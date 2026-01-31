@@ -171,6 +171,7 @@ kefir_result_t kefir_ast_identifier_flat_scope_next(const struct kefir_ast_ident
                                                     struct kefir_ast_identifier_flat_scope_iterator *);
 
 typedef struct kefir_ast_identifier_block_scope {
+    kefir_id_t next_scope_id;
     struct kefir_tree_node root;
     struct kefir_tree_node external_root;
     struct kefir_list scopes;

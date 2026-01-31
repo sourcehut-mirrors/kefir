@@ -57,7 +57,7 @@ sum:
 .loc 0 29 20
 .L__kefir_func_sum_label14:
     lea N(%rip), %rdx
-.L__kefir_func_sum_label175:
+.L__kefir_func_sum_label178:
     movq (%rdx), %rdx
 .loc 0 29 9
 .L__kefir_func_sum_label179:

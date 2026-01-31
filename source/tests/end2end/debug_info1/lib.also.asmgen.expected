@@ -26,7 +26,7 @@ factorial64:
 .L__kefir_func_factorial64_label8:
     lea -1(%rax), %rdx
 .loc 0 31 13
-.L__kefir_func_factorial64_label66:
+.L__kefir_func_factorial64_label63:
     mov %rcx, %rsi
     imul %rax, %rsi
 .loc 0 30 23
@@ -361,7 +361,7 @@ __kefir_debug_loclist_section_entry_10:
     .byte 144
     .byte 1
     .byte 4
-    .uleb128 .L__kefir_func_factorial64_label66 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_factorial64_label63 - .L__kefir_text_section_begin
     .uleb128 .L__kefir_func_factorial64_label73 - .L__kefir_text_section_begin
     .byte 2
     .byte 144
@@ -444,7 +444,7 @@ __kefir_debug_rnglist_section_entry_7:
     .byte 0
 __kefir_debug_rnglist_section_entry_8:
     .byte 4
-    .uleb128 .L__kefir_func_factorial64_label66 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_factorial64_label63 - .L__kefir_text_section_begin
     .uleb128 .L__kefir_func_factorial64_label67 - .L__kefir_text_section_begin
     .byte 0
 __kefir_debug_rnglists_section_end:

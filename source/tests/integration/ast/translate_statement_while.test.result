@@ -112,7 +112,7 @@
             "body": [
                 {
                     "opcode": "get_local_scope",
-                    "arg": 4294967296
+                    "arg": 4294967297
                 },
                 {
                     "opcode": "get_local",
@@ -125,7 +125,7 @@
                 },
                 {
                     "opcode": "get_local_scope",
-                    "arg": 4294967296
+                    "arg": 4294967297
                 },
                 {
                     "opcode": "get_local",
@@ -158,7 +158,7 @@
                 },
                 {
                     "opcode": "get_local_scope",
-                    "arg": 4294967296
+                    "arg": 4294967297
                 },
                 {
                     "opcode": "get_local",
@@ -219,7 +219,7 @@
                 },
                 {
                     "opcode": "get_local_scope",
-                    "arg": 4294967296
+                    "arg": 4294967297
                 },
                 {
                     "opcode": "get_local",
@@ -267,7 +267,7 @@
                 },
                 {
                     "opcode": "get_local_scope",
-                    "arg": 4294967296
+                    "arg": 4294967297
                 },
                 {
                     "opcode": "get_local",

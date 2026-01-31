@@ -34,7 +34,8 @@ static kefir_result_t flat_scope_removal(struct kefir_mem *mem, struct kefir_has
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_ast_identifier_flat_scope_init(struct kefir_ast_identifier_flat_scope *scope, kefir_id_t identifier) {
+kefir_result_t kefir_ast_identifier_flat_scope_init(struct kefir_ast_identifier_flat_scope *scope,
+                                                    kefir_id_t identifier) {
     REQUIRE(scope != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST identifier scope"));
     scope->remove_callback = NULL;
     scope->remove_payload = NULL;
@@ -175,10 +176,13 @@ kefir_result_t kefir_ast_identifier_block_scope_init(struct kefir_mem *mem,
                                                      struct kefir_ast_identifier_block_scope *scope) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(scope != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid multi scope"));
+
+    scope->next_scope_id = 0;
+
     struct kefir_ast_identifier_flat_scope *root_scope =
         KEFIR_MALLOC(mem, sizeof(struct kefir_ast_identifier_flat_scope));
     REQUIRE(root_scope != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate identifier scope"));
-    kefir_result_t res = kefir_ast_identifier_flat_scope_init(root_scope, 0);
+    kefir_result_t res = kefir_ast_identifier_flat_scope_init(root_scope, scope->next_scope_id++);
     REQUIRE_ELSE(res == KEFIR_OK, {
         KEFIR_FREE(mem, root_scope);
         return res;
@@ -289,7 +293,7 @@ kefir_result_t kefir_ast_identifier_block_scope_push(struct kefir_mem *mem,
     struct kefir_ast_identifier_flat_scope *subscope =
         KEFIR_MALLOC(mem, sizeof(struct kefir_ast_identifier_flat_scope));
     REQUIRE(subscope != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate identifier scope"));
-    kefir_result_t res = kefir_ast_identifier_flat_scope_init(subscope, 0);
+    kefir_result_t res = kefir_ast_identifier_flat_scope_init(subscope, scope->next_scope_id++);
     REQUIRE_ELSE(res == KEFIR_OK, {
         KEFIR_FREE(mem, subscope);
         return res;

@@ -257,7 +257,7 @@
             "body": [
                 {
                     "opcode": "get_local_scope",
-                    "arg": 34359738368
+                    "arg": 34359738370
                 },
                 {
                     "opcode": "get_local",
@@ -270,7 +270,7 @@
                 },
                 {
                     "opcode": "get_local_scope",
-                    "arg": 34359738368
+                    "arg": 34359738370
                 },
                 {
                     "opcode": "get_local",
@@ -297,7 +297,7 @@
                 },
                 {
                     "opcode": "get_local_scope",
-                    "arg": 34359738368
+                    "arg": 34359738370
                 },
                 {
                     "opcode": "get_local",
@@ -336,7 +336,7 @@
                 },
                 {
                     "opcode": "get_local_scope",
-                    "arg": 34359738368
+                    "arg": 34359738370
                 },
                 {
                     "opcode": "get_local",
@@ -384,7 +384,7 @@
                 },
                 {
                     "opcode": "get_local_scope",
-                    "arg": 34359738368
+                    "arg": 34359738370
                 },
                 {
                     "opcode": "get_local",
@@ -404,7 +404,7 @@
             "body": [
                 {
                     "opcode": "get_local_scope",
-                    "arg": 60129542144
+                    "arg": 60129542145
                 },
                 {
                     "opcode": "get_local",
@@ -417,7 +417,7 @@
                 },
                 {
                     "opcode": "get_local_scope",
-                    "arg": 60129542144
+                    "arg": 60129542145
                 },
                 {
                     "opcode": "get_local",
@@ -447,7 +447,7 @@
                 },
                 {
                     "opcode": "get_local_scope",
-                    "arg": 60129542144
+                    "arg": 60129542145
                 },
                 {
                     "opcode": "get_local",
@@ -478,7 +478,7 @@
                 },
                 {
                     "opcode": "get_local_scope",
-                    "arg": 60129542144
+                    "arg": 60129542145
                 },
                 {
                     "opcode": "get_local",
@@ -525,7 +525,7 @@
                 },
                 {
                     "opcode": "get_local_scope",
-                    "arg": 60129542144
+                    "arg": 60129542145
                 },
                 {
                     "opcode": "get_local",
@@ -538,24 +538,7 @@
                 },
                 {
                     "opcode": "get_local_scope",
-                    "arg": 60129542144
-                },
-                {
-                    "opcode": "get_local",
-                    "id": 60129542144,
-                    "type": 14,
-                    "type_index": 0
-                },
-                {
-                    "opcode": "local_lifetime_mark"
-                },
-                {
-                    "opcode": "jump",
-                    "arg": 48
-                },
-                {
-                    "opcode": "get_local_scope",
-                    "arg": 60129542144
+                    "arg": 60129542145
                 },
                 {
                     "opcode": "get_local",
@@ -572,7 +555,24 @@
                 },
                 {
                     "opcode": "get_local_scope",
-                    "arg": 60129542144
+                    "arg": 60129542145
+                },
+                {
+                    "opcode": "get_local",
+                    "id": 60129542144,
+                    "type": 14,
+                    "type_index": 0
+                },
+                {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "jump",
+                    "arg": 48
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 60129542145
                 },
                 {
                     "opcode": "get_local",
@@ -585,7 +585,7 @@
                 },
                 {
                     "opcode": "get_local_scope",
-                    "arg": 60129542144
+                    "arg": 60129542145
                 },
                 {
                     "opcode": "get_local",
@@ -602,7 +602,7 @@
                 },
                 {
                     "opcode": "get_local_scope",
-                    "arg": 60129542144
+                    "arg": 60129542145
                 },
                 {
                     "opcode": "get_local",
@@ -615,7 +615,7 @@
                 },
                 {
                     "opcode": "get_local_scope",
-                    "arg": 60129542144
+                    "arg": 60129542145
                 },
                 {
                     "opcode": "get_local",
@@ -663,7 +663,7 @@
                 },
                 {
                     "opcode": "get_local_scope",
-                    "arg": 60129542144
+                    "arg": 60129542145
                 },
                 {
                     "opcode": "get_local",

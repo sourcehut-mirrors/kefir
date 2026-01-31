@@ -590,7 +590,7 @@
             "body": [
                 {
                     "opcode": "get_local_scope",
-                    "arg": 64424509440
+                    "arg": 64424509441
                 },
                 {
                     "opcode": "get_local",
@@ -607,7 +607,7 @@
                 },
                 {
                     "opcode": "get_local_scope",
-                    "arg": 64424509440
+                    "arg": 64424509441
                 },
                 {
                     "opcode": "get_local",
@@ -627,7 +627,7 @@
                 },
                 {
                     "opcode": "get_local_scope",
-                    "arg": 64424509440
+                    "arg": 64424509441
                 },
                 {
                     "opcode": "get_local",
@@ -670,7 +670,7 @@
                 },
                 {
                     "opcode": "get_local_scope",
-                    "arg": 64424509440
+                    "arg": 64424509441
                 },
                 {
                     "opcode": "get_local",
