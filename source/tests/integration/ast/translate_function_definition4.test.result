@@ -133,6 +133,13 @@
                     "arg": 17179869185
                 },
                 {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 17179869185
+                },
+                {
                     "opcode": "get_local",
                     "id": 17179869184,
                     "type": 4,
@@ -234,7 +241,7 @@
                 },
                 {
                     "opcode": "branch",
-                    "arg": 49,
+                    "arg": 51,
                     "condition": "8bit"
                 },
                 {
@@ -347,7 +354,7 @@
                 },
                 {
                     "opcode": "jump",
-                    "arg": 17
+                    "arg": 19
                 },
                 {
                     "opcode": "get_local_scope",
@@ -364,6 +371,13 @@
                     "memory_flags": {
                         "volatile": false
                     }
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 17179869185
+                },
+                {
+                    "opcode": "local_lifetime_mark"
                 },
                 {
                     "opcode": "get_local_scope",
@@ -393,6 +407,13 @@
                 },
                 {
                     "opcode": "return"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 17179869185
+                },
+                {
+                    "opcode": "local_lifetime_mark"
                 },
                 {
                     "opcode": "get_local_scope",

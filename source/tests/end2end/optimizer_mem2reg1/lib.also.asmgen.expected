@@ -78,15 +78,14 @@ quad_equation:
     stmxcsr -24(%rbp)
     mov %rdi, %rbx
     movaps %xmm0, -48(%rbp)
-    movaps %xmm1, %xmm3
-    mulsd %xmm1, %xmm3
-    mov $4, %eax
-    cvtsi2sd %rax, %xmm4
-    mulsd %xmm0, %xmm4
-    mulsd %xmm2, %xmm4
-    movaps %xmm3, %xmm0
-    subsd %xmm4, %xmm0
     mov $-1, %r12
+    movaps %xmm1, %xmm0
+    mulsd %xmm1, %xmm0
+    mov $4, %eax
+    cvtsi2sd %rax, %xmm3
+    mulsd -48(%rbp), %xmm3
+    mulsd %xmm2, %xmm3
+    subsd %xmm3, %xmm0
     movaps %xmm1, -64(%rbp)
     movdqu -64(%rbp), %xmm2
     xorpd .L__kefir_constant_float64_neg(%rip), %xmm2

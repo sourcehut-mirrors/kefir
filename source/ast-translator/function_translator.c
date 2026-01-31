@@ -231,6 +231,8 @@ kefir_result_t kefir_ast_translator_function_context_init(struct kefir_mem *mem,
         return res;
     });
 
+    ctx->local_translator_context.global_scope_layout = context->global_scope_layout;
+    ctx->local_translator_context.local_scope_layout = &ctx->local_scope_layout;
     const struct kefir_ast_scoped_identifier *function_scoped_id =
         function->base.properties.function_definition.scoped_id;
     ctx->ir_func->flags.constructor = function_scoped_id->function.flags.constructor;

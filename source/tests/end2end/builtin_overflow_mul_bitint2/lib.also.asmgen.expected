@@ -269,12 +269,12 @@ __kefir_bigint_unsigned_compare:
 
 __kefir_bigint_right_shift_whole_digits:
 .L__kefir_runtime_text_func___kefir_bigint_right_shift_whole_digits_begin:
+    sub $-7, %rcx
+    shr $3, %rcx
     mov $-1, %rax
     xor %r8d, %r8d
     test %edx, %edx
     cmovz %r8, %rax
-    sub $-7, %rcx
-    shr $3, %rcx
     mov %rcx, %rdx
     sub %rsi, %rdx
     cmp %rcx, %rsi
@@ -537,9 +537,6 @@ __kefir_bigint_arithmetic_right_shift:
     lea 7(%rax), %r8
     mov %r8, %r15
     shr $3, %r15
-    cmp %rax, %rsi
-    mov %rsi, %rbx
-    cmova %rax, %rbx
     shl $3, %rdx
     mov %rcx, %r13
     sub %rdx, %r13
@@ -547,6 +544,9 @@ __kefir_bigint_arithmetic_right_shift:
     sar %cl, %edi
     mov %edi, %r14d
     and $1, %r14d
+    cmp %rax, %rsi
+    mov %rsi, %rbx
+    cmova %rax, %rbx
     mov $1, %edx
     mov %r13, %rcx
     shl %cl, %rdx

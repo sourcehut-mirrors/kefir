@@ -946,6 +946,13 @@
                     "arg": 386547056641
                 },
                 {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 386547056641
+                },
+                {
                     "opcode": "get_local",
                     "id": 386547056640,
                     "type": 90,
@@ -1116,8 +1123,15 @@
                 },
                 {
                     "opcode": "branch",
-                    "arg": 77,
+                    "arg": 87,
                     "condition": "8bit"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 386547056643
+                },
+                {
+                    "opcode": "local_lifetime_mark"
                 },
                 {
                     "opcode": "get_local_scope",
@@ -1205,8 +1219,15 @@
                 },
                 {
                     "opcode": "branch",
-                    "arg": 70,
+                    "arg": 78,
                     "condition": "8bit"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 386547056645
+                },
+                {
+                    "opcode": "local_lifetime_mark"
                 },
                 {
                     "opcode": "get_local_scope",
@@ -1239,6 +1260,13 @@
                     "arg": 386547056645
                 },
                 {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 386547056645
+                },
+                {
                     "opcode": "get_local",
                     "id": 386547056646,
                     "type": 90,
@@ -1249,7 +1277,14 @@
                 },
                 {
                     "opcode": "jump",
-                    "arg": 55
+                    "arg": 59
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 386547056643
+                },
+                {
+                    "opcode": "local_lifetime_mark"
                 },
                 {
                     "opcode": "get_local_scope",
@@ -1279,7 +1314,14 @@
                 },
                 {
                     "opcode": "jump",
-                    "arg": 86
+                    "arg": 100
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 386547056646
+                },
+                {
+                    "opcode": "local_lifetime_mark"
                 },
                 {
                     "opcode": "get_local_scope",
@@ -1312,6 +1354,13 @@
                     "arg": 386547056646
                 },
                 {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 386547056646
+                },
+                {
                     "opcode": "get_local",
                     "id": 386547056647,
                     "type": 90,
@@ -1323,6 +1372,13 @@
                 {
                     "opcode": "int_const",
                     "arg": 0
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 386547056641
+                },
+                {
+                    "opcode": "local_lifetime_mark"
                 },
                 {
                     "opcode": "get_local_scope",
@@ -1384,6 +1440,13 @@
                     "arg": 386547056641
                 },
                 {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 386547056641
+                },
+                {
                     "opcode": "get_local",
                     "id": 386547056640,
                     "type": 90,
@@ -1439,113 +1502,113 @@
                     "source_id": "source\/tests\/end2end\/debug_info_ir2\/lib.kefir.asmgen.c",
                     "line": 22,
                     "column": 5,
-                    "begin": 17,
-                    "end": 23
+                    "begin": 19,
+                    "end": 25
                 },
                 {
                     "source_id": "source\/tests\/end2end\/debug_info_ir2\/lib.kefir.asmgen.c",
                     "line": 23,
                     "column": 5,
-                    "begin": 23,
-                    "end": 29
+                    "begin": 25,
+                    "end": 31
                 },
                 {
                     "source_id": "source\/tests\/end2end\/debug_info_ir2\/lib.kefir.asmgen.c",
                     "line": 24,
                     "column": 5,
-                    "begin": 29,
-                    "end": 35
+                    "begin": 31,
+                    "end": 37
                 },
                 {
                     "source_id": "source\/tests\/end2end\/debug_info_ir2\/lib.kefir.asmgen.c",
                     "line": 25,
                     "column": 9,
-                    "begin": 35,
-                    "end": 38
+                    "begin": 37,
+                    "end": 40
                 },
                 {
                     "source_id": "source\/tests\/end2end\/debug_info_ir2\/lib.kefir.asmgen.c",
                     "line": 25,
                     "column": 5,
-                    "begin": 35,
-                    "end": 86
+                    "begin": 37,
+                    "end": 100
                 },
                 {
                     "source_id": "source\/tests\/end2end\/debug_info_ir2\/lib.kefir.asmgen.c",
                     "line": 25,
                     "column": 12,
-                    "begin": 40,
-                    "end": 76
+                    "begin": 42,
+                    "end": 86
                 },
                 {
                     "source_id": "source\/tests\/end2end\/debug_info_ir2\/lib.kefir.asmgen.c",
                     "line": 26,
                     "column": 9,
-                    "begin": 46,
-                    "end": 52
+                    "begin": 50,
+                    "end": 56
                 },
                 {
                     "source_id": "source\/tests\/end2end\/debug_info_ir2\/lib.kefir.asmgen.c",
                     "line": 27,
                     "column": 9,
-                    "begin": 52,
-                    "end": 55
+                    "begin": 56,
+                    "end": 59
                 },
                 {
                     "source_id": "source\/tests\/end2end\/debug_info_ir2\/lib.kefir.asmgen.c",
                     "line": 28,
                     "column": 16,
-                    "begin": 55,
-                    "end": 58
+                    "begin": 59,
+                    "end": 62
                 },
                 {
                     "source_id": "source\/tests\/end2end\/debug_info_ir2\/lib.kefir.asmgen.c",
                     "line": 28,
                     "column": 9,
-                    "begin": 55,
-                    "end": 70
+                    "begin": 59,
+                    "end": 78
                 },
                 {
                     "source_id": "source\/tests\/end2end\/debug_info_ir2\/lib.kefir.asmgen.c",
                     "line": 28,
                     "column": 19,
-                    "begin": 60,
-                    "end": 69
+                    "begin": 64,
+                    "end": 77
                 },
                 {
                     "source_id": "source\/tests\/end2end\/debug_info_ir2\/lib.kefir.asmgen.c",
                     "line": 29,
                     "column": 13,
-                    "begin": 63,
-                    "end": 66
+                    "begin": 69,
+                    "end": 72
                 },
                 {
                     "source_id": "source\/tests\/end2end\/debug_info_ir2\/lib.kefir.asmgen.c",
                     "line": 31,
                     "column": 12,
-                    "begin": 77,
-                    "end": 86
+                    "begin": 87,
+                    "end": 100
                 },
                 {
                     "source_id": "source\/tests\/end2end\/debug_info_ir2\/lib.kefir.asmgen.c",
                     "line": 32,
                     "column": 9,
-                    "begin": 80,
-                    "end": 83
+                    "begin": 92,
+                    "end": 95
                 },
                 {
                     "source_id": "source\/tests\/end2end\/debug_info_ir2\/lib.kefir.asmgen.c",
                     "line": 34,
                     "column": 12,
-                    "begin": 86,
-                    "end": 87
+                    "begin": 100,
+                    "end": 101
                 },
                 {
                     "source_id": "source\/tests\/end2end\/debug_info_ir2\/lib.kefir.asmgen.c",
                     "line": 34,
                     "column": 5,
-                    "begin": 86,
-                    "end": 100
+                    "begin": 100,
+                    "end": 116
                 }
             ]
         }
@@ -4121,11 +4184,11 @@
                     },
                     {
                         "tag": "code_begin",
-                        "value": 17
+                        "value": 19
                     },
                     {
                         "tag": "code_end",
-                        "value": 100
+                        "value": 116
                     },
                     {
                         "tag": "external",
@@ -4174,11 +4237,11 @@
                         "attributes": [
                             {
                                 "tag": "code_begin",
-                                "value": 35
+                                "value": 37
                             },
                             {
                                 "tag": "code_end",
-                                "value": 86
+                                "value": 100
                             }
                         ],
                         "children": [
@@ -4188,11 +4251,11 @@
                                 "attributes": [
                                     {
                                         "tag": "code_begin",
-                                        "value": 40
+                                        "value": 42
                                     },
                                     {
                                         "tag": "code_end",
-                                        "value": 70
+                                        "value": 78
                                     }
                                 ],
                                 "children": [
@@ -4202,11 +4265,11 @@
                                         "attributes": [
                                             {
                                                 "tag": "code_begin",
-                                                "value": 55
+                                                "value": 59
                                             },
                                             {
                                                 "tag": "code_end",
-                                                "value": 70
+                                                "value": 78
                                             }
                                         ],
                                         "children": [
@@ -4216,11 +4279,11 @@
                                                 "attributes": [
                                                     {
                                                         "tag": "code_begin",
-                                                        "value": 60
+                                                        "value": 64
                                                     },
                                                     {
                                                         "tag": "code_end",
-                                                        "value": 66
+                                                        "value": 72
                                                     }
                                                 ],
                                                 "children": [
@@ -4238,11 +4301,11 @@
                                                             },
                                                             {
                                                                 "tag": "code_begin",
-                                                                "value": 60
+                                                                "value": 64
                                                             },
                                                             {
                                                                 "tag": "code_end",
-                                                                "value": 66
+                                                                "value": 72
                                                             },
                                                             {
                                                                 "tag": "local_variable",
@@ -4293,11 +4356,11 @@
                                             },
                                             {
                                                 "tag": "code_begin",
-                                                "value": 40
+                                                "value": 42
                                             },
                                             {
                                                 "tag": "code_end",
-                                                "value": 70
+                                                "value": 78
                                             },
                                             {
                                                 "tag": "local_variable",
@@ -4344,11 +4407,11 @@
                                             },
                                             {
                                                 "tag": "code_begin",
-                                                "value": 40
+                                                "value": 42
                                             },
                                             {
                                                 "tag": "code_end",
-                                                "value": 70
+                                                "value": 78
                                             },
                                             {
                                                 "tag": "local_variable",
@@ -4389,11 +4452,11 @@
                                 "attributes": [
                                     {
                                         "tag": "code_begin",
-                                        "value": 77
+                                        "value": 87
                                     },
                                     {
                                         "tag": "code_end",
-                                        "value": 83
+                                        "value": 95
                                     }
                                 ],
                                 "children": [
@@ -4411,11 +4474,11 @@
                                             },
                                             {
                                                 "tag": "code_begin",
-                                                "value": 77
+                                                "value": 87
                                             },
                                             {
                                                 "tag": "code_end",
-                                                "value": 83
+                                                "value": 95
                                             },
                                             {
                                                 "tag": "local_variable",
@@ -4466,11 +4529,11 @@
                             },
                             {
                                 "tag": "code_begin",
-                                "value": 17
+                                "value": 19
                             },
                             {
                                 "tag": "code_end",
-                                "value": 100
+                                "value": 116
                             },
                             {
                                 "tag": "local_variable",
@@ -4517,11 +4580,11 @@
                             },
                             {
                                 "tag": "code_begin",
-                                "value": 17
+                                "value": 19
                             },
                             {
                                 "tag": "code_end",
-                                "value": 100
+                                "value": 116
                             },
                             {
                                 "tag": "local_variable",
@@ -4568,11 +4631,11 @@
                             },
                             {
                                 "tag": "code_begin",
-                                "value": 17
+                                "value": 19
                             },
                             {
                                 "tag": "code_end",
-                                "value": 100
+                                "value": 116
                             },
                             {
                                 "tag": "local_variable",
@@ -4619,11 +4682,11 @@
                             },
                             {
                                 "tag": "code_begin",
-                                "value": 17
+                                "value": 19
                             },
                             {
                                 "tag": "code_end",
-                                "value": 100
+                                "value": 116
                             },
                             {
                                 "tag": "local_variable",
@@ -4670,11 +4733,11 @@
                             },
                             {
                                 "tag": "code_begin",
-                                "value": 17
+                                "value": 19
                             },
                             {
                                 "tag": "code_end",
-                                "value": 100
+                                "value": 116
                             },
                             {
                                 "tag": "global_variable",

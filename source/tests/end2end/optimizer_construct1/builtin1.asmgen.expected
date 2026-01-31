@@ -8,14 +8,14 @@
                 "blocks": [
                     {
                         "id": 0,
-                        "control_flow": 8,
+                        "control_flow": 9,
                         "code": [
                             {
-                                "id": 7,
+                                "id": 8,
                                 "opcode": "get_argument",
                                 "index": 0,
                                 "control_next": null,
-                                "ir_instruction": 9
+                                "ir_instruction": 11
                             },
                             {
                                 "id": 0,
@@ -24,102 +24,109 @@
                                 "ir_instruction": 0
                             },
                             {
-                                "id": 1,
+                                "id": 2,
                                 "opcode": "alloc_local",
                                 "scope": 0,
                                 "type_id": 92,
                                 "type_index": 0,
                                 "control_next": null,
-                                "ir_instruction": 1
+                                "ir_instruction": 3
                             },
                             {
-                                "id": 8,
+                                "id": 9,
                                 "opcode": "int32_store",
-                                "location": 1,
-                                "value": 7,
+                                "location": 2,
+                                "value": 8,
                                 "flags": {
                                     "volatile": false
                                 },
-                                "control_next": 9,
-                                "ir_instruction": 13
+                                "control_next": 10,
+                                "ir_instruction": 15
                             },
                             {
-                                "id": 3,
+                                "id": 4,
                                 "opcode": "alloc_local",
                                 "scope": 0,
                                 "type_id": 92,
                                 "type_index": 1,
                                 "control_next": null,
-                                "ir_instruction": 4
+                                "ir_instruction": 6
                             },
                             {
-                                "id": 9,
+                                "id": 10,
                                 "opcode": "vararg_start",
-                                "arg": 3,
-                                "control_next": 10,
-                                "ir_instruction": 22
+                                "arg": 4,
+                                "control_next": 11,
+                                "ir_instruction": 24
                             },
                             {
-                                "id": 5,
+                                "id": 6,
                                 "opcode": "alloc_local",
                                 "scope": 0,
                                 "type_id": 92,
                                 "type_index": 7,
                                 "control_next": null,
-                                "ir_instruction": 7
-                            },
-                            {
-                                "id": 10,
-                                "opcode": "vararg_copy",
-                                "args": [
-                                    3,
-                                    5
-                                ],
-                                "control_next": 11,
-                                "ir_instruction": 27
+                                "ir_instruction": 9
                             },
                             {
                                 "id": 11,
+                                "opcode": "vararg_copy",
+                                "args": [
+                                    4,
+                                    6
+                                ],
+                                "control_next": 12,
+                                "ir_instruction": 29
+                            },
+                            {
+                                "id": 12,
                                 "opcode": "vararg_get",
-                                "target": 5,
+                                "target": 6,
                                 "source": null,
                                 "type": {
                                     "id": 94,
                                     "index": 0
                                 },
-                                "control_next": 12,
-                                "ir_instruction": 31
-                            },
-                            {
-                                "id": 12,
-                                "opcode": "vararg_end",
-                                "arg": 3,
-                                "control_next": 2,
-                                "ir_instruction": 35
-                            },
-                            {
-                                "id": 2,
-                                "opcode": "local_lifetime_mark",
-                                "arg": 1,
-                                "control_next": 4,
-                                "ir_instruction": 2
-                            },
-                            {
-                                "id": 4,
-                                "opcode": "local_lifetime_mark",
-                                "arg": 3,
-                                "control_next": 6,
-                                "ir_instruction": 5
-                            },
-                            {
-                                "id": 6,
-                                "opcode": "local_lifetime_mark",
-                                "arg": 5,
                                 "control_next": 13,
-                                "ir_instruction": 8
+                                "ir_instruction": 33
                             },
                             {
                                 "id": 13,
+                                "opcode": "vararg_end",
+                                "arg": 4,
+                                "control_next": 1,
+                                "ir_instruction": 37
+                            },
+                            {
+                                "id": 1,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 0,
+                                "control_next": 3,
+                                "ir_instruction": 1
+                            },
+                            {
+                                "id": 3,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 2,
+                                "control_next": 5,
+                                "ir_instruction": 4
+                            },
+                            {
+                                "id": 5,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 4,
+                                "control_next": 7,
+                                "ir_instruction": 7
+                            },
+                            {
+                                "id": 7,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 6,
+                                "control_next": 14,
+                                "ir_instruction": 10
+                            },
+                            {
+                                "id": 14,
                                 "opcode": "return",
                                 "arg": null,
                                 "control_next": null,
@@ -132,20 +139,21 @@
                             "predecessors": [],
                             "immediate_dominator": null,
                             "alive_instructions": [
+                                9,
                                 3,
                                 0,
-                                10,
                                 5,
                                 2,
                                 1,
                                 8,
                                 4,
+                                14,
                                 13,
                                 6,
                                 7,
                                 12,
                                 11,
-                                9
+                                10
                             ]
                         }
                     }
@@ -155,19 +163,19 @@
                         {
                             "variable_id": 395136991233,
                             "allocations": [
-                                3
+                                4
                             ]
                         },
                         {
                             "variable_id": 395136991239,
                             "allocations": [
-                                5
+                                6
                             ]
                         },
                         {
                             "variable_id": 395136991232,
                             "allocations": [
-                                1
+                                2
                             ]
                         }
                     ],
@@ -183,7 +191,7 @@
                 "blocks": [
                     {
                         "id": 0,
-                        "control_flow": 7,
+                        "control_flow": 8,
                         "code": [
                             {
                                 "id": 0,
@@ -192,64 +200,71 @@
                                 "ir_instruction": 0
                             },
                             {
-                                "id": 1,
+                                "id": 2,
                                 "opcode": "alloc_local",
                                 "scope": 0,
                                 "type_id": 94,
                                 "type_index": 0,
                                 "control_next": null,
-                                "ir_instruction": 1
+                                "ir_instruction": 3
                             },
                             {
-                                "id": 5,
+                                "id": 6,
                                 "opcode": "int_const",
                                 "value": 0,
+                                "control_next": null,
+                                "ir_instruction": 10
+                            },
+                            {
+                                "id": 4,
+                                "opcode": "int_const",
+                                "value": 100,
                                 "control_next": null,
                                 "ir_instruction": 8
                             },
                             {
-                                "id": 3,
-                                "opcode": "int_const",
-                                "value": 100,
-                                "control_next": null,
-                                "ir_instruction": 6
-                            },
-                            {
-                                "id": 4,
+                                "id": 5,
                                 "opcode": "int64_sign_extend_32bits",
-                                "arg": 3,
-                                "control_next": null,
-                                "ir_instruction": 7
-                            },
-                            {
-                                "id": 6,
-                                "opcode": "stack_alloc",
-                                "size_ref": 4,
-                                "alignment_ref": 5,
-                                "within_scope": false,
+                                "arg": 4,
                                 "control_next": null,
                                 "ir_instruction": 9
                             },
                             {
                                 "id": 7,
-                                "opcode": "int64_store",
-                                "location": 1,
-                                "value": 6,
-                                "flags": {
-                                    "volatile": false
-                                },
-                                "control_next": 2,
-                                "ir_instruction": 10
-                            },
-                            {
-                                "id": 2,
-                                "opcode": "local_lifetime_mark",
-                                "arg": 1,
-                                "control_next": 8,
-                                "ir_instruction": 2
+                                "opcode": "stack_alloc",
+                                "size_ref": 5,
+                                "alignment_ref": 6,
+                                "within_scope": false,
+                                "control_next": null,
+                                "ir_instruction": 11
                             },
                             {
                                 "id": 8,
+                                "opcode": "int64_store",
+                                "location": 2,
+                                "value": 7,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": 1,
+                                "ir_instruction": 12
+                            },
+                            {
+                                "id": 1,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 0,
+                                "control_next": 3,
+                                "ir_instruction": 1
+                            },
+                            {
+                                "id": 3,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 2,
+                                "control_next": 9,
+                                "ir_instruction": 4
+                            },
+                            {
+                                "id": 9,
                                 "opcode": "return",
                                 "arg": null,
                                 "control_next": null,
@@ -263,12 +278,13 @@
                             "immediate_dominator": null,
                             "alive_instructions": [
                                 8,
-                                3,
                                 4,
-                                7,
+                                9,
+                                3,
+                                5,
                                 0,
                                 6,
-                                5,
+                                7,
                                 1,
                                 2
                             ]
@@ -280,7 +296,7 @@
                         {
                             "variable_id": 416611827712,
                             "allocations": [
-                                1
+                                2
                             ]
                         }
                     ],

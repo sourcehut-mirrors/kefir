@@ -8,67 +8,67 @@
                 "blocks": [
                     {
                         "id": 0,
-                        "control_flow": 41,
+                        "control_flow": 44,
                         "code": [
                             {
-                                "id": 5,
+                                "id": 6,
                                 "opcode": "get_argument",
                                 "index": 0,
                                 "control_next": null,
-                                "ir_instruction": 6
-                            },
-                            {
-                                "id": 37,
-                                "opcode": "int_const",
-                                "value": 3,
-                                "control_next": null,
-                                "ir_instruction": 87
-                            },
-                            {
-                                "id": 38,
-                                "opcode": "int32_not",
-                                "arg": 5,
-                                "control_next": null,
-                                "ir_instruction": 87
-                            },
-                            {
-                                "id": 39,
-                                "opcode": "select",
-                                "variant": "inverted_32bit",
-                                "args": [
-                                    5,
-                                    37,
-                                    38
-                                ],
-                                "control_next": null,
-                                "ir_instruction": 87
+                                "ir_instruction": 8
                             },
                             {
                                 "id": 40,
-                                "opcode": "int32_add",
-                                "args": [
-                                    5,
-                                    39
-                                ],
+                                "opcode": "int_const",
+                                "value": 3,
                                 "control_next": null,
-                                "ir_instruction": 87
-                            },
-                            {
-                                "id": 42,
-                                "opcode": "int32_add",
-                                "args": [
-                                    5,
-                                    40
-                                ],
-                                "control_next": null,
-                                "ir_instruction": 26
+                                "ir_instruction": 95
                             },
                             {
                                 "id": 41,
-                                "opcode": "return",
-                                "arg": 42,
+                                "opcode": "int32_not",
+                                "arg": 6,
                                 "control_next": null,
-                                "ir_instruction": 33
+                                "ir_instruction": 95
+                            },
+                            {
+                                "id": 42,
+                                "opcode": "select",
+                                "variant": "inverted_32bit",
+                                "args": [
+                                    6,
+                                    40,
+                                    41
+                                ],
+                                "control_next": null,
+                                "ir_instruction": 95
+                            },
+                            {
+                                "id": 43,
+                                "opcode": "int32_add",
+                                "args": [
+                                    6,
+                                    42
+                                ],
+                                "control_next": null,
+                                "ir_instruction": 95
+                            },
+                            {
+                                "id": 45,
+                                "opcode": "int32_add",
+                                "args": [
+                                    6,
+                                    43
+                                ],
+                                "control_next": null,
+                                "ir_instruction": 28
+                            },
+                            {
+                                "id": 44,
+                                "opcode": "return",
+                                "arg": 45,
+                                "control_next": null,
+                                "ir_instruction": 37
                             }
                         ],
                         "public_labels": [],
@@ -77,13 +77,13 @@
                             "predecessors": [],
                             "immediate_dominator": null,
                             "alive_instructions": [
-                                39,
-                                37,
+                                43,
+                                44,
                                 42,
+                                45,
+                                6,
                                 40,
-                                5,
-                                41,
-                                38
+                                41
                             ]
                         }
                     }
@@ -93,56 +93,29 @@
                         {
                             "variable_id": 412316860416,
                             "allocations": [
-                                1
+                                2
                             ]
                         },
                         {
                             "variable_id": 395136991233,
                             "allocations": [
-                                32
+                                35
                             ]
                         },
                         {
                             "variable_id": 395136991232,
                             "allocations": [
-                                33
+                                36
                             ]
                         },
                         {
                             "variable_id": 412316860417,
                             "allocations": [
-                                3
+                                4
                             ]
                         }
                     ],
-                    "allocation_placement": [
-                        {
-                            "allocation_ref": 1,
-                            "placement": [
-                                5
-                            ]
-                        },
-                        {
-                            "allocation_ref": 33,
-                            "placement": [
-                                5
-                            ]
-                        },
-                        {
-                            "allocation_ref": 3,
-                            "placement": [
-                                40
-                            ]
-                        },
-                        {
-                            "allocation_ref": 32,
-                            "placement": [
-                                37,
-                                39,
-                                38
-                            ]
-                        }
-                    ]
+                    "allocation_placement": []
                 }
             }
         }

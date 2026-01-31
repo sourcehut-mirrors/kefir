@@ -40,6 +40,7 @@
     "phi-propagate," \
     "constant-fold," \
     "mem2reg," \
+    "dead-alloc," \
     "local-alloc-sink," \
     "phi-propagate," \
     "constant-fold," \

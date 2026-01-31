@@ -766,12 +766,12 @@ __kefir_bigint_is_zero:
 .L__kefir_runtime_text_func___kefir_bigint_is_zero_begin:
     cmp $0, %rsi
     je .L__kefir_runtime_func___kefir_bigint_is_zero_label11
-    lea 7(%rsi), %rax
-    shr $3, %rax
-    sub $1, %rsi
+    lea -1(%rsi), %rax
+    sub $-7, %rsi
+    shr $3, %rsi
     xor %ecx, %ecx
 .L__kefir_runtime_func___kefir_bigint_is_zero_label3:
-    cmp %rax, %rcx
+    cmp %rsi, %rcx
     jb .L__kefir_runtime_func___kefir_bigint_is_zero_label5
     mov $1, %eax
     ret
@@ -779,7 +779,7 @@ __kefir_bigint_is_zero:
     mov %rdx, %r8
     movb (%rdi, %rcx, 1), %r8b
     lea 1(%rcx), %rdx
-    cmp %rax, %rdx
+    cmp %rsi, %rdx
     je .L__kefir_runtime_func___kefir_bigint_is_zero_label10
 .L__kefir_runtime_func___kefir_bigint_is_zero_label7:
     test %r8b, %r8b
@@ -791,10 +791,10 @@ __kefir_bigint_is_zero:
     ret
 .L__kefir_runtime_func___kefir_bigint_is_zero_label10:
     movzx %r8b, %r8
-    mov %rsi, %rcx
+    mov %rax, %rcx
     shr $3, %rcx
     shl $3, %rcx
-    mov %rsi, %r9
+    mov %rax, %r9
     sub %rcx, %r9
     mov %r9, %rcx
     add $1, %rcx
@@ -952,12 +952,12 @@ __kefir_bigint_negate:
 
 __kefir_bigint_right_shift_whole_digits:
 .L__kefir_runtime_text_func___kefir_bigint_right_shift_whole_digits_begin:
+    sub $-7, %rcx
+    shr $3, %rcx
     mov $-1, %rax
     xor %r8d, %r8d
     test %edx, %edx
     cmovz %r8, %rax
-    sub $-7, %rcx
-    shr $3, %rcx
     mov %rcx, %rdx
     sub %rsi, %rdx
     cmp %rcx, %rsi
@@ -1528,14 +1528,14 @@ __kefir_bigint_signed_from_long_double:
     movq -48(%rbp), %rdx
     mov %rcx, %r14
     and $32767, %r14
+    lea -16383(%r14), %rcx
     mov %rax, %r13
     and $32768, %r13
-    lea -16383(%r14), %rax
-    cmp $0, %rax
+    cmp $0, %rcx
     jl .L__kefir_runtime_func___kefir_bigint_signed_from_long_double_label10
-    cmp %rbx, %rax
+    cmp %rbx, %rcx
     jae .L__kefir_runtime_func___kefir_bigint_signed_from_long_double_label9
-    cmp $63, %rax
+    cmp $63, %rcx
     jl .L__kefir_runtime_func___kefir_bigint_signed_from_long_double_label8
     mov %r12, %rdi
     mov %rbx, %rsi
@@ -1976,9 +1976,9 @@ __kefir_bigint_signed_to_long_double:
 
 __kefir_bigint_util_add_digit_zero_extended:
 .L__kefir_runtime_text_func___kefir_bigint_util_add_digit_zero_extended_begin:
+    movzx %sil, %rax
     sub $-7, %rdx
     shr $3, %rdx
-    movzx %sil, %rax
     xor %ecx, %ecx
     xor %esi, %esi
 .L__kefir_runtime_func___kefir_bigint_util_add_digit_zero_extended_label2:

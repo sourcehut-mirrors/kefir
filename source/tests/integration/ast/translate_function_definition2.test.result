@@ -136,6 +136,13 @@
                     "arg": 17179869185
                 },
                 {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 17179869185
+                },
+                {
                     "opcode": "get_local",
                     "id": 17179869184,
                     "type": 4,
@@ -261,6 +268,13 @@
                     "arg": 17179869185
                 },
                 {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 17179869185
+                },
+                {
                     "opcode": "get_local",
                     "id": 17179869184,
                     "type": 4,
@@ -284,6 +298,13 @@
                 },
                 {
                     "opcode": "return"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 17179869185
+                },
+                {
+                    "opcode": "local_lifetime_mark"
                 },
                 {
                     "opcode": "get_local_scope",
