@@ -122,7 +122,7 @@ factorial:
 #                        {
 #                            "type": "indirect",
 #                            "basis": "local_var",
-#                            "identifier": 2,
+#                            "identifier": 3,
 #                            "offset": 0,
 #                            "variant": "32bit"
 #                        },
@@ -164,7 +164,7 @@ factorial:
 #                        {
 #                            "type": "indirect",
 #                            "basis": "local_var",
-#                            "identifier": 2,
+#                            "identifier": 3,
 #                            "offset": 0,
 #                            "variant": "32bit"
 #                        }
@@ -194,7 +194,7 @@ factorial:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 88,
+#                    "instr_ref": 87,
 #                    "opcode": "cmp",
 #                    "parameters": [
 #                        {
@@ -291,7 +291,7 @@ factorial:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 114,
+#                    "instr_ref": 113,
 #                    "opcode": "jl",
 #                    "parameters": [
 #                        {
@@ -304,7 +304,7 @@ factorial:
 #                        },
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 88,
+#                            "instr_ref": 87,
 #                            "aspect": {
 #                                "type": "resource",
 #                                "resource": "flag_sf"
@@ -314,7 +314,7 @@ factorial:
 #                        },
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 88,
+#                            "instr_ref": 87,
 #                            "aspect": {
 #                                "type": "resource",
 #                                "resource": "flag_of"
@@ -337,13 +337,13 @@ factorial:
 #            "block_ref": 2,
 #            "code": [
 #                {
-#                    "instr_ref": 20,
+#                    "instr_ref": 19,
 #                    "opcode": "mov",
 #                    "parameters": [
 #                        {
 #                            "type": "indirect",
 #                            "basis": "local_var",
-#                            "identifier": 2,
+#                            "identifier": 3,
 #                            "offset": 0,
 #                            "variant": "32bit"
 #                        }
@@ -363,7 +363,7 @@ factorial:
 #                                "register": "rax"
 #                            },
 #                            "metadata": {
-#                                "value_ref": 8
+#                                "value_ref": 7
 #                            }
 #                        }
 #                    ],
@@ -373,7 +373,7 @@ factorial:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 22,
+#                    "instr_ref": 21,
 #                    "opcode": "mov",
 #                    "parameters": [
 #                        {
@@ -397,7 +397,7 @@ factorial:
 #                                "register": "rcx"
 #                            },
 #                            "metadata": {
-#                                "value_ref": 10
+#                                "value_ref": 9
 #                            }
 #                        }
 #                    ],
@@ -407,12 +407,12 @@ factorial:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 23,
+#                    "instr_ref": 22,
 #                    "opcode": "cmp",
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 20,
+#                            "instr_ref": 19,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -504,12 +504,12 @@ factorial:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 24,
+#                    "instr_ref": 23,
 #                    "opcode": "setl",
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 22,
+#                            "instr_ref": 21,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -519,7 +519,7 @@ factorial:
 #                        },
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 23,
+#                            "instr_ref": 22,
 #                            "aspect": {
 #                                "type": "resource",
 #                                "resource": "flag_sf"
@@ -529,7 +529,7 @@ factorial:
 #                        },
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 23,
+#                            "instr_ref": 22,
 #                            "aspect": {
 #                                "type": "resource",
 #                                "resource": "flag_of"
@@ -551,6 +551,40 @@ factorial:
 #                            "allocation": {
 #                                "type": "register",
 #                                "register": "rcx"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 9
+#                            }
+#                        }
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
+#                },
+#                {
+#                    "instr_ref": 24,
+#                    "opcode": "mov",
+#                    "parameters": [
+#                        {
+#                            "type": "integer",
+#                            "value": 0,
+#                            "variant": "default"
+#                        }
+#                    ],
+#                    "values": [
+#                        {
+#                            "aspect": {
+#                                "type": "direct_output",
+#                                "index": 0
+#                            },
+#                            "type": {
+#                                "variant": "64bit",
+#                                "kind": "general_purpose"
+#                            },
+#                            "allocation": {
+#                                "type": "register",
+#                                "register": "rdx"
 #                            },
 #                            "metadata": {
 #                                "value_ref": 10
@@ -564,40 +598,6 @@ factorial:
 #                },
 #                {
 #                    "instr_ref": 25,
-#                    "opcode": "mov",
-#                    "parameters": [
-#                        {
-#                            "type": "integer",
-#                            "value": 0,
-#                            "variant": "default"
-#                        }
-#                    ],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "direct_output",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "variant": "64bit",
-#                                "kind": "general_purpose"
-#                            },
-#                            "allocation": {
-#                                "type": "register",
-#                                "register": "rdx"
-#                            },
-#                            "metadata": {
-#                                "value_ref": 11
-#                            }
-#                        }
-#                    ],
-#                    "metadata": {
-#                        "source_location": null,
-#                        "code_ref": null
-#                    }
-#                },
-#                {
-#                    "instr_ref": 26,
 #                    "opcode": "cmp",
 #                    "parameters": [
 #                        {
@@ -607,7 +607,7 @@ factorial:
 #                        },
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 20,
+#                            "instr_ref": 19,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -694,12 +694,12 @@ factorial:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 27,
+#                    "instr_ref": 26,
 #                    "opcode": "sete",
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 25,
+#                            "instr_ref": 24,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -709,7 +709,7 @@ factorial:
 #                        },
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 26,
+#                            "instr_ref": 25,
 #                            "aspect": {
 #                                "type": "resource",
 #                                "resource": "flag_zf"
@@ -733,7 +733,7 @@ factorial:
 #                                "register": "rdx"
 #                            },
 #                            "metadata": {
-#                                "value_ref": 11
+#                                "value_ref": 10
 #                            }
 #                        }
 #                    ],
@@ -743,12 +743,12 @@ factorial:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 97,
+#                    "instr_ref": 96,
 #                    "opcode": "or",
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 24,
+#                            "instr_ref": 23,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -758,7 +758,7 @@ factorial:
 #                        },
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 27,
+#                            "instr_ref": 26,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -782,7 +782,7 @@ factorial:
 #                                "register": "rcx"
 #                            },
 #                            "metadata": {
-#                                "value_ref": 12
+#                                "value_ref": 11
 #                            }
 #                        },
 #                        {
@@ -862,7 +862,7 @@ factorial:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 118,
+#                    "instr_ref": 117,
 #                    "opcode": "jnz",
 #                    "parameters": [
 #                        {
@@ -875,7 +875,7 @@ factorial:
 #                        },
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 97,
+#                            "instr_ref": 96,
 #                            "aspect": {
 #                                "type": "resource",
 #                                "resource": "flag_zf"
@@ -904,7 +904,7 @@ factorial:
 #                        {
 #                            "type": "indirect",
 #                            "basis": "local_var",
-#                            "identifier": 4,
+#                            "identifier": 49,
 #                            "offset": 0,
 #                            "variant": "32bit"
 #                        },
@@ -963,7 +963,7 @@ factorial:
 #                        {
 #                            "type": "indirect",
 #                            "basis": "local_var",
-#                            "identifier": 2,
+#                            "identifier": 3,
 #                            "offset": 0,
 #                            "variant": "32bit"
 #                        }
@@ -1090,7 +1090,7 @@ factorial:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 116,
+#                    "instr_ref": 115,
 #                    "opcode": "jg",
 #                    "parameters": [
 #                        {
@@ -1152,7 +1152,7 @@ factorial:
 #                        {
 #                            "type": "indirect",
 #                            "basis": "local_var",
-#                            "identifier": 4,
+#                            "identifier": 49,
 #                            "offset": 0,
 #                            "variant": "32bit"
 #                        }
@@ -1300,7 +1300,7 @@ factorial:
 #                        {
 #                            "type": "indirect",
 #                            "basis": "local_var",
-#                            "identifier": 2,
+#                            "identifier": 3,
 #                            "offset": 0,
 #                            "variant": "32bit"
 #                        }
@@ -1336,7 +1336,7 @@ factorial:
 #                        {
 #                            "type": "indirect",
 #                            "basis": "local_var",
-#                            "identifier": 4,
+#                            "identifier": 49,
 #                            "offset": 0,
 #                            "variant": "32bit"
 #                        }
@@ -1366,7 +1366,7 @@ factorial:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 100,
+#                    "instr_ref": 99,
 #                    "opcode": "imul",
 #                    "parameters": [
 #                        {
@@ -1491,13 +1491,13 @@ factorial:
 #                        {
 #                            "type": "indirect",
 #                            "basis": "local_var",
-#                            "identifier": 4,
+#                            "identifier": 49,
 #                            "offset": 0,
 #                            "variant": "32bit"
 #                        },
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 100,
+#                            "instr_ref": 99,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -1533,7 +1533,7 @@ factorial:
 #                        {
 #                            "type": "indirect",
 #                            "basis": "local_var",
-#                            "identifier": 2,
+#                            "identifier": 3,
 #                            "offset": 0,
 #                            "variant": "32bit"
 #                        }
@@ -1563,7 +1563,7 @@ factorial:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 104,
+#                    "instr_ref": 103,
 #                    "opcode": "add",
 #                    "parameters": [
 #                        {
@@ -1683,13 +1683,13 @@ factorial:
 #                        {
 #                            "type": "indirect",
 #                            "basis": "local_var",
-#                            "identifier": 2,
+#                            "identifier": 3,
 #                            "offset": 0,
 #                            "variant": "32bit"
 #                        },
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 104,
+#                            "instr_ref": 103,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -1747,7 +1747,7 @@ factorial:
 #                        {
 #                            "type": "indirect",
 #                            "basis": "local_var",
-#                            "identifier": 2,
+#                            "identifier": 3,
 #                            "offset": 0,
 #                            "variant": "32bit"
 #                        }
@@ -1998,11 +1998,11 @@ factorial:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    movl %edi, -4(%rbp)
-    movl -4(%rbp), %eax
+    movl %edi, -8(%rbp)
+    movl -8(%rbp), %eax
     cmp $0, %eax
     jl .L__kefir_func_factorial_label8
-    movl -4(%rbp), %eax
+    movl -8(%rbp), %eax
     xor %ecx, %ecx
     cmp $2, %eax
     setl %cl
@@ -2012,26 +2012,26 @@ factorial:
     sete %dl
     or %rdx, %rcx
     jnz .L__kefir_func_factorial_label7
-    movl $1, -8(%rbp)
+    movl $1, -4(%rbp)
 .L__kefir_func_factorial_label4:
-    movl -4(%rbp), %eax
+    movl -8(%rbp), %eax
     cmp $1, %eax
     jg .L__kefir_func_factorial_label6
-    movl -8(%rbp), %eax
+    movl -4(%rbp), %eax
     lea (%rbp), %rsp
     pop %rbp
     ret
 .L__kefir_func_factorial_label6:
-    movl -4(%rbp), %eax
-    movl -8(%rbp), %ecx
+    movl -8(%rbp), %eax
+    movl -4(%rbp), %ecx
     imul %eax, %ecx
-    movl %ecx, -8(%rbp)
-    movl -4(%rbp), %eax
+    movl %ecx, -4(%rbp)
+    movl -8(%rbp), %eax
     add $-1, %eax
-    movl %eax, -4(%rbp)
+    movl %eax, -8(%rbp)
     jmp .L__kefir_func_factorial_label4
 .L__kefir_func_factorial_label7:
-    movl -4(%rbp), %eax
+    movl -8(%rbp), %eax
     lea (%rbp), %rsp
     pop %rbp
     ret

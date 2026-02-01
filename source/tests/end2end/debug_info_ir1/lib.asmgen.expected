@@ -1741,58 +1741,6 @@
                     "opcode": "local_lifetime_mark"
                 },
                 {
-                    "opcode": "get_local_scope",
-                    "arg": 498216206337
-                },
-                {
-                    "opcode": "get_local",
-                    "id": 498216206338,
-                    "type": 116,
-                    "type_index": 2
-                },
-                {
-                    "opcode": "local_lifetime_mark"
-                },
-                {
-                    "opcode": "get_local_scope",
-                    "arg": 498216206337
-                },
-                {
-                    "opcode": "get_local",
-                    "id": 498216206339,
-                    "type": 116,
-                    "type_index": 3
-                },
-                {
-                    "opcode": "local_lifetime_mark"
-                },
-                {
-                    "opcode": "get_local_scope",
-                    "arg": 498216206337
-                },
-                {
-                    "opcode": "get_local",
-                    "id": 498216206354,
-                    "type": 116,
-                    "type_index": 18
-                },
-                {
-                    "opcode": "local_lifetime_mark"
-                },
-                {
-                    "opcode": "get_local_scope",
-                    "arg": 498216206337
-                },
-                {
-                    "opcode": "get_local",
-                    "id": 498216206355,
-                    "type": 116,
-                    "type_index": 19
-                },
-                {
-                    "opcode": "local_lifetime_mark"
-                },
-                {
                     "opcode": "get_argument",
                     "arg": 2
                 },
@@ -1991,115 +1939,11 @@
                     "opcode": "local_lifetime_mark"
                 },
                 {
-                    "opcode": "get_local_scope",
-                    "arg": 498216206337
-                },
-                {
-                    "opcode": "get_local",
-                    "id": 498216206338,
-                    "type": 116,
-                    "type_index": 2
-                },
-                {
-                    "opcode": "local_lifetime_mark"
-                },
-                {
-                    "opcode": "get_local_scope",
-                    "arg": 498216206337
-                },
-                {
-                    "opcode": "get_local",
-                    "id": 498216206339,
-                    "type": 116,
-                    "type_index": 3
-                },
-                {
-                    "opcode": "local_lifetime_mark"
-                },
-                {
-                    "opcode": "get_local_scope",
-                    "arg": 498216206337
-                },
-                {
-                    "opcode": "get_local",
-                    "id": 498216206354,
-                    "type": 116,
-                    "type_index": 18
-                },
-                {
-                    "opcode": "local_lifetime_mark"
-                },
-                {
-                    "opcode": "get_local_scope",
-                    "arg": 498216206337
-                },
-                {
-                    "opcode": "get_local",
-                    "id": 498216206355,
-                    "type": 116,
-                    "type_index": 19
-                },
-                {
-                    "opcode": "local_lifetime_mark"
-                },
-                {
                     "opcode": "return"
                 },
                 {
                     "opcode": "get_local_scope",
                     "arg": 498216206337
-                },
-                {
-                    "opcode": "local_lifetime_mark"
-                },
-                {
-                    "opcode": "get_local_scope",
-                    "arg": 498216206337
-                },
-                {
-                    "opcode": "get_local",
-                    "id": 498216206338,
-                    "type": 116,
-                    "type_index": 2
-                },
-                {
-                    "opcode": "local_lifetime_mark"
-                },
-                {
-                    "opcode": "get_local_scope",
-                    "arg": 498216206337
-                },
-                {
-                    "opcode": "get_local",
-                    "id": 498216206339,
-                    "type": 116,
-                    "type_index": 3
-                },
-                {
-                    "opcode": "local_lifetime_mark"
-                },
-                {
-                    "opcode": "get_local_scope",
-                    "arg": 498216206337
-                },
-                {
-                    "opcode": "get_local",
-                    "id": 498216206354,
-                    "type": 116,
-                    "type_index": 18
-                },
-                {
-                    "opcode": "local_lifetime_mark"
-                },
-                {
-                    "opcode": "get_local_scope",
-                    "arg": 498216206337
-                },
-                {
-                    "opcode": "get_local",
-                    "id": 498216206355,
-                    "type": 116,
-                    "type_index": 19
                 },
                 {
                     "opcode": "local_lifetime_mark"
@@ -2112,29 +1956,29 @@
                     "source_id": "source\/tests\/end2end\/debug_info_ir1\/lib.kefir.asmgen.c",
                     "line": 70,
                     "column": 5,
-                    "begin": 29,
-                    "end": 55
+                    "begin": 17,
+                    "end": 43
                 },
                 {
                     "source_id": "source\/tests\/end2end\/debug_info_ir1\/lib.kefir.asmgen.c",
                     "line": 70,
                     "column": 13,
-                    "begin": 42,
-                    "end": 45
+                    "begin": 30,
+                    "end": 33
                 },
                 {
                     "source_id": "source\/tests\/end2end\/debug_info_ir1\/lib.kefir.asmgen.c",
                     "line": 71,
                     "column": 12,
-                    "begin": 55,
-                    "end": 56
+                    "begin": 43,
+                    "end": 44
                 },
                 {
                     "source_id": "source\/tests\/end2end\/debug_info_ir1\/lib.kefir.asmgen.c",
                     "line": 71,
                     "column": 5,
-                    "begin": 55,
-                    "end": 71
+                    "begin": 43,
+                    "end": 47
                 }
             ]
         }
@@ -6742,11 +6586,11 @@
                     },
                     {
                         "tag": "code_begin",
-                        "value": 29
+                        "value": 17
                     },
                     {
                         "tag": "code_end",
-                        "value": 71
+                        "value": 47
                     },
                     {
                         "tag": "external",
@@ -6841,11 +6685,11 @@
                             },
                             {
                                 "tag": "code_begin",
-                                "value": 29
+                                "value": 17
                             },
                             {
                                 "tag": "code_end",
-                                "value": 71
+                                "value": 47
                             },
                             {
                                 "tag": "local_variable",
@@ -6892,11 +6736,11 @@
                             },
                             {
                                 "tag": "code_begin",
-                                "value": 29
+                                "value": 17
                             },
                             {
                                 "tag": "code_end",
-                                "value": 71
+                                "value": 47
                             },
                             {
                                 "tag": "local_variable",
@@ -6943,11 +6787,11 @@
                             },
                             {
                                 "tag": "code_begin",
-                                "value": 29
+                                "value": 17
                             },
                             {
                                 "tag": "code_end",
-                                "value": 71
+                                "value": 47
                             },
                             {
                                 "tag": "local_variable",
@@ -6994,11 +6838,11 @@
                             },
                             {
                                 "tag": "code_begin",
-                                "value": 29
+                                "value": 17
                             },
                             {
                                 "tag": "code_end",
-                                "value": 71
+                                "value": 47
                             },
                             {
                                 "tag": "local_variable",
@@ -7045,11 +6889,11 @@
                             },
                             {
                                 "tag": "code_begin",
-                                "value": 29
+                                "value": 17
                             },
                             {
                                 "tag": "code_end",
-                                "value": 71
+                                "value": 47
                             },
                             {
                                 "tag": "global_variable",

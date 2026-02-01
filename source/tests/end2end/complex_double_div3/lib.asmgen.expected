@@ -714,8 +714,8 @@ __kefir_softfloat_ilogb:
     movq -24(%rbp), %rcx
     shr $52, %rax
     and $2047, %rax
-    shl $12, %rcx
     lea -1023(%eax), %edx
+    shl $12, %rcx
     cmp $2047, %eax
     je .L__kefir_runtime_func___kefir_softfloat_ilogb_label13
     cmp $0, %eax

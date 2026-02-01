@@ -11,9 +11,9 @@ test:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    lea -8(%rbp), %rax
-    movl %eax, -4(%rbp)
-    movl -4(%rbp), %eax
+    lea -4(%rbp), %rax
+    movl %eax, -8(%rbp)
+    movl -8(%rbp), %eax
     lea (%rbp), %rsp
     pop %rbp
     ret

@@ -18,33 +18,33 @@ gets1:
     movdqu %xmm0, -208(%rbp)
     movl $0, -256(%rbp)
     movdqu -256(%rbp), %xmm0
-    movdqu %xmm0, -128(%rbp)
-    movdqu -240(%rbp), %xmm0
-    movdqu %xmm0, -112(%rbp)
-    movdqu -224(%rbp), %xmm0
-    movdqu %xmm0, -96(%rbp)
-    movdqu -208(%rbp), %xmm0
-    movdqu %xmm0, -80(%rbp)
-    movdqu -128(%rbp), %xmm0
     movdqu %xmm0, -192(%rbp)
-    movdqu -112(%rbp), %xmm0
+    movdqu -240(%rbp), %xmm0
     movdqu %xmm0, -176(%rbp)
-    movdqu -96(%rbp), %xmm0
+    movdqu -224(%rbp), %xmm0
     movdqu %xmm0, -160(%rbp)
-    movdqu -80(%rbp), %xmm0
+    movdqu -208(%rbp), %xmm0
     movdqu %xmm0, -144(%rbp)
+    movdqu -192(%rbp), %xmm0
+    movdqu %xmm0, -128(%rbp)
+    movdqu -176(%rbp), %xmm0
+    movdqu %xmm0, -112(%rbp)
+    movdqu -160(%rbp), %xmm0
+    movdqu %xmm0, -96(%rbp)
+    movdqu -144(%rbp), %xmm0
+    movdqu %xmm0, -80(%rbp)
     movsx %esi, %rcx
-    lea -192(%rbp), %rax
+    lea -128(%rbp), %rax
     mov %rsi, %rdx
     not %edx
     movl %edx, (%rax, %rcx, 4)
-    movdqu -192(%rbp), %xmm0
+    movdqu -128(%rbp), %xmm0
     movdqu %xmm0, -64(%rbp)
-    movdqu -176(%rbp), %xmm0
+    movdqu -112(%rbp), %xmm0
     movdqu %xmm0, -48(%rbp)
-    movdqu -160(%rbp), %xmm0
+    movdqu -96(%rbp), %xmm0
     movdqu %xmm0, -32(%rbp)
-    movdqu -144(%rbp), %xmm0
+    movdqu -80(%rbp), %xmm0
     movdqu %xmm0, -16(%rbp)
     movdqu -64(%rbp), %xmm0
     movdqu %xmm0, (%rdi)

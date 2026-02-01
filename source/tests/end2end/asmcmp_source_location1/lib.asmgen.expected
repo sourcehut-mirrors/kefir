@@ -79,7 +79,7 @@ factorial:
 #                    {
 #                        "type": "indirect",
 #                        "basis": "local_var",
-#                        "identifier": 2,
+#                        "identifier": 3,
 #                        "offset": 0,
 #                        "variant": "32bit"
 #                    },
@@ -103,7 +103,7 @@ factorial:
 #                    {
 #                        "type": "indirect",
 #                        "basis": "local_var",
-#                        "identifier": 2,
+#                        "identifier": 3,
 #                        "offset": 0,
 #                        "variant": "32bit"
 #                    }
@@ -125,18 +125,6 @@ factorial:
 #                    }
 #                ],
 #                "labels": [],
-#                "source_location": null
-#            },
-#            {
-#                "opcode": "produce_virtual_register",
-#                "args": [
-#                    {
-#                        "type": "virtual_register",
-#                        "index": 5,
-#                        "variant": "default"
-#                    }
-#                ],
-#                "labels": [],
 #                "source_location": {
 #                    "source_id": "source\/tests\/end2end\/asmcmp_source_location1\/lib.kefir.asmgen.c",
 #                    "line": 22,
@@ -148,7 +136,7 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 6,
+#                        "index": 5,
 #                        "variant": "64bit"
 #                    },
 #                    {
@@ -174,7 +162,7 @@ factorial:
 #                    },
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 5,
+#                        "index": 4,
 #                        "variant": "32bit"
 #                    }
 #                ],
@@ -190,7 +178,7 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 6,
+#                        "index": 5,
 #                        "variant": "8bit"
 #                    }
 #                ],
@@ -206,7 +194,7 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 7,
+#                        "index": 6,
 #                        "variant": "default"
 #                    }
 #                ],
@@ -222,12 +210,12 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 6,
+#                        "index": 5,
 #                        "variant": "32bit"
 #                    },
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 6,
+#                        "index": 5,
 #                        "variant": "32bit"
 #                    }
 #                ],
@@ -243,7 +231,7 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 7,
+#                        "index": 6,
 #                        "variant": "8bit"
 #                    }
 #                ],
@@ -259,12 +247,12 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 7,
+#                        "index": 6,
 #                        "variant": "8bit"
 #                    },
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 7,
+#                        "index": 6,
 #                        "variant": "8bit"
 #                    }
 #                ],
@@ -295,13 +283,13 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 8,
+#                        "index": 7,
 #                        "variant": "32bit"
 #                    },
 #                    {
 #                        "type": "indirect",
 #                        "basis": "local_var",
-#                        "identifier": 2,
+#                        "identifier": 3,
 #                        "offset": 0,
 #                        "variant": "32bit"
 #                    }
@@ -321,7 +309,7 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 9,
+#                        "index": 8,
 #                        "variant": "default"
 #                    }
 #                ],
@@ -337,7 +325,7 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 10,
+#                        "index": 9,
 #                        "variant": "64bit"
 #                    },
 #                    {
@@ -358,12 +346,12 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 8,
+#                        "index": 7,
 #                        "variant": "32bit"
 #                    },
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 9,
+#                        "index": 8,
 #                        "variant": "32bit"
 #                    }
 #                ],
@@ -379,7 +367,7 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 10,
+#                        "index": 9,
 #                        "variant": "8bit"
 #                    }
 #                ],
@@ -395,7 +383,7 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 11,
+#                        "index": 10,
 #                        "variant": "64bit"
 #                    },
 #                    {
@@ -416,12 +404,12 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 9,
+#                        "index": 8,
 #                        "variant": "32bit"
 #                    },
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 8,
+#                        "index": 7,
 #                        "variant": "32bit"
 #                    }
 #                ],
@@ -437,7 +425,7 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 11,
+#                        "index": 10,
 #                        "variant": "8bit"
 #                    }
 #                ],
@@ -453,12 +441,12 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 12,
+#                        "index": 11,
 #                        "variant": "default"
 #                    },
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 10,
+#                        "index": 9,
 #                        "variant": "default"
 #                    }
 #                ],
@@ -474,12 +462,12 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 12,
+#                        "index": 11,
 #                        "variant": "64bit"
 #                    },
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 11,
+#                        "index": 10,
 #                        "variant": "64bit"
 #                    }
 #                ],
@@ -495,7 +483,7 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 12,
+#                        "index": 11,
 #                        "variant": "8bit"
 #                    }
 #                ],
@@ -511,12 +499,12 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 12,
+#                        "index": 11,
 #                        "variant": "64bit"
 #                    },
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 12,
+#                        "index": 11,
 #                        "variant": "8bit"
 #                    }
 #                ],
@@ -532,7 +520,7 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 13,
+#                        "index": 12,
 #                        "variant": "default"
 #                    }
 #                ],
@@ -548,12 +536,12 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 12,
+#                        "index": 11,
 #                        "variant": "32bit"
 #                    },
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 12,
+#                        "index": 11,
 #                        "variant": "32bit"
 #                    }
 #                ],
@@ -569,7 +557,7 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 13,
+#                        "index": 12,
 #                        "variant": "8bit"
 #                    }
 #                ],
@@ -585,12 +573,12 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 13,
+#                        "index": 12,
 #                        "variant": "8bit"
 #                    },
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 13,
+#                        "index": 12,
 #                        "variant": "8bit"
 #                    }
 #                ],
@@ -621,7 +609,7 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 14,
+#                        "index": 13,
 #                        "variant": "default"
 #                    }
 #                ],
@@ -629,6 +617,22 @@ factorial:
 #                    3,
 #                    4
 #                ],
+#                "source_location": {
+#                    "source_id": "source\/tests\/end2end\/asmcmp_source_location1\/lib.kefir.asmgen.c",
+#                    "line": 27,
+#                    "column": 5
+#                }
+#            },
+#            {
+#                "opcode": "produce_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 14,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": [],
 #                "source_location": {
 #                    "source_id": "source\/tests\/end2end\/asmcmp_source_location1\/lib.kefir.asmgen.c",
 #                    "line": 27,
@@ -641,7 +645,7 @@ factorial:
 #                    {
 #                        "type": "indirect",
 #                        "basis": "local_var",
-#                        "identifier": 4,
+#                        "identifier": 49,
 #                        "offset": 0,
 #                        "variant": "32bit"
 #                    },
@@ -669,7 +673,7 @@ factorial:
 #                    {
 #                        "type": "indirect",
 #                        "basis": "local_var",
-#                        "identifier": 2,
+#                        "identifier": 3,
 #                        "offset": 0,
 #                        "variant": "32bit"
 #                    }
@@ -858,7 +862,7 @@ factorial:
 #                    {
 #                        "type": "indirect",
 #                        "basis": "local_var",
-#                        "identifier": 4,
+#                        "identifier": 49,
 #                        "offset": 0,
 #                        "variant": "32bit"
 #                    }
@@ -957,7 +961,7 @@ factorial:
 #                    {
 #                        "type": "indirect",
 #                        "basis": "local_var",
-#                        "identifier": 2,
+#                        "identifier": 3,
 #                        "offset": 0,
 #                        "variant": "32bit"
 #                    }
@@ -983,7 +987,7 @@ factorial:
 #                    {
 #                        "type": "indirect",
 #                        "basis": "local_var",
-#                        "identifier": 4,
+#                        "identifier": 49,
 #                        "offset": 0,
 #                        "variant": "32bit"
 #                    }
@@ -1043,7 +1047,7 @@ factorial:
 #                    {
 #                        "type": "indirect",
 #                        "basis": "local_var",
-#                        "identifier": 4,
+#                        "identifier": 49,
 #                        "offset": 0,
 #                        "variant": "32bit"
 #                    },
@@ -1071,7 +1075,7 @@ factorial:
 #                    {
 #                        "type": "indirect",
 #                        "basis": "local_var",
-#                        "identifier": 2,
+#                        "identifier": 3,
 #                        "offset": 0,
 #                        "variant": "32bit"
 #                    }
@@ -1147,7 +1151,7 @@ factorial:
 #                    {
 #                        "type": "indirect",
 #                        "basis": "local_var",
-#                        "identifier": 2,
+#                        "identifier": 3,
 #                        "offset": 0,
 #                        "variant": "32bit"
 #                    },
@@ -1190,7 +1194,7 @@ factorial:
 #                    {
 #                        "type": "indirect",
 #                        "basis": "local_var",
-#                        "identifier": 2,
+#                        "identifier": 3,
 #                        "offset": 0,
 #                        "variant": "32bit"
 #                    }
@@ -1386,18 +1390,18 @@ factorial:
     mov %rsp, %rbp
     sub $16, %rsp
 .L__kefir_func_factorial_label30:
-    movl %edi, -4(%rbp)
+    movl %edi, -8(%rbp)
 .loc 0 22 9
-.L__kefir_func_factorial_label31:
-    movl -4(%rbp), %eax
-.L__kefir_func_factorial_label35:
+.L__kefir_func_factorial_label34:
+    movl -8(%rbp), %eax
+.L__kefir_func_factorial_label38:
     cmp $0, %eax
 .loc 0 22 5
-.L__kefir_func_factorial_label42:
+.L__kefir_func_factorial_label39:
     jl .L__kefir_func_factorial_label16
 .loc 0 24 9
 .L__kefir_func_factorial_label46:
-    movl -4(%rbp), %eax
+    movl -8(%rbp), %eax
 .L__kefir_func_factorial_label47:
     xor %ecx, %ecx
     cmp $2, %eax
@@ -1407,53 +1411,53 @@ factorial:
     mov $2, %esi
     cmp %eax, %esi
     sete %dl
-.L__kefir_func_factorial_label63:
+.L__kefir_func_factorial_label66:
     or %rdx, %rcx
 .loc 0 24 5
 .L__kefir_func_factorial_label67:
     jnz .L__kefir_func_factorial_label14
 .loc 0 27 5
-.L__kefir_func_factorial_label76:
-    movl $1, -8(%rbp)
+.L__kefir_func_factorial_label71:
+    movl $1, -4(%rbp)
 .loc 0 28 12
 .L__kefir_func_factorial_label8:
-    movl -4(%rbp), %eax
+    movl -8(%rbp), %eax
 .L__kefir_func_factorial_label81:
     cmp $1, %eax
 .loc 0 28 5
-.L__kefir_func_factorial_label85:
+.L__kefir_func_factorial_label88:
     jg .L__kefir_func_factorial_label12
 .loc 0 31 12
-.L__kefir_func_factorial_label92:
-    movl -8(%rbp), %eax
+.L__kefir_func_factorial_label89:
+    movl -4(%rbp), %eax
 .loc 0 31 5
-.L__kefir_func_factorial_label93:
+.L__kefir_func_factorial_label104:
     lea (%rbp), %rsp
     pop %rbp
     ret
 .loc 0 29 19
 .L__kefir_func_factorial_label12:
-    movl -4(%rbp), %eax
+    movl -8(%rbp), %eax
 .loc 0 29 9
 .L__kefir_func_factorial_label109:
-    movl -8(%rbp), %ecx
+    movl -4(%rbp), %ecx
 .L__kefir_func_factorial_label113:
     imul %eax, %ecx
 .L__kefir_func_factorial_label120:
-    movl %ecx, -8(%rbp)
+    movl %ecx, -4(%rbp)
 .loc 0 28 19
-.L__kefir_func_factorial_label121:
-    movl -4(%rbp), %eax
-.L__kefir_func_factorial_label128:
+.L__kefir_func_factorial_label124:
+    movl -8(%rbp), %eax
+.L__kefir_func_factorial_label125:
     add $-1, %eax
 .L__kefir_func_factorial_label129:
-    movl %eax, -4(%rbp)
+    movl %eax, -8(%rbp)
 .loc 0 28 5
 .L__kefir_func_factorial_label136:
     jmp .L__kefir_func_factorial_label8
 .loc 0 25 16
 .L__kefir_func_factorial_label14:
-    movl -4(%rbp), %eax
+    movl -8(%rbp), %eax
 .loc 0 25 9
 .L__kefir_func_factorial_label152:
     lea (%rbp), %rsp
@@ -1718,19 +1722,23 @@ __kefir_debug_loclist_section_entry_1:
     .byte 0
 __kefir_debug_loclist_section_entry_6:
     .byte 4
-    .uleb128 .L__kefir_func_factorial_label31 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_factorial_label165 - .L__kefir_text_section_begin
-    .byte 2
-    .byte 145
-    .byte 124
-    .byte 0
-__kefir_debug_loclist_section_entry_7:
-    .byte 4
-    .uleb128 .L__kefir_func_factorial_label31 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_factorial_label34 - .L__kefir_text_section_begin
     .uleb128 .L__kefir_func_factorial_label165 - .L__kefir_text_section_begin
     .byte 2
     .byte 145
     .byte 120
+    .byte 0
+__kefir_debug_loclist_section_entry_7:
+    .byte 4
+    .uleb128 .L__kefir_func_factorial_label34 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_factorial_label165 - .L__kefir_text_section_begin
+    .byte 0
+    .byte 4
+    .uleb128 .L__kefir_func_factorial_label34 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_factorial_label165 - .L__kefir_text_section_begin
+    .byte 2
+    .byte 145
+    .byte 124
     .byte 0
 __kefir_debug_loclist_section_entry_8:
     .byte 0
@@ -1749,7 +1757,7 @@ __kefir_debug_rnglist_section_entry_2:
     .uleb128 .L__kefir_func_factorial_label16 - .L__kefir_text_section_begin
     .uleb128 .L__kefir_func_factorial_label165 - .L__kefir_text_section_begin
     .byte 4
-    .uleb128 .L__kefir_func_factorial_label31 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_factorial_label34 - .L__kefir_text_section_begin
     .uleb128 .L__kefir_func_factorial_label46 - .L__kefir_text_section_begin
     .byte 0
 __kefir_debug_rnglist_section_entry_3:
@@ -1758,12 +1766,12 @@ __kefir_debug_rnglist_section_entry_3:
     .uleb128 .L__kefir_func_factorial_label16 - .L__kefir_text_section_begin
     .byte 4
     .uleb128 .L__kefir_func_factorial_label46 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_factorial_label76 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_factorial_label71 - .L__kefir_text_section_begin
     .byte 0
 __kefir_debug_rnglist_section_entry_4:
     .byte 4
     .uleb128 .L__kefir_func_factorial_label8 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_factorial_label92 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_factorial_label89 - .L__kefir_text_section_begin
     .byte 4
     .uleb128 .L__kefir_func_factorial_label12 - .L__kefir_text_section_begin
     .uleb128 .L__kefir_func_factorial_label14 - .L__kefir_text_section_begin
@@ -1771,7 +1779,7 @@ __kefir_debug_rnglist_section_entry_4:
 __kefir_debug_rnglist_section_entry_5:
     .byte 4
     .uleb128 .L__kefir_func_factorial_label12 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_factorial_label121 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_factorial_label124 - .L__kefir_text_section_begin
     .byte 0
 __kefir_debug_rnglists_section_end:
 

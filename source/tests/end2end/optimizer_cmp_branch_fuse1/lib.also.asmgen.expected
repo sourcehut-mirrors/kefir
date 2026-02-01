@@ -31,10 +31,10 @@ less:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    movl %esi, -4(%rbp)
-    movl %edi, -8(%rbp)
-    movl -8(%rbp), %eax
-    movl -4(%rbp), %ecx
+    movl %esi, -8(%rbp)
+    movl %edi, -4(%rbp)
+    movl -4(%rbp), %eax
+    movl -8(%rbp), %ecx
     cmp %ecx, %eax
     jl .L__kefir_func_less_label3
     xor %eax, %eax
@@ -53,10 +53,10 @@ above:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    movl %esi, -4(%rbp)
-    movl %edi, -8(%rbp)
-    movl -8(%rbp), %eax
-    movl -4(%rbp), %ecx
+    movl %esi, -8(%rbp)
+    movl %edi, -4(%rbp)
+    movl -4(%rbp), %eax
+    movl -8(%rbp), %ecx
     cmp %ecx, %eax
     ja .L__kefir_func_above_label3
     xor %eax, %eax
@@ -75,10 +75,10 @@ below:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    movl %esi, -4(%rbp)
-    movl %edi, -8(%rbp)
-    movl -8(%rbp), %eax
-    movl -4(%rbp), %ecx
+    movl %esi, -8(%rbp)
+    movl %edi, -4(%rbp)
+    movl -4(%rbp), %eax
+    movl -8(%rbp), %ecx
     cmp %ecx, %eax
     jb .L__kefir_func_below_label3
     xor %eax, %eax
@@ -97,10 +97,10 @@ equals:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    movl %esi, -4(%rbp)
-    movl %edi, -8(%rbp)
-    movl -8(%rbp), %eax
-    movl -4(%rbp), %ecx
+    movl %esi, -8(%rbp)
+    movl %edi, -4(%rbp)
+    movl -4(%rbp), %eax
+    movl -8(%rbp), %ecx
     cmp %ecx, %eax
     je .L__kefir_func_equals_label3
     xor %eax, %eax
@@ -119,10 +119,10 @@ greater:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    movl %esi, -4(%rbp)
-    movl %edi, -8(%rbp)
-    movl -8(%rbp), %eax
-    movl -4(%rbp), %ecx
+    movl %esi, -8(%rbp)
+    movl %edi, -4(%rbp)
+    movl -4(%rbp), %eax
+    movl -8(%rbp), %ecx
     cmp %ecx, %eax
     jg .L__kefir_func_greater_label3
     xor %eax, %eax
@@ -141,10 +141,10 @@ not_less:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    movl %esi, -4(%rbp)
-    movl %edi, -8(%rbp)
-    movl -8(%rbp), %eax
-    movl -4(%rbp), %ecx
+    movl %esi, -8(%rbp)
+    movl %edi, -4(%rbp)
+    movl -4(%rbp), %eax
+    movl -8(%rbp), %ecx
     cmp %ecx, %eax
     jge .L__kefir_func_not_less_label3
     xor %eax, %eax
@@ -163,10 +163,10 @@ not_above:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    movl %esi, -4(%rbp)
-    movl %edi, -8(%rbp)
-    movl -8(%rbp), %eax
-    movl -4(%rbp), %ecx
+    movl %esi, -8(%rbp)
+    movl %edi, -4(%rbp)
+    movl -4(%rbp), %eax
+    movl -8(%rbp), %ecx
     cmp %ecx, %eax
     jbe .L__kefir_func_not_above_label3
     xor %eax, %eax
@@ -185,10 +185,10 @@ not_below:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    movl %esi, -4(%rbp)
-    movl %edi, -8(%rbp)
-    movl -8(%rbp), %eax
-    movl -4(%rbp), %ecx
+    movl %esi, -8(%rbp)
+    movl %edi, -4(%rbp)
+    movl -4(%rbp), %eax
+    movl -8(%rbp), %ecx
     cmp %ecx, %eax
     jae .L__kefir_func_not_below_label3
     xor %eax, %eax
@@ -207,10 +207,10 @@ not_equals:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    movl %esi, -4(%rbp)
-    movl %edi, -8(%rbp)
-    movl -8(%rbp), %eax
-    movl -4(%rbp), %ecx
+    movl %esi, -8(%rbp)
+    movl %edi, -4(%rbp)
+    movl -4(%rbp), %eax
+    movl -8(%rbp), %ecx
     cmp %ecx, %eax
     jne .L__kefir_func_not_equals_label3
     xor %eax, %eax
@@ -229,10 +229,10 @@ not_equals2:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    movl %esi, -4(%rbp)
-    movl %edi, -8(%rbp)
-    movl -8(%rbp), %eax
-    movl -4(%rbp), %ecx
+    movl %esi, -8(%rbp)
+    movl %edi, -4(%rbp)
+    movl -4(%rbp), %eax
+    movl -8(%rbp), %ecx
     cmp %ecx, %eax
     jne .L__kefir_func_not_equals2_label3
     xor %eax, %eax
@@ -251,10 +251,10 @@ not_greater:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    movl %esi, -4(%rbp)
-    movl %edi, -8(%rbp)
-    movl -8(%rbp), %eax
-    movl -4(%rbp), %ecx
+    movl %esi, -8(%rbp)
+    movl %edi, -4(%rbp)
+    movl -4(%rbp), %eax
+    movl -8(%rbp), %ecx
     cmp %ecx, %eax
     jle .L__kefir_func_not_greater_label3
     xor %eax, %eax

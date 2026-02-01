@@ -155,19 +155,6 @@
                     "type_index": 0
                 },
                 {
-                    "opcode": "local_lifetime_mark"
-                },
-                {
-                    "opcode": "get_local_scope",
-                    "arg": 4294967297
-                },
-                {
-                    "opcode": "get_local",
-                    "id": 4294967296,
-                    "type": 1,
-                    "type_index": 0
-                },
-                {
                     "opcode": "vstack_pick",
                     "arg": 0
                 },
@@ -183,19 +170,6 @@
                 },
                 {
                     "opcode": "vstack_pop"
-                },
-                {
-                    "opcode": "get_local_scope",
-                    "arg": 4294967297
-                },
-                {
-                    "opcode": "get_local",
-                    "id": 4294967296,
-                    "type": 1,
-                    "type_index": 0
-                },
-                {
-                    "opcode": "local_lifetime_mark"
                 },
                 {
                     "opcode": "invoke",
@@ -256,34 +230,8 @@
                 },
                 {
                     "opcode": "branch",
-                    "arg": 9,
+                    "arg": 6,
                     "condition": "32bit"
-                },
-                {
-                    "opcode": "get_local_scope",
-                    "arg": 4294967297
-                },
-                {
-                    "opcode": "get_local",
-                    "id": 4294967296,
-                    "type": 1,
-                    "type_index": 0
-                },
-                {
-                    "opcode": "local_lifetime_mark"
-                },
-                {
-                    "opcode": "get_local_scope",
-                    "arg": 4294967297
-                },
-                {
-                    "opcode": "get_local",
-                    "id": 4294967296,
-                    "type": 1,
-                    "type_index": 0
-                },
-                {
-                    "opcode": "local_lifetime_mark"
                 }
             ],
             "public_labels": []

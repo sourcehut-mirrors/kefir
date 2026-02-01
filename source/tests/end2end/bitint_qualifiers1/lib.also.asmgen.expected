@@ -15,10 +15,10 @@ add:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    movq %rsi, -8(%rbp)
-    movq %rdi, -16(%rbp)
-    movq -8(%rbp), %rax
-    movq -16(%rbp), %rcx
+    movq %rsi, -16(%rbp)
+    movq %rdi, -8(%rbp)
+    movq -16(%rbp), %rax
+    movq -8(%rbp), %rcx
     movq (%rcx), %rdx
     shl $21, %rdx
     sar $21, %rdx

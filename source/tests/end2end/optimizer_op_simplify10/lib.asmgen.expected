@@ -10,20 +10,20 @@ test:
 .L__kefir_text_func_test_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $112, %rsp
-    movq $1, -80(%rbp)
-    movq $3, -64(%rbp)
-    movq $100, -40(%rbp)
-    movq $-1000, -8(%rbp)
-    movl $-314159, -88(%rbp)
+    sub $128, %rsp
+    movq $1, -112(%rbp)
+    movq $3, -96(%rbp)
+    movq $100, -72(%rbp)
+    movq $-1000, -40(%rbp)
+    movl $-314159, -128(%rbp)
     xor %eax, %eax
-    movq %rax, -112(%rbp)
-    movq %rax, -104(%rbp)
-    movq %rax, -96(%rbp)
-    movl $1, -112(%rbp)
-    movq $2, -104(%rbp)
+    movq %rax, -32(%rbp)
+    movq %rax, -24(%rbp)
+    movq %rax, -16(%rbp)
+    movl $1, -32(%rbp)
+    movq $2, -24(%rbp)
     movd .L__kefir_func_test_label3(%rip), %xmm0
-    movd %xmm0, -96(%rbp)
+    movd %xmm0, -16(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret

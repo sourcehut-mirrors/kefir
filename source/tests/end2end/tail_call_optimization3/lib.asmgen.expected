@@ -84,20 +84,20 @@ test4:
     mov %rsp, %rbp
     sub $16, %rsp
     movl %edi, -4(%rbp)
-    movq someothervar@GOTPCREL(%rip), %rsi
     movq someothervar@GOTPCREL(%rip), %rax
     lea -4(%rbp), %rcx
     sub %rax, %rcx
     test %rcx, %rcx
     lea 3(%rcx), %rax
     cmovns %rcx, %rax
-    mov %rax, %rdi
-    sar $2, %rdi
+    mov %rax, %rsi
+    sar $2, %rsi
+    movq someothervar@GOTPCREL(%rip), %rdi
 .L__kefir_func_test4_label2:
-    movl (%rsi), %eax
+    movl (%rdi), %eax
     movsx %eax, %rcx
-    add %rdi, %rcx
-    mov %rsi, %rdx
+    add %rsi, %rcx
+    mov %rdi, %rdx
     lock     cmpxchgl %ecx, (%rdx)
     jnz .L__kefir_func_test4_label2
     movl -4(%rbp), %eax

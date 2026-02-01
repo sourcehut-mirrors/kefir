@@ -15,30 +15,30 @@ main:
 .loc 0 24 16
 .L__kefir_func_main_label10:
     movq x@GOTPCREL(%rip), %rax
-.L__kefir_func_main_label11:
+.L__kefir_func_main_label14:
     movl (%rax), %eax
 .loc 0 26 5
-.L__kefir_func_main_label18:
+.L__kefir_func_main_label15:
     movq x@GOTPCREL(%rip), %rcx
 .loc 0 25 13
 .L__kefir_func_main_label22:
     add $1, %eax
 .loc 0 26 9
-.L__kefir_func_main_label26:
+.L__kefir_func_main_label23:
     movl %eax, (%rcx)
 .loc 0 30 16
 .L__kefir_func_main_label27:
     movq x@GOTPCREL(%rip), %rax
-.L__kefir_func_main_label31:
+.L__kefir_func_main_label34:
     movl (%rax), %eax
 .loc 0 32 5
 .L__kefir_func_main_label35:
     movq x@GOTPCREL(%rip), %rcx
 .loc 0 31 13
-.L__kefir_func_main_label42:
+.L__kefir_func_main_label39:
     add $3, %eax
 .loc 0 32 9
-.L__kefir_func_main_label43:
+.L__kefir_func_main_label46:
     movl %eax, (%rcx)
 .loc 0 24 16
 .L__kefir_func_main_label50:
@@ -46,10 +46,10 @@ main:
 .L__kefir_func_main_label51:
     movl (%rax), %eax
 .loc 0 26 5
-.L__kefir_func_main_label58:
+.L__kefir_func_main_label55:
     movq x@GOTPCREL(%rip), %rcx
 .loc 0 25 13
-.L__kefir_func_main_label59:
+.L__kefir_func_main_label62:
     add $-1, %eax
 .loc 0 26 9
 .L__kefir_func_main_label63:

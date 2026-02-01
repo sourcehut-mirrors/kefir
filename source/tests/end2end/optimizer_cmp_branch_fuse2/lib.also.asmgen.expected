@@ -22,10 +22,10 @@ lessf:
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-    movd %xmm1, -12(%rbp)
-    movd %xmm0, -16(%rbp)
-    movl -16(%rbp), %eax
-    movl -12(%rbp), %ecx
+    movd %xmm1, -16(%rbp)
+    movd %xmm0, -12(%rbp)
+    movl -12(%rbp), %eax
+    movl -16(%rbp), %ecx
     movd %eax, %xmm0
     movd %ecx, %xmm1
     ucomiss %xmm1, %xmm0
@@ -51,10 +51,10 @@ equalsf:
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-    movd %xmm1, -12(%rbp)
-    movd %xmm0, -16(%rbp)
-    movl -16(%rbp), %eax
-    movl -12(%rbp), %ecx
+    movd %xmm1, -16(%rbp)
+    movd %xmm0, -12(%rbp)
+    movl -12(%rbp), %eax
+    movl -16(%rbp), %ecx
     movd %eax, %xmm0
     movd %ecx, %xmm1
     ucomiss %xmm1, %xmm0
@@ -80,10 +80,10 @@ greaterf:
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-    movd %xmm1, -12(%rbp)
-    movd %xmm0, -16(%rbp)
-    movl -16(%rbp), %eax
-    movl -12(%rbp), %ecx
+    movd %xmm1, -16(%rbp)
+    movd %xmm0, -12(%rbp)
+    movl -12(%rbp), %eax
+    movl -16(%rbp), %ecx
     movd %eax, %xmm0
     movd %ecx, %xmm1
     ucomiss %xmm1, %xmm0
@@ -109,10 +109,10 @@ not_equalsf:
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-    movd %xmm1, -12(%rbp)
-    movd %xmm0, -16(%rbp)
-    movl -16(%rbp), %eax
-    movl -12(%rbp), %ecx
+    movd %xmm1, -16(%rbp)
+    movd %xmm0, -12(%rbp)
+    movl -12(%rbp), %eax
+    movl -16(%rbp), %ecx
     movd %eax, %xmm0
     movd %ecx, %xmm1
     ucomiss %xmm1, %xmm0
@@ -137,10 +137,10 @@ greater_or_equalsf:
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-    movd %xmm1, -12(%rbp)
-    movd %xmm0, -16(%rbp)
-    movl -16(%rbp), %eax
-    movl -12(%rbp), %ecx
+    movd %xmm1, -16(%rbp)
+    movd %xmm0, -12(%rbp)
+    movl -12(%rbp), %eax
+    movl -16(%rbp), %ecx
     movd %eax, %xmm0
     movd %ecx, %xmm1
     ucomiss %xmm1, %xmm0
@@ -166,10 +166,10 @@ less_or_equalsf:
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-    movd %xmm1, -12(%rbp)
-    movd %xmm0, -16(%rbp)
-    movl -16(%rbp), %eax
-    movl -12(%rbp), %ecx
+    movd %xmm1, -16(%rbp)
+    movd %xmm0, -12(%rbp)
+    movl -12(%rbp), %eax
+    movl -16(%rbp), %ecx
     movd %eax, %xmm0
     movd %ecx, %xmm1
     ucomiss %xmm1, %xmm0

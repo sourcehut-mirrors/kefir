@@ -43,7 +43,7 @@
                 "blocks": [
                     {
                         "id": 0,
-                        "control_flow": 5,
+                        "control_flow": 4,
                         "code": [
                             {
                                 "id": 0,
@@ -61,39 +61,32 @@
                                 "ir_instruction": 3
                             },
                             {
-                                "id": 4,
+                                "id": 3,
                                 "opcode": "long_double_const",
                                 "value": 4.281000,
                                 "control_next": null,
-                                "ir_instruction": 8
+                                "ir_instruction": 5
                             },
                             {
-                                "id": 5,
+                                "id": 4,
                                 "opcode": "long_double_store",
                                 "location": 2,
-                                "value": 4,
+                                "value": 3,
                                 "flags": {
                                     "volatile": false
                                 },
                                 "control_next": 1,
-                                "ir_instruction": 9
+                                "ir_instruction": 6
                             },
                             {
                                 "id": 1,
                                 "opcode": "local_lifetime_mark",
                                 "arg": 0,
-                                "control_next": 3,
+                                "control_next": 5,
                                 "ir_instruction": 1
                             },
                             {
-                                "id": 3,
-                                "opcode": "local_lifetime_mark",
-                                "arg": 2,
-                                "control_next": 6,
-                                "ir_instruction": 4
-                            },
-                            {
-                                "id": 6,
+                                "id": 5,
                                 "opcode": "return",
                                 "arg": null,
                                 "control_next": null,
@@ -106,13 +99,12 @@
                             "predecessors": [],
                             "immediate_dominator": null,
                             "alive_instructions": [
-                                4,
-                                3,
                                 0,
-                                6,
-                                5,
+                                3,
+                                4,
                                 1,
-                                2
+                                2,
+                                5
                             ]
                         }
                     }

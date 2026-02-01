@@ -47,7 +47,7 @@ get3:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-.L__kefir_func_get3_label2:
+.L__kefir_func_get3_label1:
 _kefir_local_public_label_get3_label1:
     xor %eax, %eax
     movq %rax, -8(%rbp)

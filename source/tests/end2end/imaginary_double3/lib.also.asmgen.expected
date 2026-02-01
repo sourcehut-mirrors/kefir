@@ -52,7 +52,7 @@ test:
     add $32, %rcx
     cmp $176, %rcx
     ja .L__kefir_func_test_label9
-    lea -24(%rbp), %rcx
+    lea -40(%rbp), %rcx
     movq -48(%rbp), %rdx
     movl -60(%rbp), %esi
     movq (%rdx, %rsi, 1), %rdi
@@ -62,9 +62,9 @@ test:
     addl $32, -60(%rbp)
 .L__kefir_func_test_label10:
     movdqu (%rcx), %xmm1
-    movdqu %xmm1, -40(%rbp)
-    movq -40(%rbp), %rcx
-    movq -32(%rbp), %rdx
+    movdqu %xmm1, -24(%rbp)
+    movq -24(%rbp), %rcx
+    movq -16(%rbp), %rdx
     movq %rcx, %xmm1
     movq %rdx, %xmm2
     subsd %xmm2, %xmm1

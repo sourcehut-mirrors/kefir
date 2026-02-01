@@ -151,25 +151,6 @@ kefir_result_t kefir_ast_translator_resolve_local_type_layout(struct kefir_irbui
     return KEFIR_OK;
 }
 
-static kefir_result_t kefir_ast_translator_resolve_local_type_layout_no_offset(
-    struct kefir_irbuilder_block *builder, kefir_id_t scope_id, kefir_id_t type_id,
-    const struct kefir_ast_type_layout *layout) {
-    REQUIRE(builder != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR block builder"));
-    REQUIRE(layout != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST type layout"));
-
-    if (layout->parent == NULL || (layout->parent->type == NULL && layout->parent->value == ~(kefir_uptr_t) 0ull)) {
-        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_GET_LOCAL_SCOPE,
-                                                   GET_LOCAL_SCOPE_ID(type_id, scope_id)));
-
-        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU32_4(
-            builder, KEFIR_IR_OPCODE_GET_LOCAL, VARIABLE_ID_UPPER32(type_id, layout->value),
-            VARIABLE_ID_LOWER32(type_id, layout->value), type_id, layout->value));
-    } else {
-        REQUIRE_OK(kefir_ast_translator_resolve_local_type_layout(builder, scope_id, type_id, layout->parent));
-    }
-    return KEFIR_OK;
-}
-
 kefir_result_t kefir_ast_translator_resolve_vla_element(struct kefir_mem *mem,
                                                         struct kefir_ast_translator_context *context,
                                                         struct kefir_irbuilder_block *builder, kefir_id_t vla_id) {
@@ -205,19 +186,14 @@ kefir_result_t kefir_ast_translator_resolve_vla_element(struct kefir_mem *mem,
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_ast_translator_mark_flat_scope_objects_lifetime(
-    struct kefir_mem *mem, struct kefir_ast_translator_context *context, struct kefir_irbuilder_block *builder,
-    const struct kefir_ast_identifier_flat_scope *scope) {
-    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
-    REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST translator context"));
-    REQUIRE(builder != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR block builder"));
-    REQUIRE(scope != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST flat scope"));
-
+static kefir_result_t mark_flat_scope_objects_lifetime(struct kefir_ast_translator_context *context,
+                                                       struct kefir_irbuilder_block *builder,
+                                                       const struct kefir_ast_identifier_flat_scope *scope) {
     if (context->environment->configuration->optimize_stack_frame) {
         struct kefir_ast_identifier_flat_scope_iterator scope_iter;
         kefir_result_t res;
         kefir_bool_t marked_scope = false;
-        for (res = kefir_ast_identifier_flat_scope_iter(scope, &scope_iter); res == KEFIR_OK;
+        for (res = kefir_ast_identifier_flat_scope_iter(scope, &scope_iter); !marked_scope && res == KEFIR_OK;
              res = kefir_ast_identifier_flat_scope_next(scope, &scope_iter)) {
             if (scope_iter.value->klass == KEFIR_AST_SCOPE_IDENTIFIER_OBJECT &&
                 (scope_iter.value->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_AUTO ||
@@ -231,18 +207,6 @@ kefir_result_t kefir_ast_translator_mark_flat_scope_objects_lifetime(
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_LOCAL_LIFETIME_MARK, 0));
                     marked_scope = true;
                 }
-                ASSIGN_DECL_CAST(struct kefir_ast_translator_scoped_identifier_object *, identifier_data,
-                                 scope_iter.value->payload.ptr);
-                if (KEFIR_AST_TYPE_IS_VL_ARRAY(scope_iter.value->object.type)) {
-                    REQUIRE_OK(kefir_ast_translator_resolve_local_type_layout_no_offset(
-                        builder, scope_iter.value->definition_scope->identifier, identifier_data->type_id,
-                        identifier_data->layout));
-                } else {
-                    REQUIRE_OK(kefir_ast_translator_resolve_local_type_layout_no_offset(
-                        builder, scope_iter.value->definition_scope->identifier, identifier_data->type_id,
-                        identifier_data->layout));
-                }
-                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_LOCAL_LIFETIME_MARK, 0));
             }
         }
         if (res != KEFIR_ITERATOR_END) {
@@ -261,8 +225,7 @@ kefir_result_t kefir_ast_translator_mark_associated_scope_objects_lifetime(
 
     for (; structure != NULL; structure = kefir_ast_flow_control_structure_parent(structure)) {
         if (structure->type != KEFIR_AST_FLOW_CONTROL_POINT) {
-            REQUIRE_OK(kefir_ast_translator_mark_flat_scope_objects_lifetime(
-                mem, context, builder, structure->associated_scopes.ordinary_scope));
+            REQUIRE_OK(mark_flat_scope_objects_lifetime(context, builder, structure->associated_scopes.ordinary_scope));
         }
     }
     return KEFIR_OK;

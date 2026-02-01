@@ -22,10 +22,10 @@ lessd:
     mov %rsp, %rbp
     sub $32, %rsp
     stmxcsr -8(%rbp)
-    movq %xmm1, -16(%rbp)
-    movq %xmm0, -24(%rbp)
-    movq -24(%rbp), %rax
-    movq -16(%rbp), %rcx
+    movq %xmm1, -24(%rbp)
+    movq %xmm0, -16(%rbp)
+    movq -16(%rbp), %rax
+    movq -24(%rbp), %rcx
     movq %rax, %xmm0
     movq %rcx, %xmm1
     ucomisd %xmm1, %xmm0
@@ -51,10 +51,10 @@ equalsd:
     mov %rsp, %rbp
     sub $32, %rsp
     stmxcsr -8(%rbp)
-    movq %xmm1, -16(%rbp)
-    movq %xmm0, -24(%rbp)
-    movq -24(%rbp), %rax
-    movq -16(%rbp), %rcx
+    movq %xmm1, -24(%rbp)
+    movq %xmm0, -16(%rbp)
+    movq -16(%rbp), %rax
+    movq -24(%rbp), %rcx
     movq %rax, %xmm0
     movq %rcx, %xmm1
     ucomisd %xmm1, %xmm0
@@ -80,10 +80,10 @@ greaterd:
     mov %rsp, %rbp
     sub $32, %rsp
     stmxcsr -8(%rbp)
-    movq %xmm1, -16(%rbp)
-    movq %xmm0, -24(%rbp)
-    movq -24(%rbp), %rax
-    movq -16(%rbp), %rcx
+    movq %xmm1, -24(%rbp)
+    movq %xmm0, -16(%rbp)
+    movq -16(%rbp), %rax
+    movq -24(%rbp), %rcx
     movq %rax, %xmm0
     movq %rcx, %xmm1
     ucomisd %xmm1, %xmm0
@@ -109,10 +109,10 @@ not_equalsd:
     mov %rsp, %rbp
     sub $32, %rsp
     stmxcsr -8(%rbp)
-    movq %xmm1, -16(%rbp)
-    movq %xmm0, -24(%rbp)
-    movq -24(%rbp), %rax
-    movq -16(%rbp), %rcx
+    movq %xmm1, -24(%rbp)
+    movq %xmm0, -16(%rbp)
+    movq -16(%rbp), %rax
+    movq -24(%rbp), %rcx
     movq %rax, %xmm0
     movq %rcx, %xmm1
     ucomisd %xmm1, %xmm0
@@ -137,10 +137,10 @@ greater_or_equalsd:
     mov %rsp, %rbp
     sub $32, %rsp
     stmxcsr -8(%rbp)
-    movq %xmm1, -16(%rbp)
-    movq %xmm0, -24(%rbp)
-    movq -24(%rbp), %rax
-    movq -16(%rbp), %rcx
+    movq %xmm1, -24(%rbp)
+    movq %xmm0, -16(%rbp)
+    movq -16(%rbp), %rax
+    movq -24(%rbp), %rcx
     movq %rax, %xmm0
     movq %rcx, %xmm1
     ucomisd %xmm1, %xmm0
@@ -166,10 +166,10 @@ less_or_equalsd:
     mov %rsp, %rbp
     sub $32, %rsp
     stmxcsr -8(%rbp)
-    movq %xmm1, -16(%rbp)
-    movq %xmm0, -24(%rbp)
-    movq -24(%rbp), %rax
-    movq -16(%rbp), %rcx
+    movq %xmm1, -24(%rbp)
+    movq %xmm0, -16(%rbp)
+    movq -16(%rbp), %rax
+    movq -24(%rbp), %rcx
     movq %rax, %xmm0
     movq %rcx, %xmm1
     ucomisd %xmm1, %xmm0

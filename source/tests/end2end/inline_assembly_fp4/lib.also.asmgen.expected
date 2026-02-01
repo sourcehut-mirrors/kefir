@@ -11,19 +11,19 @@ circle_area:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    movd %xmm0, -4(%rbp)
-    movd .L__kefir_func_circle_area_label3(%rip), %xmm0
     movd %xmm0, -8(%rbp)
-    movl -4(%rbp), %eax
+    movd .L__kefir_func_circle_area_label3(%rip), %xmm0
+    movd %xmm0, -4(%rbp)
+    movl -8(%rbp), %eax
     movd .L__kefir_func_circle_area_label4(%rip), %xmm3
-    movd -8(%rbp), %xmm0
+    movd -4(%rbp), %xmm0
     movq %rax, %xmm1
     movaps %xmm3, %xmm2
 movdqu %xmm1, %xmm0
 mulss %xmm2, %xmm0
 addss %xmm0, %xmm0
-    movd %xmm0, -8(%rbp)
-    movl -8(%rbp), %eax
+    movd %xmm0, -4(%rbp)
+    movl -4(%rbp), %eax
     movq %rax, %xmm0
     lea (%rbp), %rsp
     pop %rbp

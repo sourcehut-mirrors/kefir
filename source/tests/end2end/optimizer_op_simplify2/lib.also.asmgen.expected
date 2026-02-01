@@ -25,10 +25,10 @@ below_or_equals:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    movl %esi, -4(%rbp)
-    movl %edi, -8(%rbp)
-    movl -8(%rbp), %eax
-    movl -4(%rbp), %ecx
+    movl %esi, -8(%rbp)
+    movl %edi, -4(%rbp)
+    movl -4(%rbp), %eax
+    movl -8(%rbp), %ecx
     cmp %ecx, %eax
     jbe .L__kefir_func_below_or_equals_label3
     xor %eax, %eax
@@ -47,10 +47,10 @@ above_or_equals:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    movl %esi, -4(%rbp)
-    movl %edi, -8(%rbp)
-    movl -8(%rbp), %eax
-    movl -4(%rbp), %ecx
+    movl %esi, -8(%rbp)
+    movl %edi, -4(%rbp)
+    movl -4(%rbp), %eax
+    movl -8(%rbp), %ecx
     cmp %ecx, %eax
     jae .L__kefir_func_above_or_equals_label3
     xor %eax, %eax
@@ -69,10 +69,10 @@ below_or_equals2:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    movl %esi, -4(%rbp)
-    movl %edi, -8(%rbp)
-    movl -8(%rbp), %eax
-    movl -4(%rbp), %ecx
+    movl %esi, -8(%rbp)
+    movl %edi, -4(%rbp)
+    movl -4(%rbp), %eax
+    movl -8(%rbp), %ecx
     xor %edx, %edx
     cmp %ecx, %eax
     mov %rdx, %rax
@@ -87,10 +87,10 @@ above_or_equals2:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    movl %esi, -4(%rbp)
-    movl %edi, -8(%rbp)
-    movl -8(%rbp), %eax
-    movl -4(%rbp), %ecx
+    movl %esi, -8(%rbp)
+    movl %edi, -4(%rbp)
+    movl -4(%rbp), %eax
+    movl -8(%rbp), %ecx
     xor %edx, %edx
     cmp %ecx, %eax
     mov %rdx, %rax
@@ -105,10 +105,10 @@ greater_or_equals2:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    movl %esi, -4(%rbp)
-    movl %edi, -8(%rbp)
-    movl -8(%rbp), %eax
-    movl -4(%rbp), %ecx
+    movl %esi, -8(%rbp)
+    movl %edi, -4(%rbp)
+    movl -4(%rbp), %eax
+    movl -8(%rbp), %ecx
     xor %edx, %edx
     cmp %ecx, %eax
     mov %rdx, %rax
@@ -123,10 +123,10 @@ less_or_equals:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    movl %esi, -4(%rbp)
-    movl %edi, -8(%rbp)
-    movl -8(%rbp), %eax
-    movl -4(%rbp), %ecx
+    movl %esi, -8(%rbp)
+    movl %edi, -4(%rbp)
+    movl -4(%rbp), %eax
+    movl -8(%rbp), %ecx
     cmp %ecx, %eax
     jle .L__kefir_func_less_or_equals_label3
     xor %eax, %eax
@@ -145,10 +145,10 @@ greater_or_equals:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    movl %esi, -4(%rbp)
-    movl %edi, -8(%rbp)
-    movl -8(%rbp), %eax
-    movl -4(%rbp), %ecx
+    movl %esi, -8(%rbp)
+    movl %edi, -4(%rbp)
+    movl -4(%rbp), %eax
+    movl -8(%rbp), %ecx
     cmp %ecx, %eax
     jge .L__kefir_func_greater_or_equals_label3
     xor %eax, %eax
@@ -167,10 +167,10 @@ less_or_equals2:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    movl %esi, -4(%rbp)
-    movl %edi, -8(%rbp)
-    movl -8(%rbp), %eax
-    movl -4(%rbp), %ecx
+    movl %esi, -8(%rbp)
+    movl %edi, -4(%rbp)
+    movl -4(%rbp), %eax
+    movl -8(%rbp), %ecx
     xor %edx, %edx
     cmp %ecx, %eax
     mov %rdx, %rax

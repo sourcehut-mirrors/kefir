@@ -38,7 +38,7 @@ sum:
     movq %rax, -24(%rbp)
     lea -208(%rbp), %rax
     movq %rax, -16(%rbp)
-.L__kefir_func_sum_label137:
+.L__kefir_func_sum_label140:
     xor %eax, %eax
 .loc 0 28 21
 .L__kefir_func_sum_label8:
@@ -60,14 +60,14 @@ sum:
 .L__kefir_func_sum_label178:
     movq (%rdx), %rdx
 .loc 0 29 9
-.L__kefir_func_sum_label184:
+.L__kefir_func_sum_label179:
     cmp %rdx, %rcx
     je .L__kefir_func_sum_label18
 .loc 0 32 16
 .L__kefir_func_sum_label188:
     movq (%rcx), %rcx
 .loc 0 32 9
-.L__kefir_func_sum_label189:
+.L__kefir_func_sum_label192:
     add %rcx, %rax
 .loc 0 27 5
 .L__kefir_func_sum_label198:
@@ -532,7 +532,7 @@ __kefir_debug_loclist_section_entry_6:
     .byte 0
     .byte 4
     .uleb128 .L__kefir_func_sum_label136 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_sum_label137 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_sum_label140 - .L__kefir_text_section_begin
     .byte 0
     .byte 0
 __kefir_debug_loclist_section_entry_7:
@@ -544,7 +544,7 @@ __kefir_debug_loclist_section_entry_7:
     .byte 96
     .byte 4
     .uleb128 .L__kefir_func_sum_label136 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_sum_label137 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_sum_label140 - .L__kefir_text_section_begin
     .byte 2
     .byte 145
     .byte 96
