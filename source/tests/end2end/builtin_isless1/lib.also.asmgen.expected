@@ -22,10 +22,10 @@ is_less_f32:
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-    movd %xmm1, -12(%rbp)
-    movd %xmm0, -16(%rbp)
-    movl -16(%rbp), %eax
-    movl -12(%rbp), %ecx
+    movd %xmm1, -16(%rbp)
+    movd %xmm0, -12(%rbp)
+    movl -12(%rbp), %eax
+    movl -16(%rbp), %ecx
     xor %edx, %edx
     movd %ecx, %xmm0
     movd %eax, %xmm1
@@ -45,10 +45,10 @@ is_less_f64:
     mov %rsp, %rbp
     sub $32, %rsp
     stmxcsr -8(%rbp)
-    movq %xmm1, -16(%rbp)
-    movq %xmm0, -24(%rbp)
-    movq -24(%rbp), %rax
-    movq -16(%rbp), %rcx
+    movq %xmm1, -24(%rbp)
+    movq %xmm0, -16(%rbp)
+    movq -16(%rbp), %rax
+    movq -24(%rbp), %rcx
     xor %edx, %edx
     movq %rcx, %xmm0
     movq %rax, %xmm1
@@ -70,13 +70,13 @@ is_less_f80:
     fstcw -8(%rbp)
     fldt 32(%rbp)
     fldt 16(%rbp)
-    movq $0, -24(%rbp)
-    fxch %st(1)
-    fstpt -32(%rbp)
     movq $0, -40(%rbp)
+    fxch %st(1)
     fstpt -48(%rbp)
-    fldt -48(%rbp)
+    movq $0, -24(%rbp)
+    fstpt -32(%rbp)
     fldt -32(%rbp)
+    fldt -48(%rbp)
     xor %eax, %eax
     fucomi %st(1)
     seta %al

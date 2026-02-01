@@ -50,7 +50,7 @@ sum:
     movl -28(%rbp), %edx
     cmp $176, %rdx
     ja .L__kefir_func_sum_label9
-    lea -8(%rbp), %rdx
+    lea -6(%rbp), %rdx
     movq -16(%rbp), %rsi
     movl -32(%rbp), %edi
     movw (%rsi, %rdi, 1), %di
@@ -58,9 +58,9 @@ sum:
     addl $8, -32(%rbp)
 .L__kefir_func_sum_label10:
     movw (%rdx), %si
-    movw %si, -6(%rbp)
-    movsxb -6(%rbp), %rdx
-    movsxb -5(%rbp), %rsi
+    movw %si, -8(%rbp)
+    movsxb -8(%rbp), %rdx
+    movsxb -7(%rbp), %rsi
     movsx %al, %rax
     imul %esi, %edx
     add %edx, %eax

@@ -21,19 +21,19 @@ test1:
     mov %r8, %rbx
     mov %rcx, %r12
 .L__kefir_func_test1_label2:
-    movq %rbx, -48(%rbp)
-    movq %r13, -40(%rbp)
+    movq %rbx, -40(%rbp)
+    movq %r13, -48(%rbp)
     mov %r12, %rdi
-    lea -48(%rbp), %rsi
+    lea -40(%rbp), %rsi
     mov %r14, %rdx
-    lea -40(%rbp), %rcx
+    lea -48(%rbp), %rcx
     call somefn@PLT
     cmp $0, %eax
     jne .L__kefir_func_test1_label6
-    movq -48(%rbp), %rax
-    movq -48(%rbp), %rcx
-    movq -40(%rbp), %rdx
-    movq -40(%rbp), %rsi
+    movq -40(%rbp), %rax
+    movq -40(%rbp), %rcx
+    movq -48(%rbp), %rdx
+    movq -48(%rbp), %rsi
     sub %rcx, %rbx
     sub %rsi, %r13
     add %rax, %r12

@@ -711,10 +711,10 @@ factorial:
     mov %rsp, %rbp
     sub $16, %rsp
 .L__kefir_func_factorial_label30:
-    movl %edi, -8(%rbp)
+    movl %edi, -4(%rbp)
 .loc 0 22 9
 .L__kefir_func_factorial_label31:
-    movl -8(%rbp), %eax
+    movl -4(%rbp), %eax
 .L__kefir_func_factorial_label35:
     cmp $0, %eax
 .loc 0 22 5
@@ -722,7 +722,7 @@ factorial:
     jl .L__kefir_func_factorial_label16
 .loc 0 24 9
 .L__kefir_func_factorial_label46:
-    movl -8(%rbp), %eax
+    movl -4(%rbp), %eax
 .L__kefir_func_factorial_label47:
     xor %ecx, %ecx
     cmp $2, %eax
@@ -739,10 +739,10 @@ factorial:
     jnz .L__kefir_func_factorial_label14
 .loc 0 27 5
 .L__kefir_func_factorial_label76:
-    movl $1, -4(%rbp)
+    movl $1, -8(%rbp)
 .loc 0 28 12
 .L__kefir_func_factorial_label8:
-    movl -8(%rbp), %eax
+    movl -4(%rbp), %eax
 .L__kefir_func_factorial_label81:
     cmp $1, %eax
 .loc 0 28 5
@@ -750,7 +750,7 @@ factorial:
     jg .L__kefir_func_factorial_label12
 .loc 0 31 12
 .L__kefir_func_factorial_label92:
-    movl -4(%rbp), %eax
+    movl -8(%rbp), %eax
 .loc 0 31 5
 .L__kefir_func_factorial_label93:
     lea (%rbp), %rsp
@@ -758,27 +758,27 @@ factorial:
     ret
 .loc 0 29 19
 .L__kefir_func_factorial_label12:
-    movl -8(%rbp), %eax
+    movl -4(%rbp), %eax
 .loc 0 29 9
 .L__kefir_func_factorial_label109:
-    movl -4(%rbp), %ecx
+    movl -8(%rbp), %ecx
 .L__kefir_func_factorial_label113:
     imul %eax, %ecx
 .L__kefir_func_factorial_label120:
-    movl %ecx, -4(%rbp)
+    movl %ecx, -8(%rbp)
 .loc 0 28 19
 .L__kefir_func_factorial_label121:
-    movl -8(%rbp), %eax
+    movl -4(%rbp), %eax
 .L__kefir_func_factorial_label128:
     add $-1, %eax
 .L__kefir_func_factorial_label129:
-    movl %eax, -8(%rbp)
+    movl %eax, -4(%rbp)
 .loc 0 28 5
 .L__kefir_func_factorial_label136:
     jmp .L__kefir_func_factorial_label8
 .loc 0 25 16
 .L__kefir_func_factorial_label14:
-    movl -8(%rbp), %eax
+    movl -4(%rbp), %eax
 .loc 0 25 9
 .L__kefir_func_factorial_label152:
     lea (%rbp), %rsp
@@ -1047,7 +1047,7 @@ __kefir_debug_loclist_section_entry_6:
     .uleb128 .L__kefir_func_factorial_label165 - .L__kefir_text_section_begin
     .byte 2
     .byte 145
-    .byte 120
+    .byte 124
     .byte 0
 __kefir_debug_loclist_section_entry_7:
     .byte 4
@@ -1055,7 +1055,7 @@ __kefir_debug_loclist_section_entry_7:
     .uleb128 .L__kefir_func_factorial_label165 - .L__kefir_text_section_begin
     .byte 2
     .byte 145
-    .byte 124
+    .byte 120
     .byte 0
 __kefir_debug_loclist_section_entry_8:
     .byte 0

@@ -33,13 +33,13 @@ cast_int:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    movq %rdi, -16(%rbp)
-    movl $0, -8(%rbp)
-    movq -16(%rbp), %rcx
+    movq %rdi, -8(%rbp)
+    movl $0, -16(%rbp)
+    movq -8(%rbp), %rcx
     mov %rcx, %rax
 
-    mov %eax, -8(%rbp)
-    movl -8(%rbp), %eax
+    mov %eax, -16(%rbp)
+    movl -16(%rbp), %eax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -50,13 +50,13 @@ sum3_one:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    movq %rdx, -16(%rbp)
+    movq %rdx, -8(%rbp)
     movq %rsi, -24(%rbp)
-    movq %rdi, -32(%rbp)
-    movq $0, -8(%rbp)
-    movq -32(%rbp), %rax
+    movq %rdi, -16(%rbp)
+    movq $0, -32(%rbp)
+    movq -16(%rbp), %rax
     movq -24(%rbp), %r8
-    movq -16(%rbp), %r9
+    movq -8(%rbp), %r9
     mov $1, %ecx
     mov %r9, %rdx
     mov %rax, %rsi
@@ -64,9 +64,9 @@ sum3_one:
 add %rsi, %rcx
 add %rdi, %rdx
 add %rdx, %rcx
-    mov %rcx, -8(%rbp)
-    mov %rdx, -16(%rbp)
-    movq -8(%rbp), %rax
+    mov %rcx, -32(%rbp)
+    mov %rdx, -8(%rbp)
+    movq -32(%rbp), %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -79,12 +79,12 @@ unwrap_s1:
     sub $16, %rsp
     movq %rdi, -16(%rbp)
     movl -16(%rbp), %eax
-    movl %eax, -8(%rbp)
-    movl $0, -4(%rbp)
-    mov -8(%rbp), %eax
+    movl %eax, -4(%rbp)
+    movl $0, -8(%rbp)
+    mov -4(%rbp), %eax
 
-    mov %eax, -4(%rbp)
-    movl -4(%rbp), %eax
+    mov %eax, -8(%rbp)
+    movl -8(%rbp), %eax
     lea (%rbp), %rsp
     pop %rbp
     ret

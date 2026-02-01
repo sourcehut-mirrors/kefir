@@ -222,33 +222,33 @@ __kefir_bigint_signed_compare:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
-    movq %rdx, -48(%rbp)
-    movq %rsi, -8(%rbp)
-    movq %rdi, -24(%rbp)
-    movq -48(%rbp), %rax
+    movq %rdx, -16(%rbp)
+    movq %rsi, -32(%rbp)
+    movq %rdi, -8(%rbp)
+    movq -16(%rbp), %rax
     sub $1, %rax
     mov $8, %ecx
     xor %edx, %edx
     div %rcx
-    movq %rax, -32(%rbp)
-    movq -48(%rbp), %rax
-    movq -32(%rbp), %rcx
+    movq %rax, -48(%rbp)
+    movq -16(%rbp), %rax
+    movq -48(%rbp), %rcx
     sub $1, %rax
     shl $3, %rcx
     sub %rcx, %rax
-    movq %rax, -16(%rbp)
-    movq -24(%rbp), %rax
-    movq -32(%rbp), %rcx
+    movq %rax, -24(%rbp)
+    movq -8(%rbp), %rax
+    movq -48(%rbp), %rcx
     movb (%rax, %rcx, 1), %dl
-    movq -16(%rbp), %rcx
+    movq -24(%rbp), %rcx
     movzx %dl, %edx
     sar %cl, %edx
     and $1, %edx
     movl %edx, -40(%rbp)
-    movq -8(%rbp), %rax
-    movq -32(%rbp), %rcx
+    movq -32(%rbp), %rax
+    movq -48(%rbp), %rcx
     movb (%rax, %rcx, 1), %dl
-    movq -16(%rbp), %rcx
+    movq -24(%rbp), %rcx
     movzx %dl, %edx
     sar %cl, %edx
     and $1, %edx
@@ -271,9 +271,9 @@ __kefir_bigint_signed_compare:
 .L__kefir_runtime_func___kefir_bigint_signed_compare_label6:
     test %ecx, %ecx
     jnz .L__kefir_runtime_func___kefir_bigint_signed_compare_label8
-    movq -24(%rbp), %rdi
-    movq -8(%rbp), %rsi
-    movq -48(%rbp), %rdx
+    movq -8(%rbp), %rdi
+    movq -32(%rbp), %rsi
+    movq -16(%rbp), %rdx
     call __kefir_bigint_unsigned_compare
     lea (%rbp), %rsp
     pop %rbp
@@ -307,16 +307,16 @@ __kefir_bigint_unsigned_compare:
     push %rbp
     mov %rsp, %rbp
     sub $64, %rsp
-    movq %rdx, -56(%rbp)
-    movq %rsi, -40(%rbp)
-    movq %rdi, -48(%rbp)
-    movq -56(%rbp), %rax
+    movq %rdx, -32(%rbp)
+    movq %rsi, -48(%rbp)
+    movq %rdi, -40(%rbp)
+    movq -32(%rbp), %rax
     add $7, %rax
     mov $8, %ecx
     xor %edx, %edx
     div %rcx
-    movq %rax, -32(%rbp)
-    movq -32(%rbp), %rax
+    movq %rax, -56(%rbp)
+    movq -56(%rbp), %rax
     movq %rax, -24(%rbp)
 .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label2:
     movq -24(%rbp), %rax
@@ -328,27 +328,27 @@ __kefir_bigint_unsigned_compare:
     pop %rbp
     ret
 .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label4:
-    movq -48(%rbp), %rax
-    movq -24(%rbp), %rcx
-    movb -1(%rax, %rcx, 1), %dl
-    movzx %dl, %edx
-    movl %edx, -16(%rbp)
     movq -40(%rbp), %rax
     movq -24(%rbp), %rcx
     movb -1(%rax, %rcx, 1), %dl
     movzx %dl, %edx
     movl %edx, -12(%rbp)
+    movq -48(%rbp), %rax
+    movq -24(%rbp), %rcx
+    movb -1(%rax, %rcx, 1), %dl
+    movzx %dl, %edx
+    movl %edx, -16(%rbp)
     movq -24(%rbp), %rax
-    movq -32(%rbp), %rcx
+    movq -56(%rbp), %rcx
     cmp %rcx, %rax
     jz .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label10
 .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label5:
-    movl -16(%rbp), %eax
-    movl -12(%rbp), %ecx
+    movl -12(%rbp), %eax
+    movl -16(%rbp), %ecx
     cmp %ecx, %eax
     ja .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label9
-    movl -16(%rbp), %eax
-    movl -12(%rbp), %ecx
+    movl -12(%rbp), %eax
+    movl -16(%rbp), %ecx
     cmp %ecx, %eax
     jb .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label8
     movq -24(%rbp), %rax
@@ -366,8 +366,8 @@ __kefir_bigint_unsigned_compare:
     pop %rbp
     ret
 .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label10:
-    movq -56(%rbp), %rax
-    movq -56(%rbp), %rdx
+    movq -32(%rbp), %rax
+    movq -32(%rbp), %rdx
     lea -1(%rax), %rcx
     lea -1(%rdx), %rax
     mov $8, %esi
@@ -376,23 +376,23 @@ __kefir_bigint_unsigned_compare:
     shl $3, %rax
     sub %rax, %rcx
     add $1, %rcx
-    movl %ecx, -8(%rbp)
-    movl -8(%rbp), %eax
+    movl %ecx, -4(%rbp)
+    movl -4(%rbp), %eax
     movabs $4294967295, %rcx
     and %rcx, %rax
     mov $1, %edx
     mov %rax, %rcx
     shl %cl, %rdx
     sub $1, %rdx
-    movl %edx, -4(%rbp)
-    movl -4(%rbp), %eax
-    movl -16(%rbp), %ecx
-    and %eax, %ecx
-    movl %ecx, -16(%rbp)
-    movl -4(%rbp), %eax
+    movl %edx, -8(%rbp)
+    movl -8(%rbp), %eax
     movl -12(%rbp), %ecx
     and %eax, %ecx
     movl %ecx, -12(%rbp)
+    movl -8(%rbp), %eax
+    movl -16(%rbp), %ecx
+    and %eax, %ecx
+    movl %ecx, -16(%rbp)
     jmp .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label5
 .L__kefir_runtime_text_func___kefir_bigint_unsigned_compare_end:
 

@@ -489,11 +489,11 @@ factorial:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    movl %edi, -8(%rbp)
-    movl -8(%rbp), %eax
+    movl %edi, -4(%rbp)
+    movl -4(%rbp), %eax
     cmp $0, %eax
     jl .L__kefir_func_factorial_label8
-    movl -8(%rbp), %eax
+    movl -4(%rbp), %eax
     xor %ecx, %ecx
     cmp $2, %eax
     setl %cl
@@ -503,26 +503,26 @@ factorial:
     sete %dl
     or %rdx, %rcx
     jnz .L__kefir_func_factorial_label7
-    movl $1, -4(%rbp)
+    movl $1, -8(%rbp)
 .L__kefir_func_factorial_label4:
-    movl -8(%rbp), %eax
+    movl -4(%rbp), %eax
     cmp $1, %eax
     jg .L__kefir_func_factorial_label6
-    movl -4(%rbp), %eax
+    movl -8(%rbp), %eax
     lea (%rbp), %rsp
     pop %rbp
     ret
 .L__kefir_func_factorial_label6:
-    movl -8(%rbp), %eax
-    movl -4(%rbp), %ecx
+    movl -4(%rbp), %eax
+    movl -8(%rbp), %ecx
     imul %eax, %ecx
-    movl %ecx, -4(%rbp)
-    movl -8(%rbp), %eax
+    movl %ecx, -8(%rbp)
+    movl -4(%rbp), %eax
     add $-1, %eax
-    movl %eax, -8(%rbp)
+    movl %eax, -4(%rbp)
     jmp .L__kefir_func_factorial_label4
 .L__kefir_func_factorial_label7:
-    movl -8(%rbp), %eax
+    movl -4(%rbp), %eax
     lea (%rbp), %rsp
     pop %rbp
     ret

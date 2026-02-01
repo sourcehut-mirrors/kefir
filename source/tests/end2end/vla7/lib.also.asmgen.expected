@@ -14,16 +14,16 @@ test:
     mov %rsp, %rbp
     sub $48, %rsp
     xor %eax, %eax
-    movl %edi, -32(%rbp)
+    movl %edi, -24(%rbp)
     sub $16, %rsp
     movq %rax, (%rsp)
     mov %rsp, %rcx
-    lea -48(%rbp), %rdx
+    lea -16(%rbp), %rdx
     movq %rax, (%rdx)
-    movl -32(%rbp), %eax
+    movl -24(%rbp), %eax
     movsx %eax, %rax
     shl $2, %rax
-    movq %rax, -16(%rbp)
+    movq %rax, -40(%rbp)
     sub %rax, %rsp
     mov $16, %rax
     cmp $4, %rax
@@ -32,19 +32,19 @@ test:
     neg %rax
     and %rax, %rsp
     mov %rsp, %rax
-    movq %rax, -24(%rbp)
-    movq -24(%rbp), %rax
-    movq %rax, -8(%rbp)
+    movq %rax, -48(%rbp)
+    movq -48(%rbp), %rax
+    movq %rax, -32(%rbp)
 .L__kefir_func_test_label2:
-    movl -32(%rbp), %eax
+    movl -24(%rbp), %eax
     add $-1, %eax
-    movl %eax, -32(%rbp)
-    lea -24(%rbp), %rax
+    movl %eax, -24(%rbp)
+    lea -48(%rbp), %rax
     movq (%rax), %rax
-    movq -8(%rbp), %rdx
+    movq -32(%rbp), %rdx
     cmp %rdx, %rax
     jnz .L__kefir_func_test_label6
-    movl -32(%rbp), %eax
+    movl -24(%rbp), %eax
     cmp $1, %eax
     jg .L__kefir_func_test_label2
     mov $1, %eax
@@ -64,16 +64,16 @@ test2:
     mov %rsp, %rbp
     sub $64, %rsp
     xor %eax, %eax
-    movl %edi, -48(%rbp)
+    movl %edi, -32(%rbp)
     sub $16, %rsp
     movq %rax, (%rsp)
     mov %rsp, %rcx
-    lea -64(%rbp), %rdx
+    lea -16(%rbp), %rdx
     movq %rax, (%rdx)
-    movl -48(%rbp), %eax
+    movl -32(%rbp), %eax
     movsx %eax, %rax
     shl $2, %rax
-    movq %rax, -32(%rbp)
+    movq %rax, -56(%rbp)
     sub %rax, %rsp
     mov $16, %rax
     cmp $4, %rax
@@ -82,19 +82,19 @@ test2:
     neg %rax
     and %rax, %rsp
     mov %rsp, %rax
-    movq %rax, -40(%rbp)
+    movq %rax, -64(%rbp)
 .L__kefir_func_test2_label2:
     sub $16, %rsp
     movq %rcx, (%rsp)
     mov %rsp, %rax
-    lea -64(%rbp), %rdx
+    lea -16(%rbp), %rdx
     movq %rcx, 8(%rdx)
-    movl -48(%rbp), %edx
-    lea -24(%rbp), %rcx
+    movl -32(%rbp), %edx
+    lea -48(%rbp), %rcx
     movsx %edx, %rdx
     shl $2, %rdx
     movq %rdx, 8(%rcx)
-    lea -24(%rbp), %rcx
+    lea -48(%rbp), %rcx
     sub %rdx, %rsp
     mov $16, %rdx
     cmp $4, %rdx

@@ -33,7 +33,7 @@ struct allocator_state {
     struct kefir_codegen_local_variable_allocator *allocator;
     const struct kefir_opt_code_container *code;
     const struct kefir_codegen_local_variable_allocator_hooks *hooks;
-    const struct kefir_opt_code_variable_conflicts *conflicts;
+    const struct kefir_opt_code_variable_scopes *scopes;
     struct kefir_hashtree current_allocation;
 };
 
@@ -80,11 +80,51 @@ static kefir_result_t do_allocate_var(struct allocator_state *state, kefir_opt_i
     return KEFIR_OK;
 }
 
-static kefir_result_t allocator_run_impl(struct allocator_state *state) {
-    kefir_result_t res;
+static kefir_result_t fill_interfere_scope_vars(struct allocator_state *state, kefir_opt_instruction_ref_t scope_ref) {
+    struct kefir_hashtree_node *node;
+    kefir_result_t res = kefir_hashtree_at(&state->scopes->scope_variables, (kefir_hashtree_key_t) scope_ref, &node);
+    REQUIRE(res != KEFIR_NOT_FOUND, KEFIR_OK);
+    REQUIRE_OK(res);
+    ASSIGN_DECL_CAST(struct kefir_opt_code_scope_variables *, interfere_variables, node->value);
+
     kefir_hashset_key_t entry;
     struct kefir_hashset_iterator iter;
-    for (res = kefir_hashset_iter(&state->conflicts->globally_alive, &iter, &entry); res == KEFIR_OK;
+    for (res = kefir_hashset_iter(&interfere_variables->allocations, &iter, &entry); res == KEFIR_OK;
+         res = kefir_hashset_next(&iter, &entry)) {
+        ASSIGN_DECL_CAST(kefir_opt_instruction_ref_t, instr_ref, entry);
+        if (!kefir_hashset_has(&state->allocator->alive_variables, (kefir_hashset_key_t) instr_ref)) {
+            continue;
+        }
+
+        struct kefir_hashtree_node *node;
+        kefir_result_t res =
+            kefir_hashtree_at(&state->allocator->variable_locations, (kefir_hashtree_key_t) instr_ref, &node);
+        if (res == KEFIR_NOT_FOUND) {
+            continue;
+        }
+        REQUIRE_OK(res);
+        res = kefir_hashtree_insert(state->mem, &state->current_allocation, (kefir_hashtree_key_t) node->value,
+                                    (kefir_hashtree_value_t) node->key);
+        if (res != KEFIR_ALREADY_EXISTS) {
+            REQUIRE_OK(res);
+        }
+    }
+    if (res != KEFIR_ITERATOR_END) {
+        REQUIRE_OK(res);
+    }
+    return KEFIR_OK;
+}
+
+static kefir_result_t allocate_scope_vars(struct allocator_state *state, kefir_opt_instruction_ref_t scope_ref) {
+    struct kefir_hashtree_node *node;
+    kefir_result_t res = kefir_hashtree_at(&state->scopes->scope_variables, (kefir_hashtree_key_t) scope_ref, &node);
+    REQUIRE(res != KEFIR_NOT_FOUND, KEFIR_OK);
+    REQUIRE_OK(res);
+    ASSIGN_DECL_CAST(struct kefir_opt_code_scope_variables *, variables, node->value);
+
+    kefir_hashset_key_t entry;
+    struct kefir_hashset_iterator iter;
+    for (res = kefir_hashset_iter(&variables->allocations, &iter, &entry); res == KEFIR_OK;
          res = kefir_hashset_next(&iter, &entry)) {
         ASSIGN_DECL_CAST(kefir_opt_instruction_ref_t, instr_ref, entry);
         REQUIRE_OK(do_allocate_var(state, instr_ref));
@@ -92,78 +132,45 @@ static kefir_result_t allocator_run_impl(struct allocator_state *state) {
     if (res != KEFIR_ITERATOR_END) {
         REQUIRE_OK(res);
     }
+    return KEFIR_OK;
+}
 
-    struct kefir_hashtree_node *max_global_node = NULL;
-    REQUIRE_OK(kefir_hashtree_max(&state->current_allocation, &max_global_node));
-
-    struct kefir_hashtree_node_iterator local_iter;
-    for (struct kefir_hashtree_node *node = kefir_hashtree_iter(&state->conflicts->locally_alive, &local_iter);
-         node != NULL; node = kefir_hashtree_next(&local_iter)) {
-        ASSIGN_DECL_CAST(kefir_opt_instruction_ref_t, instr_ref, node->key);
-        if (state->allocator->all_global) {
+static kefir_result_t allocator_run_impl(struct allocator_state *state) {
+    kefir_result_t res;
+    if (state->allocator->all_global) {
+        kefir_hashset_key_t entry;
+        struct kefir_hashset_iterator iter;
+        for (res = kefir_hashset_iter(&state->allocator->alive_variables, &iter, &entry); res == KEFIR_OK;
+             res = kefir_hashset_next(&iter, &entry)) {
+            ASSIGN_DECL_CAST(kefir_opt_instruction_ref_t, instr_ref, entry);
             REQUIRE_OK(do_allocate_var(state, instr_ref));
-            continue;
         }
+        if (res != KEFIR_ITERATOR_END) {
+            REQUIRE_OK(res);
+        }
+        return KEFIR_OK;
+    }
 
-        ASSIGN_DECL_CAST(const struct kefir_opt_code_local_variable_occurences *, occurences, node->value);
-        if (!kefir_hashset_has(&state->allocator->alive_variables, (kefir_hashset_key_t) instr_ref)) {
-            continue;
-        }
+    struct kefir_hashtree_node_iterator scopes_iter;
+    for (struct kefir_hashtree_node *node = kefir_hashtree_iter(&state->scopes->scope_variables, &scopes_iter);
+         node != NULL; node = kefir_hashtree_next(&scopes_iter)) {
+        ASSIGN_DECL_CAST(kefir_opt_instruction_ref_t, scope_ref, node->key);
 
         REQUIRE_OK(kefir_hashtree_clean(state->mem, &state->current_allocation));
-
-        for (res = kefir_hashset_iter(&state->conflicts->globally_alive, &iter, &entry); res == KEFIR_OK;
-             res = kefir_hashset_next(&iter, &entry)) {
-            ASSIGN_DECL_CAST(kefir_opt_instruction_ref_t, conflict_instr_ref, entry);
-            struct kefir_hashtree_node *node;
-            res = kefir_hashtree_at(&state->allocator->variable_locations, (kefir_hashtree_key_t) conflict_instr_ref,
-                                    &node);
-            if (res != KEFIR_NOT_FOUND) {
-                REQUIRE_OK(res);
-                res = kefir_hashtree_insert(state->mem, &state->current_allocation, (kefir_hashtree_key_t) node->value,
-                                            (kefir_hashtree_value_t) node->key);
-                if (res != KEFIR_ALREADY_EXISTS) {
-                    REQUIRE_OK(res);
-                }
-            }
-        }
-
-        for (res = kefir_hashset_iter(&occurences->occurences, &iter, &entry); res == KEFIR_OK;
-             res = kefir_hashset_next(&iter, &entry)) {
-            ASSIGN_DECL_CAST(kefir_opt_block_id_t, block_id, entry);
-            REQUIRE_OK(kefir_hashtree_at(&state->conflicts->block_alive_vars, (kefir_hashtree_key_t) block_id, &node));
-            ASSIGN_DECL_CAST(const struct kefir_opt_code_block_local_variables *, block_local_variables, node->value);
-
-            struct kefir_hashset_iterator var_iter;
-            for (res = kefir_hashset_iter(&block_local_variables->variables, &var_iter, &entry); res == KEFIR_OK;
-                 res = kefir_hashset_next(&var_iter, &entry)) {
-                ASSIGN_DECL_CAST(kefir_opt_instruction_ref_t, conflict_instr_ref, entry);
-                if (instr_ref != conflict_instr_ref) {
-                    struct kefir_hashtree_node *node;
-                    res = kefir_hashtree_at(&state->allocator->variable_locations,
-                                            (kefir_hashtree_key_t) conflict_instr_ref, &node);
-                    if (res != KEFIR_NOT_FOUND) {
-                        REQUIRE_OK(res);
-                        res = kefir_hashtree_insert(state->mem, &state->current_allocation,
-                                                    (kefir_hashtree_key_t) node->value,
-                                                    (kefir_hashtree_value_t) node->key);
-                        if (res != KEFIR_ALREADY_EXISTS) {
-                            REQUIRE_OK(res);
-                        }
-                    }
-                }
-            }
-            if (res != KEFIR_ITERATOR_END) {
-                REQUIRE_OK(res);
-            }
+        struct kefir_graph_edge_iterator edge_iter;
+        kefir_graph_vertex_id_t interfere_vertex_id;
+        for (res =
+                 kefir_graph_edge_iter(&state->scopes->scope_interference, &edge_iter, scope_ref, &interfere_vertex_id);
+             res == KEFIR_OK; res = kefir_graph_edge_next(&edge_iter, &interfere_vertex_id)) {
+            ASSIGN_DECL_CAST(kefir_opt_instruction_ref_t, interfere_scope_ref, interfere_vertex_id);
+            REQUIRE_OK(fill_interfere_scope_vars(state, interfere_scope_ref));
         }
         if (res != KEFIR_ITERATOR_END) {
             REQUIRE_OK(res);
         }
 
-        REQUIRE_OK(do_allocate_var(state, instr_ref));
+        REQUIRE_OK(allocate_scope_vars(state, scope_ref));
     }
-
     return KEFIR_OK;
 }
 
@@ -201,18 +208,17 @@ kefir_result_t kefir_codegen_local_variable_allocator_mark_return_space(
 kefir_result_t kefir_codegen_local_variable_allocator_run(
     struct kefir_mem *mem, struct kefir_codegen_local_variable_allocator *allocator,
     const struct kefir_opt_code_container *code, const struct kefir_codegen_local_variable_allocator_hooks *hooks,
-    const struct kefir_opt_code_variable_conflicts *conflicts) {
+    const struct kefir_opt_code_variable_scopes *scopes) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(allocator != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid codegen variable allocator"));
     REQUIRE(hooks != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid codegen variable allocator hooks"));
-    REQUIRE(conflicts != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid local variable conflicts"));
+    REQUIRE(scopes != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer local variable scopes"));
 
     REQUIRE_OK(kefir_hashtree_clean(mem, &allocator->variable_locations));
     allocator->total_size = 0;
     allocator->total_alignment = 0;
 
-    struct allocator_state state = {
-        .mem = mem, .allocator = allocator, .code = code, .hooks = hooks, .conflicts = conflicts};
+    struct allocator_state state = {.mem = mem, .allocator = allocator, .code = code, .hooks = hooks, .scopes = scopes};
     REQUIRE_OK(kefir_hashtree_init(&state.current_allocation, &kefir_hashtree_uint_ops));
 
     kefir_result_t res = allocator_run_impl(&state);

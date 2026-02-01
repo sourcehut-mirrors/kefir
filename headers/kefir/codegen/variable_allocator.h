@@ -21,7 +21,7 @@
 #ifndef KEFIR_CODEGEN_VARIABLE_ALLOCATOR_H_
 #define KEFIR_CODEGEN_VARIABLE_ALLOCATOR_H_
 
-#include "kefir/optimizer/local_variables.h"
+#include "kefir/optimizer/variable_scope.h"
 #include "kefir/core/hashset.h"
 
 typedef struct kefir_codegen_local_variable_allocator_hooks {
@@ -52,7 +52,7 @@ kefir_result_t kefir_codegen_local_variable_allocator_run(struct kefir_mem *,
                                                           struct kefir_codegen_local_variable_allocator *,
                                                           const struct kefir_opt_code_container *,
                                                           const struct kefir_codegen_local_variable_allocator_hooks *,
-                                                          const struct kefir_opt_code_variable_conflicts *);
+                                                          const struct kefir_opt_code_variable_scopes *);
 kefir_result_t kefir_codegen_local_variable_allocation_of(const struct kefir_codegen_local_variable_allocator *,
                                                           kefir_opt_instruction_ref_t, kefir_int64_t *);
 

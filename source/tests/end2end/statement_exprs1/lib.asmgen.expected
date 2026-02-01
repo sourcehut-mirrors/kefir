@@ -24,11 +24,11 @@ eval2:
     sub $16, %rsp
     movq %rax, (%rsp)
     mov %rsp, %rcx
-    movq %rax, -24(%rbp)
+    movq %rax, -8(%rbp)
     movsx %edi, %rax
     mov %rax, %rdx
     shl $3, %rdx
-    movq %rdx, -8(%rbp)
+    movq %rdx, -16(%rbp)
     sub %rdx, %rsp
     mov $16, %rdx
     cmp $8, %rdx
@@ -37,8 +37,8 @@ eval2:
     neg %rdx
     and %rdx, %rsp
     mov %rsp, %rdx
-    movq %rdx, -16(%rbp)
-    movq -8(%rbp), %rdx
+    movq %rdx, -24(%rbp)
+    movq -16(%rbp), %rdx
     cmp $0, %rcx
     jz .L__kefir_func_eval2_label3
     mov %rcx, %rsp

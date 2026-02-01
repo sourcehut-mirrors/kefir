@@ -36,34 +36,34 @@ test8:
     sub $128, %rsp
     lea 16(%rbp), %rax
     movdqu (%rax), %xmm0
-    movdqu %xmm0, -128(%rbp)
+    movdqu %xmm0, -64(%rbp)
     movdqu 16(%rax), %xmm0
-    movdqu %xmm0, -112(%rbp)
+    movdqu %xmm0, -48(%rbp)
     movdqu 32(%rax), %xmm0
-    movdqu %xmm0, -96(%rbp)
+    movdqu %xmm0, -32(%rbp)
     movdqu 48(%rax), %xmm0
-    movdqu %xmm0, -80(%rbp)
+    movdqu %xmm0, -16(%rbp)
     xorps %xmm0, %xmm0
-    movdqu %xmm0, -64(%rbp)
-    movdqu %xmm0, -48(%rbp)
-    movdqu %xmm0, -32(%rbp)
-    movdqu %xmm0, -16(%rbp)
-    movdqu -128(%rbp), %xmm0
-    movdqu %xmm0, -64(%rbp)
-    movdqu -112(%rbp), %xmm0
-    movdqu %xmm0, -48(%rbp)
-    movdqu -96(%rbp), %xmm0
-    movdqu %xmm0, -32(%rbp)
-    movdqu -80(%rbp), %xmm0
-    movdqu %xmm0, -16(%rbp)
-    movq -64(%rbp), %rax
-    movq -56(%rbp), %rcx
-    movq -48(%rbp), %rdx
-    movq -40(%rbp), %rsi
-    movq -32(%rbp), %rdi
-    movq -24(%rbp), %r8
-    movq -16(%rbp), %r9
-    movq -8(%rbp), %r10
+    movdqu %xmm0, -128(%rbp)
+    movdqu %xmm0, -112(%rbp)
+    movdqu %xmm0, -96(%rbp)
+    movdqu %xmm0, -80(%rbp)
+    movdqu -64(%rbp), %xmm0
+    movdqu %xmm0, -128(%rbp)
+    movdqu -48(%rbp), %xmm0
+    movdqu %xmm0, -112(%rbp)
+    movdqu -32(%rbp), %xmm0
+    movdqu %xmm0, -96(%rbp)
+    movdqu -16(%rbp), %xmm0
+    movdqu %xmm0, -80(%rbp)
+    movq -128(%rbp), %rax
+    movq -120(%rbp), %rcx
+    movq -112(%rbp), %rdx
+    movq -104(%rbp), %rsi
+    movq -96(%rbp), %rdi
+    movq -88(%rbp), %r8
+    movq -80(%rbp), %r9
+    movq -72(%rbp), %r10
     add %rcx, %rax
     add %rdx, %rax
     add %rsi, %rax

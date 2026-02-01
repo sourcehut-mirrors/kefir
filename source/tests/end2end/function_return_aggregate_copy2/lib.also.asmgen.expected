@@ -16,17 +16,17 @@ get2:
     sub $512, %rsp
     mov %rsi, %r12
     mov %rdi, %rdx
-    lea -272(%rbp), %rbx
-    lea -528(%rbp), %rsi
+    lea -528(%rbp), %rbx
+    lea -272(%rbp), %rsi
     mov %rbx, %rdi
     call get@PLT
-    lea -528(%rbp), %rdi
+    lea -272(%rbp), %rdi
     mov %rax, %rsi
     cld
     mov $32, %rcx
     rep movsq
     movsx %r12d, %rcx
-    lea -528(%rbp), %rax
+    lea -272(%rbp), %rax
     movl (%rax, %rcx, 4), %eax
     lea -16(%rbp), %rsp
     pop %r12

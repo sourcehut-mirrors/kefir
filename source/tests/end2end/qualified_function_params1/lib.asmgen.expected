@@ -21,8 +21,8 @@ test1:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    movq %rsi, -8(%rbp)
-    movq %xmm0, -16(%rbp)
+    movq %rsi, -16(%rbp)
+    movq %xmm0, -8(%rbp)
     movl %edi, -24(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -58,11 +58,11 @@ test4:
     mov %rsp, %rbp
     sub $16, %rsp
     mov $1, %eax
-    movq %rax, -16(%rbp)
+    movq %rax, -8(%rbp)
     xor %eax, %eax
-    movq %rax, -8(%rbp)
-    movq -16(%rbp), %rax
-    movq %rax, -8(%rbp)
+    movq %rax, -16(%rbp)
+    movq -8(%rbp), %rax
+    movq %rax, -16(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret

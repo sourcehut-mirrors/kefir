@@ -39,15 +39,15 @@ test:
     push %rbx
     sub $24, %rsp
     xor %eax, %eax
-    movq %rax, -16(%rbp)
-    movl %edi, -16(%rbp)
-    movl %esi, -12(%rbp)
-    lea -24(%rbp), %rbx
-    movq -16(%rbp), %rdi
+    movq %rax, -24(%rbp)
+    movl %edi, -24(%rbp)
+    movl %esi, -20(%rbp)
+    lea -16(%rbp), %rbx
+    movq -24(%rbp), %rdi
     call get4
     movq %rax, (%rbx)
-    movl -24(%rbp), %eax
-    movl -20(%rbp), %ecx
+    movl -16(%rbp), %eax
+    movl -12(%rbp), %ecx
     xor %ecx, %eax
     lea -8(%rbp), %rsp
     pop %rbx

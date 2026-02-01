@@ -15,15 +15,15 @@ test:
     movq $3, -64(%rbp)
     movq $100, -40(%rbp)
     movq $-1000, -8(%rbp)
-    movl $-314159, -112(%rbp)
+    movl $-314159, -88(%rbp)
     xor %eax, %eax
+    movq %rax, -112(%rbp)
     movq %rax, -104(%rbp)
     movq %rax, -96(%rbp)
-    movq %rax, -88(%rbp)
-    movl $1, -104(%rbp)
-    movq $2, -96(%rbp)
+    movl $1, -112(%rbp)
+    movq $2, -104(%rbp)
     movd .L__kefir_func_test_label3(%rip), %xmm0
-    movd %xmm0, -88(%rbp)
+    movd %xmm0, -96(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret

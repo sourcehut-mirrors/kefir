@@ -44,13 +44,13 @@ testsmall:
     sub $40, %rsp
     stmxcsr -32(%rbp)
     mov %rdi, %r12
-    lea -64(%rbp), %rbx
+    lea -48(%rbp), %rbx
     mov %r12, %rdi
     call getsmall@PLT
     movq %rax, (%rbx)
     movq %xmm0, 8(%rbx)
     movq (%rbx), %r13
-    lea -48(%rbp), %rbx
+    lea -64(%rbp), %rbx
     mov %r12, %rdi
     call getsmall@PLT
     movq %rax, (%rbx)
@@ -77,15 +77,15 @@ testlarge2:
     sub $1024, %rsp
     mov %rsi, %r12
     mov %rdi, %rsi
-    lea -1040(%rbp), %rbx
+    lea -528(%rbp), %rbx
     mov %rbx, %rdi
     call getlarge@PLT
-    lea -528(%rbp), %rbx
+    lea -1040(%rbp), %rbx
     mov %r12, %rsi
     mov %rbx, %rdi
     call getlarge@PLT
-    lea -1040(%rbp), %rdi
-    lea -528(%rbp), %rsi
+    lea -528(%rbp), %rdi
+    lea -1040(%rbp), %rsi
     mov $512, %edx
     call my_memcmp@PLT
     lea -16(%rbp), %rsp

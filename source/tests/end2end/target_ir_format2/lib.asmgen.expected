@@ -2014,10 +2014,10 @@ test2:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    movl %esi, -8(%rbp)
-    movq %rdi, -16(%rbp)
-    movl -8(%rbp), %esi
-    movq -16(%rbp), %rdi
+    movl %esi, -16(%rbp)
+    movq %rdi, -8(%rbp)
+    movl -16(%rbp), %esi
+    movq -8(%rbp), %rdi
 .L__kefir_func_test2_label2:
     movl (%rdi), %eax
     movsx %eax, %rax

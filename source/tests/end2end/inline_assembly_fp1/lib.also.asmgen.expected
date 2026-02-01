@@ -11,19 +11,19 @@ custom_hypot:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    movq %xmm1, -16(%rbp)
+    movq %xmm1, -8(%rbp)
     movq %xmm0, -24(%rbp)
-    movq %xmm0, -8(%rbp)
+    movq %xmm0, -16(%rbp)
     movq -24(%rbp), %xmm1
-    movq -16(%rbp), %xmm2
+    movq -8(%rbp), %xmm2
 mulsd %xmm0, %xmm0
 mulsd %xmm1, %xmm1
 movq %xmm1, %xmm2
 addsd %xmm0, %xmm2
-    movq %xmm0, -8(%rbp)
+    movq %xmm0, -16(%rbp)
     movq %xmm1, -24(%rbp)
-    movq %xmm2, -16(%rbp)
-    movq -8(%rbp), %rax
+    movq %xmm2, -8(%rbp)
+    movq -16(%rbp), %rax
     movq %rax, %xmm0
     lea (%rbp), %rsp
     pop %rbp

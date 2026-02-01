@@ -214,16 +214,16 @@ __kefir_bigint_subtract:
     push %rbp
     mov %rsp, %rbp
     sub $64, %rsp
-    movq %rdx, -48(%rbp)
-    movq %rsi, -32(%rbp)
-    movq %rdi, -40(%rbp)
-    movq -48(%rbp), %rax
+    movq %rdx, -40(%rbp)
+    movq %rsi, -56(%rbp)
+    movq %rdi, -48(%rbp)
+    movq -40(%rbp), %rax
     add $7, %rax
     mov $8, %ecx
     xor %edx, %edx
     div %rcx
     movq %rax, -24(%rbp)
-    movl $0, -56(%rbp)
+    movl $0, -32(%rbp)
     xor %eax, %eax
     movq %rax, -16(%rbp)
 .L__kefir_runtime_func___kefir_bigint_subtract_label2:
@@ -236,31 +236,31 @@ __kefir_bigint_subtract:
     pop %rbp
     ret
 .L__kefir_runtime_func___kefir_bigint_subtract_label4:
-    movq -40(%rbp), %rax
+    movq -48(%rbp), %rax
     movq -16(%rbp), %rcx
     movb (%rax, %rcx, 1), %dl
     movzx %dl, %edx
-    movl %edx, -52(%rbp)
-    movq -32(%rbp), %rax
+    movl %edx, -4(%rbp)
+    movq -56(%rbp), %rax
     movq -16(%rbp), %rcx
     movb (%rax, %rcx, 1), %dl
     movzx %dl, %edx
     movl %edx, -8(%rbp)
-    movl -52(%rbp), %eax
+    movl -4(%rbp), %eax
     movl -8(%rbp), %ecx
-    movl -56(%rbp), %edx
+    movl -32(%rbp), %edx
     sub %ecx, %eax
     sub %edx, %eax
-    movl %eax, -4(%rbp)
-    movl -4(%rbp), %eax
-    movq -40(%rbp), %rcx
+    movl %eax, -28(%rbp)
+    movl -28(%rbp), %eax
+    movq -48(%rbp), %rcx
     movq -16(%rbp), %rdx
     movb %al, (%rcx, %rdx, 1)
-    movl -4(%rbp), %eax
+    movl -28(%rbp), %eax
     mov $8, %ecx
     shr %cl, %eax
     and $1, %eax
-    movl %eax, -56(%rbp)
+    movl %eax, -32(%rbp)
     movq -16(%rbp), %rax
     add $1, %rax
     movq %rax, -16(%rbp)
