@@ -3714,12 +3714,6 @@ static kefir_result_t simplify_copy_memory(struct kefir_mem *mem, const struct k
                 continue;
             }
 
-            const struct kefir_opt_instruction *use_instr;
-            REQUIRE_OK(kefir_opt_code_container_instr(&func->code, use_iter.use_instr_ref, &use_instr));
-            if (use_instr->operation.opcode == KEFIR_OPT_OPCODE_LOCAL_LIFETIME_MARK) {
-                continue;
-            }
-
             kefir_bool_t before_copy;
             REQUIRE_OK(kefir_opt_code_structure_is_sequenced_before(mem, structure, copy_instr->id,
                                                                     use_iter.use_instr_ref, &before_copy));
@@ -3750,11 +3744,7 @@ static kefir_result_t simplify_copy_memory(struct kefir_mem *mem, const struct k
             const struct kefir_opt_instruction *use_instr;
             REQUIRE_OK(kefir_opt_code_container_instr(&func->code, use_iter.use_instr_ref, &use_instr));
 
-            if (use_instr->operation.opcode == KEFIR_OPT_OPCODE_LOCAL_LIFETIME_MARK) {
-                REQUIRE_OK(kefir_opt_code_container_drop_control(&func->code, use_instr->id));
-                REQUIRE_OK(kefir_opt_code_container_drop_instr(mem, &func->code, use_instr->id));
-                res = kefir_opt_code_container_instruction_use_instr_iter(&func->code, source_instr_ref, &use_iter);
-            } else if (use_instr->operation.opcode == KEFIR_OPT_OPCODE_REF_LOCAL) {
+            if (use_instr->operation.opcode == KEFIR_OPT_OPCODE_REF_LOCAL) {
                 kefir_opt_block_id_t block_id = use_instr->block_id;
                 kefir_opt_instruction_ref_t offset_ref, replacement_ref;
                 REQUIRE_OK(kefir_opt_code_builder_int_constant(mem, &func->code, block_id,

@@ -496,18 +496,6 @@ static kefir_result_t mem2reg_pull(struct mem2reg_state *state) {
             const kefir_opt_block_id_t block_id = instr->block_id;
             kefir_opt_instruction_ref_t replacement_ref = KEFIR_ID_NONE;
             switch (instr->operation.opcode) {
-                case KEFIR_OPT_OPCODE_LOCAL_LIFETIME_MARK:
-                    if (kefir_hashtreeset_has(&state->scalar_local_candidates,
-                                              (kefir_hashtreeset_entry_t) instr->operation.parameters.refs[0])) {
-                        kefir_opt_instruction_ref_t prev_instr_id = instr_id;
-                        REQUIRE_OK(kefir_opt_instruction_next_control(&state->func->code, instr_id, &instr_id));
-                        REQUIRE_OK(kefir_opt_code_container_drop_control(&state->func->code, prev_instr_id));
-                        REQUIRE_OK(kefir_opt_code_container_drop_instr(state->mem, &state->func->code, prev_instr_id));
-                    } else {
-                        REQUIRE_OK(kefir_opt_instruction_next_control(&state->func->code, instr_id, &instr_id));
-                    }
-                    break;
-
                 case KEFIR_OPT_OPCODE_INT8_LOAD:
                 case KEFIR_OPT_OPCODE_INT16_LOAD:
                 case KEFIR_OPT_OPCODE_INT32_LOAD:

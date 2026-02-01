@@ -54,6 +54,10 @@ static kefir_result_t dead_alloc_apply_impl(struct kefir_mem *mem, struct kefir_
 
                     if (use_instr->operation.opcode != KEFIR_OPT_OPCODE_LOCAL_LIFETIME_MARK) {
                         only_lifetime_mark_uses = false;
+                    } else {
+                        REQUIRE(instr->operation.opcode == KEFIR_OPT_OPCODE_LOCAL_SCOPE,
+                                KEFIR_SET_ERROR(KEFIR_INVALID_STATE,
+                                                "Expected local lifetime mark to reference local scope"));
                     }
                 }
                 if (res != KEFIR_ITERATOR_END) {
@@ -82,10 +86,8 @@ static kefir_result_t dead_alloc_apply_impl(struct kefir_mem *mem, struct kefir_
                 const struct kefir_opt_instruction *arg_instr = NULL;
                 REQUIRE_OK(
                     kefir_opt_code_container_instr(&func->code, instr->operation.parameters.refs[0], &arg_instr));
-                REQUIRE(
-                    arg_instr->operation.opcode == KEFIR_OPT_OPCODE_ALLOC_LOCAL ||
-                        arg_instr->operation.opcode == KEFIR_OPT_OPCODE_LOCAL_SCOPE,
-                    KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected local lifetime mark to reference local allocation"));
+                REQUIRE(arg_instr->operation.opcode == KEFIR_OPT_OPCODE_LOCAL_SCOPE,
+                        KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected local lifetime mark to reference local scope"));
             }
             res = kefir_opt_instruction_next_sibling(&func->code, instr_id, &next_instr_id);
         }
