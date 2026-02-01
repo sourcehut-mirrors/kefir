@@ -3229,6 +3229,26 @@
                 },
                 {
                     "opcode": "get_local_scope",
+                    "arg": 670014898177
+                },
+                {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 670014898177
+                },
+                {
+                    "opcode": "get_local",
+                    "id": 670014898178,
+                    "type": 156,
+                    "type_index": 2
+                },
+                {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local_scope",
                     "arg": 670014898176
                 },
                 {
@@ -3526,6 +3546,26 @@
                     "id": 670014898179,
                     "type": 156,
                     "type_index": 3
+                },
+                {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 670014898177
+                },
+                {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 670014898177
+                },
+                {
+                    "opcode": "get_local",
+                    "id": 670014898178,
+                    "type": 156,
+                    "type_index": 2
                 },
                 {
                     "opcode": "local_lifetime_mark"

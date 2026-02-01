@@ -50,12 +50,8 @@ kefir_result_t kefir_ast_translate_while_statement_node(struct kefir_mem *mem,
                                                   lexical_block_entry_id,
                                                   &KEFIR_IR_DEBUG_ENTRY_ATTR_CODE_BEGIN(statement_begin_index)));
 
-    const struct kefir_ast_identifier_flat_scope *associated_ordinary_scope =
-        node->base.properties.statement_props.flow_control_statement->associated_scopes.ordinary_scope;
-    REQUIRE(associated_ordinary_scope != NULL,
-            KEFIR_SET_ERROR(KEFIR_INVALID_STATE,
-                            "Expected AST flow control statement to have an associated ordinary scope"));
-    REQUIRE_OK(kefir_ast_translator_mark_flat_scope_objects_lifetime(mem, context, builder, associated_ordinary_scope));
+    REQUIRE_OK(kefir_ast_translator_mark_associated_scope_objects_lifetime(
+        mem, context, builder, node->base.properties.statement_props.flow_control_statement));
 
     REQUIRE_OK(kefir_ast_translate_expression(mem, node->controlling_expr, builder, context));
     const struct kefir_ast_type *controlling_expr_type =
@@ -119,9 +115,11 @@ kefir_result_t kefir_ast_translate_while_statement_node(struct kefir_mem *mem,
                                                   &KEFIR_IR_DEBUG_ENTRY_ATTR_CODE_END(statement_end_index)));
     REQUIRE_OK(kefir_ast_translator_generate_object_scope_debug_information(
         mem, context->ast_context, context->environment, context->module, context->debug_entries,
-        associated_ordinary_scope, lexical_block_entry_id, statement_begin_index, statement_end_index));
+        node->base.properties.statement_props.flow_control_statement->associated_scopes.ordinary_scope,
+        lexical_block_entry_id, statement_begin_index, statement_end_index));
     REQUIRE_OK(kefir_ast_translator_context_pop_debug_hierarchy_entry(mem, context));
-    REQUIRE_OK(kefir_ast_translator_mark_flat_scope_objects_lifetime(mem, context, builder, associated_ordinary_scope));
+    REQUIRE_OK(kefir_ast_translator_mark_associated_scope_objects_lifetime(
+        mem, context, builder, node->base.properties.statement_props.flow_control_statement));
 
     return KEFIR_OK;
 }

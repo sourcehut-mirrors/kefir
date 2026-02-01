@@ -34,14 +34,8 @@ kefir_result_t kefir_ast_translate_labeled_statement_node(struct kefir_mem *mem,
     REQUIRE(builder != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR block builder"));
     REQUIRE(node != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST labeled statement node"));
 
-    struct kefir_ast_flow_control_structure *control_struct =
-        node->base.properties.statement_props.target_flow_control_point->self;
-    for (; control_struct != NULL; control_struct = kefir_ast_flow_control_structure_parent(control_struct)) {
-        if (control_struct->type != KEFIR_AST_FLOW_CONTROL_POINT) {
-            REQUIRE_OK(kefir_ast_translator_mark_flat_scope_objects_lifetime(
-                mem, context, builder, control_struct->associated_scopes.ordinary_scope));
-        }
-    }
+    REQUIRE_OK(kefir_ast_translator_mark_associated_scope_objects_lifetime(
+        mem, context, builder, node->base.properties.statement_props.flow_control_statement));
 
     if (node->base.properties.statement_props.scoped_id->label.public_label != NULL) {
         REQUIRE_OK(kefir_irblock_add_public_label(mem, builder->block, context->ast_context->symbols,
@@ -76,13 +70,8 @@ kefir_result_t kefir_ast_translate_labeled_statement_node(struct kefir_mem *mem,
         }
     }
 
-    control_struct = node->base.properties.statement_props.target_flow_control_point->self;
-    for (; control_struct != NULL; control_struct = kefir_ast_flow_control_structure_parent(control_struct)) {
-        if (control_struct->type != KEFIR_AST_FLOW_CONTROL_POINT) {
-            REQUIRE_OK(kefir_ast_translator_mark_flat_scope_objects_lifetime(
-                mem, context, builder, control_struct->associated_scopes.ordinary_scope));
-        }
-    }
+    REQUIRE_OK(kefir_ast_translator_mark_associated_scope_objects_lifetime(
+        mem, context, builder, node->base.properties.statement_props.flow_control_statement));
 
     if (node->statement != NULL) {
         if (node->statement->properties.category == KEFIR_AST_NODE_CATEGORY_DECLARATION) {

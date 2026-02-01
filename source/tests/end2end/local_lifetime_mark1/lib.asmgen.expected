@@ -130,7 +130,7 @@
                 "blocks": [
                     {
                         "id": 0,
-                        "control_flow": 1,
+                        "control_flow": 17,
                         "code": [
                             {
                                 "id": 14,
@@ -144,80 +144,12 @@
                                 "control_next": null
                             },
                             {
-                                "id": 1,
-                                "opcode": "local_lifetime_mark",
-                                "arg": 0,
-                                "control_next": 3
-                            },
-                            {
                                 "id": 2,
                                 "opcode": "alloc_local",
                                 "scope": 0,
                                 "type_id": 96,
                                 "type_index": 2,
                                 "control_next": null
-                            },
-                            {
-                                "id": 3,
-                                "opcode": "local_lifetime_mark",
-                                "arg": 2,
-                                "control_next": 5
-                            },
-                            {
-                                "id": 4,
-                                "opcode": "alloc_local",
-                                "scope": 0,
-                                "type_id": 96,
-                                "type_index": 3,
-                                "control_next": null
-                            },
-                            {
-                                "id": 5,
-                                "opcode": "local_lifetime_mark",
-                                "arg": 4,
-                                "control_next": 7
-                            },
-                            {
-                                "id": 6,
-                                "opcode": "alloc_local",
-                                "scope": 0,
-                                "type_id": 96,
-                                "type_index": 4,
-                                "control_next": null
-                            },
-                            {
-                                "id": 7,
-                                "opcode": "local_lifetime_mark",
-                                "arg": 6,
-                                "control_next": 9
-                            },
-                            {
-                                "id": 8,
-                                "opcode": "alloc_local",
-                                "scope": 0,
-                                "type_id": 96,
-                                "type_index": 7,
-                                "control_next": null
-                            },
-                            {
-                                "id": 9,
-                                "opcode": "local_lifetime_mark",
-                                "arg": 8,
-                                "control_next": 11
-                            },
-                            {
-                                "id": 10,
-                                "opcode": "alloc_local",
-                                "scope": 0,
-                                "type_id": 96,
-                                "type_index": 9,
-                                "control_next": null
-                            },
-                            {
-                                "id": 11,
-                                "opcode": "local_lifetime_mark",
-                                "arg": 10,
-                                "control_next": 17
                             },
                             {
                                 "id": 16,
@@ -236,6 +168,14 @@
                                 "control_next": 19
                             },
                             {
+                                "id": 4,
+                                "opcode": "alloc_local",
+                                "scope": 0,
+                                "type_id": 96,
+                                "type_index": 3,
+                                "control_next": null
+                            },
+                            {
                                 "id": 18,
                                 "opcode": "float64_const",
                                 "value": 1.000000,
@@ -250,6 +190,14 @@
                                     "volatile": true
                                 },
                                 "control_next": 20
+                            },
+                            {
+                                "id": 6,
+                                "opcode": "alloc_local",
+                                "scope": 0,
+                                "type_id": 96,
+                                "type_index": 4,
+                                "control_next": null
                             },
                             {
                                 "id": 20,
@@ -279,7 +227,7 @@
                                 "control_next": 26
                             },
                             {
-                                "id": 327,
+                                "id": 391,
                                 "opcode": "ref_local",
                                 "ref": 6,
                                 "offset": 4,
@@ -294,7 +242,7 @@
                             {
                                 "id": 26,
                                 "opcode": "int32_store",
-                                "location": 327,
+                                "location": 391,
                                 "value": 25,
                                 "flags": {
                                     "volatile": false
@@ -320,7 +268,7 @@
                                 "control_next": null
                             },
                             {
-                                "id": 328,
+                                "id": 392,
                                 "opcode": "ref_local",
                                 "ref": 28,
                                 "offset": 0,
@@ -329,7 +277,7 @@
                             {
                                 "id": 34,
                                 "opcode": "int64_store",
-                                "location": 328,
+                                "location": 392,
                                 "value": 33,
                                 "flags": {
                                     "volatile": false
@@ -337,7 +285,15 @@
                                 "control_next": 43
                             },
                             {
-                                "id": 331,
+                                "id": 10,
+                                "opcode": "alloc_local",
+                                "scope": 0,
+                                "type_id": 96,
+                                "type_index": 9,
+                                "control_next": null
+                            },
+                            {
+                                "id": 395,
                                 "opcode": "ref_local",
                                 "ref": 10,
                                 "offset": 8,
@@ -356,7 +312,7 @@
                                 "control_next": null
                             },
                             {
-                                "id": 330,
+                                "id": 394,
                                 "opcode": "int64_mul",
                                 "args": [
                                     39,
@@ -367,15 +323,15 @@
                             {
                                 "id": 43,
                                 "opcode": "int64_store",
-                                "location": 331,
-                                "value": 330,
+                                "location": 395,
+                                "value": 394,
                                 "flags": {
                                     "volatile": false
                                 },
                                 "control_next": 46
                             },
                             {
-                                "id": 329,
+                                "id": 393,
                                 "opcode": "ref_local",
                                 "ref": 10,
                                 "offset": 0,
@@ -384,7 +340,7 @@
                             {
                                 "id": 45,
                                 "opcode": "stack_alloc",
-                                "size_ref": 330,
+                                "size_ref": 394,
                                 "alignment_ref": 37,
                                 "within_scope": true,
                                 "control_next": null
@@ -392,23 +348,17 @@
                             {
                                 "id": 46,
                                 "opcode": "int64_store",
-                                "location": 329,
+                                "location": 393,
                                 "value": 45,
                                 "flags": {
                                     "volatile": false
                                 },
-                                "control_next": 48
+                                "control_next": 52
                             },
                             {
                                 "id": 47,
                                 "opcode": "local_scope",
                                 "control_next": null
-                            },
-                            {
-                                "id": 48,
-                                "opcode": "local_lifetime_mark",
-                                "arg": 47,
-                                "control_next": 50
                             },
                             {
                                 "id": 49,
@@ -417,12 +367,6 @@
                                 "type_id": 96,
                                 "type_index": 13,
                                 "control_next": null
-                            },
-                            {
-                                "id": 50,
-                                "opcode": "local_lifetime_mark",
-                                "arg": 49,
-                                "control_next": 52
                             },
                             {
                                 "id": 51,
@@ -438,6 +382,62 @@
                                 "flags": {
                                     "volatile": true
                                 },
+                                "control_next": 48
+                            },
+                            {
+                                "id": 48,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 47,
+                                "control_next": 50
+                            },
+                            {
+                                "id": 50,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 49,
+                                "control_next": 1
+                            },
+                            {
+                                "id": 1,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 0,
+                                "control_next": 3
+                            },
+                            {
+                                "id": 3,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 2,
+                                "control_next": 5
+                            },
+                            {
+                                "id": 5,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 4,
+                                "control_next": 7
+                            },
+                            {
+                                "id": 7,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 6,
+                                "control_next": 9
+                            },
+                            {
+                                "id": 8,
+                                "opcode": "alloc_local",
+                                "scope": 0,
+                                "type_id": 96,
+                                "type_index": 7,
+                                "control_next": null
+                            },
+                            {
+                                "id": 9,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 8,
+                                "control_next": 11
+                            },
+                            {
+                                "id": 11,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 10,
                                 "control_next": 53
                             },
                             {
@@ -448,10 +448,10 @@
                                     "load_extension": "noextend",
                                     "volatile": true
                                 },
-                                "control_next": 332
+                                "control_next": 396
                             },
                             {
-                                "id": 332,
+                                "id": 396,
                                 "opcode": "branch",
                                 "target_block": 1,
                                 "alternative_block": 2,
@@ -470,38 +470,37 @@
                             "immediate_dominator": null,
                             "alive_instructions": [
                                 39,
+                                394,
                                 18,
                                 50,
-                                37,
-                                328,
-                                327,
-                                28,
+                                393,
+                                27,
+                                10,
+                                391,
                                 5,
                                 52,
-                                22,
                                 43,
-                                332,
-                                17,
+                                28,
+                                392,
                                 14,
                                 21,
-                                33,
+                                396,
+                                0,
                                 6,
+                                37,
                                 16,
                                 20,
                                 2,
                                 51,
                                 47,
-                                330,
-                                9,
                                 3,
                                 49,
-                                26,
-                                27,
-                                331,
-                                329,
-                                1,
-                                34,
                                 8,
+                                26,
+                                1,
+                                33,
+                                17,
+                                395,
                                 4,
                                 46,
                                 53,
@@ -509,40 +508,179 @@
                                 48,
                                 19,
                                 45,
-                                0,
+                                22,
+                                34,
                                 7,
                                 11,
-                                10
+                                9
                             ]
                         }
                     },
                     {
                         "id": 1,
-                        "control_flow": 68,
+                        "control_flow": 72,
                         "code": [
                             {
-                                "id": 333,
+                                "id": 72,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 47,
+                                "control_next": 73
+                            },
+                            {
+                                "id": 73,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 49,
+                                "control_next": 74
+                            },
+                            {
+                                "id": 74,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 0,
+                                "control_next": 75
+                            },
+                            {
+                                "id": 75,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 2,
+                                "control_next": 76
+                            },
+                            {
+                                "id": 76,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 4,
+                                "control_next": 77
+                            },
+                            {
+                                "id": 77,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 6,
+                                "control_next": 78
+                            },
+                            {
+                                "id": 78,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 8,
+                                "control_next": 79
+                            },
+                            {
+                                "id": 79,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 10,
+                                "control_next": 81
+                            },
+                            {
+                                "id": 81,
+                                "opcode": "jump",
+                                "target_block": 5,
+                                "control_next": null
+                            }
+                        ],
+                        "public_labels": [],
+                        "properties": {
+                            "successors": [
+                                5
+                            ],
+                            "predecessors": [
+                                0,
+                                2
+                            ],
+                            "immediate_dominator": 0,
+                            "alive_instructions": [
+                                77,
+                                81,
+                                49,
+                                72,
+                                76,
+                                2,
+                                8,
+                                78,
+                                4,
+                                79,
+                                75,
+                                73,
+                                0,
+                                74,
+                                6,
+                                47,
+                                10
+                            ]
+                        }
+                    },
+                    {
+                        "id": 5,
+                        "control_flow": 82,
+                        "code": [
+                            {
+                                "id": 82,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 47,
+                                "control_next": 83
+                            },
+                            {
+                                "id": 83,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 49,
+                                "control_next": 84
+                            },
+                            {
+                                "id": 84,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 0,
+                                "control_next": 85
+                            },
+                            {
+                                "id": 85,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 2,
+                                "control_next": 86
+                            },
+                            {
+                                "id": 86,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 4,
+                                "control_next": 87
+                            },
+                            {
+                                "id": 87,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 6,
+                                "control_next": 88
+                            },
+                            {
+                                "id": 88,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 8,
+                                "control_next": 89
+                            },
+                            {
+                                "id": 89,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 10,
+                                "control_next": 96
+                            },
+                            {
+                                "id": 397,
                                 "opcode": "ref_local",
                                 "ref": 8,
                                 "offset": 0,
                                 "control_next": null
                             },
                             {
-                                "id": 68,
+                                "id": 96,
                                 "opcode": "int8_load",
-                                "location": 333,
+                                "location": 397,
                                 "flags": {
                                     "load_extension": "noextend",
                                     "volatile": true
                                 },
-                                "control_next": 334
+                                "control_next": 398
                             },
                             {
-                                "id": 334,
+                                "id": 398,
                                 "opcode": "branch",
                                 "target_block": 3,
                                 "alternative_block": 4,
-                                "condition": 68,
+                                "condition": 96,
                                 "condition_variant": "inverted_8bit",
                                 "control_next": null
                             }
@@ -554,198 +692,283 @@
                                 4
                             ],
                             "predecessors": [
-                                0,
-                                2,
+                                1,
                                 4
                             ],
-                            "immediate_dominator": 0,
+                            "immediate_dominator": 1,
                             "alive_instructions": [
-                                8,
-                                4,
-                                10,
+                                397,
+                                398,
+                                88,
                                 49,
-                                334,
+                                84,
+                                85,
+                                83,
+                                89,
+                                2,
+                                87,
+                                8,
+                                96,
+                                4,
+                                82,
+                                86,
                                 0,
-                                333,
                                 6,
                                 47,
-                                68,
-                                2
+                                10
                             ]
                         }
                     },
                     {
                         "id": 3,
-                        "control_flow": 76,
+                        "control_flow": 113,
                         "code": [
                             {
-                                "id": 76,
+                                "id": 113,
                                 "opcode": "local_lifetime_mark",
                                 "arg": 47,
-                                "control_next": 77
+                                "control_next": 114
                             },
                             {
-                                "id": 77,
+                                "id": 114,
                                 "opcode": "local_lifetime_mark",
                                 "arg": 49,
-                                "control_next": 358
+                                "control_next": 115
                             },
                             {
-                                "id": 359,
+                                "id": 115,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 0,
+                                "control_next": 116
+                            },
+                            {
+                                "id": 116,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 2,
+                                "control_next": 117
+                            },
+                            {
+                                "id": 117,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 4,
+                                "control_next": 118
+                            },
+                            {
+                                "id": 118,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 6,
+                                "control_next": 119
+                            },
+                            {
+                                "id": 119,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 8,
+                                "control_next": 120
+                            },
+                            {
+                                "id": 120,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 10,
+                                "control_next": 422
+                            },
+                            {
+                                "id": 423,
                                 "opcode": "uint_const",
                                 "value": 18,
                                 "control_next": null
                             },
                             {
-                                "id": 360,
+                                "id": 424,
                                 "opcode": "uint_const",
                                 "value": 20,
                                 "control_next": null
                             },
                             {
-                                "id": 358,
+                                "id": 422,
                                 "opcode": "jump",
-                                "target_block": 5,
+                                "target_block": 6,
                                 "control_next": null
                             }
                         ],
                         "public_labels": [],
                         "properties": {
                             "successors": [
-                                5
+                                6
                             ],
                             "predecessors": [
-                                1
+                                5
                             ],
-                            "immediate_dominator": 1,
+                            "immediate_dominator": 5,
                             "alive_instructions": [
-                                77,
-                                360,
+                                116,
+                                118,
+                                49,
+                                119,
+                                115,
+                                2,
+                                114,
+                                424,
                                 8,
-                                358,
-                                359,
+                                117,
+                                422,
+                                423,
+                                120,
+                                113,
                                 0,
-                                76,
-                                10,
                                 6,
                                 47,
                                 4,
-                                2,
-                                49
+                                10
                             ]
                         }
                     },
                     {
-                        "id": 5,
-                        "control_flow": 81,
+                        "id": 6,
+                        "control_flow": 132,
                         "code": [
                             {
-                                "id": 335,
+                                "id": 399,
                                 "opcode": "ref_local",
                                 "ref": 10,
                                 "offset": 0,
                                 "control_next": null
                             },
                             {
-                                "id": 81,
+                                "id": 132,
                                 "opcode": "int64_load",
-                                "location": 335,
+                                "location": 399,
                                 "flags": {
                                     "load_extension": "noextend",
                                     "volatile": false
                                 },
-                                "control_next": 336
+                                "control_next": 400
                             },
                             {
-                                "id": 86,
+                                "id": 137,
                                 "opcode": "int64_add",
                                 "args": [
-                                    81,
-                                    359
+                                    132,
+                                    423
                                 ],
                                 "control_next": null
                             },
                             {
-                                "id": 336,
+                                "id": 400,
                                 "opcode": "int16_load",
-                                "location": 86,
+                                "location": 137,
                                 "flags": {
                                     "load_extension": "sign_extend",
                                     "volatile": true
                                 },
-                                "control_next": 89
+                                "control_next": 140
                             },
                             {
-                                "id": 89,
+                                "id": 140,
                                 "opcode": "int32_load",
                                 "location": 2,
                                 "flags": {
                                     "load_extension": "noextend",
                                     "volatile": true
                                 },
-                                "control_next": 91
+                                "control_next": 142
                             },
                             {
-                                "id": 90,
+                                "id": 141,
                                 "opcode": "int32_add",
                                 "args": [
-                                    89,
-                                    336
+                                    140,
+                                    400
                                 ],
                                 "control_next": null
                             },
                             {
-                                "id": 91,
+                                "id": 142,
                                 "opcode": "int32_store",
                                 "location": 2,
-                                "value": 90,
+                                "value": 141,
                                 "flags": {
                                     "volatile": true
                                 },
-                                "control_next": 94
+                                "control_next": 123
                             },
                             {
-                                "id": 337,
+                                "id": 123,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 0,
+                                "control_next": 124
+                            },
+                            {
+                                "id": 124,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 2,
+                                "control_next": 125
+                            },
+                            {
+                                "id": 125,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 4,
+                                "control_next": 126
+                            },
+                            {
+                                "id": 126,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 6,
+                                "control_next": 127
+                            },
+                            {
+                                "id": 127,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 8,
+                                "control_next": 128
+                            },
+                            {
+                                "id": 128,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 10,
+                                "control_next": 145
+                            },
+                            {
+                                "id": 401,
                                 "opcode": "ref_local",
                                 "ref": 10,
                                 "offset": 0,
                                 "control_next": null
                             },
                             {
-                                "id": 94,
+                                "id": 145,
                                 "opcode": "int64_load",
-                                "location": 337,
+                                "location": 401,
                                 "flags": {
                                     "load_extension": "noextend",
                                     "volatile": false
                                 },
-                                "control_next": 100
+                                "control_next": 151
                             },
                             {
-                                "id": 99,
+                                "id": 150,
                                 "opcode": "int64_add",
                                 "args": [
-                                    94,
-                                    360
+                                    145,
+                                    424
                                 ],
                                 "control_next": null
                             },
                             {
-                                "id": 100,
+                                "id": 151,
                                 "opcode": "int16_load",
-                                "location": 99,
+                                "location": 150,
                                 "flags": {
                                     "load_extension": "noextend",
                                     "volatile": true
                                 },
-                                "control_next": 101
+                                "control_next": 152
                             },
                             {
-                                "id": 101,
+                                "id": 152,
                                 "opcode": "branch",
-                                "target_block": 5,
-                                "alternative_block": 6,
-                                "condition": 100,
+                                "target_block": 6,
+                                "alternative_block": 7,
+                                "condition": 151,
                                 "condition_variant": "16bit",
                                 "control_next": null
                             }
@@ -753,397 +976,501 @@
                         "public_labels": [],
                         "properties": {
                             "successors": [
-                                5,
-                                6
+                                6,
+                                7
                             ],
                             "predecessors": [
                                 3,
-                                5
+                                6
                             ],
                             "immediate_dominator": 3,
                             "alive_instructions": [
-                                90,
-                                89,
-                                359,
-                                337,
-                                336,
-                                335,
-                                2,
-                                8,
-                                360,
-                                94,
-                                100,
-                                86,
-                                99,
-                                0,
-                                91,
+                                400,
+                                401,
+                                141,
+                                142,
+                                128,
+                                423,
+                                132,
+                                424,
+                                123,
+                                399,
+                                145,
                                 6,
-                                81,
+                                2,
+                                126,
+                                125,
+                                140,
+                                8,
+                                151,
                                 4,
+                                152,
+                                124,
+                                0,
+                                137,
+                                127,
                                 10,
-                                101
+                                150
                             ]
                         }
                     },
                     {
-                        "id": 6,
-                        "control_flow": 108,
+                        "id": 7,
+                        "control_flow": 153,
                         "code": [
                             {
-                                "id": 324,
+                                "id": 153,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 0,
+                                "control_next": 154
+                            },
+                            {
+                                "id": 154,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 2,
+                                "control_next": 155
+                            },
+                            {
+                                "id": 155,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 4,
+                                "control_next": 156
+                            },
+                            {
+                                "id": 156,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 6,
+                                "control_next": 157
+                            },
+                            {
+                                "id": 157,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 8,
+                                "control_next": 158
+                            },
+                            {
+                                "id": 158,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 10,
+                                "control_next": 425
+                            },
+                            {
+                                "id": 437,
                                 "opcode": "local_scope",
                                 "control_next": null
                             },
                             {
-                                "id": 323,
+                                "id": 436,
                                 "opcode": "alloc_local",
-                                "scope": 324,
+                                "scope": 437,
                                 "type_id": 96,
                                 "type_index": 15,
                                 "control_next": null
                             },
                             {
-                                "id": 309,
+                                "id": 435,
                                 "opcode": "int_const",
                                 "value": 10,
                                 "control_next": null
                             },
                             {
-                                "id": 108,
+                                "id": 425,
                                 "opcode": "int64_store",
-                                "location": 323,
-                                "value": 309,
+                                "location": 436,
+                                "value": 435,
                                 "flags": {
                                     "volatile": true
                                 },
-                                "control_next": 103
+                                "control_next": 426
                             },
                             {
-                                "id": 103,
+                                "id": 426,
                                 "opcode": "local_lifetime_mark",
-                                "arg": 324,
-                                "control_next": 105
+                                "arg": 437,
+                                "control_next": 427
                             },
                             {
-                                "id": 105,
+                                "id": 427,
                                 "opcode": "local_lifetime_mark",
-                                "arg": 323,
-                                "control_next": 109
+                                "arg": 436,
+                                "control_next": 428
                             },
                             {
-                                "id": 109,
+                                "id": 428,
                                 "opcode": "local_lifetime_mark",
                                 "arg": 0,
-                                "control_next": 110
+                                "control_next": 429
                             },
                             {
-                                "id": 110,
+                                "id": 429,
                                 "opcode": "local_lifetime_mark",
                                 "arg": 2,
-                                "control_next": 111
+                                "control_next": 430
                             },
                             {
-                                "id": 111,
+                                "id": 430,
                                 "opcode": "local_lifetime_mark",
                                 "arg": 4,
-                                "control_next": 112
+                                "control_next": 431
                             },
                             {
-                                "id": 112,
+                                "id": 431,
                                 "opcode": "local_lifetime_mark",
                                 "arg": 6,
-                                "control_next": 113
+                                "control_next": 432
                             },
                             {
-                                "id": 113,
+                                "id": 432,
                                 "opcode": "local_lifetime_mark",
                                 "arg": 8,
-                                "control_next": 114
+                                "control_next": 433
                             },
                             {
-                                "id": 114,
+                                "id": 433,
                                 "opcode": "local_lifetime_mark",
                                 "arg": 10,
-                                "control_next": 361
+                                "control_next": 445
                             },
                             {
-                                "id": 361,
+                                "id": 445,
                                 "opcode": "jump",
-                                "target_block": 7,
+                                "target_block": 8,
                                 "control_next": null
                             }
                         ],
                         "public_labels": [],
                         "properties": {
                             "successors": [
-                                7
+                                8
                             ],
                             "predecessors": [
-                                5
+                                6
                             ],
-                            "immediate_dominator": 5,
+                            "immediate_dominator": 6,
                             "alive_instructions": [
-                                309,
-                                113,
-                                109,
-                                110,
-                                0,
+                                158,
+                                156,
+                                432,
+                                154,
+                                153,
+                                430,
+                                433,
+                                155,
                                 10,
-                                361,
-                                103,
+                                445,
+                                436,
+                                157,
+                                428,
+                                429,
                                 8,
+                                427,
                                 4,
-                                323,
-                                112,
-                                108,
-                                105,
+                                426,
+                                437,
+                                431,
+                                425,
+                                435,
+                                0,
                                 6,
-                                114,
-                                324,
-                                2,
-                                111
+                                2
                             ]
                         }
                     },
                     {
-                        "id": 7,
-                        "control_flow": 135,
+                        "id": 8,
+                        "control_flow": 194,
                         "code": [
                             {
-                                "id": 135,
-                                "opcode": "local_lifetime_mark",
-                                "arg": 0,
-                                "control_next": 136
-                            },
-                            {
-                                "id": 136,
-                                "opcode": "local_lifetime_mark",
-                                "arg": 2,
-                                "control_next": 137
-                            },
-                            {
-                                "id": 137,
-                                "opcode": "local_lifetime_mark",
-                                "arg": 4,
-                                "control_next": 138
-                            },
-                            {
-                                "id": 138,
-                                "opcode": "local_lifetime_mark",
-                                "arg": 6,
-                                "control_next": 139
-                            },
-                            {
-                                "id": 139,
-                                "opcode": "local_lifetime_mark",
-                                "arg": 8,
-                                "control_next": 140
-                            },
-                            {
-                                "id": 140,
-                                "opcode": "local_lifetime_mark",
-                                "arg": 10,
-                                "control_next": 142
-                            },
-                            {
-                                "id": 142,
+                                "id": 194,
                                 "opcode": "int32_load",
                                 "location": 2,
                                 "flags": {
                                     "load_extension": "noextend",
                                     "volatile": true
                                 },
-                                "control_next": 143
+                                "control_next": 195
                             },
                             {
-                                "id": 143,
+                                "id": 195,
                                 "opcode": "invoke",
                                 "function_declaration_id": 47,
                                 "arguments": [
-                                    142
+                                    194
                                 ],
                                 "return_space": null,
                                 "indirect_ref": null,
-                                "control_next": 362
+                                "control_next": 196
                             },
                             {
-                                "id": 362,
+                                "id": 196,
                                 "opcode": "local_lifetime_mark",
                                 "arg": 0,
-                                "control_next": 363
+                                "control_next": 197
                             },
                             {
-                                "id": 363,
+                                "id": 197,
                                 "opcode": "local_lifetime_mark",
                                 "arg": 2,
-                                "control_next": 364
+                                "control_next": 198
                             },
                             {
-                                "id": 364,
+                                "id": 198,
                                 "opcode": "local_lifetime_mark",
                                 "arg": 4,
-                                "control_next": 365
+                                "control_next": 199
                             },
                             {
-                                "id": 365,
+                                "id": 199,
                                 "opcode": "local_lifetime_mark",
                                 "arg": 6,
-                                "control_next": 366
+                                "control_next": 200
                             },
                             {
-                                "id": 366,
+                                "id": 200,
                                 "opcode": "local_lifetime_mark",
                                 "arg": 8,
-                                "control_next": 367
+                                "control_next": 201
                             },
                             {
-                                "id": 367,
+                                "id": 201,
                                 "opcode": "local_lifetime_mark",
                                 "arg": 10,
-                                "control_next": 368
+                                "control_next": 438
                             },
                             {
-                                "id": 368,
+                                "id": 438,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 0,
+                                "control_next": 439
+                            },
+                            {
+                                "id": 439,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 2,
+                                "control_next": 440
+                            },
+                            {
+                                "id": 440,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 4,
+                                "control_next": 441
+                            },
+                            {
+                                "id": 441,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 6,
+                                "control_next": 442
+                            },
+                            {
+                                "id": 442,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 8,
+                                "control_next": 443
+                            },
+                            {
+                                "id": 443,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 10,
+                                "control_next": 444
+                            },
+                            {
+                                "id": 444,
                                 "opcode": "jump",
-                                "target_block": 7,
+                                "target_block": 8,
                                 "control_next": null
                             }
                         ],
                         "public_labels": [],
                         "properties": {
                             "successors": [
-                                7
+                                8
                             ],
                             "predecessors": [
-                                6,
-                                7
+                                7,
+                                8
                             ],
-                            "immediate_dominator": 6,
+                            "immediate_dominator": 7,
                             "alive_instructions": [
-                                365,
-                                367,
-                                362,
-                                143,
-                                140,
-                                10,
-                                142,
-                                363,
-                                364,
-                                136,
-                                368,
+                                439,
+                                443,
+                                200,
+                                201,
+                                441,
+                                440,
+                                196,
+                                199,
+                                2,
+                                444,
                                 8,
                                 4,
-                                366,
-                                137,
+                                198,
+                                10,
+                                442,
+                                438,
                                 0,
-                                138,
                                 6,
-                                139,
-                                135,
-                                2
+                                195,
+                                194,
+                                197
                             ]
                         }
                     },
                     {
                         "id": 4,
-                        "control_flow": 72,
+                        "control_flow": 109,
                         "code": [
                             {
-                                "id": 72,
+                                "id": 109,
                                 "opcode": "int64_load",
                                 "location": 4,
                                 "flags": {
                                     "load_extension": "noextend",
                                     "volatile": true
                                 },
-                                "control_next": 74
+                                "control_next": 111
                             },
                             {
-                                "id": 71,
+                                "id": 108,
                                 "opcode": "float64_const",
                                 "value": 1.000000,
                                 "control_next": null
                             },
                             {
-                                "id": 73,
+                                "id": 110,
                                 "opcode": "float64_add",
                                 "args": [
-                                    72,
-                                    71
+                                    109,
+                                    108
                                 ],
                                 "control_next": null
                             },
                             {
-                                "id": 74,
+                                "id": 111,
                                 "opcode": "int64_store",
                                 "location": 4,
-                                "value": 73,
+                                "value": 110,
                                 "flags": {
                                     "volatile": true
                                 },
-                                "control_next": 75
+                                "control_next": 99
                             },
                             {
-                                "id": 75,
+                                "id": 99,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 47,
+                                "control_next": 100
+                            },
+                            {
+                                "id": 100,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 49,
+                                "control_next": 101
+                            },
+                            {
+                                "id": 101,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 0,
+                                "control_next": 102
+                            },
+                            {
+                                "id": 102,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 2,
+                                "control_next": 103
+                            },
+                            {
+                                "id": 103,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 4,
+                                "control_next": 104
+                            },
+                            {
+                                "id": 104,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 6,
+                                "control_next": 105
+                            },
+                            {
+                                "id": 105,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 8,
+                                "control_next": 106
+                            },
+                            {
+                                "id": 106,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 10,
+                                "control_next": 112
+                            },
+                            {
+                                "id": 112,
                                 "opcode": "jump",
-                                "target_block": 1,
+                                "target_block": 5,
                                 "control_next": null
                             }
                         ],
                         "public_labels": [],
                         "properties": {
                             "successors": [
-                                1
+                                5
                             ],
                             "predecessors": [
-                                1
+                                5
                             ],
-                            "immediate_dominator": 1,
+                            "immediate_dominator": 5,
                             "alive_instructions": [
-                                8,
-                                4,
-                                73,
-                                71,
-                                49,
-                                0,
-                                72,
-                                10,
-                                74,
-                                6,
-                                47,
+                                106,
+                                102,
+                                109,
+                                111,
                                 2,
-                                75
+                                105,
+                                101,
+                                103,
+                                8,
+                                112,
+                                4,
+                                100,
+                                99,
+                                108,
+                                104,
+                                0,
+                                6,
+                                110,
+                                47,
+                                10,
+                                49
                             ]
                         }
                     },
                     {
                         "id": 2,
-                        "control_flow": 61,
+                        "control_flow": 70,
                         "code": [
                             {
-                                "id": 322,
+                                "id": 386,
                                 "opcode": "local_scope",
                                 "control_next": null
                             },
                             {
-                                "id": 321,
+                                "id": 385,
                                 "opcode": "alloc_local",
-                                "scope": 322,
+                                "scope": 386,
                                 "type_id": 96,
                                 "type_index": 14,
                                 "control_next": null
                             },
                             {
-                                "id": 60,
+                                "id": 69,
                                 "opcode": "int_const",
                                 "value": 123,
                                 "control_next": null
                             },
                             {
-                                "id": 61,
+                                "id": 70,
                                 "opcode": "int32_store",
-                                "location": 321,
-                                "value": 60,
+                                "location": 385,
+                                "value": 69,
                                 "flags": {
                                     "volatile": true
                                 },
@@ -1152,17 +1479,65 @@
                             {
                                 "id": 57,
                                 "opcode": "local_lifetime_mark",
-                                "arg": 322,
+                                "arg": 386,
                                 "control_next": 59
                             },
                             {
                                 "id": 59,
                                 "opcode": "local_lifetime_mark",
-                                "arg": 321,
+                                "arg": 385,
+                                "control_next": 60
+                            },
+                            {
+                                "id": 60,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 47,
+                                "control_next": 61
+                            },
+                            {
+                                "id": 61,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 49,
                                 "control_next": 62
                             },
                             {
                                 "id": 62,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 0,
+                                "control_next": 63
+                            },
+                            {
+                                "id": 63,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 2,
+                                "control_next": 64
+                            },
+                            {
+                                "id": 64,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 4,
+                                "control_next": 65
+                            },
+                            {
+                                "id": 65,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 6,
+                                "control_next": 66
+                            },
+                            {
+                                "id": 66,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 8,
+                                "control_next": 67
+                            },
+                            {
+                                "id": 67,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 10,
+                                "control_next": 71
+                            },
+                            {
+                                "id": 71,
                                 "opcode": "jump",
                                 "target_block": 1,
                                 "control_next": null
@@ -1178,21 +1553,29 @@
                             ],
                             "immediate_dominator": 0,
                             "alive_instructions": [
+                                65,
+                                70,
+                                69,
                                 57,
+                                71,
                                 49,
+                                64,
                                 59,
+                                386,
                                 2,
-                                321,
                                 62,
                                 8,
                                 4,
                                 60,
                                 61,
+                                63,
                                 0,
                                 6,
+                                385,
                                 47,
+                                66,
                                 10,
-                                322
+                                67
                             ]
                         }
                     }

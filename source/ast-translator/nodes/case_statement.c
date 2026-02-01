@@ -35,26 +35,14 @@ kefir_result_t kefir_ast_translate_case_statement_node(struct kefir_mem *mem,
     REQUIRE(builder != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR block builder"));
     REQUIRE(node != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST case statement node"));
 
-    struct kefir_ast_flow_control_structure *control_struct =
-        node->base.properties.statement_props.target_flow_control_point->self;
-    for (; control_struct != NULL; control_struct = kefir_ast_flow_control_structure_parent(control_struct)) {
-        if (control_struct->type != KEFIR_AST_FLOW_CONTROL_POINT) {
-            REQUIRE_OK(kefir_ast_translator_mark_flat_scope_objects_lifetime(
-                mem, context, builder, control_struct->associated_scopes.ordinary_scope));
-        }
-    }
-
+    REQUIRE_OK(kefir_ast_translator_mark_associated_scope_objects_lifetime(
+        mem, context, builder, node->base.properties.statement_props.target_flow_control_point->self));
     REQUIRE_OK(kefir_ast_translator_flow_control_point_resolve(
         mem, node->base.properties.statement_props.target_flow_control_point,
         KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder)));
 
-    control_struct = node->base.properties.statement_props.target_flow_control_point->self;
-    for (; control_struct != NULL; control_struct = kefir_ast_flow_control_structure_parent(control_struct)) {
-        if (control_struct->type != KEFIR_AST_FLOW_CONTROL_POINT) {
-            REQUIRE_OK(kefir_ast_translator_mark_flat_scope_objects_lifetime(
-                mem, context, builder, control_struct->associated_scopes.ordinary_scope));
-        }
-    }
+    REQUIRE_OK(kefir_ast_translator_mark_associated_scope_objects_lifetime(
+        mem, context, builder, node->base.properties.statement_props.target_flow_control_point->self));
     if (node->statement != NULL) {
         if (node->statement->properties.category == KEFIR_AST_NODE_CATEGORY_DECLARATION) {
             REQUIRE_OK(kefir_ast_translate_declaration(mem, node->statement, builder, context));

@@ -404,9 +404,9 @@ __kefir_bigint_arithmetic_right_shift:
     ret
 .L__kefir_runtime_func___kefir_bigint_arithmetic_right_shift_label8:
     xor %eax, %eax
-    movq %rax, -8(%rbp)
+    movq %rax, -16(%rbp)
 .L__kefir_runtime_func___kefir_bigint_arithmetic_right_shift_label9:
-    movq -8(%rbp), %rax
+    movq -16(%rbp), %rax
     movq -40(%rbp), %rcx
     sub $1, %rcx
     cmp %rcx, %rax
@@ -431,18 +431,18 @@ __kefir_bigint_arithmetic_right_shift:
     movq -72(%rbp), %rax
     sub %rax, %rcx
     add $1, %rcx
-    lea -16(%rbp), %rax
+    lea -8(%rbp), %rax
 .L__kefir_runtime_func___kefir_bigint_arithmetic_right_shift_label14:
     movq %rcx, (%rax)
     movq -80(%rbp), %rax
     test %rax, %rax
     jnz .L__kefir_runtime_func___kefir_bigint_arithmetic_right_shift_label17
-    movq -16(%rbp), %rcx
+    movq -8(%rbp), %rcx
     mov $1, %eax
     shl %cl, %rax
     sub $1, %rax
-    movl %eax, -8(%rbp)
-    movl -8(%rbp), %eax
+    movl %eax, -16(%rbp)
+    movl -16(%rbp), %eax
     movq -56(%rbp), %rcx
     movq -40(%rbp), %rdx
     movb -1(%rcx, %rdx, 1), %sil
@@ -451,13 +451,13 @@ __kefir_bigint_arithmetic_right_shift:
     movb %sil, -1(%rcx, %rdx, 1)
     jmp .L__kefir_runtime_func___kefir_bigint_arithmetic_right_shift_label7
 .L__kefir_runtime_func___kefir_bigint_arithmetic_right_shift_label17:
-    movq -16(%rbp), %rcx
+    movq -8(%rbp), %rcx
     mov $1, %eax
     shl %cl, %rax
     sub $1, %rax
     not %rax
-    movl %eax, -8(%rbp)
-    movl -8(%rbp), %eax
+    movl %eax, -16(%rbp)
+    movl -16(%rbp), %eax
     movq -56(%rbp), %rcx
     movq -40(%rbp), %rdx
     movb -1(%rcx, %rdx, 1), %sil
@@ -467,19 +467,19 @@ __kefir_bigint_arithmetic_right_shift:
     jmp .L__kefir_runtime_func___kefir_bigint_arithmetic_right_shift_label7
 .L__kefir_runtime_func___kefir_bigint_arithmetic_right_shift_label18:
     xor %ecx, %ecx
-    lea -16(%rbp), %rax
+    lea -8(%rbp), %rax
     jmp .L__kefir_runtime_func___kefir_bigint_arithmetic_right_shift_label14
 .L__kefir_runtime_func___kefir_bigint_arithmetic_right_shift_label19:
     movq -56(%rbp), %rax
-    movq -8(%rbp), %rcx
+    movq -16(%rbp), %rcx
     movb (%rax, %rcx, 1), %dl
     movq -72(%rbp), %rcx
     movq -56(%rbp), %rax
-    movq -8(%rbp), %rsi
+    movq -16(%rbp), %rsi
     movb 1(%rax, %rsi, 1), %dil
     movq -72(%rbp), %rax
     movq -56(%rbp), %rsi
-    movq -8(%rbp), %r8
+    movq -16(%rbp), %r8
     movzx %dl, %edx
     sar %cl, %edx
     movzx %dil, %edi
@@ -488,9 +488,9 @@ __kefir_bigint_arithmetic_right_shift:
     shl %cl, %edi
     or %edi, %edx
     movb %dl, (%rsi, %r8, 1)
-    movq -8(%rbp), %rax
+    movq -16(%rbp), %rax
     add $1, %rax
-    movq %rax, -8(%rbp)
+    movq %rax, -16(%rbp)
     jmp .L__kefir_runtime_func___kefir_bigint_arithmetic_right_shift_label9
 .L__kefir_runtime_func___kefir_bigint_arithmetic_right_shift_label20:
     movq -56(%rbp), %rdi

@@ -23,6 +23,7 @@
 #include "kefir/ast-translator/typeconv.h"
 #include "kefir/ast-translator/function_declaration.h"
 #include "kefir/ast-translator/temporaries.h"
+#include "kefir/ast-translator/misc.h"
 #include "kefir/ast/runtime.h"
 #include "kefir/ast/type_conv.h"
 #include "kefir/ast-translator/util.h"
@@ -170,6 +171,8 @@ kefir_result_t kefir_ast_translate_function_call_node(struct kefir_mem *mem,
     }
 
     if (ir_decl->no_return) {
+        REQUIRE_OK(kefir_ast_translator_mark_associated_scope_objects_lifetime(
+            mem, context, builder, node->base.properties.expression_props.flow_control_point->self));
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_UNREACHABLE, 0));
     }
     return KEFIR_OK;

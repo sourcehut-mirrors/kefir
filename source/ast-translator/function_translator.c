@@ -399,12 +399,8 @@ kefir_result_t kefir_ast_translator_function_context_translate(
         REQUIRE_OK(generate_debug_info(mem, function_context, subprogram_entry_id));
     }
 
-    const struct kefir_ast_identifier_flat_scope *associated_ordinary_scope =
-        function->body->base.properties.statement_props.flow_control_statement->associated_scopes.ordinary_scope;
-    REQUIRE(associated_ordinary_scope != NULL,
-            KEFIR_SET_ERROR(KEFIR_INVALID_STATE,
-                            "Expected AST flow control statement to have an associated ordinary scope"));
-    REQUIRE_OK(kefir_ast_translator_mark_flat_scope_objects_lifetime(mem, context, builder, associated_ordinary_scope));
+    REQUIRE_OK(kefir_ast_translator_mark_associated_scope_objects_lifetime(
+        mem, context, builder, function->body->base.properties.statement_props.flow_control_statement));
 
     const struct kefir_ast_declarator_function *decl_func = NULL;
     REQUIRE_OK(kefir_ast_declarator_unpack_function(function->declarator, &decl_func));
@@ -590,10 +586,12 @@ kefir_result_t kefir_ast_translator_function_context_translate(
                                                   &KEFIR_IR_DEBUG_ENTRY_ATTR_CODE_END(function_end_index)));
     REQUIRE_OK(kefir_ast_translator_generate_object_scope_debug_information(
         mem, context->ast_context, context->environment, context->module, context->debug_entries,
-        associated_ordinary_scope, subprogram_entry_id, function_begin_index, function_end_index));
+        function->body->base.properties.statement_props.flow_control_statement->associated_scopes.ordinary_scope,
+        subprogram_entry_id, function_begin_index, function_end_index));
     REQUIRE_OK(
         kefir_ast_translator_context_pop_debug_hierarchy_entry(mem, &function_context->local_translator_context));
-    REQUIRE_OK(kefir_ast_translator_mark_flat_scope_objects_lifetime(mem, context, builder, associated_ordinary_scope));
+    REQUIRE_OK(kefir_ast_translator_mark_associated_scope_objects_lifetime(
+        mem, context, builder, function->body->base.properties.statement_props.flow_control_statement));
 
     return KEFIR_OK;
 }

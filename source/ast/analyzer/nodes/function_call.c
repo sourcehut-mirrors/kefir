@@ -125,5 +125,14 @@ kefir_result_t kefir_ast_analyze_function_call_node(struct kefir_mem *mem, const
             mem, context, return_type, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_UNKNOWN, NULL, &base->source_location,
             &base->properties.expression_props.temporary_identifier));
     }
+
+    if (context->flow_control_tree != NULL) {
+        struct kefir_ast_flow_control_structure *top_control_struct;
+        REQUIRE_OK(kefir_ast_flow_control_tree_top(context->flow_control_tree, &top_control_struct));
+        base->properties.expression_props.flow_control_point =
+            kefir_ast_flow_control_point_alloc(mem, context->flow_control_tree, top_control_struct);
+        REQUIRE(base->properties.expression_props.flow_control_point != NULL,
+                KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate AST flow control point"));
+    }
     return KEFIR_OK;
 }

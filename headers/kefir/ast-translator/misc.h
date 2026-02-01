@@ -43,5 +43,8 @@ kefir_result_t kefir_ast_translator_mark_flat_scope_objects_lifetime(struct kefi
                                                                      struct kefir_ast_translator_context *,
                                                                      struct kefir_irbuilder_block *,
                                                                      const struct kefir_ast_identifier_flat_scope *);
+kefir_result_t kefir_ast_translator_mark_associated_scope_objects_lifetime(
+    struct kefir_mem *, struct kefir_ast_translator_context *, struct kefir_irbuilder_block *,
+    const struct kefir_ast_flow_control_structure *);
 
 #endif

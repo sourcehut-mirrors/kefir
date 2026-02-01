@@ -22,14 +22,14 @@
                                 "opcode": "int_const",
                                 "value": 3,
                                 "control_next": null,
-                                "ir_instruction": 95
+                                "ir_instruction": 143
                             },
                             {
                                 "id": 41,
                                 "opcode": "int32_not",
                                 "arg": 6,
                                 "control_next": null,
-                                "ir_instruction": 95
+                                "ir_instruction": 143
                             },
                             {
                                 "id": 42,
@@ -41,7 +41,7 @@
                                     41
                                 ],
                                 "control_next": null,
-                                "ir_instruction": 95
+                                "ir_instruction": 143
                             },
                             {
                                 "id": 43,
@@ -51,7 +51,7 @@
                                     42
                                 ],
                                 "control_next": null,
-                                "ir_instruction": 95
+                                "ir_instruction": 143
                             },
                             {
                                 "id": 45,

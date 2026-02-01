@@ -1107,6 +1107,65 @@
                     "arg": 386547056641
                 },
                 {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 386547056641
+                },
+                {
+                    "opcode": "get_local",
+                    "id": 386547056640,
+                    "type": 90,
+                    "type_index": 0
+                },
+                {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 386547056641
+                },
+                {
+                    "opcode": "get_local",
+                    "id": 386547056641,
+                    "type": 90,
+                    "type_index": 1
+                },
+                {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 386547056641
+                },
+                {
+                    "opcode": "get_local",
+                    "id": 386547056642,
+                    "type": 90,
+                    "type_index": 2
+                },
+                {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 386547056641
+                },
+                {
+                    "opcode": "get_local",
+                    "id": 386547056643,
+                    "type": 90,
+                    "type_index": 3
+                },
+                {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 386547056641
+                },
+                {
                     "opcode": "get_local",
                     "id": 386547056640,
                     "type": 90,
@@ -1123,7 +1182,7 @@
                 },
                 {
                     "opcode": "branch",
-                    "arg": 87,
+                    "arg": 217,
                     "condition": "8bit"
                 },
                 {
@@ -1155,6 +1214,65 @@
                     "id": 386547056645,
                     "type": 90,
                     "type_index": 5
+                },
+                {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 386547056641
+                },
+                {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 386547056641
+                },
+                {
+                    "opcode": "get_local",
+                    "id": 386547056640,
+                    "type": 90,
+                    "type_index": 0
+                },
+                {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 386547056641
+                },
+                {
+                    "opcode": "get_local",
+                    "id": 386547056641,
+                    "type": 90,
+                    "type_index": 1
+                },
+                {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 386547056641
+                },
+                {
+                    "opcode": "get_local",
+                    "id": 386547056642,
+                    "type": 90,
+                    "type_index": 2
+                },
+                {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 386547056641
+                },
+                {
+                    "opcode": "get_local",
+                    "id": 386547056643,
+                    "type": 90,
+                    "type_index": 3
                 },
                 {
                     "opcode": "local_lifetime_mark"
@@ -1200,6 +1318,98 @@
                 },
                 {
                     "opcode": "get_local_scope",
+                    "arg": 386547056643
+                },
+                {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 386547056643
+                },
+                {
+                    "opcode": "get_local",
+                    "id": 386547056644,
+                    "type": 90,
+                    "type_index": 4
+                },
+                {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 386547056643
+                },
+                {
+                    "opcode": "get_local",
+                    "id": 386547056645,
+                    "type": 90,
+                    "type_index": 5
+                },
+                {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 386547056641
+                },
+                {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 386547056641
+                },
+                {
+                    "opcode": "get_local",
+                    "id": 386547056640,
+                    "type": 90,
+                    "type_index": 0
+                },
+                {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 386547056641
+                },
+                {
+                    "opcode": "get_local",
+                    "id": 386547056641,
+                    "type": 90,
+                    "type_index": 1
+                },
+                {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 386547056641
+                },
+                {
+                    "opcode": "get_local",
+                    "id": 386547056642,
+                    "type": 90,
+                    "type_index": 2
+                },
+                {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 386547056641
+                },
+                {
+                    "opcode": "get_local",
+                    "id": 386547056643,
+                    "type": 90,
+                    "type_index": 3
+                },
+                {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local_scope",
                     "arg": 386547056641
                 },
                 {
@@ -1219,7 +1429,7 @@
                 },
                 {
                     "opcode": "branch",
-                    "arg": 78,
+                    "arg": 172,
                     "condition": "8bit"
                 },
                 {
@@ -1241,43 +1451,6 @@
                 },
                 {
                     "opcode": "local_lifetime_mark"
-                },
-                {
-                    "opcode": "get_local_scope",
-                    "arg": 386547056645
-                },
-                {
-                    "opcode": "get_local",
-                    "id": 386547056646,
-                    "type": 90,
-                    "type_index": 6
-                },
-                {
-                    "opcode": "vstack_pop"
-                },
-                {
-                    "opcode": "get_local_scope",
-                    "arg": 386547056645
-                },
-                {
-                    "opcode": "local_lifetime_mark"
-                },
-                {
-                    "opcode": "get_local_scope",
-                    "arg": 386547056645
-                },
-                {
-                    "opcode": "get_local",
-                    "id": 386547056646,
-                    "type": 90,
-                    "type_index": 6
-                },
-                {
-                    "opcode": "local_lifetime_mark"
-                },
-                {
-                    "opcode": "jump",
-                    "arg": 59
                 },
                 {
                     "opcode": "get_local_scope",
@@ -1313,8 +1486,380 @@
                     "opcode": "local_lifetime_mark"
                 },
                 {
+                    "opcode": "get_local_scope",
+                    "arg": 386547056641
+                },
+                {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 386547056641
+                },
+                {
+                    "opcode": "get_local",
+                    "id": 386547056640,
+                    "type": 90,
+                    "type_index": 0
+                },
+                {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 386547056641
+                },
+                {
+                    "opcode": "get_local",
+                    "id": 386547056641,
+                    "type": 90,
+                    "type_index": 1
+                },
+                {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 386547056641
+                },
+                {
+                    "opcode": "get_local",
+                    "id": 386547056642,
+                    "type": 90,
+                    "type_index": 2
+                },
+                {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 386547056641
+                },
+                {
+                    "opcode": "get_local",
+                    "id": 386547056643,
+                    "type": 90,
+                    "type_index": 3
+                },
+                {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 386547056645
+                },
+                {
+                    "opcode": "get_local",
+                    "id": 386547056646,
+                    "type": 90,
+                    "type_index": 6
+                },
+                {
+                    "opcode": "vstack_pop"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 386547056645
+                },
+                {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 386547056645
+                },
+                {
+                    "opcode": "get_local",
+                    "id": 386547056646,
+                    "type": 90,
+                    "type_index": 6
+                },
+                {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 386547056643
+                },
+                {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 386547056643
+                },
+                {
+                    "opcode": "get_local",
+                    "id": 386547056644,
+                    "type": 90,
+                    "type_index": 4
+                },
+                {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 386547056643
+                },
+                {
+                    "opcode": "get_local",
+                    "id": 386547056645,
+                    "type": 90,
+                    "type_index": 5
+                },
+                {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 386547056641
+                },
+                {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 386547056641
+                },
+                {
+                    "opcode": "get_local",
+                    "id": 386547056640,
+                    "type": 90,
+                    "type_index": 0
+                },
+                {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 386547056641
+                },
+                {
+                    "opcode": "get_local",
+                    "id": 386547056641,
+                    "type": 90,
+                    "type_index": 1
+                },
+                {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 386547056641
+                },
+                {
+                    "opcode": "get_local",
+                    "id": 386547056642,
+                    "type": 90,
+                    "type_index": 2
+                },
+                {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 386547056641
+                },
+                {
+                    "opcode": "get_local",
+                    "id": 386547056643,
+                    "type": 90,
+                    "type_index": 3
+                },
+                {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
                     "opcode": "jump",
-                    "arg": 100
+                    "arg": 87
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 386547056643
+                },
+                {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 386547056643
+                },
+                {
+                    "opcode": "get_local",
+                    "id": 386547056644,
+                    "type": 90,
+                    "type_index": 4
+                },
+                {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 386547056643
+                },
+                {
+                    "opcode": "get_local",
+                    "id": 386547056645,
+                    "type": 90,
+                    "type_index": 5
+                },
+                {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 386547056641
+                },
+                {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 386547056641
+                },
+                {
+                    "opcode": "get_local",
+                    "id": 386547056640,
+                    "type": 90,
+                    "type_index": 0
+                },
+                {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 386547056641
+                },
+                {
+                    "opcode": "get_local",
+                    "id": 386547056641,
+                    "type": 90,
+                    "type_index": 1
+                },
+                {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 386547056641
+                },
+                {
+                    "opcode": "get_local",
+                    "id": 386547056642,
+                    "type": 90,
+                    "type_index": 2
+                },
+                {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 386547056641
+                },
+                {
+                    "opcode": "get_local",
+                    "id": 386547056643,
+                    "type": 90,
+                    "type_index": 3
+                },
+                {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 386547056643
+                },
+                {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 386547056643
+                },
+                {
+                    "opcode": "get_local",
+                    "id": 386547056644,
+                    "type": 90,
+                    "type_index": 4
+                },
+                {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 386547056643
+                },
+                {
+                    "opcode": "get_local",
+                    "id": 386547056645,
+                    "type": 90,
+                    "type_index": 5
+                },
+                {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 386547056641
+                },
+                {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 386547056641
+                },
+                {
+                    "opcode": "get_local",
+                    "id": 386547056640,
+                    "type": 90,
+                    "type_index": 0
+                },
+                {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 386547056641
+                },
+                {
+                    "opcode": "get_local",
+                    "id": 386547056641,
+                    "type": 90,
+                    "type_index": 1
+                },
+                {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 386547056641
+                },
+                {
+                    "opcode": "get_local",
+                    "id": 386547056642,
+                    "type": 90,
+                    "type_index": 2
+                },
+                {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 386547056641
+                },
+                {
+                    "opcode": "get_local",
+                    "id": 386547056643,
+                    "type": 90,
+                    "type_index": 3
+                },
+                {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "jump",
+                    "arg": 258
                 },
                 {
                     "opcode": "get_local_scope",
@@ -1332,6 +1877,65 @@
                     "id": 386547056647,
                     "type": 90,
                     "type_index": 7
+                },
+                {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 386547056641
+                },
+                {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 386547056641
+                },
+                {
+                    "opcode": "get_local",
+                    "id": 386547056640,
+                    "type": 90,
+                    "type_index": 0
+                },
+                {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 386547056641
+                },
+                {
+                    "opcode": "get_local",
+                    "id": 386547056641,
+                    "type": 90,
+                    "type_index": 1
+                },
+                {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 386547056641
+                },
+                {
+                    "opcode": "get_local",
+                    "id": 386547056642,
+                    "type": 90,
+                    "type_index": 2
+                },
+                {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 386547056641
+                },
+                {
+                    "opcode": "get_local",
+                    "id": 386547056643,
+                    "type": 90,
+                    "type_index": 3
                 },
                 {
                     "opcode": "local_lifetime_mark"
@@ -1365,6 +1969,124 @@
                     "id": 386547056647,
                     "type": 90,
                     "type_index": 7
+                },
+                {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 386547056641
+                },
+                {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 386547056641
+                },
+                {
+                    "opcode": "get_local",
+                    "id": 386547056640,
+                    "type": 90,
+                    "type_index": 0
+                },
+                {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 386547056641
+                },
+                {
+                    "opcode": "get_local",
+                    "id": 386547056641,
+                    "type": 90,
+                    "type_index": 1
+                },
+                {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 386547056641
+                },
+                {
+                    "opcode": "get_local",
+                    "id": 386547056642,
+                    "type": 90,
+                    "type_index": 2
+                },
+                {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 386547056641
+                },
+                {
+                    "opcode": "get_local",
+                    "id": 386547056643,
+                    "type": 90,
+                    "type_index": 3
+                },
+                {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 386547056641
+                },
+                {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 386547056641
+                },
+                {
+                    "opcode": "get_local",
+                    "id": 386547056640,
+                    "type": 90,
+                    "type_index": 0
+                },
+                {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 386547056641
+                },
+                {
+                    "opcode": "get_local",
+                    "id": 386547056641,
+                    "type": 90,
+                    "type_index": 1
+                },
+                {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 386547056641
+                },
+                {
+                    "opcode": "get_local",
+                    "id": 386547056642,
+                    "type": 90,
+                    "type_index": 2
+                },
+                {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 386547056641
+                },
+                {
+                    "opcode": "get_local",
+                    "id": 386547056643,
+                    "type": 90,
+                    "type_index": 3
                 },
                 {
                     "opcode": "local_lifetime_mark"
@@ -1522,93 +2244,93 @@
                 {
                     "source_id": "source\/tests\/end2end\/debug_info_ir2\/lib.kefir.asmgen.c",
                     "line": 25,
-                    "column": 9,
+                    "column": 5,
                     "begin": 37,
-                    "end": 40
+                    "end": 272
                 },
                 {
                     "source_id": "source\/tests\/end2end\/debug_info_ir2\/lib.kefir.asmgen.c",
                     "line": 25,
-                    "column": 5,
-                    "begin": 37,
-                    "end": 100
+                    "column": 9,
+                    "begin": 51,
+                    "end": 54
                 },
                 {
                     "source_id": "source\/tests\/end2end\/debug_info_ir2\/lib.kefir.asmgen.c",
                     "line": 25,
                     "column": 12,
-                    "begin": 42,
-                    "end": 86
+                    "begin": 56,
+                    "end": 216
                 },
                 {
                     "source_id": "source\/tests\/end2end\/debug_info_ir2\/lib.kefir.asmgen.c",
                     "line": 26,
                     "column": 9,
-                    "begin": 50,
-                    "end": 56
+                    "begin": 78,
+                    "end": 84
                 },
                 {
                     "source_id": "source\/tests\/end2end\/debug_info_ir2\/lib.kefir.asmgen.c",
                     "line": 27,
                     "column": 9,
-                    "begin": 56,
-                    "end": 59
+                    "begin": 84,
+                    "end": 87
+                },
+                {
+                    "source_id": "source\/tests\/end2end\/debug_info_ir2\/lib.kefir.asmgen.c",
+                    "line": 28,
+                    "column": 9,
+                    "begin": 87,
+                    "end": 194
                 },
                 {
                     "source_id": "source\/tests\/end2end\/debug_info_ir2\/lib.kefir.asmgen.c",
                     "line": 28,
                     "column": 16,
-                    "begin": 59,
-                    "end": 62
-                },
-                {
-                    "source_id": "source\/tests\/end2end\/debug_info_ir2\/lib.kefir.asmgen.c",
-                    "line": 28,
-                    "column": 9,
-                    "begin": 59,
-                    "end": 78
+                    "begin": 109,
+                    "end": 112
                 },
                 {
                     "source_id": "source\/tests\/end2end\/debug_info_ir2\/lib.kefir.asmgen.c",
                     "line": 28,
                     "column": 19,
-                    "begin": 64,
-                    "end": 77
+                    "begin": 114,
+                    "end": 171
                 },
                 {
                     "source_id": "source\/tests\/end2end\/debug_info_ir2\/lib.kefir.asmgen.c",
                     "line": 29,
                     "column": 13,
-                    "begin": 69,
-                    "end": 72
+                    "begin": 141,
+                    "end": 144
                 },
                 {
                     "source_id": "source\/tests\/end2end\/debug_info_ir2\/lib.kefir.asmgen.c",
                     "line": 31,
                     "column": 12,
-                    "begin": 87,
-                    "end": 100
+                    "begin": 217,
+                    "end": 258
                 },
                 {
                     "source_id": "source\/tests\/end2end\/debug_info_ir2\/lib.kefir.asmgen.c",
                     "line": 32,
                     "column": 9,
-                    "begin": 92,
-                    "end": 95
+                    "begin": 236,
+                    "end": 239
                 },
                 {
                     "source_id": "source\/tests\/end2end\/debug_info_ir2\/lib.kefir.asmgen.c",
                     "line": 34,
                     "column": 12,
-                    "begin": 100,
-                    "end": 101
+                    "begin": 272,
+                    "end": 273
                 },
                 {
                     "source_id": "source\/tests\/end2end\/debug_info_ir2\/lib.kefir.asmgen.c",
                     "line": 34,
                     "column": 5,
-                    "begin": 100,
-                    "end": 116
+                    "begin": 272,
+                    "end": 288
                 }
             ]
         }
@@ -4188,7 +4910,7 @@
                     },
                     {
                         "tag": "code_end",
-                        "value": 116
+                        "value": 288
                     },
                     {
                         "tag": "external",
@@ -4241,7 +4963,7 @@
                             },
                             {
                                 "tag": "code_end",
-                                "value": 100
+                                "value": 258
                             }
                         ],
                         "children": [
@@ -4251,11 +4973,11 @@
                                 "attributes": [
                                     {
                                         "tag": "code_begin",
-                                        "value": 42
+                                        "value": 56
                                     },
                                     {
                                         "tag": "code_end",
-                                        "value": 78
+                                        "value": 194
                                     }
                                 ],
                                 "children": [
@@ -4265,11 +4987,11 @@
                                         "attributes": [
                                             {
                                                 "tag": "code_begin",
-                                                "value": 59
+                                                "value": 87
                                             },
                                             {
                                                 "tag": "code_end",
-                                                "value": 78
+                                                "value": 172
                                             }
                                         ],
                                         "children": [
@@ -4279,11 +5001,11 @@
                                                 "attributes": [
                                                     {
                                                         "tag": "code_begin",
-                                                        "value": 64
+                                                        "value": 114
                                                     },
                                                     {
                                                         "tag": "code_end",
-                                                        "value": 72
+                                                        "value": 144
                                                     }
                                                 ],
                                                 "children": [
@@ -4301,11 +5023,11 @@
                                                             },
                                                             {
                                                                 "tag": "code_begin",
-                                                                "value": 64
+                                                                "value": 114
                                                             },
                                                             {
                                                                 "tag": "code_end",
-                                                                "value": 72
+                                                                "value": 144
                                                             },
                                                             {
                                                                 "tag": "local_variable",
@@ -4356,11 +5078,11 @@
                                             },
                                             {
                                                 "tag": "code_begin",
-                                                "value": 42
+                                                "value": 56
                                             },
                                             {
                                                 "tag": "code_end",
-                                                "value": 78
+                                                "value": 194
                                             },
                                             {
                                                 "tag": "local_variable",
@@ -4407,11 +5129,11 @@
                                             },
                                             {
                                                 "tag": "code_begin",
-                                                "value": 42
+                                                "value": 56
                                             },
                                             {
                                                 "tag": "code_end",
-                                                "value": 78
+                                                "value": 194
                                             },
                                             {
                                                 "tag": "local_variable",
@@ -4452,11 +5174,11 @@
                                 "attributes": [
                                     {
                                         "tag": "code_begin",
-                                        "value": 87
+                                        "value": 217
                                     },
                                     {
                                         "tag": "code_end",
-                                        "value": 95
+                                        "value": 239
                                     }
                                 ],
                                 "children": [
@@ -4474,11 +5196,11 @@
                                             },
                                             {
                                                 "tag": "code_begin",
-                                                "value": 87
+                                                "value": 217
                                             },
                                             {
                                                 "tag": "code_end",
-                                                "value": 95
+                                                "value": 239
                                             },
                                             {
                                                 "tag": "local_variable",
@@ -4533,7 +5255,7 @@
                             },
                             {
                                 "tag": "code_end",
-                                "value": 116
+                                "value": 288
                             },
                             {
                                 "tag": "local_variable",
@@ -4584,7 +5306,7 @@
                             },
                             {
                                 "tag": "code_end",
-                                "value": 116
+                                "value": 288
                             },
                             {
                                 "tag": "local_variable",
@@ -4635,7 +5357,7 @@
                             },
                             {
                                 "tag": "code_end",
-                                "value": 116
+                                "value": 288
                             },
                             {
                                 "tag": "local_variable",
@@ -4686,7 +5408,7 @@
                             },
                             {
                                 "tag": "code_end",
-                                "value": 116
+                                "value": 288
                             },
                             {
                                 "tag": "local_variable",
@@ -4737,7 +5459,7 @@
                             },
                             {
                                 "tag": "code_end",
-                                "value": 116
+                                "value": 288
                             },
                             {
                                 "tag": "global_variable",

@@ -79,20 +79,124 @@
                     "opcode": "local_lifetime_mark"
                 },
                 {
+                    "opcode": "get_local_scope",
+                    "arg": 4294967297
+                },
+                {
+                    "opcode": "get_local",
+                    "id": 4294967296,
+                    "type": 1,
+                    "type_index": 0
+                },
+                {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
                     "opcode": "inline_assembly",
                     "arg": 0
                 },
                 {
                     "opcode": "jump",
-                    "arg": 10
+                    "arg": 31
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 4294967297
+                },
+                {
+                    "opcode": "get_local",
+                    "id": 4294967296,
+                    "type": 1,
+                    "type_index": 0
+                },
+                {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 4294967297
+                },
+                {
+                    "opcode": "get_local",
+                    "id": 4294967296,
+                    "type": 1,
+                    "type_index": 0
+                },
+                {
+                    "opcode": "local_lifetime_mark"
                 },
                 {
                     "opcode": "jump",
-                    "arg": 13
+                    "arg": 31
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 4294967297
+                },
+                {
+                    "opcode": "get_local",
+                    "id": 4294967296,
+                    "type": 1,
+                    "type_index": 0
+                },
+                {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 4294967297
+                },
+                {
+                    "opcode": "get_local",
+                    "id": 4294967296,
+                    "type": 1,
+                    "type_index": 0
+                },
+                {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 4294967297
+                },
+                {
+                    "opcode": "get_local",
+                    "id": 4294967296,
+                    "type": 1,
+                    "type_index": 0
+                },
+                {
+                    "opcode": "local_lifetime_mark"
                 },
                 {
                     "opcode": "jump",
                     "arg": 3
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 4294967297
+                },
+                {
+                    "opcode": "get_local",
+                    "id": 4294967296,
+                    "type": 1,
+                    "type_index": 0
+                },
+                {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local_scope",
+                    "arg": 4294967297
+                },
+                {
+                    "opcode": "get_local",
+                    "id": 4294967296,
+                    "type": 1,
+                    "type_index": 0
+                },
+                {
+                    "opcode": "local_lifetime_mark"
                 },
                 {
                     "opcode": "get_local_scope",
@@ -139,7 +243,7 @@
                         "[label_end]"
                     ],
                     "function": "inline_asm1",
-                    "target": 8
+                    "target": 11
                 },
                 {
                     "identifier": 1,
@@ -148,7 +252,7 @@
                         "[label_begin]"
                     ],
                     "function": "inline_asm1",
-                    "target": 9
+                    "target": 21
                 }
             ]
         }

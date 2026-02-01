@@ -251,3 +251,19 @@ kefir_result_t kefir_ast_translator_mark_flat_scope_objects_lifetime(
     }
     return KEFIR_OK;
 }
+
+kefir_result_t kefir_ast_translator_mark_associated_scope_objects_lifetime(
+    struct kefir_mem *mem, struct kefir_ast_translator_context *context, struct kefir_irbuilder_block *builder,
+    const struct kefir_ast_flow_control_structure *structure) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST traslator context"));
+    REQUIRE(builder != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR block builder"));
+
+    for (; structure != NULL; structure = kefir_ast_flow_control_structure_parent(structure)) {
+        if (structure->type != KEFIR_AST_FLOW_CONTROL_POINT) {
+            REQUIRE_OK(kefir_ast_translator_mark_flat_scope_objects_lifetime(
+                mem, context, builder, structure->associated_scopes.ordinary_scope));
+        }
+    }
+    return KEFIR_OK;
+}
