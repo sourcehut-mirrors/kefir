@@ -119,14 +119,27 @@ static kefir_result_t add_to_entry(struct kefir_mem *mem, struct kefir_codegen_t
 }
 
 static kefir_bool_t is_scheduled_earlier(const struct kefir_codegen_target_ir_code *code,
+                                         const struct kefir_codegen_target_ir_numbering *numbering,
                                          kefir_codegen_target_ir_instruction_ref_t instr1_ref,
                                          kefir_codegen_target_ir_instruction_ref_t instr2_ref) {
-    for (; instr2_ref != KEFIR_ID_NONE; instr2_ref = kefir_codegen_target_ir_code_control_prev(code, instr2_ref)) {
-        if (instr2_ref == instr1_ref) {
-            return true;
-        }
+    const struct kefir_codegen_target_ir_instruction *instr1, *instr2;
+    if (kefir_codegen_target_ir_code_instruction(code, instr1_ref, &instr1) != KEFIR_OK) {
+        return false;
     }
-    return false;
+    if (kefir_codegen_target_ir_code_instruction(code, instr2_ref, &instr2) != KEFIR_OK) {
+        return false;
+    }
+    REQUIRE(instr1->block_ref == instr2->block_ref, false);
+
+    kefir_size_t index1, index2;
+    if (kefir_codegen_target_ir_numbering_instruction_seq_index(numbering, instr1_ref, &index1) != KEFIR_OK) {
+        return false;
+    }
+    if (kefir_codegen_target_ir_numbering_instruction_seq_index(numbering, instr2_ref, &index2) != KEFIR_OK) {
+        return false;
+    }
+
+    return index1 <= index2;
 }
 
 kefir_result_t kefir_codegen_target_ir_liveness_value_at(const struct kefir_codegen_target_ir_liveness *liveness,
@@ -192,12 +205,14 @@ static kefir_result_t add_value_liveness(struct kefir_mem *mem, struct kefir_cod
         REQUIRE_OK(res);
         kefir_codegen_target_ir_instruction_ref_t current_begin_ref = ((kefir_uint64_t) *table_value_ptr) >> 32,
                                                   current_end_ref = (kefir_uint32_t) *table_value_ptr;
-        if (begin_ref == KEFIR_ID_NONE || (current_begin_ref != KEFIR_ID_NONE &&
-                                           is_scheduled_earlier(liveness->code, begin_ref, current_begin_ref))) {
+        if (begin_ref == KEFIR_ID_NONE ||
+            (current_begin_ref != KEFIR_ID_NONE &&
+             is_scheduled_earlier(liveness->code, &liveness->numbering, begin_ref, current_begin_ref))) {
             current_begin_ref = begin_ref;
         }
         if (end_ref == KEFIR_ID_NONE ||
-            (current_end_ref != KEFIR_ID_NONE && is_scheduled_earlier(liveness->code, current_end_ref, end_ref))) {
+            (current_end_ref != KEFIR_ID_NONE &&
+             is_scheduled_earlier(liveness->code, &liveness->numbering, current_end_ref, end_ref))) {
             current_end_ref = end_ref;
         }
         *table_value_ptr = (((kefir_uint64_t) current_begin_ref) << 32) | (kefir_uint32_t) current_end_ref;
