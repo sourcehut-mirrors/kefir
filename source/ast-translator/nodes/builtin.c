@@ -22,6 +22,7 @@
 #include "kefir/ast-translator/translator.h"
 #include "kefir/ast-translator/typeconv.h"
 #include "kefir/ast-translator/value.h"
+#include "kefir/ast-translator/misc.h"
 #include "kefir/ast-translator/layout.h"
 #include "kefir/ast-translator/type.h"
 #include "kefir/ast-translator/temporaries.h"
@@ -259,9 +260,17 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
                 nan(arg1_node->properties.expression_props.string_literal.content)));
         } break;
 
-        case KEFIR_AST_BUILTIN_KEFIR_UNREACHABLE:
+        case KEFIR_AST_BUILTIN_KEFIR_UNREACHABLE: {
+            struct kefir_ast_flow_control_structure *control_struct =
+                node->base.properties.expression_props.flow_control_point->self;
+            for (; control_struct != NULL; control_struct = kefir_ast_flow_control_structure_parent(control_struct)) {
+                if (control_struct->type != KEFIR_AST_FLOW_CONTROL_POINT) {
+                    REQUIRE_OK(kefir_ast_translator_mark_flat_scope_objects_lifetime(
+                        mem, context, builder, control_struct->associated_scopes.ordinary_scope));
+                }
+            }
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_UNREACHABLE, 0));
-            break;
+        } break;
 
         case KEFIR_AST_BUILTIN_ADD_OVERFLOW:
         case KEFIR_AST_BUILTIN_SUB_OVERFLOW:

@@ -513,9 +513,15 @@ kefir_result_t kefir_ast_analyze_builtin_node(struct kefir_mem *mem, const struc
             base->properties.type = kefir_ast_type_signed_int();
         } break;
 
-        case KEFIR_AST_BUILTIN_KEFIR_UNREACHABLE:
+        case KEFIR_AST_BUILTIN_KEFIR_UNREACHABLE: {
             base->properties.type = kefir_ast_type_void();
-            break;
+            struct kefir_ast_flow_control_structure *top_control_struct;
+            REQUIRE_OK(kefir_ast_flow_control_tree_top(context->flow_control_tree, &top_control_struct));
+            base->properties.expression_props.flow_control_point =
+                kefir_ast_flow_control_point_alloc(mem, context->flow_control_tree, top_control_struct);
+            REQUIRE(base->properties.expression_props.flow_control_point != NULL,
+                    KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate AST flow control point"));
+        } break;
 
         case KEFIR_AST_BUILTIN_KEFIR_ISINF:
         case KEFIR_AST_BUILTIN_KEFIR_ISNAN: {
