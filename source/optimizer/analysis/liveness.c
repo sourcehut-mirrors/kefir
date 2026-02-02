@@ -20,6 +20,7 @@
 
 #include "kefir/optimizer/liveness.h"
 #include "kefir/optimizer/code_util.h"
+#include "kefir/optimizer/trace.h"
 #include "kefir/core/queue.h"
 #include "kefir/core/bitset.h"
 #include "kefir/core/error.h"
@@ -29,7 +30,7 @@
 struct verify_use_def_payload {
     struct kefir_mem *mem;
     struct kefir_opt_code_liveness *liveness;
-    struct kefir_opt_code_structure *structure;
+    struct kefir_opt_code_control_flow *control_flow;
     kefir_opt_instruction_ref_t instr_ref;
 };
 
@@ -39,8 +40,8 @@ static kefir_result_t verify_use_def_impl(kefir_opt_instruction_ref_t instr_ref,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code use-def verified parameters"));
 
     kefir_bool_t sequenced_before;
-    REQUIRE_OK(kefir_opt_code_structure_is_sequenced_before(param->mem, param->structure, instr_ref, param->instr_ref,
-                                                            &sequenced_before));
+    REQUIRE_OK(kefir_opt_code_control_flow_is_sequenced_before(param->mem, param->control_flow, instr_ref,
+                                                               param->instr_ref, &sequenced_before));
     REQUIRE(sequenced_before, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Reversed use-define chain in optimizer code"));
 
     return KEFIR_OK;
@@ -52,24 +53,25 @@ static kefir_result_t verify_use_def(kefir_opt_instruction_ref_t instr_ref, void
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code use-def verified parameters"));
 
     const struct kefir_opt_instruction *instr;
-    REQUIRE_OK(kefir_opt_code_container_instr(param->structure->code, instr_ref, &instr));
+    REQUIRE_OK(kefir_opt_code_container_instr(param->control_flow->code, instr_ref, &instr));
 
     REQUIRE_OK(kefir_hashset_add(param->mem, &param->liveness->blocks[instr->block_id].alive_instr,
                                  (kefir_hashset_key_t) instr_ref));
 
     param->instr_ref = instr_ref;
-    REQUIRE_OK(kefir_opt_instruction_extract_inputs(param->structure->code, instr, true, verify_use_def_impl, payload));
+    REQUIRE_OK(
+        kefir_opt_instruction_extract_inputs(param->control_flow->code, instr, true, verify_use_def_impl, payload));
 
     struct kefir_opt_instruction_use_iterator use_iter;
     kefir_result_t res;
-    for (res = kefir_opt_code_container_instruction_use_instr_iter(param->structure->code, instr_ref, &use_iter);
+    for (res = kefir_opt_code_container_instruction_use_instr_iter(param->control_flow->code, instr_ref, &use_iter);
          res == KEFIR_OK; res = kefir_opt_code_container_instruction_use_next(&use_iter)) {
         const struct kefir_opt_instruction *use_instr;
-        REQUIRE_OK(kefir_opt_code_container_instr(param->structure->code, use_iter.use_instr_ref, &use_instr));
+        REQUIRE_OK(kefir_opt_code_container_instr(param->control_flow->code, use_iter.use_instr_ref, &use_instr));
 
         if (use_instr->operation.opcode == KEFIR_OPT_OPCODE_PHI) {
             const struct kefir_opt_phi_node *use_phi;
-            REQUIRE_OK(kefir_opt_code_container_phi(param->structure->code, use_instr->operation.parameters.phi_ref,
+            REQUIRE_OK(kefir_opt_code_container_phi(param->control_flow->code, use_instr->operation.parameters.phi_ref,
                                                     &use_phi));
             struct kefir_hashtree_node_iterator iter;
             for (struct kefir_hashtree_node *node = kefir_hashtree_iter(&use_phi->links, &iter); node != NULL;
@@ -93,7 +95,7 @@ static kefir_result_t verify_use_def(kefir_opt_instruction_ref_t instr_ref, void
 }
 
 static kefir_result_t propagate_alive_instructions_impl(struct kefir_mem *mem, struct kefir_opt_code_liveness *liveness,
-                                                        const struct kefir_opt_code_structure *structure,
+                                                        const struct kefir_opt_code_control_flow *control_flow,
                                                         kefir_opt_block_id_t block_id,
                                                         struct kefir_bitset *visited_blocks,
                                                         struct kefir_queue *queue) {
@@ -112,13 +114,13 @@ static kefir_result_t propagate_alive_instructions_impl(struct kefir_mem *mem, s
         }
 
         REQUIRE_OK(kefir_bitset_clear(visited_blocks));
-#define ADD_PREDS(_block_id)                                                                                       \
-    do {                                                                                                           \
-        for (const struct kefir_list_entry *iter2 = kefir_list_head(&structure->blocks[(_block_id)].predecessors); \
-             iter2 != NULL; kefir_list_next(&iter2)) {                                                             \
-            ASSIGN_DECL_CAST(kefir_opt_block_id_t, pred_block_id, (kefir_uptr_t) iter2->value);                    \
-            REQUIRE_OK(kefir_queue_push(mem, queue, (kefir_queue_entry_t) pred_block_id));                         \
-        }                                                                                                          \
+#define ADD_PREDS(_block_id)                                                                                          \
+    do {                                                                                                              \
+        for (const struct kefir_list_entry *iter2 = kefir_list_head(&control_flow->blocks[(_block_id)].predecessors); \
+             iter2 != NULL; kefir_list_next(&iter2)) {                                                                \
+            ASSIGN_DECL_CAST(kefir_opt_block_id_t, pred_block_id, (kefir_uptr_t) iter2->value);                       \
+            REQUIRE_OK(kefir_queue_push(mem, queue, (kefir_queue_entry_t) pred_block_id));                            \
+        }                                                                                                             \
     } while (0)
         ADD_PREDS(block_id);
 
@@ -152,7 +154,7 @@ static kefir_result_t propagate_alive_instructions_impl(struct kefir_mem *mem, s
 }
 
 static kefir_result_t propagate_alive_instructions(struct kefir_mem *mem, struct kefir_opt_code_liveness *liveness,
-                                                   struct kefir_opt_code_structure *structure) {
+                                                   struct kefir_opt_code_control_flow *control_flow) {
     kefir_size_t num_of_blocks;
     REQUIRE_OK(kefir_opt_code_container_block_count(liveness->code, &num_of_blocks));
 
@@ -164,7 +166,7 @@ static kefir_result_t propagate_alive_instructions(struct kefir_mem *mem, struct
     kefir_result_t res = KEFIR_OK;
     REQUIRE_CHAIN(&res, kefir_bitset_ensure(mem, &visited_blocks, num_of_blocks));
     for (kefir_opt_block_id_t block_id = 0; res == KEFIR_OK && block_id < num_of_blocks; block_id++) {
-        res = propagate_alive_instructions_impl(mem, liveness, structure, block_id, &visited_blocks, &queue);
+        res = propagate_alive_instructions_impl(mem, liveness, control_flow, block_id, &visited_blocks, &queue);
     }
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_bitset_free(mem, &visited_blocks);
@@ -181,15 +183,15 @@ static kefir_result_t propagate_alive_instructions(struct kefir_mem *mem, struct
 }
 
 static kefir_result_t trace_use_def(struct kefir_mem *mem, struct kefir_opt_code_liveness *liveness,
-                                    struct kefir_opt_code_structure *structure) {
+                                    struct kefir_opt_code_control_flow *control_flow) {
     struct verify_use_def_payload payload = {
-        .mem = mem, .liveness = liveness, .structure = structure, .instr_ref = KEFIR_ID_NONE};
+        .mem = mem, .liveness = liveness, .control_flow = control_flow, .instr_ref = KEFIR_ID_NONE};
     struct kefir_opt_code_container_tracer tracer = {.trace_instruction = verify_use_def, .payload = &payload};
     REQUIRE_OK(kefir_opt_code_container_trace(mem, liveness->code, &tracer));
 
     kefir_size_t num_of_blocks;
     REQUIRE_OK(kefir_opt_code_container_block_count(liveness->code, &num_of_blocks));
-    REQUIRE_OK(propagate_alive_instructions(mem, liveness, structure));
+    REQUIRE_OK(propagate_alive_instructions(mem, liveness, control_flow));
     return KEFIR_OK;
 }
 
@@ -219,14 +221,15 @@ kefir_result_t kefir_opt_code_liveness_free(struct kefir_mem *mem, struct kefir_
 }
 
 kefir_result_t kefir_opt_code_liveness_build(struct kefir_mem *mem, struct kefir_opt_code_liveness *liveness,
-                                             struct kefir_opt_code_structure *structure) {
+                                             struct kefir_opt_code_control_flow *control_flow) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(liveness != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code liveness"));
-    REQUIRE(structure != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code structure"));
+    REQUIRE(control_flow != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code control flow"));
     REQUIRE(liveness->code == NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Optimizer code liveness has already been built"));
 
-    liveness->code = structure->code;
+    liveness->code = control_flow->code;
     kefir_result_t res;
     kefir_size_t num_of_blocks;
     REQUIRE_OK(kefir_opt_code_container_block_count(liveness->code, &num_of_blocks));
@@ -241,7 +244,7 @@ kefir_result_t kefir_opt_code_liveness_build(struct kefir_mem *mem, struct kefir
         });
     }
 
-    res = trace_use_def(mem, liveness, structure);
+    res = trace_use_def(mem, liveness, control_flow);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_opt_code_liveness_free(mem, liveness);
         kefir_opt_code_liveness_init(liveness);

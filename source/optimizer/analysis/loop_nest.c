@@ -53,11 +53,11 @@ kefir_result_t kefir_opt_code_loop_collection_free(struct kefir_mem *mem,
     return KEFIR_OK;
 }
 
-#define IS_BLOCK_REACHABLE(_structure, _block_id)      \
-    ((_block_id) == (_structure)->code->entry_point || \
-     (_structure)->blocks[(_block_id)].immediate_dominator != KEFIR_ID_NONE)
+#define IS_BLOCK_REACHABLE(_control_flow, _block_id)      \
+    ((_block_id) == (_control_flow)->code->entry_point || \
+     (_control_flow)->blocks[(_block_id)].immediate_dominator != KEFIR_ID_NONE)
 
-static kefir_result_t build_loop_impl(struct kefir_mem *mem, const struct kefir_opt_code_structure *structure,
+static kefir_result_t build_loop_impl(struct kefir_mem *mem, const struct kefir_opt_code_control_flow *control_flow,
                                       struct kefir_opt_code_loop *loop, struct kefir_list *traversal_queue) {
     REQUIRE_OK(kefir_hashtreeset_clean(mem, &loop->loop_blocks));
     REQUIRE_OK(kefir_list_clear(mem, traversal_queue));
@@ -74,7 +74,8 @@ static kefir_result_t build_loop_impl(struct kefir_mem *mem, const struct kefir_
         REQUIRE_OK(kefir_hashtreeset_add(mem, &loop->loop_blocks, (kefir_hashtreeset_entry_t) block_id));
 
         if (block_id != loop->loop_entry_block_id) {
-            for (const struct kefir_list_entry *pred_iter = kefir_list_head(&structure->blocks[block_id].predecessors);
+            for (const struct kefir_list_entry *pred_iter =
+                     kefir_list_head(&control_flow->blocks[block_id].predecessors);
                  pred_iter != NULL; kefir_list_next(&pred_iter)) {
                 REQUIRE_OK(
                     kefir_list_insert_after(mem, traversal_queue, kefir_list_tail(traversal_queue), pred_iter->value));
@@ -85,7 +86,7 @@ static kefir_result_t build_loop_impl(struct kefir_mem *mem, const struct kefir_
 }
 
 static kefir_result_t build_loop(struct kefir_mem *mem, struct kefir_opt_code_loop_collection *loops,
-                                 const struct kefir_opt_code_structure *structure,
+                                 const struct kefir_opt_code_control_flow *control_flow,
                                  kefir_opt_block_id_t loop_entry_block_id, kefir_opt_block_id_t loop_exit_block_id) {
     struct kefir_opt_code_loop *loop = KEFIR_MALLOC(mem, sizeof(struct kefir_opt_code_loop));
     REQUIRE(loop != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Unable to allocate optimzier code loop"));
@@ -102,7 +103,7 @@ static kefir_result_t build_loop(struct kefir_mem *mem, struct kefir_opt_code_lo
 
     struct kefir_list traversal_queue;
     REQUIRE_OK(kefir_list_init(&traversal_queue));
-    res = build_loop_impl(mem, structure, loop, &traversal_queue);
+    res = build_loop_impl(mem, control_flow, loop, &traversal_queue);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_list_free(mem, &traversal_queue);
         return res;
@@ -166,32 +167,34 @@ static kefir_result_t build_loop_nests(struct kefir_mem *mem, struct kefir_opt_c
 }
 
 kefir_result_t kefir_opt_code_loop_collection_build(struct kefir_mem *mem, struct kefir_opt_code_loop_collection *loops,
-                                                    const struct kefir_opt_code_structure *structure) {
+                                                    const struct kefir_opt_code_control_flow *control_flow) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(loops != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer loop collection"));
-    REQUIRE(structure != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code structure"));
+    REQUIRE(control_flow != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code control flow"));
 
     kefir_size_t block_count;
-    REQUIRE_OK(kefir_opt_code_container_block_count(structure->code, &block_count));
+    REQUIRE_OK(kefir_opt_code_container_block_count(control_flow->code, &block_count));
     for (kefir_opt_block_id_t block_id = 0; block_id < block_count; block_id++) {
-        if (!IS_BLOCK_REACHABLE(structure, block_id)) {
+        if (!IS_BLOCK_REACHABLE(control_flow, block_id)) {
             continue;
         }
 
-        for (const struct kefir_list_entry *succ_iter = kefir_list_head(&structure->blocks[block_id].successors);
+        for (const struct kefir_list_entry *succ_iter = kefir_list_head(&control_flow->blocks[block_id].successors);
              succ_iter != NULL; kefir_list_next(&succ_iter)) {
             ASSIGN_DECL_CAST(kefir_opt_block_id_t, successor_block_id, (kefir_uptr_t) succ_iter->value);
-            if (!IS_BLOCK_REACHABLE(structure, successor_block_id)) {
+            if (!IS_BLOCK_REACHABLE(control_flow, successor_block_id)) {
                 continue;
             }
 
             const struct kefir_opt_code_block *successor_block;
-            REQUIRE_OK(kefir_opt_code_container_block(structure->code, successor_block_id, &successor_block));
+            REQUIRE_OK(kefir_opt_code_container_block(control_flow->code, successor_block_id, &successor_block));
 
             kefir_bool_t is_dominator;
-            REQUIRE_OK(kefir_opt_code_structure_is_dominator(structure, block_id, successor_block_id, &is_dominator));
+            REQUIRE_OK(
+                kefir_opt_code_control_flow_is_dominator(control_flow, block_id, successor_block_id, &is_dominator));
             if (is_dominator) {
-                REQUIRE_OK(build_loop(mem, loops, structure, successor_block_id, block_id));
+                REQUIRE_OK(build_loop(mem, loops, control_flow, successor_block_id, block_id));
             }
         }
     }

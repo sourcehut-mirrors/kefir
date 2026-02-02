@@ -27,7 +27,7 @@
 #include <string.h>
 
 struct payload_param {
-    struct kefir_opt_code_structure *structure;
+    struct kefir_opt_code_control_flow *control_flow;
     struct kefir_opt_code_liveness *liveness;
 };
 
@@ -36,7 +36,7 @@ static kefir_result_t is_block_alive(kefir_opt_block_id_t block_id, kefir_bool_t
     ASSIGN_DECL_CAST(struct payload_param *, param, payload);
     REQUIRE(param != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code DCE parameter"));
 
-    REQUIRE_OK(kefir_opt_code_structure_is_reachable_from_entry(param->structure, block_id, alive_ptr));
+    REQUIRE_OK(kefir_opt_code_control_flow_is_reachable_from_entry(param->control_flow, block_id, alive_ptr));
     return KEFIR_OK;
 }
 
@@ -56,17 +56,17 @@ static kefir_result_t is_block_predecessor(kefir_opt_block_id_t predecessor_bloc
     ASSIGN_DECL_CAST(struct payload_param *, param, payload);
     REQUIRE(param != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code DCE parameter"));
 
-    REQUIRE_OK(
-        kefir_opt_code_structure_block_direct_predecessor(param->structure, predecessor_block_id, block_id, is_pred));
+    REQUIRE_OK(kefir_opt_code_control_flow_block_direct_predecessor(param->control_flow, predecessor_block_id, block_id,
+                                                                    is_pred));
     return KEFIR_OK;
 }
 
 static kefir_result_t dead_code_elimination_impl(struct kefir_mem *mem, struct kefir_opt_function *func,
-                                                 struct kefir_opt_code_structure *structure,
+                                                 struct kefir_opt_code_control_flow *control_flow,
                                                  struct kefir_opt_code_liveness *liveness) {
-    REQUIRE_OK(kefir_opt_code_structure_build(mem, structure, &func->code));
-    REQUIRE_OK(kefir_opt_code_liveness_build(mem, liveness, structure));
-    struct payload_param param = {.structure = structure, .liveness = liveness};
+    REQUIRE_OK(kefir_opt_code_control_flow_build(mem, control_flow, &func->code));
+    REQUIRE_OK(kefir_opt_code_liveness_build(mem, liveness, control_flow));
+    struct payload_param param = {.control_flow = control_flow, .liveness = liveness};
     struct kefir_opt_code_container_dead_code_index index = {.is_block_alive = is_block_alive,
                                                              .is_instruction_alive = is_instruction_alive,
                                                              .is_block_predecessor = is_block_predecessor,
@@ -85,22 +85,22 @@ static kefir_result_t dead_code_elimination_apply(struct kefir_mem *mem, struct 
     REQUIRE(module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer module"));
     REQUIRE(func != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer function"));
 
-    struct kefir_opt_code_structure structure;
+    struct kefir_opt_code_control_flow control_flow;
     struct kefir_opt_code_liveness liveness;
-    REQUIRE_OK(kefir_opt_code_structure_init(&structure));
+    REQUIRE_OK(kefir_opt_code_control_flow_init(&control_flow));
     REQUIRE_OK(kefir_opt_code_liveness_init(&liveness));
-    kefir_result_t res = dead_code_elimination_impl(mem, func, &structure, &liveness);
+    kefir_result_t res = dead_code_elimination_impl(mem, func, &control_flow, &liveness);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_opt_code_liveness_free(mem, &liveness);
-        kefir_opt_code_structure_free(mem, &structure);
+        kefir_opt_code_control_flow_free(mem, &control_flow);
         return res;
     });
     res = kefir_opt_code_liveness_free(mem, &liveness);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        kefir_opt_code_structure_free(mem, &structure);
+        kefir_opt_code_control_flow_free(mem, &control_flow);
         return res;
     });
-    REQUIRE_OK(kefir_opt_code_structure_free(mem, &structure));
+    REQUIRE_OK(kefir_opt_code_control_flow_free(mem, &control_flow));
     return KEFIR_OK;
 }
 

@@ -21,19 +21,19 @@
 #include "kefir/optimizer/pipeline.h"
 #include "kefir/optimizer/builder.h"
 #include "kefir/optimizer/code_util.h"
-#include "kefir/optimizer/structure.h"
+#include "kefir/optimizer/control_flow.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 #include <string.h>
 
 static kefir_result_t match_passthrough_block(struct kefir_opt_function *func,
-                                              struct kefir_opt_code_structure *structure,
+                                              struct kefir_opt_code_control_flow *control_flow,
                                               kefir_opt_block_id_t pred_block_id, kefir_opt_block_id_t block_id,
                                               kefir_opt_block_id_t *passthrough) {
     *passthrough = KEFIR_ID_NONE;
     kefir_bool_t only_predecessor;
-    REQUIRE_OK(kefir_opt_code_structure_block_exclusive_direct_predecessor(structure, pred_block_id, block_id,
-                                                                           &only_predecessor));
+    REQUIRE_OK(kefir_opt_code_control_flow_block_exclusive_direct_predecessor(control_flow, pred_block_id, block_id,
+                                                                              &only_predecessor));
     REQUIRE(only_predecessor, KEFIR_OK);
 
     const struct kefir_opt_code_block *block;
@@ -68,7 +68,7 @@ static kefir_result_t match_passthrough_block(struct kefir_opt_function *func,
 }
 
 static kefir_result_t block_merge_impl(struct kefir_mem *mem, struct kefir_opt_function *func,
-                                       struct kefir_opt_code_structure *structure) {
+                                       struct kefir_opt_code_control_flow *control_flow) {
     kefir_size_t num_of_blocks;
     REQUIRE_OK(kefir_opt_code_container_block_count(&func->code, &num_of_blocks));
     kefir_bool_t fixpoint_reached = false;
@@ -76,7 +76,7 @@ static kefir_result_t block_merge_impl(struct kefir_mem *mem, struct kefir_opt_f
         fixpoint_reached = true;
         for (kefir_opt_block_id_t block_id = 0; block_id < num_of_blocks; block_id++) {
             kefir_bool_t reachable;
-            REQUIRE_OK(kefir_opt_code_structure_is_reachable_from_entry(structure, block_id, &reachable));
+            REQUIRE_OK(kefir_opt_code_control_flow_is_reachable_from_entry(control_flow, block_id, &reachable));
             if (!reachable) {
                 continue;
             }
@@ -100,11 +100,11 @@ static kefir_result_t block_merge_impl(struct kefir_mem *mem, struct kefir_opt_f
                     REQUIRE_OK(kefir_opt_code_container_block(&func->code, target_block_id, &target_block));
 
                     kefir_bool_t only_predecessor;
-                    REQUIRE_OK(kefir_opt_code_structure_block_exclusive_direct_predecessor(
-                        structure, block_id, target_block_id, &only_predecessor));
+                    REQUIRE_OK(kefir_opt_code_control_flow_block_exclusive_direct_predecessor(
+                        control_flow, block_id, target_block_id, &only_predecessor));
                     if (only_predecessor) {
                         for (const struct kefir_list_entry *iter =
-                                 kefir_list_head(&structure->blocks[target_block_id].successors);
+                                 kefir_list_head(&control_flow->blocks[target_block_id].successors);
                              iter != NULL; kefir_list_next(&iter)) {
                             ASSIGN_DECL_CAST(kefir_opt_block_id_t, successor_block_id, (kefir_uptr_t) iter->value);
                             REQUIRE_OK(kefir_opt_code_block_redirect_phi_links(mem, &func->code, target_block_id,
@@ -117,8 +117,9 @@ static kefir_result_t block_merge_impl(struct kefir_mem *mem, struct kefir_opt_f
                         REQUIRE_OK(kefir_opt_code_block_merge_into(mem, &func->code, &func->debug_info, block_id,
                                                                    target_block_id, true, true));
 
-                        REQUIRE_OK(kefir_opt_code_structure_drop_edge(mem, structure, block_id, target_block_id));
-                        REQUIRE_OK(kefir_opt_code_structure_redirect_edges(mem, structure, target_block_id, block_id));
+                        REQUIRE_OK(kefir_opt_code_control_flow_drop_edge(mem, control_flow, block_id, target_block_id));
+                        REQUIRE_OK(
+                            kefir_opt_code_control_flow_redirect_edges(mem, control_flow, target_block_id, block_id));
                         fixpoint_reached = false;
                     }
                 } break;
@@ -132,9 +133,9 @@ static kefir_result_t block_merge_impl(struct kefir_mem *mem, struct kefir_opt_f
                     const kefir_opt_block_id_t alternative_block_id =
                         tail_instr->operation.parameters.branch.alternative_block;
                     kefir_opt_block_id_t target_passthrough_block_id, alternative_passthrough_block_id;
-                    REQUIRE_OK(match_passthrough_block(func, structure, block_id, target_block_id,
+                    REQUIRE_OK(match_passthrough_block(func, control_flow, block_id, target_block_id,
                                                        &target_passthrough_block_id));
-                    REQUIRE_OK(match_passthrough_block(func, structure, block_id, alternative_block_id,
+                    REQUIRE_OK(match_passthrough_block(func, control_flow, block_id, alternative_block_id,
                                                        &alternative_passthrough_block_id));
 
                     const kefir_opt_block_id_t resolved_target_block_id =
@@ -178,15 +179,16 @@ static kefir_result_t block_merge_impl(struct kefir_mem *mem, struct kefir_opt_f
                         }
 
                         if (target_passthrough_block_id != KEFIR_ID_NONE) {
-                            REQUIRE_OK(kefir_opt_code_structure_drop_edge(mem, structure, block_id, target_block_id));
                             REQUIRE_OK(
-                                kefir_opt_code_structure_redirect_edges(mem, structure, target_block_id, block_id));
+                                kefir_opt_code_control_flow_drop_edge(mem, control_flow, block_id, target_block_id));
+                            REQUIRE_OK(kefir_opt_code_control_flow_redirect_edges(mem, control_flow, target_block_id,
+                                                                                  block_id));
                         }
                         if (alternative_passthrough_block_id != KEFIR_ID_NONE) {
-                            REQUIRE_OK(
-                                kefir_opt_code_structure_drop_edge(mem, structure, block_id, alternative_block_id));
-                            REQUIRE_OK(kefir_opt_code_structure_redirect_edges(mem, structure, alternative_block_id,
-                                                                               block_id));
+                            REQUIRE_OK(kefir_opt_code_control_flow_drop_edge(mem, control_flow, block_id,
+                                                                             alternative_block_id));
+                            REQUIRE_OK(kefir_opt_code_control_flow_redirect_edges(mem, control_flow,
+                                                                                  alternative_block_id, block_id));
                         }
                         fixpoint_reached = false;
                     }
@@ -201,9 +203,9 @@ static kefir_result_t block_merge_impl(struct kefir_mem *mem, struct kefir_opt_f
                     const kefir_opt_block_id_t alternative_block_id =
                         tail_instr->operation.parameters.branch.alternative_block;
                     kefir_opt_block_id_t target_passthrough_block_id, alternative_passthrough_block_id;
-                    REQUIRE_OK(match_passthrough_block(func, structure, block_id, target_block_id,
+                    REQUIRE_OK(match_passthrough_block(func, control_flow, block_id, target_block_id,
                                                        &target_passthrough_block_id));
-                    REQUIRE_OK(match_passthrough_block(func, structure, block_id, alternative_block_id,
+                    REQUIRE_OK(match_passthrough_block(func, control_flow, block_id, alternative_block_id,
                                                        &alternative_passthrough_block_id));
 
                     const kefir_opt_block_id_t resolved_target_block_id =
@@ -247,15 +249,16 @@ static kefir_result_t block_merge_impl(struct kefir_mem *mem, struct kefir_opt_f
                         }
 
                         if (target_passthrough_block_id != KEFIR_ID_NONE) {
-                            REQUIRE_OK(kefir_opt_code_structure_drop_edge(mem, structure, block_id, target_block_id));
                             REQUIRE_OK(
-                                kefir_opt_code_structure_redirect_edges(mem, structure, target_block_id, block_id));
+                                kefir_opt_code_control_flow_drop_edge(mem, control_flow, block_id, target_block_id));
+                            REQUIRE_OK(kefir_opt_code_control_flow_redirect_edges(mem, control_flow, target_block_id,
+                                                                                  block_id));
                         }
                         if (alternative_passthrough_block_id != KEFIR_ID_NONE) {
-                            REQUIRE_OK(
-                                kefir_opt_code_structure_drop_edge(mem, structure, block_id, alternative_block_id));
-                            REQUIRE_OK(kefir_opt_code_structure_redirect_edges(mem, structure, alternative_block_id,
-                                                                               block_id));
+                            REQUIRE_OK(kefir_opt_code_control_flow_drop_edge(mem, control_flow, block_id,
+                                                                             alternative_block_id));
+                            REQUIRE_OK(kefir_opt_code_control_flow_redirect_edges(mem, control_flow,
+                                                                                  alternative_block_id, block_id));
                         }
                         fixpoint_reached = false;
                     }
@@ -279,15 +282,15 @@ static kefir_result_t block_merge_apply(struct kefir_mem *mem, struct kefir_opt_
     REQUIRE(module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer module"));
     REQUIRE(func != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer function"));
 
-    struct kefir_opt_code_structure structure;
-    REQUIRE_OK(kefir_opt_code_structure_init(&structure));
-    kefir_result_t res = kefir_opt_code_structure_build(mem, &structure, &func->code);
-    REQUIRE_CHAIN(&res, block_merge_impl(mem, func, &structure));
+    struct kefir_opt_code_control_flow control_flow;
+    REQUIRE_OK(kefir_opt_code_control_flow_init(&control_flow));
+    kefir_result_t res = kefir_opt_code_control_flow_build(mem, &control_flow, &func->code);
+    REQUIRE_CHAIN(&res, block_merge_impl(mem, func, &control_flow));
     REQUIRE_ELSE(res == KEFIR_OK, {
-        kefir_opt_code_structure_free(mem, &structure);
+        kefir_opt_code_control_flow_free(mem, &control_flow);
         return res;
     });
-    REQUIRE_OK(kefir_opt_code_structure_free(mem, &structure));
+    REQUIRE_OK(kefir_opt_code_control_flow_free(mem, &control_flow));
     return KEFIR_OK;
 }
 

@@ -74,7 +74,7 @@ static kefir_result_t schedule_collect_control_flow(const struct kefir_opt_code_
     kefir_opt_instruction_ref_t instr_ref;
     kefir_opt_instruction_ref_t tail_control_ref;
 
-    const struct kefir_opt_code_structure_block *block_props = &param->code_analysis->structure.blocks[block->id];
+    const struct kefir_opt_code_control_flow_block *block_props = &param->code_analysis->control_flow.blocks[block->id];
 
     for (res = kefir_opt_code_block_instr_head(param->code, block, &instr_ref);
          res == KEFIR_OK && instr_ref != KEFIR_ID_NONE;
@@ -266,7 +266,7 @@ static kefir_result_t schedule_block(struct kefir_mem *mem, const struct kefir_o
     });
     REQUIRE_OK(kefir_list_free(mem, &param.instr_queue));
 
-    const struct kefir_opt_code_structure_block *block_props = &code_analysis->structure.blocks[block->id];
+    const struct kefir_opt_code_control_flow_block *block_props = &code_analysis->control_flow.blocks[block->id];
     for (const struct kefir_list_entry *iter = kefir_list_head(&block_props->successors); iter != NULL;
          kefir_list_next(&iter)) {
         ASSIGN_DECL_CAST(kefir_opt_block_id_t, successor_block_id, (kefir_uptr_t) iter->value);
@@ -293,7 +293,7 @@ static kefir_result_t do_schedule(struct kefir_mem *mem, const struct kefir_opt_
     REQUIRE_OK(schedule_block(mem, schedule, code, code_analysis, code->entry_point, schedule_builder, scheduler));
     kefir_result_t res;
     struct kefir_hashtreeset_iterator iter;
-    for (res = kefir_hashtreeset_iter(&code_analysis->structure.indirect_jump_target_blocks, &iter); res == KEFIR_OK;
+    for (res = kefir_hashtreeset_iter(&code_analysis->control_flow.indirect_jump_target_blocks, &iter); res == KEFIR_OK;
          res = kefir_hashtreeset_next(&iter)) {
         ASSIGN_DECL_CAST(kefir_opt_block_id_t, block_id, iter.entry);
         REQUIRE_OK(schedule_block(mem, schedule, code, code_analysis, block_id, schedule_builder, scheduler));

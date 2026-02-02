@@ -21,7 +21,7 @@
 #ifndef KEFIR_OPTIMIZER_LOOP_NEST_H_
 #define KEFIR_OPTIMIZER_LOOP_NEST_H_
 
-#include "kefir/optimizer/structure.h"
+#include "kefir/optimizer/control_flow.h"
 #include "kefir/core/tree.h"
 
 typedef kefir_uint64_t kefir_opt_code_loop_id_t;
@@ -49,7 +49,7 @@ kefir_result_t kefir_opt_code_loop_collection_init(struct kefir_opt_code_loop_co
 kefir_result_t kefir_opt_code_loop_collection_free(struct kefir_mem *, struct kefir_opt_code_loop_collection *);
 
 kefir_result_t kefir_opt_code_loop_collection_build(struct kefir_mem *, struct kefir_opt_code_loop_collection *,
-                                                    const struct kefir_opt_code_structure *);
+                                                    const struct kefir_opt_code_control_flow *);
 
 typedef struct kefir_opt_code_loop_collection_iterator {
     struct kefir_hashtree_node_iterator iter;

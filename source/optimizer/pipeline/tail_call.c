@@ -20,7 +20,7 @@
 
 #include "kefir/optimizer/pipeline.h"
 #include "kefir/optimizer/code_util.h"
-#include "kefir/optimizer/structure.h"
+#include "kefir/optimizer/trace.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 #include <string.h>

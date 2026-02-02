@@ -491,7 +491,7 @@ static kefir_result_t alias_return_space_allocation(struct kefir_codegen_amd64_f
     REQUIRE_OK(kefir_opt_code_container_block_count(&func->function->code, &num_of_blocks));
     for (kefir_opt_block_id_t block_id = 0; block_id < num_of_blocks; block_id++) {
         if (block_id != func->function->code.entry_point &&
-            func->function_analysis.structure.blocks[block_id].immediate_dominator == KEFIR_ID_NONE) {
+            func->function_analysis.control_flow.blocks[block_id].immediate_dominator == KEFIR_ID_NONE) {
             continue;
         }
 
@@ -637,7 +637,7 @@ static kefir_result_t translate_code(struct kefir_mem *mem, struct kefir_codegen
     REQUIRE_OK(kefir_opt_code_schedule_run(mem, &func->schedule, &func->function->code, &func->function_analysis,
                                            &scheduler.scheduler));
     REQUIRE_OK(kefir_opt_code_linear_liveness_build(mem, &func->linear_liveness, &func->function->code,
-                                                    &func->function_analysis.structure, &func->schedule));
+                                                    &func->function_analysis.control_flow, &func->schedule));
 
     REQUIRE_OK(collect_translated_instructions(mem, func));
     // Initialize block labels

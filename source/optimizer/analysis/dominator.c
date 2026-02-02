@@ -18,8 +18,8 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "kefir/optimizer/structure.h"
-#include "kefir/optimizer/format.h"
+#define KEFIR_OPTIMIZER_CONTROL_FLOW_INTERNAL
+#include "kefir/optimizer/control_flow.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 
@@ -34,19 +34,19 @@ struct semi_nca_data {
     kefir_opt_block_id_t *immediate_dominators;
 };
 
-static kefir_result_t semi_nca_dfs(struct kefir_opt_code_structure *structure, struct semi_nca_data *data,
+static kefir_result_t semi_nca_dfs(struct kefir_opt_code_control_flow *control_flow, struct semi_nca_data *data,
                                    kefir_opt_block_id_t block_id) {
     REQUIRE(data->dfs_trace[block_id] == -1, KEFIR_OK);
     data->dfs_trace[block_id] = data->counter;
     data->reverse_dfs_trace[data->counter] = block_id;
     data->counter++;
 
-    for (const struct kefir_list_entry *iter = kefir_list_head(&structure->blocks[block_id].successors); iter != NULL;
-         kefir_list_next(&iter)) {
+    for (const struct kefir_list_entry *iter = kefir_list_head(&control_flow->blocks[block_id].successors);
+         iter != NULL; kefir_list_next(&iter)) {
         ASSIGN_DECL_CAST(kefir_opt_block_id_t, successor_block_id, (kefir_uptr_t) iter->value);
         if (data->dfs_trace[successor_block_id] == -1) {
             data->dfs_parents[successor_block_id] = block_id;
-            REQUIRE_OK(semi_nca_dfs(structure, data, successor_block_id));
+            REQUIRE_OK(semi_nca_dfs(control_flow, data, successor_block_id));
         }
     }
     return KEFIR_OK;
@@ -67,7 +67,7 @@ static kefir_opt_block_id_t semi_nca_evaluate(struct semi_nca_data *data, kefir_
     return result;
 }
 
-static kefir_result_t semi_nca_impl(struct kefir_opt_code_structure *structure, struct semi_nca_data *data) {
+static kefir_result_t semi_nca_impl(struct kefir_opt_code_control_flow *control_flow, struct semi_nca_data *data) {
     for (kefir_size_t i = 0; i < data->num_of_blocks; i++) {
         data->dfs_trace[i] = -1;
         data->reverse_dfs_trace[i] = KEFIR_ID_NONE;
@@ -77,14 +77,14 @@ static kefir_result_t semi_nca_impl(struct kefir_opt_code_structure *structure, 
         data->immediate_dominators[i] = KEFIR_ID_NONE;
     }
 
-    REQUIRE_OK(semi_nca_dfs(structure, data, structure->code->entry_point));
+    REQUIRE_OK(semi_nca_dfs(control_flow, data, control_flow->code->entry_point));
 
     for (kefir_int64_t i = data->counter; i > 0;) {
         i--;
         kefir_opt_block_id_t block_id = data->reverse_dfs_trace[i];
         data->semi_dominators[block_id] = block_id;
 
-        for (const struct kefir_list_entry *iter = kefir_list_head(&structure->blocks[block_id].predecessors);
+        for (const struct kefir_list_entry *iter = kefir_list_head(&control_flow->blocks[block_id].predecessors);
              iter != NULL; kefir_list_next(&iter)) {
             ASSIGN_DECL_CAST(kefir_opt_block_id_t, predecessor_block_id, (kefir_uptr_t) iter->value);
             if (data->dfs_trace[predecessor_block_id] != -1) {
@@ -109,15 +109,15 @@ static kefir_result_t semi_nca_impl(struct kefir_opt_code_structure *structure, 
     }
 
     for (kefir_opt_block_id_t block_id = 0; block_id < data->num_of_blocks; block_id++) {
-        structure->blocks[block_id].immediate_dominator = data->immediate_dominators[block_id];
+        control_flow->blocks[block_id].immediate_dominator = data->immediate_dominators[block_id];
     }
 
     return KEFIR_OK;
 }
 
-static kefir_result_t semi_nca(struct kefir_mem *mem, struct kefir_opt_code_structure *structure) {
+static kefir_result_t semi_nca(struct kefir_mem *mem, struct kefir_opt_code_control_flow *control_flow) {
     struct semi_nca_data data = {0};
-    REQUIRE_OK(kefir_opt_code_container_block_count(structure->code, &data.num_of_blocks));
+    REQUIRE_OK(kefir_opt_code_container_block_count(control_flow->code, &data.num_of_blocks));
     data.dfs_trace = KEFIR_MALLOC(mem, sizeof(kefir_int64_t) * data.num_of_blocks);
     data.reverse_dfs_trace = KEFIR_MALLOC(mem, sizeof(kefir_opt_block_id_t) * data.num_of_blocks);
     data.dfs_parents = KEFIR_MALLOC(mem, sizeof(kefir_opt_block_id_t) * data.num_of_blocks);
@@ -130,7 +130,7 @@ static kefir_result_t semi_nca(struct kefir_mem *mem, struct kefir_opt_code_stru
         data.semi_dominators == NULL || data.best_candidates == NULL || data.immediate_dominators == NULL) {
         res = KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate semi-nca dominator algorithm data");
     }
-    REQUIRE_CHAIN(&res, semi_nca_impl(structure, &data));
+    REQUIRE_CHAIN(&res, semi_nca_impl(control_flow, &data));
 
     KEFIR_FREE(mem, data.dfs_trace);
     KEFIR_FREE(mem, data.reverse_dfs_trace);
@@ -142,11 +142,12 @@ static kefir_result_t semi_nca(struct kefir_mem *mem, struct kefir_opt_code_stru
     return res;
 }
 
-kefir_result_t kefir_opt_code_structure_find_dominators(struct kefir_mem *mem,
-                                                        struct kefir_opt_code_structure *structure) {
+kefir_result_t kefir_opt_code_control_flow_find_dominators(struct kefir_mem *mem,
+                                                           struct kefir_opt_code_control_flow *control_flow) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
-    REQUIRE(structure != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code structure"));
+    REQUIRE(control_flow != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code control flow"));
 
-    REQUIRE_OK(semi_nca(mem, structure));
+    REQUIRE_OK(semi_nca(mem, control_flow));
     return KEFIR_OK;
 }

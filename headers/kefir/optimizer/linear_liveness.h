@@ -23,7 +23,7 @@
 
 #include "kefir/core/hashtable.h"
 #include "kefir/optimizer/schedule.h"
-#include "kefir/optimizer/structure.h"
+#include "kefir/optimizer/control_flow.h"
 
 typedef struct kefir_opt_code_instruction_linear_liveness {
     struct kefir_hashtable per_block;
@@ -38,7 +38,7 @@ kefir_result_t kefir_opt_code_linear_liveness_free(struct kefir_mem *, struct ke
 kefir_result_t kefir_opt_code_linear_liveness_clear(struct kefir_mem *, struct kefir_opt_code_linear_liveness *);
 kefir_result_t kefir_opt_code_linear_liveness_build(struct kefir_mem *, struct kefir_opt_code_linear_liveness *,
                                                     const struct kefir_opt_code_container *,
-                                                    const struct kefir_opt_code_structure *,
+                                                    const struct kefir_opt_code_control_flow *,
                                                     const struct kefir_opt_code_schedule *);
 
 typedef struct kefir_opt_code_instruction_linear_liveness_iterator {

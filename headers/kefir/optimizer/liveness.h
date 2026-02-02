@@ -21,7 +21,7 @@
 #ifndef KEFIR_OPTIMIZER_LIVENESS_H_
 #define KEFIR_OPTIMIZER_LIVENESS_H_
 
-#include "kefir/optimizer/structure.h"
+#include "kefir/optimizer/control_flow.h"
 #include "kefir/core/hashset.h"
 
 typedef struct kefir_opt_code_liveness_block {
@@ -37,7 +37,7 @@ kefir_result_t kefir_opt_code_liveness_init(struct kefir_opt_code_liveness *);
 kefir_result_t kefir_opt_code_liveness_free(struct kefir_mem *, struct kefir_opt_code_liveness *);
 
 kefir_result_t kefir_opt_code_liveness_build(struct kefir_mem *, struct kefir_opt_code_liveness *,
-                                             struct kefir_opt_code_structure *);
+                                             struct kefir_opt_code_control_flow *);
 
 kefir_result_t kefir_opt_code_liveness_instruction_is_alive(const struct kefir_opt_code_liveness *,
                                                             kefir_opt_instruction_ref_t, kefir_bool_t *);

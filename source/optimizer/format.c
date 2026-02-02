@@ -845,8 +845,8 @@ static kefir_result_t format_operation_variable(struct kefir_json_output *json, 
 }
 
 static kefir_result_t format_operation_localvar(struct kefir_json_output *json, const struct kefir_opt_module *module,
-                                            const struct kefir_opt_code_container *code,
-                                            const struct kefir_opt_operation *oper) {
+                                                const struct kefir_opt_code_container *code,
+                                                const struct kefir_opt_operation *oper) {
     UNUSED(module);
     UNUSED(code);
     REQUIRE_OK(kefir_json_output_object_key(json, "scope"));
@@ -1198,13 +1198,14 @@ static kefir_result_t code_block_format(struct kefir_json_output *json, const st
 
     REQUIRE_OK(kefir_json_output_object_key(json, "properties"));
     if (code_analysis != NULL) {
-        const struct kefir_opt_code_structure_block *structure_block = &code_analysis->structure.blocks[block->id];
+        const struct kefir_opt_code_control_flow_block *control_flow_block =
+            &code_analysis->control_flow.blocks[block->id];
 
         REQUIRE_OK(kefir_json_output_object_begin(json));
 
         REQUIRE_OK(kefir_json_output_object_key(json, "successors"));
         REQUIRE_OK(kefir_json_output_array_begin(json));
-        for (const struct kefir_list_entry *iter = kefir_list_head(&structure_block->successors); iter != NULL;
+        for (const struct kefir_list_entry *iter = kefir_list_head(&control_flow_block->successors); iter != NULL;
              kefir_list_next(&iter)) {
             ASSIGN_DECL_CAST(kefir_opt_block_id_t, block_id, (kefir_uptr_t) iter->value);
             REQUIRE_OK(kefir_json_output_uinteger(json, block_id));
@@ -1213,7 +1214,7 @@ static kefir_result_t code_block_format(struct kefir_json_output *json, const st
 
         REQUIRE_OK(kefir_json_output_object_key(json, "predecessors"));
         REQUIRE_OK(kefir_json_output_array_begin(json));
-        for (const struct kefir_list_entry *iter = kefir_list_head(&structure_block->predecessors); iter != NULL;
+        for (const struct kefir_list_entry *iter = kefir_list_head(&control_flow_block->predecessors); iter != NULL;
              kefir_list_next(&iter)) {
             ASSIGN_DECL_CAST(kefir_opt_block_id_t, block_id, (kefir_uptr_t) iter->value);
             REQUIRE_OK(kefir_json_output_uinteger(json, block_id));
@@ -1221,7 +1222,7 @@ static kefir_result_t code_block_format(struct kefir_json_output *json, const st
         REQUIRE_OK(kefir_json_output_array_end(json));
 
         REQUIRE_OK(kefir_json_output_object_key(json, "immediate_dominator"));
-        REQUIRE_OK(id_format(json, structure_block->immediate_dominator));
+        REQUIRE_OK(id_format(json, control_flow_block->immediate_dominator));
 
         REQUIRE_OK(kefir_json_output_object_key(json, "alive_instructions"));
         REQUIRE_OK(kefir_json_output_array_begin(json));

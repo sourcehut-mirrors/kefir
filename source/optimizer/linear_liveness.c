@@ -90,7 +90,7 @@ static kefir_result_t update_liveness_for(struct kefir_mem *mem,
 
 static kefir_result_t propagate_instruction_liveness(
     struct kefir_mem *mem, struct kefir_opt_code_linear_liveness *liveness, const struct kefir_opt_code_container *code,
-    const struct kefir_opt_code_structure *structure, const struct kefir_opt_code_schedule *schedule,
+    const struct kefir_opt_code_control_flow *control_flow, const struct kefir_opt_code_schedule *schedule,
     kefir_opt_instruction_ref_t instr_ref, struct kefir_list *queue, struct kefir_hashset *visited) {
     REQUIRE_OK(kefir_list_clear(mem, queue));
     REQUIRE_OK(kefir_hashset_clear(mem, visited));
@@ -177,7 +177,7 @@ static kefir_result_t propagate_instruction_liveness(
             REQUIRE_OK(update_liveness_for(mem, instr_liveness, block_id, 0, linear_index));
             if (!kefir_hashset_has(visited, (kefir_hashset_key_t) block_id)) {
                 for (const struct kefir_list_entry *pred_iter =
-                         kefir_list_head(&structure->blocks[block_id].predecessors);
+                         kefir_list_head(&control_flow->blocks[block_id].predecessors);
                      pred_iter != NULL; kefir_list_next(&pred_iter)) {
                     ASSIGN_DECL_CAST(kefir_opt_block_id_t, predecessor_block_id, (kefir_uptr_t) pred_iter->value);
                     const struct kefir_opt_code_block_schedule *predecessor_block_schedule;
@@ -201,7 +201,7 @@ static kefir_result_t propagate_instruction_liveness(
 kefir_result_t kefir_opt_code_linear_liveness_build(struct kefir_mem *mem,
                                                     struct kefir_opt_code_linear_liveness *liveness,
                                                     const struct kefir_opt_code_container *code,
-                                                    const struct kefir_opt_code_structure *structure,
+                                                    const struct kefir_opt_code_control_flow *control_flow,
                                                     const struct kefir_opt_code_schedule *schedule) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(liveness != NULL,
@@ -215,7 +215,7 @@ kefir_result_t kefir_opt_code_linear_liveness_build(struct kefir_mem *mem,
     for (kefir_size_t i = 0; i < schedule->blocks_length; i++) {
         for (kefir_size_t j = 0; j < schedule->blocks[i].instructions_length; j++) {
             kefir_result_t res =
-                propagate_instruction_liveness(mem, liveness, code, structure, schedule,
+                propagate_instruction_liveness(mem, liveness, code, control_flow, schedule,
                                                schedule->blocks[i].instructions[j].instr_ref, &queue, &visited);
             REQUIRE_ELSE(res == KEFIR_OK, {
                 kefir_list_free(mem, &queue);

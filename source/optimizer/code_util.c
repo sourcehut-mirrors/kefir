@@ -20,7 +20,7 @@
 
 #include "kefir/optimizer/code_util.h"
 #include "kefir/optimizer/builder.h"
-#include "kefir/optimizer/structure.h"
+#include "kefir/optimizer/control_flow.h"
 #include "kefir/core/queue.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
@@ -354,9 +354,9 @@ static kefir_result_t extract_inputs_index(const struct kefir_opt_code_container
 }
 
 static kefir_result_t extract_inputs_localvar(const struct kefir_opt_code_container *code,
-                                          const struct kefir_opt_instruction *instr, kefir_bool_t resolve_phi,
-                                          kefir_result_t (*callback)(kefir_opt_instruction_ref_t, void *),
-                                          void *payload) {
+                                              const struct kefir_opt_instruction *instr, kefir_bool_t resolve_phi,
+                                              kefir_result_t (*callback)(kefir_opt_instruction_ref_t, void *),
+                                              void *payload) {
     UNUSED(code);
     UNUSED(resolve_phi);
     INPUT_CALLBACK(instr->operation.parameters.refs[0], callback, payload);
@@ -566,7 +566,7 @@ kefir_result_t kefir_opt_code_block_redirect_phi_links(struct kefir_mem *mem, st
 }
 
 static kefir_result_t collect_instr_after_split(struct kefir_mem *mem, struct kefir_opt_code_container *code,
-                                                struct kefir_opt_code_structure *structure,
+                                                struct kefir_opt_code_control_flow *control_flow,
                                                 kefir_opt_instruction_ref_t split_instr_ref,
                                                 struct kefir_queue *queue) {
     const struct kefir_opt_instruction *split_instr, *instr;
@@ -581,8 +581,8 @@ static kefir_result_t collect_instr_after_split(struct kefir_mem *mem, struct ke
          res == KEFIR_OK && instr_ref != KEFIR_ID_NONE;
          res = kefir_opt_instruction_next_control(code, instr_ref, &instr_ref)) {
         kefir_bool_t sequenced_before;
-        REQUIRE_OK(kefir_opt_code_structure_is_sequenced_before(mem, structure, instr_ref, split_instr_ref,
-                                                                &sequenced_before));
+        REQUIRE_OK(kefir_opt_code_control_flow_is_sequenced_before(mem, control_flow, instr_ref, split_instr_ref,
+                                                                   &sequenced_before));
         if (sequenced_before || instr_ref == split_instr_ref) {
             continue;
         }
@@ -599,8 +599,8 @@ static kefir_result_t collect_instr_after_split(struct kefir_mem *mem, struct ke
     for (res = kefir_opt_code_block_instr_head(code, block, &instr_ref); res == KEFIR_OK && instr_ref != KEFIR_ID_NONE;
          res = kefir_opt_instruction_next_sibling(code, instr_ref, &instr_ref)) {
         kefir_bool_t sequenced_before, is_control_flow;
-        REQUIRE_OK(kefir_opt_code_structure_is_sequenced_before(mem, structure, instr_ref, split_instr_ref,
-                                                                &sequenced_before));
+        REQUIRE_OK(kefir_opt_code_control_flow_is_sequenced_before(mem, control_flow, instr_ref, split_instr_ref,
+                                                                   &sequenced_before));
         REQUIRE_OK(kefir_opt_code_instruction_is_control_flow(code, instr_ref, &is_control_flow));
         if (sequenced_before || instr_ref == split_instr_ref || is_control_flow) {
             continue;
@@ -620,7 +620,7 @@ static kefir_result_t collect_instr_after_split(struct kefir_mem *mem, struct ke
 
 static kefir_result_t split_block_after_impl(struct kefir_mem *mem, struct kefir_opt_code_container *code,
                                              struct kefir_opt_code_debug_info *debug_info,
-                                             struct kefir_opt_code_structure *structure,
+                                             struct kefir_opt_code_control_flow *control_flow,
                                              kefir_opt_instruction_ref_t split_instr_ref,
                                              kefir_opt_block_id_t *split_block_id, struct kefir_queue *instr_queue) {
     const struct kefir_opt_instruction *split_instr, *instr;
@@ -632,7 +632,7 @@ static kefir_result_t split_block_after_impl(struct kefir_mem *mem, struct kefir
     const struct kefir_opt_code_block *block;
     REQUIRE_OK(kefir_opt_code_container_block(code, split_instr->block_id, &block));
 
-    REQUIRE_OK(collect_instr_after_split(mem, code, structure, split_instr_ref, instr_queue));
+    REQUIRE_OK(collect_instr_after_split(mem, code, control_flow, split_instr_ref, instr_queue));
 
     while (!kefir_queue_is_empty(instr_queue)) {
         kefir_queue_entry_t queue_entry;
@@ -656,29 +656,29 @@ static kefir_result_t split_block_after_impl(struct kefir_mem *mem, struct kefir
         REQUIRE_OK(kefir_opt_code_container_drop_instr(mem, code, instr_ref));
     }
 
-    for (const struct kefir_list_entry *iter = kefir_list_head(&structure->blocks[block->id].successors); iter != NULL;
-         kefir_list_next(&iter)) {
+    for (const struct kefir_list_entry *iter = kefir_list_head(&control_flow->blocks[block->id].successors);
+         iter != NULL; kefir_list_next(&iter)) {
         ASSIGN_DECL_CAST(kefir_opt_block_id_t, successor_block_id, (kefir_uptr_t) iter->value);
         REQUIRE_OK(kefir_opt_code_block_redirect_phi_links(mem, code, block->id, new_block_id, successor_block_id));
     }
 
     REQUIRE_OK(kefir_opt_code_builder_finalize_jump(mem, code, block->id, new_block_id, NULL));
-    REQUIRE_OK(kefir_opt_code_structure_free(mem, structure));
-    REQUIRE_OK(kefir_opt_code_structure_init(structure));
-    REQUIRE_OK(kefir_opt_code_structure_build(mem, structure, code));
+    REQUIRE_OK(kefir_opt_code_control_flow_free(mem, control_flow));
+    REQUIRE_OK(kefir_opt_code_control_flow_init(control_flow));
+    REQUIRE_OK(kefir_opt_code_control_flow_build(mem, control_flow, code));
     *split_block_id = new_block_id;
     return KEFIR_OK;
 }
 
 kefir_result_t kefir_opt_code_split_block_after(struct kefir_mem *mem, struct kefir_opt_code_container *code,
                                                 struct kefir_opt_code_debug_info *debug_info,
-                                                struct kefir_opt_code_structure *structure,
+                                                struct kefir_opt_code_control_flow *control_flow,
                                                 kefir_opt_instruction_ref_t split_instr_ref,
                                                 kefir_opt_block_id_t *split_block_id) {
     struct kefir_queue instr_queue;
     REQUIRE_OK(kefir_queue_init(&instr_queue));
     kefir_result_t res =
-        split_block_after_impl(mem, code, debug_info, structure, split_instr_ref, split_block_id, &instr_queue);
+        split_block_after_impl(mem, code, debug_info, control_flow, split_instr_ref, split_block_id, &instr_queue);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_queue_free(mem, &instr_queue);
         return res;
@@ -954,24 +954,25 @@ kefir_result_t kefir_opt_hoist_instruction_with_local_dependencies(struct kefir_
     return KEFIR_OK;
 }
 
-#define IS_BLOCK_REACHABLE(_structure, _block_id)      \
-    ((_block_id) == (_structure)->code->entry_point || \
-     (_structure)->blocks[(_block_id)].immediate_dominator != KEFIR_ID_NONE)
+#define IS_BLOCK_REACHABLE(_control_flow, _block_id)      \
+    ((_block_id) == (_control_flow)->code->entry_point || \
+     (_control_flow)->blocks[(_block_id)].immediate_dominator != KEFIR_ID_NONE)
 
-kefir_result_t kefr_opt_can_hoist_isolated_instruction(const struct kefir_opt_code_structure *structure,
+kefir_result_t kefr_opt_can_hoist_isolated_instruction(const struct kefir_opt_code_control_flow *control_flow,
                                                        kefir_opt_instruction_ref_t instr_ref,
                                                        kefir_opt_block_id_t target_block_id,
                                                        kefir_bool_t *can_hoist_ptr) {
-    REQUIRE(structure != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code structure"));
+    REQUIRE(control_flow != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code control flow"));
     REQUIRE(can_hoist_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to boolean flag"));
 
     *can_hoist_ptr = false;
 
     const struct kefir_opt_instruction *instr;
-    REQUIRE_OK(kefir_opt_code_container_instr(structure->code, instr_ref, &instr));
+    REQUIRE_OK(kefir_opt_code_container_instr(control_flow->code, instr_ref, &instr));
 
     kefir_bool_t is_control_flow;
-    REQUIRE_OK(kefir_opt_code_instruction_is_control_flow(structure->code, instr_ref, &is_control_flow));
+    REQUIRE_OK(kefir_opt_code_instruction_is_control_flow(control_flow->code, instr_ref, &is_control_flow));
     REQUIRE(!is_control_flow, KEFIR_OK);
 
     kefir_bool_t is_side_effect_free;
@@ -985,17 +986,17 @@ kefir_result_t kefr_opt_can_hoist_isolated_instruction(const struct kefir_opt_co
 
     struct kefir_opt_instruction_use_iterator use_iter;
     kefir_result_t res;
-    for (res = kefir_opt_code_container_instruction_use_instr_iter(structure->code, instr_ref, &use_iter);
+    for (res = kefir_opt_code_container_instruction_use_instr_iter(control_flow->code, instr_ref, &use_iter);
          res == KEFIR_OK; res = kefir_opt_code_container_instruction_use_next(&use_iter)) {
         const struct kefir_opt_instruction *use_instr;
-        REQUIRE_OK(kefir_opt_code_container_instr(structure->code, use_iter.use_instr_ref, &use_instr));
-        if (!IS_BLOCK_REACHABLE(structure, use_instr->block_id)) {
+        REQUIRE_OK(kefir_opt_code_container_instr(control_flow->code, use_iter.use_instr_ref, &use_instr));
+        if (!IS_BLOCK_REACHABLE(control_flow, use_instr->block_id)) {
             continue;
         }
 
         kefir_bool_t is_dominator;
-        REQUIRE_OK(
-            kefir_opt_code_structure_is_dominator(structure, use_instr->block_id, target_block_id, &is_dominator));
+        REQUIRE_OK(kefir_opt_code_control_flow_is_dominator(control_flow, use_instr->block_id, target_block_id,
+                                                            &is_dominator));
         REQUIRE(is_dominator, KEFIR_OK);
     }
     if (res != KEFIR_ITERATOR_END) {
@@ -1007,7 +1008,7 @@ kefir_result_t kefr_opt_can_hoist_isolated_instruction(const struct kefir_opt_co
 }
 
 struct can_hoist_param {
-    const struct kefir_opt_code_structure *structure;
+    const struct kefir_opt_code_control_flow *control_flow;
     kefir_opt_block_id_t source_block_id;
     kefir_opt_block_id_t target_block_id;
     kefir_bool_t can_hoist;
@@ -1019,11 +1020,11 @@ static kefir_result_t can_hoist_instr(kefir_opt_instruction_ref_t instr_ref, voi
     REQUIRE(param->can_hoist, KEFIR_OK);
 
     const struct kefir_opt_instruction *instr;
-    REQUIRE_OK(kefir_opt_code_container_instr(param->structure->code, instr_ref, &instr));
+    REQUIRE_OK(kefir_opt_code_container_instr(param->control_flow->code, instr_ref, &instr));
     if (instr->block_id != param->source_block_id) {
         kefir_bool_t is_dominator;
-        REQUIRE_OK(kefir_opt_code_structure_is_dominator(param->structure, param->target_block_id, instr->block_id,
-                                                         &is_dominator));
+        REQUIRE_OK(kefir_opt_code_control_flow_is_dominator(param->control_flow, param->target_block_id,
+                                                            instr->block_id, &is_dominator));
         if (!is_dominator) {
             param->can_hoist = false;
         }
@@ -1031,19 +1032,19 @@ static kefir_result_t can_hoist_instr(kefir_opt_instruction_ref_t instr_ref, voi
     }
 
     kefir_bool_t can_hoist_isolated = false;
-    REQUIRE_OK(kefr_opt_can_hoist_isolated_instruction(param->structure, instr_ref, param->target_block_id,
+    REQUIRE_OK(kefr_opt_can_hoist_isolated_instruction(param->control_flow, instr_ref, param->target_block_id,
                                                        &can_hoist_isolated));
     if (!can_hoist_isolated) {
         param->can_hoist = false;
         return KEFIR_OK;
     }
 
-    REQUIRE_OK(kefir_opt_instruction_extract_inputs(param->structure->code, instr, true, can_hoist_instr, payload));
+    REQUIRE_OK(kefir_opt_instruction_extract_inputs(param->control_flow->code, instr, true, can_hoist_instr, payload));
     return KEFIR_OK;
 }
 
 struct can_hoist_single_param {
-    const struct kefir_opt_code_structure *structure;
+    const struct kefir_opt_code_control_flow *control_flow;
     kefir_opt_block_id_t target_block_id;
     kefir_bool_t can_hoist;
 };
@@ -1054,53 +1055,54 @@ static kefir_result_t can_hoist_single_instr(kefir_opt_instruction_ref_t instr_r
     REQUIRE(param->can_hoist, KEFIR_OK);
 
     const struct kefir_opt_instruction *instr;
-    REQUIRE_OK(kefir_opt_code_container_instr(param->structure->code, instr_ref, &instr));
+    REQUIRE_OK(kefir_opt_code_container_instr(param->control_flow->code, instr_ref, &instr));
 
     if (instr->block_id == param->target_block_id) {
         kefir_bool_t is_control_flow;
-        REQUIRE_OK(kefir_opt_code_instruction_is_control_flow(param->structure->code, instr->id, &is_control_flow));
+        REQUIRE_OK(kefir_opt_code_instruction_is_control_flow(param->control_flow->code, instr->id, &is_control_flow));
         param->can_hoist = !is_control_flow;
     } else {
         kefir_bool_t is_dominator;
-        REQUIRE_OK(kefir_opt_code_structure_is_dominator(param->structure, param->target_block_id, instr->block_id,
-                                                         &is_dominator));
+        REQUIRE_OK(kefir_opt_code_control_flow_is_dominator(param->control_flow, param->target_block_id,
+                                                            instr->block_id, &is_dominator));
         param->can_hoist = is_dominator;
     }
 
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_opt_can_hoist_instruction(const struct kefir_opt_code_structure *structure,
+kefir_result_t kefir_opt_can_hoist_instruction(const struct kefir_opt_code_control_flow *control_flow,
                                                kefir_opt_instruction_ref_t instr_ref,
                                                kefir_opt_block_id_t target_block_id, kefir_bool_t *can_hoist_ptr) {
-    REQUIRE(structure != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code structure"));
+    REQUIRE(control_flow != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code control flow"));
     REQUIRE(can_hoist_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to boolean flag"));
 
     *can_hoist_ptr = false;
     struct can_hoist_single_param param = {
-        .structure = structure, .target_block_id = target_block_id, .can_hoist = true};
-    REQUIRE_OK(kefr_opt_can_hoist_isolated_instruction(structure, instr_ref, target_block_id, &param.can_hoist));
+        .control_flow = control_flow, .target_block_id = target_block_id, .can_hoist = true};
+    REQUIRE_OK(kefr_opt_can_hoist_isolated_instruction(control_flow, instr_ref, target_block_id, &param.can_hoist));
     REQUIRE(param.can_hoist, KEFIR_OK);
 
     const struct kefir_opt_instruction *instr;
-    REQUIRE_OK(kefir_opt_code_container_instr(structure->code, instr_ref, &instr));
+    REQUIRE_OK(kefir_opt_code_container_instr(control_flow->code, instr_ref, &instr));
 
-    REQUIRE_OK(kefir_opt_instruction_extract_inputs(structure->code, instr, true, can_hoist_single_instr, &param));
+    REQUIRE_OK(kefir_opt_instruction_extract_inputs(control_flow->code, instr, true, can_hoist_single_instr, &param));
     *can_hoist_ptr = param.can_hoist;
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_opt_can_hoist_instruction_with_local_dependencies(const struct kefir_opt_code_structure *structure,
-                                                                       kefir_opt_instruction_ref_t instr_ref,
-                                                                       kefir_opt_block_id_t target_block_id,
-                                                                       kefir_bool_t *can_hoist_ptr) {
-    REQUIRE(structure != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code structure"));
+kefir_result_t kefir_opt_can_hoist_instruction_with_local_dependencies(
+    const struct kefir_opt_code_control_flow *control_flow, kefir_opt_instruction_ref_t instr_ref,
+    kefir_opt_block_id_t target_block_id, kefir_bool_t *can_hoist_ptr) {
+    REQUIRE(control_flow != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code control flow"));
     REQUIRE(can_hoist_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to boolean flag"));
 
     const struct kefir_opt_instruction *instr;
-    REQUIRE_OK(kefir_opt_code_container_instr(structure->code, instr_ref, &instr));
+    REQUIRE_OK(kefir_opt_code_container_instr(control_flow->code, instr_ref, &instr));
 
-    struct can_hoist_param param = {.structure = structure,
+    struct can_hoist_param param = {.control_flow = control_flow,
                                     .source_block_id = instr->block_id,
                                     .target_block_id = target_block_id,
                                     .can_hoist = true};
@@ -1110,11 +1112,12 @@ kefir_result_t kefir_opt_can_hoist_instruction_with_local_dependencies(const str
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_opt_find_closest_common_dominator(const struct kefir_opt_code_structure *structure,
+kefir_result_t kefir_opt_find_closest_common_dominator(const struct kefir_opt_code_control_flow *control_flow,
                                                        kefir_opt_block_id_t block_id,
                                                        kefir_opt_block_id_t other_block_id,
                                                        kefir_opt_block_id_t *common_dominator_block_id) {
-    REQUIRE(structure != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code structure"));
+    REQUIRE(control_flow != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code control flow"));
     REQUIRE(common_dominator_block_id != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to block id"));
 
@@ -1133,12 +1136,12 @@ kefir_result_t kefir_opt_find_closest_common_dominator(const struct kefir_opt_co
         if (dominator_block_id == KEFIR_ID_NONE) {
             break;
         }
-        REQUIRE_OK(kefir_opt_code_structure_is_dominator(structure, block_id, dominator_block_id, &is_dominator));
+        REQUIRE_OK(kefir_opt_code_control_flow_is_dominator(control_flow, block_id, dominator_block_id, &is_dominator));
         if (is_dominator) {
             *common_dominator_block_id = dominator_block_id;
             return KEFIR_OK;
         } else {
-            dominator_block_id = structure->blocks[dominator_block_id].immediate_dominator;
+            dominator_block_id = control_flow->blocks[dominator_block_id].immediate_dominator;
         }
     } while (!is_dominator);
 

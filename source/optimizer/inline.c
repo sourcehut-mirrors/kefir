@@ -21,6 +21,7 @@
 #include "kefir/optimizer/inline.h"
 #include "kefir/optimizer/code_util.h"
 #include "kefir/optimizer/builder.h"
+#include "kefir/optimizer/trace.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 
@@ -333,8 +334,9 @@ static kefir_result_t inline_operation_variable(struct do_inline_param *param,
     return KEFIR_OK;
 }
 
-static kefir_result_t inline_operation_localvar(struct do_inline_param *param, const struct kefir_opt_instruction *instr,
-                                            kefir_opt_instruction_ref_t *mapped_instr_ref_ptr) {
+static kefir_result_t inline_operation_localvar(struct do_inline_param *param,
+                                                const struct kefir_opt_instruction *instr,
+                                                kefir_opt_instruction_ref_t *mapped_instr_ref_ptr) {
     kefir_opt_block_id_t mapped_block_id;
     REQUIRE_OK(map_block(param, instr->block_id, &mapped_block_id));
 
@@ -343,12 +345,9 @@ static kefir_result_t inline_operation_localvar(struct do_inline_param *param, c
 
     REQUIRE_OK(kefir_opt_code_container_new_instruction(
         param->mem, param->dst_code, mapped_block_id,
-        &(struct kefir_opt_operation) {.opcode = instr->operation.opcode, .parameters.type = instr->operation.parameters.type, .parameters.refs = {
-            mapped_ref1,
-            KEFIR_ID_NONE,
-            KEFIR_ID_NONE,
-            KEFIR_ID_NONE
-        }},
+        &(struct kefir_opt_operation) {.opcode = instr->operation.opcode,
+                                       .parameters.type = instr->operation.parameters.type,
+                                       .parameters.refs = {mapped_ref1, KEFIR_ID_NONE, KEFIR_ID_NONE, KEFIR_ID_NONE}},
         mapped_instr_ref_ptr));
     return KEFIR_OK;
 }
@@ -1335,13 +1334,14 @@ static kefir_result_t can_inline_function(const struct kefir_opt_function *calle
 
 kefir_result_t kefir_opt_try_inline_function_call(
     struct kefir_mem *mem, const struct kefir_opt_module *module, struct kefir_opt_function *func,
-    struct kefir_opt_code_structure *structure,
+    struct kefir_opt_code_control_flow *control_flow,
     const struct kefir_opt_try_inline_function_call_parameters *inline_params, kefir_opt_instruction_ref_t instr_ref,
     kefir_bool_t *did_inline_ptr) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer module"));
     REQUIRE(func != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer function"));
-    REQUIRE(structure != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code structure"));
+    REQUIRE(control_flow != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code control flow"));
 
     ASSIGN_PTR(did_inline_ptr, false);
 
@@ -1369,16 +1369,16 @@ kefir_result_t kefir_opt_try_inline_function_call(
     if (can_inline) {
         kefir_opt_block_id_t block_id = instr->block_id;
         kefir_opt_block_id_t split_block_id;
-        REQUIRE_OK(kefir_opt_code_split_block_after(mem, &func->code, &func->debug_info, structure, instr_ref,
+        REQUIRE_OK(kefir_opt_code_split_block_after(mem, &func->code, &func->debug_info, control_flow, instr_ref,
                                                     &split_block_id));
         REQUIRE_OK(do_inline(mem, module, func, called_func, block_id, split_block_id, call_node->node_id,
                              call_node->output_ref));
         func->num_of_inlines++;
         ASSIGN_PTR(did_inline_ptr, true);
 
-        REQUIRE_OK(kefir_opt_code_structure_free(mem, structure));
-        REQUIRE_OK(kefir_opt_code_structure_init(structure));
-        REQUIRE_OK(kefir_opt_code_structure_build(mem, structure, &func->code));
+        REQUIRE_OK(kefir_opt_code_control_flow_free(mem, control_flow));
+        REQUIRE_OK(kefir_opt_code_control_flow_init(control_flow));
+        REQUIRE_OK(kefir_opt_code_control_flow_build(mem, control_flow, &func->code));
     }
 
     return KEFIR_OK;

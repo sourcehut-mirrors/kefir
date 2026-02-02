@@ -29,7 +29,7 @@
 struct gvn_state {
     struct kefir_mem *mem;
     struct kefir_opt_function *func;
-    struct kefir_opt_code_structure structure;
+    struct kefir_opt_code_control_flow control_flow;
     struct kefir_list queue;
     struct kefir_hashtreeset queued_instr;
     struct kefir_hashtreeset processed_instr;
@@ -832,12 +832,12 @@ static kefir_result_t try_replace_instr(struct gvn_state *state, kefir_opt_instr
     kefir_bool_t can_replace = false;
     if (replacement_instr->block_id == instr->block_id) {
         kefir_bool_t sequenced_before = false;
-        REQUIRE_OK(kefir_opt_code_structure_is_sequenced_before(state->mem, &state->structure, instr_ref,
-                                                                replacement_ref, &sequenced_before));
+        REQUIRE_OK(kefir_opt_code_control_flow_is_sequenced_before(state->mem, &state->control_flow, instr_ref,
+                                                                   replacement_ref, &sequenced_before));
         can_replace = !sequenced_before;
     } else if (!only_local) {
-        REQUIRE_OK(kefir_opt_code_structure_is_dominator(&state->structure, instr->block_id,
-                                                         replacement_instr->block_id, &can_replace));
+        REQUIRE_OK(kefir_opt_code_control_flow_is_dominator(&state->control_flow, instr->block_id,
+                                                            replacement_instr->block_id, &can_replace));
     }
 
     if (can_replace) {
@@ -849,12 +849,12 @@ static kefir_result_t try_replace_instr(struct gvn_state *state, kefir_opt_instr
     return KEFIR_OK;
 }
 
-#define IS_BLOCK_REACHABLE(_structure, _block_id)      \
-    ((_block_id) == (_structure)->code->entry_point || \
-     (_structure)->blocks[(_block_id)].immediate_dominator != KEFIR_ID_NONE)
+#define IS_BLOCK_REACHABLE(_control_flow, _block_id)      \
+    ((_block_id) == (_control_flow)->code->entry_point || \
+     (_control_flow)->blocks[(_block_id)].immediate_dominator != KEFIR_ID_NONE)
 
 static kefir_result_t gvn_impl(struct gvn_state *state) {
-    REQUIRE_OK(kefir_opt_code_structure_build(state->mem, &state->structure, &state->func->code));
+    REQUIRE_OK(kefir_opt_code_control_flow_build(state->mem, &state->control_flow, &state->func->code));
     REQUIRE_OK(gvn_scan_control_flow(state));
 
     for (struct kefir_list_entry *iter = kefir_list_head(&state->queue); iter != NULL;
@@ -865,7 +865,7 @@ static kefir_result_t gvn_impl(struct gvn_state *state) {
 
         const struct kefir_opt_instruction *instr;
         REQUIRE_OK(kefir_opt_code_container_instr(&state->func->code, instr_ref, &instr));
-        if (!IS_BLOCK_REACHABLE(&state->structure, instr->block_id)) {
+        if (!IS_BLOCK_REACHABLE(&state->control_flow, instr->block_id)) {
             continue;
         }
         enum gvn_replacement_policy replacement_policy = GVN_REPLACEMENT_SKIP;
@@ -925,12 +925,12 @@ static kefir_result_t gvn_impl(struct gvn_state *state) {
                         kefir_opt_code_container_instr(&state->func->code, candidate_instr_ref, &candidate_instr));
 
                     kefir_opt_block_id_t closest_common_dominator_block_id;
-                    REQUIRE_OK(kefir_opt_find_closest_common_dominator(&state->structure, instr->block_id,
+                    REQUIRE_OK(kefir_opt_find_closest_common_dominator(&state->control_flow, instr->block_id,
                                                                        candidate_instr->block_id,
                                                                        &closest_common_dominator_block_id));
 
                     kefir_bool_t can_hoist;
-                    REQUIRE_OK(kefir_opt_can_hoist_instruction(&state->structure, instr_ref,
+                    REQUIRE_OK(kefir_opt_can_hoist_instruction(&state->control_flow, instr_ref,
                                                                closest_common_dominator_block_id, &can_hoist));
 
                     if (can_hoist) {
@@ -989,18 +989,18 @@ static kefir_result_t global_value_numbering_apply(struct kefir_mem *mem, struct
     REQUIRE_OK(kefir_hashtreeset_init(&state.processed_instr, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtree_init(&state.instr_hashes, &instr_ops));
     REQUIRE_OK(kefir_hashtree_on_removal(&state.instr_hashes, free_instr_refs, NULL));
-    REQUIRE_OK(kefir_opt_code_structure_init(&state.structure));
+    REQUIRE_OK(kefir_opt_code_control_flow_init(&state.control_flow));
 
     kefir_result_t res = gvn_impl(&state);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        kefir_opt_code_structure_free(mem, &state.structure);
+        kefir_opt_code_control_flow_free(mem, &state.control_flow);
         kefir_list_free(mem, &state.queue);
         kefir_hashtreeset_free(mem, &state.processed_instr);
         kefir_hashtreeset_free(mem, &state.queued_instr);
         kefir_hashtree_free(mem, &state.instr_hashes);
         return res;
     });
-    res = kefir_opt_code_structure_free(mem, &state.structure);
+    res = kefir_opt_code_control_flow_free(mem, &state.control_flow);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_list_free(mem, &state.queue);
         kefir_hashtreeset_free(mem, &state.processed_instr);

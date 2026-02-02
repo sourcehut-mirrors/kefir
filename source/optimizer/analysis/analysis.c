@@ -19,6 +19,7 @@
 */
 
 #include "kefir/optimizer/analysis.h"
+#include "kefir/optimizer/trace.h"
 #include "kefir/core/queue.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
@@ -28,7 +29,7 @@ kefir_result_t kefir_opt_code_analysis_init(struct kefir_opt_code_analysis *anal
     REQUIRE(analysis != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to optimizer code analysis"));
 
-    REQUIRE_OK(kefir_opt_code_structure_init(&analysis->structure));
+    REQUIRE_OK(kefir_opt_code_control_flow_init(&analysis->control_flow));
     REQUIRE_OK(kefir_opt_code_liveness_init(&analysis->liveness));
     REQUIRE_OK(kefir_opt_code_variable_scopes_init(&analysis->variable_scopes));
     return KEFIR_OK;
@@ -44,10 +45,10 @@ kefir_result_t kefir_opt_code_analyze(struct kefir_mem *mem, const struct kefir_
     kefir_size_t num_of_blocks;
     REQUIRE_OK(kefir_opt_code_container_block_count(code, &num_of_blocks));
 
-    REQUIRE_OK(kefir_opt_code_structure_build(mem, &analysis->structure, code));
-    REQUIRE_OK(kefir_opt_code_liveness_build(mem, &analysis->liveness, &analysis->structure));
+    REQUIRE_OK(kefir_opt_code_control_flow_build(mem, &analysis->control_flow, code));
+    REQUIRE_OK(kefir_opt_code_liveness_build(mem, &analysis->liveness, &analysis->control_flow));
     REQUIRE_OK(kefir_opt_code_variable_scopes_build(mem, &analysis->variable_scopes, &analysis->liveness));
-    REQUIRE_OK(kefir_opt_code_structure_drop_sequencing_cache(mem, &analysis->structure));
+    REQUIRE_OK(kefir_opt_code_control_flow_drop_sequencing_cache(mem, &analysis->control_flow));
     return KEFIR_OK;
 }
 
@@ -57,7 +58,7 @@ kefir_result_t kefir_opt_code_analysis_free(struct kefir_mem *mem, struct kefir_
 
     REQUIRE_OK(kefir_opt_code_variable_scopes_free(mem, &analysis->variable_scopes));
     REQUIRE_OK(kefir_opt_code_liveness_free(mem, &analysis->liveness));
-    REQUIRE_OK(kefir_opt_code_structure_free(mem, &analysis->structure));
+    REQUIRE_OK(kefir_opt_code_control_flow_free(mem, &analysis->control_flow));
     return KEFIR_OK;
 }
 
@@ -66,9 +67,9 @@ kefir_result_t kefir_opt_code_analysis_clear(struct kefir_mem *mem, struct kefir
     REQUIRE(analysis != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code analysis"));
 
     REQUIRE_OK(kefir_opt_code_liveness_free(mem, &analysis->liveness));
-    REQUIRE_OK(kefir_opt_code_structure_free(mem, &analysis->structure));
+    REQUIRE_OK(kefir_opt_code_control_flow_free(mem, &analysis->control_flow));
 
-    REQUIRE_OK(kefir_opt_code_structure_init(&analysis->structure));
+    REQUIRE_OK(kefir_opt_code_control_flow_init(&analysis->control_flow));
     REQUIRE_OK(kefir_opt_code_liveness_init(&analysis->liveness));
     return KEFIR_OK;
 }

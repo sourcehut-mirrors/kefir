@@ -18,7 +18,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "kefir/optimizer/structure.h"
+#include "kefir/optimizer/trace.h"
 #include "kefir/optimizer/code_util.h"
 #include "kefir/core/queue.h"
 #include "kefir/core/error.h"

@@ -20,7 +20,7 @@
 
 #include "kefir/optimizer/pipeline.h"
 #include "kefir/optimizer/builder.h"
-#include "kefir/optimizer/structure.h"
+#include "kefir/optimizer/control_flow.h"
 #include "kefir/optimizer/code_util.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
@@ -220,7 +220,7 @@ static kefir_result_t simplify_bool_not(struct kefir_mem *mem, struct kefir_opt_
 }
 
 static kefir_result_t simplify_or_candidate(struct kefir_mem *mem, struct kefir_opt_function *func,
-                                            struct kefir_opt_code_structure *structure,
+                                            struct kefir_opt_code_control_flow *control_flow,
                                             kefir_opt_instruction_ref_t instr_ref,
                                             kefir_opt_instruction_ref_t *replacement_ref) {
     const struct kefir_opt_instruction *instr;
@@ -236,8 +236,8 @@ static kefir_result_t simplify_or_candidate(struct kefir_mem *mem, struct kefir_
     REQUIRE_OK(kefir_opt_code_container_instr(&func->code, instr->operation.parameters.refs[1], &arg2));
 
     kefir_bool_t only_predecessor;
-    REQUIRE_OK(kefir_opt_code_structure_block_exclusive_direct_predecessor(structure, arg1->block_id, instr->block_id,
-                                                                           &only_predecessor));
+    REQUIRE_OK(kefir_opt_code_control_flow_block_exclusive_direct_predecessor(control_flow, arg1->block_id,
+                                                                              instr->block_id, &only_predecessor));
     if (only_predecessor) {
         const struct kefir_opt_code_block *arg1_block;
         REQUIRE_OK(kefir_opt_code_container_block(&func->code, arg1->block_id, &arg1_block));
@@ -293,12 +293,12 @@ static kefir_result_t simplify_or_candidate(struct kefir_mem *mem, struct kefir_
 }
 
 static kefir_result_t simplify_bool_or(struct kefir_mem *mem, struct kefir_opt_function *func,
-                                       struct kefir_opt_code_structure *structure,
+                                       struct kefir_opt_code_control_flow *control_flow,
                                        const struct kefir_opt_instruction *instr,
                                        kefir_opt_instruction_ref_t *replacement_ref) {
     const kefir_opt_block_id_t block_id = instr->block_id;
 
-    REQUIRE_OK(simplify_or_candidate(mem, func, structure, instr->id, replacement_ref));
+    REQUIRE_OK(simplify_or_candidate(mem, func, control_flow, instr->id, replacement_ref));
     REQUIRE(*replacement_ref == KEFIR_ID_NONE, KEFIR_OK);
 
     const struct kefir_opt_instruction *arg1, *arg2;
@@ -489,7 +489,7 @@ static kefir_result_t simplify_bool_or(struct kefir_mem *mem, struct kefir_opt_f
 }
 
 static kefir_result_t simplify_bool_and(struct kefir_mem *mem, struct kefir_opt_function *func,
-                                        struct kefir_opt_code_structure *structure,
+                                        struct kefir_opt_code_control_flow *control_flow,
                                         kefir_opt_instruction_ref_t instr_ref,
                                         kefir_opt_instruction_ref_t *replacement_ref) {
     const struct kefir_opt_instruction *instr;
@@ -617,8 +617,8 @@ static kefir_result_t simplify_bool_and(struct kefir_mem *mem, struct kefir_opt_
     REQUIRE(arg1->block_id != instr->block_id, KEFIR_OK);
 
     kefir_bool_t only_predecessor;
-    REQUIRE_OK(kefir_opt_code_structure_block_exclusive_direct_predecessor(structure, arg1->block_id, instr->block_id,
-                                                                           &only_predecessor));
+    REQUIRE_OK(kefir_opt_code_control_flow_block_exclusive_direct_predecessor(control_flow, arg1->block_id,
+                                                                              instr->block_id, &only_predecessor));
     if (only_predecessor) {
         const struct kefir_opt_code_block *arg1_block;
         REQUIRE_OK(kefir_opt_code_container_block(&func->code, arg1->block_id, &arg1_block));
@@ -3117,7 +3117,7 @@ static kefir_result_t is_unreachable_block(const struct kefir_opt_code_container
 }
 
 static kefir_result_t simplify_branch(struct kefir_mem *mem, struct kefir_opt_function *func,
-                                      struct kefir_opt_code_structure *structure,
+                                      struct kefir_opt_code_control_flow *control_flow,
                                       const struct kefir_opt_instruction *instr,
                                       kefir_opt_instruction_ref_t *replacement_ref) {
     const kefir_opt_block_id_t block_id = instr->block_id,
@@ -3133,7 +3133,7 @@ static kefir_result_t simplify_branch(struct kefir_mem *mem, struct kefir_opt_fu
     if (target_block == alternative_block) {
         REQUIRE_OK(kefir_opt_code_container_drop_control(&func->code, instr->id));
         REQUIRE_OK(kefir_opt_code_builder_finalize_jump(mem, &func->code, block_id, target_block, replacement_ref));
-        REQUIRE_OK(kefir_opt_code_structure_drop_sequencing_cache(mem, structure));
+        REQUIRE_OK(kefir_opt_code_control_flow_drop_sequencing_cache(mem, control_flow));
     } else if (target_block_unreachable) {
         const kefir_opt_instruction_ref_t instr_ref = instr->id;
         REQUIRE_OK(
@@ -3141,14 +3141,14 @@ static kefir_result_t simplify_branch(struct kefir_mem *mem, struct kefir_opt_fu
         REQUIRE_OK(kefir_opt_code_container_drop_control(&func->code, instr_ref));
         REQUIRE_OK(
             kefir_opt_code_builder_finalize_jump(mem, &func->code, block_id, alternative_block, replacement_ref));
-        REQUIRE_OK(kefir_opt_code_structure_drop_sequencing_cache(mem, structure));
+        REQUIRE_OK(kefir_opt_code_control_flow_drop_sequencing_cache(mem, control_flow));
     } else if (alternative_block_unreachable) {
         const kefir_opt_instruction_ref_t instr_ref = instr->id;
         REQUIRE_OK(kefir_opt_code_block_merge_into(mem, &func->code, &func->debug_info, block_id, alternative_block,
                                                    false, false));
         REQUIRE_OK(kefir_opt_code_container_drop_control(&func->code, instr_ref));
         REQUIRE_OK(kefir_opt_code_builder_finalize_jump(mem, &func->code, block_id, target_block, replacement_ref));
-        REQUIRE_OK(kefir_opt_code_structure_drop_sequencing_cache(mem, structure));
+        REQUIRE_OK(kefir_opt_code_control_flow_drop_sequencing_cache(mem, control_flow));
     } else if (arg1->operation.opcode == KEFIR_OPT_OPCODE_SCALAR_COMPARE) {
         kefir_opt_comparison_operation_t comparison = arg1->operation.parameters.comparison;
         const kefir_opt_instruction_ref_t ref1 = arg1->operation.parameters.refs[0],
@@ -3162,7 +3162,7 @@ static kefir_result_t simplify_branch(struct kefir_mem *mem, struct kefir_opt_fu
         REQUIRE_OK(kefir_opt_code_container_drop_control(&func->code, instr->id));
         REQUIRE_OK(kefir_opt_code_builder_finalize_branch_compare(mem, &func->code, block_id, comparison, ref1, ref2,
                                                                   target_block, alternative_block, replacement_ref));
-        REQUIRE_OK(kefir_opt_code_structure_drop_sequencing_cache(mem, structure));
+        REQUIRE_OK(kefir_opt_code_control_flow_drop_sequencing_cache(mem, control_flow));
     } else if (arg1->operation.opcode == KEFIR_OPT_OPCODE_INT8_BOOL_NOT &&
                (instr->operation.parameters.branch.condition_variant == KEFIR_OPT_BRANCH_CONDITION_8BIT ||
                 instr->operation.parameters.branch.condition_variant == KEFIR_OPT_BRANCH_CONDITION_16BIT ||
@@ -3174,7 +3174,7 @@ static kefir_result_t simplify_branch(struct kefir_mem *mem, struct kefir_opt_fu
                                                           KEFIR_OPT_BRANCH_CONDITION_NEGATED_8BIT, condition_ref,
                                                           target_block, alternative_block, replacement_ref));
 
-        REQUIRE_OK(kefir_opt_code_structure_drop_sequencing_cache(mem, structure));
+        REQUIRE_OK(kefir_opt_code_control_flow_drop_sequencing_cache(mem, control_flow));
     } else if (arg1->operation.opcode == KEFIR_OPT_OPCODE_INT16_BOOL_NOT &&
                (instr->operation.parameters.branch.condition_variant == KEFIR_OPT_BRANCH_CONDITION_8BIT ||
                 instr->operation.parameters.branch.condition_variant == KEFIR_OPT_BRANCH_CONDITION_16BIT ||
@@ -3186,7 +3186,7 @@ static kefir_result_t simplify_branch(struct kefir_mem *mem, struct kefir_opt_fu
                                                           KEFIR_OPT_BRANCH_CONDITION_NEGATED_16BIT, condition_ref,
                                                           target_block, alternative_block, replacement_ref));
 
-        REQUIRE_OK(kefir_opt_code_structure_drop_sequencing_cache(mem, structure));
+        REQUIRE_OK(kefir_opt_code_control_flow_drop_sequencing_cache(mem, control_flow));
     } else if (arg1->operation.opcode == KEFIR_OPT_OPCODE_INT32_BOOL_NOT &&
                (instr->operation.parameters.branch.condition_variant == KEFIR_OPT_BRANCH_CONDITION_8BIT ||
                 instr->operation.parameters.branch.condition_variant == KEFIR_OPT_BRANCH_CONDITION_16BIT ||
@@ -3198,7 +3198,7 @@ static kefir_result_t simplify_branch(struct kefir_mem *mem, struct kefir_opt_fu
                                                           KEFIR_OPT_BRANCH_CONDITION_NEGATED_32BIT, condition_ref,
                                                           target_block, alternative_block, replacement_ref));
 
-        REQUIRE_OK(kefir_opt_code_structure_drop_sequencing_cache(mem, structure));
+        REQUIRE_OK(kefir_opt_code_control_flow_drop_sequencing_cache(mem, control_flow));
     } else if (arg1->operation.opcode == KEFIR_OPT_OPCODE_INT64_BOOL_NOT &&
                (instr->operation.parameters.branch.condition_variant == KEFIR_OPT_BRANCH_CONDITION_8BIT ||
                 instr->operation.parameters.branch.condition_variant == KEFIR_OPT_BRANCH_CONDITION_16BIT ||
@@ -3210,7 +3210,7 @@ static kefir_result_t simplify_branch(struct kefir_mem *mem, struct kefir_opt_fu
                                                           KEFIR_OPT_BRANCH_CONDITION_NEGATED_64BIT, condition_ref,
                                                           target_block, alternative_block, replacement_ref));
 
-        REQUIRE_OK(kefir_opt_code_structure_drop_sequencing_cache(mem, structure));
+        REQUIRE_OK(kefir_opt_code_control_flow_drop_sequencing_cache(mem, control_flow));
     } else if (arg1->operation.opcode == KEFIR_OPT_OPCODE_INT8_BOOL_NOT &&
                (instr->operation.parameters.branch.condition_variant == KEFIR_OPT_BRANCH_CONDITION_NEGATED_8BIT ||
                 instr->operation.parameters.branch.condition_variant == KEFIR_OPT_BRANCH_CONDITION_NEGATED_16BIT ||
@@ -3222,7 +3222,7 @@ static kefir_result_t simplify_branch(struct kefir_mem *mem, struct kefir_opt_fu
                                                           condition_ref, target_block, alternative_block,
                                                           replacement_ref));
 
-        REQUIRE_OK(kefir_opt_code_structure_drop_sequencing_cache(mem, structure));
+        REQUIRE_OK(kefir_opt_code_control_flow_drop_sequencing_cache(mem, control_flow));
     } else if (arg1->operation.opcode == KEFIR_OPT_OPCODE_INT16_BOOL_NOT &&
                (instr->operation.parameters.branch.condition_variant == KEFIR_OPT_BRANCH_CONDITION_NEGATED_8BIT ||
                 instr->operation.parameters.branch.condition_variant == KEFIR_OPT_BRANCH_CONDITION_NEGATED_16BIT ||
@@ -3234,7 +3234,7 @@ static kefir_result_t simplify_branch(struct kefir_mem *mem, struct kefir_opt_fu
                                                           condition_ref, target_block, alternative_block,
                                                           replacement_ref));
 
-        REQUIRE_OK(kefir_opt_code_structure_drop_sequencing_cache(mem, structure));
+        REQUIRE_OK(kefir_opt_code_control_flow_drop_sequencing_cache(mem, control_flow));
     } else if (arg1->operation.opcode == KEFIR_OPT_OPCODE_INT32_BOOL_NOT &&
                (instr->operation.parameters.branch.condition_variant == KEFIR_OPT_BRANCH_CONDITION_NEGATED_8BIT ||
                 instr->operation.parameters.branch.condition_variant == KEFIR_OPT_BRANCH_CONDITION_NEGATED_16BIT ||
@@ -3246,7 +3246,7 @@ static kefir_result_t simplify_branch(struct kefir_mem *mem, struct kefir_opt_fu
                                                           condition_ref, target_block, alternative_block,
                                                           replacement_ref));
 
-        REQUIRE_OK(kefir_opt_code_structure_drop_sequencing_cache(mem, structure));
+        REQUIRE_OK(kefir_opt_code_control_flow_drop_sequencing_cache(mem, control_flow));
     } else if (arg1->operation.opcode == KEFIR_OPT_OPCODE_INT64_BOOL_NOT &&
                (instr->operation.parameters.branch.condition_variant == KEFIR_OPT_BRANCH_CONDITION_NEGATED_8BIT ||
                 instr->operation.parameters.branch.condition_variant == KEFIR_OPT_BRANCH_CONDITION_NEGATED_16BIT ||
@@ -3257,7 +3257,7 @@ static kefir_result_t simplify_branch(struct kefir_mem *mem, struct kefir_opt_fu
         REQUIRE_OK(kefir_opt_code_builder_finalize_branch(mem, &func->code, block_id, KEFIR_OPT_BRANCH_CONDITION_64BIT,
                                                           condition_ref, target_block, alternative_block,
                                                           replacement_ref));
-        REQUIRE_OK(kefir_opt_code_structure_drop_sequencing_cache(mem, structure));
+        REQUIRE_OK(kefir_opt_code_control_flow_drop_sequencing_cache(mem, control_flow));
     } else if (arg1->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST ||
                arg1->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST) {
         kefir_bool_t condition = true;
@@ -3304,7 +3304,7 @@ static kefir_result_t simplify_branch(struct kefir_mem *mem, struct kefir_opt_fu
             REQUIRE_OK(kefir_opt_code_builder_finalize_jump(
                 mem, &func->code, block_id, instr->operation.parameters.branch.alternative_block, replacement_ref));
         }
-        REQUIRE_OK(kefir_opt_code_structure_drop_sequencing_cache(mem, structure));
+        REQUIRE_OK(kefir_opt_code_control_flow_drop_sequencing_cache(mem, control_flow));
     } else if (IS_BOOL_INSTR(arg1) &&
                (instr->operation.parameters.branch.condition_variant == KEFIR_OPT_BRANCH_CONDITION_16BIT ||
                 instr->operation.parameters.branch.condition_variant == KEFIR_OPT_BRANCH_CONDITION_32BIT ||
@@ -3313,7 +3313,7 @@ static kefir_result_t simplify_branch(struct kefir_mem *mem, struct kefir_opt_fu
         REQUIRE_OK(kefir_opt_code_builder_finalize_branch(mem, &func->code, block_id, KEFIR_OPT_BRANCH_CONDITION_8BIT,
                                                           arg1->id, target_block, alternative_block, replacement_ref));
 
-        REQUIRE_OK(kefir_opt_code_structure_drop_sequencing_cache(mem, structure));
+        REQUIRE_OK(kefir_opt_code_control_flow_drop_sequencing_cache(mem, control_flow));
     } else if (IS_BOOL_INSTR(arg1) &&
                (instr->operation.parameters.branch.condition_variant == KEFIR_OPT_BRANCH_CONDITION_NEGATED_16BIT ||
                 instr->operation.parameters.branch.condition_variant == KEFIR_OPT_BRANCH_CONDITION_NEGATED_32BIT ||
@@ -3323,13 +3323,13 @@ static kefir_result_t simplify_branch(struct kefir_mem *mem, struct kefir_opt_fu
                                                           KEFIR_OPT_BRANCH_CONDITION_NEGATED_8BIT, arg1->id,
                                                           target_block, alternative_block, replacement_ref));
 
-        REQUIRE_OK(kefir_opt_code_structure_drop_sequencing_cache(mem, structure));
+        REQUIRE_OK(kefir_opt_code_control_flow_drop_sequencing_cache(mem, control_flow));
     }
     return KEFIR_OK;
 }
 
 static kefir_result_t simplify_branch_compare(struct kefir_mem *mem, struct kefir_opt_function *func,
-                                              struct kefir_opt_code_structure *structure,
+                                              struct kefir_opt_code_control_flow *control_flow,
                                               const struct kefir_opt_instruction *instr,
                                               kefir_opt_instruction_ref_t *replacement_ref) {
     const kefir_opt_block_id_t block_id = instr->block_id,
@@ -3339,7 +3339,7 @@ static kefir_result_t simplify_branch_compare(struct kefir_mem *mem, struct kefi
     if (target_block == alternative_block) {
         REQUIRE_OK(kefir_opt_code_container_drop_control(&func->code, instr->id));
         REQUIRE_OK(kefir_opt_code_builder_finalize_jump(mem, &func->code, block_id, target_block, replacement_ref));
-        REQUIRE_OK(kefir_opt_code_structure_drop_sequencing_cache(mem, structure));
+        REQUIRE_OK(kefir_opt_code_control_flow_drop_sequencing_cache(mem, control_flow));
     } else {
         kefir_bool_t target_block_unreachable, alternative_block_unreachable;
         REQUIRE_OK(is_unreachable_block(&func->code, target_block, &target_block_unreachable));
@@ -3351,14 +3351,14 @@ static kefir_result_t simplify_branch_compare(struct kefir_mem *mem, struct kefi
             REQUIRE_OK(kefir_opt_code_container_drop_control(&func->code, instr_ref));
             REQUIRE_OK(
                 kefir_opt_code_builder_finalize_jump(mem, &func->code, block_id, alternative_block, replacement_ref));
-            REQUIRE_OK(kefir_opt_code_structure_drop_sequencing_cache(mem, structure));
+            REQUIRE_OK(kefir_opt_code_control_flow_drop_sequencing_cache(mem, control_flow));
         } else if (alternative_block_unreachable) {
             const kefir_opt_instruction_ref_t instr_ref = instr->id;
             REQUIRE_OK(kefir_opt_code_block_merge_into(mem, &func->code, &func->debug_info, block_id, alternative_block,
                                                        false, false));
             REQUIRE_OK(kefir_opt_code_container_drop_control(&func->code, instr_ref));
             REQUIRE_OK(kefir_opt_code_builder_finalize_jump(mem, &func->code, block_id, target_block, replacement_ref));
-            REQUIRE_OK(kefir_opt_code_structure_drop_sequencing_cache(mem, structure));
+            REQUIRE_OK(kefir_opt_code_control_flow_drop_sequencing_cache(mem, control_flow));
         }
     }
     return KEFIR_OK;
@@ -3516,7 +3516,7 @@ static kefir_result_t simplify_load(struct kefir_mem *mem, struct kefir_opt_func
 }
 
 static kefir_result_t simplify_phi(struct kefir_mem *mem, struct kefir_opt_function *func,
-                                   struct kefir_opt_code_structure *structure,
+                                   struct kefir_opt_code_control_flow *control_flow,
                                    const struct kefir_opt_instruction *phi_instr,
                                    kefir_opt_instruction_ref_t *replacement_ref) {
     kefir_opt_phi_id_t phi_ref = phi_instr->operation.parameters.phi_ref;
@@ -3530,7 +3530,7 @@ static kefir_result_t simplify_phi(struct kefir_mem *mem, struct kefir_opt_funct
     const kefir_opt_block_id_t phi_instr_block_id = phi_instr->block_id;
 
     const kefir_opt_block_id_t immediate_dominator_block_id =
-        structure->blocks[phi_instr->block_id].immediate_dominator;
+        control_flow->blocks[phi_instr->block_id].immediate_dominator;
     REQUIRE(immediate_dominator_block_id != KEFIR_ID_NONE, KEFIR_OK);
 
     const struct kefir_opt_code_block *immediate_dominator_block;
@@ -3579,11 +3579,11 @@ static kefir_result_t simplify_phi(struct kefir_mem *mem, struct kefir_opt_funct
 #define CHECK_TARGET(_dominator_branch, _link_ref, _move_link)                                                     \
     do {                                                                                                           \
         kefir_bool_t is_predecessor;                                                                               \
-        REQUIRE_OK(kefir_opt_code_structure_block_exclusive_direct_predecessor(                                    \
-            structure, immediate_dominator_block_id, (_dominator_branch), &is_predecessor));                       \
+        REQUIRE_OK(kefir_opt_code_control_flow_block_exclusive_direct_predecessor(                                 \
+            control_flow, immediate_dominator_block_id, (_dominator_branch), &is_predecessor));                    \
         REQUIRE(is_predecessor, KEFIR_OK);                                                                         \
-        REQUIRE_OK(kefir_opt_code_structure_block_direct_predecessor(structure, (_dominator_branch),               \
-                                                                     phi_instr->block_id, &is_predecessor));       \
+        REQUIRE_OK(kefir_opt_code_control_flow_block_direct_predecessor(control_flow, (_dominator_branch),         \
+                                                                        phi_instr->block_id, &is_predecessor));    \
         REQUIRE(is_predecessor, KEFIR_OK);                                                                         \
                                                                                                                    \
         const struct kefir_opt_code_block *branch_block;                                                           \
@@ -3602,7 +3602,7 @@ static kefir_result_t simplify_phi(struct kefir_mem *mem, struct kefir_opt_funct
         if (link_instr->block_id == (_dominator_branch)) {                                                         \
             kefir_bool_t can_move_instr;                                                                           \
             REQUIRE_OK(kefir_opt_can_hoist_instruction_with_local_dependencies(                                    \
-                structure, *(_link_ref), immediate_dominator_block_id, &can_move_instr));                          \
+                control_flow, *(_link_ref), immediate_dominator_block_id, &can_move_instr));                       \
             REQUIRE(can_move_instr, KEFIR_OK);                                                                     \
             *(_move_link) = true;                                                                                  \
         }                                                                                                          \
@@ -3639,7 +3639,8 @@ static kefir_result_t simplify_phi(struct kefir_mem *mem, struct kefir_opt_funct
 }
 
 static kefir_result_t simplify_copy_memory(struct kefir_mem *mem, const struct kefir_opt_module *module,
-                                           struct kefir_opt_function *func, struct kefir_opt_code_structure *structure,
+                                           struct kefir_opt_function *func,
+                                           struct kefir_opt_code_control_flow *control_flow,
                                            const struct kefir_opt_instruction *copy_instr,
                                            kefir_opt_instruction_ref_t *replacement_ref, kefir_bool_t *drop_instr) {
     UNUSED(replacement_ref);
@@ -3686,7 +3687,7 @@ static kefir_result_t simplify_copy_memory(struct kefir_mem *mem, const struct k
 
         kefir_bool_t call_sequenced_before_other_uses;
         REQUIRE_OK(kefir_opt_check_all_control_flow_uses_after(
-            mem, structure, copy_target_instr->id, copy_source_instr->id, &call_sequenced_before_other_uses));
+            mem, control_flow, copy_target_instr->id, copy_source_instr->id, &call_sequenced_before_other_uses));
         REQUIRE(call_sequenced_before_other_uses, KEFIR_OK);
 
         REQUIRE_OK(kefir_opt_code_container_replace_references(mem, &func->code, copy_target_instr->id,
@@ -3694,7 +3695,7 @@ static kefir_result_t simplify_copy_memory(struct kefir_mem *mem, const struct k
 
         REQUIRE_OK(kefir_opt_code_container_drop_control(&func->code, copy_instr_ref));
         REQUIRE_OK(kefir_opt_code_container_drop_instr(mem, &func->code, copy_instr_ref));
-        REQUIRE_OK(kefir_opt_code_structure_drop_sequencing_cache(mem, structure));
+        REQUIRE_OK(kefir_opt_code_control_flow_drop_sequencing_cache(mem, control_flow));
     } else if (copy_source_instr->operation.opcode == KEFIR_OPT_OPCODE_GET_ARGUMENT &&
                copy_target_instr->operation.opcode == KEFIR_OPT_OPCODE_ALLOC_LOCAL &&
                kefir_ir_type_length(copy_instr_type) > 0 &&
@@ -3715,8 +3716,8 @@ static kefir_result_t simplify_copy_memory(struct kefir_mem *mem, const struct k
             }
 
             kefir_bool_t before_copy;
-            REQUIRE_OK(kefir_opt_code_structure_is_sequenced_before(mem, structure, copy_instr->id,
-                                                                    use_iter.use_instr_ref, &before_copy));
+            REQUIRE_OK(kefir_opt_code_control_flow_is_sequenced_before(mem, control_flow, copy_instr->id,
+                                                                       use_iter.use_instr_ref, &before_copy));
             REQUIRE(!before_copy, KEFIR_OK);
         }
         if (res != KEFIR_ITERATOR_END) {
@@ -3910,7 +3911,7 @@ static kefir_result_t simplify_int128_part(struct kefir_mem *mem, struct kefir_o
 
 static kefir_result_t op_simplify_apply_impl(struct kefir_mem *mem, const struct kefir_opt_module *module,
                                              struct kefir_opt_function *func,
-                                             struct kefir_opt_code_structure *structure) {
+                                             struct kefir_opt_code_control_flow *control_flow) {
     struct kefir_opt_code_container_iterator iter;
     for (struct kefir_opt_code_block *block = kefir_opt_code_container_iter(&func->code, &iter); block != NULL;
          block = kefir_opt_code_container_next(&iter)) {
@@ -3939,14 +3940,14 @@ static kefir_result_t op_simplify_apply_impl(struct kefir_mem *mem, const struct
                     case KEFIR_OPT_OPCODE_INT16_BOOL_OR:
                     case KEFIR_OPT_OPCODE_INT32_BOOL_OR:
                     case KEFIR_OPT_OPCODE_INT64_BOOL_OR:
-                        REQUIRE_OK(simplify_bool_or(mem, func, structure, instr, &replacement_ref));
+                        REQUIRE_OK(simplify_bool_or(mem, func, control_flow, instr, &replacement_ref));
                         break;
 
                     case KEFIR_OPT_OPCODE_INT8_BOOL_AND:
                     case KEFIR_OPT_OPCODE_INT16_BOOL_AND:
                     case KEFIR_OPT_OPCODE_INT32_BOOL_AND:
                     case KEFIR_OPT_OPCODE_INT64_BOOL_AND:
-                        REQUIRE_OK(simplify_bool_and(mem, func, structure, instr->id, &replacement_ref));
+                        REQUIRE_OK(simplify_bool_and(mem, func, control_flow, instr->id, &replacement_ref));
                         break;
 
                     case KEFIR_OPT_OPCODE_INT8_NOT:
@@ -4074,11 +4075,11 @@ static kefir_result_t op_simplify_apply_impl(struct kefir_mem *mem, const struct
                         break;
 
                     case KEFIR_OPT_OPCODE_BRANCH:
-                        REQUIRE_OK(simplify_branch(mem, func, structure, instr, &replacement_ref));
+                        REQUIRE_OK(simplify_branch(mem, func, control_flow, instr, &replacement_ref));
                         break;
 
                     case KEFIR_OPT_OPCODE_BRANCH_COMPARE:
-                        REQUIRE_OK(simplify_branch_compare(mem, func, structure, instr, &replacement_ref));
+                        REQUIRE_OK(simplify_branch_compare(mem, func, control_flow, instr, &replacement_ref));
                         break;
 
                     case KEFIR_OPT_OPCODE_SELECT:
@@ -4090,7 +4091,7 @@ static kefir_result_t op_simplify_apply_impl(struct kefir_mem *mem, const struct
                         break;
 
                     case KEFIR_OPT_OPCODE_PHI:
-                        REQUIRE_OK(simplify_phi(mem, func, structure, instr, &replacement_ref));
+                        REQUIRE_OK(simplify_phi(mem, func, control_flow, instr, &replacement_ref));
                         break;
 
                     case KEFIR_OPT_OPCODE_INT8_LOAD:
@@ -4100,8 +4101,8 @@ static kefir_result_t op_simplify_apply_impl(struct kefir_mem *mem, const struct
                         break;
 
                     case KEFIR_OPT_OPCODE_COPY_MEMORY:
-                        REQUIRE_OK(
-                            simplify_copy_memory(mem, module, func, structure, instr, &replacement_ref, &drop_instr));
+                        REQUIRE_OK(simplify_copy_memory(mem, module, func, control_flow, instr, &replacement_ref,
+                                                        &drop_instr));
                         break;
 
                     case KEFIR_OPT_OPCODE_BITINT_CAST_SIGNED:
@@ -4147,7 +4148,7 @@ static kefir_result_t op_simplify_apply_impl(struct kefir_mem *mem, const struct
                                                                                replacement_ref));
                         }
                         REQUIRE_OK(kefir_opt_code_container_drop_control(&func->code, instr_id));
-                        REQUIRE_OK(kefir_opt_code_structure_drop_sequencing_cache(mem, structure));
+                        REQUIRE_OK(kefir_opt_code_control_flow_drop_sequencing_cache(mem, control_flow));
                     }
                     kefir_opt_instruction_ref_t prev_instr_id = instr_id;
                     REQUIRE_OK(kefir_opt_instruction_next_sibling(&func->code, instr_id, &instr_id));
@@ -4159,7 +4160,7 @@ static kefir_result_t op_simplify_apply_impl(struct kefir_mem *mem, const struct
                     REQUIRE_OK(kefir_opt_code_instruction_is_control_flow(&func->code, instr_id, &is_control_flow));
                     if (is_control_flow) {
                         REQUIRE_OK(kefir_opt_code_container_drop_control(&func->code, instr_id));
-                        REQUIRE_OK(kefir_opt_code_structure_drop_sequencing_cache(mem, structure));
+                        REQUIRE_OK(kefir_opt_code_control_flow_drop_sequencing_cache(mem, control_flow));
                     }
                     kefir_opt_instruction_ref_t prev_instr_id = instr_id;
                     REQUIRE_OK(kefir_opt_instruction_next_sibling(&func->code, instr_id, &instr_id));
@@ -4184,15 +4185,15 @@ static kefir_result_t op_simplify_apply(struct kefir_mem *mem, struct kefir_opt_
     REQUIRE(module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer module"));
     REQUIRE(func != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer function"));
 
-    struct kefir_opt_code_structure structure;
-    REQUIRE_OK(kefir_opt_code_structure_init(&structure));
-    kefir_result_t res = kefir_opt_code_structure_build(mem, &structure, &func->code);
-    REQUIRE_CHAIN(&res, op_simplify_apply_impl(mem, module, func, &structure));
+    struct kefir_opt_code_control_flow control_flow;
+    REQUIRE_OK(kefir_opt_code_control_flow_init(&control_flow));
+    kefir_result_t res = kefir_opt_code_control_flow_build(mem, &control_flow, &func->code);
+    REQUIRE_CHAIN(&res, op_simplify_apply_impl(mem, module, func, &control_flow));
     REQUIRE_ELSE(res == KEFIR_OK, {
-        kefir_opt_code_structure_free(mem, &structure);
+        kefir_opt_code_control_flow_free(mem, &control_flow);
         return res;
     });
-    REQUIRE_OK(kefir_opt_code_structure_free(mem, &structure));
+    REQUIRE_OK(kefir_opt_code_control_flow_free(mem, &control_flow));
     return KEFIR_OK;
 }
 
