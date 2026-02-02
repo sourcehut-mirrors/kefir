@@ -658,10 +658,16 @@ static kefir_result_t split_block_after_impl(struct kefir_mem *mem, struct kefir
         REQUIRE_OK(kefir_opt_code_container_drop_instr(mem, code, instr_ref));
     }
 
-    for (const struct kefir_list_entry *iter = kefir_list_head(&control_flow->blocks[block->id].successors);
-         iter != NULL; kefir_list_next(&iter)) {
-        ASSIGN_DECL_CAST(kefir_opt_block_id_t, successor_block_id, (kefir_uptr_t) iter->value);
+    kefir_result_t res;
+    struct kefir_hashset_iterator iter;
+    kefir_hashset_key_t entry;
+    for (res = kefir_hashset_iter(&control_flow->blocks[block->id].successors, &iter, &entry); res == KEFIR_OK;
+         res = kefir_hashset_next(&iter, &entry)) {
+        ASSIGN_DECL_CAST(kefir_opt_block_id_t, successor_block_id, entry);
         REQUIRE_OK(kefir_opt_code_block_redirect_phi_links(mem, code, block->id, new_block_id, successor_block_id));
+    }
+    if (res != KEFIR_ITERATOR_END) {
+        REQUIRE_OK(res);
     }
 
     REQUIRE_OK(kefir_opt_code_builder_finalize_jump(mem, code, block->id, new_block_id, NULL));

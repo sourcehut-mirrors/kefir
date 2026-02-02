@@ -103,12 +103,17 @@ static kefir_result_t block_merge_impl(struct kefir_mem *mem, struct kefir_opt_f
                     REQUIRE_OK(kefir_opt_code_control_flow_block_exclusive_direct_predecessor(
                         control_flow, block_id, target_block_id, &only_predecessor));
                     if (only_predecessor) {
-                        for (const struct kefir_list_entry *iter =
-                                 kefir_list_head(&control_flow->blocks[target_block_id].successors);
-                             iter != NULL; kefir_list_next(&iter)) {
-                            ASSIGN_DECL_CAST(kefir_opt_block_id_t, successor_block_id, (kefir_uptr_t) iter->value);
+                        kefir_result_t res;
+                        struct kefir_hashset_iterator iter;
+                        kefir_hashset_key_t entry;
+                        for (res = kefir_hashset_iter(&control_flow->blocks[target_block_id].successors, &iter, &entry);
+                             res == KEFIR_OK; res = kefir_hashset_next(&iter, &entry)) {
+                            ASSIGN_DECL_CAST(kefir_opt_block_id_t, successor_block_id, entry);
                             REQUIRE_OK(kefir_opt_code_block_redirect_phi_links(mem, &func->code, target_block_id,
                                                                                block_id, successor_block_id));
+                        }
+                        if (res != KEFIR_ITERATOR_END) {
+                            REQUIRE_OK(res);
                         }
 
                         REQUIRE_OK(kefir_opt_code_container_drop_control(&func->code, tail_instr_ref));

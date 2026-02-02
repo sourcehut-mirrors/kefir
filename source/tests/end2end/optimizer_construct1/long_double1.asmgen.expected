@@ -184,7 +184,6 @@
                         "public_labels": [],
                         "properties": {
                             "successors": [
-                                1,
                                 1
                             ],
                             "predecessors": [],
@@ -215,7 +214,6 @@
                         "properties": {
                             "successors": [],
                             "predecessors": [
-                                0,
                                 0
                             ],
                             "immediate_dominator": 0,

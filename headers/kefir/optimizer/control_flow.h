@@ -26,8 +26,8 @@
 #include "kefir/core/hashset.h"
 
 typedef struct kefir_opt_code_control_flow_block {
-    struct kefir_list predecessors;
-    struct kefir_list successors;
+    struct kefir_hashset predecessors;
+    struct kefir_hashset successors;
     kefir_opt_block_id_t immediate_dominator;
 } kefir_opt_code_control_flow_block_t;
 
@@ -35,7 +35,8 @@ typedef struct kefir_opt_code_control_flow {
     const struct kefir_opt_code_container *code;
     kefir_size_t num_of_blocks;
     struct kefir_opt_code_control_flow_block *blocks;
-    struct kefir_hashtreeset indirect_jump_target_blocks;
+    struct kefir_hashset indirect_jump_source_blocks;
+    struct kefir_hashset indirect_jump_target_blocks;
 } kefir_opt_code_control_flow_t;
 
 kefir_result_t kefir_opt_code_control_flow_init(struct kefir_opt_code_control_flow *);

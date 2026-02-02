@@ -180,8 +180,8 @@
                         "properties": {
                             "successors": [
                                 7,
-                                5,
-                                6
+                                6,
+                                5
                             ],
                             "predecessors": [
                                 1,
@@ -245,32 +245,6 @@
                         }
                     },
                     {
-                        "id": 5,
-                        "control_flow": 22,
-                        "code": [
-                            {
-                                "id": 22,
-                                "opcode": "jump",
-                                "target_block": 8,
-                                "control_next": null,
-                                "ir_instruction": 20
-                            }
-                        ],
-                        "public_labels": [],
-                        "properties": {
-                            "successors": [
-                                8
-                            ],
-                            "predecessors": [
-                                3
-                            ],
-                            "immediate_dominator": 3,
-                            "alive_instructions": [
-                                22
-                            ]
-                        }
-                    },
-                    {
                         "id": 6,
                         "control_flow": 23,
                         "code": [
@@ -293,6 +267,32 @@
                             "immediate_dominator": 3,
                             "alive_instructions": [
                                 23
+                            ]
+                        }
+                    },
+                    {
+                        "id": 5,
+                        "control_flow": 22,
+                        "code": [
+                            {
+                                "id": 22,
+                                "opcode": "jump",
+                                "target_block": 8,
+                                "control_next": null,
+                                "ir_instruction": 20
+                            }
+                        ],
+                        "public_labels": [],
+                        "properties": {
+                            "successors": [
+                                8
+                            ],
+                            "predecessors": [
+                                3
+                            ],
+                            "immediate_dominator": 3,
+                            "alive_instructions": [
+                                22
                             ]
                         }
                     },

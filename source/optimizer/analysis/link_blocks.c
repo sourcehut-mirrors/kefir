@@ -29,7 +29,7 @@ static kefir_result_t link_block(struct kefir_mem *mem, struct kefir_opt_code_co
     const struct kefir_opt_code_block *block;
     REQUIRE_OK(kefir_opt_code_container_block(control_flow->code, block_id, &block));
 
-    struct kefir_list *successors = &control_flow->blocks[block_id].successors;
+    struct kefir_hashset *successors = &control_flow->blocks[block_id].successors;
 
     kefir_opt_instruction_ref_t tail_instr_ref;
     const struct kefir_opt_instruction *tail_instr = NULL;
@@ -38,32 +38,31 @@ static kefir_result_t link_block(struct kefir_mem *mem, struct kefir_opt_code_co
     REQUIRE_OK(kefir_opt_code_container_instr(control_flow->code, tail_instr_ref, &tail_instr));
     switch (tail_instr->operation.opcode) {
         case KEFIR_OPT_OPCODE_JUMP:
-            REQUIRE_OK(
-                kefir_list_insert_after(mem, successors, kefir_list_tail(successors),
-                                        (void *) (kefir_uptr_t) tail_instr->operation.parameters.branch.target_block));
+            REQUIRE_OK(kefir_hashset_add(mem, successors,
+                                         (kefir_hashset_key_t) tail_instr->operation.parameters.branch.target_block));
             break;
 
         case KEFIR_OPT_OPCODE_BRANCH:
         case KEFIR_OPT_OPCODE_BRANCH_COMPARE:
-            REQUIRE_OK(
-                kefir_list_insert_after(mem, successors, kefir_list_tail(successors),
-                                        (void *) (kefir_uptr_t) tail_instr->operation.parameters.branch.target_block));
-            REQUIRE_OK(kefir_list_insert_after(
-                mem, successors, kefir_list_tail(successors),
-                (void *) (kefir_uptr_t) tail_instr->operation.parameters.branch.alternative_block));
+            REQUIRE_OK(kefir_hashset_add(mem, successors,
+                                         (kefir_hashset_key_t) tail_instr->operation.parameters.branch.target_block));
+            REQUIRE_OK(kefir_hashset_add(
+                mem, successors, (kefir_hashset_key_t) tail_instr->operation.parameters.branch.alternative_block));
             break;
 
         case KEFIR_OPT_OPCODE_IJUMP: {
             kefir_result_t res;
-            struct kefir_hashtreeset_iterator iter;
-            for (res = kefir_hashtreeset_iter(&control_flow->indirect_jump_target_blocks, &iter); res == KEFIR_OK;
-                 res = kefir_hashtreeset_next(&iter)) {
-                REQUIRE_OK(kefir_list_insert_after(mem, successors, kefir_list_tail(successors),
-                                                   (void *) (kefir_uptr_t) iter.entry));
+            struct kefir_hashset_iterator iter;
+            kefir_hashset_key_t entry;
+            for (res = kefir_hashset_iter(&control_flow->indirect_jump_target_blocks, &iter, &entry); res == KEFIR_OK;
+                 res = kefir_hashset_next(&iter, &entry)) {
+                REQUIRE_OK(kefir_hashset_add(mem, successors, (kefir_hashset_key_t) entry));
             }
             if (res != KEFIR_ITERATOR_END) {
                 REQUIRE_OK(res);
             }
+            REQUIRE_OK(
+                kefir_hashset_add(mem, &control_flow->indirect_jump_source_blocks, (kefir_hashset_key_t) block_id));
         } break;
 
         case KEFIR_OPT_OPCODE_INLINE_ASSEMBLY: {
@@ -71,15 +70,13 @@ static kefir_result_t link_block(struct kefir_mem *mem, struct kefir_opt_code_co
             REQUIRE_OK(kefir_opt_code_container_inline_assembly(
                 control_flow->code, tail_instr->operation.parameters.inline_asm_ref, &inline_asm));
             if (!kefir_hashtree_empty(&inline_asm->jump_targets)) {
-                REQUIRE_OK(kefir_list_insert_after(mem, successors, kefir_list_tail(successors),
-                                                   (void *) (kefir_uptr_t) inline_asm->default_jump_target));
+                REQUIRE_OK(kefir_hashset_add(mem, successors, (kefir_hashset_key_t) inline_asm->default_jump_target));
 
                 struct kefir_hashtree_node_iterator iter;
                 for (const struct kefir_hashtree_node *node = kefir_hashtree_iter(&inline_asm->jump_targets, &iter);
                      node != NULL; node = kefir_hashtree_next(&iter)) {
                     ASSIGN_DECL_CAST(kefir_opt_block_id_t, target_block, node->value);
-                    REQUIRE_OK(kefir_list_insert_after(mem, successors, kefir_list_tail(successors),
-                                                       (void *) (kefir_uptr_t) target_block));
+                    REQUIRE_OK(kefir_hashset_add(mem, successors, (kefir_hashset_key_t) target_block));
                 }
             }
         } break;
@@ -96,12 +93,17 @@ static kefir_result_t link_block(struct kefir_mem *mem, struct kefir_opt_code_co
                                    "Unexpected terminating instruction of optimizer code block");
     }
 
-    for (const struct kefir_list_entry *iter = kefir_list_head(successors); iter != NULL; kefir_list_next(&iter)) {
-        ASSIGN_DECL_CAST(kefir_opt_block_id_t, successor_block, (kefir_uptr_t) iter->value);
-
-        REQUIRE_OK(kefir_list_insert_after(mem, &control_flow->blocks[successor_block].predecessors,
-                                           kefir_list_tail(&control_flow->blocks[successor_block].predecessors),
-                                           (void *) (kefir_uptr_t) block_id));
+    kefir_result_t res;
+    struct kefir_hashset_iterator iter;
+    kefir_hashset_key_t entry;
+    for (res = kefir_hashset_iter(successors, &iter, &entry); res == KEFIR_OK;
+         res = kefir_hashset_next(&iter, &entry)) {
+        ASSIGN_DECL_CAST(kefir_opt_block_id_t, successor_block, (kefir_uptr_t) entry);
+        REQUIRE_OK(kefir_hashset_add(mem, &control_flow->blocks[successor_block].predecessors,
+                                     (kefir_hashset_key_t) block_id));
+    }
+    if (res != KEFIR_ITERATOR_END) {
+        REQUIRE_OK(res);
     }
     return KEFIR_OK;
 }
@@ -119,8 +121,8 @@ static kefir_result_t link_blocks_trace(kefir_opt_instruction_ref_t instr_ref, v
     REQUIRE_OK(kefir_opt_code_container_instr(param->control_flow->code, instr_ref, &instr));
 
     if (instr->operation.opcode == KEFIR_OPT_OPCODE_BLOCK_LABEL) {
-        REQUIRE_OK(kefir_hashtreeset_add(param->mem, &param->control_flow->indirect_jump_target_blocks,
-                                         (kefir_hashtreeset_entry_t) instr->operation.parameters.imm.block_ref));
+        REQUIRE_OK(kefir_hashset_add(param->mem, &param->control_flow->indirect_jump_target_blocks,
+                                     (kefir_hashset_key_t) instr->operation.parameters.imm.block_ref));
     }
 
     return KEFIR_OK;
@@ -142,8 +144,8 @@ kefir_result_t kefir_opt_code_control_flow_link_blocks(struct kefir_mem *mem,
         const struct kefir_opt_code_block *block;
         REQUIRE_OK(kefir_opt_code_container_block(control_flow->code, block_id, &block));
         if (!kefir_hashtreeset_empty(&block->public_labels)) {
-            REQUIRE_OK(kefir_hashtreeset_add(mem, &control_flow->indirect_jump_target_blocks,
-                                             (kefir_hashtreeset_entry_t) block_id));
+            REQUIRE_OK(
+                kefir_hashset_add(mem, &control_flow->indirect_jump_target_blocks, (kefir_hashset_key_t) block_id));
         }
     }
 

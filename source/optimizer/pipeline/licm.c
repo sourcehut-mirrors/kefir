@@ -83,9 +83,12 @@ static kefir_result_t insert_predecessor_block_impl(struct kefir_mem *mem,
     REQUIRE_OK(kefir_opt_code_container_new_block(mem, code, false, &predecessor_block_id));
     REQUIRE_OK(kefir_opt_code_builder_finalize_jump(mem, code, predecessor_block_id, loop_entry, NULL));
 
-    for (const struct kefir_list_entry *iter = kefir_list_head(&control_flow->blocks[loop_entry].predecessors);
-         iter != NULL; kefir_list_next(&iter)) {
-        ASSIGN_DECL_CAST(kefir_opt_block_id_t, current_pred_block_id, (kefir_uptr_t) iter->value);
+    kefir_result_t res;
+    struct kefir_hashset_iterator iter;
+    kefir_hashset_key_t entry;
+    for (res = kefir_hashset_iter(&control_flow->blocks[loop_entry].predecessors, &iter, &entry); res == KEFIR_OK;
+         res = kefir_hashset_next(&iter, &entry)) {
+        ASSIGN_DECL_CAST(kefir_opt_block_id_t, current_pred_block_id, entry);
         if (current_pred_block_id != loop_exit && IS_BLOCK_REACHABLE(control_flow, current_pred_block_id)) {
             const struct kefir_opt_code_block *block;
             REQUIRE_OK(kefir_opt_code_container_block(code, current_pred_block_id, &block));
@@ -96,8 +99,10 @@ static kefir_result_t insert_predecessor_block_impl(struct kefir_mem *mem,
                 code, control_tail_ref, loop_entry, predecessor_block_id));
         }
     }
+    if (res != KEFIR_ITERATOR_END) {
+        REQUIRE_OK(res);
+    }
 
-    kefir_result_t res;
     kefir_opt_phi_id_t phi_ref;
     const struct kefir_opt_code_block *loop_entry_block;
     REQUIRE_OK(kefir_opt_code_container_block(code, loop_entry, &loop_entry_block));
@@ -241,8 +246,8 @@ static kefir_result_t do_hoist(struct licm_state *state, kefir_opt_block_id_t lo
 
 static kefir_result_t process_loop(struct licm_state *state) {
     REQUIRE(state->loop->loop_entry_block_id != state->control_flow.code->entry_point &&
-                !kefir_hashtreeset_has(&state->control_flow.indirect_jump_target_blocks,
-                                       (kefir_hashtreeset_entry_t) state->loop->loop_entry_block_id),
+                !kefir_hashset_has(&state->control_flow.indirect_jump_target_blocks,
+                                   (kefir_hashset_key_t) state->loop->loop_entry_block_id),
             KEFIR_OK);
 
     REQUIRE_OK(kefir_hashtreeset_clean(state->mem, &state->processed_instr));

@@ -259,8 +259,8 @@
                                 4
                             ],
                             "predecessors": [
-                                0,
-                                3
+                                3,
+                                0
                             ],
                             "immediate_dominator": 0,
                             "alive_instructions": [
@@ -395,8 +395,8 @@
                         "public_labels": [],
                         "properties": {
                             "successors": [
-                                2,
-                                5
+                                5,
+                                2
                             ],
                             "predecessors": [
                                 2

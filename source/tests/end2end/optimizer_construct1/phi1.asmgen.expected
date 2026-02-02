@@ -417,8 +417,8 @@
                                 3
                             ],
                             "predecessors": [
-                                4,
-                                6
+                                6,
+                                4
                             ],
                             "immediate_dominator": 4,
                             "alive_instructions": [

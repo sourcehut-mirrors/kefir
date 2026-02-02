@@ -41,13 +41,19 @@ static kefir_result_t semi_nca_dfs(struct kefir_opt_code_control_flow *control_f
     data->reverse_dfs_trace[data->counter] = block_id;
     data->counter++;
 
-    for (const struct kefir_list_entry *iter = kefir_list_head(&control_flow->blocks[block_id].successors);
-         iter != NULL; kefir_list_next(&iter)) {
-        ASSIGN_DECL_CAST(kefir_opt_block_id_t, successor_block_id, (kefir_uptr_t) iter->value);
+    kefir_result_t res;
+    struct kefir_hashset_iterator iter;
+    kefir_hashset_key_t entry;
+    for (res = kefir_hashset_iter(&control_flow->blocks[block_id].successors, &iter, &entry); res == KEFIR_OK;
+         res = kefir_hashset_next(&iter, &entry)) {
+        ASSIGN_DECL_CAST(kefir_opt_block_id_t, successor_block_id, (kefir_uptr_t) entry);
         if (data->dfs_trace[successor_block_id] == -1) {
             data->dfs_parents[successor_block_id] = block_id;
             REQUIRE_OK(semi_nca_dfs(control_flow, data, successor_block_id));
         }
+    }
+    if (res != KEFIR_ITERATOR_END) {
+        REQUIRE_OK(res);
     }
     return KEFIR_OK;
 }
@@ -84,9 +90,12 @@ static kefir_result_t semi_nca_impl(struct kefir_opt_code_control_flow *control_
         kefir_opt_block_id_t block_id = data->reverse_dfs_trace[i];
         data->semi_dominators[block_id] = block_id;
 
-        for (const struct kefir_list_entry *iter = kefir_list_head(&control_flow->blocks[block_id].predecessors);
-             iter != NULL; kefir_list_next(&iter)) {
-            ASSIGN_DECL_CAST(kefir_opt_block_id_t, predecessor_block_id, (kefir_uptr_t) iter->value);
+        kefir_result_t res;
+        struct kefir_hashset_iterator iter;
+        kefir_hashset_key_t entry;
+        for (res = kefir_hashset_iter(&control_flow->blocks[block_id].predecessors, &iter, &entry); res == KEFIR_OK;
+             res = kefir_hashset_next(&iter, &entry)) {
+            ASSIGN_DECL_CAST(kefir_opt_block_id_t, predecessor_block_id, (kefir_uptr_t) entry);
             if (data->dfs_trace[predecessor_block_id] != -1) {
                 semi_nca_evaluate(data, predecessor_block_id, i);
                 if (data->dfs_trace[data->best_candidates[predecessor_block_id]] <
@@ -94,6 +103,9 @@ static kefir_result_t semi_nca_impl(struct kefir_opt_code_control_flow *control_
                     data->semi_dominators[block_id] = data->best_candidates[predecessor_block_id];
                 }
             }
+        }
+        if (res != KEFIR_ITERATOR_END) {
+            REQUIRE_OK(res);
         }
 
         data->best_candidates[block_id] = data->semi_dominators[block_id];

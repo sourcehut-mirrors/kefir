@@ -74,11 +74,16 @@ static kefir_result_t build_loop_impl(struct kefir_mem *mem, const struct kefir_
         REQUIRE_OK(kefir_hashtreeset_add(mem, &loop->loop_blocks, (kefir_hashtreeset_entry_t) block_id));
 
         if (block_id != loop->loop_entry_block_id) {
-            for (const struct kefir_list_entry *pred_iter =
-                     kefir_list_head(&control_flow->blocks[block_id].predecessors);
-                 pred_iter != NULL; kefir_list_next(&pred_iter)) {
-                REQUIRE_OK(
-                    kefir_list_insert_after(mem, traversal_queue, kefir_list_tail(traversal_queue), pred_iter->value));
+            kefir_result_t res;
+            struct kefir_hashset_iterator pred_iter;
+            kefir_hashset_key_t entry;
+            for (res = kefir_hashset_iter(&control_flow->blocks[block_id].predecessors, &pred_iter, &entry);
+                 res == KEFIR_OK; res = kefir_hashset_next(&pred_iter, &entry)) {
+                REQUIRE_OK(kefir_list_insert_after(mem, traversal_queue, kefir_list_tail(traversal_queue),
+                                                   (void *) (kefir_uptr_t) entry));
+            }
+            if (res != KEFIR_ITERATOR_END) {
+                REQUIRE_OK(res);
             }
         }
     }
@@ -180,9 +185,12 @@ kefir_result_t kefir_opt_code_loop_collection_build(struct kefir_mem *mem, struc
             continue;
         }
 
-        for (const struct kefir_list_entry *succ_iter = kefir_list_head(&control_flow->blocks[block_id].successors);
-             succ_iter != NULL; kefir_list_next(&succ_iter)) {
-            ASSIGN_DECL_CAST(kefir_opt_block_id_t, successor_block_id, (kefir_uptr_t) succ_iter->value);
+        kefir_result_t res;
+        struct kefir_hashset_iterator succ_iter;
+        kefir_hashset_key_t entry;
+        for (res = kefir_hashset_iter(&control_flow->blocks[block_id].successors, &succ_iter, &entry); res == KEFIR_OK;
+             res = kefir_hashset_next(&succ_iter, &entry)) {
+            ASSIGN_DECL_CAST(kefir_opt_block_id_t, successor_block_id, entry);
             if (!IS_BLOCK_REACHABLE(control_flow, successor_block_id)) {
                 continue;
             }
@@ -196,6 +204,9 @@ kefir_result_t kefir_opt_code_loop_collection_build(struct kefir_mem *mem, struc
             if (is_dominator) {
                 REQUIRE_OK(build_loop(mem, loops, control_flow, successor_block_id, block_id));
             }
+        }
+        if (res != KEFIR_ITERATOR_END) {
+            REQUIRE_OK(res);
         }
     }
 

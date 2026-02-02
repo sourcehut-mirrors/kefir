@@ -116,13 +116,19 @@ static kefir_result_t propagate_alive_instructions_impl(struct kefir_mem *mem, s
         }
 
         REQUIRE_OK(kefir_bitset_clear(visited_blocks));
-#define ADD_PREDS(_block_id)                                                                                          \
-    do {                                                                                                              \
-        for (const struct kefir_list_entry *iter2 = kefir_list_head(&control_flow->blocks[(_block_id)].predecessors); \
-             iter2 != NULL; kefir_list_next(&iter2)) {                                                                \
-            ASSIGN_DECL_CAST(kefir_opt_block_id_t, pred_block_id, (kefir_uptr_t) iter2->value);                       \
-            REQUIRE_OK(kefir_queue_push(mem, queue, (kefir_queue_entry_t) pred_block_id));                            \
-        }                                                                                                             \
+#define ADD_PREDS(_block_id)                                                                           \
+    do {                                                                                               \
+        kefir_result_t res;                                                                            \
+        struct kefir_hashset_iterator iter;                                                            \
+        kefir_hashset_key_t entry;                                                                     \
+        for (res = kefir_hashset_iter(&control_flow->blocks[(_block_id)].predecessors, &iter, &entry); \
+             res == KEFIR_OK; res = kefir_hashset_next(&iter, &entry)) {                               \
+            ASSIGN_DECL_CAST(kefir_opt_block_id_t, pred_block_id, entry);                              \
+            REQUIRE_OK(kefir_queue_push(mem, queue, (kefir_queue_entry_t) pred_block_id));             \
+        }                                                                                              \
+        if (res != KEFIR_ITERATOR_END) {                                                               \
+            REQUIRE_OK(res);                                                                           \
+        }                                                                                              \
     } while (0)
         ADD_PREDS(block_id);
 

@@ -176,10 +176,11 @@ static kefir_result_t propagate_instruction_liveness(
 
             REQUIRE_OK(update_liveness_for(mem, instr_liveness, block_id, 0, linear_index));
             if (!kefir_hashset_has(visited, (kefir_hashset_key_t) block_id)) {
-                for (const struct kefir_list_entry *pred_iter =
-                         kefir_list_head(&control_flow->blocks[block_id].predecessors);
-                     pred_iter != NULL; kefir_list_next(&pred_iter)) {
-                    ASSIGN_DECL_CAST(kefir_opt_block_id_t, predecessor_block_id, (kefir_uptr_t) pred_iter->value);
+                struct kefir_hashset_iterator pred_iter;
+                kefir_hashset_key_t entry;
+                for (res = kefir_hashset_iter(&control_flow->blocks[block_id].predecessors, &pred_iter, &entry);
+                     res == KEFIR_OK; res = kefir_hashset_next(&pred_iter, &entry)) {
+                    ASSIGN_DECL_CAST(kefir_opt_block_id_t, predecessor_block_id, entry);
                     const struct kefir_opt_code_block_schedule *predecessor_block_schedule;
                     res = kefir_opt_code_schedule_of_block(schedule, predecessor_block_id, &predecessor_block_schedule);
                     if (res == KEFIR_NOT_FOUND) {
@@ -190,6 +191,9 @@ static kefir_result_t propagate_instruction_liveness(
                                          (kefir_uint32_t) predecessor_block_schedule->instructions_length;
                     REQUIRE_OK(
                         kefir_list_insert_after(mem, queue, kefir_list_tail(queue), (void *) (kefir_uptr_t) key));
+                }
+                if (res != KEFIR_ITERATOR_END) {
+                    REQUIRE_OK(res);
                 }
             }
             REQUIRE_OK(kefir_hashset_add(mem, visited, (kefir_hashset_key_t) block_id));

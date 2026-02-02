@@ -110,23 +110,23 @@ __kefir_softfloat_complex_double_mul:
     movaps %xmm0, %xmm4
 .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label8:
     or %r8d, %edi
-    jnz .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label41
-.L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label10:
+    jnz .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label10
+.L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label15:
     xor %eax, %eax
     test %dl, %dl
     sete %al
-    jz .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label31
-.L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label12:
+    jz .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label17
+.L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label25:
     test %eax, %eax
-    jnz .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label18
-.L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label14:
+    jnz .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label27
+.L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label40:
     test %dl, %dl
-    jnz .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label17
-.L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label16:
+    jnz .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label43
+.L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label42:
     movaps %xmm7, %xmm0
     movaps %xmm10, %xmm1
     jmp .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label5
-.L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label17:
+.L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label43:
     movq .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label57(%rip), %xmm7
     movaps %xmm4, %xmm0
     mulsd %xmm2, %xmm0
@@ -139,23 +139,23 @@ __kefir_softfloat_complex_double_mul:
     mulsd %xmm2, %xmm1
     addsd %xmm1, %xmm4
     mulsd %xmm4, %xmm10
-    jmp .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label16
-.L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label18:
-    ucomisd %xmm4, %xmm4
-    jp .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label30
-.L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label20:
-    ucomisd %xmm1, %xmm1
-    jp .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label29
-.L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label22:
-    ucomisd %xmm2, %xmm2
-    jp .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label28
-.L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label24:
-    ucomisd %xmm3, %xmm3
-    jp .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label27
-.L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label26:
-    mov $1, %edx
-    jmp .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label14
+    jmp .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label42
 .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label27:
+    ucomisd %xmm4, %xmm4
+    jp .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label29
+.L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label30:
+    ucomisd %xmm1, %xmm1
+    jp .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label32
+.L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label33:
+    ucomisd %xmm2, %xmm2
+    jp .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label35
+.L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label36:
+    ucomisd %xmm3, %xmm3
+    jp .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label38
+.L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label39:
+    mov $1, %edx
+    jmp .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label40
+.L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label38:
     movq .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label59(%rip), %xmm5
     movdqu .L__kefir_runtime_constant_copysign(%rip), %xmm0
     movaps %xmm0, %xmm6
@@ -163,8 +163,8 @@ __kefir_softfloat_complex_double_mul:
     movaps %xmm0, %xmm3
     andnpd %xmm5, %xmm3
     orpd %xmm6, %xmm3
-    jmp .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label26
-.L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label28:
+    jmp .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label39
+.L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label35:
     movq .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label60(%rip), %xmm5
     movdqu .L__kefir_runtime_constant_copysign(%rip), %xmm0
     movaps %xmm0, %xmm6
@@ -172,8 +172,8 @@ __kefir_softfloat_complex_double_mul:
     movaps %xmm0, %xmm2
     andnpd %xmm5, %xmm2
     orpd %xmm6, %xmm2
-    jmp .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label24
-.L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label29:
+    jmp .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label36
+.L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label32:
     movq .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label61(%rip), %xmm5
     movdqu .L__kefir_runtime_constant_copysign(%rip), %xmm0
     movaps %xmm0, %xmm6
@@ -181,8 +181,8 @@ __kefir_softfloat_complex_double_mul:
     movaps %xmm0, %xmm1
     andnpd %xmm5, %xmm1
     orpd %xmm6, %xmm1
-    jmp .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label22
-.L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label30:
+    jmp .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label33
+.L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label29:
     movq .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label62(%rip), %xmm5
     movdqu .L__kefir_runtime_constant_copysign(%rip), %xmm0
     movaps %xmm0, %xmm6
@@ -190,8 +190,8 @@ __kefir_softfloat_complex_double_mul:
     movaps %xmm0, %xmm4
     andnpd %xmm5, %xmm4
     orpd %xmm6, %xmm4
-    jmp .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label20
-.L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label31:
+    jmp .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label30
+.L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label17:
     movq %xmm5, %rax
     movabs $9223372036854775807, %rcx
     and %rax, %rcx
@@ -205,25 +205,25 @@ __kefir_softfloat_complex_double_mul:
     setne %al
     movzx %al, %rax
     test %al, %al
-    jz .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label40
-.L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label33:
+    jz .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label19
+.L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label20:
     test %eax, %eax
     setne %al
     movzx %al, %rax
     test %al, %al
-    jz .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label39
-.L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label35:
+    jz .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label45
+.L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label22:
     test %eax, %eax
     setne %al
     movzx %al, %rax
     test %al, %al
-    jz .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label38
-.L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label37:
+    jz .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label44
+.L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label24:
     test %eax, %eax
     setne %al
     movzx %al, %rax
-    jmp .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label12
-.L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label38:
+    jmp .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label25
+.L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label44:
     movq %xmm9, %rax
     movabs $9223372036854775807, %rcx
     and %rax, %rcx
@@ -236,8 +236,8 @@ __kefir_softfloat_complex_double_mul:
     test %esi, %esi
     setne %al
     movzx %al, %rax
-    jmp .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label37
-.L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label39:
+    jmp .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label24
+.L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label45:
     movq %xmm8, %rax
     movabs $9223372036854775807, %rcx
     and %rax, %rcx
@@ -250,8 +250,8 @@ __kefir_softfloat_complex_double_mul:
     test %esi, %esi
     setne %al
     movzx %al, %rax
-    jmp .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label35
-.L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label40:
+    jmp .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label22
+.L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label19:
     movq %xmm6, %rax
     movabs $9223372036854775807, %rcx
     and %rax, %rcx
@@ -264,8 +264,8 @@ __kefir_softfloat_complex_double_mul:
     test %esi, %esi
     setne %al
     movzx %al, %rax
-    jmp .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label33
-.L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label41:
+    jmp .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label20
+.L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label10:
     movq .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label63(%rip), %xmm0
     movq .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label64(%rip), %xmm11
     movq %xmm0, %rdx
@@ -294,12 +294,12 @@ __kefir_softfloat_complex_double_mul:
     orpd %xmm11, %xmm3
     ucomisd %xmm4, %xmm4
     jp .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label47
-.L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label43:
+.L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label12:
     ucomisd %xmm1, %xmm1
     jp .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label46
-.L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label45:
+.L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label14:
     mov $1, %edx
-    jmp .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label10
+    jmp .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label15
 .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label46:
     movq .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label67(%rip), %xmm11
     movdqu .L__kefir_runtime_constant_copysign(%rip), %xmm0
@@ -308,7 +308,7 @@ __kefir_softfloat_complex_double_mul:
     movaps %xmm0, %xmm1
     andnpd %xmm11, %xmm1
     orpd %xmm12, %xmm1
-    jmp .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label45
+    jmp .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label14
 .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label47:
     movq .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label68(%rip), %xmm11
     movdqu .L__kefir_runtime_constant_copysign(%rip), %xmm0
@@ -317,7 +317,7 @@ __kefir_softfloat_complex_double_mul:
     movaps %xmm0, %xmm4
     andnpd %xmm11, %xmm4
     orpd %xmm12, %xmm4
-    jmp .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label43
+    jmp .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label12
 .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label48:
     movq .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label69(%rip), %xmm4
     movq .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label70(%rip), %xmm11
@@ -346,14 +346,14 @@ __kefir_softfloat_complex_double_mul:
     andnpd %xmm12, %xmm1
     orpd %xmm11, %xmm1
     ucomisd %xmm2, %xmm2
-    jp .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label54
-.L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label50:
+    jp .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label50
+.L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label51:
     ucomisd %xmm3, %xmm3
-    jp .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label53
-.L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label52:
+    jp .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label54
+.L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label53:
     mov $1, %edx
     jmp .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label8
-.L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label53:
+.L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label54:
     movq .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label73(%rip), %xmm11
     movdqu .L__kefir_runtime_constant_copysign(%rip), %xmm0
     movaps %xmm0, %xmm12
@@ -361,8 +361,8 @@ __kefir_softfloat_complex_double_mul:
     movaps %xmm0, %xmm3
     andnpd %xmm11, %xmm3
     orpd %xmm12, %xmm3
-    jmp .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label52
-.L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label54:
+    jmp .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label53
+.L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label50:
     movq .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label74(%rip), %xmm11
     movdqu .L__kefir_runtime_constant_copysign(%rip), %xmm0
     movaps %xmm0, %xmm12
@@ -370,7 +370,7 @@ __kefir_softfloat_complex_double_mul:
     movaps %xmm0, %xmm2
     andnpd %xmm11, %xmm2
     orpd %xmm12, %xmm2
-    jmp .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label50
+    jmp .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label51
 .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label55:
     ucomisd %xmm10, %xmm10
     setp %al

@@ -170,8 +170,8 @@
                         "public_labels": [],
                         "properties": {
                             "successors": [
-                                4,
-                                5
+                                5,
+                                4
                             ],
                             "predecessors": [
                                 0
@@ -185,6 +185,76 @@
                                 12,
                                 11,
                                 10
+                            ]
+                        }
+                    },
+                    {
+                        "id": 5,
+                        "control_flow": 22,
+                        "code": [
+                            {
+                                "id": 17,
+                                "opcode": "int_const",
+                                "value": 7,
+                                "control_next": null,
+                                "ir_instruction": 17
+                            },
+                            {
+                                "id": 18,
+                                "opcode": "int_const",
+                                "value": 1,
+                                "control_next": null,
+                                "ir_instruction": 18
+                            },
+                            {
+                                "id": 19,
+                                "opcode": "int_const",
+                                "value": 4,
+                                "control_next": null,
+                                "ir_instruction": 19
+                            },
+                            {
+                                "id": 20,
+                                "opcode": "int32_mod",
+                                "args": [
+                                    18,
+                                    19
+                                ],
+                                "control_next": null,
+                                "ir_instruction": 20
+                            },
+                            {
+                                "id": 21,
+                                "opcode": "int32_sub",
+                                "args": [
+                                    17,
+                                    20
+                                ],
+                                "control_next": null,
+                                "ir_instruction": 21
+                            },
+                            {
+                                "id": 22,
+                                "opcode": "return",
+                                "arg": 21,
+                                "control_next": null,
+                                "ir_instruction": 22
+                            }
+                        ],
+                        "public_labels": [],
+                        "properties": {
+                            "successors": [],
+                            "predecessors": [
+                                1
+                            ],
+                            "immediate_dominator": 1,
+                            "alive_instructions": [
+                                20,
+                                22,
+                                19,
+                                17,
+                                21,
+                                18
                             ]
                         }
                     },
@@ -274,76 +344,6 @@
                                 30,
                                 29,
                                 25
-                            ]
-                        }
-                    },
-                    {
-                        "id": 5,
-                        "control_flow": 22,
-                        "code": [
-                            {
-                                "id": 17,
-                                "opcode": "int_const",
-                                "value": 7,
-                                "control_next": null,
-                                "ir_instruction": 17
-                            },
-                            {
-                                "id": 18,
-                                "opcode": "int_const",
-                                "value": 1,
-                                "control_next": null,
-                                "ir_instruction": 18
-                            },
-                            {
-                                "id": 19,
-                                "opcode": "int_const",
-                                "value": 4,
-                                "control_next": null,
-                                "ir_instruction": 19
-                            },
-                            {
-                                "id": 20,
-                                "opcode": "int32_mod",
-                                "args": [
-                                    18,
-                                    19
-                                ],
-                                "control_next": null,
-                                "ir_instruction": 20
-                            },
-                            {
-                                "id": 21,
-                                "opcode": "int32_sub",
-                                "args": [
-                                    17,
-                                    20
-                                ],
-                                "control_next": null,
-                                "ir_instruction": 21
-                            },
-                            {
-                                "id": 22,
-                                "opcode": "return",
-                                "arg": 21,
-                                "control_next": null,
-                                "ir_instruction": 22
-                            }
-                        ],
-                        "public_labels": [],
-                        "properties": {
-                            "successors": [],
-                            "predecessors": [
-                                1
-                            ],
-                            "immediate_dominator": 1,
-                            "alive_instructions": [
-                                20,
-                                22,
-                                19,
-                                17,
-                                21,
-                                18
                             ]
                         }
                     },

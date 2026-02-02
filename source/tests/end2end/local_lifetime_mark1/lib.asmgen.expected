@@ -761,8 +761,8 @@
                         "public_labels": [],
                         "properties": {
                             "successors": [
-                                6,
-                                7
+                                7,
+                                6
                             ],
                             "predecessors": [
                                 3,
