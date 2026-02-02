@@ -32,6 +32,7 @@
 static kefir_result_t inline_func_impl(struct kefir_mem *mem, const struct kefir_opt_module *module,
                                        struct kefir_opt_function *func,
                                        struct kefir_opt_code_control_flow *control_flow,
+                                       struct kefir_opt_code_sequencing *sequencing,
                                        const struct kefir_optimizer_configuration *config,
                                        kefir_bool_t *fixpoint_reached) {
     kefir_size_t num_of_blocks;
@@ -56,7 +57,7 @@ static kefir_result_t inline_func_impl(struct kefir_mem *mem, const struct kefir
             kefir_bool_t inlined = false;
             if (instr->operation.opcode == KEFIR_OPT_OPCODE_INVOKE) {
                 REQUIRE_OK(kefir_opt_try_inline_function_call(
-                    mem, module, func, control_flow,
+                    mem, module, func, control_flow, sequencing,
                     &(struct kefir_opt_try_inline_function_call_parameters) {
                         .max_inline_depth = config->max_inline_depth,
                         .max_inlines_per_function = config->max_inlines_per_function},
@@ -85,13 +86,21 @@ static kefir_result_t inline_func_apply(struct kefir_mem *mem, struct kefir_opt_
     REQUIRE(config != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer configuration"));
 
     struct kefir_opt_code_control_flow control_flow;
+    struct kefir_opt_code_sequencing sequencing;
     REQUIRE_OK(kefir_opt_code_control_flow_init(&control_flow));
+    REQUIRE_OK(kefir_opt_code_sequencing_init(&sequencing));
     kefir_result_t res = kefir_opt_code_control_flow_build(mem, &control_flow, &func->code);
     kefir_bool_t fixpoint_reached = false;
     while (!fixpoint_reached && res == KEFIR_OK) {
         fixpoint_reached = true;
-        REQUIRE_CHAIN(&res, inline_func_impl(mem, module, func, &control_flow, config, &fixpoint_reached));
+        REQUIRE_CHAIN(&res, inline_func_impl(mem, module, func, &control_flow, &sequencing, config, &fixpoint_reached));
     }
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_opt_code_sequencing_free(mem, &sequencing);
+        kefir_opt_code_control_flow_free(mem, &control_flow);
+        return res;
+    });
+    res = kefir_opt_code_sequencing_free(mem, &sequencing);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_opt_code_control_flow_free(mem, &control_flow);
         return res;

@@ -566,7 +566,8 @@ kefir_result_t kefir_opt_code_block_redirect_phi_links(struct kefir_mem *mem, st
 }
 
 static kefir_result_t collect_instr_after_split(struct kefir_mem *mem, struct kefir_opt_code_container *code,
-                                                struct kefir_opt_code_control_flow *control_flow,
+                                                const struct kefir_opt_code_control_flow *control_flow,
+                                                struct kefir_opt_code_sequencing *sequencing,
                                                 kefir_opt_instruction_ref_t split_instr_ref,
                                                 struct kefir_queue *queue) {
     const struct kefir_opt_instruction *split_instr, *instr;
@@ -581,8 +582,8 @@ static kefir_result_t collect_instr_after_split(struct kefir_mem *mem, struct ke
          res == KEFIR_OK && instr_ref != KEFIR_ID_NONE;
          res = kefir_opt_instruction_next_control(code, instr_ref, &instr_ref)) {
         kefir_bool_t sequenced_before;
-        REQUIRE_OK(kefir_opt_code_control_flow_is_sequenced_before(mem, control_flow, instr_ref, split_instr_ref,
-                                                                   &sequenced_before));
+        REQUIRE_OK(kefir_opt_code_is_sequenced_before(mem, control_flow, sequencing, instr_ref, split_instr_ref,
+                                                      &sequenced_before));
         if (sequenced_before || instr_ref == split_instr_ref) {
             continue;
         }
@@ -599,8 +600,8 @@ static kefir_result_t collect_instr_after_split(struct kefir_mem *mem, struct ke
     for (res = kefir_opt_code_block_instr_head(code, block, &instr_ref); res == KEFIR_OK && instr_ref != KEFIR_ID_NONE;
          res = kefir_opt_instruction_next_sibling(code, instr_ref, &instr_ref)) {
         kefir_bool_t sequenced_before, is_control_flow;
-        REQUIRE_OK(kefir_opt_code_control_flow_is_sequenced_before(mem, control_flow, instr_ref, split_instr_ref,
-                                                                   &sequenced_before));
+        REQUIRE_OK(kefir_opt_code_is_sequenced_before(mem, control_flow, sequencing, instr_ref, split_instr_ref,
+                                                      &sequenced_before));
         REQUIRE_OK(kefir_opt_code_instruction_is_control_flow(code, instr_ref, &is_control_flow));
         if (sequenced_before || instr_ref == split_instr_ref || is_control_flow) {
             continue;
@@ -621,6 +622,7 @@ static kefir_result_t collect_instr_after_split(struct kefir_mem *mem, struct ke
 static kefir_result_t split_block_after_impl(struct kefir_mem *mem, struct kefir_opt_code_container *code,
                                              struct kefir_opt_code_debug_info *debug_info,
                                              struct kefir_opt_code_control_flow *control_flow,
+                                             struct kefir_opt_code_sequencing *sequencing,
                                              kefir_opt_instruction_ref_t split_instr_ref,
                                              kefir_opt_block_id_t *split_block_id, struct kefir_queue *instr_queue) {
     const struct kefir_opt_instruction *split_instr, *instr;
@@ -632,7 +634,7 @@ static kefir_result_t split_block_after_impl(struct kefir_mem *mem, struct kefir
     const struct kefir_opt_code_block *block;
     REQUIRE_OK(kefir_opt_code_container_block(code, split_instr->block_id, &block));
 
-    REQUIRE_OK(collect_instr_after_split(mem, code, control_flow, split_instr_ref, instr_queue));
+    REQUIRE_OK(collect_instr_after_split(mem, code, control_flow, sequencing, split_instr_ref, instr_queue));
 
     while (!kefir_queue_is_empty(instr_queue)) {
         kefir_queue_entry_t queue_entry;
@@ -666,6 +668,7 @@ static kefir_result_t split_block_after_impl(struct kefir_mem *mem, struct kefir
     REQUIRE_OK(kefir_opt_code_control_flow_free(mem, control_flow));
     REQUIRE_OK(kefir_opt_code_control_flow_init(control_flow));
     REQUIRE_OK(kefir_opt_code_control_flow_build(mem, control_flow, code));
+    REQUIRE_OK(kefir_opt_code_sequencing_drop_cache(mem, sequencing));
     *split_block_id = new_block_id;
     return KEFIR_OK;
 }
@@ -673,12 +676,22 @@ static kefir_result_t split_block_after_impl(struct kefir_mem *mem, struct kefir
 kefir_result_t kefir_opt_code_split_block_after(struct kefir_mem *mem, struct kefir_opt_code_container *code,
                                                 struct kefir_opt_code_debug_info *debug_info,
                                                 struct kefir_opt_code_control_flow *control_flow,
+                                                struct kefir_opt_code_sequencing *sequencing,
                                                 kefir_opt_instruction_ref_t split_instr_ref,
                                                 kefir_opt_block_id_t *split_block_id) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code"));
+    REQUIRE(debug_info != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code debug info"));
+    REQUIRE(control_flow != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code control flow"));
+    REQUIRE(sequencing != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code sequencing"));
+    REQUIRE(split_block_id != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to optimizer block identifier"));
+
     struct kefir_queue instr_queue;
     REQUIRE_OK(kefir_queue_init(&instr_queue));
-    kefir_result_t res =
-        split_block_after_impl(mem, code, debug_info, control_flow, split_instr_ref, split_block_id, &instr_queue);
+    kefir_result_t res = split_block_after_impl(mem, code, debug_info, control_flow, sequencing, split_instr_ref,
+                                                split_block_id, &instr_queue);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_queue_free(mem, &instr_queue);
         return res;
@@ -1146,4 +1159,113 @@ kefir_result_t kefir_opt_find_closest_common_dominator(const struct kefir_opt_co
     } while (!is_dominator);
 
     return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to find common dominator block");
+}
+
+static kefir_result_t check_all_control_flow_uses_after_impl(struct kefir_mem *mem,
+                                                             const struct kefir_opt_code_control_flow *control_flow,
+                                                             struct kefir_opt_code_sequencing *sequencing,
+                                                             kefir_opt_instruction_ref_t instr_ref,
+                                                             kefir_opt_instruction_ref_t sequence_point_instr_ref,
+                                                             kefir_bool_t *all_uses_after,
+                                                             struct kefir_hashtreeset *visited) {
+    if (kefir_hashtreeset_has(visited, (kefir_hashtreeset_entry_t) instr_ref)) {
+        *all_uses_after = true;
+        return KEFIR_OK;
+    }
+    REQUIRE_OK(kefir_hashtreeset_add(mem, visited, (kefir_hashtreeset_entry_t) instr_ref));
+
+    struct kefir_opt_instruction_use_iterator use_iter;
+    kefir_result_t res;
+    for (res = kefir_opt_code_container_instruction_use_instr_iter(control_flow->code, instr_ref, &use_iter);
+         res == KEFIR_OK; res = kefir_opt_code_container_instruction_use_next(&use_iter)) {
+        const struct kefir_opt_instruction *use_instr;
+        REQUIRE_OK(kefir_opt_code_container_instr(control_flow->code, use_iter.use_instr_ref, &use_instr));
+
+        if (use_instr->id == sequence_point_instr_ref) {
+            switch (use_instr->operation.opcode) {
+                case KEFIR_OPT_OPCODE_INVOKE:
+                case KEFIR_OPT_OPCODE_INVOKE_VIRTUAL: {
+                    if (use_instr->operation.parameters.function_call.indirect_ref == instr_ref) {
+                        *all_uses_after = false;
+                        return KEFIR_OK;
+                    }
+
+                    const struct kefir_opt_call_node *call_node;
+                    REQUIRE_OK(kefir_opt_code_container_call(
+                        control_flow->code, use_instr->operation.parameters.function_call.call_ref, &call_node));
+                    for (kefir_size_t i = 0; i < call_node->argument_count; i++) {
+                        if (call_node->arguments[i] == instr_ref) {
+                            *all_uses_after = false;
+                            return KEFIR_OK;
+                        }
+                    }
+                } break;
+
+                default:
+                    // Intentionally left blank
+                    break;
+            }
+
+            kefir_bool_t uses_sequenced_after;
+            REQUIRE_OK(check_all_control_flow_uses_after_impl(mem, control_flow, sequencing, use_instr->id,
+                                                              sequence_point_instr_ref, &uses_sequenced_after,
+                                                              visited));
+            if (!uses_sequenced_after) {
+                *all_uses_after = false;
+                return KEFIR_OK;
+            }
+        } else if (use_instr->operation.opcode != KEFIR_OPT_OPCODE_LOCAL_LIFETIME_MARK) {
+            kefir_bool_t is_control_flow;
+            REQUIRE_OK(kefir_opt_code_instruction_is_control_flow(control_flow->code, use_instr->id, &is_control_flow));
+            if (is_control_flow) {
+                kefir_bool_t sequenced_before;
+                REQUIRE_OK(kefir_opt_code_is_sequenced_before(mem, control_flow, sequencing, sequence_point_instr_ref,
+                                                              use_instr->id, &sequenced_before));
+                if (!sequenced_before) {
+                    *all_uses_after = false;
+                    return KEFIR_OK;
+                }
+            }
+
+            kefir_bool_t uses_sequenced_after;
+            REQUIRE_OK(check_all_control_flow_uses_after_impl(mem, control_flow, sequencing, use_instr->id,
+                                                              sequence_point_instr_ref, &uses_sequenced_after,
+                                                              visited));
+            if (!uses_sequenced_after) {
+                *all_uses_after = false;
+                return KEFIR_OK;
+            }
+        }
+    }
+    if (res != KEFIR_ITERATOR_END) {
+        REQUIRE_OK(res);
+    }
+
+    *all_uses_after = true;
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_opt_check_all_control_flow_uses_after(struct kefir_mem *mem,
+                                                           const struct kefir_opt_code_control_flow *control_flow,
+                                                           struct kefir_opt_code_sequencing *sequencing,
+                                                           kefir_opt_instruction_ref_t instr_ref,
+                                                           kefir_opt_instruction_ref_t sequence_point_instr_ref,
+                                                           kefir_bool_t *all_uses_after) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(control_flow != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code control flow"));
+    REQUIRE(sequencing != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code sequencing"));
+    REQUIRE(all_uses_after != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to boolean flag"));
+
+    struct kefir_hashtreeset visited;
+    REQUIRE_OK(kefir_hashtreeset_init(&visited, &kefir_hashtree_uint_ops));
+    kefir_result_t res = check_all_control_flow_uses_after_impl(mem, control_flow, sequencing, instr_ref,
+                                                                sequence_point_instr_ref, all_uses_after, &visited);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_hashtreeset_free(mem, &visited);
+        return res;
+    });
+    REQUIRE_OK(kefir_hashtreeset_free(mem, &visited));
+
+    return KEFIR_OK;
 }

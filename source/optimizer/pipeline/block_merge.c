@@ -117,9 +117,8 @@ static kefir_result_t block_merge_impl(struct kefir_mem *mem, struct kefir_opt_f
                         REQUIRE_OK(kefir_opt_code_block_merge_into(mem, &func->code, &func->debug_info, block_id,
                                                                    target_block_id, true, true));
 
-                        REQUIRE_OK(kefir_opt_code_control_flow_drop_edge(mem, control_flow, block_id, target_block_id));
-                        REQUIRE_OK(
-                            kefir_opt_code_control_flow_redirect_edges(mem, control_flow, target_block_id, block_id));
+                        REQUIRE_OK(kefir_opt_code_control_flow_modify_bypass_block(mem, control_flow, target_block_id,
+                                                                                   block_id));
                         fixpoint_reached = false;
                     }
                 } break;
@@ -179,16 +178,12 @@ static kefir_result_t block_merge_impl(struct kefir_mem *mem, struct kefir_opt_f
                         }
 
                         if (target_passthrough_block_id != KEFIR_ID_NONE) {
-                            REQUIRE_OK(
-                                kefir_opt_code_control_flow_drop_edge(mem, control_flow, block_id, target_block_id));
-                            REQUIRE_OK(kefir_opt_code_control_flow_redirect_edges(mem, control_flow, target_block_id,
-                                                                                  block_id));
+                            REQUIRE_OK(kefir_opt_code_control_flow_modify_bypass_block(mem, control_flow,
+                                                                                       target_block_id, block_id));
                         }
                         if (alternative_passthrough_block_id != KEFIR_ID_NONE) {
-                            REQUIRE_OK(kefir_opt_code_control_flow_drop_edge(mem, control_flow, block_id,
-                                                                             alternative_block_id));
-                            REQUIRE_OK(kefir_opt_code_control_flow_redirect_edges(mem, control_flow,
-                                                                                  alternative_block_id, block_id));
+                            REQUIRE_OK(kefir_opt_code_control_flow_modify_bypass_block(mem, control_flow,
+                                                                                       alternative_block_id, block_id));
                         }
                         fixpoint_reached = false;
                     }
@@ -249,16 +244,12 @@ static kefir_result_t block_merge_impl(struct kefir_mem *mem, struct kefir_opt_f
                         }
 
                         if (target_passthrough_block_id != KEFIR_ID_NONE) {
-                            REQUIRE_OK(
-                                kefir_opt_code_control_flow_drop_edge(mem, control_flow, block_id, target_block_id));
-                            REQUIRE_OK(kefir_opt_code_control_flow_redirect_edges(mem, control_flow, target_block_id,
-                                                                                  block_id));
+                            REQUIRE_OK(kefir_opt_code_control_flow_modify_bypass_block(mem, control_flow,
+                                                                                       target_block_id, block_id));
                         }
                         if (alternative_passthrough_block_id != KEFIR_ID_NONE) {
-                            REQUIRE_OK(kefir_opt_code_control_flow_drop_edge(mem, control_flow, block_id,
-                                                                             alternative_block_id));
-                            REQUIRE_OK(kefir_opt_code_control_flow_redirect_edges(mem, control_flow,
-                                                                                  alternative_block_id, block_id));
+                            REQUIRE_OK(kefir_opt_code_control_flow_modify_bypass_block(mem, control_flow,
+                                                                                       alternative_block_id, block_id));
                         }
                         fixpoint_reached = false;
                     }

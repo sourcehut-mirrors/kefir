@@ -1334,7 +1334,7 @@ static kefir_result_t can_inline_function(const struct kefir_opt_function *calle
 
 kefir_result_t kefir_opt_try_inline_function_call(
     struct kefir_mem *mem, const struct kefir_opt_module *module, struct kefir_opt_function *func,
-    struct kefir_opt_code_control_flow *control_flow,
+    struct kefir_opt_code_control_flow *control_flow, struct kefir_opt_code_sequencing *sequencing,
     const struct kefir_opt_try_inline_function_call_parameters *inline_params, kefir_opt_instruction_ref_t instr_ref,
     kefir_bool_t *did_inline_ptr) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
@@ -1342,6 +1342,7 @@ kefir_result_t kefir_opt_try_inline_function_call(
     REQUIRE(func != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer function"));
     REQUIRE(control_flow != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code control flow"));
+    REQUIRE(sequencing != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code sequencing"));
 
     ASSIGN_PTR(did_inline_ptr, false);
 
@@ -1369,8 +1370,8 @@ kefir_result_t kefir_opt_try_inline_function_call(
     if (can_inline) {
         kefir_opt_block_id_t block_id = instr->block_id;
         kefir_opt_block_id_t split_block_id;
-        REQUIRE_OK(kefir_opt_code_split_block_after(mem, &func->code, &func->debug_info, control_flow, instr_ref,
-                                                    &split_block_id));
+        REQUIRE_OK(kefir_opt_code_split_block_after(mem, &func->code, &func->debug_info, control_flow, sequencing,
+                                                    instr_ref, &split_block_id));
         REQUIRE_OK(do_inline(mem, module, func, called_func, block_id, split_block_id, call_node->node_id,
                              call_node->output_ref));
         func->num_of_inlines++;

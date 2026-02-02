@@ -36,9 +36,6 @@ typedef struct kefir_opt_code_control_flow {
     kefir_size_t num_of_blocks;
     struct kefir_opt_code_control_flow_block *blocks;
     struct kefir_hashtreeset indirect_jump_target_blocks;
-    struct kefir_hashset sequenced_before;
-    struct kefir_hashtree sequence_numbering;
-    kefir_size_t next_seq_number;
 } kefir_opt_code_control_flow_t;
 
 kefir_result_t kefir_opt_code_control_flow_init(struct kefir_opt_code_control_flow *);
@@ -46,20 +43,12 @@ kefir_result_t kefir_opt_code_control_flow_free(struct kefir_mem *, struct kefir
 
 kefir_result_t kefir_opt_code_control_flow_build(struct kefir_mem *, struct kefir_opt_code_control_flow *,
                                                  const struct kefir_opt_code_container *);
-kefir_result_t kefir_opt_code_control_flow_drop_sequencing_cache(struct kefir_mem *,
-                                                                 struct kefir_opt_code_control_flow *);
 
-kefir_result_t kefir_opt_code_control_flow_redirect_edges(struct kefir_mem *, struct kefir_opt_code_control_flow *,
-                                                          kefir_opt_block_id_t, kefir_opt_block_id_t);
-kefir_result_t kefir_opt_code_control_flow_drop_edge(struct kefir_mem *, struct kefir_opt_code_control_flow *,
-                                                     kefir_opt_block_id_t, kefir_opt_block_id_t);
+kefir_result_t kefir_opt_code_control_flow_modify_bypass_block(struct kefir_mem *, struct kefir_opt_code_control_flow *,
+                                                               kefir_opt_block_id_t, kefir_opt_block_id_t);
 
 kefir_result_t kefir_opt_code_control_flow_is_dominator(const struct kefir_opt_code_control_flow *,
                                                         kefir_opt_block_id_t, kefir_opt_block_id_t, kefir_bool_t *);
-
-kefir_result_t kefir_opt_code_control_flow_is_sequenced_before(struct kefir_mem *, struct kefir_opt_code_control_flow *,
-                                                               kefir_opt_instruction_ref_t, kefir_opt_instruction_ref_t,
-                                                               kefir_bool_t *);
 
 kefir_result_t kefir_opt_code_control_flow_is_reachable_from_entry(const struct kefir_opt_code_control_flow *,
                                                                    kefir_opt_block_id_t, kefir_bool_t *);

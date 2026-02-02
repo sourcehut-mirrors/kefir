@@ -20,6 +20,7 @@
 
 #include "kefir/optimizer/liveness.h"
 #include "kefir/optimizer/code_util.h"
+#include "kefir/optimizer/sequencing.h"
 #include "kefir/optimizer/trace.h"
 #include "kefir/core/queue.h"
 #include "kefir/core/bitset.h"
@@ -31,6 +32,7 @@ struct verify_use_def_payload {
     struct kefir_mem *mem;
     struct kefir_opt_code_liveness *liveness;
     struct kefir_opt_code_control_flow *control_flow;
+    struct kefir_opt_code_sequencing *sequencing;
     kefir_opt_instruction_ref_t instr_ref;
 };
 
@@ -40,8 +42,8 @@ static kefir_result_t verify_use_def_impl(kefir_opt_instruction_ref_t instr_ref,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code use-def verified parameters"));
 
     kefir_bool_t sequenced_before;
-    REQUIRE_OK(kefir_opt_code_control_flow_is_sequenced_before(param->mem, param->control_flow, instr_ref,
-                                                               param->instr_ref, &sequenced_before));
+    REQUIRE_OK(kefir_opt_code_is_sequenced_before(param->mem, param->control_flow, param->sequencing, instr_ref,
+                                                  param->instr_ref, &sequenced_before));
     REQUIRE(sequenced_before, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Reversed use-define chain in optimizer code"));
 
     return KEFIR_OK;
@@ -183,9 +185,13 @@ static kefir_result_t propagate_alive_instructions(struct kefir_mem *mem, struct
 }
 
 static kefir_result_t trace_use_def(struct kefir_mem *mem, struct kefir_opt_code_liveness *liveness,
-                                    struct kefir_opt_code_control_flow *control_flow) {
-    struct verify_use_def_payload payload = {
-        .mem = mem, .liveness = liveness, .control_flow = control_flow, .instr_ref = KEFIR_ID_NONE};
+                                    struct kefir_opt_code_control_flow *control_flow,
+                                    struct kefir_opt_code_sequencing *sequencing) {
+    struct verify_use_def_payload payload = {.mem = mem,
+                                             .liveness = liveness,
+                                             .control_flow = control_flow,
+                                             .sequencing = sequencing,
+                                             .instr_ref = KEFIR_ID_NONE};
     struct kefir_opt_code_container_tracer tracer = {.trace_instruction = verify_use_def, .payload = &payload};
     REQUIRE_OK(kefir_opt_code_container_trace(mem, liveness->code, &tracer));
 
@@ -229,6 +235,9 @@ kefir_result_t kefir_opt_code_liveness_build(struct kefir_mem *mem, struct kefir
     REQUIRE(liveness->code == NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Optimizer code liveness has already been built"));
 
+    struct kefir_opt_code_sequencing sequencing;
+    REQUIRE_OK(kefir_opt_code_sequencing_init(&sequencing));
+
     liveness->code = control_flow->code;
     kefir_result_t res;
     kefir_size_t num_of_blocks;
@@ -244,12 +253,14 @@ kefir_result_t kefir_opt_code_liveness_build(struct kefir_mem *mem, struct kefir
         });
     }
 
-    res = trace_use_def(mem, liveness, control_flow);
+    res = trace_use_def(mem, liveness, control_flow, &sequencing);
     REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_opt_code_sequencing_free(mem, &sequencing);
         kefir_opt_code_liveness_free(mem, liveness);
         kefir_opt_code_liveness_init(liveness);
         return res;
     });
+    REQUIRE_OK(kefir_opt_code_sequencing_free(mem, &sequencing));
 
     return KEFIR_OK;
 }

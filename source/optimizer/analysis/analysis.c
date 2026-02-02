@@ -48,7 +48,6 @@ kefir_result_t kefir_opt_code_analyze(struct kefir_mem *mem, const struct kefir_
     REQUIRE_OK(kefir_opt_code_control_flow_build(mem, &analysis->control_flow, code));
     REQUIRE_OK(kefir_opt_code_liveness_build(mem, &analysis->liveness, &analysis->control_flow));
     REQUIRE_OK(kefir_opt_code_variable_scopes_build(mem, &analysis->variable_scopes, &analysis->liveness));
-    REQUIRE_OK(kefir_opt_code_control_flow_drop_sequencing_cache(mem, &analysis->control_flow));
     return KEFIR_OK;
 }
 

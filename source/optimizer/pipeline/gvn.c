@@ -19,7 +19,7 @@
 */
 
 #include "kefir/optimizer/pipeline.h"
-#include "kefir/optimizer/builder.h"
+#include "kefir/optimizer/sequencing.h"
 #include "kefir/optimizer/code_util.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
@@ -30,6 +30,7 @@ struct gvn_state {
     struct kefir_mem *mem;
     struct kefir_opt_function *func;
     struct kefir_opt_code_control_flow control_flow;
+    struct kefir_opt_code_sequencing sequencing;
     struct kefir_list queue;
     struct kefir_hashtreeset queued_instr;
     struct kefir_hashtreeset processed_instr;
@@ -832,8 +833,8 @@ static kefir_result_t try_replace_instr(struct gvn_state *state, kefir_opt_instr
     kefir_bool_t can_replace = false;
     if (replacement_instr->block_id == instr->block_id) {
         kefir_bool_t sequenced_before = false;
-        REQUIRE_OK(kefir_opt_code_control_flow_is_sequenced_before(state->mem, &state->control_flow, instr_ref,
-                                                                   replacement_ref, &sequenced_before));
+        REQUIRE_OK(kefir_opt_code_is_sequenced_before(state->mem, &state->control_flow, &state->sequencing, instr_ref,
+                                                      replacement_ref, &sequenced_before));
         can_replace = !sequenced_before;
     } else if (!only_local) {
         REQUIRE_OK(kefir_opt_code_control_flow_is_dominator(&state->control_flow, instr->block_id,
@@ -990,9 +991,11 @@ static kefir_result_t global_value_numbering_apply(struct kefir_mem *mem, struct
     REQUIRE_OK(kefir_hashtree_init(&state.instr_hashes, &instr_ops));
     REQUIRE_OK(kefir_hashtree_on_removal(&state.instr_hashes, free_instr_refs, NULL));
     REQUIRE_OK(kefir_opt_code_control_flow_init(&state.control_flow));
+    REQUIRE_OK(kefir_opt_code_sequencing_init(&state.sequencing));
 
     kefir_result_t res = gvn_impl(&state);
     REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_opt_code_sequencing_free(mem, &state.sequencing);
         kefir_opt_code_control_flow_free(mem, &state.control_flow);
         kefir_list_free(mem, &state.queue);
         kefir_hashtreeset_free(mem, &state.processed_instr);
