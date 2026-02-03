@@ -24,6 +24,17 @@
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 
+static kefir_result_t add_successor(struct kefir_mem *mem, struct kefir_opt_code_control_flow *control_flow,
+                                    struct kefir_hashset *successors, kefir_opt_block_id_t block_id) {
+    if (control_flow->code->gate_block != KEFIR_ID_NONE &&
+        kefir_hashset_has(&control_flow->indirect_jump_target_blocks, (kefir_hashset_key_t) block_id)) {
+        REQUIRE_OK(kefir_hashset_add(mem, successors, (kefir_hashset_key_t) control_flow->code->gate_block));
+    } else {
+        REQUIRE_OK(kefir_hashset_add(mem, successors, (kefir_hashset_key_t) block_id));
+    }
+    return KEFIR_OK;
+}
+
 static kefir_result_t link_block(struct kefir_mem *mem, struct kefir_opt_code_control_flow *control_flow,
                                  kefir_opt_block_id_t block_id) {
     const struct kefir_opt_code_block *block;
@@ -38,16 +49,16 @@ static kefir_result_t link_block(struct kefir_mem *mem, struct kefir_opt_code_co
     REQUIRE_OK(kefir_opt_code_container_instr(control_flow->code, tail_instr_ref, &tail_instr));
     switch (tail_instr->operation.opcode) {
         case KEFIR_OPT_OPCODE_JUMP:
-            REQUIRE_OK(kefir_hashset_add(mem, successors,
-                                         (kefir_hashset_key_t) tail_instr->operation.parameters.branch.target_block));
+            REQUIRE_OK(
+                add_successor(mem, control_flow, successors, tail_instr->operation.parameters.branch.target_block));
             break;
 
         case KEFIR_OPT_OPCODE_BRANCH:
         case KEFIR_OPT_OPCODE_BRANCH_COMPARE:
-            REQUIRE_OK(kefir_hashset_add(mem, successors,
-                                         (kefir_hashset_key_t) tail_instr->operation.parameters.branch.target_block));
-            REQUIRE_OK(kefir_hashset_add(
-                mem, successors, (kefir_hashset_key_t) tail_instr->operation.parameters.branch.alternative_block));
+            REQUIRE_OK(
+                add_successor(mem, control_flow, successors, tail_instr->operation.parameters.branch.target_block));
+            REQUIRE_OK(add_successor(mem, control_flow, successors,
+                                     tail_instr->operation.parameters.branch.alternative_block));
             break;
 
         case KEFIR_OPT_OPCODE_IJUMP:
@@ -63,13 +74,13 @@ static kefir_result_t link_block(struct kefir_mem *mem, struct kefir_opt_code_co
             REQUIRE_OK(kefir_opt_code_container_inline_assembly(
                 control_flow->code, tail_instr->operation.parameters.inline_asm_ref, &inline_asm));
             if (!kefir_hashtree_empty(&inline_asm->jump_targets)) {
-                REQUIRE_OK(kefir_hashset_add(mem, successors, (kefir_hashset_key_t) inline_asm->default_jump_target));
+                REQUIRE_OK(add_successor(mem, control_flow, successors, inline_asm->default_jump_target));
 
                 struct kefir_hashtree_node_iterator iter;
                 for (const struct kefir_hashtree_node *node = kefir_hashtree_iter(&inline_asm->jump_targets, &iter);
                      node != NULL; node = kefir_hashtree_next(&iter)) {
                     ASSIGN_DECL_CAST(kefir_opt_block_id_t, target_block, node->value);
-                    REQUIRE_OK(kefir_hashset_add(mem, successors, (kefir_hashset_key_t) target_block));
+                    REQUIRE_OK(add_successor(mem, control_flow, successors, target_block));
                 }
             }
         } break;

@@ -65,6 +65,12 @@ static kefir_result_t map_phi_outputs_impl(struct kefir_mem *mem, struct kefir_c
                                            struct kefir_hashtreeset *used_target_vregs,
                                            struct kefir_hashtreeset *used_source_vregs,
                                            struct kefir_hashtree *deferred_target_vregs) {
+    if (function->function->code.gate_block != KEFIR_ID_NONE &&
+        kefir_hashset_has(&function->function_analysis.control_flow.indirect_jump_target_blocks,
+                          (kefir_hashset_key_t) target_block_ref)) {
+        target_block_ref = function->function->code.gate_block;
+    }
+
     const struct kefir_opt_code_block *source_block;
     REQUIRE_OK(kefir_opt_code_container_block(&function->function->code, source_block_ref, &source_block));
     const struct kefir_opt_code_block *target_block;
@@ -885,6 +891,9 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(ijump)(struct kefir_mem *mem
 
     REQUIRE_OK(kefir_codegen_amd64_function_x87_flush(mem, function));
     REQUIRE_OK(kefir_codegen_local_variable_allocator_mark_all_global(&function->variable_allocator));
+
+    REQUIRE_OK(kefir_codegen_amd64_function_map_phi_outputs(mem, function, function->function->code.gate_block,
+                                                            instruction->block_id));
 
     kefir_asmcmp_virtual_register_index_t target_vreg_idx;
     REQUIRE_OK(

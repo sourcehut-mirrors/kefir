@@ -3563,7 +3563,7 @@ test4:
 #                    "parameters": [
 #                        {
 #                            "type": "block_ref",
-#                            "block_ref": 2
+#                            "block_ref": 3
 #                        }
 #                    ],
 #                    "values": [],
@@ -3580,194 +3580,7 @@ test4:
 #            "block_ref": 2,
 #            "code": [
 #                {
-#                    "instr_ref": 9,
-#                    "opcode": "mov",
-#                    "parameters": [
-#                        {
-#                            "type": "indirect",
-#                            "basis": "local_var",
-#                            "identifier": 3,
-#                            "offset": 0,
-#                            "variant": "32bit"
-#                        }
-#                    ],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "direct_output",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "variant": "32bit",
-#                                "kind": "general_purpose"
-#                            },
-#                            "allocation": {
-#                                "type": "register",
-#                                "register": "rax"
-#                            },
-#                            "metadata": {
-#                                "value_ref": 3
-#                            }
-#                        }
-#                    ],
-#                    "metadata": {
-#                        "source_location": null,
-#                        "code_ref": null
-#                    }
-#                },
-#                {
 #                    "instr_ref": 10,
-#                    "opcode": "lea",
-#                    "parameters": [
-#                        {
-#                            "type": "rip_indirect_external",
-#                            "type": "absolute",
-#                            "base": "__kefir_function_test4_static_arr_10",
-#                            "variant": "default"
-#                        }
-#                    ],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "direct_output",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "variant": "64bit",
-#                                "kind": "general_purpose"
-#                            },
-#                            "allocation": {
-#                                "type": "register",
-#                                "register": "rcx"
-#                            },
-#                            "metadata": {
-#                                "value_ref": 4
-#                            }
-#                        }
-#                    ],
-#                    "metadata": {
-#                        "source_location": null,
-#                        "code_ref": null
-#                    }
-#                },
-#                {
-#                    "instr_ref": 11,
-#                    "opcode": "movsx",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 9,
-#                            "aspect": {
-#                                "type": "direct_output",
-#                                "index": 0
-#                            },
-#                            "variant": "32bit",
-#                            "tied": false
-#                        }
-#                    ],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "direct_output",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "variant": "64bit",
-#                                "kind": "general_purpose"
-#                            },
-#                            "allocation": {
-#                                "type": "register",
-#                                "register": "rax"
-#                            },
-#                            "metadata": {
-#                                "value_ref": 5
-#                            }
-#                        }
-#                    ],
-#                    "metadata": {
-#                        "source_location": null,
-#                        "code_ref": null
-#                    }
-#                },
-#                {
-#                    "instr_ref": 31,
-#                    "opcode": "mov",
-#                    "parameters": [
-#                        {
-#                            "type": "indirect",
-#                            "basis": "value_ref",
-#                            "instr_ref": 10,
-#                            "aspect": {
-#                                "type": "direct_output",
-#                                "index": 0
-#                            },
-#                            "index": "value_ref",
-#                            "index_instr_ref": 11,
-#                            "index_aspect": {
-#                                "type": "direct_output",
-#                                "index": 0
-#                            },
-#                            "index_scale": 8,
-#                            "offset": 0,
-#                            "variant": "64bit"
-#                        }
-#                    ],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "direct_output",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "variant": "64bit",
-#                                "kind": "general_purpose"
-#                            },
-#                            "allocation": {
-#                                "type": "register",
-#                                "register": "rax"
-#                            },
-#                            "metadata": {
-#                                "value_ref": 9
-#                            }
-#                        }
-#                    ],
-#                    "metadata": {
-#                        "source_location": null,
-#                        "code_ref": null
-#                    }
-#                },
-#                {
-#                    "instr_ref": 17,
-#                    "opcode": "jmp",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 31,
-#                            "aspect": {
-#                                "type": "direct_output",
-#                                "index": 0
-#                            },
-#                            "variant": "default",
-#                            "tied": false
-#                        }
-#                    ],
-#                    "values": [],
-#                    "metadata": {
-#                        "source_location": null,
-#                        "code_ref": null
-#                    }
-#                }
-#            ],
-#            "externally_visible": true,
-#            "public_labels": [
-#                "_kefir_local_public_label_test4_label1"
-#            ]
-#        },
-#        {
-#            "block_ref": 3,
-#            "code": [
-#                {
-#                    "instr_ref": 19,
 #                    "opcode": "assign",
 #                    "parameters": [
 #                        {
@@ -3795,7 +3608,7 @@ test4:
 #                                "register": "rax"
 #                            },
 #                            "metadata": {
-#                                "value_ref": 11
+#                                "value_ref": 4
 #                            }
 #                        }
 #                    ],
@@ -3805,7 +3618,7 @@ test4:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 20,
+#                    "instr_ref": 11,
 #                    "opcode": "function_epilogue",
 #                    "parameters": [],
 #                    "values": [],
@@ -3815,12 +3628,12 @@ test4:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 21,
+#                    "instr_ref": 12,
 #                    "opcode": "touch",
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 19,
+#                            "instr_ref": 10,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -3836,12 +3649,12 @@ test4:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 22,
+#                    "instr_ref": 13,
 #                    "opcode": "touch",
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 19,
+#                            "instr_ref": 10,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -3857,7 +3670,7 @@ test4:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 23,
+#                    "instr_ref": 14,
 #                    "opcode": "ret",
 #                    "parameters": [],
 #                    "values": [],
@@ -3873,6 +3686,193 @@ test4:
 #            ]
 #        },
 #        {
+#            "block_ref": 3,
+#            "code": [
+#                {
+#                    "instr_ref": 15,
+#                    "opcode": "mov",
+#                    "parameters": [
+#                        {
+#                            "type": "indirect",
+#                            "basis": "local_var",
+#                            "identifier": 3,
+#                            "offset": 0,
+#                            "variant": "32bit"
+#                        }
+#                    ],
+#                    "values": [
+#                        {
+#                            "aspect": {
+#                                "type": "direct_output",
+#                                "index": 0
+#                            },
+#                            "type": {
+#                                "variant": "32bit",
+#                                "kind": "general_purpose"
+#                            },
+#                            "allocation": {
+#                                "type": "register",
+#                                "register": "rax"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 5
+#                            }
+#                        }
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
+#                },
+#                {
+#                    "instr_ref": 16,
+#                    "opcode": "lea",
+#                    "parameters": [
+#                        {
+#                            "type": "rip_indirect_external",
+#                            "type": "absolute",
+#                            "base": "__kefir_function_test4_static_arr_10",
+#                            "variant": "default"
+#                        }
+#                    ],
+#                    "values": [
+#                        {
+#                            "aspect": {
+#                                "type": "direct_output",
+#                                "index": 0
+#                            },
+#                            "type": {
+#                                "variant": "64bit",
+#                                "kind": "general_purpose"
+#                            },
+#                            "allocation": {
+#                                "type": "register",
+#                                "register": "rcx"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 6
+#                            }
+#                        }
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
+#                },
+#                {
+#                    "instr_ref": 17,
+#                    "opcode": "movsx",
+#                    "parameters": [
+#                        {
+#                            "type": "value_ref",
+#                            "instr_ref": 15,
+#                            "aspect": {
+#                                "type": "direct_output",
+#                                "index": 0
+#                            },
+#                            "variant": "32bit",
+#                            "tied": false
+#                        }
+#                    ],
+#                    "values": [
+#                        {
+#                            "aspect": {
+#                                "type": "direct_output",
+#                                "index": 0
+#                            },
+#                            "type": {
+#                                "variant": "64bit",
+#                                "kind": "general_purpose"
+#                            },
+#                            "allocation": {
+#                                "type": "register",
+#                                "register": "rax"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 7
+#                            }
+#                        }
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
+#                },
+#                {
+#                    "instr_ref": 31,
+#                    "opcode": "mov",
+#                    "parameters": [
+#                        {
+#                            "type": "indirect",
+#                            "basis": "value_ref",
+#                            "instr_ref": 16,
+#                            "aspect": {
+#                                "type": "direct_output",
+#                                "index": 0
+#                            },
+#                            "index": "value_ref",
+#                            "index_instr_ref": 17,
+#                            "index_aspect": {
+#                                "type": "direct_output",
+#                                "index": 0
+#                            },
+#                            "index_scale": 8,
+#                            "offset": 0,
+#                            "variant": "64bit"
+#                        }
+#                    ],
+#                    "values": [
+#                        {
+#                            "aspect": {
+#                                "type": "direct_output",
+#                                "index": 0
+#                            },
+#                            "type": {
+#                                "variant": "64bit",
+#                                "kind": "general_purpose"
+#                            },
+#                            "allocation": {
+#                                "type": "register",
+#                                "register": "rax"
+#                            },
+#                            "metadata": {
+#                                "value_ref": 11
+#                            }
+#                        }
+#                    ],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
+#                },
+#                {
+#                    "instr_ref": 23,
+#                    "opcode": "jmp",
+#                    "parameters": [
+#                        {
+#                            "type": "value_ref",
+#                            "instr_ref": 31,
+#                            "aspect": {
+#                                "type": "direct_output",
+#                                "index": 0
+#                            },
+#                            "variant": "default",
+#                            "tied": false
+#                        }
+#                    ],
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
+#                }
+#            ],
+#            "externally_visible": true,
+#            "public_labels": [
+#                "_kefir_local_public_label_test4_label1"
+#            ]
+#        },
+#        {
 #            "block_ref": 5,
 #            "code": [],
 #            "externally_visible": false,
@@ -3885,14 +3885,14 @@ test4:
     mov %rsp, %rbp
     sub $16, %rsp
     movl %edi, -4(%rbp)
-.L__kefir_func_test4_label2:
+.L__kefir_func_test4_label3:
 _kefir_local_public_label_test4_label1:
     movl -4(%rbp), %eax
     lea __kefir_function_test4_static_arr_10(%rip), %rcx
     movsx %eax, %rax
     movq (%rcx, %rax, 8), %rax
     jmp *%rax
-.L__kefir_func_test4_label3:
+.L__kefir_func_test4_label2:
 _kefir_local_public_label_test4_label2:
     mov $10, %eax
     lea (%rbp), %rsp
