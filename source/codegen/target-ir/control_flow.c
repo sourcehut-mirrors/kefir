@@ -500,6 +500,37 @@ kefir_result_t kefir_codegen_target_ir_control_flow_build(struct kefir_mem *mem,
         REQUIRE_OK(res);
     }
 
+    for (res = kefir_hashtreeset_iter(&control_flow->indirect_jump_targets, &target_iter);
+         res == KEFIR_OK && control_flow->code->indirect_jump_gate_block != KEFIR_ID_NONE;
+         res = kefir_hashtreeset_next(&target_iter)) {
+        ASSIGN_DECL_CAST(kefir_codegen_target_ir_block_ref_t, block_ref, target_iter.entry);
+
+        struct kefir_hashset_iterator source_iter;
+        kefir_hashset_key_t entry;
+        for (res = kefir_hashset_iter(&control_flow->blocks[block_ref].predecessors, &source_iter, &entry);
+             res == KEFIR_OK; res = kefir_hashset_next(&source_iter, &entry)) {
+            ASSIGN_DECL_CAST(kefir_codegen_target_ir_block_ref_t, pred_block_ref, entry);
+            if (pred_block_ref == control_flow->code->indirect_jump_gate_block) {
+                continue;
+            }
+
+            REQUIRE_OK(kefir_hashset_delete(&control_flow->blocks[pred_block_ref].successors,
+                                            (kefir_hashset_key_t) block_ref));
+            REQUIRE_OK(kefir_hashset_add(mem, &control_flow->blocks[pred_block_ref].successors,
+                                         (kefir_hashset_key_t) control_flow->code->indirect_jump_gate_block));
+        }
+        if (res != KEFIR_ITERATOR_END) {
+            REQUIRE_OK(res);
+        }
+
+        REQUIRE_OK(kefir_hashset_clear(mem, &control_flow->blocks[block_ref].predecessors));
+        REQUIRE_OK(kefir_hashset_add(mem, &control_flow->blocks[block_ref].predecessors,
+                                     (kefir_hashset_key_t) control_flow->code->indirect_jump_gate_block));
+    }
+    if (res != KEFIR_ITERATOR_END) {
+        REQUIRE_OK(res);
+    }
+
     REQUIRE_OK(kefir_codegen_target_ir_control_flow_find_dominators(mem, control_flow));
     REQUIRE_OK(kefir_codegen_target_ir_control_flow_find_postdominators(mem, control_flow));
     REQUIRE_OK(find_dominance_frontier(mem, control_flow));

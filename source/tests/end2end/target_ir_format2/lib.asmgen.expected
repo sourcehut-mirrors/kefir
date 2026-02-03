@@ -3885,6 +3885,13 @@ test4:
     mov %rsp, %rbp
     sub $16, %rsp
     movl %edi, -4(%rbp)
+    jmp .L__kefir_func_test4_label3
+.L__kefir_func_test4_label2:
+_kefir_local_public_label_test4_label2:
+    mov $10, %eax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
 .L__kefir_func_test4_label3:
 _kefir_local_public_label_test4_label1:
     movl -4(%rbp), %eax
@@ -3892,12 +3899,6 @@ _kefir_local_public_label_test4_label1:
     movsx %eax, %rax
     movq (%rcx, %rax, 8), %rax
     jmp *%rax
-.L__kefir_func_test4_label2:
-_kefir_local_public_label_test4_label2:
-    mov $10, %eax
-    lea (%rbp), %rsp
-    pop %rbp
-    ret
 .L__kefir_text_func_test4_end:
 
 init_array:

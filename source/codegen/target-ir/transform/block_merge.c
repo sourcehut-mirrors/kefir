@@ -97,7 +97,8 @@ static kefir_result_t merge_blocks(struct kefir_mem *mem, struct kefir_codegen_t
         for (res = kefir_hashset_iter(&control_flow->blocks[block_ref].successors, &iter, &key); res == KEFIR_OK;
              res = kefir_hashset_next(&iter, &key)) {
             ASSIGN_DECL_CAST(kefir_codegen_target_ir_block_ref_t, successor_block_ref, key);
-            if (successor_block_ref == block_ref) {
+            if (successor_block_ref == block_ref ||
+                kefir_codegen_target_ir_code_is_gate_block(code, successor_block_ref)) {
                 continue;
             }
 
