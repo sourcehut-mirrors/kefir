@@ -408,6 +408,7 @@ typedef struct kefir_opt_code_container {
     kefir_opt_call_id_t next_inline_assembly_id;
 
     kefir_opt_block_id_t entry_point;
+    kefir_opt_block_id_t gate_block;
 
     const struct kefir_opt_code_event_listener *event_listener;
 } kefir_opt_code_container_t;
@@ -424,6 +425,8 @@ kefir_bool_t kefir_opt_code_container_is_empty(const struct kefir_opt_code_conta
 kefir_size_t kefir_opt_code_container_length(const struct kefir_opt_code_container *);
 kefir_result_t kefir_opt_code_container_new_block(struct kefir_mem *, struct kefir_opt_code_container *, kefir_bool_t,
                                                   kefir_opt_block_id_t *);
+kefir_result_t kefir_opt_code_container_gate_block(struct kefir_mem *, struct kefir_opt_code_container *,
+                                                   kefir_opt_block_id_t *);
 kefir_result_t kefir_opt_code_container_block(const struct kefir_opt_code_container *, kefir_opt_block_id_t,
                                               const struct kefir_opt_code_block **);
 kefir_result_t kefir_opt_code_container_block_count(const struct kefir_opt_code_container *, kefir_size_t *);

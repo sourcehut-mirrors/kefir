@@ -248,8 +248,10 @@ static kefir_result_t schedule_block(struct kefir_mem *mem, const struct kefir_o
     const struct kefir_opt_code_block *block;
     REQUIRE_OK(kefir_opt_code_container_block(code, block_id, &block));
 
-    kefir_uint32_t block_linear_index;
-    REQUIRE_OK(schedule_builder->schedule_block(mem, block_id, &block_linear_index, schedule_builder->payload));
+    if (block_id != code->gate_block) {
+        kefir_uint32_t block_linear_index;
+        REQUIRE_OK(schedule_builder->schedule_block(mem, block_id, &block_linear_index, schedule_builder->payload));
+    }
 
     struct schedule_instruction_param param = {.mem = mem,
                                                .schedule = schedule,

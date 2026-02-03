@@ -50,20 +50,13 @@ static kefir_result_t link_block(struct kefir_mem *mem, struct kefir_opt_code_co
                 mem, successors, (kefir_hashset_key_t) tail_instr->operation.parameters.branch.alternative_block));
             break;
 
-        case KEFIR_OPT_OPCODE_IJUMP: {
-            kefir_result_t res;
-            struct kefir_hashset_iterator iter;
-            kefir_hashset_key_t entry;
-            for (res = kefir_hashset_iter(&control_flow->indirect_jump_target_blocks, &iter, &entry); res == KEFIR_OK;
-                 res = kefir_hashset_next(&iter, &entry)) {
-                REQUIRE_OK(kefir_hashset_add(mem, successors, (kefir_hashset_key_t) entry));
-            }
-            if (res != KEFIR_ITERATOR_END) {
-                REQUIRE_OK(res);
-            }
+        case KEFIR_OPT_OPCODE_IJUMP:
+            REQUIRE(control_flow->code->gate_block != KEFIR_ID_NONE,
+                    KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected optimizer code gate block to exist"));
+            REQUIRE_OK(kefir_hashset_add(mem, successors, (kefir_hashset_key_t) control_flow->code->gate_block));
             REQUIRE_OK(
                 kefir_hashset_add(mem, &control_flow->indirect_jump_source_blocks, (kefir_hashset_key_t) block_id));
-        } break;
+            break;
 
         case KEFIR_OPT_OPCODE_INLINE_ASSEMBLY: {
             const struct kefir_opt_inline_assembly_node *inline_asm = NULL;
@@ -151,6 +144,22 @@ kefir_result_t kefir_opt_code_control_flow_link_blocks(struct kefir_mem *mem,
 
     for (kefir_opt_block_id_t block_id = 0; block_id < total_block_count; block_id++) {
         REQUIRE_OK(link_block(mem, control_flow, block_id));
+    }
+
+    if (control_flow->code->gate_block != KEFIR_ID_NONE) {
+        kefir_result_t res;
+        struct kefir_hashset_iterator iter;
+        kefir_hashset_key_t entry;
+        for (res = kefir_hashset_iter(&control_flow->indirect_jump_target_blocks, &iter, &entry); res == KEFIR_OK;
+             res = kefir_hashset_next(&iter, &entry)) {
+            REQUIRE_OK(kefir_hashset_add(mem, &control_flow->blocks[control_flow->code->gate_block].successors,
+                                         (kefir_hashset_key_t) entry));
+            REQUIRE_OK(kefir_hashset_add(mem, &control_flow->blocks[entry].predecessors,
+                                         (kefir_hashset_key_t) control_flow->code->gate_block));
+        }
+        if (res != KEFIR_ITERATOR_END) {
+            REQUIRE_OK(res);
+        }
     }
 
     return KEFIR_OK;

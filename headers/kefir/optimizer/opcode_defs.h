@@ -37,7 +37,7 @@
     OPCODE(GET_PART, "get_part", ref_index2) SEPARATOR \
     /* Flow control */ \
     OPCODE(JUMP, "jump", branch) SEPARATOR \
-    OPCODE(IJUMP, "indirect_jump", ref1) SEPARATOR \
+    OPCODE(IJUMP, "indirect_jump", branch) SEPARATOR \
     OPCODE(BRANCH, "branch", branch) SEPARATOR \
     OPCODE(BRANCH_COMPARE, "branch_compare", branch_compare) SEPARATOR \
     OPCODE(RETURN, "return", ref1) SEPARATOR \

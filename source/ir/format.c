@@ -318,11 +318,13 @@ kefir_result_t kefir_ir_format_instr_branch(struct kefir_json_output *json, cons
     REQUIRE_OK(kefir_json_output_object_begin(json));
     REQUIRE_OK(kefir_json_output_object_key(json, "opcode"));
     REQUIRE_OK(kefir_json_output_string(json, kefir_iropcode_mnemonic(instr->opcode)));
-    REQUIRE_OK(kefir_json_output_object_key(json, "arg"));
-    REQUIRE_OK(kefir_json_output_uinteger(json, instr->arg.u64_2[0]));
-    if (instr->opcode != KEFIR_IR_OPCODE_JUMP) {
-        REQUIRE_OK(kefir_json_output_object_key(json, "condition"));
-        REQUIRE_OK(format_condition(json, instr->arg.u64_2[1]));
+    if (instr->opcode != KEFIR_IR_OPCODE_IJUMP) {
+        REQUIRE_OK(kefir_json_output_object_key(json, "arg"));
+        REQUIRE_OK(kefir_json_output_uinteger(json, instr->arg.u64_2[0]));
+        if (instr->opcode != KEFIR_IR_OPCODE_JUMP) {
+            REQUIRE_OK(kefir_json_output_object_key(json, "condition"));
+            REQUIRE_OK(format_condition(json, instr->arg.u64_2[1]));
+        }
     }
     REQUIRE_OK(kefir_json_output_object_end(json));
     return KEFIR_OK;

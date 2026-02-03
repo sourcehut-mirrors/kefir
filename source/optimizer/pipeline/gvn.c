@@ -929,6 +929,11 @@ static kefir_result_t gvn_impl(struct gvn_state *state) {
                     REQUIRE_OK(kefir_opt_find_closest_common_dominator(&state->control_flow, instr->block_id,
                                                                        candidate_instr->block_id,
                                                                        &closest_common_dominator_block_id));
+                    if (closest_common_dominator_block_id != KEFIR_ID_NONE &&
+                        closest_common_dominator_block_id == state->control_flow.code->gate_block) {
+                        closest_common_dominator_block_id =
+                            state->control_flow.blocks[closest_common_dominator_block_id].immediate_dominator;
+                    }
 
                     kefir_bool_t can_hoist;
                     REQUIRE_OK(kefir_opt_can_hoist_instruction(&state->control_flow, instr_ref,

@@ -140,10 +140,14 @@ kefir_result_t kefir_opt_code_builder_finalize_indirect_jump(struct kefir_mem *m
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code container"));
 
     REQUIRE_OK(instr_exists(code, block_id, arg_instr_id, false));
+    kefir_opt_block_id_t gate_block;
+    REQUIRE_OK(kefir_opt_code_container_gate_block(mem, code, &gate_block));
     REQUIRE_OK(kefir_opt_code_builder_add_instruction(
         mem, code, block_id,
-        &(struct kefir_opt_operation) {.opcode = KEFIR_OPT_OPCODE_IJUMP, .parameters.refs[0] = arg_instr_id}, true,
-        instr_id_ptr));
+        &(struct kefir_opt_operation) {.opcode = KEFIR_OPT_OPCODE_IJUMP,
+                                       .parameters.refs = {arg_instr_id, KEFIR_ID_NONE, KEFIR_ID_NONE, KEFIR_ID_NONE},
+                                       .parameters.branch.target_block = gate_block},
+        true, instr_id_ptr));
     return KEFIR_OK;
 }
 
@@ -567,8 +571,9 @@ kefir_result_t kefir_opt_code_builder_get_thread_local(struct kefir_mem *mem, st
 }
 
 kefir_result_t kefir_opt_code_builder_alloc_local(struct kefir_mem *mem, struct kefir_opt_code_container *code,
-                                                  kefir_opt_block_id_t block_id, kefir_opt_instruction_ref_t scope_ref, kefir_id_t type_id,
-                                                  kefir_size_t type_index, kefir_opt_instruction_ref_t *instr_id_ptr) {
+                                                  kefir_opt_block_id_t block_id, kefir_opt_instruction_ref_t scope_ref,
+                                                  kefir_id_t type_id, kefir_size_t type_index,
+                                                  kefir_opt_instruction_ref_t *instr_id_ptr) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code container"));
 
@@ -576,25 +581,20 @@ kefir_result_t kefir_opt_code_builder_alloc_local(struct kefir_mem *mem, struct 
         mem, code, block_id,
         &(struct kefir_opt_operation) {.opcode = KEFIR_OPT_OPCODE_ALLOC_LOCAL,
                                        .parameters.type = {.type_id = type_id, .type_index = type_index},
-                                        .parameters.refs = {
-                                            scope_ref,
-                                            KEFIR_ID_NONE,
-                                            KEFIR_ID_NONE,
-                                            KEFIR_ID_NONE
-                                        }},
+                                       .parameters.refs = {scope_ref, KEFIR_ID_NONE, KEFIR_ID_NONE, KEFIR_ID_NONE}},
         false, instr_id_ptr));
     return KEFIR_OK;
 }
 
 kefir_result_t kefir_opt_code_builder_local_scope(struct kefir_mem *mem, struct kefir_opt_code_container *code,
-                                                  kefir_opt_block_id_t block_id, kefir_opt_instruction_ref_t *instr_id_ptr) {
+                                                  kefir_opt_block_id_t block_id,
+                                                  kefir_opt_instruction_ref_t *instr_id_ptr) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code container"));
 
     REQUIRE_OK(kefir_opt_code_builder_add_instruction(
-        mem, code, block_id,
-        &(struct kefir_opt_operation) {.opcode = KEFIR_OPT_OPCODE_LOCAL_SCOPE},
-        false, instr_id_ptr));
+        mem, code, block_id, &(struct kefir_opt_operation) {.opcode = KEFIR_OPT_OPCODE_LOCAL_SCOPE}, false,
+        instr_id_ptr));
     return KEFIR_OK;
 }
 

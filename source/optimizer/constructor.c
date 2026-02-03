@@ -562,16 +562,15 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             break;
 
         case KEFIR_IR_OPCODE_GET_LOCAL_SCOPE:
-            REQUIRE_OK(kefir_opt_constructor_get_local_scope(
-                mem, state, instr->arg.u64, &instr_ref));
+            REQUIRE_OK(kefir_opt_constructor_get_local_scope(mem, state, instr->arg.u64, &instr_ref));
             REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));
             break;
 
         case KEFIR_IR_OPCODE_GET_LOCAL:
             REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref2));
             REQUIRE_OK(kefir_opt_constructor_get_local_allocation(
-                mem, state, instr_ref2, (((kefir_uint64_t) instr->arg.u32[0]) << 32) | instr->arg.u32[1], instr->arg.u32[2],
-                instr->arg.u32[3], &instr_ref));
+                mem, state, instr_ref2, (((kefir_uint64_t) instr->arg.u32[0]) << 32) | instr->arg.u32[1],
+                instr->arg.u32[2], instr->arg.u32[3], &instr_ref));
             REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));
             break;
 
@@ -1693,6 +1692,7 @@ static kefir_result_t link_blocks_match(struct kefir_mem *mem, struct kefir_opt_
     kefir_opt_instruction_ref_t instr_ref;
     const struct kefir_opt_instruction *instr = NULL;
     REQUIRE_OK(kefir_opt_code_block_instr_control_tail(&state->function->code, block, &instr_ref));
+    REQUIRE(instr_ref != KEFIR_ID_NONE, KEFIR_OK);
     REQUIRE_OK(kefir_opt_code_container_instr(&state->function->code, instr_ref, &instr));
 
     switch (instr->operation.opcode) {

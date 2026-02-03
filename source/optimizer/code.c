@@ -517,6 +517,7 @@ kefir_result_t kefir_opt_code_container_init(struct kefir_opt_code_container *co
     code->next_call_node_id = 0;
     code->next_inline_assembly_id = 0;
     code->entry_point = KEFIR_ID_NONE;
+    code->gate_block = KEFIR_ID_NONE;
     code->event_listener = NULL;
     REQUIRE_OK(kefir_hashtree_init(&code->call_nodes, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtree_on_removal(&code->call_nodes, free_call_node, NULL));
@@ -596,6 +597,20 @@ kefir_result_t kefir_opt_code_container_new_block(struct kefir_mem *mem, struct 
     }
 
     *block_id_ptr = block->id;
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_opt_code_container_gate_block(struct kefir_mem *mem, struct kefir_opt_code_container *code,
+                                                   kefir_opt_block_id_t *block_id_ptr) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code container"));
+    REQUIRE(block_id_ptr != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to optimizer code block identifier"));
+
+    if (code->gate_block == KEFIR_ID_NONE) {
+        REQUIRE_OK(kefir_opt_code_container_new_block(mem, code, false, &code->gate_block));
+    }
+    *block_id_ptr = code->gate_block;
     return KEFIR_OK;
 }
 
@@ -2492,6 +2507,7 @@ kefir_result_t kefir_opt_code_container_instruction_replace_control_flow_target(
             // Fallthrough
 
         case KEFIR_OPT_OPCODE_JUMP:
+        case KEFIR_OPT_OPCODE_IJUMP:
             if (instr->operation.parameters.branch.target_block == current_target_block_id) {
                 instr->operation.parameters.branch.target_block = desired_target_block_id;
             }
@@ -2544,6 +2560,8 @@ static kefir_result_t replace_references_branch(struct kefir_opt_instruction *in
                                                 kefir_opt_instruction_ref_t from_ref) {
     if (instr->operation.opcode == KEFIR_OPT_OPCODE_BRANCH) {
         REPLACE_REF(&instr->operation.parameters.branch.condition_ref, to_ref, from_ref);
+    } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_IJUMP) {
+        REPLACE_REF(&instr->operation.parameters.refs[0], to_ref, from_ref);
     }
     return KEFIR_OK;
 }
@@ -2692,8 +2710,9 @@ static kefir_result_t replace_references_bitfield(struct kefir_opt_instruction *
     return KEFIR_OK;
 }
 
-static kefir_result_t replace_references_localvar(struct kefir_opt_instruction *instr, kefir_opt_instruction_ref_t to_ref,
-                                              kefir_opt_instruction_ref_t from_ref) {
+static kefir_result_t replace_references_localvar(struct kefir_opt_instruction *instr,
+                                                  kefir_opt_instruction_ref_t to_ref,
+                                                  kefir_opt_instruction_ref_t from_ref) {
     UNUSED(instr);
     UNUSED(to_ref);
     UNUSED(from_ref);

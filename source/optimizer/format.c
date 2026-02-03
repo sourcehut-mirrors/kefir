@@ -93,6 +93,13 @@ static kefir_result_t format_operation_branch(struct kefir_json_output *json, co
             REQUIRE_OK(format_condition_variamt(json, oper->parameters.branch.condition_variant));
             break;
 
+        case KEFIR_OPT_OPCODE_IJUMP:
+            REQUIRE_OK(kefir_json_output_object_key(json, "target_ref"));
+            REQUIRE_OK(id_format(json, oper->parameters.refs[0]));
+            REQUIRE_OK(kefir_json_output_object_key(json, "gate_block"));
+            REQUIRE_OK(id_format(json, oper->parameters.branch.target_block));
+            break;
+
         default:
             return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected optimizer operation code");
     }
@@ -1161,7 +1168,7 @@ static kefir_result_t code_block_format(struct kefir_json_output *json, const st
 
     kefir_opt_instruction_ref_t instr_ref;
     const struct kefir_opt_instruction *instr = NULL;
-    if (schedule == NULL) {
+    if (schedule == NULL || block->id == code->gate_block) {
         for (res = kefir_opt_code_block_instr_head(code, block, &instr_ref);
              res == KEFIR_OK && instr_ref != KEFIR_ID_NONE;
              res = kefir_opt_instruction_next_sibling(code, instr_ref, &instr_ref)) {
@@ -1275,6 +1282,12 @@ static kefir_result_t format_blocks(struct kefir_json_output *json, const struct
             REQUIRE_OK(kefir_opt_code_container_block(code, block_id, &block));
             REQUIRE_OK(code_block_format(json, module, code, block, code_analysis, debug_info, schedule));
         }
+
+        if (code->gate_block != KEFIR_ID_NONE) {
+            const struct kefir_opt_code_block *block;
+            REQUIRE_OK(kefir_opt_code_container_block(code, code->gate_block, &block));
+            REQUIRE_OK(code_block_format(json, module, code, block, code_analysis, debug_info, schedule));
+        }
     }
     REQUIRE_OK(kefir_json_output_array_end(json));
     return KEFIR_OK;
@@ -1292,6 +1305,10 @@ kefir_result_t kefir_opt_code_format(struct kefir_mem *mem, struct kefir_json_ou
 
     REQUIRE_OK(kefir_json_output_object_key(json, "entry_point"));
     REQUIRE_OK(id_format(json, code->entry_point));
+    if (code->gate_block != KEFIR_ID_NONE) {
+        REQUIRE_OK(kefir_json_output_object_key(json, "gate_block"));
+        REQUIRE_OK(id_format(json, code->gate_block));
+    }
 
     struct kefir_opt_code_topological_scheduler topological_scheduler;
     REQUIRE_OK(kefir_opt_code_topological_scheduler_init(

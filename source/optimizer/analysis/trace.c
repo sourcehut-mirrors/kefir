@@ -180,6 +180,8 @@ static kefir_result_t trace_instr(struct kefir_mem *mem, const struct kefir_opt_
                     REQUIRE_OK(trace_block(mem, code, block_id, instr_queue, traced_blocks, pending_instr));
                 }
             }
+            REQUIRE_OK(trace_block(mem, code, instr->operation.parameters.branch.target_block, instr_queue,
+                                   traced_blocks, pending_instr));
             REQUIRE_OK(kefir_hashset_clear(mem, pending_block_labels));
         } break;
 

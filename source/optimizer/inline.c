@@ -213,22 +213,39 @@ static kefir_result_t inline_operation_ref4_compare(struct do_inline_param *para
 
 static kefir_result_t inline_operation_branch(struct do_inline_param *param, const struct kefir_opt_instruction *instr,
                                               kefir_opt_instruction_ref_t *mapped_instr_ref_ptr) {
-    kefir_opt_block_id_t mapped_block_id, mapped_target_block_id, mapped_alternative_block_id;
-    REQUIRE_OK(map_block(param, instr->block_id, &mapped_block_id));
-    REQUIRE_OK(map_block(param, instr->operation.parameters.branch.target_block, &mapped_target_block_id));
-    REQUIRE_OK(map_block(param, instr->operation.parameters.branch.alternative_block, &mapped_alternative_block_id));
+    if (instr->operation.opcode == KEFIR_OPT_OPCODE_IJUMP) {
+        kefir_opt_block_id_t mapped_block_id, mapped_target_block_id;
+        REQUIRE_OK(map_block(param, instr->block_id, &mapped_block_id));
+        REQUIRE_OK(kefir_opt_code_container_gate_block(param->mem, param->dst_code, &mapped_target_block_id));
 
-    kefir_opt_instruction_ref_t mapped_ref1;
-    REQUIRE_OK(get_instr_ref_mapping(param, instr->operation.parameters.branch.condition_ref, &mapped_ref1));
-    REQUIRE_OK(kefir_opt_code_container_new_instruction(
-        param->mem, param->dst_code, mapped_block_id,
-        &(struct kefir_opt_operation) {
-            .opcode = instr->operation.opcode,
-            .parameters = {.branch = {.condition_ref = mapped_ref1,
-                                      .condition_variant = instr->operation.parameters.branch.condition_variant,
-                                      .target_block = mapped_target_block_id,
-                                      .alternative_block = mapped_alternative_block_id}}},
-        mapped_instr_ref_ptr));
+        kefir_opt_instruction_ref_t mapped_ref1;
+        REQUIRE_OK(get_instr_ref_mapping(param, instr->operation.parameters.refs[0], &mapped_ref1));
+        REQUIRE_OK(kefir_opt_code_container_new_instruction(
+            param->mem, param->dst_code, mapped_block_id,
+            &(struct kefir_opt_operation) {
+                .opcode = instr->operation.opcode,
+                .parameters = {.refs = {mapped_ref1, KEFIR_ID_NONE, KEFIR_ID_NONE, KEFIR_ID_NONE},
+                               .branch.target_block = mapped_target_block_id}},
+            mapped_instr_ref_ptr));
+    } else {
+        kefir_opt_block_id_t mapped_block_id, mapped_target_block_id, mapped_alternative_block_id;
+        REQUIRE_OK(map_block(param, instr->block_id, &mapped_block_id));
+        REQUIRE_OK(map_block(param, instr->operation.parameters.branch.target_block, &mapped_target_block_id));
+        REQUIRE_OK(
+            map_block(param, instr->operation.parameters.branch.alternative_block, &mapped_alternative_block_id));
+
+        kefir_opt_instruction_ref_t mapped_ref1;
+        REQUIRE_OK(get_instr_ref_mapping(param, instr->operation.parameters.branch.condition_ref, &mapped_ref1));
+        REQUIRE_OK(kefir_opt_code_container_new_instruction(
+            param->mem, param->dst_code, mapped_block_id,
+            &(struct kefir_opt_operation) {
+                .opcode = instr->operation.opcode,
+                .parameters = {.branch = {.condition_ref = mapped_ref1,
+                                          .condition_variant = instr->operation.parameters.branch.condition_variant,
+                                          .target_block = mapped_target_block_id,
+                                          .alternative_block = mapped_alternative_block_id}}},
+            mapped_instr_ref_ptr));
+    }
     return KEFIR_OK;
 }
 

@@ -68,11 +68,18 @@ static kefir_result_t trace_instruction_impl(kefir_opt_instruction_ref_t instr_r
                 if (src_instr_ref == instr_ref && IS_BLOCK_REACHABLE(param->control_flow, src_block_id)) {
                     REQUIRE_OK(kefir_opt_find_closest_common_dominator(param->control_flow, src_block_id,
                                                                        closest_dominator, &closest_dominator));
+                    if (closest_dominator != KEFIR_ID_NONE &&
+                        closest_dominator == param->control_flow->code->gate_block) {
+                        closest_dominator = param->control_flow->blocks[closest_dominator].immediate_dominator;
+                    }
                 }
             }
         } else if (IS_BLOCK_REACHABLE(param->control_flow, use_instr->block_id)) {
             REQUIRE_OK(kefir_opt_find_closest_common_dominator(param->control_flow, use_instr->block_id,
                                                                closest_dominator, &closest_dominator));
+            if (closest_dominator != KEFIR_ID_NONE && closest_dominator == param->control_flow->code->gate_block) {
+                closest_dominator = param->control_flow->blocks[closest_dominator].immediate_dominator;
+            }
         }
     }
     if (res != KEFIR_ITERATOR_END) {
