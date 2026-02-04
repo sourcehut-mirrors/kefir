@@ -3477,7 +3477,7 @@ test4:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 24,
+#                    "instr_ref": 39,
 #                    "opcode": "assign",
 #                    "parameters": [
 #                        {
@@ -3516,7 +3516,7 @@ test4:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 26,
+#                    "instr_ref": 41,
 #                    "opcode": "mov",
 #                    "parameters": [
 #                        {
@@ -3528,7 +3528,7 @@ test4:
 #                        },
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 24,
+#                            "instr_ref": 39,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -3558,7 +3558,7 @@ test4:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 27,
+#                    "instr_ref": 42,
 #                    "opcode": "jmp",
 #                    "parameters": [
 #                        {
@@ -3799,7 +3799,7 @@ test4:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 31,
+#                    "instr_ref": 46,
 #                    "opcode": "mov",
 #                    "parameters": [
 #                        {
@@ -3851,7 +3851,7 @@ test4:
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 31,
+#                            "instr_ref": 46,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0

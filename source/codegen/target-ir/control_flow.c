@@ -518,6 +518,9 @@ kefir_result_t kefir_codegen_target_ir_control_flow_build(struct kefir_mem *mem,
                                             (kefir_hashset_key_t) block_ref));
             REQUIRE_OK(kefir_hashset_add(mem, &control_flow->blocks[pred_block_ref].successors,
                                          (kefir_hashset_key_t) control_flow->code->indirect_jump_gate_block));
+            REQUIRE_OK(
+                kefir_hashset_add(mem, &control_flow->blocks[control_flow->code->indirect_jump_gate_block].predecessors,
+                                  (kefir_hashset_key_t) pred_block_ref));
         }
         if (res != KEFIR_ITERATOR_END) {
             REQUIRE_OK(res);
