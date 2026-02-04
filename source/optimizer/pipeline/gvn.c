@@ -1008,6 +1008,15 @@ static kefir_result_t global_value_numbering_apply(struct kefir_mem *mem, struct
         kefir_hashtree_free(mem, &state.instr_hashes);
         return res;
     });
+    res = kefir_opt_code_sequencing_free(mem, &state.sequencing);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_opt_code_control_flow_free(mem, &state.control_flow);
+        kefir_list_free(mem, &state.queue);
+        kefir_hashtreeset_free(mem, &state.processed_instr);
+        kefir_hashtreeset_free(mem, &state.queued_instr);
+        kefir_hashtree_free(mem, &state.instr_hashes);
+        return res;
+    });
     res = kefir_opt_code_control_flow_free(mem, &state.control_flow);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_list_free(mem, &state.queue);
