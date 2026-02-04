@@ -246,6 +246,7 @@ static kefir_result_t do_hoist(struct licm_state *state, kefir_opt_block_id_t lo
 
 static kefir_result_t process_loop(struct licm_state *state) {
     REQUIRE(state->loop->loop_entry_block_id != state->control_flow.code->entry_point &&
+                state->loop->loop_entry_block_id != state->control_flow.code->gate_block &&
                 !kefir_hashset_has(&state->control_flow.indirect_jump_target_blocks,
                                    (kefir_hashset_key_t) state->loop->loop_entry_block_id),
             KEFIR_OK);
