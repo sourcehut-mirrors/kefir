@@ -702,23 +702,6 @@ static kefir_result_t translate_code(struct kefir_mem *mem, struct kefir_codegen
     }
 
     // Translate blocks
-    if (func->function->code.gate_block != KEFIR_ID_NONE) {
-        const struct kefir_opt_code_block *block;
-        REQUIRE_OK(kefir_opt_code_container_block(&func->function->code, func->function->code.gate_block, &block));
-        kefir_opt_phi_id_t phi_ref;
-        for (res = kefir_opt_code_block_phi_head(&func->function->code, block, &phi_ref);
-             res == KEFIR_OK && phi_ref != KEFIR_ID_NONE;
-             res = kefir_opt_phi_next_sibling(&func->function->code, phi_ref, &phi_ref)) {
-            const struct kefir_opt_phi_node *phi;
-            REQUIRE_OK(kefir_opt_code_container_phi(&func->function->code, phi_ref, &phi));
-            const struct kefir_opt_instruction *instr = NULL;
-            REQUIRE_OK(kefir_opt_code_container_instr(&func->function->code, phi->output_ref, &instr));
-            REQUIRE_OK(translate_instruction(mem, func, instr));
-        }
-        if (res != KEFIR_ITERATOR_END) {
-            REQUIRE_OK(res);
-        }
-    }
     for (kefir_size_t block_linear_index = 0;
          block_linear_index < kefir_opt_code_schedule_num_of_blocks(&func->schedule); block_linear_index++) {
         kefir_opt_block_id_t block_id;

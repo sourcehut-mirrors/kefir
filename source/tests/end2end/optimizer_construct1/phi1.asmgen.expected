@@ -836,6 +836,26 @@
                         }
                     },
                     {
+                        "id": 11,
+                        "control_flow": null,
+                        "code": [],
+                        "public_labels": [],
+                        "properties": {
+                            "successors": [
+                                1,
+                                2
+                            ],
+                            "predecessors": [
+                                5,
+                                6
+                            ],
+                            "immediate_dominator": 3,
+                            "alive_instructions": [
+                                0
+                            ]
+                        }
+                    },
+                    {
                         "id": 1,
                         "control_flow": 35,
                         "code": [

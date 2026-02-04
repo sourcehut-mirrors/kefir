@@ -68,13 +68,59 @@ static kefir_result_t schedule_stack_push(struct schedule_instruction_param *par
     return KEFIR_OK;
 }
 
+static kefir_result_t schedule_live_out(struct schedule_instruction_param *param,
+                                        const struct kefir_opt_code_block *block) {
+    kefir_result_t res;
+    struct kefir_hashset_iterator iter;
+    kefir_hashset_key_t entry;
+    const struct kefir_opt_code_control_flow_block *block_props = &param->code_analysis->control_flow.blocks[block->id];
+    for (res = kefir_hashset_iter(&block_props->successors, &iter, &entry); res == KEFIR_OK;
+         res = kefir_hashset_next(&iter, &entry)) {
+        ASSIGN_DECL_CAST(kefir_opt_block_id_t, successor_block_id, entry);
+        const struct kefir_opt_code_block *successor_block;
+        REQUIRE_OK(kefir_opt_code_container_block(param->code, successor_block_id, &successor_block));
+        kefir_opt_phi_id_t phi_ref;
+        for (res = kefir_opt_code_block_phi_head(param->code, successor_block, &phi_ref);
+             res == KEFIR_OK && phi_ref != KEFIR_ID_NONE; kefir_opt_phi_next_sibling(param->code, phi_ref, &phi_ref)) {
+            const struct kefir_opt_phi_node *phi_node;
+            REQUIRE_OK(kefir_opt_code_container_phi(param->code, phi_ref, &phi_node));
+            if (!kefir_hashset_has(&param->code_analysis->liveness.blocks[successor_block_id].alive_instr,
+                                   (kefir_hashset_key_t) phi_node->output_ref)) {
+                continue;
+            }
+            kefir_opt_instruction_ref_t instr_ref2;
+            REQUIRE_OK(kefir_opt_code_container_phi_link_for(param->code, phi_ref, block->id, &instr_ref2));
+            REQUIRE_OK(schedule_stack_push(param, instr_ref2, true, kefir_list_tail(&param->instr_queue)));
+        }
+        REQUIRE_OK(res);
+
+        if (successor_block_id != block->id) {
+            struct kefir_hashset_iterator alive_instr_iter;
+            kefir_hashset_key_t alive_instr_entry;
+            for (res = kefir_hashset_iter(&param->code_analysis->liveness.blocks[successor_block_id].alive_instr,
+                                          &alive_instr_iter, &alive_instr_entry);
+                 res == KEFIR_OK; res = kefir_hashset_next(&alive_instr_iter, &alive_instr_entry)) {
+                ASSIGN_DECL_CAST(kefir_opt_instruction_ref_t, alive_instr_ref, alive_instr_entry);
+                const struct kefir_opt_instruction *alive_instr;
+                REQUIRE_OK(kefir_opt_code_container_instr(param->code, alive_instr_ref, &alive_instr));
+                if (alive_instr->block_id != block->id) {
+                    continue;
+                }
+                REQUIRE_OK(schedule_stack_push(param, alive_instr_ref, true, kefir_list_tail(&param->instr_queue)));
+            }
+        }
+    }
+    if (res != KEFIR_ITERATOR_END) {
+        REQUIRE_OK(res);
+    }
+    return KEFIR_OK;
+}
+
 static kefir_result_t schedule_collect_control_flow(const struct kefir_opt_code_block *block,
                                                     struct schedule_instruction_param *param) {
     kefir_result_t res;
     kefir_opt_instruction_ref_t instr_ref;
     kefir_opt_instruction_ref_t tail_control_ref;
-
-    const struct kefir_opt_code_control_flow_block *block_props = &param->code_analysis->control_flow.blocks[block->id];
 
     for (res = kefir_opt_code_block_instr_head(param->code, block, &instr_ref);
          res == KEFIR_OK && instr_ref != KEFIR_ID_NONE;
@@ -111,8 +157,12 @@ static kefir_result_t schedule_collect_control_flow(const struct kefir_opt_code_
     REQUIRE_OK(res);
 
     REQUIRE_OK(kefir_opt_code_block_instr_control_tail(param->code, block, &tail_control_ref));
-    for (res = kefir_opt_code_block_instr_control_head(param->code, block, &instr_ref);
-         res == KEFIR_OK && instr_ref != KEFIR_ID_NONE;
+    res = kefir_opt_code_block_instr_control_head(param->code, block, &instr_ref);
+    REQUIRE_OK(res);
+    if (instr_ref == KEFIR_ID_NONE) {
+        REQUIRE_OK(schedule_live_out(param, block));
+    }
+    for (; res == KEFIR_OK && instr_ref != KEFIR_ID_NONE;
          res = kefir_opt_instruction_next_control(param->code, instr_ref, &instr_ref)) {
 
         const struct kefir_opt_instruction *instr;
@@ -127,50 +177,7 @@ static kefir_result_t schedule_collect_control_flow(const struct kefir_opt_code_
         }
 
         if (instr_ref == tail_control_ref) {
-            struct kefir_hashset_iterator iter;
-            kefir_hashset_key_t entry;
-            for (res = kefir_hashset_iter(&block_props->successors, &iter, &entry); res == KEFIR_OK;
-                 res = kefir_hashset_next(&iter, &entry)) {
-                ASSIGN_DECL_CAST(kefir_opt_block_id_t, successor_block_id, entry);
-                const struct kefir_opt_code_block *successor_block;
-                REQUIRE_OK(kefir_opt_code_container_block(param->code, successor_block_id, &successor_block));
-                kefir_opt_phi_id_t phi_ref;
-                for (res = kefir_opt_code_block_phi_head(param->code, successor_block, &phi_ref);
-                     res == KEFIR_OK && phi_ref != KEFIR_ID_NONE;
-                     kefir_opt_phi_next_sibling(param->code, phi_ref, &phi_ref)) {
-                    const struct kefir_opt_phi_node *phi_node;
-                    REQUIRE_OK(kefir_opt_code_container_phi(param->code, phi_ref, &phi_node));
-                    if (!kefir_hashset_has(&param->code_analysis->liveness.blocks[successor_block_id].alive_instr,
-                                           (kefir_hashset_key_t) phi_node->output_ref)) {
-                        continue;
-                    }
-                    kefir_opt_instruction_ref_t instr_ref2;
-                    REQUIRE_OK(kefir_opt_code_container_phi_link_for(param->code, phi_ref, block->id, &instr_ref2));
-                    REQUIRE_OK(schedule_stack_push(param, instr_ref2, true, kefir_list_tail(&param->instr_queue)));
-                }
-                REQUIRE_OK(res);
-
-                if (successor_block_id != block->id) {
-                    struct kefir_hashset_iterator alive_instr_iter;
-                    kefir_hashset_key_t alive_instr_entry;
-                    for (res =
-                             kefir_hashset_iter(&param->code_analysis->liveness.blocks[successor_block_id].alive_instr,
-                                                &alive_instr_iter, &alive_instr_entry);
-                         res == KEFIR_OK; res = kefir_hashset_next(&alive_instr_iter, &alive_instr_entry)) {
-                        ASSIGN_DECL_CAST(kefir_opt_instruction_ref_t, alive_instr_ref, alive_instr_entry);
-                        const struct kefir_opt_instruction *alive_instr;
-                        REQUIRE_OK(kefir_opt_code_container_instr(param->code, alive_instr_ref, &alive_instr));
-                        if (alive_instr->block_id != block->id) {
-                            continue;
-                        }
-                        REQUIRE_OK(
-                            schedule_stack_push(param, alive_instr_ref, true, kefir_list_tail(&param->instr_queue)));
-                    }
-                }
-            }
-            if (res != KEFIR_ITERATOR_END) {
-                REQUIRE_OK(res);
-            }
+            REQUIRE_OK(schedule_live_out(param, block));
         }
         REQUIRE_OK(schedule_stack_push(param, instr_ref, true, kefir_list_tail(&param->instr_queue)));
     }
@@ -248,10 +255,8 @@ static kefir_result_t schedule_block(struct kefir_mem *mem, const struct kefir_o
     const struct kefir_opt_code_block *block;
     REQUIRE_OK(kefir_opt_code_container_block(code, block_id, &block));
 
-    if (block_id != code->gate_block) {
-        kefir_uint32_t block_linear_index;
-        REQUIRE_OK(schedule_builder->schedule_block(mem, block_id, &block_linear_index, schedule_builder->payload));
-    }
+    kefir_uint32_t block_linear_index;
+    REQUIRE_OK(schedule_builder->schedule_block(mem, block_id, &block_linear_index, schedule_builder->payload));
 
     struct schedule_instruction_param param = {.mem = mem,
                                                .schedule = schedule,
