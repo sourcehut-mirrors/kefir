@@ -31,6 +31,7 @@ typedef struct kefir_opt_code_control_flow_block {
     kefir_opt_block_id_t immediate_dominator;
     kefir_size_t dominance_linear_index;
     kefir_size_t dominated_block_max_linear;
+    struct kefir_hashset dominance_frontier;
 } kefir_opt_code_control_flow_block_t;
 
 typedef struct kefir_opt_code_control_flow {
@@ -50,6 +51,7 @@ kefir_result_t kefir_opt_code_control_flow_build(struct kefir_mem *, struct kefi
 
 kefir_result_t kefir_opt_code_control_flow_modify_bypass_block(struct kefir_mem *, struct kefir_opt_code_control_flow *,
                                                                kefir_opt_block_id_t, kefir_opt_block_id_t);
+kefir_result_t kefir_opt_code_control_flow_rebuild_dominance(struct kefir_mem *, struct kefir_opt_code_control_flow *);
 
 kefir_result_t kefir_opt_code_control_flow_is_dominator(const struct kefir_opt_code_control_flow *,
                                                         kefir_opt_block_id_t, kefir_opt_block_id_t, kefir_bool_t *);
