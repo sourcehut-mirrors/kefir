@@ -29,6 +29,8 @@ typedef struct kefir_opt_code_control_flow_block {
     struct kefir_hashset predecessors;
     struct kefir_hashset successors;
     kefir_opt_block_id_t immediate_dominator;
+    kefir_size_t dominance_linear_index;
+    kefir_size_t dominated_block_max_linear;
 } kefir_opt_code_control_flow_block_t;
 
 typedef struct kefir_opt_code_control_flow {
@@ -37,6 +39,7 @@ typedef struct kefir_opt_code_control_flow {
     struct kefir_opt_code_control_flow_block *blocks;
     struct kefir_hashset indirect_jump_source_blocks;
     struct kefir_hashset indirect_jump_target_blocks;
+    struct kefir_hashtable dominator_tree;
 } kefir_opt_code_control_flow_t;
 
 kefir_result_t kefir_opt_code_control_flow_init(struct kefir_opt_code_control_flow *);
@@ -64,5 +67,15 @@ kefir_result_t kefir_opt_code_control_flow_block_exclusive_direct_predecessor(
 kefir_result_t kefir_opt_code_control_flow_link_blocks(struct kefir_mem *, struct kefir_opt_code_control_flow *);
 kefir_result_t kefir_opt_code_control_flow_find_dominators(struct kefir_mem *, struct kefir_opt_code_control_flow *);
 #endif
+
+typedef struct kefir_opt_control_flow_dominator_tree_iterator {
+    struct kefir_hashset_iterator iter;
+} kefir_opt_control_flow_dominator_tree_iterator_t;
+
+kefir_result_t kefir_opt_control_flow_dominator_tree_iter(const struct kefir_opt_code_control_flow *,
+                                                          struct kefir_opt_control_flow_dominator_tree_iterator *,
+                                                          kefir_opt_block_id_t, kefir_opt_block_id_t *);
+kefir_result_t kefir_opt_control_flow_dominator_tree_next(struct kefir_opt_control_flow_dominator_tree_iterator *,
+                                                          kefir_opt_block_id_t *);
 
 #endif
