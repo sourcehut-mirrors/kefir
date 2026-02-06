@@ -35,7 +35,7 @@ factorial64:
 .L__kefir_func_factorial64_label69:
     jg .L__kefir_func_factorial64_label22
 .loc 0 33 9
-.L__kefir_func_factorial64_label73:
+.L__kefir_func_factorial64_label84:
     mov %rcx, %rax
 .L__kefir_func_factorial64_label75:
     ret
@@ -396,7 +396,7 @@ __kefir_debug_rnglist_section_entry_6:
 __kefir_debug_rnglist_section_entry_7:
     .byte 4
     .uleb128 .L__kefir_func_factorial64_label8 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_factorial64_label73 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_factorial64_label84 - .L__kefir_text_section_begin
     .byte 0
 __kefir_debug_rnglist_section_entry_8:
     .byte 4

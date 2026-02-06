@@ -78,8 +78,8 @@ test_dec128_run:
     ret
 .L__kefir_func_test_dec128_run_label4:
     lea -80(%rbp), %rdi
-    movaps -112(%rbp), %xmm0
-    movaps -96(%rbp), %xmm1
+    movaps -96(%rbp), %xmm0
+    movaps -112(%rbp), %xmm1
     movaps -128(%rbp), %xmm2
     call test_dec128_step
     add $1, %r13d
@@ -91,10 +91,10 @@ test_dec128_run:
     .quad 1, 3475090062469758976
     .align 16
 .L__kefir_func_test_dec128_run_label7:
-    .quad 4, 3475653012423180288
+    .quad 6, 3475653012423180288
     .align 16
 .L__kefir_func_test_dec128_run_label8:
-    .quad 6, 3475653012423180288
+    .quad 4, 3475653012423180288
 .section .text
 
 test_dec32_init:
@@ -946,8 +946,8 @@ test_dec64_run:
     ret
 .L__kefir_func_test_dec64_run_label4:
     lea -56(%rbp), %rdi
-    movaps -96(%rbp), %xmm0
-    movaps -80(%rbp), %xmm1
+    movaps -80(%rbp), %xmm0
+    movaps -96(%rbp), %xmm1
     movaps -112(%rbp), %xmm2
     call test_dec64_step
     add $1, %r13d
@@ -959,10 +959,10 @@ test_dec64_run:
     .quad 3557843705622691841
     .align 8
 .L__kefir_func_test_dec64_run_label7:
-    .quad 3566850904877432836
+    .quad 3566850904877432838
     .align 8
 .L__kefir_func_test_dec64_run_label8:
-    .quad 3566850904877432838
+    .quad 3566850904877432836
 .section .text
 
 test_dec128_laplacian:

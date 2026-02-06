@@ -194,17 +194,6 @@ __kefir_softfloat_complex_long_double_mul:
     test %al, %al
     jz .L__kefir_runtime_func___kefir_softfloat_complex_long_double_mul_label5
     fldt .L__kefir_runtime_func___kefir_softfloat_complex_long_double_mul_label57(%rip)
-    fldt -80(%rbp)
-    fldt -224(%rbp)
-    fmulp
-    fldt -48(%rbp)
-    fldt -176(%rbp)
-    fmulp
-    fxch %st(1)
-    fsubp
-    fxch %st(1)
-    fmulp
-    fldt .L__kefir_runtime_func___kefir_softfloat_complex_long_double_mul_label58(%rip)
     fldt -48(%rbp)
     fldt -224(%rbp)
     fmulp
@@ -215,8 +204,19 @@ __kefir_softfloat_complex_long_double_mul:
     faddp
     fxch %st(1)
     fmulp
-    fstpt -160(%rbp)
+    fldt .L__kefir_runtime_func___kefir_softfloat_complex_long_double_mul_label58(%rip)
+    fldt -80(%rbp)
+    fldt -224(%rbp)
+    fmulp
+    fldt -48(%rbp)
+    fldt -176(%rbp)
+    fmulp
+    fxch %st(1)
+    fsubp
+    fxch %st(1)
+    fmulp
     fstpt -128(%rbp)
+    fstpt -160(%rbp)
     jmp .L__kefir_runtime_func___kefir_softfloat_complex_long_double_mul_label5
 .L__kefir_runtime_func___kefir_softfloat_complex_long_double_mul_label27:
     fldt -224(%rbp)
@@ -442,9 +442,9 @@ __kefir_softfloat_complex_long_double_mul:
     fstpt -176(%rbp)
     jp .L__kefir_runtime_func___kefir_softfloat_complex_long_double_mul_label46
 .L__kefir_runtime_func___kefir_softfloat_complex_long_double_mul_label14:
-    mov $1, %eax
     movdqu -32(%rbp), %xmm0
     movdqu %xmm0, -48(%rbp)
+    mov $1, %eax
     movdqu -64(%rbp), %xmm0
     movdqu %xmm0, -80(%rbp)
     jmp .L__kefir_runtime_func___kefir_softfloat_complex_long_double_mul_label15
@@ -533,9 +533,9 @@ __kefir_softfloat_complex_long_double_mul:
     fstpt -48(%rbp)
     jp .L__kefir_runtime_func___kefir_softfloat_complex_long_double_mul_label54
 .L__kefir_runtime_func___kefir_softfloat_complex_long_double_mul_label53:
+    mov $1, %eax
     movdqu -208(%rbp), %xmm0
     movdqu %xmm0, -224(%rbp)
-    mov $1, %eax
     jmp .L__kefir_runtime_func___kefir_softfloat_complex_long_double_mul_label8
 .L__kefir_runtime_func___kefir_softfloat_complex_long_double_mul_label54:
     fldt .L__kefir_runtime_func___kefir_softfloat_complex_long_double_mul_label73(%rip)

@@ -14,11 +14,11 @@ test2:
     push %rbx
     sub $40, %rsp
     mov %rdi, %rbx
-    movl $1, -44(%rbp)
+    movl $1, -40(%rbp)
     movl $2, -48(%rbp)
     movl %ebx, -12(%rbp)
     mov $2, %edi
-    lea -44(%rbp), %rsi
+    lea -40(%rbp), %rsi
     lea -48(%rbp), %rdx
     xor %eax, %eax
     call test@PLT
@@ -28,7 +28,7 @@ test2:
     movl $11, -24(%rbp)
     movl $12, -20(%rbp)
     mov $5, %edi
-    lea -44(%rbp), %rsi
+    lea -40(%rbp), %rsi
     lea -48(%rbp), %rdx
     lea -16(%rbp), %rcx
     lea -24(%rbp), %r8
@@ -36,11 +36,11 @@ test2:
     xor %eax, %eax
     call test@PLT
 .L__kefir_func_test2_label3:
-    movl $100, -40(%rbp)
+    movl $100, -44(%rbp)
     mov $3, %edi
-    lea -44(%rbp), %rsi
+    lea -40(%rbp), %rsi
     lea -48(%rbp), %rdx
-    lea -40(%rbp), %rcx
+    lea -44(%rbp), %rcx
     xor %eax, %eax
     call test@PLT
     lea -8(%rbp), %rsp
@@ -51,7 +51,7 @@ test2:
     movl $3, -36(%rbp)
     movl $4, -32(%rbp)
     mov $4, %edi
-    lea -44(%rbp), %rsi
+    lea -40(%rbp), %rsi
     lea -48(%rbp), %rdx
     lea -36(%rbp), %rcx
     lea -32(%rbp), %r8
@@ -63,7 +63,7 @@ test2:
     cmp $10, %eax
     jge .L__kefir_func_test2_label3
     mov $5, %edi
-    lea -44(%rbp), %rsi
+    lea -40(%rbp), %rsi
     lea -48(%rbp), %rdx
     lea -36(%rbp), %rcx
     lea -32(%rbp), %r8

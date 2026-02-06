@@ -714,8 +714,9 @@ test_dec32_sqrt_approx:
     call __bid_addsd3@PLT
     xor %eax, %eax
     movaps %xmm0, -32(%rbp)
+    mov %rax, %rbx
 .L__kefir_func_test_dec32_sqrt_approx_label3:
-    cmp $10, %eax
+    cmp $10, %ebx
     jl .L__kefir_func_test_dec32_sqrt_approx_label5
     movaps -32(%rbp), %xmm0
     lea -8(%rbp), %rsp
@@ -723,7 +724,6 @@ test_dec32_sqrt_approx:
     pop %rbp
     ret
 .L__kefir_func_test_dec32_sqrt_approx_label5:
-    lea 1(%eax), %ebx
     movaps -64(%rbp), %xmm0
     movaps -32(%rbp), %xmm1
     call __bid_divsd3@PLT
@@ -732,8 +732,8 @@ test_dec32_sqrt_approx:
     call __bid_addsd3@PLT
     movd .L__kefir_func_test_dec32_sqrt_approx_label12(%rip), %xmm1
     call __bid_mulsd3@PLT
+    add $1, %ebx
     movaps %xmm0, -32(%rbp)
-    mov %ebx, %eax
     jmp .L__kefir_func_test_dec32_sqrt_approx_label3
 .L__kefir_func_test_dec32_sqrt_approx_label7:
     movd .L__kefir_func_test_dec32_sqrt_approx_label13(%rip), %xmm0
@@ -774,11 +774,11 @@ test_dec128_ax:
     mov %rdx, -80(%rbp)
     mov %rsi, %r12
     mov %rdi, %r13
-    movq (%r13), %r14
-    mov %r14, %rax
-    imul %r14, %rax
-    shl $4, %rax
-    mov %rax, %rdi
+    movq (%r13), %rax
+    mov %rax, %r14
+    imul %rax, %r14
+    mov %r14, %rdi
+    shl $4, %rdi
     call malloc@PLT
     mov %rax, %r15
     test %r15, %r15
@@ -787,7 +787,6 @@ test_dec128_ax:
     mov %r12, %rsi
     mov %r15, %rdx
     call test_dec128_laplacian_apply
-    imul %r14, %r14
     xor %eax, %eax
     mov %rax, %r13
 .L__kefir_func_test_dec128_ax_label3:
@@ -1076,8 +1075,9 @@ test_dec128_sqrt_approx:
     call __bid_addtd3@PLT
     xor %eax, %eax
     movaps %xmm0, -32(%rbp)
+    mov %rax, %rbx
 .L__kefir_func_test_dec128_sqrt_approx_label3:
-    cmp $10, %eax
+    cmp $10, %ebx
     jl .L__kefir_func_test_dec128_sqrt_approx_label5
     movaps -32(%rbp), %xmm0
     lea -8(%rbp), %rsp
@@ -1085,7 +1085,6 @@ test_dec128_sqrt_approx:
     pop %rbp
     ret
 .L__kefir_func_test_dec128_sqrt_approx_label5:
-    lea 1(%eax), %ebx
     movaps -64(%rbp), %xmm0
     movaps -32(%rbp), %xmm1
     call __bid_divtd3@PLT
@@ -1094,8 +1093,8 @@ test_dec128_sqrt_approx:
     call __bid_addtd3@PLT
     movdqu .L__kefir_func_test_dec128_sqrt_approx_label12(%rip), %xmm1
     call __bid_multd3@PLT
+    add $1, %ebx
     movaps %xmm0, -32(%rbp)
-    mov %ebx, %eax
     jmp .L__kefir_func_test_dec128_sqrt_approx_label3
 .L__kefir_func_test_dec128_sqrt_approx_label7:
     movdqu .L__kefir_func_test_dec128_sqrt_approx_label13(%rip), %xmm0
@@ -1149,8 +1148,9 @@ test_dec64_sqrt_approx:
     call __bid_adddd3@PLT
     xor %eax, %eax
     movaps %xmm0, -32(%rbp)
+    mov %rax, %rbx
 .L__kefir_func_test_dec64_sqrt_approx_label3:
-    cmp $10, %eax
+    cmp $10, %ebx
     jl .L__kefir_func_test_dec64_sqrt_approx_label5
     movaps -32(%rbp), %xmm0
     lea -8(%rbp), %rsp
@@ -1158,7 +1158,6 @@ test_dec64_sqrt_approx:
     pop %rbp
     ret
 .L__kefir_func_test_dec64_sqrt_approx_label5:
-    lea 1(%eax), %ebx
     movaps -64(%rbp), %xmm0
     movaps -32(%rbp), %xmm1
     call __bid_divdd3@PLT
@@ -1167,8 +1166,8 @@ test_dec64_sqrt_approx:
     call __bid_adddd3@PLT
     movq .L__kefir_func_test_dec64_sqrt_approx_label12(%rip), %xmm1
     call __bid_muldd3@PLT
+    add $1, %ebx
     movaps %xmm0, -32(%rbp)
-    mov %ebx, %eax
     jmp .L__kefir_func_test_dec64_sqrt_approx_label3
 .L__kefir_func_test_dec64_sqrt_approx_label7:
     movq .L__kefir_func_test_dec64_sqrt_approx_label13(%rip), %xmm0
@@ -1209,11 +1208,11 @@ test_dec32_ax:
     mov %rdx, %rbx
     mov %rsi, %r12
     mov %rdi, %r13
-    movq (%r13), %r14
-    mov %r14, %rax
-    imul %r14, %rax
-    shl $2, %rax
-    mov %rax, %rdi
+    movq (%r13), %rax
+    mov %rax, %r14
+    imul %rax, %r14
+    mov %r14, %rdi
+    shl $2, %rdi
     call malloc@PLT
     mov %rax, %r15
     test %r15, %r15
@@ -1222,7 +1221,6 @@ test_dec32_ax:
     mov %r12, %rsi
     mov %r15, %rdx
     call test_dec32_laplacian_apply
-    imul %r14, %r14
     xor %eax, %eax
     mov %rax, %r13
 .L__kefir_func_test_dec32_ax_label3:
@@ -1274,11 +1272,11 @@ test_dec64_ax:
     mov %rdx, %rbx
     mov %rsi, %r12
     mov %rdi, %r13
-    movq (%r13), %r14
-    mov %r14, %rax
-    imul %r14, %rax
-    shl $3, %rax
-    mov %rax, %rdi
+    movq (%r13), %rax
+    mov %rax, %r14
+    imul %rax, %r14
+    mov %r14, %rdi
+    shl $3, %rdi
     call malloc@PLT
     mov %rax, %r15
     test %r15, %r15
@@ -1287,7 +1285,6 @@ test_dec64_ax:
     mov %r12, %rsi
     mov %r15, %rdx
     call test_dec64_laplacian_apply
-    imul %r14, %r14
     xor %eax, %eax
     mov %rax, %r13
 .L__kefir_func_test_dec64_ax_label3:

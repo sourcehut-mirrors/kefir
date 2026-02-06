@@ -24,15 +24,15 @@ test2:
     call test@PLT
     test %ebx, %ebx
     jnz .L__kefir_func_test2_label4
-    movl $10, -12(%rbp)
-    movl $11, -16(%rbp)
-    movl $12, -20(%rbp)
+    movl $10, -20(%rbp)
+    movl $11, -12(%rbp)
+    movl $12, -16(%rbp)
     mov $5, %edi
     lea -32(%rbp), %rsi
     lea -24(%rbp), %rdx
-    lea -12(%rbp), %rcx
-    lea -16(%rbp), %r8
-    lea -20(%rbp), %r9
+    lea -20(%rbp), %rcx
+    lea -12(%rbp), %r8
+    lea -16(%rbp), %r9
     xor %eax, %eax
     call test@PLT
 .L__kefir_func_test2_label3:

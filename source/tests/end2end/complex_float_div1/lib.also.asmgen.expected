@@ -540,19 +540,19 @@ __kefir_softfloat_scalbnf:
     mov $-126, %rdi
     jmp .L__kefir_runtime_func___kefir_softfloat_scalbnf_label13
 .L__kefir_runtime_func___kefir_softfloat_scalbnf_label9:
-    add $1, %eax
     add $102, %edi
     movd .L__kefir_runtime_func___kefir_softfloat_scalbnf_label16(%rip), %xmm1
     mulss %xmm1, %xmm0
+    add $1, %eax
     jmp .L__kefir_runtime_func___kefir_softfloat_scalbnf_label7
 .L__kefir_runtime_func___kefir_softfloat_scalbnf_label5:
     mov $127, %edi
     jmp .L__kefir_runtime_func___kefir_softfloat_scalbnf_label6
 .L__kefir_runtime_func___kefir_softfloat_scalbnf_label14:
-    add $1, %eax
     sub $127, %edi
     movd .L__kefir_runtime_func___kefir_softfloat_scalbnf_label17(%rip), %xmm1
     mulss %xmm1, %xmm0
+    add $1, %eax
     jmp .L__kefir_runtime_func___kefir_softfloat_scalbnf_label2
 .L__kefir_runtime_text_func___kefir_softfloat_scalbnf_end:
 .section .rodata
@@ -599,8 +599,8 @@ __kefir_softfloat_ilogbf:
     shr $31, %rax
     cmp $0, %rax
     jne .L__kefir_runtime_func___kefir_softfloat_ilogbf_label4
-    shl $1, %rcx
     add $-1, %edx
+    shl $1, %rcx
     jmp .L__kefir_runtime_func___kefir_softfloat_ilogbf_label11
 .L__kefir_runtime_func___kefir_softfloat_ilogbf_label8:
     movq .L__kefir_runtime_func___kefir_softfloat_ilogbf_label17(%rip), %xmm0
