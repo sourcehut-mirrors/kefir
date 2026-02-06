@@ -406,7 +406,8 @@ static kefir_result_t rematerialize_block(struct kefir_mem *mem, struct kefir_co
         const struct kefir_codegen_target_ir_instruction *instr;
         REQUIRE_OK(kefir_codegen_target_ir_code_instruction(code, instr_ref, &instr));
         if (instr->operation.opcode == code->klass->phi_opcode ||
-            instr->operation.opcode == code->klass->inline_asm_opcode) {
+            instr->operation.opcode == code->klass->inline_asm_opcode ||
+            instr->operation.opcode == code->klass->touch_opcode) {
             // Intentionally left blank
         } else {
             kefir_bool_t do_replace = false;
