@@ -110,6 +110,18 @@ static kefir_result_t preserve_virtual_regs(struct kefir_mem *mem, struct kefir_
             continue;
         }
 
+        kefir_codegen_target_ir_instruction_ref_t tail_instr_ref =
+            kefir_codegen_target_ir_code_block_control_tail(code, block_ref);
+        for (kefir_codegen_target_ir_instruction_ref_t iter_ref = tail_instr_ref; iter_ref != KEFIR_ID_NONE;
+             iter_ref = kefir_codegen_target_ir_code_control_prev(code, iter_ref)) {
+            const struct kefir_codegen_target_ir_instruction *iter_instr;
+            REQUIRE_OK(kefir_codegen_target_ir_code_instruction(code, iter_ref, &iter_instr));
+            if (iter_instr->operation.opcode == code->klass->function_epilogue_opcode) {
+                tail_instr_ref = iter_ref;
+                break;
+            }
+        }
+
         kefir_result_t res;
         struct kefir_hashset_iterator iter;
         kefir_hashset_key_t key;
@@ -117,9 +129,7 @@ static kefir_result_t preserve_virtual_regs(struct kefir_mem *mem, struct kefir_
             kefir_codegen_target_ir_value_ref_t value_ref = KEFIR_CODEGEN_TARGET_IR_VALUE_REF_FROM(key);
 
             REQUIRE_OK(kefir_codegen_target_ir_code_new_instruction(
-                mem, code, block_ref,
-                kefir_codegen_target_ir_code_control_prev(
-                    code, kefir_codegen_target_ir_code_block_control_tail(code, block_ref)),
+                mem, code, block_ref, kefir_codegen_target_ir_code_control_prev(code, tail_instr_ref),
                 &(struct kefir_codegen_target_ir_operation) {
                     .opcode = code->klass->touch_opcode,
                     .parameters[0] = {.type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF,

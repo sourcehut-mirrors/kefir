@@ -406,6 +406,7 @@ typedef struct kefir_codegen_target_ir_code_class {
     kefir_codegen_target_ir_opcode_t upsilon_opcode;
     kefir_codegen_target_ir_opcode_t placeholder_opcode;
     kefir_codegen_target_ir_opcode_t inline_asm_opcode;
+    kefir_codegen_target_ir_opcode_t function_epilogue_opcode;
     void *payload;
 } kefir_codegen_target_ir_code_class_t;
 
