@@ -115,7 +115,34 @@
                             ]
                         }
                     ],
-                    "allocation_placement": []
+                    "allocation_placement": [
+                        {
+                            "allocation_ref": 3,
+                            "placement": [
+                                2
+                            ]
+                        },
+                        {
+                            "allocation_ref": 5,
+                            "placement": [
+                                35
+                            ]
+                        },
+                        {
+                            "allocation_ref": 30,
+                            "placement": [
+                                2
+                            ]
+                        },
+                        {
+                            "allocation_ref": 29,
+                            "placement": [
+                                34,
+                                33,
+                                32
+                            ]
+                        }
+                    ]
                 }
             }
         }

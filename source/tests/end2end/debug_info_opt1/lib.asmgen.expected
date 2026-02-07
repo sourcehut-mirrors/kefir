@@ -206,7 +206,66 @@
                             ]
                         }
                     ],
-                    "allocation_placement": []
+                    "allocation_placement": [
+                        {
+                            "allocation_ref": 3,
+                            "placement": [
+                                2
+                            ]
+                        },
+                        {
+                            "allocation_ref": 21,
+                            "placement": [
+                                24,
+                                50
+                            ]
+                        },
+                        {
+                            "allocation_ref": 31,
+                            "placement": [
+                                34
+                            ]
+                        },
+                        {
+                            "allocation_ref": 26,
+                            "placement": [
+                                29
+                            ]
+                        },
+                        {
+                            "allocation_ref": 6,
+                            "placement": [
+                                5
+                            ]
+                        },
+                        {
+                            "allocation_ref": 16,
+                            "placement": [
+                                19,
+                                46
+                            ]
+                        },
+                        {
+                            "allocation_ref": 11,
+                            "placement": [
+                                14,
+                                42
+                            ]
+                        },
+                        {
+                            "allocation_ref": 9,
+                            "placement": [
+                                8
+                            ]
+                        },
+                        {
+                            "allocation_ref": 36,
+                            "placement": [
+                                50,
+                                38
+                            ]
+                        }
+                    ]
                 }
             }
         }

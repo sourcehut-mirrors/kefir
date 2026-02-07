@@ -423,7 +423,11 @@ static kefir_result_t kefir_opt_code_debug_info_replace_reference(struct kefir_m
                 return res;
             });
         } else {
-            REQUIRE_OK(kefir_hashtable_delete(mem, &debug_info->allocations, (kefir_hashtable_key_t) instr_ref));
+            REQUIRE_OK(res);
+            ASSIGN_DECL_CAST(struct kefir_opt_code_debug_info_allocation_placement *, placement, *table_value_ptr);
+            if (kefir_hashset_size(&placement->placement) == 0) {
+                REQUIRE_OK(kefir_hashtable_delete(mem, &debug_info->allocations, (kefir_hashtable_key_t) instr_ref));
+            }
         }
     }
 
