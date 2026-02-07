@@ -37,12 +37,12 @@
 // clang-format off
 #define KEFIR_OPTIMIZER_PIPELINE_FULL_SPEC                                                                             \
     "inline-func," \
-    "phi-propagate," \
+    "phi-removal," \
     "constant-fold," \
     "mem2reg," \
     "dead-alloc," \
     "local-alloc-sink," \
-    "phi-propagate," \
+    "phi-removal," \
     "constant-fold," \
     "op-simplify," \
     "gvn," \
@@ -51,10 +51,10 @@
     "lowering," \
     "dead-code-elimination," \
     "dead-alloc," \
-    "phi-propagate," \
+    "phi-removal," \
     "op-simplify," \
     "constant-fold," \
-    "phi-propagate," \
+    "phi-removal," \
     "block-merge," \
     "dead-code-elimination," \
     "tail-calls"

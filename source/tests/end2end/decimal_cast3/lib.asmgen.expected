@@ -1977,9 +1977,9 @@ __kefir_bigint_signed_to_long_double:
 
 __kefir_bigint_util_add_digit_zero_extended:
 .L__kefir_runtime_text_func___kefir_bigint_util_add_digit_zero_extended_begin:
+    movzx %sil, %rax
     sub $-7, %rdx
     shr $3, %rdx
-    movzx %sil, %rax
     xor %ecx, %ecx
     xor %esi, %esi
 .L__kefir_runtime_func___kefir_bigint_util_add_digit_zero_extended_label2:

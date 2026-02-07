@@ -2851,7 +2851,7 @@ test_dec32_initialize_gaussian:
     call __bid_floatunsdisd@PLT
     movaps -144(%rbp), %xmm1
     call __bid_mulsd3@PLT
-    movaps -128(%rbp), %xmm1
+    movaps -112(%rbp), %xmm1
     call __bid_subsd3@PLT
     movaps %xmm0, %xmm1
     movaps %xmm1, %xmm0
@@ -2862,7 +2862,7 @@ test_dec32_initialize_gaussian:
     call __bid_floatunsdisd@PLT
     movaps -144(%rbp), %xmm1
     call __bid_mulsd3@PLT
-    movaps -112(%rbp), %xmm1
+    movaps -128(%rbp), %xmm1
     call __bid_subsd3@PLT
     movaps %xmm0, %xmm1
     movaps %xmm1, %xmm0
