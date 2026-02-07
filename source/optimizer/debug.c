@@ -380,8 +380,7 @@ static kefir_result_t kefir_opt_code_debug_info_replace_reference(struct kefir_m
              res = kefir_hashtable_next(&iter, NULL, &table_value)) {
             ASSIGN_DECL_CAST(struct kefir_opt_code_debug_info_local_variable *, local_variable, table_value);
             if (kefir_hashset_has(&local_variable->allocations, (kefir_hashset_key_t) instr_ref)) {
-                REQUIRE_OK(
-                    kefir_hashset_delete(&local_variable->allocations, (kefir_hashset_key_t) replacement_instr_ref));
+                REQUIRE_OK(kefir_hashset_delete(&local_variable->allocations, (kefir_hashset_key_t) instr_ref));
                 REQUIRE_OK(
                     kefir_hashset_add(mem, &local_variable->allocations, (kefir_hashset_key_t) replacement_instr_ref));
             }

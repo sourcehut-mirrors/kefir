@@ -1053,10 +1053,6 @@ __kefir_debug_loclist_section_entry_7:
     .byte 4
     .uleb128 .L__kefir_func_factorial_label34 - .L__kefir_text_section_begin
     .uleb128 .L__kefir_func_factorial_label165 - .L__kefir_text_section_begin
-    .byte 0
-    .byte 4
-    .uleb128 .L__kefir_func_factorial_label34 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_factorial_label165 - .L__kefir_text_section_begin
     .byte 2
     .byte 145
     .byte 124
