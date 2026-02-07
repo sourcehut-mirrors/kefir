@@ -48,13 +48,13 @@ test2:
     pop %rbp
     ret
 .L__kefir_func_test2_label4:
-    movl $3, -16(%rbp)
-    movl $4, -20(%rbp)
+    movl $3, -20(%rbp)
+    movl $4, -16(%rbp)
     mov $4, %edi
     lea -32(%rbp), %rsi
     lea -24(%rbp), %rdx
-    lea -16(%rbp), %rcx
-    lea -20(%rbp), %r8
+    lea -20(%rbp), %rcx
+    lea -16(%rbp), %r8
     xor %eax, %eax
     call test@PLT
     movl $0, -12(%rbp)
@@ -65,8 +65,8 @@ test2:
     mov $5, %edi
     lea -32(%rbp), %rsi
     lea -24(%rbp), %rdx
-    lea -16(%rbp), %rcx
-    lea -20(%rbp), %r8
+    lea -20(%rbp), %rcx
+    lea -16(%rbp), %r8
     lea -12(%rbp), %r9
     xor %eax, %eax
     call test@PLT

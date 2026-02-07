@@ -8,7 +8,7 @@
                 "blocks": [
                     {
                         "id": 0,
-                        "control_flow": 36,
+                        "control_flow": 33,
                         "code": [
                             {
                                 "id": 2,
@@ -18,37 +18,27 @@
                                 "ir_instruction": 2
                             },
                             {
-                                "id": 32,
+                                "id": 34,
                                 "opcode": "int_const",
                                 "value": 3,
                                 "control_next": null,
                                 "ir_instruction": 27
                             },
                             {
-                                "id": 33,
+                                "id": 35,
                                 "opcode": "int32_not",
                                 "arg": 2,
                                 "control_next": null,
                                 "ir_instruction": 27
                             },
                             {
-                                "id": 34,
+                                "id": 36,
                                 "opcode": "select",
                                 "variant": "inverted_32bit",
                                 "args": [
                                     2,
-                                    32,
-                                    33
-                                ],
-                                "control_next": null,
-                                "ir_instruction": 27
-                            },
-                            {
-                                "id": 35,
-                                "opcode": "int32_add",
-                                "args": [
-                                    2,
-                                    34
+                                    34,
+                                    35
                                 ],
                                 "control_next": null,
                                 "ir_instruction": 27
@@ -58,15 +48,25 @@
                                 "opcode": "int32_add",
                                 "args": [
                                     2,
-                                    35
+                                    36
+                                ],
+                                "control_next": null,
+                                "ir_instruction": 27
+                            },
+                            {
+                                "id": 38,
+                                "opcode": "int32_add",
+                                "args": [
+                                    2,
+                                    37
                                 ],
                                 "control_next": null,
                                 "ir_instruction": 22
                             },
                             {
-                                "id": 36,
+                                "id": 33,
                                 "opcode": "return",
-                                "arg": 37,
+                                "arg": 38,
                                 "control_next": null,
                                 "ir_instruction": 25
                             }
@@ -79,11 +79,11 @@
                             "alive_instructions": [
                                 35,
                                 33,
-                                32,
                                 36,
                                 37,
                                 34,
-                                2
+                                2,
+                                38
                             ]
                         }
                     }
@@ -125,7 +125,7 @@
                         {
                             "allocation_ref": 5,
                             "placement": [
-                                35
+                                37
                             ]
                         },
                         {
@@ -137,9 +137,9 @@
                         {
                             "allocation_ref": 29,
                             "placement": [
-                                34,
-                                33,
-                                32
+                                35,
+                                36,
+                                34
                             ]
                         }
                     ]

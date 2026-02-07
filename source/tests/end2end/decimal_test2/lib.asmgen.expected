@@ -163,7 +163,7 @@ test_dec32_rk4_step:
     mov %rsi, %r12
     mov %rdi, %r13
     sub $48, %rsp
-    lea -564(%rbp), %rbx
+    lea -560(%rbp), %rbx
     lea (%rsp), %rax
     movq (%r13), %rcx
     movq %rcx, (%rax)
@@ -183,7 +183,7 @@ test_dec32_rk4_step:
     movq %xmm0, (%rbx)
     add $48, %rsp
     sub $48, %rsp
-    lea -512(%rbp), %rbx
+    lea -472(%rbp), %rbx
     lea (%rsp), %rax
     movq (%r12), %rcx
     movq %rcx, (%rax)
@@ -202,7 +202,7 @@ test_dec32_rk4_step:
     call test_dec32_grav_accel
     movq %xmm0, (%rbx)
     add $48, %rsp
-    movq -564(%rbp), %rax
+    movq -560(%rbp), %rax
     movq %rax, -224(%rbp)
     xor %eax, %eax
     movq %rax, -232(%rbp)
@@ -221,26 +221,26 @@ test_dec32_rk4_step:
     call __bid_mulsd3@PLT
     movd %xmm0, -228(%rbp)
     movq -232(%rbp), %rax
-    movq %rax, -488(%rbp)
-    movq -488(%rbp), %rax
-    movq %rax, -208(%rbp)
-    movq 8(%r13), %rax
+    movq %rax, -628(%rbp)
+    movq -628(%rbp), %rax
     movq %rax, -200(%rbp)
-    xor %eax, %eax
+    movq 8(%r13), %rax
     movq %rax, -216(%rbp)
-    movd -200(%rbp), %xmm0
-    movd -208(%rbp), %xmm1
+    xor %eax, %eax
+    movq %rax, -208(%rbp)
+    movd -216(%rbp), %xmm0
+    movd -200(%rbp), %xmm1
     call __bid_addsd3@PLT
-    movd %xmm0, -216(%rbp)
-    movd -196(%rbp), %xmm0
-    movd -204(%rbp), %xmm1
+    movd %xmm0, -208(%rbp)
+    movd -212(%rbp), %xmm0
+    movd -196(%rbp), %xmm1
     call __bid_addsd3@PLT
-    movd %xmm0, -212(%rbp)
-    movq -216(%rbp), %rax
-    movq %rax, -528(%rbp)
-    movq -528(%rbp), %rax
-    movq %rax, -304(%rbp)
-    movq -512(%rbp), %rax
+    movd %xmm0, -204(%rbp)
+    movq -208(%rbp), %rax
+    movq %rax, -340(%rbp)
+    movq -340(%rbp), %rax
+    movq %rax, -416(%rbp)
+    movq -472(%rbp), %rax
     movq %rax, -192(%rbp)
     xor %eax, %eax
     movq %rax, -184(%rbp)
@@ -259,30 +259,30 @@ test_dec32_rk4_step:
     call __bid_mulsd3@PLT
     movd %xmm0, -180(%rbp)
     movq -184(%rbp), %rax
-    movq %rax, -392(%rbp)
-    movq -392(%rbp), %rax
-    movq %rax, -176(%rbp)
-    movq 8(%r12), %rax
+    movq %rax, -696(%rbp)
+    movq -696(%rbp), %rax
     movq %rax, -168(%rbp)
-    xor %eax, %eax
+    movq 8(%r12), %rax
     movq %rax, -160(%rbp)
-    movd -168(%rbp), %xmm0
-    movd -176(%rbp), %xmm1
-    call __bid_addsd3@PLT
-    movd %xmm0, -160(%rbp)
-    movd -164(%rbp), %xmm0
-    movd -172(%rbp), %xmm1
-    call __bid_addsd3@PLT
-    movd %xmm0, -156(%rbp)
-    movq -160(%rbp), %rax
-    movq %rax, -496(%rbp)
-    movq -496(%rbp), %rax
-    movq %rax, -348(%rbp)
-    movq 8(%r13), %rax
-    movq %rax, -152(%rbp)
     xor %eax, %eax
+    movq %rax, -176(%rbp)
+    movd -160(%rbp), %xmm0
+    movd -168(%rbp), %xmm1
+    call __bid_addsd3@PLT
+    movd %xmm0, -176(%rbp)
+    movd -156(%rbp), %xmm0
+    movd -164(%rbp), %xmm1
+    call __bid_addsd3@PLT
+    movd %xmm0, -172(%rbp)
+    movq -176(%rbp), %rax
+    movq %rax, -584(%rbp)
+    movq -584(%rbp), %rax
+    movq %rax, -372(%rbp)
+    movq 8(%r13), %rax
     movq %rax, -144(%rbp)
-    movd -152(%rbp), %xmm0
+    xor %eax, %eax
+    movq %rax, -152(%rbp)
+    movd -144(%rbp), %xmm0
     movd %xmm0, -752(%rbp)
     movd .L__kefir_func_test_dec32_rk4_step_label5(%rip), %xmm1
     movaps -784(%rbp), %xmm0
@@ -291,31 +291,31 @@ test_dec32_rk4_step:
     movaps %xmm1, -736(%rbp)
     movaps -752(%rbp), %xmm0
     call __bid_mulsd3@PLT
-    movd %xmm0, -144(%rbp)
-    movd -148(%rbp), %xmm0
+    movd %xmm0, -152(%rbp)
+    movd -140(%rbp), %xmm0
     movaps -736(%rbp), %xmm1
     call __bid_mulsd3@PLT
-    movd %xmm0, -140(%rbp)
-    movq -144(%rbp), %rax
-    movq %rax, -240(%rbp)
-    movq -240(%rbp), %rax
-    movq %rax, -120(%rbp)
+    movd %xmm0, -148(%rbp)
+    movq -152(%rbp), %rax
+    movq %rax, -644(%rbp)
+    movq -644(%rbp), %rax
+    movq %rax, -128(%rbp)
     movq (%r13), %rax
     movq %rax, -136(%rbp)
     xor %eax, %eax
-    movq %rax, -128(%rbp)
+    movq %rax, -120(%rbp)
     movd -136(%rbp), %xmm0
-    movd -120(%rbp), %xmm1
+    movd -128(%rbp), %xmm1
     call __bid_addsd3@PLT
-    movd %xmm0, -128(%rbp)
+    movd %xmm0, -120(%rbp)
     movd -132(%rbp), %xmm0
-    movd -116(%rbp), %xmm1
+    movd -124(%rbp), %xmm1
     call __bid_addsd3@PLT
-    movd %xmm0, -124(%rbp)
-    movq -128(%rbp), %rax
-    movq %rax, -604(%rbp)
-    movq -604(%rbp), %rax
-    movq %rax, -480(%rbp)
+    movd %xmm0, -116(%rbp)
+    movq -120(%rbp), %rax
+    movq %rax, -440(%rbp)
+    movq -440(%rbp), %rax
+    movq %rax, -388(%rbp)
     movq 8(%r12), %rax
     movq %rax, -112(%rbp)
     xor %eax, %eax
@@ -335,324 +335,324 @@ test_dec32_rk4_step:
     call __bid_mulsd3@PLT
     movd %xmm0, -100(%rbp)
     movq -104(%rbp), %rax
-    movq %rax, -268(%rbp)
-    movq -268(%rbp), %rax
-    movq %rax, -96(%rbp)
+    movq %rax, -300(%rbp)
+    movq -300(%rbp), %rax
+    movq %rax, -80(%rbp)
     movq (%r12), %rax
     movq %rax, -88(%rbp)
     xor %eax, %eax
-    movq %rax, -80(%rbp)
+    movq %rax, -96(%rbp)
     movd -88(%rbp), %xmm0
-    movd -96(%rbp), %xmm1
+    movd -80(%rbp), %xmm1
     call __bid_addsd3@PLT
-    movd %xmm0, -80(%rbp)
+    movd %xmm0, -96(%rbp)
     movd -84(%rbp), %xmm0
-    movd -92(%rbp), %xmm1
+    movd -76(%rbp), %xmm1
     call __bid_addsd3@PLT
-    movd %xmm0, -76(%rbp)
-    movq -80(%rbp), %rax
-    movq %rax, -384(%rbp)
-    movq -384(%rbp), %rax
-    movq %rax, -652(%rbp)
+    movd %xmm0, -92(%rbp)
+    movq -96(%rbp), %rax
+    movq %rax, -432(%rbp)
+    movq -432(%rbp), %rax
+    movq %rax, -480(%rbp)
     xor %eax, %eax
-    movq %rax, -376(%rbp)
-    movq %rax, -368(%rbp)
-    movl %eax, -360(%rbp)
-    movq -480(%rbp), %rax
-    movq %rax, -376(%rbp)
-    movq -304(%rbp), %rax
-    movq %rax, -368(%rbp)
+    movq %rax, -620(%rbp)
+    movq %rax, -612(%rbp)
+    movl %eax, -604(%rbp)
+    movq -388(%rbp), %rax
+    movq %rax, -620(%rbp)
+    movq -416(%rbp), %rax
+    movq %rax, -612(%rbp)
     movd 16(%r13), %xmm0
-    movd %xmm0, -360(%rbp)
+    movd %xmm0, -604(%rbp)
     xor %eax, %eax
-    movq %rax, -696(%rbp)
-    movq %rax, -688(%rbp)
-    movl %eax, -680(%rbp)
-    movq -652(%rbp), %rax
-    movq %rax, -696(%rbp)
-    movq -348(%rbp), %rax
-    movq %rax, -688(%rbp)
+    movq %rax, -500(%rbp)
+    movq %rax, -492(%rbp)
+    movl %eax, -484(%rbp)
+    movq -480(%rbp), %rax
+    movq %rax, -500(%rbp)
+    movq -372(%rbp), %rax
+    movq %rax, -492(%rbp)
     movd 16(%r12), %xmm0
-    movd %xmm0, -680(%rbp)
+    movd %xmm0, -484(%rbp)
     sub $48, %rsp
-    lea -676(%rbp), %rbx
+    lea -260(%rbp), %rbx
     lea (%rsp), %rax
-    movq -376(%rbp), %rcx
+    movq -620(%rbp), %rcx
     movq %rcx, (%rax)
-    movq -368(%rbp), %rcx
+    movq -612(%rbp), %rcx
     movq %rcx, 8(%rax)
-    movl -360(%rbp), %ecx
+    movl -604(%rbp), %ecx
     movl %ecx, 16(%rax)
     lea 24(%rsp), %rax
-    movq -696(%rbp), %rcx
+    movq -500(%rbp), %rcx
     movq %rcx, (%rax)
-    movq -688(%rbp), %rcx
+    movq -492(%rbp), %rcx
     movq %rcx, 8(%rax)
-    movl -680(%rbp), %ecx
+    movl -484(%rbp), %ecx
     movl %ecx, 16(%rax)
     movaps -768(%rbp), %xmm0
     call test_dec32_grav_accel
     movq %xmm0, (%rbx)
     add $48, %rsp
     sub $48, %rsp
-    lea -408(%rbp), %rbx
+    lea -268(%rbp), %rbx
     lea (%rsp), %rax
-    movq -696(%rbp), %rcx
+    movq -500(%rbp), %rcx
     movq %rcx, (%rax)
-    movq -688(%rbp), %rcx
+    movq -492(%rbp), %rcx
     movq %rcx, 8(%rax)
-    movl -680(%rbp), %ecx
+    movl -484(%rbp), %ecx
     movl %ecx, 16(%rax)
     lea 24(%rsp), %rax
-    movq -376(%rbp), %rcx
+    movq -620(%rbp), %rcx
     movq %rcx, (%rax)
-    movq -368(%rbp), %rcx
+    movq -612(%rbp), %rcx
     movq %rcx, 8(%rax)
-    movl -360(%rbp), %ecx
+    movl -604(%rbp), %ecx
     movl %ecx, 16(%rax)
     movaps -768(%rbp), %xmm0
     call test_dec32_grav_accel
     movq %xmm0, (%rbx)
     add $48, %rsp
-    movq -676(%rbp), %rax
-    movq %rax, -72(%rbp)
-    xor %eax, %eax
+    movq -260(%rbp), %rax
     movq %rax, -64(%rbp)
-    movd -72(%rbp), %xmm0
-    movaps -784(%rbp), %xmm1
-    call __bid_mulsd3@PLT
-    movd %xmm0, -64(%rbp)
-    movd -68(%rbp), %xmm0
-    movaps -784(%rbp), %xmm1
-    call __bid_mulsd3@PLT
-    movd %xmm0, -60(%rbp)
-    movq -64(%rbp), %rax
-    movq %rax, -580(%rbp)
-    movq -580(%rbp), %rax
-    movq %rax, -56(%rbp)
-    movq 8(%r13), %rax
-    movq %rax, -40(%rbp)
     xor %eax, %eax
+    movq %rax, -72(%rbp)
+    movd -64(%rbp), %xmm0
+    movaps -784(%rbp), %xmm1
+    call __bid_mulsd3@PLT
+    movd %xmm0, -72(%rbp)
+    movd -60(%rbp), %xmm0
+    movaps -784(%rbp), %xmm1
+    call __bid_mulsd3@PLT
+    movd %xmm0, -68(%rbp)
+    movq -72(%rbp), %rax
+    movq %rax, -424(%rbp)
+    movq -424(%rbp), %rax
+    movq %rax, -40(%rbp)
+    movq 8(%r13), %rax
     movq %rax, -48(%rbp)
-    movd -40(%rbp), %xmm0
-    movd -56(%rbp), %xmm1
+    xor %eax, %eax
+    movq %rax, -56(%rbp)
+    movd -48(%rbp), %xmm0
+    movd -40(%rbp), %xmm1
     call __bid_addsd3@PLT
-    movd %xmm0, -48(%rbp)
-    movd -36(%rbp), %xmm0
-    movd -52(%rbp), %xmm1
+    movd %xmm0, -56(%rbp)
+    movd -44(%rbp), %xmm0
+    movd -36(%rbp), %xmm1
     call __bid_addsd3@PLT
-    movd %xmm0, -44(%rbp)
-    movq -48(%rbp), %rax
-    movq %rax, -400(%rbp)
-    movq -400(%rbp), %rax
+    movd %xmm0, -52(%rbp)
+    movq -56(%rbp), %rax
     movq %rax, -456(%rbp)
-    lea -668(%rbp), %rbx
-    movq -408(%rbp), %xmm0
+    movq -456(%rbp), %rax
+    movq %rax, -508(%rbp)
+    lea -592(%rbp), %rbx
+    movq -268(%rbp), %xmm0
     movaps -784(%rbp), %xmm1
     call test_dec32_mulv
     mov %rbx, %rax
     movq %xmm0, (%rax)
-    lea -432(%rbp), %rbx
+    lea -364(%rbp), %rbx
     movq 8(%r12), %xmm0
     movq (%rax), %xmm1
     call test_dec32_addv
     movq %xmm0, (%rbx)
-    lea -416(%rbp), %rbx
+    lea -308(%rbp), %rbx
     movq 8(%r13), %xmm0
     movaps -784(%rbp), %xmm1
     call test_dec32_mulv
     mov %rbx, %rax
     movq %xmm0, (%rax)
-    lea -440(%rbp), %rbx
+    lea -448(%rbp), %rbx
     movq (%r13), %xmm0
     movq (%rax), %xmm1
     call test_dec32_addv
     movq %xmm0, (%rbx)
-    lea -356(%rbp), %rbx
+    lea -532(%rbp), %rbx
     movq 8(%r12), %xmm0
     movaps -784(%rbp), %xmm1
     call test_dec32_mulv
     mov %rbx, %rax
     movq %xmm0, (%rax)
-    lea -312(%rbp), %rbx
+    lea -292(%rbp), %rbx
     movq (%r12), %xmm0
     movq (%rax), %xmm1
     call test_dec32_addv
     movq %xmm0, (%rbx)
     movd .L__kefir_func_test_dec32_rk4_step_label7(%rip), %xmm1
-    lea -536(%rbp), %rbx
-    movq -676(%rbp), %xmm0
+    lea -380(%rbp), %rbx
+    movq -260(%rbp), %xmm0
     call test_dec32_mulv
     mov %rbx, %rax
     movq %xmm0, (%rax)
-    lea -276(%rbp), %rbx
-    movq -564(%rbp), %xmm0
+    lea -284(%rbp), %rbx
+    movq -560(%rbp), %xmm0
     movq (%rax), %xmm1
     call test_dec32_addv
     mov %rbx, %r14
     movq %xmm0, (%r14)
     xor %eax, %eax
-    movq %rax, -340(%rbp)
-    movq %rax, -332(%rbp)
-    movl %eax, -324(%rbp)
-    movq -440(%rbp), %rax
-    movq %rax, -340(%rbp)
-    movq -456(%rbp), %rax
-    movq %rax, -332(%rbp)
+    movq %rax, -408(%rbp)
+    movq %rax, -400(%rbp)
+    movl %eax, -392(%rbp)
+    movq -448(%rbp), %rax
+    movq %rax, -408(%rbp)
+    movq -508(%rbp), %rax
+    movq %rax, -400(%rbp)
     movd 16(%r13), %xmm0
-    movd %xmm0, -324(%rbp)
+    movd %xmm0, -392(%rbp)
     xor %eax, %eax
-    movq %rax, -296(%rbp)
-    movq %rax, -288(%rbp)
-    movl %eax, -280(%rbp)
-    movq -312(%rbp), %rax
-    movq %rax, -296(%rbp)
-    movq -432(%rbp), %rax
-    movq %rax, -288(%rbp)
+    movq %rax, -688(%rbp)
+    movq %rax, -680(%rbp)
+    movl %eax, -672(%rbp)
+    movq -292(%rbp), %rax
+    movq %rax, -688(%rbp)
+    movq -364(%rbp), %rax
+    movq %rax, -680(%rbp)
     movd 16(%r12), %xmm0
-    movd %xmm0, -280(%rbp)
+    movd %xmm0, -672(%rbp)
     sub $48, %rsp
-    lea -588(%rbp), %rbx
+    lea -348(%rbp), %rbx
     lea (%rsp), %rax
-    movq -340(%rbp), %rcx
+    movq -408(%rbp), %rcx
     movq %rcx, (%rax)
-    movq -332(%rbp), %rcx
+    movq -400(%rbp), %rcx
     movq %rcx, 8(%rax)
-    movl -324(%rbp), %ecx
+    movl -392(%rbp), %ecx
     movl %ecx, 16(%rax)
     lea 24(%rsp), %rax
-    movq -296(%rbp), %rcx
+    movq -688(%rbp), %rcx
     movq %rcx, (%rax)
-    movq -288(%rbp), %rcx
+    movq -680(%rbp), %rcx
     movq %rcx, 8(%rax)
-    movl -280(%rbp), %ecx
+    movl -672(%rbp), %ecx
     movl %ecx, 16(%rax)
     movaps -768(%rbp), %xmm0
     call test_dec32_grav_accel
     mov %rbx, %rax
     movq %xmm0, (%rax)
     add $48, %rsp
-    lea -596(%rbp), %rbx
+    lea -600(%rbp), %rbx
     movq (%r14), %xmm0
     movq (%rax), %xmm1
     call test_dec32_addv
     mov %rbx, %rax
     movq %xmm0, (%rax)
     movd .L__kefir_func_test_dec32_rk4_step_label8(%rip), %xmm1
-    lea -448(%rbp), %rbx
+    lea -524(%rbp), %rbx
     movq (%rax), %xmm0
     call test_dec32_mulv
     movq %xmm0, (%rbx)
     movd .L__kefir_func_test_dec32_rk4_step_label9(%rip), %xmm1
-    lea -424(%rbp), %rbx
-    movq -408(%rbp), %xmm0
+    lea -316(%rbp), %rbx
+    movq -268(%rbp), %xmm0
     call test_dec32_mulv
     mov %rbx, %rax
     movq %xmm0, (%rax)
-    lea -520(%rbp), %rbx
-    movq -512(%rbp), %xmm0
+    lea -276(%rbp), %rbx
+    movq -472(%rbp), %xmm0
     movq (%rax), %xmm1
     call test_dec32_addv
     mov %rbx, %r14
     movq %xmm0, (%r14)
     xor %eax, %eax
-    movq %rax, -556(%rbp)
-    movq %rax, -548(%rbp)
-    movl %eax, -540(%rbp)
-    movq -312(%rbp), %rax
-    movq %rax, -556(%rbp)
-    movq -432(%rbp), %rax
-    movq %rax, -548(%rbp)
+    movq %rax, -552(%rbp)
+    movq %rax, -544(%rbp)
+    movl %eax, -536(%rbp)
+    movq -292(%rbp), %rax
+    movq %rax, -552(%rbp)
+    movq -364(%rbp), %rax
+    movq %rax, -544(%rbp)
     movd 16(%r12), %xmm0
-    movd %xmm0, -540(%rbp)
+    movd %xmm0, -536(%rbp)
     xor %eax, %eax
-    movq %rax, -260(%rbp)
     movq %rax, -252(%rbp)
-    movl %eax, -244(%rbp)
-    movq -440(%rbp), %rax
-    movq %rax, -260(%rbp)
-    movq -456(%rbp), %rax
+    movq %rax, -244(%rbp)
+    movl %eax, -236(%rbp)
+    movq -448(%rbp), %rax
     movq %rax, -252(%rbp)
+    movq -508(%rbp), %rax
+    movq %rax, -244(%rbp)
     movd 16(%r13), %xmm0
-    movd %xmm0, -244(%rbp)
+    movd %xmm0, -236(%rbp)
     sub $48, %rsp
-    lea -644(%rbp), %rbx
+    lea -356(%rbp), %rbx
     lea (%rsp), %rax
-    movq -556(%rbp), %rcx
+    movq -552(%rbp), %rcx
     movq %rcx, (%rax)
-    movq -548(%rbp), %rcx
+    movq -544(%rbp), %rcx
     movq %rcx, 8(%rax)
-    movl -540(%rbp), %ecx
+    movl -536(%rbp), %ecx
     movl %ecx, 16(%rax)
     lea 24(%rsp), %rax
-    movq -260(%rbp), %rcx
-    movq %rcx, (%rax)
     movq -252(%rbp), %rcx
+    movq %rcx, (%rax)
+    movq -244(%rbp), %rcx
     movq %rcx, 8(%rax)
-    movl -244(%rbp), %ecx
+    movl -236(%rbp), %ecx
     movl %ecx, 16(%rax)
     movaps -768(%rbp), %xmm0
     call test_dec32_grav_accel
     mov %rbx, %rax
     movq %xmm0, (%rax)
     add $48, %rsp
-    lea -620(%rbp), %rbx
+    lea -568(%rbp), %rbx
     movq (%r14), %xmm0
     movq (%rax), %xmm1
     call test_dec32_addv
     mov %rbx, %rax
     movq %xmm0, (%rax)
     movd .L__kefir_func_test_dec32_rk4_step_label10(%rip), %xmm1
-    lea -636(%rbp), %rbx
+    lea -332(%rbp), %rbx
     movq (%rax), %xmm0
     call test_dec32_mulv
     movq %xmm0, (%rbx)
-    lea -464(%rbp), %rbx
-    movq -448(%rbp), %xmm0
+    lea -668(%rbp), %rbx
+    movq -524(%rbp), %xmm0
     movaps -784(%rbp), %xmm1
     call test_dec32_mulv
     mov %rbx, %rax
     movq %xmm0, (%rax)
-    lea -660(%rbp), %rbx
+    lea -464(%rbp), %rbx
     movq 8(%r13), %xmm0
     movq (%rax), %xmm1
     call test_dec32_addv
     movq %xmm0, (%rbx)
     movq (%rbx), %rax
     movq %rax, 8(%r13)
-    lea -472(%rbp), %rbx
-    movq -636(%rbp), %xmm0
+    lea -652(%rbp), %rbx
+    movq -332(%rbp), %xmm0
     movaps -784(%rbp), %xmm1
     call test_dec32_mulv
     mov %rbx, %rax
     movq %xmm0, (%rax)
-    lea -612(%rbp), %rbx
+    lea -636(%rbp), %rbx
     movq 8(%r12), %xmm0
     movq (%rax), %xmm1
     call test_dec32_addv
     movq %xmm0, (%rbx)
     movq (%rbx), %rax
     movq %rax, 8(%r12)
-    lea -572(%rbp), %rbx
+    lea -516(%rbp), %rbx
     movq 8(%r13), %xmm0
     movaps -784(%rbp), %xmm1
     call test_dec32_mulv
     mov %rbx, %rax
     movq %xmm0, (%rax)
-    lea -320(%rbp), %rbx
+    lea -660(%rbp), %rbx
     movq (%r13), %xmm0
     movq (%rax), %xmm1
     call test_dec32_addv
     movq %xmm0, (%rbx)
     movq (%rbx), %rax
     movq %rax, (%r13)
-    lea -628(%rbp), %rbx
+    lea -324(%rbp), %rbx
     movq 8(%r12), %xmm0
     movaps -784(%rbp), %xmm1
     call test_dec32_mulv
     mov %rbx, %rax
     movq %xmm0, (%rax)
-    lea -504(%rbp), %rbx
+    lea -576(%rbp), %rbx
     movq (%r12), %xmm0
     movq (%rax), %xmm1
     call test_dec32_addv
@@ -852,7 +852,7 @@ test_dec64_rk4_step:
     mov %rsi, %r12
     mov %rdi, %r13
     sub $80, %rsp
-    lea -1120(%rbp), %rbx
+    lea -1088(%rbp), %rbx
     lea (%rsp), %rax
     movq (%r13), %rcx
     movq %rcx, (%rax)
@@ -881,7 +881,7 @@ test_dec64_rk4_step:
     movq %xmm1, 8(%rbx)
     add $80, %rsp
     sub $80, %rsp
-    lea -1104(%rbp), %rbx
+    lea -1072(%rbp), %rbx
     lea (%rsp), %rax
     movq (%r12), %rcx
     movq %rcx, (%rax)
@@ -909,7 +909,7 @@ test_dec64_rk4_step:
     movq %xmm0, (%rbx)
     movq %xmm1, 8(%rbx)
     add $80, %rsp
-    movdqu -1120(%rbp), %xmm0
+    movdqu -1088(%rbp), %xmm0
     movdqu %xmm0, -432(%rbp)
     xorps %xmm0, %xmm0
     movdqu %xmm0, -416(%rbp)
@@ -928,26 +928,26 @@ test_dec64_rk4_step:
     call __bid_muldd3@PLT
     movq %xmm0, -408(%rbp)
     movdqu -416(%rbp), %xmm0
-    movdqu %xmm0, -1240(%rbp)
-    movdqu -1240(%rbp), %xmm0
-    movdqu %xmm0, -384(%rbp)
+    movdqu %xmm0, -848(%rbp)
+    movdqu -848(%rbp), %xmm0
+    movdqu %xmm0, -400(%rbp)
     movdqu 16(%r13), %xmm0
     movdqu %xmm0, -368(%rbp)
     xorps %xmm0, %xmm0
-    movdqu %xmm0, -400(%rbp)
+    movdqu %xmm0, -384(%rbp)
     movq -368(%rbp), %xmm0
-    movq -384(%rbp), %xmm1
+    movq -400(%rbp), %xmm1
     call __bid_adddd3@PLT
-    movq %xmm0, -400(%rbp)
+    movq %xmm0, -384(%rbp)
     movq -360(%rbp), %xmm0
-    movq -376(%rbp), %xmm1
+    movq -392(%rbp), %xmm1
     call __bid_adddd3@PLT
-    movq %xmm0, -392(%rbp)
-    movdqu -400(%rbp), %xmm0
-    movdqu %xmm0, -1008(%rbp)
-    movdqu -1008(%rbp), %xmm0
-    movdqu %xmm0, -1288(%rbp)
-    movdqu -1104(%rbp), %xmm0
+    movq %xmm0, -376(%rbp)
+    movdqu -384(%rbp), %xmm0
+    movdqu %xmm0, -728(%rbp)
+    movdqu -728(%rbp), %xmm0
+    movdqu %xmm0, -864(%rbp)
+    movdqu -1072(%rbp), %xmm0
     movdqu %xmm0, -352(%rbp)
     xorps %xmm0, %xmm0
     movdqu %xmm0, -336(%rbp)
@@ -966,25 +966,25 @@ test_dec64_rk4_step:
     call __bid_muldd3@PLT
     movq %xmm0, -328(%rbp)
     movdqu -336(%rbp), %xmm0
-    movdqu %xmm0, -928(%rbp)
-    movdqu -928(%rbp), %xmm0
-    movdqu %xmm0, -320(%rbp)
+    movdqu %xmm0, -976(%rbp)
+    movdqu -976(%rbp), %xmm0
+    movdqu %xmm0, -304(%rbp)
     movdqu 16(%r12), %xmm0
     movdqu %xmm0, -288(%rbp)
     xorps %xmm0, %xmm0
-    movdqu %xmm0, -304(%rbp)
+    movdqu %xmm0, -320(%rbp)
     movq -288(%rbp), %xmm0
-    movq -320(%rbp), %xmm1
+    movq -304(%rbp), %xmm1
     call __bid_adddd3@PLT
-    movq %xmm0, -304(%rbp)
+    movq %xmm0, -320(%rbp)
     movq -280(%rbp), %xmm0
-    movq -312(%rbp), %xmm1
+    movq -296(%rbp), %xmm1
     call __bid_adddd3@PLT
-    movq %xmm0, -296(%rbp)
-    movdqu -304(%rbp), %xmm0
-    movdqu %xmm0, -960(%rbp)
-    movdqu -960(%rbp), %xmm0
-    movdqu %xmm0, -520(%rbp)
+    movq %xmm0, -312(%rbp)
+    movdqu -320(%rbp), %xmm0
+    movdqu %xmm0, -992(%rbp)
+    movdqu -992(%rbp), %xmm0
+    movdqu %xmm0, -1240(%rbp)
     movdqu 16(%r13), %xmm0
     movdqu %xmm0, -256(%rbp)
     xorps %xmm0, %xmm0
@@ -1004,25 +1004,25 @@ test_dec64_rk4_step:
     call __bid_muldd3@PLT
     movq %xmm0, -264(%rbp)
     movdqu -272(%rbp), %xmm0
-    movdqu %xmm0, -608(%rbp)
-    movdqu -608(%rbp), %xmm0
-    movdqu %xmm0, -224(%rbp)
+    movdqu %xmm0, -520(%rbp)
+    movdqu -520(%rbp), %xmm0
+    movdqu %xmm0, -240(%rbp)
     movdqu (%r13), %xmm0
     movdqu %xmm0, -208(%rbp)
     xorps %xmm0, %xmm0
-    movdqu %xmm0, -240(%rbp)
+    movdqu %xmm0, -224(%rbp)
     movq -208(%rbp), %xmm0
-    movq -224(%rbp), %xmm1
+    movq -240(%rbp), %xmm1
     call __bid_adddd3@PLT
-    movq %xmm0, -240(%rbp)
+    movq %xmm0, -224(%rbp)
     movq -200(%rbp), %xmm0
-    movq -216(%rbp), %xmm1
+    movq -232(%rbp), %xmm1
     call __bid_adddd3@PLT
-    movq %xmm0, -232(%rbp)
-    movdqu -240(%rbp), %xmm0
-    movdqu %xmm0, -808(%rbp)
-    movdqu -808(%rbp), %xmm0
-    movdqu %xmm0, -624(%rbp)
+    movq %xmm0, -216(%rbp)
+    movdqu -224(%rbp), %xmm0
+    movdqu %xmm0, -960(%rbp)
+    movdqu -960(%rbp), %xmm0
+    movdqu %xmm0, -680(%rbp)
     movdqu 16(%r12), %xmm0
     movdqu %xmm0, -176(%rbp)
     xorps %xmm0, %xmm0
@@ -1042,72 +1042,72 @@ test_dec64_rk4_step:
     call __bid_muldd3@PLT
     movq %xmm0, -184(%rbp)
     movdqu -192(%rbp), %xmm0
-    movdqu %xmm0, -672(%rbp)
-    movdqu -672(%rbp), %xmm0
-    movdqu %xmm0, -160(%rbp)
-    movdqu (%r12), %xmm0
+    movdqu %xmm0, -1312(%rbp)
+    movdqu -1312(%rbp), %xmm0
     movdqu %xmm0, -144(%rbp)
-    xorps %xmm0, %xmm0
+    movdqu (%r12), %xmm0
     movdqu %xmm0, -128(%rbp)
-    movq -144(%rbp), %xmm0
-    movq -160(%rbp), %xmm1
+    xorps %xmm0, %xmm0
+    movdqu %xmm0, -160(%rbp)
+    movq -128(%rbp), %xmm0
+    movq -144(%rbp), %xmm1
     call __bid_adddd3@PLT
-    movq %xmm0, -128(%rbp)
-    movq -136(%rbp), %xmm0
-    movq -152(%rbp), %xmm1
+    movq %xmm0, -160(%rbp)
+    movq -120(%rbp), %xmm0
+    movq -136(%rbp), %xmm1
     call __bid_adddd3@PLT
-    movq %xmm0, -120(%rbp)
-    movdqu -128(%rbp), %xmm0
-    movdqu %xmm0, -1272(%rbp)
-    movdqu -1272(%rbp), %xmm0
-    movdqu %xmm0, -1304(%rbp)
+    movq %xmm0, -152(%rbp)
+    movdqu -160(%rbp), %xmm0
+    movdqu %xmm0, -1008(%rbp)
+    movdqu -1008(%rbp), %xmm0
+    movdqu %xmm0, -504(%rbp)
     xor %eax, %eax
-    movq %rax, -1360(%rbp)
-    movq %rax, -1352(%rbp)
-    movq %rax, -1344(%rbp)
-    movq %rax, -1336(%rbp)
-    movq %rax, -1328(%rbp)
-    movdqu -624(%rbp), %xmm0
-    movdqu %xmm0, -1360(%rbp)
-    movdqu -1288(%rbp), %xmm0
-    movdqu %xmm0, -1344(%rbp)
+    movq %rax, -1192(%rbp)
+    movq %rax, -1184(%rbp)
+    movq %rax, -1176(%rbp)
+    movq %rax, -1168(%rbp)
+    movq %rax, -1160(%rbp)
+    movdqu -680(%rbp), %xmm0
+    movdqu %xmm0, -1192(%rbp)
+    movdqu -864(%rbp), %xmm0
+    movdqu %xmm0, -1176(%rbp)
     movq 32(%r13), %xmm0
-    movq %xmm0, -1328(%rbp)
+    movq %xmm0, -1160(%rbp)
     xor %eax, %eax
-    movq %rax, -576(%rbp)
-    movq %rax, -568(%rbp)
     movq %rax, -560(%rbp)
     movq %rax, -552(%rbp)
     movq %rax, -544(%rbp)
-    movdqu -1304(%rbp), %xmm0
-    movdqu %xmm0, -576(%rbp)
-    movdqu -520(%rbp), %xmm0
+    movq %rax, -536(%rbp)
+    movq %rax, -528(%rbp)
+    movdqu -504(%rbp), %xmm0
     movdqu %xmm0, -560(%rbp)
+    movdqu -1240(%rbp), %xmm0
+    movdqu %xmm0, -544(%rbp)
     movq 32(%r12), %xmm0
-    movq %xmm0, -544(%rbp)
+    movq %xmm0, -528(%rbp)
     sub $80, %rsp
-    lea -720(%rbp), %rbx
+    lea -696(%rbp), %rbx
     lea (%rsp), %rax
-    movq -1360(%rbp), %rcx
+    movq -1192(%rbp), %rcx
     movq %rcx, (%rax)
-    movq -1352(%rbp), %rcx
+    movq -1184(%rbp), %rcx
     movq %rcx, 8(%rax)
-    movq -1344(%rbp), %rcx
+    movq -1176(%rbp), %rcx
     movq %rcx, 16(%rax)
-    movq -1336(%rbp), %rcx
+    movq -1168(%rbp), %rcx
     movq %rcx, 24(%rax)
-    movq -1328(%rbp), %rcx
+    movq -1160(%rbp), %rcx
     movq %rcx, 32(%rax)
     lea 40(%rsp), %rax
-    movq -576(%rbp), %rcx
-    movq %rcx, (%rax)
-    movq -568(%rbp), %rcx
-    movq %rcx, 8(%rax)
     movq -560(%rbp), %rcx
-    movq %rcx, 16(%rax)
+    movq %rcx, (%rax)
     movq -552(%rbp), %rcx
-    movq %rcx, 24(%rax)
+    movq %rcx, 8(%rax)
     movq -544(%rbp), %rcx
+    movq %rcx, 16(%rax)
+    movq -536(%rbp), %rcx
+    movq %rcx, 24(%rax)
+    movq -528(%rbp), %rcx
     movq %rcx, 32(%rax)
     movaps -1424(%rbp), %xmm0
     call test_dec64_grav_accel
@@ -1115,35 +1115,35 @@ test_dec64_rk4_step:
     movq %xmm1, 8(%rbx)
     add $80, %rsp
     sub $80, %rsp
-    lea -896(%rbp), %rbx
+    lea -832(%rbp), %rbx
     lea (%rsp), %rax
-    movq -576(%rbp), %rcx
-    movq %rcx, (%rax)
-    movq -568(%rbp), %rcx
-    movq %rcx, 8(%rax)
     movq -560(%rbp), %rcx
-    movq %rcx, 16(%rax)
+    movq %rcx, (%rax)
     movq -552(%rbp), %rcx
-    movq %rcx, 24(%rax)
+    movq %rcx, 8(%rax)
     movq -544(%rbp), %rcx
+    movq %rcx, 16(%rax)
+    movq -536(%rbp), %rcx
+    movq %rcx, 24(%rax)
+    movq -528(%rbp), %rcx
     movq %rcx, 32(%rax)
     lea 40(%rsp), %rax
-    movq -1360(%rbp), %rcx
+    movq -1192(%rbp), %rcx
     movq %rcx, (%rax)
-    movq -1352(%rbp), %rcx
+    movq -1184(%rbp), %rcx
     movq %rcx, 8(%rax)
-    movq -1344(%rbp), %rcx
+    movq -1176(%rbp), %rcx
     movq %rcx, 16(%rax)
-    movq -1336(%rbp), %rcx
+    movq -1168(%rbp), %rcx
     movq %rcx, 24(%rax)
-    movq -1328(%rbp), %rcx
+    movq -1160(%rbp), %rcx
     movq %rcx, 32(%rax)
     movaps -1424(%rbp), %xmm0
     call test_dec64_grav_accel
     movq %xmm0, (%rbx)
     movq %xmm1, 8(%rbx)
     add $80, %rsp
-    movdqu -720(%rbp), %xmm0
+    movdqu -696(%rbp), %xmm0
     movdqu %xmm0, -96(%rbp)
     xorps %xmm0, %xmm0
     movdqu %xmm0, -112(%rbp)
@@ -1156,8 +1156,8 @@ test_dec64_rk4_step:
     call __bid_muldd3@PLT
     movq %xmm0, -104(%rbp)
     movdqu -112(%rbp), %xmm0
-    movdqu %xmm0, -736(%rbp)
-    movdqu -736(%rbp), %xmm0
+    movdqu %xmm0, -1056(%rbp)
+    movdqu -1056(%rbp), %xmm0
     movdqu %xmm0, -80(%rbp)
     movdqu 16(%r13), %xmm0
     movdqu %xmm0, -48(%rbp)
@@ -1172,18 +1172,18 @@ test_dec64_rk4_step:
     call __bid_adddd3@PLT
     movq %xmm0, -56(%rbp)
     movdqu -64(%rbp), %xmm0
-    movdqu %xmm0, -1040(%rbp)
-    movdqu -1040(%rbp), %xmm0
-    movdqu %xmm0, -1256(%rbp)
-    lea -792(%rbp), %rbx
-    movq -896(%rbp), %xmm0
-    movq -888(%rbp), %xmm1
+    movdqu %xmm0, -1104(%rbp)
+    movdqu -1104(%rbp), %xmm0
+    movdqu %xmm0, -664(%rbp)
+    lea -1328(%rbp), %rbx
+    movq -832(%rbp), %xmm0
+    movq -824(%rbp), %xmm1
     movaps -1440(%rbp), %xmm2
     call test_dec64_mulv
     mov %rbx, %rax
     movq %xmm0, (%rax)
     movq %xmm1, 8(%rax)
-    lea -448(%rbp), %rbx
+    lea -944(%rbp), %rbx
     movq 16(%r12), %xmm0
     movq 24(%r12), %xmm1
     movq (%rax), %xmm2
@@ -1191,7 +1191,7 @@ test_dec64_rk4_step:
     call test_dec64_addv
     movq %xmm0, (%rbx)
     movq %xmm1, 8(%rbx)
-    lea -912(%rbp), %rbx
+    lea -1120(%rbp), %rbx
     movq 16(%r13), %xmm0
     movq 24(%r13), %xmm1
     movaps -1440(%rbp), %xmm2
@@ -1207,7 +1207,7 @@ test_dec64_rk4_step:
     call test_dec64_addv
     movq %xmm0, (%rbx)
     movq %xmm1, 8(%rbx)
-    lea -1136(%rbp), %rbx
+    lea -1344(%rbp), %rbx
     movq 16(%r12), %xmm0
     movq 24(%r12), %xmm1
     movaps -1440(%rbp), %xmm2
@@ -1215,7 +1215,7 @@ test_dec64_rk4_step:
     mov %rbx, %rax
     movq %xmm0, (%rax)
     movq %xmm1, 8(%rax)
-    lea -656(%rbp), %rbx
+    lea -1296(%rbp), %rbx
     movq (%r12), %xmm0
     movq 8(%r12), %xmm1
     movq (%rax), %xmm2
@@ -1224,16 +1224,16 @@ test_dec64_rk4_step:
     movq %xmm0, (%rbx)
     movq %xmm1, 8(%rbx)
     movq .L__kefir_func_test_dec64_rk4_step_label7(%rip), %xmm2
-    lea -944(%rbp), %rbx
-    movq -720(%rbp), %xmm0
-    movq -712(%rbp), %xmm1
+    lea -1360(%rbp), %rbx
+    movq -696(%rbp), %xmm0
+    movq -688(%rbp), %xmm1
     call test_dec64_mulv
     mov %rbx, %rax
     movq %xmm0, (%rax)
     movq %xmm1, 8(%rax)
-    lea -992(%rbp), %rbx
-    movq -1120(%rbp), %xmm0
-    movq -1112(%rbp), %xmm1
+    lea -912(%rbp), %rbx
+    movq -1088(%rbp), %xmm0
+    movq -1080(%rbp), %xmm1
     movq (%rax), %xmm2
     movq 8(%rax), %xmm3
     call test_dec64_addv
@@ -1241,52 +1241,52 @@ test_dec64_rk4_step:
     movq %xmm0, (%r14)
     movq %xmm1, 8(%r14)
     xor %eax, %eax
+    movq %rax, -784(%rbp)
     movq %rax, -776(%rbp)
     movq %rax, -768(%rbp)
     movq %rax, -760(%rbp)
     movq %rax, -752(%rbp)
-    movq %rax, -744(%rbp)
     movdqu -1224(%rbp), %xmm0
-    movdqu %xmm0, -776(%rbp)
-    movdqu -1256(%rbp), %xmm0
-    movdqu %xmm0, -760(%rbp)
+    movdqu %xmm0, -784(%rbp)
+    movdqu -664(%rbp), %xmm0
+    movdqu %xmm0, -768(%rbp)
     movq 32(%r13), %xmm0
-    movq %xmm0, -744(%rbp)
+    movq %xmm0, -752(%rbp)
     xor %eax, %eax
-    movq %rax, -848(%rbp)
-    movq %rax, -840(%rbp)
-    movq %rax, -832(%rbp)
-    movq %rax, -824(%rbp)
-    movq %rax, -816(%rbp)
-    movdqu -656(%rbp), %xmm0
-    movdqu %xmm0, -848(%rbp)
-    movdqu -448(%rbp), %xmm0
-    movdqu %xmm0, -832(%rbp)
+    movq %rax, -600(%rbp)
+    movq %rax, -592(%rbp)
+    movq %rax, -584(%rbp)
+    movq %rax, -576(%rbp)
+    movq %rax, -568(%rbp)
+    movdqu -1296(%rbp), %xmm0
+    movdqu %xmm0, -600(%rbp)
+    movdqu -944(%rbp), %xmm0
+    movdqu %xmm0, -584(%rbp)
     movq 32(%r12), %xmm0
-    movq %xmm0, -816(%rbp)
+    movq %xmm0, -568(%rbp)
     sub $80, %rsp
-    lea -688(%rbp), %rbx
+    lea -1208(%rbp), %rbx
     lea (%rsp), %rax
-    movq -776(%rbp), %rcx
+    movq -784(%rbp), %rcx
     movq %rcx, (%rax)
-    movq -768(%rbp), %rcx
+    movq -776(%rbp), %rcx
     movq %rcx, 8(%rax)
-    movq -760(%rbp), %rcx
+    movq -768(%rbp), %rcx
     movq %rcx, 16(%rax)
-    movq -752(%rbp), %rcx
+    movq -760(%rbp), %rcx
     movq %rcx, 24(%rax)
-    movq -744(%rbp), %rcx
+    movq -752(%rbp), %rcx
     movq %rcx, 32(%rax)
     lea 40(%rsp), %rax
-    movq -848(%rbp), %rcx
+    movq -600(%rbp), %rcx
     movq %rcx, (%rax)
-    movq -840(%rbp), %rcx
+    movq -592(%rbp), %rcx
     movq %rcx, 8(%rax)
-    movq -832(%rbp), %rcx
+    movq -584(%rbp), %rcx
     movq %rcx, 16(%rax)
-    movq -824(%rbp), %rcx
+    movq -576(%rbp), %rcx
     movq %rcx, 24(%rax)
-    movq -816(%rbp), %rcx
+    movq -568(%rbp), %rcx
     movq %rcx, 32(%rax)
     movaps -1424(%rbp), %xmm0
     call test_dec64_grav_accel
@@ -1294,7 +1294,7 @@ test_dec64_rk4_step:
     movq %xmm0, (%rax)
     movq %xmm1, 8(%rax)
     add $80, %rsp
-    lea -536(%rbp), %rbx
+    lea -896(%rbp), %rbx
     movq (%r14), %xmm0
     movq 8(%r14), %xmm1
     movq (%rax), %xmm2
@@ -1304,23 +1304,23 @@ test_dec64_rk4_step:
     movq %xmm0, (%rax)
     movq %xmm1, 8(%rax)
     movq .L__kefir_func_test_dec64_rk4_step_label8(%rip), %xmm2
-    lea -640(%rbp), %rbx
+    lea -1040(%rbp), %rbx
     movq (%rax), %xmm0
     movq 8(%rax), %xmm1
     call test_dec64_mulv
     movq %xmm0, (%rbx)
     movq %xmm1, 8(%rbx)
     movq .L__kefir_func_test_dec64_rk4_step_label9(%rip), %xmm2
-    lea -1024(%rbp), %rbx
-    movq -896(%rbp), %xmm0
-    movq -888(%rbp), %xmm1
+    lea -744(%rbp), %rbx
+    movq -832(%rbp), %xmm0
+    movq -824(%rbp), %xmm1
     call test_dec64_mulv
     mov %rbx, %rax
     movq %xmm0, (%rax)
     movq %xmm1, 8(%rax)
-    lea -1056(%rbp), %rbx
-    movq -1104(%rbp), %xmm0
-    movq -1096(%rbp), %xmm1
+    lea -800(%rbp), %rbx
+    movq -1072(%rbp), %xmm0
+    movq -1064(%rbp), %xmm1
     movq (%rax), %xmm2
     movq 8(%rax), %xmm3
     call test_dec64_addv
@@ -1333,26 +1333,26 @@ test_dec64_rk4_step:
     movq %rax, -472(%rbp)
     movq %rax, -464(%rbp)
     movq %rax, -456(%rbp)
-    movdqu -656(%rbp), %xmm0
+    movdqu -1296(%rbp), %xmm0
     movdqu %xmm0, -488(%rbp)
-    movdqu -448(%rbp), %xmm0
+    movdqu -944(%rbp), %xmm0
     movdqu %xmm0, -472(%rbp)
     movq 32(%r12), %xmm0
     movq %xmm0, -456(%rbp)
     xor %eax, %eax
-    movq %rax, -1208(%rbp)
-    movq %rax, -1200(%rbp)
-    movq %rax, -1192(%rbp)
-    movq %rax, -1184(%rbp)
-    movq %rax, -1176(%rbp)
+    movq %rax, -1280(%rbp)
+    movq %rax, -1272(%rbp)
+    movq %rax, -1264(%rbp)
+    movq %rax, -1256(%rbp)
+    movq %rax, -1248(%rbp)
     movdqu -1224(%rbp), %xmm0
-    movdqu %xmm0, -1208(%rbp)
-    movdqu -1256(%rbp), %xmm0
-    movdqu %xmm0, -1192(%rbp)
+    movdqu %xmm0, -1280(%rbp)
+    movdqu -664(%rbp), %xmm0
+    movdqu %xmm0, -1264(%rbp)
     movq 32(%r13), %xmm0
-    movq %xmm0, -1176(%rbp)
+    movq %xmm0, -1248(%rbp)
     sub $80, %rsp
-    lea -880(%rbp), %rbx
+    lea -712(%rbp), %rbx
     lea (%rsp), %rax
     movq -488(%rbp), %rcx
     movq %rcx, (%rax)
@@ -1365,15 +1365,15 @@ test_dec64_rk4_step:
     movq -456(%rbp), %rcx
     movq %rcx, 32(%rax)
     lea 40(%rsp), %rax
-    movq -1208(%rbp), %rcx
+    movq -1280(%rbp), %rcx
     movq %rcx, (%rax)
-    movq -1200(%rbp), %rcx
+    movq -1272(%rbp), %rcx
     movq %rcx, 8(%rax)
-    movq -1192(%rbp), %rcx
+    movq -1264(%rbp), %rcx
     movq %rcx, 16(%rax)
-    movq -1184(%rbp), %rcx
+    movq -1256(%rbp), %rcx
     movq %rcx, 24(%rax)
-    movq -1176(%rbp), %rcx
+    movq -1248(%rbp), %rcx
     movq %rcx, 32(%rax)
     movaps -1424(%rbp), %xmm0
     call test_dec64_grav_accel
@@ -1381,7 +1381,7 @@ test_dec64_rk4_step:
     movq %xmm0, (%rax)
     movq %xmm1, 8(%rax)
     add $80, %rsp
-    lea -1088(%rbp), %rbx
+    lea -928(%rbp), %rbx
     movq (%r14), %xmm0
     movq 8(%r14), %xmm1
     movq (%rax), %xmm2
@@ -1391,21 +1391,21 @@ test_dec64_rk4_step:
     movq %xmm0, (%rax)
     movq %xmm1, 8(%rax)
     movq .L__kefir_func_test_dec64_rk4_step_label10(%rip), %xmm2
-    lea -976(%rbp), %rbx
+    lea -816(%rbp), %rbx
     movq (%rax), %xmm0
     movq 8(%rax), %xmm1
     call test_dec64_mulv
     movq %xmm0, (%rbx)
     movq %xmm1, 8(%rbx)
-    lea -1152(%rbp), %rbx
-    movq -640(%rbp), %xmm0
-    movq -632(%rbp), %xmm1
+    lea -1136(%rbp), %rbx
+    movq -1040(%rbp), %xmm0
+    movq -1032(%rbp), %xmm1
     movaps -1440(%rbp), %xmm2
     call test_dec64_mulv
     mov %rbx, %rax
     movq %xmm0, (%rax)
     movq %xmm1, 8(%rax)
-    lea -504(%rbp), %rbx
+    lea -648(%rbp), %rbx
     movq 16(%r13), %xmm0
     movq 24(%r13), %xmm1
     movq (%rax), %xmm2
@@ -1415,15 +1415,15 @@ test_dec64_rk4_step:
     movq %xmm1, 8(%rbx)
     movdqu (%rbx), %xmm0
     movdqu %xmm0, 16(%r13)
-    lea -864(%rbp), %rbx
-    movq -976(%rbp), %xmm0
-    movq -968(%rbp), %xmm1
+    lea -1152(%rbp), %rbx
+    movq -816(%rbp), %xmm0
+    movq -808(%rbp), %xmm1
     movaps -1440(%rbp), %xmm2
     call test_dec64_mulv
     mov %rbx, %rax
     movq %xmm0, (%rax)
     movq %xmm1, 8(%rax)
-    lea -1072(%rbp), %rbx
+    lea -448(%rbp), %rbx
     movq 16(%r12), %xmm0
     movq 24(%r12), %xmm1
     movq (%rax), %xmm2
@@ -1433,7 +1433,7 @@ test_dec64_rk4_step:
     movq %xmm1, 8(%rbx)
     movdqu (%rbx), %xmm0
     movdqu %xmm0, 16(%r12)
-    lea -704(%rbp), %rbx
+    lea -632(%rbp), %rbx
     movq 16(%r13), %xmm0
     movq 24(%r13), %xmm1
     movaps -1440(%rbp), %xmm2
@@ -1441,7 +1441,7 @@ test_dec64_rk4_step:
     mov %rbx, %rax
     movq %xmm0, (%rax)
     movq %xmm1, 8(%rax)
-    lea -1320(%rbp), %rbx
+    lea -616(%rbp), %rbx
     movq (%r13), %xmm0
     movq 8(%r13), %xmm1
     movq (%rax), %xmm2
@@ -1451,7 +1451,7 @@ test_dec64_rk4_step:
     movq %xmm1, 8(%rbx)
     movdqu (%rbx), %xmm0
     movdqu %xmm0, (%r13)
-    lea -1168(%rbp), %rbx
+    lea -1024(%rbp), %rbx
     movq 16(%r12), %xmm0
     movq 24(%r12), %xmm1
     movaps -1440(%rbp), %xmm2
@@ -1459,7 +1459,7 @@ test_dec64_rk4_step:
     mov %rbx, %rax
     movq %xmm0, (%rax)
     movq %xmm1, 8(%rax)
-    lea -592(%rbp), %rbx
+    lea -880(%rbp), %rbx
     movq (%r12), %xmm0
     movq 8(%r12), %xmm1
     movq (%rax), %xmm2
@@ -1812,47 +1812,47 @@ test_dec128_grav_accel:
     movaps %xmm0, -480(%rbp)
     lea 96(%rbp), %rsi
     lea 16(%rbp), %rax
-    lea -368(%rbp), %rdi
+    lea -400(%rbp), %rdi
     cld
     mov $10, %rcx
     rep movsq
-    lea -256(%rbp), %rdi
+    lea -320(%rbp), %rdi
     mov %rax, %rsi
     cld
     mov $10, %rcx
     rep movsq
-    movdqu -256(%rbp), %xmm0
-    movdqu %xmm0, -176(%rbp)
-    movdqu -240(%rbp), %xmm0
-    movdqu %xmm0, -160(%rbp)
-    movdqu -368(%rbp), %xmm0
-    movdqu %xmm0, -144(%rbp)
-    movdqu -352(%rbp), %xmm0
-    movdqu %xmm0, -128(%rbp)
-    xorps %xmm0, %xmm0
+    movdqu -320(%rbp), %xmm0
     movdqu %xmm0, -112(%rbp)
+    movdqu -304(%rbp), %xmm0
     movdqu %xmm0, -96(%rbp)
-    movdqu -144(%rbp), %xmm0
-    movdqu -176(%rbp), %xmm1
-    call __bid_subtd3@PLT
-    movdqu %xmm0, -112(%rbp)
-    movdqu -128(%rbp), %xmm0
-    movdqu -160(%rbp), %xmm1
-    call __bid_subtd3@PLT
-    movdqu %xmm0, -96(%rbp)
-    movdqu -112(%rbp), %xmm0
-    movdqu %xmm0, -400(%rbp)
-    movdqu -96(%rbp), %xmm0
-    movdqu %xmm0, -384(%rbp)
     movdqu -400(%rbp), %xmm0
-    movdqu %xmm0, -288(%rbp)
+    movdqu %xmm0, -176(%rbp)
     movdqu -384(%rbp), %xmm0
-    movdqu %xmm0, -272(%rbp)
-    movdqu -288(%rbp), %xmm0
-    movdqu -288(%rbp), %xmm1
-    movdqu -272(%rbp), %xmm2
+    movdqu %xmm0, -160(%rbp)
+    xorps %xmm0, %xmm0
+    movdqu %xmm0, -144(%rbp)
+    movdqu %xmm0, -128(%rbp)
+    movdqu -176(%rbp), %xmm0
+    movdqu -112(%rbp), %xmm1
+    call __bid_subtd3@PLT
+    movdqu %xmm0, -144(%rbp)
+    movdqu -160(%rbp), %xmm0
+    movdqu -96(%rbp), %xmm1
+    call __bid_subtd3@PLT
+    movdqu %xmm0, -128(%rbp)
+    movdqu -144(%rbp), %xmm0
+    movdqu %xmm0, -208(%rbp)
+    movdqu -128(%rbp), %xmm0
+    movdqu %xmm0, -192(%rbp)
+    movdqu -208(%rbp), %xmm0
+    movdqu %xmm0, -240(%rbp)
+    movdqu -192(%rbp), %xmm0
+    movdqu %xmm0, -224(%rbp)
+    movdqu -240(%rbp), %xmm0
+    movdqu -240(%rbp), %xmm1
+    movdqu -224(%rbp), %xmm2
     movdqu %xmm2, -464(%rbp)
-    movdqu -272(%rbp), %xmm2
+    movdqu -224(%rbp), %xmm2
     movdqu %xmm2, -448(%rbp)
     call __bid_multd3@PLT
     movaps %xmm0, -432(%rbp)
@@ -1867,10 +1867,10 @@ test_dec128_grav_accel:
     movaps %xmm0, -464(%rbp)
     call test_dec128_sqrt_approx
     movaps %xmm0, -448(%rbp)
-    movdqu -304(%rbp), %xmm1
-    movdqu -288(%rbp), %xmm0
+    movdqu -336(%rbp), %xmm1
+    movdqu -240(%rbp), %xmm0
     movdqu %xmm0, -48(%rbp)
-    movdqu -272(%rbp), %xmm0
+    movdqu -224(%rbp), %xmm0
     movdqu %xmm0, -32(%rbp)
     xorps %xmm0, %xmm0
     movdqu %xmm0, -80(%rbp)
@@ -1928,40 +1928,40 @@ test_dec32_grav_accel:
     lea 40(%rbp), %rax
     lea 16(%rbp), %rcx
     movq (%rax), %rdx
-    movq %rdx, -104(%rbp)
-    movq 8(%rax), %rdx
     movq %rdx, -96(%rbp)
+    movq 8(%rax), %rdx
+    movq %rdx, -88(%rbp)
     movl 16(%rax), %eax
-    movl %eax, -88(%rbp)
+    movl %eax, -80(%rbp)
     movq (%rcx), %rax
-    movq %rax, -84(%rbp)
+    movq %rax, -68(%rbp)
     movq 8(%rcx), %rax
-    movq %rax, -76(%rbp)
+    movq %rax, -60(%rbp)
     movl 16(%rcx), %eax
-    movl %eax, -68(%rbp)
-    movq -84(%rbp), %rax
-    movq %rax, -32(%rbp)
-    movq -104(%rbp), %rax
+    movl %eax, -52(%rbp)
+    movq -68(%rbp), %rax
     movq %rax, -24(%rbp)
+    movq -96(%rbp), %rax
+    movq %rax, -32(%rbp)
     xor %eax, %eax
     movq %rax, -40(%rbp)
-    movd -24(%rbp), %xmm0
-    movd -32(%rbp), %xmm1
+    movd -32(%rbp), %xmm0
+    movd -24(%rbp), %xmm1
     call __bid_subsd3@PLT
     movd %xmm0, -40(%rbp)
-    movd -20(%rbp), %xmm0
-    movd -28(%rbp), %xmm1
+    movd -28(%rbp), %xmm0
+    movd -20(%rbp), %xmm1
     call __bid_subsd3@PLT
     movd %xmm0, -36(%rbp)
     movq -40(%rbp), %rax
     movq %rax, -48(%rbp)
     movq -48(%rbp), %rax
-    movq %rax, -56(%rbp)
-    movd -56(%rbp), %xmm0
-    movd -56(%rbp), %xmm1
-    movd -52(%rbp), %xmm2
+    movq %rax, -76(%rbp)
+    movd -76(%rbp), %xmm0
+    movd -76(%rbp), %xmm1
+    movd -72(%rbp), %xmm2
     movd %xmm2, -176(%rbp)
-    movd -52(%rbp), %xmm2
+    movd -72(%rbp), %xmm2
     movd %xmm2, -160(%rbp)
     call __bid_mulsd3@PLT
     movaps %xmm0, -144(%rbp)
@@ -1976,12 +1976,12 @@ test_dec32_grav_accel:
     movaps %xmm0, -176(%rbp)
     call test_dec32_sqrt_approx
     movaps %xmm0, -160(%rbp)
-    movd -88(%rbp), %xmm1
-    movq -56(%rbp), %rax
-    movq %rax, -8(%rbp)
-    xor %eax, %eax
+    movd -80(%rbp), %xmm1
+    movq -76(%rbp), %rax
     movq %rax, -16(%rbp)
-    movd -8(%rbp), %xmm0
+    xor %eax, %eax
+    movq %rax, -8(%rbp)
+    movd -16(%rbp), %xmm0
     movd %xmm0, -128(%rbp)
     movaps -192(%rbp), %xmm0
     call __bid_mulsd3@PLT
@@ -2001,14 +2001,14 @@ test_dec32_grav_accel:
     movaps %xmm1, -192(%rbp)
     movaps -128(%rbp), %xmm0
     call __bid_mulsd3@PLT
-    movd %xmm0, -16(%rbp)
-    movd -4(%rbp), %xmm0
+    movd %xmm0, -8(%rbp)
+    movd -12(%rbp), %xmm0
     movaps -192(%rbp), %xmm1
     call __bid_mulsd3@PLT
-    movd %xmm0, -12(%rbp)
-    movq -16(%rbp), %rax
-    movq %rax, -64(%rbp)
-    movq -64(%rbp), %xmm0
+    movd %xmm0, -4(%rbp)
+    movq -8(%rbp), %rax
+    movq %rax, -104(%rbp)
+    movq -104(%rbp), %xmm0
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -2036,7 +2036,7 @@ test_dec128_rk4_step:
     mov %rsi, %r12
     mov %rdi, %r13
     sub $160, %rsp
-    lea -2048(%rbp), %rbx
+    lea -2096(%rbp), %rbx
     lea (%rsp), %rdi
     mov %r13, %rsi
     cld
@@ -2052,7 +2052,7 @@ test_dec128_rk4_step:
     call test_dec128_grav_accel
     add $160, %rsp
     sub $160, %rsp
-    lea -2016(%rbp), %rbx
+    lea -2064(%rbp), %rbx
     lea (%rsp), %rdi
     mov %r12, %rsi
     cld
@@ -2067,14 +2067,14 @@ test_dec128_rk4_step:
     mov %rbx, %rdi
     call test_dec128_grav_accel
     add $160, %rsp
-    movdqu -2048(%rbp), %xmm0
-    movdqu %xmm0, -800(%rbp)
-    movdqu -2032(%rbp), %xmm0
-    movdqu %xmm0, -784(%rbp)
-    xorps %xmm0, %xmm0
+    movdqu -2096(%rbp), %xmm0
     movdqu %xmm0, -832(%rbp)
+    movdqu -2080(%rbp), %xmm0
     movdqu %xmm0, -816(%rbp)
-    movdqu -800(%rbp), %xmm0
+    xorps %xmm0, %xmm0
+    movdqu %xmm0, -800(%rbp)
+    movdqu %xmm0, -784(%rbp)
+    movdqu -832(%rbp), %xmm0
     movdqu %xmm0, -2736(%rbp)
     movdqu .L__kefir_func_test_dec128_rk4_step_label3(%rip), %xmm1
     movaps -2768(%rbp), %xmm0
@@ -2083,50 +2083,50 @@ test_dec128_rk4_step:
     movaps %xmm1, -2720(%rbp)
     movaps -2736(%rbp), %xmm0
     call __bid_multd3@PLT
-    movdqu %xmm0, -832(%rbp)
-    movdqu -784(%rbp), %xmm0
+    movdqu %xmm0, -800(%rbp)
+    movdqu -816(%rbp), %xmm0
     movaps -2720(%rbp), %xmm1
     call __bid_multd3@PLT
-    movdqu %xmm0, -816(%rbp)
-    movdqu -832(%rbp), %xmm0
-    movdqu %xmm0, -1216(%rbp)
-    movdqu -816(%rbp), %xmm0
-    movdqu %xmm0, -1200(%rbp)
-    movdqu -1216(%rbp), %xmm0
-    movdqu %xmm0, -704(%rbp)
-    movdqu -1200(%rbp), %xmm0
-    movdqu %xmm0, -688(%rbp)
-    movdqu 32(%r13), %xmm0
+    movdqu %xmm0, -784(%rbp)
+    movdqu -800(%rbp), %xmm0
+    movdqu %xmm0, -1824(%rbp)
+    movdqu -784(%rbp), %xmm0
+    movdqu %xmm0, -1808(%rbp)
+    movdqu -1824(%rbp), %xmm0
     movdqu %xmm0, -768(%rbp)
-    movdqu 48(%r13), %xmm0
+    movdqu -1808(%rbp), %xmm0
     movdqu %xmm0, -752(%rbp)
+    movdqu 32(%r13), %xmm0
+    movdqu %xmm0, -736(%rbp)
+    movdqu 48(%r13), %xmm0
+    movdqu %xmm0, -720(%rbp)
     xorps %xmm0, %xmm0
-    movdqu %xmm0, -736(%rbp)
-    movdqu %xmm0, -720(%rbp)
-    movdqu -768(%rbp), %xmm0
-    movdqu -704(%rbp), %xmm1
-    call __bid_addtd3@PLT
-    movdqu %xmm0, -736(%rbp)
-    movdqu -752(%rbp), %xmm0
-    movdqu -688(%rbp), %xmm1
-    call __bid_addtd3@PLT
-    movdqu %xmm0, -720(%rbp)
+    movdqu %xmm0, -704(%rbp)
+    movdqu %xmm0, -688(%rbp)
     movdqu -736(%rbp), %xmm0
-    movdqu %xmm0, -1792(%rbp)
+    movdqu -768(%rbp), %xmm1
+    call __bid_addtd3@PLT
+    movdqu %xmm0, -704(%rbp)
     movdqu -720(%rbp), %xmm0
-    movdqu %xmm0, -1776(%rbp)
-    movdqu -1792(%rbp), %xmm0
-    movdqu %xmm0, -1632(%rbp)
-    movdqu -1776(%rbp), %xmm0
-    movdqu %xmm0, -1616(%rbp)
-    movdqu -2016(%rbp), %xmm0
-    movdqu %xmm0, -640(%rbp)
-    movdqu -2000(%rbp), %xmm0
-    movdqu %xmm0, -624(%rbp)
-    xorps %xmm0, %xmm0
+    movdqu -752(%rbp), %xmm1
+    call __bid_addtd3@PLT
+    movdqu %xmm0, -688(%rbp)
+    movdqu -704(%rbp), %xmm0
+    movdqu %xmm0, -2560(%rbp)
+    movdqu -688(%rbp), %xmm0
+    movdqu %xmm0, -2544(%rbp)
+    movdqu -2560(%rbp), %xmm0
+    movdqu %xmm0, -1040(%rbp)
+    movdqu -2544(%rbp), %xmm0
+    movdqu %xmm0, -1024(%rbp)
+    movdqu -2064(%rbp), %xmm0
     movdqu %xmm0, -672(%rbp)
+    movdqu -2048(%rbp), %xmm0
     movdqu %xmm0, -656(%rbp)
-    movdqu -640(%rbp), %xmm0
+    xorps %xmm0, %xmm0
+    movdqu %xmm0, -640(%rbp)
+    movdqu %xmm0, -624(%rbp)
+    movdqu -672(%rbp), %xmm0
     movdqu %xmm0, -2736(%rbp)
     movdqu .L__kefir_func_test_dec128_rk4_step_label4(%rip), %xmm1
     movaps -2768(%rbp), %xmm0
@@ -2135,50 +2135,50 @@ test_dec128_rk4_step:
     movaps %xmm1, -2704(%rbp)
     movaps -2736(%rbp), %xmm0
     call __bid_multd3@PLT
-    movdqu %xmm0, -672(%rbp)
-    movdqu -624(%rbp), %xmm0
+    movdqu %xmm0, -640(%rbp)
+    movdqu -656(%rbp), %xmm0
     movaps -2704(%rbp), %xmm1
     call __bid_multd3@PLT
-    movdqu %xmm0, -656(%rbp)
-    movdqu -672(%rbp), %xmm0
-    movdqu %xmm0, -2112(%rbp)
-    movdqu -656(%rbp), %xmm0
-    movdqu %xmm0, -2096(%rbp)
-    movdqu -2112(%rbp), %xmm0
-    movdqu %xmm0, -576(%rbp)
-    movdqu -2096(%rbp), %xmm0
-    movdqu %xmm0, -560(%rbp)
-    movdqu 32(%r12), %xmm0
+    movdqu %xmm0, -624(%rbp)
+    movdqu -640(%rbp), %xmm0
+    movdqu %xmm0, -2464(%rbp)
+    movdqu -624(%rbp), %xmm0
+    movdqu %xmm0, -2448(%rbp)
+    movdqu -2464(%rbp), %xmm0
     movdqu %xmm0, -544(%rbp)
-    movdqu 48(%r12), %xmm0
+    movdqu -2448(%rbp), %xmm0
     movdqu %xmm0, -528(%rbp)
+    movdqu 32(%r12), %xmm0
+    movdqu %xmm0, -608(%rbp)
+    movdqu 48(%r12), %xmm0
+    movdqu %xmm0, -592(%rbp)
     xorps %xmm0, %xmm0
-    movdqu %xmm0, -608(%rbp)
-    movdqu %xmm0, -592(%rbp)
-    movdqu -544(%rbp), %xmm0
-    movdqu -576(%rbp), %xmm1
-    call __bid_addtd3@PLT
-    movdqu %xmm0, -608(%rbp)
-    movdqu -528(%rbp), %xmm0
-    movdqu -560(%rbp), %xmm1
-    call __bid_addtd3@PLT
-    movdqu %xmm0, -592(%rbp)
+    movdqu %xmm0, -576(%rbp)
+    movdqu %xmm0, -560(%rbp)
     movdqu -608(%rbp), %xmm0
-    movdqu %xmm0, -2272(%rbp)
+    movdqu -544(%rbp), %xmm1
+    call __bid_addtd3@PLT
+    movdqu %xmm0, -576(%rbp)
     movdqu -592(%rbp), %xmm0
-    movdqu %xmm0, -2256(%rbp)
-    movdqu -2272(%rbp), %xmm0
-    movdqu %xmm0, -2208(%rbp)
-    movdqu -2256(%rbp), %xmm0
-    movdqu %xmm0, -2192(%rbp)
+    movdqu -528(%rbp), %xmm1
+    call __bid_addtd3@PLT
+    movdqu %xmm0, -560(%rbp)
+    movdqu -576(%rbp), %xmm0
+    movdqu %xmm0, -1600(%rbp)
+    movdqu -560(%rbp), %xmm0
+    movdqu %xmm0, -1584(%rbp)
+    movdqu -1600(%rbp), %xmm0
+    movdqu %xmm0, -1248(%rbp)
+    movdqu -1584(%rbp), %xmm0
+    movdqu %xmm0, -1232(%rbp)
     movdqu 32(%r13), %xmm0
-    movdqu %xmm0, -512(%rbp)
-    movdqu 48(%r13), %xmm0
-    movdqu %xmm0, -496(%rbp)
-    xorps %xmm0, %xmm0
     movdqu %xmm0, -480(%rbp)
+    movdqu 48(%r13), %xmm0
     movdqu %xmm0, -464(%rbp)
-    movdqu -512(%rbp), %xmm0
+    xorps %xmm0, %xmm0
+    movdqu %xmm0, -512(%rbp)
+    movdqu %xmm0, -496(%rbp)
+    movdqu -480(%rbp), %xmm0
     movdqu %xmm0, -2736(%rbp)
     movdqu .L__kefir_func_test_dec128_rk4_step_label5(%rip), %xmm1
     movaps -2768(%rbp), %xmm0
@@ -2187,50 +2187,50 @@ test_dec128_rk4_step:
     movaps %xmm1, -2720(%rbp)
     movaps -2736(%rbp), %xmm0
     call __bid_multd3@PLT
-    movdqu %xmm0, -480(%rbp)
-    movdqu -496(%rbp), %xmm0
+    movdqu %xmm0, -512(%rbp)
+    movdqu -464(%rbp), %xmm0
     movaps -2720(%rbp), %xmm1
     call __bid_multd3@PLT
-    movdqu %xmm0, -464(%rbp)
-    movdqu -480(%rbp), %xmm0
-    movdqu %xmm0, -1824(%rbp)
-    movdqu -464(%rbp), %xmm0
-    movdqu %xmm0, -1808(%rbp)
-    movdqu -1824(%rbp), %xmm0
-    movdqu %xmm0, -416(%rbp)
-    movdqu -1808(%rbp), %xmm0
-    movdqu %xmm0, -400(%rbp)
+    movdqu %xmm0, -496(%rbp)
+    movdqu -512(%rbp), %xmm0
+    movdqu %xmm0, -2192(%rbp)
+    movdqu -496(%rbp), %xmm0
+    movdqu %xmm0, -2176(%rbp)
+    movdqu -2192(%rbp), %xmm0
+    movdqu %xmm0, -448(%rbp)
+    movdqu -2176(%rbp), %xmm0
+    movdqu %xmm0, -432(%rbp)
     movdqu (%r13), %xmm0
     movdqu %xmm0, -384(%rbp)
     movdqu 16(%r13), %xmm0
     movdqu %xmm0, -368(%rbp)
     xorps %xmm0, %xmm0
-    movdqu %xmm0, -448(%rbp)
-    movdqu %xmm0, -432(%rbp)
+    movdqu %xmm0, -416(%rbp)
+    movdqu %xmm0, -400(%rbp)
     movdqu -384(%rbp), %xmm0
-    movdqu -416(%rbp), %xmm1
+    movdqu -448(%rbp), %xmm1
     call __bid_addtd3@PLT
-    movdqu %xmm0, -448(%rbp)
+    movdqu %xmm0, -416(%rbp)
     movdqu -368(%rbp), %xmm0
-    movdqu -400(%rbp), %xmm1
+    movdqu -432(%rbp), %xmm1
     call __bid_addtd3@PLT
-    movdqu %xmm0, -432(%rbp)
-    movdqu -448(%rbp), %xmm0
-    movdqu %xmm0, -2688(%rbp)
-    movdqu -432(%rbp), %xmm0
-    movdqu %xmm0, -2672(%rbp)
-    movdqu -2688(%rbp), %xmm0
-    movdqu %xmm0, -960(%rbp)
-    movdqu -2672(%rbp), %xmm0
-    movdqu %xmm0, -944(%rbp)
+    movdqu %xmm0, -400(%rbp)
+    movdqu -416(%rbp), %xmm0
+    movdqu %xmm0, -1760(%rbp)
+    movdqu -400(%rbp), %xmm0
+    movdqu %xmm0, -1744(%rbp)
+    movdqu -1760(%rbp), %xmm0
+    movdqu %xmm0, -1968(%rbp)
+    movdqu -1744(%rbp), %xmm0
+    movdqu %xmm0, -1952(%rbp)
     movdqu 32(%r12), %xmm0
-    movdqu %xmm0, -352(%rbp)
-    movdqu 48(%r12), %xmm0
-    movdqu %xmm0, -336(%rbp)
-    xorps %xmm0, %xmm0
     movdqu %xmm0, -320(%rbp)
+    movdqu 48(%r12), %xmm0
     movdqu %xmm0, -304(%rbp)
-    movdqu -352(%rbp), %xmm0
+    xorps %xmm0, %xmm0
+    movdqu %xmm0, -352(%rbp)
+    movdqu %xmm0, -336(%rbp)
+    movdqu -320(%rbp), %xmm0
     movdqu %xmm0, -2736(%rbp)
     movdqu .L__kefir_func_test_dec128_rk4_step_label6(%rip), %xmm1
     movaps -2768(%rbp), %xmm0
@@ -2239,81 +2239,81 @@ test_dec128_rk4_step:
     movaps %xmm1, -2720(%rbp)
     movaps -2736(%rbp), %xmm0
     call __bid_multd3@PLT
-    movdqu %xmm0, -320(%rbp)
-    movdqu -336(%rbp), %xmm0
+    movdqu %xmm0, -352(%rbp)
+    movdqu -304(%rbp), %xmm0
     movaps -2720(%rbp), %xmm1
     call __bid_multd3@PLT
-    movdqu %xmm0, -304(%rbp)
-    movdqu -320(%rbp), %xmm0
-    movdqu %xmm0, -1072(%rbp)
-    movdqu -304(%rbp), %xmm0
-    movdqu %xmm0, -1056(%rbp)
-    movdqu -1072(%rbp), %xmm0
-    movdqu %xmm0, -288(%rbp)
-    movdqu -1056(%rbp), %xmm0
-    movdqu %xmm0, -272(%rbp)
-    movdqu (%r12), %xmm0
+    movdqu %xmm0, -336(%rbp)
+    movdqu -352(%rbp), %xmm0
+    movdqu %xmm0, -2032(%rbp)
+    movdqu -336(%rbp), %xmm0
+    movdqu %xmm0, -2016(%rbp)
+    movdqu -2032(%rbp), %xmm0
     movdqu %xmm0, -224(%rbp)
-    movdqu 16(%r12), %xmm0
+    movdqu -2016(%rbp), %xmm0
     movdqu %xmm0, -208(%rbp)
+    movdqu (%r12), %xmm0
+    movdqu %xmm0, -256(%rbp)
+    movdqu 16(%r12), %xmm0
+    movdqu %xmm0, -240(%rbp)
     xorps %xmm0, %xmm0
-    movdqu %xmm0, -256(%rbp)
-    movdqu %xmm0, -240(%rbp)
-    movdqu -224(%rbp), %xmm0
-    movdqu -288(%rbp), %xmm1
-    call __bid_addtd3@PLT
-    movdqu %xmm0, -256(%rbp)
-    movdqu -208(%rbp), %xmm0
-    movdqu -272(%rbp), %xmm1
-    call __bid_addtd3@PLT
-    movdqu %xmm0, -240(%rbp)
+    movdqu %xmm0, -288(%rbp)
+    movdqu %xmm0, -272(%rbp)
     movdqu -256(%rbp), %xmm0
-    movdqu %xmm0, -1728(%rbp)
+    movdqu -224(%rbp), %xmm1
+    call __bid_addtd3@PLT
+    movdqu %xmm0, -288(%rbp)
     movdqu -240(%rbp), %xmm0
-    movdqu %xmm0, -1712(%rbp)
-    movdqu -1728(%rbp), %xmm0
+    movdqu -208(%rbp), %xmm1
+    call __bid_addtd3@PLT
+    movdqu %xmm0, -272(%rbp)
+    movdqu -288(%rbp), %xmm0
+    movdqu %xmm0, -1008(%rbp)
+    movdqu -272(%rbp), %xmm0
+    movdqu %xmm0, -992(%rbp)
+    movdqu -1008(%rbp), %xmm0
     movdqu %xmm0, -1392(%rbp)
-    movdqu -1712(%rbp), %xmm0
+    movdqu -992(%rbp), %xmm0
     movdqu %xmm0, -1376(%rbp)
-    lea -2656(%rbp), %rdi
+    lea -2272(%rbp), %rdi
     xor %eax, %eax
     mov $10, %rcx
     mov %rax, %rsi
     rep stosq
-    movdqu -960(%rbp), %xmm0
-    movdqu %xmm0, -2656(%rbp)
-    movdqu -944(%rbp), %xmm0
-    movdqu %xmm0, -2640(%rbp)
-    movdqu -1632(%rbp), %xmm0
-    movdqu %xmm0, -2624(%rbp)
-    movdqu -1616(%rbp), %xmm0
-    movdqu %xmm0, -2608(%rbp)
+    movdqu -1968(%rbp), %xmm0
+    movdqu %xmm0, -2272(%rbp)
+    movdqu -1952(%rbp), %xmm0
+    movdqu %xmm0, -2256(%rbp)
+    movdqu -1040(%rbp), %xmm0
+    movdqu %xmm0, -2240(%rbp)
+    movdqu -1024(%rbp), %xmm0
+    movdqu %xmm0, -2224(%rbp)
     movdqu 64(%r13), %xmm0
-    movdqu %xmm0, -2592(%rbp)
-    lea -1040(%rbp), %rdi
+    movdqu %xmm0, -2208(%rbp)
+    lea -1120(%rbp), %rdi
     xor %eax, %eax
     mov $10, %rcx
     mov %rax, %rsi
     rep stosq
     movdqu -1392(%rbp), %xmm0
-    movdqu %xmm0, -1040(%rbp)
+    movdqu %xmm0, -1120(%rbp)
     movdqu -1376(%rbp), %xmm0
-    movdqu %xmm0, -1024(%rbp)
-    movdqu -2208(%rbp), %xmm0
-    movdqu %xmm0, -1008(%rbp)
-    movdqu -2192(%rbp), %xmm0
-    movdqu %xmm0, -992(%rbp)
+    movdqu %xmm0, -1104(%rbp)
+    movdqu -1248(%rbp), %xmm0
+    movdqu %xmm0, -1088(%rbp)
+    movdqu -1232(%rbp), %xmm0
+    movdqu %xmm0, -1072(%rbp)
     movdqu 64(%r12), %xmm0
-    movdqu %xmm0, -976(%rbp)
+    movdqu %xmm0, -1056(%rbp)
     sub $160, %rsp
-    lea -1856(%rbp), %rbx
+    lea -1664(%rbp), %rbx
     lea (%rsp), %rdi
-    lea -2656(%rbp), %rsi
+    lea -2272(%rbp), %rsi
     cld
     mov $10, %rcx
     rep movsq
     lea 80(%rsp), %rdi
-    lea -1040(%rbp), %rsi
+    lea -1120(%rbp), %rsi
     cld
     mov $10, %rcx
     rep movsq
@@ -2322,14 +2322,14 @@ test_dec128_rk4_step:
     call test_dec128_grav_accel
     add $160, %rsp
     sub $160, %rsp
-    lea -1920(%rbp), %rbx
+    lea -2000(%rbp), %rbx
     lea (%rsp), %rdi
-    lea -1040(%rbp), %rsi
+    lea -1120(%rbp), %rsi
     cld
     mov $10, %rcx
     rep movsq
     lea 80(%rsp), %rdi
-    lea -2656(%rbp), %rsi
+    lea -2272(%rbp), %rsi
     cld
     mov $10, %rcx
     rep movsq
@@ -2337,65 +2337,65 @@ test_dec128_rk4_step:
     mov %rbx, %rdi
     call test_dec128_grav_accel
     add $160, %rsp
-    movdqu -1856(%rbp), %xmm0
-    movdqu %xmm0, -160(%rbp)
-    movdqu -1840(%rbp), %xmm0
-    movdqu %xmm0, -144(%rbp)
+    movdqu -1664(%rbp), %xmm0
+    movdqu %xmm0, -192(%rbp)
+    movdqu -1648(%rbp), %xmm0
+    movdqu %xmm0, -176(%rbp)
     xorps %xmm0, %xmm0
-    movdqu %xmm0, -192(%rbp)
-    movdqu %xmm0, -176(%rbp)
-    movdqu -160(%rbp), %xmm0
-    movaps -2768(%rbp), %xmm1
-    call __bid_multd3@PLT
-    movdqu %xmm0, -192(%rbp)
-    movdqu -144(%rbp), %xmm0
-    movaps -2768(%rbp), %xmm1
-    call __bid_multd3@PLT
-    movdqu %xmm0, -176(%rbp)
+    movdqu %xmm0, -160(%rbp)
+    movdqu %xmm0, -144(%rbp)
     movdqu -192(%rbp), %xmm0
-    movdqu %xmm0, -2544(%rbp)
+    movaps -2768(%rbp), %xmm1
+    call __bid_multd3@PLT
+    movdqu %xmm0, -160(%rbp)
     movdqu -176(%rbp), %xmm0
-    movdqu %xmm0, -2528(%rbp)
-    movdqu -2544(%rbp), %xmm0
-    movdqu %xmm0, -96(%rbp)
-    movdqu -2528(%rbp), %xmm0
-    movdqu %xmm0, -80(%rbp)
+    movaps -2768(%rbp), %xmm1
+    call __bid_multd3@PLT
+    movdqu %xmm0, -144(%rbp)
+    movdqu -160(%rbp), %xmm0
+    movdqu %xmm0, -1856(%rbp)
+    movdqu -144(%rbp), %xmm0
+    movdqu %xmm0, -1840(%rbp)
+    movdqu -1856(%rbp), %xmm0
+    movdqu %xmm0, -128(%rbp)
+    movdqu -1840(%rbp), %xmm0
+    movdqu %xmm0, -112(%rbp)
     movdqu 32(%r13), %xmm0
     movdqu %xmm0, -64(%rbp)
     movdqu 48(%r13), %xmm0
     movdqu %xmm0, -48(%rbp)
     xorps %xmm0, %xmm0
-    movdqu %xmm0, -128(%rbp)
-    movdqu %xmm0, -112(%rbp)
+    movdqu %xmm0, -96(%rbp)
+    movdqu %xmm0, -80(%rbp)
     movdqu -64(%rbp), %xmm0
-    movdqu -96(%rbp), %xmm1
+    movdqu -128(%rbp), %xmm1
     call __bid_addtd3@PLT
-    movdqu %xmm0, -128(%rbp)
+    movdqu %xmm0, -96(%rbp)
     movdqu -48(%rbp), %xmm0
-    movdqu -80(%rbp), %xmm1
+    movdqu -112(%rbp), %xmm1
     call __bid_addtd3@PLT
-    movdqu %xmm0, -112(%rbp)
-    movdqu -128(%rbp), %xmm0
-    movdqu %xmm0, -864(%rbp)
-    movdqu -112(%rbp), %xmm0
-    movdqu %xmm0, -848(%rbp)
-    movdqu -864(%rbp), %xmm0
-    movdqu %xmm0, -1184(%rbp)
-    movdqu -848(%rbp), %xmm0
-    movdqu %xmm0, -1168(%rbp)
+    movdqu %xmm0, -80(%rbp)
+    movdqu -96(%rbp), %xmm0
+    movdqu %xmm0, -2624(%rbp)
+    movdqu -80(%rbp), %xmm0
+    movdqu %xmm0, -2608(%rbp)
+    movdqu -2624(%rbp), %xmm0
+    movdqu %xmm0, -2656(%rbp)
+    movdqu -2608(%rbp), %xmm0
+    movdqu %xmm0, -2640(%rbp)
     sub $32, %rsp
-    lea -2368(%rbp), %rbx
+    lea -896(%rbp), %rbx
     lea (%rsp), %rax
-    movdqu -1920(%rbp), %xmm0
+    movdqu -2000(%rbp), %xmm0
     movdqu %xmm0, (%rax)
-    movdqu -1904(%rbp), %xmm0
+    movdqu -1984(%rbp), %xmm0
     movdqu %xmm0, 16(%rax)
     movaps -2768(%rbp), %xmm0
     mov %rbx, %rdi
     call test_dec128_mulv
     add $32, %rsp
     sub $64, %rsp
-    lea -1696(%rbp), %rbx
+    lea -2128(%rbp), %rbx
     lea (%rsp), %rcx
     movdqu 32(%r12), %xmm0
     movdqu %xmm0, (%rcx)
@@ -2410,7 +2410,7 @@ test_dec128_rk4_step:
     call test_dec128_addv
     add $64, %rsp
     sub $32, %rsp
-    lea -2240(%rbp), %rbx
+    lea -2432(%rbp), %rbx
     lea (%rsp), %rax
     movdqu 32(%r13), %xmm0
     movdqu %xmm0, (%rax)
@@ -2421,7 +2421,7 @@ test_dec128_rk4_step:
     call test_dec128_mulv
     add $32, %rsp
     sub $64, %rsp
-    lea -2176(%rbp), %rbx
+    lea -2528(%rbp), %rbx
     lea (%rsp), %rcx
     movdqu (%r13), %xmm0
     movdqu %xmm0, (%rcx)
@@ -2436,7 +2436,7 @@ test_dec128_rk4_step:
     call test_dec128_addv
     add $64, %rsp
     sub $32, %rsp
-    lea -1760(%rbp), %rbx
+    lea -2160(%rbp), %rbx
     lea (%rsp), %rax
     movdqu 32(%r12), %xmm0
     movdqu %xmm0, (%rax)
@@ -2447,7 +2447,7 @@ test_dec128_rk4_step:
     call test_dec128_mulv
     add $32, %rsp
     sub $64, %rsp
-    lea -1568(%rbp), %rbx
+    lea -2592(%rbp), %rbx
     lea (%rsp), %rcx
     movdqu (%r12), %xmm0
     movdqu %xmm0, (%rcx)
@@ -2463,21 +2463,21 @@ test_dec128_rk4_step:
     add $64, %rsp
     movdqu .L__kefir_func_test_dec128_rk4_step_label7(%rip), %xmm0
     sub $32, %rsp
-    lea -2304(%rbp), %rbx
+    lea -1456(%rbp), %rbx
     lea (%rsp), %rax
-    movdqu -1856(%rbp), %xmm1
+    movdqu -1664(%rbp), %xmm1
     movdqu %xmm1, (%rax)
-    movdqu -1840(%rbp), %xmm1
+    movdqu -1648(%rbp), %xmm1
     movdqu %xmm1, 16(%rax)
     mov %rbx, %rdi
     call test_dec128_mulv
     add $32, %rsp
     sub $64, %rsp
-    lea -928(%rbp), %rbx
+    lea -2336(%rbp), %rbx
     lea (%rsp), %rcx
-    movdqu -2048(%rbp), %xmm0
+    movdqu -2096(%rbp), %xmm0
     movdqu %xmm0, (%rcx)
-    movdqu -2032(%rbp), %xmm0
+    movdqu -2080(%rbp), %xmm0
     movdqu %xmm0, 16(%rcx)
     lea 32(%rsp), %rcx
     movdqu (%rax), %xmm0
@@ -2488,45 +2488,45 @@ test_dec128_rk4_step:
     call test_dec128_addv
     mov %rax, %r14
     add $64, %rsp
-    lea -1504(%rbp), %rdi
+    lea -1568(%rbp), %rdi
     xor %eax, %eax
     mov $10, %rcx
     mov %rax, %rsi
     rep stosq
-    movdqu -2176(%rbp), %xmm0
-    movdqu %xmm0, -1504(%rbp)
-    movdqu -2160(%rbp), %xmm0
-    movdqu %xmm0, -1488(%rbp)
-    movdqu -1184(%rbp), %xmm0
-    movdqu %xmm0, -1472(%rbp)
-    movdqu -1168(%rbp), %xmm0
-    movdqu %xmm0, -1456(%rbp)
+    movdqu -2528(%rbp), %xmm0
+    movdqu %xmm0, -1568(%rbp)
+    movdqu -2512(%rbp), %xmm0
+    movdqu %xmm0, -1552(%rbp)
+    movdqu -2656(%rbp), %xmm0
+    movdqu %xmm0, -1536(%rbp)
+    movdqu -2640(%rbp), %xmm0
+    movdqu %xmm0, -1520(%rbp)
     movdqu 64(%r13), %xmm0
-    movdqu %xmm0, -1440(%rbp)
-    lea -1360(%rbp), %rdi
+    movdqu %xmm0, -1504(%rbp)
+    lea -1328(%rbp), %rdi
     xor %eax, %eax
     mov $10, %rcx
     mov %rax, %rsi
     rep stosq
-    movdqu -1568(%rbp), %xmm0
-    movdqu %xmm0, -1360(%rbp)
-    movdqu -1552(%rbp), %xmm0
-    movdqu %xmm0, -1344(%rbp)
-    movdqu -1696(%rbp), %xmm0
+    movdqu -2592(%rbp), %xmm0
     movdqu %xmm0, -1328(%rbp)
-    movdqu -1680(%rbp), %xmm0
+    movdqu -2576(%rbp), %xmm0
     movdqu %xmm0, -1312(%rbp)
-    movdqu 64(%r12), %xmm0
+    movdqu -2128(%rbp), %xmm0
     movdqu %xmm0, -1296(%rbp)
+    movdqu -2112(%rbp), %xmm0
+    movdqu %xmm0, -1280(%rbp)
+    movdqu 64(%r12), %xmm0
+    movdqu %xmm0, -1264(%rbp)
     sub $160, %rsp
-    lea -1280(%rbp), %rbx
+    lea -1792(%rbp), %rbx
     lea (%rsp), %rdi
-    lea -1504(%rbp), %rsi
+    lea -1568(%rbp), %rsi
     cld
     mov $10, %rcx
     rep movsq
     lea 80(%rsp), %rdi
-    lea -1360(%rbp), %rsi
+    lea -1328(%rbp), %rsi
     cld
     mov $10, %rcx
     rep movsq
@@ -2535,7 +2535,7 @@ test_dec128_rk4_step:
     call test_dec128_grav_accel
     add $160, %rsp
     sub $64, %rsp
-    lea -2144(%rbp), %rbx
+    lea -1184(%rbp), %rbx
     lea (%rsp), %rcx
     movdqu (%r14), %xmm0
     movdqu %xmm0, (%rcx)
@@ -2551,7 +2551,7 @@ test_dec128_rk4_step:
     add $64, %rsp
     movdqu .L__kefir_func_test_dec128_rk4_step_label8(%rip), %xmm0
     sub $32, %rsp
-    lea -2400(%rbp), %rbx
+    lea -1360(%rbp), %rbx
     lea (%rsp), %rcx
     movdqu (%rax), %xmm1
     movdqu %xmm1, (%rcx)
@@ -2562,21 +2562,21 @@ test_dec128_rk4_step:
     add $32, %rsp
     movdqu .L__kefir_func_test_dec128_rk4_step_label9(%rip), %xmm0
     sub $32, %rsp
-    lea -1952(%rbp), %rbx
+    lea -2688(%rbp), %rbx
     lea (%rsp), %rax
-    movdqu -1920(%rbp), %xmm1
+    movdqu -2000(%rbp), %xmm1
     movdqu %xmm1, (%rax)
-    movdqu -1904(%rbp), %xmm1
+    movdqu -1984(%rbp), %xmm1
     movdqu %xmm1, 16(%rax)
     mov %rbx, %rdi
     call test_dec128_mulv
     add $32, %rsp
     sub $64, %rsp
-    lea -1536(%rbp), %rbx
+    lea -1632(%rbp), %rbx
     lea (%rsp), %rcx
-    movdqu -2016(%rbp), %xmm0
+    movdqu -2064(%rbp), %xmm0
     movdqu %xmm0, (%rcx)
-    movdqu -2000(%rbp), %xmm0
+    movdqu -2048(%rbp), %xmm0
     movdqu %xmm0, 16(%rcx)
     lea 32(%rsp), %rcx
     movdqu (%rax), %xmm0
@@ -2587,45 +2587,45 @@ test_dec128_rk4_step:
     call test_dec128_addv
     mov %rax, %r14
     add $64, %rsp
-    lea -1152(%rbp), %rdi
+    lea -976(%rbp), %rdi
     xor %eax, %eax
     mov $10, %rcx
     mov %rax, %rsi
     rep stosq
-    movdqu -1568(%rbp), %xmm0
-    movdqu %xmm0, -1152(%rbp)
-    movdqu -1552(%rbp), %xmm0
-    movdqu %xmm0, -1136(%rbp)
-    movdqu -1696(%rbp), %xmm0
-    movdqu %xmm0, -1120(%rbp)
-    movdqu -1680(%rbp), %xmm0
-    movdqu %xmm0, -1104(%rbp)
+    movdqu -2592(%rbp), %xmm0
+    movdqu %xmm0, -976(%rbp)
+    movdqu -2576(%rbp), %xmm0
+    movdqu %xmm0, -960(%rbp)
+    movdqu -2128(%rbp), %xmm0
+    movdqu %xmm0, -944(%rbp)
+    movdqu -2112(%rbp), %xmm0
+    movdqu %xmm0, -928(%rbp)
     movdqu 64(%r12), %xmm0
-    movdqu %xmm0, -1088(%rbp)
-    lea -2480(%rbp), %rdi
+    movdqu %xmm0, -912(%rbp)
+    lea -1936(%rbp), %rdi
     xor %eax, %eax
     mov $10, %rcx
     mov %rax, %rsi
     rep stosq
-    movdqu -2176(%rbp), %xmm0
-    movdqu %xmm0, -2480(%rbp)
-    movdqu -2160(%rbp), %xmm0
-    movdqu %xmm0, -2464(%rbp)
-    movdqu -1184(%rbp), %xmm0
-    movdqu %xmm0, -2448(%rbp)
-    movdqu -1168(%rbp), %xmm0
-    movdqu %xmm0, -2432(%rbp)
+    movdqu -2528(%rbp), %xmm0
+    movdqu %xmm0, -1936(%rbp)
+    movdqu -2512(%rbp), %xmm0
+    movdqu %xmm0, -1920(%rbp)
+    movdqu -2656(%rbp), %xmm0
+    movdqu %xmm0, -1904(%rbp)
+    movdqu -2640(%rbp), %xmm0
+    movdqu %xmm0, -1888(%rbp)
     movdqu 64(%r13), %xmm0
-    movdqu %xmm0, -2416(%rbp)
+    movdqu %xmm0, -1872(%rbp)
     sub $160, %rsp
-    lea -896(%rbp), %rbx
+    lea -2368(%rbp), %rbx
     lea (%rsp), %rdi
-    lea -1152(%rbp), %rsi
+    lea -976(%rbp), %rsi
     cld
     mov $10, %rcx
     rep movsq
     lea 80(%rsp), %rdi
-    lea -2480(%rbp), %rsi
+    lea -1936(%rbp), %rsi
     cld
     mov $10, %rcx
     rep movsq
@@ -2634,7 +2634,7 @@ test_dec128_rk4_step:
     call test_dec128_grav_accel
     add $160, %rsp
     sub $64, %rsp
-    lea -2576(%rbp), %rbx
+    lea -1152(%rbp), %rbx
     lea (%rsp), %rcx
     movdqu (%r14), %xmm0
     movdqu %xmm0, (%rcx)
@@ -2650,7 +2650,7 @@ test_dec128_rk4_step:
     add $64, %rsp
     movdqu .L__kefir_func_test_dec128_rk4_step_label10(%rip), %xmm0
     sub $32, %rsp
-    lea -1600(%rbp), %rbx
+    lea -1424(%rbp), %rbx
     lea (%rsp), %rcx
     movdqu (%rax), %xmm1
     movdqu %xmm1, (%rcx)
@@ -2660,18 +2660,18 @@ test_dec128_rk4_step:
     call test_dec128_mulv
     add $32, %rsp
     sub $32, %rsp
-    lea -1248(%rbp), %rbx
+    lea -1216(%rbp), %rbx
     lea (%rsp), %rax
-    movdqu -2400(%rbp), %xmm0
+    movdqu -1360(%rbp), %xmm0
     movdqu %xmm0, (%rax)
-    movdqu -2384(%rbp), %xmm0
+    movdqu -1344(%rbp), %xmm0
     movdqu %xmm0, 16(%rax)
     movaps -2768(%rbp), %xmm0
     mov %rbx, %rdi
     call test_dec128_mulv
     add $32, %rsp
     sub $64, %rsp
-    lea -2080(%rbp), %rbx
+    lea -2304(%rbp), %rbx
     lea (%rsp), %rcx
     movdqu 32(%r13), %xmm0
     movdqu %xmm0, (%rcx)
@@ -2690,18 +2690,18 @@ test_dec128_rk4_step:
     movdqu 16(%rax), %xmm0
     movdqu %xmm0, 48(%r13)
     sub $32, %rsp
-    lea -2512(%rbp), %rbx
+    lea -864(%rbp), %rbx
     lea (%rsp), %rax
-    movdqu -1600(%rbp), %xmm0
+    movdqu -1424(%rbp), %xmm0
     movdqu %xmm0, (%rax)
-    movdqu -1584(%rbp), %xmm0
+    movdqu -1408(%rbp), %xmm0
     movdqu %xmm0, 16(%rax)
     movaps -2768(%rbp), %xmm0
     mov %rbx, %rdi
     call test_dec128_mulv
     add $32, %rsp
     sub $64, %rsp
-    lea -2336(%rbp), %rbx
+    lea -1488(%rbp), %rbx
     lea (%rsp), %rcx
     movdqu 32(%r12), %xmm0
     movdqu %xmm0, (%rcx)
@@ -2720,7 +2720,7 @@ test_dec128_rk4_step:
     movdqu 16(%rax), %xmm0
     movdqu %xmm0, 48(%r12)
     sub $32, %rsp
-    lea -1984(%rbp), %rbx
+    lea -1728(%rbp), %rbx
     lea (%rsp), %rax
     movdqu 32(%r13), %xmm0
     movdqu %xmm0, (%rax)
@@ -2731,7 +2731,7 @@ test_dec128_rk4_step:
     call test_dec128_mulv
     add $32, %rsp
     sub $64, %rsp
-    lea -1888(%rbp), %rbx
+    lea -2400(%rbp), %rbx
     lea (%rsp), %rcx
     movdqu (%r13), %xmm0
     movdqu %xmm0, (%rcx)
@@ -2750,7 +2750,7 @@ test_dec128_rk4_step:
     movdqu 16(%rax), %xmm0
     movdqu %xmm0, 16(%r13)
     sub $32, %rsp
-    lea -1424(%rbp), %rbx
+    lea -1696(%rbp), %rbx
     lea (%rsp), %rax
     movdqu 32(%r12), %xmm0
     movdqu %xmm0, (%rax)
@@ -2761,7 +2761,7 @@ test_dec128_rk4_step:
     call test_dec128_mulv
     add $32, %rsp
     sub $64, %rsp
-    lea -1664(%rbp), %rbx
+    lea -2496(%rbp), %rbx
     lea (%rsp), %rcx
     movdqu (%r12), %xmm0
     movdqu %xmm0, (%rcx)
@@ -2979,38 +2979,38 @@ test_dec64_grav_accel:
     movq 32(%rax), %rax
     movq %rax, -160(%rbp)
     movq (%rcx), %rax
-    movq %rax, -120(%rbp)
+    movq %rax, -152(%rbp)
     movq 8(%rcx), %rax
-    movq %rax, -112(%rbp)
+    movq %rax, -144(%rbp)
     movq 16(%rcx), %rax
-    movq %rax, -104(%rbp)
+    movq %rax, -136(%rbp)
     movq 24(%rcx), %rax
-    movq %rax, -96(%rbp)
+    movq %rax, -128(%rbp)
     movq 32(%rcx), %rax
-    movq %rax, -88(%rbp)
-    movdqu -120(%rbp), %xmm0
-    movdqu %xmm0, -80(%rbp)
-    movdqu -192(%rbp), %xmm0
+    movq %rax, -120(%rbp)
+    movdqu -152(%rbp), %xmm0
     movdqu %xmm0, -64(%rbp)
+    movdqu -192(%rbp), %xmm0
+    movdqu %xmm0, -80(%rbp)
     xorps %xmm0, %xmm0
     movdqu %xmm0, -48(%rbp)
-    movq -64(%rbp), %xmm0
-    movq -80(%rbp), %xmm1
+    movq -80(%rbp), %xmm0
+    movq -64(%rbp), %xmm1
     call __bid_subdd3@PLT
     movq %xmm0, -48(%rbp)
-    movq -56(%rbp), %xmm0
-    movq -72(%rbp), %xmm1
+    movq -72(%rbp), %xmm0
+    movq -56(%rbp), %xmm1
     call __bid_subdd3@PLT
     movq %xmm0, -40(%rbp)
     movdqu -48(%rbp), %xmm0
-    movdqu %xmm0, -152(%rbp)
-    movdqu -152(%rbp), %xmm0
-    movdqu %xmm0, -136(%rbp)
-    movq -136(%rbp), %xmm0
-    movq -136(%rbp), %xmm1
-    movq -128(%rbp), %xmm2
+    movdqu %xmm0, -96(%rbp)
+    movdqu -96(%rbp), %xmm0
+    movdqu %xmm0, -112(%rbp)
+    movq -112(%rbp), %xmm0
+    movq -112(%rbp), %xmm1
+    movq -104(%rbp), %xmm2
     movq %xmm2, -272(%rbp)
-    movq -128(%rbp), %xmm2
+    movq -104(%rbp), %xmm2
     movq %xmm2, -256(%rbp)
     call __bid_muldd3@PLT
     movaps %xmm0, -240(%rbp)
@@ -3026,7 +3026,7 @@ test_dec64_grav_accel:
     call test_dec64_sqrt_approx
     movaps %xmm0, -256(%rbp)
     movq -160(%rbp), %xmm1
-    movdqu -136(%rbp), %xmm0
+    movdqu -112(%rbp), %xmm0
     movdqu %xmm0, -32(%rbp)
     xorps %xmm0, %xmm0
     movdqu %xmm0, -16(%rbp)

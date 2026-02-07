@@ -19,7 +19,7 @@ clamp_int:
     cmp $-30, %edi
     setle %cl
     and %cl, %al
-    jnz .L__kefir_func_clamp_int_label25
+    jnz .L__kefir_func_clamp_int_label24
     cmp $-29, %edi
     setge %al
     cmp $-20, %edi
@@ -31,7 +31,7 @@ clamp_int:
     cmp $-10, %edi
     setle %cl
     and %cl, %al
-    jnz .L__kefir_func_clamp_int_label24
+    jnz .L__kefir_func_clamp_int_label23
     cmp $-9, %edi
     setge %al
     cmp $-1, %edi
@@ -49,7 +49,7 @@ clamp_int:
     cmp $19, %edi
     setle %cl
     and %cl, %al
-    jnz .L__kefir_func_clamp_int_label23
+    jnz .L__kefir_func_clamp_int_label22
     cmp $20, %edi
     setge %al
     cmp $29, %edi
@@ -75,7 +75,7 @@ clamp_int:
 .L__kefir_func_clamp_int_label15:
     mov $2, %eax
     ret
-.L__kefir_func_clamp_int_label23:
+.L__kefir_func_clamp_int_label22:
     mov $1, %eax
     ret
 .L__kefir_func_clamp_int_label11:
@@ -84,13 +84,13 @@ clamp_int:
 .L__kefir_func_clamp_int_label8:
     xor %eax, %eax
     ret
-.L__kefir_func_clamp_int_label24:
+.L__kefir_func_clamp_int_label23:
     mov $-1, %rax
     ret
 .L__kefir_func_clamp_int_label4:
     mov $-2, %rax
     ret
-.L__kefir_func_clamp_int_label25:
+.L__kefir_func_clamp_int_label24:
     mov $-3, %rax
     ret
 .L__kefir_text_func_clamp_int_end:
@@ -103,7 +103,7 @@ clamp_char:
     cmp $-30, %eax
     setle %dl
     and %dl, %cl
-    jnz .L__kefir_func_clamp_char_label25
+    jnz .L__kefir_func_clamp_char_label24
     cmp $-29, %eax
     setge %cl
     cmp $-20, %eax
@@ -115,7 +115,7 @@ clamp_char:
     cmp $-10, %eax
     setle %dl
     and %dl, %cl
-    jnz .L__kefir_func_clamp_char_label24
+    jnz .L__kefir_func_clamp_char_label23
     cmp $-9, %eax
     setge %cl
     cmp $-1, %eax
@@ -133,7 +133,7 @@ clamp_char:
     cmp $19, %eax
     setle %dl
     and %dl, %cl
-    jnz .L__kefir_func_clamp_char_label23
+    jnz .L__kefir_func_clamp_char_label22
     cmp $20, %eax
     setge %cl
     cmp $29, %eax
@@ -159,7 +159,7 @@ clamp_char:
 .L__kefir_func_clamp_char_label15:
     mov $2, %eax
     ret
-.L__kefir_func_clamp_char_label23:
+.L__kefir_func_clamp_char_label22:
     mov $1, %eax
     ret
 .L__kefir_func_clamp_char_label11:
@@ -168,13 +168,13 @@ clamp_char:
 .L__kefir_func_clamp_char_label8:
     xor %eax, %eax
     ret
-.L__kefir_func_clamp_char_label24:
+.L__kefir_func_clamp_char_label23:
     mov $-1, %rax
     ret
 .L__kefir_func_clamp_char_label4:
     mov $-2, %rax
     ret
-.L__kefir_func_clamp_char_label25:
+.L__kefir_func_clamp_char_label24:
     mov $-3, %rax
     ret
 .L__kefir_text_func_clamp_char_end:
@@ -186,7 +186,7 @@ clamp_long:
     cmp $-30, %rdi
     setle %cl
     and %cl, %al
-    jnz .L__kefir_func_clamp_long_label25
+    jnz .L__kefir_func_clamp_long_label24
     cmp $-29, %rdi
     setge %al
     cmp $-20, %rdi
@@ -198,7 +198,7 @@ clamp_long:
     cmp $-10, %rdi
     setle %cl
     and %cl, %al
-    jnz .L__kefir_func_clamp_long_label24
+    jnz .L__kefir_func_clamp_long_label23
     cmp $-9, %rdi
     setge %al
     cmp $-1, %rdi
@@ -216,7 +216,7 @@ clamp_long:
     cmp $19, %rdi
     setle %cl
     and %cl, %al
-    jnz .L__kefir_func_clamp_long_label23
+    jnz .L__kefir_func_clamp_long_label22
     cmp $20, %rdi
     setge %al
     cmp $29, %rdi
@@ -242,7 +242,7 @@ clamp_long:
 .L__kefir_func_clamp_long_label15:
     mov $2, %eax
     ret
-.L__kefir_func_clamp_long_label23:
+.L__kefir_func_clamp_long_label22:
     mov $1, %eax
     ret
 .L__kefir_func_clamp_long_label11:
@@ -251,13 +251,13 @@ clamp_long:
 .L__kefir_func_clamp_long_label8:
     xor %eax, %eax
     ret
-.L__kefir_func_clamp_long_label24:
+.L__kefir_func_clamp_long_label23:
     mov $-1, %rax
     ret
 .L__kefir_func_clamp_long_label4:
     mov $-2, %rax
     ret
-.L__kefir_func_clamp_long_label25:
+.L__kefir_func_clamp_long_label24:
     mov $-3, %rax
     ret
 .L__kefir_text_func_clamp_long_end:
@@ -270,7 +270,7 @@ clamp_short:
     cmp $-30, %eax
     setle %dl
     and %dl, %cl
-    jnz .L__kefir_func_clamp_short_label25
+    jnz .L__kefir_func_clamp_short_label24
     cmp $-29, %eax
     setge %cl
     cmp $-20, %eax
@@ -282,7 +282,7 @@ clamp_short:
     cmp $-10, %eax
     setle %dl
     and %dl, %cl
-    jnz .L__kefir_func_clamp_short_label24
+    jnz .L__kefir_func_clamp_short_label23
     cmp $-9, %eax
     setge %cl
     cmp $-1, %eax
@@ -300,7 +300,7 @@ clamp_short:
     cmp $19, %eax
     setle %dl
     and %dl, %cl
-    jnz .L__kefir_func_clamp_short_label23
+    jnz .L__kefir_func_clamp_short_label22
     cmp $20, %eax
     setge %cl
     cmp $29, %eax
@@ -326,7 +326,7 @@ clamp_short:
 .L__kefir_func_clamp_short_label15:
     mov $2, %eax
     ret
-.L__kefir_func_clamp_short_label23:
+.L__kefir_func_clamp_short_label22:
     mov $1, %eax
     ret
 .L__kefir_func_clamp_short_label11:
@@ -335,13 +335,13 @@ clamp_short:
 .L__kefir_func_clamp_short_label8:
     xor %eax, %eax
     ret
-.L__kefir_func_clamp_short_label24:
+.L__kefir_func_clamp_short_label23:
     mov $-1, %rax
     ret
 .L__kefir_func_clamp_short_label4:
     mov $-2, %rax
     ret
-.L__kefir_func_clamp_short_label25:
+.L__kefir_func_clamp_short_label24:
     mov $-3, %rax
     ret
 .L__kefir_text_func_clamp_short_end:
