@@ -1066,21 +1066,22 @@ kefir_result_t kefir_opt_code_container_copy_instruction(struct kefir_mem *mem, 
             REQUIRE_OK(kefir_opt_code_container_inline_assembly(code, src_operation.parameters.inline_asm_ref,
                                                                 &src_inline_asm_node));
 
-            kefir_opt_inline_assembly_id_t inline_asm_ref;
+            kefir_opt_instruction_ref_t inline_asm_instr_ref;
             REQUIRE_OK(kefir_opt_code_container_new_inline_assembly(
                 mem, code, block_id, src_inline_asm_node->inline_asm_id, src_inline_asm_node->parameter_count,
-                &inline_asm_ref, instr_ref_ptr));
+                &inline_asm_instr_ref));
+            ASSIGN_PTR(instr_ref_ptr, inline_asm_instr_ref);
             REQUIRE_OK(kefir_opt_code_container_inline_assembly(code, src_operation.parameters.inline_asm_ref,
                                                                 &src_inline_asm_node));
 
             for (kefir_size_t i = 0; i < src_inline_asm_node->parameter_count; i++) {
-                REQUIRE_OK(kefir_opt_code_container_inline_assembly_set_parameter(mem, code, inline_asm_ref, i,
+                REQUIRE_OK(kefir_opt_code_container_inline_assembly_set_parameter(mem, code, inline_asm_instr_ref, i,
                                                                                   &src_inline_asm_node->parameters[i]));
             }
 
             if (src_inline_asm_node->default_jump_target != KEFIR_ID_NONE) {
                 REQUIRE_OK(kefir_opt_code_container_inline_assembly_set_default_jump_target(
-                    code, inline_asm_ref, src_inline_asm_node->default_jump_target));
+                    code, inline_asm_instr_ref, src_inline_asm_node->default_jump_target));
             }
 
             struct kefir_hashtree_node_iterator iter;
@@ -1088,7 +1089,7 @@ kefir_result_t kefir_opt_code_container_copy_instruction(struct kefir_mem *mem, 
                  node != NULL; node = kefir_hashtree_next(&iter)) {
                 ASSIGN_DECL_CAST(kefir_id_t, target_id, node->key);
                 ASSIGN_DECL_CAST(kefir_opt_block_id_t, target_block_id, node->value);
-                REQUIRE_OK(kefir_opt_code_container_inline_assembly_add_jump_target(mem, code, inline_asm_ref,
+                REQUIRE_OK(kefir_opt_code_container_inline_assembly_add_jump_target(mem, code, inline_asm_instr_ref,
                                                                                     target_id, target_block_id));
             }
         } break;
@@ -1857,12 +1858,9 @@ kefir_result_t kefir_opt_code_container_new_inline_assembly(struct kefir_mem *me
                                                             struct kefir_opt_code_container *code,
                                                             kefir_opt_block_id_t block_id, kefir_id_t inline_asm_id,
                                                             kefir_size_t param_count,
-                                                            kefir_opt_inline_assembly_id_t *inline_asm_ref_ptr,
                                                             kefir_opt_instruction_ref_t *instr_ref_ptr) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code container"));
-    REQUIRE(inline_asm_ref_ptr != NULL,
-            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to optimizer inline assembly identifier"));
     REQUIRE(instr_ref_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER,
                                                    "Expected valid pointer to optimizer inline assembly instruction"));
 
@@ -1935,7 +1933,6 @@ kefir_result_t kefir_opt_code_container_new_inline_assembly(struct kefir_mem *me
     inline_asm->output_ref = instr_ref;
 
     code->next_inline_assembly_id++;
-    *inline_asm_ref_ptr = inline_asm->node_id;
     *instr_ref_ptr = instr_ref;
     return KEFIR_OK;
 }
@@ -1954,14 +1951,20 @@ kefir_result_t kefir_opt_code_container_inline_assembly(const struct kefir_opt_c
 }
 
 kefir_result_t kefir_opt_code_container_inline_assembly_get_parameter(
-    const struct kefir_opt_code_container *code, kefir_opt_inline_assembly_id_t inline_asm_ref,
+    const struct kefir_opt_code_container *code, kefir_opt_instruction_ref_t inline_asm_instr_ref,
     kefir_size_t param_index, const struct kefir_opt_inline_assembly_parameter **param_ptr) {
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code container"));
     REQUIRE(param_ptr != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to optimizer inline assembly parameter"));
 
+    struct kefir_opt_instruction *inline_asm_instr = NULL;
+    REQUIRE_OK(code_container_instr_mutable(code, inline_asm_instr_ref, &inline_asm_instr));
+    REQUIRE(inline_asm_instr->operation.opcode == KEFIR_OPT_OPCODE_INLINE_ASSEMBLY,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected optimizer inline assembly instruction"));
+
     struct kefir_opt_inline_assembly_node *inline_asm_node = NULL;
-    REQUIRE_OK(code_container_inline_assembly_mutable(code, inline_asm_ref, &inline_asm_node));
+    REQUIRE_OK(code_container_inline_assembly_mutable(code, inline_asm_instr->operation.parameters.inline_asm_ref,
+                                                      &inline_asm_node));
 
     REQUIRE(param_index < inline_asm_node->parameter_count,
             KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Requested parameter is out of inline assembly node bounds"));
@@ -1996,15 +1999,22 @@ static kefir_result_t inline_asm_drop_used_instructions(struct kefir_mem *mem,
 }
 
 kefir_result_t kefir_opt_code_container_inline_assembly_set_parameter(
-    struct kefir_mem *mem, const struct kefir_opt_code_container *code, kefir_opt_inline_assembly_id_t inline_asm_ref,
-    kefir_size_t param_index, const struct kefir_opt_inline_assembly_parameter *param_ptr) {
+    struct kefir_mem *mem, const struct kefir_opt_code_container *code,
+    kefir_opt_instruction_ref_t inline_asm_instr_ref, kefir_size_t param_index,
+    const struct kefir_opt_inline_assembly_parameter *param_ptr) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code container"));
     REQUIRE(param_ptr != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer inline assembly parameter"));
 
+    struct kefir_opt_instruction *inline_asm_instr = NULL;
+    REQUIRE_OK(code_container_instr_mutable(code, inline_asm_instr_ref, &inline_asm_instr));
+    REQUIRE(inline_asm_instr->operation.opcode == KEFIR_OPT_OPCODE_INLINE_ASSEMBLY,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected optimizer inline assembly instruction"));
+
     struct kefir_opt_inline_assembly_node *inline_asm_node = NULL;
-    REQUIRE_OK(code_container_inline_assembly_mutable(code, inline_asm_ref, &inline_asm_node));
+    REQUIRE_OK(code_container_inline_assembly_mutable(code, inline_asm_instr->operation.parameters.inline_asm_ref,
+                                                      &inline_asm_node));
 
     REQUIRE(param_index < inline_asm_node->parameter_count,
             KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Requested parameter is out of inline assembly node bounds"));
@@ -2017,12 +2027,18 @@ kefir_result_t kefir_opt_code_container_inline_assembly_set_parameter(
 }
 
 kefir_result_t kefir_opt_code_container_inline_assembly_set_default_jump_target(
-    const struct kefir_opt_code_container *code, kefir_opt_inline_assembly_id_t inline_asm_ref,
+    const struct kefir_opt_code_container *code, kefir_opt_instruction_ref_t inline_asm_instr_ref,
     kefir_opt_block_id_t target_block) {
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code container"));
 
+    struct kefir_opt_instruction *inline_asm_instr = NULL;
+    REQUIRE_OK(code_container_instr_mutable(code, inline_asm_instr_ref, &inline_asm_instr));
+    REQUIRE(inline_asm_instr->operation.opcode == KEFIR_OPT_OPCODE_INLINE_ASSEMBLY,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected optimizer inline assembly instruction"));
+
     struct kefir_opt_inline_assembly_node *inline_asm_node = NULL;
-    REQUIRE_OK(code_container_inline_assembly_mutable(code, inline_asm_ref, &inline_asm_node));
+    REQUIRE_OK(code_container_inline_assembly_mutable(code, inline_asm_instr->operation.parameters.inline_asm_ref,
+                                                      &inline_asm_node));
 
     REQUIRE(inline_asm_node->default_jump_target == KEFIR_ID_NONE,
             KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Expected empty default jump target of optimizer inline assembly"));
@@ -2031,16 +2047,20 @@ kefir_result_t kefir_opt_code_container_inline_assembly_set_default_jump_target(
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_opt_code_container_inline_assembly_add_jump_target(struct kefir_mem *mem,
-                                                                        const struct kefir_opt_code_container *code,
-                                                                        kefir_opt_inline_assembly_id_t inline_asm_ref,
-                                                                        kefir_id_t target_id,
-                                                                        kefir_opt_block_id_t target_block) {
+kefir_result_t kefir_opt_code_container_inline_assembly_add_jump_target(
+    struct kefir_mem *mem, const struct kefir_opt_code_container *code,
+    kefir_opt_instruction_ref_t inline_asm_instr_ref, kefir_id_t target_id, kefir_opt_block_id_t target_block) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code container"));
 
+    struct kefir_opt_instruction *inline_asm_instr = NULL;
+    REQUIRE_OK(code_container_instr_mutable(code, inline_asm_instr_ref, &inline_asm_instr));
+    REQUIRE(inline_asm_instr->operation.opcode == KEFIR_OPT_OPCODE_INLINE_ASSEMBLY,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected optimizer inline assembly instruction"));
+
     struct kefir_opt_inline_assembly_node *inline_asm_node = NULL;
-    REQUIRE_OK(code_container_inline_assembly_mutable(code, inline_asm_ref, &inline_asm_node));
+    REQUIRE_OK(code_container_inline_assembly_mutable(code, inline_asm_instr->operation.parameters.inline_asm_ref,
+                                                      &inline_asm_node));
 
     REQUIRE(inline_asm_node->default_jump_target != KEFIR_ID_NONE,
             KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Expected valid default jump target of optimizer inline assembly"));
@@ -2055,7 +2075,7 @@ kefir_result_t kefir_opt_code_container_inline_assembly_add_jump_target(struct k
 }
 
 kefir_result_t kefir_opt_code_container_inline_assembly_jump_target(const struct kefir_opt_code_container *code,
-                                                                    kefir_opt_inline_assembly_id_t inline_asm_ref,
+                                                                    kefir_opt_instruction_ref_t inline_asm_instr_ref,
                                                                     kefir_id_t target_id,
                                                                     kefir_opt_block_id_t *target_block_ptr) {
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code container"));
@@ -2063,8 +2083,14 @@ kefir_result_t kefir_opt_code_container_inline_assembly_jump_target(const struct
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER,
                             "Expected valid pointer to optimizer inline assembly jump target block"));
 
+    struct kefir_opt_instruction *inline_asm_instr = NULL;
+    REQUIRE_OK(code_container_instr_mutable(code, inline_asm_instr_ref, &inline_asm_instr));
+    REQUIRE(inline_asm_instr->operation.opcode == KEFIR_OPT_OPCODE_INLINE_ASSEMBLY,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected optimizer inline assembly instruction"));
+
     struct kefir_opt_inline_assembly_node *inline_asm_node = NULL;
-    REQUIRE_OK(code_container_inline_assembly_mutable(code, inline_asm_ref, &inline_asm_node));
+    REQUIRE_OK(code_container_inline_assembly_mutable(code, inline_asm_instr->operation.parameters.inline_asm_ref,
+                                                      &inline_asm_node));
 
     struct kefir_hashtree_node *node = NULL;
     kefir_result_t res = kefir_hashtree_at(&inline_asm_node->jump_targets, (kefir_hashtree_key_t) target_id, &node);
@@ -2201,27 +2227,39 @@ kefir_result_t kefir_opt_code_block_call_tail(const struct kefir_opt_code_contai
 
 kefir_result_t kefir_opt_code_block_inline_assembly_head(const struct kefir_opt_code_container *code,
                                                          const struct kefir_opt_code_block *block,
-                                                         kefir_opt_inline_assembly_id_t *inline_asm_id_ptr) {
+                                                         kefir_opt_instruction_ref_t *inline_asm_instr_ref_ptr) {
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code container"));
     REQUIRE(block != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code block"));
-    REQUIRE(inline_asm_id_ptr != NULL,
+    REQUIRE(inline_asm_instr_ref_ptr != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER,
-                            "Expected valid pointer to optimizer inline assembly node identifier"));
+                            "Expected valid pointer to optimizer inline assembly instruction reference"));
 
-    *inline_asm_id_ptr = block->inline_assembly_nodes.head;
+    if (block->inline_assembly_nodes.head != KEFIR_ID_NONE) {
+        struct kefir_opt_inline_assembly_node *node;
+        REQUIRE_OK(code_container_inline_assembly_mutable(code, block->inline_assembly_nodes.head, &node));
+        *inline_asm_instr_ref_ptr = node->output_ref;
+    } else {
+        *inline_asm_instr_ref_ptr = KEFIR_ID_NONE;
+    }
     return KEFIR_OK;
 }
 
 kefir_result_t kefir_opt_code_block_inline_assembly_tail(const struct kefir_opt_code_container *code,
                                                          const struct kefir_opt_code_block *block,
-                                                         kefir_opt_inline_assembly_id_t *inline_asm_id_ptr) {
+                                                         kefir_opt_instruction_ref_t *inline_asm_instr_ref_ptr) {
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code container"));
     REQUIRE(block != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code block"));
-    REQUIRE(inline_asm_id_ptr != NULL,
+    REQUIRE(inline_asm_instr_ref_ptr != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER,
-                            "Expected valid pointer to optimizer inline assembly node identifier"));
+                            "Expected valid pointer to optimizer inline assembly instruction reference"));
 
-    *inline_asm_id_ptr = block->inline_assembly_nodes.tail;
+    if (block->inline_assembly_nodes.tail != KEFIR_ID_NONE) {
+        struct kefir_opt_inline_assembly_node *node;
+        REQUIRE_OK(code_container_inline_assembly_mutable(code, block->inline_assembly_nodes.tail, &node));
+        *inline_asm_instr_ref_ptr = node->output_ref;
+    } else {
+        *inline_asm_instr_ref_ptr = KEFIR_ID_NONE;
+    }
     return KEFIR_OK;
 }
 
@@ -2390,34 +2428,58 @@ kefir_result_t kefir_opt_call_next_sibling(const struct kefir_opt_code_container
 }
 
 kefir_result_t kefir_opt_inline_assembly_prev_sibling(const struct kefir_opt_code_container *code,
-                                                      kefir_opt_inline_assembly_id_t inline_asm_id,
-                                                      kefir_opt_inline_assembly_id_t *inline_asm_id_ptr) {
+                                                      kefir_opt_instruction_ref_t inline_asm_instr_ref,
+                                                      kefir_opt_instruction_ref_t *inline_asm_instr_ref_ptr) {
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code container"));
-    REQUIRE(inline_asm_id != KEFIR_ID_NONE,
-            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer inline assembly node identifier"));
-    REQUIRE(inline_asm_id_ptr != NULL,
+    REQUIRE(inline_asm_instr_ref != KEFIR_ID_NONE,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer inline assembly instruction reference"));
+    REQUIRE(inline_asm_instr_ref_ptr != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER,
-                            "Expected valid pointer to optimizer inline assembly node identifier"));
+                            "Expected valid pointer to optimizer inline assembly instruction reference"));
 
-    struct kefir_opt_inline_assembly_node *inline_asm;
-    REQUIRE_OK(code_container_inline_assembly_mutable(code, inline_asm_id, &inline_asm));
-    *inline_asm_id_ptr = inline_asm->siblings.prev;
+    struct kefir_opt_instruction *inline_asm_instr = NULL;
+    REQUIRE_OK(code_container_instr_mutable(code, inline_asm_instr_ref, &inline_asm_instr));
+    REQUIRE(inline_asm_instr->operation.opcode == KEFIR_OPT_OPCODE_INLINE_ASSEMBLY,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected optimizer inline assembly instruction"));
+
+    struct kefir_opt_inline_assembly_node *inline_asm_node = NULL;
+    REQUIRE_OK(code_container_inline_assembly_mutable(code, inline_asm_instr->operation.parameters.inline_asm_ref,
+                                                      &inline_asm_node));
+
+    if (inline_asm_node->siblings.prev != KEFIR_ID_NONE) {
+        REQUIRE_OK(code_container_inline_assembly_mutable(code, inline_asm_node->siblings.prev, &inline_asm_node));
+        *inline_asm_instr_ref_ptr = inline_asm_node->output_ref;
+    } else {
+        *inline_asm_instr_ref_ptr = KEFIR_ID_NONE;
+    }
     return KEFIR_OK;
 }
 
 kefir_result_t kefir_opt_inline_assembly_next_sibling(const struct kefir_opt_code_container *code,
-                                                      kefir_opt_inline_assembly_id_t inline_asm_id,
-                                                      kefir_opt_inline_assembly_id_t *inline_asm_id_ptr) {
+                                                      kefir_opt_instruction_ref_t inline_asm_instr_ref,
+                                                      kefir_opt_instruction_ref_t *inline_asm_instr_ref_ptr) {
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code container"));
-    REQUIRE(inline_asm_id != KEFIR_ID_NONE,
-            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer inline assembly node identifier"));
-    REQUIRE(inline_asm_id_ptr != NULL,
+    REQUIRE(inline_asm_instr_ref != KEFIR_ID_NONE,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer inline assembly instruction reference"));
+    REQUIRE(inline_asm_instr_ref_ptr != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER,
-                            "Expected valid pointer to optimizer inline assembly node identifier"));
+                            "Expected valid pointer to optimizer inline assembly instruction reference"));
 
-    struct kefir_opt_inline_assembly_node *inline_asm;
-    REQUIRE_OK(code_container_inline_assembly_mutable(code, inline_asm_id, &inline_asm));
-    *inline_asm_id_ptr = inline_asm->siblings.next;
+    struct kefir_opt_instruction *inline_asm_instr = NULL;
+    REQUIRE_OK(code_container_instr_mutable(code, inline_asm_instr_ref, &inline_asm_instr));
+    REQUIRE(inline_asm_instr->operation.opcode == KEFIR_OPT_OPCODE_INLINE_ASSEMBLY,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected optimizer inline assembly instruction"));
+
+    struct kefir_opt_inline_assembly_node *inline_asm_node = NULL;
+    REQUIRE_OK(code_container_inline_assembly_mutable(code, inline_asm_instr->operation.parameters.inline_asm_ref,
+                                                      &inline_asm_node));
+
+    if (inline_asm_node->siblings.next != KEFIR_ID_NONE) {
+        REQUIRE_OK(code_container_inline_assembly_mutable(code, inline_asm_node->siblings.next, &inline_asm_node));
+        *inline_asm_instr_ref_ptr = inline_asm_node->output_ref;
+    } else {
+        *inline_asm_instr_ref_ptr = KEFIR_ID_NONE;
+    }
     return KEFIR_OK;
 }
 

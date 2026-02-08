@@ -692,10 +692,9 @@ static kefir_result_t inline_operation_inline_asm(struct do_inline_param *param,
         &param->src_function->code, instr->operation.parameters.inline_asm_ref, &src_inline_asm_node));
 
     kefir_opt_instruction_ref_t inline_asm_instr_ref;
-    kefir_opt_inline_assembly_id_t inline_asm_ref;
     REQUIRE_OK(kefir_opt_code_container_new_inline_assembly(
         param->mem, param->dst_code, mapped_block_id, src_inline_asm_node->inline_asm_id,
-        src_inline_asm_node->parameter_count, &inline_asm_ref, &inline_asm_instr_ref));
+        src_inline_asm_node->parameter_count, &inline_asm_instr_ref));
     ASSIGN_PTR(mapped_instr_ref_ptr, inline_asm_instr_ref);
 
     for (kefir_size_t i = 0; i < src_inline_asm_node->parameter_count; i++) {
@@ -703,15 +702,15 @@ static kefir_result_t inline_operation_inline_asm(struct do_inline_param *param,
         REQUIRE_OK(get_instr_ref_mapping(param, src_inline_asm_node->parameters[i].load_store_ref, &mapped_ref1));
         REQUIRE_OK(get_instr_ref_mapping(param, src_inline_asm_node->parameters[i].read_ref, &mapped_ref2));
         REQUIRE_OK(kefir_opt_code_container_inline_assembly_set_parameter(
-            param->mem, param->dst_code, inline_asm_ref, i,
+            param->mem, param->dst_code, inline_asm_instr_ref, i,
             &(struct kefir_opt_inline_assembly_parameter) {.load_store_ref = mapped_ref1, .read_ref = mapped_ref2}));
     }
 
     if (src_inline_asm_node->default_jump_target != KEFIR_ID_NONE) {
         kefir_opt_block_id_t mapped_target_block_id;
         REQUIRE_OK(map_block(param, src_inline_asm_node->default_jump_target, &mapped_target_block_id));
-        REQUIRE_OK(kefir_opt_code_container_inline_assembly_set_default_jump_target(param->dst_code, inline_asm_ref,
-                                                                                    mapped_target_block_id));
+        REQUIRE_OK(kefir_opt_code_container_inline_assembly_set_default_jump_target(
+            param->dst_code, inline_asm_instr_ref, mapped_target_block_id));
     }
 
     struct kefir_hashtree_node_iterator iter;
@@ -721,8 +720,8 @@ static kefir_result_t inline_operation_inline_asm(struct do_inline_param *param,
         ASSIGN_DECL_CAST(kefir_opt_block_id_t, target_block_id, node->value);
         kefir_opt_block_id_t mapped_target_block_id;
         REQUIRE_OK(map_block(param, target_block_id, &mapped_target_block_id));
-        REQUIRE_OK(kefir_opt_code_container_inline_assembly_add_jump_target(param->mem, param->dst_code, inline_asm_ref,
-                                                                            target_id, mapped_target_block_id));
+        REQUIRE_OK(kefir_opt_code_container_inline_assembly_add_jump_target(
+            param->mem, param->dst_code, inline_asm_instr_ref, target_id, mapped_target_block_id));
     }
     return KEFIR_OK;
 }

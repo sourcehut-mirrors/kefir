@@ -138,10 +138,9 @@ static kefir_result_t construct_inline_asm(struct kefir_mem *mem, const struct k
     }
 
     kefir_opt_instruction_ref_t instr_ref;
-    kefir_opt_inline_assembly_id_t inline_asm_ref;
-    REQUIRE_OK(kefir_opt_code_container_new_inline_assembly(
-        mem, code, state->current_block->block_id, ir_inline_asm->id, kefir_list_length(&ir_inline_asm->parameter_list),
-        &inline_asm_ref, &instr_ref));
+    REQUIRE_OK(
+        kefir_opt_code_container_new_inline_assembly(mem, code, state->current_block->block_id, ir_inline_asm->id,
+                                                     kefir_list_length(&ir_inline_asm->parameter_list), &instr_ref));
 
     kefir_size_t param_idx = 0;
     for (const struct kefir_list_entry *iter = kefir_list_head(&ir_inline_asm->parameter_list); iter != NULL;
@@ -158,7 +157,7 @@ static kefir_result_t construct_inline_asm(struct kefir_mem *mem, const struct k
                 REQUIRE_OK(kefir_opt_constructor_stack_at(mem, state, ir_asm_param->load_store_index, &param_ref));
                 inline_asm_param.load_store_ref = param_ref;
                 REQUIRE_OK(kefir_opt_code_container_inline_assembly_set_parameter(
-                    mem, code, inline_asm_ref, ir_asm_param->parameter_id, &inline_asm_param));
+                    mem, code, instr_ref, ir_asm_param->parameter_id, &inline_asm_param));
                 break;
 
             case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ_STORE:
@@ -167,14 +166,14 @@ static kefir_result_t construct_inline_asm(struct kefir_mem *mem, const struct k
                 REQUIRE_OK(kefir_opt_constructor_stack_at(mem, state, ir_asm_param->read_index, &param_ref));
                 inline_asm_param.read_ref = param_ref;
                 REQUIRE_OK(kefir_opt_code_container_inline_assembly_set_parameter(
-                    mem, code, inline_asm_ref, ir_asm_param->parameter_id, &inline_asm_param));
+                    mem, code, instr_ref, ir_asm_param->parameter_id, &inline_asm_param));
                 break;
 
             case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ:
                 REQUIRE_OK(kefir_opt_constructor_stack_at(mem, state, ir_asm_param->read_index, &param_ref));
                 inline_asm_param.read_ref = param_ref;
                 REQUIRE_OK(kefir_opt_code_container_inline_assembly_set_parameter(
-                    mem, code, inline_asm_ref, ir_asm_param->parameter_id, &inline_asm_param));
+                    mem, code, instr_ref, ir_asm_param->parameter_id, &inline_asm_param));
                 break;
 
             case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_IMMEDIATE:
@@ -193,7 +192,7 @@ static kefir_result_t construct_inline_asm(struct kefir_mem *mem, const struct k
     if (kefir_list_length(&ir_inline_asm->jump_target_list) > 0) {
         struct kefir_opt_constructor_code_block_state *default_control_flow = NULL;
         REQUIRE_OK(kefir_opt_constructor_find_code_block_for(state, state->ir_location + 1, &default_control_flow));
-        REQUIRE_OK(kefir_opt_code_container_inline_assembly_set_default_jump_target(code, inline_asm_ref,
+        REQUIRE_OK(kefir_opt_code_container_inline_assembly_set_default_jump_target(code, instr_ref,
                                                                                     default_control_flow->block_id));
 
         for (const struct kefir_list_entry *iter = kefir_list_head(&ir_inline_asm->jump_target_list); iter != NULL;
@@ -204,7 +203,7 @@ static kefir_result_t construct_inline_asm(struct kefir_mem *mem, const struct k
             REQUIRE_OK(kefir_opt_constructor_find_code_block_for(state, ir_jump_target->target, &target_block_state));
 
             REQUIRE_OK(kefir_opt_code_container_inline_assembly_add_jump_target(
-                mem, &state->function->code, inline_asm_ref, ir_jump_target->uid, target_block_state->block_id));
+                mem, &state->function->code, instr_ref, ir_jump_target->uid, target_block_state->block_id));
         }
     }
     return KEFIR_OK;
