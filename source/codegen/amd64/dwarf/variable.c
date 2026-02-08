@@ -23,6 +23,7 @@
 #include "kefir/codegen/amd64/dwarf.h"
 #include "kefir/codegen/amd64/symbolic_labels.h"
 #include "kefir/codegen/amd64/function.h"
+#include "kefir/optimizer/module_liveness.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 

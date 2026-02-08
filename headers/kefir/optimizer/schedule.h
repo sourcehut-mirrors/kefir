@@ -25,7 +25,8 @@
 #include "kefir/core/list.h"
 #include "kefir/core/hashtree.h"
 #include "kefir/optimizer/code.h"
-#include "kefir/optimizer/analysis.h"
+#include "kefir/optimizer/control_flow.h"
+#include "kefir/optimizer/liveness.h"
 
 typedef struct kefir_opt_code_schedule kefir_opt_code_schedule_t;
 
@@ -52,8 +53,9 @@ typedef struct kefir_opt_code_schedule_builder {
 
 typedef struct kefir_opt_code_scheduler {
     kefir_result_t (*do_schedule)(struct kefir_mem *, const struct kefir_opt_code_container *,
-                                  const struct kefir_opt_code_analysis *, const struct kefir_opt_code_schedule *,
-                                  struct kefir_opt_code_schedule_builder *, void *);
+                                  const struct kefir_opt_code_control_flow *, const struct kefir_opt_code_liveness *,
+                                  const struct kefir_opt_code_schedule *, struct kefir_opt_code_schedule_builder *,
+                                  void *);
     void *payload;
 } kefir_opt_code_scheduler_t;
 
@@ -71,7 +73,8 @@ kefir_result_t kefir_opt_code_schedule_clear(struct kefir_mem *, struct kefir_op
 
 kefir_result_t kefir_opt_code_schedule_run(struct kefir_mem *, struct kefir_opt_code_schedule *,
                                            const struct kefir_opt_code_container *,
-                                           const struct kefir_opt_code_analysis *,
+                                           const struct kefir_opt_code_control_flow *,
+                                           const struct kefir_opt_code_liveness *,
                                            const struct kefir_opt_code_scheduler *);
 
 kefir_result_t kefir_opt_code_schedule_of_block(const struct kefir_opt_code_schedule *, kefir_opt_block_id_t,

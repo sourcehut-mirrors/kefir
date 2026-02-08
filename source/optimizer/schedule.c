@@ -181,7 +181,8 @@ kefir_result_t kefir_opt_code_block_schedule_next(struct kefir_opt_code_block_sc
 struct builder_payload {
     struct kefir_opt_code_schedule *schedule;
     const struct kefir_opt_code_container *code;
-    const struct kefir_opt_code_analysis *code_analysis;
+    const struct kefir_opt_code_control_flow *control_flow;
+    const struct kefir_opt_code_liveness *liveness;
 };
 
 static kefir_result_t builder_schedule_block(struct kefir_mem *mem, kefir_opt_block_id_t block_id,
@@ -265,19 +266,23 @@ static kefir_result_t builder_schedule_instruction(struct kefir_mem *mem, kefir_
 
 kefir_result_t kefir_opt_code_schedule_run(struct kefir_mem *mem, struct kefir_opt_code_schedule *schedule,
                                            const struct kefir_opt_code_container *code,
-                                           const struct kefir_opt_code_analysis *code_analysis,
+                                           const struct kefir_opt_code_control_flow *control_flow,
+                                           const struct kefir_opt_code_liveness *liveness,
                                            const struct kefir_opt_code_scheduler *scheduler) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(schedule != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code schedule"));
     REQUIRE(schedule->blocks == NULL, KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Schedule has already been constructed"));
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code"));
-    REQUIRE(code_analysis != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code analysis"));
+    REQUIRE(control_flow != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code control flow"));
+    REQUIRE(liveness != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code liveness"));
     REQUIRE(scheduler != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code scheduler"));
 
-    struct builder_payload payload = {.code = code, .code_analysis = code_analysis, .schedule = schedule};
+    struct builder_payload payload = {
+        .code = code, .control_flow = control_flow, .liveness = liveness, .schedule = schedule};
     struct kefir_opt_code_schedule_builder builder = {.schedule_block = builder_schedule_block,
                                                       .schedule_instruction = builder_schedule_instruction,
                                                       .payload = &payload};
-    REQUIRE_OK(scheduler->do_schedule(mem, code, code_analysis, schedule, &builder, scheduler->payload));
+    REQUIRE_OK(scheduler->do_schedule(mem, code, control_flow, liveness, schedule, &builder, scheduler->payload));
     return KEFIR_OK;
 }

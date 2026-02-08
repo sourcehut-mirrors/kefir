@@ -33,7 +33,6 @@
 #include "kefir/ast/node.h"
 #include "kefir/ir/module.h"
 #include "kefir/optimizer/module.h"
-#include "kefir/optimizer/analysis.h"
 #include "kefir/optimizer/configuration.h"
 #include "kefir/core/error.h"
 

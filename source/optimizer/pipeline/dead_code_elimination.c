@@ -21,7 +21,8 @@
 #include "kefir/optimizer/pipeline.h"
 #include "kefir/optimizer/builder.h"
 #include "kefir/optimizer/code_util.h"
-#include "kefir/optimizer/analysis.h"
+#include "kefir/optimizer/control_flow.h"
+#include "kefir/optimizer/liveness.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 #include <string.h>

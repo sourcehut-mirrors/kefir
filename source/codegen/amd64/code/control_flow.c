@@ -66,7 +66,7 @@ static kefir_result_t map_phi_outputs_impl(struct kefir_mem *mem, struct kefir_c
                                            struct kefir_hashtreeset *used_source_vregs,
                                            struct kefir_hashtree *deferred_target_vregs) {
     if (function->function->code.gate_block != KEFIR_ID_NONE &&
-        kefir_hashset_has(&function->function_analysis.control_flow.indirect_jump_target_blocks,
+        kefir_hashset_has(&function->control_flow.indirect_jump_target_blocks,
                           (kefir_hashset_key_t) target_block_ref)) {
         target_block_ref = function->function->code.gate_block;
     }
@@ -175,7 +175,7 @@ static kefir_result_t map_phi_outputs_impl(struct kefir_mem *mem, struct kefir_c
 
         if (deferred_target_vreg_idx != KEFIR_ASMCMP_INDEX_NONE ||
             (source_block_ref != target_block_ref && source_vreg_idx != target_vreg_idx &&
-             !kefir_hashset_has(&function->function_analysis.liveness.blocks[source_block_ref].alive_instr,
+             !kefir_hashset_has(&function->liveness.blocks[source_block_ref].alive_instr,
                                 (kefir_hashset_key_t) target_ref) &&
              !kefir_hashtreeset_has(used_source_vregs, (kefir_hashtreeset_entry_t) target_vreg_idx))) {
             REQUIRE_OK(kefir_hashtreeset_add(mem, used_target_vregs, (kefir_hashtreeset_entry_t) target_vreg_idx));

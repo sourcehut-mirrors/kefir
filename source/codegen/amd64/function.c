@@ -508,7 +508,7 @@ static kefir_result_t alias_return_space_allocation(struct kefir_codegen_amd64_f
     REQUIRE_OK(kefir_opt_code_container_block_count(&func->function->code, &num_of_blocks));
     for (kefir_opt_block_id_t block_id = 0; block_id < num_of_blocks; block_id++) {
         if (block_id != func->function->code.entry_point &&
-            func->function_analysis.control_flow.blocks[block_id].immediate_dominator == KEFIR_ID_NONE) {
+            func->control_flow.blocks[block_id].immediate_dominator == KEFIR_ID_NONE) {
             continue;
         }
 
@@ -651,10 +651,10 @@ static kefir_result_t translate_code(struct kefir_mem *mem, struct kefir_codegen
     struct scheduler_schedule_param scheduler_param = {.mem = mem, .func = func};
     struct kefir_opt_code_topological_scheduler scheduler;
     REQUIRE_OK(kefir_opt_code_topological_scheduler_init(&scheduler, scheduler_schedule, &scheduler_param));
-    REQUIRE_OK(kefir_opt_code_schedule_run(mem, &func->schedule, &func->function->code, &func->function_analysis,
-                                           &scheduler.scheduler));
+    REQUIRE_OK(kefir_opt_code_schedule_run(mem, &func->schedule, &func->function->code, &func->control_flow,
+                                           &func->liveness, &scheduler.scheduler));
     REQUIRE_OK(kefir_opt_code_linear_liveness_build(mem, &func->linear_liveness, &func->function->code,
-                                                    &func->function_analysis.control_flow, &func->schedule));
+                                                    &func->control_flow, &func->schedule));
 
     REQUIRE_OK(collect_translated_instructions(mem, func));
     // Initialize block labels
@@ -1333,15 +1333,20 @@ static kefir_result_t kefir_codegen_amd64_function_translate_impl(struct kefir_m
     if (!codegen->config->omit_frame_pointer) {
         REQUIRE_OK(kefir_codegen_amd64_stack_frame_require_frame_pointer(&func->stack_frame));
     }
-    REQUIRE_OK(kefir_opt_code_analyze(mem, &func->function->code, &func->function_analysis));
+    REQUIRE_OK(kefir_opt_code_control_flow_build(mem, &func->control_flow, &func->function->code));
+    REQUIRE_OK(kefir_opt_code_liveness_build(mem, &func->liveness, &func->control_flow));
+    REQUIRE_OK(kefir_opt_code_variable_scopes_build(mem, &func->variable_scopes, &func->liveness));
     REQUIRE_OK(translate_code(mem, func));
     REQUIRE_OK(kefir_codegen_local_variable_allocator_run(
         mem, &func->variable_allocator, &func->function->code,
         &(struct kefir_codegen_local_variable_allocator_hooks) {
             .type_layout = variable_allocator_type_layout,
             .payload = &(struct variable_allocator_type_layout_param) {.mem = mem, .func = func}},
-        &func->function_analysis.variable_scopes));
-    REQUIRE_OK(kefir_opt_code_analysis_clear(mem, &func->function_analysis));
+        &func->variable_scopes));
+    REQUIRE_OK(kefir_opt_code_liveness_free(mem, &func->liveness));
+    REQUIRE_OK(kefir_opt_code_control_flow_free(mem, &func->control_flow));
+    REQUIRE_OK(kefir_opt_code_control_flow_init(&func->control_flow));
+    REQUIRE_OK(kefir_opt_code_liveness_init(&func->liveness));
     REQUIRE_OK(propagate_virtual_register_hints(mem, func));
 
     if (codegen->config->print_details != NULL && strcmp(codegen->config->print_details, "vasm") == 0) {
@@ -1434,7 +1439,9 @@ kefir_result_t kefir_codegen_amd64_function_init(struct kefir_mem *mem, struct k
     REQUIRE_OK(kefir_hashtree_init(&func->debug.occupied_x87_stack_slots, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_list_init(&func->x87_stack));
     REQUIRE_OK(kefir_codegen_target_ir_code_constructor_metadata_init(&func->debug.target_ir_metadata));
-    REQUIRE_OK(kefir_opt_code_analysis_init(&func->function_analysis));
+    REQUIRE_OK(kefir_opt_code_control_flow_init(&func->control_flow));
+    REQUIRE_OK(kefir_opt_code_liveness_init(&func->liveness));
+    REQUIRE_OK(kefir_opt_code_variable_scopes_init(&func->variable_scopes));
     REQUIRE_OK(kefir_opt_code_schedule_init(&func->schedule));
     REQUIRE_OK(kefir_opt_code_linear_liveness_init(&func->linear_liveness));
     REQUIRE_OK(kefir_codegen_local_variable_allocator_init(&func->variable_allocator));
@@ -1468,7 +1475,9 @@ kefir_result_t kefir_codegen_amd64_function_free(struct kefir_mem *mem, struct k
     REQUIRE_OK(kefir_codegen_amd64_stack_frame_free(mem, &func->stack_frame));
     REQUIRE_OK(kefir_opt_code_linear_liveness_free(mem, &func->linear_liveness));
     REQUIRE_OK(kefir_opt_code_schedule_free(mem, &func->schedule));
-    REQUIRE_OK(kefir_opt_code_analysis_free(mem, &func->function_analysis));
+    REQUIRE_OK(kefir_opt_code_variable_scopes_free(mem, &func->variable_scopes));
+    REQUIRE_OK(kefir_opt_code_liveness_free(mem, &func->liveness));
+    REQUIRE_OK(kefir_opt_code_control_flow_free(mem, &func->control_flow));
     REQUIRE_OK(kefir_codegen_target_ir_code_constructor_metadata_free(mem, &func->debug.target_ir_metadata));
     REQUIRE_OK(kefir_list_free(mem, &func->x87_stack));
     REQUIRE_OK(kefir_hashtree_free(mem, &func->debug.function_parameters));

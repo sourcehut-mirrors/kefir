@@ -21,6 +21,7 @@
 #define KEFIR_CODEGEN_AMD64_DWARF_INTERNAL
 #include "kefir/codegen/amd64/dwarf.h"
 #include "kefir/codegen/amd64/symbolic_labels.h"
+#include "kefir/optimizer/module_liveness.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 

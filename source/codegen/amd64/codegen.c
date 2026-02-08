@@ -26,6 +26,7 @@
 #include "kefir/codegen/amd64/dwarf.h"
 #include "kefir/codegen/amd64/module.h"
 #include "kefir/codegen/amd64/lowering.h"
+#include "kefir/optimizer/module_liveness.h"
 #include "kefir/target/abi/amd64/type_layout.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"

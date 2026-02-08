@@ -25,7 +25,6 @@
 #include "kefir/core/mem.h"
 #include "kefir/core/basic-types.h"
 #include "kefir/optimizer/module.h"
-#include "kefir/optimizer/analysis.h"
 
 typedef struct kefir_codegen_runtime_hooks {
     kefir_result_t (*generate_runtime_functions)(struct kefir_mem *, FILE *, const struct kefir_hashtreeset *, void *);
