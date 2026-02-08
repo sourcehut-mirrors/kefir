@@ -44,7 +44,7 @@ static kefir_result_t link_block(struct kefir_mem *mem, struct kefir_opt_code_co
 
     kefir_opt_instruction_ref_t tail_instr_ref;
     const struct kefir_opt_instruction *tail_instr = NULL;
-    REQUIRE_OK(kefir_opt_code_block_instr_control_tail(control_flow->code, block, &tail_instr_ref));
+    REQUIRE_OK(kefir_opt_code_block_instr_control_tail(control_flow->code, block_id, &tail_instr_ref));
     REQUIRE(tail_instr_ref != KEFIR_ID_NONE, KEFIR_OK);
     REQUIRE_OK(kefir_opt_code_container_instr(control_flow->code, tail_instr_ref, &tail_instr));
     switch (tail_instr->operation.opcode) {
@@ -142,8 +142,7 @@ kefir_result_t kefir_opt_code_control_flow_link_blocks(struct kefir_mem *mem,
     struct kefir_opt_code_container_tracer tracer = {.trace_instruction = link_blocks_trace, .payload = &payload};
     REQUIRE_OK(kefir_opt_code_container_trace(mem, control_flow->code, &tracer));
 
-    kefir_size_t total_block_count;
-    REQUIRE_OK(kefir_opt_code_container_block_count(control_flow->code, &total_block_count));
+    kefir_size_t total_block_count = kefir_opt_code_container_block_count(control_flow->code);
     for (kefir_opt_block_id_t block_id = 0; block_id < total_block_count; block_id++) {
         const struct kefir_opt_code_block *block;
         REQUIRE_OK(kefir_opt_code_container_block(control_flow->code, block_id, &block));

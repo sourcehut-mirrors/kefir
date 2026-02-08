@@ -81,7 +81,7 @@ static kefir_result_t schedule_live_out(struct schedule_instruction_param *param
         const struct kefir_opt_code_block *successor_block;
         REQUIRE_OK(kefir_opt_code_container_block(param->code, successor_block_id, &successor_block));
         kefir_opt_instruction_ref_t phi_instr_ref;
-        for (res = kefir_opt_code_block_phi_head(param->code, successor_block, &phi_instr_ref);
+        for (res = kefir_opt_code_block_phi_head(param->code, successor_block_id, &phi_instr_ref);
              res == KEFIR_OK && phi_instr_ref != KEFIR_ID_NONE;
              kefir_opt_phi_next_sibling(param->code, phi_instr_ref, &phi_instr_ref)) {
             if (!kefir_hashset_has(&param->liveness->blocks[successor_block_id].alive_instr,
@@ -122,7 +122,7 @@ static kefir_result_t schedule_collect_control_flow(const struct kefir_opt_code_
     kefir_opt_instruction_ref_t instr_ref;
     kefir_opt_instruction_ref_t tail_control_ref;
 
-    for (res = kefir_opt_code_block_instr_head(param->code, block, &instr_ref);
+    for (res = kefir_opt_code_block_instr_head(param->code, block->id, &instr_ref);
          res == KEFIR_OK && instr_ref != KEFIR_ID_NONE;
          res = kefir_opt_instruction_next_sibling(param->code, instr_ref, &instr_ref)) {
 
@@ -138,7 +138,7 @@ static kefir_result_t schedule_collect_control_flow(const struct kefir_opt_code_
     }
     REQUIRE_OK(res);
 
-    for (res = kefir_opt_code_block_instr_head(param->code, block, &instr_ref);
+    for (res = kefir_opt_code_block_instr_head(param->code, block->id, &instr_ref);
          res == KEFIR_OK && instr_ref != KEFIR_ID_NONE;
          res = kefir_opt_instruction_next_sibling(param->code, instr_ref, &instr_ref)) {
 
@@ -154,8 +154,8 @@ static kefir_result_t schedule_collect_control_flow(const struct kefir_opt_code_
     }
     REQUIRE_OK(res);
 
-    REQUIRE_OK(kefir_opt_code_block_instr_control_tail(param->code, block, &tail_control_ref));
-    res = kefir_opt_code_block_instr_control_head(param->code, block, &instr_ref);
+    REQUIRE_OK(kefir_opt_code_block_instr_control_tail(param->code, block->id, &tail_control_ref));
+    res = kefir_opt_code_block_instr_control_head(param->code, block->id, &instr_ref);
     REQUIRE_OK(res);
     if (instr_ref == KEFIR_ID_NONE) {
         REQUIRE_OK(schedule_live_out(param, block));

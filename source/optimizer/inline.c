@@ -990,15 +990,14 @@ static kefir_result_t inline_blocks(struct do_inline_param *param) {
 }
 
 static kefir_result_t map_inlined_phis(struct do_inline_param *param) {
-    kefir_size_t num_of_src_blocks;
-    REQUIRE_OK(kefir_opt_code_container_block_count(&param->src_function->code, &num_of_src_blocks));
+    kefir_size_t num_of_src_blocks = kefir_opt_code_container_block_count(&param->src_function->code);
 
     for (kefir_opt_block_id_t src_block_id = 0; src_block_id < num_of_src_blocks; src_block_id++) {
         const struct kefir_opt_code_block *src_block;
         REQUIRE_OK(kefir_opt_code_container_block(&param->src_function->code, src_block_id, &src_block));
         kefir_opt_instruction_ref_t src_phi_instr_ref;
         kefir_result_t res;
-        for (res = kefir_opt_code_block_phi_head(&param->src_function->code, src_block, &src_phi_instr_ref);
+        for (res = kefir_opt_code_block_phi_head(&param->src_function->code, src_block_id, &src_phi_instr_ref);
              res == KEFIR_OK && src_phi_instr_ref != KEFIR_ID_NONE;
              res = kefir_opt_phi_next_sibling(&param->src_function->code, src_phi_instr_ref, &src_phi_instr_ref)) {
 
@@ -1048,11 +1047,13 @@ static kefir_result_t link_inlined_entry_block(struct do_inline_param *param) {
     REQUIRE_OK(kefir_opt_code_container_block(param->dst_code, param->inline_predecessor_block_id, &pred_block));
 
     kefir_opt_instruction_ref_t tail_instr_ref;
-    REQUIRE_OK(kefir_opt_code_block_instr_control_tail(param->dst_code, pred_block, &tail_instr_ref));
+    REQUIRE_OK(
+        kefir_opt_code_block_instr_control_tail(param->dst_code, param->inline_predecessor_block_id, &tail_instr_ref));
     REQUIRE_OK(kefir_opt_code_container_drop_control(param->dst_code, tail_instr_ref));
     REQUIRE_OK(kefir_opt_code_container_drop_instr(param->mem, param->dst_code, tail_instr_ref));
 
-    REQUIRE_OK(kefir_opt_code_block_instr_control_tail(param->dst_code, pred_block, &tail_instr_ref));
+    REQUIRE_OK(
+        kefir_opt_code_block_instr_control_tail(param->dst_code, param->inline_predecessor_block_id, &tail_instr_ref));
     if (param->result_phi_instr != KEFIR_ID_NONE) {
         REQUIRE_OK(kefir_opt_code_container_replace_references(param->mem, param->dst_code, param->result_phi_instr,
                                                                tail_instr_ref));
@@ -1315,8 +1316,7 @@ static kefir_result_t can_inline_function(const struct kefir_opt_function *calle
         can_inline = false;
     }
 
-    kefir_size_t called_func_blocks;
-    REQUIRE_OK(kefir_opt_code_container_block_count(&called_function->code, &called_func_blocks));
+    kefir_size_t called_func_blocks = kefir_opt_code_container_block_count(&called_function->code);
     for (kefir_opt_block_id_t block_id = 0; can_inline && block_id < called_func_blocks; block_id++) {
         const struct kefir_opt_code_block *block;
         REQUIRE_OK(kefir_opt_code_container_block(&called_function->code, block_id, &block));
@@ -1326,7 +1326,7 @@ static kefir_result_t can_inline_function(const struct kefir_opt_function *calle
 
         kefir_opt_instruction_ref_t instr_ref;
         kefir_result_t res;
-        for (res = kefir_opt_code_block_instr_head(&called_function->code, block, &instr_ref);
+        for (res = kefir_opt_code_block_instr_head(&called_function->code, block_id, &instr_ref);
              res == KEFIR_OK && instr_ref != KEFIR_ID_NONE && can_inline;
              res = kefir_opt_instruction_next_sibling(&called_function->code, instr_ref, &instr_ref)) {
             const struct kefir_opt_instruction *instruction;

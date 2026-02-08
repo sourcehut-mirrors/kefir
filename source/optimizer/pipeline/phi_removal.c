@@ -270,7 +270,7 @@ static kefir_result_t remove_unused_phis_from_block(struct kefir_mem *mem, struc
 
     kefir_result_t res;
     kefir_opt_instruction_ref_t phi_instr_ref;
-    for (res = kefir_opt_code_block_phi_head(code, block, &phi_instr_ref);
+    for (res = kefir_opt_code_block_phi_head(code, block_ref, &phi_instr_ref);
          res == KEFIR_OK && phi_instr_ref != KEFIR_ID_NONE;
          res = kefir_opt_phi_next_sibling(code, phi_instr_ref, &phi_instr_ref)) {
         struct kefir_opt_instruction_use_iterator use_iter;
@@ -300,8 +300,7 @@ static kefir_result_t remove_unused_phis_from_block(struct kefir_mem *mem, struc
 static kefir_result_t phi_scc_tarjan_impl(struct kefir_mem *mem, struct kefir_opt_code_container *code,
                                           struct phi_scc_traversal *traversal, struct kefir_hashset *removal_set,
                                           const struct kefir_opt_code_control_flow *control_flow) {
-    kefir_size_t block_count;
-    REQUIRE_OK(kefir_opt_code_container_block_count(code, &block_count));
+    kefir_size_t block_count = kefir_opt_code_container_block_count(code);
     for (kefir_opt_block_id_t block_ref = 0; block_ref < block_count; block_ref++) {
         REQUIRE_OK(remove_unused_phis_from_block(mem, code, block_ref, removal_set));
     }
@@ -322,7 +321,7 @@ static kefir_result_t phi_scc_tarjan_impl(struct kefir_mem *mem, struct kefir_op
 
         kefir_result_t res;
         kefir_opt_instruction_ref_t phi_instr_ref;
-        for (res = kefir_opt_code_block_phi_head(code, block, &phi_instr_ref);
+        for (res = kefir_opt_code_block_phi_head(code, block_ref, &phi_instr_ref);
              res == KEFIR_OK && phi_instr_ref != KEFIR_ID_NONE;
              res = kefir_opt_phi_next_sibling(code, phi_instr_ref, &phi_instr_ref)) {
             if (!kefir_hashtable_has(&traversal->indices, (kefir_hashtable_key_t) phi_instr_ref)) {

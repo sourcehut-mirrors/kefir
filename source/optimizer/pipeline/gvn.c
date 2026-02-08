@@ -788,15 +788,14 @@ static kefir_int_t compare_instr(kefir_hashtree_key_t key1, kefir_hashtree_key_t
 
 static kefir_result_t gvn_scan_control_flow(struct gvn_state *state) {
     kefir_result_t res;
-    kefir_size_t total_blocks;
-    REQUIRE_OK(kefir_opt_code_container_block_count(&state->func->code, &total_blocks));
+    kefir_size_t total_blocks = kefir_opt_code_container_block_count(&state->func->code);
 
     for (kefir_opt_block_id_t block_id = 0; block_id < total_blocks; block_id++) {
         const struct kefir_opt_code_block *block;
         REQUIRE_OK(kefir_opt_code_container_block(&state->func->code, block_id, &block));
 
         kefir_opt_instruction_ref_t instr_ref;
-        for (res = kefir_opt_code_block_instr_control_head(&state->func->code, block, &instr_ref);
+        for (res = kefir_opt_code_block_instr_control_head(&state->func->code, block_id, &instr_ref);
              res == KEFIR_OK && instr_ref != KEFIR_ID_NONE;
              res = kefir_opt_instruction_next_control(&state->func->code, instr_ref, &instr_ref)) {
             REQUIRE_OK(kefir_list_insert_after(state->mem, &state->queue, kefir_list_tail(&state->queue),

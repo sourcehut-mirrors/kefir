@@ -178,8 +178,7 @@ kefir_result_t kefir_opt_code_loop_collection_build(struct kefir_mem *mem, struc
     REQUIRE(control_flow != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code control flow"));
 
-    kefir_size_t block_count;
-    REQUIRE_OK(kefir_opt_code_container_block_count(control_flow->code, &block_count));
+    kefir_size_t block_count = kefir_opt_code_container_block_count(control_flow->code);
     for (kefir_opt_block_id_t block_id = 0; block_id < block_count; block_id++) {
         if (!IS_BLOCK_REACHABLE(control_flow, block_id)) {
             continue;

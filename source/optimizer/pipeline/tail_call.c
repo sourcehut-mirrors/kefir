@@ -194,7 +194,7 @@ static kefir_result_t block_tail_call_apply(struct kefir_mem *mem, const struct 
     REQUIRE_OK(kefir_opt_code_container_block(&func->code, block_id, &block));
 
     kefir_opt_instruction_ref_t tail_instr_ref, call_instr_ref, prev_tail_instr_ref;
-    REQUIRE_OK(kefir_opt_code_block_instr_control_tail(&func->code, block, &tail_instr_ref));
+    REQUIRE_OK(kefir_opt_code_block_instr_control_tail(&func->code, block_id, &tail_instr_ref));
     REQUIRE(tail_instr_ref != KEFIR_ID_NONE, KEFIR_OK);
 
     const struct kefir_opt_instruction *tail_instr, *call_instr, *prev_tail_instr;
@@ -292,8 +292,7 @@ static kefir_result_t tail_call_apply(struct kefir_mem *mem, struct kefir_opt_mo
     REQUIRE(module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer module"));
     REQUIRE(func != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer function"));
 
-    kefir_size_t num_of_blocks;
-    REQUIRE_OK(kefir_opt_code_container_block_count(&func->code, &num_of_blocks));
+    kefir_size_t num_of_blocks = kefir_opt_code_container_block_count(&func->code);
     for (kefir_opt_block_id_t block_id = 0; block_id < num_of_blocks; block_id++) {
         REQUIRE_OK(block_tail_call_apply(mem, module, func, block_id));
     }

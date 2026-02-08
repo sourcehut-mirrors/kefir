@@ -94,7 +94,7 @@ static kefir_result_t insert_predecessor_block_impl(struct kefir_mem *mem,
             REQUIRE_OK(kefir_opt_code_container_block(code, current_pred_block_id, &block));
 
             kefir_opt_instruction_ref_t control_tail_ref;
-            REQUIRE_OK(kefir_opt_code_block_instr_control_tail(code, block, &control_tail_ref));
+            REQUIRE_OK(kefir_opt_code_block_instr_control_tail(code, current_pred_block_id, &control_tail_ref));
             REQUIRE_OK(kefir_opt_code_container_instruction_replace_control_flow_target(
                 code, control_tail_ref, loop_entry, predecessor_block_id));
         }
@@ -106,7 +106,7 @@ static kefir_result_t insert_predecessor_block_impl(struct kefir_mem *mem,
     kefir_opt_instruction_ref_t phi_instr_ref;
     const struct kefir_opt_code_block *loop_entry_block;
     REQUIRE_OK(kefir_opt_code_container_block(code, loop_entry, &loop_entry_block));
-    for (res = kefir_opt_code_block_phi_head(code, loop_entry_block, &phi_instr_ref);
+    for (res = kefir_opt_code_block_phi_head(code, loop_entry, &phi_instr_ref);
          res == KEFIR_OK && phi_instr_ref != KEFIR_ID_NONE;
          kefir_opt_phi_next_sibling(code, phi_instr_ref, &phi_instr_ref)) {
         REQUIRE_OK(
@@ -260,7 +260,7 @@ static kefir_result_t process_loop(struct licm_state *state) {
         REQUIRE_OK(kefir_opt_code_container_block(&state->func->code, block_id, &block));
 
         kefir_opt_instruction_ref_t instr_ref;
-        for (res = kefir_opt_code_block_instr_control_head(&state->func->code, block, &instr_ref);
+        for (res = kefir_opt_code_block_instr_control_head(&state->func->code, block_id, &instr_ref);
              res == KEFIR_OK && instr_ref != KEFIR_ID_NONE;
              res = kefir_opt_instruction_next_control(&state->func->code, instr_ref, &instr_ref)) {
             REQUIRE_OK(kefir_list_insert_after(state->mem, &state->traversal_queue,

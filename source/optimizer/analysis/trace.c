@@ -87,7 +87,7 @@ static kefir_result_t trace_block(struct kefir_mem *mem, const struct kefir_opt_
 
     kefir_result_t res;
     kefir_opt_instruction_ref_t instr_ref;
-    for (res = kefir_opt_code_block_instr_control_head(code, block, &instr_ref);
+    for (res = kefir_opt_code_block_instr_control_head(code, block_id, &instr_ref);
          res == KEFIR_OK && instr_ref != KEFIR_ID_NONE;
          res = kefir_opt_instruction_next_control(code, instr_ref, &instr_ref)) {
         const struct kefir_opt_instruction *instr;
@@ -170,8 +170,7 @@ static kefir_result_t trace_instr(struct kefir_mem *mem, const struct kefir_opt_
         case KEFIR_OPT_OPCODE_IJUMP: {
             *has_indirect_jumps = true;
 
-            kefir_size_t total_block_count;
-            REQUIRE_OK(kefir_opt_code_container_block_count(code, &total_block_count));
+            kefir_size_t total_block_count = kefir_opt_code_container_block_count(code);
             for (kefir_opt_block_id_t block_id = 0; block_id < total_block_count; block_id++) {
                 const struct kefir_opt_code_block *block;
                 REQUIRE_OK(kefir_opt_code_container_block(code, block_id, &block));
@@ -222,8 +221,6 @@ static kefir_result_t trace_impl(struct kefir_mem *mem, const struct kefir_opt_c
                                  const struct kefir_opt_code_container_tracer *tracer, struct kefir_queue *instr_queue,
                                  struct kefir_hashset *traced_blocks, struct kefir_hashset *traced_instr,
                                  struct kefir_hashtable *pending_instr, struct kefir_hashset *pending_block_labels) {
-    kefir_size_t total_block_count;
-    REQUIRE_OK(kefir_opt_code_container_block_count(code, &total_block_count));
     REQUIRE_OK(trace_block(mem, code, code->entry_point, instr_queue, traced_blocks, pending_instr));
 
     kefir_bool_t has_indirect_jumps = false;

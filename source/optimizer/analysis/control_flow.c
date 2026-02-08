@@ -105,8 +105,7 @@ static kefir_result_t update_dominator_tree(struct kefir_mem *mem, struct kefir_
 }
 
 static kefir_result_t build_dominance_tree(struct kefir_mem *mem, struct kefir_opt_code_control_flow *control_flow) {
-    kefir_size_t block_count;
-    REQUIRE_OK(kefir_opt_code_container_block_count(control_flow->code, &block_count));
+    kefir_size_t block_count = kefir_opt_code_container_block_count(control_flow->code);
     for (kefir_opt_block_id_t block_ref = 0; block_ref < block_count; block_ref++) {
         kefir_opt_block_id_t immediate_dominator_ref = control_flow->blocks[block_ref].immediate_dominator;
         if (immediate_dominator_ref == KEFIR_ID_NONE) {
@@ -167,8 +166,7 @@ static kefir_result_t walk_dominance_tree(struct kefir_mem *mem, struct kefir_op
 }
 
 static kefir_result_t find_dominance_frontier(struct kefir_mem *mem, struct kefir_opt_code_control_flow *control_flow) {
-    kefir_size_t block_count;
-    REQUIRE_OK(kefir_opt_code_container_block_count(control_flow->code, &block_count));
+    kefir_size_t block_count = kefir_opt_code_container_block_count(control_flow->code);
 
     struct kefir_list queue;
     struct kefir_hashset visited;
@@ -238,7 +236,7 @@ kefir_result_t kefir_opt_code_control_flow_build(struct kefir_mem *mem,
 
     kefir_result_t res;
     control_flow->code = code;
-    REQUIRE_OK(kefir_opt_code_container_block_count(control_flow->code, &control_flow->num_of_blocks));
+    control_flow->num_of_blocks = kefir_opt_code_container_block_count(control_flow->code);
     control_flow->blocks =
         KEFIR_MALLOC(mem, sizeof(struct kefir_opt_code_control_flow_block) * control_flow->num_of_blocks);
     REQUIRE(control_flow->blocks != NULL,
@@ -303,8 +301,7 @@ kefir_result_t kefir_opt_code_control_flow_is_reachable_from_entry(
     REQUIRE(reachable_flag_ptr != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to boolean flag"));
 
-    kefir_size_t num_of_blocks;
-    REQUIRE_OK(kefir_opt_code_container_block_count(control_flow->code, &num_of_blocks));
+    kefir_size_t num_of_blocks = kefir_opt_code_container_block_count(control_flow->code);
     REQUIRE(block_id < num_of_blocks,
             KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Provided block identifier is outside of code container bounds"));
 
@@ -320,8 +317,7 @@ kefir_result_t kefir_opt_code_control_flow_block_direct_predecessor(
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code control flow"));
     REQUIRE(result_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to boolean flag"));
 
-    kefir_size_t num_of_blocks;
-    REQUIRE_OK(kefir_opt_code_container_block_count(control_flow->code, &num_of_blocks));
+    kefir_size_t num_of_blocks = kefir_opt_code_container_block_count(control_flow->code);
     REQUIRE(block_id < num_of_blocks,
             KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Provided block identifier is outside of code container bounds"));
     REQUIRE(successor_block_id < num_of_blocks,
@@ -347,8 +343,7 @@ kefir_result_t kefir_opt_code_control_flow_block_exclusive_direct_predecessor(
         return KEFIR_OK;
     }
 
-    kefir_size_t num_of_blocks;
-    REQUIRE_OK(kefir_opt_code_container_block_count(control_flow->code, &num_of_blocks));
+    kefir_size_t num_of_blocks = kefir_opt_code_container_block_count(control_flow->code);
     REQUIRE(block_id < num_of_blocks,
             KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Provided block identifier is outside of code container bounds"));
     REQUIRE(successor_block_id < num_of_blocks,

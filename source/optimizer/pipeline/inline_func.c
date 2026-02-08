@@ -35,9 +35,6 @@ static kefir_result_t inline_func_impl(struct kefir_mem *mem, const struct kefir
                                        struct kefir_opt_code_sequencing *sequencing,
                                        const struct kefir_optimizer_configuration *config,
                                        kefir_bool_t *fixpoint_reached) {
-    kefir_size_t num_of_blocks;
-    REQUIRE_OK(kefir_opt_code_container_block_count(&func->code, &num_of_blocks));
-
     for (kefir_opt_block_id_t block_id = 0; block_id < control_flow->num_of_blocks; block_id++) {
         kefir_bool_t reachable;
         REQUIRE_OK(kefir_opt_code_control_flow_is_reachable_from_entry(control_flow, block_id, &reachable));
@@ -50,7 +47,7 @@ static kefir_result_t inline_func_impl(struct kefir_mem *mem, const struct kefir
 
         kefir_result_t res;
         kefir_opt_instruction_ref_t instr_ref;
-        for (res = kefir_opt_code_block_instr_head(&func->code, block, &instr_ref);
+        for (res = kefir_opt_code_block_instr_head(&func->code, block_id, &instr_ref);
              res == KEFIR_OK && instr_ref != KEFIR_ID_NONE;) {
             const struct kefir_opt_instruction *instr;
             REQUIRE_OK(kefir_opt_code_container_instr(&func->code, instr_ref, &instr));
@@ -65,7 +62,7 @@ static kefir_result_t inline_func_impl(struct kefir_mem *mem, const struct kefir
             }
             if (inlined) {
                 REQUIRE_OK(kefir_opt_code_container_block(&func->code, block_id, &block));
-                REQUIRE_OK(kefir_opt_code_block_instr_head(&func->code, block, &instr_ref));
+                REQUIRE_OK(kefir_opt_code_block_instr_head(&func->code, block_id, &instr_ref));
                 *fixpoint_reached = false;
             } else {
                 REQUIRE_OK(kefir_opt_instruction_next_sibling(&func->code, instr_ref, &instr_ref));

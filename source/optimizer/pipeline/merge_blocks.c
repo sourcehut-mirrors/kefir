@@ -38,8 +38,7 @@ struct merge_state {
 static kefir_result_t collect_candidates(struct kefir_mem *mem, struct kefir_opt_function *func,
                                          struct merge_state *state) {
     kefir_result_t res;
-    kefir_size_t block_count;
-    REQUIRE_OK(kefir_opt_code_container_block_count(&func->code, &block_count));
+    kefir_size_t block_count = kefir_opt_code_container_block_count(&func->code);
 
     for (kefir_opt_block_id_t block_ref = 0; block_ref < block_count; block_ref++) {
         kefir_opt_block_id_t immediate_dominator_ref = state->control_flow.blocks[block_ref].immediate_dominator;
@@ -47,7 +46,7 @@ static kefir_result_t collect_candidates(struct kefir_mem *mem, struct kefir_opt
         const struct kefir_opt_code_block *block;
         REQUIRE_OK(kefir_opt_code_container_block(&func->code, block_ref, &block));
         kefir_opt_instruction_ref_t phi_instr_ref;
-        REQUIRE_OK(kefir_opt_code_block_phi_head(&func->code, block, &phi_instr_ref));
+        REQUIRE_OK(kefir_opt_code_block_phi_head(&func->code, block_ref, &phi_instr_ref));
         if (block_ref != func->code.gate_block && immediate_dominator_ref != KEFIR_ID_NONE &&
             immediate_dominator_ref != func->code.gate_block &&
             kefir_hashset_size(&state->control_flow.blocks[block_ref].predecessors) == 1 &&
@@ -60,8 +59,9 @@ static kefir_result_t collect_candidates(struct kefir_mem *mem, struct kefir_opt
             REQUIRE_OK(kefir_opt_code_container_block(&func->code, immediate_dominator_ref, &pred_block));
 
             kefir_opt_instruction_ref_t pred_block_tail_ref, block_tail_ref;
-            REQUIRE_OK(kefir_opt_code_block_instr_control_tail(&func->code, pred_block, &pred_block_tail_ref));
-            REQUIRE_OK(kefir_opt_code_block_instr_control_tail(&func->code, block, &block_tail_ref));
+            REQUIRE_OK(
+                kefir_opt_code_block_instr_control_tail(&func->code, immediate_dominator_ref, &pred_block_tail_ref));
+            REQUIRE_OK(kefir_opt_code_block_instr_control_tail(&func->code, block_ref, &block_tail_ref));
 
             const struct kefir_opt_instruction *pred_block_tail, *block_tail;
             REQUIRE_OK(kefir_opt_code_container_instr(&func->code, pred_block_tail_ref, &pred_block_tail));
@@ -157,8 +157,8 @@ static kefir_result_t do_merge(struct kefir_mem *mem, struct kefir_opt_function 
     REQUIRE_OK(kefir_opt_code_container_block(&func->code, successor_block_id, &successor_block));
 
     kefir_opt_instruction_ref_t block_tail_ref, successor_block_tail_ref;
-    REQUIRE_OK(kefir_opt_code_block_instr_control_tail(&func->code, block, &block_tail_ref));
-    REQUIRE_OK(kefir_opt_code_block_instr_control_tail(&func->code, successor_block, &successor_block_tail_ref));
+    REQUIRE_OK(kefir_opt_code_block_instr_control_tail(&func->code, block_id, &block_tail_ref));
+    REQUIRE_OK(kefir_opt_code_block_instr_control_tail(&func->code, successor_block_id, &successor_block_tail_ref));
 
     const struct kefir_opt_instruction *block_tail, *successor_block_tail;
     REQUIRE_OK(kefir_opt_code_container_instr(&func->code, block_tail_ref, &block_tail));
@@ -169,7 +169,7 @@ static kefir_result_t do_merge(struct kefir_mem *mem, struct kefir_opt_function 
 
         kefir_result_t res;
         kefir_opt_instruction_ref_t instr_ref;
-        for (res = kefir_opt_code_block_instr_head(&func->code, successor_block, &instr_ref);
+        for (res = kefir_opt_code_block_instr_head(&func->code, successor_block_id, &instr_ref);
              res == KEFIR_OK && instr_ref != KEFIR_ID_NONE;
              res = kefir_opt_instruction_next_sibling(&func->code, instr_ref, &instr_ref)) {
             if (instr_ref == successor_block_tail_ref) {
@@ -195,7 +195,7 @@ static kefir_result_t do_merge(struct kefir_mem *mem, struct kefir_opt_function 
             const struct kefir_opt_code_block *target_block;
             REQUIRE_OK(kefir_opt_code_container_block(&func->code, oper.parameters.branch.target_block, &target_block));
             kefir_opt_instruction_ref_t phi_instr_ref;
-            REQUIRE_OK(kefir_opt_code_block_phi_head(&func->code, target_block, &phi_instr_ref));
+            REQUIRE_OK(kefir_opt_code_block_phi_head(&func->code, oper.parameters.branch.target_block, &phi_instr_ref));
             REQUIRE(phi_instr_ref == KEFIR_ID_NONE, KEFIR_OK);
         }
 

@@ -80,7 +80,7 @@ static kefir_result_t instr_sequence_number(struct kefir_mem *mem,
 #define CONTROL_FLOW_SEQ_STEP (1ull << 32)
         kefir_size_t seq_num = CONTROL_FLOW_SEQ_STEP;
         kefir_opt_instruction_ref_t control_flow_iter;
-        for (res = kefir_opt_code_block_instr_control_head(control_flow->code, block, &control_flow_iter);
+        for (res = kefir_opt_code_block_instr_control_head(control_flow->code, instr->block_id, &control_flow_iter);
              res == KEFIR_OK && control_flow_iter != KEFIR_ID_NONE;
              res = kefir_opt_instruction_next_control(control_flow->code, control_flow_iter, &control_flow_iter),
             seq_num += CONTROL_FLOW_SEQ_STEP) {

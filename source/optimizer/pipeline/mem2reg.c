@@ -150,7 +150,7 @@ static kefir_result_t mem2reg_scan(struct mem2reg_state *state) {
          block = kefir_opt_code_container_next(&iter)) {
 
         kefir_opt_instruction_ref_t instr_ref;
-        for (kefir_opt_code_block_instr_head(&state->func->code, block, &instr_ref); instr_ref != KEFIR_ID_NONE;
+        for (kefir_opt_code_block_instr_head(&state->func->code, block->id, &instr_ref); instr_ref != KEFIR_ID_NONE;
              kefir_opt_instruction_next_sibling(&state->func->code, instr_ref, &instr_ref)) {
 
             const struct kefir_opt_instruction *instr;
@@ -529,7 +529,7 @@ static kefir_result_t mem2reg_assign(struct mem2reg_state *state, struct mem2reg
     REQUIRE_OK(kefir_opt_code_container_block(&state->func->code, frame->block_ref, &block));
 
     kefir_opt_instruction_ref_t instr_ref;
-    for (res = kefir_opt_code_block_instr_control_head(&state->func->code, block, &instr_ref);
+    for (res = kefir_opt_code_block_instr_control_head(&state->func->code, frame->block_ref, &instr_ref);
          res == KEFIR_OK && instr_ref != KEFIR_ID_NONE;) {
         const struct kefir_opt_instruction *instr;
         REQUIRE_OK(kefir_opt_code_container_instr(&state->func->code, instr_ref, &instr));

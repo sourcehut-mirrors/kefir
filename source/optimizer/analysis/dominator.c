@@ -129,7 +129,7 @@ static kefir_result_t semi_nca_impl(struct kefir_opt_code_control_flow *control_
 
 static kefir_result_t semi_nca(struct kefir_mem *mem, struct kefir_opt_code_control_flow *control_flow) {
     struct semi_nca_data data = {0};
-    REQUIRE_OK(kefir_opt_code_container_block_count(control_flow->code, &data.num_of_blocks));
+    data.num_of_blocks = kefir_opt_code_container_block_count(control_flow->code);
     data.dfs_trace = KEFIR_MALLOC(mem, sizeof(kefir_int64_t) * data.num_of_blocks);
     data.reverse_dfs_trace = KEFIR_MALLOC(mem, sizeof(kefir_opt_block_id_t) * data.num_of_blocks);
     data.dfs_parents = KEFIR_MALLOC(mem, sizeof(kefir_opt_block_id_t) * data.num_of_blocks);

@@ -153,7 +153,7 @@ static kefir_result_t collect_translated_instructions_impl(struct kefir_mem *mem
 
         kefir_opt_instruction_ref_t instr_ref;
         const struct kefir_opt_instruction *instr;
-        REQUIRE_OK(kefir_opt_code_block_instr_control_head(&func->function->code, block, &instr_ref));
+        REQUIRE_OK(kefir_opt_code_block_instr_control_head(&func->function->code, block_id, &instr_ref));
         for (; instr_ref != KEFIR_ID_NONE;) {
             REQUIRE_OK(kefir_opt_code_container_instr(&func->function->code, instr_ref, &instr));
             REQUIRE_OK(kefir_queue_push(mem, queue, (kefir_queue_entry_t) instr));
@@ -166,7 +166,7 @@ static kefir_result_t collect_translated_instructions_impl(struct kefir_mem *mem
         const struct kefir_opt_code_block *block;
         REQUIRE_OK(kefir_opt_code_container_block(&func->function->code, func->function->code.gate_block, &block));
         kefir_opt_instruction_ref_t phi_instr_ref;
-        for (res = kefir_opt_code_block_phi_head(&func->function->code, block, &phi_instr_ref);
+        for (res = kefir_opt_code_block_phi_head(&func->function->code, block->id, &phi_instr_ref);
              res == KEFIR_OK && phi_instr_ref != KEFIR_ID_NONE;
              res = kefir_opt_phi_next_sibling(&func->function->code, phi_instr_ref, &phi_instr_ref)) {
             const struct kefir_opt_instruction *instr = NULL;
@@ -504,8 +504,7 @@ static kefir_result_t scheduler_schedule(
 
 static kefir_result_t alias_return_space_allocation(struct kefir_codegen_amd64_function *func) {
     REQUIRE(func->variable_allocator.return_space_variable_ref == KEFIR_ID_NONE, KEFIR_OK);
-    kefir_size_t num_of_blocks;
-    REQUIRE_OK(kefir_opt_code_container_block_count(&func->function->code, &num_of_blocks));
+    kefir_size_t num_of_blocks = kefir_opt_code_container_block_count(&func->function->code);
     for (kefir_opt_block_id_t block_id = 0; block_id < num_of_blocks; block_id++) {
         if (block_id != func->function->code.entry_point &&
             func->control_flow.blocks[block_id].immediate_dominator == KEFIR_ID_NONE) {
@@ -516,7 +515,7 @@ static kefir_result_t alias_return_space_allocation(struct kefir_codegen_amd64_f
         REQUIRE_OK(kefir_opt_code_container_block(&func->function->code, block_id, &block));
 
         kefir_opt_instruction_ref_t tail_ref;
-        REQUIRE_OK(kefir_opt_code_block_instr_control_tail(&func->function->code, block, &tail_ref));
+        REQUIRE_OK(kefir_opt_code_block_instr_control_tail(&func->function->code, block_id, &tail_ref));
         if (tail_ref == KEFIR_ID_NONE) {
             continue;
         }

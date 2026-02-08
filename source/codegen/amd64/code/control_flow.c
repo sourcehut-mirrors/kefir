@@ -81,7 +81,7 @@ static kefir_result_t map_phi_outputs_impl(struct kefir_mem *mem, struct kefir_c
     kefir_opt_instruction_ref_t source_ref, target_ref;
     kefir_asmcmp_virtual_register_index_t source_vreg_idx, target_vreg_idx, deferred_target_vreg_idx;
     const struct kefir_opt_phi_node *source_phi = NULL;
-    for (res = kefir_opt_code_block_phi_head(&function->function->code, target_block, &phi_instr_ref);
+    for (res = kefir_opt_code_block_phi_head(&function->function->code, target_block_ref, &phi_instr_ref);
          res == KEFIR_OK && phi_instr_ref != KEFIR_ID_NONE;
          res = kefir_opt_phi_next_sibling(&function->function->code, phi_instr_ref, &phi_instr_ref)) {
 
@@ -104,7 +104,7 @@ static kefir_result_t map_phi_outputs_impl(struct kefir_mem *mem, struct kefir_c
         }
     }
 
-    for (res = kefir_opt_code_block_phi_head(&function->function->code, target_block, &phi_instr_ref);
+    for (res = kefir_opt_code_block_phi_head(&function->function->code, target_block_ref, &phi_instr_ref);
          res == KEFIR_OK && phi_instr_ref != KEFIR_ID_NONE;
          res = kefir_opt_phi_next_sibling(&function->function->code, phi_instr_ref, &phi_instr_ref)) {
 
@@ -196,7 +196,7 @@ static kefir_result_t map_phi_outputs_impl(struct kefir_mem *mem, struct kefir_c
                                                              deferred_target_vreg, temporary_target_vreg, NULL));
     }
 
-    for (res = kefir_opt_code_block_phi_head(&function->function->code, target_block, &phi_instr_ref);
+    for (res = kefir_opt_code_block_phi_head(&function->function->code, target_block_ref, &phi_instr_ref);
          res == KEFIR_OK && phi_instr_ref != KEFIR_ID_NONE;
          res = kefir_opt_phi_next_sibling(&function->function->code, phi_instr_ref, &phi_instr_ref)) {
 
@@ -273,7 +273,7 @@ static kefir_result_t has_phi_outputs(struct kefir_codegen_amd64_function *funct
     kefir_opt_instruction_ref_t phi_instr_ref;
     kefir_result_t res;
     *has_outputs = false;
-    for (res = kefir_opt_code_block_phi_head(&function->function->code, target_block, &phi_instr_ref);
+    for (res = kefir_opt_code_block_phi_head(&function->function->code, target_block->id, &phi_instr_ref);
          res == KEFIR_OK && phi_instr_ref != KEFIR_ID_NONE;
          res = kefir_opt_phi_next_sibling(&function->function->code, phi_instr_ref, &phi_instr_ref)) {
 

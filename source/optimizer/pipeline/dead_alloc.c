@@ -33,7 +33,7 @@ static kefir_result_t dead_alloc_apply_impl(struct kefir_mem *mem, struct kefir_
         kefir_opt_instruction_ref_t instr_id, next_instr_id;
         const struct kefir_opt_instruction *instr = NULL;
         kefir_result_t res;
-        for (res = kefir_opt_code_block_instr_head(&func->code, block, &instr_id); instr_id != KEFIR_ID_NONE;
+        for (res = kefir_opt_code_block_instr_head(&func->code, block->id, &instr_id); instr_id != KEFIR_ID_NONE;
              instr_id = next_instr_id) {
             if (res == KEFIR_ITERATOR_END) {
                 next_instr_id = KEFIR_ID_NONE;

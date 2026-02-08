@@ -71,7 +71,7 @@ kefir_result_t kefir_opt_code_builder_is_finalized(const struct kefir_opt_code_c
 
     kefir_opt_instruction_ref_t prev_instr_ref;
     const struct kefir_opt_instruction *prev_instr = NULL;
-    REQUIRE_OK(kefir_opt_code_block_instr_control_tail(code, block, &prev_instr_ref));
+    REQUIRE_OK(kefir_opt_code_block_instr_control_tail(code, block_id, &prev_instr_ref));
     if (prev_instr_ref != KEFIR_ID_NONE) {
         REQUIRE_OK(kefir_opt_code_container_instr(code, prev_instr_ref, &prev_instr));
         switch (prev_instr->operation.opcode) {

@@ -244,7 +244,7 @@ static kefir_result_t simplify_or_candidate(struct kefir_mem *mem, struct kefir_
         REQUIRE_OK(kefir_opt_code_container_block(&func->code, arg1->block_id, &arg1_block));
 
         kefir_opt_instruction_ref_t arg1_block_tail_ref;
-        REQUIRE_OK(kefir_opt_code_block_instr_control_tail(&func->code, arg1_block, &arg1_block_tail_ref));
+        REQUIRE_OK(kefir_opt_code_block_instr_control_tail(&func->code, arg1->block_id, &arg1_block_tail_ref));
         REQUIRE(arg1_block_tail_ref != KEFIR_ID_NONE, KEFIR_OK);
 
         const struct kefir_opt_instruction *arg1_block_tail;
@@ -625,7 +625,7 @@ static kefir_result_t simplify_bool_and(struct kefir_mem *mem, struct kefir_opt_
         REQUIRE_OK(kefir_opt_code_container_block(&func->code, arg1->block_id, &arg1_block));
 
         kefir_opt_instruction_ref_t arg1_block_tail_ref;
-        REQUIRE_OK(kefir_opt_code_block_instr_control_tail(&func->code, arg1_block, &arg1_block_tail_ref));
+        REQUIRE_OK(kefir_opt_code_block_instr_control_tail(&func->code, arg1->block_id, &arg1_block_tail_ref));
         REQUIRE(arg1_block_tail_ref != KEFIR_ID_NONE, KEFIR_OK);
 
         const struct kefir_opt_instruction *arg1_block_tail;
@@ -3097,7 +3097,7 @@ static kefir_result_t is_unreachable_block(const struct kefir_opt_code_container
 
     *unreachable_ptr = false;
     kefir_opt_instruction_ref_t instr_ref;
-    REQUIRE_OK(kefir_opt_code_block_instr_control_tail(code, block, &instr_ref));
+    REQUIRE_OK(kefir_opt_code_block_instr_control_tail(code, block_id, &instr_ref));
     REQUIRE(instr_ref != KEFIR_ID_NONE, KEFIR_OK);
     const struct kefir_opt_instruction *instr;
     REQUIRE_OK(kefir_opt_code_container_instr(code, instr_ref, &instr));
@@ -3538,8 +3538,8 @@ static kefir_result_t simplify_phi(struct kefir_mem *mem, struct kefir_opt_funct
     REQUIRE_OK(kefir_opt_code_container_block(&func->code, immediate_dominator_block_id, &immediate_dominator_block));
 
     kefir_opt_instruction_ref_t immediate_dominator_tail_ref;
-    REQUIRE_OK(
-        kefir_opt_code_block_instr_control_tail(&func->code, immediate_dominator_block, &immediate_dominator_tail_ref));
+    REQUIRE_OK(kefir_opt_code_block_instr_control_tail(&func->code, immediate_dominator_block_id,
+                                                       &immediate_dominator_tail_ref));
     REQUIRE(immediate_dominator_tail_ref != KEFIR_ID_NONE, KEFIR_OK);
 
     const struct kefir_opt_instruction *immediate_dominator_tail;
@@ -3590,7 +3590,7 @@ static kefir_result_t simplify_phi(struct kefir_mem *mem, struct kefir_opt_funct
         const struct kefir_opt_code_block *branch_block;                                                         \
         REQUIRE_OK(kefir_opt_code_container_block(&func->code, (_dominator_branch), &branch_block));             \
         kefir_opt_instruction_ref_t branch_block_tail, branch_block_tail_prev;                                   \
-        REQUIRE_OK(kefir_opt_code_block_instr_control_tail(&func->code, branch_block, &branch_block_tail));      \
+        REQUIRE_OK(kefir_opt_code_block_instr_control_tail(&func->code, branch_block->id, &branch_block_tail));  \
         REQUIRE(branch_block_tail != KEFIR_ID_NONE, KEFIR_OK);                                                   \
         REQUIRE_OK(kefir_opt_instruction_prev_control(&func->code, branch_block_tail, &branch_block_tail_prev)); \
         REQUIRE(branch_block_tail_prev == KEFIR_ID_NONE, KEFIR_OK);                                              \
@@ -3926,7 +3926,7 @@ static kefir_result_t op_simplify_apply_impl(struct kefir_mem *mem, const struct
         kefir_bool_t fixpoint_reached = false;
         while (!fixpoint_reached) {
             fixpoint_reached = true;
-            for (kefir_opt_code_block_instr_head(&func->code, block, &instr_id); instr_id != KEFIR_ID_NONE;) {
+            for (kefir_opt_code_block_instr_head(&func->code, block->id, &instr_id); instr_id != KEFIR_ID_NONE;) {
                 REQUIRE_OK(kefir_opt_code_container_instr(&func->code, instr_id, &instr));
                 REQUIRE_OK(kefir_opt_code_debug_info_next_instruction_code_reference_of(&func->debug_info, instr_id));
                 kefir_opt_instruction_ref_t replacement_ref = KEFIR_ID_NONE;

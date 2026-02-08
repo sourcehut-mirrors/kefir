@@ -498,8 +498,8 @@ kefir_result_t kefir_opt_code_block_merge_into(struct kefir_mem *mem, struct kef
 
     kefir_result_t res;
     kefir_opt_instruction_ref_t instr_ref, replacement_ref, tail_control_ref;
-    REQUIRE_OK(kefir_opt_code_block_instr_control_tail(code, source_block, &tail_control_ref));
-    for (res = kefir_opt_code_block_instr_control_head(code, source_block, &instr_ref);
+    REQUIRE_OK(kefir_opt_code_block_instr_control_tail(code, source_block_id, &tail_control_ref));
+    for (res = kefir_opt_code_block_instr_control_head(code, source_block_id, &instr_ref);
          res == KEFIR_OK && instr_ref != KEFIR_ID_NONE;
          res = kefir_opt_instruction_next_control(code, instr_ref, &instr_ref)) {
         if (!merge_control_tail && instr_ref == tail_control_ref) {
@@ -516,7 +516,7 @@ kefir_result_t kefir_opt_code_block_merge_into(struct kefir_mem *mem, struct kef
     }
     REQUIRE_OK(res);
 
-    for (res = kefir_opt_code_block_instr_head(code, source_block, &instr_ref);
+    for (res = kefir_opt_code_block_instr_head(code, source_block_id, &instr_ref);
          res == KEFIR_OK && instr_ref != KEFIR_ID_NONE;
          res = kefir_opt_instruction_next_sibling(code, instr_ref, &instr_ref)) {
         kefir_bool_t is_control_flow;
@@ -548,7 +548,7 @@ kefir_result_t kefir_opt_code_block_redirect_phi_links(struct kefir_mem *mem, st
 
     kefir_result_t res;
     kefir_opt_instruction_ref_t phi_instr_ref;
-    for (res = kefir_opt_code_block_phi_head(code, block, &phi_instr_ref);
+    for (res = kefir_opt_code_block_phi_head(code, block_id, &phi_instr_ref);
          res == KEFIR_OK && phi_instr_ref != KEFIR_ID_NONE;
          res = kefir_opt_phi_next_sibling(code, phi_instr_ref, &phi_instr_ref)) {
         kefir_opt_instruction_ref_t instr_ref;
@@ -580,7 +580,7 @@ static kefir_result_t collect_instr_after_split(struct kefir_mem *mem, struct ke
 
     kefir_result_t res;
     kefir_opt_instruction_ref_t instr_ref;
-    for (res = kefir_opt_code_block_instr_control_head(code, block, &instr_ref);
+    for (res = kefir_opt_code_block_instr_control_head(code, split_instr->block_id, &instr_ref);
          res == KEFIR_OK && instr_ref != KEFIR_ID_NONE;
          res = kefir_opt_instruction_next_control(code, instr_ref, &instr_ref)) {
         kefir_bool_t sequenced_before;
@@ -599,7 +599,8 @@ static kefir_result_t collect_instr_after_split(struct kefir_mem *mem, struct ke
     }
     REQUIRE_OK(res);
 
-    for (res = kefir_opt_code_block_instr_head(code, block, &instr_ref); res == KEFIR_OK && instr_ref != KEFIR_ID_NONE;
+    for (res = kefir_opt_code_block_instr_head(code, split_instr->block_id, &instr_ref);
+         res == KEFIR_OK && instr_ref != KEFIR_ID_NONE;
          res = kefir_opt_instruction_next_sibling(code, instr_ref, &instr_ref)) {
         kefir_bool_t sequenced_before, is_control_flow;
         REQUIRE_OK(kefir_opt_code_is_sequenced_before(mem, control_flow, sequencing, instr_ref, split_instr_ref,

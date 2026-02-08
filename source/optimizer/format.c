@@ -1171,7 +1171,7 @@ static kefir_result_t code_block_format(struct kefir_json_output *json, const st
     kefir_opt_instruction_ref_t instr_ref;
     const struct kefir_opt_instruction *instr = NULL;
     if (schedule == NULL || block->id == code->gate_block) {
-        for (res = kefir_opt_code_block_instr_head(code, block, &instr_ref);
+        for (res = kefir_opt_code_block_instr_head(code, block->id, &instr_ref);
              res == KEFIR_OK && instr_ref != KEFIR_ID_NONE;
              res = kefir_opt_instruction_next_sibling(code, instr_ref, &instr_ref)) {
 

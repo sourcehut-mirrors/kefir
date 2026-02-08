@@ -4821,7 +4821,7 @@ static kefir_result_t lower_function(struct kefir_mem *mem, struct kefir_opt_mod
         kefir_opt_instruction_ref_t instr_id;
         const struct kefir_opt_instruction *instr = NULL;
 
-        for (kefir_opt_code_block_instr_head(&func->code, block, &instr_id); instr_id != KEFIR_ID_NONE;) {
+        for (kefir_opt_code_block_instr_head(&func->code, block->id, &instr_id); instr_id != KEFIR_ID_NONE;) {
             REQUIRE_OK(kefir_opt_code_debug_info_next_instruction_code_reference_of(&func->debug_info, instr_id));
             REQUIRE_OK(kefir_opt_code_container_instr(&func->code, instr_id, &instr));
 
