@@ -222,8 +222,19 @@ kefir_result_t kefir_opt_code_control_flow_build(struct kefir_mem *mem,
     REQUIRE(control_flow != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code control flow"));
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code"));
-    REQUIRE(control_flow->code == NULL,
-            KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Optimizer code control flow has already been built"));
+
+    if (control_flow->code != NULL) {
+        REQUIRE_OK(kefir_hashtable_clear(mem, &control_flow->dominator_tree));
+        REQUIRE_OK(kefir_hashset_clear(mem, &control_flow->indirect_jump_source_blocks));
+        REQUIRE_OK(kefir_hashset_clear(mem, &control_flow->indirect_jump_target_blocks));
+
+        for (kefir_size_t i = 0; i < control_flow->num_of_blocks; i++) {
+            REQUIRE_OK(kefir_hashset_free(mem, &control_flow->blocks[i].predecessors));
+            REQUIRE_OK(kefir_hashset_free(mem, &control_flow->blocks[i].successors));
+            REQUIRE_OK(kefir_hashset_free(mem, &control_flow->blocks[i].dominance_frontier));
+        }
+        KEFIR_FREE(mem, control_flow->blocks);
+    }
 
     kefir_result_t res;
     control_flow->code = code;
