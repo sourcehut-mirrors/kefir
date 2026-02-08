@@ -49,10 +49,6 @@ kefir_result_t kefir_opt_code_control_flow_free(struct kefir_mem *, struct kefir
 kefir_result_t kefir_opt_code_control_flow_build(struct kefir_mem *, struct kefir_opt_code_control_flow *,
                                                  const struct kefir_opt_code_container *);
 
-kefir_result_t kefir_opt_code_control_flow_modify_bypass_block(struct kefir_mem *, struct kefir_opt_code_control_flow *,
-                                                               kefir_opt_block_id_t, kefir_opt_block_id_t);
-kefir_result_t kefir_opt_code_control_flow_rebuild_dominance(struct kefir_mem *, struct kefir_opt_code_control_flow *);
-
 kefir_result_t kefir_opt_code_control_flow_is_dominator(const struct kefir_opt_code_control_flow *,
                                                         kefir_opt_block_id_t, kefir_opt_block_id_t, kefir_bool_t *);
 
