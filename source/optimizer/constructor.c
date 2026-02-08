@@ -1668,18 +1668,18 @@ static kefir_result_t link_blocks_impl(struct kefir_mem *mem, struct kefir_opt_c
     for (; source_iter != NULL && target_iter != NULL;
          source_iter = source_iter->prev, target_iter = target_iter->prev) {
         ASSIGN_DECL_CAST(kefir_opt_instruction_ref_t, instr_ref, (kefir_uptr_t) source_iter->value);
-        ASSIGN_DECL_CAST(kefir_opt_phi_id_t, phi_ref, (kefir_uptr_t) target_iter->value);
+        ASSIGN_DECL_CAST(kefir_opt_instruction_ref_t, phi_instr_ref, (kefir_uptr_t) target_iter->value);
 
         kefir_opt_instruction_ref_t existing_ref;
-        kefir_result_t res =
-            kefir_opt_code_container_phi_link_for(&state->function->code, phi_ref, source_block_id, &existing_ref);
+        kefir_result_t res = kefir_opt_code_container_phi_link_for(&state->function->code, phi_instr_ref,
+                                                                   source_block_id, &existing_ref);
         if (res != KEFIR_NOT_FOUND) {
             REQUIRE_OK(res);
             REQUIRE(existing_ref == instr_ref,
                     KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Mismatch with existing phi link for a source block"));
         } else {
-            REQUIRE_OK(
-                kefir_opt_code_container_phi_attach(mem, &state->function->code, phi_ref, source_block_id, instr_ref));
+            REQUIRE_OK(kefir_opt_code_container_phi_attach(mem, &state->function->code, phi_instr_ref, source_block_id,
+                                                           instr_ref));
         }
     }
     REQUIRE(target_iter == NULL,
@@ -1759,12 +1759,10 @@ static kefir_result_t link_blocks_equalize_stack(struct kefir_mem *mem, struct k
     ASSIGN_DECL_CAST(struct kefir_opt_constructor_code_block_state *, target_state, hashtree_node->value);
 
     while (kefir_list_length(&source_state->stack) > kefir_list_length(&target_state->phi_stack)) {
-        kefir_opt_phi_id_t phi_ref;
         kefir_opt_instruction_ref_t instr_ref;
-        REQUIRE_OK(
-            kefir_opt_code_container_new_phi(mem, &state->function->code, target_block_id, &phi_ref, &instr_ref));
+        REQUIRE_OK(kefir_opt_code_container_new_phi(mem, &state->function->code, target_block_id, &instr_ref));
         REQUIRE_OK(kefir_list_insert_after(mem, &target_state->stack, NULL, (void *) (kefir_uptr_t) instr_ref));
-        REQUIRE_OK(kefir_list_insert_after(mem, &target_state->phi_stack, NULL, (void *) (kefir_uptr_t) phi_ref));
+        REQUIRE_OK(kefir_list_insert_after(mem, &target_state->phi_stack, NULL, (void *) (kefir_uptr_t) instr_ref));
     }
     return KEFIR_OK;
 }

@@ -462,17 +462,17 @@ kefir_result_t kefir_opt_code_container_drop_control(const struct kefir_opt_code
                                                      kefir_opt_instruction_ref_t);
 
 kefir_result_t kefir_opt_code_container_new_phi(struct kefir_mem *, struct kefir_opt_code_container *,
-                                                kefir_opt_block_id_t, kefir_opt_phi_id_t *,
-                                                kefir_opt_instruction_ref_t *);
+                                                kefir_opt_block_id_t, kefir_opt_instruction_ref_t *);
 kefir_result_t kefir_opt_code_container_phi(const struct kefir_opt_code_container *, kefir_opt_phi_id_t,
                                             const struct kefir_opt_phi_node **);
 kefir_result_t kefir_opt_code_container_phi_attach(struct kefir_mem *, struct kefir_opt_code_container *,
-                                                   kefir_opt_phi_id_t, kefir_opt_block_id_t,
+                                                   kefir_opt_instruction_ref_t, kefir_opt_block_id_t,
                                                    kefir_opt_instruction_ref_t);
-kefir_result_t kefir_opt_code_container_phi_link_for(const struct kefir_opt_code_container *, kefir_opt_phi_id_t,
-                                                     kefir_opt_block_id_t, kefir_opt_instruction_ref_t *);
+kefir_result_t kefir_opt_code_container_phi_link_for(const struct kefir_opt_code_container *,
+                                                     kefir_opt_instruction_ref_t, kefir_opt_block_id_t,
+                                                     kefir_opt_instruction_ref_t *);
 kefir_result_t kefir_opt_code_container_phi_drop_link(struct kefir_mem *, const struct kefir_opt_code_container *,
-                                                      kefir_opt_phi_id_t, kefir_opt_block_id_t);
+                                                      kefir_opt_instruction_ref_t, kefir_opt_block_id_t);
 
 kefir_result_t kefir_opt_code_container_new_call(struct kefir_mem *, struct kefir_opt_code_container *,
                                                  kefir_opt_block_id_t, kefir_id_t, kefir_size_t,
@@ -527,9 +527,9 @@ kefir_result_t kefir_opt_code_block_instr_control_tail(const struct kefir_opt_co
                                                        const struct kefir_opt_code_block *,
                                                        kefir_opt_instruction_ref_t *);
 kefir_result_t kefir_opt_code_block_phi_head(const struct kefir_opt_code_container *,
-                                             const struct kefir_opt_code_block *, kefir_opt_phi_id_t *);
+                                             const struct kefir_opt_code_block *, kefir_opt_instruction_ref_t *);
 kefir_result_t kefir_opt_code_block_phi_tail(const struct kefir_opt_code_container *,
-                                             const struct kefir_opt_code_block *, kefir_opt_phi_id_t *);
+                                             const struct kefir_opt_code_block *, kefir_opt_instruction_ref_t *);
 kefir_result_t kefir_opt_code_block_call_head(const struct kefir_opt_code_container *,
                                               const struct kefir_opt_code_block *, kefir_opt_call_id_t *);
 kefir_result_t kefir_opt_code_block_call_tail(const struct kefir_opt_code_container *,
@@ -548,10 +548,10 @@ kefir_result_t kefir_opt_instruction_prev_control(const struct kefir_opt_code_co
                                                   kefir_opt_instruction_ref_t *);
 kefir_result_t kefir_opt_instruction_next_control(const struct kefir_opt_code_container *, kefir_opt_instruction_ref_t,
                                                   kefir_opt_instruction_ref_t *);
-kefir_result_t kefir_opt_phi_prev_sibling(const struct kefir_opt_code_container *, kefir_opt_phi_id_t,
-                                          kefir_opt_phi_id_t *);
-kefir_result_t kefir_opt_phi_next_sibling(const struct kefir_opt_code_container *, kefir_opt_phi_id_t,
-                                          kefir_opt_phi_id_t *);
+kefir_result_t kefir_opt_phi_prev_sibling(const struct kefir_opt_code_container *, kefir_opt_instruction_ref_t,
+                                          kefir_opt_instruction_ref_t *);
+kefir_result_t kefir_opt_phi_next_sibling(const struct kefir_opt_code_container *, kefir_opt_instruction_ref_t,
+                                          kefir_opt_instruction_ref_t *);
 kefir_result_t kefir_opt_call_prev_sibling(const struct kefir_opt_code_container *, kefir_opt_call_id_t,
                                            kefir_opt_call_id_t *);
 kefir_result_t kefir_opt_call_next_sibling(const struct kefir_opt_code_container *, kefir_opt_call_id_t,
@@ -584,7 +584,7 @@ typedef struct kefir_opt_phi_node_link_iterator {
     struct kefir_hashtree_node_iterator iter;
 } kefir_opt_phi_node_link_iterator_t;
 
-kefir_result_t kefir_opt_phi_node_link_iter(const struct kefir_opt_phi_node *,
+kefir_result_t kefir_opt_phi_node_link_iter(const struct kefir_opt_code_container *, kefir_opt_instruction_ref_t,
                                             struct kefir_opt_phi_node_link_iterator *, kefir_opt_block_id_t *,
                                             kefir_opt_instruction_ref_t *);
 

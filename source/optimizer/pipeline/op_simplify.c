@@ -3574,45 +3574,46 @@ static kefir_result_t simplify_phi(struct kefir_mem *mem, struct kefir_opt_funct
     kefir_bool_t move_link1 = false;
     kefir_bool_t move_link2 = false;
     if (immediate_dominator_target == phi_instr->block_id) {
-        REQUIRE_OK(
-            kefir_opt_code_container_phi_link_for(&func->code, phi_ref, immediate_dominator_block_id, &link_ref1));
+        REQUIRE_OK(kefir_opt_code_container_phi_link_for(&func->code, phi_node->output_ref,
+                                                         immediate_dominator_block_id, &link_ref1));
     } else {
-#define CHECK_TARGET(_dominator_branch, _link_ref, _move_link)                                                     \
-    do {                                                                                                           \
-        kefir_bool_t is_predecessor;                                                                               \
-        REQUIRE_OK(kefir_opt_code_control_flow_block_exclusive_direct_predecessor(                                 \
-            control_flow, immediate_dominator_block_id, (_dominator_branch), &is_predecessor));                    \
-        REQUIRE(is_predecessor, KEFIR_OK);                                                                         \
-        REQUIRE_OK(kefir_opt_code_control_flow_block_direct_predecessor(control_flow, (_dominator_branch),         \
-                                                                        phi_instr->block_id, &is_predecessor));    \
-        REQUIRE(is_predecessor, KEFIR_OK);                                                                         \
-                                                                                                                   \
-        const struct kefir_opt_code_block *branch_block;                                                           \
-        REQUIRE_OK(kefir_opt_code_container_block(&func->code, (_dominator_branch), &branch_block));               \
-        kefir_opt_instruction_ref_t branch_block_tail, branch_block_tail_prev;                                     \
-        REQUIRE_OK(kefir_opt_code_block_instr_control_tail(&func->code, branch_block, &branch_block_tail));        \
-        REQUIRE(branch_block_tail != KEFIR_ID_NONE, KEFIR_OK);                                                     \
-        REQUIRE_OK(kefir_opt_instruction_prev_control(&func->code, branch_block_tail, &branch_block_tail_prev));   \
-        REQUIRE(branch_block_tail_prev == KEFIR_ID_NONE, KEFIR_OK);                                                \
-                                                                                                                   \
-        REQUIRE_OK(kefir_opt_code_container_phi_link_for(&func->code, phi_ref, (_dominator_branch), (_link_ref))); \
-                                                                                                                   \
-        const struct kefir_opt_instruction *link_instr;                                                            \
-        REQUIRE_OK(kefir_opt_code_container_instr(&func->code, *(_link_ref), &link_instr));                        \
-                                                                                                                   \
-        if (link_instr->block_id == (_dominator_branch)) {                                                         \
-            kefir_bool_t can_move_instr;                                                                           \
-            REQUIRE_OK(kefir_opt_can_hoist_instruction_with_local_dependencies(                                    \
-                control_flow, *(_link_ref), immediate_dominator_block_id, &can_move_instr));                       \
-            REQUIRE(can_move_instr, KEFIR_OK);                                                                     \
-            *(_move_link) = true;                                                                                  \
-        }                                                                                                          \
+#define CHECK_TARGET(_dominator_branch, _link_ref, _move_link)                                                   \
+    do {                                                                                                         \
+        kefir_bool_t is_predecessor;                                                                             \
+        REQUIRE_OK(kefir_opt_code_control_flow_block_exclusive_direct_predecessor(                               \
+            control_flow, immediate_dominator_block_id, (_dominator_branch), &is_predecessor));                  \
+        REQUIRE(is_predecessor, KEFIR_OK);                                                                       \
+        REQUIRE_OK(kefir_opt_code_control_flow_block_direct_predecessor(control_flow, (_dominator_branch),       \
+                                                                        phi_instr->block_id, &is_predecessor));  \
+        REQUIRE(is_predecessor, KEFIR_OK);                                                                       \
+                                                                                                                 \
+        const struct kefir_opt_code_block *branch_block;                                                         \
+        REQUIRE_OK(kefir_opt_code_container_block(&func->code, (_dominator_branch), &branch_block));             \
+        kefir_opt_instruction_ref_t branch_block_tail, branch_block_tail_prev;                                   \
+        REQUIRE_OK(kefir_opt_code_block_instr_control_tail(&func->code, branch_block, &branch_block_tail));      \
+        REQUIRE(branch_block_tail != KEFIR_ID_NONE, KEFIR_OK);                                                   \
+        REQUIRE_OK(kefir_opt_instruction_prev_control(&func->code, branch_block_tail, &branch_block_tail_prev)); \
+        REQUIRE(branch_block_tail_prev == KEFIR_ID_NONE, KEFIR_OK);                                              \
+                                                                                                                 \
+        REQUIRE_OK(kefir_opt_code_container_phi_link_for(&func->code, phi_node->output_ref, (_dominator_branch), \
+                                                         (_link_ref)));                                          \
+                                                                                                                 \
+        const struct kefir_opt_instruction *link_instr;                                                          \
+        REQUIRE_OK(kefir_opt_code_container_instr(&func->code, *(_link_ref), &link_instr));                      \
+                                                                                                                 \
+        if (link_instr->block_id == (_dominator_branch)) {                                                       \
+            kefir_bool_t can_move_instr;                                                                         \
+            REQUIRE_OK(kefir_opt_can_hoist_instruction_with_local_dependencies(                                  \
+                control_flow, *(_link_ref), immediate_dominator_block_id, &can_move_instr));                     \
+            REQUIRE(can_move_instr, KEFIR_OK);                                                                   \
+            *(_move_link) = true;                                                                                \
+        }                                                                                                        \
     } while (0)
         CHECK_TARGET(immediate_dominator_target, &link_ref1, &move_link1);
     }
     if (immediate_dominator_alternative == phi_instr->block_id) {
-        REQUIRE_OK(
-            kefir_opt_code_container_phi_link_for(&func->code, phi_ref, immediate_dominator_block_id, &link_ref2));
+        REQUIRE_OK(kefir_opt_code_container_phi_link_for(&func->code, phi_node->output_ref,
+                                                         immediate_dominator_block_id, &link_ref2));
     } else {
         CHECK_TARGET(immediate_dominator_alternative, &link_ref2, &move_link2);
 #undef CHECK_TARGET

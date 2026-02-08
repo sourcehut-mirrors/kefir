@@ -35,7 +35,6 @@ struct do_inline_param {
     kefir_opt_block_id_t inline_successor_block_id;
     kefir_opt_call_id_t original_call_ref;
     kefir_opt_instruction_ref_t original_call_instr_ref;
-    kefir_opt_phi_id_t result_phi_ref;
     kefir_opt_instruction_ref_t result_phi_instr;
 
     struct kefir_hashtree block_mapping;
@@ -732,9 +731,7 @@ static kefir_result_t inline_operation_phi_ref(struct do_inline_param *param, co
     kefir_opt_block_id_t mapped_block_id;
     REQUIRE_OK(map_block(param, instr->block_id, &mapped_block_id));
 
-    kefir_opt_phi_id_t phi_ref;
-    REQUIRE_OK(
-        kefir_opt_code_container_new_phi(param->mem, param->dst_code, mapped_block_id, &phi_ref, mapped_instr_ref_ptr));
+    REQUIRE_OK(kefir_opt_code_container_new_phi(param->mem, param->dst_code, mapped_block_id, mapped_instr_ref_ptr));
     return KEFIR_OK;
 }
 
@@ -855,9 +852,9 @@ static kefir_result_t inline_return(struct do_inline_param *param, const struct 
             kefir_ir_type_at(param->src_function->ir_func->declaration->result, 0);
         REQUIRE(ir_typeentry != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to retrieve IR type entry"));
 
-        if (param->result_phi_ref == KEFIR_ID_NONE) {
+        if (param->result_phi_instr == KEFIR_ID_NONE) {
             REQUIRE_OK(kefir_opt_code_container_new_phi(param->mem, param->dst_code, param->inline_successor_block_id,
-                                                        &param->result_phi_ref, &param->result_phi_instr));
+                                                        &param->result_phi_instr));
         }
 
         if (instr->operation.parameters.refs[0] != KEFIR_ID_NONE) {
@@ -886,7 +883,7 @@ static kefir_result_t inline_return(struct do_inline_param *param, const struct 
                                             param->src_function->ir_func->declaration->result_type_id, 0,
                                             mapped_block->control_flow.tail, mapped_instr_ref));
         }
-        REQUIRE_OK(kefir_opt_code_container_phi_attach(param->mem, param->dst_code, param->result_phi_ref,
+        REQUIRE_OK(kefir_opt_code_container_phi_attach(param->mem, param->dst_code, param->result_phi_instr,
                                                        mapped_block_id, *mapped_instr_ref));
     }
     REQUIRE_OK(kefir_opt_code_builder_finalize_jump(param->mem, param->dst_code, mapped_block_id,
@@ -905,9 +902,9 @@ static kefir_result_t inline_unreachable(struct do_inline_param *param, const st
             kefir_ir_type_at(param->src_function->ir_func->declaration->result, 0);
         REQUIRE(ir_typeentry != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to retrieve IR type entry"));
 
-        if (param->result_phi_ref == KEFIR_ID_NONE) {
+        if (param->result_phi_instr == KEFIR_ID_NONE) {
             REQUIRE_OK(kefir_opt_code_container_new_phi(param->mem, param->dst_code, param->inline_successor_block_id,
-                                                        &param->result_phi_ref, &param->result_phi_instr));
+                                                        &param->result_phi_instr));
         }
 
         const struct kefir_opt_code_block *mapped_block;
@@ -915,7 +912,7 @@ static kefir_result_t inline_unreachable(struct do_inline_param *param, const st
         REQUIRE_OK(generate_placeholder(param, mapped_block_id,
                                         param->src_function->ir_func->declaration->result_type_id, 0,
                                         mapped_block->control_flow.tail, mapped_instr_ref));
-        REQUIRE_OK(kefir_opt_code_container_phi_attach(param->mem, param->dst_code, param->result_phi_ref,
+        REQUIRE_OK(kefir_opt_code_container_phi_attach(param->mem, param->dst_code, param->result_phi_instr,
                                                        mapped_block_id, *mapped_instr_ref));
     }
     REQUIRE_OK(
@@ -999,24 +996,24 @@ static kefir_result_t map_inlined_phis(struct do_inline_param *param) {
     for (kefir_opt_block_id_t src_block_id = 0; src_block_id < num_of_src_blocks; src_block_id++) {
         const struct kefir_opt_code_block *src_block;
         REQUIRE_OK(kefir_opt_code_container_block(&param->src_function->code, src_block_id, &src_block));
-        kefir_opt_phi_id_t src_phi_ref;
+        kefir_opt_instruction_ref_t src_phi_instr_ref;
         kefir_result_t res;
-        for (res = kefir_opt_code_block_phi_head(&param->src_function->code, src_block, &src_phi_ref);
-             res == KEFIR_OK && src_phi_ref != KEFIR_ID_NONE;
-             res = kefir_opt_phi_next_sibling(&param->src_function->code, src_phi_ref, &src_phi_ref)) {
+        for (res = kefir_opt_code_block_phi_head(&param->src_function->code, src_block, &src_phi_instr_ref);
+             res == KEFIR_OK && src_phi_instr_ref != KEFIR_ID_NONE;
+             res = kefir_opt_phi_next_sibling(&param->src_function->code, src_phi_instr_ref, &src_phi_instr_ref)) {
+
+            const struct kefir_opt_instruction *src_phi_instr;
+            REQUIRE_OK(kefir_opt_code_container_instr(&param->src_function->code, src_phi_instr_ref, &src_phi_instr));
 
             const struct kefir_opt_phi_node *src_phi_node;
-            REQUIRE_OK(kefir_opt_code_container_phi(&param->src_function->code, src_phi_ref, &src_phi_node));
-            if (!kefir_hashtree_has(&param->instr_mapping, (kefir_hashtree_key_t) src_phi_node->output_ref)) {
+            REQUIRE_OK(kefir_opt_code_container_phi(&param->src_function->code,
+                                                    src_phi_instr->operation.parameters.phi_ref, &src_phi_node));
+            if (!kefir_hashtree_has(&param->instr_mapping, (kefir_hashtree_key_t) src_phi_instr_ref)) {
                 continue;
             }
 
             kefir_opt_instruction_ref_t dst_phi_instr_ref;
-            REQUIRE_OK(get_instr_ref_mapping(param, src_phi_node->output_ref, &dst_phi_instr_ref));
-
-            const struct kefir_opt_instruction *dst_phi_instr;
-            REQUIRE_OK(kefir_opt_code_container_instr(param->dst_code, dst_phi_instr_ref, &dst_phi_instr));
-            kefir_opt_phi_id_t dst_phi_ref = dst_phi_instr->operation.parameters.phi_ref;
+            REQUIRE_OK(get_instr_ref_mapping(param, src_phi_instr_ref, &dst_phi_instr_ref));
 
             struct kefir_hashtree_node_iterator iter;
             for (struct kefir_hashtree_node *node = kefir_hashtree_iter(&src_phi_node->links, &iter); node != NULL;
@@ -1032,7 +1029,7 @@ static kefir_result_t map_inlined_phis(struct do_inline_param *param) {
                     ASSIGN_DECL_CAST(kefir_opt_block_id_t, mapped_block_id, node->value);
                     kefir_opt_instruction_ref_t mapped_instr_ref;
                     REQUIRE_OK(get_instr_ref_mapping(param, link_instr_ref, &mapped_instr_ref));
-                    REQUIRE_OK(kefir_opt_code_container_phi_attach(param->mem, param->dst_code, dst_phi_ref,
+                    REQUIRE_OK(kefir_opt_code_container_phi_attach(param->mem, param->dst_code, dst_phi_instr_ref,
                                                                    mapped_block_id, mapped_instr_ref));
                 }
             }
@@ -1281,7 +1278,6 @@ static kefir_result_t do_inline(struct kefir_mem *mem, const struct kefir_opt_mo
                                     .inline_successor_block_id = inline_successor_block_id,
                                     .original_call_ref = original_call_ref,
                                     .original_call_instr_ref = original_call_instr_ref,
-                                    .result_phi_ref = KEFIR_ID_NONE,
                                     .result_phi_instr = KEFIR_ID_NONE};
     REQUIRE_OK(kefir_hashtree_init(&param.block_mapping, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtree_init(&param.instr_mapping, &kefir_hashtree_uint_ops));

@@ -165,14 +165,12 @@ static kefir_result_t collect_translated_instructions_impl(struct kefir_mem *mem
         kefir_result_t res;
         const struct kefir_opt_code_block *block;
         REQUIRE_OK(kefir_opt_code_container_block(&func->function->code, func->function->code.gate_block, &block));
-        kefir_opt_phi_id_t phi_ref;
-        for (res = kefir_opt_code_block_phi_head(&func->function->code, block, &phi_ref);
-             res == KEFIR_OK && phi_ref != KEFIR_ID_NONE;
-             res = kefir_opt_phi_next_sibling(&func->function->code, phi_ref, &phi_ref)) {
-            const struct kefir_opt_phi_node *phi;
-            REQUIRE_OK(kefir_opt_code_container_phi(&func->function->code, phi_ref, &phi));
+        kefir_opt_instruction_ref_t phi_instr_ref;
+        for (res = kefir_opt_code_block_phi_head(&func->function->code, block, &phi_instr_ref);
+             res == KEFIR_OK && phi_instr_ref != KEFIR_ID_NONE;
+             res = kefir_opt_phi_next_sibling(&func->function->code, phi_instr_ref, &phi_instr_ref)) {
             const struct kefir_opt_instruction *instr = NULL;
-            REQUIRE_OK(kefir_opt_code_container_instr(&func->function->code, phi->output_ref, &instr));
+            REQUIRE_OK(kefir_opt_code_container_instr(&func->function->code, phi_instr_ref, &instr));
             REQUIRE_OK(kefir_queue_push(mem, queue, (kefir_queue_entry_t) instr));
         }
         if (res != KEFIR_ITERATOR_END) {

@@ -234,12 +234,11 @@ static kefir_result_t mem2reg_insert_phis(struct mem2reg_state *state, kefir_opt
                 continue;
             }
 
-            kefir_opt_phi_id_t phi_ref;
             kefir_opt_instruction_ref_t phi_instr_ref;
-            REQUIRE_OK(kefir_opt_code_container_new_phi(state->mem, &state->func->code, frontier_block_ref, &phi_ref,
-                                                        &phi_instr_ref));
+            REQUIRE_OK(
+                kefir_opt_code_container_new_phi(state->mem, &state->func->code, frontier_block_ref, &phi_instr_ref));
             REQUIRE_OK(kefir_hashtable_insert(state->mem, &state->inserted_phis, (kefir_hashtable_key_t) key,
-                                              (kefir_hashtable_value_t) phi_ref));
+                                              (kefir_hashtable_value_t) phi_instr_ref));
             REQUIRE_OK(kefir_list_insert_after(state->mem, &state->block_queue, NULL,
                                                (void *) (kefir_uptr_t) frontier_block_ref));
 
@@ -425,8 +424,8 @@ static kefir_result_t mem2reg_link_successor_phis(struct mem2reg_state *state, s
                 kefir_opt_instruction_ref_t link_ref;
                 REQUIRE_OK(mem2reg_find_link_for(state, frame, instr_ref, block_ref, &link_ref));
 
-                REQUIRE_OK(kefir_opt_code_container_phi_attach(state->mem, &state->func->code, table_value, block_ref,
-                                                               link_ref));
+                REQUIRE_OK(kefir_opt_code_container_phi_attach(
+                    state->mem, &state->func->code, (kefir_opt_instruction_ref_t) table_value, block_ref, link_ref));
             }
         }
     }
@@ -662,11 +661,9 @@ static kefir_result_t mem2reg_link(struct mem2reg_state *state) {
                 res = kefir_hashtable_at(&state->inserted_phis, key, &table_value);
                 if (res != KEFIR_NOT_FOUND) {
                     REQUIRE_OK(res);
-                    const struct kefir_opt_phi_node *phi_node;
-                    REQUIRE_OK(
-                        kefir_opt_code_container_phi(&state->func->code, (kefir_opt_phi_id_t) table_value, &phi_node));
-                    REQUIRE_OK(kefir_hashtable_insert(
-                        state->mem, &frame->content, (kefir_hashtable_key_t) original_instr_ref, phi_node->output_ref));
+                    REQUIRE_OK(kefir_hashtable_insert(state->mem, &frame->content,
+                                                      (kefir_hashtable_key_t) original_instr_ref,
+                                                      (kefir_opt_instruction_ref_t) table_value));
                 }
             }
 

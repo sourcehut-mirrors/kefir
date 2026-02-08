@@ -398,13 +398,11 @@ static kefir_result_t extract_inputs_phi_ref(const struct kefir_opt_code_contain
                                              kefir_result_t (*callback)(kefir_opt_instruction_ref_t, void *),
                                              void *payload) {
     if (!resolve_phi) {
-        const struct kefir_opt_phi_node *phi_node;
-        REQUIRE_OK(kefir_opt_code_container_phi(code, instr->operation.parameters.phi_ref, &phi_node));
         struct kefir_opt_phi_node_link_iterator iter;
         kefir_opt_block_id_t block_id;
         kefir_opt_instruction_ref_t instr_ref;
         kefir_result_t res;
-        for (res = kefir_opt_phi_node_link_iter(phi_node, &iter, &block_id, &instr_ref); res == KEFIR_OK;
+        for (res = kefir_opt_phi_node_link_iter(code, instr->id, &iter, &block_id, &instr_ref); res == KEFIR_OK;
              res = kefir_opt_phi_node_link_next(&iter, &block_id, &instr_ref)) {
             INPUT_CALLBACK(instr_ref, callback, payload);
         }
@@ -477,8 +475,7 @@ static kefir_result_t copy_instruction_resolve_phi(struct kefir_mem *mem, struct
     const struct kefir_opt_instruction *instr;
     REQUIRE_OK(kefir_opt_code_container_instr(code, instr_ref, &instr));
     if (instr->operation.opcode == KEFIR_OPT_OPCODE_PHI) {
-        REQUIRE_OK(kefir_opt_code_container_phi_link_for(code, instr->operation.parameters.phi_ref, block_id,
-                                                         copied_instr_ref));
+        REQUIRE_OK(kefir_opt_code_container_phi_link_for(code, instr_ref, block_id, copied_instr_ref));
     } else {
         if (debug_info != NULL) {
             REQUIRE_OK(kefir_opt_code_debug_info_next_instruction_code_reference_of(debug_info, instr_ref));
@@ -549,19 +546,21 @@ kefir_result_t kefir_opt_code_block_redirect_phi_links(struct kefir_mem *mem, st
     const struct kefir_opt_code_block *block;
     REQUIRE_OK(kefir_opt_code_container_block(code, block_id, &block));
 
-    kefir_opt_phi_id_t phi_ref;
     kefir_result_t res;
-    for (res = kefir_opt_code_block_phi_head(code, block, &phi_ref); res == KEFIR_OK && phi_ref != KEFIR_ID_NONE;
-         res = kefir_opt_phi_next_sibling(code, phi_ref, &phi_ref)) {
+    kefir_opt_instruction_ref_t phi_instr_ref;
+    for (res = kefir_opt_code_block_phi_head(code, block, &phi_instr_ref);
+         res == KEFIR_OK && phi_instr_ref != KEFIR_ID_NONE;
+         res = kefir_opt_phi_next_sibling(code, phi_instr_ref, &phi_instr_ref)) {
         kefir_opt_instruction_ref_t instr_ref;
-        kefir_result_t res = kefir_opt_code_container_phi_link_for(code, phi_ref, old_predecessor_block_id, &instr_ref);
+        kefir_result_t res =
+            kefir_opt_code_container_phi_link_for(code, phi_instr_ref, old_predecessor_block_id, &instr_ref);
         if (res == KEFIR_NOT_FOUND) {
             continue;
         }
         REQUIRE_OK(res);
-        REQUIRE_OK(kefir_opt_code_container_phi_drop_link(mem, code, phi_ref, old_predecessor_block_id));
-        REQUIRE_OK(kefir_opt_code_container_phi_drop_link(mem, code, phi_ref, new_predecessor_block_id));
-        REQUIRE_OK(kefir_opt_code_container_phi_attach(mem, code, phi_ref, new_predecessor_block_id, instr_ref));
+        REQUIRE_OK(kefir_opt_code_container_phi_drop_link(mem, code, phi_instr_ref, old_predecessor_block_id));
+        REQUIRE_OK(kefir_opt_code_container_phi_drop_link(mem, code, phi_instr_ref, new_predecessor_block_id));
+        REQUIRE_OK(kefir_opt_code_container_phi_attach(mem, code, phi_instr_ref, new_predecessor_block_id, instr_ref));
     }
     REQUIRE_OK(res);
 

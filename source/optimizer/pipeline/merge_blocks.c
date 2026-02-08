@@ -46,15 +46,15 @@ static kefir_result_t collect_candidates(struct kefir_mem *mem, struct kefir_opt
 
         const struct kefir_opt_code_block *block;
         REQUIRE_OK(kefir_opt_code_container_block(&func->code, block_ref, &block));
-        kefir_opt_phi_id_t phi_ref;
-        REQUIRE_OK(kefir_opt_code_block_phi_head(&func->code, block, &phi_ref));
+        kefir_opt_instruction_ref_t phi_instr_ref;
+        REQUIRE_OK(kefir_opt_code_block_phi_head(&func->code, block, &phi_instr_ref));
         if (block_ref != func->code.gate_block && immediate_dominator_ref != KEFIR_ID_NONE &&
             immediate_dominator_ref != func->code.gate_block &&
             kefir_hashset_size(&state->control_flow.blocks[block_ref].predecessors) == 1 &&
             kefir_hashset_has(&state->control_flow.blocks[block_ref].predecessors,
                               (kefir_hashset_key_t) immediate_dominator_ref) &&
             !kefir_hashset_has(&state->control_flow.indirect_jump_target_blocks, (kefir_hashset_key_t) block_ref) &&
-            phi_ref == KEFIR_ID_NONE) {
+            phi_instr_ref == KEFIR_ID_NONE) {
 
             const struct kefir_opt_code_block *pred_block;
             REQUIRE_OK(kefir_opt_code_container_block(&func->code, immediate_dominator_ref, &pred_block));
@@ -194,9 +194,9 @@ static kefir_result_t do_merge(struct kefir_mem *mem, struct kefir_opt_function 
         if (oper.parameters.branch.target_block == oper.parameters.branch.alternative_block) {
             const struct kefir_opt_code_block *target_block;
             REQUIRE_OK(kefir_opt_code_container_block(&func->code, oper.parameters.branch.target_block, &target_block));
-            kefir_opt_phi_id_t phi_ref;
-            REQUIRE_OK(kefir_opt_code_block_phi_head(&func->code, target_block, &phi_ref));
-            REQUIRE(phi_ref == KEFIR_ID_NONE, KEFIR_OK);
+            kefir_opt_instruction_ref_t phi_instr_ref;
+            REQUIRE_OK(kefir_opt_code_block_phi_head(&func->code, target_block, &phi_instr_ref));
+            REQUIRE(phi_instr_ref == KEFIR_ID_NONE, KEFIR_OK);
         }
 
         REQUIRE_OK(kefir_opt_code_block_redirect_phi_links(

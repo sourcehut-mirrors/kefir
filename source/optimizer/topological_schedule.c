@@ -79,17 +79,16 @@ static kefir_result_t schedule_live_out(struct schedule_instruction_param *param
         ASSIGN_DECL_CAST(kefir_opt_block_id_t, successor_block_id, entry);
         const struct kefir_opt_code_block *successor_block;
         REQUIRE_OK(kefir_opt_code_container_block(param->code, successor_block_id, &successor_block));
-        kefir_opt_phi_id_t phi_ref;
-        for (res = kefir_opt_code_block_phi_head(param->code, successor_block, &phi_ref);
-             res == KEFIR_OK && phi_ref != KEFIR_ID_NONE; kefir_opt_phi_next_sibling(param->code, phi_ref, &phi_ref)) {
-            const struct kefir_opt_phi_node *phi_node;
-            REQUIRE_OK(kefir_opt_code_container_phi(param->code, phi_ref, &phi_node));
+        kefir_opt_instruction_ref_t phi_instr_ref;
+        for (res = kefir_opt_code_block_phi_head(param->code, successor_block, &phi_instr_ref);
+             res == KEFIR_OK && phi_instr_ref != KEFIR_ID_NONE;
+             kefir_opt_phi_next_sibling(param->code, phi_instr_ref, &phi_instr_ref)) {
             if (!kefir_hashset_has(&param->code_analysis->liveness.blocks[successor_block_id].alive_instr,
-                                   (kefir_hashset_key_t) phi_node->output_ref)) {
+                                   (kefir_hashset_key_t) phi_instr_ref)) {
                 continue;
             }
             kefir_opt_instruction_ref_t instr_ref2;
-            REQUIRE_OK(kefir_opt_code_container_phi_link_for(param->code, phi_ref, block->id, &instr_ref2));
+            REQUIRE_OK(kefir_opt_code_container_phi_link_for(param->code, phi_instr_ref, block->id, &instr_ref2));
             REQUIRE_OK(schedule_stack_push(param, instr_ref2, true, kefir_list_tail(&param->instr_queue)));
         }
         REQUIRE_OK(res);

@@ -77,24 +77,23 @@ static kefir_result_t map_phi_outputs_impl(struct kefir_mem *mem, struct kefir_c
     REQUIRE_OK(kefir_opt_code_container_block(&function->function->code, target_block_ref, &target_block));
 
     kefir_result_t res;
-    kefir_opt_phi_id_t phi_ref;
+    kefir_opt_instruction_ref_t phi_instr_ref;
     kefir_opt_instruction_ref_t source_ref, target_ref;
     kefir_asmcmp_virtual_register_index_t source_vreg_idx, target_vreg_idx, deferred_target_vreg_idx;
-    const struct kefir_opt_phi_node *phi = NULL, *source_phi = NULL;
-    for (res = kefir_opt_code_block_phi_head(&function->function->code, target_block, &phi_ref);
-         res == KEFIR_OK && phi_ref != KEFIR_ID_NONE;
-         res = kefir_opt_phi_next_sibling(&function->function->code, phi_ref, &phi_ref)) {
+    const struct kefir_opt_phi_node *source_phi = NULL;
+    for (res = kefir_opt_code_block_phi_head(&function->function->code, target_block, &phi_instr_ref);
+         res == KEFIR_OK && phi_instr_ref != KEFIR_ID_NONE;
+         res = kefir_opt_phi_next_sibling(&function->function->code, phi_instr_ref, &phi_instr_ref)) {
 
-        REQUIRE_OK(kefir_opt_code_container_phi(&function->function->code, phi_ref, &phi));
-        if (!kefir_opt_code_schedule_has(&function->schedule, phi->output_ref) ||
-            !kefir_hashtreeset_has(&function->translated_instructions, (kefir_hashtreeset_entry_t) phi->output_ref)) {
+        if (!kefir_opt_code_schedule_has(&function->schedule, phi_instr_ref) ||
+            !kefir_hashtreeset_has(&function->translated_instructions, (kefir_hashtreeset_entry_t) phi_instr_ref)) {
             continue;
         }
 
-        REQUIRE_OK(kefir_opt_code_container_phi_link_for(&function->function->code, phi->node_id, source_block_ref,
+        REQUIRE_OK(kefir_opt_code_container_phi_link_for(&function->function->code, phi_instr_ref, source_block_ref,
                                                          &source_ref));
         REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, source_ref, &source_vreg_idx));
-        kefir_result_t res = kefir_codegen_amd64_function_vreg_of(function, phi->output_ref, &target_vreg_idx);
+        kefir_result_t res = kefir_codegen_amd64_function_vreg_of(function, phi_instr_ref, &target_vreg_idx);
         if (res == KEFIR_NOT_FOUND) {
             REQUIRE_OK(kefir_hashtreeset_add(mem, used_source_vregs, (kefir_hashtreeset_entry_t) source_vreg_idx));
         } else {
@@ -105,18 +104,17 @@ static kefir_result_t map_phi_outputs_impl(struct kefir_mem *mem, struct kefir_c
         }
     }
 
-    for (res = kefir_opt_code_block_phi_head(&function->function->code, target_block, &phi_ref);
-         res == KEFIR_OK && phi_ref != KEFIR_ID_NONE;
-         res = kefir_opt_phi_next_sibling(&function->function->code, phi_ref, &phi_ref)) {
+    for (res = kefir_opt_code_block_phi_head(&function->function->code, target_block, &phi_instr_ref);
+         res == KEFIR_OK && phi_instr_ref != KEFIR_ID_NONE;
+         res = kefir_opt_phi_next_sibling(&function->function->code, phi_instr_ref, &phi_instr_ref)) {
 
-        REQUIRE_OK(kefir_opt_code_container_phi(&function->function->code, phi_ref, &phi));
-        if (!kefir_opt_code_schedule_has(&function->schedule, phi->output_ref) ||
-            !kefir_hashtreeset_has(&function->translated_instructions, (kefir_hashtreeset_entry_t) phi->output_ref)) {
+        if (!kefir_opt_code_schedule_has(&function->schedule, phi_instr_ref) ||
+            !kefir_hashtreeset_has(&function->translated_instructions, (kefir_hashtreeset_entry_t) phi_instr_ref)) {
             continue;
         }
 
-        target_ref = phi->output_ref;
-        REQUIRE_OK(kefir_opt_code_container_phi_link_for(&function->function->code, phi->node_id, source_block_ref,
+        target_ref = phi_instr_ref;
+        REQUIRE_OK(kefir_opt_code_container_phi_link_for(&function->function->code, phi_instr_ref, source_block_ref,
                                                          &source_ref));
 
         REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, source_ref, &source_vreg_idx));
@@ -132,7 +130,12 @@ static kefir_result_t map_phi_outputs_impl(struct kefir_mem *mem, struct kefir_c
             deferred_target_vreg_idx = KEFIR_ASMCMP_INDEX_NONE;
         }
         if (res == KEFIR_NOT_FOUND || deferred_target_vreg_idx != KEFIR_ASMCMP_INDEX_NONE) {
-            if (deferred_target_vreg_idx == KEFIR_ASMCMP_INDEX_NONE && phi->number_of_links == 1 &&
+            const struct kefir_opt_instruction *phi_instr;
+            REQUIRE_OK(kefir_opt_code_container_instr(&function->function->code, phi_instr_ref, &phi_instr));
+            const struct kefir_opt_phi_node *phi_node;
+            REQUIRE_OK(kefir_opt_code_container_phi(&function->function->code, phi_instr->operation.parameters.phi_ref,
+                                                    &phi_node));
+            if (deferred_target_vreg_idx == KEFIR_ASMCMP_INDEX_NONE && phi_node->number_of_links == 1 &&
                 !kefir_hashtreeset_has(transferred_vregs, (kefir_hashtreeset_entry_t) source_vreg_idx)) {
                 const struct kefir_opt_instruction *source_instr;
                 REQUIRE_OK(kefir_opt_code_container_instr(&function->function->code, source_ref, &source_instr));
@@ -193,17 +196,16 @@ static kefir_result_t map_phi_outputs_impl(struct kefir_mem *mem, struct kefir_c
                                                              deferred_target_vreg, temporary_target_vreg, NULL));
     }
 
-    for (res = kefir_opt_code_block_phi_head(&function->function->code, target_block, &phi_ref);
-         res == KEFIR_OK && phi_ref != KEFIR_ID_NONE;
-         res = kefir_opt_phi_next_sibling(&function->function->code, phi_ref, &phi_ref)) {
+    for (res = kefir_opt_code_block_phi_head(&function->function->code, target_block, &phi_instr_ref);
+         res == KEFIR_OK && phi_instr_ref != KEFIR_ID_NONE;
+         res = kefir_opt_phi_next_sibling(&function->function->code, phi_instr_ref, &phi_instr_ref)) {
 
-        REQUIRE_OK(kefir_opt_code_container_phi(&function->function->code, phi_ref, &phi));
-        if (!kefir_opt_code_schedule_has(&function->schedule, phi->output_ref) ||
-            !kefir_hashtreeset_has(&function->translated_instructions, (kefir_hashtreeset_entry_t) phi->output_ref)) {
+        if (!kefir_opt_code_schedule_has(&function->schedule, phi_instr_ref) ||
+            !kefir_hashtreeset_has(&function->translated_instructions, (kefir_hashtreeset_entry_t) phi_instr_ref)) {
             continue;
         }
 
-        kefir_opt_instruction_ref_t target_ref = phi->output_ref;
+        kefir_opt_instruction_ref_t target_ref = phi_instr_ref;
 
         kefir_asmcmp_virtual_register_index_t target_vreg_idx;
         REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, target_ref, &target_vreg_idx));
@@ -268,17 +270,15 @@ kefir_result_t kefir_codegen_amd64_function_map_phi_outputs(struct kefir_mem *me
 
 static kefir_result_t has_phi_outputs(struct kefir_codegen_amd64_function *function,
                                       const struct kefir_opt_code_block *target_block, kefir_bool_t *has_outputs) {
-    kefir_opt_phi_id_t phi_ref;
-    const struct kefir_opt_phi_node *phi = NULL;
+    kefir_opt_instruction_ref_t phi_instr_ref;
     kefir_result_t res;
     *has_outputs = false;
-    for (res = kefir_opt_code_block_phi_head(&function->function->code, target_block, &phi_ref);
-         res == KEFIR_OK && phi_ref != KEFIR_ID_NONE;
-         res = kefir_opt_phi_next_sibling(&function->function->code, phi_ref, &phi_ref)) {
+    for (res = kefir_opt_code_block_phi_head(&function->function->code, target_block, &phi_instr_ref);
+         res == KEFIR_OK && phi_instr_ref != KEFIR_ID_NONE;
+         res = kefir_opt_phi_next_sibling(&function->function->code, phi_instr_ref, &phi_instr_ref)) {
 
-        REQUIRE_OK(kefir_opt_code_container_phi(&function->function->code, phi_ref, &phi));
-        if (!kefir_opt_code_schedule_has(&function->schedule, phi->output_ref) ||
-            !kefir_hashtreeset_has(&function->translated_instructions, (kefir_hashtreeset_entry_t) phi->output_ref)) {
+        if (!kefir_opt_code_schedule_has(&function->schedule, phi_instr_ref) ||
+            !kefir_hashtreeset_has(&function->translated_instructions, (kefir_hashtreeset_entry_t) phi_instr_ref)) {
             continue;
         }
 
