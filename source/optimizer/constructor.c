@@ -668,18 +668,17 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             kefir_size_t num_of_params = kefir_ir_type_children(ir_decl->params);
             kefir_bool_t has_return = kefir_ir_type_children(ir_decl->result) > 0;
 
-            kefir_opt_call_id_t call_ref;
             if (instr->opcode == KEFIR_IR_OPCODE_INVOKE) {
                 REQUIRE_OK(kefir_opt_code_container_new_call(mem, code, current_block_id, ir_decl->id, num_of_params,
-                                                             KEFIR_ID_NONE, &call_ref, &instr_ref));
+                                                             KEFIR_ID_NONE, &instr_ref));
             } else {
                 REQUIRE_OK(kefir_opt_code_container_new_tail_call(mem, code, current_block_id, ir_decl->id,
-                                                                  num_of_params, KEFIR_ID_NONE, &call_ref, &instr_ref));
+                                                                  num_of_params, KEFIR_ID_NONE, &instr_ref));
             }
             for (kefir_size_t i = 0; i < num_of_params; i++) {
                 REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref2));
-                REQUIRE_OK(
-                    kefir_opt_code_container_call_set_argument(mem, code, call_ref, num_of_params - i - 1, instr_ref2));
+                REQUIRE_OK(kefir_opt_code_container_call_set_argument(mem, code, instr_ref, num_of_params - i - 1,
+                                                                      instr_ref2));
             }
 
             const struct kefir_ir_typeentry *return_typeentry = kefir_ir_type_at(ir_decl->result, 0);
@@ -689,7 +688,7 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
                     case KEFIR_IR_TYPE_ARRAY:
                     case KEFIR_IR_TYPE_UNION:
                         REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref2));
-                        REQUIRE_OK(kefir_opt_code_container_call_set_return_space(mem, code, call_ref, instr_ref2));
+                        REQUIRE_OK(kefir_opt_code_container_call_set_return_space(mem, code, instr_ref, instr_ref2));
                         break;
 
                     default:
@@ -712,19 +711,18 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             kefir_size_t num_of_params = kefir_ir_type_children(ir_decl->params);
             kefir_bool_t has_return = kefir_ir_type_children(ir_decl->result) > 0;
 
-            kefir_opt_call_id_t call_ref;
             REQUIRE_OK(kefir_opt_constructor_stack_at(mem, state, num_of_params, &instr_ref2));
             if (instr->opcode == KEFIR_IR_OPCODE_INVOKE_VIRTUAL) {
                 REQUIRE_OK(kefir_opt_code_container_new_call(mem, code, current_block_id, ir_decl->id, num_of_params,
-                                                             instr_ref2, &call_ref, &instr_ref));
+                                                             instr_ref2, &instr_ref));
             } else {
                 REQUIRE_OK(kefir_opt_code_container_new_tail_call(mem, code, current_block_id, ir_decl->id,
-                                                                  num_of_params, instr_ref2, &call_ref, &instr_ref));
+                                                                  num_of_params, instr_ref2, &instr_ref));
             }
             for (kefir_size_t i = 0; i < num_of_params; i++) {
                 REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref2));
-                REQUIRE_OK(
-                    kefir_opt_code_container_call_set_argument(mem, code, call_ref, num_of_params - i - 1, instr_ref2));
+                REQUIRE_OK(kefir_opt_code_container_call_set_argument(mem, code, instr_ref, num_of_params - i - 1,
+                                                                      instr_ref2));
             }
             REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref2));
             const struct kefir_ir_typeentry *return_typeentry = kefir_ir_type_at(ir_decl->result, 0);
@@ -734,7 +732,7 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
                     case KEFIR_IR_TYPE_ARRAY:
                     case KEFIR_IR_TYPE_UNION:
                         REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref2));
-                        REQUIRE_OK(kefir_opt_code_container_call_set_return_space(mem, code, call_ref, instr_ref2));
+                        REQUIRE_OK(kefir_opt_code_container_call_set_return_space(mem, code, instr_ref, instr_ref2));
                         break;
 
                     default:

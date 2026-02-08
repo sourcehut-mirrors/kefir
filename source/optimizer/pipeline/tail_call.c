@@ -258,20 +258,19 @@ static kefir_result_t block_tail_call_apply(struct kefir_mem *mem, const struct 
     const struct kefir_opt_call_node *call_node;
     REQUIRE_OK(kefir_opt_code_container_call(&func->code, call_ref, &call_node));
 
-    kefir_opt_call_id_t tail_call_ref;
     kefir_opt_instruction_ref_t tail_call_instr_ref;
     REQUIRE_OK(kefir_opt_code_container_new_tail_call(
         mem, &func->code, block_id, call_node->function_declaration_id, call_node->argument_count,
-        call_instr->operation.parameters.function_call.indirect_ref, &tail_call_ref, &tail_call_instr_ref));
+        call_instr->operation.parameters.function_call.indirect_ref, &tail_call_instr_ref));
     REQUIRE_OK(kefir_opt_code_container_call(&func->code, call_ref, &call_node));
     if (call_node->return_space != KEFIR_ID_NONE) {
-        REQUIRE_OK(
-            kefir_opt_code_container_call_set_return_space(mem, &func->code, tail_call_ref, call_node->return_space));
+        REQUIRE_OK(kefir_opt_code_container_call_set_return_space(mem, &func->code, tail_call_instr_ref,
+                                                                  call_node->return_space));
     }
 
     for (kefir_size_t i = 0; i < call_node->argument_count; i++) {
-        REQUIRE_OK(
-            kefir_opt_code_container_call_set_argument(mem, &func->code, tail_call_ref, i, call_node->arguments[i]));
+        REQUIRE_OK(kefir_opt_code_container_call_set_argument(mem, &func->code, tail_call_instr_ref, i,
+                                                              call_node->arguments[i]));
     }
 
     REQUIRE_OK(kefir_opt_code_container_drop_control(&func->code, tail_instr_ref));

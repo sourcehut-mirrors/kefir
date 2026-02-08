@@ -284,20 +284,21 @@ static kefir_result_t inline_operation_call_ref(struct do_inline_param *param,
     kefir_opt_instruction_ref_t mapped_ref1;
     REQUIRE_OK(get_instr_ref_mapping(param, instr->operation.parameters.function_call.indirect_ref, &mapped_ref1));
 
-    kefir_opt_call_id_t dst_call_ref;
+    kefir_opt_instruction_ref_t dst_call_instr_ref;
     REQUIRE_OK(kefir_opt_code_container_new_call(param->mem, param->dst_code, mapped_block_id,
                                                  src_call_node->function_declaration_id, src_call_node->argument_count,
-                                                 mapped_ref1, &dst_call_ref, mapped_instr_ref_ptr));
+                                                 mapped_ref1, &dst_call_instr_ref));
+    ASSIGN_PTR(mapped_instr_ref_ptr, dst_call_instr_ref);
 
     for (kefir_size_t i = 0; i < src_call_node->argument_count; i++) {
         REQUIRE_OK(get_instr_ref_mapping(param, src_call_node->arguments[i], &mapped_ref1));
-        REQUIRE_OK(
-            kefir_opt_code_container_call_set_argument(param->mem, param->dst_code, dst_call_ref, i, mapped_ref1));
+        REQUIRE_OK(kefir_opt_code_container_call_set_argument(param->mem, param->dst_code, dst_call_instr_ref, i,
+                                                              mapped_ref1));
     }
     if (src_call_node->return_space != KEFIR_ID_NONE) {
         REQUIRE_OK(get_instr_ref_mapping(param, src_call_node->return_space, &mapped_ref1));
-        REQUIRE_OK(
-            kefir_opt_code_container_call_set_return_space(param->mem, param->dst_code, dst_call_ref, mapped_ref1));
+        REQUIRE_OK(kefir_opt_code_container_call_set_return_space(param->mem, param->dst_code, dst_call_instr_ref,
+                                                                  mapped_ref1));
     }
     return KEFIR_OK;
 }
