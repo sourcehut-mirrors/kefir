@@ -23,6 +23,7 @@
 
 #include "kefir/core/hashset.h"
 #include "kefir/optimizer/code.h"
+#include "kefir/optimizer/control_flow.h"
 
 typedef kefir_uint32_t kefir_opt_code_memssa_node_ref_t;
 
@@ -98,5 +99,9 @@ kefir_result_t kefir_opt_code_memssa_join_attach(struct kefir_mem *, struct kefi
 kefir_result_t kefir_opt_code_memssa_phi_attach(struct kefir_mem *, struct kefir_opt_code_memssa *,
                                                 kefir_opt_code_memssa_node_ref_t, kefir_opt_block_id_t,
                                                 kefir_opt_code_memssa_node_ref_t);
+
+kefir_result_t kefir_opt_code_memssa_construct(struct kefir_mem *, struct kefir_opt_code_memssa *,
+                                               const struct kefir_opt_code_container *,
+                                               const struct kefir_opt_code_control_flow *);
 
 #endif

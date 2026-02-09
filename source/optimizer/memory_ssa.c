@@ -46,11 +46,11 @@ kefir_result_t kefir_opt_code_memssa_free(struct kefir_mem *mem, struct kefir_op
                 break;
 
             case KEFIR_OPT_CODE_MEMSSA_PHI_NODE:
-                KEFIR_FREE(mem, &memssa->nodes[i].phi.links);
+                KEFIR_FREE(mem, memssa->nodes[i].phi.links);
                 break;
 
             case KEFIR_OPT_CODE_MEMSSA_JOIN_NODE:
-                KEFIR_FREE(mem, &memssa->nodes[i].join.inputs);
+                KEFIR_FREE(mem, memssa->nodes[i].join.inputs);
                 break;
         }
         REQUIRE_OK(kefir_hashset_free(mem, &memssa->nodes[i].uses));
@@ -213,7 +213,7 @@ kefir_result_t kefir_opt_code_memssa_join_attach(struct kefir_mem *mem, struct k
     REQUIRE(memssa != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer memory ssa"));
     REQUIRE(join_node_ref < memssa->node_length && memssa->nodes[join_node_ref].type == KEFIR_OPT_CODE_MEMSSA_JOIN_NODE,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer memory ssa join node reference"));
-    REQUIRE(node_ref < memssa->node_length,
+    REQUIRE(node_ref < memssa->node_length || node_ref == KEFIR_ID_NONE,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer memory ssa node reference"));
 
     for (kefir_size_t i = 0; i < memssa->nodes[join_node_ref].join.input_length; i++) {
@@ -246,7 +246,7 @@ kefir_result_t kefir_opt_code_memssa_phi_attach(struct kefir_mem *mem, struct ke
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer memory ssa phi node reference"));
     REQUIRE(block_id < memssa->block_length,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer memory ssa block reference"));
-    REQUIRE(node_ref < memssa->node_length,
+    REQUIRE(node_ref < memssa->node_length || node_ref == KEFIR_ID_NONE,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer memory ssa node reference"));
 
     for (kefir_size_t i = 0; i < memssa->nodes[phi_node_ref].phi.link_count; i++) {
