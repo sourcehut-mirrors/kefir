@@ -1382,6 +1382,11 @@ static kefir_result_t kefir_codegen_amd64_function_translate_impl(struct kefir_m
     REQUIRE_OK(kefir_asmcmp_context_instr_drop_code(mem, &func->code.context));
     REQUIRE_OK(kefir_opt_code_schedule_clear(mem, &func->schedule));
     REQUIRE_OK(kefir_opt_code_linear_liveness_clear(mem, &func->linear_liveness));
+
+    if (!codegen->config->debug_info) {
+        REQUIRE_OK(kefir_codegen_target_ir_regalloc_reset(mem, &func->target_ir.regalloc));
+        REQUIRE_OK(kefir_codegen_target_ir_code_reset(mem, &func->target_ir.code));
+    }
     return KEFIR_OK;
 }
 
