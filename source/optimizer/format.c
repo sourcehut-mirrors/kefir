@@ -1116,7 +1116,9 @@ static kefir_result_t format_operation_none(struct kefir_json_output *json, cons
 static kefir_result_t instr_format(struct kefir_json_output *json, const struct kefir_opt_module *module,
                                    const struct kefir_opt_code_container *code,
                                    const struct kefir_opt_instruction *instr,
+                                   const struct kefir_opt_code_memssa *memssa,
                                    const struct kefir_opt_code_debug_info *debug_info) {
+    UNUSED(memssa);
     REQUIRE_OK(kefir_json_output_object_begin(json));
     REQUIRE_OK(kefir_json_output_object_key(json, "id"));
     REQUIRE_OK(kefir_json_output_uinteger(json, instr->id));
@@ -1147,17 +1149,52 @@ static kefir_result_t instr_format(struct kefir_json_output *json, const struct 
         }
     }
 
+    if (memssa != NULL) {
+        kefir_opt_code_memssa_node_ref_t node_ref;
+        kefir_result_t res = kefir_opt_code_memssa_instruction_binding(memssa, instr->id, &node_ref);
+        if (res != KEFIR_NOT_FOUND) {
+            REQUIRE_OK(res);
+            const struct kefir_opt_code_memssa_node *node;
+            REQUIRE_OK(kefir_opt_code_memssa_node(memssa, node_ref, &node));
+            REQUIRE_OK(kefir_json_output_object_key(json, "memssa"));
+            REQUIRE_OK(kefir_json_output_object_begin(json));
+            REQUIRE_OK(kefir_json_output_object_key(json, "node_ref"));
+            REQUIRE_OK(id_format(json, node_ref));
+            switch (node->type) {
+                case KEFIR_OPT_CODE_MEMSSA_PRODUCE_NODE:
+                    REQUIRE_OK(kefir_json_output_object_key(json, "type"));
+                    REQUIRE_OK(kefir_json_output_string(json, "produce"));
+                    REQUIRE_OK(kefir_json_output_object_key(json, "predecessor_ref"));
+                    REQUIRE_OK(id_format(json, node->predecessor_ref));
+                    break;
+
+                case KEFIR_OPT_CODE_MEMSSA_CONSUME_NODE:
+                    REQUIRE_OK(kefir_json_output_object_key(json, "type"));
+                    REQUIRE_OK(kefir_json_output_string(json, "produce"));
+                    REQUIRE_OK(kefir_json_output_object_key(json, "predecessor_ref"));
+                    REQUIRE_OK(id_format(json, node->predecessor_ref));
+                    break;
+
+                case KEFIR_OPT_CODE_MEMSSA_ROOT_NODE:
+                case KEFIR_OPT_CODE_MEMSSA_JOIN_NODE:
+                case KEFIR_OPT_CODE_MEMSSA_PHI_NODE:
+                    // Cannot appear in instruction binding
+                    // Intentionally left blank
+                    break;
+            }
+            REQUIRE_OK(kefir_json_output_object_end(json));
+        }
+    }
+
     REQUIRE_OK(kefir_json_output_object_end(json));
     return KEFIR_OK;
 }
 
-static kefir_result_t code_block_format(struct kefir_json_output *json, const struct kefir_opt_module *module,
-                                        const struct kefir_opt_code_container *code,
-                                        const struct kefir_opt_code_block *block,
-                                        const struct kefir_opt_code_control_flow *control_flow,
-                                        const struct kefir_opt_code_liveness *liveness,
-                                        const struct kefir_opt_code_debug_info *debug_info,
-                                        const struct kefir_opt_code_schedule *schedule) {
+static kefir_result_t code_block_format(
+    struct kefir_json_output *json, const struct kefir_opt_module *module, const struct kefir_opt_code_container *code,
+    const struct kefir_opt_code_block *block, const struct kefir_opt_code_control_flow *control_flow,
+    const struct kefir_opt_code_liveness *liveness, const struct kefir_opt_code_memssa *memssa,
+    const struct kefir_opt_code_debug_info *debug_info, const struct kefir_opt_code_schedule *schedule) {
     REQUIRE_OK(kefir_json_output_object_begin(json));
     REQUIRE_OK(kefir_json_output_object_key(json, "id"));
     REQUIRE_OK(kefir_json_output_uinteger(json, block->id));
@@ -1176,7 +1213,7 @@ static kefir_result_t code_block_format(struct kefir_json_output *json, const st
              res = kefir_opt_instruction_next_sibling(code, instr_ref, &instr_ref)) {
 
             REQUIRE_OK(kefir_opt_code_container_instr(code, instr_ref, &instr));
-            REQUIRE_OK(instr_format(json, module, code, instr, debug_info));
+            REQUIRE_OK(instr_format(json, module, code, instr, memssa, debug_info));
         }
         REQUIRE_OK(res);
     } else {
@@ -1184,7 +1221,7 @@ static kefir_result_t code_block_format(struct kefir_json_output *json, const st
         for (res = kefir_opt_code_block_schedule_iter(schedule, block->id, &iter);
              res == KEFIR_OK && iter.instr_ref != KEFIR_ID_NONE; res = kefir_opt_code_block_schedule_next(&iter)) {
             REQUIRE_OK(kefir_opt_code_container_instr(code, iter.instr_ref, &instr));
-            REQUIRE_OK(instr_format(json, module, code, instr, debug_info));
+            REQUIRE_OK(instr_format(json, module, code, instr, memssa, debug_info));
         }
         if (res != KEFIR_ITERATOR_END) {
             REQUIRE_OK(res);
@@ -1264,6 +1301,7 @@ static kefir_result_t format_blocks(struct kefir_json_output *json, const struct
                                     const struct kefir_opt_code_container *code,
                                     const struct kefir_opt_code_control_flow *control_flow,
                                     const struct kefir_opt_code_liveness *liveness,
+                                    const struct kefir_opt_code_memssa *memssa,
                                     struct kefir_opt_code_schedule *schedule,
                                     const struct kefir_opt_code_debug_info *debug_info) {
     REQUIRE_OK(kefir_json_output_object_key(json, "blocks"));
@@ -1272,7 +1310,8 @@ static kefir_result_t format_blocks(struct kefir_json_output *json, const struct
         struct kefir_opt_code_container_iterator iter;
         for (struct kefir_opt_code_block *block = kefir_opt_code_container_iter(code, &iter); block != NULL;
              block = kefir_opt_code_container_next(&iter)) {
-            REQUIRE_OK(code_block_format(json, module, code, block, control_flow, liveness, debug_info, schedule));
+            REQUIRE_OK(
+                code_block_format(json, module, code, block, control_flow, liveness, memssa, debug_info, schedule));
         }
     } else {
         const kefir_size_t num_of_blocks = kefir_opt_code_schedule_num_of_blocks(schedule);
@@ -1282,13 +1321,15 @@ static kefir_result_t format_blocks(struct kefir_json_output *json, const struct
 
             const struct kefir_opt_code_block *block;
             REQUIRE_OK(kefir_opt_code_container_block(code, block_id, &block));
-            REQUIRE_OK(code_block_format(json, module, code, block, control_flow, liveness, debug_info, schedule));
+            REQUIRE_OK(
+                code_block_format(json, module, code, block, control_flow, liveness, memssa, debug_info, schedule));
         }
 
         if (code->gate_block != KEFIR_ID_NONE) {
             const struct kefir_opt_code_block *block;
             REQUIRE_OK(kefir_opt_code_container_block(code, code->gate_block, &block));
-            REQUIRE_OK(code_block_format(json, module, code, block, control_flow, liveness, debug_info, schedule));
+            REQUIRE_OK(
+                code_block_format(json, module, code, block, control_flow, liveness, memssa, debug_info, schedule));
         }
     }
     REQUIRE_OK(kefir_json_output_array_end(json));
@@ -1299,6 +1340,7 @@ kefir_result_t kefir_opt_code_format(struct kefir_mem *mem, struct kefir_json_ou
                                      const struct kefir_opt_module *module, const struct kefir_opt_code_container *code,
                                      const struct kefir_opt_code_control_flow *control_flow,
                                      const struct kefir_opt_code_liveness *liveness,
+                                     const struct kefir_opt_code_memssa *memssa,
                                      const struct kefir_opt_code_debug_info *debug_info) {
     REQUIRE(json != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid json output"));
     REQUIRE(module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer module"));
@@ -1324,7 +1366,7 @@ kefir_result_t kefir_opt_code_format(struct kefir_mem *mem, struct kefir_json_ou
             kefir_opt_code_schedule_run(mem, &schedule, code, control_flow, liveness, &topological_scheduler.scheduler);
     }
     REQUIRE_CHAIN(
-        &res, format_blocks(json, module, code, control_flow, liveness,
+        &res, format_blocks(json, module, code, control_flow, liveness, memssa,
                             mem != NULL && control_flow != NULL && liveness != NULL ? &schedule : NULL, debug_info));
     if (mem != NULL && control_flow != NULL && liveness != NULL) {
         REQUIRE_ELSE(res == KEFIR_OK, {
@@ -1410,7 +1452,8 @@ kefir_result_t kefir_opt_code_format(struct kefir_mem *mem, struct kefir_json_ou
 static kefir_result_t format_function(struct kefir_mem *mem, struct kefir_json_output *json,
                                       const struct kefir_opt_module *module, const struct kefir_opt_function *function,
                                       const struct kefir_opt_code_control_flow *control_flow,
-                                      const struct kefir_opt_code_liveness *liveness, kefir_bool_t debug_info) {
+                                      const struct kefir_opt_code_liveness *liveness,
+                                      const struct kefir_opt_code_memssa *memssa, kefir_bool_t debug_info) {
     REQUIRE_OK(kefir_json_output_object_begin(json));
     REQUIRE_OK(kefir_json_output_object_key(json, "id"));
     REQUIRE_OK(kefir_json_output_uinteger(json, function->ir_func->declaration->id));
@@ -1421,7 +1464,7 @@ static kefir_result_t format_function(struct kefir_mem *mem, struct kefir_json_o
         REQUIRE_OK(kefir_json_output_null(json));
     }
     REQUIRE_OK(kefir_json_output_object_key(json, "code"));
-    REQUIRE_OK(kefir_opt_code_format(mem, json, module, &function->code, control_flow, liveness,
+    REQUIRE_OK(kefir_opt_code_format(mem, json, module, &function->code, control_flow, liveness, memssa,
                                      debug_info ? &function->debug_info : NULL));
     REQUIRE_OK(kefir_json_output_object_end(json));
     return KEFIR_OK;
@@ -1450,20 +1493,33 @@ kefir_result_t kefir_opt_module_format(struct kefir_mem *mem, struct kefir_json_
 
         struct kefir_opt_code_control_flow control_flow;
         struct kefir_opt_code_liveness liveness;
+        struct kefir_opt_code_memssa memssa;
         REQUIRE_CHAIN(&res, kefir_opt_code_control_flow_init(&control_flow));
         REQUIRE_CHAIN(&res, kefir_opt_code_liveness_init(&liveness));
+        REQUIRE_CHAIN(&res, kefir_opt_code_memssa_init(&memssa));
 
         kefir_result_t res = KEFIR_OK;
         ASSIGN_DECL_CAST(const struct kefir_opt_function *, function, node->value);
         if (analyze) {
             REQUIRE_CHAIN(&res, kefir_opt_code_control_flow_build(mem, &control_flow, &function->code));
             REQUIRE_CHAIN(&res, kefir_opt_code_liveness_build(mem, &liveness, &control_flow));
+            REQUIRE_CHAIN(&res,
+                          kefir_opt_code_memssa_construct(mem, &memssa, &function->code, &control_flow, &liveness));
         }
 
         if (!analyze || kefir_opt_module_is_symbol_alive(&module_liveness, function->ir_func->declaration->name)) {
-            REQUIRE_CHAIN(&res, format_function(mem, json, module, function, &control_flow, &liveness, debug_info));
+            REQUIRE_CHAIN(&res, format_function(mem, json, module, function, analyze ? &control_flow : NULL,
+                                                analyze ? &liveness : NULL, analyze ? &memssa : NULL, debug_info));
         }
 
+        REQUIRE_ELSE(res == KEFIR_OK, {
+            kefir_opt_code_memssa_free(mem, &memssa);
+            kefir_opt_code_liveness_free(mem, &liveness);
+            kefir_opt_code_control_flow_free(mem, &control_flow);
+            kefir_opt_module_liveness_free(mem, &module_liveness);
+            return res;
+        });
+        res = kefir_opt_code_memssa_free(mem, &memssa);
         REQUIRE_ELSE(res == KEFIR_OK, {
             kefir_opt_code_liveness_free(mem, &liveness);
             kefir_opt_code_control_flow_free(mem, &control_flow);

@@ -24,13 +24,14 @@
 #include "kefir/optimizer/module.h"
 #include "kefir/optimizer/control_flow.h"
 #include "kefir/optimizer/liveness.h"
+#include "kefir/optimizer/memory_ssa.h"
 #include "kefir/ir/debug.h"
 #include "kefir/util/json.h"
 
 kefir_result_t kefir_opt_code_format(struct kefir_mem *, struct kefir_json_output *, const struct kefir_opt_module *,
                                      const struct kefir_opt_code_container *,
                                      const struct kefir_opt_code_control_flow *, const struct kefir_opt_code_liveness *,
-                                     const struct kefir_opt_code_debug_info *);
+                                     const struct kefir_opt_code_memssa *, const struct kefir_opt_code_debug_info *);
 kefir_result_t kefir_opt_module_format(struct kefir_mem *, struct kefir_json_output *, const struct kefir_opt_module *,
                                        kefir_bool_t, kefir_bool_t);
 

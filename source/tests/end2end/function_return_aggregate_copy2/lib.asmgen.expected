@@ -53,7 +53,12 @@
                                 ],
                                 "return_space": 9,
                                 "indirect_ref": null,
-                                "control_next": 12
+                                "control_next": 12,
+                                "memssa": {
+                                    "node_ref": 1,
+                                    "type": "produce",
+                                    "predecessor_ref": null
+                                }
                             },
                             {
                                 "id": 12,
@@ -64,7 +69,12 @@
                                     "id": 95,
                                     "index": 0
                                 },
-                                "control_next": 18
+                                "control_next": 18,
+                                "memssa": {
+                                    "node_ref": 3,
+                                    "type": "produce",
+                                    "predecessor_ref": 2
+                                }
                             },
                             {
                                 "id": 14,
@@ -104,7 +114,12 @@
                                     "load_extension": "noextend",
                                     "volatile": false
                                 },
-                                "control_next": 1
+                                "control_next": 1,
+                                "memssa": {
+                                    "node_ref": 4,
+                                    "type": "produce",
+                                    "predecessor_ref": 3
+                                }
                             },
                             {
                                 "id": 1,

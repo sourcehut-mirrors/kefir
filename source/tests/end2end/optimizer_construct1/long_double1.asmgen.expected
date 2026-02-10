@@ -76,7 +76,12 @@
                                     "volatile": false
                                 },
                                 "control_next": 1,
-                                "ir_instruction": 6
+                                "ir_instruction": 6,
+                                "memssa": {
+                                    "node_ref": 1,
+                                    "type": "produce",
+                                    "predecessor_ref": null
+                                }
                             },
                             {
                                 "id": 1,

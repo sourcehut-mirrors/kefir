@@ -37,7 +37,12 @@
                                 "flags": {
                                     "volatile": true
                                 },
-                                "control_next": 60
+                                "control_next": 60,
+                                "memssa": {
+                                    "node_ref": 1,
+                                    "type": "produce",
+                                    "predecessor_ref": null
+                                }
                             },
                             {
                                 "id": 60,
@@ -81,7 +86,12 @@
                                 "flags": {
                                     "volatile": true
                                 },
-                                "control_next": 62
+                                "control_next": 62,
+                                "memssa": {
+                                    "node_ref": 2,
+                                    "type": "produce",
+                                    "predecessor_ref": null
+                                }
                             },
                             {
                                 "id": 62,
@@ -111,7 +121,12 @@
                                     "id": 97,
                                     "index": 0
                                 },
-                                "control_next": 64
+                                "control_next": 64,
+                                "memssa": {
+                                    "node_ref": 3,
+                                    "type": "produce",
+                                    "predecessor_ref": null
+                                }
                             },
                             {
                                 "id": 64,
