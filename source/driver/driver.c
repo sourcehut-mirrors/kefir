@@ -45,6 +45,7 @@
     "phi-removal," \
     "constant-fold," \
     "op-simplify," \
+    "memory-ssa," \
     "gvn," \
     "licm," \
     "gvn," \

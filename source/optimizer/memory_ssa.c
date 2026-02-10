@@ -232,7 +232,9 @@ kefir_result_t kefir_opt_code_memssa_join_attach(struct kefir_mem *mem, struct k
     memssa->nodes[join_node_ref].join.inputs = new_inputs;
     memssa->nodes[join_node_ref].join.input_length = new_length;
 
-    REQUIRE_OK(kefir_hashset_add(mem, &memssa->nodes[node_ref].uses, (kefir_hashset_key_t) join_node_ref));
+    if (node_ref != KEFIR_ID_NONE) {
+        REQUIRE_OK(kefir_hashset_add(mem, &memssa->nodes[node_ref].uses, (kefir_hashset_key_t) join_node_ref));
+    }
     return KEFIR_OK;
 }
 
@@ -268,6 +270,8 @@ kefir_result_t kefir_opt_code_memssa_phi_attach(struct kefir_mem *mem, struct ke
     memssa->nodes[phi_node_ref].phi.links = new_links;
     memssa->nodes[phi_node_ref].phi.link_count = new_length;
 
-    REQUIRE_OK(kefir_hashset_add(mem, &memssa->nodes[node_ref].uses, (kefir_hashset_key_t) phi_node_ref));
+    if (node_ref != KEFIR_ID_NONE) {
+        REQUIRE_OK(kefir_hashset_add(mem, &memssa->nodes[node_ref].uses, (kefir_hashset_key_t) phi_node_ref));
+    }
     return KEFIR_OK;
 }

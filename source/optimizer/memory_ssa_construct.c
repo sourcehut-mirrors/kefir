@@ -224,7 +224,7 @@ static kefir_result_t link_successor_phis(struct kefir_mem *mem, struct construc
             REQUIRE_OK(find_link_for(frame, &link_ref));
 
             REQUIRE_OK(kefir_opt_code_memssa_phi_attach(
-                mem, state->memssa, (kefir_opt_code_memssa_node_ref_t) table_value, successor_block_ref, link_ref));
+                mem, state->memssa, (kefir_opt_code_memssa_node_ref_t) table_value, block_ref, link_ref));
         }
     }
     if (res != KEFIR_ITERATOR_END) {
