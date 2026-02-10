@@ -24,10 +24,12 @@
 #include "kefir/core/hashset.h"
 #include "kefir/optimizer/code.h"
 #include "kefir/optimizer/control_flow.h"
+#include "kefir/optimizer/liveness.h"
 
 typedef kefir_uint32_t kefir_opt_code_memssa_node_ref_t;
 
 typedef enum kefir_opt_code_memssa_node_type {
+    KEFIR_OPT_CODE_MEMSSA_ROOT_NODE,
     KEFIR_OPT_CODE_MEMSSA_CONSUME_NODE,
     KEFIR_OPT_CODE_MEMSSA_PRODUCE_NODE,
     KEFIR_OPT_CODE_MEMSSA_JOIN_NODE,
@@ -71,6 +73,8 @@ typedef struct kefir_opt_code_memssa {
     struct kefir_opt_code_memssa_block *blocks;
     kefir_size_t block_length;
     kefir_size_t block_capacity;
+
+    struct kefir_hashtable instruction_bindings;
 } kefir_opt_code_memssa_t;
 
 kefir_result_t kefir_opt_code_memssa_init(struct kefir_opt_code_memssa *);
@@ -83,6 +87,8 @@ kefir_result_t kefir_opt_code_memssa_update_block_output(struct kefir_opt_code_m
 kefir_result_t kefir_opt_code_memssa_block(const struct kefir_opt_code_memssa *, kefir_opt_block_id_t,
                                            const struct kefir_opt_code_memssa_block **);
 
+kefir_result_t kefir_opt_code_memssa_new_root_node(struct kefir_mem *, struct kefir_opt_code_memssa *,
+                                                   kefir_opt_code_memssa_node_ref_t *);
 kefir_result_t kefir_opt_code_memssa_new_consume_node(struct kefir_mem *, struct kefir_opt_code_memssa *,
                                                       kefir_opt_code_memssa_node_ref_t, kefir_opt_instruction_ref_t,
                                                       kefir_opt_code_memssa_node_ref_t *);
@@ -100,8 +106,15 @@ kefir_result_t kefir_opt_code_memssa_phi_attach(struct kefir_mem *, struct kefir
                                                 kefir_opt_code_memssa_node_ref_t, kefir_opt_block_id_t,
                                                 kefir_opt_code_memssa_node_ref_t);
 
+kefir_result_t kefir_opt_code_memssa_instruction_binding(const struct kefir_opt_code_memssa *,
+                                                         kefir_opt_instruction_ref_t,
+                                                         kefir_opt_code_memssa_node_ref_t *);
+kefir_result_t kefir_opt_code_memssa_node(const struct kefir_opt_code_memssa *, kefir_opt_code_memssa_node_ref_t,
+                                          const struct kefir_opt_code_memssa_node **);
+
 kefir_result_t kefir_opt_code_memssa_construct(struct kefir_mem *, struct kefir_opt_code_memssa *,
                                                const struct kefir_opt_code_container *,
-                                               const struct kefir_opt_code_control_flow *);
+                                               const struct kefir_opt_code_control_flow *,
+                                               const struct kefir_opt_code_liveness *);
 
 #endif
