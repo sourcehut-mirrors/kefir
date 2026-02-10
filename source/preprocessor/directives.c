@@ -77,6 +77,7 @@ kefir_result_t kefir_preprocessor_directive_scanner_skip_line(
         kefir_result_t res = kefir_preprocessor_tokenize_next(mem, directive_scanner->lexer,
                                                               &directive_scanner->tokenizer_context, &next_token);
         if (res == KEFIR_LEXER_ERROR) {
+            kefir_clear_error();
             const kefir_char32_t chr = kefir_lexer_source_cursor_at(directive_scanner->lexer->cursor, 0);
             if (chr == KEFIR_LEXER_SOURCE_CURSOR_EOF) {
                 break;
@@ -685,6 +686,7 @@ static kefir_result_t next_linemarker(struct kefir_mem *mem,
     REQUIRE_OK(kefir_string_buffer_init(mem, &strbuf, KEFIR_STRING_BUFFER_MULTIBYTE));
     kefir_result_t res = kefir_lexer_scan_string(mem, directive_scanner->lexer, &strbuf);
     if (res == KEFIR_LEXER_ERROR || res == KEFIR_NO_MATCH) {
+        kefir_clear_error();
         REQUIRE_OK(kefir_string_buffer_free(mem, &strbuf));
         REQUIRE_OK(next_non_directive(directive_scanner, directive));
         return KEFIR_OK;
