@@ -197,6 +197,11 @@ static kefir_result_t scan_struct_specifier_body(struct kefir_mem *mem, struct k
         if (res == KEFIR_NO_MATCH) {
             res = kefir_parser_try_invoke(mem, parser, scan_struct_static_assert, &entry);
         }
+        if (res == KEFIR_NO_MATCH && PARSER_TOKEN_IS_PUNCTUATOR(parser, 0, KEFIR_PUNCTUATOR_SEMICOLON)) {
+            // Skip empty declaration
+            REQUIRE_OK(PARSER_SHIFT(parser));
+            continue;
+        }
 
         if (res == KEFIR_NO_MATCH) {
             scan_declarations = false;
