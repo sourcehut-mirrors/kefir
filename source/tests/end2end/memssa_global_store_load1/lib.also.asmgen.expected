@@ -1,0 +1,158 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global c1
+.type c1, @object
+.global c2
+.type c2, @object
+.global c3
+.type c3, @object
+.global i1
+.type i1, @object
+.global i2
+.type i2, @object
+.global i3
+.type i3, @object
+.global l1
+.type l1, @object
+.global l2
+.type l2, @object
+.global l3
+.type l3, @object
+.global s1
+.type s1, @object
+.global s2
+.type s2, @object
+.global s3
+.type s3, @object
+.global test_int
+.type test_int, @function
+.global test_char
+.type test_char, @function
+.global test_long
+.type test_long, @function
+.global test_short
+.type test_short, @function
+
+.section .text
+.L__kefir_text_section_begin:
+test_int:
+.L__kefir_text_func_test_int_begin:
+    movq i1@GOTPCREL(%rip), %rax
+    movl %edi, (%rax)
+    movq i2@GOTPCREL(%rip), %rax
+    lea 1(%edi), %ecx
+    movl %ecx, (%rax)
+    movq i3@GOTPCREL(%rip), %rax
+    mov %rdi, %rdx
+    shl $1, %edx
+    movl %edx, (%rax)
+    add %ecx, %edi
+    mov %edi, %eax
+    add %edx, %eax
+    ret
+.L__kefir_text_func_test_int_end:
+
+test_char:
+.L__kefir_text_func_test_char_begin:
+    movq c1@GOTPCREL(%rip), %rax
+    movb %dil, (%rax)
+    movq c2@GOTPCREL(%rip), %rax
+    movsx %dil, %rcx
+    lea 1(%ecx), %edx
+    movb %dl, (%rax)
+    movq c3@GOTPCREL(%rip), %rax
+    mov %rcx, %rsi
+    shl $1, %esi
+    movb %sil, (%rax)
+    movsx %dl, %rax
+    add %eax, %ecx
+    movsx %sil, %rax
+    add %ecx, %eax
+    ret
+.L__kefir_text_func_test_char_end:
+
+test_long:
+.L__kefir_text_func_test_long_begin:
+    movq l1@GOTPCREL(%rip), %rax
+    movq %rdi, (%rax)
+    movq l2@GOTPCREL(%rip), %rax
+    lea 1(%rdi), %rcx
+    movq %rcx, (%rax)
+    movq l3@GOTPCREL(%rip), %rax
+    mov %rdi, %rdx
+    shl $1, %rdx
+    movq %rdx, (%rax)
+    add %rcx, %rdi
+    mov %rdi, %rax
+    add %rdx, %rax
+    ret
+.L__kefir_text_func_test_long_end:
+
+test_short:
+.L__kefir_text_func_test_short_begin:
+    movq s1@GOTPCREL(%rip), %rax
+    movw %di, (%rax)
+    movq s2@GOTPCREL(%rip), %rax
+    movsx %di, %rcx
+    lea 1(%ecx), %edx
+    movw %dx, (%rax)
+    movq s3@GOTPCREL(%rip), %rax
+    mov %rcx, %rsi
+    shl $1, %esi
+    movw %si, (%rax)
+    movsx %dx, %rax
+    add %eax, %ecx
+    movsx %si, %rax
+    add %ecx, %eax
+    ret
+.L__kefir_text_func_test_short_end:
+
+.L__kefir_text_section_end:
+
+.section .bss
+c1:
+    .skip 1
+
+c2:
+    .skip 1
+
+c3:
+    .skip 1
+
+    .align 4
+i1:
+    .skip 4
+
+    .align 4
+i2:
+    .skip 4
+
+    .align 4
+i3:
+    .skip 4
+
+    .align 8
+l1:
+    .skip 8
+
+    .align 8
+l2:
+    .skip 8
+
+    .align 8
+l3:
+    .skip 8
+
+    .align 2
+s1:
+    .skip 2
+
+    .align 2
+s2:
+    .skip 2
+
+    .align 2
+s3:
+    .skip 2
+

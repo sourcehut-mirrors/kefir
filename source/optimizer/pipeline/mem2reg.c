@@ -436,41 +436,50 @@ static kefir_result_t mem2reg_link_successor_phis(struct mem2reg_state *state, s
     return KEFIR_OK;
 }
 
-static kefir_result_t mem2reg_extend_value(struct mem2reg_state *state, const struct kefir_opt_instruction *instr,
-                                           kefir_opt_instruction_ref_t value_ref,
-                                           kefir_opt_instruction_ref_t *ext_instr_ref) {
+kefir_result_t kefir_opt_code_util_extend_load_value(struct kefir_mem *mem, struct kefir_opt_code_container *code,
+                                                     const struct kefir_ir_module *ir_module,
+                                                     const struct kefir_opt_instruction *instr,
+                                                     kefir_opt_instruction_ref_t value_ref,
+                                                     kefir_opt_instruction_ref_t *ext_instr_ref) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code"));
+    REQUIRE(ir_module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR module"));
+    REQUIRE(instr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer instruction"));
+    REQUIRE(ext_instr_ref != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to optimizer instructionn reference"));
+
     *ext_instr_ref = value_ref;
     switch (instr->operation.opcode) {
         case KEFIR_OPT_OPCODE_INT8_LOAD:
             if (instr->operation.parameters.memory_access.flags.load_extension == KEFIR_OPT_MEMORY_LOAD_ZERO_EXTEND) {
-                REQUIRE_OK(kefir_opt_code_builder_int64_zero_extend_8bits(state->mem, &state->func->code,
-                                                                          instr->block_id, value_ref, ext_instr_ref));
+                REQUIRE_OK(kefir_opt_code_builder_int64_zero_extend_8bits(mem, code, instr->block_id, value_ref,
+                                                                          ext_instr_ref));
             } else if (instr->operation.parameters.memory_access.flags.load_extension ==
                        KEFIR_OPT_MEMORY_LOAD_SIGN_EXTEND) {
-                REQUIRE_OK(kefir_opt_code_builder_int64_sign_extend_8bits(state->mem, &state->func->code,
-                                                                          instr->block_id, value_ref, ext_instr_ref));
+                REQUIRE_OK(kefir_opt_code_builder_int64_sign_extend_8bits(mem, code, instr->block_id, value_ref,
+                                                                          ext_instr_ref));
             }
             break;
 
         case KEFIR_OPT_OPCODE_INT16_LOAD:
             if (instr->operation.parameters.memory_access.flags.load_extension == KEFIR_OPT_MEMORY_LOAD_ZERO_EXTEND) {
-                REQUIRE_OK(kefir_opt_code_builder_int64_zero_extend_16bits(state->mem, &state->func->code,
-                                                                           instr->block_id, value_ref, ext_instr_ref));
+                REQUIRE_OK(kefir_opt_code_builder_int64_zero_extend_16bits(mem, code, instr->block_id, value_ref,
+                                                                           ext_instr_ref));
             } else if (instr->operation.parameters.memory_access.flags.load_extension ==
                        KEFIR_OPT_MEMORY_LOAD_SIGN_EXTEND) {
-                REQUIRE_OK(kefir_opt_code_builder_int64_sign_extend_16bits(state->mem, &state->func->code,
-                                                                           instr->block_id, value_ref, ext_instr_ref));
+                REQUIRE_OK(kefir_opt_code_builder_int64_sign_extend_16bits(mem, code, instr->block_id, value_ref,
+                                                                           ext_instr_ref));
             }
             break;
 
         case KEFIR_OPT_OPCODE_INT32_LOAD:
             if (instr->operation.parameters.memory_access.flags.load_extension == KEFIR_OPT_MEMORY_LOAD_ZERO_EXTEND) {
-                REQUIRE_OK(kefir_opt_code_builder_int64_zero_extend_32bits(state->mem, &state->func->code,
-                                                                           instr->block_id, value_ref, ext_instr_ref));
+                REQUIRE_OK(kefir_opt_code_builder_int64_zero_extend_32bits(mem, code, instr->block_id, value_ref,
+                                                                           ext_instr_ref));
             } else if (instr->operation.parameters.memory_access.flags.load_extension ==
                        KEFIR_OPT_MEMORY_LOAD_SIGN_EXTEND) {
-                REQUIRE_OK(kefir_opt_code_builder_int64_sign_extend_32bits(state->mem, &state->func->code,
-                                                                           instr->block_id, value_ref, ext_instr_ref));
+                REQUIRE_OK(kefir_opt_code_builder_int64_sign_extend_32bits(mem, code, instr->block_id, value_ref,
+                                                                           ext_instr_ref));
             }
             break;
 
@@ -478,13 +487,12 @@ static kefir_result_t mem2reg_extend_value(struct mem2reg_state *state, const st
         case KEFIR_OPT_OPCODE_BITINT_LOAD_PRECISE: {
             const struct kefir_opt_instruction *alloc_instr;
             REQUIRE_OK(kefir_opt_code_container_instr(
-                &state->func->code, instr->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_LOCATION_REF],
-                &alloc_instr));
+                code, instr->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_LOCATION_REF], &alloc_instr));
             REQUIRE(alloc_instr->operation.opcode == KEFIR_OPT_OPCODE_ALLOC_LOCAL,
                     KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected local variable allocation"));
 
-            const struct kefir_ir_type *ir_type = kefir_ir_module_get_named_type(
-                state->module->ir_module, alloc_instr->operation.parameters.type.type_id);
+            const struct kefir_ir_type *ir_type =
+                kefir_ir_module_get_named_type(ir_module, alloc_instr->operation.parameters.type.type_id);
             REQUIRE(ir_type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to find IR type"));
             const struct kefir_ir_typeentry *local_typeentry =
                 kefir_ir_type_at(ir_type, alloc_instr->operation.parameters.type.type_index);
@@ -494,14 +502,14 @@ static kefir_result_t mem2reg_extend_value(struct mem2reg_state *state, const st
                     KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected bitint local variable allocation"));
 
             if (instr->operation.parameters.bitint_memflags.load_extension == KEFIR_OPT_MEMORY_LOAD_SIGN_EXTEND) {
-                REQUIRE_OK(kefir_opt_code_builder_bitint_cast_signed(state->mem, &state->func->code, instr->block_id,
+                REQUIRE_OK(kefir_opt_code_builder_bitint_cast_signed(mem, code, instr->block_id,
                                                                      instr->operation.parameters.bitwidth,
                                                                      local_typeentry->param, value_ref, ext_instr_ref));
             } else if (instr->operation.parameters.bitint_memflags.load_extension ==
                        KEFIR_OPT_MEMORY_LOAD_ZERO_EXTEND) {
                 REQUIRE_OK(kefir_opt_code_builder_bitint_cast_unsigned(
-                    state->mem, &state->func->code, instr->block_id, instr->operation.parameters.bitwidth,
-                    local_typeentry->param, value_ref, ext_instr_ref));
+                    mem, code, instr->block_id, instr->operation.parameters.bitwidth, local_typeentry->param, value_ref,
+                    ext_instr_ref));
             }
         } break;
 
@@ -556,7 +564,8 @@ static kefir_result_t mem2reg_assign(struct mem2reg_state *state, struct mem2reg
                     REQUIRE_OK(mem2reg_find_link_for(
                         state, frame, instr->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_LOCATION_REF],
                         instr->block_id, &link_ref));
-                    REQUIRE_OK(mem2reg_extend_value(state, instr, link_ref, &link_ref));
+                    REQUIRE_OK(kefir_opt_code_util_extend_load_value(
+                        state->mem, &state->func->code, state->module->ir_module, instr, link_ref, &link_ref));
                     REQUIRE_OK(kefir_opt_code_container_replace_references(state->mem, &state->func->code, link_ref,
                                                                            instr_ref));
                     kefir_opt_instruction_ref_t del_instr_ref = instr_ref;
