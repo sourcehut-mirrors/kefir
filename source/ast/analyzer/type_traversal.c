@@ -485,12 +485,12 @@ struct kefir_ast_designator *kefir_ast_type_traversal_layer_designator(
     REQUIRE(layer != NULL, NULL);
 
     struct kefir_ast_designator *base = kefir_ast_type_traversal_layer_designator(mem, symbols, layer->parent);
-    struct kefir_ast_designator *designator = NULL;
+    struct kefir_ast_designator *designator = base;
     switch (layer->type) {
         case KEFIR_AST_TYPE_TRAVERSAL_STRUCTURE:
         case KEFIR_AST_TYPE_TRAVERSAL_UNION: {
             ASSIGN_DECL_CAST(struct kefir_ast_struct_field *, field, layer->structure.iterator->value);
-            if (field != NULL) {
+            if (field != NULL && field->identifier != NULL) {
                 designator = kefir_ast_new_member_designator(mem, symbols, field->identifier, base);
             }
         } break;
@@ -502,6 +502,9 @@ struct kefir_ast_designator *kefir_ast_type_traversal_layer_designator(
         case KEFIR_AST_TYPE_TRAVERSAL_SCALAR:
             // Intentionally left blank
             break;
+    }
+    if (designator == NULL && base != NULL) {
+        kefir_ast_designator_free(mem, base);
     }
     return designator;
 }
