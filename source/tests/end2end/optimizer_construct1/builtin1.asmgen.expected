@@ -42,11 +42,7 @@
                                 },
                                 "control_next": 7,
                                 "ir_instruction": 6,
-                                "memssa": {
-                                    "node_ref": 1,
-                                    "type": "produce",
-                                    "predecessor_ref": null
-                                }
+                                "memssa_node_ref": 1
                             },
                             {
                                 "id": 5,
@@ -63,11 +59,7 @@
                                 "arg": 5,
                                 "control_next": 8,
                                 "ir_instruction": 15,
-                                "memssa": {
-                                    "node_ref": 2,
-                                    "type": "produce",
-                                    "predecessor_ref": 1
-                                }
+                                "memssa_node_ref": 2
                             },
                             {
                                 "id": 6,
@@ -87,11 +79,7 @@
                                 ],
                                 "control_next": 9,
                                 "ir_instruction": 20,
-                                "memssa": {
-                                    "node_ref": 3,
-                                    "type": "produce",
-                                    "predecessor_ref": 2
-                                }
+                                "memssa_node_ref": 3
                             },
                             {
                                 "id": 9,
@@ -104,11 +92,7 @@
                                 },
                                 "control_next": 10,
                                 "ir_instruction": 24,
-                                "memssa": {
-                                    "node_ref": 4,
-                                    "type": "produce",
-                                    "predecessor_ref": 3
-                                }
+                                "memssa_node_ref": 4
                             },
                             {
                                 "id": 10,
@@ -116,11 +100,7 @@
                                 "arg": 5,
                                 "control_next": 1,
                                 "ir_instruction": 28,
-                                "memssa": {
-                                    "node_ref": 5,
-                                    "type": "produce",
-                                    "predecessor_ref": 4
-                                }
+                                "memssa_node_ref": 5
                             },
                             {
                                 "id": 1,
@@ -181,7 +161,38 @@
                         }
                     ],
                     "allocation_placement": []
-                }
+                },
+                "memssa": [
+                    {
+                        "node_ref": 0,
+                        "type": "root"
+                    },
+                    {
+                        "node_ref": 1,
+                        "type": "produce",
+                        "predecessor_ref": 0
+                    },
+                    {
+                        "node_ref": 2,
+                        "type": "produce",
+                        "predecessor_ref": 1
+                    },
+                    {
+                        "node_ref": 3,
+                        "type": "produce",
+                        "predecessor_ref": 2
+                    },
+                    {
+                        "node_ref": 4,
+                        "type": "produce",
+                        "predecessor_ref": 3
+                    },
+                    {
+                        "node_ref": 5,
+                        "type": "produce",
+                        "predecessor_ref": 4
+                    }
+                ]
             }
         },
         {
@@ -249,11 +260,7 @@
                                 },
                                 "control_next": 1,
                                 "ir_instruction": 9,
-                                "memssa": {
-                                    "node_ref": 1,
-                                    "type": "produce",
-                                    "predecessor_ref": null
-                                }
+                                "memssa_node_ref": 1
                             },
                             {
                                 "id": 1,
@@ -299,7 +306,18 @@
                         }
                     ],
                     "allocation_placement": []
-                }
+                },
+                "memssa": [
+                    {
+                        "node_ref": 0,
+                        "type": "root"
+                    },
+                    {
+                        "node_ref": 1,
+                        "type": "produce",
+                        "predecessor_ref": 0
+                    }
+                ]
             }
         }
     ]

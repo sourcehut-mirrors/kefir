@@ -31,6 +31,7 @@ kefir_result_t kefir_opt_code_memssa_init(struct kefir_opt_code_memssa *memssa) 
     memssa->blocks = NULL;
     memssa->block_length = 0;
     memssa->block_capacity = 0;
+    memssa->root_ref = KEFIR_ID_NONE;
     REQUIRE_OK(kefir_hashtable_init(&memssa->instruction_bindings, &kefir_hashtable_uint_ops));
     return KEFIR_OK;
 }
@@ -131,6 +132,10 @@ kefir_result_t kefir_opt_code_memssa_new_root_node(struct kefir_mem *mem, struct
                                                    kefir_opt_code_memssa_node_ref_t *node_ref_ptr) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(memssa != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer memory ssa"));
+    if (memssa->root_ref != KEFIR_ID_NONE) {
+        ASSIGN_PTR(node_ref_ptr, memssa->root_ref);
+        return KEFIR_OK;
+    }
 
     kefir_opt_code_memssa_node_ref_t node_ref = KEFIR_ID_NONE;
     REQUIRE_OK(new_node(mem, memssa, &node_ref));
@@ -138,6 +143,7 @@ kefir_result_t kefir_opt_code_memssa_new_root_node(struct kefir_mem *mem, struct
     memssa->nodes[node_ref].type = KEFIR_OPT_CODE_MEMSSA_ROOT_NODE;
     REQUIRE_OK(kefir_hashset_init(&memssa->nodes[node_ref].uses, &kefir_hashtable_uint_ops));
     memssa->node_length++;
+    memssa->root_ref = node_ref;
     ASSIGN_PTR(node_ref_ptr, node_ref);
     return KEFIR_OK;
 }
@@ -335,8 +341,44 @@ kefir_result_t kefir_opt_code_memssa_node(const struct kefir_opt_code_memssa *me
     REQUIRE(memssa != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer memory ssa"));
     REQUIRE(node_ref != KEFIR_ID_NONE && node_ref < memssa->node_length,
             KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find memory ssa node"));
-    ;
 
     ASSIGN_PTR(node_ptr, &memssa->nodes[node_ref]);
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_opt_code_memssa_use_iter(const struct kefir_opt_code_memssa *memssa,
+                                              struct kefir_opt_code_memssa_use_iterator *iter,
+                                              kefir_opt_code_memssa_node_ref_t node_ref,
+                                              kefir_opt_code_memssa_node_ref_t *node_ref_ptr) {
+    REQUIRE(memssa != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer memory ssa"));
+    REQUIRE(iter != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to optimizer memory ssa iterator"));
+
+    const struct kefir_opt_code_memssa_node *node;
+    REQUIRE_OK(kefir_opt_code_memssa_node(memssa, node_ref, &node));
+
+    kefir_hashset_key_t key;
+    kefir_result_t res = kefir_hashset_iter(&node->uses, &iter->iter, &key);
+    if (res == KEFIR_ITERATOR_END) {
+        res = KEFIR_SET_ERROR(KEFIR_ITERATOR_END, "End of memory ssa node use iterator");
+    }
+    REQUIRE_OK(res);
+
+    ASSIGN_PTR(node_ref_ptr, (kefir_opt_code_memssa_node_ref_t) key);
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_opt_code_memssa_use_next(struct kefir_opt_code_memssa_use_iterator *iter,
+                                              kefir_opt_code_memssa_node_ref_t *node_ref_ptr) {
+    REQUIRE(iter != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer memory ssa iterator"));
+
+    kefir_hashset_key_t key;
+    kefir_result_t res = kefir_hashset_next(&iter->iter, &key);
+    if (res == KEFIR_ITERATOR_END) {
+        res = KEFIR_SET_ERROR(KEFIR_ITERATOR_END, "End of memory ssa node use iterator");
+    }
+    REQUIRE_OK(res);
+
+    ASSIGN_PTR(node_ref_ptr, (kefir_opt_code_memssa_node_ref_t) key);
     return KEFIR_OK;
 }

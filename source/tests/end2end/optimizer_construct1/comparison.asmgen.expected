@@ -489,7 +489,13 @@
                 "debug": {
                     "local_variables": [],
                     "allocation_placement": []
-                }
+                },
+                "memssa": [
+                    {
+                        "node_ref": 0,
+                        "type": "root"
+                    }
+                ]
             }
         }
     ]

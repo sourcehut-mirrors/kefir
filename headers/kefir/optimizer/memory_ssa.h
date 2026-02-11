@@ -74,6 +74,8 @@ typedef struct kefir_opt_code_memssa {
     kefir_size_t block_length;
     kefir_size_t block_capacity;
 
+    kefir_opt_code_memssa_node_ref_t root_ref;
+
     struct kefir_hashtable instruction_bindings;
 } kefir_opt_code_memssa_t;
 
@@ -111,6 +113,16 @@ kefir_result_t kefir_opt_code_memssa_instruction_binding(const struct kefir_opt_
                                                          kefir_opt_code_memssa_node_ref_t *);
 kefir_result_t kefir_opt_code_memssa_node(const struct kefir_opt_code_memssa *, kefir_opt_code_memssa_node_ref_t,
                                           const struct kefir_opt_code_memssa_node **);
+
+typedef struct kefir_opt_code_memssa_use_iterator {
+    struct kefir_hashset_iterator iter;
+} kefir_opt_code_memssa_use_iterator_t;
+
+kefir_result_t kefir_opt_code_memssa_use_iter(const struct kefir_opt_code_memssa *,
+                                              struct kefir_opt_code_memssa_use_iterator *,
+                                              kefir_opt_code_memssa_node_ref_t, kefir_opt_code_memssa_node_ref_t *);
+kefir_result_t kefir_opt_code_memssa_use_next(struct kefir_opt_code_memssa_use_iterator *,
+                                              kefir_opt_code_memssa_node_ref_t *);
 
 kefir_result_t kefir_opt_code_memssa_construct(struct kefir_mem *, struct kefir_opt_code_memssa *,
                                                const struct kefir_opt_code_container *,

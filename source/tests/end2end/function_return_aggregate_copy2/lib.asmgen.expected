@@ -54,11 +54,7 @@
                                 "return_space": 9,
                                 "indirect_ref": null,
                                 "control_next": 12,
-                                "memssa": {
-                                    "node_ref": 1,
-                                    "type": "produce",
-                                    "predecessor_ref": null
-                                }
+                                "memssa_node_ref": 1
                             },
                             {
                                 "id": 12,
@@ -70,11 +66,7 @@
                                     "index": 0
                                 },
                                 "control_next": 18,
-                                "memssa": {
-                                    "node_ref": 3,
-                                    "type": "produce",
-                                    "predecessor_ref": 2
-                                }
+                                "memssa_node_ref": 2
                             },
                             {
                                 "id": 14,
@@ -115,11 +107,7 @@
                                     "volatile": false
                                 },
                                 "control_next": 1,
-                                "memssa": {
-                                    "node_ref": 4,
-                                    "type": "produce",
-                                    "predecessor_ref": 3
-                                }
+                                "memssa_node_ref": 3
                             },
                             {
                                 "id": 1,
@@ -156,6 +144,27 @@
                                 12
                             ]
                         }
+                    }
+                ],
+                "memssa": [
+                    {
+                        "node_ref": 0,
+                        "type": "root"
+                    },
+                    {
+                        "node_ref": 1,
+                        "type": "produce",
+                        "predecessor_ref": 0
+                    },
+                    {
+                        "node_ref": 2,
+                        "type": "produce",
+                        "predecessor_ref": 1
+                    },
+                    {
+                        "node_ref": 3,
+                        "type": "produce",
+                        "predecessor_ref": 2
                     }
                 ]
             }

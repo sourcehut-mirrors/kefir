@@ -1154,35 +1154,8 @@ static kefir_result_t instr_format(struct kefir_json_output *json, const struct 
         kefir_result_t res = kefir_opt_code_memssa_instruction_binding(memssa, instr->id, &node_ref);
         if (res != KEFIR_NOT_FOUND) {
             REQUIRE_OK(res);
-            const struct kefir_opt_code_memssa_node *node;
-            REQUIRE_OK(kefir_opt_code_memssa_node(memssa, node_ref, &node));
-            REQUIRE_OK(kefir_json_output_object_key(json, "memssa"));
-            REQUIRE_OK(kefir_json_output_object_begin(json));
-            REQUIRE_OK(kefir_json_output_object_key(json, "node_ref"));
+            REQUIRE_OK(kefir_json_output_object_key(json, "memssa_node_ref"));
             REQUIRE_OK(id_format(json, node_ref));
-            switch (node->type) {
-                case KEFIR_OPT_CODE_MEMSSA_PRODUCE_NODE:
-                    REQUIRE_OK(kefir_json_output_object_key(json, "type"));
-                    REQUIRE_OK(kefir_json_output_string(json, "produce"));
-                    REQUIRE_OK(kefir_json_output_object_key(json, "predecessor_ref"));
-                    REQUIRE_OK(id_format(json, node->predecessor_ref));
-                    break;
-
-                case KEFIR_OPT_CODE_MEMSSA_CONSUME_NODE:
-                    REQUIRE_OK(kefir_json_output_object_key(json, "type"));
-                    REQUIRE_OK(kefir_json_output_string(json, "produce"));
-                    REQUIRE_OK(kefir_json_output_object_key(json, "predecessor_ref"));
-                    REQUIRE_OK(id_format(json, node->predecessor_ref));
-                    break;
-
-                case KEFIR_OPT_CODE_MEMSSA_ROOT_NODE:
-                case KEFIR_OPT_CODE_MEMSSA_JOIN_NODE:
-                case KEFIR_OPT_CODE_MEMSSA_PHI_NODE:
-                    // Cannot appear in instruction binding
-                    // Intentionally left blank
-                    break;
-            }
-            REQUIRE_OK(kefir_json_output_object_end(json));
         }
     }
 
@@ -1336,6 +1309,93 @@ static kefir_result_t format_blocks(struct kefir_json_output *json, const struct
     return KEFIR_OK;
 }
 
+static kefir_result_t format_memssa(struct kefir_mem *mem, struct kefir_json_output *json,
+                                    const struct kefir_opt_code_memssa *memssa, struct kefir_list *queue,
+                                    struct kefir_hashset *visited) {
+    REQUIRE_OK(kefir_json_output_object_key(json, "memssa"));
+    REQUIRE_OK(kefir_json_output_array_begin(json));
+
+    REQUIRE_OK(kefir_list_insert_after(mem, queue, NULL, (void *) (kefir_uptr_t) memssa->root_ref));
+    for (struct kefir_list_entry *iter = kefir_list_head(queue); iter != NULL; iter = kefir_list_head(queue)) {
+        ASSIGN_DECL_CAST(kefir_opt_code_memssa_node_ref_t, node_ref, (kefir_uptr_t) iter->value);
+        REQUIRE_OK(kefir_list_pop(mem, queue, iter));
+        if (kefir_hashset_has(visited, (kefir_hashset_key_t) node_ref)) {
+            continue;
+        }
+        REQUIRE_OK(kefir_hashset_add(mem, visited, (kefir_hashset_key_t) node_ref));
+
+        kefir_result_t res;
+        struct kefir_opt_code_memssa_use_iterator use_iter;
+        kefir_opt_code_memssa_node_ref_t use_node_ref;
+        for (res = kefir_opt_code_memssa_use_iter(memssa, &use_iter, node_ref, &use_node_ref); res == KEFIR_OK;
+             res = kefir_opt_code_memssa_use_next(&use_iter, &use_node_ref)) {
+            REQUIRE_OK(kefir_list_insert_after(mem, queue, NULL, (void *) (kefir_uptr_t) use_node_ref));
+        }
+        if (res != KEFIR_ITERATOR_END) {
+            REQUIRE_OK(res);
+        }
+
+        const struct kefir_opt_code_memssa_node *node;
+        REQUIRE_OK(kefir_opt_code_memssa_node(memssa, node_ref, &node));
+
+        REQUIRE_OK(kefir_json_output_object_begin(json));
+        REQUIRE_OK(kefir_json_output_object_key(json, "node_ref"));
+        REQUIRE_OK(id_format(json, node_ref));
+        switch (node->type) {
+            case KEFIR_OPT_CODE_MEMSSA_ROOT_NODE:
+                REQUIRE_OK(kefir_json_output_object_key(json, "type"));
+                REQUIRE_OK(kefir_json_output_string(json, "root"));
+                break;
+
+            case KEFIR_OPT_CODE_MEMSSA_PRODUCE_NODE:
+                REQUIRE_OK(kefir_json_output_object_key(json, "type"));
+                REQUIRE_OK(kefir_json_output_string(json, "produce"));
+                REQUIRE_OK(kefir_json_output_object_key(json, "predecessor_ref"));
+                REQUIRE_OK(id_format(json, node->predecessor_ref));
+                break;
+
+            case KEFIR_OPT_CODE_MEMSSA_CONSUME_NODE:
+                REQUIRE_OK(kefir_json_output_object_key(json, "type"));
+                REQUIRE_OK(kefir_json_output_string(json, "produce"));
+                REQUIRE_OK(kefir_json_output_object_key(json, "predecessor_ref"));
+                REQUIRE_OK(id_format(json, node->predecessor_ref));
+                break;
+
+            case KEFIR_OPT_CODE_MEMSSA_JOIN_NODE: {
+                REQUIRE_OK(kefir_json_output_object_key(json, "type"));
+                REQUIRE_OK(kefir_json_output_string(json, "join"));
+                REQUIRE_OK(kefir_json_output_object_key(json, "nodes"));
+                REQUIRE_OK(kefir_json_output_array_begin(json));
+                for (kefir_size_t i = 0; i < node->join.input_length; i++) {
+                    REQUIRE_OK(id_format(json, node->join.inputs[i]));
+                }
+                REQUIRE_OK(kefir_json_output_array_end(json));
+            } break;
+
+            case KEFIR_OPT_CODE_MEMSSA_PHI_NODE: {
+                REQUIRE_OK(kefir_json_output_object_key(json, "type"));
+                REQUIRE_OK(kefir_json_output_string(json, "phi"));
+                REQUIRE_OK(kefir_json_output_object_key(json, "links"));
+                REQUIRE_OK(kefir_json_output_array_begin(json));
+                for (kefir_size_t i = 0; i < node->phi.link_count; i++) {
+                    REQUIRE_OK(kefir_json_output_object_begin(json));
+                    REQUIRE_OK(kefir_json_output_object_key(json, "block_ref"));
+                    REQUIRE_OK(id_format(json, node->phi.links[i].block_ref));
+                    REQUIRE_OK(kefir_json_output_object_key(json, "node_ref"));
+                    REQUIRE_OK(id_format(json, node->phi.links[i].node_ref));
+                    REQUIRE_OK(kefir_json_output_object_end(json));
+                }
+                REQUIRE_OK(kefir_json_output_array_end(json));
+            } break;
+        }
+        REQUIRE_OK(kefir_json_output_object_end(json));
+    }
+
+    REQUIRE_OK(kefir_json_output_array_end(json));
+
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_opt_code_format(struct kefir_mem *mem, struct kefir_json_output *json,
                                      const struct kefir_opt_module *module, const struct kefir_opt_code_container *code,
                                      const struct kefir_opt_code_control_flow *control_flow,
@@ -1443,6 +1503,25 @@ kefir_result_t kefir_opt_code_format(struct kefir_mem *mem, struct kefir_json_ou
         REQUIRE_OK(kefir_json_output_array_end(json));
 
         REQUIRE_OK(kefir_json_output_object_end(json));
+    }
+
+    if (memssa != NULL && memssa->root_ref != KEFIR_ID_NONE) {
+        struct kefir_list queue;
+        struct kefir_hashset visited;
+        REQUIRE_OK(kefir_list_init(&queue));
+        REQUIRE_OK(kefir_hashset_init(&visited, &kefir_hashtable_uint_ops));
+        res = format_memssa(mem, json, memssa, &queue, &visited);
+        REQUIRE_ELSE(res == KEFIR_OK, {
+            kefir_list_free(mem, &queue);
+            kefir_hashset_free(mem, &visited);
+            return res;
+        });
+        res = kefir_list_free(mem, &queue);
+        REQUIRE_ELSE(res == KEFIR_OK, {
+            kefir_hashset_free(mem, &visited);
+            return res;
+        });
+        REQUIRE_OK(kefir_hashset_free(mem, &visited));
     }
 
     REQUIRE_OK(kefir_json_output_object_end(json));

@@ -42,6 +42,12 @@
                             ]
                         }
                     }
+                ],
+                "memssa": [
+                    {
+                        "node_ref": 0,
+                        "type": "root"
+                    }
                 ]
             }
         }
