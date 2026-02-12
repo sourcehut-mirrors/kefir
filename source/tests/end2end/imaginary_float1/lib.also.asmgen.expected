@@ -2004,7 +2004,6 @@ __kefir_softfloat_scalbnf:
     movsx %edi, %rax
     shl $23, %rax
     movq %rax, -16(%rbp)
-    movl -16(%rbp), %eax
     movd %eax, %xmm1
     mulss %xmm1, %xmm0
     ldmxcsr -8(%rbp)
@@ -2195,7 +2194,6 @@ __kefir_softfloat_fabsf:
     movq -8(%rbp), %rax
     and $2147483647, %rax
     movq %rax, -8(%rbp)
-    movl -8(%rbp), %eax
     movq %rax, %xmm0
     lea (%rbp), %rsp
     pop %rbp

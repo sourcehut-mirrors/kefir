@@ -46,9 +46,7 @@ test:
     movq someptr@GOTPCREL(%rip), %rax
     lea -4(%rbp), %rcx
     movq %rcx, (%rax)
-    movl -4(%rbp), %eax
-    add $1, %eax
-    mov %eax, %edi
+    add $1, %edi
     call test
     lea (%rbp), %rsp
     pop %rbp
@@ -143,12 +141,11 @@ test7:
     mov %rsp, %rbp
     sub $16, %rsp
     movl %edi, -4(%rbp)
-    movl -4(%rbp), %eax
-    lea -4(%rbp), %rcx
-    xor %edx, %edx
-    cmp $0, %eax
-    cmovle %rdx, %rcx
-    mov %rcx, %rdi
+    lea -4(%rbp), %rax
+    xor %ecx, %ecx
+    cmp $0, %edi
+    cmovle %rcx, %rax
+    mov %rax, %rdi
     call somefn@PLT
     movl -4(%rbp), %eax
     add $1, %eax

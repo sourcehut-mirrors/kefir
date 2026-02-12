@@ -281,6 +281,7 @@ kefir_result_t kefir_codegen_amd64_get_argument_register(struct kefir_mem *, str
     _def(int_bool_and, KEFIR_OPT_OPCODE_INT16_BOOL_AND) _separator                                                   \
     _def(int_bool_and, KEFIR_OPT_OPCODE_INT32_BOOL_AND) _separator                                                   \
     _def(int_bool_and, KEFIR_OPT_OPCODE_INT64_BOOL_AND) _separator                                                   \
+    _def(to_int, KEFIR_OPT_OPCODE_TO_INT) _separator                          \
     _def(int_to_bool, KEFIR_OPT_OPCODE_INT8_TO_BOOL) _separator                          \
     _def(int_to_bool, KEFIR_OPT_OPCODE_INT16_TO_BOOL) _separator                          \
     _def(int_to_bool, KEFIR_OPT_OPCODE_INT32_TO_BOOL) _separator                          \

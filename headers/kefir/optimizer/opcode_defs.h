@@ -138,6 +138,7 @@
     OPCODE(INT32_BOOL_AND, "int32_bool_and", ref2) SEPARATOR \
     OPCODE(INT64_BOOL_AND, "int64_bool_and", ref2) SEPARATOR \
     /* Type conversions */ \
+    OPCODE(TO_INT, "to_int", ref1) SEPARATOR \
     OPCODE(INT8_TO_BOOL, "int8_to_bool", ref1) SEPARATOR \
     OPCODE(INT16_TO_BOOL, "int16_to_bool", ref1) SEPARATOR \
     OPCODE(INT32_TO_BOOL, "int32_to_bool", ref1) SEPARATOR \

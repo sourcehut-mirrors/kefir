@@ -62,12 +62,12 @@ test_char:
     lea 1(%ecx), %edx
     movb %dl, (%rax)
     movq c3@GOTPCREL(%rip), %rax
-    mov %rcx, %rsi
-    shl $1, %esi
-    movb %sil, (%rax)
-    movsx %dl, %rax
-    add %eax, %ecx
-    movsx %sil, %rax
+    shl $1, %ecx
+    movb %cl, (%rax)
+    movsx %dil, %rax
+    movsx %dl, %rdx
+    add %edx, %eax
+    movsx %cl, %rcx
     add %ecx, %eax
     ret
 .L__kefir_text_func_test_char_end:
@@ -98,12 +98,12 @@ test_short:
     lea 1(%ecx), %edx
     movw %dx, (%rax)
     movq s3@GOTPCREL(%rip), %rax
-    mov %rcx, %rsi
-    shl $1, %esi
-    movw %si, (%rax)
-    movsx %dx, %rax
-    add %eax, %ecx
-    movsx %si, %rax
+    shl $1, %ecx
+    movw %cx, (%rax)
+    movsx %di, %rax
+    movsx %dx, %rdx
+    add %edx, %eax
+    movsx %cx, %rcx
     add %ecx, %eax
     ret
 .L__kefir_text_func_test_short_end:
