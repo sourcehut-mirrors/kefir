@@ -567,11 +567,11 @@ static kefir_result_t amd64_regalloc_register_allocation(kefir_codegen_target_ir
     REQUIRE(allocation_ptr != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to target IR register allocation"));
 
-    union kefir_codegen_target_ir_amd64_regalloc_entry entry = {
-        .reg = {.type = kefir_asm_amd64_xasmgen_register_is_floating_point(phreg)
-                            ? KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_SSE
-                            : KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_GP,
-                .value = phreg}};
+    union kefir_codegen_target_ir_amd64_regalloc_entry entry = {0};
+    entry.reg.type = kefir_asm_amd64_xasmgen_register_is_floating_point(phreg)
+                         ? KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_SSE
+                         : KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_GP;
+    entry.reg.value = phreg;
     *allocation_ptr = entry.allocation;
     return KEFIR_OK;
 }
