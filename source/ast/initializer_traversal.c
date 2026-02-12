@@ -22,6 +22,7 @@
 #include "kefir/ast/analyzer/type_traversal.h"
 #include "kefir/ast/analyzer/analyzer.h"
 #include "kefir/ast/type.h"
+#include "kefir/ast/type_conv.h"
 #include "kefir/ast/downcast.h"
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
@@ -214,30 +215,36 @@ static kefir_result_t traverse_aggregate_union_impl(struct kefir_ast_designator 
         }
     } else if (entry->value->expression->properties.expression_props.string_literal.content != NULL) {
         REQUIRE_OK(assign_string(mem, context, entry, traversal, initializer_traversal));
-    } else if (KEFIR_AST_TYPE_IS_SCALAR_TYPE(entry->value->expression->properties.type)) {
-        const struct kefir_ast_type *type = NULL;
-        REQUIRE_OK(kefir_ast_type_traversal_next_recursive(mem, traversal, &type, &layer));
-        REQUIRE_OK(layer_designator(mem, context->symbols, entry_designator, layer, &designator_layer));
-
-        INVOKE_TRAVERSAL_CHAIN(&res, initializer_traversal, visit_value, designator_layer, entry->value->expression);
     } else {
-        const struct kefir_ast_type *type = NULL;
-        REQUIRE_OK(kefir_ast_type_traversal_next(mem, traversal, &type, &layer));
-        res = kefir_ast_node_assignable(mem, context, entry->value->expression, kefir_ast_unqualified_type(type));
-        while (res == KEFIR_NO_MATCH) {
-            REQUIRE_OK(kefir_ast_type_traversal_step(mem, traversal));
-            REQUIRE_OK(kefir_ast_type_traversal_next(mem, traversal, &type, &layer));
-            REQUIRE_MATCH_OK(
-                &res,
-                kefir_ast_node_assignable(mem, context, entry->value->expression, kefir_ast_unqualified_type(type)),
-                KEFIR_SET_SOURCE_ERROR(
-                    KEFIR_ANALYSIS_ERROR, &entry->value->expression->source_location,
-                    "Initializer expression shall be convertible to corresponding field/element type"));
-        }
-        REQUIRE_OK(res);
-        REQUIRE_OK(layer_designator(mem, context->symbols, entry_designator, layer, &designator_layer));
+        const struct kefir_ast_type *entry_type =
+            KEFIR_AST_TYPE_CONV_EXPRESSION_ALL(mem, context->type_bundle, entry->value->expression->properties.type);
+        if (KEFIR_AST_TYPE_IS_SCALAR_TYPE(entry_type)) {
+            const struct kefir_ast_type *type = NULL;
+            REQUIRE_OK(kefir_ast_type_traversal_next_recursive(mem, traversal, &type, &layer));
+            REQUIRE_OK(layer_designator(mem, context->symbols, entry_designator, layer, &designator_layer));
 
-        INVOKE_TRAVERSAL_CHAIN(&res, initializer_traversal, visit_value, designator_layer, entry->value->expression);
+            INVOKE_TRAVERSAL_CHAIN(&res, initializer_traversal, visit_value, designator_layer,
+                                   entry->value->expression);
+        } else {
+            const struct kefir_ast_type *type = NULL;
+            REQUIRE_OK(kefir_ast_type_traversal_next(mem, traversal, &type, &layer));
+            res = kefir_ast_node_assignable(mem, context, entry->value->expression, kefir_ast_unqualified_type(type));
+            while (res == KEFIR_NO_MATCH) {
+                REQUIRE_OK(kefir_ast_type_traversal_step(mem, traversal));
+                REQUIRE_OK(kefir_ast_type_traversal_next(mem, traversal, &type, &layer));
+                REQUIRE_MATCH_OK(
+                    &res,
+                    kefir_ast_node_assignable(mem, context, entry->value->expression, kefir_ast_unqualified_type(type)),
+                    KEFIR_SET_SOURCE_ERROR(
+                        KEFIR_ANALYSIS_ERROR, &entry->value->expression->source_location,
+                        "Initializer expression shall be convertible to corresponding field/element type"));
+            }
+            REQUIRE_OK(res);
+            REQUIRE_OK(layer_designator(mem, context->symbols, entry_designator, layer, &designator_layer));
+
+            INVOKE_TRAVERSAL_CHAIN(&res, initializer_traversal, visit_value, designator_layer,
+                                   entry->value->expression);
+        }
     }
 
     REQUIRE_ELSE(res == KEFIR_OK, {

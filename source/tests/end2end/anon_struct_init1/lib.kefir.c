@@ -21,3 +21,5 @@
 #include "./definitions.h"
 
 struct S1 arr[1] = {&arr[0]};
+struct S1 arr2[1] = {arr2};
+struct S1 arr3[1] = {fn};

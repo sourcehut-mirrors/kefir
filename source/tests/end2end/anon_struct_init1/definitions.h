@@ -27,6 +27,10 @@ struct S1 {
     };
 };
 
+extern void fn(void);
+
 extern struct S1 arr[1];
+extern struct S1 arr2[1];
+extern struct S1 arr3[1];
 
 #endif

@@ -23,7 +23,12 @@
 #include <assert.h>
 #include "./definitions.h"
 
+void fn(void) {}
+
 int main(void) {
+    void (*ptr)(void) = fn;
     assert(arr[0].ptr == &arr[0]);
+    assert(arr2[0].ptr == arr2);
+    assert(arr3[0].ptr == *(void **) &ptr);
     return EXIT_SUCCESS;
 }
