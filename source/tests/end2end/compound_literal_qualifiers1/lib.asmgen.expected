@@ -1,0 +1,62 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global test
+.type test, @function
+
+.section .text
+.L__kefir_text_section_begin:
+test:
+.L__kefir_text_func_test_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $64, %rsp
+    fstcw -8(%rbp)
+    fldt .L__kefir_func_test_label6(%rip)
+    movq $0, -24(%rbp)
+    fstpt -32(%rbp)
+    fldt -32(%rbp)
+    flds .L__kefir_constant_long_double_to_uint(%rip)
+    fxch %st(1)
+    fcomi %st(1)
+    jnb .L__kefir_func_test_label3
+    fstp %st(1)
+    fnstcww -64(%rbp)
+    movzxw -64(%rbp), %eax
+    or $3072, %ax
+    movw %ax, -56(%rbp)
+    fldcww -56(%rbp)
+    fistpq -48(%rbp)
+    mov -48(%rbp), %rax
+    fldcww -64(%rbp)
+.L__kefir_func_test_label4:
+    fldcw -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.L__kefir_func_test_label3:
+    fnstcww -64(%rbp)
+    fsubp
+    movzxw -64(%rbp), %eax
+    or $3072, %ax
+    movw %ax, -56(%rbp)
+    fldcww -56(%rbp)
+    fistpq -48(%rbp)
+    mov -48(%rbp), %rax
+    fldcww -64(%rbp)
+    btc $63, %rax
+    jmp .L__kefir_func_test_label4
+.L__kefir_text_func_test_end:
+.section .rodata
+    .align 8
+.L__kefir_func_test_label6:
+    .quad 18446744073709541615
+    .quad 16446
+.section .text
+
+.L__kefir_text_section_end:
+
+.section .rodata
+    .align 4
+.L__kefir_constant_long_double_to_uint:
+    .long 1593835520
