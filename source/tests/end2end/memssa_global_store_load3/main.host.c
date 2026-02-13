@@ -18,29 +18,17 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef DEFINITIONS_H_
-#define DEFINITIONS_H_
+#include <stdlib.h>
+#include <stdio.h>
+#include <assert.h>
+#include <math.h>
+#include <complex.h>
+#include "./definitions.h"
 
-extern char c1, c2, c3;
-extern short s1, s2, s3;
-extern int i1, i2, i3;
-extern long l1, l2, l3;
-extern float f1, f2, f3;
-extern double d1, d2, d3;
-extern long double ld1, ld2, ld3;
-extern _Complex float cf1, cf2, cf3;
-extern _Complex double cd1, cd2, cd3;
-extern _Complex long double cld1, cld2, cld3;
-
-char test_char(char);
-short test_short(short);
-int test_int(int);
-long test_long(long);
-float test_float(float);
-double test_double(double);
-long double test_ldouble(long double);
-_Complex float test_cfloat(_Complex float);
-_Complex double test_cdouble(_Complex double);
-_Complex long double test_cldouble(_Complex long double);
-
-#endif
+int main(void) {
+    for (int i = -4096; i < 4096; i++) {
+        assert(test1(i) == (int) (((int) i) + ((int) (i + 1)) + ((int) (i * 2))));
+        assert(test2(i) == (int) (((int) i) + ((int) (i + 1)) + ((int) (i * 2))));
+    }
+    return EXIT_SUCCESS;
+}

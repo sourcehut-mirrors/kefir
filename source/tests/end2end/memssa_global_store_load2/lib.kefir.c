@@ -20,16 +20,16 @@
 
 #include "./definitions.h"
 
-char c1, c2, c3;
-short s1, s2, s3;
-int i1, i2, i3;
-long l1, l2, l3;
-float f1, f2, f3;
-double d1, d2, d3;
-long double ld1, ld2, ld3;
-_Complex float cf1, cf2, cf3;
-_Complex double cd1, cd2, cd3;
-_Complex long double cld1, cld2, cld3;
+_Thread_local char c1, c2, c3;
+_Thread_local short s1, s2, s3;
+_Thread_local int i1, i2, i3;
+_Thread_local long l1, l2, l3;
+_Thread_local float f1, f2, f3;
+_Thread_local double d1, d2, d3;
+_Thread_local long double ld1, ld2, ld3;
+_Thread_local _Complex float cf1, cf2, cf3;
+_Thread_local _Complex double cd1, cd2, cd3;
+_Thread_local _Complex long double cld1, cld2, cld3;
 
 char test_char(char x) {
     c1 = x;

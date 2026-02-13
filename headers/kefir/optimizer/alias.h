@@ -18,29 +18,16 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef DEFINITIONS_H_
-#define DEFINITIONS_H_
+#ifndef KEFIR_OPTIMIZER_ALIAS_H_
+#define KEFIR_OPTIMIZER_ALIAS_H_
 
-extern char c1, c2, c3;
-extern short s1, s2, s3;
-extern int i1, i2, i3;
-extern long l1, l2, l3;
-extern float f1, f2, f3;
-extern double d1, d2, d3;
-extern long double ld1, ld2, ld3;
-extern _Complex float cf1, cf2, cf3;
-extern _Complex double cd1, cd2, cd3;
-extern _Complex long double cld1, cld2, cld3;
+#include "kefir/optimizer/code.h"
 
-char test_char(char);
-short test_short(short);
-int test_int(int);
-long test_long(long);
-float test_float(float);
-double test_double(double);
-long double test_ldouble(long double);
-_Complex float test_cfloat(_Complex float);
-_Complex double test_cdouble(_Complex double);
-_Complex long double test_cldouble(_Complex long double);
+kefir_result_t kefir_opt_code_may_alias(const struct kefir_opt_code_container *, kefir_opt_instruction_ref_t,
+                                        kefir_size_t, kefir_int64_t, kefir_opt_instruction_ref_t, kefir_size_t,
+                                        kefir_int64_t, kefir_bool_t *);
+kefir_result_t kefir_opt_code_must_alias(const struct kefir_opt_code_container *, kefir_opt_instruction_ref_t,
+                                         kefir_size_t, kefir_int64_t, kefir_opt_instruction_ref_t, kefir_size_t,
+                                         kefir_int64_t, kefir_bool_t *);
 
 #endif

@@ -1,0 +1,72 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global x
+.type x, @object
+.global y
+.type y, @object
+.global test1
+.type test1, @function
+.global test2
+.type test2, @function
+
+.section .text
+.L__kefir_text_section_begin:
+test1:
+.L__kefir_text_func_test1_begin:
+    movq x@GOTPCREL(%rip), %rax
+    movl %edi, (%rax)
+    movq x@GOTPCREL(%rip), %rax
+    lea 1(%edi), %ecx
+    movl %ecx, 4(%rax)
+    movq x@GOTPCREL(%rip), %rax
+    mov %rdi, %rdx
+    shl $1, %edx
+    movl %edx, 8(%rax)
+    add %ecx, %edi
+    mov %edi, %eax
+    add %edx, %eax
+    ret
+.L__kefir_text_func_test1_end:
+
+test2:
+.L__kefir_text_func_test2_begin:
+.extern __tls_get_addr
+    push %rbx
+    push %r12
+    mov %rdi, %rbx
+    data16     lea y@tlsgd(%rip), %rdi
+    .word 26214
+    rex.W     call __tls_get_addr@PLT
+    movl %ebx, (%rax)
+    data16     lea y@tlsgd(%rip), %rdi
+    .word 26214
+    rex.W     call __tls_get_addr@PLT
+    lea 1(%ebx), %r12d
+    movl %r12d, 4(%rax)
+    data16     lea y@tlsgd(%rip), %rdi
+    .word 26214
+    rex.W     call __tls_get_addr@PLT
+    mov %rbx, %rcx
+    shl $1, %ecx
+    movl %ecx, 8(%rax)
+    add %r12d, %ebx
+    mov %ebx, %eax
+    add %ecx, %eax
+    pop %r12
+    pop %rbx
+    ret
+.L__kefir_text_func_test2_end:
+
+.L__kefir_text_section_end:
+
+.section .bss
+    .align 4
+x:
+    .skip 12
+
+.section .tbss
+    .align 4
+y:
+    .zero 12
+

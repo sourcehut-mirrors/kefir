@@ -24,33 +24,82 @@
 #include "kefir/optimizer/memory_ssa.h"
 #include "kefir/optimizer/sequencing.h"
 #include "kefir/optimizer/builder.h"
+#include "kefir/optimizer/alias.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 #include <string.h>
 
-static kefir_result_t may_alias(const struct kefir_opt_code_container *code, kefir_opt_instruction_ref_t location_ref1,
-                                kefir_opt_instruction_ref_t location_ref2, kefir_bool_t *may_alias) {
-    *may_alias = true;
+static kefir_result_t classify_memory_access(const struct kefir_opt_instruction *instr,
+                                             kefir_opt_instruction_ref_t *location_ptr, kefir_size_t *size_ptr,
+                                             kefir_int64_t *offset_ptr) {
+    *offset_ptr = 0;
+    switch (instr->operation.opcode) {
+        case KEFIR_OPT_OPCODE_INT8_LOAD:
+        case KEFIR_OPT_OPCODE_INT8_STORE:
+            *location_ptr = instr->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_LOCATION_REF];
+            *size_ptr = 1;
+            break;
 
-    const struct kefir_opt_instruction *location1, *location2;
-    REQUIRE_OK(kefir_opt_code_container_instr(code, location_ref1, &location1));
-    REQUIRE_OK(kefir_opt_code_container_instr(code, location_ref2, &location2));
-    if ((location1->operation.opcode == KEFIR_OPT_OPCODE_GET_GLOBAL &&
-         location2->operation.opcode == KEFIR_OPT_OPCODE_GET_GLOBAL &&
-         location1->operation.parameters.variable.global_ref != location2->operation.parameters.variable.global_ref) ||
-        (location1->operation.opcode == KEFIR_OPT_OPCODE_GET_THREAD_LOCAL &&
-         location2->operation.opcode == KEFIR_OPT_OPCODE_GET_THREAD_LOCAL &&
-         location1->operation.parameters.variable.global_ref != location2->operation.parameters.variable.global_ref) ||
-        (location1->operation.opcode == KEFIR_OPT_OPCODE_ALLOC_LOCAL &&
-         location2->operation.opcode == KEFIR_OPT_OPCODE_ALLOC_LOCAL && location1->id != location2->id) ||
-        ((location1->operation.opcode == KEFIR_OPT_OPCODE_GET_GLOBAL ||
-          location1->operation.opcode == KEFIR_OPT_OPCODE_GET_THREAD_LOCAL ||
-          location1->operation.opcode == KEFIR_OPT_OPCODE_ALLOC_LOCAL) &&
-         (location2->operation.opcode == KEFIR_OPT_OPCODE_GET_GLOBAL ||
-          location2->operation.opcode == KEFIR_OPT_OPCODE_GET_THREAD_LOCAL ||
-          location2->operation.opcode == KEFIR_OPT_OPCODE_ALLOC_LOCAL) &&
-         location1->operation.opcode != location2->operation.opcode)) {
-        *may_alias = false;
+        case KEFIR_OPT_OPCODE_INT16_LOAD:
+        case KEFIR_OPT_OPCODE_INT16_STORE:
+            *location_ptr = instr->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_LOCATION_REF];
+            *size_ptr = 2;
+            break;
+
+        case KEFIR_OPT_OPCODE_INT32_LOAD:
+        case KEFIR_OPT_OPCODE_INT32_STORE:
+        case KEFIR_OPT_OPCODE_DECIMAL32_LOAD:
+        case KEFIR_OPT_OPCODE_DECIMAL32_STORE:
+            *location_ptr = instr->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_LOCATION_REF];
+            *size_ptr = 4;
+            break;
+
+        case KEFIR_OPT_OPCODE_INT64_LOAD:
+        case KEFIR_OPT_OPCODE_INT64_STORE:
+        case KEFIR_OPT_OPCODE_COMPLEX_FLOAT32_LOAD:
+        case KEFIR_OPT_OPCODE_COMPLEX_FLOAT32_STORE:
+        case KEFIR_OPT_OPCODE_DECIMAL64_LOAD:
+        case KEFIR_OPT_OPCODE_DECIMAL64_STORE:
+            *location_ptr = instr->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_LOCATION_REF];
+            *size_ptr = 8;
+            break;
+
+        case KEFIR_OPT_OPCODE_INT128_LOAD:
+        case KEFIR_OPT_OPCODE_INT128_STORE:
+        case KEFIR_OPT_OPCODE_LONG_DOUBLE_LOAD:
+        case KEFIR_OPT_OPCODE_LONG_DOUBLE_STORE:
+        case KEFIR_OPT_OPCODE_COMPLEX_FLOAT64_LOAD:
+        case KEFIR_OPT_OPCODE_COMPLEX_FLOAT64_STORE:
+        case KEFIR_OPT_OPCODE_DECIMAL128_LOAD:
+        case KEFIR_OPT_OPCODE_DECIMAL128_STORE:
+            *location_ptr = instr->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_LOCATION_REF];
+            *size_ptr = 16;
+            break;
+
+        case KEFIR_OPT_OPCODE_COMPLEX_LONG_DOUBLE_LOAD:
+        case KEFIR_OPT_OPCODE_COMPLEX_LONG_DOUBLE_STORE:
+            *location_ptr = instr->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_LOCATION_REF];
+            *size_ptr = 32;
+            break;
+
+        case KEFIR_OPT_OPCODE_BITINT_LOAD:
+        case KEFIR_OPT_OPCODE_BITINT_LOAD_PRECISE:
+            *location_ptr = instr->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_LOCATION_REF];
+            if (instr->operation.parameters.bitwidth <= 8) {
+                *size_ptr = 1;
+            } else if (instr->operation.parameters.bitwidth <= 16) {
+                *size_ptr = 2;
+            } else if (instr->operation.parameters.bitwidth <= 32) {
+                *size_ptr = 4;
+            } else if (instr->operation.parameters.bitwidth <= 64) {
+                *size_ptr = 8;
+            } else {
+                *size_ptr = (instr->operation.parameters.bitwidth + 63) / 64 * 8;
+            }
+            break;
+
+        default:
+            return KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to classify memory access instruction");
     }
     return KEFIR_OK;
 }
@@ -65,44 +114,16 @@ static kefir_result_t check_clobber(struct kefir_mem *mem, const struct kefir_op
     REQUIRE_OK(kefir_opt_code_container_instr(code, instr_ref1, &instr1));
     REQUIRE_OK(kefir_opt_code_container_instr(code, instr_ref2, &instr2));
 
-    switch (instr1->operation.opcode) {
-        case KEFIR_OPT_OPCODE_INT8_LOAD:
-        case KEFIR_OPT_OPCODE_INT16_LOAD:
-        case KEFIR_OPT_OPCODE_INT32_LOAD:
-        case KEFIR_OPT_OPCODE_INT64_LOAD:
-        case KEFIR_OPT_OPCODE_INT128_LOAD:
-        case KEFIR_OPT_OPCODE_LONG_DOUBLE_LOAD:
-        case KEFIR_OPT_OPCODE_COMPLEX_FLOAT32_LOAD:
-        case KEFIR_OPT_OPCODE_COMPLEX_FLOAT64_LOAD:
-        case KEFIR_OPT_OPCODE_COMPLEX_LONG_DOUBLE_LOAD:
-        case KEFIR_OPT_OPCODE_BITINT_LOAD:
-        case KEFIR_OPT_OPCODE_BITINT_LOAD_PRECISE:
-        case KEFIR_OPT_OPCODE_DECIMAL32_LOAD:
-        case KEFIR_OPT_OPCODE_DECIMAL64_LOAD:
-        case KEFIR_OPT_OPCODE_DECIMAL128_LOAD:
-            if (instr2->operation.opcode == KEFIR_OPT_OPCODE_INT8_STORE ||
-                instr2->operation.opcode == KEFIR_OPT_OPCODE_INT16_STORE ||
-                instr2->operation.opcode == KEFIR_OPT_OPCODE_INT32_STORE ||
-                instr2->operation.opcode == KEFIR_OPT_OPCODE_INT64_STORE ||
-                instr2->operation.opcode == KEFIR_OPT_OPCODE_INT128_STORE ||
-                instr2->operation.opcode == KEFIR_OPT_OPCODE_LONG_DOUBLE_STORE ||
-                instr2->operation.opcode == KEFIR_OPT_OPCODE_COMPLEX_FLOAT32_STORE ||
-                instr2->operation.opcode == KEFIR_OPT_OPCODE_COMPLEX_FLOAT64_STORE ||
-                instr2->operation.opcode == KEFIR_OPT_OPCODE_COMPLEX_LONG_DOUBLE_STORE ||
-                instr2->operation.opcode == KEFIR_OPT_OPCODE_BITINT_STORE ||
-                instr2->operation.opcode == KEFIR_OPT_OPCODE_BITINT_STORE_PRECISE ||
-                instr2->operation.opcode == KEFIR_OPT_OPCODE_DECIMAL32_STORE ||
-                instr2->operation.opcode == KEFIR_OPT_OPCODE_DECIMAL64_STORE ||
-                instr2->operation.opcode == KEFIR_OPT_OPCODE_DECIMAL128_STORE) {
-                REQUIRE_OK(may_alias(code, instr1->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_LOCATION_REF],
-                                     instr2->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_LOCATION_REF],
-                                     do_alias));
-            }
-            break;
+    kefir_opt_instruction_ref_t location1_ref = KEFIR_ID_NONE, location2_ref = KEFIR_ID_NONE;
+    kefir_size_t size1 = 0, size2 = 0;
+    kefir_int64_t offset1 = 0, offset2 = 0;
 
-        default:
-            // Intentionally left blank
-            break;
+    kefir_result_t res = classify_memory_access(instr1, &location1_ref, &size1, &offset1);
+    REQUIRE_CHAIN(&res, classify_memory_access(instr2, &location2_ref, &size2, &offset2));
+    if (res != KEFIR_NO_MATCH) {
+        REQUIRE_OK(res);
+        REQUIRE_OK(
+            kefir_opt_code_may_alias(code, location1_ref, size1, offset1, location2_ref, size2, offset2, do_alias));
     }
     return KEFIR_OK;
 }
@@ -206,14 +227,6 @@ static kefir_result_t do_optimize_nonvolatile_load(struct kefir_mem *mem, struct
     UNUSED(control_flow);
     kefir_opt_instruction_ref_t instr_ref = instr->id;
 
-    const struct kefir_opt_instruction *location_instr, *clobber_location_instr;
-    REQUIRE_OK(kefir_opt_code_container_instr(
-        &func->code, instr->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_LOCATION_REF], &location_instr));
-    REQUIRE(location_instr->operation.opcode == KEFIR_OPT_OPCODE_GET_GLOBAL ||
-                location_instr->operation.opcode == KEFIR_OPT_OPCODE_GET_THREAD_LOCAL ||
-                location_instr->operation.opcode == KEFIR_OPT_OPCODE_ALLOC_LOCAL,
-            KEFIR_OK);
-
     kefir_opt_code_memssa_node_ref_t node_ref, clobber_ref = KEFIR_ID_NONE;
     kefir_result_t res = kefir_opt_code_memssa_instruction_binding(memssa, instr_ref, &node_ref);
     REQUIRE(res != KEFIR_NOT_FOUND, KEFIR_OK);
@@ -238,6 +251,21 @@ static kefir_result_t do_optimize_nonvolatile_load(struct kefir_mem *mem, struct
                                                   &is_sequenced_before));
     REQUIRE(is_sequenced_before, KEFIR_OK);
 
+    kefir_opt_instruction_ref_t location1_ref, location2_ref;
+    kefir_size_t size1, size2;
+    kefir_int64_t offset1, offset2;
+    res = classify_memory_access(instr, &location1_ref, &size1, &offset1);
+    REQUIRE_CHAIN(&res, classify_memory_access(clobber_instr, &location2_ref, &size2, &offset2));
+    REQUIRE(res != KEFIR_NO_MATCH, KEFIR_OK);
+    REQUIRE_OK(res);
+
+    kefir_bool_t must_alias;
+    REQUIRE_OK(kefir_opt_code_must_alias(&func->code, location2_ref, size2, offset2, location1_ref, size1, offset1,
+                                         &must_alias));
+    REQUIRE(must_alias, KEFIR_OK);
+
+    kefir_opt_instruction_ref_t replacement_ref =
+        clobber_instr->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_VALUE_REF];
     if ((instr->operation.opcode == KEFIR_OPT_OPCODE_INT8_LOAD &&
          (clobber_instr->operation.opcode == KEFIR_OPT_OPCODE_INT8_STORE ||
           clobber_instr->operation.opcode == KEFIR_OPT_OPCODE_INT16_STORE ||
@@ -252,58 +280,31 @@ static kefir_result_t do_optimize_nonvolatile_load(struct kefir_mem *mem, struct
           clobber_instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_STORE)) ||
         (instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_LOAD &&
          clobber_instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_STORE)) {
-        REQUIRE_OK(kefir_opt_code_container_instr(
-            &func->code, clobber_instr->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_LOCATION_REF],
-            &clobber_location_instr));
-        REQUIRE(((clobber_location_instr->operation.opcode == KEFIR_OPT_OPCODE_GET_GLOBAL ||
-                  clobber_location_instr->operation.opcode == KEFIR_OPT_OPCODE_GET_THREAD_LOCAL) &&
-                 clobber_location_instr->operation.opcode == location_instr->operation.opcode &&
-                 clobber_location_instr->operation.parameters.variable.global_ref ==
-                     location_instr->operation.parameters.variable.global_ref &&
-                 clobber_location_instr->operation.parameters.variable.offset ==
-                     location_instr->operation.parameters.variable.offset) ||
-                    clobber_location_instr->id == location_instr->id,
-                KEFIR_OK);
 
-        kefir_opt_instruction_ref_t replacement_ref;
-        REQUIRE_OK(kefir_opt_code_builder_to_int(
-            mem, &func->code, instr->block_id,
-            clobber_instr->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_VALUE_REF], &replacement_ref));
+        REQUIRE_OK(kefir_opt_code_builder_to_int(mem, &func->code, instr->block_id, replacement_ref, &replacement_ref));
         REQUIRE_OK(kefir_opt_code_container_instr(&func->code, instr_ref, &instr));
         REQUIRE_OK(kefir_opt_code_util_extend_load_value(mem, &func->code, module->ir_module, instr, replacement_ref,
                                                          &replacement_ref));
-        REQUIRE_OK(kefir_opt_code_container_replace_references(mem, &func->code, replacement_ref, instr_ref));
-    } else if ((instr->operation.opcode == KEFIR_OPT_OPCODE_INT128_LOAD &&
-                clobber_instr->operation.opcode == KEFIR_OPT_OPCODE_INT128_STORE) ||
-               (instr->operation.opcode == KEFIR_OPT_OPCODE_LONG_DOUBLE_LOAD &&
-                clobber_instr->operation.opcode == KEFIR_OPT_OPCODE_LONG_DOUBLE_STORE) ||
-               (instr->operation.opcode == KEFIR_OPT_OPCODE_COMPLEX_FLOAT32_LOAD &&
-                clobber_instr->operation.opcode == KEFIR_OPT_OPCODE_COMPLEX_FLOAT32_STORE) ||
-               (instr->operation.opcode == KEFIR_OPT_OPCODE_COMPLEX_FLOAT64_LOAD &&
-                clobber_instr->operation.opcode == KEFIR_OPT_OPCODE_COMPLEX_FLOAT64_STORE) ||
-               (instr->operation.opcode == KEFIR_OPT_OPCODE_COMPLEX_LONG_DOUBLE_LOAD &&
-                clobber_instr->operation.opcode == KEFIR_OPT_OPCODE_COMPLEX_LONG_DOUBLE_STORE) ||
-               (instr->operation.opcode == KEFIR_OPT_OPCODE_DECIMAL32_LOAD &&
-                clobber_instr->operation.opcode == KEFIR_OPT_OPCODE_DECIMAL32_STORE) ||
-               (instr->operation.opcode == KEFIR_OPT_OPCODE_DECIMAL64_LOAD &&
-                clobber_instr->operation.opcode == KEFIR_OPT_OPCODE_DECIMAL64_STORE) ||
-               (instr->operation.opcode == KEFIR_OPT_OPCODE_DECIMAL128_LOAD &&
-                clobber_instr->operation.opcode == KEFIR_OPT_OPCODE_DECIMAL128_STORE)) {
-        REQUIRE_OK(kefir_opt_code_container_instr(
-            &func->code, clobber_instr->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_LOCATION_REF],
-            &clobber_location_instr));
-        REQUIRE(((clobber_location_instr->operation.opcode == KEFIR_OPT_OPCODE_GET_GLOBAL ||
-                  clobber_location_instr->operation.opcode == KEFIR_OPT_OPCODE_GET_THREAD_LOCAL) &&
-                 clobber_location_instr->operation.opcode == location_instr->operation.opcode &&
-                 clobber_location_instr->operation.parameters.variable.global_ref ==
-                     location_instr->operation.parameters.variable.global_ref &&
-                 clobber_location_instr->operation.parameters.variable.offset ==
-                     location_instr->operation.parameters.variable.offset) ||
-                    clobber_location_instr->id == location_instr->id,
+    } else {
+        REQUIRE((instr->operation.opcode == KEFIR_OPT_OPCODE_INT128_LOAD &&
+                 clobber_instr->operation.opcode == KEFIR_OPT_OPCODE_INT128_STORE) ||
+                    (instr->operation.opcode == KEFIR_OPT_OPCODE_LONG_DOUBLE_LOAD &&
+                     clobber_instr->operation.opcode == KEFIR_OPT_OPCODE_LONG_DOUBLE_STORE) ||
+                    (instr->operation.opcode == KEFIR_OPT_OPCODE_COMPLEX_FLOAT32_LOAD &&
+                     clobber_instr->operation.opcode == KEFIR_OPT_OPCODE_COMPLEX_FLOAT32_STORE) ||
+                    (instr->operation.opcode == KEFIR_OPT_OPCODE_COMPLEX_FLOAT64_LOAD &&
+                     clobber_instr->operation.opcode == KEFIR_OPT_OPCODE_COMPLEX_FLOAT64_STORE) ||
+                    (instr->operation.opcode == KEFIR_OPT_OPCODE_COMPLEX_LONG_DOUBLE_LOAD &&
+                     clobber_instr->operation.opcode == KEFIR_OPT_OPCODE_COMPLEX_LONG_DOUBLE_STORE) ||
+                    (instr->operation.opcode == KEFIR_OPT_OPCODE_DECIMAL32_LOAD &&
+                     clobber_instr->operation.opcode == KEFIR_OPT_OPCODE_DECIMAL32_STORE) ||
+                    (instr->operation.opcode == KEFIR_OPT_OPCODE_DECIMAL64_LOAD &&
+                     clobber_instr->operation.opcode == KEFIR_OPT_OPCODE_DECIMAL64_STORE) ||
+                    (instr->operation.opcode == KEFIR_OPT_OPCODE_DECIMAL128_LOAD &&
+                     clobber_instr->operation.opcode == KEFIR_OPT_OPCODE_DECIMAL128_STORE),
                 KEFIR_OK);
-        REQUIRE_OK(kefir_opt_code_container_replace_references(
-            mem, &func->code, clobber_instr->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_VALUE_REF], instr_ref));
     }
+    REQUIRE_OK(kefir_opt_code_container_replace_references(mem, &func->code, replacement_ref, instr_ref));
     return KEFIR_OK;
 }
 
