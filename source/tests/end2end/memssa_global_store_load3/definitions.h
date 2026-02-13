@@ -23,5 +23,6 @@
 
 int test1(int);
 int test2(int);
+int test3(int);
 
 #endif

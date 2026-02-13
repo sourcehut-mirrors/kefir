@@ -29,6 +29,7 @@ int main(void) {
     for (int i = -4096; i < 4096; i++) {
         assert(test1(i) == (int) (((int) i) + ((int) (i + 1)) + ((int) (i * 2))));
         assert(test2(i) == (int) (((int) i) + ((int) (i + 1)) + ((int) (i * 2))));
+        assert(test3(i) == (int) (((int) i) + ((int) (i + 1)) + ((int) (i * 2))));
     }
     return EXIT_SUCCESS;
 }

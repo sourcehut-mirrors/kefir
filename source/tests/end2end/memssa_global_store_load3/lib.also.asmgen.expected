@@ -9,6 +9,8 @@
 .type test1, @function
 .global test2
 .type test2, @function
+.global test3
+.type test3, @function
 
 .section .text
 .L__kefir_text_section_begin:
@@ -57,6 +59,25 @@ test2:
     pop %rbx
     ret
 .L__kefir_text_func_test2_end:
+
+test3:
+.L__kefir_text_func_test3_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    movl %edi, -12(%rbp)
+    lea 1(%edi), %eax
+    movl %eax, -8(%rbp)
+    mov %rdi, %rcx
+    shl $1, %ecx
+    movl %ecx, -4(%rbp)
+    add %eax, %edi
+    mov %edi, %eax
+    add %ecx, %eax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.L__kefir_text_func_test3_end:
 
 .L__kefir_text_section_end:
 

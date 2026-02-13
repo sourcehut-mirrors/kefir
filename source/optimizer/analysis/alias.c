@@ -66,6 +66,14 @@ kefir_result_t kefir_opt_code_may_alias(const struct kefir_opt_code_container *c
                 location2->operation.opcode == KEFIR_OPT_OPCODE_ALLOC_LOCAL) &&
                location1->operation.opcode != location2->operation.opcode) {
         *may_alias = false;
+    } else if (location1->operation.opcode == KEFIR_OPT_OPCODE_REF_LOCAL) {
+        REQUIRE_OK(kefir_opt_code_may_alias(code, location1->operation.parameters.refs[0], size1,
+                                            offset1 + location1->operation.parameters.offset, location_ref2, size2,
+                                            offset2, may_alias));
+    } else if (location2->operation.opcode == KEFIR_OPT_OPCODE_REF_LOCAL) {
+        REQUIRE_OK(kefir_opt_code_may_alias(code, location_ref1, size1, offset1,
+                                            location2->operation.parameters.refs[0], size2,
+                                            offset2 + location2->operation.parameters.offset, may_alias));
     }
     return KEFIR_OK;
 }
@@ -99,6 +107,14 @@ kefir_result_t kefir_opt_code_must_alias(const struct kefir_opt_code_container *
     } else if (location1->operation.opcode == KEFIR_OPT_OPCODE_ALLOC_LOCAL &&
                location2->operation.opcode == KEFIR_OPT_OPCODE_ALLOC_LOCAL && location1->id == location2->id) {
         *must_alias = offset1 == offset2;
+    } else if (location1->operation.opcode == KEFIR_OPT_OPCODE_REF_LOCAL) {
+        REQUIRE_OK(kefir_opt_code_must_alias(code, location1->operation.parameters.refs[0], size1,
+                                             offset1 + location1->operation.parameters.offset, location_ref2, size2,
+                                             offset2, must_alias));
+    } else if (location2->operation.opcode == KEFIR_OPT_OPCODE_REF_LOCAL) {
+        REQUIRE_OK(kefir_opt_code_must_alias(code, location_ref1, size1, offset1,
+                                             location2->operation.parameters.refs[0], size2,
+                                             offset2 + location2->operation.parameters.offset, must_alias));
     }
     return KEFIR_OK;
 }

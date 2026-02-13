@@ -27,12 +27,9 @@ run_bf:
     movw $0, -20(%rbp)
     movb $0, -18(%rbp)
     movq %rsi, -16(%rbp)
-    movq -5152(%rbp), %rax
-    movl -24(%rbp), %ecx
-    lea 1(%ecx), %edx
-    movl %edx, -24(%rbp)
-    mov %ecx, %ecx
-    movsxb (%rax, %rcx, 1), %rax
+    mov $1, %eax
+    movl %eax, -24(%rbp)
+    movsxb (%rdx), %rax
     lea ops(%rip), %rcx
     movq (%rcx, %rax, 8), %rbx
     lea -5152(%rbp), %rdi

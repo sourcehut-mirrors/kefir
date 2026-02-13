@@ -36,3 +36,11 @@ int test2(int a) {
     y[2] = a * 2;
     return y[0] + y[1] + y[2];
 }
+
+int test3(int a) {
+    int z[3];
+    z[0] = a;
+    z[1] = a + 1;
+    z[2] = a * 2;
+    return z[0] + z[1] + z[2];
+}

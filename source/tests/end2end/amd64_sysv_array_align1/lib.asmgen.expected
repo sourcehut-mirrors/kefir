@@ -147,7 +147,6 @@ vla1:
     and %rax, %rsp
     mov %rsp, %rax
     movq %rax, -24(%rbp)
-    movq -24(%rbp), %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
