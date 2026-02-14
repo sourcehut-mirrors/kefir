@@ -258,7 +258,7 @@ kefir_result_t kefir_opt_code_memssa_phi_attach(struct kefir_mem *mem, struct ke
     REQUIRE(memssa != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer memory ssa"));
     REQUIRE(phi_node_ref < memssa->node_length && memssa->nodes[phi_node_ref].type == KEFIR_OPT_CODE_MEMSSA_PHI_NODE,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer memory ssa phi node reference"));
-    REQUIRE(block_id < memssa->block_length,
+    REQUIRE(block_id < memssa->block_length || block_id == KEFIR_ID_NONE,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer memory ssa block reference"));
     REQUIRE(node_ref < memssa->node_length || node_ref == KEFIR_ID_NONE,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer memory ssa node reference"));

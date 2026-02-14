@@ -148,7 +148,8 @@ static kefir_result_t find_dominance_frontier(struct kefir_mem *mem,
             continue;
         }
 
-        if (kefir_hashset_size(&control_flow->blocks[block_ref].predecessors) <= 1) {
+        if (kefir_hashset_size(&control_flow->blocks[block_ref].predecessors) <= 1 &&
+            block_ref != control_flow->code->entry_block) {
             continue;
         }
 

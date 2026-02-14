@@ -19,7 +19,7 @@
                                 "jump_targets": [],
                                 "control_next": 1,
                                 "ir_instruction": 0,
-                                "memssa_node_ref": 3
+                                "memssa_node_ref": 4
                             },
                             {
                                 "id": 1,
@@ -35,7 +35,7 @@
                                 "jump_targets": [],
                                 "control_next": 3,
                                 "ir_instruction": 1,
-                                "memssa_node_ref": 4
+                                "memssa_node_ref": 5
                             },
                             {
                                 "id": 2,
@@ -55,7 +55,7 @@
                                 },
                                 "control_next": 5,
                                 "ir_instruction": 3,
-                                "memssa_node_ref": 5
+                                "memssa_node_ref": 6
                             },
                             {
                                 "id": 4,
@@ -117,7 +117,7 @@
                                 },
                                 "control_next": 12,
                                 "ir_instruction": 9,
-                                "memssa_node_ref": 7
+                                "memssa_node_ref": 8
                             },
                             {
                                 "id": 11,
@@ -178,7 +178,7 @@
                                 ],
                                 "control_next": null,
                                 "ir_instruction": 18,
-                                "memssa_node_ref": 10
+                                "memssa_node_ref": 11
                             }
                         ],
                         "public_labels": [],
@@ -323,7 +323,7 @@
                                 },
                                 "control_next": 18,
                                 "ir_instruction": 15,
-                                "memssa_node_ref": 8
+                                "memssa_node_ref": 9
                             },
                             {
                                 "id": 13,
@@ -374,7 +374,7 @@
                                 "jump_targets": [],
                                 "control_next": 19,
                                 "ir_instruction": 17,
-                                "memssa_node_ref": 9
+                                "memssa_node_ref": 10
                             },
                             {
                                 "id": 19,
@@ -434,7 +434,7 @@
                                 "jump_targets": [],
                                 "control_next": 8,
                                 "ir_instruction": 7,
-                                "memssa_node_ref": 6
+                                "memssa_node_ref": 7
                             },
                             {
                                 "id": 8,
@@ -467,47 +467,51 @@
                 },
                 "memssa": [
                     {
-                        "node_ref": 2,
-                        "type": "root"
-                    },
-                    {
                         "node_ref": 3,
-                        "type": "produce",
-                        "predecessor_ref": 2
-                    },
-                    {
-                        "node_ref": 4,
-                        "type": "produce",
-                        "predecessor_ref": 3
-                    },
-                    {
-                        "node_ref": 6,
-                        "type": "produce",
-                        "predecessor_ref": 4
+                        "type": "root"
                     },
                     {
                         "node_ref": 1,
                         "type": "phi",
                         "links": [
                             {
-                                "block_ref": 0,
-                                "node_ref": 4
+                                "block_ref": null,
+                                "node_ref": 3
                             },
                             {
-                                "block_ref": 2,
-                                "node_ref": 6
+                                "block_ref": 6,
+                                "node_ref": 11
                             }
                         ]
                     },
                     {
-                        "node_ref": 8,
-                        "type": "consume",
+                        "node_ref": 4,
+                        "type": "produce",
                         "predecessor_ref": 1
                     },
                     {
-                        "node_ref": 9,
+                        "node_ref": 5,
                         "type": "produce",
-                        "predecessor_ref": 1
+                        "predecessor_ref": 4
+                    },
+                    {
+                        "node_ref": 2,
+                        "type": "phi",
+                        "links": [
+                            {
+                                "block_ref": 0,
+                                "node_ref": 5
+                            },
+                            {
+                                "block_ref": 2,
+                                "node_ref": 7
+                            }
+                        ]
+                    },
+                    {
+                        "node_ref": 10,
+                        "type": "produce",
+                        "predecessor_ref": 2
                     },
                     {
                         "node_ref": 0,
@@ -515,33 +519,43 @@
                         "links": [
                             {
                                 "block_ref": 1,
-                                "node_ref": 1
+                                "node_ref": 2
                             },
                             {
                                 "block_ref": 4,
-                                "node_ref": 9
+                                "node_ref": 10
                             }
                         ]
                     },
                     {
-                        "node_ref": 10,
+                        "node_ref": 11,
                         "type": "produce",
                         "predecessor_ref": 0
                     },
                     {
-                        "node_ref": 11,
+                        "node_ref": 12,
                         "type": "terminate",
-                        "predecessor_ref": 10
+                        "predecessor_ref": 11
+                    },
+                    {
+                        "node_ref": 9,
+                        "type": "consume",
+                        "predecessor_ref": 2
+                    },
+                    {
+                        "node_ref": 8,
+                        "type": "consume",
+                        "predecessor_ref": 2
+                    },
+                    {
+                        "node_ref": 6,
+                        "type": "consume",
+                        "predecessor_ref": 5
                     },
                     {
                         "node_ref": 7,
-                        "type": "consume",
-                        "predecessor_ref": 1
-                    },
-                    {
-                        "node_ref": 5,
-                        "type": "consume",
-                        "predecessor_ref": 4
+                        "type": "produce",
+                        "predecessor_ref": 5
                     }
                 ]
             }

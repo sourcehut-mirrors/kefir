@@ -407,6 +407,15 @@ static kefir_result_t link(struct kefir_mem *mem, struct construct_state *state)
     REQUIRE_OK(kefir_opt_code_memssa_new_root_node(mem, state->memssa, &root_ref));
     ((struct link_frame *) kefir_list_head(&state->block_queue)->value)->node_ref = root_ref;
 
+    kefir_hashtable_value_t table_value;
+    kefir_result_t res =
+        kefir_hashtable_at(&state->inserted_phis, (kefir_hashtable_key_t) state->code->entry_point, &table_value);
+    if (res != KEFIR_NOT_FOUND) {
+        REQUIRE_OK(res);
+        REQUIRE_OK(kefir_opt_code_memssa_phi_attach(mem, state->memssa, (kefir_opt_code_memssa_node_ref_t) table_value,
+                                                    KEFIR_ID_NONE, root_ref));
+    }
+
     for (struct kefir_list_entry *iter = kefir_list_head(&state->block_queue); iter != NULL;
          iter = kefir_list_head(&state->block_queue)) {
         ASSIGN_DECL_CAST(struct link_frame *, frame, iter->value);
