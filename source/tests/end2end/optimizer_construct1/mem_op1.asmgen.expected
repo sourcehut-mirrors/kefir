@@ -173,12 +173,17 @@
                     },
                     {
                         "node_ref": 2,
-                        "type": "produce",
+                        "type": "consume",
+                        "predecessor_ref": 1
+                    },
+                    {
+                        "node_ref": 4,
+                        "type": "terminate",
                         "predecessor_ref": 1
                     },
                     {
                         "node_ref": 3,
-                        "type": "produce",
+                        "type": "consume",
                         "predecessor_ref": 1
                     }
                 ]
@@ -357,12 +362,17 @@
                     },
                     {
                         "node_ref": 2,
-                        "type": "produce",
+                        "type": "consume",
+                        "predecessor_ref": 1
+                    },
+                    {
+                        "node_ref": 4,
+                        "type": "terminate",
                         "predecessor_ref": 1
                     },
                     {
                         "node_ref": 3,
-                        "type": "produce",
+                        "type": "consume",
                         "predecessor_ref": 1
                     }
                 ]
@@ -639,13 +649,18 @@
                         "predecessor_ref": 4
                     },
                     {
+                        "node_ref": 7,
+                        "type": "terminate",
+                        "predecessor_ref": 6
+                    },
+                    {
                         "node_ref": 5,
-                        "type": "produce",
+                        "type": "consume",
                         "predecessor_ref": 4
                     },
                     {
                         "node_ref": 3,
-                        "type": "produce",
+                        "type": "consume",
                         "predecessor_ref": 2
                     }
                 ]

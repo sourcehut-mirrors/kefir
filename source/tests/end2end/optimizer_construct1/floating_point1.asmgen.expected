@@ -335,23 +335,28 @@
                         "predecessor_ref": 3
                     },
                     {
-                        "node_ref": 7,
-                        "type": "produce",
-                        "predecessor_ref": 4
-                    },
-                    {
-                        "node_ref": 8,
-                        "type": "produce",
-                        "predecessor_ref": 4
-                    },
-                    {
-                        "node_ref": 6,
-                        "type": "produce",
+                        "node_ref": 9,
+                        "type": "terminate",
                         "predecessor_ref": 4
                     },
                     {
                         "node_ref": 5,
-                        "type": "produce",
+                        "type": "consume",
+                        "predecessor_ref": 4
+                    },
+                    {
+                        "node_ref": 7,
+                        "type": "consume",
+                        "predecessor_ref": 4
+                    },
+                    {
+                        "node_ref": 6,
+                        "type": "consume",
+                        "predecessor_ref": 4
+                    },
+                    {
+                        "node_ref": 8,
+                        "type": "consume",
                         "predecessor_ref": 4
                     }
                 ]
@@ -692,23 +697,28 @@
                         "predecessor_ref": 3
                     },
                     {
-                        "node_ref": 7,
-                        "type": "produce",
-                        "predecessor_ref": 4
-                    },
-                    {
-                        "node_ref": 8,
-                        "type": "produce",
-                        "predecessor_ref": 4
-                    },
-                    {
-                        "node_ref": 6,
-                        "type": "produce",
+                        "node_ref": 9,
+                        "type": "terminate",
                         "predecessor_ref": 4
                     },
                     {
                         "node_ref": 5,
-                        "type": "produce",
+                        "type": "consume",
+                        "predecessor_ref": 4
+                    },
+                    {
+                        "node_ref": 7,
+                        "type": "consume",
+                        "predecessor_ref": 4
+                    },
+                    {
+                        "node_ref": 6,
+                        "type": "consume",
+                        "predecessor_ref": 4
+                    },
+                    {
+                        "node_ref": 8,
+                        "type": "consume",
                         "predecessor_ref": 4
                     }
                 ]
@@ -764,6 +774,11 @@
                     {
                         "node_ref": 0,
                         "type": "root"
+                    },
+                    {
+                        "node_ref": 1,
+                        "type": "terminate",
+                        "predecessor_ref": 0
                     }
                 ]
             }
@@ -818,6 +833,11 @@
                     {
                         "node_ref": 0,
                         "type": "root"
+                    },
+                    {
+                        "node_ref": 1,
+                        "type": "terminate",
+                        "predecessor_ref": 0
                     }
                 ]
             }
@@ -872,6 +892,11 @@
                     {
                         "node_ref": 0,
                         "type": "root"
+                    },
+                    {
+                        "node_ref": 1,
+                        "type": "terminate",
+                        "predecessor_ref": 0
                     }
                 ]
             }

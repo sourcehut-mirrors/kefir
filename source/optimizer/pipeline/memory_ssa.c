@@ -154,6 +154,7 @@ static kefir_result_t find_clobber_impl(struct kefir_mem *mem, const struct kefi
     REQUIRE(node->type == KEFIR_OPT_CODE_MEMSSA_CONSUME_NODE || node->type == KEFIR_OPT_CODE_MEMSSA_PRODUCE_NODE,
             KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find clobber memory ssa node"));
 
+    *clobber_ref_ptr = KEFIR_ID_NONE;
     REQUIRE_OK(kefir_list_insert_after(mem, queue, NULL, (void *) (kefir_uptr_t) node_ref));
     for (struct kefir_list_entry *iter = kefir_list_head(queue); iter != NULL; iter = kefir_list_head(queue)) {
         ASSIGN_DECL_CAST(kefir_opt_code_memssa_node_ref_t, iter_node_ref, (kefir_uptr_t) iter->value);
@@ -167,8 +168,12 @@ static kefir_result_t find_clobber_impl(struct kefir_mem *mem, const struct kefi
         REQUIRE_OK(kefir_opt_code_memssa_node(memssa, iter_node_ref, &iter_node));
         switch (iter_node->type) {
             case KEFIR_OPT_CODE_MEMSSA_ROOT_NODE:
-                *clobber_ref_ptr = iter_node_ref;
-                return KEFIR_OK;
+                if (*clobber_ref_ptr == KEFIR_ID_NONE || *clobber_ref_ptr == iter_node_ref) {
+                    *clobber_ref_ptr = iter_node_ref;
+                } else {
+                    return KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find clobber memory ssa node");
+                }
+                break;
 
             case KEFIR_OPT_CODE_MEMSSA_JOIN_NODE:
                 for (kefir_size_t i = 0; i < iter_node->join.input_length; i++) {
@@ -189,21 +194,34 @@ static kefir_result_t find_clobber_impl(struct kefir_mem *mem, const struct kefi
                     kefir_list_insert_after(mem, queue, NULL, (void *) (kefir_uptr_t) iter_node->predecessor_ref));
                 break;
 
-            case KEFIR_OPT_CODE_MEMSSA_PRODUCE_NODE:
+            case KEFIR_OPT_CODE_MEMSSA_PRODUCE_NODE: {
+                kefir_bool_t trace = true;
                 if (iter_node_ref != node_ref) {
                     kefir_bool_t node_alias = true;
                     REQUIRE_OK(check_clobber(mem, code, escapes, node->instr_ref, iter_node->instr_ref, &node_alias));
                     if (node_alias) {
-                        *clobber_ref_ptr = iter_node_ref;
-                        return KEFIR_OK;
+                        if (*clobber_ref_ptr == KEFIR_ID_NONE || *clobber_ref_ptr == iter_node_ref) {
+                            *clobber_ref_ptr = iter_node_ref;
+                            trace = false;
+                        } else {
+                            return KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find clobber memory ssa node");
+                        }
                     }
                 }
-                REQUIRE_OK(
-                    kefir_list_insert_after(mem, queue, NULL, (void *) (kefir_uptr_t) iter_node->predecessor_ref));
-                break;
+                if (trace) {
+                    REQUIRE_OK(
+                        kefir_list_insert_after(mem, queue, NULL, (void *) (kefir_uptr_t) iter_node->predecessor_ref));
+                }
+            } break;
+
+            case KEFIR_OPT_CODE_MEMSSA_TERMINATE_NODE:
+                return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected memory ssa node type");
         }
     }
-    return KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find clobber memory ssa node");
+
+    REQUIRE(*clobber_ref_ptr != KEFIR_ID_NONE,
+            KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find clobber memory ssa node"));
+    return KEFIR_OK;
 }
 
 static kefir_result_t find_clobber(struct kefir_mem *mem, const struct kefir_opt_code_container *code,

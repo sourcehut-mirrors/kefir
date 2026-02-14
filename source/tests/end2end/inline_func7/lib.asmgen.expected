@@ -126,14 +126,19 @@
                         "type": "root"
                     },
                     {
-                        "node_ref": 2,
+                        "node_ref": 1,
                         "type": "produce",
                         "predecessor_ref": 0
                     },
                     {
-                        "node_ref": 1,
+                        "node_ref": 2,
                         "type": "produce",
-                        "predecessor_ref": 0
+                        "predecessor_ref": 1
+                    },
+                    {
+                        "node_ref": 3,
+                        "type": "terminate",
+                        "predecessor_ref": 2
                     }
                 ]
             }

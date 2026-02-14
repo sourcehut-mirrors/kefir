@@ -127,7 +127,12 @@
                     },
                     {
                         "node_ref": 2,
-                        "type": "produce",
+                        "type": "consume",
+                        "predecessor_ref": 1
+                    },
+                    {
+                        "node_ref": 3,
+                        "type": "terminate",
                         "predecessor_ref": 1
                     }
                 ]
@@ -207,80 +212,7 @@
                             {
                                 "id": 26,
                                 "opcode": "scope_push",
-                                "control_next": 37
-                            },
-                            {
-                                "id": 28,
-                                "opcode": "alloc_local",
-                                "scope": 0,
-                                "type_id": 96,
-                                "type_index": 9,
-                                "control_next": null
-                            },
-                            {
-                                "id": 254,
-                                "opcode": "ref_local",
-                                "ref": 28,
-                                "offset": 8,
-                                "control_next": null
-                            },
-                            {
-                                "id": 33,
-                                "opcode": "int64_sign_extend_32bits",
-                                "arg": 2,
-                                "control_next": null
-                            },
-                            {
-                                "id": 31,
-                                "opcode": "uint_const",
-                                "value": 2,
-                                "control_next": null
-                            },
-                            {
-                                "id": 253,
-                                "opcode": "int64_mul",
-                                "args": [
-                                    33,
-                                    31
-                                ],
-                                "control_next": null
-                            },
-                            {
-                                "id": 37,
-                                "opcode": "int64_store",
-                                "location": 254,
-                                "value": 253,
-                                "flags": {
-                                    "volatile": false
-                                },
-                                "control_next": 40,
-                                "memssa_node_ref": 7
-                            },
-                            {
-                                "id": 252,
-                                "opcode": "ref_local",
-                                "ref": 28,
-                                "offset": 0,
-                                "control_next": null
-                            },
-                            {
-                                "id": 39,
-                                "opcode": "stack_alloc",
-                                "size_ref": 253,
-                                "alignment_ref": 31,
-                                "within_scope": true,
-                                "control_next": null
-                            },
-                            {
-                                "id": 40,
-                                "opcode": "int64_store",
-                                "location": 252,
-                                "value": 39,
-                                "flags": {
-                                    "volatile": false
-                                },
-                                "control_next": 45,
-                                "memssa_node_ref": 8
+                                "control_next": 45
                             },
                             {
                                 "id": 41,
@@ -310,7 +242,7 @@
                                     "volatile": true
                                 },
                                 "control_next": 42,
-                                "memssa_node_ref": 9
+                                "memssa_node_ref": 7
                             },
                             {
                                 "id": 42,
@@ -333,7 +265,36 @@
                                     "volatile": true
                                 },
                                 "control_next": 255,
-                                "memssa_node_ref": 10
+                                "memssa_node_ref": 8
+                            },
+                            {
+                                "id": 31,
+                                "opcode": "uint_const",
+                                "value": 2,
+                                "control_next": null
+                            },
+                            {
+                                "id": 33,
+                                "opcode": "int64_sign_extend_32bits",
+                                "arg": 2,
+                                "control_next": null
+                            },
+                            {
+                                "id": 253,
+                                "opcode": "int64_mul",
+                                "args": [
+                                    33,
+                                    31
+                                ],
+                                "control_next": null
+                            },
+                            {
+                                "id": 39,
+                                "opcode": "stack_alloc",
+                                "size_ref": 253,
+                                "alignment_ref": 31,
+                                "within_scope": true,
+                                "control_next": null
                             },
                             {
                                 "id": 255,
@@ -354,32 +315,27 @@
                             "predecessors": [],
                             "immediate_dominator": null,
                             "alive_instructions": [
-                                253,
-                                37,
-                                10,
-                                28,
-                                40,
-                                5,
-                                43,
-                                44,
                                 39,
-                                6,
-                                2,
+                                31,
+                                9,
                                 7,
-                                254,
                                 42,
                                 26,
+                                5,
                                 1,
-                                33,
                                 41,
                                 8,
                                 255,
+                                44,
                                 46,
-                                31,
-                                45,
+                                253,
+                                33,
                                 0,
-                                252,
-                                9
+                                45,
+                                43,
+                                6,
+                                2,
+                                10
                             ]
                         }
                     },
@@ -419,9 +375,9 @@
                             "alive_instructions": [
                                 8,
                                 57,
+                                39,
                                 58,
                                 0,
-                                28,
                                 59,
                                 5,
                                 41
@@ -468,7 +424,7 @@
                                     "volatile": true
                                 },
                                 "control_next": 257,
-                                "memssa_node_ref": 12
+                                "memssa_node_ref": 10
                             },
                             {
                                 "id": 257,
@@ -497,7 +453,7 @@
                                 257,
                                 61,
                                 67,
-                                28,
+                                39,
                                 0,
                                 60,
                                 5,
@@ -520,22 +476,22 @@
                                 "id": 78,
                                 "opcode": "local_lifetime_mark",
                                 "arg": 0,
-                                "control_next": 286
+                                "control_next": 288
                             },
                             {
-                                "id": 287,
+                                "id": 289,
                                 "opcode": "uint_const",
                                 "value": 18,
                                 "control_next": null
                             },
                             {
-                                "id": 288,
+                                "id": 290,
                                 "opcode": "uint_const",
                                 "value": 20,
                                 "control_next": null
                             },
                             {
-                                "id": 286,
+                                "id": 288,
                                 "opcode": "jump",
                                 "target_block": 6,
                                 "control_next": null
@@ -553,10 +509,10 @@
                             "alive_instructions": [
                                 77,
                                 78,
-                                286,
-                                287,
+                                289,
+                                39,
                                 0,
-                                28,
+                                290,
                                 5,
                                 288,
                                 41
@@ -565,32 +521,20 @@
                     },
                     {
                         "id": 6,
-                        "control_flow": 83,
+                        "control_flow": 259,
                         "code": [
                             {
-                                "id": 258,
-                                "opcode": "ref_local",
-                                "ref": 28,
-                                "offset": 0,
+                                "id": 279,
+                                "opcode": "to_int",
+                                "arg": 39,
                                 "control_next": null
-                            },
-                            {
-                                "id": 83,
-                                "opcode": "int64_load",
-                                "location": 258,
-                                "flags": {
-                                    "load_extension": "noextend",
-                                    "volatile": false
-                                },
-                                "control_next": 259,
-                                "memssa_node_ref": 15
                             },
                             {
                                 "id": 88,
                                 "opcode": "int64_add",
                                 "args": [
-                                    83,
-                                    287
+                                    279,
+                                    289
                                 ],
                                 "control_next": null
                             },
@@ -603,7 +547,7 @@
                                     "volatile": true
                                 },
                                 "control_next": 91,
-                                "memssa_node_ref": 16
+                                "memssa_node_ref": 13
                             },
                             {
                                 "id": 91,
@@ -614,7 +558,7 @@
                                     "volatile": true
                                 },
                                 "control_next": 93,
-                                "memssa_node_ref": 17
+                                "memssa_node_ref": 14
                             },
                             {
                                 "id": 92,
@@ -634,38 +578,26 @@
                                     "volatile": true
                                 },
                                 "control_next": 80,
-                                "memssa_node_ref": 18
+                                "memssa_node_ref": 15
                             },
                             {
                                 "id": 80,
                                 "opcode": "local_lifetime_mark",
                                 "arg": 0,
-                                "control_next": 96
+                                "control_next": 102
                             },
                             {
-                                "id": 260,
-                                "opcode": "ref_local",
-                                "ref": 28,
-                                "offset": 0,
+                                "id": 280,
+                                "opcode": "to_int",
+                                "arg": 39,
                                 "control_next": null
-                            },
-                            {
-                                "id": 96,
-                                "opcode": "int64_load",
-                                "location": 260,
-                                "flags": {
-                                    "load_extension": "noextend",
-                                    "volatile": false
-                                },
-                                "control_next": 102,
-                                "memssa_node_ref": 19
                             },
                             {
                                 "id": 101,
                                 "opcode": "int64_add",
                                 "args": [
-                                    96,
-                                    288
+                                    280,
+                                    290
                                 ],
                                 "control_next": null
                             },
@@ -678,7 +610,7 @@
                                     "volatile": true
                                 },
                                 "control_next": 103,
-                                "memssa_node_ref": 20
+                                "memssa_node_ref": 16
                             },
                             {
                                 "id": 103,
@@ -702,23 +634,21 @@
                             ],
                             "immediate_dominator": 3,
                             "alive_instructions": [
-                                258,
-                                260,
+                                80,
                                 93,
                                 102,
-                                80,
-                                287,
+                                289,
+                                39,
                                 88,
-                                83,
+                                290,
                                 5,
-                                103,
-                                96,
-                                92,
-                                288,
-                                28,
-                                0,
                                 91,
+                                92,
+                                280,
+                                0,
+                                279,
                                 259,
+                                103,
                                 101
                             ]
                         }
@@ -731,52 +661,52 @@
                                 "id": 104,
                                 "opcode": "local_lifetime_mark",
                                 "arg": 0,
-                                "control_next": 290
+                                "control_next": 292
                             },
                             {
-                                "id": 296,
+                                "id": 298,
                                 "opcode": "local_scope",
                                 "control_next": null
                             },
                             {
-                                "id": 295,
+                                "id": 297,
                                 "opcode": "alloc_local",
-                                "scope": 296,
+                                "scope": 298,
                                 "type_id": 96,
                                 "type_index": 15,
                                 "control_next": null
                             },
                             {
-                                "id": 294,
+                                "id": 296,
                                 "opcode": "int_const",
                                 "value": 10,
                                 "control_next": null
                             },
                             {
-                                "id": 290,
+                                "id": 292,
                                 "opcode": "int64_store",
-                                "location": 295,
-                                "value": 294,
+                                "location": 297,
+                                "value": 296,
                                 "flags": {
                                     "volatile": true
                                 },
-                                "control_next": 291,
-                                "memssa_node_ref": 21
-                            },
-                            {
-                                "id": 291,
-                                "opcode": "local_lifetime_mark",
-                                "arg": 296,
-                                "control_next": 292
-                            },
-                            {
-                                "id": 292,
-                                "opcode": "local_lifetime_mark",
-                                "arg": 0,
-                                "control_next": 293
+                                "control_next": 293,
+                                "memssa_node_ref": 17
                             },
                             {
                                 "id": 293,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 298,
+                                "control_next": 294
+                            },
+                            {
+                                "id": 294,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 0,
+                                "control_next": 295
+                            },
+                            {
+                                "id": 295,
                                 "opcode": "jump",
                                 "target_block": 8,
                                 "control_next": null
@@ -792,13 +722,13 @@
                             ],
                             "immediate_dominator": 6,
                             "alive_instructions": [
-                                290,
+                                298,
                                 293,
                                 295,
+                                297,
                                 104,
                                 0,
                                 296,
-                                291,
                                 5,
                                 292,
                                 294
@@ -818,7 +748,7 @@
                                     "volatile": true
                                 },
                                 "control_next": 120,
-                                "memssa_node_ref": 22
+                                "memssa_node_ref": 18
                             },
                             {
                                 "id": 120,
@@ -830,22 +760,22 @@
                                 "return_space": null,
                                 "indirect_ref": null,
                                 "control_next": 121,
-                                "memssa_node_ref": 23
+                                "memssa_node_ref": 19
                             },
                             {
                                 "id": 121,
                                 "opcode": "local_lifetime_mark",
                                 "arg": 0,
-                                "control_next": 284
+                                "control_next": 286
                             },
                             {
-                                "id": 284,
+                                "id": 286,
                                 "opcode": "local_lifetime_mark",
                                 "arg": 0,
-                                "control_next": 285
+                                "control_next": 287
                             },
                             {
-                                "id": 285,
+                                "id": 287,
                                 "opcode": "jump",
                                 "target_block": 8,
                                 "control_next": null
@@ -864,11 +794,11 @@
                             "alive_instructions": [
                                 119,
                                 0,
-                                284,
                                 121,
                                 5,
                                 120,
-                                285
+                                286,
+                                287
                             ]
                         }
                     },
@@ -885,7 +815,7 @@
                                     "volatile": true
                                 },
                                 "control_next": 75,
-                                "memssa_node_ref": 13
+                                "memssa_node_ref": 11
                             },
                             {
                                 "id": 72,
@@ -911,7 +841,7 @@
                                     "volatile": true
                                 },
                                 "control_next": 70,
-                                "memssa_node_ref": 14
+                                "memssa_node_ref": 12
                             },
                             {
                                 "id": 70,
@@ -947,12 +877,12 @@
                                 72,
                                 71,
                                 74,
-                                28,
                                 73,
                                 0,
                                 75,
                                 76,
                                 5,
+                                39,
                                 41
                             ]
                         }
@@ -989,7 +919,7 @@
                                     "volatile": true
                                 },
                                 "control_next": 50,
-                                "memssa_node_ref": 11
+                                "memssa_node_ref": 9
                             },
                             {
                                 "id": 50,
@@ -1030,10 +960,10 @@
                                 55,
                                 50,
                                 8,
+                                39,
                                 246,
                                 5,
                                 0,
-                                28,
                                 51,
                                 245,
                                 52,
@@ -1049,16 +979,6 @@
                         "type": "root"
                     },
                     {
-                        "node_ref": 10,
-                        "type": "produce",
-                        "predecessor_ref": 4
-                    },
-                    {
-                        "node_ref": 11,
-                        "type": "produce",
-                        "predecessor_ref": 4
-                    },
-                    {
                         "node_ref": 5,
                         "type": "produce",
                         "predecessor_ref": 4
@@ -1071,17 +991,12 @@
                     {
                         "node_ref": 7,
                         "type": "produce",
-                        "predecessor_ref": 4
-                    },
-                    {
-                        "node_ref": 8,
-                        "type": "produce",
-                        "predecessor_ref": 7
+                        "predecessor_ref": 6
                     },
                     {
                         "node_ref": 9,
                         "type": "produce",
-                        "predecessor_ref": 8
+                        "predecessor_ref": 7
                     },
                     {
                         "node_ref": 3,
@@ -1089,11 +1004,11 @@
                         "links": [
                             {
                                 "block_ref": 0,
-                                "node_ref": 4
+                                "node_ref": 7
                             },
                             {
                                 "block_ref": 2,
-                                "node_ref": 4
+                                "node_ref": 9
                             }
                         ]
                     },
@@ -1107,14 +1022,9 @@
                             },
                             {
                                 "block_ref": 4,
-                                "node_ref": 2
+                                "node_ref": 12
                             }
                         ]
-                    },
-                    {
-                        "node_ref": 13,
-                        "type": "produce",
-                        "predecessor_ref": 2
                     },
                     {
                         "node_ref": 1,
@@ -1126,43 +1036,14 @@
                             },
                             {
                                 "block_ref": 6,
-                                "node_ref": 1
+                                "node_ref": 15
                             }
                         ]
                     },
                     {
-                        "node_ref": 20,
-                        "type": "produce",
+                        "node_ref": 13,
+                        "type": "consume",
                         "predecessor_ref": 1
-                    },
-                    {
-                        "node_ref": 16,
-                        "type": "produce",
-                        "predecessor_ref": 1
-                    },
-                    {
-                        "node_ref": 0,
-                        "type": "phi",
-                        "links": [
-                            {
-                                "block_ref": 7,
-                                "node_ref": 1
-                            },
-                            {
-                                "block_ref": 8,
-                                "node_ref": 0
-                            }
-                        ]
-                    },
-                    {
-                        "node_ref": 22,
-                        "type": "produce",
-                        "predecessor_ref": 0
-                    },
-                    {
-                        "node_ref": 23,
-                        "type": "produce",
-                        "predecessor_ref": 0
                     },
                     {
                         "node_ref": 15,
@@ -1170,24 +1051,53 @@
                         "predecessor_ref": 1
                     },
                     {
-                        "node_ref": 21,
-                        "type": "produce",
-                        "predecessor_ref": 1
-                    },
-                    {
                         "node_ref": 17,
                         "type": "produce",
-                        "predecessor_ref": 1
+                        "predecessor_ref": 15
+                    },
+                    {
+                        "node_ref": 0,
+                        "type": "phi",
+                        "links": [
+                            {
+                                "block_ref": 7,
+                                "node_ref": 17
+                            },
+                            {
+                                "block_ref": 8,
+                                "node_ref": 19
+                            }
+                        ]
                     },
                     {
                         "node_ref": 19,
                         "type": "produce",
-                        "predecessor_ref": 1
+                        "predecessor_ref": 0
                     },
                     {
                         "node_ref": 18,
-                        "type": "produce",
+                        "type": "consume",
+                        "predecessor_ref": 0
+                    },
+                    {
+                        "node_ref": 16,
+                        "type": "consume",
+                        "predecessor_ref": 15
+                    },
+                    {
+                        "node_ref": 14,
+                        "type": "consume",
                         "predecessor_ref": 1
+                    },
+                    {
+                        "node_ref": 10,
+                        "type": "consume",
+                        "predecessor_ref": 2
+                    },
+                    {
+                        "node_ref": 11,
+                        "type": "consume",
+                        "predecessor_ref": 2
                     },
                     {
                         "node_ref": 12,
@@ -1195,9 +1105,9 @@
                         "predecessor_ref": 2
                     },
                     {
-                        "node_ref": 14,
-                        "type": "produce",
-                        "predecessor_ref": 2
+                        "node_ref": 8,
+                        "type": "consume",
+                        "predecessor_ref": 7
                     }
                 ]
             }

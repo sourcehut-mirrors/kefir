@@ -46,6 +46,7 @@ kefir_result_t kefir_opt_code_memssa_free(struct kefir_mem *mem, struct kefir_op
             case KEFIR_OPT_CODE_MEMSSA_ROOT_NODE:
             case KEFIR_OPT_CODE_MEMSSA_CONSUME_NODE:
             case KEFIR_OPT_CODE_MEMSSA_PRODUCE_NODE:
+            case KEFIR_OPT_CODE_MEMSSA_TERMINATE_NODE:
                 // Intentionally left blank
                 break;
 
@@ -176,6 +177,28 @@ kefir_result_t kefir_opt_code_memssa_new_consume_node(struct kefir_mem *mem, str
         kefir_hashset_delete(&memssa->nodes[predecessor_ref].uses, (kefir_hashset_key_t) node_ref);
         return res;
     });
+    memssa->node_length++;
+    ASSIGN_PTR(node_ref_ptr, node_ref);
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_opt_code_memssa_new_terminate_node(struct kefir_mem *mem, struct kefir_opt_code_memssa *memssa,
+                                                        kefir_opt_code_memssa_node_ref_t predecessor_ref,
+                                                        kefir_opt_code_memssa_node_ref_t *node_ref_ptr) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(memssa != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer memory ssa"));
+    REQUIRE(predecessor_ref == KEFIR_ID_NONE || predecessor_ref < memssa->node_length,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer memory ssa node reference"));
+
+    kefir_opt_code_memssa_node_ref_t node_ref = KEFIR_ID_NONE;
+    REQUIRE_OK(new_node(mem, memssa, &node_ref));
+
+    memssa->nodes[node_ref].type = KEFIR_OPT_CODE_MEMSSA_TERMINATE_NODE;
+    memssa->nodes[node_ref].predecessor_ref = predecessor_ref;
+    REQUIRE_OK(kefir_hashset_init(&memssa->nodes[node_ref].uses, &kefir_hashtable_uint_ops));
+    if (predecessor_ref != KEFIR_ID_NONE) {
+        REQUIRE_OK(kefir_hashset_add(mem, &memssa->nodes[predecessor_ref].uses, (kefir_hashset_key_t) node_ref));
+    }
     memssa->node_length++;
     ASSIGN_PTR(node_ref_ptr, node_ref);
     return KEFIR_OK;

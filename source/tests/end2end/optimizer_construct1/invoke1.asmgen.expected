@@ -492,6 +492,11 @@
                         "predecessor_ref": 13
                     },
                     {
+                        "node_ref": 15,
+                        "type": "terminate",
+                        "predecessor_ref": 14
+                    },
+                    {
                         "node_ref": 7,
                         "type": "produce",
                         "predecessor_ref": 6

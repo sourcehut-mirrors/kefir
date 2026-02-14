@@ -37,6 +37,11 @@
                     {
                         "node_ref": 0,
                         "type": "root"
+                    },
+                    {
+                        "node_ref": 1,
+                        "type": "terminate",
+                        "predecessor_ref": 0
                     }
                 ]
             }
@@ -78,6 +83,11 @@
                     {
                         "node_ref": 0,
                         "type": "root"
+                    },
+                    {
+                        "node_ref": 1,
+                        "type": "terminate",
+                        "predecessor_ref": 0
                     }
                 ]
             }
@@ -415,6 +425,11 @@
                         "node_ref": 8,
                         "type": "produce",
                         "predecessor_ref": 7
+                    },
+                    {
+                        "node_ref": 9,
+                        "type": "terminate",
+                        "predecessor_ref": 8
                     }
                 ]
             }
@@ -718,23 +733,28 @@
                         "predecessor_ref": 2
                     },
                     {
+                        "node_ref": 5,
+                        "type": "consume",
+                        "predecessor_ref": 3
+                    },
+                    {
                         "node_ref": 7,
-                        "type": "produce",
+                        "type": "consume",
                         "predecessor_ref": 3
                     },
                     {
                         "node_ref": 4,
-                        "type": "produce",
+                        "type": "consume",
                         "predecessor_ref": 3
                     },
                     {
                         "node_ref": 6,
-                        "type": "produce",
+                        "type": "consume",
                         "predecessor_ref": 3
                     },
                     {
-                        "node_ref": 5,
-                        "type": "produce",
+                        "node_ref": 8,
+                        "type": "terminate",
                         "predecessor_ref": 3
                     }
                 ]
@@ -1098,17 +1118,17 @@
                     },
                     {
                         "node_ref": 5,
-                        "type": "produce",
+                        "type": "consume",
                         "predecessor_ref": 0
                     },
                     {
                         "node_ref": 2,
-                        "type": "produce",
+                        "type": "consume",
                         "predecessor_ref": 0
                     },
                     {
                         "node_ref": 1,
-                        "type": "produce",
+                        "type": "consume",
                         "predecessor_ref": 0
                     },
                     {
@@ -1128,7 +1148,7 @@
                     },
                     {
                         "node_ref": 9,
-                        "type": "produce",
+                        "type": "consume",
                         "predecessor_ref": 8
                     },
                     {
@@ -1137,13 +1157,18 @@
                         "predecessor_ref": 8
                     },
                     {
+                        "node_ref": 11,
+                        "type": "terminate",
+                        "predecessor_ref": 10
+                    },
+                    {
                         "node_ref": 4,
-                        "type": "produce",
+                        "type": "consume",
                         "predecessor_ref": 0
                     },
                     {
                         "node_ref": 3,
-                        "type": "produce",
+                        "type": "consume",
                         "predecessor_ref": 0
                     }
                 ]

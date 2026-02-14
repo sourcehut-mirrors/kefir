@@ -33,7 +33,8 @@ typedef enum kefir_opt_code_memssa_node_type {
     KEFIR_OPT_CODE_MEMSSA_CONSUME_NODE,
     KEFIR_OPT_CODE_MEMSSA_PRODUCE_NODE,
     KEFIR_OPT_CODE_MEMSSA_JOIN_NODE,
-    KEFIR_OPT_CODE_MEMSSA_PHI_NODE
+    KEFIR_OPT_CODE_MEMSSA_PHI_NODE,
+    KEFIR_OPT_CODE_MEMSSA_TERMINATE_NODE
 } kefir_opt_code_memssa_node_type_t;
 
 typedef struct kefir_opt_code_memssa_phi_link {
@@ -101,6 +102,9 @@ kefir_result_t kefir_opt_code_memssa_new_join_node(struct kefir_mem *, struct ke
                                                    kefir_opt_code_memssa_node_ref_t *);
 kefir_result_t kefir_opt_code_memssa_new_phi_node(struct kefir_mem *, struct kefir_opt_code_memssa *,
                                                   kefir_opt_code_memssa_node_ref_t *);
+kefir_result_t kefir_opt_code_memssa_new_terminate_node(struct kefir_mem *, struct kefir_opt_code_memssa *,
+                                                        kefir_opt_code_memssa_node_ref_t,
+                                                        kefir_opt_code_memssa_node_ref_t *);
 
 kefir_result_t kefir_opt_code_memssa_join_attach(struct kefir_mem *, struct kefir_opt_code_memssa *,
                                                  kefir_opt_code_memssa_node_ref_t, kefir_opt_code_memssa_node_ref_t);

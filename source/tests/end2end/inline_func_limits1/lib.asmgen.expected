@@ -13,42 +13,33 @@ main:
     mov %rsp, %rbp
     movq A@GOTPCREL(%rip), %rax
     movl (%rax), %ecx
-    add $100, %ecx
-    movl %ecx, (%rax)
+    lea 100(%ecx), %edx
+    movl %edx, (%rax)
     movq A@GOTPCREL(%rip), %rax
-    movl (%rax), %ecx
-    sub $50, %ecx
-    movl %ecx, (%rax)
+    lea 50(%ecx), %edx
+    movl %edx, (%rax)
     movq A@GOTPCREL(%rip), %rax
-    movl (%rax), %ecx
-    add $200, %ecx
-    movl %ecx, (%rax)
+    lea 250(%ecx), %edx
+    movl %edx, (%rax)
     movq A@GOTPCREL(%rip), %rax
-    movl (%rax), %ecx
-    sub $30, %ecx
-    movl %ecx, (%rax)
+    lea 220(%ecx), %edx
+    movl %edx, (%rax)
     movq A@GOTPCREL(%rip), %rax
-    movl (%rax), %ecx
-    add $-500, %ecx
-    movl %ecx, (%rax)
+    lea -280(%ecx), %edx
+    movl %edx, (%rax)
     movq A@GOTPCREL(%rip), %rax
-    movl (%rax), %ecx
-    sub $45, %ecx
-    movl %ecx, (%rax)
+    lea -325(%ecx), %edx
+    movl %edx, (%rax)
     movq A@GOTPCREL(%rip), %rax
-    movl (%rax), %ecx
-    add $123, %ecx
-    movl %ecx, (%rax)
+    lea -202(%ecx), %edx
+    movl %edx, (%rax)
     movq A@GOTPCREL(%rip), %rax
-    movl (%rax), %ecx
-    movl %ecx, (%rax)
+    movl %edx, (%rax)
     movq A@GOTPCREL(%rip), %rax
-    movl (%rax), %ecx
-    add $-90, %ecx
-    movl %ecx, (%rax)
+    lea -292(%ecx), %edx
+    movl %edx, (%rax)
     movq A@GOTPCREL(%rip), %rax
-    movl (%rax), %ecx
-    sub $-56, %ecx
+    add $-236, %ecx
     movl %ecx, (%rax)
     mov $1000, %edi
     call test1

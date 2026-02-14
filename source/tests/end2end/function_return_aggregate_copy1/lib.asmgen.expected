@@ -135,7 +135,12 @@
                     },
                     {
                         "node_ref": 2,
-                        "type": "produce",
+                        "type": "consume",
+                        "predecessor_ref": 1
+                    },
+                    {
+                        "node_ref": 3,
+                        "type": "terminate",
                         "predecessor_ref": 1
                     }
                 ]
@@ -328,7 +333,12 @@
                     },
                     {
                         "node_ref": 4,
-                        "type": "produce",
+                        "type": "consume",
+                        "predecessor_ref": 3
+                    },
+                    {
+                        "node_ref": 5,
+                        "type": "terminate",
                         "predecessor_ref": 3
                     }
                 ]

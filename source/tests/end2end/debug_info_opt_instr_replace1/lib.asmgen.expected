@@ -148,6 +148,11 @@
                     {
                         "node_ref": 0,
                         "type": "root"
+                    },
+                    {
+                        "node_ref": 1,
+                        "type": "terminate",
+                        "predecessor_ref": 0
                     }
                 ]
             }
