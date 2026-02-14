@@ -108,7 +108,7 @@ static kefir_result_t dead_alloc_apply_impl(struct kefir_mem *mem, struct kefir_
                                     case KEFIR_OPT_OPCODE_BITINT_LOAD_PRECISE:
                                     case KEFIR_OPT_OPCODE_BITINT_STORE_PRECISE:
                                         if (use_instr2->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_VALUE_REF] ==
-                                                instr_id ||
+                                                use_iter.use_instr_ref ||
                                             use_instr2->operation.parameters.memory_access.flags.volatile_access) {
                                             only_lifetime_mark_uses = false;
                                         }

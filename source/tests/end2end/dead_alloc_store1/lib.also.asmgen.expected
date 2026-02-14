@@ -1,0 +1,30 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global test
+.type test, @function
+.extern callback
+
+.section .text
+.L__kefir_text_section_begin:
+test:
+.L__kefir_text_func_test_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    xor %eax, %eax
+    movl %eax, -16(%rbp)
+    movl %edi, -16(%rbp)
+    xor %eax, %eax
+    movq %rax, -8(%rbp)
+    lea -16(%rbp), %rax
+    movq %rax, -8(%rbp)
+    lea -8(%rbp), %rdi
+    call callback@PLT
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.L__kefir_text_func_test_end:
+
+.L__kefir_text_section_end:
+
