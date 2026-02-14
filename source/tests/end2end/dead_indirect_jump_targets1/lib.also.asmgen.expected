@@ -14,11 +14,7 @@ test:
 .L__kefir_text_func_test_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $16, %rsp
-    lea .L__kefir_func_test_label2(%rip), %rax
-    movq %rax, -8(%rbp)
     xor %eax, %eax
-    lea (%rbp), %rsp
     pop %rbp
     ret
 .L__kefir_func_test_label2:

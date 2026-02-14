@@ -52,12 +52,74 @@ static kefir_result_t dead_alloc_apply_impl(struct kefir_mem *mem, struct kefir_
                     const struct kefir_opt_instruction *use_instr = NULL;
                     REQUIRE_OK(kefir_opt_code_container_instr(&func->code, use_iter.use_instr_ref, &use_instr));
 
-                    if (use_instr->operation.opcode != KEFIR_OPT_OPCODE_LOCAL_LIFETIME_MARK) {
-                        only_lifetime_mark_uses = false;
-                    } else {
-                        REQUIRE(instr->operation.opcode == KEFIR_OPT_OPCODE_LOCAL_SCOPE,
-                                KEFIR_SET_ERROR(KEFIR_INVALID_STATE,
-                                                "Expected local lifetime mark to reference local scope"));
+                    switch (use_instr->operation.opcode) {
+                        case KEFIR_OPT_OPCODE_INT8_STORE:
+                        case KEFIR_OPT_OPCODE_INT16_STORE:
+                        case KEFIR_OPT_OPCODE_INT32_STORE:
+                        case KEFIR_OPT_OPCODE_DECIMAL32_STORE:
+                        case KEFIR_OPT_OPCODE_INT64_STORE:
+                        case KEFIR_OPT_OPCODE_COMPLEX_FLOAT32_STORE:
+                        case KEFIR_OPT_OPCODE_DECIMAL64_STORE:
+                        case KEFIR_OPT_OPCODE_INT128_STORE:
+                        case KEFIR_OPT_OPCODE_LONG_DOUBLE_STORE:
+                        case KEFIR_OPT_OPCODE_COMPLEX_FLOAT64_STORE:
+                        case KEFIR_OPT_OPCODE_DECIMAL128_STORE:
+                        case KEFIR_OPT_OPCODE_COMPLEX_LONG_DOUBLE_STORE:
+                        case KEFIR_OPT_OPCODE_BITINT_LOAD_PRECISE:
+                        case KEFIR_OPT_OPCODE_BITINT_STORE_PRECISE:
+                            if (use_instr->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_VALUE_REF] == instr_id ||
+                                use_instr->operation.parameters.memory_access.flags.volatile_access) {
+                                only_lifetime_mark_uses = false;
+                            }
+                            break;
+
+                        case KEFIR_OPT_OPCODE_LOCAL_LIFETIME_MARK:
+                            REQUIRE(instr->operation.opcode == KEFIR_OPT_OPCODE_LOCAL_SCOPE,
+                                    KEFIR_SET_ERROR(KEFIR_INVALID_STATE,
+                                                    "Expected local lifetime mark to reference local scope"));
+                            break;
+
+                        case KEFIR_OPT_OPCODE_REF_LOCAL: {
+                            struct kefir_opt_instruction_use_iterator use_iter2;
+                            for (res = kefir_opt_code_container_instruction_use_instr_iter(
+                                     &func->code, use_iter.use_instr_ref, &use_iter2);
+                                 res == KEFIR_OK && only_lifetime_mark_uses;
+                                 res = kefir_opt_code_container_instruction_use_next(&use_iter2)) {
+                                const struct kefir_opt_instruction *use_instr2 = NULL;
+                                REQUIRE_OK(
+                                    kefir_opt_code_container_instr(&func->code, use_iter2.use_instr_ref, &use_instr2));
+                                switch (use_instr2->operation.opcode) {
+                                    case KEFIR_OPT_OPCODE_INT8_STORE:
+                                    case KEFIR_OPT_OPCODE_INT16_STORE:
+                                    case KEFIR_OPT_OPCODE_INT32_STORE:
+                                    case KEFIR_OPT_OPCODE_DECIMAL32_STORE:
+                                    case KEFIR_OPT_OPCODE_INT64_STORE:
+                                    case KEFIR_OPT_OPCODE_COMPLEX_FLOAT32_STORE:
+                                    case KEFIR_OPT_OPCODE_DECIMAL64_STORE:
+                                    case KEFIR_OPT_OPCODE_INT128_STORE:
+                                    case KEFIR_OPT_OPCODE_LONG_DOUBLE_STORE:
+                                    case KEFIR_OPT_OPCODE_COMPLEX_FLOAT64_STORE:
+                                    case KEFIR_OPT_OPCODE_DECIMAL128_STORE:
+                                    case KEFIR_OPT_OPCODE_COMPLEX_LONG_DOUBLE_STORE:
+                                    case KEFIR_OPT_OPCODE_BITINT_LOAD_PRECISE:
+                                    case KEFIR_OPT_OPCODE_BITINT_STORE_PRECISE:
+                                        if (use_instr2->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_VALUE_REF] ==
+                                                instr_id ||
+                                            use_instr2->operation.parameters.memory_access.flags.volatile_access) {
+                                            only_lifetime_mark_uses = false;
+                                        }
+                                        break;
+
+                                    default:
+                                        only_lifetime_mark_uses = false;
+                                        break;
+                                }
+                            }
+                        } break;
+
+                        default:
+                            only_lifetime_mark_uses = false;
+                            break;
                     }
                 }
                 if (res != KEFIR_ITERATOR_END) {
@@ -72,6 +134,19 @@ static kefir_result_t dead_alloc_apply_impl(struct kefir_mem *mem, struct kefir_
                 for (res = kefir_opt_code_container_instruction_use_instr_iter(&func->code, instr_id, &use_iter);
                      res == KEFIR_OK;
                      res = kefir_opt_code_container_instruction_use_instr_iter(&func->code, instr_id, &use_iter)) {
+                    const struct kefir_opt_instruction *use_instr = NULL;
+                    REQUIRE_OK(kefir_opt_code_container_instr(&func->code, use_iter.use_instr_ref, &use_instr));
+                    if (use_instr->operation.opcode == KEFIR_OPT_OPCODE_REF_LOCAL) {
+                        struct kefir_opt_instruction_use_iterator use_iter2;
+                        for (res = kefir_opt_code_container_instruction_use_instr_iter(
+                                 &func->code, use_iter.use_instr_ref, &use_iter2);
+                             res == KEFIR_OK && only_lifetime_mark_uses;
+                             res = kefir_opt_code_container_instruction_use_next(&use_iter2)) {
+                            REQUIRE_OK(kefir_opt_code_container_drop_control(&func->code, use_iter2.use_instr_ref));
+                            REQUIRE_OK(kefir_opt_code_container_drop_instr(mem, &func->code, use_iter2.use_instr_ref));
+                        }
+                    }
+
                     REQUIRE_OK(kefir_opt_code_container_drop_control(&func->code, use_iter.use_instr_ref));
                     REQUIRE_OK(kefir_opt_code_container_drop_instr(mem, &func->code, use_iter.use_instr_ref));
                 }

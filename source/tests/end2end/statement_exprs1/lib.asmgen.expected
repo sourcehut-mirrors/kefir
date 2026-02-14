@@ -19,35 +19,26 @@ eval2:
 .L__kefir_text_func_eval2_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $32, %rsp
     xor %eax, %eax
     sub $16, %rsp
     movq %rax, (%rsp)
-    mov %rsp, %rcx
-    movq %rax, -8(%rbp)
-    movsx %edi, %rax
-    mov %rax, %rdx
-    shl $3, %rdx
-    movq %rdx, -16(%rbp)
-    sub %rdx, %rsp
-    mov $16, %rsi
-    cmp $8, %rsi
-    mov $8, %rdi
-    cmovl %rdi, %rsi
-    neg %rsi
-    and %rsi, %rsp
-    mov %rsp, %rsi
-    movq %rsi, -24(%rbp)
-    cmp $0, %rcx
-    jz .L__kefir_func_eval2_label3
-    mov %rcx, %rsp
+    mov %rsp, %rax
+    cmp $0, %rax
+    jz .L__kefir_func_eval2_label5
+    mov %rax, %rsp
     movq (%rsp), %rcx
     add $16, %rsp
 .L__kefir_func_eval2_label3:
+    movsx %edi, %rax
+    mov %rax, %rdx
+    shl $3, %rdx
     add %rdx, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
+.L__kefir_func_eval2_label5:
+    mov %rax, %rcx
+    jmp .L__kefir_func_eval2_label3
 .L__kefir_text_func_eval2_end:
 
 .L__kefir_text_section_end:

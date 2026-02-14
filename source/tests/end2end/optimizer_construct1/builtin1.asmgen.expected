@@ -8,41 +8,13 @@
                 "blocks": [
                     {
                         "id": 0,
-                        "control_flow": 4,
+                        "control_flow": 7,
                         "code": [
-                            {
-                                "id": 2,
-                                "opcode": "get_argument",
-                                "index": 0,
-                                "control_next": null,
-                                "ir_instruction": 2
-                            },
                             {
                                 "id": 0,
                                 "opcode": "local_scope",
                                 "control_next": null,
                                 "ir_instruction": 0
-                            },
-                            {
-                                "id": 3,
-                                "opcode": "alloc_local",
-                                "scope": 0,
-                                "type_id": 92,
-                                "type_index": 0,
-                                "control_next": null,
-                                "ir_instruction": 4
-                            },
-                            {
-                                "id": 4,
-                                "opcode": "int32_store",
-                                "location": 3,
-                                "value": 2,
-                                "flags": {
-                                    "volatile": false
-                                },
-                                "control_next": 7,
-                                "ir_instruction": 6,
-                                "memssa_node_ref": 1
                             },
                             {
                                 "id": 5,
@@ -59,7 +31,7 @@
                                 "arg": 5,
                                 "control_next": 8,
                                 "ir_instruction": 15,
-                                "memssa_node_ref": 2
+                                "memssa_node_ref": 1
                             },
                             {
                                 "id": 6,
@@ -79,7 +51,7 @@
                                 ],
                                 "control_next": 9,
                                 "ir_instruction": 20,
-                                "memssa_node_ref": 3
+                                "memssa_node_ref": 2
                             },
                             {
                                 "id": 9,
@@ -92,7 +64,7 @@
                                 },
                                 "control_next": 10,
                                 "ir_instruction": 24,
-                                "memssa_node_ref": 4
+                                "memssa_node_ref": 3
                             },
                             {
                                 "id": 10,
@@ -100,7 +72,7 @@
                                 "arg": 5,
                                 "control_next": 1,
                                 "ir_instruction": 28,
-                                "memssa_node_ref": 5
+                                "memssa_node_ref": 4
                             },
                             {
                                 "id": 1,
@@ -124,17 +96,14 @@
                             "immediate_dominator": null,
                             "alive_instructions": [
                                 8,
-                                3,
-                                4,
-                                9,
                                 7,
                                 5,
                                 0,
+                                10,
                                 6,
-                                2,
                                 1,
                                 11,
-                                10
+                                9
                             ]
                         }
                     }
@@ -186,11 +155,6 @@
                         "node_ref": 4,
                         "type": "produce",
                         "predecessor_ref": 3
-                    },
-                    {
-                        "node_ref": 5,
-                        "type": "produce",
-                        "predecessor_ref": 4
                     }
                 ]
             }
@@ -203,72 +167,8 @@
                 "blocks": [
                     {
                         "id": 0,
-                        "control_flow": 7,
+                        "control_flow": 8,
                         "code": [
-                            {
-                                "id": 0,
-                                "opcode": "local_scope",
-                                "control_next": null,
-                                "ir_instruction": 0
-                            },
-                            {
-                                "id": 2,
-                                "opcode": "alloc_local",
-                                "scope": 0,
-                                "type_id": 94,
-                                "type_index": 0,
-                                "control_next": null,
-                                "ir_instruction": 3
-                            },
-                            {
-                                "id": 5,
-                                "opcode": "int_const",
-                                "value": 0,
-                                "control_next": null,
-                                "ir_instruction": 7
-                            },
-                            {
-                                "id": 3,
-                                "opcode": "int_const",
-                                "value": 100,
-                                "control_next": null,
-                                "ir_instruction": 5
-                            },
-                            {
-                                "id": 4,
-                                "opcode": "int64_sign_extend_32bits",
-                                "arg": 3,
-                                "control_next": null,
-                                "ir_instruction": 6
-                            },
-                            {
-                                "id": 6,
-                                "opcode": "stack_alloc",
-                                "size_ref": 4,
-                                "alignment_ref": 5,
-                                "within_scope": false,
-                                "control_next": null,
-                                "ir_instruction": 8
-                            },
-                            {
-                                "id": 7,
-                                "opcode": "int64_store",
-                                "location": 2,
-                                "value": 6,
-                                "flags": {
-                                    "volatile": false
-                                },
-                                "control_next": 1,
-                                "ir_instruction": 9,
-                                "memssa_node_ref": 1
-                            },
-                            {
-                                "id": 1,
-                                "opcode": "local_lifetime_mark",
-                                "arg": 0,
-                                "control_next": 8,
-                                "ir_instruction": 1
-                            },
                             {
                                 "id": 8,
                                 "opcode": "return",
@@ -283,15 +183,7 @@
                             "predecessors": [],
                             "immediate_dominator": null,
                             "alive_instructions": [
-                                8,
-                                3,
-                                4,
-                                7,
-                                0,
-                                6,
-                                5,
-                                1,
-                                2
+                                8
                             ]
                         }
                     }
@@ -311,11 +203,6 @@
                     {
                         "node_ref": 0,
                         "type": "root"
-                    },
-                    {
-                        "node_ref": 1,
-                        "type": "produce",
-                        "predecessor_ref": 0
                     }
                 ]
             }

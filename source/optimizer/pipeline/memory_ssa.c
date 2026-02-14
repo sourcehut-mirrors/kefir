@@ -84,6 +84,8 @@ static kefir_result_t classify_memory_access(const struct kefir_opt_instruction 
 
         case KEFIR_OPT_OPCODE_BITINT_LOAD:
         case KEFIR_OPT_OPCODE_BITINT_LOAD_PRECISE:
+        case KEFIR_OPT_OPCODE_BITINT_STORE:
+        case KEFIR_OPT_OPCODE_BITINT_STORE_PRECISE:
             *location_ptr = instr->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_LOCATION_REF];
             if (instr->operation.parameters.bitwidth <= 8) {
                 *size_ptr = 1;

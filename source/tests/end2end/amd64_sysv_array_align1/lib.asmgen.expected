@@ -130,14 +130,11 @@ vla1:
 .L__kefir_text_func_vla1_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $32, %rsp
     xor %eax, %eax
     sub $16, %rsp
     movq %rax, (%rsp)
     mov %rsp, %rcx
-    movq %rax, -8(%rbp)
     movsx %edi, %rax
-    movq %rax, -16(%rbp)
     sub %rax, %rsp
     mov $16, %rax
     cmp $1, %rax
@@ -146,7 +143,6 @@ vla1:
     neg %rax
     and %rax, %rsp
     mov %rsp, %rax
-    movq %rax, -24(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret

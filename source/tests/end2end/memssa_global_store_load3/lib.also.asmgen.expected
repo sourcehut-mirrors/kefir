@@ -62,20 +62,10 @@ test2:
 
 test3:
 .L__kefir_text_func_test3_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $16, %rsp
-    movl %edi, -12(%rbp)
     lea 1(%edi), %eax
-    movl %eax, -8(%rbp)
-    mov %rdi, %rcx
-    shl $1, %ecx
-    movl %ecx, -4(%rbp)
-    add %eax, %edi
-    mov %edi, %eax
-    add %ecx, %eax
-    lea (%rbp), %rsp
-    pop %rbp
+    add %edi, %eax
+    shl $1, %edi
+    add %edi, %eax
     ret
 .L__kefir_text_func_test3_end:
 

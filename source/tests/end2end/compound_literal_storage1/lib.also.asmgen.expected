@@ -118,10 +118,7 @@ test1:
 .L__kefir_text_func_test1_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $16, %rsp
-    movq %rdi, -8(%rbp)
     mov $8, %eax
-    lea (%rbp), %rsp
     pop %rbp
     ret
 .L__kefir_text_func_test1_end:
