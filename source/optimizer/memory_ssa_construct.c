@@ -14,11 +14,9 @@ struct construct_state {
     struct kefir_list block_queue;
     struct kefir_hashtable inserted_phis;
 
-    struct kefir_hashtable instr_nodes;
+    struct kefir_hashset processed_instr;
     struct kefir_list instr_queue;
     struct kefir_hashset instr_queue_index;
-    kefir_opt_code_memssa_node_ref_t input_node_ref;
-    kefir_size_t num_of_inputs;
     kefir_bool_t all_inputs_ready;
 };
 
@@ -250,9 +248,7 @@ static kefir_result_t handle_input(struct construct_state *state, kefir_opt_inst
     REQUIRE(input_instr->block_id == ((struct link_frame *) kefir_list_head(&state->block_queue)->value)->block_ref,
             KEFIR_OK);
 
-    kefir_hashtable_value_t table_value;
-    kefir_result_t res = kefir_hashtable_at(&state->instr_nodes, (kefir_hashtable_key_t) input_instr_ref, &table_value);
-    if (res == KEFIR_NOT_FOUND) {
+    if (!kefir_hashset_has(&state->processed_instr, (kefir_hashset_key_t) input_instr_ref)) {
         if (!kefir_hashset_has(&state->instr_queue_index, (kefir_hashset_key_t) input_instr_ref)) {
             REQUIRE_OK(kefir_list_insert_after(state->mem, &state->instr_queue, kefir_list_tail(&state->instr_queue),
                                                (void *) (kefir_uptr_t) input_instr_ref));
@@ -260,27 +256,6 @@ static kefir_result_t handle_input(struct construct_state *state, kefir_opt_inst
         }
         state->all_inputs_ready = false;
         return KEFIR_OK;
-    }
-    REQUIRE_OK(res);
-
-    ASSIGN_DECL_CAST(kefir_opt_code_memssa_node_ref_t, input_node_ref, table_value);
-    REQUIRE(input_node_ref != KEFIR_ID_NONE, KEFIR_OK);
-
-    if (state->num_of_inputs == 0) {
-        state->input_node_ref = input_node_ref;
-        state->num_of_inputs++;
-    } else if (state->num_of_inputs == 1) {
-        if (state->input_node_ref != input_node_ref) {
-            kefir_opt_code_memssa_node_ref_t join_ref;
-            REQUIRE_OK(kefir_opt_code_memssa_new_join_node(state->mem, state->memssa, &join_ref));
-            REQUIRE_OK(kefir_opt_code_memssa_join_attach(state->mem, state->memssa, join_ref, state->input_node_ref));
-            REQUIRE_OK(kefir_opt_code_memssa_join_attach(state->mem, state->memssa, join_ref, input_node_ref));
-            state->input_node_ref = join_ref;
-            state->num_of_inputs++;
-        }
-    } else {
-        REQUIRE_OK(kefir_opt_code_memssa_join_attach(state->mem, state->memssa, state->input_node_ref, input_node_ref));
-        state->num_of_inputs++;
     }
     return KEFIR_OK;
 }
@@ -293,13 +268,50 @@ static kefir_result_t extract_inputs_callback(kefir_opt_instruction_ref_t input_
     return KEFIR_OK;
 }
 
+static kefir_result_t insert_missing_nodes(struct kefir_mem *mem, struct construct_state *state,
+                                           struct link_frame *frame, kefir_bool_t *has_missing_nodes) {
+    ASSIGN_PTR(has_missing_nodes, false);
+
+    kefir_opt_instruction_ref_t block_tail_ref;
+    REQUIRE_OK(kefir_opt_code_block_instr_control_tail(state->code, frame->block_ref, &block_tail_ref));
+
+    kefir_result_t res;
+    struct kefir_hashset_iterator iter;
+    kefir_hashset_key_t entry;
+    for (res = kefir_hashset_iter(&state->liveness->blocks[frame->block_ref].alive_instr, &iter, &entry);
+         res == KEFIR_OK; res = kefir_hashset_next(&iter, &entry)) {
+        if (entry != block_tail_ref && !kefir_hashset_has(&state->processed_instr, entry)) {
+            const struct kefir_opt_instruction *instr;
+            REQUIRE_OK(kefir_opt_code_container_instr(state->code, (kefir_opt_instruction_ref_t) entry, &instr));
+            if (instr->block_id != frame->block_ref) {
+                continue;
+            }
+
+            REQUIRE_OK(kefir_list_insert_after(mem, &state->instr_queue, kefir_list_tail(&state->instr_queue),
+                                               (void *) (kefir_uptr_t) entry));
+            REQUIRE_OK(kefir_hashset_add(mem, &state->instr_queue_index, (kefir_hashset_key_t) entry));
+            ASSIGN_PTR(has_missing_nodes, true);
+        }
+    }
+    if (res != KEFIR_ITERATOR_END) {
+        REQUIRE_OK(res);
+    }
+    return KEFIR_OK;
+}
+
 static kefir_result_t do_assign(struct kefir_mem *mem, struct construct_state *state, struct link_frame *frame) {
+    kefir_opt_instruction_ref_t block_tail_ref;
+    REQUIRE_OK(kefir_opt_code_block_instr_control_tail(state->code, frame->block_ref, &block_tail_ref));
+
     for (struct kefir_list_entry *iter = kefir_list_head(&state->instr_queue); iter != NULL;
          iter = kefir_list_head(&state->instr_queue)) {
         ASSIGN_DECL_CAST(kefir_opt_instruction_ref_t, instr_ref, (kefir_uptr_t) iter->value);
         REQUIRE_OK(kefir_list_pop(mem, &state->instr_queue, iter));
         REQUIRE_OK(kefir_hashset_delete(&state->instr_queue_index, (kefir_hashset_key_t) instr_ref));
-        if (instr_ref == KEFIR_ID_NONE || kefir_hashtable_has(&state->instr_nodes, (kefir_hashtable_key_t) instr_ref)) {
+        if (instr_ref == KEFIR_ID_NONE || kefir_hashset_has(&state->processed_instr, instr_ref)) {
+            if (kefir_list_length(&state->instr_queue) == 0) {
+                REQUIRE_OK(insert_missing_nodes(mem, state, frame, NULL));
+            }
             continue;
         }
         const struct kefir_opt_instruction *instr;
@@ -309,9 +321,6 @@ static kefir_result_t do_assign(struct kefir_mem *mem, struct construct_state *s
         }
 
         state->all_inputs_ready = true;
-        state->input_node_ref = KEFIR_ID_NONE;
-        state->num_of_inputs = 0;
-
         REQUIRE_OK(kefir_opt_instruction_extract_inputs(state->code, instr, true, extract_inputs_callback, state));
 
         kefir_bool_t is_control_flow;
@@ -331,26 +340,31 @@ static kefir_result_t do_assign(struct kefir_mem *mem, struct construct_state *s
             continue;
         }
 
+        if (instr_ref == block_tail_ref) {
+            kefir_bool_t has_missing_nodes = false;
+            REQUIRE_OK(insert_missing_nodes(mem, state, frame, &has_missing_nodes));
+            if (has_missing_nodes) {
+                REQUIRE_OK(kefir_list_insert_after(mem, &state->instr_queue, kefir_list_tail(&state->instr_queue),
+                                                   (void *) (kefir_uptr_t) instr_ref));
+                REQUIRE_OK(kefir_hashset_add(mem, &state->instr_queue_index, (kefir_hashset_key_t) instr_ref));
+                continue;
+            }
+        }
+
         kefir_uint32_t op_type = MEMORY_OP_NONE;
         REQUIRE_OK(is_instr_memory(instr, &op_type));
 
-        kefir_opt_code_memssa_node_ref_t node_ref = state->input_node_ref;
+        kefir_opt_code_memssa_node_ref_t input_node_ref, output_node_ref;
+        REQUIRE_OK(find_link_for(frame, &input_node_ref));
+        output_node_ref = input_node_ref;
         if (op_type & MEMORY_OP_PRODUCE) {
-            if (state->input_node_ref == KEFIR_ID_NONE) {
-                REQUIRE_OK(find_link_for(frame, &state->input_node_ref));
-            }
-            REQUIRE_OK(kefir_opt_code_memssa_new_produce_node(mem, state->memssa, state->input_node_ref, instr_ref,
-                                                              &node_ref));
+            REQUIRE_OK(kefir_opt_code_memssa_new_produce_node(mem, state->memssa, input_node_ref, instr_ref,
+                                                              &output_node_ref));
         } else if (op_type & MEMORY_OP_CONSUME) {
-            if (state->input_node_ref == KEFIR_ID_NONE) {
-                REQUIRE_OK(find_link_for(frame, &state->input_node_ref));
-            }
-            kefir_opt_code_memssa_node_ref_t consume_node_ref;
-            REQUIRE_OK(kefir_opt_code_memssa_new_consume_node(mem, state->memssa, state->input_node_ref, instr_ref,
-                                                              &consume_node_ref));
+            REQUIRE_OK(kefir_opt_code_memssa_new_consume_node(mem, state->memssa, input_node_ref, instr_ref, NULL));
         }
-        REQUIRE_OK(kefir_hashtable_insert(mem, &state->instr_nodes, (kefir_hashtable_key_t) instr_ref,
-                                          (kefir_hashtable_value_t) node_ref));
+        REQUIRE_OK(kefir_hashset_add(mem, &state->processed_instr, (kefir_hashset_key_t) instr_ref));
+        frame->node_ref = output_node_ref;
     }
 
     return KEFIR_OK;
@@ -361,58 +375,14 @@ static kefir_result_t assign(struct kefir_mem *mem, struct construct_state *stat
     REQUIRE_OK(kefir_opt_code_container_block(state->code, frame->block_ref, &block));
 
     REQUIRE_OK(kefir_list_clear(mem, &state->instr_queue));
-    REQUIRE_OK(kefir_hashtable_clear(mem, &state->instr_nodes));
-
-    kefir_opt_instruction_ref_t block_output_ref = KEFIR_ID_NONE;
-    kefir_size_t num_of_block_output = 0;
+    REQUIRE_OK(kefir_hashset_clear(mem, &state->processed_instr));
 
     kefir_opt_instruction_ref_t block_tail_ref;
     REQUIRE_OK(kefir_opt_code_block_instr_control_tail(state->code, frame->block_ref, &block_tail_ref));
-    if (block_tail_ref != KEFIR_ID_NONE) {
-        REQUIRE_OK(kefir_list_insert_after(mem, &state->instr_queue, kefir_list_tail(&state->instr_queue),
-                                           (void *) (kefir_uptr_t) block_tail_ref));
-        REQUIRE_OK(kefir_hashset_add(mem, &state->instr_queue_index, (kefir_hashset_key_t) block_tail_ref));
-        REQUIRE_OK(do_assign(mem, state, frame));
-
-        state->input_node_ref = block_output_ref;
-        state->num_of_inputs = num_of_block_output;
-        REQUIRE_OK(handle_input(state, block_tail_ref));
-        block_output_ref = state->input_node_ref;
-        num_of_block_output = state->num_of_inputs;
-    }
-
-    kefir_result_t res;
-    struct kefir_hashset_iterator iter;
-    kefir_hashset_key_t entry;
-    for (res = kefir_hashset_iter(&state->liveness->blocks[frame->block_ref].alive_instr, &iter, &entry);
-         res == KEFIR_OK; res = kefir_hashset_next(&iter, &entry)) {
-        if (!kefir_hashtable_has(&state->instr_nodes, (kefir_hashtable_key_t) entry)) {
-            const struct kefir_opt_instruction *instr;
-            REQUIRE_OK(kefir_opt_code_container_instr(state->code, (kefir_opt_instruction_ref_t) entry, &instr));
-            if (instr->block_id != frame->block_ref) {
-                continue;
-            }
-
-            REQUIRE_OK(kefir_list_insert_after(mem, &state->instr_queue, kefir_list_tail(&state->instr_queue),
-                                               (void *) (kefir_uptr_t) entry));
-            REQUIRE_OK(kefir_hashset_add(mem, &state->instr_queue_index, (kefir_hashset_key_t) entry));
-            REQUIRE_OK(do_assign(mem, state, frame));
-
-            state->input_node_ref = block_output_ref;
-            state->num_of_inputs = num_of_block_output;
-            REQUIRE_OK(handle_input(state, (kefir_opt_instruction_ref_t) entry));
-            block_output_ref = state->input_node_ref;
-            num_of_block_output = state->num_of_inputs;
-        }
-    }
-    if (res != KEFIR_ITERATOR_END) {
-        REQUIRE_OK(res);
-    }
-
-    if (block_output_ref != KEFIR_ID_NONE) {
-        frame->node_ref = block_output_ref;
-    }
-
+    REQUIRE_OK(kefir_list_insert_after(mem, &state->instr_queue, kefir_list_tail(&state->instr_queue),
+                                       (void *) (kefir_uptr_t) block_tail_ref));
+    REQUIRE_OK(kefir_hashset_add(mem, &state->instr_queue_index, (kefir_hashset_key_t) block_tail_ref));
+    REQUIRE_OK(do_assign(mem, state, frame));
     return KEFIR_OK;
 }
 
@@ -496,7 +466,7 @@ kefir_result_t kefir_opt_code_memssa_construct(struct kefir_mem *mem, struct kef
     REQUIRE_OK(kefir_hashset_init(&state.visited_blocks, &kefir_hashtable_uint_ops));
     REQUIRE_OK(kefir_hashtable_init(&state.inserted_phis, &kefir_hashtable_uint_ops));
     REQUIRE_OK(kefir_list_init(&state.block_queue));
-    REQUIRE_OK(kefir_hashtable_init(&state.instr_nodes, &kefir_hashtable_uint_ops));
+    REQUIRE_OK(kefir_hashset_init(&state.processed_instr, &kefir_hashtable_uint_ops));
     REQUIRE_OK(kefir_list_init(&state.instr_queue));
     REQUIRE_OK(kefir_hashset_init(&state.instr_queue_index, &kefir_hashtable_uint_ops));
 
@@ -504,7 +474,7 @@ kefir_result_t kefir_opt_code_memssa_construct(struct kefir_mem *mem, struct kef
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_hashset_free(mem, &state.instr_queue_index);
         kefir_list_free(mem, &state.instr_queue);
-        kefir_hashtable_free(mem, &state.instr_nodes);
+        kefir_hashset_free(mem, &state.processed_instr);
         kefir_list_free(mem, &state.block_queue);
         kefir_hashtable_free(mem, &state.inserted_phis);
         kefir_hashset_free(mem, &state.visited_blocks);
@@ -513,7 +483,7 @@ kefir_result_t kefir_opt_code_memssa_construct(struct kefir_mem *mem, struct kef
     res = kefir_hashset_free(mem, &state.instr_queue_index);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_list_free(mem, &state.instr_queue);
-        kefir_hashtable_free(mem, &state.instr_nodes);
+        kefir_hashset_free(mem, &state.processed_instr);
         kefir_list_free(mem, &state.block_queue);
         kefir_hashtable_free(mem, &state.inserted_phis);
         kefir_hashset_free(mem, &state.visited_blocks);
@@ -521,13 +491,13 @@ kefir_result_t kefir_opt_code_memssa_construct(struct kefir_mem *mem, struct kef
     });
     res = kefir_list_free(mem, &state.instr_queue);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        kefir_hashtable_free(mem, &state.instr_nodes);
+        kefir_hashset_free(mem, &state.processed_instr);
         kefir_list_free(mem, &state.block_queue);
         kefir_hashtable_free(mem, &state.inserted_phis);
         kefir_hashset_free(mem, &state.visited_blocks);
         return res;
     });
-    res = kefir_hashtable_free(mem, &state.instr_nodes);
+    res = kefir_hashset_free(mem, &state.processed_instr);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_list_free(mem, &state.block_queue);
         kefir_hashtable_free(mem, &state.inserted_phis);

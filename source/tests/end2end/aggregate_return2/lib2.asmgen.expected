@@ -161,27 +161,6 @@
                         "predecessor_ref": 0
                     },
                     {
-                        "node_ref": 5,
-                        "type": "join",
-                        "nodes": [
-                            1,
-                            3
-                        ]
-                    },
-                    {
-                        "node_ref": 6,
-                        "type": "join",
-                        "nodes": [
-                            5,
-                            3
-                        ]
-                    },
-                    {
-                        "node_ref": 7,
-                        "type": "terminate",
-                        "predecessor_ref": 6
-                    },
-                    {
                         "node_ref": 2,
                         "type": "consume",
                         "predecessor_ref": 1
@@ -194,6 +173,11 @@
                     {
                         "node_ref": 4,
                         "type": "consume",
+                        "predecessor_ref": 3
+                    },
+                    {
+                        "node_ref": 5,
+                        "type": "terminate",
                         "predecessor_ref": 3
                     }
                 ]

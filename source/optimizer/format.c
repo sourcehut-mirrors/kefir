@@ -1368,17 +1368,6 @@ static kefir_result_t format_memssa(struct kefir_mem *mem, struct kefir_json_out
                 REQUIRE_OK(id_format(json, node->predecessor_ref));
                 break;
 
-            case KEFIR_OPT_CODE_MEMSSA_JOIN_NODE: {
-                REQUIRE_OK(kefir_json_output_object_key(json, "type"));
-                REQUIRE_OK(kefir_json_output_string(json, "join"));
-                REQUIRE_OK(kefir_json_output_object_key(json, "nodes"));
-                REQUIRE_OK(kefir_json_output_array_begin(json));
-                for (kefir_size_t i = 0; i < node->join.input_length; i++) {
-                    REQUIRE_OK(id_format(json, node->join.inputs[i]));
-                }
-                REQUIRE_OK(kefir_json_output_array_end(json));
-            } break;
-
             case KEFIR_OPT_CODE_MEMSSA_PHI_NODE: {
                 REQUIRE_OK(kefir_json_output_object_key(json, "type"));
                 REQUIRE_OK(kefir_json_output_string(json, "phi"));

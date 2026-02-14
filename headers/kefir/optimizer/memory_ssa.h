@@ -32,7 +32,6 @@ typedef enum kefir_opt_code_memssa_node_type {
     KEFIR_OPT_CODE_MEMSSA_ROOT_NODE,
     KEFIR_OPT_CODE_MEMSSA_CONSUME_NODE,
     KEFIR_OPT_CODE_MEMSSA_PRODUCE_NODE,
-    KEFIR_OPT_CODE_MEMSSA_JOIN_NODE,
     KEFIR_OPT_CODE_MEMSSA_PHI_NODE,
     KEFIR_OPT_CODE_MEMSSA_TERMINATE_NODE
 } kefir_opt_code_memssa_node_type_t;
@@ -49,10 +48,6 @@ typedef struct kefir_opt_code_memssa_node {
             kefir_opt_code_memssa_node_ref_t predecessor_ref;
             kefir_opt_instruction_ref_t instr_ref;
         };
-        struct {
-            kefir_opt_code_memssa_node_ref_t *inputs;
-            kefir_size_t input_length;
-        } join;
         struct {
             struct kefir_opt_code_memssa_phi_link *links;
             kefir_size_t link_count;
@@ -98,16 +93,12 @@ kefir_result_t kefir_opt_code_memssa_new_consume_node(struct kefir_mem *, struct
 kefir_result_t kefir_opt_code_memssa_new_produce_node(struct kefir_mem *, struct kefir_opt_code_memssa *,
                                                       kefir_opt_code_memssa_node_ref_t, kefir_opt_instruction_ref_t,
                                                       kefir_opt_code_memssa_node_ref_t *);
-kefir_result_t kefir_opt_code_memssa_new_join_node(struct kefir_mem *, struct kefir_opt_code_memssa *,
-                                                   kefir_opt_code_memssa_node_ref_t *);
 kefir_result_t kefir_opt_code_memssa_new_phi_node(struct kefir_mem *, struct kefir_opt_code_memssa *,
                                                   kefir_opt_code_memssa_node_ref_t *);
 kefir_result_t kefir_opt_code_memssa_new_terminate_node(struct kefir_mem *, struct kefir_opt_code_memssa *,
                                                         kefir_opt_code_memssa_node_ref_t,
                                                         kefir_opt_code_memssa_node_ref_t *);
 
-kefir_result_t kefir_opt_code_memssa_join_attach(struct kefir_mem *, struct kefir_opt_code_memssa *,
-                                                 kefir_opt_code_memssa_node_ref_t, kefir_opt_code_memssa_node_ref_t);
 kefir_result_t kefir_opt_code_memssa_phi_attach(struct kefir_mem *, struct kefir_opt_code_memssa *,
                                                 kefir_opt_code_memssa_node_ref_t, kefir_opt_block_id_t,
                                                 kefir_opt_code_memssa_node_ref_t);

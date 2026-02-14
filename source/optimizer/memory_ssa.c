@@ -53,10 +53,6 @@ kefir_result_t kefir_opt_code_memssa_free(struct kefir_mem *mem, struct kefir_op
             case KEFIR_OPT_CODE_MEMSSA_PHI_NODE:
                 KEFIR_FREE(mem, memssa->nodes[i].phi.links);
                 break;
-
-            case KEFIR_OPT_CODE_MEMSSA_JOIN_NODE:
-                KEFIR_FREE(mem, memssa->nodes[i].join.inputs);
-                break;
         }
         REQUIRE_OK(kefir_hashset_free(mem, &memssa->nodes[i].uses));
     }
@@ -237,23 +233,6 @@ kefir_result_t kefir_opt_code_memssa_new_produce_node(struct kefir_mem *mem, str
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_opt_code_memssa_new_join_node(struct kefir_mem *mem, struct kefir_opt_code_memssa *memssa,
-                                                   kefir_opt_code_memssa_node_ref_t *node_ref_ptr) {
-    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
-    REQUIRE(memssa != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer memory ssa"));
-
-    kefir_opt_code_memssa_node_ref_t node_ref = KEFIR_ID_NONE;
-    REQUIRE_OK(new_node(mem, memssa, &node_ref));
-
-    memssa->nodes[node_ref].type = KEFIR_OPT_CODE_MEMSSA_JOIN_NODE;
-    memssa->nodes[node_ref].join.inputs = NULL;
-    memssa->nodes[node_ref].join.input_length = 0;
-    REQUIRE_OK(kefir_hashset_init(&memssa->nodes[node_ref].uses, &kefir_hashtable_uint_ops));
-    memssa->node_length++;
-    ASSIGN_PTR(node_ref_ptr, node_ref);
-    return KEFIR_OK;
-}
-
 kefir_result_t kefir_opt_code_memssa_new_phi_node(struct kefir_mem *mem, struct kefir_opt_code_memssa *memssa,
                                                   kefir_opt_code_memssa_node_ref_t *node_ref_ptr) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
@@ -268,38 +247,6 @@ kefir_result_t kefir_opt_code_memssa_new_phi_node(struct kefir_mem *mem, struct 
     REQUIRE_OK(kefir_hashset_init(&memssa->nodes[node_ref].uses, &kefir_hashtable_uint_ops));
     memssa->node_length++;
     ASSIGN_PTR(node_ref_ptr, node_ref);
-    return KEFIR_OK;
-}
-
-kefir_result_t kefir_opt_code_memssa_join_attach(struct kefir_mem *mem, struct kefir_opt_code_memssa *memssa,
-                                                 kefir_opt_code_memssa_node_ref_t join_node_ref,
-                                                 kefir_opt_code_memssa_node_ref_t node_ref) {
-    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
-    REQUIRE(memssa != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer memory ssa"));
-    REQUIRE(join_node_ref < memssa->node_length && memssa->nodes[join_node_ref].type == KEFIR_OPT_CODE_MEMSSA_JOIN_NODE,
-            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer memory ssa join node reference"));
-    REQUIRE(node_ref < memssa->node_length || node_ref == KEFIR_ID_NONE,
-            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer memory ssa node reference"));
-
-    for (kefir_size_t i = 0; i < memssa->nodes[join_node_ref].join.input_length; i++) {
-        if (memssa->nodes[join_node_ref].join.inputs[i] == node_ref) {
-            return KEFIR_OK;
-        }
-    }
-
-    kefir_size_t new_length = memssa->nodes[join_node_ref].join.input_length + 1;
-    kefir_opt_code_memssa_node_ref_t *new_inputs = KEFIR_REALLOC(mem, memssa->nodes[join_node_ref].join.inputs,
-                                                                 sizeof(kefir_opt_code_memssa_node_ref_t) * new_length);
-    REQUIRE(new_inputs != NULL,
-            KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate optimizer memory ssa join node"));
-
-    new_inputs[new_length - 1] = node_ref;
-    memssa->nodes[join_node_ref].join.inputs = new_inputs;
-    memssa->nodes[join_node_ref].join.input_length = new_length;
-
-    if (node_ref != KEFIR_ID_NONE) {
-        REQUIRE_OK(kefir_hashset_add(mem, &memssa->nodes[node_ref].uses, (kefir_hashset_key_t) join_node_ref));
-    }
     return KEFIR_OK;
 }
 

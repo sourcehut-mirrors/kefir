@@ -175,13 +175,6 @@ static kefir_result_t find_clobber_impl(struct kefir_mem *mem, const struct kefi
                 }
                 break;
 
-            case KEFIR_OPT_CODE_MEMSSA_JOIN_NODE:
-                for (kefir_size_t i = 0; i < iter_node->join.input_length; i++) {
-                    REQUIRE_OK(
-                        kefir_list_insert_after(mem, queue, NULL, (void *) (kefir_uptr_t) iter_node->join.inputs[i]));
-                }
-                break;
-
             case KEFIR_OPT_CODE_MEMSSA_PHI_NODE:
                 for (kefir_size_t i = 0; i < iter_node->phi.link_count; i++) {
                     REQUIRE_OK(kefir_list_insert_after(mem, queue, NULL,
@@ -421,7 +414,7 @@ static kefir_result_t memory_ssa_apply(struct kefir_mem *mem, struct kefir_opt_m
     kefir_result_t res = kefir_opt_code_control_flow_build(mem, &control_flow, &func->code);
     REQUIRE_CHAIN(&res, kefir_opt_code_liveness_build(mem, &liveness, &control_flow));
     REQUIRE_CHAIN(&res, kefir_opt_code_memssa_construct(mem, &memssa, &func->code, &control_flow, &liveness));
-    REQUIRE_OK(kefir_opt_code_escape_analysis_build(mem, &escapes, &func->code));
+    REQUIRE_CHAIN(&res, kefir_opt_code_escape_analysis_build(mem, &escapes, &func->code));
     REQUIRE_CHAIN(&res, do_optimize(mem, module, func, &control_flow, &sequencing, &memssa, &escapes));
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_opt_code_escape_analysis_free(mem, &escapes);
