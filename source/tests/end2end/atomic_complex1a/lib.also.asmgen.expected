@@ -4205,19 +4205,10 @@ __kefir_softfloat_fmaximum_numl:
 
 __kefir_softfloat_fabs:
 .L__kefir_runtime_text_func___kefir_softfloat_fabs_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $16, %rsp
-    xor %eax, %eax
-    movq %rax, -8(%rbp)
-    movq %xmm0, -8(%rbp)
     movq %xmm0, %rax
     movabs $9223372036854775807, %rcx
     and %rcx, %rax
-    movq %rax, -8(%rbp)
     movq %rax, %xmm0
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 .L__kefir_runtime_text_func___kefir_softfloat_fabs_end:
 
@@ -4305,21 +4296,18 @@ __kefir_softfloat_ilogb:
 .L__kefir_runtime_text_func___kefir_softfloat_ilogb_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $32, %rsp
+    sub $16, %rsp
     stmxcsr -8(%rbp)
-    xor %eax, %eax
-    movq %rax, -24(%rbp)
-    movq %xmm0, -24(%rbp)
+    movq %xmm0, %rax
+    mov %rax, %rcx
+    shl $12, %rcx
     movq %xmm0, %rax
     shr $52, %rax
-    mov %rax, %rcx
-    and $2047, %rcx
-    lea -1023(%ecx), %edx
-    movq %xmm0, %rax
-    shl $12, %rax
-    cmp $2047, %ecx
-    je .L__kefir_runtime_func___kefir_softfloat_ilogb_label14
-    cmp $0, %ecx
+    and $2047, %rax
+    lea -1023(%eax), %edx
+    cmp $2047, %eax
+    je .L__kefir_runtime_func___kefir_softfloat_ilogb_label13
+    cmp $0, %eax
     je .L__kefir_runtime_func___kefir_softfloat_ilogb_label6
 .L__kefir_runtime_func___kefir_softfloat_ilogb_label4:
     mov %rdx, %rax
@@ -4329,37 +4317,41 @@ __kefir_softfloat_ilogb:
     pop %rbp
     ret
 .L__kefir_runtime_func___kefir_softfloat_ilogb_label6:
-    cmp $0, %rax
-    je .L__kefir_runtime_func___kefir_softfloat_ilogb_label8
+    cmp $0, %rcx
+    je .L__kefir_runtime_func___kefir_softfloat_ilogb_label12
     mov $-1023, %rdx
-.L__kefir_runtime_func___kefir_softfloat_ilogb_label11:
-    mov %rax, %rcx
+.L__kefir_runtime_func___kefir_softfloat_ilogb_label8:
+    lea -1(%edx), %eax
+    mov %rcx, %rsi
+    shl $1, %rsi
     shr $63, %rcx
     cmp $0, %rcx
     jne .L__kefir_runtime_func___kefir_softfloat_ilogb_label4
-    add $-1, %edx
-    shl $1, %rax
-    jmp .L__kefir_runtime_func___kefir_softfloat_ilogb_label11
-.L__kefir_runtime_func___kefir_softfloat_ilogb_label8:
-    movq .L__kefir_runtime_func___kefir_softfloat_ilogb_label17(%rip), %xmm0
-    movq .L__kefir_runtime_func___kefir_softfloat_ilogb_label18(%rip), %xmm1
+    mov %eax, %edx
+    mov %rsi, %rcx
+    jmp .L__kefir_runtime_func___kefir_softfloat_ilogb_label8
+.L__kefir_runtime_func___kefir_softfloat_ilogb_label12:
+    movq .L__kefir_runtime_func___kefir_softfloat_ilogb_label16(%rip), %xmm0
+    movq .L__kefir_runtime_func___kefir_softfloat_ilogb_label17(%rip), %xmm1
     divsd %xmm1, %xmm0
     movq %xmm0, -16(%rbp)
     mov $-2147483648, %rdx
     jmp .L__kefir_runtime_func___kefir_softfloat_ilogb_label4
-.L__kefir_runtime_func___kefir_softfloat_ilogb_label14:
-    movq .L__kefir_runtime_func___kefir_softfloat_ilogb_label19(%rip), %xmm0
-    movq .L__kefir_runtime_func___kefir_softfloat_ilogb_label20(%rip), %xmm1
+.L__kefir_runtime_func___kefir_softfloat_ilogb_label13:
+    movq .L__kefir_runtime_func___kefir_softfloat_ilogb_label18(%rip), %xmm0
+    movq .L__kefir_runtime_func___kefir_softfloat_ilogb_label19(%rip), %xmm1
     divsd %xmm1, %xmm0
     movq %xmm0, -16(%rbp)
-    mov $-2147483648, %rcx
+    mov $-2147483648, %rax
     mov $2147483647, %edx
-    test %rax, %rax
-    mov %rcx, %rax
+    test %rcx, %rcx
     cmovz %rdx, %rax
     jmp .L__kefir_runtime_func___kefir_softfloat_ilogb_label5
 .L__kefir_runtime_text_func___kefir_softfloat_ilogb_end:
 .section .rodata
+    .align 8
+.L__kefir_runtime_func___kefir_softfloat_ilogb_label16:
+    .quad 0
     .align 8
 .L__kefir_runtime_func___kefir_softfloat_ilogb_label17:
     .quad 0
@@ -4368,9 +4360,6 @@ __kefir_softfloat_ilogb:
     .quad 0
     .align 8
 .L__kefir_runtime_func___kefir_softfloat_ilogb_label19:
-    .quad 0
-    .align 8
-.L__kefir_runtime_func___kefir_softfloat_ilogb_label20:
     .quad 0
 .section .text
 

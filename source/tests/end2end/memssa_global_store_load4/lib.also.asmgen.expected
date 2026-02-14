@@ -1,0 +1,175 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.extern dummy
+.global test1
+.type test1, @function
+.global test2
+.type test2, @function
+.global test3
+.type test3, @function
+.global test4
+.type test4, @function
+.global test5
+.type test5, @function
+.global test6
+.type test6, @function
+
+.section .text
+.L__kefir_text_section_begin:
+test1:
+.L__kefir_text_func_test1_begin:
+    push %rbp
+    mov %rsp, %rbp
+    push %rbx
+    sub $8, %rsp
+    mov %rdi, %rbx
+    xor %edi, %edi
+    call dummy@PLT
+    lea 1(%ebx), %eax
+    lea 1(%ebx), %ecx
+    add %ecx, %eax
+    shl $1, %ebx
+    imul $-1, %ebx, %ecx
+    add %ecx, %eax
+    lea -8(%rbp), %rsp
+    pop %rbx
+    pop %rbp
+    ret
+.L__kefir_text_func_test1_end:
+
+test2:
+.L__kefir_text_func_test2_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    xor %eax, %eax
+    movq %rax, -12(%rbp)
+    movl %eax, -4(%rbp)
+    movl %edi, -12(%rbp)
+    lea 1(%edi), %eax
+    movl %eax, -8(%rbp)
+    shl $1, %edi
+    movl %edi, -4(%rbp)
+    imul $-1, %edi, %eax
+    movl %eax, -4(%rbp)
+    lea -12(%rbp), %rdi
+    call dummy@PLT
+    movl -12(%rbp), %eax
+    add $1, %eax
+    movl %eax, -12(%rbp)
+    movl -8(%rbp), %ecx
+    movl -4(%rbp), %edx
+    add %ecx, %eax
+    add %edx, %eax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.L__kefir_text_func_test2_end:
+
+test3:
+.L__kefir_text_func_test3_begin:
+    push %rbp
+    mov %rsp, %rbp
+    push %rbx
+    sub $8, %rsp
+    mov %rdi, %rbx
+    xor %edi, %edi
+    call dummy@PLT
+    lea 1(%ebx), %eax
+    lea 1(%ebx), %ecx
+    add %ecx, %eax
+    shl $1, %ebx
+    imul $-1, %ebx, %ecx
+    add %ecx, %eax
+    lea -8(%rbp), %rsp
+    pop %rbx
+    pop %rbp
+    ret
+.L__kefir_text_func_test3_end:
+
+test4:
+.L__kefir_text_func_test4_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    movl %edi, -12(%rbp)
+    lea 1(%edi), %eax
+    movl %eax, -8(%rbp)
+    shl $1, %edi
+    movl %edi, -4(%rbp)
+    imul $-1, %edi, %eax
+    movl %eax, -4(%rbp)
+    lea -12(%rbp), %rdi
+    call dummy@PLT
+    movl -12(%rbp), %eax
+    add $1, %eax
+    movl %eax, -12(%rbp)
+    movl -8(%rbp), %ecx
+    movl -4(%rbp), %edx
+    add %ecx, %eax
+    add %edx, %eax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.L__kefir_text_func_test4_end:
+
+test5:
+.L__kefir_text_func_test5_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    xor %eax, %eax
+    movq %rax, -12(%rbp)
+    movl %eax, -4(%rbp)
+    movl %edi, -12(%rbp)
+    lea 1(%edi), %eax
+    movl %eax, -8(%rbp)
+    shl $1, %edi
+    movl %edi, -4(%rbp)
+    lea -12(%rbp), %rdi
+    call dummy@PLT
+    movl -4(%rbp), %eax
+    imul $-1, %eax, %eax
+    movl %eax, -4(%rbp)
+    movl -12(%rbp), %ecx
+    add $1, %ecx
+    movl %ecx, -12(%rbp)
+    movl -8(%rbp), %edx
+    add %edx, %ecx
+    add %ecx, %eax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.L__kefir_text_func_test5_end:
+
+test6:
+.L__kefir_text_func_test6_begin:
+    push %rbp
+    mov %rsp, %rbp
+    push %rbx
+    sub $24, %rsp
+    mov %rdi, %rbx
+    lea -20(%rbp), %rdi
+    call dummy@PLT
+    movl %ebx, -20(%rbp)
+    lea 1(%ebx), %eax
+    movl %eax, -16(%rbp)
+    mov %rbx, %rcx
+    shl $1, %ecx
+    movl %ecx, -12(%rbp)
+    imul $-1, %ecx, %ecx
+    movl %ecx, -12(%rbp)
+    add $1, %ebx
+    movl %ebx, -20(%rbp)
+    add %eax, %ebx
+    mov %ebx, %eax
+    add %ecx, %eax
+    lea -8(%rbp), %rsp
+    pop %rbx
+    pop %rbp
+    ret
+.L__kefir_text_func_test6_end:
+
+.L__kefir_text_section_end:
+

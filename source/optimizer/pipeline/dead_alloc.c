@@ -73,6 +73,10 @@ static kefir_result_t dead_alloc_apply_impl(struct kefir_mem *mem, struct kefir_
                             }
                             break;
 
+                        case KEFIR_OPT_OPCODE_ZERO_MEMORY:
+                            // Intentionally left blank
+                            break;
+
                         case KEFIR_OPT_OPCODE_LOCAL_LIFETIME_MARK:
                             REQUIRE(instr->operation.opcode == KEFIR_OPT_OPCODE_LOCAL_SCOPE,
                                     KEFIR_SET_ERROR(KEFIR_INVALID_STATE,
@@ -108,6 +112,10 @@ static kefir_result_t dead_alloc_apply_impl(struct kefir_mem *mem, struct kefir_
                                             use_instr2->operation.parameters.memory_access.flags.volatile_access) {
                                             only_lifetime_mark_uses = false;
                                         }
+                                        break;
+
+                                    case KEFIR_OPT_OPCODE_ZERO_MEMORY:
+                                        // Intentionally left blank
                                         break;
 
                                     default:

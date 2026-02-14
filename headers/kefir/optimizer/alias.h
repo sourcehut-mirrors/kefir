@@ -22,8 +22,10 @@
 #define KEFIR_OPTIMIZER_ALIAS_H_
 
 #include "kefir/optimizer/code.h"
+#include "kefir/optimizer/escape.h"
 
-kefir_result_t kefir_opt_code_may_alias(const struct kefir_opt_code_container *, kefir_opt_instruction_ref_t,
+kefir_result_t kefir_opt_code_may_alias(const struct kefir_opt_code_container *,
+                                        const struct kefir_opt_code_escape_analysis *, kefir_opt_instruction_ref_t,
                                         kefir_size_t, kefir_int64_t, kefir_opt_instruction_ref_t, kefir_size_t,
                                         kefir_int64_t, kefir_bool_t *);
 kefir_result_t kefir_opt_code_must_alias(const struct kefir_opt_code_container *, kefir_opt_instruction_ref_t,

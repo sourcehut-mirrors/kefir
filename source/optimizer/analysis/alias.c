@@ -29,9 +29,11 @@ static kefir_bool_t offset_alias(kefir_int64_t offset1, kefir_size_t size1, kefi
 }
 
 kefir_result_t kefir_opt_code_may_alias(const struct kefir_opt_code_container *code,
+                                        const struct kefir_opt_code_escape_analysis *escapes,
                                         kefir_opt_instruction_ref_t location_ref1, kefir_size_t size1,
                                         kefir_int64_t offset1, kefir_opt_instruction_ref_t location_ref2,
                                         kefir_size_t size2, kefir_int64_t offset2, kefir_bool_t *may_alias) {
+    UNUSED(escapes);
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code"));
     REQUIRE(may_alias != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to boolean flag"));
 
@@ -67,13 +69,19 @@ kefir_result_t kefir_opt_code_may_alias(const struct kefir_opt_code_container *c
                location1->operation.opcode != location2->operation.opcode) {
         *may_alias = false;
     } else if (location1->operation.opcode == KEFIR_OPT_OPCODE_REF_LOCAL) {
-        REQUIRE_OK(kefir_opt_code_may_alias(code, location1->operation.parameters.refs[0], size1,
+        REQUIRE_OK(kefir_opt_code_may_alias(code, escapes, location1->operation.parameters.refs[0], size1,
                                             offset1 + location1->operation.parameters.offset, location_ref2, size2,
                                             offset2, may_alias));
     } else if (location2->operation.opcode == KEFIR_OPT_OPCODE_REF_LOCAL) {
-        REQUIRE_OK(kefir_opt_code_may_alias(code, location_ref1, size1, offset1,
+        REQUIRE_OK(kefir_opt_code_may_alias(code, escapes, location_ref1, size1, offset1,
                                             location2->operation.parameters.refs[0], size2,
                                             offset2 + location2->operation.parameters.offset, may_alias));
+    } else if (escapes != NULL && location1->operation.opcode == KEFIR_OPT_OPCODE_ALLOC_LOCAL &&
+               !kefir_opt_code_escape_analysis_has_escapes(escapes, location_ref1)) {
+        *may_alias = false;
+    } else if (escapes != NULL && location2->operation.opcode == KEFIR_OPT_OPCODE_ALLOC_LOCAL &&
+               !kefir_opt_code_escape_analysis_has_escapes(escapes, location_ref2)) {
+        *may_alias = false;
     }
     return KEFIR_OK;
 }
