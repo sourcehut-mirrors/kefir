@@ -1354,6 +1354,13 @@ static kefir_result_t format_memssa(struct kefir_mem *mem, struct kefir_json_out
                 REQUIRE_OK(id_format(json, node->predecessor_ref));
                 break;
 
+            case KEFIR_OPT_CODE_MEMSSA_PRODUCE_CONSUME_NODE:
+                REQUIRE_OK(kefir_json_output_object_key(json, "type"));
+                REQUIRE_OK(kefir_json_output_string(json, "produce"));
+                REQUIRE_OK(kefir_json_output_object_key(json, "predecessor_ref"));
+                REQUIRE_OK(id_format(json, node->predecessor_ref));
+                break;
+
             case KEFIR_OPT_CODE_MEMSSA_CONSUME_NODE:
                 REQUIRE_OK(kefir_json_output_object_key(json, "type"));
                 REQUIRE_OK(kefir_json_output_string(json, "consume"));

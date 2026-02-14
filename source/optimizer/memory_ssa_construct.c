@@ -357,7 +357,10 @@ static kefir_result_t do_assign(struct kefir_mem *mem, struct construct_state *s
         kefir_opt_code_memssa_node_ref_t input_node_ref, output_node_ref;
         REQUIRE_OK(find_link_for(frame, &input_node_ref));
         output_node_ref = input_node_ref;
-        if (op_type & MEMORY_OP_PRODUCE) {
+        if ((op_type & MEMORY_OP_PRODUCE) && (op_type & MEMORY_OP_CONSUME)) {
+            REQUIRE_OK(kefir_opt_code_memssa_new_produce_consume_node(mem, state->memssa, input_node_ref, instr_ref,
+                                                                      &output_node_ref));
+        } else if (op_type & MEMORY_OP_PRODUCE) {
             REQUIRE_OK(kefir_opt_code_memssa_new_produce_node(mem, state->memssa, input_node_ref, instr_ref,
                                                               &output_node_ref));
         } else if (op_type & MEMORY_OP_CONSUME) {

@@ -151,7 +151,8 @@ static kefir_result_t find_clobber_impl(struct kefir_mem *mem, const struct kefi
                                         struct kefir_hashset *visited) {
     const struct kefir_opt_code_memssa_node *node;
     REQUIRE_OK(kefir_opt_code_memssa_node(memssa, node_ref, &node));
-    REQUIRE(node->type == KEFIR_OPT_CODE_MEMSSA_CONSUME_NODE || node->type == KEFIR_OPT_CODE_MEMSSA_PRODUCE_NODE,
+    REQUIRE(node->type == KEFIR_OPT_CODE_MEMSSA_CONSUME_NODE || node->type == KEFIR_OPT_CODE_MEMSSA_PRODUCE_NODE ||
+                node->type == KEFIR_OPT_CODE_MEMSSA_PRODUCE_CONSUME_NODE,
             KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find clobber memory ssa node"));
 
     *clobber_ref_ptr = KEFIR_ID_NONE;
@@ -187,7 +188,8 @@ static kefir_result_t find_clobber_impl(struct kefir_mem *mem, const struct kefi
                     kefir_list_insert_after(mem, queue, NULL, (void *) (kefir_uptr_t) iter_node->predecessor_ref));
                 break;
 
-            case KEFIR_OPT_CODE_MEMSSA_PRODUCE_NODE: {
+            case KEFIR_OPT_CODE_MEMSSA_PRODUCE_NODE:
+            case KEFIR_OPT_CODE_MEMSSA_PRODUCE_CONSUME_NODE: {
                 kefir_bool_t trace = true;
                 if (iter_node_ref != node_ref) {
                     kefir_bool_t node_alias = true;
@@ -270,7 +272,9 @@ static kefir_result_t do_optimize_nonvolatile_load(struct kefir_mem *mem, struct
     REQUIRE_OK(res);
 
     REQUIRE_OK(kefir_opt_code_memssa_node(memssa, clobber_ref, &clobber_node));
-    REQUIRE(clobber_node->type == KEFIR_OPT_CODE_MEMSSA_PRODUCE_NODE, KEFIR_OK);
+    REQUIRE(clobber_node->type == KEFIR_OPT_CODE_MEMSSA_PRODUCE_NODE ||
+                clobber_node->type == KEFIR_OPT_CODE_MEMSSA_PRODUCE_CONSUME_NODE,
+            KEFIR_OK);
 
     const struct kefir_opt_instruction *clobber_instr;
     REQUIRE_OK(kefir_opt_code_container_instr(&func->code, clobber_node->instr_ref, &clobber_instr));
