@@ -1226,7 +1226,8 @@ static kefir_result_t insert_vreg_phis(struct constructor_state *state,
         REQUIRE_OK(kefir_hashtree_at(&state->blocks, (kefir_hashtree_key_t) block_ref, &node));
         ASSIGN_DECL_CAST(struct code_block_state *, block_state, node->value);
 
-        if (!kefir_hashtable_has(&block_state->virtual_register_refs, (kefir_hashtree_key_t) vreg_idx)) {
+        if (block_ref == state->code->entry_block ||
+            !kefir_hashtable_has(&block_state->virtual_register_refs, (kefir_hashtree_key_t) vreg_idx)) {
             continue;
         }
 

@@ -230,7 +230,8 @@ static kefir_result_t mem2reg_insert_phis(struct mem2reg_state *state, kefir_opt
              res == KEFIR_OK; res = kefir_hashset_next(&iter, &entry)) {
             ASSIGN_DECL_CAST(kefir_opt_block_id_t, frontier_block_ref, entry);
             kefir_uint64_t key = (((kefir_uint64_t) instr_ref) << 32) | (kefir_uint32_t) frontier_block_ref;
-            if (kefir_hashtable_has(&state->inserted_phis, (kefir_hashtable_key_t) key)) {
+            if (frontier_block_ref == state->control_flow.code->entry_point ||
+                kefir_hashtable_has(&state->inserted_phis, (kefir_hashtable_key_t) key)) {
                 continue;
             }
 
