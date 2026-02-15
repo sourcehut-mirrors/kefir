@@ -237,15 +237,6 @@ test_cfloat:
     movaps %xmm0, %xmm1
     movd %xmm1, (%rbx)
     movd %xmm3, 4(%rbx)
-    movq cf1@GOTPCREL(%rip), %rax
-    movd (%rax), %xmm0
-    movd 4(%rax), %xmm0
-    movq cf2@GOTPCREL(%rip), %rax
-    movd (%rax), %xmm0
-    movd 4(%rax), %xmm0
-    movq cf3@GOTPCREL(%rip), %rax
-    movd (%rax), %xmm0
-    movd 4(%rax), %xmm0
     movaps -64(%rbp), %xmm0
     addss -48(%rbp), %xmm0
     movaps %xmm0, %xmm2
@@ -472,15 +463,6 @@ test_cdouble:
     movaps %xmm1, %xmm3
     movq %xmm2, (%rbx)
     movq %xmm3, 8(%rbx)
-    movq cd1@GOTPCREL(%rip), %rax
-    movq (%rax), %xmm0
-    movq 8(%rax), %xmm0
-    movq cd2@GOTPCREL(%rip), %rax
-    movq (%rax), %xmm0
-    movq 8(%rax), %xmm0
-    movq cd3@GOTPCREL(%rip), %rax
-    movq (%rax), %xmm0
-    movq 8(%rax), %xmm0
     movaps -80(%rbp), %xmm0
     addsd -48(%rbp), %xmm0
     addsd %xmm2, %xmm0

@@ -50,7 +50,6 @@ test2:
     lea 1(%edi), %eax
     movl %eax, -8(%rbp)
     shl $1, %edi
-    movl %edi, -4(%rbp)
     imul $-1, %edi, %eax
     movl %eax, -4(%rbp)
     lea -12(%rbp), %rdi
@@ -97,7 +96,6 @@ test4:
     lea 1(%edi), %eax
     movl %eax, -8(%rbp)
     shl $1, %edi
-    movl %edi, -4(%rbp)
     imul $-1, %edi, %eax
     movl %eax, -4(%rbp)
     lea -12(%rbp), %rdi
@@ -152,12 +150,10 @@ test6:
     mov %rdi, %rbx
     lea -20(%rbp), %rdi
     call dummy@PLT
-    movl %ebx, -20(%rbp)
     lea 1(%ebx), %eax
     movl %eax, -16(%rbp)
     mov %rbx, %rcx
     shl $1, %ecx
-    movl %ecx, -12(%rbp)
     imul $-1, %ecx, %ecx
     movl %ecx, -12(%rbp)
     add $1, %ebx

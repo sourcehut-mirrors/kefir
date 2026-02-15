@@ -49,6 +49,7 @@
     "gvn," \
     "licm," \
     "gvn," \
+    "memory-ssa," \
     "lowering," \
     "dead-code-elimination," \
     "dead-alloc," \

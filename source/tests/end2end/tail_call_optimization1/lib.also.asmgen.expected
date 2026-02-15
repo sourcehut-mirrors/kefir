@@ -23,7 +23,6 @@ run_bf:
     movq %rdx, -5152(%rbp)
     movb $0, -5144(%rbp)
     movq $0, -1048(%rbp)
-    movl $0, -24(%rbp)
     movw $0, -20(%rbp)
     movb $0, -18(%rbp)
     movq %rsi, -16(%rbp)

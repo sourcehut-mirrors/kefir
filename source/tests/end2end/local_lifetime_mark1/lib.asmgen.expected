@@ -268,7 +268,7 @@
                                 "memssa_node_ref": 8
                             },
                             {
-                                "id": 31,
+                                "id": 38,
                                 "opcode": "uint_const",
                                 "value": 2,
                                 "control_next": null
@@ -284,7 +284,7 @@
                                 "opcode": "int64_mul",
                                 "args": [
                                     33,
-                                    31
+                                    38
                                 ],
                                 "control_next": null
                             },
@@ -292,7 +292,7 @@
                                 "id": 39,
                                 "opcode": "stack_alloc",
                                 "size_ref": 253,
-                                "alignment_ref": 31,
+                                "alignment_ref": 38,
                                 "within_scope": true,
                                 "control_next": null
                             },
@@ -316,7 +316,6 @@
                             "immediate_dominator": null,
                             "alive_instructions": [
                                 39,
-                                31,
                                 9,
                                 7,
                                 42,
@@ -324,6 +323,7 @@
                                 5,
                                 1,
                                 41,
+                                38,
                                 8,
                                 255,
                                 44,
