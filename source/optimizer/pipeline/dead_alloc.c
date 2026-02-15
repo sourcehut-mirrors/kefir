@@ -148,8 +148,8 @@ static kefir_result_t dead_alloc_apply_impl(struct kefir_mem *mem, struct kefir_
                         struct kefir_opt_instruction_use_iterator use_iter2;
                         for (res = kefir_opt_code_container_instruction_use_instr_iter(
                                  &func->code, use_iter.use_instr_ref, &use_iter2);
-                             res == KEFIR_OK && only_lifetime_mark_uses;
-                             res = kefir_opt_code_container_instruction_use_next(&use_iter2)) {
+                             res == KEFIR_OK; res = kefir_opt_code_container_instruction_use_instr_iter(
+                                                  &func->code, use_iter.use_instr_ref, &use_iter2)) {
                             REQUIRE_OK(kefir_opt_code_container_drop_control(&func->code, use_iter2.use_instr_ref));
                             REQUIRE_OK(kefir_opt_code_container_drop_instr(mem, &func->code, use_iter2.use_instr_ref));
                         }
