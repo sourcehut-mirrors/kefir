@@ -63,7 +63,11 @@ static kefir_result_t get_permitted_constant_types(enum integer_constant_type or
 
         case CONSTANT_LONG:
             if (decimal) {
-                static const enum integer_constant_type types[] = {CONSTANT_LONG, CONSTANT_LONG_LONG};
+                // ISO/IEC 9899:2024 6.4.4.2 specifies 'long' and 'long long', however other compilers permit unsigned
+                // types too See also
+                // https://www.gnu.org/software/c-intro-and-ref/manual/html_node/Integer-Const-Type.html
+                static const enum integer_constant_type types[] = {CONSTANT_LONG, CONSTANT_LONG_LONG,
+                                                                   CONSTANT_UNSIGNED_LONG, CONSTANT_UNSIGNED_LONG_LONG};
                 *permitted = types;
                 *length = sizeof(types) / sizeof(types[0]);
             } else {
@@ -82,7 +86,8 @@ static kefir_result_t get_permitted_constant_types(enum integer_constant_type or
 
         case CONSTANT_LONG_LONG:
             if (decimal) {
-                static const enum integer_constant_type types[] = {CONSTANT_LONG_LONG};
+                // As above
+                static const enum integer_constant_type types[] = {CONSTANT_LONG_LONG, CONSTANT_UNSIGNED_LONG_LONG};
                 *permitted = types;
                 *length = sizeof(types) / sizeof(types[0]);
             } else {
