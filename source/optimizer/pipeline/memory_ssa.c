@@ -252,7 +252,7 @@ static kefir_result_t do_optimize_nonvolatile_load(struct kefir_mem *mem, struct
                                                    struct kefir_opt_function *func,
                                                    const struct kefir_opt_code_control_flow *control_flow,
                                                    struct kefir_opt_code_sequencing *sequencing,
-                                                   const struct kefir_opt_code_memssa *memssa,
+                                                   struct kefir_opt_code_memssa *memssa,
                                                    const struct kefir_opt_code_escape_analysis *escapes,
                                                    const struct kefir_opt_instruction *instr) {
     UNUSED(control_flow);
@@ -340,6 +340,8 @@ static kefir_result_t do_optimize_nonvolatile_load(struct kefir_mem *mem, struct
     REQUIRE_OK(kefir_opt_code_container_replace_references(mem, &func->code, replacement_ref, instr_ref));
     REQUIRE_OK(kefir_opt_code_container_drop_control(&func->code, instr_ref));
     REQUIRE_OK(kefir_opt_code_container_drop_instr(mem, &func->code, instr_ref));
+    REQUIRE_OK(kefir_opt_code_memssa_replace(mem, memssa, node->predecessor_ref, node_ref));
+    REQUIRE_OK(kefir_opt_code_memssa_unbind(mem, memssa, node_ref));
     return KEFIR_OK;
 }
 
@@ -495,7 +497,7 @@ static kefir_result_t do_optimize_nonvolatile_store(struct kefir_mem *mem, struc
                                                     struct kefir_opt_function *func,
                                                     const struct kefir_opt_code_control_flow *control_flow,
                                                     struct kefir_opt_code_sequencing *sequencing,
-                                                    const struct kefir_opt_code_memssa *memssa,
+                                                    struct kefir_opt_code_memssa *memssa,
                                                     const struct kefir_opt_code_escape_analysis *escapes,
                                                     const struct kefir_opt_instruction *instr) {
     UNUSED(control_flow);
@@ -539,6 +541,8 @@ static kefir_result_t do_optimize_nonvolatile_store(struct kefir_mem *mem, struc
     if (downstream_clobbers) {
         REQUIRE_OK(kefir_opt_code_container_drop_control(&func->code, instr_ref));
         REQUIRE_OK(kefir_opt_code_container_drop_instr(mem, &func->code, instr_ref));
+        REQUIRE_OK(kefir_opt_code_memssa_replace(mem, memssa, node->predecessor_ref, node_ref));
+        REQUIRE_OK(kefir_opt_code_memssa_unbind(mem, memssa, node_ref));
         return KEFIR_OK;
     }
 
@@ -575,6 +579,8 @@ static kefir_result_t do_optimize_nonvolatile_store(struct kefir_mem *mem, struc
             clobber_instr->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_VALUE_REF]) {
         REQUIRE_OK(kefir_opt_code_container_drop_control(&func->code, instr_ref));
         REQUIRE_OK(kefir_opt_code_container_drop_instr(mem, &func->code, instr_ref));
+        REQUIRE_OK(kefir_opt_code_memssa_replace(mem, memssa, node->predecessor_ref, node_ref));
+        REQUIRE_OK(kefir_opt_code_memssa_unbind(mem, memssa, node_ref));
     }
     return KEFIR_OK;
 }
@@ -582,8 +588,7 @@ static kefir_result_t do_optimize_nonvolatile_store(struct kefir_mem *mem, struc
 static kefir_result_t do_optimize(struct kefir_mem *mem, struct kefir_opt_module *module,
                                   struct kefir_opt_function *func,
                                   const struct kefir_opt_code_control_flow *control_flow,
-                                  struct kefir_opt_code_sequencing *sequencing,
-                                  const struct kefir_opt_code_memssa *memssa,
+                                  struct kefir_opt_code_sequencing *sequencing, struct kefir_opt_code_memssa *memssa,
                                   const struct kefir_opt_code_escape_analysis *escapes) {
     for (kefir_opt_block_id_t block_id = 0; block_id < kefir_opt_code_container_block_count(&func->code); block_id++) {
         kefir_bool_t is_reachable;

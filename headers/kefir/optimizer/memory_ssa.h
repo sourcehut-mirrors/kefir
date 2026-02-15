@@ -114,6 +114,11 @@ kefir_result_t kefir_opt_code_memssa_instruction_binding(const struct kefir_opt_
 kefir_result_t kefir_opt_code_memssa_node(const struct kefir_opt_code_memssa *, kefir_opt_code_memssa_node_ref_t,
                                           const struct kefir_opt_code_memssa_node **);
 
+kefir_result_t kefir_opt_code_memssa_replace(struct kefir_mem *, struct kefir_opt_code_memssa *,
+                                             kefir_opt_code_memssa_node_ref_t, kefir_opt_code_memssa_node_ref_t);
+kefir_result_t kefir_opt_code_memssa_unbind(struct kefir_mem *, struct kefir_opt_code_memssa *,
+                                            kefir_opt_code_memssa_node_ref_t);
+
 typedef struct kefir_opt_code_memssa_use_iterator {
     struct kefir_hashset_iterator iter;
 } kefir_opt_code_memssa_use_iterator_t;
