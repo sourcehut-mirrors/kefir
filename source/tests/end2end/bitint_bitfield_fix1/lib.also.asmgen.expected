@@ -10,17 +10,18 @@ test1:
 .L__kefir_text_func_test1_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $192, %rsp
-    lea value(%rip), %rax
-    movq (%rax), %rcx
-    movq %rcx, -192(%rbp)
-    movq 8(%rax), %rcx
-    movq %rcx, -184(%rbp)
-    movq 16(%rax), %rcx
-    movq %rcx, -176(%rbp)
-    movq 24(%rax), %rcx
-    movq %rcx, -168(%rbp)
-    movq 32(%rax), %rax
+    push %rbx
+    sub $184, %rsp
+    lea value(%rip), %rbx
+    movq (%rbx), %rax
+    movq %rax, -192(%rbp)
+    movq 8(%rbx), %rax
+    movq %rax, -184(%rbp)
+    movq 16(%rbx), %rax
+    movq %rax, -176(%rbp)
+    movq 24(%rbx), %rax
+    movq %rax, -168(%rbp)
+    movq 32(%rbx), %rax
     movq %rax, -160(%rbp)
     movq -192(%rbp), %rax
     movq %rax, -152(%rbp)
@@ -74,29 +75,27 @@ test1:
     lea -112(%rbp), %rsi
     mov $304, %edx
     call __kefir_bigint_or
-    lea value(%rip), %rax
-    movq -152(%rbp), %rcx
-    movq %rcx, (%rax)
-    movq -144(%rbp), %rcx
-    movq %rcx, 8(%rax)
-    movq -136(%rbp), %rcx
-    movq %rcx, 16(%rax)
-    movq -128(%rbp), %rcx
-    movq %rcx, 24(%rax)
-    movl -120(%rbp), %ecx
-    movl %ecx, 32(%rax)
-    movw -116(%rbp), %cx
-    movw %cx, 36(%rax)
-    lea value(%rip), %rax
-    movq (%rax), %rcx
-    movq %rcx, -192(%rbp)
-    movq 8(%rax), %rcx
-    movq %rcx, -184(%rbp)
-    movq 16(%rax), %rcx
-    movq %rcx, -176(%rbp)
-    movq 24(%rax), %rcx
-    movq %rcx, -168(%rbp)
-    movq 32(%rax), %rax
+    movq -152(%rbp), %rax
+    movq %rax, (%rbx)
+    movq -144(%rbp), %rax
+    movq %rax, 8(%rbx)
+    movq -136(%rbp), %rax
+    movq %rax, 16(%rbx)
+    movq -128(%rbp), %rax
+    movq %rax, 24(%rbx)
+    movl -120(%rbp), %eax
+    movl %eax, 32(%rbx)
+    movw -116(%rbp), %ax
+    movw %ax, 36(%rbx)
+    movq (%rbx), %rax
+    movq %rax, -192(%rbp)
+    movq 8(%rbx), %rax
+    movq %rax, -184(%rbp)
+    movq 16(%rbx), %rax
+    movq %rax, -176(%rbp)
+    movq 24(%rbx), %rax
+    movq %rax, -168(%rbp)
+    movq 32(%rbx), %rax
     movq %rax, -160(%rbp)
     movq -192(%rbp), %rax
     movq %rax, -152(%rbp)
@@ -150,7 +149,8 @@ test1:
     cmp $0, %al
     mov %rcx, %rax
     sete %al
-    lea (%rbp), %rsp
+    lea -8(%rbp), %rsp
+    pop %rbx
     pop %rbp
     ret
 .L__kefir_text_func_test1_end:

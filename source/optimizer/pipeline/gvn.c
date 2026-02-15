@@ -53,6 +53,13 @@ static kefir_uint64_t hash_instruction_impl(const struct kefir_opt_instruction *
             hash ^= kefir_splitmix64(instr->operation.parameters.imm.uinteger + KEFIR_SPLITMIX64_MAGIC1);
             break;
 
+        case KEFIR_OPT_OPCODE_GET_GLOBAL:
+        case KEFIR_OPT_OPCODE_GET_THREAD_LOCAL:
+            hash += kefir_splitmix64(instr->operation.opcode);
+            hash ^= kefir_splitmix64(instr->operation.parameters.variable.global_ref + KEFIR_SPLITMIX64_MAGIC1);
+            hash ^= kefir_splitmix64(instr->operation.parameters.variable.offset + KEFIR_SPLITMIX64_MAGIC2);
+            break;
+
         case KEFIR_OPT_OPCODE_INT8_ADD:
         case KEFIR_OPT_OPCODE_INT16_ADD:
         case KEFIR_OPT_OPCODE_INT32_ADD:
@@ -316,6 +323,12 @@ static kefir_bool_t compare_instructions_impl(const struct kefir_opt_instruction
         case KEFIR_OPT_OPCODE_INT_CONST:
         case KEFIR_OPT_OPCODE_UINT_CONST:
             return instr1->operation.parameters.imm.uinteger == instr2->operation.parameters.imm.uinteger;
+
+        case KEFIR_OPT_OPCODE_GET_GLOBAL:
+        case KEFIR_OPT_OPCODE_GET_THREAD_LOCAL:
+            return instr1->operation.parameters.variable.global_ref ==
+                       instr2->operation.parameters.variable.global_ref &&
+                   instr1->operation.parameters.variable.offset == instr2->operation.parameters.variable.offset;
 
         case KEFIR_OPT_OPCODE_INT8_ADD:
         case KEFIR_OPT_OPCODE_INT16_ADD:
@@ -737,6 +750,8 @@ static kefir_result_t instr_replacement_policy(struct gvn_state *state, const st
         case KEFIR_OPT_OPCODE_INT64_SIGN_EXTEND_8BITS:
         case KEFIR_OPT_OPCODE_INT64_SIGN_EXTEND_16BITS:
         case KEFIR_OPT_OPCODE_INT64_SIGN_EXTEND_32BITS:
+        case KEFIR_OPT_OPCODE_GET_GLOBAL:
+        case KEFIR_OPT_OPCODE_GET_THREAD_LOCAL:
             *policy = GVN_REPLACEMENT_LOCAL;
             break;
 

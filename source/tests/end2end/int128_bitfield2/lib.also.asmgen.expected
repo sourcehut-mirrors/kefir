@@ -69,8 +69,7 @@ set_a:
     mov %rsp, %rbp
     sub $16, %rsp
     lea value(%rip), %rax
-    movl (%rax), %eax
-    lea value(%rip), %rdx
+    movl (%rax), %edx
     mov $32, %ecx
     movabs $4294967296, %rsi
     xor %r8d, %r8d
@@ -89,9 +88,9 @@ set_a:
     test $64, %cl
     cmove %r8, %rdi
     not %rdi
-    and %rdi, %rax
-    or %rax, %rsi
-    movl %esi, (%rdx)
+    and %rdi, %rdx
+    or %rdx, %rsi
+    movl %esi, (%rax)
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -101,49 +100,49 @@ set_b:
 .L__kefir_text_func_set_b_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $16, %rsp
+    push %rbx
+    sub $24, %rsp
     lea value(%rip), %rax
-    movq 4(%rax), %rax
-    lea value(%rip), %rcx
-    movzxw 12(%rcx), %rdx
+    movq 4(%rax), %rdx
     lea value(%rip), %r8
-    mov $1, %r9d
-    xor %r10d, %r10d
-    mov $70, %ecx
-    shld $70, %r9, %r10
-    shl $70, %r9
+    movzxw 12(%r8), %r9
+    mov $1, %r10d
     xor %r11d, %r11d
+    mov $70, %ecx
+    shld $70, %r10, %r11
+    shl $70, %r10
+    xor %ebx, %ebx
     test $64, %cl
-    cmovne %r9, %r10
-    cmove %r9, %r11
-    sub $1, %r11
-    sbb $0, %r10
-    and %r11, %rdi
-    and %r10, %rsi
+    cmovne %r10, %r11
+    cmove %r10, %rbx
+    sub $1, %rbx
+    sbb $0, %r11
+    and %rbx, %rdi
+    and %r11, %rsi
     mov $3, %ecx
     shld $3, %rdi, %rsi
     shl $3, %rdi
-    xor %r9d, %r9d
+    xor %r10d, %r10d
     test $64, %cl
     cmovne %rdi, %rsi
-    cmove %rdi, %r9
+    cmove %rdi, %r10
     mov $3, %ecx
-    shld $3, %r11, %r10
-    shl $3, %r11
+    shld $3, %rbx, %r11
+    shl $3, %rbx
     xor %edi, %edi
     test $64, %cl
-    cmovne %r11, %r10
-    cmove %r11, %rdi
+    cmovne %rbx, %r11
+    cmove %rbx, %rdi
     not %rdi
-    not %r10
-    and %rdi, %rax
-    and %r10, %rdx
-    or %rax, %r9
-    or %rdx, %rsi
-    movq %r9, 4(%r8)
-    lea value(%rip), %rax
-    movw %si, 12(%rax)
-    lea (%rbp), %rsp
+    not %r11
+    and %rdi, %rdx
+    and %r11, %r9
+    or %rdx, %r10
+    or %r9, %rsi
+    movq %r10, 4(%rax)
+    movw %si, 12(%r8)
+    lea -8(%rbp), %rsp
+    pop %rbx
     pop %rbp
     ret
 .L__kefir_text_func_set_b_end:

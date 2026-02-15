@@ -315,17 +315,19 @@ test_cldouble:
     push %rbp
     mov %rsp, %rbp
     push %rbx
+    push %r12
+    push %r13
     sub $72, %rsp
-    fstcw -16(%rbp)
+    fstcw -32(%rbp)
     lea 16(%rbp), %rax
     movq cld1@GOTPCREL(%rip), %rcx
     fldt 16(%rax)
     movq $0, 24(%rcx)
     fstpt 16(%rcx)
-    movq cld1@GOTPCREL(%rip), %rcx
+    movq cld1@GOTPCREL(%rip), %rbx
     fldt (%rax)
-    movq $0, 8(%rcx)
-    fstpt (%rcx)
+    movq $0, 8(%rbx)
+    fstpt (%rbx)
     movq cld2@GOTPCREL(%rip), %rcx
     fldt 16(%rax)
     fldt .L__kefir_func_test_cldouble_label3(%rip)
@@ -333,53 +335,50 @@ test_cldouble:
     faddp
     movq $0, 24(%rcx)
     fstpt 16(%rcx)
-    movq cld2@GOTPCREL(%rip), %rcx
+    movq cld2@GOTPCREL(%rip), %r12
     fldt (%rax)
     fldt .L__kefir_func_test_cldouble_label4(%rip)
     fxch %st(1)
     faddp
-    movq $0, 8(%rcx)
-    fstpt (%rcx)
-    movq cld3@GOTPCREL(%rip), %rbx
+    movq $0, 8(%r12)
+    fstpt (%r12)
+    movq cld3@GOTPCREL(%rip), %r13
     fldt (%rax)
     fldt 16(%rax)
     fldt .L__kefir_func_test_cldouble_label5(%rip)
     fldt .L__kefir_func_test_cldouble_label6(%rip)
+    fstpt -96(%rbp)
     fstpt -80(%rbp)
     fstpt -64(%rbp)
     fstpt -48(%rbp)
-    fstpt -32(%rbp)
     sub $64, %rsp
-    fldt -32(%rbp)
-    fstpt (%rsp)
     fldt -48(%rbp)
-    fstpt 16(%rsp)
+    fstpt (%rsp)
     fldt -64(%rbp)
-    fstpt 32(%rsp)
+    fstpt 16(%rsp)
     fldt -80(%rbp)
+    fstpt 32(%rsp)
+    fldt -96(%rbp)
     fstpt 48(%rsp)
     call __kefir_softfloat_complex_long_double_mul
+    fstpt -96(%rbp)
     fstpt -80(%rbp)
-    fstpt -64(%rbp)
     add $64, %rsp
-    fldt -64(%rbp)
-    movq $0, 24(%rbx)
-    fstpt 16(%rbx)
-    movq cld3@GOTPCREL(%rip), %rax
     fldt -80(%rbp)
+    movq $0, 24(%r13)
+    fstpt 16(%r13)
+    movq cld3@GOTPCREL(%rip), %rax
+    fldt -96(%rbp)
     movq $0, 8(%rax)
     fstpt (%rax)
-    movq cld1@GOTPCREL(%rip), %rax
-    fldt 16(%rax)
-    movq cld1@GOTPCREL(%rip), %rax
-    fldt (%rax)
-    movq cld2@GOTPCREL(%rip), %rax
-    fldt 16(%rax)
-    movq cld2@GOTPCREL(%rip), %rax
-    fldt (%rax)
-    movq cld3@GOTPCREL(%rip), %rax
-    fldt 16(%rax)
-    movq cld3@GOTPCREL(%rip), %rax
+    movq cld1@GOTPCREL(%rip), %rcx
+    fldt 16(%rcx)
+    fldt (%rbx)
+    movq cld2@GOTPCREL(%rip), %rcx
+    fldt 16(%rcx)
+    fldt (%r12)
+    movq cld3@GOTPCREL(%rip), %rcx
+    fldt 16(%rcx)
     fldt (%rax)
     fxch %st(1)
     fxch %st(2)
@@ -399,12 +398,14 @@ test_cldouble:
     fxch %st(2)
     fxch %st(1)
     faddp
-    fstpt -64(%rbp)
     fstpt -80(%rbp)
-    fldt -64(%rbp)
+    fstpt -96(%rbp)
     fldt -80(%rbp)
-    fldcw -16(%rbp)
-    lea -8(%rbp), %rsp
+    fldt -96(%rbp)
+    fldcw -32(%rbp)
+    lea -24(%rbp), %rsp
+    pop %r13
+    pop %r12
     pop %rbx
     pop %rbp
     ret

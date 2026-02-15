@@ -49,12 +49,11 @@ _kefir_local_public_label_run_factorial_terminate:
 .L__kefir_func_run_factorial_label3:
 _kefir_local_public_label_run_factorial_round:
     movq factorial_param@GOTPCREL(%rip), %rax
-    movq (%rax), %rax
-    movq factorial_result@GOTPCREL(%rip), %rcx
-    movq (%rcx), %rdx
-    imul %rax, %rdx
-    movq %rdx, (%rcx)
-    movq factorial_param@GOTPCREL(%rip), %rax
+    movq (%rax), %rcx
+    movq factorial_result@GOTPCREL(%rip), %rdx
+    movq (%rdx), %rsi
+    imul %rcx, %rsi
+    movq %rsi, (%rdx)
     movq (%rax), %rcx
     add $-1, %rcx
     movq %rcx, (%rax)

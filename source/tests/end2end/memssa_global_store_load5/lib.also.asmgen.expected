@@ -43,9 +43,8 @@ test2:
 test3:
 .L__kefir_text_func_test3_begin:
     mov %rdi, %rax
-    movq y@GOTPCREL(%rip), %rcx
-    xchgl (%rcx), %eax
     movq y@GOTPCREL(%rip), %rsi
+    xchgl (%rsi), %eax
 .L__kefir_func_test3_label2:
     movl (%rsi), %eax
     lea 1(%eax), %ecx
@@ -77,7 +76,6 @@ test4:
     movq y@GOTPCREL(%rip), %rcx
     mov %rdi, %rax
     xchgl (%rcx), %eax
-    movq y@GOTPCREL(%rip), %rcx
     movl (%rcx), %eax
     movsx %eax, %rax
     ret
@@ -92,15 +90,12 @@ test5:
 .L__kefir_text_func_test5_begin:
     movq z@GOTPCREL(%rip), %rax
     movl %edi, (%rax)
-    movq z@GOTPCREL(%rip), %rax
     movl (%rax), %ecx
     add $1, %ecx
     movl %ecx, (%rax)
-    movq z@GOTPCREL(%rip), %rax
     movl (%rax), %ecx
     shl $1, %ecx
     movl %ecx, (%rax)
-    movq z@GOTPCREL(%rip), %rax
     movl (%rax), %eax
     ret
 .L__kefir_text_func_test5_end:
@@ -114,7 +109,6 @@ test6:
 .L__kefir_func_test6_label2:
     movq z@GOTPCREL(%rip), %rax
     movl %edi, (%rax)
-    movq z@GOTPCREL(%rip), %rax
     movl (%rax), %eax
     ret
 .L__kefir_func_test6_label3:
