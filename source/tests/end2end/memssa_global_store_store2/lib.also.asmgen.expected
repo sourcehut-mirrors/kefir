@@ -1,0 +1,200 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global x
+.type x, @object
+.global y
+.type y, @object
+.global z
+.type z, @object
+.extern fn
+.global test1
+.type test1, @function
+.global test2
+.type test2, @function
+.global test3
+.type test3, @function
+.global test4
+.type test4, @function
+.global test5
+.type test5, @function
+.global test6
+.type test6, @function
+.global test7
+.type test7, @function
+
+.section .text
+.L__kefir_text_section_begin:
+test1:
+.L__kefir_text_func_test1_begin:
+    mov %rdi, %rax
+    xor %ecx, %ecx
+.L__kefir_func_test1_label2:
+    lea 1(%ecx), %edx
+    cmp %eax, %ecx
+    jl .L__kefir_func_test1_label7
+    movq x@GOTPCREL(%rip), %rcx
+    movl %eax, (%rcx)
+    ret
+.L__kefir_func_test1_label7:
+    mov %edx, %ecx
+    jmp .L__kefir_func_test1_label2
+.L__kefir_text_func_test1_end:
+
+test2:
+.L__kefir_text_func_test2_begin:
+    mov %rdi, %rax
+    xor %ecx, %ecx
+.L__kefir_func_test2_label2:
+    lea 1(%ecx), %edx
+    cmp %eax, %ecx
+    jl .L__kefir_func_test2_label7
+    movq x@GOTPCREL(%rip), %rcx
+    movl %eax, (%rcx)
+    ret
+.L__kefir_func_test2_label7:
+    mov %edx, %ecx
+    jmp .L__kefir_func_test2_label2
+.L__kefir_text_func_test2_end:
+
+test3:
+.L__kefir_text_func_test3_begin:
+    movq y@GOTPCREL(%rip), %rax
+    movl $0, (%rax)
+    xor %eax, %eax
+.L__kefir_func_test3_label2:
+    cmp %edi, %eax
+    jl .L__kefir_func_test3_label4
+    movq y@GOTPCREL(%rip), %rax
+    movl %edi, (%rax)
+    movl (%rax), %eax
+    ret
+.L__kefir_func_test3_label4:
+    movq y@GOTPCREL(%rip), %rcx
+    movl $1, (%rcx)
+    add $1, %eax
+    jmp .L__kefir_func_test3_label2
+.L__kefir_text_func_test3_end:
+
+test4:
+.L__kefir_text_func_test4_begin:
+    movq y@GOTPCREL(%rip), %rax
+    movl $0, (%rax)
+    xor %eax, %eax
+.L__kefir_func_test4_label2:
+    cmp %edi, %eax
+    jl .L__kefir_func_test4_label4
+    movq y@GOTPCREL(%rip), %rax
+    movl %edi, (%rax)
+    movl (%rax), %eax
+    ret
+.L__kefir_func_test4_label4:
+    movq y@GOTPCREL(%rip), %rcx
+    movl (%rcx), %edx
+    add $1, %edx
+    movl %edx, (%rcx)
+    add $1, %eax
+    jmp .L__kefir_func_test4_label2
+.L__kefir_text_func_test4_end:
+
+test5:
+.L__kefir_text_func_test5_begin:
+    movq z@GOTPCREL(%rip), %rcx
+    xor %eax, %eax
+    xchgl (%rcx), %eax
+    xor %eax, %eax
+    mov %rax, %rcx
+.L__kefir_func_test5_label2:
+    cmp %edi, %ecx
+    jl .L__kefir_func_test5_label4
+    movq z@GOTPCREL(%rip), %rcx
+    mov %rdi, %rax
+    xchgl (%rcx), %eax
+    movl (%rcx), %eax
+    movsx %eax, %rax
+    ret
+.L__kefir_func_test5_label4:
+    movq z@GOTPCREL(%rip), %rdx
+    mov $1, %eax
+    xchgl (%rdx), %eax
+    add $1, %ecx
+    jmp .L__kefir_func_test5_label2
+.L__kefir_text_func_test5_end:
+
+test6:
+.L__kefir_text_func_test6_begin:
+    movq z@GOTPCREL(%rip), %rcx
+    xor %eax, %eax
+    xchgl (%rcx), %eax
+    xor %eax, %eax
+    mov %rax, %rsi
+.L__kefir_func_test6_label2:
+    cmp %edi, %esi
+    jl .L__kefir_func_test6_label4
+    movq z@GOTPCREL(%rip), %rcx
+    mov %rdi, %rax
+    xchgl (%rcx), %eax
+    movl (%rcx), %eax
+    movsx %eax, %rax
+    ret
+.L__kefir_func_test6_label4:
+    movq z@GOTPCREL(%rip), %r8
+.L__kefir_func_test6_label5:
+    movl (%r8), %eax
+    lea 1(%eax), %ecx
+    mov %r8, %rdx
+    lock     cmpxchgl %ecx, (%rdx)
+    sete %al
+    lea 1(%esi), %ecx
+    test %al, %al
+    jz .L__kefir_func_test6_label5
+    mov %ecx, %esi
+    jmp .L__kefir_func_test6_label2
+.L__kefir_text_func_test6_end:
+
+test7:
+.L__kefir_text_func_test7_begin:
+    push %rbp
+    mov %rsp, %rbp
+    push %rbx
+    push %r12
+    mov %rdi, %rbx
+    movq x@GOTPCREL(%rip), %rax
+    movl $0, (%rax)
+    xor %eax, %eax
+    mov %rax, %r12
+.L__kefir_func_test7_label2:
+    cmp %ebx, %r12d
+    jl .L__kefir_func_test7_label4
+    movq x@GOTPCREL(%rip), %rax
+    movl %ebx, (%rax)
+    mov %rbx, %rax
+    pop %r12
+    pop %rbx
+    pop %rbp
+    ret
+.L__kefir_func_test7_label4:
+    movq x@GOTPCREL(%rip), %rax
+    movl (%rax), %edi
+    lea 1(%edi), %ecx
+    movl %ecx, (%rax)
+    call fn@PLT
+    add $1, %r12d
+    jmp .L__kefir_func_test7_label2
+.L__kefir_text_func_test7_end:
+
+.L__kefir_text_section_end:
+
+.section .data
+    .align 4
+x:
+    .long 0
+
+    .align 4
+y:
+    .long 0
+
+    .align 4
+z:
+    .long 0
+

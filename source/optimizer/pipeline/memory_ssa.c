@@ -26,6 +26,7 @@
 #include "kefir/optimizer/builder.h"
 #include "kefir/optimizer/alias.h"
 #include "kefir/optimizer/escape.h"
+#include "kefir/optimizer/code_util.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 #include <string.h>
@@ -143,12 +144,12 @@ static kefir_result_t check_clobber(struct kefir_mem *mem, const struct kefir_op
     return KEFIR_OK;
 }
 
-static kefir_result_t find_clobber_impl(struct kefir_mem *mem, const struct kefir_opt_code_container *code,
-                                        const struct kefir_opt_code_escape_analysis *escapes,
-                                        const struct kefir_opt_code_memssa *memssa,
-                                        kefir_opt_code_memssa_node_ref_t node_ref,
-                                        kefir_opt_code_memssa_node_ref_t *clobber_ref_ptr, struct kefir_list *queue,
-                                        struct kefir_hashset *visited) {
+static kefir_result_t find_upstream_clobber_impl(struct kefir_mem *mem, const struct kefir_opt_code_container *code,
+                                                 const struct kefir_opt_code_escape_analysis *escapes,
+                                                 const struct kefir_opt_code_memssa *memssa,
+                                                 kefir_opt_code_memssa_node_ref_t node_ref,
+                                                 kefir_opt_code_memssa_node_ref_t *clobber_ref_ptr,
+                                                 struct kefir_list *queue, struct kefir_hashset *visited) {
     const struct kefir_opt_code_memssa_node *node;
     REQUIRE_OK(kefir_opt_code_memssa_node(memssa, node_ref, &node));
     REQUIRE(node->type == KEFIR_OPT_CODE_MEMSSA_CONSUME_NODE || node->type == KEFIR_OPT_CODE_MEMSSA_PRODUCE_NODE ||
@@ -228,7 +229,8 @@ static kefir_result_t find_upstream_clobber(struct kefir_mem *mem, const struct 
     struct kefir_hashset visited;
     REQUIRE_OK(kefir_list_init(&queue));
     REQUIRE_OK(kefir_hashset_init(&visited, &kefir_hashtable_uint_ops));
-    kefir_result_t res = find_clobber_impl(mem, code, escapes, memssa, node_ref, clobber_ref_ptr, &queue, &visited);
+    kefir_result_t res =
+        find_upstream_clobber_impl(mem, code, escapes, memssa, node_ref, clobber_ref_ptr, &queue, &visited);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_hashset_free(mem, &visited);
         kefir_list_free(mem, &queue);
@@ -350,7 +352,7 @@ static kefir_result_t has_downstream_clobbers_impl(struct kefir_mem *mem, const 
                                                    const struct kefir_opt_code_memssa *memssa,
                                                    kefir_opt_code_memssa_node_ref_t node_ref,
                                                    kefir_bool_t *has_clobbers, struct kefir_list *queue,
-                                                   struct kefir_hashset *visited) {
+                                                   struct kefir_hashset *visited, struct kefir_hashset *consumers) {
     kefir_opt_instruction_ref_t location1_ref, location2_ref;
     kefir_size_t size1, size2;
     kefir_int64_t offset1, offset2;
@@ -394,7 +396,37 @@ static kefir_result_t has_downstream_clobbers_impl(struct kefir_mem *mem, const 
                     *has_clobbers = false;
                     return KEFIR_OK;
 
-                case KEFIR_OPT_CODE_MEMSSA_CONSUME_NODE:
+                case KEFIR_OPT_CODE_MEMSSA_CONSUME_NODE: {
+                    const struct kefir_opt_instruction *iter_instr;
+                    res = kefir_opt_code_container_instr(code, iter_node->instr_ref, &iter_instr);
+                    if (res != KEFIR_NOT_FOUND) {
+                        REQUIRE_OK(res);
+                        res = classify_memory_access(iter_instr, &location2_ref, &size2, &offset2);
+                        if (res == KEFIR_NO_MATCH) {
+                            location2_ref = iter_node->instr_ref;
+                            size2 = 0;
+                            offset2 = 0;
+                            res = KEFIR_OK;
+                        }
+                        REQUIRE_OK(res);
+
+                        kefir_bool_t must_alias;
+                        REQUIRE_OK(kefir_opt_code_must_alias(code, location1_ref, size1, offset1, location2_ref, size2,
+                                                             offset2, &must_alias));
+                        if (must_alias && size2 <= size1) {
+                            REQUIRE_OK(kefir_hashset_add(mem, consumers, (kefir_hashset_key_t) iter_node->instr_ref));
+                        } else {
+                            kefir_bool_t may_alias;
+                            REQUIRE_OK(kefir_opt_code_may_alias(code, escapes, location1_ref, size1, offset1,
+                                                                location2_ref, size2, offset2, &may_alias));
+                            if (may_alias) {
+                                *has_clobbers = false;
+                                return KEFIR_OK;
+                            }
+                        }
+                    }
+                } break;
+
                 case KEFIR_OPT_CODE_MEMSSA_PRODUCE_CONSUME_NODE: {
                     const struct kefir_opt_instruction *iter_instr;
                     res = kefir_opt_code_container_instr(code, iter_node->instr_ref, &iter_instr);
@@ -409,12 +441,21 @@ static kefir_result_t has_downstream_clobbers_impl(struct kefir_mem *mem, const 
                         }
                         REQUIRE_OK(res);
 
-                        kefir_bool_t may_alias;
-                        REQUIRE_OK(kefir_opt_code_may_alias(code, escapes, location1_ref, size1, offset1, location2_ref,
-                                                            size2, offset2, &may_alias));
-                        if (may_alias) {
-                            *has_clobbers = false;
-                            return KEFIR_OK;
+                        kefir_bool_t must_alias;
+                        REQUIRE_OK(kefir_opt_code_must_alias(code, location1_ref, size1, offset1, location2_ref, size2,
+                                                             offset2, &must_alias));
+
+                        if (must_alias && size1 == size2) {
+                            REQUIRE_OK(kefir_hashset_add(mem, consumers, (kefir_hashset_key_t) iter_node->instr_ref));
+                            continue_scan = false;
+                        } else {
+                            kefir_bool_t may_alias;
+                            REQUIRE_OK(kefir_opt_code_may_alias(code, escapes, location1_ref, size1, offset1,
+                                                                location2_ref, size2, offset2, &may_alias));
+                            if (may_alias) {
+                                *has_clobbers = false;
+                                return KEFIR_OK;
+                            }
                         }
                     }
                 } break;
@@ -472,13 +513,14 @@ static kefir_result_t has_downstream_clobbers_impl(struct kefir_mem *mem, const 
 static kefir_result_t has_downstream_clobbers(struct kefir_mem *mem, const struct kefir_opt_code_container *code,
                                               const struct kefir_opt_code_escape_analysis *escapes,
                                               const struct kefir_opt_code_memssa *memssa,
-                                              kefir_opt_code_memssa_node_ref_t node_ref, kefir_bool_t *has_clobbers) {
+                                              kefir_opt_code_memssa_node_ref_t node_ref, kefir_bool_t *has_clobbers,
+                                              struct kefir_hashset *consumers) {
     struct kefir_list queue;
     struct kefir_hashset visited;
     REQUIRE_OK(kefir_list_init(&queue));
     REQUIRE_OK(kefir_hashset_init(&visited, &kefir_hashtable_uint_ops));
     kefir_result_t res =
-        has_downstream_clobbers_impl(mem, code, escapes, memssa, node_ref, has_clobbers, &queue, &visited);
+        has_downstream_clobbers_impl(mem, code, escapes, memssa, node_ref, has_clobbers, &queue, &visited, consumers);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_hashset_free(mem, &visited);
         kefir_list_free(mem, &queue);
@@ -490,6 +532,85 @@ static kefir_result_t has_downstream_clobbers(struct kefir_mem *mem, const struc
         return res;
     });
     REQUIRE_OK(kefir_list_free(mem, &queue));
+    return KEFIR_OK;
+}
+
+static kefir_result_t uses_terminate_at(const struct kefir_opt_code_container *code,
+                                        kefir_opt_instruction_ref_t source_ref, kefir_opt_instruction_ref_t target_ref,
+                                        kefir_bool_t permit_control_flow, kefir_size_t depth,
+                                        kefir_bool_t *terminates_at) {
+    REQUIRE(source_ref != target_ref, KEFIR_OK);
+    if (depth == 0) {
+        *terminates_at = false;
+        return KEFIR_OK;
+    }
+
+    const struct kefir_opt_instruction *instr;
+    REQUIRE_OK(kefir_opt_code_container_instr(code, source_ref, &instr));
+
+    kefir_bool_t is_control_flow, is_side_effect_free;
+    REQUIRE_OK(kefir_opt_code_instruction_is_control_flow(code, source_ref, &is_control_flow));
+    REQUIRE_OK(kefir_opt_instruction_is_side_effect_free(instr, &is_side_effect_free));
+
+    if (!permit_control_flow && (is_control_flow || !is_side_effect_free)) {
+        *terminates_at = false;
+        return KEFIR_OK;
+    }
+
+    kefir_result_t res;
+    struct kefir_opt_instruction_use_iterator use_iter;
+    for (res = kefir_opt_code_container_instruction_use_instr_iter(code, source_ref, &use_iter);
+         res == KEFIR_OK && *terminates_at; res = kefir_opt_code_container_instruction_use_next(&use_iter)) {
+        REQUIRE_OK(uses_terminate_at(code, use_iter.use_instr_ref, target_ref, false, depth - 1, terminates_at));
+    }
+    if (res != KEFIR_ITERATOR_END) {
+        REQUIRE_OK(res);
+    }
+
+    return KEFIR_OK;
+}
+
+#define MAX_USE_CHAIN 16
+static kefir_result_t all_uses_terminate_at(const struct kefir_opt_code_container *code,
+                                            const struct kefir_hashset *sources, kefir_opt_instruction_ref_t target_ref,
+                                            kefir_bool_t *all_terminate_at) {
+    *all_terminate_at = true;
+
+    kefir_result_t res;
+    struct kefir_hashset_iterator iter;
+    kefir_hashset_key_t key;
+    for (res = kefir_hashset_iter(sources, &iter, &key); res == KEFIR_OK && *all_terminate_at;
+         res = kefir_hashset_next(&iter, &key)) {
+        ASSIGN_DECL_CAST(kefir_opt_instruction_ref_t, source_ref, key);
+
+        const struct kefir_opt_instruction *instr;
+        REQUIRE_OK(kefir_opt_code_container_instr(code, source_ref, &instr));
+        switch (instr->operation.opcode) {
+            case KEFIR_OPT_OPCODE_INT8_LOAD:
+            case KEFIR_OPT_OPCODE_INT16_LOAD:
+            case KEFIR_OPT_OPCODE_INT32_LOAD:
+            case KEFIR_OPT_OPCODE_INT64_LOAD:
+            case KEFIR_OPT_OPCODE_INT128_LOAD:
+            case KEFIR_OPT_OPCODE_LONG_DOUBLE_LOAD:
+            case KEFIR_OPT_OPCODE_COMPLEX_FLOAT32_LOAD:
+            case KEFIR_OPT_OPCODE_COMPLEX_FLOAT64_LOAD:
+            case KEFIR_OPT_OPCODE_COMPLEX_LONG_DOUBLE_LOAD:
+            case KEFIR_OPT_OPCODE_BITINT_LOAD:
+            case KEFIR_OPT_OPCODE_BITINT_LOAD_PRECISE:
+            case KEFIR_OPT_OPCODE_DECIMAL32_LOAD:
+            case KEFIR_OPT_OPCODE_DECIMAL64_LOAD:
+            case KEFIR_OPT_OPCODE_DECIMAL128_LOAD:
+                REQUIRE_OK(uses_terminate_at(code, source_ref, target_ref, true, MAX_USE_CHAIN, all_terminate_at));
+                break;
+
+            default:
+                all_terminate_at = false;
+                break;
+        }
+    }
+    if (res != KEFIR_ITERATOR_END) {
+        REQUIRE_OK(res);
+    }
     return KEFIR_OK;
 }
 
@@ -536,14 +657,24 @@ static kefir_result_t do_optimize_nonvolatile_store(struct kefir_mem *mem, struc
             return KEFIR_OK;
     }
 
-    kefir_bool_t downstream_clobbers = false;
-    REQUIRE_OK(has_downstream_clobbers(mem, &func->code, escapes, memssa, node_ref, &downstream_clobbers));
-    if (downstream_clobbers) {
+    kefir_bool_t downstream_clobbers = false, all_consumers_terminate_at = false;
+    struct kefir_hashset consumers;
+    REQUIRE_OK(kefir_hashset_init(&consumers, &kefir_hashtable_uint_ops));
+    res = has_downstream_clobbers(mem, &func->code, escapes, memssa, node_ref, &downstream_clobbers, &consumers);
+    REQUIRE_CHAIN(&res, all_uses_terminate_at(&func->code, &consumers, instr_ref, &all_consumers_terminate_at));
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_hashset_free(mem, &consumers);
+        return res;
+    });
+    if (downstream_clobbers && all_consumers_terminate_at) {
+        REQUIRE_OK(kefir_hashset_free(mem, &consumers));
         REQUIRE_OK(kefir_opt_code_container_drop_control(&func->code, instr_ref));
         REQUIRE_OK(kefir_opt_code_container_drop_instr(mem, &func->code, instr_ref));
         REQUIRE_OK(kefir_opt_code_memssa_replace(mem, memssa, node->predecessor_ref, node_ref));
         REQUIRE_OK(kefir_opt_code_memssa_unbind(mem, memssa, node_ref));
         return KEFIR_OK;
+    } else {
+        REQUIRE_OK(kefir_hashset_free(mem, &consumers));
     }
 
     res = find_upstream_clobber(mem, &func->code, escapes, memssa, node_ref, &clobber_ref);
