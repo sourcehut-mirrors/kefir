@@ -132,7 +132,7 @@ static kefir_result_t check_clobber(struct kefir_mem *mem, const struct kefir_op
     }
     REQUIRE_CHAIN(&res, classify_memory_access(instr2, &location2_ref, &size2, &offset2));
     if (res == KEFIR_NO_MATCH) {
-        location2_ref = instr_ref1;
+        location2_ref = instr_ref2;
         size2 = 0;
         offset2 = 0;
         res = KEFIR_OK;
