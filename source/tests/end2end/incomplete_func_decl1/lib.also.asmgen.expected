@@ -20,10 +20,9 @@ get4:
     movq %rax, -8(%rbp)
     movl -16(%rbp), %eax
     movl -12(%rbp), %ecx
-    add %ecx, %eax
-    movl %eax, -8(%rbp)
-    movl -16(%rbp), %eax
-    movl -12(%rbp), %ecx
+    mov %eax, %edx
+    add %ecx, %edx
+    movl %edx, -8(%rbp)
     sub %ecx, %eax
     movl %eax, -4(%rbp)
     movq -8(%rbp), %rax

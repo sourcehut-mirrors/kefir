@@ -40,23 +40,21 @@ run_factorial:
     xor %edx, %edx
     cmp $1, %rax
     setg %dl
-    movsx %edx, %rax
-    movq (%rcx, %rax, 8), %rax
-    jmp *%rax
+    movsx %edx, %rdx
+    movq (%rcx, %rdx, 8), %rcx
+    jmp *%rcx
 .L__kefir_func_run_factorial_label2:
 _kefir_local_public_label_run_factorial_terminate:
     ret
 .L__kefir_func_run_factorial_label3:
 _kefir_local_public_label_run_factorial_round:
-    movq factorial_param@GOTPCREL(%rip), %rax
-    movq (%rax), %rcx
-    movq factorial_result@GOTPCREL(%rip), %rdx
-    movq (%rdx), %rsi
-    imul %rcx, %rsi
-    movq %rsi, (%rdx)
-    movq (%rax), %rcx
-    add $-1, %rcx
-    movq %rcx, (%rax)
+    movq factorial_result@GOTPCREL(%rip), %rcx
+    movq (%rcx), %rdx
+    imul %rax, %rdx
+    movq %rdx, (%rcx)
+    movq factorial_param@GOTPCREL(%rip), %rcx
+    add $-1, %rax
+    movq %rax, (%rcx)
     jmp .L__kefir_func_run_factorial_label1
 .L__kefir_text_func_run_factorial_end:
 

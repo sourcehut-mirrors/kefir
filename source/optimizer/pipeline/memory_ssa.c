@@ -250,14 +250,13 @@ kefir_result_t kefir_opt_code_util_extend_load_value(struct kefir_mem *, struct 
                                                      const struct kefir_opt_instruction *, kefir_opt_instruction_ref_t,
                                                      kefir_opt_instruction_ref_t *);
 
-static kefir_result_t do_optimize_nonvolatile_load(struct kefir_mem *mem, struct kefir_opt_module *module,
-                                                   struct kefir_opt_function *func,
-                                                   const struct kefir_opt_code_control_flow *control_flow,
-                                                   struct kefir_opt_code_sequencing *sequencing,
-                                                   struct kefir_opt_code_memssa *memssa,
-                                                   const struct kefir_opt_code_escape_analysis *escapes,
-                                                   const struct kefir_opt_instruction *instr) {
+static kefir_result_t do_optimize_nonvolatile_load(
+    struct kefir_mem *mem, struct kefir_opt_module *module, struct kefir_opt_function *func,
+    const struct kefir_opt_code_control_flow *control_flow, struct kefir_opt_code_sequencing *sequencing,
+    struct kefir_opt_code_memssa *memssa, const struct kefir_opt_code_escape_analysis *escapes,
+    const struct kefir_opt_instruction *instr, kefir_bool_t *did_replace) {
     UNUSED(control_flow);
+    *did_replace = false;
     kefir_opt_instruction_ref_t instr_ref = instr->id;
 
     kefir_opt_code_memssa_node_ref_t node_ref, clobber_ref = KEFIR_ID_NONE;
@@ -342,8 +341,133 @@ static kefir_result_t do_optimize_nonvolatile_load(struct kefir_mem *mem, struct
     REQUIRE_OK(kefir_opt_code_container_replace_references(mem, &func->code, replacement_ref, instr_ref));
     REQUIRE_OK(kefir_opt_code_container_drop_control(&func->code, instr_ref));
     REQUIRE_OK(kefir_opt_code_container_drop_instr(mem, &func->code, instr_ref));
+    REQUIRE_OK(kefir_opt_code_sequencing_drop_cache(mem, sequencing));
     REQUIRE_OK(kefir_opt_code_memssa_replace(mem, memssa, node->predecessor_ref, node_ref));
     REQUIRE_OK(kefir_opt_code_memssa_unbind(mem, memssa, node_ref));
+    *did_replace = true;
+    return KEFIR_OK;
+}
+
+static kefir_result_t do_deduplicate_nonvolatile_load(struct kefir_mem *mem, struct kefir_opt_module *module,
+                                                      struct kefir_opt_function *func,
+                                                      const struct kefir_opt_code_control_flow *control_flow,
+                                                      struct kefir_opt_code_sequencing *sequencing,
+                                                      struct kefir_opt_code_memssa *memssa,
+                                                      const struct kefir_opt_code_escape_analysis *escapes,
+                                                      const struct kefir_opt_instruction *instr) {
+    UNUSED(control_flow);
+    UNUSED(module);
+    kefir_opt_instruction_ref_t instr_ref = instr->id;
+
+    kefir_opt_code_memssa_node_ref_t node_ref;
+    kefir_result_t res = kefir_opt_code_memssa_instruction_binding(memssa, instr_ref, &node_ref);
+    REQUIRE(res != KEFIR_NOT_FOUND, KEFIR_OK);
+    REQUIRE_OK(res);
+
+    const struct kefir_opt_code_memssa_node *node, *iter_node;
+    REQUIRE_OK(kefir_opt_code_memssa_node(memssa, node_ref, &node));
+    REQUIRE(node->type == KEFIR_OPT_CODE_MEMSSA_CONSUME_NODE, KEFIR_OK);
+
+    kefir_opt_instruction_ref_t location1_ref, location2_ref;
+    kefir_size_t size1, size2;
+    kefir_int64_t offset1, offset2;
+    res = classify_memory_access(instr, &location1_ref, &size1, &offset1);
+    if (res == KEFIR_NO_MATCH) {
+        location1_ref = instr_ref;
+        size1 = 0;
+        offset1 = 0;
+        res = KEFIR_OK;
+    }
+    REQUIRE_OK(res);
+
+    for (kefir_opt_code_memssa_node_ref_t iter_node_ref = node->predecessor_ref; iter_node_ref != KEFIR_ID_NONE;) {
+        REQUIRE_OK(kefir_opt_code_memssa_node(memssa, iter_node_ref, &iter_node));
+
+        kefir_bool_t terminate = false;
+        switch (iter_node->type) {
+            case KEFIR_OPT_CODE_MEMSSA_ROOT_NODE:
+            case KEFIR_OPT_CODE_MEMSSA_PHI_NODE:
+                terminate = true;
+                break;
+
+            case KEFIR_OPT_CODE_MEMSSA_TERMINATE_NODE:
+            case KEFIR_OPT_CODE_MEMSSA_CONSUME_NODE:
+                return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected memory ssa node type");
+
+            case KEFIR_OPT_CODE_MEMSSA_PRODUCE_NODE:
+            case KEFIR_OPT_CODE_MEMSSA_PRODUCE_CONSUME_NODE: {
+                const struct kefir_opt_instruction *iter_instr;
+                REQUIRE_OK(kefir_opt_code_container_instr(&func->code, iter_node->instr_ref, &iter_instr));
+
+                res = classify_memory_access(iter_instr, &location2_ref, &size2, &offset2);
+                if (res == KEFIR_NO_MATCH) {
+                    location2_ref = iter_node->instr_ref;
+                    size2 = 0;
+                    offset2 = 0;
+                    res = KEFIR_OK;
+                }
+                REQUIRE_OK(res);
+
+                REQUIRE_OK(kefir_opt_code_may_alias(&func->code, escapes, location1_ref, size1, offset1, location2_ref,
+                                                    size2, offset2, &terminate));
+            } break;
+        }
+
+        struct kefir_opt_code_memssa_use_iterator use_iter;
+        kefir_opt_code_memssa_node_ref_t use_node_ref;
+        for (res = kefir_opt_code_memssa_use_iter(memssa, &use_iter, iter_node_ref, &use_node_ref); res == KEFIR_OK;
+             res = kefir_opt_code_memssa_use_next(&use_iter, &use_node_ref)) {
+            const struct kefir_opt_code_memssa_node *use_node;
+            REQUIRE_OK(kefir_opt_code_memssa_node(memssa, use_node_ref, &use_node));
+            if (use_node->type != KEFIR_OPT_CODE_MEMSSA_CONSUME_NODE || use_node->instr_ref == instr_ref) {
+                continue;
+            }
+
+            const struct kefir_opt_instruction *use_instr;
+            REQUIRE_OK(kefir_opt_code_container_instr(&func->code, use_node->instr_ref, &use_instr));
+            if (use_instr->operation.opcode != instr->operation.opcode ||
+                use_instr->operation.parameters.memory_access.flags.load_extension !=
+                    instr->operation.parameters.memory_access.flags.load_extension) {
+                continue;
+            }
+
+            res = classify_memory_access(use_instr, &location2_ref, &size2, &offset2);
+            if (res == KEFIR_NO_MATCH) {
+                continue;
+            }
+            REQUIRE_OK(res);
+
+            kefir_bool_t must_alias;
+            REQUIRE_OK(kefir_opt_code_must_alias(&func->code, location1_ref, size1, offset1, location2_ref, size2,
+                                                 offset2, &must_alias));
+            if (must_alias && size1 == size2) {
+                kefir_bool_t is_sequenced_before;
+                REQUIRE_OK(kefir_opt_code_is_sequenced_before(mem, control_flow, sequencing, use_node->instr_ref,
+                                                              instr_ref, &is_sequenced_before));
+                if (!is_sequenced_before) {
+                    continue;
+                }
+
+                REQUIRE_OK(
+                    kefir_opt_code_container_replace_references(mem, &func->code, use_node->instr_ref, instr_ref));
+                REQUIRE_OK(kefir_opt_code_container_drop_control(&func->code, instr_ref));
+                REQUIRE_OK(kefir_opt_code_container_drop_instr(mem, &func->code, instr_ref));
+                REQUIRE_OK(kefir_opt_code_sequencing_drop_cache(mem, sequencing));
+                REQUIRE_OK(kefir_opt_code_memssa_replace(mem, memssa, node->predecessor_ref, node_ref));
+                REQUIRE_OK(kefir_opt_code_memssa_unbind(mem, memssa, node_ref));
+                return KEFIR_OK;
+            }
+        }
+        if (res != KEFIR_ITERATOR_END) {
+            REQUIRE_OK(res);
+        }
+
+        if (terminate) {
+            break;
+        } else {
+            iter_node_ref = iter_node->predecessor_ref;
+        }
+    }
     return KEFIR_OK;
 }
 
@@ -670,6 +794,7 @@ static kefir_result_t do_optimize_nonvolatile_store(struct kefir_mem *mem, struc
         REQUIRE_OK(kefir_hashset_free(mem, &consumers));
         REQUIRE_OK(kefir_opt_code_container_drop_control(&func->code, instr_ref));
         REQUIRE_OK(kefir_opt_code_container_drop_instr(mem, &func->code, instr_ref));
+        REQUIRE_OK(kefir_opt_code_sequencing_drop_cache(mem, sequencing));
         REQUIRE_OK(kefir_opt_code_memssa_replace(mem, memssa, node->predecessor_ref, node_ref));
         REQUIRE_OK(kefir_opt_code_memssa_unbind(mem, memssa, node_ref));
         return KEFIR_OK;
@@ -710,6 +835,7 @@ static kefir_result_t do_optimize_nonvolatile_store(struct kefir_mem *mem, struc
             clobber_instr->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_VALUE_REF]) {
         REQUIRE_OK(kefir_opt_code_container_drop_control(&func->code, instr_ref));
         REQUIRE_OK(kefir_opt_code_container_drop_instr(mem, &func->code, instr_ref));
+        REQUIRE_OK(kefir_opt_code_sequencing_drop_cache(mem, sequencing));
         REQUIRE_OK(kefir_opt_code_memssa_replace(mem, memssa, node->predecessor_ref, node_ref));
         REQUIRE_OK(kefir_opt_code_memssa_unbind(mem, memssa, node_ref));
     }
@@ -752,8 +878,13 @@ static kefir_result_t do_optimize(struct kefir_mem *mem, struct kefir_opt_module
                 case KEFIR_OPT_OPCODE_DECIMAL64_LOAD:
                 case KEFIR_OPT_OPCODE_DECIMAL128_LOAD:
                     if (!instr->operation.parameters.memory_access.flags.volatile_access) {
+                        kefir_bool_t did_replace = false;
                         REQUIRE_OK(do_optimize_nonvolatile_load(mem, module, func, control_flow, sequencing, memssa,
-                                                                escapes, instr));
+                                                                escapes, instr, &did_replace));
+                        if (!did_replace) {
+                            REQUIRE_OK(do_deduplicate_nonvolatile_load(mem, module, func, control_flow, sequencing,
+                                                                       memssa, escapes, instr));
+                        }
                     }
                     break;
 
