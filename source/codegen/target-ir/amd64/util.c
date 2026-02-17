@@ -42,17 +42,23 @@ kefir_result_t kefir_codegen_target_ir_amd64_match_immediate(const struct kefir_
 
     REQUIRE((instr->operation.opcode == code->klass->assign_opcode ||
              instr->operation.opcode == KEFIR_TARGET_IR_AMD64_OPCODE(mov)) &&
-                (output_type->variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT ||
-                 output_type->variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_64BIT ||
-                 output_type->variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_32BIT) &&
                 instr->operation.parameters[0].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INTEGER,
             KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to match target IR integral assign instruction"));
 
-    kefir_int64_t value =
-        sign_extend ? kefir_codegen_target_ir_sign_extend(instr->operation.parameters[0].immediate.int_immediate,
+    kefir_int64_t value;
+    if (output_type->variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT ||
+        output_type->variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_64BIT) {
+        value = sign_extend
+                    ? kefir_codegen_target_ir_sign_extend(instr->operation.parameters[0].immediate.int_immediate,
                                                           instr->operation.parameters[0].immediate.variant)
                     : kefir_codegen_target_ir_zero_extend(instr->operation.parameters[0].immediate.int_immediate,
                                                           instr->operation.parameters[0].immediate.variant);
+    } else {
+        REQUIRE(output_type->variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_32BIT,
+                KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to match target IR integral assign instruction"));
+        value = kefir_codegen_target_ir_zero_extend(instr->operation.parameters[0].immediate.int_immediate,
+                                                    instr->operation.parameters[0].immediate.variant);
+    }
 
     ASSIGN_PTR(int_value_ptr, value);
     return KEFIR_OK;

@@ -1,0 +1,17 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global test1
+.type test1, @function
+
+.section .text
+.L__kefir_text_section_begin:
+test1:
+.L__kefir_text_func_test1_begin:
+    movabs $4294967287, %rax
+    movq %rax, (%rdi)
+    ret
+.L__kefir_text_func_test1_end:
+
+.L__kefir_text_section_end:
+
