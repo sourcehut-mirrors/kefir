@@ -289,7 +289,22 @@ static kefir_result_t do_optimize_nonvolatile_load(
     kefir_size_t size1, size2;
     kefir_int64_t offset1, offset2;
     res = classify_memory_access(instr, &location1_ref, &size1, &offset1);
-    REQUIRE_CHAIN(&res, classify_memory_access(clobber_instr, &location2_ref, &size2, &offset2));
+    if (res == KEFIR_NO_MATCH) {
+        location1_ref = instr->id;
+        size1 = 0;
+        offset1 = 0;
+        res = KEFIR_OK;
+    }
+    REQUIRE(res != KEFIR_NO_MATCH, KEFIR_OK);
+    REQUIRE_OK(res);
+
+    res = classify_memory_access(clobber_instr, &location2_ref, &size2, &offset2);
+    if (res == KEFIR_NO_MATCH) {
+        location2_ref = clobber_instr->id;
+        size2 = 0;
+        offset2 = 0;
+        res = KEFIR_OK;
+    }
     REQUIRE(res != KEFIR_NO_MATCH, KEFIR_OK);
     REQUIRE_OK(res);
 
