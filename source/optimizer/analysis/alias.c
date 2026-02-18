@@ -123,6 +123,64 @@ kefir_result_t kefir_opt_code_must_alias(const struct kefir_opt_code_container *
         REQUIRE_OK(kefir_opt_code_must_alias(code, location_ref1, size1, offset1,
                                              location2->operation.parameters.refs[0], size2,
                                              offset2 + location2->operation.parameters.offset, must_alias));
+    } else if (location1->operation.opcode == KEFIR_OPT_OPCODE_GET_ARGUMENT &&
+               location2->operation.opcode == KEFIR_OPT_OPCODE_GET_ARGUMENT &&
+               location1->operation.parameters.index == location2->operation.parameters.index) {
+        *must_alias = offset1 == offset2;
+    } else if (location1->operation.opcode == KEFIR_OPT_OPCODE_INT64_ADD) {
+        const struct kefir_opt_instruction *arg1_instr, *arg2_instr;
+        REQUIRE_OK(kefir_opt_code_container_instr(code, location1->operation.parameters.refs[0], &arg1_instr));
+        REQUIRE_OK(kefir_opt_code_container_instr(code, location1->operation.parameters.refs[1], &arg2_instr));
+        if (arg1_instr->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST ||
+            arg1_instr->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST) {
+            REQUIRE_OK(kefir_opt_code_must_alias(code, location1->operation.parameters.refs[1], size1,
+                                                 offset1 + arg1_instr->operation.parameters.imm.integer, location_ref2,
+                                                 size2, offset2, must_alias));
+        } else if (arg2_instr->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST ||
+                   arg2_instr->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST) {
+            REQUIRE_OK(kefir_opt_code_must_alias(code, location1->operation.parameters.refs[0], size1,
+                                                 offset1 + arg2_instr->operation.parameters.imm.integer, location_ref2,
+                                                 size2, offset2, must_alias));
+        }
+    } else if (location2->operation.opcode == KEFIR_OPT_OPCODE_INT64_ADD) {
+        const struct kefir_opt_instruction *arg1_instr, *arg2_instr;
+        REQUIRE_OK(kefir_opt_code_container_instr(code, location2->operation.parameters.refs[0], &arg1_instr));
+        REQUIRE_OK(kefir_opt_code_container_instr(code, location2->operation.parameters.refs[1], &arg2_instr));
+        if (arg1_instr->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST ||
+            arg1_instr->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST) {
+            REQUIRE_OK(kefir_opt_code_must_alias(code, location_ref1, size1, offset1,
+                                                 location2->operation.parameters.refs[1], size2,
+                                                 offset2 + arg1_instr->operation.parameters.imm.integer, must_alias));
+        } else if (arg2_instr->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST ||
+                   arg2_instr->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST) {
+            REQUIRE_OK(kefir_opt_code_must_alias(code, location_ref1, size1, offset1,
+                                                 location2->operation.parameters.refs[0], size2,
+                                                 offset2 + arg2_instr->operation.parameters.imm.integer, must_alias));
+        }
+    } else if (location1->operation.opcode == KEFIR_OPT_OPCODE_INT64_SUB) {
+        const struct kefir_opt_instruction *arg2_instr;
+        REQUIRE_OK(kefir_opt_code_container_instr(code, location1->operation.parameters.refs[1], &arg2_instr));
+        if (arg2_instr->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST ||
+            arg2_instr->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST) {
+            REQUIRE_OK(kefir_opt_code_must_alias(code, location1->operation.parameters.refs[0], size1,
+                                                 offset1 - arg2_instr->operation.parameters.imm.integer, location_ref2,
+                                                 size2, offset2, must_alias));
+        }
+    } else if (location2->operation.opcode == KEFIR_OPT_OPCODE_INT64_SUB) {
+        const struct kefir_opt_instruction *arg2_instr;
+        REQUIRE_OK(kefir_opt_code_container_instr(code, location2->operation.parameters.refs[1], &arg2_instr));
+        if (arg2_instr->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST ||
+            arg2_instr->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST) {
+            REQUIRE_OK(kefir_opt_code_must_alias(code, location_ref1, size1, offset1,
+                                                 location2->operation.parameters.refs[0], size2,
+                                                 offset2 - arg2_instr->operation.parameters.imm.integer, must_alias));
+        }
+    } else if ((location1->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST ||
+                location1->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST) &&
+               (location2->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST ||
+                location2->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST)) {
+        *must_alias = location1->operation.parameters.imm.integer + offset1 ==
+                      location2->operation.parameters.imm.integer + offset2;
     }
     return KEFIR_OK;
 }

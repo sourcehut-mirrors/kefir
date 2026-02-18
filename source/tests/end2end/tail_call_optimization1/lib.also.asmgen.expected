@@ -137,9 +137,9 @@ op_loop_end:
     movb 5134(%rdi), %al
     add $-1, %al
     movb %al, 5134(%rdi)
-    movzxw 5132(%rdi), %rax
-    movzxb 8(%rdi, %rax, 1), %rax
-    cmp $0, %eax
+    movzxw 5132(%rdi), %rcx
+    movzxb 8(%rdi, %rcx, 1), %rcx
+    cmp $0, %ecx
     jne .L__kefir_func_op_loop_end_label3
 .L__kefir_func_op_loop_end_label2:
     movq (%rdi), %rax
@@ -152,7 +152,7 @@ op_loop_end:
     movq (%rcx, %rax, 8), %rax
     jmp *%rax
 .L__kefir_func_op_loop_end_label3:
-    movzxb 5134(%rdi), %rax
+    movzx %al, %rax
     movq 4104(%rdi, %rax, 8), %rax
     sub $1, %rax
     movl %eax, 5128(%rdi)
