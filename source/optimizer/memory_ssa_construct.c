@@ -476,12 +476,39 @@ static kefir_result_t link(struct kefir_mem *mem, struct construct_state *state)
     return KEFIR_OK;
 }
 
+static kefir_result_t simplify(struct kefir_mem *mem, struct construct_state *state) {
+    for (kefir_size_t i = 0; i < state->memssa->node_length; i++) {
+        struct kefir_opt_code_memssa_node *node = &state->memssa->nodes[i];
+        if (node->type != KEFIR_OPT_CODE_MEMSSA_PHI_NODE) {
+            continue;
+        }
+
+        kefir_opt_code_memssa_node_ref_t link_node_ref = KEFIR_ID_NONE;
+        for (kefir_size_t j = 0; j < node->phi.link_count; j++) {
+            if (node->phi.links[j].node_ref == i) {
+                // Intentionally left blank
+            } else if (link_node_ref == KEFIR_ID_NONE || link_node_ref == node->phi.links[j].node_ref) {
+                link_node_ref = node->phi.links[j].node_ref;
+            } else {
+                link_node_ref = KEFIR_ID_NONE;
+                break;
+            }
+        }
+        if (link_node_ref != KEFIR_ID_NONE) {
+            REQUIRE_OK(kefir_opt_code_memssa_replace(mem, state->memssa, link_node_ref, i));
+            REQUIRE_OK(kefir_opt_code_memssa_unbind(mem, state->memssa, i));
+        }
+    }
+    return KEFIR_OK;
+}
+
 static kefir_result_t construct_impl(struct kefir_mem *mem, struct construct_state *state) {
     memset(state->processed_instr, 0, sizeof(kefir_bool_t) * state->code->length);
     memset(state->visited_blocks, 0, sizeof(kefir_bool_t) * kefir_opt_code_container_block_count(state->code));
     REQUIRE_OK(collect_def_blocks(mem, state));
     REQUIRE_OK(insert_phis(mem, state));
     REQUIRE_OK(link(mem, state));
+    REQUIRE_OK(simplify(mem, state));
     return KEFIR_OK;
 }
 

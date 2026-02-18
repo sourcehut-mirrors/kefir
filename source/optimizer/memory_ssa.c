@@ -430,10 +430,18 @@ kefir_result_t kefir_opt_code_memssa_unbind(struct kefir_mem *mem, struct kefir_
                 // Intentionally left blank
                 break;
 
-            case KEFIR_OPT_CODE_MEMSSA_TERMINATE_NODE:
             case KEFIR_OPT_CODE_MEMSSA_PRODUCE_NODE:
             case KEFIR_OPT_CODE_MEMSSA_PRODUCE_CONSUME_NODE:
             case KEFIR_OPT_CODE_MEMSSA_CONSUME_NODE:
+                REQUIRE_OK(
+                    kefir_hashset_delete(&memssa->nodes[node->predecessor_ref].uses, (kefir_hashset_key_t) node_ref));
+                node->predecessor_ref = KEFIR_ID_NONE;
+                REQUIRE_OK(kefir_hashtable_delete(mem, &memssa->instruction_bindings,
+                                                  (kefir_hashtable_key_t) node->instr_ref));
+                node->instr_ref = KEFIR_ID_NONE;
+                break;
+
+            case KEFIR_OPT_CODE_MEMSSA_TERMINATE_NODE:
                 REQUIRE_OK(
                     kefir_hashset_delete(&memssa->nodes[node->predecessor_ref].uses, (kefir_hashset_key_t) node_ref));
                 node->predecessor_ref = KEFIR_ID_NONE;
@@ -449,8 +457,6 @@ kefir_result_t kefir_opt_code_memssa_unbind(struct kefir_mem *mem, struct kefir_
                 node->phi.link_count = 0;
                 break;
         }
-        REQUIRE_OK(kefir_hashtable_delete(mem, &memssa->instruction_bindings, (kefir_hashtable_key_t) node->instr_ref));
-        node->instr_ref = KEFIR_ID_NONE;
         if (memssa->root_ref == node_ref) {
             memssa->root_ref = KEFIR_ID_NONE;
         }

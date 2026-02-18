@@ -591,66 +591,24 @@
                         "predecessor_ref": 6
                     },
                     {
+                        "node_ref": 11,
+                        "type": "consume",
+                        "predecessor_ref": 7
+                    },
+                    {
+                        "node_ref": 12,
+                        "type": "terminate",
+                        "predecessor_ref": 7
+                    },
+                    {
                         "node_ref": 9,
                         "type": "consume",
                         "predecessor_ref": 7
                     },
                     {
-                        "node_ref": 2,
-                        "type": "phi",
-                        "links": [
-                            {
-                                "block_ref": 0,
-                                "node_ref": 7
-                            },
-                            {
-                                "block_ref": 2,
-                                "node_ref": 7
-                            }
-                        ]
-                    },
-                    {
                         "node_ref": 10,
                         "type": "consume",
-                        "predecessor_ref": 2
-                    },
-                    {
-                        "node_ref": 11,
-                        "type": "consume",
-                        "predecessor_ref": 2
-                    },
-                    {
-                        "node_ref": 1,
-                        "type": "phi",
-                        "links": [
-                            {
-                                "block_ref": 1,
-                                "node_ref": 2
-                            },
-                            {
-                                "block_ref": 5,
-                                "node_ref": 0
-                            }
-                        ]
-                    },
-                    {
-                        "node_ref": 12,
-                        "type": "terminate",
-                        "predecessor_ref": 1
-                    },
-                    {
-                        "node_ref": 0,
-                        "type": "phi",
-                        "links": [
-                            {
-                                "block_ref": 4,
-                                "node_ref": 2
-                            },
-                            {
-                                "block_ref": 6,
-                                "node_ref": 2
-                            }
-                        ]
+                        "predecessor_ref": 7
                     },
                     {
                         "node_ref": 8,
@@ -1217,28 +1175,14 @@
                         "predecessor_ref": 4
                     },
                     {
-                        "node_ref": 0,
-                        "type": "phi",
-                        "links": [
-                            {
-                                "block_ref": 6,
-                                "node_ref": 4
-                            },
-                            {
-                                "block_ref": 5,
-                                "node_ref": 4
-                            }
-                        ]
+                        "node_ref": 7,
+                        "type": "terminate",
+                        "predecessor_ref": 4
                     },
                     {
                         "node_ref": 6,
                         "type": "terminate",
-                        "predecessor_ref": 0
-                    },
-                    {
-                        "node_ref": 7,
-                        "type": "terminate",
-                        "predecessor_ref": 0
+                        "predecessor_ref": 4
                     },
                     {
                         "node_ref": 8,
