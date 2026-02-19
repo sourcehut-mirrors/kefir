@@ -200,7 +200,7 @@
                             },
                             {
                                 "id": 10,
-                                "opcode": "int64_store",
+                                "opcode": "float64_store",
                                 "location": 8,
                                 "value": 9,
                                 "flags": {
@@ -834,7 +834,7 @@
                             },
                             {
                                 "id": 75,
-                                "opcode": "int64_store",
+                                "opcode": "float64_store",
                                 "location": 8,
                                 "value": 74,
                                 "flags": {

@@ -876,8 +876,11 @@ kefir_result_t kefir_ast_translator_store_value(struct kefir_mem *mem, const str
             break;
 
         case KEFIR_AST_TYPE_DATA_MODEL_INT64:
-        case KEFIR_AST_TYPE_DATA_MODEL_DOUBLE:
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT64_STORE, mem_flags));
+            break;
+
+        case KEFIR_AST_TYPE_DATA_MODEL_DOUBLE:
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_FLOAT64_STORE, mem_flags));
             break;
 
         case KEFIR_AST_TYPE_DATA_MODEL_INT128:

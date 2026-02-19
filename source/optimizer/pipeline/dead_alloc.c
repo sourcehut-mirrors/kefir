@@ -59,6 +59,7 @@ static kefir_result_t dead_alloc_apply_impl(struct kefir_mem *mem, struct kefir_
                         case KEFIR_OPT_OPCODE_FLOAT32_STORE:
                         case KEFIR_OPT_OPCODE_DECIMAL32_STORE:
                         case KEFIR_OPT_OPCODE_INT64_STORE:
+                        case KEFIR_OPT_OPCODE_FLOAT64_STORE:
                         case KEFIR_OPT_OPCODE_COMPLEX_FLOAT32_STORE:
                         case KEFIR_OPT_OPCODE_DECIMAL64_STORE:
                         case KEFIR_OPT_OPCODE_INT128_STORE:
@@ -100,6 +101,7 @@ static kefir_result_t dead_alloc_apply_impl(struct kefir_mem *mem, struct kefir_
                                     case KEFIR_OPT_OPCODE_FLOAT32_STORE:
                                     case KEFIR_OPT_OPCODE_DECIMAL32_STORE:
                                     case KEFIR_OPT_OPCODE_INT64_STORE:
+                                    case KEFIR_OPT_OPCODE_FLOAT64_STORE:
                                     case KEFIR_OPT_OPCODE_COMPLEX_FLOAT32_STORE:
                                     case KEFIR_OPT_OPCODE_DECIMAL64_STORE:
                                     case KEFIR_OPT_OPCODE_INT128_STORE:

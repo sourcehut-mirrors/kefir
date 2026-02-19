@@ -1113,7 +1113,7 @@
                     "opcode": "float64_placeholder"
                 },
                 {
-                    "opcode": "int64_store",
+                    "opcode": "float64_store",
                     "memory_flags": {
                         "volatile": false
                     }

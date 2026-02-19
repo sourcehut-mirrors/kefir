@@ -486,7 +486,7 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "int64_store",
+                    "opcode": "float64_store",
                     "memory_flags": {
                         "volatile": false
                     }
@@ -644,7 +644,7 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "int64_store",
+                    "opcode": "float64_store",
                     "memory_flags": {
                         "volatile": false
                     }

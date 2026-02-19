@@ -110,6 +110,7 @@ static kefir_result_t record_escapes(struct kefir_mem *mem, struct kefir_opt_cod
             case KEFIR_OPT_OPCODE_INT64_STORE:
             case KEFIR_OPT_OPCODE_INT128_STORE:
             case KEFIR_OPT_OPCODE_FLOAT32_STORE:
+            case KEFIR_OPT_OPCODE_FLOAT64_STORE:
             case KEFIR_OPT_OPCODE_LONG_DOUBLE_STORE:
             case KEFIR_OPT_OPCODE_COMPLEX_FLOAT32_STORE:
             case KEFIR_OPT_OPCODE_COMPLEX_FLOAT64_STORE:

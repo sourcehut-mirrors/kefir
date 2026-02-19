@@ -486,7 +486,7 @@
                     "opcode": "float64_add"
                 },
                 {
-                    "opcode": "int64_store",
+                    "opcode": "float64_store",
                     "memory_flags": {
                         "volatile": false
                     }
@@ -644,7 +644,7 @@
                     "opcode": "float64_add"
                 },
                 {
-                    "opcode": "int64_store",
+                    "opcode": "float64_store",
                     "memory_flags": {
                         "volatile": false
                     }

@@ -417,7 +417,7 @@
                             },
                             {
                                 "id": 4,
-                                "opcode": "int64_store",
+                                "opcode": "float64_store",
                                 "location": 3,
                                 "value": 2,
                                 "flags": {
@@ -438,7 +438,7 @@
                             },
                             {
                                 "id": 7,
-                                "opcode": "int64_store",
+                                "opcode": "float64_store",
                                 "location": 6,
                                 "value": 5,
                                 "flags": {
@@ -459,7 +459,7 @@
                             },
                             {
                                 "id": 10,
-                                "opcode": "int64_store",
+                                "opcode": "float64_store",
                                 "location": 9,
                                 "value": 8,
                                 "flags": {
@@ -480,7 +480,7 @@
                             },
                             {
                                 "id": 13,
-                                "opcode": "int64_store",
+                                "opcode": "float64_store",
                                 "location": 12,
                                 "value": 11,
                                 "flags": {

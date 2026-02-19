@@ -1583,6 +1583,7 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             STORE_OP(int64_store, KEFIR_IR_OPCODE_INT64_STORE)
             STORE_OP(int128_store, KEFIR_IR_OPCODE_INT128_STORE)
             STORE_OP(float32_store, KEFIR_IR_OPCODE_FLOAT32_STORE)
+            STORE_OP(float64_store, KEFIR_IR_OPCODE_FLOAT64_STORE)
             STORE_OP(long_double_store, KEFIR_IR_OPCODE_LONG_DOUBLE_STORE)
             STORE_OP(decimal32_store, KEFIR_IR_OPCODE_DECIMAL32_STORE)
             STORE_OP(decimal64_store, KEFIR_IR_OPCODE_DECIMAL64_STORE)

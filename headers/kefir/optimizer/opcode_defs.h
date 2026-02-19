@@ -167,6 +167,7 @@
     OPCODE(INT32_STORE, "int32_store", store_mem) SEPARATOR \
     OPCODE(INT64_STORE, "int64_store", store_mem) SEPARATOR \
     OPCODE(FLOAT32_STORE, "float32_store", store_mem) SEPARATOR \
+    OPCODE(FLOAT64_STORE, "float64_store", store_mem) SEPARATOR \
     OPCODE(LONG_DOUBLE_STORE, "long_double_store", store_mem) SEPARATOR \
     OPCODE(ZERO_MEMORY, "zero_memory", typed_ref2) SEPARATOR \
     OPCODE(COPY_MEMORY, "copy_memory", typed_ref2) SEPARATOR \

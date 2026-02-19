@@ -110,6 +110,7 @@ static kefir_result_t is_mem2reg_candidate(const struct kefir_opt_code_container
             case KEFIR_OPT_OPCODE_INT64_STORE:
             case KEFIR_OPT_OPCODE_INT128_STORE:
             case KEFIR_OPT_OPCODE_FLOAT32_STORE:
+            case KEFIR_OPT_OPCODE_FLOAT64_STORE:
             case KEFIR_OPT_OPCODE_LONG_DOUBLE_STORE:
             case KEFIR_OPT_OPCODE_COMPLEX_FLOAT32_STORE:
             case KEFIR_OPT_OPCODE_COMPLEX_FLOAT64_STORE:
