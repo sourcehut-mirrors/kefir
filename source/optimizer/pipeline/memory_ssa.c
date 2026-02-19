@@ -51,6 +51,7 @@ static kefir_result_t classify_memory_access(const struct kefir_opt_instruction 
         case KEFIR_OPT_OPCODE_INT32_LOAD:
         case KEFIR_OPT_OPCODE_INT32_STORE:
         case KEFIR_OPT_OPCODE_FLOAT32_LOAD:
+        case KEFIR_OPT_OPCODE_FLOAT32_STORE:
         case KEFIR_OPT_OPCODE_DECIMAL32_LOAD:
         case KEFIR_OPT_OPCODE_DECIMAL32_STORE:
             *location_ptr = instr->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_LOCATION_REF];
@@ -320,14 +321,17 @@ static kefir_result_t do_optimize_nonvolatile_load(
          (clobber_instr->operation.opcode == KEFIR_OPT_OPCODE_INT8_STORE ||
           clobber_instr->operation.opcode == KEFIR_OPT_OPCODE_INT16_STORE ||
           clobber_instr->operation.opcode == KEFIR_OPT_OPCODE_INT32_STORE ||
+          clobber_instr->operation.opcode == KEFIR_OPT_OPCODE_FLOAT32_STORE ||
           clobber_instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_STORE)) ||
         (instr->operation.opcode == KEFIR_OPT_OPCODE_INT16_LOAD &&
          (clobber_instr->operation.opcode == KEFIR_OPT_OPCODE_INT16_STORE ||
           clobber_instr->operation.opcode == KEFIR_OPT_OPCODE_INT32_STORE ||
+          clobber_instr->operation.opcode == KEFIR_OPT_OPCODE_FLOAT32_STORE ||
           clobber_instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_STORE)) ||
         ((instr->operation.opcode == KEFIR_OPT_OPCODE_INT32_LOAD ||
           instr->operation.opcode == KEFIR_OPT_OPCODE_FLOAT32_LOAD) &&
          (clobber_instr->operation.opcode == KEFIR_OPT_OPCODE_INT32_STORE ||
+          clobber_instr->operation.opcode == KEFIR_OPT_OPCODE_FLOAT32_STORE ||
           clobber_instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_STORE)) ||
         (instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_LOAD &&
          clobber_instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_STORE)) {
@@ -783,6 +787,7 @@ static kefir_result_t do_optimize_nonvolatile_store(struct kefir_mem *mem, struc
         case KEFIR_OPT_OPCODE_INT32_STORE:
         case KEFIR_OPT_OPCODE_INT64_STORE:
         case KEFIR_OPT_OPCODE_INT128_STORE:
+        case KEFIR_OPT_OPCODE_FLOAT32_STORE:
         case KEFIR_OPT_OPCODE_LONG_DOUBLE_STORE:
         case KEFIR_OPT_OPCODE_COMPLEX_FLOAT32_STORE:
         case KEFIR_OPT_OPCODE_COMPLEX_FLOAT64_STORE:
@@ -912,6 +917,7 @@ static kefir_result_t do_optimize(struct kefir_mem *mem, struct kefir_opt_module
                 case KEFIR_OPT_OPCODE_INT32_STORE:
                 case KEFIR_OPT_OPCODE_INT64_STORE:
                 case KEFIR_OPT_OPCODE_INT128_STORE:
+                case KEFIR_OPT_OPCODE_FLOAT32_STORE:
                 case KEFIR_OPT_OPCODE_LONG_DOUBLE_STORE:
                 case KEFIR_OPT_OPCODE_COMPLEX_FLOAT32_STORE:
                 case KEFIR_OPT_OPCODE_COMPLEX_FLOAT64_STORE:

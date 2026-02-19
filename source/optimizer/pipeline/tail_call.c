@@ -143,6 +143,7 @@ static kefir_result_t escape_analyze(kefir_opt_instruction_ref_t instr_ref, void
         case KEFIR_OPT_OPCODE_INT16_STORE:
         case KEFIR_OPT_OPCODE_INT32_STORE:
         case KEFIR_OPT_OPCODE_INT64_STORE:
+        case KEFIR_OPT_OPCODE_FLOAT32_STORE:
         case KEFIR_OPT_OPCODE_LONG_DOUBLE_STORE:
             REQUIRE_OK(kefir_hashtreeset_clean(param->mem, &param->visited_instr));
             REQUIRE_OK(check_escape(instr->operation.parameters.refs[1], param));

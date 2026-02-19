@@ -3808,6 +3808,7 @@ static kefir_result_t simplify_unreachable(struct kefir_mem *mem, struct kefir_o
             case KEFIR_OPT_OPCODE_INT16_STORE:
             case KEFIR_OPT_OPCODE_INT32_STORE:
             case KEFIR_OPT_OPCODE_INT64_STORE:
+            case KEFIR_OPT_OPCODE_FLOAT32_STORE:
             case KEFIR_OPT_OPCODE_LONG_DOUBLE_STORE:
             case KEFIR_OPT_OPCODE_COMPLEX_FLOAT32_STORE:
             case KEFIR_OPT_OPCODE_COMPLEX_FLOAT64_STORE:
@@ -4058,6 +4059,7 @@ static kefir_result_t op_simplify_apply_impl(struct kefir_mem *mem, const struct
                     case KEFIR_OPT_OPCODE_INT8_STORE:
                     case KEFIR_OPT_OPCODE_INT16_STORE:
                     case KEFIR_OPT_OPCODE_INT32_STORE:
+                    case KEFIR_OPT_OPCODE_FLOAT32_STORE:
                         REQUIRE_OK(simplify_int_store(mem, func, instr, &replacement_ref));
                         break;
 

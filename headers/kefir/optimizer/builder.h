@@ -745,6 +745,7 @@ STORE_OP(int16_store);
 STORE_OP(int32_store);
 STORE_OP(int64_store);
 STORE_OP(int128_store);
+STORE_OP(float32_store);
 STORE_OP(long_double_store);
 
 STORE_OP(decimal32_store);

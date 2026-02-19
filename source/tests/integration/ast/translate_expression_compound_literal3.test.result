@@ -306,7 +306,7 @@
                     "opcode": "int_to_float32"
                 },
                 {
-                    "opcode": "int32_store",
+                    "opcode": "float32_store",
                     "memory_flags": {
                         "volatile": false
                     }
@@ -475,7 +475,7 @@
                     "opcode": "int_to_float32"
                 },
                 {
-                    "opcode": "int32_store",
+                    "opcode": "float32_store",
                     "memory_flags": {
                         "volatile": false
                     }

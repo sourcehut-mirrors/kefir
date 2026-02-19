@@ -150,6 +150,7 @@ kefir_result_t kefir_codegen_amd64_get_argument_register(struct kefir_mem *, str
     _def(int16_store, KEFIR_OPT_OPCODE_INT16_STORE) _separator \
     _def(int32_store, KEFIR_OPT_OPCODE_INT32_STORE) _separator \
     _def(int64_store, KEFIR_OPT_OPCODE_INT64_STORE) _separator \
+    _def(int32_store, KEFIR_OPT_OPCODE_FLOAT32_STORE) _separator \
     _def(long_double_store, KEFIR_OPT_OPCODE_LONG_DOUBLE_STORE) _separator \
     _def(int8_load, KEFIR_OPT_OPCODE_INT8_LOAD) _separator \
     _def(int16_load, KEFIR_OPT_OPCODE_INT16_LOAD) _separator \

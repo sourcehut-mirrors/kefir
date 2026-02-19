@@ -55,7 +55,7 @@
                             },
                             {
                                 "id": 4,
-                                "opcode": "int32_store",
+                                "opcode": "float32_store",
                                 "location": 3,
                                 "value": 2,
                                 "flags": {
@@ -76,7 +76,7 @@
                             },
                             {
                                 "id": 7,
-                                "opcode": "int32_store",
+                                "opcode": "float32_store",
                                 "location": 6,
                                 "value": 5,
                                 "flags": {
@@ -97,7 +97,7 @@
                             },
                             {
                                 "id": 10,
-                                "opcode": "int32_store",
+                                "opcode": "float32_store",
                                 "location": 9,
                                 "value": 8,
                                 "flags": {
@@ -118,7 +118,7 @@
                             },
                             {
                                 "id": 13,
-                                "opcode": "int32_store",
+                                "opcode": "float32_store",
                                 "location": 12,
                                 "value": 11,
                                 "flags": {

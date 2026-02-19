@@ -1021,7 +1021,7 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "int32_store",
+                    "opcode": "float32_store",
                     "memory_flags": {
                         "volatile": false
                     }
@@ -1086,7 +1086,7 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "int32_store",
+                    "opcode": "float32_store",
                     "memory_flags": {
                         "volatile": false
                     }

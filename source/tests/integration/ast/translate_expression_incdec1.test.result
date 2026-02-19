@@ -802,7 +802,7 @@
                     "opcode": "float32_add"
                 },
                 {
-                    "opcode": "int32_store",
+                    "opcode": "float32_store",
                     "memory_flags": {
                         "volatile": false
                     }
@@ -850,7 +850,7 @@
                     "opcode": "float32_add"
                 },
                 {
-                    "opcode": "int32_store",
+                    "opcode": "float32_store",
                     "memory_flags": {
                         "volatile": false
                     }
