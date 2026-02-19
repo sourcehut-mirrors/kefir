@@ -24,10 +24,8 @@ lessd:
     stmxcsr -8(%rbp)
     movq %xmm1, -24(%rbp)
     movq %xmm0, -16(%rbp)
-    movq -16(%rbp), %rax
-    movq -24(%rbp), %rcx
-    movq %rax, %xmm0
-    movq %rcx, %xmm1
+    movq -16(%rbp), %xmm0
+    movq -24(%rbp), %xmm1
     ucomisd %xmm1, %xmm0
     jp .L__kefir_func_lessd_label3
     jb .L__kefir_func_lessd_label4
@@ -53,10 +51,8 @@ equalsd:
     stmxcsr -8(%rbp)
     movq %xmm1, -24(%rbp)
     movq %xmm0, -16(%rbp)
-    movq -16(%rbp), %rax
-    movq -24(%rbp), %rcx
-    movq %rax, %xmm0
-    movq %rcx, %xmm1
+    movq -16(%rbp), %xmm0
+    movq -24(%rbp), %xmm1
     ucomisd %xmm1, %xmm0
     jp .L__kefir_func_equalsd_label3
     je .L__kefir_func_equalsd_label4
@@ -82,10 +78,8 @@ greaterd:
     stmxcsr -8(%rbp)
     movq %xmm1, -24(%rbp)
     movq %xmm0, -16(%rbp)
-    movq -16(%rbp), %rax
-    movq -24(%rbp), %rcx
-    movq %rax, %xmm0
-    movq %rcx, %xmm1
+    movq -16(%rbp), %xmm0
+    movq -24(%rbp), %xmm1
     ucomisd %xmm1, %xmm0
     jp .L__kefir_func_greaterd_label3
     ja .L__kefir_func_greaterd_label4
@@ -111,10 +105,8 @@ not_equalsd:
     stmxcsr -8(%rbp)
     movq %xmm1, -24(%rbp)
     movq %xmm0, -16(%rbp)
-    movq -16(%rbp), %rax
-    movq -24(%rbp), %rcx
-    movq %rax, %xmm0
-    movq %rcx, %xmm1
+    movq -16(%rbp), %xmm0
+    movq -24(%rbp), %xmm1
     ucomisd %xmm1, %xmm0
     jp .L__kefir_func_not_equalsd_label4
     jne .L__kefir_func_not_equalsd_label4
@@ -139,10 +131,8 @@ greater_or_equalsd:
     stmxcsr -8(%rbp)
     movq %xmm1, -24(%rbp)
     movq %xmm0, -16(%rbp)
-    movq -16(%rbp), %rax
-    movq -24(%rbp), %rcx
-    movq %rax, %xmm0
-    movq %rcx, %xmm1
+    movq -16(%rbp), %xmm0
+    movq -24(%rbp), %xmm1
     ucomisd %xmm1, %xmm0
     jp .L__kefir_func_greater_or_equalsd_label3
     jae .L__kefir_func_greater_or_equalsd_label4
@@ -168,10 +158,8 @@ less_or_equalsd:
     stmxcsr -8(%rbp)
     movq %xmm1, -24(%rbp)
     movq %xmm0, -16(%rbp)
-    movq -16(%rbp), %rax
-    movq -24(%rbp), %rcx
-    movq %rax, %xmm0
-    movq %rcx, %xmm1
+    movq -16(%rbp), %xmm0
+    movq -24(%rbp), %xmm1
     ucomisd %xmm1, %xmm0
     jp .L__kefir_func_less_or_equalsd_label3
     jbe .L__kefir_func_less_or_equalsd_label4

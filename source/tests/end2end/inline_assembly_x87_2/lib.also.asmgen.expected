@@ -30,15 +30,13 @@ sub:
     fstcw -8(%rbp)
     movq %xmm1, -24(%rbp)
     movq %xmm0, -16(%rbp)
-    movq -24(%rbp), %rax
-    movq %rax, %xmm0
+    movq -24(%rbp), %xmm0
     movq %xmm0, -32(%rbp)
     fldl -32(%rbp)
     fldl -16(%rbp)
 fsubp
     fstpl -16(%rbp)
-    movq -16(%rbp), %rax
-    movq %rax, %xmm0
+    movq -16(%rbp), %xmm0
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -100,15 +98,13 @@ mydiv:
     fstcw -8(%rbp)
     movq %xmm1, -24(%rbp)
     movq %xmm0, -16(%rbp)
-    movq -24(%rbp), %rax
-    movq %rax, %xmm0
+    movq -24(%rbp), %xmm0
     movq %xmm0, -32(%rbp)
     fldl -32(%rbp)
     fldl -16(%rbp)
 fdivp
     fstpl -16(%rbp)
-    movq -16(%rbp), %rax
-    movq %rax, %xmm0
+    movq -16(%rbp), %xmm0
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -170,15 +166,13 @@ mydivr:
     fstcw -8(%rbp)
     movq %xmm1, -24(%rbp)
     movq %xmm0, -16(%rbp)
-    movq -24(%rbp), %rax
-    movq %rax, %xmm0
+    movq -24(%rbp), %xmm0
     movq %xmm0, -32(%rbp)
     fldl -32(%rbp)
     fldl -16(%rbp)
 fdivrp
     fstpl -16(%rbp)
-    movq -16(%rbp), %rax
-    movq %rax, %xmm0
+    movq -16(%rbp), %xmm0
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

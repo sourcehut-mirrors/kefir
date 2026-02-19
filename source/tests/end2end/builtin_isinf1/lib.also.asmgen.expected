@@ -48,7 +48,8 @@ is_inf_f64:
     sub $16, %rsp
     stmxcsr -8(%rbp)
     movq %xmm0, -16(%rbp)
-    movq -16(%rbp), %rax
+    movq -16(%rbp), %xmm0
+    movq %xmm0, %rax
     movabs $9223372036854775807, %rcx
     and %rax, %rcx
     sar $63, %rax

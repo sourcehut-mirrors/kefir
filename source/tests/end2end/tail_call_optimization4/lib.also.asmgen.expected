@@ -35,10 +35,11 @@ sum_helper:
     movdqu -48(%rbp), %xmm0
     movdqu %xmm0, -24(%rbp)
     movq -24(%rbp), %rax
-    movq -16(%rbp), %rcx
-    cvtsi2sd %rax, %xmm0
-    movq %rcx, %xmm1
-    addsd %xmm1, %xmm0
+    movq -16(%rbp), %xmm0
+    cvtsi2sd %rax, %xmm1
+    movaps %xmm1, %xmm2
+    addsd %xmm0, %xmm2
+    movaps %xmm2, %xmm0
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

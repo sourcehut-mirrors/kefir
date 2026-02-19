@@ -495,6 +495,41 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(int64_load)(struct kefir_mem
     return KEFIR_OK;
 }
 
+kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(float64_load)(struct kefir_mem *mem,
+                                                                  struct kefir_codegen_amd64_function *function,
+                                                                  const struct kefir_opt_instruction *instruction) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(function != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid codegen amd64 function"));
+    REQUIRE(instruction != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer instruction"));
+
+    kefir_bool_t local_var;
+    kefir_id_t local_var_id;
+    kefir_int64_t load_offset;
+    REQUIRE_OK(is_local_var(mem, function, instruction->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_LOCATION_REF],
+                            &local_var, &local_var_id, &load_offset));
+    struct kefir_asmcmp_value source_value;
+    if (local_var) {
+        source_value =
+            KEFIR_ASMCMP_MAKE_INDIRECT_LOCAL_AREA(local_var_id, load_offset, KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT);
+    } else {
+        kefir_opt_instruction_ref_t location_ref =
+            instruction->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_LOCATION_REF];
+        kefir_int64_t offset = 0;
+        REQUIRE_OK(match_location_offset(function, instruction, &location_ref, &offset));
+        kefir_asmcmp_virtual_register_index_t source_vreg;
+        REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, location_ref, &source_vreg));
+        source_value = KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(source_vreg, offset, KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT);
+    }
+    kefir_asmcmp_virtual_register_index_t value_vreg;
+    REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
+                                                 KEFIR_ASMCMP_VIRTUAL_REGISTER_FLOATING_POINT, &value_vreg));
+    REQUIRE_OK(kefir_asmcmp_amd64_movq(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                                       &KEFIR_ASMCMP_MAKE_VREG(value_vreg), &source_value, NULL));
+    REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, value_vreg));
+
+    return KEFIR_OK;
+}
+
 kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(long_double_load)(struct kefir_mem *mem,
                                                                       struct kefir_codegen_amd64_function *function,
                                                                       const struct kefir_opt_instruction *instruction) {

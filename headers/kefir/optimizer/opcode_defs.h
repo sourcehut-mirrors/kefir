@@ -160,6 +160,7 @@
     OPCODE(INT32_LOAD, "int32_load", load_mem) SEPARATOR \
     OPCODE(INT64_LOAD, "int64_load", load_mem) SEPARATOR \
     OPCODE(FLOAT32_LOAD, "float32_load", load_mem) SEPARATOR \
+    OPCODE(FLOAT64_LOAD, "float64_load", load_mem) SEPARATOR \
     OPCODE(LONG_DOUBLE_LOAD, "long_double_load", load_mem) SEPARATOR \
     OPCODE(INT8_STORE, "int8_store", store_mem) SEPARATOR \
     OPCODE(INT16_STORE, "int16_store", store_mem) SEPARATOR \

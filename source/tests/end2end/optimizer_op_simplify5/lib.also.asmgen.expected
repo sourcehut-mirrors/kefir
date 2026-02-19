@@ -64,13 +64,10 @@ greater_or_equalsd:
     stmxcsr -8(%rbp)
     movq %xmm1, -24(%rbp)
     movq %xmm0, -16(%rbp)
-    movq -16(%rbp), %rax
-    movq -24(%rbp), %rcx
-    xor %edx, %edx
-    movq %rax, %xmm0
-    movq %rcx, %xmm1
+    movq -16(%rbp), %xmm0
+    movq -24(%rbp), %xmm1
+    xor %eax, %eax
     comisd %xmm1, %xmm0
-    mov %rdx, %rax
     setae %al
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
@@ -86,13 +83,10 @@ less_or_equalsd:
     stmxcsr -8(%rbp)
     movq %xmm1, -24(%rbp)
     movq %xmm0, -16(%rbp)
-    movq -16(%rbp), %rax
-    movq -24(%rbp), %rcx
-    xor %edx, %edx
-    movq %rcx, %xmm0
-    movq %rax, %xmm1
-    comisd %xmm1, %xmm0
-    mov %rdx, %rax
+    movq -16(%rbp), %xmm0
+    movq -24(%rbp), %xmm1
+    xor %eax, %eax
+    comisd %xmm0, %xmm1
     setae %al
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp

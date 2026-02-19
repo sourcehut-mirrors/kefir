@@ -44,19 +44,20 @@ test1:
     .word 26214
     rex.W     call __tls_get_addr@PLT
 .L__kefir_func_test1_label351:
-    movq (%rax), %rax
+    movq (%rax), %xmm0
 .loc 0 26 12
 .L__kefir_func_test1_label358:
     add %r12, %rbx
 .L__kefir_func_test1_label359:
-    cvtsi2ss %rbx, %xmm0
+    cvtsi2ss %rbx, %xmm1
 .L__kefir_func_test1_label366:
-    addss -48(%rbp), %xmm0
+    addss -48(%rbp), %xmm1
 .L__kefir_func_test1_label367:
-    cvtss2sd %xmm0, %xmm0
+    cvtss2sd %xmm1, %xmm1
 .L__kefir_func_test1_label374:
-    movq %rax, %xmm1
-    addsd %xmm1, %xmm0
+    movaps %xmm1, %xmm2
+    addsd %xmm0, %xmm2
+    movaps %xmm2, %xmm0
 .loc 0 26 5
 .L__kefir_func_test1_label386:
     ldmxcsr -24(%rbp)

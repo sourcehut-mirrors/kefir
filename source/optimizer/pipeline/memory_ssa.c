@@ -60,6 +60,7 @@ static kefir_result_t classify_memory_access(const struct kefir_opt_instruction 
 
         case KEFIR_OPT_OPCODE_INT64_LOAD:
         case KEFIR_OPT_OPCODE_INT64_STORE:
+        case KEFIR_OPT_OPCODE_FLOAT64_LOAD:
         case KEFIR_OPT_OPCODE_COMPLEX_FLOAT32_LOAD:
         case KEFIR_OPT_OPCODE_COMPLEX_FLOAT32_STORE:
         case KEFIR_OPT_OPCODE_DECIMAL64_LOAD:
@@ -333,7 +334,8 @@ static kefir_result_t do_optimize_nonvolatile_load(
          (clobber_instr->operation.opcode == KEFIR_OPT_OPCODE_INT32_STORE ||
           clobber_instr->operation.opcode == KEFIR_OPT_OPCODE_FLOAT32_STORE ||
           clobber_instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_STORE)) ||
-        (instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_LOAD &&
+        ((instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_LOAD ||
+          instr->operation.opcode == KEFIR_OPT_OPCODE_FLOAT64_LOAD) &&
          clobber_instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_STORE)) {
 
         REQUIRE_OK(kefir_opt_code_builder_to_int(mem, &func->code, instr->block_id, replacement_ref, &replacement_ref));
@@ -737,6 +739,7 @@ static kefir_result_t all_uses_terminate_at(const struct kefir_opt_code_containe
             case KEFIR_OPT_OPCODE_INT64_LOAD:
             case KEFIR_OPT_OPCODE_INT128_LOAD:
             case KEFIR_OPT_OPCODE_FLOAT32_LOAD:
+            case KEFIR_OPT_OPCODE_FLOAT64_LOAD:
             case KEFIR_OPT_OPCODE_LONG_DOUBLE_LOAD:
             case KEFIR_OPT_OPCODE_COMPLEX_FLOAT32_LOAD:
             case KEFIR_OPT_OPCODE_COMPLEX_FLOAT64_LOAD:
@@ -892,6 +895,7 @@ static kefir_result_t do_optimize(struct kefir_mem *mem, struct kefir_opt_module
                 case KEFIR_OPT_OPCODE_INT64_LOAD:
                 case KEFIR_OPT_OPCODE_INT128_LOAD:
                 case KEFIR_OPT_OPCODE_FLOAT32_LOAD:
+                case KEFIR_OPT_OPCODE_FLOAT64_LOAD:
                 case KEFIR_OPT_OPCODE_LONG_DOUBLE_LOAD:
                 case KEFIR_OPT_OPCODE_COMPLEX_FLOAT32_LOAD:
                 case KEFIR_OPT_OPCODE_COMPLEX_FLOAT64_LOAD:

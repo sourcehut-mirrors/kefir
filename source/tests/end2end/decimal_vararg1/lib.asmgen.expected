@@ -274,9 +274,8 @@ sum128_2:
     jmp .L__kefir_func_sum128_2_label4
 .L__kefir_func_sum128_2_label11:
     mov -40(%rbp), %rax
-    lea 8(%rax), %rcx
-    mov %rcx, -40(%rbp)
-    movq (%rax), %xmm2
+    lea 8(%rax), %rax
+    mov %rax, -40(%rbp)
     jmp .L__kefir_func_sum128_2_label12
 .L__kefir_func_sum128_2_label8:
     mov -40(%rbp), %rax

@@ -195,7 +195,7 @@
                     }
                 },
                 {
-                    "opcode": "int64_load",
+                    "opcode": "float64_load",
                     "memory_flags": {
                         "volatile": false
                     }
@@ -224,7 +224,7 @@
                     "opcode": "int64_add"
                 },
                 {
-                    "opcode": "int64_load",
+                    "opcode": "float64_load",
                     "memory_flags": {
                         "volatile": false
                     }

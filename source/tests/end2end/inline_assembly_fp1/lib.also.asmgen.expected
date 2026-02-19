@@ -23,8 +23,7 @@ addsd %xmm0, %xmm2
     movq %xmm0, -8(%rbp)
     movq %xmm1, -16(%rbp)
     movq %xmm2, -24(%rbp)
-    movq -8(%rbp), %rax
-    movq %rax, %xmm0
+    movq -8(%rbp), %xmm0
     lea (%rbp), %rsp
     pop %rbp
     ret

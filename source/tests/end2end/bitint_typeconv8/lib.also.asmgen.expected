@@ -418,8 +418,8 @@ __kefir_bigint_unsigned_from_double:
     movq %rdi, -8(%rbp)
     xor %eax, %eax
     movq %rax, -16(%rbp)
-    movq -32(%rbp), %rax
-    movq %rax, -16(%rbp)
+    movq -32(%rbp), %xmm0
+    movq %xmm0, -16(%rbp)
     movq -16(%rbp), %rax
     mov $63, %ecx
     movsx %ecx, %rcx
@@ -887,8 +887,8 @@ __kefir_bigint_signed_from_double:
     movq %rdi, -8(%rbp)
     xor %eax, %eax
     movq %rax, -16(%rbp)
-    movq -32(%rbp), %rax
-    movq %rax, -16(%rbp)
+    movq -32(%rbp), %xmm0
+    movq %xmm0, -16(%rbp)
     movq -16(%rbp), %rax
     mov $63, %ecx
     movsx %ecx, %rcx

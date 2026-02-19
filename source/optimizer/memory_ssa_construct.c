@@ -97,6 +97,7 @@ static kefir_result_t is_instr_memory(const struct kefir_opt_instruction *instr,
         case KEFIR_OPT_OPCODE_INT64_LOAD:
         case KEFIR_OPT_OPCODE_INT128_LOAD:
         case KEFIR_OPT_OPCODE_FLOAT32_LOAD:
+        case KEFIR_OPT_OPCODE_FLOAT64_LOAD:
         case KEFIR_OPT_OPCODE_LONG_DOUBLE_LOAD:
         case KEFIR_OPT_OPCODE_COMPLEX_FLOAT32_LOAD:
         case KEFIR_OPT_OPCODE_COMPLEX_FLOAT64_LOAD:

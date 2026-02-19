@@ -808,7 +808,7 @@
                         "code": [
                             {
                                 "id": 73,
-                                "opcode": "int64_load",
+                                "opcode": "float64_load",
                                 "location": 8,
                                 "flags": {
                                     "load_extension": "noextend",

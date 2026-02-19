@@ -53,15 +53,15 @@ fn1:
     ret
 .loc 0 30 33
 .L__kefir_func_fn1_label6:
-    movq (%rdx), %rcx
+    movq (%rdx), %xmm2
 .loc 0 32 24
 .L__kefir_func_fn1_label108:
-    movsx %r8d, %rsi
+    movsx %r8d, %rcx
 .loc 0 32 24
 .L__kefir_func_fn1_label114:
-    lea -816(%rbp), %rdi
+    lea -816(%rbp), %rsi
 .L__kefir_func_fn1_label118:
-    movq (%rdi, %rsi, 8), %rsi
+    movq (%rsi, %rcx, 8), %rcx
 .loc 0 31 24
 .L__kefir_func_fn1_label119:
     movq %xmm1, -1632(%rbp)
@@ -71,8 +71,7 @@ fn1:
 .L__kefir_func_fn1_label130:
     cvtss2sd %xmm0, %xmm0
 .L__kefir_func_fn1_label134:
-    movq %rcx, %xmm1
-    addsd %xmm1, %xmm0
+    addsd %xmm2, %xmm0
 .loc 0 30 13
 .L__kefir_func_fn1_label135:
     movq %xmm0, -1624(%rbp)
@@ -87,7 +86,7 @@ fn1:
     movq -8(%rsp), %xmm0
 .loc 0 32 20
 .L__kefir_func_fn1_label158:
-    cvtsi2sd %rsi, %xmm1
+    cvtsi2sd %rcx, %xmm1
 .L__kefir_func_fn1_label162:
     mulsd %xmm1, %xmm0
 .loc 0 32 34

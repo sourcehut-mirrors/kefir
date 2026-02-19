@@ -39,8 +39,7 @@ dnotd:
     sub $16, %rsp
     stmxcsr -8(%rbp)
     movq %xmm0, -16(%rbp)
-    movq -16(%rbp), %rax
-    movq %rax, %xmm0
+    movq -16(%rbp), %xmm0
     ucomisd .L__kefir_func_dnotd_label8(%rip), %xmm0
     jp .L__kefir_func_dnotd_label4
     jne .L__kefir_func_dnotd_label4

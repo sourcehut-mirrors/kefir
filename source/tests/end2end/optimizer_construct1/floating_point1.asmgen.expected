@@ -492,7 +492,7 @@
                             },
                             {
                                 "id": 14,
-                                "opcode": "int64_load",
+                                "opcode": "float64_load",
                                 "location": 12,
                                 "flags": {
                                     "load_extension": "noextend",
@@ -504,7 +504,7 @@
                             },
                             {
                                 "id": 15,
-                                "opcode": "int64_load",
+                                "opcode": "float64_load",
                                 "location": 9,
                                 "flags": {
                                     "load_extension": "noextend",
@@ -516,7 +516,7 @@
                             },
                             {
                                 "id": 18,
-                                "opcode": "int64_load",
+                                "opcode": "float64_load",
                                 "location": 6,
                                 "flags": {
                                     "load_extension": "noextend",
@@ -528,7 +528,7 @@
                             },
                             {
                                 "id": 20,
-                                "opcode": "int64_load",
+                                "opcode": "float64_load",
                                 "location": 3,
                                 "flags": {
                                     "load_extension": "noextend",

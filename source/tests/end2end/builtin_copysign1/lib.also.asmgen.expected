@@ -24,14 +24,14 @@ my_copysign:
     stmxcsr -8(%rbp)
     movq %xmm1, -24(%rbp)
     movq %xmm0, -16(%rbp)
-    movq -16(%rbp), %rax
-    movq -24(%rbp), %rcx
-    movdqu .L__kefir_constant_copysign(%rip), %xmm0
-    movaps %xmm0, %xmm1
-    movq %rcx, %xmm2
-    andpd %xmm2, %xmm1
-    movq %rax, %xmm2
-    andnpd %xmm2, %xmm0
+    movq -16(%rbp), %xmm0
+    movq -24(%rbp), %xmm1
+    movdqu .L__kefir_constant_copysign(%rip), %xmm2
+    movaps %xmm2, %xmm3
+    andpd %xmm1, %xmm3
+    movaps %xmm3, %xmm1
+    andnpd %xmm0, %xmm2
+    movaps %xmm2, %xmm0
     orpd %xmm1, %xmm0
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp

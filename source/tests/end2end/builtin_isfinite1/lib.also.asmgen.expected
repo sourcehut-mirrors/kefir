@@ -42,8 +42,7 @@ is_finite_f64:
     sub $16, %rsp
     stmxcsr -8(%rbp)
     movq %xmm0, -16(%rbp)
-    movq -16(%rbp), %rax
-    movq %rax, %xmm0
+    movq -16(%rbp), %xmm0
     andpd .L__kefir_constant_isfinitef64_mask(%rip), %xmm0
     movdqu .L__kefir_constant_isfinitef64_cmp(%rip), %xmm1
     ucomisd %xmm0, %xmm1

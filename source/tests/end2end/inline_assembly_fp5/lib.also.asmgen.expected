@@ -14,17 +14,17 @@ discriminant:
     movq %xmm2, -24(%rbp)
     movq %xmm1, -40(%rbp)
     movq %xmm0, -8(%rbp)
-    movq -8(%rbp), %rax
-    movq %rax, -16(%rbp)
-    movq -24(%rbp), %rax
-    movq %rax, -32(%rbp)
+    movq -8(%rbp), %xmm0
+    movq %xmm0, -16(%rbp)
+    movq -24(%rbp), %xmm0
+    movq %xmm0, -32(%rbp)
     movq %xmm0, -48(%rbp)
-    movq -40(%rbp), %rax
-    movq -16(%rbp), %rcx
-    movq -32(%rbp), %rdx
-    movq %rax, %xmm11
-    movq %rcx, %xmm1
-    movq %rdx, %xmm7
+    movq -40(%rbp), %xmm0
+    movq -16(%rbp), %xmm2
+    movq -32(%rbp), %xmm3
+    movaps %xmm0, %xmm11
+    movaps %xmm2, %xmm1
+    movaps %xmm3, %xmm7
 mulsd %xmm11, %xmm11
 movdqu %xmm1, %xmm0
 mulsd %xmm7, %xmm0
@@ -32,8 +32,7 @@ addsd %xmm0, %xmm0
 addsd %xmm0, %xmm0
 subsd %xmm0, %xmm11
     movq %xmm11, -48(%rbp)
-    movq -48(%rbp), %rax
-    movq %rax, %xmm0
+    movq -48(%rbp), %xmm0
     lea (%rbp), %rsp
     pop %rbp
     ret

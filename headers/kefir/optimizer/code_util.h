@@ -39,6 +39,7 @@ kefir_result_t kefir_opt_code_instruction_is_control_flow(const struct kefir_opt
       (_instr)->operation.opcode == KEFIR_OPT_OPCODE_INT32_LOAD ||        \
       (_instr)->operation.opcode == KEFIR_OPT_OPCODE_INT64_LOAD ||        \
       (_instr)->operation.opcode == KEFIR_OPT_OPCODE_FLOAT32_LOAD ||      \
+      (_instr)->operation.opcode == KEFIR_OPT_OPCODE_FLOAT64_LOAD ||      \
       (_instr)->operation.opcode == KEFIR_OPT_OPCODE_LONG_DOUBLE_LOAD) && \
      !(_instr)->operation.parameters.memory_access.flags.volatile_access)
 

@@ -539,8 +539,7 @@ __kefir_bigint_signed_to_double:
     and %rcx, %rsi
     or %rsi, %rax
     movq %rax, -56(%rbp)
-    movq -56(%rbp), %rax
-    movq %rax, %xmm0
+    movq -56(%rbp), %xmm0
     lea -16(%rbp), %rsp
     pop %r12
     pop %rbx
@@ -1138,8 +1137,7 @@ __kefir_bigint_unsigned_to_double:
     and %rcx, %rsi
     or %rsi, %rax
     movq %rax, -56(%rbp)
-    movq -56(%rbp), %rax
-    movq %rax, %xmm0
+    movq -56(%rbp), %xmm0
     lea -16(%rbp), %rsp
     pop %r12
     pop %rbx
