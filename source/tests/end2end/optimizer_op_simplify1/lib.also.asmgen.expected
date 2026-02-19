@@ -69,8 +69,7 @@ dnotf:
     sub $16, %rsp
     stmxcsr -8(%rbp)
     movd %xmm0, -12(%rbp)
-    movl -12(%rbp), %eax
-    movd %eax, %xmm0
+    movd -12(%rbp), %xmm0
     ucomiss .L__kefir_func_dnotf_label8(%rip), %xmm0
     jp .L__kefir_func_dnotf_label4
     jne .L__kefir_func_dnotf_label4

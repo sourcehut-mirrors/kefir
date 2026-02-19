@@ -21,10 +21,9 @@ getb:
     .word 26214
     rex.W     call __tls_get_addr@PLT
 .L__kefir_func_getb_label172:
-    movl (%rax), %eax
+    movd (%rax), %xmm0
 .loc 0 26 5
 .L__kefir_func_getb_label173:
-    movq %rax, %xmm0
     ret
 .L__kefir_func_getb_label185:
 .L__kefir_text_func_getb_end:

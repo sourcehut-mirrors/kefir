@@ -462,6 +462,7 @@ static kefir_result_t scheduler_schedule(
         instr->operation.opcode == KEFIR_OPT_OPCODE_INT16_LOAD ||
         instr->operation.opcode == KEFIR_OPT_OPCODE_INT32_LOAD ||
         instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_LOAD ||
+        instr->operation.opcode == KEFIR_OPT_OPCODE_FLOAT32_LOAD ||
         instr->operation.opcode == KEFIR_OPT_OPCODE_LONG_DOUBLE_LOAD) {
         const struct kefir_opt_instruction *location_instr;
         REQUIRE_OK(kefir_opt_code_container_instr(

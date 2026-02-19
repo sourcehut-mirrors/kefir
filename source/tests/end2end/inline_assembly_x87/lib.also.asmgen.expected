@@ -60,16 +60,13 @@ discriminantf:
     movd %xmm1, -20(%rbp)
     movd %xmm0, -12(%rbp)
     movd %xmm0, -16(%rbp)
-    movl -12(%rbp), %eax
-    movl -20(%rbp), %ecx
-    movl -24(%rbp), %edx
-    movd %edx, %xmm0
-    movd %xmm0, -48(%rbp)
+    movd -12(%rbp), %xmm0
+    movd -20(%rbp), %xmm1
+    movd -24(%rbp), %xmm2
+    movd %xmm2, -48(%rbp)
     flds -48(%rbp)
-    movd %ecx, %xmm0
-    movd %xmm0, -40(%rbp)
+    movd %xmm1, -40(%rbp)
     flds -40(%rbp)
-    movd %eax, %xmm0
     movd %xmm0, -48(%rbp)
     flds -48(%rbp)
 fxch %st(1)
@@ -82,8 +79,7 @@ fmulp
 fxch %st(1)
 fsubp
     fstps -16(%rbp)
-    movl -16(%rbp), %eax
-    movq %rax, %xmm0
+    movd -16(%rbp), %xmm0
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

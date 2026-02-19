@@ -24,15 +24,12 @@ is_greater_f32:
     stmxcsr -8(%rbp)
     movd %xmm1, -16(%rbp)
     movd %xmm0, -12(%rbp)
-    movl -12(%rbp), %eax
-    movl -16(%rbp), %ecx
-    xor %edx, %edx
-    movd %eax, %xmm0
-    movd %ecx, %xmm1
+    movd -12(%rbp), %xmm0
+    movd -16(%rbp), %xmm1
+    xor %eax, %eax
     ucomiss %xmm1, %xmm0
-    seta %dl
-    mov %rdx, %rax
-    and $255, %rax
+    seta %al
+    movzx %al, %eax
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

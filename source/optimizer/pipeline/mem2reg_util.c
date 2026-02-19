@@ -104,6 +104,7 @@ kefir_result_t kefir_opt_code_util_extend_load_value(struct kefir_mem *mem, stru
 
         case KEFIR_OPT_OPCODE_INT64_LOAD:
         case KEFIR_OPT_OPCODE_INT128_LOAD:
+        case KEFIR_OPT_OPCODE_FLOAT32_LOAD:
         case KEFIR_OPT_OPCODE_LONG_DOUBLE_LOAD:
         case KEFIR_OPT_OPCODE_COMPLEX_FLOAT32_LOAD:
         case KEFIR_OPT_OPCODE_COMPLEX_FLOAT64_LOAD:
@@ -415,6 +416,7 @@ static kefir_result_t mem2reg_assign(struct mem2reg_state *state, struct mem2reg
             case KEFIR_OPT_OPCODE_INT32_LOAD:
             case KEFIR_OPT_OPCODE_INT64_LOAD:
             case KEFIR_OPT_OPCODE_INT128_LOAD:
+            case KEFIR_OPT_OPCODE_FLOAT32_LOAD:
             case KEFIR_OPT_OPCODE_LONG_DOUBLE_LOAD:
             case KEFIR_OPT_OPCODE_COMPLEX_FLOAT32_LOAD:
             case KEFIR_OPT_OPCODE_COMPLEX_FLOAT64_LOAD:

@@ -2023,8 +2023,7 @@ __kefir_bigint_unsigned_to_float:
     and $8388607, %rsi
     or %rsi, %rax
     movq %rax, -40(%rbp)
-    movl -40(%rbp), %eax
-    movq %rax, %xmm0
+    movd -40(%rbp), %xmm0
     lea -16(%rbp), %rsp
     pop %r12
     pop %rbx
@@ -2810,8 +2809,7 @@ __kefir_bigint_signed_to_float:
     and $8388607, %rsi
     or %rsi, %rax
     movq %rax, -40(%rbp)
-    movl -40(%rbp), %eax
-    movq %rax, %xmm0
+    movd -40(%rbp), %xmm0
     lea -16(%rbp), %rsp
     pop %r12
     pop %rbx

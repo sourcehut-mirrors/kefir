@@ -23,8 +23,9 @@ is_inf_f32:
     sub $16, %rsp
     stmxcsr -8(%rbp)
     movd %xmm0, -12(%rbp)
-    movl -12(%rbp), %eax
-    mov %eax, %ecx
+    movd -12(%rbp), %xmm0
+    movq %xmm0, %rax
+    mov %rax, %rcx
     and $2147483647, %ecx
     sar $31, %eax
     or $1, %eax

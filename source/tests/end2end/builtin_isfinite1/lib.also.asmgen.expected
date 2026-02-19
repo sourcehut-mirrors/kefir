@@ -23,8 +23,7 @@ is_finite_f32:
     sub $16, %rsp
     stmxcsr -8(%rbp)
     movd %xmm0, -12(%rbp)
-    movl -12(%rbp), %eax
-    movq %rax, %xmm0
+    movd -12(%rbp), %xmm0
     andps .L__kefir_constant_isfinitef32_mask(%rip), %xmm0
     movdqu .L__kefir_constant_isfinitef32_cmp(%rip), %xmm1
     ucomiss %xmm0, %xmm1

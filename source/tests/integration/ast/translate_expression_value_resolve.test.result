@@ -761,7 +761,7 @@
                     }
                 },
                 {
-                    "opcode": "int32_load",
+                    "opcode": "float32_load",
                     "memory_flags": {
                         "volatile": false
                     }

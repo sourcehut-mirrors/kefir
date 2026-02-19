@@ -23,10 +23,8 @@ is_nan_f32:
     sub $16, %rsp
     stmxcsr -8(%rbp)
     movd %xmm0, -12(%rbp)
-    movl -12(%rbp), %eax
-    movd %eax, %xmm0
-    movd %eax, %xmm1
-    ucomiss %xmm1, %xmm0
+    movd -12(%rbp), %xmm0
+    ucomiss %xmm0, %xmm0
     setp %al
     movzx %al, %rax
     ldmxcsr -8(%rbp)

@@ -55,10 +55,11 @@ testsmall:
     call getsmall@PLT
     movq %rax, (%rbx)
     movq %xmm0, 8(%rbx)
-    movl 8(%rbx), %eax
-    cvtsi2ss %r13, %xmm0
-    movd %eax, %xmm1
-    addss %xmm1, %xmm0
+    movd 8(%rbx), %xmm0
+    cvtsi2ss %r13, %xmm1
+    movaps %xmm1, %xmm2
+    addss %xmm0, %xmm2
+    movaps %xmm2, %xmm0
     ldmxcsr -32(%rbp)
     lea -24(%rbp), %rsp
     pop %r13

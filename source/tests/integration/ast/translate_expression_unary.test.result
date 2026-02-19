@@ -688,7 +688,7 @@
                     "opcode": "int64_sign_extend_32bits"
                 },
                 {
-                    "opcode": "int32_load",
+                    "opcode": "float32_load",
                     "memory_flags": {
                         "volatile": false
                     }

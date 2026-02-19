@@ -61,10 +61,8 @@ test:
 .L__kefir_func_test_label10:
     movq (%rcx), %rcx
     movq %rcx, -24(%rbp)
-    movl -24(%rbp), %ecx
-    movl -20(%rbp), %edx
-    movq %rcx, %xmm1
-    movd %edx, %xmm2
+    movd -24(%rbp), %xmm1
+    movd -20(%rbp), %xmm2
     subss %xmm2, %xmm1
     addss %xmm1, %xmm0
     mov %eax, %edi

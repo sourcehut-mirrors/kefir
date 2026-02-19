@@ -20,9 +20,8 @@ call1_proxy:
     push %rbx
     sub $8, %rsp
     movd %xmm0, -16(%rbp)
-    movl -16(%rbp), %eax
+    movd -16(%rbp), %xmm0
     lea -12(%rbp), %rbx
-    movq %rax, %xmm0
     call call1@PLT
     movd %xmm0, (%rbx)
     movd (%rbx), %xmm0
@@ -39,9 +38,8 @@ call2_proxy:
     push %rbx
     sub $24, %rsp
     movd %xmm0, -20(%rbp)
-    movl -20(%rbp), %eax
+    movd -20(%rbp), %xmm0
     lea -16(%rbp), %rbx
-    movq %rax, %xmm0
     call call2@PLT
     movq %xmm0, (%rbx)
     movq (%rbx), %xmm0
@@ -58,9 +56,8 @@ call3_proxy:
     push %rbx
     sub $24, %rsp
     movd %xmm0, -24(%rbp)
-    movl -24(%rbp), %eax
+    movd -24(%rbp), %xmm0
     lea -20(%rbp), %rbx
-    movq %rax, %xmm0
     call call3@PLT
     movq %xmm0, (%rbx)
     movd %xmm1, 8(%rbx)

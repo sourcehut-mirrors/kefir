@@ -89,7 +89,7 @@
                             },
                             {
                                 "id": 15,
-                                "opcode": "int32_load",
+                                "opcode": "float32_load",
                                 "location": 14,
                                 "flags": {
                                     "load_extension": "noextend",

@@ -656,6 +656,7 @@ LOAD_OP(int16_load);
 LOAD_OP(int32_load);
 LOAD_OP(int64_load);
 LOAD_OP(int128_load);
+LOAD_OP(float32_load);
 LOAD_OP(long_double_load);
 
 LOAD_OP(decimal32_load);

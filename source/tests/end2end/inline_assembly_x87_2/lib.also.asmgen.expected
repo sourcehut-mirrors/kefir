@@ -53,15 +53,13 @@ subf:
     fstcw -8(%rbp)
     movd %xmm1, -16(%rbp)
     movd %xmm0, -12(%rbp)
-    movl -16(%rbp), %eax
-    movd %eax, %xmm0
+    movd -16(%rbp), %xmm0
     movd %xmm0, -32(%rbp)
     flds -32(%rbp)
     flds -12(%rbp)
 fsubp
     fstps -12(%rbp)
-    movl -12(%rbp), %eax
-    movq %rax, %xmm0
+    movd -12(%rbp), %xmm0
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -125,15 +123,13 @@ mydivf:
     fstcw -8(%rbp)
     movd %xmm1, -16(%rbp)
     movd %xmm0, -12(%rbp)
-    movl -16(%rbp), %eax
-    movd %eax, %xmm0
+    movd -16(%rbp), %xmm0
     movd %xmm0, -32(%rbp)
     flds -32(%rbp)
     flds -12(%rbp)
 fdivp
     fstps -12(%rbp)
-    movl -12(%rbp), %eax
-    movq %rax, %xmm0
+    movd -12(%rbp), %xmm0
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -197,15 +193,13 @@ mydivrf:
     fstcw -8(%rbp)
     movd %xmm1, -16(%rbp)
     movd %xmm0, -12(%rbp)
-    movl -16(%rbp), %eax
-    movd %eax, %xmm0
+    movd -16(%rbp), %xmm0
     movd %xmm0, -32(%rbp)
     flds -32(%rbp)
     flds -12(%rbp)
 fdivrp
     fstps -12(%rbp)
-    movl -12(%rbp), %eax
-    movq %rax, %xmm0
+    movd -12(%rbp), %xmm0
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

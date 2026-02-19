@@ -24,15 +24,12 @@ is_lessequal_f32:
     stmxcsr -8(%rbp)
     movd %xmm1, -16(%rbp)
     movd %xmm0, -12(%rbp)
-    movl -12(%rbp), %eax
-    movl -16(%rbp), %ecx
-    xor %edx, %edx
-    movd %ecx, %xmm0
-    movd %eax, %xmm1
-    ucomiss %xmm1, %xmm0
-    setnb %dl
-    mov %rdx, %rax
-    and $255, %rax
+    movd -12(%rbp), %xmm0
+    movd -16(%rbp), %xmm1
+    xor %eax, %eax
+    ucomiss %xmm0, %xmm1
+    setnb %al
+    movzx %al, %eax
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

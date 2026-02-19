@@ -299,7 +299,7 @@
                     "type_index": 2
                 },
                 {
-                    "opcode": "int32_load",
+                    "opcode": "float32_load",
                     "memory_flags": {
                         "volatile": false
                     }
@@ -372,7 +372,7 @@
                     "type_index": 2
                 },
                 {
-                    "opcode": "int32_load",
+                    "opcode": "float32_load",
                     "memory_flags": {
                         "volatile": false
                     }
