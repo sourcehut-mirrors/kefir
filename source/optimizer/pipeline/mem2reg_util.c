@@ -72,38 +72,10 @@ kefir_result_t kefir_opt_code_util_extend_load_value(struct kefir_mem *mem, stru
             }
             break;
 
-        case KEFIR_OPT_OPCODE_BITINT_LOAD:
-        case KEFIR_OPT_OPCODE_BITINT_LOAD_PRECISE: {
-            const struct kefir_opt_instruction *alloc_instr;
-            REQUIRE_OK(kefir_opt_code_container_instr(
-                code, instr->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_LOCATION_REF], &alloc_instr));
-            REQUIRE(alloc_instr->operation.opcode == KEFIR_OPT_OPCODE_ALLOC_LOCAL,
-                    KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected local variable allocation"));
-
-            const struct kefir_ir_type *ir_type =
-                kefir_ir_module_get_named_type(ir_module, alloc_instr->operation.parameters.type.type_id);
-            REQUIRE(ir_type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to find IR type"));
-            const struct kefir_ir_typeentry *local_typeentry =
-                kefir_ir_type_at(ir_type, alloc_instr->operation.parameters.type.type_index);
-            REQUIRE(local_typeentry != NULL,
-                    KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to fetch local variable type"));
-            REQUIRE(local_typeentry->typecode == KEFIR_IR_TYPE_BITINT,
-                    KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected bitint local variable allocation"));
-
-            if (instr->operation.parameters.bitint_memflags.load_extension == KEFIR_OPT_MEMORY_LOAD_SIGN_EXTEND) {
-                REQUIRE_OK(kefir_opt_code_builder_bitint_cast_signed(mem, code, instr->block_id,
-                                                                     instr->operation.parameters.bitwidth,
-                                                                     local_typeentry->param, value_ref, ext_instr_ref));
-            } else if (instr->operation.parameters.bitint_memflags.load_extension ==
-                       KEFIR_OPT_MEMORY_LOAD_ZERO_EXTEND) {
-                REQUIRE_OK(kefir_opt_code_builder_bitint_cast_unsigned(
-                    mem, code, instr->block_id, instr->operation.parameters.bitwidth, local_typeentry->param, value_ref,
-                    ext_instr_ref));
-            }
-        } break;
-
         case KEFIR_OPT_OPCODE_INT64_LOAD:
         case KEFIR_OPT_OPCODE_INT128_LOAD:
+        case KEFIR_OPT_OPCODE_BITINT_LOAD:
+        case KEFIR_OPT_OPCODE_BITINT_LOAD_PRECISE:
         case KEFIR_OPT_OPCODE_FLOAT32_LOAD:
         case KEFIR_OPT_OPCODE_FLOAT64_LOAD:
         case KEFIR_OPT_OPCODE_LONG_DOUBLE_LOAD:

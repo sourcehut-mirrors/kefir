@@ -99,9 +99,14 @@ static kefir_result_t is_mem2reg_candidate(const struct kefir_opt_code_container
             case KEFIR_OPT_OPCODE_DECIMAL32_LOAD:
             case KEFIR_OPT_OPCODE_DECIMAL64_LOAD:
             case KEFIR_OPT_OPCODE_DECIMAL128_LOAD:
+                *skip_candidate = use_instr->operation.parameters.memory_access.flags.volatile_access;
+                break;
+
             case KEFIR_OPT_OPCODE_BITINT_LOAD:
             case KEFIR_OPT_OPCODE_BITINT_LOAD_PRECISE:
-                *skip_candidate = use_instr->operation.parameters.memory_access.flags.volatile_access;
+                *skip_candidate = use_instr->operation.parameters.memory_access.flags.volatile_access ||
+                                  local_typeentry->typecode != KEFIR_IR_TYPE_BITINT ||
+                                  (kefir_size_t) local_typeentry->param != use_instr->operation.parameters.bitwidth;
                 break;
 
             case KEFIR_OPT_OPCODE_INT8_STORE:
@@ -118,12 +123,22 @@ static kefir_result_t is_mem2reg_candidate(const struct kefir_opt_code_container
             case KEFIR_OPT_OPCODE_DECIMAL32_STORE:
             case KEFIR_OPT_OPCODE_DECIMAL64_STORE:
             case KEFIR_OPT_OPCODE_DECIMAL128_STORE:
+                if (instr_ref == use_instr->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_VALUE_REF]) {
+                    *skip_candidate = true;
+                } else {
+                    *skip_candidate = use_instr->operation.parameters.memory_access.flags.volatile_access;
+                }
+                break;
+
             case KEFIR_OPT_OPCODE_BITINT_STORE:
             case KEFIR_OPT_OPCODE_BITINT_STORE_PRECISE:
                 if (instr_ref == use_instr->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_VALUE_REF]) {
                     *skip_candidate = true;
                 } else {
-                    *skip_candidate = use_instr->operation.parameters.memory_access.flags.volatile_access;
+                    *skip_candidate = use_instr->operation.parameters.memory_access.flags.volatile_access ||
+                                      local_typeentry->typecode != KEFIR_IR_TYPE_BITINT ||
+                                      (kefir_size_t) local_typeentry->param != use_instr->operation.parameters.bitwidth;
+                    ;
                 }
                 break;
 
