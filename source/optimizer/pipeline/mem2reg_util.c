@@ -236,10 +236,10 @@ static kefir_result_t mem2reg_push_link_frame(struct mem2reg_state *state, kefir
     return KEFIR_OK;
 }
 
-static kefir_result_t mem2reg_assign_empty_value(struct mem2reg_state *state,
-                                                 kefir_opt_instruction_ref_t original_instr_ref,
-                                                 kefir_opt_block_id_t source_block_ref,
-                                                 kefir_opt_instruction_ref_t *instr_ref) {
+static kefir_result_t mem2reg_assign_placeholder_value(struct mem2reg_state *state,
+                                                       kefir_opt_instruction_ref_t original_instr_ref,
+                                                       kefir_opt_block_id_t source_block_ref,
+                                                       kefir_opt_instruction_ref_t *instr_ref) {
     const struct kefir_opt_instruction *original_instr;
     REQUIRE_OK(kefir_opt_code_container_instr(state->code, original_instr_ref, &original_instr));
     REQUIRE(original_instr->operation.opcode == KEFIR_OPT_OPCODE_ALLOC_LOCAL,
@@ -257,23 +257,23 @@ static kefir_result_t mem2reg_assign_empty_value(struct mem2reg_state *state,
         case KEFIR_IR_TYPE_INT16:
         case KEFIR_IR_TYPE_INT32:
         case KEFIR_IR_TYPE_INT64:
-            REQUIRE_OK(kefir_opt_code_builder_int_constant(state->mem, state->code, source_block_ref, 0, instr_ref));
+            REQUIRE_OK(kefir_opt_code_builder_int_placeholder(state->mem, state->code, source_block_ref, instr_ref));
             break;
 
         case KEFIR_IR_TYPE_INT128:
-            REQUIRE_OK(kefir_opt_code_builder_int_constant(state->mem, state->code, source_block_ref, 0, instr_ref));
+            REQUIRE_OK(kefir_opt_code_builder_int_placeholder(state->mem, state->code, source_block_ref, instr_ref));
             REQUIRE_OK(kefir_opt_code_builder_int128_zero_extend_64bits(state->mem, state->code, source_block_ref,
                                                                         *instr_ref, instr_ref));
             break;
 
         case KEFIR_IR_TYPE_FLOAT32:
             REQUIRE_OK(
-                kefir_opt_code_builder_float32_constant(state->mem, state->code, source_block_ref, 0.0f, instr_ref));
+                kefir_opt_code_builder_float32_placeholder(state->mem, state->code, source_block_ref, instr_ref));
             break;
 
         case KEFIR_IR_TYPE_FLOAT64:
             REQUIRE_OK(
-                kefir_opt_code_builder_float64_constant(state->mem, state->code, source_block_ref, 0.0, instr_ref));
+                kefir_opt_code_builder_float64_placeholder(state->mem, state->code, source_block_ref, instr_ref));
             break;
 
         case KEFIR_IR_TYPE_LONG_DOUBLE:
@@ -283,8 +283,8 @@ static kefir_result_t mem2reg_assign_empty_value(struct mem2reg_state *state,
 
         case KEFIR_IR_TYPE_COMPLEX_FLOAT32: {
             kefir_opt_instruction_ref_t zero_instr_ref;
-            REQUIRE_OK(kefir_opt_code_builder_float32_constant(state->mem, state->code, source_block_ref, 0.0f,
-                                                               &zero_instr_ref));
+            REQUIRE_OK(
+                kefir_opt_code_builder_float32_placeholder(state->mem, state->code, source_block_ref, &zero_instr_ref));
 
             REQUIRE_OK(kefir_opt_code_builder_complex_float32_from(state->mem, state->code, source_block_ref,
                                                                    zero_instr_ref, zero_instr_ref, instr_ref));
@@ -292,8 +292,8 @@ static kefir_result_t mem2reg_assign_empty_value(struct mem2reg_state *state,
 
         case KEFIR_IR_TYPE_COMPLEX_FLOAT64: {
             kefir_opt_instruction_ref_t zero_instr_ref;
-            REQUIRE_OK(kefir_opt_code_builder_float64_constant(state->mem, state->code, source_block_ref, 0.0,
-                                                               &zero_instr_ref));
+            REQUIRE_OK(
+                kefir_opt_code_builder_float64_placeholder(state->mem, state->code, source_block_ref, &zero_instr_ref));
 
             REQUIRE_OK(kefir_opt_code_builder_complex_float64_from(state->mem, state->code, source_block_ref,
                                                                    zero_instr_ref, zero_instr_ref, instr_ref));
@@ -311,7 +311,7 @@ static kefir_result_t mem2reg_assign_empty_value(struct mem2reg_state *state,
         case KEFIR_IR_TYPE_BITINT: {
             kefir_opt_instruction_ref_t zero_instr_ref;
             REQUIRE_OK(
-                kefir_opt_code_builder_int_constant(state->mem, state->code, source_block_ref, 0, &zero_instr_ref));
+                kefir_opt_code_builder_int_placeholder(state->mem, state->code, source_block_ref, &zero_instr_ref));
             REQUIRE_OK(kefir_opt_code_builder_bitint_from_unsigned(state->mem, state->code, source_block_ref,
                                                                    local_typeentry->param, zero_instr_ref, instr_ref));
         } break;
@@ -359,7 +359,7 @@ static kefir_result_t mem2reg_find_link_for(struct mem2reg_state *state, struct 
         }
     }
 
-    REQUIRE_OK(mem2reg_assign_empty_value(state, alloc_instr_ref, base_block_ref, link_ref));
+    REQUIRE_OK(mem2reg_assign_placeholder_value(state, alloc_instr_ref, base_block_ref, link_ref));
     return KEFIR_OK;
 }
 
