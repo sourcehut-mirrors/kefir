@@ -89,17 +89,55 @@ static kefir_result_t is_mem2reg_candidate(const struct kefir_opt_code_container
             case KEFIR_OPT_OPCODE_INT16_LOAD:
             case KEFIR_OPT_OPCODE_INT32_LOAD:
             case KEFIR_OPT_OPCODE_INT64_LOAD:
-            case KEFIR_OPT_OPCODE_INT128_LOAD:
             case KEFIR_OPT_OPCODE_FLOAT32_LOAD:
             case KEFIR_OPT_OPCODE_FLOAT64_LOAD:
+                *skip_candidate = use_instr->operation.parameters.memory_access.flags.volatile_access ||
+                                  !(local_typeentry->typecode == KEFIR_IR_TYPE_INT8 ||
+                                    local_typeentry->typecode == KEFIR_IR_TYPE_INT16 ||
+                                    local_typeentry->typecode == KEFIR_IR_TYPE_INT32 ||
+                                    local_typeentry->typecode == KEFIR_IR_TYPE_INT64 ||
+                                    local_typeentry->typecode == KEFIR_IR_TYPE_FLOAT32 ||
+                                    local_typeentry->typecode == KEFIR_IR_TYPE_FLOAT64);
+                break;
+
+            case KEFIR_OPT_OPCODE_INT128_LOAD:
+                *skip_candidate = use_instr->operation.parameters.memory_access.flags.volatile_access ||
+                                  local_typeentry->typecode != KEFIR_IR_TYPE_INT128;
+                break;
+
             case KEFIR_OPT_OPCODE_LONG_DOUBLE_LOAD:
+                *skip_candidate = use_instr->operation.parameters.memory_access.flags.volatile_access ||
+                                  local_typeentry->typecode != KEFIR_IR_TYPE_LONG_DOUBLE;
+                break;
+
             case KEFIR_OPT_OPCODE_COMPLEX_FLOAT32_LOAD:
+                *skip_candidate = use_instr->operation.parameters.memory_access.flags.volatile_access ||
+                                  local_typeentry->typecode != KEFIR_IR_TYPE_COMPLEX_FLOAT32;
+                break;
+
             case KEFIR_OPT_OPCODE_COMPLEX_FLOAT64_LOAD:
+                *skip_candidate = use_instr->operation.parameters.memory_access.flags.volatile_access ||
+                                  local_typeentry->typecode != KEFIR_IR_TYPE_COMPLEX_FLOAT64;
+                break;
+
             case KEFIR_OPT_OPCODE_COMPLEX_LONG_DOUBLE_LOAD:
+                *skip_candidate = use_instr->operation.parameters.memory_access.flags.volatile_access ||
+                                  local_typeentry->typecode != KEFIR_IR_TYPE_COMPLEX_LONG_DOUBLE;
+                break;
+
             case KEFIR_OPT_OPCODE_DECIMAL32_LOAD:
+                *skip_candidate = use_instr->operation.parameters.memory_access.flags.volatile_access ||
+                                  local_typeentry->typecode != KEFIR_IR_TYPE_DECIMAL32;
+                break;
+
             case KEFIR_OPT_OPCODE_DECIMAL64_LOAD:
+                *skip_candidate = use_instr->operation.parameters.memory_access.flags.volatile_access ||
+                                  local_typeentry->typecode != KEFIR_IR_TYPE_DECIMAL64;
+                break;
+
             case KEFIR_OPT_OPCODE_DECIMAL128_LOAD:
-                *skip_candidate = use_instr->operation.parameters.memory_access.flags.volatile_access;
+                *skip_candidate = use_instr->operation.parameters.memory_access.flags.volatile_access ||
+                                  local_typeentry->typecode != KEFIR_IR_TYPE_DECIMAL128;
                 break;
 
             case KEFIR_OPT_OPCODE_BITINT_LOAD:
@@ -113,20 +151,90 @@ static kefir_result_t is_mem2reg_candidate(const struct kefir_opt_code_container
             case KEFIR_OPT_OPCODE_INT16_STORE:
             case KEFIR_OPT_OPCODE_INT32_STORE:
             case KEFIR_OPT_OPCODE_INT64_STORE:
-            case KEFIR_OPT_OPCODE_INT128_STORE:
             case KEFIR_OPT_OPCODE_FLOAT32_STORE:
             case KEFIR_OPT_OPCODE_FLOAT64_STORE:
+                if (instr_ref == use_instr->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_VALUE_REF]) {
+                    *skip_candidate = true;
+                } else {
+                    *skip_candidate = use_instr->operation.parameters.memory_access.flags.volatile_access ||
+                                      !(local_typeentry->typecode == KEFIR_IR_TYPE_INT8 ||
+                                        local_typeentry->typecode == KEFIR_IR_TYPE_INT16 ||
+                                        local_typeentry->typecode == KEFIR_IR_TYPE_INT32 ||
+                                        local_typeentry->typecode == KEFIR_IR_TYPE_INT64 ||
+                                        local_typeentry->typecode == KEFIR_IR_TYPE_FLOAT32 ||
+                                        local_typeentry->typecode == KEFIR_IR_TYPE_FLOAT64);
+                }
+                break;
+
+            case KEFIR_OPT_OPCODE_INT128_STORE:
+                if (instr_ref == use_instr->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_VALUE_REF]) {
+                    *skip_candidate = true;
+                } else {
+                    *skip_candidate = use_instr->operation.parameters.memory_access.flags.volatile_access ||
+                                      local_typeentry->typecode != KEFIR_IR_TYPE_INT128;
+                }
+                break;
+
             case KEFIR_OPT_OPCODE_LONG_DOUBLE_STORE:
+                if (instr_ref == use_instr->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_VALUE_REF]) {
+                    *skip_candidate = true;
+                } else {
+                    *skip_candidate = use_instr->operation.parameters.memory_access.flags.volatile_access ||
+                                      local_typeentry->typecode != KEFIR_IR_TYPE_LONG_DOUBLE;
+                }
+                break;
+
             case KEFIR_OPT_OPCODE_COMPLEX_FLOAT32_STORE:
+                if (instr_ref == use_instr->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_VALUE_REF]) {
+                    *skip_candidate = true;
+                } else {
+                    *skip_candidate = use_instr->operation.parameters.memory_access.flags.volatile_access ||
+                                      local_typeentry->typecode != KEFIR_IR_TYPE_COMPLEX_FLOAT32;
+                }
+                break;
+
             case KEFIR_OPT_OPCODE_COMPLEX_FLOAT64_STORE:
+                if (instr_ref == use_instr->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_VALUE_REF]) {
+                    *skip_candidate = true;
+                } else {
+                    *skip_candidate = use_instr->operation.parameters.memory_access.flags.volatile_access ||
+                                      local_typeentry->typecode != KEFIR_IR_TYPE_COMPLEX_FLOAT64;
+                }
+                break;
+
             case KEFIR_OPT_OPCODE_COMPLEX_LONG_DOUBLE_STORE:
+                if (instr_ref == use_instr->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_VALUE_REF]) {
+                    *skip_candidate = true;
+                } else {
+                    *skip_candidate = use_instr->operation.parameters.memory_access.flags.volatile_access ||
+                                      local_typeentry->typecode != KEFIR_IR_TYPE_COMPLEX_LONG_DOUBLE;
+                }
+                break;
+
             case KEFIR_OPT_OPCODE_DECIMAL32_STORE:
+                if (instr_ref == use_instr->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_VALUE_REF]) {
+                    *skip_candidate = true;
+                } else {
+                    *skip_candidate = use_instr->operation.parameters.memory_access.flags.volatile_access ||
+                                      local_typeentry->typecode != KEFIR_IR_TYPE_DECIMAL32;
+                }
+                break;
+
             case KEFIR_OPT_OPCODE_DECIMAL64_STORE:
+                if (instr_ref == use_instr->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_VALUE_REF]) {
+                    *skip_candidate = true;
+                } else {
+                    *skip_candidate = use_instr->operation.parameters.memory_access.flags.volatile_access ||
+                                      local_typeentry->typecode != KEFIR_IR_TYPE_DECIMAL64;
+                }
+                break;
+
             case KEFIR_OPT_OPCODE_DECIMAL128_STORE:
                 if (instr_ref == use_instr->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_VALUE_REF]) {
                     *skip_candidate = true;
                 } else {
-                    *skip_candidate = use_instr->operation.parameters.memory_access.flags.volatile_access;
+                    *skip_candidate = use_instr->operation.parameters.memory_access.flags.volatile_access ||
+                                      local_typeentry->typecode != KEFIR_IR_TYPE_DECIMAL128;
                 }
                 break;
 
@@ -195,8 +303,8 @@ static kefir_result_t mem2reg_apply(struct kefir_mem *mem, struct kefir_opt_modu
 
     kefir_result_t res = kefir_opt_code_control_flow_build(mem, &control_flow, &func->code);
     REQUIRE_CHAIN(&res, mem2reg_scan(mem, &func->code, &control_flow, module->ir_module, &candidates));
-    REQUIRE_CHAIN(&res, kefir_opt_code_util_mem2reg_apply(mem, module->ir_module, &func->code, &func->debug_info,
-                                                          &control_flow, &candidates));
+    REQUIRE_CHAIN(&res,
+                  kefir_opt_code_util_mem2reg_apply(mem, &func->code, &func->debug_info, &control_flow, &candidates));
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_opt_code_control_flow_free(mem, &control_flow);
         kefir_hashset_free(mem, &candidates);

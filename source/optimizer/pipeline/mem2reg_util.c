@@ -26,13 +26,11 @@
 #include "kefir/core/util.h"
 
 kefir_result_t kefir_opt_code_util_extend_load_value(struct kefir_mem *mem, struct kefir_opt_code_container *code,
-                                                     const struct kefir_ir_module *ir_module,
                                                      const struct kefir_opt_instruction *instr,
                                                      kefir_opt_instruction_ref_t value_ref,
                                                      kefir_opt_instruction_ref_t *ext_instr_ref) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code"));
-    REQUIRE(ir_module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR module"));
     REQUIRE(instr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer instruction"));
     REQUIRE(ext_instr_ref != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to optimizer instructionn reference"));
@@ -96,7 +94,6 @@ kefir_result_t kefir_opt_code_util_extend_load_value(struct kefir_mem *mem, stru
 
 struct mem2reg_state {
     struct kefir_mem *mem;
-    const struct kefir_ir_module *ir_module;
     struct kefir_opt_code_container *code;
     struct kefir_opt_code_debug_info *debug_info;
     const struct kefir_opt_code_control_flow *control_flow;
@@ -104,6 +101,22 @@ struct mem2reg_state {
     struct kefir_list block_queue;
     struct kefir_hashset visited_blocks;
     struct kefir_hashtable inserted_phis;
+    struct kefir_hashtable candidate_types;
+};
+
+enum {
+    CANDIDATE_INT = 1,
+    CANDIDATE_INT128,
+    CANDIDATE_FLOAT32,
+    CANDIDATE_FLOAT64,
+    CANDIDATE_LONG_DOUBLE,
+    CANDIDATE_COMPLEX_FLOAT32,
+    CANDIDATE_COMPLEX_FLOAT64,
+    CANDIDATE_COMPLEX_LONG_DOUBLE,
+    CANDIDATE_DECIMAL32,
+    CANDIDATE_DECIMAL64,
+    CANDIDATE_DECIMAL128,
+    CANDIDATE_BITINT
 };
 
 static kefir_result_t mem2reg_collect_def_blocks(struct mem2reg_state *state, kefir_opt_instruction_ref_t instr_ref) {
@@ -212,52 +225,124 @@ static kefir_result_t mem2reg_push_link_frame(struct mem2reg_state *state, kefir
     return KEFIR_OK;
 }
 
+static kefir_result_t classify_use_opcode(const struct kefir_opt_instruction *use_instr, kefir_uint64_t *type) {
+    switch (use_instr->operation.opcode) {
+        case KEFIR_OPT_OPCODE_INT8_LOAD:
+        case KEFIR_OPT_OPCODE_INT16_LOAD:
+        case KEFIR_OPT_OPCODE_INT32_LOAD:
+        case KEFIR_OPT_OPCODE_INT64_LOAD:
+        case KEFIR_OPT_OPCODE_INT8_STORE:
+        case KEFIR_OPT_OPCODE_INT16_STORE:
+        case KEFIR_OPT_OPCODE_INT32_STORE:
+        case KEFIR_OPT_OPCODE_INT64_STORE:
+            *type = CANDIDATE_INT;
+            break;
+
+        case KEFIR_OPT_OPCODE_INT128_LOAD:
+        case KEFIR_OPT_OPCODE_INT128_STORE:
+            *type = CANDIDATE_INT128;
+            break;
+
+        case KEFIR_OPT_OPCODE_FLOAT32_LOAD:
+        case KEFIR_OPT_OPCODE_FLOAT32_STORE:
+            *type = CANDIDATE_FLOAT32;
+            break;
+
+        case KEFIR_OPT_OPCODE_FLOAT64_LOAD:
+        case KEFIR_OPT_OPCODE_FLOAT64_STORE:
+            *type = CANDIDATE_FLOAT64;
+            break;
+
+        case KEFIR_OPT_OPCODE_LONG_DOUBLE_LOAD:
+        case KEFIR_OPT_OPCODE_LONG_DOUBLE_STORE:
+            *type = CANDIDATE_LONG_DOUBLE;
+            break;
+
+        case KEFIR_OPT_OPCODE_COMPLEX_FLOAT32_LOAD:
+        case KEFIR_OPT_OPCODE_COMPLEX_FLOAT32_STORE:
+            *type = CANDIDATE_COMPLEX_FLOAT32;
+            break;
+
+        case KEFIR_OPT_OPCODE_COMPLEX_FLOAT64_LOAD:
+        case KEFIR_OPT_OPCODE_COMPLEX_FLOAT64_STORE:
+            *type = CANDIDATE_COMPLEX_FLOAT64;
+            break;
+
+        case KEFIR_OPT_OPCODE_COMPLEX_LONG_DOUBLE_LOAD:
+        case KEFIR_OPT_OPCODE_COMPLEX_LONG_DOUBLE_STORE:
+            *type = CANDIDATE_COMPLEX_LONG_DOUBLE;
+            break;
+
+        case KEFIR_OPT_OPCODE_DECIMAL32_LOAD:
+        case KEFIR_OPT_OPCODE_DECIMAL32_STORE:
+            *type = CANDIDATE_DECIMAL32;
+            break;
+
+        case KEFIR_OPT_OPCODE_DECIMAL64_LOAD:
+        case KEFIR_OPT_OPCODE_DECIMAL64_STORE:
+            *type = CANDIDATE_DECIMAL64;
+            break;
+
+        case KEFIR_OPT_OPCODE_DECIMAL128_LOAD:
+        case KEFIR_OPT_OPCODE_DECIMAL128_STORE:
+            *type = CANDIDATE_DECIMAL128;
+            break;
+
+        case KEFIR_OPT_OPCODE_BITINT_LOAD:
+        case KEFIR_OPT_OPCODE_BITINT_STORE:
+        case KEFIR_OPT_OPCODE_BITINT_LOAD_PRECISE:
+        case KEFIR_OPT_OPCODE_BITINT_STORE_PRECISE:
+            *type = ((kefir_uint64_t) use_instr->operation.parameters.bitwidth) << 32 | CANDIDATE_BITINT;
+            break;
+
+        default:
+            return KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to match use opcode");
+    }
+    return KEFIR_OK;
+}
+
 static kefir_result_t mem2reg_assign_placeholder_value(struct mem2reg_state *state,
                                                        kefir_opt_instruction_ref_t original_instr_ref,
                                                        kefir_opt_block_id_t source_block_ref,
+                                                       const struct kefir_opt_instruction *use_instr,
                                                        kefir_opt_instruction_ref_t *instr_ref) {
-    const struct kefir_opt_instruction *original_instr;
-    REQUIRE_OK(kefir_opt_code_container_instr(state->code, original_instr_ref, &original_instr));
-    REQUIRE(original_instr->operation.opcode == KEFIR_OPT_OPCODE_ALLOC_LOCAL,
-            KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Expected local allocation optimizer instruction"));
+    kefir_uint64_t type = 0;
+    if (use_instr != NULL) {
+        REQUIRE_OK(classify_use_opcode(use_instr, &type));
+    } else {
+        kefir_hashtable_value_t table_value;
+        REQUIRE_OK(
+            kefir_hashtable_at(&state->candidate_types, (kefir_hashtable_key_t) original_instr_ref, &table_value));
+        type = (kefir_uint64_t) table_value;
+    }
 
-    const struct kefir_ir_type *ir_type =
-        kefir_ir_module_get_named_type(state->ir_module, original_instr->operation.parameters.type.type_id);
-    REQUIRE(ir_type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to find IR type"));
-    const struct kefir_ir_typeentry *local_typeentry =
-        kefir_ir_type_at(ir_type, original_instr->operation.parameters.type.type_index);
-    REQUIRE(local_typeentry != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to fetch local variable type"));
-
-    switch (local_typeentry->typecode) {
-        case KEFIR_IR_TYPE_INT8:
-        case KEFIR_IR_TYPE_INT16:
-        case KEFIR_IR_TYPE_INT32:
-        case KEFIR_IR_TYPE_INT64:
+    switch ((kefir_uint32_t) type) {
+        case CANDIDATE_INT:
             REQUIRE_OK(kefir_opt_code_builder_int_placeholder(state->mem, state->code, source_block_ref, instr_ref));
             break;
 
-        case KEFIR_IR_TYPE_INT128:
+        case CANDIDATE_INT128:
             REQUIRE_OK(kefir_opt_code_builder_int_placeholder(state->mem, state->code, source_block_ref, instr_ref));
             REQUIRE_OK(kefir_opt_code_builder_int128_zero_extend_64bits(state->mem, state->code, source_block_ref,
                                                                         *instr_ref, instr_ref));
             break;
 
-        case KEFIR_IR_TYPE_FLOAT32:
+        case CANDIDATE_FLOAT32:
             REQUIRE_OK(
                 kefir_opt_code_builder_float32_placeholder(state->mem, state->code, source_block_ref, instr_ref));
             break;
 
-        case KEFIR_IR_TYPE_FLOAT64:
+        case CANDIDATE_FLOAT64:
             REQUIRE_OK(
                 kefir_opt_code_builder_float64_placeholder(state->mem, state->code, source_block_ref, instr_ref));
             break;
 
-        case KEFIR_IR_TYPE_LONG_DOUBLE:
+        case CANDIDATE_LONG_DOUBLE:
             REQUIRE_OK(kefir_opt_code_builder_long_double_constant(state->mem, state->code, source_block_ref, 0.0L,
                                                                    instr_ref));
             break;
 
-        case KEFIR_IR_TYPE_COMPLEX_FLOAT32: {
+        case CANDIDATE_COMPLEX_FLOAT32: {
             kefir_opt_instruction_ref_t zero_instr_ref;
             REQUIRE_OK(
                 kefir_opt_code_builder_float32_placeholder(state->mem, state->code, source_block_ref, &zero_instr_ref));
@@ -266,7 +351,7 @@ static kefir_result_t mem2reg_assign_placeholder_value(struct mem2reg_state *sta
                                                                    zero_instr_ref, zero_instr_ref, instr_ref));
         } break;
 
-        case KEFIR_IR_TYPE_COMPLEX_FLOAT64: {
+        case CANDIDATE_COMPLEX_FLOAT64: {
             kefir_opt_instruction_ref_t zero_instr_ref;
             REQUIRE_OK(
                 kefir_opt_code_builder_float64_placeholder(state->mem, state->code, source_block_ref, &zero_instr_ref));
@@ -275,7 +360,7 @@ static kefir_result_t mem2reg_assign_placeholder_value(struct mem2reg_state *sta
                                                                    zero_instr_ref, zero_instr_ref, instr_ref));
         } break;
 
-        case KEFIR_IR_TYPE_COMPLEX_LONG_DOUBLE: {
+        case CANDIDATE_COMPLEX_LONG_DOUBLE: {
             kefir_opt_instruction_ref_t zero_instr_ref;
             REQUIRE_OK(kefir_opt_code_builder_long_double_constant(state->mem, state->code, source_block_ref, 0.0L,
                                                                    &zero_instr_ref));
@@ -284,39 +369,34 @@ static kefir_result_t mem2reg_assign_placeholder_value(struct mem2reg_state *sta
                                                                        zero_instr_ref, zero_instr_ref, instr_ref));
         } break;
 
-        case KEFIR_IR_TYPE_BITINT: {
+        case CANDIDATE_BITINT: {
             kefir_opt_instruction_ref_t zero_instr_ref;
             REQUIRE_OK(
                 kefir_opt_code_builder_int_placeholder(state->mem, state->code, source_block_ref, &zero_instr_ref));
             REQUIRE_OK(kefir_opt_code_builder_bitint_from_unsigned(state->mem, state->code, source_block_ref,
-                                                                   local_typeentry->param, zero_instr_ref, instr_ref));
+                                                                   type >> 32, zero_instr_ref, instr_ref));
         } break;
 
-        case KEFIR_IR_TYPE_DECIMAL32:
+        case CANDIDATE_DECIMAL32:
             REQUIRE_OK(kefir_dfp_require_supported(NULL));
             REQUIRE_OK(kefir_opt_code_builder_decimal32_constant(state->mem, state->code, source_block_ref,
                                                                  kefir_dfp_decimal32_from_int64(0), instr_ref));
             break;
 
-        case KEFIR_IR_TYPE_DECIMAL64:
+        case CANDIDATE_DECIMAL64:
             REQUIRE_OK(kefir_dfp_require_supported(NULL));
             REQUIRE_OK(kefir_opt_code_builder_decimal64_constant(state->mem, state->code, source_block_ref,
                                                                  kefir_dfp_decimal64_from_int64(0), instr_ref));
             break;
 
-        case KEFIR_IR_TYPE_DECIMAL128:
+        case CANDIDATE_DECIMAL128:
             REQUIRE_OK(kefir_dfp_require_supported(NULL));
             REQUIRE_OK(kefir_opt_code_builder_decimal128_constant(state->mem, state->code, source_block_ref,
                                                                   kefir_dfp_decimal128_from_int64(0), instr_ref));
             break;
 
-        case KEFIR_IR_TYPE_STRUCT:
-        case KEFIR_IR_TYPE_ARRAY:
-        case KEFIR_IR_TYPE_UNION:
-        case KEFIR_IR_TYPE_BITFIELD:
-        case KEFIR_IR_TYPE_NONE:
-        case KEFIR_IR_TYPE_COUNT:
-            return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected local IR type");
+        default:
+            return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected mem2reg candidate type");
     }
     return KEFIR_OK;
 }
@@ -324,6 +404,7 @@ static kefir_result_t mem2reg_assign_placeholder_value(struct mem2reg_state *sta
 static kefir_result_t mem2reg_find_link_for(struct mem2reg_state *state, struct mem2reg_link_frame *frame,
                                             kefir_opt_instruction_ref_t alloc_instr_ref,
                                             kefir_opt_block_id_t base_block_ref,
+                                            const struct kefir_opt_instruction *use_instr,
                                             kefir_opt_instruction_ref_t *link_ref) {
     for (; frame != NULL; frame = frame->parent) {
         kefir_hashtable_value_t table_value;
@@ -335,7 +416,7 @@ static kefir_result_t mem2reg_find_link_for(struct mem2reg_state *state, struct 
         }
     }
 
-    REQUIRE_OK(mem2reg_assign_placeholder_value(state, alloc_instr_ref, base_block_ref, link_ref));
+    REQUIRE_OK(mem2reg_assign_placeholder_value(state, alloc_instr_ref, base_block_ref, use_instr, link_ref));
     return KEFIR_OK;
 }
 
@@ -360,7 +441,7 @@ static kefir_result_t mem2reg_link_successor_phis(struct mem2reg_state *state, s
             if (res != KEFIR_NOT_FOUND) {
                 REQUIRE_OK(res);
                 kefir_opt_instruction_ref_t link_ref;
-                REQUIRE_OK(mem2reg_find_link_for(state, frame, instr_ref, block_ref, &link_ref));
+                REQUIRE_OK(mem2reg_find_link_for(state, frame, instr_ref, block_ref, NULL, &link_ref));
 
                 REQUIRE_OK(kefir_opt_code_container_phi_attach(
                     state->mem, state->code, (kefir_opt_instruction_ref_t) table_value, block_ref, link_ref));
@@ -408,9 +489,9 @@ static kefir_result_t mem2reg_assign(struct mem2reg_state *state, struct mem2reg
                     kefir_opt_instruction_ref_t link_ref;
                     REQUIRE_OK(mem2reg_find_link_for(
                         state, frame, instr->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_LOCATION_REF],
-                        instr->block_id, &link_ref));
-                    REQUIRE_OK(kefir_opt_code_util_extend_load_value(state->mem, state->code, state->ir_module, instr,
-                                                                     link_ref, &link_ref));
+                        instr->block_id, instr, &link_ref));
+                    REQUIRE_OK(
+                        kefir_opt_code_util_extend_load_value(state->mem, state->code, instr, link_ref, &link_ref));
                     REQUIRE_OK(
                         kefir_opt_code_container_replace_references(state->mem, state->code, link_ref, instr_ref));
                     kefir_opt_instruction_ref_t del_instr_ref = instr_ref;
@@ -542,6 +623,38 @@ static kefir_result_t mem2reg_link(struct mem2reg_state *state) {
     return KEFIR_OK;
 }
 
+static kefir_result_t mem2reg_scan_candidate(struct mem2reg_state *state, kefir_opt_instruction_ref_t instr_ref) {
+    kefir_result_t res;
+    struct kefir_opt_instruction_use_iterator use_iter;
+    for (res = kefir_opt_code_container_instruction_use_instr_iter(state->code, instr_ref, &use_iter); res == KEFIR_OK;
+         res = kefir_opt_code_container_instruction_use_next(&use_iter)) {
+        const struct kefir_opt_instruction *use_instr;
+        REQUIRE_OK(kefir_opt_code_container_instr(state->code, use_iter.use_instr_ref, &use_instr));
+
+        kefir_uint64_t type = 0;
+        kefir_result_t res = classify_use_opcode(use_instr, &type);
+        if (res != KEFIR_NO_MATCH) {
+            REQUIRE_OK(res);
+            kefir_hashtable_value_t *table_value_ptr;
+            kefir_result_t res =
+                kefir_hashtable_at_mut(&state->candidate_types, (kefir_hashtable_key_t) instr_ref, &table_value_ptr);
+            if (res != KEFIR_NOT_FOUND) {
+                REQUIRE_OK(res);
+                if (type == CANDIDATE_INT || *table_value_ptr == CANDIDATE_INT) {
+                    *table_value_ptr = CANDIDATE_INT;
+                } else {
+                    REQUIRE(type == *table_value_ptr,
+                            KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Conflicting mem2reg candidate types"));
+                }
+            } else {
+                REQUIRE_OK(kefir_hashtable_insert(state->mem, &state->candidate_types,
+                                                  (kefir_hashtable_key_t) instr_ref, (kefir_hashtable_value_t) type));
+            }
+        }
+    }
+    return KEFIR_OK;
+}
+
 static kefir_result_t mem2reg_do(struct mem2reg_state *state) {
     kefir_result_t res;
     struct kefir_hashset_iterator iter;
@@ -550,6 +663,7 @@ static kefir_result_t mem2reg_do(struct mem2reg_state *state) {
          res = kefir_hashset_next(&iter, &entry)) {
         ASSIGN_DECL_CAST(kefir_opt_instruction_ref_t, instr_ref, entry);
 
+        REQUIRE_OK(mem2reg_scan_candidate(state, instr_ref));
         REQUIRE_OK(kefir_hashset_clear(state->mem, &state->visited_blocks));
         REQUIRE_OK(kefir_list_clear(state->mem, &state->block_queue));
         REQUIRE_OK(mem2reg_collect_def_blocks(state, instr_ref));
@@ -561,30 +675,33 @@ static kefir_result_t mem2reg_do(struct mem2reg_state *state) {
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_opt_code_util_mem2reg_apply(struct kefir_mem *mem, const struct kefir_ir_module *ir_module,
-                                                 struct kefir_opt_code_container *code,
+kefir_result_t kefir_opt_code_util_mem2reg_apply(struct kefir_mem *mem, struct kefir_opt_code_container *code,
                                                  struct kefir_opt_code_debug_info *debug_info,
                                                  const struct kefir_opt_code_control_flow *control_flow,
                                                  const struct kefir_hashset *candidates) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
-    REQUIRE(ir_module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR module"));
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code"));
     REQUIRE(debug_info != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer debug info"));
     REQUIRE(control_flow != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer control flow"));
     REQUIRE(candidates != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid mem2reg candidate set"));
 
-    struct mem2reg_state state = {.mem = mem,
-                                  .ir_module = ir_module,
-                                  .code = code,
-                                  .debug_info = debug_info,
-                                  .control_flow = control_flow,
-                                  .candidates = candidates};
+    struct mem2reg_state state = {
+        .mem = mem, .code = code, .debug_info = debug_info, .control_flow = control_flow, .candidates = candidates};
     REQUIRE_OK(kefir_hashset_init(&state.visited_blocks, &kefir_hashtable_uint_ops));
     REQUIRE_OK(kefir_list_init(&state.block_queue));
     REQUIRE_OK(kefir_hashtable_init(&state.inserted_phis, &kefir_hashtable_uint_ops));
+    REQUIRE_OK(kefir_hashtable_init(&state.candidate_types, &kefir_hashtable_uint_ops));
 
     kefir_result_t res = KEFIR_OK;
     REQUIRE_CHAIN(&res, mem2reg_do(&state));
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_hashtable_free(mem, &state.candidate_types);
+        kefir_hashtable_free(mem, &state.inserted_phis);
+        kefir_list_free(mem, &state.block_queue);
+        kefir_hashset_free(mem, &state.visited_blocks);
+        return res;
+    });
+    res = kefir_hashtable_free(mem, &state.candidate_types);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_hashtable_free(mem, &state.inserted_phis);
         kefir_list_free(mem, &state.block_queue);

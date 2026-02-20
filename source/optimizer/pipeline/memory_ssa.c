@@ -27,6 +27,7 @@
 #include "kefir/optimizer/alias.h"
 #include "kefir/optimizer/escape.h"
 #include "kefir/optimizer/code_util.h"
+#include "kefir/optimizer/mem2reg_util.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 #include <string.h>
@@ -249,16 +250,13 @@ static kefir_result_t find_upstream_clobber(struct kefir_mem *mem, const struct 
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_opt_code_util_extend_load_value(struct kefir_mem *, struct kefir_opt_code_container *,
-                                                     const struct kefir_ir_module *,
-                                                     const struct kefir_opt_instruction *, kefir_opt_instruction_ref_t,
-                                                     kefir_opt_instruction_ref_t *);
-
-static kefir_result_t do_optimize_nonvolatile_load(
-    struct kefir_mem *mem, struct kefir_opt_module *module, struct kefir_opt_function *func,
-    const struct kefir_opt_code_control_flow *control_flow, struct kefir_opt_code_sequencing *sequencing,
-    struct kefir_opt_code_memssa *memssa, const struct kefir_opt_code_escape_analysis *escapes,
-    const struct kefir_opt_instruction *instr, kefir_bool_t *did_replace) {
+static kefir_result_t do_optimize_nonvolatile_load(struct kefir_mem *mem, struct kefir_opt_function *func,
+                                                   const struct kefir_opt_code_control_flow *control_flow,
+                                                   struct kefir_opt_code_sequencing *sequencing,
+                                                   struct kefir_opt_code_memssa *memssa,
+                                                   const struct kefir_opt_code_escape_analysis *escapes,
+                                                   const struct kefir_opt_instruction *instr,
+                                                   kefir_bool_t *did_replace) {
     UNUSED(control_flow);
     *did_replace = false;
     kefir_opt_instruction_ref_t instr_ref = instr->id;
@@ -345,8 +343,7 @@ static kefir_result_t do_optimize_nonvolatile_load(
 
         REQUIRE_OK(kefir_opt_code_builder_to_int(mem, &func->code, instr->block_id, replacement_ref, &replacement_ref));
         REQUIRE_OK(kefir_opt_code_container_instr(&func->code, instr_ref, &instr));
-        REQUIRE_OK(kefir_opt_code_util_extend_load_value(mem, &func->code, module->ir_module, instr, replacement_ref,
-                                                         &replacement_ref));
+        REQUIRE_OK(kefir_opt_code_util_extend_load_value(mem, &func->code, instr, replacement_ref, &replacement_ref));
     } else {
         REQUIRE((instr->operation.opcode == KEFIR_OPT_OPCODE_INT128_LOAD &&
                  clobber_instr->operation.opcode == KEFIR_OPT_OPCODE_INT128_STORE) ||
@@ -913,8 +910,8 @@ static kefir_result_t do_optimize(struct kefir_mem *mem, struct kefir_opt_module
                 case KEFIR_OPT_OPCODE_DECIMAL128_LOAD:
                     if (!instr->operation.parameters.memory_access.flags.volatile_access) {
                         kefir_bool_t did_replace = false;
-                        REQUIRE_OK(do_optimize_nonvolatile_load(mem, module, func, control_flow, sequencing, memssa,
-                                                                escapes, instr, &did_replace));
+                        REQUIRE_OK(do_optimize_nonvolatile_load(mem, func, control_flow, sequencing, memssa, escapes,
+                                                                instr, &did_replace));
                         if (!did_replace) {
                             REQUIRE_OK(do_deduplicate_nonvolatile_load(mem, module, func, control_flow, sequencing,
                                                                        memssa, escapes, instr));
