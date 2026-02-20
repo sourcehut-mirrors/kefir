@@ -225,7 +225,12 @@ static kefir_result_t mem2reg_push_link_frame(struct mem2reg_state *state, kefir
     return KEFIR_OK;
 }
 
-static kefir_result_t classify_use_opcode(const struct kefir_opt_instruction *use_instr, kefir_uint64_t *type) {
+kefir_result_t kefir_opt_code_util_mem2reg_classify_opcode(const struct kefir_opt_instruction *use_instr,
+                                                           kefir_uint64_t *type) {
+    REQUIRE(use_instr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer instruction"));
+    REQUIRE(type != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to mem2reg instruction classification"));
+
     switch (use_instr->operation.opcode) {
         case KEFIR_OPT_OPCODE_INT8_LOAD:
         case KEFIR_OPT_OPCODE_INT16_LOAD:
@@ -308,7 +313,7 @@ static kefir_result_t mem2reg_assign_placeholder_value(struct mem2reg_state *sta
                                                        kefir_opt_instruction_ref_t *instr_ref) {
     kefir_uint64_t type = 0;
     if (use_instr != NULL) {
-        REQUIRE_OK(classify_use_opcode(use_instr, &type));
+        REQUIRE_OK(kefir_opt_code_util_mem2reg_classify_opcode(use_instr, &type));
     } else {
         kefir_hashtable_value_t table_value;
         REQUIRE_OK(
@@ -632,7 +637,7 @@ static kefir_result_t mem2reg_scan_candidate(struct mem2reg_state *state, kefir_
         REQUIRE_OK(kefir_opt_code_container_instr(state->code, use_iter.use_instr_ref, &use_instr));
 
         kefir_uint64_t type = 0;
-        kefir_result_t res = classify_use_opcode(use_instr, &type);
+        kefir_result_t res = kefir_opt_code_util_mem2reg_classify_opcode(use_instr, &type);
         if (res != KEFIR_NO_MATCH) {
             REQUIRE_OK(res);
             kefir_hashtable_value_t *table_value_ptr;
