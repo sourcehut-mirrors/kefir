@@ -106,6 +106,13 @@ kefir_result_t kefir_codegen_target_ir_amd64_transform_dead_code_elimination(
                     continue;
                 }
 
+                struct kefir_codegen_target_ir_code_attribute_iterator attr_iter;
+                if (kefir_codegen_target_ir_code_instruction_attribute_iter(code, &attr_iter, instr_ref, NULL) !=
+                    KEFIR_ITERATOR_END) {
+                    instr_ref = kefir_codegen_target_ir_code_control_next(code, instr_ref);
+                    continue;
+                }
+
                 struct kefir_codegen_target_ir_use_iterator use_iter;
                 kefir_bool_t has_uses =
                     kefir_codegen_target_ir_code_use_iter(code, &use_iter, instr_ref, NULL, NULL) != KEFIR_ITERATOR_END;
