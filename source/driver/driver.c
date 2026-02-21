@@ -46,6 +46,7 @@
     "constant-fold," \
     "op-simplify," \
     "memory-ssa," \
+    "sroa," \
     "gvn," \
     "licm," \
     "gvn," \

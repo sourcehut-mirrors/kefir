@@ -664,6 +664,12 @@ Wherever possible, substitue phi nodes of SSA representation by actual reference
 .It Ar mem2reg
 Pull function local variables into registers
 .\"
+.It Ar memory-ssa
+Perform memory SSA-based optimizations for store-load, load-load, store-store sequences.
+.\"
+.It Ar sroa
+Perfrom limited scalar replacement of non-escaping aggregates.
+.\"
 .It Ar op-simplify
 General code simplification
 .\"
