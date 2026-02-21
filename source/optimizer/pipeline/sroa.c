@@ -32,6 +32,7 @@
 struct sroa_state {
     struct kefir_opt_code_container *code;
     struct kefir_opt_code_debug_info *debug_info;
+    const struct kefir_ir_module *ir_module;
     struct kefir_opt_code_control_flow control_flow;
     struct kefir_opt_code_escape_analysis escapes;
 
@@ -61,6 +62,30 @@ static kefir_result_t sroa_scan_candidate(struct kefir_mem *mem, struct sroa_sta
         res = KEFIR_OK;
     }
     REQUIRE_OK(res);
+
+    if (candidate_instr->operation.opcode == KEFIR_OPT_OPCODE_ZERO_MEMORY) {
+        const struct kefir_opt_instruction *location_instr;
+        REQUIRE_OK(kefir_opt_code_container_instr(state->code, candidate_instr->operation.parameters.refs[0],
+                                                  &location_instr));
+
+        REQUIRE(location_instr->operation.opcode == KEFIR_OPT_OPCODE_ALLOC_LOCAL,
+                KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to match sroa candidate"));
+
+        const struct kefir_ir_type *location_type, *zero_type;
+        location_type =
+            kefir_ir_module_get_named_type(state->ir_module, location_instr->operation.parameters.type.type_id);
+        zero_type =
+            kefir_ir_module_get_named_type(state->ir_module, candidate_instr->operation.parameters.type.type_id);
+        REQUIRE(location_type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to find IR type"));
+        REQUIRE(zero_type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to find IR type"));
+
+        kefir_bool_t same_type;
+        REQUIRE_OK(kefir_ir_type_same(location_type, location_instr->operation.parameters.type.type_index, zero_type,
+                                      candidate_instr->operation.parameters.type.type_index, &same_type));
+        REQUIRE(same_type, KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to match sroa candidate"));
+
+        return KEFIR_OK;
+    }
 
     kefir_uint64_t candidate_type;
     REQUIRE_OK(kefir_opt_code_util_mem2reg_classify_opcode(candidate_instr, &candidate_type));
@@ -167,6 +192,13 @@ static kefir_result_t sroa_scan(struct kefir_mem *mem, struct sroa_state *state,
                 REQUIRE_OK(sroa_scan_candidate(mem, state, use_iter.use_instr_ref));
                 break;
 
+            case KEFIR_OPT_OPCODE_ZERO_MEMORY:
+                REQUIRE_OK(
+                    kefir_opt_code_instruction_is_control_flow(state->code, use_iter.use_instr_ref, &is_control_flow));
+                REQUIRE(is_control_flow, KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to match sroa candidate"));
+                REQUIRE_OK(sroa_scan_candidate(mem, state, use_iter.use_instr_ref));
+                break;
+
             default:
                 return KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to match sroa candidate");
         }
@@ -191,6 +223,9 @@ static kefir_result_t sroa_prepare_locations(struct kefir_mem *mem, struct sroa_
 
         const struct kefir_opt_instruction *candidate_instr, *location_instr, *alloc_instr;
         REQUIRE_OK(kefir_opt_code_container_instr(state->code, candidate_ref, &candidate_instr));
+        if (candidate_instr->operation.opcode == KEFIR_OPT_OPCODE_ZERO_MEMORY) {
+            continue;
+        }
         REQUIRE_OK(kefir_opt_code_container_instr(state->code, candidate_instr->operation.parameters.refs[0],
                                                   &location_instr));
 
@@ -264,8 +299,8 @@ static kefir_result_t sroa_impl(struct kefir_mem *mem, struct sroa_state *state)
         }
     }
 
-    REQUIRE_OK(kefir_opt_code_util_mem2reg_apply(mem, state->code, state->debug_info, &state->control_flow,
-                                                 &state->candidates));
+    REQUIRE_OK(kefir_opt_code_util_mem2reg_apply(mem, state->code, state->debug_info, state->ir_module,
+                                                 &state->control_flow, &state->candidates));
     return KEFIR_OK;
 }
 
@@ -278,7 +313,7 @@ static kefir_result_t sroa_apply(struct kefir_mem *mem, struct kefir_opt_module 
     REQUIRE(module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer module"));
     REQUIRE(func != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer function"));
 
-    struct sroa_state state = {.code = &func->code, .debug_info = &func->debug_info};
+    struct sroa_state state = {.code = &func->code, .debug_info = &func->debug_info, .ir_module = module->ir_module};
     REQUIRE_OK(kefir_opt_code_control_flow_init(&state.control_flow));
     REQUIRE_OK(kefir_opt_code_escape_analysis_init(&state.escapes));
     REQUIRE_OK(kefir_hashtable_init(&state.candidate_accesses, &kefir_hashtable_uint_ops));

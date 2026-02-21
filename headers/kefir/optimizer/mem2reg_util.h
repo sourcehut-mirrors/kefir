@@ -24,6 +24,7 @@
 #include "kefir/optimizer/code.h"
 #include "kefir/optimizer/debug.h"
 #include "kefir/optimizer/control_flow.h"
+#include "kefir/ir/module.h"
 
 kefir_result_t kefir_opt_code_util_extend_load_value(struct kefir_mem *, struct kefir_opt_code_container *,
                                                      const struct kefir_opt_instruction *, kefir_opt_instruction_ref_t,
@@ -32,7 +33,7 @@ kefir_result_t kefir_opt_code_util_extend_load_value(struct kefir_mem *, struct 
 kefir_result_t kefir_opt_code_util_mem2reg_classify_opcode(const struct kefir_opt_instruction *, kefir_uint64_t *);
 
 kefir_result_t kefir_opt_code_util_mem2reg_apply(struct kefir_mem *, struct kefir_opt_code_container *,
-                                                 struct kefir_opt_code_debug_info *,
+                                                 struct kefir_opt_code_debug_info *, const struct kefir_ir_module *,
                                                  const struct kefir_opt_code_control_flow *,
                                                  const struct kefir_hashset *);
 

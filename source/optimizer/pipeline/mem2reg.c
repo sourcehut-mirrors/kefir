@@ -303,8 +303,8 @@ static kefir_result_t mem2reg_apply(struct kefir_mem *mem, struct kefir_opt_modu
 
     kefir_result_t res = kefir_opt_code_control_flow_build(mem, &control_flow, &func->code);
     REQUIRE_CHAIN(&res, mem2reg_scan(mem, &func->code, &control_flow, module->ir_module, &candidates));
-    REQUIRE_CHAIN(&res,
-                  kefir_opt_code_util_mem2reg_apply(mem, &func->code, &func->debug_info, &control_flow, &candidates));
+    REQUIRE_CHAIN(&res, kefir_opt_code_util_mem2reg_apply(mem, &func->code, &func->debug_info, module->ir_module,
+                                                          &control_flow, &candidates));
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_opt_code_control_flow_free(mem, &control_flow);
         kefir_hashset_free(mem, &candidates);

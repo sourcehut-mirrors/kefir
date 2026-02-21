@@ -30,8 +30,7 @@ int test1(int x, int y) {
 }
 
 int test2(int x, int y) {
-    int arr[100] = {0};
-    arr[50] = x;
+    int arr[100] = {[50] = x};
     for (int i = 0; i < y; i++)
         arr[90] += arr[50];
     return arr[90];
@@ -69,9 +68,7 @@ int test5(int x, int y) {
 int test6(int x, int y) {
     struct point {
         int x, y;
-    } p;
-    p.x = y;
-    p.y = x;
+    } p = {y, x};
     for (int i = 0; i < 10; i++)
         p.x ^= p.y;
     return (-p.x) ^ p.y;
@@ -81,8 +78,7 @@ int test7(int x, int y) {
     union {
         int x;
         int y[1];
-    } p;
-    p.x = -y;
+    } p = {-y};
     p.y[0] ^= x;
     for (int i = 0; i < 10; i++)
         p.x ^= 0xc0c0;
