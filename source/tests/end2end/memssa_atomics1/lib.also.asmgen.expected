@@ -1,0 +1,110 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global test1
+.type test1, @function
+.global test2
+.type test2, @function
+.global test3
+.type test3, @function
+.global test4
+.type test4, @function
+.global test5
+.type test5, @function
+.global test6
+.type test6, @function
+.global test7
+.type test7, @function
+
+.section .text
+.L__kefir_text_section_begin:
+test1:
+.L__kefir_text_func_test1_begin:
+    movl (%rdi), %eax
+    lock     orq $0, (%rsp)
+    movl (%rdi), %ecx
+    add %ecx, %eax
+    ret
+.L__kefir_text_func_test1_end:
+
+test2:
+.L__kefir_text_func_test2_begin:
+    movl (%rdi), %eax
+    lock     orq $0, (%rsp)
+    movl (%rdi), %ecx
+    add %ecx, %eax
+    ret
+.L__kefir_text_func_test2_end:
+
+test3:
+.L__kefir_text_func_test3_begin:
+    movl (%rdi), %eax
+    lea __kefir_function_test3_static_z_10(%rip), %rcx
+    mov $1, %edx
+    xchgl %edx, (%rcx)
+    movl (%rdi), %ecx
+    add %ecx, %eax
+    ret
+.L__kefir_text_func_test3_end:
+
+test4:
+.L__kefir_text_func_test4_begin:
+    movl (%rdi), %eax
+    lea __kefir_function_test4_static_z_16(%rip), %rcx
+    mov $1, %edx
+    xchgl %edx, (%rcx)
+    movl (%rdi), %ecx
+    add %ecx, %eax
+    ret
+.L__kefir_text_func_test4_end:
+
+test5:
+.L__kefir_text_func_test5_begin:
+    movl (%rdi), %eax
+    movl (%rdi), %ecx
+    add %ecx, %eax
+    ret
+.L__kefir_text_func_test5_end:
+
+test6:
+.L__kefir_text_func_test6_begin:
+    movl (%rdi), %eax
+    movl (%rdi), %ecx
+    add %ecx, %eax
+    ret
+.L__kefir_text_func_test6_end:
+
+test7:
+.L__kefir_text_func_test7_begin:
+    movl (%rdi), %ecx
+    lea __kefir_function_test7_static_z_34(%rip), %rdx
+    mov %ecx, %eax
+    lock     xaddl %eax, (%rdx)
+    movl (%rdi), %eax
+    add %ecx, %eax
+    ret
+.L__kefir_text_func_test7_end:
+
+.L__kefir_text_section_end:
+
+.section .bss
+    .align 4
+__kefir_function_test3_static_z_10:
+    .skip 4
+
+    .align 4
+__kefir_function_test4_static_z_16:
+    .skip 4
+
+    .align 4
+__kefir_function_test5_static_z_23:
+    .skip 4
+
+    .align 4
+__kefir_function_test6_static_z_28:
+    .skip 4
+
+    .align 4
+__kefir_function_test7_static_z_34:
+    .skip 4
+
