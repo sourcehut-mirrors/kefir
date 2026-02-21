@@ -35,6 +35,12 @@
 kefir_result_t kefir_opt_code_util_classify_memory_access(const struct kefir_opt_instruction *instr,
                                                           kefir_opt_instruction_ref_t *location_ptr,
                                                           kefir_size_t *size_ptr, kefir_int64_t *offset_ptr) {
+    REQUIRE(instr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer instruction"));
+    REQUIRE(location_ptr != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to optimizer instruction reference"));
+    REQUIRE(size_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to size"));
+    REQUIRE(offset_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to offset"));
+
     *offset_ptr = 0;
     switch (instr->operation.opcode) {
         case KEFIR_OPT_OPCODE_INT8_LOAD:

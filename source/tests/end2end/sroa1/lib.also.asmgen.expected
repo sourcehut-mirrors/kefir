@@ -203,20 +203,17 @@ test9:
 
 test10:
 .L__kefir_text_func_test10_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $16, %rsp
     xor %eax, %eax
+    xor %ecx, %ecx
 .L__kefir_func_test10_label2:
+    lea 1(%eax), %edx
     cmp $10, %eax
-    jl .L__kefir_func_test10_label4
-    movd -4(%rbp), %xmm0
-    lea (%rbp), %rsp
-    pop %rbp
+    jl .L__kefir_func_test10_label7
+    movq %rcx, %xmm0
     ret
-.L__kefir_func_test10_label4:
-    movl %edi, -4(%rbp)
-    add $1, %eax
+.L__kefir_func_test10_label7:
+    mov %edx, %eax
+    mov %rdi, %rcx
     jmp .L__kefir_func_test10_label2
 .L__kefir_text_func_test10_end:
 

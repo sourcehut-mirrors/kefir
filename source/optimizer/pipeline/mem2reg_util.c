@@ -307,6 +307,13 @@ kefir_result_t kefir_opt_code_util_mem2reg_classify_opcode(const struct kefir_op
     return KEFIR_OK;
 }
 
+kefir_bool_t kefir_opt_code_util_mem2reg_compare_classification(kefir_uint64_t c1, kefir_uint64_t c2) {
+    return true || c1 == c2 || (((kefir_uint32_t) c1) == CANDIDATE_INT && ((kefir_uint32_t) c2) == CANDIDATE_FLOAT32) ||
+           (((kefir_uint32_t) c1) == CANDIDATE_INT && ((kefir_uint32_t) c2) == CANDIDATE_FLOAT64) ||
+           (((kefir_uint32_t) c2) == CANDIDATE_INT && ((kefir_uint32_t) c1) == CANDIDATE_FLOAT32) ||
+           (((kefir_uint32_t) c2) == CANDIDATE_INT && ((kefir_uint32_t) c1) == CANDIDATE_FLOAT64);
+}
+
 static kefir_result_t mem2reg_assign_placeholder_value(struct mem2reg_state *state,
                                                        kefir_opt_instruction_ref_t original_instr_ref,
                                                        kefir_opt_block_id_t source_block_ref,

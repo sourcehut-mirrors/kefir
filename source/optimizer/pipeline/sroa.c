@@ -41,10 +41,6 @@ struct sroa_state {
     struct kefir_hashset candidates;
 };
 
-kefir_result_t kefir_opt_code_util_classify_memory_access(const struct kefir_opt_instruction *,
-                                                          kefir_opt_instruction_ref_t *, kefir_size_t *,
-                                                          kefir_int64_t *);
-
 static kefir_result_t sroa_scan_candidate(struct kefir_mem *mem, struct sroa_state *state,
                                           kefir_opt_instruction_ref_t candidate_ref) {
     const struct kefir_opt_instruction *candidate_instr;
@@ -120,7 +116,9 @@ static kefir_result_t sroa_scan_candidate(struct kefir_mem *mem, struct sroa_sta
         REQUIRE_OK(kefir_opt_code_must_alias(state->code, location1_ref, size1, offset1, location2_ref, size2, offset2,
                                              &must_alias));
 
-        if (may_alias && (!table_value || !must_alias || size1 != size2 || candidate_type != current_candidate_type)) {
+        if (may_alias &&
+            (!table_value || !must_alias || size1 != size2 ||
+             !kefir_opt_code_util_mem2reg_compare_classification(candidate_type, current_candidate_type))) {
             valid_candidate = false;
 
             kefir_hashtree_value_t *value_ptr;
