@@ -37,8 +37,8 @@ int main(void) {
         assert(test2(&(volatile int) {i}) == i + i);
         assert(test3((_Atomic int *) &(int) {i}) == i + i);
         assert(test4(i) == fn(i) * fn(-i) + fn(i));
-        assert(test5(i) == global1 * fn(i) + global1);
-        assert(test6(i) == global1 * i + global1);
+        assert(test5(i) == (int) (global1 * (long) fn(i) + global1));
+        assert(test6(i) == (int) (global1 * (long) i + global1));
         assert(test7((_Atomic int *) &(int) {i}) == global1 + i + global1);
         assert(test8((_Atomic int *) &(int) {i}) == fn(1000) + i + fn(1000));
         assert(test9(&(int) {i}) == (i ? i + i : -1));
