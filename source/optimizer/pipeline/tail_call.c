@@ -262,6 +262,19 @@ static kefir_result_t block_tail_call_apply(struct kefir_mem *mem, const struct 
     const struct kefir_opt_call_node *call_node;
     REQUIRE_OK(kefir_opt_code_container_call(&func->code, call_ref, &call_node));
 
+    if (kefir_ir_type_length(func->ir_func->declaration->result) > 0) {
+        const struct kefir_ir_function_decl *call_func_decl =
+            kefir_ir_module_get_declaration(module->ir_module, call_node->function_declaration_id);
+        REQUIRE(call_func_decl != NULL,
+                KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to retrieve IR function declaration"));
+        if (kefir_ir_type_length(call_func_decl->result) > 0) {
+            kefir_bool_t same_type;
+            REQUIRE_OK(
+                kefir_ir_type_same(call_func_decl->result, 0, func->ir_func->declaration->result, 0, &same_type));
+            REQUIRE(same_type, KEFIR_OK);
+        }
+    }
+
     kefir_opt_instruction_ref_t tail_call_instr_ref;
     REQUIRE_OK(kefir_opt_code_container_new_tail_call(
         mem, &func->code, block_id, call_node->function_declaration_id, call_node->argument_count,

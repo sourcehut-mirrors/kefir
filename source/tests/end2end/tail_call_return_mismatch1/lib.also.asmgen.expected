@@ -1,0 +1,21 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.extern conv1
+.global test1
+.type test1, @function
+
+.section .text
+.L__kefir_text_section_begin:
+test1:
+.L__kefir_text_func_test1_begin:
+    push %rbp
+    mov %rsp, %rbp
+    call conv1@PLT
+    movq %xmm0, %rax
+    pop %rbp
+    ret
+.L__kefir_text_func_test1_end:
+
+.L__kefir_text_section_end:
+
