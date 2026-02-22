@@ -479,9 +479,31 @@ static kefir_result_t resolve_value_ref(struct destructor_state *state, kefir_co
                 case KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_NA:
                     return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected amd64 target IR register allocation");
 
-                case KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_GP:
+                case KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_GP: {
+                    kefir_asm_amd64_xasmgen_register_t reg = entry.reg.value;
+                    if (variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_128BIT) {
+                        kefir_asm_amd64_xasmgen_register_t tmp_reg;
+                        REQUIRE_OK(allocate_scratch_register(state, &tmp_reg, TEMPORARY_REGISTER_SSE, NULL));
+                        REQUIRE_OK(kefir_asmcmp_amd64_movq(
+                            state->mem, state->asmcmp_ctx, kefir_asmcmp_context_instr_tail(&state->asmcmp_ctx->context),
+                            &KEFIR_ASMCMP_MAKE_PHREG(tmp_reg), &KEFIR_ASMCMP_MAKE_PHREG(reg), NULL));
+                        reg = tmp_reg;
+                    }
+                    REQUIRE_OK(match_physical_reg_variant(&reg, asmcmp_variant, asmcmp_variant_high_half));
+                    *value = KEFIR_ASMCMP_MAKE_PHREG(reg);
+                } break;
+
                 case KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_SSE: {
                     kefir_asm_amd64_xasmgen_register_t reg = entry.reg.value;
+                    if (variant != KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT &&
+                        variant != KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_128BIT) {
+                        kefir_asm_amd64_xasmgen_register_t tmp_reg;
+                        REQUIRE_OK(allocate_scratch_register(state, &tmp_reg, TEMPORARY_REGISTER_GP, NULL));
+                        REQUIRE_OK(kefir_asmcmp_amd64_movq(
+                            state->mem, state->asmcmp_ctx, kefir_asmcmp_context_instr_tail(&state->asmcmp_ctx->context),
+                            &KEFIR_ASMCMP_MAKE_PHREG(tmp_reg), &KEFIR_ASMCMP_MAKE_PHREG(reg), NULL));
+                        reg = tmp_reg;
+                    }
                     REQUIRE_OK(match_physical_reg_variant(&reg, asmcmp_variant, asmcmp_variant_high_half));
                     *value = KEFIR_ASMCMP_MAKE_PHREG(reg);
                 } break;
@@ -2210,23 +2232,24 @@ static kefir_result_t translate_instruction(struct destructor_state *state,
             asmcmp_instrs[0].args[0].internal_label = target_block_state->asmcmp_label;
             asmcmp_instrs[0].args[0].segment.present = false;
 
-            const struct kefir_codegen_target_ir_block_schedule *current_block_schedule, *target_block_schedule, *alternative_block_schedule;
+            const struct kefir_codegen_target_ir_block_schedule *current_block_schedule, *target_block_schedule,
+                *alternative_block_schedule;
             REQUIRE_OK(kefir_codegen_target_ir_code_schedule_of_block(&state->schedule, instr->block_ref,
                                                                       &current_block_schedule));
             REQUIRE_OK(kefir_codegen_target_ir_code_schedule_of_block(
                 &state->schedule, alternative_block_state->block_ref, &alternative_block_schedule));
-            REQUIRE_OK(kefir_codegen_target_ir_code_schedule_of_block(
-                &state->schedule, target_block_state->block_ref, &target_block_schedule));
+            REQUIRE_OK(kefir_codegen_target_ir_code_schedule_of_block(&state->schedule, target_block_state->block_ref,
+                                                                      &target_block_schedule));
 
             if (current_block_schedule->linear_position + 1 == target_block_schedule->linear_position) {
                 kefir_bool_t invert = false;
                 switch (asmcmp_instrs[0].opcode) {
-#define INVERT(_opcode, _opcode2) \
-                    case KEFIR_ASMCMP_AMD64_OPCODE(_opcode): \
-                        asmcmp_instrs[0].opcode = KEFIR_ASMCMP_AMD64_OPCODE(_opcode2); \
-                        asmcmp_instrs[0].args[0].internal_label = alternative_block_state->asmcmp_label; \
-                        invert = true; \
-                        break
+#define INVERT(_opcode, _opcode2)                                                        \
+    case KEFIR_ASMCMP_AMD64_OPCODE(_opcode):                                             \
+        asmcmp_instrs[0].opcode = KEFIR_ASMCMP_AMD64_OPCODE(_opcode2);                   \
+        asmcmp_instrs[0].args[0].internal_label = alternative_block_state->asmcmp_label; \
+        invert = true;                                                                   \
+        break
 
                     INVERT(jz, jnz);
                     INVERT(jnz, jz);
@@ -2256,8 +2279,8 @@ static kefir_result_t translate_instruction(struct destructor_state *state,
 
                 if (invert) {
                     REQUIRE_OK(kefir_asmcmp_context_instr_insert_after(
-                        state->mem, &state->asmcmp_ctx->context, kefir_asmcmp_context_instr_tail(&state->asmcmp_ctx->context),
-                        &asmcmp_instrs[0], NULL));
+                        state->mem, &state->asmcmp_ctx->context,
+                        kefir_asmcmp_context_instr_tail(&state->asmcmp_ctx->context), &asmcmp_instrs[0], NULL));
                     return KEFIR_OK;
                 }
             }
