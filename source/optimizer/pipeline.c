@@ -53,6 +53,7 @@ kefir_result_t kefir_optimizer_pass_resolve(const char *name, const struct kefir
     PASS(Lowering);
     PASS(GlobalValueNumbering);
     PASS(LoopInvariantCodeMotion);
+    PASS(LoopRemoval);
     PASS(MemorySSA);
     PASS(SROA);
 #undef PASS

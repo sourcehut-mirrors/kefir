@@ -72,6 +72,7 @@ DECLARE_PASS(DeadAlloc);
 DECLARE_PASS(Lowering);
 DECLARE_PASS(GlobalValueNumbering);
 DECLARE_PASS(LoopInvariantCodeMotion);
+DECLARE_PASS(LoopRemoval);
 DECLARE_PASS(MemorySSA);
 DECLARE_PASS(SROA);
 #undef DECLARE_PASS

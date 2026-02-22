@@ -58,6 +58,7 @@
     "op-simplify," \
     "constant-fold," \
     "phi-removal," \
+    "loop-removal," \
     "merge-blocks," \
     "dead-code-elimination," \
     "tail-calls"
