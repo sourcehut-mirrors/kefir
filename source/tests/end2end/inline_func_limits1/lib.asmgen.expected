@@ -14,7 +14,7 @@ main:
     movq A@GOTPCREL(%rip), %rax
     movl (%rax), %eax
     movq A@GOTPCREL(%rip), %rcx
-    add $-236, %eax
+    sub $236, %eax
     movl %eax, (%rcx)
     mov $1000, %edi
     call test1

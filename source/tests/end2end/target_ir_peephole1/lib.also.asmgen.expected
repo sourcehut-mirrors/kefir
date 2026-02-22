@@ -9,6 +9,7 @@
 test1:
 .L__kefir_text_func_test1_begin:
     movabs $4294967287, %rax
+    or $24375, %rax
     movq %rax, (%rdi)
     ret
 .L__kefir_text_func_test1_end:

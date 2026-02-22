@@ -1466,7 +1466,7 @@ test_dec128_grid_init:
     mov %rsi, %rbx
     mov %rdi, %r12
     movq %rbx, (%r12)
-    movdqu .L__kefir_func_test_dec128_grid_init_label8(%rip), %xmm0
+    movdqu .L__kefir_func_test_dec128_grid_init_label5(%rip), %xmm0
     movdqu %xmm0, -48(%rbp)
     lea 1(%rbx), %rdi
     call __bid_floatunsditd@PLT
@@ -1475,7 +1475,7 @@ test_dec128_grid_init:
     call __bid_divtd3@PLT
     movaps %xmm0, %xmm1
     movdqu %xmm1, 16(%r12)
-    movdqu .L__kefir_func_test_dec128_grid_init_label9(%rip), %xmm0
+    movdqu .L__kefir_func_test_dec128_grid_init_label6(%rip), %xmm0
     movdqu %xmm0, -32(%rbp)
     movaps %xmm1, %xmm0
     call __bid_multd3@PLT
@@ -1496,33 +1496,31 @@ test_dec128_grid_init:
     xor %edx, %edx
     test %rcx, %rcx
     sete %dl
-    jnz .L__kefir_func_test_dec128_grid_init_label6
-.L__kefir_func_test_dec128_grid_init_label3:
+    xor %esi, %esi
+    test %rax, %rax
+    sete %sil
+    test %rcx, %rcx
+    cmovnz %rsi, %rdx
     test %edx, %edx
-    jnz .L__kefir_func_test_dec128_grid_init_label5
+    jnz .L__kefir_func_test_dec128_grid_init_label3
     lea -16(%rbp), %rsp
     pop %r12
     pop %rbx
     pop %rbp
     ret
-.L__kefir_func_test_dec128_grid_init_label5:
+.L__kefir_func_test_dec128_grid_init_label3:
     lea -16(%rbp), %rsp
     pop %r12
     pop %rbx
     pop %rbp
     jmp abort@PLT
-.L__kefir_func_test_dec128_grid_init_label6:
-    xor %edx, %edx
-    test %rax, %rax
-    sete %dl
-    jmp .L__kefir_func_test_dec128_grid_init_label3
 .L__kefir_text_func_test_dec128_grid_init_end:
 .section .rodata
     .align 16
-.L__kefir_func_test_dec128_grid_init_label8:
+.L__kefir_func_test_dec128_grid_init_label5:
     .quad 1, 3476778912330022912
     .align 16
-.L__kefir_func_test_dec128_grid_init_label9:
+.L__kefir_func_test_dec128_grid_init_label6:
     .quad 1, 3476778912330022912
 .section .text
 
@@ -1934,7 +1932,7 @@ test_dec32_grid_init:
     mov %rsi, %rbx
     mov %rdi, %r12
     movq %rbx, (%r12)
-    movd .L__kefir_func_test_dec32_grid_init_label8(%rip), %xmm0
+    movd .L__kefir_func_test_dec32_grid_init_label5(%rip), %xmm0
     movd %xmm0, -48(%rbp)
     lea 1(%rbx), %rdi
     call __bid_floatunsdisd@PLT
@@ -1943,7 +1941,7 @@ test_dec32_grid_init:
     call __bid_divsd3@PLT
     movaps %xmm0, %xmm1
     movd %xmm1, 8(%r12)
-    movd .L__kefir_func_test_dec32_grid_init_label9(%rip), %xmm0
+    movd .L__kefir_func_test_dec32_grid_init_label6(%rip), %xmm0
     movd %xmm0, -32(%rbp)
     movaps %xmm1, %xmm0
     call __bid_mulsd3@PLT
@@ -1964,33 +1962,31 @@ test_dec32_grid_init:
     xor %edx, %edx
     test %rcx, %rcx
     sete %dl
-    jnz .L__kefir_func_test_dec32_grid_init_label6
-.L__kefir_func_test_dec32_grid_init_label3:
+    xor %esi, %esi
+    test %rax, %rax
+    sete %sil
+    test %rcx, %rcx
+    cmovnz %rsi, %rdx
     test %edx, %edx
-    jnz .L__kefir_func_test_dec32_grid_init_label5
+    jnz .L__kefir_func_test_dec32_grid_init_label3
     lea -16(%rbp), %rsp
     pop %r12
     pop %rbx
     pop %rbp
     ret
-.L__kefir_func_test_dec32_grid_init_label5:
+.L__kefir_func_test_dec32_grid_init_label3:
     lea -16(%rbp), %rsp
     pop %r12
     pop %rbx
     pop %rbp
     jmp abort@PLT
-.L__kefir_func_test_dec32_grid_init_label6:
-    xor %edx, %edx
-    test %rax, %rax
-    sete %dl
-    jmp .L__kefir_func_test_dec32_grid_init_label3
 .L__kefir_text_func_test_dec32_grid_init_end:
 .section .rodata
     .align 4
-.L__kefir_func_test_dec32_grid_init_label8:
+.L__kefir_func_test_dec32_grid_init_label5:
     .long 847249409
     .align 4
-.L__kefir_func_test_dec32_grid_init_label9:
+.L__kefir_func_test_dec32_grid_init_label6:
     .long 847249409
 .section .text
 
@@ -2023,7 +2019,7 @@ test_dec64_grid_init:
     mov %rsi, %rbx
     mov %rdi, %r12
     movq %rbx, (%r12)
-    movq .L__kefir_func_test_dec64_grid_init_label8(%rip), %xmm0
+    movq .L__kefir_func_test_dec64_grid_init_label5(%rip), %xmm0
     movq %xmm0, -48(%rbp)
     lea 1(%rbx), %rdi
     call __bid_floatunsdidd@PLT
@@ -2032,7 +2028,7 @@ test_dec64_grid_init:
     call __bid_divdd3@PLT
     movaps %xmm0, %xmm1
     movq %xmm1, 8(%r12)
-    movq .L__kefir_func_test_dec64_grid_init_label9(%rip), %xmm0
+    movq .L__kefir_func_test_dec64_grid_init_label6(%rip), %xmm0
     movq %xmm0, -32(%rbp)
     movaps %xmm1, %xmm0
     call __bid_muldd3@PLT
@@ -2053,33 +2049,31 @@ test_dec64_grid_init:
     xor %edx, %edx
     test %rcx, %rcx
     sete %dl
-    jnz .L__kefir_func_test_dec64_grid_init_label6
-.L__kefir_func_test_dec64_grid_init_label3:
+    xor %esi, %esi
+    test %rax, %rax
+    sete %sil
+    test %rcx, %rcx
+    cmovnz %rsi, %rdx
     test %edx, %edx
-    jnz .L__kefir_func_test_dec64_grid_init_label5
+    jnz .L__kefir_func_test_dec64_grid_init_label3
     lea -16(%rbp), %rsp
     pop %r12
     pop %rbx
     pop %rbp
     ret
-.L__kefir_func_test_dec64_grid_init_label5:
+.L__kefir_func_test_dec64_grid_init_label3:
     lea -16(%rbp), %rsp
     pop %r12
     pop %rbx
     pop %rbp
     jmp abort@PLT
-.L__kefir_func_test_dec64_grid_init_label6:
-    xor %edx, %edx
-    test %rax, %rax
-    sete %dl
-    jmp .L__kefir_func_test_dec64_grid_init_label3
 .L__kefir_text_func_test_dec64_grid_init_end:
 .section .rodata
     .align 8
-.L__kefir_func_test_dec64_grid_init_label8:
+.L__kefir_func_test_dec64_grid_init_label5:
     .quad 3584865303386914817
     .align 8
-.L__kefir_func_test_dec64_grid_init_label9:
+.L__kefir_func_test_dec64_grid_init_label6:
     .quad 3584865303386914817
 .section .text
 

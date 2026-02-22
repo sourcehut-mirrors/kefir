@@ -27,10 +27,8 @@ test1:
     xor %edi, %edi
     call dummy@PLT
     lea 1(%ebx), %eax
-    lea 1(%ebx), %ecx
-    add %ecx, %eax
-    shl $1, %ebx
-    imul $-1, %ebx, %ecx
+    add %eax, %eax
+    imul $-2, %ebx, %ecx
     add %ecx, %eax
     lea -8(%rbp), %rsp
     pop %rbx
@@ -49,8 +47,7 @@ test2:
     movl %edi, -12(%rbp)
     lea 1(%edi), %eax
     movl %eax, -8(%rbp)
-    shl $1, %edi
-    imul $-1, %edi, %eax
+    imul $-2, %edi, %eax
     movl %eax, -4(%rbp)
     lea -12(%rbp), %rdi
     call dummy@PLT
@@ -76,10 +73,8 @@ test3:
     xor %edi, %edi
     call dummy@PLT
     lea 1(%ebx), %eax
-    lea 1(%ebx), %ecx
-    add %ecx, %eax
-    shl $1, %ebx
-    imul $-1, %ebx, %ecx
+    add %eax, %eax
+    imul $-2, %ebx, %ecx
     add %ecx, %eax
     lea -8(%rbp), %rsp
     pop %rbx
@@ -95,8 +90,7 @@ test4:
     movl %edi, -12(%rbp)
     lea 1(%edi), %eax
     movl %eax, -8(%rbp)
-    shl $1, %edi
-    imul $-1, %edi, %eax
+    imul $-2, %edi, %eax
     movl %eax, -4(%rbp)
     lea -12(%rbp), %rdi
     call dummy@PLT
@@ -152,14 +146,10 @@ test6:
     call dummy@PLT
     lea 1(%ebx), %eax
     movl %eax, -16(%rbp)
-    mov %rbx, %rcx
-    shl $1, %ecx
-    imul $-1, %ecx, %ecx
+    imul $-2, %ebx, %ecx
     movl %ecx, -12(%rbp)
-    add $1, %ebx
-    movl %ebx, -20(%rbp)
-    add %eax, %ebx
-    mov %ebx, %eax
+    movl %eax, -20(%rbp)
+    add %eax, %eax
     add %ecx, %eax
     lea -8(%rbp), %rsp
     pop %rbx

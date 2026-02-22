@@ -110,12 +110,12 @@ test_char:
     lea 1(%ecx), %edx
     movb %dl, (%rax)
     movq c3@GOTPCREL(%rip), %rax
-    shl $1, %ecx
-    movb %cl, (%rax)
-    movsx %dil, %rax
-    movsx %dl, %rdx
-    add %edx, %eax
-    movsx %cl, %rcx
+    mov %rcx, %rsi
+    shl $1, %esi
+    movb %sil, (%rax)
+    movsx %dl, %rax
+    add %eax, %ecx
+    movsx %sil, %rax
     add %ecx, %eax
     ret
 .L__kefir_text_func_test_char_end:
@@ -157,14 +157,8 @@ test_float:
     mulss %xmm2, %xmm3
     movaps %xmm3, %xmm2
     movd %xmm2, (%rax)
-    movq %xmm0, %rax
-    movq %xmm1, %rcx
-    movq %rax, %xmm0
-    movd %ecx, %xmm1
     addss %xmm1, %xmm0
-    movq %xmm2, %rax
-    movd %eax, %xmm1
-    addss %xmm1, %xmm0
+    addss %xmm2, %xmm0
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -188,12 +182,12 @@ test_short:
     lea 1(%ecx), %edx
     movw %dx, (%rax)
     movq s3@GOTPCREL(%rip), %rax
-    shl $1, %ecx
-    movw %cx, (%rax)
-    movsx %di, %rax
-    movsx %dx, %rdx
-    add %edx, %eax
-    movsx %cx, %rcx
+    mov %rcx, %rsi
+    shl $1, %esi
+    movw %si, (%rax)
+    movsx %dx, %rax
+    add %eax, %ecx
+    movsx %si, %rax
     add %ecx, %eax
     ret
 .L__kefir_text_func_test_short_end:
@@ -288,14 +282,8 @@ test_double:
     mulsd %xmm2, %xmm3
     movaps %xmm3, %xmm2
     movq %xmm2, (%rax)
-    movq %xmm0, %rax
-    movq %xmm1, %rcx
-    movq %rax, %xmm0
-    movq %rcx, %xmm1
     addsd %xmm1, %xmm0
-    movq %xmm2, %rax
-    movq %rax, %xmm1
-    addsd %xmm1, %xmm0
+    addsd %xmm2, %xmm0
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

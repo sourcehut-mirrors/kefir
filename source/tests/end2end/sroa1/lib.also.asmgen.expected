@@ -29,13 +29,16 @@ test1:
     xor %eax, %eax
     xor %ecx, %ecx
 .L__kefir_func_test1_label2:
+    lea 1(%eax), %edx
+    mov %rcx, %r8
+    add %edi, %r8d
     cmp %esi, %eax
-    jl .L__kefir_func_test1_label4
+    jl .L__kefir_func_test1_label7
     mov %rcx, %rax
     ret
-.L__kefir_func_test1_label4:
-    add $1, %eax
-    add %edi, %ecx
+.L__kefir_func_test1_label7:
+    mov %edx, %eax
+    mov %r8d, %ecx
     jmp .L__kefir_func_test1_label2
 .L__kefir_text_func_test1_end:
 
@@ -44,13 +47,16 @@ test2:
     xor %eax, %eax
     xor %ecx, %ecx
 .L__kefir_func_test2_label2:
+    lea 1(%eax), %edx
+    mov %rcx, %r8
+    add %edi, %r8d
     cmp %esi, %eax
-    jl .L__kefir_func_test2_label4
+    jl .L__kefir_func_test2_label7
     mov %rcx, %rax
     ret
-.L__kefir_func_test2_label4:
-    add $1, %eax
-    add %edi, %ecx
+.L__kefir_func_test2_label7:
+    mov %edx, %eax
+    mov %r8d, %ecx
     jmp .L__kefir_func_test2_label2
 .L__kefir_text_func_test2_end:
 
@@ -144,15 +150,18 @@ test6:
 .L__kefir_text_func_test6_begin:
     xor %eax, %eax
 .L__kefir_func_test6_label2:
+    lea 1(%eax), %ecx
+    mov %rsi, %rdx
+    xor %edi, %edx
     cmp $10, %eax
-    jl .L__kefir_func_test6_label4
+    jl .L__kefir_func_test6_label7
     neg %esi
     mov %esi, %eax
     xor %edi, %eax
     ret
-.L__kefir_func_test6_label4:
-    add $1, %eax
-    xor %edi, %esi
+.L__kefir_func_test6_label7:
+    mov %ecx, %eax
+    mov %edx, %esi
     jmp .L__kefir_func_test6_label2
 .L__kefir_text_func_test6_end:
 

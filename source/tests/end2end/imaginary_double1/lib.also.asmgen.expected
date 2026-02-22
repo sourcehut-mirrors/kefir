@@ -1957,8 +1957,8 @@ __kefir_softfloat_scalbn:
 
 __kefir_softfloat_fabs:
 .L__kefir_runtime_text_func___kefir_softfloat_fabs_begin:
-    movq %xmm0, %rax
     movabs $9223372036854775807, %rcx
+    movq %xmm0, %rax
     and %rcx, %rax
     movq %rax, %xmm0
     ret
@@ -2043,8 +2043,8 @@ __kefir_softfloat_ilogb:
     shr $63, %rcx
     cmp $0, %rcx
     jne .L__kefir_runtime_func___kefir_softfloat_ilogb_label4
-    mov %eax, %edx
     mov %rsi, %rcx
+    mov %eax, %edx
     jmp .L__kefir_runtime_func___kefir_softfloat_ilogb_label8
 .L__kefir_runtime_func___kefir_softfloat_ilogb_label12:
     movq .L__kefir_runtime_func___kefir_softfloat_ilogb_label16(%rip), %xmm0

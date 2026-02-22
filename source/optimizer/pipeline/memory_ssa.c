@@ -347,7 +347,6 @@ static kefir_result_t do_optimize_nonvolatile_load(struct kefir_mem *mem, struct
          (clobber_instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_STORE ||
           clobber_instr->operation.opcode == KEFIR_OPT_OPCODE_FLOAT64_STORE))) {
 
-        REQUIRE_OK(kefir_opt_code_builder_to_int(mem, &func->code, instr->block_id, replacement_ref, &replacement_ref));
         REQUIRE_OK(kefir_opt_code_container_instr(&func->code, instr_ref, &instr));
         REQUIRE_OK(kefir_opt_code_util_extend_load_value(mem, &func->code, instr, replacement_ref, &replacement_ref));
     } else {
