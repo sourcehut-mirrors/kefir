@@ -545,6 +545,7 @@ static kefir_result_t mem2reg_assign(struct mem2reg_state *state, struct mem2reg
                     REQUIRE_OK(mem2reg_find_link_for(
                         state, frame, instr->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_LOCATION_REF],
                         instr->block_id, instr, &link_ref));
+                    REQUIRE_OK(kefir_opt_code_container_instr(state->code, instr_ref, &instr));
                     REQUIRE_OK(
                         kefir_opt_code_util_extend_load_value(state->mem, state->code, instr, link_ref, &link_ref));
                     REQUIRE_OK(
