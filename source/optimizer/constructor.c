@@ -810,7 +810,6 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             UNARY_OP(int32_bool_not, KEFIR_IR_OPCODE_INT32_BOOL_NOT)
             UNARY_OP(int64_bool_not, KEFIR_IR_OPCODE_INT64_BOOL_NOT)
 
-            UNARY_OP(to_int, KEFIR_IR_OPCODE_TO_INT)
             UNARY_OP(int8_to_bool, KEFIR_IR_OPCODE_INT8_TO_BOOL)
             UNARY_OP(int16_to_bool, KEFIR_IR_OPCODE_INT16_TO_BOOL)
             UNARY_OP(int32_to_bool, KEFIR_IR_OPCODE_INT32_TO_BOOL)

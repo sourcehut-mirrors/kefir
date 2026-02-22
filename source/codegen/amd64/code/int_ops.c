@@ -365,31 +365,6 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(int_arithmetics)(struct kefi
     return KEFIR_OK;
 }
 
-kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(to_int)(struct kefir_mem *mem,
-                                                            struct kefir_codegen_amd64_function *function,
-                                                            const struct kefir_opt_instruction *instruction) {
-    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
-    REQUIRE(function != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid codegen amd64 function"));
-    REQUIRE(instruction != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer instruction"));
-
-    kefir_asmcmp_virtual_register_index_t arg_vreg, tmp_vreg;
-    REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, instruction->operation.parameters.refs[0], &arg_vreg));
-
-    const struct kefir_asmcmp_virtual_register *arg_virtual_reg;
-    REQUIRE_OK(kefir_asmcmp_virtual_register_get(&function->code.context, arg_vreg, &arg_virtual_reg));
-    if (arg_virtual_reg->type != KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE &&
-        arg_virtual_reg->type != KEFIR_ASMCMP_VIRTUAL_REGISTER_IMMEDIATE_INTEGER) {
-        REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
-                                                     KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &tmp_vreg));
-        REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(
-            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), tmp_vreg, arg_vreg, NULL));
-        REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, tmp_vreg));
-    } else {
-        REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, arg_vreg));
-    }
-    return KEFIR_OK;
-}
-
 #define EXTEND_OP(_op, _width)                                                                                      \
     do {                                                                                                            \
         kefir_asmcmp_virtual_register_index_t result_vreg, arg_vreg;                                                \

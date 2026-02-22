@@ -207,7 +207,6 @@ UNARY_OP(int16_bool_not);
 UNARY_OP(int32_bool_not);
 UNARY_OP(int64_bool_not);
 
-UNARY_OP(to_int);
 UNARY_OP(int8_to_bool);
 UNARY_OP(int16_to_bool);
 UNARY_OP(int32_to_bool);
