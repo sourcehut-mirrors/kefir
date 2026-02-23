@@ -55,8 +55,8 @@
     "dead-code-elimination," \
     "dead-alloc," \
     "phi-removal," \
-    "op-simplify," \
     "constant-fold," \
+    "op-simplify," \
     "phi-removal," \
     "loop-removal," \
     "merge-blocks," \

@@ -17,14 +17,13 @@ test1:
     shr $50, %rdi
     shl $50, %rsi
     shr $50, %rsi
-    mov $16382, %eax
-    imul %si, %ax
-    sub $2, %ax
-    shl $50, %rax
-    shr $50, %rax
-    xor %ecx, %ecx
-    cmp %ax, %di
-    mov %rcx, %rax
+    mov $16382, %ax
+    imul %ax, %si
+    sub $2, %si
+    shl $50, %rsi
+    shr $50, %rsi
+    xor %eax, %eax
+    cmp %si, %di
     setb %al
     ret
 .L__kefir_text_func_test1_end:
