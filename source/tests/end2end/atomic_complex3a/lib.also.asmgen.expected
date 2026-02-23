@@ -4067,14 +4067,16 @@ __kefir_softfloat_ilogbf:
 .L__kefir_runtime_func___kefir_softfloat_ilogbf_label6:
     cmp $0, %rax
     je .L__kefir_runtime_func___kefir_softfloat_ilogbf_label8
-    mov $-127, %rdx
-.L__kefir_runtime_func___kefir_softfloat_ilogbf_label11:
     mov %rax, %rcx
     shr $31, %rcx
+    mov $-127, %rdx
+.L__kefir_runtime_func___kefir_softfloat_ilogbf_label11:
     cmp $0, %rcx
     jne .L__kefir_runtime_func___kefir_softfloat_ilogbf_label4
     add $-1, %edx
     shl $1, %rax
+    mov %rax, %rcx
+    shr $31, %rcx
     jmp .L__kefir_runtime_func___kefir_softfloat_ilogbf_label11
 .L__kefir_runtime_func___kefir_softfloat_ilogbf_label8:
     movq .L__kefir_runtime_func___kefir_softfloat_ilogbf_label17(%rip), %xmm0
@@ -4161,11 +4163,11 @@ __kefir_softfloat_ilogbl:
     fstpt -80(%rbp)
     jmp .L__kefir_runtime_func___kefir_softfloat_ilogbl_label7
 .L__kefir_runtime_func___kefir_softfloat_ilogbl_label4:
-    xor %ecx, %ecx
-    mov %rcx, %rsi
-.L__kefir_runtime_func___kefir_softfloat_ilogbl_label5:
     mov %rax, %rcx
     and %rdx, %rcx
+    xor %esi, %esi
+.L__kefir_runtime_func___kefir_softfloat_ilogbl_label5:
+    test %rcx, %rcx
     jz .L__kefir_runtime_func___kefir_softfloat_ilogbl_label9
     movabs $4294950914, %rcx
     sub %esi, %ecx
@@ -4173,6 +4175,8 @@ __kefir_softfloat_ilogbl:
 .L__kefir_runtime_func___kefir_softfloat_ilogbl_label9:
     add $1, %esi
     shl $1, %rax
+    mov %rax, %rcx
+    and %rdx, %rcx
     jmp .L__kefir_runtime_func___kefir_softfloat_ilogbl_label5
 .L__kefir_runtime_func___kefir_softfloat_ilogbl_label14:
     fldt .L__kefir_runtime_func___kefir_softfloat_ilogbl_label18(%rip)
@@ -4602,18 +4606,20 @@ __kefir_softfloat_ilogb:
     pop %rbp
     ret
 .L__kefir_runtime_func___kefir_softfloat_ilogb_label6:
+    mov %rcx, %rax
+    shr $63, %rax
     cmp $0, %rcx
     je .L__kefir_runtime_func___kefir_softfloat_ilogb_label12
     mov $-1023, %rdx
 .L__kefir_runtime_func___kefir_softfloat_ilogb_label8:
-    lea -1(%edx), %eax
-    mov %rcx, %rsi
-    shl $1, %rsi
-    shr $63, %rcx
-    cmp $0, %rcx
+    lea -1(%edx), %esi
+    shl $1, %rcx
+    mov %rcx, %rdi
+    shr $63, %rdi
+    cmp $0, %rax
     jne .L__kefir_runtime_func___kefir_softfloat_ilogb_label4
-    mov %rsi, %rcx
-    mov %eax, %edx
+    mov %esi, %edx
+    mov %rdi, %rax
     jmp .L__kefir_runtime_func___kefir_softfloat_ilogb_label8
 .L__kefir_runtime_func___kefir_softfloat_ilogb_label12:
     movq .L__kefir_runtime_func___kefir_softfloat_ilogb_label16(%rip), %xmm0

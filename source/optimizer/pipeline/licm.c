@@ -41,6 +41,8 @@ struct licm_state {
     struct kefir_list traversal_queue;
     kefir_bool_t all_inputs_processed;
     kefir_bool_t all_inputs_nonlocal;
+    kefir_opt_instruction_ref_t phi_input;
+    struct kefir_hashset skip_phi_uses;
 };
 
 static kefir_result_t all_inputs_processed(kefir_opt_instruction_ref_t instr_ref, void *payload) {
@@ -239,6 +241,164 @@ static kefir_result_t do_hoist(struct licm_state *state, kefir_opt_block_id_t lo
     return KEFIR_OK;
 }
 
+static kefir_result_t all_inputs_phi_or_nonlocal(kefir_opt_instruction_ref_t instr_ref, void *payload) {
+    ASSIGN_DECL_CAST(struct licm_state *, state, payload);
+    REQUIRE(state != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid LICM state"));
+
+    const struct kefir_opt_instruction *instr;
+    REQUIRE_OK(kefir_opt_code_container_instr(&state->func->code, instr_ref, &instr));
+
+    if (instr->operation.opcode == KEFIR_OPT_OPCODE_PHI && instr->block_id == state->loop->loop_entry_block_id &&
+        state->phi_input == KEFIR_ID_NONE) {
+        state->phi_input = instr->id;
+        return KEFIR_OK;
+    }
+
+    const kefir_bool_t loop_local =
+        kefir_hashtreeset_has(&state->loop->loop_blocks, (kefir_hashtreeset_entry_t) instr->block_id);
+    if (loop_local) {
+        state->all_inputs_nonlocal = false;
+    }
+    return KEFIR_OK;
+}
+
+static kefir_result_t distribute_over_phi(struct licm_state *state, kefir_opt_instruction_ref_t phi_instr_ref,
+                                          kefir_opt_instruction_ref_t instr_ref, kefir_bool_t *fixpoint_reached) {
+    const struct kefir_opt_instruction *phi_instr;
+    REQUIRE_OK(kefir_opt_code_container_instr(&state->func->code, phi_instr_ref, &phi_instr));
+
+    kefir_opt_instruction_ref_t new_phi_instr_ref = KEFIR_ID_NONE;
+
+    kefir_result_t res;
+    struct kefir_opt_phi_node_link_iterator link_iter;
+    kefir_opt_block_id_t link_block_id;
+    kefir_opt_instruction_ref_t link_instr_ref;
+    for (res = kefir_opt_phi_node_link_iter(&state->func->code, phi_instr_ref, &link_iter, &link_block_id,
+                                            &link_instr_ref);
+         res == KEFIR_OK; res = kefir_opt_phi_node_link_next(&link_iter, &link_block_id, &link_instr_ref)) {
+
+        if (new_phi_instr_ref == KEFIR_ID_NONE) {
+            REQUIRE_OK(kefir_opt_code_container_new_phi(state->mem, &state->func->code,
+                                                        state->loop->loop_entry_block_id, &new_phi_instr_ref));
+        }
+
+        kefir_opt_instruction_ref_t copy_instr_ref;
+        REQUIRE_OK(kefir_opt_code_container_copy_instruction(state->mem, &state->func->code, link_block_id, instr_ref,
+                                                             &copy_instr_ref));
+        REQUIRE_OK(kefir_opt_code_container_replace_references_in(state->mem, &state->func->code, copy_instr_ref,
+                                                                  link_instr_ref, phi_instr_ref));
+        REQUIRE_OK(kefir_opt_code_container_phi_attach(state->mem, &state->func->code, new_phi_instr_ref, link_block_id,
+                                                       copy_instr_ref));
+        REQUIRE_OK(kefir_hashset_add(state->mem, &state->skip_phi_uses, (kefir_hashset_key_t) copy_instr_ref));
+        *fixpoint_reached = false;
+    }
+    if (res != KEFIR_ITERATOR_END) {
+        REQUIRE_OK(res);
+    }
+
+    if (new_phi_instr_ref != KEFIR_ID_NONE) {
+        REQUIRE_OK(
+            kefir_opt_code_container_replace_references(state->mem, &state->func->code, new_phi_instr_ref, instr_ref));
+        REQUIRE_OK(kefir_opt_code_container_drop_instr(state->mem, &state->func->code, instr_ref));
+    }
+    return KEFIR_OK;
+}
+
+static kefir_result_t has_transitive_use(struct licm_state *state, kefir_size_t depth, kefir_opt_block_id_t block_ref,
+                                         kefir_opt_instruction_ref_t instr_ref, kefir_opt_instruction_ref_t search_ref,
+                                         kefir_bool_t *has_use) {
+    REQUIRE(depth > 0, KEFIR_OK);
+
+    struct kefir_opt_instruction_use_iterator use_iter;
+    kefir_result_t res;
+    for (res = kefir_opt_code_container_instruction_use_instr_iter(&state->func->code, instr_ref, &use_iter);
+         res == KEFIR_OK; res = kefir_opt_code_container_instruction_use_next(&use_iter)) {
+
+        const struct kefir_opt_instruction *use_instr;
+        REQUIRE_OK(kefir_opt_code_container_instr(&state->func->code, use_iter.use_instr_ref, &use_instr));
+
+        if (use_iter.use_instr_ref == search_ref) {
+            *has_use = true;
+            return KEFIR_OK;
+        } else if (use_instr->block_id != block_ref) {
+            continue;
+        }
+
+        REQUIRE_OK(has_transitive_use(state, depth - 1, block_ref, use_iter.use_instr_ref, search_ref, has_use));
+        REQUIRE(!*has_use, KEFIR_OK);
+    }
+    return KEFIR_OK;
+}
+
+static kefir_result_t distribute_condition_dependencies_over_phis(struct licm_state *state) {
+    kefir_bool_t fixpoint_reached = false;
+
+    kefir_opt_instruction_ref_t entry_tail_ref;
+    REQUIRE_OK(
+        kefir_opt_code_block_instr_control_tail(&state->func->code, state->loop->loop_entry_block_id, &entry_tail_ref));
+
+    REQUIRE_OK(kefir_hashset_clear(state->mem, &state->skip_phi_uses));
+    for (; !fixpoint_reached;) {
+        fixpoint_reached = true;
+
+        kefir_result_t res;
+        kefir_opt_instruction_ref_t phi_instr_ref;
+        for (res = kefir_opt_code_block_phi_head(&state->func->code, state->loop->loop_entry_block_id, &phi_instr_ref);
+             res == KEFIR_OK && phi_instr_ref != KEFIR_ID_NONE;
+             res = kefir_opt_phi_next_sibling(&state->func->code, phi_instr_ref, &phi_instr_ref)) {
+
+            struct kefir_opt_instruction_use_iterator use_iter;
+            kefir_result_t res;
+            for (res =
+                     kefir_opt_code_container_instruction_use_instr_iter(&state->func->code, phi_instr_ref, &use_iter);
+                 res == KEFIR_OK; res = kefir_opt_code_container_instruction_use_next(&use_iter)) {
+                if (kefir_hashset_has(&state->skip_phi_uses, (kefir_hashset_key_t) use_iter.use_instr_ref)) {
+                    continue;
+                }
+                const struct kefir_opt_instruction *use_instr;
+                REQUIRE_OK(kefir_opt_code_container_instr(&state->func->code, use_iter.use_instr_ref, &use_instr));
+
+                if (use_instr->block_id != state->loop->loop_entry_block_id ||
+                    use_instr->operation.opcode == KEFIR_OPT_OPCODE_PHI) {
+                    continue;
+                }
+
+                kefir_bool_t side_effect_free, control_flow;
+                REQUIRE_OK(kefir_opt_instruction_is_side_effect_free(use_instr, &side_effect_free));
+                REQUIRE_OK(kefir_opt_code_instruction_is_control_flow(&state->func->code, use_iter.use_instr_ref,
+                                                                      &control_flow));
+                if (!side_effect_free || control_flow) {
+                    continue;
+                }
+
+                kefir_bool_t transitive_uses = false;
+                REQUIRE_OK(has_transitive_use(state, 32, state->loop->loop_entry_block_id, use_iter.use_instr_ref,
+                                              entry_tail_ref, &transitive_uses));
+                if (!transitive_uses) {
+                    continue;
+                }
+
+                state->all_inputs_nonlocal = true;
+                state->phi_input = KEFIR_ID_NONE;
+                REQUIRE_OK(kefir_opt_instruction_extract_inputs(&state->func->code, use_instr, false,
+                                                                all_inputs_phi_or_nonlocal, state));
+
+                if (state->all_inputs_nonlocal && state->phi_input != KEFIR_ID_NONE) {
+                    REQUIRE_OK(distribute_over_phi(state, state->phi_input, use_iter.use_instr_ref, &fixpoint_reached));
+                    break;
+                }
+            }
+            if (res != KEFIR_ITERATOR_END) {
+                REQUIRE_OK(res);
+            }
+        }
+        if (res != KEFIR_ITERATOR_END) {
+            REQUIRE_OK(res);
+        }
+    }
+    return KEFIR_OK;
+}
+
 static kefir_result_t process_loop(struct licm_state *state) {
     REQUIRE(state->loop->loop_entry_block_id != state->control_flow.code->entry_point &&
                 state->loop->loop_entry_block_id != state->control_flow.code->gate_block &&
@@ -358,6 +518,7 @@ static kefir_result_t process_loop(struct licm_state *state) {
         REQUIRE_OK(res);
     }
 
+    REQUIRE_OK(distribute_condition_dependencies_over_phis(state));
     return KEFIR_OK;
 }
 
@@ -405,6 +566,7 @@ static kefir_result_t loop_invariant_code_motion_apply(struct kefir_mem *mem, st
     REQUIRE_OK(kefir_hashtreeset_init(&state.hoist_candidates, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtreeset_init(&state.traversal_queue_index, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_list_init(&state.traversal_queue));
+    REQUIRE_OK(kefir_hashset_init(&state.skip_phi_uses, &kefir_hashtable_uint_ops));
     REQUIRE_OK(kefir_opt_code_control_flow_init(&state.control_flow));
     REQUIRE_OK(kefir_opt_code_loop_collection_init(&state.loops));
 
@@ -412,6 +574,7 @@ static kefir_result_t loop_invariant_code_motion_apply(struct kefir_mem *mem, st
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_opt_code_loop_collection_free(mem, &state.loops);
         kefir_opt_code_control_flow_free(mem, &state.control_flow);
+        kefir_hashset_free(mem, &state.skip_phi_uses);
         kefir_list_free(mem, &state.traversal_queue);
         kefir_hashtreeset_free(mem, &state.hoist_candidates);
         kefir_hashtreeset_free(mem, &state.traversal_queue_index);
@@ -421,6 +584,7 @@ static kefir_result_t loop_invariant_code_motion_apply(struct kefir_mem *mem, st
     res = kefir_opt_code_loop_collection_free(mem, &state.loops);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_opt_code_control_flow_free(mem, &state.control_flow);
+        kefir_hashset_free(mem, &state.skip_phi_uses);
         kefir_list_free(mem, &state.traversal_queue);
         kefir_hashtreeset_free(mem, &state.hoist_candidates);
         kefir_hashtreeset_free(mem, &state.traversal_queue_index);
@@ -428,6 +592,15 @@ static kefir_result_t loop_invariant_code_motion_apply(struct kefir_mem *mem, st
         return res;
     });
     res = kefir_opt_code_control_flow_free(mem, &state.control_flow);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_hashset_free(mem, &state.skip_phi_uses);
+        kefir_list_free(mem, &state.traversal_queue);
+        kefir_hashtreeset_free(mem, &state.traversal_queue_index);
+        kefir_hashtreeset_free(mem, &state.hoist_candidates);
+        kefir_hashtreeset_free(mem, &state.processed_instr);
+        return res;
+    });
+    res = kefir_hashset_free(mem, &state.skip_phi_uses);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_list_free(mem, &state.traversal_queue);
         kefir_hashtreeset_free(mem, &state.traversal_queue_index);

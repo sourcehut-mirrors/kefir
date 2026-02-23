@@ -18,6 +18,10 @@
 .type test7, @function
 .global test8
 .type test8, @function
+.global test9
+.type test9, @function
+.global test10
+.type test10, @function
 
 .section .text
 .L__kefir_text_section_begin:
@@ -94,6 +98,20 @@ test8:
     call fn1@PLT
     jmp .L__kefir_func_test8_label1
 .L__kefir_text_func_test8_end:
+
+test9:
+.L__kefir_text_func_test9_begin:
+    push %rbp
+    mov %rsp, %rbp
+.L__kefir_func_test9_label1:
+    call fn1@PLT
+    jmp .L__kefir_func_test9_label1
+.L__kefir_text_func_test9_end:
+
+test10:
+.L__kefir_text_func_test10_begin:
+    ret
+.L__kefir_text_func_test10_end:
 
 .L__kefir_text_section_end:
 

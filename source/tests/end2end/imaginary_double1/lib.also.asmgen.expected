@@ -2033,18 +2033,20 @@ __kefir_softfloat_ilogb:
     pop %rbp
     ret
 .L__kefir_runtime_func___kefir_softfloat_ilogb_label6:
+    mov %rcx, %rax
+    shr $63, %rax
     cmp $0, %rcx
     je .L__kefir_runtime_func___kefir_softfloat_ilogb_label12
     mov $-1023, %rdx
 .L__kefir_runtime_func___kefir_softfloat_ilogb_label8:
-    lea -1(%edx), %eax
-    mov %rcx, %rsi
-    shl $1, %rsi
-    shr $63, %rcx
-    cmp $0, %rcx
+    lea -1(%edx), %esi
+    shl $1, %rcx
+    mov %rcx, %rdi
+    shr $63, %rdi
+    cmp $0, %rax
     jne .L__kefir_runtime_func___kefir_softfloat_ilogb_label4
-    mov %rsi, %rcx
-    mov %eax, %edx
+    mov %esi, %edx
+    mov %rdi, %rax
     jmp .L__kefir_runtime_func___kefir_softfloat_ilogb_label8
 .L__kefir_runtime_func___kefir_softfloat_ilogb_label12:
     movq .L__kefir_runtime_func___kefir_softfloat_ilogb_label16(%rip), %xmm0

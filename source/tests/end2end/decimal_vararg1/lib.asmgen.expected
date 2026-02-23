@@ -46,8 +46,9 @@ sum32:
     lea -224(%rbp), %rax
     movq %rax, -32(%rbp)
     movd .L__kefir_func_sum32_label12(%rip), %xmm0
+    lea -1(%edi), %eax
+    mov %eax, %ebx
 .L__kefir_func_sum32_label4:
-    lea -1(%edi), %ebx
     test %edi, %edi
     jnz .L__kefir_func_sum32_label6
     ldmxcsr -16(%rbp)
@@ -65,7 +66,9 @@ sum32:
     movdqu -16(%rax), %xmm1
 .L__kefir_func_sum32_label9:
     call __bid_addsd3@PLT
-    mov %ebx, %edi
+    lea -1(%ebx), %eax
+    mov %rbx, %rdi
+    mov %eax, %ebx
     jmp .L__kefir_func_sum32_label4
 .L__kefir_func_sum32_label8:
     mov -40(%rbp), %rax
@@ -111,8 +114,9 @@ sum64:
     lea -224(%rbp), %rax
     movq %rax, -32(%rbp)
     movq .L__kefir_func_sum64_label12(%rip), %xmm0
+    lea -1(%edi), %eax
+    mov %eax, %ebx
 .L__kefir_func_sum64_label4:
-    lea -1(%edi), %ebx
     test %edi, %edi
     jnz .L__kefir_func_sum64_label6
     ldmxcsr -16(%rbp)
@@ -130,7 +134,9 @@ sum64:
     movdqu -16(%rax), %xmm1
 .L__kefir_func_sum64_label9:
     call __bid_adddd3@PLT
-    mov %ebx, %edi
+    lea -1(%ebx), %eax
+    mov %rbx, %rdi
+    mov %eax, %ebx
     jmp .L__kefir_func_sum64_label4
 .L__kefir_func_sum64_label8:
     mov -40(%rbp), %rax
@@ -176,8 +182,9 @@ sum128:
     lea -224(%rbp), %rax
     movq %rax, -32(%rbp)
     movdqu .L__kefir_func_sum128_label12(%rip), %xmm0
+    lea -1(%edi), %eax
+    mov %eax, %ebx
 .L__kefir_func_sum128_label4:
-    lea -1(%edi), %ebx
     test %edi, %edi
     jnz .L__kefir_func_sum128_label6
     ldmxcsr -16(%rbp)
@@ -195,7 +202,9 @@ sum128:
     movdqu -16(%rax), %xmm1
 .L__kefir_func_sum128_label9:
     call __bid_addtd3@PLT
-    mov %ebx, %edi
+    lea -1(%ebx), %eax
+    mov %rbx, %rdi
+    mov %eax, %ebx
     jmp .L__kefir_func_sum128_label4
 .L__kefir_func_sum128_label8:
     mov -40(%rbp), %rax
@@ -243,8 +252,9 @@ sum128_2:
     lea -224(%rbp), %rax
     movq %rax, -32(%rbp)
     movdqu .L__kefir_func_sum128_2_label15(%rip), %xmm0
+    lea -1(%edi), %eax
+    mov %eax, %ebx
 .L__kefir_func_sum128_2_label4:
-    lea -1(%edi), %ebx
     test %edi, %edi
     jnz .L__kefir_func_sum128_2_label6
     ldmxcsr -16(%rbp)
@@ -270,7 +280,9 @@ sum128_2:
     movdqu -16(%rax), %xmm2
 .L__kefir_func_sum128_2_label12:
     call __bid_addtd3@PLT
-    mov %ebx, %edi
+    lea -1(%ebx), %eax
+    mov %rbx, %rdi
+    mov %eax, %ebx
     jmp .L__kefir_func_sum128_2_label4
 .L__kefir_func_sum128_2_label11:
     mov -40(%rbp), %rax

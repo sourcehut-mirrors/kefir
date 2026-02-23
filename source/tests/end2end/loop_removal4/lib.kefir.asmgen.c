@@ -61,3 +61,15 @@ void test8(void) {
         fn1();
     }
 }
+
+void test9(void) {
+    for (int i = 0; ~i; i = 0) {
+        fn1();
+    }
+}
+
+void test10(void) {
+    for (int i = ~0u; ~i; i = 0) {
+        fn1();
+    }
+}

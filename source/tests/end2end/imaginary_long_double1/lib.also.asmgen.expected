@@ -2529,11 +2529,11 @@ __kefir_softfloat_ilogbl:
     fstpt -80(%rbp)
     jmp .L__kefir_runtime_func___kefir_softfloat_ilogbl_label7
 .L__kefir_runtime_func___kefir_softfloat_ilogbl_label4:
-    xor %ecx, %ecx
-    mov %rcx, %rsi
-.L__kefir_runtime_func___kefir_softfloat_ilogbl_label5:
     mov %rax, %rcx
     and %rdx, %rcx
+    xor %esi, %esi
+.L__kefir_runtime_func___kefir_softfloat_ilogbl_label5:
+    test %rcx, %rcx
     jz .L__kefir_runtime_func___kefir_softfloat_ilogbl_label9
     movabs $4294950914, %rcx
     sub %esi, %ecx
@@ -2541,6 +2541,8 @@ __kefir_softfloat_ilogbl:
 .L__kefir_runtime_func___kefir_softfloat_ilogbl_label9:
     add $1, %esi
     shl $1, %rax
+    mov %rax, %rcx
+    and %rdx, %rcx
     jmp .L__kefir_runtime_func___kefir_softfloat_ilogbl_label5
 .L__kefir_runtime_func___kefir_softfloat_ilogbl_label14:
     fldt .L__kefir_runtime_func___kefir_softfloat_ilogbl_label18(%rip)
