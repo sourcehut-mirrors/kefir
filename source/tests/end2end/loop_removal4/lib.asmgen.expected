@@ -1,0 +1,99 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.extern fn1
+.global test1
+.type test1, @function
+.global test2
+.type test2, @function
+.global test3
+.type test3, @function
+.global test4
+.type test4, @function
+.global test5
+.type test5, @function
+.global test6
+.type test6, @function
+.global test7
+.type test7, @function
+.global test8
+.type test8, @function
+
+.section .text
+.L__kefir_text_section_begin:
+test1:
+.L__kefir_text_func_test1_begin:
+.L__kefir_func_test1_label1:
+    jmp .L__kefir_func_test1_label1
+.L__kefir_text_func_test1_end:
+
+test2:
+.L__kefir_text_func_test2_begin:
+    ret
+.L__kefir_text_func_test2_end:
+
+test3:
+.L__kefir_text_func_test3_begin:
+    push %rbp
+    mov %rsp, %rbp
+.L__kefir_func_test3_label1:
+    call fn1@PLT
+    test %eax, %eax
+    jnz .L__kefir_func_test3_label1
+    pop %rbp
+    ret
+.L__kefir_text_func_test3_end:
+
+test4:
+.L__kefir_text_func_test4_begin:
+    push %rbp
+    mov %rsp, %rbp
+    mov $1, %eax
+.L__kefir_func_test4_label2:
+    test %eax, %eax
+    jnz .L__kefir_func_test4_label4
+    pop %rbp
+    ret
+.L__kefir_func_test4_label4:
+    call fn1@PLT
+    xor %eax, %eax
+    jmp .L__kefir_func_test4_label2
+.L__kefir_text_func_test4_end:
+
+test5:
+.L__kefir_text_func_test5_begin:
+    ret
+.L__kefir_text_func_test5_end:
+
+test6:
+.L__kefir_text_func_test6_begin:
+    ret
+.L__kefir_text_func_test6_end:
+
+test7:
+.L__kefir_text_func_test7_begin:
+    push %rbp
+    mov %rsp, %rbp
+    xor %eax, %eax
+.L__kefir_func_test7_label2:
+    test %eax, %eax
+    jz .L__kefir_func_test7_label4
+    pop %rbp
+    ret
+.L__kefir_func_test7_label4:
+    call fn1@PLT
+    mov $1, %eax
+    jmp .L__kefir_func_test7_label2
+.L__kefir_text_func_test7_end:
+
+test8:
+.L__kefir_text_func_test8_begin:
+    push %rbp
+    mov %rsp, %rbp
+.L__kefir_func_test8_label1:
+    call fn1@PLT
+    jmp .L__kefir_func_test8_label1
+.L__kefir_text_func_test8_end:
+
+.L__kefir_text_section_end:
+

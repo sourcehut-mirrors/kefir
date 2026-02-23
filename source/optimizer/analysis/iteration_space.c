@@ -34,341 +34,37 @@ static kefir_result_t match_branch_compare(const struct kefir_opt_code_container
     kefir_bool_t signed_comparison = false;
     kefir_bool_t inclusive = false;
     switch (entry_tail->operation.parameters.branch.comparison.operation) {
-        case KEFIR_OPT_COMPARISON_INT8_BELOW:
-            REQUIRE(kefir_hashtreeset_has(&loop->loop_blocks, entry_tail->operation.parameters.branch.target_block),
-                    NO_MATCH);
-            REQUIRE(
-                !kefir_hashtreeset_has(&loop->loop_blocks, entry_tail->operation.parameters.branch.alternative_block),
-                NO_MATCH);
-            width = 8;
-            break;
+#define CASE(_cmp, _width, _reversed, _signed, _inclusive)                                                         \
+    case KEFIR_OPT_COMPARISON_INT##_width##_##_cmp:                                                                \
+        REQUIRE(kefir_hashtreeset_has(&loop->loop_blocks, entry_tail->operation.parameters.branch.target_block) == \
+                    !(_reversed),                                                                                  \
+                NO_MATCH);                                                                                         \
+        REQUIRE(kefir_hashtreeset_has(&loop->loop_blocks,                                                          \
+                                      entry_tail->operation.parameters.branch.alternative_block) == (_reversed),   \
+                NO_MATCH);                                                                                         \
+        reversed = (_reversed);                                                                                    \
+        signed_comparison = (_signed);                                                                             \
+        inclusive = (_inclusive);                                                                                  \
+        width = (_width);                                                                                          \
+        break
 
-        case KEFIR_OPT_COMPARISON_INT8_BELOW_OR_EQUALS:
-            REQUIRE(kefir_hashtreeset_has(&loop->loop_blocks, entry_tail->operation.parameters.branch.target_block),
-                    NO_MATCH);
-            REQUIRE(
-                !kefir_hashtreeset_has(&loop->loop_blocks, entry_tail->operation.parameters.branch.alternative_block),
-                NO_MATCH);
-            inclusive = true;
-            width = 8;
-            break;
+#define WIDTH_CASE(_width)                             \
+    CASE(BELOW, _width, false, false, false);          \
+    CASE(BELOW_OR_EQUALS, _width, false, false, true); \
+    CASE(LESSER, _width, false, true, false);          \
+    CASE(LESSER_OR_EQUALS, _width, false, true, true); \
+    CASE(ABOVE, _width, true, false, true);            \
+    CASE(ABOVE_OR_EQUALS, _width, true, false, false); \
+    CASE(GREATER, _width, true, true, true);           \
+    CASE(GREATER_OR_EQUALS, _width, true, true, false)
 
-        case KEFIR_OPT_COMPARISON_INT8_LESSER:
-            REQUIRE(kefir_hashtreeset_has(&loop->loop_blocks, entry_tail->operation.parameters.branch.target_block),
-                    NO_MATCH);
-            REQUIRE(
-                !kefir_hashtreeset_has(&loop->loop_blocks, entry_tail->operation.parameters.branch.alternative_block),
-                NO_MATCH);
-            signed_comparison = true;
-            width = 8;
-            break;
+        WIDTH_CASE(8);
+        WIDTH_CASE(16);
+        WIDTH_CASE(32);
+        WIDTH_CASE(64);
 
-        case KEFIR_OPT_COMPARISON_INT8_LESSER_OR_EQUALS:
-            REQUIRE(kefir_hashtreeset_has(&loop->loop_blocks, entry_tail->operation.parameters.branch.target_block),
-                    NO_MATCH);
-            REQUIRE(
-                !kefir_hashtreeset_has(&loop->loop_blocks, entry_tail->operation.parameters.branch.alternative_block),
-                NO_MATCH);
-            inclusive = true;
-            signed_comparison = true;
-            width = 8;
-            break;
-
-        case KEFIR_OPT_COMPARISON_INT8_ABOVE:
-            REQUIRE(!kefir_hashtreeset_has(&loop->loop_blocks, entry_tail->operation.parameters.branch.target_block),
-                    NO_MATCH);
-            REQUIRE(
-                kefir_hashtreeset_has(&loop->loop_blocks, entry_tail->operation.parameters.branch.alternative_block),
-                NO_MATCH);
-            width = 8;
-            reversed = true;
-            break;
-
-        case KEFIR_OPT_COMPARISON_INT8_ABOVE_OR_EQUALS:
-            REQUIRE(!kefir_hashtreeset_has(&loop->loop_blocks, entry_tail->operation.parameters.branch.target_block),
-                    NO_MATCH);
-            REQUIRE(
-                kefir_hashtreeset_has(&loop->loop_blocks, entry_tail->operation.parameters.branch.alternative_block),
-                NO_MATCH);
-            inclusive = true;
-            width = 8;
-            reversed = true;
-            break;
-
-        case KEFIR_OPT_COMPARISON_INT8_GREATER:
-            REQUIRE(!kefir_hashtreeset_has(&loop->loop_blocks, entry_tail->operation.parameters.branch.target_block),
-                    NO_MATCH);
-            REQUIRE(
-                kefir_hashtreeset_has(&loop->loop_blocks, entry_tail->operation.parameters.branch.alternative_block),
-                NO_MATCH);
-            signed_comparison = true;
-            width = 8;
-            reversed = true;
-            break;
-
-        case KEFIR_OPT_COMPARISON_INT8_GREATER_OR_EQUALS:
-            REQUIRE(!kefir_hashtreeset_has(&loop->loop_blocks, entry_tail->operation.parameters.branch.target_block),
-                    NO_MATCH);
-            REQUIRE(
-                kefir_hashtreeset_has(&loop->loop_blocks, entry_tail->operation.parameters.branch.alternative_block),
-                NO_MATCH);
-            inclusive = true;
-            signed_comparison = true;
-            width = 8;
-            reversed = true;
-            break;
-
-        case KEFIR_OPT_COMPARISON_INT16_BELOW:
-            REQUIRE(kefir_hashtreeset_has(&loop->loop_blocks, entry_tail->operation.parameters.branch.target_block),
-                    NO_MATCH);
-            REQUIRE(
-                !kefir_hashtreeset_has(&loop->loop_blocks, entry_tail->operation.parameters.branch.alternative_block),
-                NO_MATCH);
-            width = 16;
-            break;
-
-        case KEFIR_OPT_COMPARISON_INT16_BELOW_OR_EQUALS:
-            REQUIRE(kefir_hashtreeset_has(&loop->loop_blocks, entry_tail->operation.parameters.branch.target_block),
-                    NO_MATCH);
-            REQUIRE(
-                !kefir_hashtreeset_has(&loop->loop_blocks, entry_tail->operation.parameters.branch.alternative_block),
-                NO_MATCH);
-            inclusive = true;
-            width = 16;
-            break;
-
-        case KEFIR_OPT_COMPARISON_INT16_LESSER:
-            REQUIRE(kefir_hashtreeset_has(&loop->loop_blocks, entry_tail->operation.parameters.branch.target_block),
-                    NO_MATCH);
-            REQUIRE(
-                !kefir_hashtreeset_has(&loop->loop_blocks, entry_tail->operation.parameters.branch.alternative_block),
-                NO_MATCH);
-            signed_comparison = true;
-            width = 16;
-            break;
-
-        case KEFIR_OPT_COMPARISON_INT16_LESSER_OR_EQUALS:
-            REQUIRE(kefir_hashtreeset_has(&loop->loop_blocks, entry_tail->operation.parameters.branch.target_block),
-                    NO_MATCH);
-            REQUIRE(
-                !kefir_hashtreeset_has(&loop->loop_blocks, entry_tail->operation.parameters.branch.alternative_block),
-                NO_MATCH);
-            inclusive = true;
-            signed_comparison = true;
-            width = 16;
-            break;
-
-        case KEFIR_OPT_COMPARISON_INT16_ABOVE:
-            REQUIRE(!kefir_hashtreeset_has(&loop->loop_blocks, entry_tail->operation.parameters.branch.target_block),
-                    NO_MATCH);
-            REQUIRE(
-                kefir_hashtreeset_has(&loop->loop_blocks, entry_tail->operation.parameters.branch.alternative_block),
-                NO_MATCH);
-            width = 16;
-            reversed = true;
-            break;
-
-        case KEFIR_OPT_COMPARISON_INT16_ABOVE_OR_EQUALS:
-            REQUIRE(!kefir_hashtreeset_has(&loop->loop_blocks, entry_tail->operation.parameters.branch.target_block),
-                    NO_MATCH);
-            REQUIRE(
-                kefir_hashtreeset_has(&loop->loop_blocks, entry_tail->operation.parameters.branch.alternative_block),
-                NO_MATCH);
-            inclusive = true;
-            width = 16;
-            reversed = true;
-            break;
-
-        case KEFIR_OPT_COMPARISON_INT16_GREATER:
-            REQUIRE(!kefir_hashtreeset_has(&loop->loop_blocks, entry_tail->operation.parameters.branch.target_block),
-                    NO_MATCH);
-            REQUIRE(
-                kefir_hashtreeset_has(&loop->loop_blocks, entry_tail->operation.parameters.branch.alternative_block),
-                NO_MATCH);
-            signed_comparison = true;
-            width = 16;
-            reversed = true;
-            break;
-
-        case KEFIR_OPT_COMPARISON_INT16_GREATER_OR_EQUALS:
-            REQUIRE(!kefir_hashtreeset_has(&loop->loop_blocks, entry_tail->operation.parameters.branch.target_block),
-                    NO_MATCH);
-            REQUIRE(
-                kefir_hashtreeset_has(&loop->loop_blocks, entry_tail->operation.parameters.branch.alternative_block),
-                NO_MATCH);
-            inclusive = true;
-            signed_comparison = true;
-            width = 16;
-            reversed = true;
-            break;
-
-        case KEFIR_OPT_COMPARISON_INT32_BELOW:
-            REQUIRE(kefir_hashtreeset_has(&loop->loop_blocks, entry_tail->operation.parameters.branch.target_block),
-                    NO_MATCH);
-            REQUIRE(
-                !kefir_hashtreeset_has(&loop->loop_blocks, entry_tail->operation.parameters.branch.alternative_block),
-                NO_MATCH);
-            width = 32;
-            break;
-
-        case KEFIR_OPT_COMPARISON_INT32_BELOW_OR_EQUALS:
-            REQUIRE(kefir_hashtreeset_has(&loop->loop_blocks, entry_tail->operation.parameters.branch.target_block),
-                    NO_MATCH);
-            REQUIRE(
-                !kefir_hashtreeset_has(&loop->loop_blocks, entry_tail->operation.parameters.branch.alternative_block),
-                NO_MATCH);
-            inclusive = true;
-            width = 32;
-            break;
-
-        case KEFIR_OPT_COMPARISON_INT32_LESSER:
-            REQUIRE(kefir_hashtreeset_has(&loop->loop_blocks, entry_tail->operation.parameters.branch.target_block),
-                    NO_MATCH);
-            REQUIRE(
-                !kefir_hashtreeset_has(&loop->loop_blocks, entry_tail->operation.parameters.branch.alternative_block),
-                NO_MATCH);
-            signed_comparison = true;
-            width = 32;
-            break;
-
-        case KEFIR_OPT_COMPARISON_INT32_LESSER_OR_EQUALS:
-            REQUIRE(kefir_hashtreeset_has(&loop->loop_blocks, entry_tail->operation.parameters.branch.target_block),
-                    NO_MATCH);
-            REQUIRE(
-                !kefir_hashtreeset_has(&loop->loop_blocks, entry_tail->operation.parameters.branch.alternative_block),
-                NO_MATCH);
-            inclusive = true;
-            signed_comparison = true;
-            width = 32;
-            break;
-
-        case KEFIR_OPT_COMPARISON_INT32_ABOVE:
-            REQUIRE(!kefir_hashtreeset_has(&loop->loop_blocks, entry_tail->operation.parameters.branch.target_block),
-                    NO_MATCH);
-            REQUIRE(
-                kefir_hashtreeset_has(&loop->loop_blocks, entry_tail->operation.parameters.branch.alternative_block),
-                NO_MATCH);
-            width = 32;
-            reversed = true;
-            break;
-
-        case KEFIR_OPT_COMPARISON_INT32_ABOVE_OR_EQUALS:
-            REQUIRE(!kefir_hashtreeset_has(&loop->loop_blocks, entry_tail->operation.parameters.branch.target_block),
-                    NO_MATCH);
-            REQUIRE(
-                kefir_hashtreeset_has(&loop->loop_blocks, entry_tail->operation.parameters.branch.alternative_block),
-                NO_MATCH);
-            inclusive = true;
-            width = 32;
-            reversed = true;
-            break;
-
-        case KEFIR_OPT_COMPARISON_INT32_GREATER:
-            REQUIRE(!kefir_hashtreeset_has(&loop->loop_blocks, entry_tail->operation.parameters.branch.target_block),
-                    NO_MATCH);
-            REQUIRE(
-                kefir_hashtreeset_has(&loop->loop_blocks, entry_tail->operation.parameters.branch.alternative_block),
-                NO_MATCH);
-            signed_comparison = true;
-            width = 32;
-            reversed = true;
-            break;
-
-        case KEFIR_OPT_COMPARISON_INT32_GREATER_OR_EQUALS:
-            REQUIRE(!kefir_hashtreeset_has(&loop->loop_blocks, entry_tail->operation.parameters.branch.target_block),
-                    NO_MATCH);
-            REQUIRE(
-                kefir_hashtreeset_has(&loop->loop_blocks, entry_tail->operation.parameters.branch.alternative_block),
-                NO_MATCH);
-            inclusive = true;
-            signed_comparison = true;
-            width = 32;
-            reversed = true;
-            break;
-
-        case KEFIR_OPT_COMPARISON_INT64_BELOW:
-            REQUIRE(kefir_hashtreeset_has(&loop->loop_blocks, entry_tail->operation.parameters.branch.target_block),
-                    NO_MATCH);
-            REQUIRE(
-                !kefir_hashtreeset_has(&loop->loop_blocks, entry_tail->operation.parameters.branch.alternative_block),
-                NO_MATCH);
-            width = 64;
-            break;
-
-        case KEFIR_OPT_COMPARISON_INT64_BELOW_OR_EQUALS:
-            REQUIRE(kefir_hashtreeset_has(&loop->loop_blocks, entry_tail->operation.parameters.branch.target_block),
-                    NO_MATCH);
-            REQUIRE(
-                !kefir_hashtreeset_has(&loop->loop_blocks, entry_tail->operation.parameters.branch.alternative_block),
-                NO_MATCH);
-            inclusive = true;
-            width = 64;
-            break;
-
-        case KEFIR_OPT_COMPARISON_INT64_LESSER:
-            REQUIRE(kefir_hashtreeset_has(&loop->loop_blocks, entry_tail->operation.parameters.branch.target_block),
-                    NO_MATCH);
-            REQUIRE(
-                !kefir_hashtreeset_has(&loop->loop_blocks, entry_tail->operation.parameters.branch.alternative_block),
-                NO_MATCH);
-            signed_comparison = true;
-            width = 64;
-            break;
-
-        case KEFIR_OPT_COMPARISON_INT64_LESSER_OR_EQUALS:
-            REQUIRE(kefir_hashtreeset_has(&loop->loop_blocks, entry_tail->operation.parameters.branch.target_block),
-                    NO_MATCH);
-            REQUIRE(
-                !kefir_hashtreeset_has(&loop->loop_blocks, entry_tail->operation.parameters.branch.alternative_block),
-                NO_MATCH);
-            inclusive = true;
-            signed_comparison = true;
-            width = 64;
-            break;
-
-        case KEFIR_OPT_COMPARISON_INT64_ABOVE:
-            REQUIRE(!kefir_hashtreeset_has(&loop->loop_blocks, entry_tail->operation.parameters.branch.target_block),
-                    NO_MATCH);
-            REQUIRE(
-                kefir_hashtreeset_has(&loop->loop_blocks, entry_tail->operation.parameters.branch.alternative_block),
-                NO_MATCH);
-            width = 64;
-            reversed = true;
-            break;
-
-        case KEFIR_OPT_COMPARISON_INT64_ABOVE_OR_EQUALS:
-            REQUIRE(!kefir_hashtreeset_has(&loop->loop_blocks, entry_tail->operation.parameters.branch.target_block),
-                    NO_MATCH);
-            REQUIRE(
-                kefir_hashtreeset_has(&loop->loop_blocks, entry_tail->operation.parameters.branch.alternative_block),
-                NO_MATCH);
-            inclusive = true;
-            width = 64;
-            reversed = true;
-            break;
-
-        case KEFIR_OPT_COMPARISON_INT64_GREATER:
-            REQUIRE(!kefir_hashtreeset_has(&loop->loop_blocks, entry_tail->operation.parameters.branch.target_block),
-                    NO_MATCH);
-            REQUIRE(
-                kefir_hashtreeset_has(&loop->loop_blocks, entry_tail->operation.parameters.branch.alternative_block),
-                NO_MATCH);
-            signed_comparison = true;
-            width = 64;
-            reversed = true;
-            break;
-
-        case KEFIR_OPT_COMPARISON_INT64_GREATER_OR_EQUALS:
-            REQUIRE(!kefir_hashtreeset_has(&loop->loop_blocks, entry_tail->operation.parameters.branch.target_block),
-                    NO_MATCH);
-            REQUIRE(
-                kefir_hashtreeset_has(&loop->loop_blocks, entry_tail->operation.parameters.branch.alternative_block),
-                NO_MATCH);
-            inclusive = true;
-            signed_comparison = true;
-            width = 64;
-            reversed = true;
-            break;
+#undef WIDTH_CASE
+#undef CASE
 
         default:
             return NO_MATCH;
@@ -410,6 +106,7 @@ static kefir_result_t match_branch_compare(const struct kefir_opt_code_container
     }
     REQUIRE(lower_bound != NULL, NO_MATCH);
     REQUIRE(stride_op != NULL, NO_MATCH);
+    REQUIRE(kefir_hashtreeset_has(&loop->loop_blocks, stride_op->block_id), NO_MATCH);
 
     kefir_bool_t asceding = true;
     if (((stride_op->operation.opcode == KEFIR_OPT_OPCODE_INT8_ADD && width == 8) ||
@@ -422,18 +119,103 @@ static kefir_result_t match_branch_compare(const struct kefir_opt_code_container
             REQUIRE_OK(kefir_opt_code_container_instr(code, stride_op->operation.parameters.refs[0], &stride));
         }
     }
-    REQUIRE(stride != NULL, NO_MATCH);
-    REQUIRE(!kefir_hashtreeset_has(&loop->loop_blocks, stride->block_id), NO_MATCH);
+    kefir_bool_t strided = false;
+    if (stride != NULL) {
+        REQUIRE(stride != NULL, NO_MATCH);
+        if (!kefir_hashtreeset_has(&loop->loop_blocks, stride->block_id)) {
+            strided = true;
+            iteration_space->type = KEFIR_OPT_LOOP_ITERATION_SPACE_STRIDED_RANGE;
+            iteration_space->range.stride_ref = stride->id;
+        }
+    }
+    if (!strided) {
+        iteration_space->type = KEFIR_OPT_LOOP_ITERATION_SPACE_GENERAL_RANGE;
+        iteration_space->range.stride_ref = stride_op->id;
+    }
 
-    iteration_space->type = KEFIR_OPT_LOOP_ITERATION_SPACE_RANGE;
-    iteration_space->strided_range.index_ref = index->id;
-    iteration_space->strided_range.lower_bound_ref = lower_bound->id;
-    iteration_space->strided_range.upper_bound_ref = upper_bound->id;
-    iteration_space->strided_range.stride_ref = stride->id;
-    iteration_space->strided_range.ascending = asceding;
-    iteration_space->strided_range.comparison_width = width;
-    iteration_space->strided_range.signed_comparison = signed_comparison;
-    iteration_space->strided_range.inclusive = inclusive;
+    iteration_space->range.index_ref = index->id;
+    iteration_space->range.lower_bound_ref = lower_bound->id;
+    iteration_space->range.upper_bound_ref = upper_bound->id;
+    iteration_space->range.ascending = asceding;
+    iteration_space->range.comparison_width = width;
+    iteration_space->range.signed_comparison = signed_comparison;
+    iteration_space->range.inclusive = inclusive;
+    return KEFIR_OK;
+}
+
+static kefir_result_t match_branch(const struct kefir_opt_code_container *code, const struct kefir_opt_code_loop *loop,
+                                   const struct kefir_opt_instruction *entry_tail,
+                                   struct kefir_opt_loop_iteration_space *iteration_space) {
+    kefir_bool_t has_target_block =
+        kefir_hashtreeset_has(&loop->loop_blocks, entry_tail->operation.parameters.branch.target_block);
+    kefir_bool_t has_alternative_block =
+        kefir_hashtreeset_has(&loop->loop_blocks, entry_tail->operation.parameters.branch.alternative_block);
+    kefir_bool_t invert = false;
+    switch (entry_tail->operation.parameters.branch.condition_variant) {
+        case KEFIR_OPT_BRANCH_CONDITION_8BIT:
+        case KEFIR_OPT_BRANCH_CONDITION_16BIT:
+        case KEFIR_OPT_BRANCH_CONDITION_32BIT:
+        case KEFIR_OPT_BRANCH_CONDITION_64BIT:
+            if (has_target_block && !has_alternative_block) {
+                // Intentionally left blank
+            } else if (!has_target_block && has_alternative_block) {
+                invert = true;
+            } else {
+                return NO_MATCH;
+            }
+            break;
+
+        case KEFIR_OPT_BRANCH_CONDITION_NEGATED_8BIT:
+        case KEFIR_OPT_BRANCH_CONDITION_NEGATED_16BIT:
+        case KEFIR_OPT_BRANCH_CONDITION_NEGATED_32BIT:
+        case KEFIR_OPT_BRANCH_CONDITION_NEGATED_64BIT:
+            if (!has_target_block && has_alternative_block) {
+                // Intentionally left blank
+            } else if (has_target_block && !has_alternative_block) {
+                invert = true;
+            } else {
+                return NO_MATCH;
+            }
+            break;
+    }
+
+    const struct kefir_opt_instruction *cond_instr;
+    REQUIRE_OK(
+        kefir_opt_code_container_instr(code, entry_tail->operation.parameters.branch.condition_ref, &cond_instr));
+    REQUIRE(cond_instr->block_id == loop->loop_entry_block_id, NO_MATCH);
+    REQUIRE(cond_instr->operation.opcode == KEFIR_OPT_OPCODE_PHI, NO_MATCH);
+
+    const struct kefir_opt_phi_node *cond_phi;
+    REQUIRE_OK(kefir_opt_code_container_phi(code, cond_instr->operation.parameters.phi_ref, &cond_phi));
+    REQUIRE(cond_phi->number_of_links == 2, KEFIR_NO_MATCH);
+
+    const struct kefir_opt_instruction *init_instr = NULL, *next_instr = NULL;
+
+    kefir_result_t res;
+    struct kefir_opt_phi_node_link_iterator link_iter;
+    kefir_opt_block_id_t link_block_id;
+    kefir_opt_instruction_ref_t link_instr_ref;
+    for (res = kefir_opt_phi_node_link_iter(code, cond_phi->output_ref, &link_iter, &link_block_id, &link_instr_ref);
+         res == KEFIR_OK; res = kefir_opt_phi_node_link_next(&link_iter, &link_block_id, &link_instr_ref)) {
+        if (kefir_hashtreeset_has(&loop->loop_blocks, (kefir_hashtreeset_entry_t) link_block_id)) {
+            REQUIRE_OK(kefir_opt_code_container_instr(code, link_instr_ref, &next_instr));
+        } else {
+            REQUIRE_OK(kefir_opt_code_container_instr(code, link_instr_ref, &init_instr));
+        }
+    }
+    if (res != KEFIR_ITERATOR_END) {
+        REQUIRE_OK(res);
+    }
+    REQUIRE(init_instr != NULL, NO_MATCH);
+    REQUIRE(next_instr != NULL, NO_MATCH);
+    REQUIRE(!kefir_hashtreeset_has(&loop->loop_blocks, init_instr->block_id), NO_MATCH);
+
+    iteration_space->type = KEFIR_OPT_LOOP_ITERATION_SPACE_GENERAL;
+    iteration_space->general.init_ref = init_instr->id;
+    iteration_space->general.condition_ref = cond_instr->id;
+    iteration_space->general.next_ref = next_instr->id;
+    iteration_space->general.variant = entry_tail->operation.parameters.branch.condition_variant;
+    iteration_space->general.invert = invert;
     return KEFIR_OK;
 }
 
@@ -458,8 +240,121 @@ kefir_result_t kefir_opt_loop_match_iteration_space(const struct kefir_opt_code_
             REQUIRE_OK(match_branch_compare(code, loop, entry_tail, iteration_space));
             break;
 
+        case KEFIR_OPT_OPCODE_BRANCH:
+            REQUIRE_OK(match_branch(code, loop, entry_tail, iteration_space));
+            break;
+
         default:
             return NO_MATCH;
+    }
+    return KEFIR_OK;
+}
+
+#undef NO_MATCH
+
+static kefir_result_t range_may_execute(const struct kefir_opt_code_container *code,
+                                        const struct kefir_opt_loop_iteration_space *iteration_space,
+                                        kefir_bool_t *may_execute_ptr) {
+    REQUIRE(iteration_space->range.ascending, KEFIR_OK);
+
+    const struct kefir_opt_instruction *lower_bound_instr, *upper_bound_instr;
+    REQUIRE_OK(kefir_opt_code_container_instr(code, iteration_space->range.lower_bound_ref, &lower_bound_instr));
+    REQUIRE_OK(kefir_opt_code_container_instr(code, iteration_space->range.upper_bound_ref, &upper_bound_instr));
+
+    REQUIRE(lower_bound_instr->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST ||
+                lower_bound_instr->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST,
+            KEFIR_OK);
+    REQUIRE(upper_bound_instr->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST ||
+                upper_bound_instr->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST,
+            KEFIR_OK);
+
+#define CHECK(_width)                                                                                              \
+    if (iteration_space->range.comparison_width == (_width) && iteration_space->range.signed_comparison &&         \
+        iteration_space->range.inclusive) {                                                                        \
+        *may_execute_ptr = ((kefir_int##_width##_t) lower_bound_instr->operation.parameters.imm.integer) <=        \
+                           ((kefir_int##_width##_t) upper_bound_instr->operation.parameters.imm.integer);          \
+    } else if (iteration_space->range.comparison_width == (_width) && iteration_space->range.signed_comparison &&  \
+               !iteration_space->range.inclusive) {                                                                \
+        *may_execute_ptr = ((kefir_int##_width##_t) lower_bound_instr->operation.parameters.imm.integer) <         \
+                           ((kefir_int##_width##_t) upper_bound_instr->operation.parameters.imm.integer);          \
+    } else if (iteration_space->range.comparison_width == (_width) && !iteration_space->range.signed_comparison && \
+               iteration_space->range.inclusive) {                                                                 \
+        *may_execute_ptr = ((kefir_uint##_width##_t) lower_bound_instr->operation.parameters.imm.integer) <=       \
+                           ((kefir_uint##_width##_t) upper_bound_instr->operation.parameters.imm.integer);         \
+    } else if (iteration_space->range.comparison_width == (_width) && !iteration_space->range.signed_comparison && \
+               !iteration_space->range.inclusive) {                                                                \
+        *may_execute_ptr = ((kefir_uint##_width##_t) lower_bound_instr->operation.parameters.imm.integer) <        \
+                           ((kefir_uint##_width##_t) upper_bound_instr->operation.parameters.imm.integer);         \
+    }
+
+    // clang-format off
+    CHECK(8)
+    else CHECK(16)
+    else CHECK(32)
+    else CHECK(64)
+    return KEFIR_OK;
+    // clang-format on
+}
+
+static kefir_result_t general_may_execute(const struct kefir_opt_code_container *code,
+                                          const struct kefir_opt_loop_iteration_space *iteration_space,
+                                          kefir_bool_t *may_execute_ptr) {
+    const struct kefir_opt_instruction *init_instr;
+    REQUIRE_OK(kefir_opt_code_container_instr(code, iteration_space->general.init_ref, &init_instr));
+
+    REQUIRE(init_instr->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST ||
+                init_instr->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST,
+            KEFIR_OK);
+
+    kefir_bool_t init_holds = true;
+    switch (iteration_space->general.variant) {
+        case KEFIR_OPT_BRANCH_CONDITION_8BIT:
+        case KEFIR_OPT_BRANCH_CONDITION_NEGATED_8BIT:
+            init_holds = (kefir_uint8_t) init_instr->operation.parameters.imm.uinteger;
+            break;
+
+        case KEFIR_OPT_BRANCH_CONDITION_16BIT:
+        case KEFIR_OPT_BRANCH_CONDITION_NEGATED_16BIT:
+            init_holds = (kefir_uint16_t) init_instr->operation.parameters.imm.uinteger;
+            break;
+
+        case KEFIR_OPT_BRANCH_CONDITION_32BIT:
+        case KEFIR_OPT_BRANCH_CONDITION_NEGATED_32BIT:
+            init_holds = (kefir_uint32_t) init_instr->operation.parameters.imm.uinteger;
+            break;
+
+        case KEFIR_OPT_BRANCH_CONDITION_64BIT:
+        case KEFIR_OPT_BRANCH_CONDITION_NEGATED_64BIT:
+            init_holds = (kefir_uint64_t) init_instr->operation.parameters.imm.uinteger;
+            break;
+    }
+    if (iteration_space->general.invert) {
+        init_holds = !init_holds;
+    }
+
+    *may_execute_ptr = init_holds;
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_opt_loop_may_execute(const struct kefir_opt_code_container *code,
+                                          const struct kefir_opt_loop_iteration_space *iteration_space,
+                                          kefir_bool_t *may_execute_ptr) {
+    REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code"));
+    REQUIRE(iteration_space != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to optimizer iteration space"));
+    REQUIRE(may_execute_ptr != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to boolean flag"));
+
+    *may_execute_ptr = true;
+    switch (iteration_space->type) {
+        case KEFIR_OPT_LOOP_ITERATION_SPACE_STRIDED_RANGE:
+        case KEFIR_OPT_LOOP_ITERATION_SPACE_GENERAL_RANGE:
+            REQUIRE_OK(range_may_execute(code, iteration_space, may_execute_ptr));
+            break;
+
+        case KEFIR_OPT_LOOP_ITERATION_SPACE_GENERAL:
+            REQUIRE_OK(general_may_execute(code, iteration_space, may_execute_ptr));
+            break;
     }
     return KEFIR_OK;
 }

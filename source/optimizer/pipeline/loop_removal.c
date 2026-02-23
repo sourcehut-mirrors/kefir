@@ -62,15 +62,18 @@ static kefir_result_t process_loop(struct licm_state *state) {
     REQUIRE(res != KEFIR_NO_MATCH, KEFIR_OK);
     REQUIRE_OK(res);
 
+    kefir_bool_t may_execute;
+    REQUIRE_OK(kefir_opt_loop_may_execute(&state->func->code, &iteration_space, &may_execute));
+
     struct kefir_hashtreeset_iterator iter;
     for (res = kefir_hashtreeset_iter(&state->loop->loop_blocks, &iter); res == KEFIR_OK;
          res = kefir_hashtreeset_next(&iter)) {
         ASSIGN_DECL_CAST(kefir_opt_block_id_t, block_id, iter.entry);
 
-        struct kefir_hashset_iterator succ_iter;
+        struct kefir_hashset_iterator block_iter;
         kefir_hashset_key_t key;
-        for (res = kefir_hashset_iter(&state->control_flow.blocks[block_id].successors, &succ_iter, &key);
-             res == KEFIR_OK; res = kefir_hashset_next(&succ_iter, &key)) {
+        for (res = kefir_hashset_iter(&state->control_flow.blocks[block_id].successors, &block_iter, &key);
+             res == KEFIR_OK; res = kefir_hashset_next(&block_iter, &key)) {
             kefir_bool_t in_loop = kefir_hashtreeset_has(&state->loop->loop_blocks, (kefir_hashtreeset_entry_t) key);
             if (block_id == state->loop->loop_entry_block_id && exit_block_ref == KEFIR_ID_NONE && !in_loop) {
                 exit_block_ref = key;
@@ -82,38 +85,52 @@ static kefir_result_t process_loop(struct licm_state *state) {
             REQUIRE_OK(res);
         }
 
-        kefir_opt_instruction_ref_t instr_ref;
-        for (res = kefir_opt_code_block_instr_head(&state->func->code, block_id, &instr_ref);
-             res == KEFIR_OK && instr_ref != KEFIR_ID_NONE;
-             res = kefir_opt_instruction_next_sibling(&state->func->code, instr_ref, &instr_ref)) {
-            const struct kefir_opt_instruction *instr;
-            REQUIRE_OK(kefir_opt_code_container_instr(&state->func->code, instr_ref, &instr));
-
-            struct kefir_opt_instruction_use_iterator use_iter;
-            for (res = kefir_opt_code_container_instruction_use_instr_iter(&state->func->code, instr_ref, &use_iter);
-                 res == KEFIR_OK; res = kefir_opt_code_container_instruction_use_next(&use_iter)) {
-                const struct kefir_opt_instruction *use_instr;
-                REQUIRE_OK(kefir_opt_code_container_instr(&state->func->code, use_iter.use_instr_ref, &use_instr));
-                REQUIRE(
-                    kefir_hashtreeset_has(&state->loop->loop_blocks, (kefir_hashtreeset_entry_t) use_instr->block_id),
-                    KEFIR_OK);
+        if (block_id != state->loop->loop_entry_block_id) {
+            for (res = kefir_hashset_iter(&state->control_flow.blocks[block_id].predecessors, &block_iter, &key);
+                 res == KEFIR_OK; res = kefir_hashset_next(&block_iter, &key)) {
+                REQUIRE(kefir_hashtreeset_has(&state->loop->loop_blocks, (kefir_hashtreeset_entry_t) key), KEFIR_OK);
             }
             if (res != KEFIR_ITERATOR_END) {
                 REQUIRE_OK(res);
             }
-
-            if (instr->operation.opcode == KEFIR_OPT_OPCODE_PHI || instr->operation.opcode == KEFIR_OPT_OPCODE_JUMP ||
-                instr->operation.opcode == KEFIR_OPT_OPCODE_BRANCH ||
-                instr->operation.opcode == KEFIR_OPT_OPCODE_BRANCH_COMPARE) {
-                // Intentionally left blank
-            } else {
-                kefir_bool_t side_effect_free;
-                REQUIRE_OK(kefir_opt_instruction_is_side_effect_free(instr, &side_effect_free));
-                REQUIRE(side_effect_free, KEFIR_OK);
-            }
         }
-        if (res != KEFIR_ITERATOR_END) {
-            REQUIRE_OK(res);
+
+        if (may_execute) {
+            kefir_opt_instruction_ref_t instr_ref;
+            for (res = kefir_opt_code_block_instr_head(&state->func->code, block_id, &instr_ref);
+                 res == KEFIR_OK && instr_ref != KEFIR_ID_NONE;
+                 res = kefir_opt_instruction_next_sibling(&state->func->code, instr_ref, &instr_ref)) {
+                const struct kefir_opt_instruction *instr;
+                REQUIRE_OK(kefir_opt_code_container_instr(&state->func->code, instr_ref, &instr));
+
+                struct kefir_opt_instruction_use_iterator use_iter;
+                for (res =
+                         kefir_opt_code_container_instruction_use_instr_iter(&state->func->code, instr_ref, &use_iter);
+                     res == KEFIR_OK; res = kefir_opt_code_container_instruction_use_next(&use_iter)) {
+                    const struct kefir_opt_instruction *use_instr;
+                    REQUIRE_OK(kefir_opt_code_container_instr(&state->func->code, use_iter.use_instr_ref, &use_instr));
+                    REQUIRE(kefir_hashtreeset_has(&state->loop->loop_blocks,
+                                                  (kefir_hashtreeset_entry_t) use_instr->block_id),
+                            KEFIR_OK);
+                }
+                if (res != KEFIR_ITERATOR_END) {
+                    REQUIRE_OK(res);
+                }
+
+                if (instr->operation.opcode == KEFIR_OPT_OPCODE_PHI ||
+                    instr->operation.opcode == KEFIR_OPT_OPCODE_JUMP ||
+                    instr->operation.opcode == KEFIR_OPT_OPCODE_BRANCH ||
+                    instr->operation.opcode == KEFIR_OPT_OPCODE_BRANCH_COMPARE) {
+                    // Intentionally left blank
+                } else {
+                    kefir_bool_t side_effect_free;
+                    REQUIRE_OK(kefir_opt_instruction_is_side_effect_free(instr, &side_effect_free));
+                    REQUIRE(side_effect_free, KEFIR_OK);
+                }
+            }
+            if (res != KEFIR_ITERATOR_END) {
+                REQUIRE_OK(res);
+            }
         }
     }
     if (res != KEFIR_ITERATOR_END) {

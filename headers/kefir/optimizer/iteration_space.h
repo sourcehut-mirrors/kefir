@@ -24,7 +24,9 @@
 #include "kefir/optimizer/loop_nest.h"
 
 typedef enum kefir_opt_loop_iteration_space_type {
-    KEFIR_OPT_LOOP_ITERATION_SPACE_RANGE
+    KEFIR_OPT_LOOP_ITERATION_SPACE_STRIDED_RANGE,
+    KEFIR_OPT_LOOP_ITERATION_SPACE_GENERAL_RANGE,
+    KEFIR_OPT_LOOP_ITERATION_SPACE_GENERAL
 } kefir_opt_loop_iteration_space_type_t;
 
 typedef struct kefir_opt_loop_iteration_space {
@@ -39,12 +41,23 @@ typedef struct kefir_opt_loop_iteration_space {
             kefir_opt_instruction_ref_t lower_bound_ref;
             kefir_opt_instruction_ref_t stride_ref;
             kefir_opt_instruction_ref_t upper_bound_ref;
-        } strided_range;
+        } range;
+
+        struct {
+            kefir_opt_instruction_ref_t init_ref;
+            kefir_opt_instruction_ref_t condition_ref;
+            kefir_opt_instruction_ref_t next_ref;
+            kefir_opt_branch_condition_variant_t variant;
+            kefir_bool_t invert;
+        } general;
     };
 } kefir_opt_loop_iteration_space_t;
 
 kefir_result_t kefir_opt_loop_match_iteration_space(const struct kefir_opt_code_container *,
                                                     const struct kefir_opt_code_loop *,
                                                     struct kefir_opt_loop_iteration_space *);
+
+kefir_result_t kefir_opt_loop_may_execute(const struct kefir_opt_code_container *,
+                                          const struct kefir_opt_loop_iteration_space *, kefir_bool_t *);
 
 #endif
