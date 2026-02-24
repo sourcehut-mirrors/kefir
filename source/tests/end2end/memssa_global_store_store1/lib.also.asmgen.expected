@@ -50,15 +50,15 @@ test3:
     lea 1(%eax), %ecx
     mov %rsi, %rdx
     lock     cmpxchgl %ecx, (%rdx)
+    movq y@GOTPCREL(%rip), %rdi
     jnz .L__kefir_func_test3_label2
-    movq y@GOTPCREL(%rip), %rsi
-.L__kefir_func_test3_label4:
-    movl (%rsi), %eax
+.L__kefir_func_test3_label3:
+    movl (%rdi), %eax
     mov %rax, %rcx
     shl $1, %ecx
-    mov %rsi, %rdx
+    mov %rdi, %rdx
     lock     cmpxchgl %ecx, (%rdx)
-    jnz .L__kefir_func_test3_label4
+    jnz .L__kefir_func_test3_label3
     movq y@GOTPCREL(%rip), %rcx
     movl (%rcx), %eax
     movsx %eax, %rax

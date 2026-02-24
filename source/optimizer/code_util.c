@@ -837,6 +837,10 @@ kefir_result_t kefir_opt_instruction_is_side_effect_free(const struct kefir_opt_
         case KEFIR_OPT_OPCODE_BITINT_BUILTIN_CLRSB:
         case KEFIR_OPT_OPCODE_BITINT_BUILTIN_POPCOUNT:
         case KEFIR_OPT_OPCODE_BITINT_BUILTIN_PARITY:
+        case KEFIR_OPT_OPCODE_GET_GLOBAL:
+        case KEFIR_OPT_OPCODE_GET_THREAD_LOCAL:
+        case KEFIR_OPT_OPCODE_ALLOC_LOCAL:
+        case KEFIR_OPT_OPCODE_REF_LOCAL:
             *result_ptr = true;
             break;
 

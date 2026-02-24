@@ -18,8 +18,9 @@ add_ld1:
 .L__kefir_text_func_add_ld1_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $64, %rsp
-    fstcw -8(%rbp)
+    push %rbx
+    sub $56, %rsp
+    fstcw -16(%rbp)
     fldt 16(%rbp)
     movq ld1@GOTPCREL(%rip), %rsi
     fstpt -64(%rbp)
@@ -30,6 +31,7 @@ add_ld1:
     fldt -32(%rbp)
     movq $0, -40(%rbp)
     fstpt -48(%rbp)
+    movq ld1@GOTPCREL(%rip), %rbx
 .L__kefir_func_add_ld1_label2:
     fldt -48(%rbp)
     fldt -64(%rbp)
@@ -37,8 +39,8 @@ add_ld1:
     faddp
     movq $0, -24(%rbp)
     fstpt -32(%rbp)
-    movq ld1@GOTPCREL(%rip), %rsi
     mov $16, %edi
+    mov %rbx, %rsi
     lea -48(%rbp), %rdx
     lea -32(%rbp), %rcx
     mov $5, %r8d
@@ -46,8 +48,9 @@ add_ld1:
     call __atomic_compare_exchange@PLT
     test %al, %al
     jz .L__kefir_func_add_ld1_label2
-    fldcw -8(%rbp)
-    lea (%rbp), %rsp
+    fldcw -16(%rbp)
+    lea -8(%rbp), %rsp
+    pop %rbx
     pop %rbp
     ret
 .L__kefir_text_func_add_ld1_end:
@@ -57,46 +60,49 @@ add_cld1:
     push %rbp
     mov %rsp, %rbp
     push %rbx
-    sub $72, %rsp
-    fstcw -16(%rbp)
+    push %r12
+    sub $80, %rsp
+    fstcw -24(%rbp)
     lea 16(%rbp), %rbx
     movq cld1@GOTPCREL(%rip), %rsi
     mov $32, %edi
-    lea -48(%rbp), %rdx
+    lea -64(%rbp), %rdx
     mov $2, %ecx
     call __atomic_load@PLT
-    fldt -32(%rbp)
     fldt -48(%rbp)
-    movq $0, -56(%rbp)
-    fxch %st(1)
-    fstpt -64(%rbp)
-    movq $0, -72(%rbp)
-    fstpt -80(%rbp)
-.L__kefir_func_add_cld1_label2:
     fldt -64(%rbp)
+    movq $0, -72(%rbp)
+    fxch %st(1)
+    fstpt -80(%rbp)
+    movq $0, -88(%rbp)
+    fstpt -96(%rbp)
+    movq cld1@GOTPCREL(%rip), %r12
+.L__kefir_func_add_cld1_label2:
     fldt -80(%rbp)
+    fldt -96(%rbp)
     fldt 16(%rbx)
     fxch %st(1)
     fxch %st(2)
     faddp
-    movq $0, -24(%rbp)
-    fstpt -32(%rbp)
+    movq $0, -40(%rbp)
+    fstpt -48(%rbp)
     fldt (%rbx)
     fxch %st(1)
     faddp
-    movq $0, -40(%rbp)
-    fstpt -48(%rbp)
-    movq cld1@GOTPCREL(%rip), %rsi
+    movq $0, -56(%rbp)
+    fstpt -64(%rbp)
     mov $32, %edi
-    lea -80(%rbp), %rdx
-    lea -48(%rbp), %rcx
+    mov %r12, %rsi
+    lea -96(%rbp), %rdx
+    lea -64(%rbp), %rcx
     mov $5, %r8d
     mov $2, %r9d
     call __atomic_compare_exchange@PLT
     test %al, %al
     jz .L__kefir_func_add_cld1_label2
-    fldcw -16(%rbp)
-    lea -8(%rbp), %rsp
+    fldcw -24(%rbp)
+    lea -16(%rbp), %rsp
+    pop %r12
     pop %rbx
     pop %rbp
     ret
