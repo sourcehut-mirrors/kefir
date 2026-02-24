@@ -33,6 +33,8 @@ kefir_result_t kefir_opt_code_escape_analysis_free(struct kefir_mem *, struct ke
 
 kefir_result_t kefir_opt_code_escape_analysis_build(struct kefir_mem *, struct kefir_opt_code_escape_analysis *,
                                                     const struct kefir_opt_code_container *);
+kefir_result_t kefir_opt_code_escape_analysis_replace(struct kefir_mem *, struct kefir_opt_code_escape_analysis *,
+                                                      kefir_opt_instruction_ref_t, kefir_opt_instruction_ref_t);
 
 kefir_bool_t kefir_opt_code_escape_analysis_has_escapes(const struct kefir_opt_code_escape_analysis *,
                                                         kefir_opt_instruction_ref_t);

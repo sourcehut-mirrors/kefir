@@ -210,6 +210,7 @@ kefir_result_t kefir_opt_code_liveness_init(struct kefir_opt_code_liveness *live
 
     liveness->code = NULL;
     liveness->blocks = NULL;
+    liveness->num_of_blocks = 0;
     return KEFIR_OK;
 }
 
@@ -218,13 +219,29 @@ kefir_result_t kefir_opt_code_liveness_free(struct kefir_mem *mem, struct kefir_
     REQUIRE(liveness != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code liveness"));
 
     if (liveness->code != NULL) {
-        kefir_size_t num_of_blocks = kefir_opt_code_container_block_count(liveness->code);
-        for (kefir_size_t i = 0; i < num_of_blocks; i++) {
+        for (kefir_size_t i = 0; i < liveness->num_of_blocks; i++) {
             REQUIRE_OK(kefir_hashset_free(mem, &liveness->blocks[i].alive_instr));
         }
         KEFIR_FREE(mem, liveness->blocks);
         memset(liveness, 0, sizeof(struct kefir_opt_code_liveness));
     }
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_opt_code_liveness_reset(struct kefir_mem *mem, struct kefir_opt_code_liveness *liveness) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(liveness != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code liveness"));
+
+    if (liveness->code != NULL) {
+        for (kefir_size_t i = 0; i < liveness->num_of_blocks; i++) {
+            REQUIRE_OK(kefir_hashset_free(mem, &liveness->blocks[i].alive_instr));
+        }
+        KEFIR_FREE(mem, liveness->blocks);
+        memset(liveness, 0, sizeof(struct kefir_opt_code_liveness));
+    }
+    liveness->code = NULL;
+    liveness->blocks = NULL;
+    liveness->num_of_blocks = 0;
     return KEFIR_OK;
 }
 
@@ -242,11 +259,11 @@ kefir_result_t kefir_opt_code_liveness_build(struct kefir_mem *mem, struct kefir
 
     liveness->code = control_flow->code;
     kefir_result_t res;
-    kefir_size_t num_of_blocks = kefir_opt_code_container_block_count(liveness->code);
-    liveness->blocks = KEFIR_MALLOC(mem, sizeof(struct kefir_opt_code_liveness_block) * num_of_blocks);
+    liveness->num_of_blocks = kefir_opt_code_container_block_count(liveness->code);
+    liveness->blocks = KEFIR_MALLOC(mem, sizeof(struct kefir_opt_code_liveness_block) * liveness->num_of_blocks);
     REQUIRE(liveness->blocks != NULL,
             KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate optimizer code liveness blocks"));
-    for (kefir_size_t i = 0; i < num_of_blocks; i++) {
+    for (kefir_size_t i = 0; i < liveness->num_of_blocks; i++) {
         res = kefir_hashset_init(&liveness->blocks[i].alive_instr, &kefir_hashtable_uint_ops);
         REQUIRE_ELSE(res == KEFIR_OK, {
             KEFIR_FREE(mem, liveness->blocks);

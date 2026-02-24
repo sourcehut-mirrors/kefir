@@ -59,5 +59,7 @@ kefir_result_t kefir_opt_loop_match_iteration_space(const struct kefir_opt_code_
 
 kefir_result_t kefir_opt_loop_may_execute(const struct kefir_opt_code_container *,
                                           const struct kefir_opt_loop_iteration_space *, kefir_bool_t *);
+kefir_result_t kefir_opt_loop_must_execute(const struct kefir_opt_code_container *,
+                                           const struct kefir_opt_loop_iteration_space *, kefir_bool_t *);
 
 #endif

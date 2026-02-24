@@ -14,10 +14,11 @@ static kefir_result_t free_escape_entry(struct kefir_mem *mem, struct kefir_hash
     UNUSED(payload);
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     ASSIGN_DECL_CAST(struct escape_entry *, entry, value);
-    REQUIRE(entry != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer escape entry"));
 
-    REQUIRE_OK(kefir_hashset_free(mem, &entry->escapes));
-    KEFIR_FREE(mem, entry);
+    if (entry != NULL) {
+        REQUIRE_OK(kefir_hashset_free(mem, &entry->escapes));
+        KEFIR_FREE(mem, entry);
+    }
     return KEFIR_OK;
 }
 
@@ -171,6 +172,37 @@ kefir_result_t kefir_opt_code_escape_analysis_build(struct kefir_mem *mem,
         if (res != KEFIR_ITERATOR_END) {
             REQUIRE_OK(res);
         }
+    }
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_opt_code_escape_analysis_replace(struct kefir_mem *mem,
+                                                      struct kefir_opt_code_escape_analysis *escape,
+                                                      kefir_opt_instruction_ref_t to_ref,
+                                                      kefir_opt_instruction_ref_t from_ref) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(escape != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer escape analysis"));
+
+    kefir_hashtable_value_t *from_table_value_ptr, *to_table_value_ptr;
+    kefir_result_t res =
+        kefir_hashtable_at_mut(&escape->local_escapes, (kefir_hashtable_key_t) from_ref, &from_table_value_ptr);
+    if (res != KEFIR_NOT_FOUND) {
+        REQUIRE_OK(res);
+        ASSIGN_DECL_CAST(struct escape_entry *, from_entry, *from_table_value_ptr);
+
+        res = kefir_hashtable_at_mut(&escape->local_escapes, (kefir_hashtable_key_t) to_ref, &to_table_value_ptr);
+        if (res != KEFIR_NOT_FOUND) {
+            REQUIRE_OK(res);
+            ASSIGN_DECL_CAST(struct escape_entry *, to_entry, *to_table_value_ptr);
+
+            REQUIRE_OK(kefir_hashset_merge(mem, &to_entry->escapes, &from_entry->escapes));
+        } else {
+            *from_table_value_ptr = (kefir_hashtable_value_t) NULL;
+            REQUIRE_OK(kefir_hashtable_insert(mem, &escape->local_escapes, (kefir_hashtable_key_t) to_ref,
+                                              (kefir_hashtable_value_t) from_entry));
+        }
+
+        REQUIRE_OK(kefir_hashtable_delete(mem, &escape->local_escapes, (kefir_hashtable_key_t) from_ref));
     }
     return KEFIR_OK;
 }

@@ -30,11 +30,13 @@ typedef struct kefir_opt_code_liveness_block {
 
 typedef struct kefir_opt_code_liveness {
     const struct kefir_opt_code_container *code;
+    kefir_size_t num_of_blocks;
     struct kefir_opt_code_liveness_block *blocks;
 } kefir_opt_code_liveness_t;
 
 kefir_result_t kefir_opt_code_liveness_init(struct kefir_opt_code_liveness *);
 kefir_result_t kefir_opt_code_liveness_free(struct kefir_mem *, struct kefir_opt_code_liveness *);
+kefir_result_t kefir_opt_code_liveness_reset(struct kefir_mem *, struct kefir_opt_code_liveness *);
 
 kefir_result_t kefir_opt_code_liveness_build(struct kefir_mem *, struct kefir_opt_code_liveness *,
                                              struct kefir_opt_code_control_flow *);

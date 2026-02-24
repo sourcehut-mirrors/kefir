@@ -1,0 +1,41 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global x
+.type x, @object
+.global y
+.type y, @object
+.global test
+.type test, @function
+
+.section .text
+.L__kefir_text_section_begin:
+test:
+.L__kefir_text_func_test_begin:
+    movq x@GOTPCREL(%rip), %rax
+    movl (%rax), %eax
+    movq y@GOTPCREL(%rip), %rcx
+    xor %edx, %edx
+.L__kefir_func_test_label2:
+    cmp $10, %edx
+    jl .L__kefir_func_test_label4
+    ret
+.L__kefir_func_test_label4:
+    movl (%rcx), %esi
+    add %eax, %esi
+    movl %esi, (%rcx)
+    add $1, %edx
+    jmp .L__kefir_func_test_label2
+.L__kefir_text_func_test_end:
+
+.L__kefir_text_section_end:
+
+.section .bss
+    .align 4
+x:
+    .skip 4
+
+    .align 4
+y:
+    .skip 4
+
