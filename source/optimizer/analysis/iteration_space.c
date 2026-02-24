@@ -79,7 +79,6 @@ static kefir_result_t match_branch_compare(const struct kefir_opt_code_container
         REQUIRE_OK(kefir_opt_code_container_instr(code, entry_tail->operation.parameters.refs[1], &index));
         REQUIRE_OK(kefir_opt_code_container_instr(code, entry_tail->operation.parameters.refs[0], &upper_bound));
     }
-    REQUIRE(!kefir_hashtreeset_has(&loop->loop_blocks, upper_bound->block_id), NO_MATCH);
     REQUIRE(index->block_id == loop->loop_entry_block_id, NO_MATCH);
     REQUIRE(index->operation.opcode == KEFIR_OPT_OPCODE_PHI, NO_MATCH);
 
@@ -119,16 +118,11 @@ static kefir_result_t match_branch_compare(const struct kefir_opt_code_container
             REQUIRE_OK(kefir_opt_code_container_instr(code, stride_op->operation.parameters.refs[0], &stride));
         }
     }
-    kefir_bool_t strided = false;
     if (stride != NULL) {
         REQUIRE(stride != NULL, NO_MATCH);
-        if (!kefir_hashtreeset_has(&loop->loop_blocks, stride->block_id)) {
-            strided = true;
-            iteration_space->type = KEFIR_OPT_LOOP_ITERATION_SPACE_STRIDED_RANGE;
-            iteration_space->range.stride_ref = stride->id;
-        }
-    }
-    if (!strided) {
+        iteration_space->type = KEFIR_OPT_LOOP_ITERATION_SPACE_STRIDED_RANGE;
+        iteration_space->range.stride_ref = stride->id;
+    } else {
         iteration_space->type = KEFIR_OPT_LOOP_ITERATION_SPACE_GENERAL_RANGE;
         iteration_space->range.stride_ref = stride_op->id;
     }
@@ -292,6 +286,7 @@ static kefir_result_t range_may_execute(const struct kefir_opt_code_container *c
     else CHECK(16)
     else CHECK(32)
     else CHECK(64)
+#undef CHECK
     return KEFIR_OK;
     // clang-format on
 }
@@ -356,5 +351,114 @@ kefir_result_t kefir_opt_loop_may_execute(const struct kefir_opt_code_container 
             REQUIRE_OK(general_may_execute(code, iteration_space, may_execute_ptr));
             break;
     }
+    return KEFIR_OK;
+}
+
+static kefir_result_t range_must_execute(const struct kefir_opt_code_container *code,
+                                         const struct kefir_opt_loop_iteration_space *iteration_space,
+                                         kefir_bool_t *must_execute_ptr) {
+    REQUIRE(iteration_space->range.ascending, KEFIR_OK);
+
+    const struct kefir_opt_instruction *lower_bound_instr, *upper_bound_instr;
+    REQUIRE_OK(kefir_opt_code_container_instr(code, iteration_space->range.lower_bound_ref, &lower_bound_instr));
+    REQUIRE_OK(kefir_opt_code_container_instr(code, iteration_space->range.upper_bound_ref, &upper_bound_instr));
+
+    REQUIRE(lower_bound_instr->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST ||
+                lower_bound_instr->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST,
+            KEFIR_OK);
+    REQUIRE(upper_bound_instr->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST ||
+                upper_bound_instr->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST,
+            KEFIR_OK);
+
+#define CHECK(_width)                                                                                              \
+    if (iteration_space->range.comparison_width == (_width) && iteration_space->range.signed_comparison &&         \
+        iteration_space->range.inclusive) {                                                                        \
+        *must_execute_ptr = ((kefir_int##_width##_t) lower_bound_instr->operation.parameters.imm.integer) <=       \
+                            ((kefir_int##_width##_t) upper_bound_instr->operation.parameters.imm.integer);         \
+    } else if (iteration_space->range.comparison_width == (_width) && iteration_space->range.signed_comparison &&  \
+               !iteration_space->range.inclusive) {                                                                \
+        *must_execute_ptr = ((kefir_int##_width##_t) lower_bound_instr->operation.parameters.imm.integer) <        \
+                            ((kefir_int##_width##_t) upper_bound_instr->operation.parameters.imm.integer);         \
+    } else if (iteration_space->range.comparison_width == (_width) && !iteration_space->range.signed_comparison && \
+               iteration_space->range.inclusive) {                                                                 \
+        *must_execute_ptr = ((kefir_uint##_width##_t) lower_bound_instr->operation.parameters.imm.integer) <=      \
+                            ((kefir_uint##_width##_t) upper_bound_instr->operation.parameters.imm.integer);        \
+    } else if (iteration_space->range.comparison_width == (_width) && !iteration_space->range.signed_comparison && \
+               !iteration_space->range.inclusive) {                                                                \
+        *must_execute_ptr = ((kefir_uint##_width##_t) lower_bound_instr->operation.parameters.imm.integer) <       \
+                            ((kefir_uint##_width##_t) upper_bound_instr->operation.parameters.imm.integer);        \
+    }
+
+    // clang-format off
+    CHECK(8)
+    else CHECK(16)
+    else CHECK(32)
+    else CHECK(64)
+#undef CHECK
+    return KEFIR_OK;
+    // clang-format on
+}
+
+static kefir_result_t general_must_execute(const struct kefir_opt_code_container *code,
+                                           const struct kefir_opt_loop_iteration_space *iteration_space,
+                                           kefir_bool_t *must_execute_ptr) {
+    const struct kefir_opt_instruction *init_instr;
+    REQUIRE_OK(kefir_opt_code_container_instr(code, iteration_space->general.init_ref, &init_instr));
+
+    REQUIRE(init_instr->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST ||
+                init_instr->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST,
+            KEFIR_OK);
+
+    kefir_bool_t init_holds = true;
+    switch (iteration_space->general.variant) {
+        case KEFIR_OPT_BRANCH_CONDITION_8BIT:
+        case KEFIR_OPT_BRANCH_CONDITION_NEGATED_8BIT:
+            init_holds = (kefir_uint8_t) init_instr->operation.parameters.imm.uinteger;
+            break;
+
+        case KEFIR_OPT_BRANCH_CONDITION_16BIT:
+        case KEFIR_OPT_BRANCH_CONDITION_NEGATED_16BIT:
+            init_holds = (kefir_uint16_t) init_instr->operation.parameters.imm.uinteger;
+            break;
+
+        case KEFIR_OPT_BRANCH_CONDITION_32BIT:
+        case KEFIR_OPT_BRANCH_CONDITION_NEGATED_32BIT:
+            init_holds = (kefir_uint32_t) init_instr->operation.parameters.imm.uinteger;
+            break;
+
+        case KEFIR_OPT_BRANCH_CONDITION_64BIT:
+        case KEFIR_OPT_BRANCH_CONDITION_NEGATED_64BIT:
+            init_holds = (kefir_uint64_t) init_instr->operation.parameters.imm.uinteger;
+            break;
+    }
+    if (iteration_space->general.invert) {
+        init_holds = !init_holds;
+    }
+
+    *must_execute_ptr = init_holds;
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_opt_loop_must_execute(const struct kefir_opt_code_container *code,
+                                           const struct kefir_opt_loop_iteration_space *iteration_space,
+                                           kefir_bool_t *must_execute_ptr) {
+    REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code"));
+    REQUIRE(iteration_space != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to optimizer iteration space"));
+    REQUIRE(must_execute_ptr != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to boolean flag"));
+
+    *must_execute_ptr = false;
+    switch (iteration_space->type) {
+        case KEFIR_OPT_LOOP_ITERATION_SPACE_STRIDED_RANGE:
+        case KEFIR_OPT_LOOP_ITERATION_SPACE_GENERAL_RANGE:
+            REQUIRE_OK(range_must_execute(code, iteration_space, must_execute_ptr));
+            break;
+
+        case KEFIR_OPT_LOOP_ITERATION_SPACE_GENERAL:
+            REQUIRE_OK(general_must_execute(code, iteration_space, must_execute_ptr));
+            break;
+    }
+
     return KEFIR_OK;
 }
