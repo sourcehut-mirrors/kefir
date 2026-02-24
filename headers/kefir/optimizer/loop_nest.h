@@ -30,6 +30,7 @@ typedef struct kefir_opt_code_loop {
     kefir_opt_block_id_t loop_entry_block_id;
     kefir_opt_block_id_t loop_exit_block_id;
     struct kefir_hashtreeset loop_blocks;
+    struct kefir_hashset loop_exits_or_backedges;
 } kefir_opt_code_loop_t;
 
 typedef struct kefir_opt_loop_nest {

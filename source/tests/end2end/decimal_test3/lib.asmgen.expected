@@ -2084,33 +2084,29 @@ test_dec32_run_simulation:
     push %rbx
     push %r12
     push %r13
-    push %r14
-    sub $64, %rsp
+    sub $72, %rsp
     movaps %xmm1, -96(%rbp)
     mov %rdx, %rbx
     movaps %xmm0, -80(%rbp)
     mov %rsi, %r12
     mov %rdi, %rsi
-    lea -64(%rbp), %rdi
+    lea -56(%rbp), %rdi
     call test_dec32_grid_init
     movd .L__kefir_func_test_dec32_run_simulation_label12(%rip), %xmm0
-    lea -64(%rbp), %rdi
+    lea -56(%rbp), %rdi
     call test_dec32_initialize_gaussian
-    mov %r12, %r13
-    shl $1, %r13d
     xor %eax, %eax
-    mov %rax, %r14
+    mov %rax, %r13
 .L__kefir_func_test_dec32_run_simulation_label2:
-    cmp %r12d, %r14d
+    cmp %r12d, %r13d
     jl .L__kefir_func_test_dec32_run_simulation_label4
-    lea -64(%rbp), %rdi
+    lea -56(%rbp), %rdi
     call test_dec32_total_energy
     movaps %xmm0, -96(%rbp)
-    lea -64(%rbp), %rdi
+    lea -56(%rbp), %rdi
     call test_dec32_grid_free
     movaps -96(%rbp), %xmm0
-    lea -32(%rbp), %rsp
-    pop %r14
+    lea -24(%rbp), %rsp
     pop %r13
     pop %r12
     pop %rbx
@@ -2121,21 +2117,22 @@ test_dec32_run_simulation:
     cdq
     mov $3, %ecx
     idiv %ecx
-    cmp %eax, %r14d
+    cmp %eax, %r13d
     jl .L__kefir_func_test_dec32_run_simulation_label10
-    mov %r13d, %eax
+    mov %r12, %rax
+    shl $1, %eax
     cdq
     mov $3, %ecx
     idiv %ecx
-    cmp %eax, %r14d
+    cmp %eax, %r13d
     jl .L__kefir_func_test_dec32_run_simulation_label7
     movaps -96(%rbp), %xmm1
 .L__kefir_func_test_dec32_run_simulation_label9:
-    lea -64(%rbp), %rdi
+    lea -56(%rbp), %rdi
     movaps -80(%rbp), %xmm0
     mov %rbx, %rsi
     call test_dec32_timestep_implicit
-    add $1, %r14d
+    add $1, %r13d
     jmp .L__kefir_func_test_dec32_run_simulation_label2
 .L__kefir_func_test_dec32_run_simulation_label7:
     movd .L__kefir_func_test_dec32_run_simulation_label13(%rip), %xmm1
@@ -2398,33 +2395,29 @@ test_dec64_run_simulation:
     push %rbx
     push %r12
     push %r13
-    push %r14
-    sub $80, %rsp
-    movaps %xmm1, -112(%rbp)
+    sub $72, %rsp
+    movaps %xmm1, -96(%rbp)
     mov %rdx, %rbx
-    movaps %xmm0, -96(%rbp)
+    movaps %xmm0, -80(%rbp)
     mov %rsi, %r12
     mov %rdi, %rsi
-    lea -72(%rbp), %rdi
+    lea -64(%rbp), %rdi
     call test_dec64_grid_init
     movq .L__kefir_func_test_dec64_run_simulation_label12(%rip), %xmm0
-    lea -72(%rbp), %rdi
+    lea -64(%rbp), %rdi
     call test_dec64_initialize_gaussian
-    mov %r12, %r13
-    shl $1, %r13d
     xor %eax, %eax
-    mov %rax, %r14
+    mov %rax, %r13
 .L__kefir_func_test_dec64_run_simulation_label2:
-    cmp %r12d, %r14d
+    cmp %r12d, %r13d
     jl .L__kefir_func_test_dec64_run_simulation_label4
-    lea -72(%rbp), %rdi
+    lea -64(%rbp), %rdi
     call test_dec64_total_energy
-    movaps %xmm0, -112(%rbp)
-    lea -72(%rbp), %rdi
+    movaps %xmm0, -96(%rbp)
+    lea -64(%rbp), %rdi
     call test_dec64_grid_free
-    movaps -112(%rbp), %xmm0
-    lea -32(%rbp), %rsp
-    pop %r14
+    movaps -96(%rbp), %xmm0
+    lea -24(%rbp), %rsp
     pop %r13
     pop %r12
     pop %rbx
@@ -2435,31 +2428,32 @@ test_dec64_run_simulation:
     cdq
     mov $3, %ecx
     idiv %ecx
-    cmp %eax, %r14d
+    cmp %eax, %r13d
     jl .L__kefir_func_test_dec64_run_simulation_label10
-    mov %r13d, %eax
+    mov %r12, %rax
+    shl $1, %eax
     cdq
     mov $3, %ecx
     idiv %ecx
-    cmp %eax, %r14d
+    cmp %eax, %r13d
     jl .L__kefir_func_test_dec64_run_simulation_label7
-    movaps -112(%rbp), %xmm1
+    movaps -96(%rbp), %xmm1
 .L__kefir_func_test_dec64_run_simulation_label9:
-    lea -72(%rbp), %rdi
-    movaps -96(%rbp), %xmm0
+    lea -64(%rbp), %rdi
+    movaps -80(%rbp), %xmm0
     mov %rbx, %rsi
     call test_dec64_timestep_implicit
-    add $1, %r14d
+    add $1, %r13d
     jmp .L__kefir_func_test_dec64_run_simulation_label2
 .L__kefir_func_test_dec64_run_simulation_label7:
     movq .L__kefir_func_test_dec64_run_simulation_label13(%rip), %xmm1
-    movaps -112(%rbp), %xmm0
+    movaps -96(%rbp), %xmm0
     call __bid_muldd3@PLT
     movaps %xmm0, %xmm1
     jmp .L__kefir_func_test_dec64_run_simulation_label9
 .L__kefir_func_test_dec64_run_simulation_label10:
     movq .L__kefir_func_test_dec64_run_simulation_label14(%rip), %xmm1
-    movaps -112(%rbp), %xmm0
+    movaps -96(%rbp), %xmm0
     call __bid_muldd3@PLT
     movaps %xmm0, %xmm1
     jmp .L__kefir_func_test_dec64_run_simulation_label9
@@ -2483,8 +2477,7 @@ test_dec128_run_simulation:
     push %rbx
     push %r12
     push %r13
-    push %r14
-    sub $96, %rsp
+    sub $104, %rsp
     movaps %xmm1, -128(%rbp)
     mov %rdx, %rbx
     movaps %xmm0, -112(%rbp)
@@ -2495,12 +2488,10 @@ test_dec128_run_simulation:
     movdqu .L__kefir_func_test_dec128_run_simulation_label12(%rip), %xmm0
     lea -96(%rbp), %rdi
     call test_dec128_initialize_gaussian
-    mov %r12, %r13
-    shl $1, %r13d
     xor %eax, %eax
-    mov %rax, %r14
+    mov %rax, %r13
 .L__kefir_func_test_dec128_run_simulation_label2:
-    cmp %r12d, %r14d
+    cmp %r12d, %r13d
     jl .L__kefir_func_test_dec128_run_simulation_label4
     lea -96(%rbp), %rdi
     call test_dec128_total_energy
@@ -2508,8 +2499,7 @@ test_dec128_run_simulation:
     lea -96(%rbp), %rdi
     call test_dec128_grid_free
     movaps -128(%rbp), %xmm0
-    lea -32(%rbp), %rsp
-    pop %r14
+    lea -24(%rbp), %rsp
     pop %r13
     pop %r12
     pop %rbx
@@ -2520,13 +2510,14 @@ test_dec128_run_simulation:
     cdq
     mov $3, %ecx
     idiv %ecx
-    cmp %eax, %r14d
+    cmp %eax, %r13d
     jl .L__kefir_func_test_dec128_run_simulation_label10
-    mov %r13d, %eax
+    mov %r12, %rax
+    shl $1, %eax
     cdq
     mov $3, %ecx
     idiv %ecx
-    cmp %eax, %r14d
+    cmp %eax, %r13d
     jl .L__kefir_func_test_dec128_run_simulation_label7
     movaps -128(%rbp), %xmm1
 .L__kefir_func_test_dec128_run_simulation_label9:
@@ -2534,7 +2525,7 @@ test_dec128_run_simulation:
     movaps -112(%rbp), %xmm0
     mov %rbx, %rsi
     call test_dec128_timestep_implicit
-    add $1, %r14d
+    add $1, %r13d
     jmp .L__kefir_func_test_dec128_run_simulation_label2
 .L__kefir_func_test_dec128_run_simulation_label7:
     movdqu .L__kefir_func_test_dec128_run_simulation_label13(%rip), %xmm1

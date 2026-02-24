@@ -402,9 +402,6 @@ __kefir_bigint_least_significant_nonzero:
     je .L__kefir_runtime_func___kefir_bigint_least_significant_nonzero_label13
     lea 7(%rsi), %rax
     shr $3, %rax
-    lea -1(%rax), %rcx
-    shl $3, %rcx
-    sub %rcx, %rsi
     xor %ecx, %ecx
     mov %rcx, %rdx
 .L__kefir_runtime_func___kefir_bigint_least_significant_nonzero_label3:
@@ -419,22 +416,27 @@ __kefir_bigint_least_significant_nonzero:
     movb (%rdi, %rdx, 1), %cl
     movzx %cl, %r8
     lea 1(%rdx), %r9
-    mov $8, %r10d
+    lea -1(%rax), %r10
+    shl $3, %r10
+    mov %rsi, %r11
+    sub %r10, %r11
+    mov %r11, %r10
+    mov $8, %r11d
     cmp %rax, %r9
-    cmovae %rsi, %r10
+    cmovae %r10, %r11
     movzx %cl, %rcx
     cmp $0, %ecx
     je .L__kefir_runtime_func___kefir_bigint_least_significant_nonzero_label8
     xor %ecx, %ecx
     mov %rcx, %r9
 .L__kefir_runtime_func___kefir_bigint_least_significant_nonzero_label7:
-    cmp %r10, %r9
+    cmp %r11, %r9
     jb .L__kefir_runtime_func___kefir_bigint_least_significant_nonzero_label9
 .L__kefir_runtime_func___kefir_bigint_least_significant_nonzero_label8:
     add $1, %rdx
     jmp .L__kefir_runtime_func___kefir_bigint_least_significant_nonzero_label3
 .L__kefir_runtime_func___kefir_bigint_least_significant_nonzero_label9:
-    lea 1(%r9), %r11
+    lea 1(%r9), %r10
     mov %r9, %rcx
     mov %r8, %rbx
     sar %cl, %ebx
@@ -442,7 +444,7 @@ __kefir_bigint_least_significant_nonzero:
     and $1, %ecx
     cmp $1, %ecx
     je .L__kefir_runtime_func___kefir_bigint_least_significant_nonzero_label11
-    mov %r11, %r9
+    mov %r10, %r9
     jmp .L__kefir_runtime_func___kefir_bigint_least_significant_nonzero_label7
 .L__kefir_runtime_func___kefir_bigint_least_significant_nonzero_label11:
     shl $3, %rdx
@@ -474,9 +476,6 @@ __kefir_bigint_trailing_zeros:
     lea 7(%rsi), %rcx
     mov %rcx, %rdx
     shr $3, %rdx
-    lea -1(%rdx), %rcx
-    shl $3, %rcx
-    sub %rcx, %rsi
     xor %ecx, %ecx
     xor %r8d, %r8d
     mov %r8, %r9
@@ -493,11 +492,16 @@ __kefir_bigint_trailing_zeros:
     mov %r8, %r10
     movb (%rdi, %r9, 1), %r10b
     lea 8(%rcx), %r8
-    movzx %r10b, %r11
-    lea 1(%r9), %rbx
+    lea 1(%r9), %r11
+    lea -1(%rdx), %rbx
+    shl $3, %rbx
+    mov %rsi, %r12
+    sub %rbx, %r12
+    mov %r12, %rbx
     mov $8, %r12d
-    cmp %rdx, %rbx
-    cmovae %rsi, %r12
+    cmp %rdx, %r11
+    cmovae %rbx, %r12
+    movzx %r10b, %r11
     movzx %r10b, %r10
     cmp $0, %r10d
     je .L__kefir_runtime_func___kefir_bigint_trailing_zeros_label7
