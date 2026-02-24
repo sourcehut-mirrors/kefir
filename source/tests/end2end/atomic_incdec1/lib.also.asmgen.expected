@@ -64,19 +64,21 @@ predec_ld:
     push %rbp
     mov %rsp, %rbp
     push %rbx
-    sub $88, %rsp
+    sub $104, %rsp
     fstcw -16(%rbp)
-    fnstenv -96(%rbp)
-    stmxcsr -68(%rbp)
+    fnstenv -112(%rbp)
+    stmxcsr -84(%rbp)
     fnclex
     movq ld@GOTPCREL(%rip), %rbx
+    fldt .L__kefir_func_predec_ld_label6(%rip)
+    fstpt -80(%rbp)
 .L__kefir_func_predec_ld_label2:
     lea -64(%rbp), %rdx
     mov %rbx, %rsi
     mov $16, %rdi
     mov $5, %rcx
     call __atomic_load@PLT
-    fldt .L__kefir_func_predec_ld_label6(%rip)
+    fldt -80(%rbp)
     fldt -64(%rbp)
     faddp
     fstpt -48(%rbp)
@@ -95,16 +97,16 @@ predec_ld:
     call __atomic_compare_exchange@PLT
     test %al, %al
     jz .L__kefir_func_predec_ld_label4
-    stmxcsr -64(%rbp)
-    mov -64(%rbp), %rcx
+    stmxcsr -80(%rbp)
+    mov -80(%rbp), %rcx
     fnstsw %ax
     or %ecx, %eax
     and $63, %eax
-    fldenv -96(%rbp)
-    ldmxcsr -68(%rbp)
-    stmxcsr -64(%rbp)
-    orl %eax, -64(%rbp)
-    ldmxcsr -64(%rbp)
+    fldenv -112(%rbp)
+    ldmxcsr -84(%rbp)
+    stmxcsr -80(%rbp)
+    orl %eax, -80(%rbp)
+    ldmxcsr -80(%rbp)
     fldt -48(%rbp)
     fldcw -16(%rbp)
     lea -8(%rbp), %rsp
@@ -142,19 +144,21 @@ preinc_ld:
     push %rbp
     mov %rsp, %rbp
     push %rbx
-    sub $88, %rsp
+    sub $104, %rsp
     fstcw -16(%rbp)
-    fnstenv -96(%rbp)
-    stmxcsr -68(%rbp)
+    fnstenv -112(%rbp)
+    stmxcsr -84(%rbp)
     fnclex
     movq ld@GOTPCREL(%rip), %rbx
+    fldt .L__kefir_func_preinc_ld_label6(%rip)
+    fstpt -80(%rbp)
 .L__kefir_func_preinc_ld_label2:
     lea -64(%rbp), %rdx
     mov %rbx, %rsi
     mov $16, %rdi
     mov $5, %rcx
     call __atomic_load@PLT
-    fldt .L__kefir_func_preinc_ld_label6(%rip)
+    fldt -80(%rbp)
     fldt -64(%rbp)
     faddp
     fstpt -48(%rbp)
@@ -173,16 +177,16 @@ preinc_ld:
     call __atomic_compare_exchange@PLT
     test %al, %al
     jz .L__kefir_func_preinc_ld_label4
-    stmxcsr -64(%rbp)
-    mov -64(%rbp), %rcx
+    stmxcsr -80(%rbp)
+    mov -80(%rbp), %rcx
     fnstsw %ax
     or %ecx, %eax
     and $63, %eax
-    fldenv -96(%rbp)
-    ldmxcsr -68(%rbp)
-    stmxcsr -64(%rbp)
-    orl %eax, -64(%rbp)
-    ldmxcsr -64(%rbp)
+    fldenv -112(%rbp)
+    ldmxcsr -84(%rbp)
+    stmxcsr -80(%rbp)
+    orl %eax, -80(%rbp)
+    ldmxcsr -80(%rbp)
     fldt -48(%rbp)
     fldcw -16(%rbp)
     lea -8(%rbp), %rsp
@@ -210,15 +214,13 @@ predec_f32:
     stmxcsr -20(%rbp)
     fnclex
     movq f32@GOTPCREL(%rip), %rsi
+    movd .L__kefir_func_predec_f32_label6(%rip), %xmm0
 .L__kefir_func_predec_f32_label2:
     movl (%rsi), %eax
-    movd .L__kefir_func_predec_f32_label6(%rip), %xmm0
     movq %rax, %xmm1
-    movaps %xmm1, %xmm2
-    addss %xmm0, %xmm2
-    movaps %xmm2, %xmm0
+    addss %xmm0, %xmm1
     mov %rsi, %rdx
-    movq %xmm0, %rcx
+    movq %xmm1, %rcx
     lock     cmpxchgl %ecx, (%rdx)
     jnz .L__kefir_func_predec_f32_label4
     stmxcsr -16(%rbp)
@@ -231,6 +233,7 @@ predec_f32:
     stmxcsr -16(%rbp)
     orl %eax, -16(%rbp)
     ldmxcsr -16(%rbp)
+    movaps %xmm1, %xmm0
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -255,15 +258,13 @@ predec_f64:
     stmxcsr -20(%rbp)
     fnclex
     movq f64@GOTPCREL(%rip), %rsi
+    movq .L__kefir_func_predec_f64_label6(%rip), %xmm0
 .L__kefir_func_predec_f64_label2:
     movq (%rsi), %rax
-    movq .L__kefir_func_predec_f64_label6(%rip), %xmm0
     movq %rax, %xmm1
-    movaps %xmm1, %xmm2
-    addsd %xmm0, %xmm2
-    movaps %xmm2, %xmm0
+    addsd %xmm0, %xmm1
     mov %rsi, %rdx
-    movq %xmm0, %rcx
+    movq %xmm1, %rcx
     lock     cmpxchgq %rcx, (%rdx)
     jnz .L__kefir_func_predec_f64_label4
     stmxcsr -16(%rbp)
@@ -276,6 +277,7 @@ predec_f64:
     stmxcsr -16(%rbp)
     orl %eax, -16(%rbp)
     ldmxcsr -16(%rbp)
+    movaps %xmm1, %xmm0
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -357,15 +359,13 @@ preinc_f32:
     stmxcsr -20(%rbp)
     fnclex
     movq f32@GOTPCREL(%rip), %rsi
+    movd .L__kefir_func_preinc_f32_label6(%rip), %xmm0
 .L__kefir_func_preinc_f32_label2:
     movl (%rsi), %eax
-    movd .L__kefir_func_preinc_f32_label6(%rip), %xmm0
     movq %rax, %xmm1
-    movaps %xmm1, %xmm2
-    addss %xmm0, %xmm2
-    movaps %xmm2, %xmm0
+    addss %xmm0, %xmm1
     mov %rsi, %rdx
-    movq %xmm0, %rcx
+    movq %xmm1, %rcx
     lock     cmpxchgl %ecx, (%rdx)
     jnz .L__kefir_func_preinc_f32_label4
     stmxcsr -16(%rbp)
@@ -378,6 +378,7 @@ preinc_f32:
     stmxcsr -16(%rbp)
     orl %eax, -16(%rbp)
     ldmxcsr -16(%rbp)
+    movaps %xmm1, %xmm0
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -402,15 +403,13 @@ preinc_f64:
     stmxcsr -20(%rbp)
     fnclex
     movq f64@GOTPCREL(%rip), %rsi
+    movq .L__kefir_func_preinc_f64_label6(%rip), %xmm0
 .L__kefir_func_preinc_f64_label2:
     movq (%rsi), %rax
-    movq .L__kefir_func_preinc_f64_label6(%rip), %xmm0
     movq %rax, %xmm1
-    movaps %xmm1, %xmm2
-    addsd %xmm0, %xmm2
-    movaps %xmm2, %xmm0
+    addsd %xmm0, %xmm1
     mov %rsi, %rdx
-    movq %xmm0, %rcx
+    movq %xmm1, %rcx
     lock     cmpxchgq %rcx, (%rdx)
     jnz .L__kefir_func_preinc_f64_label4
     stmxcsr -16(%rbp)
@@ -423,6 +422,7 @@ preinc_f64:
     stmxcsr -16(%rbp)
     orl %eax, -16(%rbp)
     ldmxcsr -16(%rbp)
+    movaps %xmm1, %xmm0
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

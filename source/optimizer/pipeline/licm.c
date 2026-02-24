@@ -505,22 +505,8 @@ static kefir_result_t process_loop(struct licm_state *state) {
         REQUIRE_OK(kefir_opt_code_instruction_is_control_flow(state->control_flow.code, instr_ref, &is_control_flow));
         if (is_side_effect_free && !is_control_flow &&
             kefir_hashset_has(&state->candidate_blocks, (kefir_hashset_key_t) instr->block_id)) {
-            switch (instr->operation.opcode) {
-                case KEFIR_OPT_OPCODE_FLOAT32_CONST:
-                case KEFIR_OPT_OPCODE_FLOAT64_CONST:
-                case KEFIR_OPT_OPCODE_LONG_DOUBLE_CONST:
-                case KEFIR_OPT_OPCODE_STRING_REF:
-                case KEFIR_OPT_OPCODE_BLOCK_LABEL:
-                case KEFIR_OPT_OPCODE_FLOAT32_PLACEHOLDER:
-                case KEFIR_OPT_OPCODE_FLOAT64_PLACEHOLDER:
-                    // Intentionally left blank
-                    break;
-
-                default:
-                    REQUIRE_OK(do_hoist(state, state->loop->loop_entry_block_id, state->loop->loop_exit_block_id,
-                                        instr_ref, &hoist_target));
-                    break;
-            }
+            REQUIRE_OK(do_hoist(state, state->loop->loop_entry_block_id, state->loop->loop_exit_block_id, instr_ref,
+                                &hoist_target));
         }
     }
 

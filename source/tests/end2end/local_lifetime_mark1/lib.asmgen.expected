@@ -353,10 +353,16 @@
                                 "id": 58,
                                 "opcode": "local_lifetime_mark",
                                 "arg": 0,
-                                "control_next": 59
+                                "control_next": 301
                             },
                             {
-                                "id": 59,
+                                "id": 302,
+                                "opcode": "float64_const",
+                                "value": 1.000000,
+                                "control_next": null
+                            },
+                            {
+                                "id": 301,
                                 "opcode": "jump",
                                 "target_block": 5,
                                 "control_next": null
@@ -374,11 +380,12 @@
                             "immediate_dominator": 0,
                             "alive_instructions": [
                                 8,
+                                301,
                                 57,
                                 39,
                                 58,
                                 0,
-                                59,
+                                302,
                                 5,
                                 41
                             ]
@@ -454,9 +461,10 @@
                                 61,
                                 67,
                                 39,
+                                5,
                                 0,
                                 60,
-                                5,
+                                302,
                                 41,
                                 247
                             ]
@@ -476,40 +484,40 @@
                                 "id": 78,
                                 "opcode": "local_lifetime_mark",
                                 "arg": 0,
-                                "control_next": 299
+                                "control_next": 303
                             },
                             {
-                                "id": 302,
-                                "opcode": "uint_const",
-                                "value": 20,
-                                "control_next": null
-                            },
-                            {
-                                "id": 303,
-                                "opcode": "int64_add",
-                                "args": [
-                                    39,
-                                    302
-                                ],
-                                "control_next": null
-                            },
-                            {
-                                "id": 300,
+                                "id": 304,
                                 "opcode": "uint_const",
                                 "value": 18,
                                 "control_next": null
                             },
                             {
-                                "id": 301,
+                                "id": 305,
                                 "opcode": "int64_add",
                                 "args": [
                                     39,
-                                    300
+                                    304
                                 ],
                                 "control_next": null
                             },
                             {
-                                "id": 299,
+                                "id": 306,
+                                "opcode": "uint_const",
+                                "value": 20,
+                                "control_next": null
+                            },
+                            {
+                                "id": 307,
+                                "opcode": "int64_add",
+                                "args": [
+                                    39,
+                                    306
+                                ],
+                                "control_next": null
+                            },
+                            {
+                                "id": 303,
                                 "opcode": "jump",
                                 "target_block": 6,
                                 "control_next": null
@@ -527,14 +535,14 @@
                             "alive_instructions": [
                                 77,
                                 78,
-                                301,
-                                300,
-                                303,
-                                299,
-                                0,
-                                302,
-                                5,
                                 39,
+                                306,
+                                303,
+                                307,
+                                5,
+                                0,
+                                304,
+                                305,
                                 41
                             ]
                         }
@@ -546,7 +554,7 @@
                             {
                                 "id": 259,
                                 "opcode": "int16_load",
-                                "location": 301,
+                                "location": 305,
                                 "flags": {
                                     "load_extension": "sign_extend",
                                     "volatile": true
@@ -594,7 +602,7 @@
                             {
                                 "id": 102,
                                 "opcode": "int16_load",
-                                "location": 303,
+                                "location": 307,
                                 "flags": {
                                     "load_extension": "noextend",
                                     "volatile": true
@@ -624,12 +632,12 @@
                             ],
                             "immediate_dominator": 3,
                             "alive_instructions": [
-                                303,
                                 92,
+                                305,
                                 93,
                                 102,
                                 80,
-                                301,
+                                307,
                                 0,
                                 91,
                                 5,
@@ -646,52 +654,52 @@
                                 "id": 104,
                                 "opcode": "local_lifetime_mark",
                                 "arg": 0,
-                                "control_next": 292
+                                "control_next": 294
                             },
                             {
-                                "id": 298,
+                                "id": 300,
                                 "opcode": "local_scope",
                                 "control_next": null
                             },
                             {
-                                "id": 297,
+                                "id": 299,
                                 "opcode": "alloc_local",
-                                "scope": 298,
+                                "scope": 300,
                                 "type_id": 96,
                                 "type_index": 15,
                                 "control_next": null
                             },
                             {
-                                "id": 296,
+                                "id": 298,
                                 "opcode": "int_const",
                                 "value": 10,
                                 "control_next": null
                             },
                             {
-                                "id": 292,
+                                "id": 294,
                                 "opcode": "int64_store",
-                                "location": 297,
-                                "value": 296,
+                                "location": 299,
+                                "value": 298,
                                 "flags": {
                                     "volatile": true
                                 },
-                                "control_next": 293,
+                                "control_next": 295,
                                 "memssa_node_ref": 17
                             },
                             {
-                                "id": 293,
+                                "id": 295,
                                 "opcode": "local_lifetime_mark",
-                                "arg": 298,
-                                "control_next": 294
+                                "arg": 300,
+                                "control_next": 296
                             },
                             {
-                                "id": 294,
+                                "id": 296,
                                 "opcode": "local_lifetime_mark",
                                 "arg": 0,
-                                "control_next": 295
+                                "control_next": 297
                             },
                             {
-                                "id": 295,
+                                "id": 297,
                                 "opcode": "jump",
                                 "target_block": 8,
                                 "control_next": null
@@ -708,14 +716,14 @@
                             "immediate_dominator": 6,
                             "alive_instructions": [
                                 298,
-                                293,
                                 295,
+                                300,
+                                299,
                                 297,
                                 104,
                                 0,
                                 296,
                                 5,
-                                292,
                                 294
                             ]
                         }
@@ -751,16 +759,16 @@
                                 "id": 121,
                                 "opcode": "local_lifetime_mark",
                                 "arg": 0,
-                                "control_next": 290
+                                "control_next": 292
                             },
                             {
-                                "id": 290,
+                                "id": 292,
                                 "opcode": "local_lifetime_mark",
                                 "arg": 0,
-                                "control_next": 291
+                                "control_next": 293
                             },
                             {
-                                "id": 291,
+                                "id": 293,
                                 "opcode": "jump",
                                 "target_block": 8,
                                 "control_next": null
@@ -779,11 +787,11 @@
                             "alive_instructions": [
                                 119,
                                 0,
-                                290,
+                                293,
                                 121,
                                 5,
                                 120,
-                                291
+                                292
                             ]
                         }
                     },
@@ -803,17 +811,11 @@
                                 "memssa_node_ref": 11
                             },
                             {
-                                "id": 72,
-                                "opcode": "float64_const",
-                                "value": 1.000000,
-                                "control_next": null
-                            },
-                            {
                                 "id": 74,
                                 "opcode": "float64_add",
                                 "args": [
                                     73,
-                                    72
+                                    302
                                 ],
                                 "control_next": null
                             },
@@ -859,14 +861,14 @@
                             "alive_instructions": [
                                 8,
                                 70,
-                                72,
                                 71,
                                 74,
+                                5,
                                 73,
                                 0,
                                 75,
                                 76,
-                                5,
+                                302,
                                 39,
                                 41
                             ]
