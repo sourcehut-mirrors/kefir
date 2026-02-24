@@ -172,14 +172,14 @@ op_loop_begin:
     movl %esi, 5128(%rdi)
     mov %edx, %edx
     movb (%rcx, %rdx, 1), %sil
-    lea -1(%eax), %edx
-    movsx %sil, %r8
+    movsx %sil, %rdx
+    lea -1(%eax), %r8d
     lea 1(%eax), %ecx
     movsx %sil, %rsi
     cmp $91, %esi
     je .L__kefir_func_op_loop_begin_label7
-    cmp $93, %r8d
-    cmove %rdx, %rax
+    cmp $93, %edx
+    cmove %r8, %rax
 .L__kefir_func_op_loop_begin_label9:
     cmp $0, %eax
     ja .L__kefir_func_op_loop_begin_label5

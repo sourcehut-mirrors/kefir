@@ -465,7 +465,8 @@ generate_buf_6:
     movb $0, -7(%rbp)
     movzx %dil, %rcx
     xor %eax, %eax
-    xor %esi, %esi
+    xor %edx, %edx
+    mov %rdx, %rsi
     mov %rax, %rdx
 .L__kefir_func_generate_buf_6_label2:
     cmp $7, %esi
@@ -748,8 +749,7 @@ generate_buf_14:
     movb $0, -15(%rbp)
     movzx %dil, %rcx
     xor %eax, %eax
-    xor %edx, %edx
-    mov %rdx, %rsi
+    xor %esi, %esi
     mov %rax, %rdx
 .L__kefir_func_generate_buf_14_label2:
     cmp $15, %esi

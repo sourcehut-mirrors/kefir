@@ -62,14 +62,13 @@ test2:
 _kefir_local_public_label_test2_outer:
     mov %rax, %r9
     or %esi, %r9d
-    movsx %r8d, %rcx
-    imul $40, %rcx, %rcx
-    mov %rdi, %r10
-    add %rcx, %r10
     mov %rdx, %rcx
-    mov %r8, %r11
-    shl %cl, %r11d
-    mov %r11, %rcx
+    mov %r8, %r10
+    shl %cl, %r10d
+    mov %r10, %rcx
+    movsx %r8d, %r10
+    imul $40, %r10, %r10
+    add %rdi, %r10
     cmp %esi, %r8d
     je .L__kefir_func_test2_label8
     xor %r11d, %r11d

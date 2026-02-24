@@ -34,12 +34,11 @@ sum:
     movq %rax, -24(%rbp)
     lea -208(%rbp), %rax
     movq %rax, -16(%rbp)
-    lea -1(%edi), %eax
-    xor %ecx, %ecx
+    xor %eax, %eax
 .L__kefir_func_sum_label4:
+    lea -1(%edi), %ecx
     test %edi, %edi
     jnz .L__kefir_func_sum_label6
-    mov %rcx, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -62,12 +61,10 @@ sum:
     movw %si, -6(%rbp)
     movsxb -6(%rbp), %rdx
     movsxb -5(%rbp), %rsi
-    movsx %cl, %rcx
+    movsx %al, %rax
     imul %esi, %edx
-    add %edx, %ecx
-    lea -1(%eax), %edx
-    mov %rax, %rdi
-    mov %edx, %eax
+    add %edx, %eax
+    mov %ecx, %edi
     jmp .L__kefir_func_sum_label4
 .L__kefir_func_sum_label9:
     movq -24(%rbp), %rdx

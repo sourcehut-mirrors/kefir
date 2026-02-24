@@ -721,8 +721,8 @@ __kefir_softfloat_ilogb:
     shr $63, %rdi
     cmp $0, %rax
     jne .L__kefir_runtime_func___kefir_softfloat_ilogb_label4
-    mov %esi, %edx
     mov %rdi, %rax
+    mov %esi, %edx
     jmp .L__kefir_runtime_func___kefir_softfloat_ilogb_label8
 .L__kefir_runtime_func___kefir_softfloat_ilogb_label12:
     movq .L__kefir_runtime_func___kefir_softfloat_ilogb_label16(%rip), %xmm0

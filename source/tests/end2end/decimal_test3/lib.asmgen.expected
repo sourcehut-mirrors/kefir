@@ -171,8 +171,8 @@ test_dec128_dot:
     movaps %xmm0, %xmm1
     movaps -48(%rbp), %xmm0
     call __bid_addtd3@PLT
-    movaps %xmm0, -48(%rbp)
     mov %r14, %rax
+    movaps %xmm0, -48(%rbp)
     jmp .L__kefir_func_test_dec128_dot_label2
 .L__kefir_text_func_test_dec128_dot_end:
 .section .rodata
@@ -709,8 +709,8 @@ test_dec32_sqrt_approx:
     movd .L__kefir_func_test_dec32_sqrt_approx_label11(%rip), %xmm1
     call __bid_addsd3@PLT
     xor %eax, %eax
-    movaps %xmm0, -32(%rbp)
     mov %rax, %rbx
+    movaps %xmm0, -32(%rbp)
 .L__kefir_func_test_dec32_sqrt_approx_label3:
     cmp $10, %ebx
     jl .L__kefir_func_test_dec32_sqrt_approx_label5
@@ -857,8 +857,8 @@ test_dec32_dot:
     movaps %xmm0, %xmm1
     movaps -48(%rbp), %xmm0
     call __bid_addsd3@PLT
-    movaps %xmm0, -48(%rbp)
     mov %r14, %rax
+    movaps %xmm0, -48(%rbp)
     jmp .L__kefir_func_test_dec32_dot_label2
 .L__kefir_text_func_test_dec32_dot_end:
 .section .rodata
@@ -901,8 +901,8 @@ test_dec64_dot:
     movaps %xmm0, %xmm1
     movaps -48(%rbp), %xmm0
     call __bid_adddd3@PLT
-    movaps %xmm0, -48(%rbp)
     mov %r14, %rax
+    movaps %xmm0, -48(%rbp)
     jmp .L__kefir_func_test_dec64_dot_label2
 .L__kefir_text_func_test_dec64_dot_end:
 .section .rodata
@@ -1063,8 +1063,8 @@ test_dec128_sqrt_approx:
     movdqu .L__kefir_func_test_dec128_sqrt_approx_label11(%rip), %xmm1
     call __bid_addtd3@PLT
     xor %eax, %eax
-    movaps %xmm0, -32(%rbp)
     mov %rax, %rbx
+    movaps %xmm0, -32(%rbp)
 .L__kefir_func_test_dec128_sqrt_approx_label3:
     cmp $10, %ebx
     jl .L__kefir_func_test_dec128_sqrt_approx_label5
@@ -1136,8 +1136,8 @@ test_dec64_sqrt_approx:
     movq .L__kefir_func_test_dec64_sqrt_approx_label11(%rip), %xmm1
     call __bid_adddd3@PLT
     xor %eax, %eax
-    movaps %xmm0, -32(%rbp)
     mov %rax, %rbx
+    movaps %xmm0, -32(%rbp)
 .L__kefir_func_test_dec64_sqrt_approx_label3:
     cmp $10, %ebx
     jl .L__kefir_func_test_dec64_sqrt_approx_label5
@@ -2811,7 +2811,7 @@ test_dec32_initialize_gaussian:
     call __bid_floatunsdisd@PLT
     movaps -144(%rbp), %xmm1
     call __bid_mulsd3@PLT
-    movaps -112(%rbp), %xmm1
+    movaps -128(%rbp), %xmm1
     call __bid_subsd3@PLT
     movaps %xmm0, %xmm1
     movaps %xmm1, %xmm0
@@ -2822,7 +2822,7 @@ test_dec32_initialize_gaussian:
     call __bid_floatunsdisd@PLT
     movaps -144(%rbp), %xmm1
     call __bid_mulsd3@PLT
-    movaps -128(%rbp), %xmm1
+    movaps -112(%rbp), %xmm1
     call __bid_subsd3@PLT
     movaps %xmm0, %xmm1
     movaps %xmm1, %xmm0

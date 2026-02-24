@@ -16,8 +16,8 @@ factorial2:
     cmp $1, %rdi
     setg %al
     movsx %eax, %rax
+    shl $3, %rax
     mov %rax, %rcx
-    shl $3, %rcx
     mov %rsi, %rax
 .L__kefir_func_factorial2_label2:
     lea __kefir_function_factorial2_static_branches_7(%rip), %rdx

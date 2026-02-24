@@ -768,7 +768,6 @@ __kefir_bigint_is_zero:
     je .L__kefir_runtime_func___kefir_bigint_is_zero_label12
     lea 7(%rsi), %rax
     shr $3, %rax
-    sub $1, %rsi
     xor %ecx, %ecx
 .L__kefir_runtime_func___kefir_bigint_is_zero_label3:
     cmp %rax, %rcx
@@ -791,12 +790,11 @@ __kefir_bigint_is_zero:
     ret
 .L__kefir_runtime_func___kefir_bigint_is_zero_label7:
     movzx %r8b, %r8
-    mov %rsi, %rcx
-    shr $3, %rcx
-    shl $3, %rcx
-    mov %rsi, %r9
-    sub %rcx, %r9
-    mov %r9, %rcx
+    lea -1(%rsi), %rcx
+    mov %rcx, %r9
+    shr $3, %r9
+    shl $3, %r9
+    sub %r9, %rcx
     add $1, %rcx
     mov $1, %r9d
     shl %cl, %r9
@@ -1003,7 +1001,8 @@ __kefir_bigint_right_shift_whole_digits:
 
 __kefir_bigint_get_min_unsigned_width:
 .L__kefir_runtime_text_func___kefir_bigint_get_min_unsigned_width_begin:
-    lea -1(%rsi), %rcx
+    lea -1(%rsi), %rax
+    mov %rax, %rcx
     mov %rsi, %rax
 .L__kefir_runtime_func___kefir_bigint_get_min_unsigned_width_label2:
     cmp $0, %rcx
@@ -1021,8 +1020,8 @@ __kefir_bigint_get_min_unsigned_width:
     sar %cl, %esi
     and $1, %esi
     jnz .L__kefir_runtime_func___kefir_bigint_get_min_unsigned_width_label3
-    mov %r8, %rax
     mov %r9, %rcx
+    mov %r8, %rax
     jmp .L__kefir_runtime_func___kefir_bigint_get_min_unsigned_width_label2
 .L__kefir_runtime_text_func___kefir_bigint_get_min_unsigned_width_end:
 

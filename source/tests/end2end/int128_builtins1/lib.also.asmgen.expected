@@ -477,7 +477,6 @@ __kefir_bigint_unsigned_compare:
 .L__kefir_runtime_text_func___kefir_bigint_unsigned_compare_begin:
     lea 7(%rdx), %rax
     shr $3, %rax
-    sub $1, %rdx
     mov %rax, %r8
 .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label2:
     cmp $0, %r8
@@ -501,12 +500,11 @@ __kefir_bigint_unsigned_compare:
     mov $1, %eax
     ret
 .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label11:
-    mov %rdx, %rcx
-    shr $3, %rcx
-    shl $3, %rcx
-    mov %rdx, %r11
-    sub %rcx, %r11
-    mov %r11, %rcx
+    lea -1(%rdx), %rcx
+    mov %rcx, %r11
+    shr $3, %r11
+    shl $3, %r11
+    sub %r11, %rcx
     add $1, %rcx
     mov %ecx, %ecx
     mov $1, %r11d
