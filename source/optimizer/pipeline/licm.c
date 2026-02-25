@@ -650,6 +650,22 @@ static kefir_result_t process_loop(struct licm_state *state) {
             case KEFIR_OPT_OPCODE_DECIMAL32_LOAD:
             case KEFIR_OPT_OPCODE_DECIMAL64_LOAD:
             case KEFIR_OPT_OPCODE_DECIMAL128_LOAD:
+            case KEFIR_OPT_OPCODE_INT8_STORE:
+            case KEFIR_OPT_OPCODE_INT16_STORE:
+            case KEFIR_OPT_OPCODE_INT32_STORE:
+            case KEFIR_OPT_OPCODE_INT64_STORE:
+            case KEFIR_OPT_OPCODE_INT128_STORE:
+            case KEFIR_OPT_OPCODE_FLOAT32_STORE:
+            case KEFIR_OPT_OPCODE_FLOAT64_STORE:
+            case KEFIR_OPT_OPCODE_LONG_DOUBLE_STORE:
+            case KEFIR_OPT_OPCODE_COMPLEX_FLOAT32_STORE:
+            case KEFIR_OPT_OPCODE_COMPLEX_FLOAT64_STORE:
+            case KEFIR_OPT_OPCODE_COMPLEX_LONG_DOUBLE_STORE:
+            case KEFIR_OPT_OPCODE_BITINT_STORE:
+            case KEFIR_OPT_OPCODE_BITINT_STORE_PRECISE:
+            case KEFIR_OPT_OPCODE_DECIMAL32_STORE:
+            case KEFIR_OPT_OPCODE_DECIMAL64_STORE:
+            case KEFIR_OPT_OPCODE_DECIMAL128_STORE:
                 if (must_execute && !instr->operation.parameters.memory_access.flags.volatile_access) {
                     REQUIRE_OK(hoist_memory_operation(state, instr_ref, &hoist_target));
                 }

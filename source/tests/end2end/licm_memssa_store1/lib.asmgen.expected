@@ -1,0 +1,101 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.extern a
+.extern b
+.extern c
+.extern d
+.extern fn
+.global test
+.type test, @function
+.global test2
+.type test2, @function
+.global test3
+.type test3, @function
+.global test4
+.type test4, @function
+.global test5
+.type test5, @function
+.global test6
+.type test6, @function
+
+.section .text
+.L__kefir_text_section_begin:
+test:
+.L__kefir_text_func_test_begin:
+    movq a@GOTPCREL(%rip), %rax
+    movl $1, (%rax)
+    ret
+.L__kefir_text_func_test_end:
+
+test2:
+.L__kefir_text_func_test2_begin:
+    movq c@GOTPCREL(%rip), %rax
+    movl 4(%rax), %eax
+    movq b@GOTPCREL(%rip), %rcx
+    xor %edx, %edx
+.L__kefir_func_test2_label2:
+    cmp $10, %edx
+    jl .L__kefir_func_test2_label4
+    ret
+.L__kefir_func_test2_label4:
+    movsx %edx, %rsi
+    movl %eax, (%rcx, %rsi, 4)
+    add $1, %edx
+    jmp .L__kefir_func_test2_label2
+.L__kefir_text_func_test2_end:
+
+test3:
+.L__kefir_text_func_test3_begin:
+    movq c@GOTPCREL(%rip), %rax
+    movl 8(%rax), %eax
+    movq b@GOTPCREL(%rip), %rcx
+    movl %eax, 4(%rcx)
+    ret
+.L__kefir_text_func_test3_end:
+
+test4:
+.L__kefir_text_func_test4_begin:
+.L__kefir_func_test4_label1:
+    jmp .L__kefir_func_test4_label1
+.L__kefir_text_func_test4_end:
+
+test5:
+.L__kefir_text_func_test5_begin:
+.L__kefir_func_test5_label1:
+    movq d@GOTPCREL(%rip), %rax
+    movl $1234, (%rax)
+    jmp .L__kefir_func_test5_label1
+.L__kefir_text_func_test5_end:
+
+test6:
+.L__kefir_text_func_test6_begin:
+    push %rbp
+    mov %rsp, %rbp
+    push %rbx
+    push %r12
+    push %r13
+    sub $8, %rsp
+    movq b@GOTPCREL(%rip), %rbx
+    movq c@GOTPCREL(%rip), %r12
+    xor %eax, %eax
+    mov %rax, %r13
+.L__kefir_func_test6_label2:
+    cmp $10, %r13d
+    jl .L__kefir_func_test6_label4
+    lea -24(%rbp), %rsp
+    pop %r13
+    pop %r12
+    pop %rbx
+    pop %rbp
+    ret
+.L__kefir_func_test6_label4:
+    call fn@PLT
+    movl 8(%r12), %eax
+    movl %eax, 4(%rbx)
+    add $1, %r13d
+    jmp .L__kefir_func_test6_label2
+.L__kefir_text_func_test6_end:
+
+.L__kefir_text_section_end:
+
