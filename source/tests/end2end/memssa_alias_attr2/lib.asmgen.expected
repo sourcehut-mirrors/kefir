@@ -1,0 +1,41 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.extern x
+.extern y
+.global test
+.type test, @function
+
+.section .text
+.L__kefir_text_section_begin:
+test:
+.L__kefir_text_func_test_begin:
+.extern __tls_get_addr
+    push %rbp
+    mov %rsp, %rbp
+    push %rbx
+    sub $8, %rsp
+    data16     lea y@tlsgd(%rip), %rdi
+    .word 26214
+    rex.W     call __tls_get_addr@PLT
+    movl (%rax), %ebx
+    data16     lea x@tlsgd(%rip), %rdi
+    .word 26214
+    rex.W     call __tls_get_addr@PLT
+    xor %ecx, %ecx
+.L__kefir_func_test_label2:
+    cmp $10, %ecx
+    jl .L__kefir_func_test_label4
+    lea -8(%rbp), %rsp
+    pop %rbx
+    pop %rbp
+    ret
+.L__kefir_func_test_label4:
+    lea 1(%ebx), %edx
+    movl %edx, (%rax)
+    add $1, %ecx
+    jmp .L__kefir_func_test_label2
+.L__kefir_text_func_test_end:
+
+.L__kefir_text_section_end:
+

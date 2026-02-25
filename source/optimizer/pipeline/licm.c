@@ -34,6 +34,7 @@
 
 struct licm_state {
     struct kefir_mem *mem;
+    struct kefir_opt_module *module;
     struct kefir_opt_function *func;
     struct kefir_opt_code_control_flow control_flow;
     struct kefir_opt_code_liveness liveness;
@@ -453,8 +454,8 @@ static kefir_result_t hoist_memory_operation(struct licm_state *state, kefir_opt
         REQUIRE_OK(res);
 
         kefir_bool_t may_alias;
-        REQUIRE_OK(kefir_opt_code_may_alias(&state->func->code, &state->escapes, location1_ref, size1, offset1,
-                                            location2_ref, size2, offset2, &may_alias));
+        REQUIRE_OK(kefir_opt_code_may_alias(&state->func->code, &state->escapes, state->module->ir_module,
+                                            location1_ref, size1, offset1, location2_ref, size2, offset2, &may_alias));
         if (may_alias) {
             return KEFIR_OK;
         }
@@ -731,7 +732,7 @@ static kefir_result_t loop_invariant_code_motion_apply(struct kefir_mem *mem, st
     REQUIRE(module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer module"));
     REQUIRE(func != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer function"));
 
-    struct licm_state state = {.mem = mem, .func = func};
+    struct licm_state state = {.mem = mem, .func = func, .module = module};
     REQUIRE_OK(kefir_hashset_init(&state.candidate_queue_index, &kefir_hashtable_uint_ops));
     REQUIRE_OK(kefir_hashset_init(&state.rejected_candidates, &kefir_hashtable_uint_ops));
     REQUIRE_OK(kefir_list_init(&state.candidate_queue));

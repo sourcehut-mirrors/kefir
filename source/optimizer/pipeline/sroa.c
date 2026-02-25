@@ -111,10 +111,10 @@ static kefir_result_t sroa_scan_candidate(struct kefir_mem *mem, struct sroa_sta
         REQUIRE_OK(res);
 
         kefir_bool_t may_alias, must_alias;
-        REQUIRE_OK(kefir_opt_code_may_alias(state->code, &state->escapes, location1_ref, size1, offset1, location2_ref,
-                                            size2, offset2, &may_alias));
-        REQUIRE_OK(kefir_opt_code_must_alias(state->code, location1_ref, size1, offset1, location2_ref, size2, offset2,
-                                             &must_alias));
+        REQUIRE_OK(kefir_opt_code_may_alias(state->code, &state->escapes, state->ir_module, location1_ref, size1,
+                                            offset1, location2_ref, size2, offset2, &may_alias));
+        REQUIRE_OK(kefir_opt_code_must_alias(state->code, state->ir_module, location1_ref, size1, offset1,
+                                             location2_ref, size2, offset2, &must_alias));
 
         if (may_alias &&
             (!table_value || !must_alias || size1 != size2 ||
