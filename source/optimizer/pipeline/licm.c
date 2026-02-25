@@ -456,7 +456,7 @@ static kefir_result_t hoist_memory_operation(struct licm_state *state, kefir_opt
         REQUIRE_OK(kefir_opt_code_may_alias(&state->func->code, &state->escapes, location1_ref, size1, offset1,
                                             location2_ref, size2, offset2, &may_alias));
         if (may_alias) {
-            return KEFIR_OK;  // TODO
+            return KEFIR_OK;
         }
     }
     if (res != KEFIR_ITERATOR_END) {
@@ -650,7 +650,7 @@ static kefir_result_t process_loop(struct licm_state *state) {
             case KEFIR_OPT_OPCODE_DECIMAL32_LOAD:
             case KEFIR_OPT_OPCODE_DECIMAL64_LOAD:
             case KEFIR_OPT_OPCODE_DECIMAL128_LOAD:
-                if (must_execute) {
+                if (must_execute && !instr->operation.parameters.memory_access.flags.volatile_access) {
                     REQUIRE_OK(hoist_memory_operation(state, instr_ref, &hoist_target));
                 }
                 break;
