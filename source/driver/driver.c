@@ -57,6 +57,8 @@
     "phi-removal," \
     "constant-fold," \
     "op-simplify," \
+    "canonicalize," \
+    "gvn," \
     "phi-removal," \
     "loop-removal," \
     "merge-blocks," \

@@ -392,29 +392,23 @@ test_cldouble:
     data16     lea cld1@tlsgd(%rip), %rdi
     .word 26214
     rex.W     call __tls_get_addr@PLT
-    fldt 16(%rbx)
-    movq $0, 24(%rax)
-    fstpt 16(%rax)
-    data16     lea cld1@tlsgd(%rip), %rdi
-    .word 26214
-    rex.W     call __tls_get_addr@PLT
     mov %rax, %r12
+    fldt 16(%rbx)
+    movq $0, 24(%r12)
+    fstpt 16(%r12)
     fldt (%rbx)
     movq $0, 8(%r12)
     fstpt (%r12)
     data16     lea cld2@tlsgd(%rip), %rdi
     .word 26214
     rex.W     call __tls_get_addr@PLT
+    mov %rax, %r13
     fldt 16(%rbx)
     fldt .L__kefir_func_test_cldouble_label3(%rip)
     fxch %st(1)
     faddp
-    movq $0, 24(%rax)
-    fstpt 16(%rax)
-    data16     lea cld2@tlsgd(%rip), %rdi
-    .word 26214
-    rex.W     call __tls_get_addr@PLT
-    mov %rax, %r13
+    movq $0, 24(%r13)
+    fstpt 16(%r13)
     fldt (%rbx)
     fldt .L__kefir_func_test_cldouble_label4(%rip)
     fxch %st(1)
@@ -449,28 +443,15 @@ test_cldouble:
     fldt -96(%rbp)
     movq $0, 24(%r14)
     fstpt 16(%r14)
-    data16     lea cld3@tlsgd(%rip), %rdi
-    .word 26214
-    rex.W     call __tls_get_addr@PLT
-    mov %rax, %rbx
     fldt -112(%rbp)
-    movq $0, 8(%rbx)
-    fstpt (%rbx)
-    data16     lea cld1@tlsgd(%rip), %rdi
-    .word 26214
-    rex.W     call __tls_get_addr@PLT
-    fldt 16(%rax)
+    movq $0, 8(%r14)
+    fstpt (%r14)
+    fldt 16(%r12)
     fldt (%r12)
-    data16     lea cld2@tlsgd(%rip), %rdi
-    .word 26214
-    rex.W     call __tls_get_addr@PLT
-    fldt 16(%rax)
+    fldt 16(%r13)
     fldt (%r13)
-    data16     lea cld3@tlsgd(%rip), %rdi
-    .word 26214
-    rex.W     call __tls_get_addr@PLT
-    fldt 16(%rax)
-    fldt (%rbx)
+    fldt 16(%r14)
+    fldt (%r14)
     fxch %st(1)
     fxch %st(2)
     fxch %st(1)

@@ -16,26 +16,17 @@
 .L__kefir_text_section_begin:
 test1:
 .L__kefir_text_func_test1_begin:
-    mov %rdi, %rax
-    shl $58, %rax
-    shr $58, %rax
-    cmp $48, %al
+    shl $58, %rdi
+    shr $58, %rdi
+    cmp $48, %dil
     seta %al
-    mov %rdi, %rcx
-    shl $58, %rcx
-    shr $58, %rcx
-    mov $48, %dl
-    cmp %cl, %dl
+    mov $48, %cl
+    cmp %dil, %cl
     sete %cl
     or %cl, %al
     setne %al
-    mov %rdi, %rcx
-    shl $58, %rcx
-    shr $58, %rcx
-    cmp $63, %cl
+    cmp $63, %dil
     setb %cl
-    shl $58, %rdi
-    shr $58, %rdi
     mov $63, %dl
     cmp %dil, %dl
     sete %dl
@@ -52,26 +43,17 @@ test1:
 
 test2:
 .L__kefir_text_func_test2_begin:
-    mov %rdi, %rax
-    shl $50, %rax
-    shr $50, %rax
-    cmp $16128, %ax
+    shl $50, %rdi
+    shr $50, %rdi
+    cmp $16128, %di
     seta %al
-    mov %rdi, %rcx
-    shl $50, %rcx
-    shr $50, %rcx
-    mov $16128, %dx
-    cmp %cx, %dx
+    mov $16128, %cx
+    cmp %di, %cx
     sete %cl
     or %cl, %al
     setne %al
-    mov %rdi, %rcx
-    shl $50, %rcx
-    shr $50, %rcx
-    cmp $16383, %cx
+    cmp $16383, %di
     setb %cl
-    shl $50, %rdi
-    shr $50, %rdi
     mov $16383, %dx
     cmp %di, %dx
     sete %dl
@@ -88,26 +70,17 @@ test2:
 
 test3:
 .L__kefir_text_func_test3_begin:
-    mov %rdi, %rax
-    shl $35, %rax
-    shr $35, %rax
-    cmp $536870656, %eax
+    shl $35, %rdi
+    shr $35, %rdi
+    cmp $536870656, %edi
     seta %al
-    mov %rdi, %rcx
-    shl $35, %rcx
-    shr $35, %rcx
-    mov $536870656, %edx
-    cmp %ecx, %edx
+    mov $536870656, %ecx
+    cmp %edi, %ecx
     sete %cl
     or %cl, %al
     setne %al
-    mov %rdi, %rcx
-    shl $35, %rcx
-    shr $35, %rcx
-    cmp $536870911, %ecx
+    cmp $536870911, %edi
     setb %cl
-    shl $35, %rdi
-    shr $35, %rdi
     mov $536870911, %edx
     cmp %edi, %edx
     sete %dl
@@ -124,32 +97,21 @@ test3:
 
 test4:
 .L__kefir_text_func_test4_begin:
-    mov %rdi, %rax
-    shl $4, %rax
-    shr $4, %rax
-    movabs $1152921504606846720, %rcx
-    cmp %rcx, %rax
-    seta %al
-    movabs $1152921504606846720, %rcx
-    mov %rdi, %rdx
-    shl $4, %rdx
-    shr $4, %rdx
-    cmp %rdx, %rcx
-    sete %cl
-    or %cl, %al
-    setne %al
-    mov %rdi, %rcx
-    shl $4, %rcx
-    shr $4, %rcx
-    movabs $1152921504606846975, %rdx
-    cmp %rdx, %rcx
-    setb %cl
-    movabs $1152921504606846975, %rdx
     shl $4, %rdi
     shr $4, %rdi
-    cmp %rdi, %rdx
-    sete %dl
-    or %dl, %cl
+    movabs $1152921504606846720, %rax
+    cmp %rax, %rdi
+    seta %cl
+    cmp %rdi, %rax
+    sete %al
+    or %al, %cl
+    setne %al
+    movabs $1152921504606846975, %rcx
+    cmp %rcx, %rdi
+    setb %dl
+    cmp %rdi, %rcx
+    sete %cl
+    or %cl, %dl
     setne %cl
     and %cl, %al
     jnz .L__kefir_func_test4_label3

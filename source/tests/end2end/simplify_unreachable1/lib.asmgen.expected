@@ -193,7 +193,6 @@ test16:
     fldt .L__kefir_func_test16_label3(%rip)
     movq $0, 24(%rax)
     fstpt 16(%rax)
-    movq c80@GOTPCREL(%rip), %rax
     fldt .L__kefir_func_test16_label4(%rip)
     movq $0, 8(%rax)
     fstpt (%rax)

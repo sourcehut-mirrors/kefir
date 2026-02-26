@@ -58,12 +58,12 @@ get_b:
 get_c:
 .L__kefir_text_func_get_c_begin:
     movq s@GOTPCREL(%rip), %rax
-    movzxb 5(%rax), %rax
-    movq s@GOTPCREL(%rip), %rcx
-    movzxw 3(%rcx), %rcx
-    shl $16, %rax
-    or %rcx, %rax
-    shl $41, %rax
+    movzxb 5(%rax), %rcx
+    movzxw 3(%rax), %rax
+    shl $16, %rcx
+    or %rax, %rcx
+    shl $41, %rcx
+    mov %rcx, %rax
     sar $41, %rax
     ret
 .L__kefir_text_func_get_c_end:
@@ -80,12 +80,12 @@ get_d:
 get_e:
 .L__kefir_text_func_get_e_begin:
     movq s@GOTPCREL(%rip), %rax
-    movzxb 20(%rax), %rax
-    movq s@GOTPCREL(%rip), %rcx
-    movl 16(%rcx), %ecx
-    shl $32, %rax
-    or %rcx, %rax
-    shl $25, %rax
+    movzxb 20(%rax), %rcx
+    movl 16(%rax), %eax
+    shl $32, %rcx
+    or %rax, %rcx
+    shl $25, %rcx
+    mov %rcx, %rax
     sar $25, %rax
     ret
 .L__kefir_text_func_get_e_end:
@@ -93,12 +93,12 @@ get_e:
 get_f:
 .L__kefir_text_func_get_f_begin:
     movq s@GOTPCREL(%rip), %rax
-    movzxw 28(%rax), %rax
-    movq s@GOTPCREL(%rip), %rcx
-    movl 24(%rcx), %ecx
-    shl $32, %rax
-    or %rcx, %rax
-    shl $17, %rax
+    movzxw 28(%rax), %rcx
+    movl 24(%rax), %eax
+    shl $32, %rcx
+    or %rax, %rcx
+    shl $17, %rcx
+    mov %rcx, %rax
     sar $17, %rax
     ret
 .L__kefir_text_func_get_f_end:
@@ -106,16 +106,15 @@ get_f:
 get_g:
 .L__kefir_text_func_get_g_begin:
     movq s@GOTPCREL(%rip), %rax
-    movzxb 38(%rax), %rax
-    movq s@GOTPCREL(%rip), %rcx
-    movzxw 36(%rcx), %rcx
-    movq s@GOTPCREL(%rip), %rdx
-    movl 32(%rdx), %edx
-    shl $48, %rax
-    shl $32, %rcx
+    movzxb 38(%rax), %rcx
+    movzxw 36(%rax), %rdx
+    movl 32(%rax), %eax
+    shl $48, %rcx
+    shl $32, %rdx
+    or %rax, %rdx
     or %rdx, %rcx
-    or %rcx, %rax
-    shl $9, %rax
+    shl $9, %rcx
+    mov %rcx, %rax
     sar $9, %rax
     ret
 .L__kefir_text_func_get_g_end:
@@ -157,10 +156,9 @@ set_c:
 .L__kefir_text_func_set_c_begin:
     movq s@GOTPCREL(%rip), %rax
     movzxb 5(%rax), %rcx
-    movq s@GOTPCREL(%rip), %rdx
-    movzxw 3(%rdx), %rsi
+    movzxw 3(%rax), %rdx
     shl $16, %rcx
-    or %rsi, %rcx
+    or %rdx, %rcx
     and $-8388608, %rcx
     shl $41, %rdi
     shr $41, %rdi
@@ -168,7 +166,7 @@ set_c:
     mov %rdi, %rcx
     shr $16, %rcx
     movb %cl, 5(%rax)
-    movw %di, 3(%rdx)
+    movw %di, 3(%rax)
     ret
 .L__kefir_text_func_set_c_end:
 
@@ -188,19 +186,18 @@ set_e:
 .L__kefir_text_func_set_e_begin:
     movq s@GOTPCREL(%rip), %rax
     movzxb 20(%rax), %rcx
-    movq s@GOTPCREL(%rip), %rdx
-    movl 16(%rdx), %esi
+    movl 16(%rax), %edx
     shl $32, %rcx
-    or %rsi, %rcx
-    movabs $-549755813888, %rsi
-    and %rcx, %rsi
+    or %rdx, %rcx
+    movabs $-549755813888, %rdx
+    and %rcx, %rdx
     shl $25, %rdi
     shr $25, %rdi
-    or %rsi, %rdi
+    or %rdx, %rdi
     mov %rdi, %rcx
     shr $32, %rcx
     movb %cl, 20(%rax)
-    movl %edi, 16(%rdx)
+    movl %edi, 16(%rax)
     ret
 .L__kefir_text_func_set_e_end:
 
@@ -208,19 +205,18 @@ set_f:
 .L__kefir_text_func_set_f_begin:
     movq s@GOTPCREL(%rip), %rax
     movzxw 28(%rax), %rcx
-    movq s@GOTPCREL(%rip), %rdx
-    movl 24(%rdx), %esi
+    movl 24(%rax), %edx
     shl $32, %rcx
-    or %rsi, %rcx
-    movabs $-140737488355328, %rsi
-    and %rcx, %rsi
+    or %rdx, %rcx
+    movabs $-140737488355328, %rdx
+    and %rcx, %rdx
     shl $17, %rdi
     shr $17, %rdi
-    or %rsi, %rdi
+    or %rdx, %rdi
     mov %rdi, %rcx
     shr $32, %rcx
     movw %cx, 28(%rax)
-    movl %edi, 24(%rdx)
+    movl %edi, 24(%rax)
     ret
 .L__kefir_text_func_set_f_end:
 
@@ -228,26 +224,24 @@ set_g:
 .L__kefir_text_func_set_g_begin:
     movq s@GOTPCREL(%rip), %rax
     movzxb 38(%rax), %rcx
-    movq s@GOTPCREL(%rip), %rdx
-    movzxw 36(%rdx), %rsi
-    movq s@GOTPCREL(%rip), %r8
-    movl 32(%r8), %r9d
+    movzxw 36(%rax), %rdx
+    movl 32(%rax), %esi
     shl $48, %rcx
-    shl $32, %rsi
-    or %r9, %rsi
-    or %rsi, %rcx
-    movabs $-36028797018963968, %rsi
-    and %rcx, %rsi
+    shl $32, %rdx
+    or %rsi, %rdx
+    or %rdx, %rcx
+    movabs $-36028797018963968, %rdx
+    and %rcx, %rdx
     shl $9, %rdi
     shr $9, %rdi
-    or %rsi, %rdi
+    or %rdx, %rdi
     mov %rdi, %rcx
     shr $48, %rcx
     movb %cl, 38(%rax)
-    mov %rdi, %rax
-    shr $32, %rax
-    movw %ax, 36(%rdx)
-    movl %edi, 32(%r8)
+    mov %rdi, %rcx
+    shr $32, %rcx
+    movw %cx, 36(%rax)
+    movl %edi, 32(%rax)
     ret
 .L__kefir_text_func_set_g_end:
 

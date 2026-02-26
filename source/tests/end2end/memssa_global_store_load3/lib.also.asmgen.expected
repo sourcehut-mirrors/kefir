@@ -18,10 +18,8 @@ test1:
 .L__kefir_text_func_test1_begin:
     movq x@GOTPCREL(%rip), %rax
     movl %edi, (%rax)
-    movq x@GOTPCREL(%rip), %rax
     lea 1(%edi), %ecx
     movl %ecx, 4(%rax)
-    movq x@GOTPCREL(%rip), %rax
     mov %rdi, %rdx
     shl $1, %edx
     movl %edx, 8(%rax)
@@ -34,29 +32,26 @@ test1:
 test2:
 .L__kefir_text_func_test2_begin:
 .extern __tls_get_addr
+    push %rbp
+    mov %rsp, %rbp
     push %rbx
-    push %r12
+    sub $8, %rsp
     mov %rdi, %rbx
     data16     lea y@tlsgd(%rip), %rdi
     .word 26214
     rex.W     call __tls_get_addr@PLT
     movl %ebx, (%rax)
-    data16     lea y@tlsgd(%rip), %rdi
-    .word 26214
-    rex.W     call __tls_get_addr@PLT
-    lea 1(%ebx), %r12d
-    movl %r12d, 4(%rax)
-    data16     lea y@tlsgd(%rip), %rdi
-    .word 26214
-    rex.W     call __tls_get_addr@PLT
-    mov %rbx, %rcx
-    shl $1, %ecx
-    movl %ecx, 8(%rax)
-    add %r12d, %ebx
+    lea 1(%ebx), %ecx
+    movl %ecx, 4(%rax)
+    mov %rbx, %rdx
+    shl $1, %edx
+    movl %edx, 8(%rax)
+    add %ecx, %ebx
     mov %ebx, %eax
-    add %ecx, %eax
-    pop %r12
+    add %edx, %eax
+    lea -8(%rbp), %rsp
     pop %rbx
+    pop %rbp
     ret
 .L__kefir_text_func_test2_end:
 

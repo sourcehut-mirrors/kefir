@@ -75,6 +75,7 @@ DECLARE_PASS(LoopInvariantCodeMotion);
 DECLARE_PASS(LoopRemoval);
 DECLARE_PASS(MemorySSA);
 DECLARE_PASS(SROA);
+DECLARE_PASS(Canonicalize);
 #undef DECLARE_PASS
 #endif
 

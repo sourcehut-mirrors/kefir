@@ -17,17 +17,13 @@ test1:
     fstcw -8(%rbp)
     movq b@GOTPCREL(%rip), %rax
     fldt 16(%rax)
-    movq b@GOTPCREL(%rip), %rax
     fldt (%rax)
     movq c@GOTPCREL(%rip), %rax
     fldt 16(%rax)
-    movq c@GOTPCREL(%rip), %rax
     fldt (%rax)
     movq a@GOTPCREL(%rip), %rax
     fldt 16(%rax)
-    movq a@GOTPCREL(%rip), %rax
     fldt (%rax)
-    movq a@GOTPCREL(%rip), %rcx
     fxch %st(1)
     fxch %st(2)
     fxch %st(3)
@@ -40,8 +36,8 @@ test1:
     fxch %st(1)
     fxch %st(2)
     faddp
-    movq $0, 24(%rcx)
-    fstpt 16(%rcx)
+    movq $0, 24(%rax)
+    fstpt 16(%rax)
     fxch %st(2)
     faddp
     fxch %st(1)
