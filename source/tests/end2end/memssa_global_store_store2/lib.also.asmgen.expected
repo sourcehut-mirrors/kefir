@@ -74,9 +74,7 @@ test4:
     movl (%rax), %eax
     ret
 .L__kefir_func_test4_label4:
-    movl (%rax), %edx
-    add $1, %edx
-    movl %edx, (%rax)
+    addl $1, (%rax)
     add $1, %ecx
     jmp .L__kefir_func_test4_label2
 .L__kefir_text_func_test4_end:

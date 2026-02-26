@@ -90,9 +90,7 @@ test5:
 .L__kefir_text_func_test5_begin:
     movq z@GOTPCREL(%rip), %rax
     movl %edi, (%rax)
-    movl (%rax), %ecx
-    add $1, %ecx
-    movl %ecx, (%rax)
+    addl $1, (%rax)
     movl (%rax), %ecx
     shl $1, %ecx
     movl %ecx, (%rax)

@@ -299,9 +299,7 @@ __kefir_bigint_add:
     mov $8, %ecx
     shr %cl, %eax
     movl %eax, -48(%rbp)
-    movq -16(%rbp), %rax
-    add $1, %rax
-    movq %rax, -16(%rbp)
+    addq $1, -16(%rbp)
     jmp .L__kefir_runtime_func___kefir_bigint_add_label2
 .L__kefir_runtime_text_func___kefir_bigint_add_end:
 

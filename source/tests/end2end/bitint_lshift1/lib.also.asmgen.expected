@@ -289,9 +289,7 @@ __kefir_bigint_left_shift:
     sar %cl, %edi
     or %edi, %edx
     movb %dl, (%rsi, %r8, 1)
-    movq -8(%rbp), %rax
-    add $-1, %rax
-    movq %rax, -8(%rbp)
+    addq $-1, -8(%rbp)
     jmp .L__kefir_runtime_func___kefir_bigint_left_shift_label6
 .L__kefir_runtime_func___kefir_bigint_left_shift_label9:
     movq -24(%rbp), %rdi
@@ -353,9 +351,7 @@ __kefir_bigint_left_shift_whole_digits:
     movq -24(%rbp), %rax
     movq -8(%rbp), %rcx
     movb $0, (%rax, %rcx, 1)
-    movq -8(%rbp), %rax
-    add $1, %rax
-    movq %rax, -8(%rbp)
+    addq $1, -8(%rbp)
     jmp .L__kefir_runtime_func___kefir_bigint_left_shift_whole_digits_label4
 .L__kefir_runtime_func___kefir_bigint_left_shift_whole_digits_label8:
     movq -24(%rbp), %rax
@@ -366,9 +362,7 @@ __kefir_bigint_left_shift_whole_digits:
     movq -24(%rbp), %rax
     movq -16(%rbp), %rcx
     movb %dl, (%rax, %rcx, 1)
-    movq -16(%rbp), %rax
-    add $-1, %rax
-    movq %rax, -16(%rbp)
+    addq $-1, -16(%rbp)
     jmp .L__kefir_runtime_func___kefir_bigint_left_shift_whole_digits_label2
 .L__kefir_runtime_text_func___kefir_bigint_left_shift_whole_digits_end:
 

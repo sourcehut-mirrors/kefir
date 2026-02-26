@@ -40,9 +40,7 @@ run_bf:
 
 op_next:
 .L__kefir_text_func_op_next_begin:
-    movw 5132(%rdi), %ax
-    add $1, %ax
-    movw %ax, 5132(%rdi)
+    addw $1, 5132(%rdi)
     movq (%rdi), %rax
     movl 5128(%rdi), %ecx
     lea 1(%ecx), %edx
@@ -57,9 +55,7 @@ op_next:
 op_plus:
 .L__kefir_text_func_op_plus_begin:
     movzxw 5132(%rdi), %rax
-    movb 8(%rdi, %rax, 1), %cl
-    add $1, %cl
-    movb %cl, 8(%rdi, %rax, 1)
+    addb $1, 8(%rdi, %rax, 1)
     movq (%rdi), %rax
     movl 5128(%rdi), %ecx
     lea 1(%ecx), %edx
@@ -73,9 +69,7 @@ op_plus:
 
 op_prev:
 .L__kefir_text_func_op_prev_begin:
-    movw 5132(%rdi), %ax
-    add $-1, %ax
-    movw %ax, 5132(%rdi)
+    addw $-1, 5132(%rdi)
     movq (%rdi), %rax
     movl 5128(%rdi), %ecx
     lea 1(%ecx), %edx
@@ -90,9 +84,7 @@ op_prev:
 op_minus:
 .L__kefir_text_func_op_minus_begin:
     movzxw 5132(%rdi), %rax
-    movb 8(%rdi, %rax, 1), %cl
-    add $-1, %cl
-    movb %cl, 8(%rdi, %rax, 1)
+    addb $-1, 8(%rdi, %rax, 1)
     movq (%rdi), %rax
     movl 5128(%rdi), %ecx
     lea 1(%ecx), %edx

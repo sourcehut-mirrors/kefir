@@ -228,9 +228,7 @@ __kefir_bigint_invert:
     movzx %dl, %edx
     not %edx
     movb %dl, (%rax, %rcx, 1)
-    movq -8(%rbp), %rax
-    add $1, %rax
-    movq %rax, -8(%rbp)
+    addq $1, -8(%rbp)
     jmp .L__kefir_runtime_func___kefir_bigint_invert_label2
 .L__kefir_runtime_text_func___kefir_bigint_invert_end:
 
@@ -342,9 +340,7 @@ __kefir_bigint_cast_signed:
     movq -8(%rbp), %rcx
     movb $0, (%rax, %rcx, 1)
 .L__kefir_runtime_func___kefir_bigint_cast_signed_label13:
-    movq -8(%rbp), %rax
-    add $1, %rax
-    movq %rax, -8(%rbp)
+    addq $1, -8(%rbp)
     jmp .L__kefir_runtime_func___kefir_bigint_cast_signed_label9
 .L__kefir_runtime_func___kefir_bigint_cast_signed_label14:
     movq -24(%rbp), %rax
@@ -406,9 +402,7 @@ __kefir_bigint_cast_signed:
     movq -24(%rbp), %rax
     movq -8(%rbp), %rcx
     movb $0, (%rax, %rcx, 1)
-    movq -8(%rbp), %rax
-    add $1, %rax
-    movq %rax, -8(%rbp)
+    addq $1, -8(%rbp)
     jmp .L__kefir_runtime_func___kefir_bigint_cast_signed_label17
 .L__kefir_runtime_func___kefir_bigint_cast_signed_label21:
     movq -24(%rbp), %rax
@@ -531,9 +525,7 @@ __kefir_bigint_cast_unsigned:
     movq -16(%rbp), %rax
     movq -8(%rbp), %rcx
     movb $0, (%rax, %rcx, 1)
-    movq -8(%rbp), %rax
-    add $1, %rax
-    movq %rax, -8(%rbp)
+    addq $1, -8(%rbp)
     jmp .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label13
 .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label11:
     movq -48(%rbp), %rcx
@@ -571,9 +563,7 @@ __kefir_bigint_cast_unsigned:
     movq -16(%rbp), %rax
     movq -8(%rbp), %rcx
     movb $0, (%rax, %rcx, 1)
-    movq -8(%rbp), %rax
-    add $1, %rax
-    movq %rax, -8(%rbp)
+    addq $1, -8(%rbp)
     jmp .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label5
 .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label16:
     movq -32(%rbp), %rcx
@@ -651,9 +641,7 @@ __kefir_bigint_util_add_digit_zero_extended:
     mov $8, %ecx
     shr %cl, %eax
     movl %eax, -48(%rbp)
-    movq -16(%rbp), %rax
-    add $1, %rax
-    movq %rax, -16(%rbp)
+    addq $1, -16(%rbp)
     jmp .L__kefir_runtime_func___kefir_bigint_util_add_digit_zero_extended_label2
 .L__kefir_runtime_func___kefir_bigint_util_add_digit_zero_extended_label9:
     movl -56(%rbp), %ecx

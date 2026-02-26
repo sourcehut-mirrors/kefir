@@ -26,6 +26,11 @@ void test() {
         y += x;
 }
 
+void test0() {
+    for (int i = 0; i < 10; i++)
+        y -= x;
+}
+
 void test2() {
     extern int a[10];
     extern int b[10];

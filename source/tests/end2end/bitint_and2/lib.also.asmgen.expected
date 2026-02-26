@@ -251,9 +251,7 @@ __kefir_bigint_and:
     movq -16(%rbp), %rsi
     and %ecx, %eax
     movb %al, (%rdx, %rsi, 1)
-    movq -16(%rbp), %rax
-    add $1, %rax
-    movq %rax, -16(%rbp)
+    addq $1, -16(%rbp)
     jmp .L__kefir_runtime_func___kefir_bigint_and_label2
 .L__kefir_runtime_text_func___kefir_bigint_and_end:
 

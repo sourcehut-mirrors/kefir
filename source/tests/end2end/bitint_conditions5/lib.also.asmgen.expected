@@ -258,9 +258,7 @@ __kefir_bigint_is_zero:
     movb -32(%rbp), %al
     test %al, %al
     jnz .L__kefir_runtime_func___kefir_bigint_is_zero_label10
-    movq -8(%rbp), %rax
-    add $1, %rax
-    movq %rax, -8(%rbp)
+    addq $1, -8(%rbp)
     jmp .L__kefir_runtime_func___kefir_bigint_is_zero_label3
 .L__kefir_runtime_func___kefir_bigint_is_zero_label10:
     xor %eax, %eax

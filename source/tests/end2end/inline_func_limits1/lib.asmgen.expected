@@ -26,18 +26,14 @@ main:
 test1:
 .L__kefir_text_func_test1_begin:
     movq A@GOTPCREL(%rip), %rax
-    movl (%rax), %ecx
-    add %edi, %ecx
-    movl %ecx, (%rax)
+    addl %edi, (%rax)
     ret
 .L__kefir_text_func_test1_end:
 
 test2:
 .L__kefir_text_func_test2_begin:
     movq A@GOTPCREL(%rip), %rax
-    movl (%rax), %ecx
-    sub %edi, %ecx
-    movl %ecx, (%rax)
+    subl %edi, (%rax)
     ret
 .L__kefir_text_func_test2_end:
 

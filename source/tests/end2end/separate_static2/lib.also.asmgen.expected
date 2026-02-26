@@ -18,9 +18,7 @@ mov value(%rip), %rax
 add __kefir_function_gety_static_y_3(%rip), %rax
     mov %rax, -8(%rbp)
     lea __kefir_function_gety_static_y_3(%rip), %rax
-    movq (%rax), %rcx
-    add $1, %rcx
-    movq %rcx, (%rax)
+    addq $1, (%rax)
     movq -8(%rbp), %rax
     lea (%rbp), %rsp
     pop %rbp

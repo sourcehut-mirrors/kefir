@@ -77,9 +77,7 @@ test3:
     ret
 .L__kefir_func_test3_label4:
     movl -200(%rbp), %ecx
-    movl -40(%rbp), %edx
-    add %ecx, %edx
-    movl %edx, -40(%rbp)
+    addl %ecx, -40(%rbp)
     add $1, %eax
     jmp .L__kefir_func_test3_label2
 .L__kefir_text_func_test3_end:
@@ -139,9 +137,7 @@ test5:
     pop %rbp
     ret
 .L__kefir_func_test5_label4:
-    movl -40(%rbp), %ecx
-    add %edi, %ecx
-    movl %ecx, -40(%rbp)
+    addl %edi, -40(%rbp)
     add $1, %eax
     jmp .L__kefir_func_test5_label2
 .L__kefir_text_func_test5_end:

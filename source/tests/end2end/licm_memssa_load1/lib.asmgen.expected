@@ -13,6 +13,8 @@
 .extern fn
 .global test
 .type test, @function
+.global test0
+.type test0, @function
 .global test2
 .type test2, @function
 .global test3
@@ -53,12 +55,26 @@ test:
     jl .L__kefir_func_test_label4
     ret
 .L__kefir_func_test_label4:
-    movl (%rcx), %esi
-    add %eax, %esi
-    movl %esi, (%rcx)
+    addl %eax, (%rcx)
     add $1, %edx
     jmp .L__kefir_func_test_label2
 .L__kefir_text_func_test_end:
+
+test0:
+.L__kefir_text_func_test0_begin:
+    movq x@GOTPCREL(%rip), %rax
+    movl (%rax), %eax
+    movq y@GOTPCREL(%rip), %rcx
+    xor %edx, %edx
+.L__kefir_func_test0_label2:
+    cmp $10, %edx
+    jl .L__kefir_func_test0_label4
+    ret
+.L__kefir_func_test0_label4:
+    subl %eax, (%rcx)
+    add $1, %edx
+    jmp .L__kefir_func_test0_label2
+.L__kefir_text_func_test0_end:
 
 test2:
 .L__kefir_text_func_test2_begin:
@@ -72,9 +88,7 @@ test2:
     ret
 .L__kefir_func_test2_label4:
     movsx %edx, %rsi
-    movl (%rcx, %rsi, 4), %edi
-    add %eax, %edi
-    movl %edi, (%rcx, %rsi, 4)
+    addl %eax, (%rcx, %rsi, 4)
     add $1, %edx
     jmp .L__kefir_func_test2_label2
 .L__kefir_text_func_test2_end:
@@ -90,9 +104,7 @@ test3:
 .L__kefir_func_test3_label4:
     movl 4(%rax), %edx
     movsx %ecx, %rsi
-    movl (%rax, %rsi, 4), %edi
-    add %edx, %edi
-    movl %edi, (%rax, %rsi, 4)
+    addl %edx, (%rax, %rsi, 4)
     add $1, %ecx
     jmp .L__kefir_func_test3_label2
 .L__kefir_text_func_test3_end:
@@ -109,9 +121,7 @@ test4:
     ret
 .L__kefir_func_test4_label4:
     movsx %edx, %rsi
-    movl (%rcx, %rsi, 4), %edi
-    add %eax, %edi
-    movl %edi, (%rcx, %rsi, 4)
+    addl %eax, (%rcx, %rsi, 4)
     add $1, %edx
     jmp .L__kefir_func_test4_label2
 .L__kefir_text_func_test4_end:
@@ -128,9 +138,7 @@ test5:
     ret
 .L__kefir_func_test5_label4:
     movsx %edx, %rsi
-    movl (%rcx, %rsi, 4), %r8d
-    add %eax, %r8d
-    movl %r8d, (%rcx, %rsi, 4)
+    addl %eax, (%rcx, %rsi, 4)
     add $1, %edx
     jmp .L__kefir_func_test5_label2
 .L__kefir_text_func_test5_end:
@@ -147,9 +155,7 @@ test6:
     ret
 .L__kefir_func_test6_label4:
     movsx %eax, %rdx
-    movl (%rsi, %rdx, 4), %r8d
-    add %ecx, %r8d
-    movl %r8d, (%rsi, %rdx, 4)
+    addl %ecx, (%rsi, %rdx, 4)
     cdq
     idiv %edi
     mov %rdx, %rax
@@ -172,9 +178,7 @@ test8:
     movq e@GOTPCREL(%rip), %rcx
 .L__kefir_func_test8_label2:
     movl (%rax), %edx
-    movl 4(%rcx), %esi
-    add %edx, %esi
-    movl %esi, 4(%rcx)
+    addl %edx, 4(%rcx)
     jmp .L__kefir_func_test8_label2
 .L__kefir_text_func_test8_end:
 
@@ -188,9 +192,7 @@ test9:
     jnz .L__kefir_func_test9_label4
     ret
 .L__kefir_func_test9_label4:
-    movl 4(%rcx), %edx
-    add %eax, %edx
-    movl %edx, 4(%rcx)
+    addl %eax, 4(%rcx)
     jmp .L__kefir_func_test9_label2
 .L__kefir_text_func_test9_end:
 
@@ -220,9 +222,7 @@ test11:
     call fn@PLT
     movl (%r13), %eax
     movsx %r14d, %rcx
-    movl (%r12, %rcx, 4), %edx
-    add %eax, %edx
-    movl %edx, (%r12, %rcx, 4)
+    addl %eax, (%r12, %rcx, 4)
     mov %r14, %rax
     cdq
     idiv %ebx
@@ -243,9 +243,7 @@ test12:
     movsx %edx, %rsi
     movl (%rax, %rsi, 4), %esi
     movsx %ecx, %rcx
-    movl (%rax, %rcx, 4), %edi
-    add %esi, %edi
-    movl %edi, (%rax, %rcx, 4)
+    addl %esi, (%rax, %rcx, 4)
     mov %edx, %ecx
     jmp .L__kefir_func_test12_label2
 .L__kefir_text_func_test12_end:
@@ -267,9 +265,7 @@ test13:
     movsx %ecx, %rsi
     lea -48(%rbp), %rdx
     movl (%rdx, %rsi, 4), %edx
-    movl (%rax, %rsi, 4), %edi
-    add %edx, %edi
-    movl %edi, (%rax, %rsi, 4)
+    addl %edx, (%rax, %rsi, 4)
     add $1, %ecx
     jmp .L__kefir_func_test13_label2
 .L__kefir_text_func_test13_end:
@@ -290,9 +286,7 @@ test14:
 .L__kefir_func_test14_label4:
     movsx %ecx, %rsi
     movl (%rax, %rsi, 4), %edi
-    movl (%rdx, %rsi, 4), %r8d
-    add %edi, %r8d
-    movl %r8d, (%rdx, %rsi, 4)
+    addl %edi, (%rdx, %rsi, 4)
     add $1, %ecx
     jmp .L__kefir_func_test14_label2
 .L__kefir_text_func_test14_end:
@@ -313,9 +307,7 @@ test15:
     movsx %edx, %rsi
     movl (%rax, %rsi, 4), %esi
     movsx %ecx, %rcx
-    movl (%rax, %rcx, 4), %edi
-    add %esi, %edi
-    movl %edi, (%rax, %rcx, 4)
+    addl %esi, (%rax, %rcx, 4)
     mov %edx, %ecx
     jmp .L__kefir_func_test15_label2
 .L__kefir_text_func_test15_end:

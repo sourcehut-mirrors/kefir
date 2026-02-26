@@ -97,9 +97,7 @@ process:
     movl -76(%rbp), %edx
     movsx %edx, %rdx
     movl %ecx, (%rax, %rdx, 4)
-    movl -76(%rbp), %eax
-    add $1, %eax
-    movl %eax, -76(%rbp)
+    addl $1, -76(%rbp)
     jmp .L__kefir_func_process_label6
 .L__kefir_func_process_label10:
     mov -56(%rbp), %rax

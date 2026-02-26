@@ -261,9 +261,7 @@ __kefir_bigint_subtract:
     shr %cl, %eax
     and $1, %eax
     movl %eax, -48(%rbp)
-    movq -16(%rbp), %rax
-    add $1, %rax
-    movq %rax, -16(%rbp)
+    addq $1, -16(%rbp)
     jmp .L__kefir_runtime_func___kefir_bigint_subtract_label2
 .L__kefir_runtime_text_func___kefir_bigint_subtract_end:
 

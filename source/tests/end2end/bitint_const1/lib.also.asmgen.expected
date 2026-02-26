@@ -237,9 +237,7 @@ __kefir_bigint_cast_unsigned:
     movq -16(%rbp), %rax
     movq -8(%rbp), %rcx
     movb $0, (%rax, %rcx, 1)
-    movq -8(%rbp), %rax
-    add $1, %rax
-    movq %rax, -8(%rbp)
+    addq $1, -8(%rbp)
     jmp .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label13
 .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label11:
     movq -48(%rbp), %rcx
@@ -277,9 +275,7 @@ __kefir_bigint_cast_unsigned:
     movq -16(%rbp), %rax
     movq -8(%rbp), %rcx
     movb $0, (%rax, %rcx, 1)
-    movq -8(%rbp), %rax
-    add $1, %rax
-    movq %rax, -8(%rbp)
+    addq $1, -8(%rbp)
     jmp .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label5
 .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label16:
     movq -32(%rbp), %rcx

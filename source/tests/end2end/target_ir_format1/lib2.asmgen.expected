@@ -364,50 +364,19 @@ factorial:
 #                "labels": []
 #            },
 #            {
-#                "opcode": "mov",
+#                "opcode": "add",
 #                "args": [
-#                    {
-#                        "type": "physical_register",
-#                        "reg": "eax"
-#                    },
 #                    {
 #                        "type": "indirect",
 #                        "basis": "local_var",
 #                        "identifier": 3,
 #                        "offset": 0,
 #                        "variant": "32bit"
-#                    }
-#                ],
-#                "labels": []
-#            },
-#            {
-#                "opcode": "add",
-#                "args": [
-#                    {
-#                        "type": "physical_register",
-#                        "reg": "eax"
 #                    },
 #                    {
 #                        "type": "integer",
 #                        "value": -1,
 #                        "variant": "32bit"
-#                    }
-#                ],
-#                "labels": []
-#            },
-#            {
-#                "opcode": "mov",
-#                "args": [
-#                    {
-#                        "type": "indirect",
-#                        "basis": "local_var",
-#                        "identifier": 3,
-#                        "offset": 0,
-#                        "variant": "32bit"
-#                    },
-#                    {
-#                        "type": "physical_register",
-#                        "reg": "eax"
 #                    }
 #                ],
 #                "labels": []
@@ -517,9 +486,7 @@ factorial:
     movl -4(%rbp), %ecx
     imul %eax, %ecx
     movl %ecx, -4(%rbp)
-    movl -8(%rbp), %eax
-    add $-1, %eax
-    movl %eax, -8(%rbp)
+    addl $-1, -8(%rbp)
     jmp .L__kefir_func_factorial_label4
 .L__kefir_func_factorial_label7:
     movl -8(%rbp), %eax

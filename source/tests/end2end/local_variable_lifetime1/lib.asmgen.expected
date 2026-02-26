@@ -70,9 +70,7 @@ test2:
     lea -12(%rbp), %r9
     xor %eax, %eax
     call test@PLT
-    movl -12(%rbp), %eax
-    add $1, %eax
-    movl %eax, -12(%rbp)
+    addl $1, -12(%rbp)
     jmp .L__kefir_func_test2_label5
 .L__kefir_text_func_test2_end:
 

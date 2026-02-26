@@ -36,9 +36,7 @@ test:
     movq -40(%rbp), %rax
     movq %rax, -24(%rbp)
 .L__kefir_func_test_label2:
-    movl -48(%rbp), %eax
-    add $-1, %eax
-    movl %eax, -48(%rbp)
+    addl $-1, -48(%rbp)
     lea -40(%rbp), %rax
     movq (%rax), %rax
     movq -24(%rbp), %rdx
