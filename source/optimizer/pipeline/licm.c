@@ -495,6 +495,28 @@ static kefir_result_t hoist_memory_operation(struct licm_state *state, kefir_opt
     return KEFIR_OK;
 }
 
+static kefir_result_t is_safe_load(struct licm_state *state, kefir_opt_instruction_ref_t location_ref,
+                                   kefir_bool_t pessimistic, kefir_bool_t *safe_load) {
+    const struct kefir_opt_instruction *location;
+    REQUIRE_OK(kefir_opt_code_container_instr(&state->func->code, location_ref, &location));
+
+    *safe_load = false;
+    if (location->operation.opcode == KEFIR_OPT_OPCODE_GET_GLOBAL ||
+        location->operation.opcode == KEFIR_OPT_OPCODE_GET_THREAD_LOCAL ||
+        location->operation.opcode == KEFIR_OPT_OPCODE_ALLOC_LOCAL ||
+        location->operation.opcode == KEFIR_OPT_OPCODE_REF_LOCAL) {
+        *safe_load = true;
+    } else if (location->operation.opcode == KEFIR_OPT_OPCODE_INT64_ADD && !pessimistic) {
+        kefir_bool_t safe_left = false, safe_right = false;
+        REQUIRE_OK(is_safe_load(state, location->operation.parameters.refs[0], true, &safe_left));
+        REQUIRE_OK(is_safe_load(state, location->operation.parameters.refs[1], true, &safe_right));
+        *safe_load = safe_left || safe_right;
+    } else if (location->operation.opcode == KEFIR_OPT_OPCODE_INT64_SUB && !pessimistic) {
+        REQUIRE_OK(is_safe_load(state, location->operation.parameters.refs[0], true, safe_load));
+    }
+    return KEFIR_OK;
+}
+
 static kefir_result_t process_loop(struct licm_state *state) {
     REQUIRE(state->loop->loop_entry_block_id != state->control_flow.code->entry_point &&
                 state->loop->loop_entry_block_id != state->control_flow.code->gate_block &&
@@ -651,6 +673,17 @@ static kefir_result_t process_loop(struct licm_state *state) {
             case KEFIR_OPT_OPCODE_DECIMAL32_LOAD:
             case KEFIR_OPT_OPCODE_DECIMAL64_LOAD:
             case KEFIR_OPT_OPCODE_DECIMAL128_LOAD:
+                if (!instr->operation.parameters.memory_access.flags.volatile_access) {
+                    kefir_bool_t safe_load;
+                    REQUIRE_OK(is_safe_load(state,
+                                            instr->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_LOCATION_REF],
+                                            false, &safe_load));
+                    if (must_execute || safe_load) {
+                        REQUIRE_OK(hoist_memory_operation(state, instr_ref, &hoist_target));
+                    }
+                }
+                break;
+
             case KEFIR_OPT_OPCODE_INT8_STORE:
             case KEFIR_OPT_OPCODE_INT16_STORE:
             case KEFIR_OPT_OPCODE_INT32_STORE:

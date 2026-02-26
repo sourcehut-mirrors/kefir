@@ -120,6 +120,7 @@ test4:
 test5:
 .L__kefir_text_func_test5_begin:
     movq d@GOTPCREL(%rip), %rax
+    movl (%rax), %eax
     movq a@GOTPCREL(%rip), %rcx
     xor %edx, %edx
 .L__kefir_func_test5_label2:
@@ -127,11 +128,10 @@ test5:
     jl .L__kefir_func_test5_label4
     ret
 .L__kefir_func_test5_label4:
-    movl (%rax), %esi
-    movsx %edx, %r8
-    movl (%rcx, %r8, 4), %r9d
-    add %esi, %r9d
-    movl %r9d, (%rcx, %r8, 4)
+    movsx %edx, %rsi
+    movl (%rcx, %rsi, 4), %r8d
+    add %eax, %r8d
+    movl %r8d, (%rcx, %rsi, 4)
     add $1, %edx
     jmp .L__kefir_func_test5_label2
 .L__kefir_text_func_test5_end:
@@ -181,17 +181,17 @@ test8:
 
 test9:
 .L__kefir_text_func_test9_begin:
-    movq a@GOTPCREL(%rip), %rax
-    movq d@GOTPCREL(%rip), %rcx
+    movq d@GOTPCREL(%rip), %rax
+    movl (%rax), %eax
+    movq a@GOTPCREL(%rip), %rcx
 .L__kefir_func_test9_label2:
     test %edi, %edi
     jnz .L__kefir_func_test9_label4
     ret
 .L__kefir_func_test9_label4:
-    movl (%rcx), %edx
-    movl 4(%rax), %esi
-    add %edx, %esi
-    movl %esi, 4(%rax)
+    movl 4(%rcx), %edx
+    add %eax, %edx
+    movl %edx, 4(%rcx)
     jmp .L__kefir_func_test9_label2
 .L__kefir_text_func_test9_end:
 
