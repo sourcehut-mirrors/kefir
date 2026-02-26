@@ -2,7 +2,9 @@
 .section .note.GNU-stack,"",%progbits
 
 .extern x
-.extern y
+.set y, x
+.global y
+.type y, @object
 .global test
 .type test, @function
 
@@ -18,7 +20,7 @@ test:
     data16     lea y@tlsgd(%rip), %rdi
     .word 26214
     rex.W     call __tls_get_addr@PLT
-    movl (%rax), %ebx
+    mov %rax, %rbx
     data16     lea x@tlsgd(%rip), %rdi
     .word 26214
     rex.W     call __tls_get_addr@PLT
@@ -31,7 +33,8 @@ test:
     pop %rbp
     ret
 .L__kefir_func_test_label4:
-    lea 1(%ebx), %edx
+    movl (%rbx), %edx
+    add $1, %edx
     movl %edx, (%rax)
     add $1, %ecx
     jmp .L__kefir_func_test_label2

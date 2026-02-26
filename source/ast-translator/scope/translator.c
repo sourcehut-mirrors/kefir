@@ -321,11 +321,13 @@ static kefir_result_t translate_external_thread_locals(
                         .type = KEFIR_IR_IDENTIFIER_THREAD_LOCAL_DATA,
                         .scope = KEFIR_IR_IDENTIFIER_SCOPE_IMPORT,
                         .visibility = KEFIR_IR_IDENTIFIER_VISIBILITY_DEFAULT,
-                        .alias = NULL,
+                        .alias = scoped_identifier->value->object.alias,
                         .debug_info = {.entry = SCOPED_IDENTIFIER_DEBUG_INFO_ENTRY(identifier_data)}};
 
                     if (scoped_identifier->value->object.flags.weak) {
                         ir_identifier.scope = KEFIR_IR_IDENTIFIER_SCOPE_EXPORT_WEAK;
+                    } else if (scoped_identifier->value->object.alias != NULL) {
+                        ir_identifier.scope = KEFIR_IR_IDENTIFIER_SCOPE_EXPORT;
                     }
 
                     REQUIRE_OK(
@@ -336,7 +338,7 @@ static kefir_result_t translate_external_thread_locals(
                         .type = KEFIR_IR_IDENTIFIER_THREAD_LOCAL_DATA,
                         .scope = KEFIR_IR_IDENTIFIER_SCOPE_EXPORT,
                         .visibility = KEFIR_IR_IDENTIFIER_VISIBILITY_DEFAULT,
-                        .alias = NULL,
+                        .alias = scoped_identifier->value->object.alias,
                         .debug_info = {.entry = SCOPED_IDENTIFIER_DEBUG_INFO_ENTRY(identifier_data)}};
                     if (scoped_identifier->value->object.flags.common && !scoped_identifier->value->object.flags.weak &&
                         scoped_identifier->value->object.initializer == NULL &&
