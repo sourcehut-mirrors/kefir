@@ -21,6 +21,7 @@
 #include "kefir/codegen/target-ir/util.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
+#include <string.h>
 
 kefir_int64_t kefir_codegen_target_ir_sign_extend(kefir_int64_t value,
                                                   kefir_codegen_target_ir_operand_variant_t variant) {
@@ -118,4 +119,72 @@ kefir_result_t kefir_codegen_target_ir_code_get_single_user(const struct kefir_c
 
     ASSIGN_PTR(user_instr_ref, single_user_instr_ref);
     return KEFIR_OK;
+}
+
+kefir_bool_t kefir_codegen_target_ir_indirect_operand_same(const struct kefir_codegen_target_ir_operand *operand1,
+                                                           const struct kefir_codegen_target_ir_operand *operand2) {
+    REQUIRE(operand1 != NULL, false);
+    REQUIRE(operand2 != NULL, false);
+
+    REQUIRE(operand1->type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INDIRECT, false);
+    REQUIRE(operand2->type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INDIRECT, false);
+
+    REQUIRE(operand1->indirect.type == operand2->indirect.type, false);
+    REQUIRE(operand1->indirect.index_type == operand2->indirect.index_type, false);
+    REQUIRE(operand1->indirect.offset == operand2->indirect.offset, false);
+    REQUIRE(operand1->indirect.variant == operand2->indirect.variant, false);
+    switch (operand1->indirect.type) {
+        case KEFIR_CODEGEN_TARGET_IR_INDIRECT_PHYSICAL_BASIS:
+            REQUIRE(operand1->indirect.base.phreg == operand2->indirect.base.phreg, false);
+            break;
+
+        case KEFIR_CODEGEN_TARGET_IR_INDIRECT_VALUE_REF_BASIS:
+            REQUIRE(operand1->indirect.base.value_ref.instr_ref == operand2->indirect.base.value_ref.instr_ref, false);
+            REQUIRE(operand1->indirect.base.value_ref.aspect == operand2->indirect.base.value_ref.aspect, false);
+            break;
+
+        case KEFIR_CODEGEN_TARGET_IR_INDIRECT_IMMEDIATE_BASIS:
+            REQUIRE(operand1->indirect.base.immediate == operand2->indirect.base.immediate, false);
+            break;
+
+        case KEFIR_CODEGEN_TARGET_IR_INDIRECT_BLOCK_REF_BASIS:
+            REQUIRE(operand1->indirect.base.block_ref == operand2->indirect.base.block_ref, false);
+            break;
+
+        case KEFIR_CODEGEN_TARGET_IR_INDIRECT_NATIVE_LABEL_BASIS:
+            REQUIRE(operand1->indirect.base.native_id == operand2->indirect.base.native_id, false);
+            break;
+
+        case KEFIR_CODEGEN_TARGET_IR_INDIRECT_EXTERNAL_LABEL_BASIS:
+            REQUIRE(operand1->indirect.base.external_type == operand2->indirect.base.external_type, false);
+            REQUIRE(strcmp(operand1->indirect.base.external_label, operand2->indirect.base.external_label) == 0, false);
+            break;
+
+        case KEFIR_CODEGEN_TARGET_IR_INDIRECT_LOCAL_AREA_BASIS:
+            REQUIRE(operand1->indirect.base.local_variable_id == operand2->indirect.base.local_variable_id, false);
+            break;
+
+        case KEFIR_CODEGEN_TARGET_IR_INDIRECT_SPILL_AREA_BASIS:
+            REQUIRE(operand1->indirect.base.spill_index == operand2->indirect.base.spill_index, false);
+            break;
+    }
+
+    switch (operand1->indirect.index_type) {
+        case KEFIR_CODEGEN_TARGET_IR_INDIRECT_INDEX_NONE:
+            // Intentionally left blank
+            break;
+
+        case KEFIR_CODEGEN_TARGET_IR_INDIRECT_INDEX_PHYSICAL:
+            REQUIRE(operand1->indirect.index.phreg == operand2->indirect.index.phreg, false);
+            REQUIRE(operand1->indirect.index.scale == operand2->indirect.index.scale, false);
+            break;
+
+        case KEFIR_CODEGEN_TARGET_IR_INDIRECT_INDEX_VALUE_REF:
+            REQUIRE(operand1->indirect.index.value_ref.instr_ref == operand2->indirect.index.value_ref.instr_ref,
+                    false);
+            REQUIRE(operand1->indirect.index.value_ref.aspect == operand2->indirect.index.value_ref.aspect, false);
+            REQUIRE(operand1->indirect.index.scale == operand2->indirect.index.scale, false);
+            break;
+    }
+    return true;
 }

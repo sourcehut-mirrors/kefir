@@ -32,4 +32,7 @@ kefir_result_t kefir_codegen_target_ir_code_get_single_user(const struct kefir_c
                                                             kefir_codegen_target_ir_value_ref_t,
                                                             kefir_codegen_target_ir_instruction_ref_t *);
 
+kefir_bool_t kefir_codegen_target_ir_indirect_operand_same(const struct kefir_codegen_target_ir_operand *,
+                                                           const struct kefir_codegen_target_ir_operand *);
+
 #endif
