@@ -384,13 +384,9 @@ __kefir_bigint_unsigned_compare:
     sub $1, %rdx
     movl %edx, -8(%rbp)
     movl -8(%rbp), %eax
-    movl -16(%rbp), %ecx
-    and %eax, %ecx
-    movl %ecx, -16(%rbp)
+    andl %eax, -16(%rbp)
     movl -8(%rbp), %eax
-    movl -12(%rbp), %ecx
-    and %eax, %ecx
-    movl %ecx, -12(%rbp)
+    andl %eax, -12(%rbp)
     jmp .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label5
 .L__kefir_runtime_text_func___kefir_bigint_unsigned_compare_end:
 

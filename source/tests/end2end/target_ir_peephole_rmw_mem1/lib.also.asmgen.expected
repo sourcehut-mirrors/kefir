@@ -1,0 +1,564 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global or_int
+.type or_int, @function
+.global add_int
+.type add_int, @function
+.global and_int
+.type and_int, @function
+.global or_char
+.type or_char, @function
+.global or_long
+.type or_long, @function
+.global or_uint
+.type or_uint, @function
+.global shl_int
+.type shl_int, @function
+.global shr_int
+.type shr_int, @function
+.global sub_int
+.type sub_int, @function
+.global xor_int
+.type xor_int, @function
+.global add_char
+.type add_char, @function
+.global add_long
+.type add_long, @function
+.global add_uint
+.type add_uint, @function
+.global and_char
+.type and_char, @function
+.global and_long
+.type and_long, @function
+.global and_uint
+.type and_uint, @function
+.global or_short
+.type or_short, @function
+.global or_uchar
+.type or_uchar, @function
+.global or_ulong
+.type or_ulong, @function
+.global shl_char
+.type shl_char, @function
+.global shl_long
+.type shl_long, @function
+.global shl_uint
+.type shl_uint, @function
+.global shr_char
+.type shr_char, @function
+.global shr_long
+.type shr_long, @function
+.global shr_uint
+.type shr_uint, @function
+.global sub_char
+.type sub_char, @function
+.global sub_long
+.type sub_long, @function
+.global sub_uint
+.type sub_uint, @function
+.global xor_char
+.type xor_char, @function
+.global xor_long
+.type xor_long, @function
+.global xor_uint
+.type xor_uint, @function
+.global add_short
+.type add_short, @function
+.global add_uchar
+.type add_uchar, @function
+.global add_ulong
+.type add_ulong, @function
+.global and_short
+.type and_short, @function
+.global and_uchar
+.type and_uchar, @function
+.global and_ulong
+.type and_ulong, @function
+.global or_ushort
+.type or_ushort, @function
+.global shl_short
+.type shl_short, @function
+.global shl_uchar
+.type shl_uchar, @function
+.global shl_ulong
+.type shl_ulong, @function
+.global shr_short
+.type shr_short, @function
+.global shr_uchar
+.type shr_uchar, @function
+.global shr_ulong
+.type shr_ulong, @function
+.global sub_short
+.type sub_short, @function
+.global sub_uchar
+.type sub_uchar, @function
+.global sub_ulong
+.type sub_ulong, @function
+.global xor_short
+.type xor_short, @function
+.global xor_uchar
+.type xor_uchar, @function
+.global xor_ulong
+.type xor_ulong, @function
+.global add_ushort
+.type add_ushort, @function
+.global and_ushort
+.type and_ushort, @function
+.global shl_ushort
+.type shl_ushort, @function
+.global shr_ushort
+.type shr_ushort, @function
+.global sub_ushort
+.type sub_ushort, @function
+.global xor_ushort
+.type xor_ushort, @function
+
+.section .text
+.L__kefir_text_section_begin:
+or_int:
+.L__kefir_text_func_or_int_begin:
+    orl %esi, (%rdi)
+    ret
+.L__kefir_text_func_or_int_end:
+
+add_int:
+.L__kefir_text_func_add_int_begin:
+    addl %esi, (%rdi)
+    ret
+.L__kefir_text_func_add_int_end:
+
+and_int:
+.L__kefir_text_func_and_int_begin:
+    andl %esi, (%rdi)
+    ret
+.L__kefir_text_func_and_int_end:
+
+or_char:
+.L__kefir_text_func_or_char_begin:
+    movsxb (%rdi), %rax
+    movsx %sil, %rcx
+    or %ecx, %eax
+    movb %al, (%rdi)
+    ret
+.L__kefir_text_func_or_char_end:
+
+or_long:
+.L__kefir_text_func_or_long_begin:
+    orq %rsi, (%rdi)
+    ret
+.L__kefir_text_func_or_long_end:
+
+or_uint:
+.L__kefir_text_func_or_uint_begin:
+    orl %esi, (%rdi)
+    ret
+.L__kefir_text_func_or_uint_end:
+
+shl_int:
+.L__kefir_text_func_shl_int_begin:
+    mov %rsi, %rcx
+    movl (%rdi), %eax
+    shl %cl, %eax
+    movl %eax, (%rdi)
+    ret
+.L__kefir_text_func_shl_int_end:
+
+shr_int:
+.L__kefir_text_func_shr_int_begin:
+    mov %rsi, %rcx
+    movl (%rdi), %eax
+    sar %cl, %eax
+    movl %eax, (%rdi)
+    ret
+.L__kefir_text_func_shr_int_end:
+
+sub_int:
+.L__kefir_text_func_sub_int_begin:
+    subl %esi, (%rdi)
+    ret
+.L__kefir_text_func_sub_int_end:
+
+xor_int:
+.L__kefir_text_func_xor_int_begin:
+    xorl %esi, (%rdi)
+    ret
+.L__kefir_text_func_xor_int_end:
+
+add_char:
+.L__kefir_text_func_add_char_begin:
+    movsxb (%rdi), %rax
+    movsx %sil, %rcx
+    add %ecx, %eax
+    movb %al, (%rdi)
+    ret
+.L__kefir_text_func_add_char_end:
+
+add_long:
+.L__kefir_text_func_add_long_begin:
+    addq %rsi, (%rdi)
+    ret
+.L__kefir_text_func_add_long_end:
+
+add_uint:
+.L__kefir_text_func_add_uint_begin:
+    addl %esi, (%rdi)
+    ret
+.L__kefir_text_func_add_uint_end:
+
+and_char:
+.L__kefir_text_func_and_char_begin:
+    movsxb (%rdi), %rax
+    movsx %sil, %rcx
+    and %ecx, %eax
+    movb %al, (%rdi)
+    ret
+.L__kefir_text_func_and_char_end:
+
+and_long:
+.L__kefir_text_func_and_long_begin:
+    andq %rsi, (%rdi)
+    ret
+.L__kefir_text_func_and_long_end:
+
+and_uint:
+.L__kefir_text_func_and_uint_begin:
+    andl %esi, (%rdi)
+    ret
+.L__kefir_text_func_and_uint_end:
+
+or_short:
+.L__kefir_text_func_or_short_begin:
+    movsxw (%rdi), %rax
+    movsx %si, %rcx
+    or %ecx, %eax
+    movw %ax, (%rdi)
+    ret
+.L__kefir_text_func_or_short_end:
+
+or_uchar:
+.L__kefir_text_func_or_uchar_begin:
+    movzxb (%rdi), %rax
+    movzx %sil, %rcx
+    or %ecx, %eax
+    movb %al, (%rdi)
+    ret
+.L__kefir_text_func_or_uchar_end:
+
+or_ulong:
+.L__kefir_text_func_or_ulong_begin:
+    orq %rsi, (%rdi)
+    ret
+.L__kefir_text_func_or_ulong_end:
+
+shl_char:
+.L__kefir_text_func_shl_char_begin:
+    mov %rsi, %rcx
+    movb (%rdi), %al
+    shl %cl, %al
+    movb %al, (%rdi)
+    ret
+.L__kefir_text_func_shl_char_end:
+
+shl_long:
+.L__kefir_text_func_shl_long_begin:
+    mov %rsi, %rcx
+    movq (%rdi), %rax
+    shl %cl, %rax
+    movq %rax, (%rdi)
+    ret
+.L__kefir_text_func_shl_long_end:
+
+shl_uint:
+.L__kefir_text_func_shl_uint_begin:
+    mov %rsi, %rcx
+    movl (%rdi), %eax
+    shl %cl, %eax
+    movl %eax, (%rdi)
+    ret
+.L__kefir_text_func_shl_uint_end:
+
+shr_char:
+.L__kefir_text_func_shr_char_begin:
+    mov %rsi, %rcx
+    movb (%rdi), %al
+    sar %cl, %al
+    movb %al, (%rdi)
+    ret
+.L__kefir_text_func_shr_char_end:
+
+shr_long:
+.L__kefir_text_func_shr_long_begin:
+    mov %rsi, %rcx
+    movq (%rdi), %rax
+    sar %cl, %rax
+    movq %rax, (%rdi)
+    ret
+.L__kefir_text_func_shr_long_end:
+
+shr_uint:
+.L__kefir_text_func_shr_uint_begin:
+    mov %rsi, %rcx
+    movl (%rdi), %eax
+    shr %cl, %eax
+    movl %eax, (%rdi)
+    ret
+.L__kefir_text_func_shr_uint_end:
+
+sub_char:
+.L__kefir_text_func_sub_char_begin:
+    movsxb (%rdi), %rax
+    movsx %sil, %rcx
+    sub %ecx, %eax
+    movb %al, (%rdi)
+    ret
+.L__kefir_text_func_sub_char_end:
+
+sub_long:
+.L__kefir_text_func_sub_long_begin:
+    subq %rsi, (%rdi)
+    ret
+.L__kefir_text_func_sub_long_end:
+
+sub_uint:
+.L__kefir_text_func_sub_uint_begin:
+    subl %esi, (%rdi)
+    ret
+.L__kefir_text_func_sub_uint_end:
+
+xor_char:
+.L__kefir_text_func_xor_char_begin:
+    movsxb (%rdi), %rax
+    movsx %sil, %rcx
+    xor %ecx, %eax
+    movb %al, (%rdi)
+    ret
+.L__kefir_text_func_xor_char_end:
+
+xor_long:
+.L__kefir_text_func_xor_long_begin:
+    xorq %rsi, (%rdi)
+    ret
+.L__kefir_text_func_xor_long_end:
+
+xor_uint:
+.L__kefir_text_func_xor_uint_begin:
+    xorl %esi, (%rdi)
+    ret
+.L__kefir_text_func_xor_uint_end:
+
+add_short:
+.L__kefir_text_func_add_short_begin:
+    movsxw (%rdi), %rax
+    movsx %si, %rcx
+    add %ecx, %eax
+    movw %ax, (%rdi)
+    ret
+.L__kefir_text_func_add_short_end:
+
+add_uchar:
+.L__kefir_text_func_add_uchar_begin:
+    movzxb (%rdi), %rax
+    movzx %sil, %rcx
+    add %ecx, %eax
+    movb %al, (%rdi)
+    ret
+.L__kefir_text_func_add_uchar_end:
+
+add_ulong:
+.L__kefir_text_func_add_ulong_begin:
+    addq %rsi, (%rdi)
+    ret
+.L__kefir_text_func_add_ulong_end:
+
+and_short:
+.L__kefir_text_func_and_short_begin:
+    movsxw (%rdi), %rax
+    movsx %si, %rcx
+    and %ecx, %eax
+    movw %ax, (%rdi)
+    ret
+.L__kefir_text_func_and_short_end:
+
+and_uchar:
+.L__kefir_text_func_and_uchar_begin:
+    movzxb (%rdi), %rax
+    movzx %sil, %rcx
+    and %ecx, %eax
+    movb %al, (%rdi)
+    ret
+.L__kefir_text_func_and_uchar_end:
+
+and_ulong:
+.L__kefir_text_func_and_ulong_begin:
+    andq %rsi, (%rdi)
+    ret
+.L__kefir_text_func_and_ulong_end:
+
+or_ushort:
+.L__kefir_text_func_or_ushort_begin:
+    movzxw (%rdi), %rax
+    movzx %si, %rcx
+    or %ecx, %eax
+    movw %ax, (%rdi)
+    ret
+.L__kefir_text_func_or_ushort_end:
+
+shl_short:
+.L__kefir_text_func_shl_short_begin:
+    mov %rsi, %rcx
+    movw (%rdi), %ax
+    shl %cl, %ax
+    movw %ax, (%rdi)
+    ret
+.L__kefir_text_func_shl_short_end:
+
+shl_uchar:
+.L__kefir_text_func_shl_uchar_begin:
+    mov %rsi, %rcx
+    movb (%rdi), %al
+    shl %cl, %al
+    movb %al, (%rdi)
+    ret
+.L__kefir_text_func_shl_uchar_end:
+
+shl_ulong:
+.L__kefir_text_func_shl_ulong_begin:
+    mov %rsi, %rcx
+    movq (%rdi), %rax
+    shl %cl, %rax
+    movq %rax, (%rdi)
+    ret
+.L__kefir_text_func_shl_ulong_end:
+
+shr_short:
+.L__kefir_text_func_shr_short_begin:
+    mov %rsi, %rcx
+    movw (%rdi), %ax
+    sar %cl, %ax
+    movw %ax, (%rdi)
+    ret
+.L__kefir_text_func_shr_short_end:
+
+shr_uchar:
+.L__kefir_text_func_shr_uchar_begin:
+    mov %rsi, %rcx
+    movb (%rdi), %al
+    shr %cl, %al
+    movb %al, (%rdi)
+    ret
+.L__kefir_text_func_shr_uchar_end:
+
+shr_ulong:
+.L__kefir_text_func_shr_ulong_begin:
+    mov %rsi, %rcx
+    movq (%rdi), %rax
+    shr %cl, %rax
+    movq %rax, (%rdi)
+    ret
+.L__kefir_text_func_shr_ulong_end:
+
+sub_short:
+.L__kefir_text_func_sub_short_begin:
+    movsxw (%rdi), %rax
+    movsx %si, %rcx
+    sub %ecx, %eax
+    movw %ax, (%rdi)
+    ret
+.L__kefir_text_func_sub_short_end:
+
+sub_uchar:
+.L__kefir_text_func_sub_uchar_begin:
+    movzxb (%rdi), %rax
+    movzx %sil, %rcx
+    sub %ecx, %eax
+    movb %al, (%rdi)
+    ret
+.L__kefir_text_func_sub_uchar_end:
+
+sub_ulong:
+.L__kefir_text_func_sub_ulong_begin:
+    subq %rsi, (%rdi)
+    ret
+.L__kefir_text_func_sub_ulong_end:
+
+xor_short:
+.L__kefir_text_func_xor_short_begin:
+    movsxw (%rdi), %rax
+    movsx %si, %rcx
+    xor %ecx, %eax
+    movw %ax, (%rdi)
+    ret
+.L__kefir_text_func_xor_short_end:
+
+xor_uchar:
+.L__kefir_text_func_xor_uchar_begin:
+    movzxb (%rdi), %rax
+    movzx %sil, %rcx
+    xor %ecx, %eax
+    movb %al, (%rdi)
+    ret
+.L__kefir_text_func_xor_uchar_end:
+
+xor_ulong:
+.L__kefir_text_func_xor_ulong_begin:
+    xorq %rsi, (%rdi)
+    ret
+.L__kefir_text_func_xor_ulong_end:
+
+add_ushort:
+.L__kefir_text_func_add_ushort_begin:
+    movzxw (%rdi), %rax
+    movzx %si, %rcx
+    add %ecx, %eax
+    movw %ax, (%rdi)
+    ret
+.L__kefir_text_func_add_ushort_end:
+
+and_ushort:
+.L__kefir_text_func_and_ushort_begin:
+    movzxw (%rdi), %rax
+    movzx %si, %rcx
+    and %ecx, %eax
+    movw %ax, (%rdi)
+    ret
+.L__kefir_text_func_and_ushort_end:
+
+shl_ushort:
+.L__kefir_text_func_shl_ushort_begin:
+    mov %rsi, %rcx
+    movw (%rdi), %ax
+    shl %cl, %ax
+    movw %ax, (%rdi)
+    ret
+.L__kefir_text_func_shl_ushort_end:
+
+shr_ushort:
+.L__kefir_text_func_shr_ushort_begin:
+    mov %rsi, %rcx
+    movw (%rdi), %ax
+    shr %cl, %ax
+    movw %ax, (%rdi)
+    ret
+.L__kefir_text_func_shr_ushort_end:
+
+sub_ushort:
+.L__kefir_text_func_sub_ushort_begin:
+    movzxw (%rdi), %rax
+    movzx %si, %rcx
+    sub %ecx, %eax
+    movw %ax, (%rdi)
+    ret
+.L__kefir_text_func_sub_ushort_end:
+
+xor_ushort:
+.L__kefir_text_func_xor_ushort_begin:
+    movzxw (%rdi), %rax
+    movzx %si, %rcx
+    xor %ecx, %eax
+    movw %ax, (%rdi)
+    ret
+.L__kefir_text_func_xor_ushort_end:
+
+.L__kefir_text_section_end:
+

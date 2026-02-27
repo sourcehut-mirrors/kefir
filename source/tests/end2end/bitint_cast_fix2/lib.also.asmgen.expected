@@ -971,9 +971,7 @@ __kefir_bigint_get_unsigned_value:
     sub $1, %rax
     movq %rax, -8(%rbp)
     movq -8(%rbp), %rax
-    movq -24(%rbp), %rcx
-    and %rax, %rcx
-    movq %rcx, -24(%rbp)
+    andq %rax, -24(%rbp)
     jmp .L__kefir_runtime_func___kefir_bigint_get_unsigned_value_label7
 .L__kefir_runtime_func___kefir_bigint_get_unsigned_value_label8:
     movq -24(%rbp), %rax

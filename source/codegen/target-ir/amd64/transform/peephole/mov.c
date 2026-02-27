@@ -396,7 +396,13 @@ kefir_result_t kefir_codegen_target_ir_amd64_peephole_mov(struct kefir_mem *mem,
         struct kefir_codegen_target_ir_tie_classification next_classification;
         switch (next_instr->operation.opcode) {
             case KEFIR_TARGET_IR_AMD64_OPCODE(add):
-            case KEFIR_TARGET_IR_AMD64_OPCODE(sub): {
+            case KEFIR_TARGET_IR_AMD64_OPCODE(sub):
+            case KEFIR_TARGET_IR_AMD64_OPCODE(and):
+            case KEFIR_TARGET_IR_AMD64_OPCODE(or):
+            case KEFIR_TARGET_IR_AMD64_OPCODE(xor):
+            case KEFIR_TARGET_IR_AMD64_OPCODE(shl):
+            case KEFIR_TARGET_IR_AMD64_OPCODE(shr):
+            case KEFIR_TARGET_IR_AMD64_OPCODE(sar): {
                 REQUIRE_OK(kefir_codegen_target_ir_tie_operands(code, next_instr_ref, &next_classification));
                 kefir_codegen_target_ir_instruction_ref_t next_next_instr_ref =
                     kefir_codegen_target_ir_code_control_next(code, next_instr_ref);

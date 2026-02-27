@@ -1572,9 +1572,7 @@ __kefir_bigint_subtract_zero_extend:
     sub $1, %rax
     movl %eax, -76(%rbp)
     movl -76(%rbp), %eax
-    movl -16(%rbp), %ecx
-    and %eax, %ecx
-    movl %ecx, -16(%rbp)
+    andl %eax, -16(%rbp)
     jmp .L__kefir_runtime_func___kefir_bigint_subtract_zero_extend_label8
 .L__kefir_runtime_func___kefir_bigint_subtract_zero_extend_label10:
     movq -40(%rbp), %rax
@@ -2755,9 +2753,7 @@ __kefir_bigint_add_zero_extend:
     sub $1, %rax
     movl %eax, -76(%rbp)
     movl -76(%rbp), %eax
-    movl -12(%rbp), %ecx
-    and %eax, %ecx
-    movl %ecx, -12(%rbp)
+    andl %eax, -12(%rbp)
     jmp .L__kefir_runtime_func___kefir_bigint_add_zero_extend_label8
 .L__kefir_runtime_func___kefir_bigint_add_zero_extend_label10:
     movq -40(%rbp), %rax

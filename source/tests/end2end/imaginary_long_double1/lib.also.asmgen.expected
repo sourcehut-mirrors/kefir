@@ -2723,9 +2723,7 @@ __kefir_softfloat_fabsl:
     movdqu %xmm0, -16(%rbp)
     movq $0, -8(%rbp)
     fstpt -16(%rbp)
-    movq -8(%rbp), %rax
-    and $32767, %rax
-    movq %rax, -8(%rbp)
+    andq $32767, -8(%rbp)
     fldt -16(%rbp)
     lea (%rbp), %rsp
     pop %rbp
