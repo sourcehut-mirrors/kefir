@@ -1702,7 +1702,7 @@ __kefir_softfloat_complex_long_double_div:
     fstpt -112(%rbp)
     fnstcww -96(%rbp)
     movzxw -96(%rbp), %eax
-    or $3072, %eax
+    or $3072, %ax
     movw %ax, -88(%rbp)
     fldcww -88(%rbp)
     fistpq -88(%rbp)

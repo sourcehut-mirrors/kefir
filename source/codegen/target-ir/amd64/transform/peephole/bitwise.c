@@ -70,8 +70,8 @@
                         REQUIRE_OK(res);                                                                               \
                                                                                                                        \
                         if (_cond(lhs, rhs)) {                                                                         \
-                            result = _op(lhs, rhs);                                                                        \
-                            result = kefir_codegen_target_ir_sign_extend(result, value_type->variant);                     \
+                            result = _op(lhs, rhs);                                                                    \
+                            result = kefir_codegen_target_ir_sign_extend(result, value_type->variant);                 \
                             REQUIRE_OK(kefir_codegen_target_ir_code_replace_operation(                                 \
                                 mem, code, instr_ref,                                                                  \
                                 &(struct kefir_codegen_target_ir_operation) {                                          \
@@ -108,6 +108,9 @@ kefir_result_t kefir_codegen_target_ir_amd64_peephole_xor(struct kefir_mem *mem,
 
     CONST_EVAL(OP_XOR, COND_TRUE);
     REQUIRE_OK(kefir_codegen_target_ir_amd64_peephole_const_operand(mem, code, instr, true, replaced));
+    REQUIRE(!*replaced, KEFIR_OK);
+
+    REQUIRE_OK(kefir_codegen_target_ir_amd64_peephole_reduce_variant(mem, code, instr, replaced));
     REQUIRE(!*replaced, KEFIR_OK);
 
     REQUIRE(classification.classification.operands[0].class == KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_READ_WRITE &&
@@ -173,6 +176,9 @@ kefir_result_t kefir_codegen_target_ir_amd64_peephole_and(struct kefir_mem *mem,
     kefir_result_t res;
     CONST_EVAL(OP_AND, COND_TRUE);
     REQUIRE_OK(kefir_codegen_target_ir_amd64_peephole_const_operand(mem, code, instr, true, replaced));
+    REQUIRE(!*replaced, KEFIR_OK);
+
+    REQUIRE_OK(kefir_codegen_target_ir_amd64_peephole_reduce_variant(mem, code, instr, replaced));
     REQUIRE(!*replaced, KEFIR_OK);
 
     REQUIRE(classification.classification.operands[0].class == KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_READ_WRITE &&
@@ -250,6 +256,9 @@ kefir_result_t kefir_codegen_target_ir_amd64_peephole_or(struct kefir_mem *mem,
 
     CONST_EVAL(OP_OR, COND_TRUE);
     REQUIRE_OK(kefir_codegen_target_ir_amd64_peephole_const_operand(mem, code, instr, true, replaced));
+    REQUIRE(!*replaced, KEFIR_OK);
+
+    REQUIRE_OK(kefir_codegen_target_ir_amd64_peephole_reduce_variant(mem, code, instr, replaced));
     return KEFIR_OK;
 }
 

@@ -81,7 +81,8 @@ get:
     cld
     mov $17, %rcx
     rep movsq
-    lea 14(%r8d), %eax
+    mov %r8, %rax
+    add $14, %ax
     movw %ax, 432(%rdx)
     lea 15(%r8d), %eax
     movl %eax, 440(%rdx)

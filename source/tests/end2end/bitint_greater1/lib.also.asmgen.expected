@@ -366,14 +366,14 @@ __kefir_bigint_unsigned_compare:
 .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label11:
     movq -48(%rbp), %rax
     movq -48(%rbp), %rdx
-    lea -1(%rax), %rcx
+    lea -1(%eax), %ecx
     lea -1(%rdx), %rax
     mov $8, %esi
     xor %edx, %edx
     div %rsi
     shl $3, %rax
-    sub %rax, %rcx
-    add $1, %rcx
+    sub %eax, %ecx
+    add $1, %ecx
     movl %ecx, -4(%rbp)
     movl -4(%rbp), %eax
     movabs $4294967295, %rcx
@@ -381,7 +381,7 @@ __kefir_bigint_unsigned_compare:
     mov $1, %edx
     mov %rax, %rcx
     shl %cl, %rdx
-    sub $1, %rdx
+    sub $1, %edx
     movl %edx, -8(%rbp)
     movl -8(%rbp), %eax
     andl %eax, -16(%rbp)

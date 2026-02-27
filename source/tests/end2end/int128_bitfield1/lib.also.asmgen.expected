@@ -86,9 +86,9 @@ set_a:
     xor %edi, %edi
     test $64, %cl
     cmove %r8, %rdi
-    not %rdi
-    and %rdi, %rdx
-    or %rdx, %rsi
+    not %edi
+    and %edi, %edx
+    or %edx, %esi
     movl %esi, (%rax)
     lea (%rbp), %rsp
     pop %rbp
@@ -131,11 +131,11 @@ set_b:
     cmovne %r11, %r10
     cmove %r11, %rdi
     not %rdi
-    not %r10
+    not %r10w
     and %rdi, %rdx
-    and %r10, %r8
+    and %r10w, %r8w
     or %rdx, %r9
-    or %r8, %rsi
+    or %r8w, %si
     movq %r9, 4(%rax)
     movw %si, 12(%rax)
     lea (%rbp), %rsp

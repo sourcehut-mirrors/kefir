@@ -229,12 +229,12 @@ __kefir_bigint_is_zero:
     mov $1, %edx
     mov %rax, %rcx
     shl %cl, %rdx
-    sub $1, %rdx
+    sub $1, %edx
     movl %edx, -28(%rbp)
     movl -28(%rbp), %eax
     movb -32(%rbp), %cl
-    movzx %cl, %ecx
-    and %eax, %ecx
+    and $-1, %cl
+    and %al, %cl
     movb %cl, -32(%rbp)
     jmp .L__kefir_runtime_func___kefir_bigint_is_zero_label8
 .L__kefir_runtime_func___kefir_bigint_is_zero_label12:

@@ -149,7 +149,7 @@ ldcint:
     fldt 16(%rbp)
     fnstcww -32(%rbp)
     movzxw -32(%rbp), %eax
-    or $3072, %eax
+    or $3072, %ax
     movw %ax, -24(%rbp)
     fldcww -24(%rbp)
     fistpq -16(%rbp)

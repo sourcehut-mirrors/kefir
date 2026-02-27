@@ -52,7 +52,7 @@ is_inf_f64:
     movabs $9223372036854775807, %rcx
     and %rax, %rcx
     sar $63, %rax
-    or $1, %rax
+    or $1, %eax
     xor %edx, %edx
     movabs $9218868437227405312, %rsi
     cmp %rsi, %rcx

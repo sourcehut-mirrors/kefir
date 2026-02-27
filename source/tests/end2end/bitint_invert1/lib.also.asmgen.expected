@@ -194,8 +194,8 @@ __kefir_bigint_invert:
     movb (%rax, %rcx, 1), %dl
     movq -24(%rbp), %rax
     movq -8(%rbp), %rcx
-    movzx %dl, %edx
-    not %edx
+    and $-1, %dl
+    not %dl
     movb %dl, (%rax, %rcx, 1)
     addq $1, -8(%rbp)
     jmp .L__kefir_runtime_func___kefir_bigint_invert_label2

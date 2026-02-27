@@ -159,11 +159,11 @@ set_a:
     cmovne %r11, %r10
     cmove %r11, %rdi
     not %rdi
-    not %r10
+    not %r10w
     and %rdi, %rdx
-    and %r10, %r8
+    and %r10w, %r8w
     or %rdx, %r9
-    or %r8, %rsi
+    or %r8w, %si
     movq %r9, (%rax)
     movw %si, 8(%rax)
     lea (%rbp), %rsp
@@ -240,11 +240,11 @@ set_c:
     cmovne %r11, %r10
     cmove %r11, %rdi
     not %rdi
-    not %r10
+    not %r10w
     and %rdi, %rdx
-    and %r10, %r8
+    and %r10w, %r8w
     or %rdx, %r9
-    or %r8, %rsi
+    or %r8w, %si
     movq %r9, 32(%rax)
     movw %si, 40(%rax)
     lea (%rbp), %rsp

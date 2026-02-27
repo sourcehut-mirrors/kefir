@@ -1541,7 +1541,7 @@ __kefir_softfloat_complex_double_div:
     movabs $9223372036854775807, %rcx
     and %rax, %rcx
     sar $63, %rax
-    or $1, %rax
+    or $1, %eax
     xor %edx, %edx
     movabs $9218868437227405312, %rsi
     cmp %rsi, %rcx
@@ -1570,7 +1570,7 @@ __kefir_softfloat_complex_double_div:
     movabs $9223372036854775807, %rcx
     and %rax, %rcx
     sar $63, %rax
-    or $1, %rax
+    or $1, %eax
     xor %edx, %edx
     movabs $9218868437227405312, %rsi
     cmp %rsi, %rcx
@@ -1604,7 +1604,7 @@ __kefir_softfloat_complex_double_div:
     movabs $9223372036854775807, %rcx
     and %rax, %rcx
     sar $63, %rax
-    or $1, %rax
+    or $1, %eax
     xor %edx, %edx
     movabs $9218868437227405312, %rsi
     cmp %rsi, %rcx
@@ -1626,7 +1626,7 @@ __kefir_softfloat_complex_double_div:
     movabs $9223372036854775807, %rcx
     and %rax, %rcx
     sar $63, %rax
-    or $1, %rax
+    or $1, %eax
     xor %edx, %edx
     movabs $9218868437227405312, %rsi
     cmp %rsi, %rcx
@@ -1698,7 +1698,7 @@ __kefir_softfloat_complex_double_div:
     movabs $9223372036854775807, %rcx
     and %rax, %rcx
     sar $63, %rax
-    or $1, %rax
+    or $1, %eax
     xor %edx, %edx
     movabs $9218868437227405312, %rsi
     cmp %rsi, %rcx
@@ -1721,7 +1721,7 @@ __kefir_softfloat_complex_double_div:
     movabs $9223372036854775807, %rcx
     and %rax, %rcx
     sar $63, %rax
-    or $1, %rax
+    or $1, %eax
     xor %edx, %edx
     movabs $9218868437227405312, %rsi
     cmp %rsi, %rcx
@@ -1779,7 +1779,7 @@ __kefir_softfloat_complex_double_div:
     movabs $9223372036854775807, %rcx
     and %rax, %rcx
     sar $63, %rax
-    or $1, %rax
+    or $1, %eax
     xor %edx, %edx
     movabs $9218868437227405312, %rsi
     cmp %rsi, %rcx
@@ -1940,7 +1940,7 @@ __kefir_softfloat_complex_double_mul:
     movabs $9223372036854775807, %rcx
     and %rax, %rcx
     sar $63, %rax
-    or $1, %rax
+    or $1, %eax
     xor %edx, %edx
     movabs $9218868437227405312, %rsi
     cmp %rsi, %rcx
@@ -1949,7 +1949,7 @@ __kefir_softfloat_complex_double_mul:
     movabs $9223372036854775807, %rcx
     and %rax, %rcx
     sar $63, %rax
-    or $1, %rax
+    or $1, %eax
     xor %esi, %esi
     movabs $9218868437227405312, %rdi
     cmp %rdi, %rcx
@@ -1958,7 +1958,7 @@ __kefir_softfloat_complex_double_mul:
     movabs $9223372036854775807, %rcx
     and %rax, %rcx
     sar $63, %rax
-    or $1, %rax
+    or $1, %eax
     xor %edi, %edi
     movabs $9218868437227405312, %r8
     cmp %r8, %rcx
@@ -1967,7 +1967,7 @@ __kefir_softfloat_complex_double_mul:
     movabs $9223372036854775807, %rcx
     and %rax, %rcx
     sar $63, %rax
-    or $1, %rax
+    or $1, %eax
     xor %r8d, %r8d
     movabs $9218868437227405312, %r9
     cmp %r9, %rcx
@@ -2076,7 +2076,7 @@ __kefir_softfloat_complex_double_mul:
     movabs $9223372036854775807, %rcx
     and %rax, %rcx
     sar $63, %rax
-    or $1, %rax
+    or $1, %eax
     xor %esi, %esi
     movabs $9218868437227405312, %rdi
     cmp %rdi, %rcx
@@ -2108,7 +2108,7 @@ __kefir_softfloat_complex_double_mul:
     movabs $9223372036854775807, %rcx
     and %rax, %rcx
     sar $63, %rax
-    or $1, %rax
+    or $1, %eax
     xor %esi, %esi
     movabs $9218868437227405312, %rdi
     cmp %rdi, %rcx
@@ -2122,7 +2122,7 @@ __kefir_softfloat_complex_double_mul:
     movabs $9223372036854775807, %rcx
     and %rax, %rcx
     sar $63, %rax
-    or $1, %rax
+    or $1, %eax
     xor %esi, %esi
     movabs $9218868437227405312, %rdi
     cmp %rdi, %rcx
@@ -2136,7 +2136,7 @@ __kefir_softfloat_complex_double_mul:
     movabs $9223372036854775807, %rcx
     and %rax, %rcx
     sar $63, %rax
-    or $1, %rax
+    or $1, %eax
     xor %esi, %esi
     movabs $9218868437227405312, %rdi
     cmp %rdi, %rcx
@@ -2903,7 +2903,7 @@ __kefir_softfloat_complex_long_double_div:
     fstpt -112(%rbp)
     fnstcww -96(%rbp)
     movzxw -96(%rbp), %eax
-    or $3072, %eax
+    or $3072, %ax
     movw %ax, -88(%rbp)
     fldcww -88(%rbp)
     fistpq -88(%rbp)
@@ -4306,7 +4306,7 @@ __kefir_softfloat_ilogb:
     shl $12, %rcx
     movq %xmm0, %rax
     shr $52, %rax
-    and $2047, %rax
+    and $2047, %eax
     lea -1023(%eax), %edx
     cmp $2047, %eax
     je .L__kefir_runtime_func___kefir_softfloat_ilogb_label13

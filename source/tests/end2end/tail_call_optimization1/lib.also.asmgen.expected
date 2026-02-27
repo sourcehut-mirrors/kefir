@@ -145,7 +145,7 @@ op_loop_end:
 .L__kefir_func_op_loop_end_label3:
     movzx %al, %rax
     movq 4104(%rdi, %rax, 8), %rax
-    sub $1, %rax
+    sub $1, %eax
     movl %eax, 5128(%rdi)
     jmp .L__kefir_func_op_loop_end_label2
 .L__kefir_text_func_op_loop_end_end:

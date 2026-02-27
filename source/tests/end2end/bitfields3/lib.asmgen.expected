@@ -113,10 +113,10 @@ set_a:
 .L__kefir_text_func_set_a_begin:
     movq s@GOTPCREL(%rip), %rax
     movzxb (%rax), %rcx
-    and $-128, %rcx
+    and $-128, %cl
     shl $57, %rdi
     shr $57, %rdi
-    or %rcx, %rdi
+    or %cl, %dil
     movb %dil, (%rax)
     ret
 .L__kefir_text_func_set_a_end:
@@ -125,10 +125,10 @@ set_b:
 .L__kefir_text_func_set_b_begin:
     movq s@GOTPCREL(%rip), %rax
     movzxw 1(%rax), %rcx
-    and $-32768, %rcx
+    and $-32768, %cx
     shl $49, %rdi
     shr $49, %rdi
-    or %rcx, %rdi
+    or %cx, %di
     movw %di, 1(%rax)
     ret
 .L__kefir_text_func_set_b_end:
@@ -152,10 +152,10 @@ set_d:
 .L__kefir_text_func_set_d_begin:
     movq s@GOTPCREL(%rip), %rax
     movl 8(%rax), %ecx
-    and $-2147483648, %rcx
+    and $-2147483648, %ecx
     shl $33, %rdi
     shr $33, %rdi
-    or %rcx, %rdi
+    or %ecx, %edi
     movl %edi, 8(%rax)
     ret
 .L__kefir_text_func_set_d_end:

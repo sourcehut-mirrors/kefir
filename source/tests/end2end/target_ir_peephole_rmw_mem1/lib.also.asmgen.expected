@@ -137,8 +137,7 @@ and_int:
 or_char:
 .L__kefir_text_func_or_char_begin:
     movsxb (%rdi), %rax
-    movsx %sil, %rcx
-    or %ecx, %eax
+    or %sil, %al
     movb %al, (%rdi)
     ret
 .L__kefir_text_func_or_char_end:
@@ -188,8 +187,7 @@ xor_int:
 add_char:
 .L__kefir_text_func_add_char_begin:
     movsxb (%rdi), %rax
-    movsx %sil, %rcx
-    add %ecx, %eax
+    add %sil, %al
     movb %al, (%rdi)
     ret
 .L__kefir_text_func_add_char_end:
@@ -209,8 +207,7 @@ add_uint:
 and_char:
 .L__kefir_text_func_and_char_begin:
     movsxb (%rdi), %rax
-    movsx %sil, %rcx
-    and %ecx, %eax
+    and %sil, %al
     movb %al, (%rdi)
     ret
 .L__kefir_text_func_and_char_end:
@@ -230,8 +227,7 @@ and_uint:
 or_short:
 .L__kefir_text_func_or_short_begin:
     movsxw (%rdi), %rax
-    movsx %si, %rcx
-    or %ecx, %eax
+    or %si, %ax
     movw %ax, (%rdi)
     ret
 .L__kefir_text_func_or_short_end:
@@ -239,8 +235,7 @@ or_short:
 or_uchar:
 .L__kefir_text_func_or_uchar_begin:
     movzxb (%rdi), %rax
-    movzx %sil, %rcx
-    or %ecx, %eax
+    or %sil, %al
     movb %al, (%rdi)
     ret
 .L__kefir_text_func_or_uchar_end:
@@ -308,8 +303,7 @@ shr_uint:
 sub_char:
 .L__kefir_text_func_sub_char_begin:
     movsxb (%rdi), %rax
-    movsx %sil, %rcx
-    sub %ecx, %eax
+    sub %sil, %al
     movb %al, (%rdi)
     ret
 .L__kefir_text_func_sub_char_end:
@@ -329,8 +323,7 @@ sub_uint:
 xor_char:
 .L__kefir_text_func_xor_char_begin:
     movsxb (%rdi), %rax
-    movsx %sil, %rcx
-    xor %ecx, %eax
+    xor %sil, %al
     movb %al, (%rdi)
     ret
 .L__kefir_text_func_xor_char_end:
@@ -350,8 +343,7 @@ xor_uint:
 add_short:
 .L__kefir_text_func_add_short_begin:
     movsxw (%rdi), %rax
-    movsx %si, %rcx
-    add %ecx, %eax
+    add %si, %ax
     movw %ax, (%rdi)
     ret
 .L__kefir_text_func_add_short_end:
@@ -359,8 +351,7 @@ add_short:
 add_uchar:
 .L__kefir_text_func_add_uchar_begin:
     movzxb (%rdi), %rax
-    movzx %sil, %rcx
-    add %ecx, %eax
+    add %sil, %al
     movb %al, (%rdi)
     ret
 .L__kefir_text_func_add_uchar_end:
@@ -374,8 +365,7 @@ add_ulong:
 and_short:
 .L__kefir_text_func_and_short_begin:
     movsxw (%rdi), %rax
-    movsx %si, %rcx
-    and %ecx, %eax
+    and %si, %ax
     movw %ax, (%rdi)
     ret
 .L__kefir_text_func_and_short_end:
@@ -383,8 +373,7 @@ and_short:
 and_uchar:
 .L__kefir_text_func_and_uchar_begin:
     movzxb (%rdi), %rax
-    movzx %sil, %rcx
-    and %ecx, %eax
+    and %sil, %al
     movb %al, (%rdi)
     ret
 .L__kefir_text_func_and_uchar_end:
@@ -398,8 +387,7 @@ and_ulong:
 or_ushort:
 .L__kefir_text_func_or_ushort_begin:
     movzxw (%rdi), %rax
-    movzx %si, %rcx
-    or %ecx, %eax
+    or %si, %ax
     movw %ax, (%rdi)
     ret
 .L__kefir_text_func_or_ushort_end:
@@ -461,8 +449,7 @@ shr_ulong:
 sub_short:
 .L__kefir_text_func_sub_short_begin:
     movsxw (%rdi), %rax
-    movsx %si, %rcx
-    sub %ecx, %eax
+    sub %si, %ax
     movw %ax, (%rdi)
     ret
 .L__kefir_text_func_sub_short_end:
@@ -470,8 +457,7 @@ sub_short:
 sub_uchar:
 .L__kefir_text_func_sub_uchar_begin:
     movzxb (%rdi), %rax
-    movzx %sil, %rcx
-    sub %ecx, %eax
+    sub %sil, %al
     movb %al, (%rdi)
     ret
 .L__kefir_text_func_sub_uchar_end:
@@ -485,8 +471,7 @@ sub_ulong:
 xor_short:
 .L__kefir_text_func_xor_short_begin:
     movsxw (%rdi), %rax
-    movsx %si, %rcx
-    xor %ecx, %eax
+    xor %si, %ax
     movw %ax, (%rdi)
     ret
 .L__kefir_text_func_xor_short_end:
@@ -494,8 +479,7 @@ xor_short:
 xor_uchar:
 .L__kefir_text_func_xor_uchar_begin:
     movzxb (%rdi), %rax
-    movzx %sil, %rcx
-    xor %ecx, %eax
+    xor %sil, %al
     movb %al, (%rdi)
     ret
 .L__kefir_text_func_xor_uchar_end:
@@ -509,8 +493,7 @@ xor_ulong:
 add_ushort:
 .L__kefir_text_func_add_ushort_begin:
     movzxw (%rdi), %rax
-    movzx %si, %rcx
-    add %ecx, %eax
+    add %si, %ax
     movw %ax, (%rdi)
     ret
 .L__kefir_text_func_add_ushort_end:
@@ -518,8 +501,7 @@ add_ushort:
 and_ushort:
 .L__kefir_text_func_and_ushort_begin:
     movzxw (%rdi), %rax
-    movzx %si, %rcx
-    and %ecx, %eax
+    and %si, %ax
     movw %ax, (%rdi)
     ret
 .L__kefir_text_func_and_ushort_end:
@@ -545,8 +527,7 @@ shr_ushort:
 sub_ushort:
 .L__kefir_text_func_sub_ushort_begin:
     movzxw (%rdi), %rax
-    movzx %si, %rcx
-    sub %ecx, %eax
+    sub %si, %ax
     movw %ax, (%rdi)
     ret
 .L__kefir_text_func_sub_ushort_end:
@@ -554,8 +535,7 @@ sub_ushort:
 xor_ushort:
 .L__kefir_text_func_xor_ushort_begin:
     movzxw (%rdi), %rax
-    movzx %si, %rcx
-    xor %ecx, %eax
+    xor %si, %ax
     movw %ax, (%rdi)
     ret
 .L__kefir_text_func_xor_ushort_end:

@@ -204,12 +204,12 @@ __kefir_bigint_unsigned_compare:
     mov %rcx, %r11
     shr $3, %r11
     shl $3, %r11
-    sub %r11, %rcx
-    add $1, %rcx
+    sub %r11d, %ecx
+    add $1, %ecx
     mov %ecx, %ecx
     mov $1, %r11d
     shl %cl, %r11
-    sub $1, %r11
+    sub $1, %r11d
     and %r11d, %r9d
     and %r11d, %r10d
     jmp .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label6

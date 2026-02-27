@@ -35,6 +35,11 @@ kefir_result_t kefir_codegen_target_ir_amd64_peephole_rmw_mem(
     REQUIRE(load_instr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR instruction"));
     REQUIRE(replaced != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to boolean flag"));
 
+    struct kefir_codegen_target_ir_code_attribute_iterator attr_iter;
+    REQUIRE(kefir_codegen_target_ir_code_instruction_attribute_iter(code, &attr_iter, load_instr->instr_ref, NULL) ==
+                KEFIR_ITERATOR_END,
+            KEFIR_OK);
+
     struct kefir_codegen_target_ir_tie_classification load_classification;
     REQUIRE_OK(kefir_codegen_target_ir_tie_operands(code, load_instr->instr_ref, &load_classification));
     REQUIRE(load_classification.operands[1].read_index != KEFIR_CODEGEN_TARGET_IR_TIED_READ_INDEX_NONE, KEFIR_OK);
@@ -57,6 +62,10 @@ kefir_result_t kefir_codegen_target_ir_amd64_peephole_rmw_mem(
     REQUIRE_OK(kefir_codegen_target_ir_code_get_single_user(code, load_output_value_ref, &modify_instr_ref));
     REQUIRE(modify_instr_ref != KEFIR_ID_NONE &&
                 kefir_codegen_target_ir_code_control_next(code, load_instr->instr_ref) == modify_instr_ref,
+            KEFIR_OK);
+
+    REQUIRE(kefir_codegen_target_ir_code_instruction_attribute_iter(code, &attr_iter, modify_instr_ref, NULL) ==
+                KEFIR_ITERATOR_END,
             KEFIR_OK);
 
     const struct kefir_codegen_target_ir_instruction *modify_instr;
@@ -102,6 +111,10 @@ kefir_result_t kefir_codegen_target_ir_amd64_peephole_rmw_mem(
     REQUIRE_OK(kefir_codegen_target_ir_code_get_single_user(code, modify_output_value_ref, &store_instr_ref));
     REQUIRE(store_instr_ref != KEFIR_ID_NONE &&
                 kefir_codegen_target_ir_code_control_next(code, modify_instr_ref) == store_instr_ref,
+            KEFIR_OK);
+
+    REQUIRE(kefir_codegen_target_ir_code_instruction_attribute_iter(code, &attr_iter, store_instr_ref, NULL) ==
+                KEFIR_ITERATOR_END,
             KEFIR_OK);
 
     const struct kefir_codegen_target_ir_instruction *store_instr;

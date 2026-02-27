@@ -34,8 +34,7 @@ cld_eq:
     fstp %st(0)
     setnp %al
     cmovne %rcx, %rax
-    and %rax, %rdx
-    test %edx, %edx
+    and %eax, %edx
     setne %al
     movzx %al, %rax
     fldcw -8(%rbp)

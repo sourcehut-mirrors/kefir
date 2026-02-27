@@ -249,7 +249,7 @@ __kefir_bigint_or:
     movl -4(%rbp), %ecx
     movq -24(%rbp), %rdx
     movq -16(%rbp), %rsi
-    or %ecx, %eax
+    or %cl, %al
     movb %al, (%rdx, %rsi, 1)
     addq $1, -16(%rbp)
     jmp .L__kefir_runtime_func___kefir_bigint_or_label2

@@ -107,7 +107,8 @@ test_char:
     movb %dil, (%rax)
     movq c2@GOTPCREL(%rip), %rax
     movsx %dil, %rcx
-    lea 1(%ecx), %edx
+    mov %rcx, %rdx
+    add $1, %dl
     movb %dl, (%rax)
     movq c3@GOTPCREL(%rip), %rax
     mov %rcx, %rsi
@@ -179,7 +180,8 @@ test_short:
     movw %di, (%rax)
     movq s2@GOTPCREL(%rip), %rax
     movsx %di, %rcx
-    lea 1(%ecx), %edx
+    mov %rcx, %rdx
+    add $1, %dx
     movw %dx, (%rax)
     movq s3@GOTPCREL(%rip), %rax
     mov %rcx, %rsi
@@ -1089,7 +1091,7 @@ __kefir_softfloat_complex_double_mul:
     movabs $9223372036854775807, %rcx
     and %rax, %rcx
     sar $63, %rax
-    or $1, %rax
+    or $1, %eax
     xor %edx, %edx
     movabs $9218868437227405312, %rsi
     cmp %rsi, %rcx
@@ -1098,7 +1100,7 @@ __kefir_softfloat_complex_double_mul:
     movabs $9223372036854775807, %rcx
     and %rax, %rcx
     sar $63, %rax
-    or $1, %rax
+    or $1, %eax
     xor %esi, %esi
     movabs $9218868437227405312, %rdi
     cmp %rdi, %rcx
@@ -1107,7 +1109,7 @@ __kefir_softfloat_complex_double_mul:
     movabs $9223372036854775807, %rcx
     and %rax, %rcx
     sar $63, %rax
-    or $1, %rax
+    or $1, %eax
     xor %edi, %edi
     movabs $9218868437227405312, %r8
     cmp %r8, %rcx
@@ -1116,7 +1118,7 @@ __kefir_softfloat_complex_double_mul:
     movabs $9223372036854775807, %rcx
     and %rax, %rcx
     sar $63, %rax
-    or $1, %rax
+    or $1, %eax
     xor %r8d, %r8d
     movabs $9218868437227405312, %r9
     cmp %r9, %rcx
@@ -1225,7 +1227,7 @@ __kefir_softfloat_complex_double_mul:
     movabs $9223372036854775807, %rcx
     and %rax, %rcx
     sar $63, %rax
-    or $1, %rax
+    or $1, %eax
     xor %esi, %esi
     movabs $9218868437227405312, %rdi
     cmp %rdi, %rcx
@@ -1257,7 +1259,7 @@ __kefir_softfloat_complex_double_mul:
     movabs $9223372036854775807, %rcx
     and %rax, %rcx
     sar $63, %rax
-    or $1, %rax
+    or $1, %eax
     xor %esi, %esi
     movabs $9218868437227405312, %rdi
     cmp %rdi, %rcx
@@ -1271,7 +1273,7 @@ __kefir_softfloat_complex_double_mul:
     movabs $9223372036854775807, %rcx
     and %rax, %rcx
     sar $63, %rax
-    or $1, %rax
+    or $1, %eax
     xor %esi, %esi
     movabs $9218868437227405312, %rdi
     cmp %rdi, %rcx
@@ -1285,7 +1287,7 @@ __kefir_softfloat_complex_double_mul:
     movabs $9223372036854775807, %rcx
     and %rax, %rcx
     sar $63, %rax
-    or $1, %rax
+    or $1, %eax
     xor %esi, %esi
     movabs $9218868437227405312, %rdi
     cmp %rdi, %rcx

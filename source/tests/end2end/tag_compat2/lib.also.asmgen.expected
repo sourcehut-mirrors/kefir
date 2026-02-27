@@ -47,7 +47,8 @@ get:
     add $8, %rsp
     movq $0, 24(%rdx)
     fstpt 16(%rdx)
-    lea 4(%esi), %eax
+    mov %rsi, %rax
+    add $4, %al
     movb %al, 96(%rdx)
     add $5, %esi
     movsx %esi, %rax

@@ -10,7 +10,7 @@ func1:
 .L__kefir_text_func_func1_begin:
     push %rbp
     mov %rbp, %rsp
-    xor %eax, %eax
+    xor %al, %al
     mov %rcx, 0
     mov BYTE PTR [%rcx], %al
     mov %rcx, 0

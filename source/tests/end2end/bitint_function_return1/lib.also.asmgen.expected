@@ -2793,7 +2793,7 @@ __kefir_bigint_invert:
     ret
 .L__kefir_runtime_func___kefir_bigint_invert_label4:
     movzxb (%rdi, %rax, 1), %rcx
-    not %ecx
+    not %cl
     movb %cl, (%rdi, %rax, 1)
     add $1, %rax
     jmp .L__kefir_runtime_func___kefir_bigint_invert_label2
