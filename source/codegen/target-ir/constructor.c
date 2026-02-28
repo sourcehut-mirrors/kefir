@@ -354,7 +354,7 @@ static kefir_asmcmp_virtual_register_index_t store_virtual_register_aspect(
                     .kind = KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_LOCAL_VARIABLE,
                     .variant = variant,
                     .parameters.local_variable = {.identifier = virtual_register->parameters.local_variable.identifier,
-                                                  .offset = virtual_register->parameters.local_variable.offset},
+                                                  .offset = 0},
                     .constraint = constraint_copy,
                     .metadata = {.value_ref = vreg}}));
             break;

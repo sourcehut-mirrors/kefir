@@ -882,7 +882,7 @@ kefir_result_t kefir_asmcmp_virtual_register_new_spill_space(struct kefir_mem *m
 
 kefir_result_t kefir_asmcmp_virtual_register_new_local_variable(struct kefir_mem *mem,
                                                                 struct kefir_asmcmp_context *context,
-                                                                kefir_id_t variable_id, kefir_int64_t offset,
+                                                                kefir_id_t variable_id,
                                                                 kefir_asmcmp_virtual_register_index_t *reg_alloc_idx) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmgen context"));
@@ -897,7 +897,6 @@ kefir_result_t kefir_asmcmp_virtual_register_new_local_variable(struct kefir_mem
     REQUIRE_OK(new_virtual_register(mem, context, KEFIR_ASMCMP_VIRTUAL_REGISTER_LOCAL_VARIABLE, reg_alloc_idx));
     struct kefir_asmcmp_virtual_register *reg_alloc = &context->virtual_registers[*reg_alloc_idx];
     reg_alloc->parameters.local_variable.identifier = variable_id;
-    reg_alloc->parameters.local_variable.offset = offset;
     return KEFIR_OK;
 }
 

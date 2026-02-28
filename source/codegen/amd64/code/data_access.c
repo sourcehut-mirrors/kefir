@@ -130,8 +130,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(alloc_local)(struct kefir_me
         REQUIRE_OK(kefir_codegen_local_variable_allocator_mark_alive(mem, &function->variable_allocator,
                                                                      instruction->id, &variable_id));
 
-        REQUIRE_OK(
-            kefir_asmcmp_virtual_register_new_local_variable(mem, &function->code.context, variable_id, 0, &vreg));
+        REQUIRE_OK(kefir_asmcmp_virtual_register_new_local_variable(mem, &function->code.context, variable_id, &vreg));
         REQUIRE_OK(kefir_asmcmp_amd64_produce_virtual_register(
             mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), vreg, NULL));
         REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, vreg));

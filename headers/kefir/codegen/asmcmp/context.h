@@ -321,7 +321,6 @@ typedef struct kefir_asmcmp_virtual_register {
         } memory;
         struct {
             kefir_id_t identifier;
-            kefir_int64_t offset;
         } local_variable;
         kefir_int64_t immediate_int;
         struct {
@@ -439,8 +438,7 @@ kefir_result_t kefir_asmcmp_virtual_register_new_spill_space(struct kefir_mem *,
                                                              kefir_size_t, kefir_size_t,
                                                              kefir_asmcmp_virtual_register_index_t *);
 kefir_result_t kefir_asmcmp_virtual_register_new_local_variable(struct kefir_mem *, struct kefir_asmcmp_context *,
-                                                                kefir_id_t, kefir_int64_t,
-                                                                kefir_asmcmp_virtual_register_index_t *);
+                                                                kefir_id_t, kefir_asmcmp_virtual_register_index_t *);
 kefir_result_t kefir_asmcmp_virtual_register_new_pair(struct kefir_mem *, struct kefir_asmcmp_context *,
                                                       kefir_asmcmp_virtual_register_pair_type_t,
                                                       kefir_asmcmp_virtual_register_index_t,
