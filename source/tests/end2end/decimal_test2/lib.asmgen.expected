@@ -713,9 +713,8 @@ test_dec32_simulate:
     movd %xmm0, -52(%rbp)
     movd .L__kefir_func_test_dec32_simulate_label8(%rip), %xmm0
     movd %xmm0, -48(%rbp)
-    lea -48(%rbp), %rax
     movd .L__kefir_func_test_dec32_simulate_label9(%rip), %xmm0
-    movd %xmm0, 4(%rax)
+    movd %xmm0, -44(%rbp)
     movd .L__kefir_func_test_dec32_simulate_label10(%rip), %xmm0
     movd %xmm0, -40(%rbp)
     xor %eax, %eax
@@ -728,9 +727,8 @@ test_dec32_simulate:
     movd %xmm0, -32(%rbp)
     movd .L__kefir_func_test_dec32_simulate_label13(%rip), %xmm0
     movd %xmm0, -28(%rbp)
-    lea -28(%rbp), %rax
     movd .L__kefir_func_test_dec32_simulate_label14(%rip), %xmm0
-    movd %xmm0, 4(%rax)
+    movd %xmm0, -24(%rbp)
     movd .L__kefir_func_test_dec32_simulate_label15(%rip), %xmm0
     movd %xmm0, -20(%rbp)
     movd .L__kefir_func_test_dec32_simulate_label16(%rip), %xmm0
@@ -741,13 +739,11 @@ test_dec32_simulate:
     cmp %ebx, %r12d
     jl .L__kefir_func_test_dec32_simulate_label4
     movd -48(%rbp), %xmm1
-    lea -48(%rbp), %rax
-    movd 4(%rax), %xmm0
+    movd -44(%rbp), %xmm0
     movd %xmm0, -144(%rbp)
     movd -28(%rbp), %xmm0
     movd %xmm0, -112(%rbp)
-    lea -28(%rbp), %rax
-    movd 4(%rax), %xmm0
+    movd -24(%rbp), %xmm0
     movd %xmm0, -128(%rbp)
     movd .L__kefir_func_test_dec32_simulate_label17(%rip), %xmm0
     movd %xmm0, -96(%rbp)
@@ -1517,9 +1513,8 @@ test_dec64_simulate:
     movq %xmm0, -88(%rbp)
     movq .L__kefir_func_test_dec64_simulate_label8(%rip), %xmm0
     movq %xmm0, -80(%rbp)
-    lea -80(%rbp), %rax
     movq .L__kefir_func_test_dec64_simulate_label9(%rip), %xmm0
-    movq %xmm0, 8(%rax)
+    movq %xmm0, -72(%rbp)
     movq .L__kefir_func_test_dec64_simulate_label10(%rip), %xmm0
     movq %xmm0, -64(%rbp)
     xor %eax, %eax
@@ -1534,9 +1529,8 @@ test_dec64_simulate:
     movq %xmm0, -48(%rbp)
     movq .L__kefir_func_test_dec64_simulate_label13(%rip), %xmm0
     movq %xmm0, -40(%rbp)
-    lea -40(%rbp), %rax
     movq .L__kefir_func_test_dec64_simulate_label14(%rip), %xmm0
-    movq %xmm0, 8(%rax)
+    movq %xmm0, -32(%rbp)
     movq .L__kefir_func_test_dec64_simulate_label15(%rip), %xmm0
     movq %xmm0, -24(%rbp)
     movq .L__kefir_func_test_dec64_simulate_label16(%rip), %xmm0
@@ -1547,13 +1541,11 @@ test_dec64_simulate:
     cmp %ebx, %r12d
     jl .L__kefir_func_test_dec64_simulate_label4
     movq -80(%rbp), %xmm1
-    lea -80(%rbp), %rax
-    movq 8(%rax), %xmm0
+    movq -72(%rbp), %xmm0
     movq %xmm0, -176(%rbp)
     movq -40(%rbp), %xmm0
     movq %xmm0, -144(%rbp)
-    lea -40(%rbp), %rax
-    movq 8(%rax), %xmm0
+    movq -32(%rbp), %xmm0
     movq %xmm0, -160(%rbp)
     movq .L__kefir_func_test_dec64_simulate_label17(%rip), %xmm0
     movq %xmm0, -128(%rbp)
@@ -2814,9 +2806,8 @@ test_dec128_simulate:
     movdqu %xmm0, -160(%rbp)
     movdqu .L__kefir_func_test_dec128_simulate_label8(%rip), %xmm0
     movdqu %xmm0, -144(%rbp)
-    lea -144(%rbp), %rax
     movdqu .L__kefir_func_test_dec128_simulate_label9(%rip), %xmm0
-    movdqu %xmm0, 16(%rax)
+    movdqu %xmm0, -128(%rbp)
     movdqu .L__kefir_func_test_dec128_simulate_label10(%rip), %xmm0
     movdqu %xmm0, -112(%rbp)
     lea -96(%rbp), %rdi
@@ -2830,9 +2821,8 @@ test_dec128_simulate:
     movdqu %xmm0, -80(%rbp)
     movdqu .L__kefir_func_test_dec128_simulate_label13(%rip), %xmm0
     movdqu %xmm0, -64(%rbp)
-    lea -64(%rbp), %rax
     movdqu .L__kefir_func_test_dec128_simulate_label14(%rip), %xmm0
-    movdqu %xmm0, 16(%rax)
+    movdqu %xmm0, -48(%rbp)
     movdqu .L__kefir_func_test_dec128_simulate_label15(%rip), %xmm0
     movdqu %xmm0, -32(%rbp)
     movdqu .L__kefir_func_test_dec128_simulate_label16(%rip), %xmm0
@@ -2843,13 +2833,11 @@ test_dec128_simulate:
     cmp %ebx, %r12d
     jl .L__kefir_func_test_dec128_simulate_label4
     movdqu -144(%rbp), %xmm1
-    lea -144(%rbp), %rax
-    movdqu 16(%rax), %xmm0
+    movdqu -128(%rbp), %xmm0
     movdqu %xmm0, -256(%rbp)
     movdqu -64(%rbp), %xmm0
     movdqu %xmm0, -224(%rbp)
-    lea -64(%rbp), %rax
-    movdqu 16(%rax), %xmm0
+    movdqu -48(%rbp), %xmm0
     movdqu %xmm0, -240(%rbp)
     movdqu .L__kefir_func_test_dec128_simulate_label17(%rip), %xmm0
     movdqu %xmm0, -208(%rbp)
