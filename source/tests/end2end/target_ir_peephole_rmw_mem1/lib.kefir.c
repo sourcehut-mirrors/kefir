@@ -42,3 +42,35 @@ DEF_OP(or, |)
 DEF_OP(xor, ^)
 DEF_OP(shl, <<)
 DEF_OP(shr, >>)
+
+void neg_char(char *ptr) {
+    *ptr *= -1;
+}
+
+void neg_short(short *ptr) {
+    *ptr *= -1;
+}
+
+void neg_int(int *ptr) {
+    *ptr *= -1;
+}
+
+void neg_long(long *ptr) {
+    *ptr *= -1;
+}
+
+void not_char(char *ptr) {
+    *ptr = ~*ptr;
+}
+
+void not_short(short *ptr) {
+    *ptr = ~*ptr;
+}
+
+void not_int(int *ptr) {
+    *ptr = ~*ptr;
+}
+
+void not_long(long *ptr) {
+    *ptr = ~*ptr;
+}

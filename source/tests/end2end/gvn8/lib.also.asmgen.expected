@@ -345,9 +345,7 @@ __kefir_bigint_invert:
     xor %eax, %eax
     ret
 .L__kefir_runtime_func___kefir_bigint_invert_label4:
-    movb (%rdi, %rax, 1), %cl
-    not %cl
-    movb %cl, (%rdi, %rax, 1)
+    notb (%rdi, %rax, 1)
     add $1, %rax
     jmp .L__kefir_runtime_func___kefir_bigint_invert_label2
 .L__kefir_runtime_text_func___kefir_bigint_invert_end:

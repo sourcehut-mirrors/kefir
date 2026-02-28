@@ -54,6 +54,38 @@ int main(void) {
 
 #undef TEST_OP
         }
+
+        char i8 = i;
+        neg_char(&i8);
+        assert(i8 == (char) -i);
+
+        short i16 = i;
+        neg_short(&i16);
+        assert(i16 == (short) -i);
+
+        int i32 = i;
+        neg_int(&i32);
+        assert(i32 == (int) -i);
+
+        long i64 = i;
+        neg_long(&i64);
+        assert(i64 == (long) -i);
+
+        i8 = i;
+        not_char(&i8);
+        assert(i8 == (char) ~i);
+
+        i16 = i;
+        not_short(&i16);
+        assert(i16 == (short) ~i);
+
+        i32 = i;
+        not_int(&i32);
+        assert(i32 == (int) ~i);
+
+        i64 = i;
+        not_long(&i64);
+        assert(i64 == (long) ~i);
     }
     return EXIT_SUCCESS;
 }

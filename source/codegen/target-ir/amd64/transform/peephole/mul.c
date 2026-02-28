@@ -201,6 +201,23 @@ kefir_result_t kefir_codegen_target_ir_amd64_peephole_imul3(struct kefir_mem *me
                 }
             }
         }
+
+        res = kefir_codegen_target_ir_amd64_match_immediate_operand(
+            code, &instr->operation.parameters[classification.operands[2].read_index], true, &rhs);
+
+        if (res != KEFIR_NO_MATCH) {
+            REQUIRE_OK(res);
+            if (rhs == -1) {
+                REQUIRE_OK(kefir_codegen_target_ir_code_replace_operation(
+                    mem, code, instr_ref,
+                    &(struct kefir_codegen_target_ir_operation) {
+                        .opcode = KEFIR_TARGET_IR_AMD64_OPCODE(neg),
+                        .parameters[0] = instr->operation.parameters[classification.operands[1].read_index]},
+                    NULL));
+                *replaced = true;
+                return KEFIR_OK;
+            }
+        }
     }
 
     REQUIRE(classification.classification.operands[0].class == KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_WRITE &&

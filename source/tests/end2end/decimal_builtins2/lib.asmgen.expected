@@ -47,8 +47,8 @@ dec32_isinf:
     xor %ecx, %ecx
     test %eax, %eax
     sete %cl
-    imul $-1, %ecx, %eax
-    or %eax, %ebx
+    neg %ecx
+    or %ecx, %ebx
     xor %eax, %eax
     cmp $0, %ebx
     setne %al
@@ -85,8 +85,8 @@ dec64_isinf:
     xor %ecx, %ecx
     test %eax, %eax
     sete %cl
-    imul $-1, %ecx, %eax
-    or %eax, %ebx
+    neg %ecx
+    or %ecx, %ebx
     xor %eax, %eax
     cmp $0, %ebx
     setne %al
@@ -207,8 +207,9 @@ dec64_isinf_sign:
     xor %ecx, %ecx
     test %eax, %eax
     sete %cl
-    imul $-1, %ecx, %eax
-    or %ebx, %eax
+    neg %ecx
+    mov %rbx, %rax
+    or %ecx, %eax
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
@@ -242,8 +243,8 @@ dec128_isinf:
     xor %ecx, %ecx
     test %eax, %eax
     sete %cl
-    imul $-1, %ecx, %eax
-    or %eax, %ebx
+    neg %ecx
+    or %ecx, %ebx
     xor %eax, %eax
     cmp $0, %ebx
     setne %al
@@ -280,8 +281,9 @@ dec128_isinf_sign:
     xor %ecx, %ecx
     test %eax, %eax
     sete %cl
-    imul $-1, %ecx, %eax
-    or %ebx, %eax
+    neg %ecx
+    mov %rbx, %rax
+    or %ecx, %eax
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
@@ -357,8 +359,9 @@ dec32_isinf_sign:
     xor %ecx, %ecx
     test %eax, %eax
     sete %cl
-    imul $-1, %ecx, %eax
-    or %ebx, %eax
+    neg %ecx
+    mov %rbx, %rax
+    or %ecx, %eax
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp

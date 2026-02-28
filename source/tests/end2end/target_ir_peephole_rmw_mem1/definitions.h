@@ -49,4 +49,14 @@ DECL_OP(shr);
 #undef DECL_OP
 #undef DECL
 
+void neg_char(char *);
+void neg_short(short *);
+void neg_int(int *);
+void neg_long(long *);
+
+void not_char(char *);
+void not_short(short *);
+void not_int(int *);
+void not_long(long *);
+
 #endif

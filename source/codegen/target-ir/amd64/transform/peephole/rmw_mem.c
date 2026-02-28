@@ -80,6 +80,8 @@ kefir_result_t kefir_codegen_target_ir_amd64_peephole_rmw_mem(
         case KEFIR_TARGET_IR_AMD64_OPCODE(shl):
         case KEFIR_TARGET_IR_AMD64_OPCODE(shr):
         case KEFIR_TARGET_IR_AMD64_OPCODE(sar):
+        case KEFIR_TARGET_IR_AMD64_OPCODE(neg):
+        case KEFIR_TARGET_IR_AMD64_OPCODE(not):
             // Intentionally left blank
             break;
 
@@ -89,9 +91,7 @@ kefir_result_t kefir_codegen_target_ir_amd64_peephole_rmw_mem(
 
     struct kefir_codegen_target_ir_tie_classification modify_classification;
     REQUIRE_OK(kefir_codegen_target_ir_tie_operands(code, modify_instr_ref, &modify_classification));
-    REQUIRE(modify_classification.operands[0].read_index != KEFIR_CODEGEN_TARGET_IR_TIED_READ_INDEX_NONE &&
-                modify_classification.operands[1].read_index != KEFIR_CODEGEN_TARGET_IR_TIED_READ_INDEX_NONE,
-            KEFIR_OK);
+    REQUIRE(modify_classification.operands[0].read_index != KEFIR_CODEGEN_TARGET_IR_TIED_READ_INDEX_NONE, KEFIR_OK);
 
     const struct kefir_codegen_target_ir_operand *modify_input_param =
         &modify_instr->operation.parameters[modify_classification.operands[0].read_index];
@@ -130,10 +130,11 @@ kefir_result_t kefir_codegen_target_ir_amd64_peephole_rmw_mem(
             store_instr->operation.parameters[1].direct.variant == modify_output_value_type->variant,
         KEFIR_OK);
 
-    struct kefir_codegen_target_ir_operation oper = {
-        .opcode = modify_instr->operation.opcode,
-        .parameters[0] = *load_input_param,
-        .parameters[1] = modify_instr->operation.parameters[modify_classification.operands[1].read_index]};
+    struct kefir_codegen_target_ir_operation oper = {.opcode = modify_instr->operation.opcode,
+                                                     .parameters[0] = *load_input_param};
+    if (modify_classification.operands[1].read_index != KEFIR_CODEGEN_TARGET_IR_TIED_READ_INDEX_NONE) {
+        oper.parameters[1] = modify_instr->operation.parameters[modify_classification.operands[1].read_index];
+    }
     struct kefir_codegen_target_ir_instruction_metadata metadata = modify_instr->metadata;
     kefir_codegen_target_ir_instruction_ref_t replacement_ref;
     REQUIRE_OK(kefir_codegen_target_ir_code_new_instruction(mem, code, load_instr->block_ref, load_instr->instr_ref,

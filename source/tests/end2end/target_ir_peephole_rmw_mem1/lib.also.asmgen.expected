@@ -7,6 +7,10 @@
 .type add_int, @function
 .global and_int
 .type and_int, @function
+.global neg_int
+.type neg_int, @function
+.global not_int
+.type not_int, @function
 .global or_char
 .type or_char, @function
 .global or_long
@@ -33,6 +37,14 @@
 .type and_long, @function
 .global and_uint
 .type and_uint, @function
+.global neg_char
+.type neg_char, @function
+.global neg_long
+.type neg_long, @function
+.global not_char
+.type not_char, @function
+.global not_long
+.type not_long, @function
 .global or_short
 .type or_short, @function
 .global or_uchar
@@ -75,6 +87,10 @@
 .type and_uchar, @function
 .global and_ulong
 .type and_ulong, @function
+.global neg_short
+.type neg_short, @function
+.global not_short
+.type not_short, @function
 .global or_ushort
 .type or_ushort, @function
 .global shl_short
@@ -133,6 +149,18 @@ and_int:
     andl %esi, (%rdi)
     ret
 .L__kefir_text_func_and_int_end:
+
+neg_int:
+.L__kefir_text_func_neg_int_begin:
+    negl (%rdi)
+    ret
+.L__kefir_text_func_neg_int_end:
+
+not_int:
+.L__kefir_text_func_not_int_begin:
+    notl (%rdi)
+    ret
+.L__kefir_text_func_not_int_end:
 
 or_char:
 .L__kefir_text_func_or_char_begin:
@@ -217,6 +245,30 @@ and_uint:
     andl %esi, (%rdi)
     ret
 .L__kefir_text_func_and_uint_end:
+
+neg_char:
+.L__kefir_text_func_neg_char_begin:
+    negb (%rdi)
+    ret
+.L__kefir_text_func_neg_char_end:
+
+neg_long:
+.L__kefir_text_func_neg_long_begin:
+    negq (%rdi)
+    ret
+.L__kefir_text_func_neg_long_end:
+
+not_char:
+.L__kefir_text_func_not_char_begin:
+    notb (%rdi)
+    ret
+.L__kefir_text_func_not_char_end:
+
+not_long:
+.L__kefir_text_func_not_long_begin:
+    notq (%rdi)
+    ret
+.L__kefir_text_func_not_long_end:
 
 or_short:
 .L__kefir_text_func_or_short_begin:
@@ -361,6 +413,18 @@ and_ulong:
     andq %rsi, (%rdi)
     ret
 .L__kefir_text_func_and_ulong_end:
+
+neg_short:
+.L__kefir_text_func_neg_short_begin:
+    negw (%rdi)
+    ret
+.L__kefir_text_func_neg_short_end:
+
+not_short:
+.L__kefir_text_func_not_short_begin:
+    notw (%rdi)
+    ret
+.L__kefir_text_func_not_short_end:
 
 or_ushort:
 .L__kefir_text_func_or_ushort_begin:

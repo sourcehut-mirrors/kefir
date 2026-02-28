@@ -122,7 +122,7 @@ test5:
     lea -12(%rbp), %rdi
     call dummy@PLT
     movl -4(%rbp), %eax
-    imul $-1, %eax, %eax
+    neg %eax
     movl %eax, -4(%rbp)
     movl -12(%rbp), %ecx
     add $1, %ecx
