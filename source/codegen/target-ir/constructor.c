@@ -602,12 +602,8 @@ static kefir_result_t init_operand(struct constructor_state *state, struct code_
                     break;
 
                 case KEFIR_ASMCMP_INDIRECT_LOCAL_AREA_BASIS:
-                    return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected indirect operand basis");
-
                 case KEFIR_ASMCMP_INDIRECT_SPILL_AREA_BASIS:
-                    operand->indirect.type = KEFIR_CODEGEN_TARGET_IR_INDIRECT_SPILL_AREA_BASIS;
-                    operand->indirect.base.spill_index = value->indirect.base.spill_index;
-                    break;
+                    return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected indirect operand basis");
             }
             break;
 

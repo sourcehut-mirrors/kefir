@@ -159,10 +159,6 @@ kefir_bool_t kefir_codegen_target_ir_indirect_operand_same(const struct kefir_co
             REQUIRE(operand1->indirect.base.external_type == operand2->indirect.base.external_type, false);
             REQUIRE(strcmp(operand1->indirect.base.external_label, operand2->indirect.base.external_label) == 0, false);
             break;
-
-        case KEFIR_CODEGEN_TARGET_IR_INDIRECT_SPILL_AREA_BASIS:
-            REQUIRE(operand1->indirect.base.spill_index == operand2->indirect.base.spill_index, false);
-            break;
     }
 
     switch (operand1->indirect.index_type) {

@@ -238,13 +238,6 @@ static kefir_result_t operand_format(struct kefir_json_output *json, const struc
                     REQUIRE_OK(kefir_json_output_object_key(json, "label"));
                     REQUIRE_OK(kefir_json_output_string(json, operand->indirect.base.external_label));
                     break;
-
-                case KEFIR_CODEGEN_TARGET_IR_INDIRECT_SPILL_AREA_BASIS:
-                    REQUIRE_OK(kefir_json_output_object_key(json, "basis"));
-                    REQUIRE_OK(kefir_json_output_string(json, "spill_area"));
-                    REQUIRE_OK(kefir_json_output_object_key(json, "index"));
-                    REQUIRE_OK(kefir_json_output_uinteger(json, operand->indirect.base.spill_index));
-                    break;
             }
             switch (operand->indirect.index_type) {
                 case KEFIR_CODEGEN_TARGET_IR_INDIRECT_INDEX_NONE:

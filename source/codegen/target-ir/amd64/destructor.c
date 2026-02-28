@@ -791,11 +791,6 @@ static kefir_result_t resolve_operand(struct destructor_state *state,
                     *value = KEFIR_ASMCMP_MAKE_INDIRECT_EXTERNAL_LABEL(reloc, operand->indirect.base.external_label,
                                                                        operand->indirect.offset, variant);
                 } break;
-
-                case KEFIR_CODEGEN_TARGET_IR_INDIRECT_SPILL_AREA_BASIS:
-                    *value = KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(operand->indirect.base.spill_index,
-                                                              operand->indirect.offset, variant);
-                    break;
             }
             switch (operand->indirect.index_type) {
                 case KEFIR_CODEGEN_TARGET_IR_INDIRECT_INDEX_NONE:
@@ -1128,7 +1123,6 @@ static kefir_result_t build_current_instr_state(
                         case KEFIR_CODEGEN_TARGET_IR_INDIRECT_BLOCK_REF_BASIS:
                         case KEFIR_CODEGEN_TARGET_IR_INDIRECT_NATIVE_LABEL_BASIS:
                         case KEFIR_CODEGEN_TARGET_IR_INDIRECT_EXTERNAL_LABEL_BASIS:
-                        case KEFIR_CODEGEN_TARGET_IR_INDIRECT_SPILL_AREA_BASIS:
                             // Intentionally left blank
                             break;
                     }

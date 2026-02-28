@@ -93,8 +93,7 @@ typedef enum kefir_codegen_target_ir_indirect_basis_type {
     KEFIR_CODEGEN_TARGET_IR_INDIRECT_IMMEDIATE_BASIS,
     KEFIR_CODEGEN_TARGET_IR_INDIRECT_BLOCK_REF_BASIS,
     KEFIR_CODEGEN_TARGET_IR_INDIRECT_NATIVE_LABEL_BASIS,
-    KEFIR_CODEGEN_TARGET_IR_INDIRECT_EXTERNAL_LABEL_BASIS,
-    KEFIR_CODEGEN_TARGET_IR_INDIRECT_SPILL_AREA_BASIS
+    KEFIR_CODEGEN_TARGET_IR_INDIRECT_EXTERNAL_LABEL_BASIS
 } kefir_codegen_target_ir_indirect_basis_type_t;
 
 typedef enum kefir_codegen_target_ir_indirect_index_type {
@@ -234,7 +233,6 @@ typedef struct kefir_codegen_target_ir_operand {
                     kefir_codegen_target_ir_external_label_relocation_t external_type;
                     const char *external_label;
                 };
-                kefir_size_t spill_index;
             } base;
             struct kefir_codegen_target_ir_operand_indirect_index {
                 union {
