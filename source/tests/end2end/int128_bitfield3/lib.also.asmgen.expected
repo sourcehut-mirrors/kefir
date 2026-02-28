@@ -130,7 +130,8 @@ set_a:
     sub $16, %rsp
     lea value(%rip), %rax
     movq (%rax), %rdx
-    movzxw 8(%rax), %r8
+    mov %rcx, %r8
+    movw 8(%rax), %r8w
     mov $1, %r9d
     xor %r10d, %r10d
     mov $80, %ecx
@@ -211,7 +212,8 @@ set_c:
     sub $16, %rsp
     lea value(%rip), %rax
     movq 32(%rax), %rdx
-    movzxw 40(%rax), %r8
+    mov %rcx, %r8
+    movw 40(%rax), %r8w
     mov $1, %r9d
     xor %r10d, %r10d
     mov $76, %ecx

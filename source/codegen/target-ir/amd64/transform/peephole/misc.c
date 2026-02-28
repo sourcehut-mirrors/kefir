@@ -25,23 +25,19 @@
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 
-kefir_result_t kefir_codegen_target_ir_amd64_peephole_reduce_variant(
+kefir_result_t kefir_codegen_target_ir_amd64_peephole_match_max_use_variant(
     struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code,
-    const struct kefir_codegen_target_ir_instruction *instr, kefir_bool_t *replaced) {
+    const struct kefir_codegen_target_ir_instruction *instr, kefir_codegen_target_ir_operand_variant_t *variant_ptr) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR code"));
     REQUIRE(instr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR instruction"));
-    REQUIRE(replaced != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to boolean flag"));
+    REQUIRE(variant_ptr != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to target IR operand variant"));
 
     kefir_result_t res;
     struct kefir_codegen_target_ir_use_iterator use_iter;
     kefir_codegen_target_ir_instruction_ref_t use_instr_ref, instr_ref = instr->instr_ref;
     kefir_codegen_target_ir_value_ref_t used_value_ref;
-
-    const struct kefir_codegen_target_ir_value_type *output_type;
-    kefir_codegen_target_ir_value_ref_t output_value_ref;
-    REQUIRE_OK(
-        kefir_codegen_target_ir_code_instruction_output(code, instr->instr_ref, 0, &output_value_ref, &output_type));
 
     kefir_size_t found_variants = 0;
     kefir_codegen_target_ir_operand_variant_t max_use_variant = KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_8BIT;
@@ -92,8 +88,34 @@ kefir_result_t kefir_codegen_target_ir_amd64_peephole_reduce_variant(
         REQUIRE_OK(res);
     }
 
-    if (max_use_variant != KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT && found_variants > 0 &&
-        max_use_variant < output_type->variant) {
+    REQUIRE(found_variants > 0 && max_use_variant != KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT,
+            KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to match target IR operand variant"));
+    *variant_ptr = max_use_variant;
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_codegen_target_ir_amd64_peephole_reduce_variant(
+    struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code,
+    const struct kefir_codegen_target_ir_instruction *instr, kefir_bool_t *replaced) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR code"));
+    REQUIRE(instr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR instruction"));
+    REQUIRE(replaced != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to boolean flag"));
+
+    kefir_codegen_target_ir_instruction_ref_t instr_ref = instr->instr_ref;
+
+    kefir_codegen_target_ir_operand_variant_t max_use_variant = KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT;
+    kefir_result_t res =
+        kefir_codegen_target_ir_amd64_peephole_match_max_use_variant(mem, code, instr, &max_use_variant);
+    REQUIRE(res != KEFIR_NO_MATCH, KEFIR_OK);
+    REQUIRE_OK(res);
+
+    const struct kefir_codegen_target_ir_value_type *output_type;
+    kefir_codegen_target_ir_value_ref_t output_value_ref;
+    REQUIRE_OK(
+        kefir_codegen_target_ir_code_instruction_output(code, instr->instr_ref, 0, &output_value_ref, &output_type));
+
+    if (max_use_variant < output_type->variant) {
         struct kefir_codegen_target_ir_value_type value_type = *output_type;
         value_type.variant = max_use_variant;
 

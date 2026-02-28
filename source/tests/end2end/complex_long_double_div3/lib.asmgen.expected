@@ -570,7 +570,7 @@ __kefir_softfloat_complex_long_double_div:
     fld %st(0)
     fstpt -112(%rbp)
     fnstcww -96(%rbp)
-    movzxw -96(%rbp), %eax
+    movw -96(%rbp), %ax
     or $3072, %ax
     movw %ax, -88(%rbp)
     fldcww -88(%rbp)

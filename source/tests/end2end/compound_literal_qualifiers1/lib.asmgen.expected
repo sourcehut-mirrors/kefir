@@ -22,7 +22,7 @@ test:
     jnb .L__kefir_func_test_label3
     fstp %st(1)
     fnstcww -64(%rbp)
-    movzxw -64(%rbp), %eax
+    movw -64(%rbp), %ax
     or $3072, %ax
     movw %ax, -56(%rbp)
     fldcww -56(%rbp)
@@ -37,7 +37,7 @@ test:
 .L__kefir_func_test_label3:
     fnstcww -64(%rbp)
     fsubp
-    movzxw -64(%rbp), %eax
+    movw -64(%rbp), %ax
     or $3072, %ax
     movw %ax, -56(%rbp)
     fldcww -56(%rbp)

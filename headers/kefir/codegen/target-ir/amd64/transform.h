@@ -184,6 +184,10 @@ kefir_result_t kefir_codegen_target_ir_amd64_peephole_reduce_variant(struct kefi
                                                                      const struct kefir_codegen_target_ir_instruction *,
                                                                      kefir_bool_t *);
 
+kefir_result_t kefir_codegen_target_ir_amd64_peephole_match_max_use_variant(
+    struct kefir_mem *, struct kefir_codegen_target_ir_code *, const struct kefir_codegen_target_ir_instruction *,
+    kefir_codegen_target_ir_operand_variant_t *);
+
 #endif
 
 #endif

@@ -112,7 +112,7 @@ get_h:
 set_a:
 .L__kefir_text_func_set_a_begin:
     movq s@GOTPCREL(%rip), %rax
-    movzxb (%rax), %rcx
+    movb (%rax), %cl
     and $-128, %cl
     shl $57, %rdi
     shr $57, %rdi
@@ -124,7 +124,7 @@ set_a:
 set_b:
 .L__kefir_text_func_set_b_begin:
     movq s@GOTPCREL(%rip), %rax
-    movzxw 1(%rax), %rcx
+    movw 1(%rax), %cx
     and $-32768, %cx
     shl $49, %rdi
     shr $49, %rdi

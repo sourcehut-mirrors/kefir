@@ -148,7 +148,7 @@ ldcint:
     fstcw -8(%rbp)
     fldt 16(%rbp)
     fnstcww -32(%rbp)
-    movzxw -32(%rbp), %eax
+    movw -32(%rbp), %ax
     or $3072, %ax
     movw %ax, -24(%rbp)
     fldcww -24(%rbp)
@@ -174,7 +174,7 @@ ldcuint:
     jnb .L__kefir_func_ldcuint_label3
     fstp %st(1)
     fnstcww -16(%rbp)
-    movzxw -16(%rbp), %eax
+    movw -16(%rbp), %ax
     or $3072, %ax
     movw %ax, -24(%rbp)
     fldcww -24(%rbp)
@@ -189,7 +189,7 @@ ldcuint:
 .L__kefir_func_ldcuint_label3:
     fnstcww -16(%rbp)
     fsubp
-    movzxw -16(%rbp), %eax
+    movw -16(%rbp), %ax
     or $3072, %ax
     movw %ax, -24(%rbp)
     fldcww -24(%rbp)
