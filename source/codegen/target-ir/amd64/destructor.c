@@ -792,11 +792,6 @@ static kefir_result_t resolve_operand(struct destructor_state *state,
                                                                        operand->indirect.offset, variant);
                 } break;
 
-                case KEFIR_CODEGEN_TARGET_IR_INDIRECT_LOCAL_AREA_BASIS:
-                    *value = KEFIR_ASMCMP_MAKE_INDIRECT_LOCAL_AREA(operand->indirect.base.local_variable_id,
-                                                                   operand->indirect.offset, variant);
-                    break;
-
                 case KEFIR_CODEGEN_TARGET_IR_INDIRECT_SPILL_AREA_BASIS:
                     *value = KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(operand->indirect.base.spill_index,
                                                               operand->indirect.offset, variant);
@@ -1133,7 +1128,6 @@ static kefir_result_t build_current_instr_state(
                         case KEFIR_CODEGEN_TARGET_IR_INDIRECT_BLOCK_REF_BASIS:
                         case KEFIR_CODEGEN_TARGET_IR_INDIRECT_NATIVE_LABEL_BASIS:
                         case KEFIR_CODEGEN_TARGET_IR_INDIRECT_EXTERNAL_LABEL_BASIS:
-                        case KEFIR_CODEGEN_TARGET_IR_INDIRECT_LOCAL_AREA_BASIS:
                         case KEFIR_CODEGEN_TARGET_IR_INDIRECT_SPILL_AREA_BASIS:
                             // Intentionally left blank
                             break;

@@ -239,13 +239,6 @@ static kefir_result_t operand_format(struct kefir_json_output *json, const struc
                     REQUIRE_OK(kefir_json_output_string(json, operand->indirect.base.external_label));
                     break;
 
-                case KEFIR_CODEGEN_TARGET_IR_INDIRECT_LOCAL_AREA_BASIS:
-                    REQUIRE_OK(kefir_json_output_object_key(json, "basis"));
-                    REQUIRE_OK(kefir_json_output_string(json, "local_var"));
-                    REQUIRE_OK(kefir_json_output_object_key(json, "identifier"));
-                    REQUIRE_OK(kefir_json_output_integer(json, operand->indirect.base.local_variable_id));
-                    break;
-
                 case KEFIR_CODEGEN_TARGET_IR_INDIRECT_SPILL_AREA_BASIS:
                     REQUIRE_OK(kefir_json_output_object_key(json, "basis"));
                     REQUIRE_OK(kefir_json_output_string(json, "spill_area"));

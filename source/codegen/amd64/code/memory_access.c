@@ -25,21 +25,26 @@
 #include "kefir/core/util.h"
 
 static kefir_result_t is_local_var(struct kefir_mem *mem, struct kefir_codegen_amd64_function *function,
-                                   kefir_opt_instruction_ref_t instr_ref, kefir_bool_t *res, kefir_id_t *local_var_id,
-                                   kefir_int64_t *offset) {
+                                   kefir_opt_instruction_ref_t instr_ref, kefir_bool_t *res,
+                                   kefir_asmcmp_virtual_register_index_t *local_var_vreg, kefir_int64_t *offset) {
     UNUSED(mem);
     const struct kefir_opt_instruction *location_instr;
     REQUIRE_OK(kefir_opt_code_container_instr(&function->function->code, instr_ref, &location_instr));
     if (location_instr->operation.opcode == KEFIR_OPT_OPCODE_ALLOC_LOCAL &&
         location_instr->id != function->variable_allocator.return_space_variable_ref) {
+        kefir_id_t local_var_id;
         REQUIRE_OK(kefir_codegen_local_variable_allocator_mark_alive(mem, &function->variable_allocator, instr_ref,
-                                                                     local_var_id));
+                                                                     &local_var_id));
+        REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, instr_ref, local_var_vreg));
         *offset = 0;
         *res = true;
     } else if (location_instr->operation.opcode == KEFIR_OPT_OPCODE_REF_LOCAL &&
                location_instr->operation.parameters.refs[0] != function->variable_allocator.return_space_variable_ref) {
+        kefir_id_t local_var_id;
         REQUIRE_OK(kefir_codegen_local_variable_allocator_mark_alive(
-            mem, &function->variable_allocator, location_instr->operation.parameters.refs[0], local_var_id));
+            mem, &function->variable_allocator, location_instr->operation.parameters.refs[0], &local_var_id));
+        REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, location_instr->operation.parameters.refs[0],
+                                                        local_var_vreg));
         *offset = location_instr->operation.parameters.offset;
         *res = true;
     } else {
@@ -94,15 +99,15 @@ static kefir_result_t match_location_offset(struct kefir_codegen_amd64_function 
         REQUIRE_OK(kefir_asmcmp_virtual_register_get(&function->code.context, value_vreg, &value));                  \
                                                                                                                      \
         kefir_bool_t local_var;                                                                                      \
-        kefir_id_t local_var_id;                                                                                     \
+        kefir_asmcmp_virtual_register_index_t local_var_vreg;                                                        \
         kefir_int64_t load_offset;                                                                                   \
         REQUIRE_OK(is_local_var(mem, function,                                                                       \
                                 instruction->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_LOCATION_REF],        \
-                                &local_var, &local_var_id, &load_offset));                                           \
+                                &local_var, &local_var_vreg, &load_offset));                                         \
         struct kefir_asmcmp_value target_value;                                                                      \
         if (local_var) {                                                                                             \
-            target_value = KEFIR_ASMCMP_MAKE_INDIRECT_LOCAL_AREA(local_var_id, load_offset,                          \
-                                                                 KEFIR_ASMCMP_OPERAND_VARIANT_##_width##BIT);        \
+            target_value = KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(local_var_vreg, load_offset,                           \
+                                                              KEFIR_ASMCMP_OPERAND_VARIANT_##_width##BIT);           \
         } else {                                                                                                     \
             kefir_opt_instruction_ref_t location_ref =                                                               \
                 instruction->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_LOCATION_REF];                        \
@@ -160,13 +165,13 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(int32_store)(struct kefir_me
                                                         : KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT;
 
     kefir_bool_t local_var;
-    kefir_id_t local_var_id;
+    kefir_asmcmp_virtual_register_index_t local_var_vreg;
     kefir_int64_t load_offset;
     REQUIRE_OK(is_local_var(mem, function, instruction->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_LOCATION_REF],
-                            &local_var, &local_var_id, &load_offset));
+                            &local_var, &local_var_vreg, &load_offset));
     struct kefir_asmcmp_value target_value;
     if (local_var) {
-        target_value = KEFIR_ASMCMP_MAKE_INDIRECT_LOCAL_AREA(local_var_id, load_offset, target_variant);
+        target_value = KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(local_var_vreg, load_offset, target_variant);
     } else {
         kefir_opt_instruction_ref_t location_ref =
             instruction->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_LOCATION_REF];
@@ -209,13 +214,13 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(int64_store)(struct kefir_me
                                                         : KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT;
 
     kefir_bool_t local_var;
-    kefir_id_t local_var_id;
+    kefir_asmcmp_virtual_register_index_t local_var_vreg;
     kefir_int64_t load_offset;
     REQUIRE_OK(is_local_var(mem, function, instruction->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_LOCATION_REF],
-                            &local_var, &local_var_id, &load_offset));
+                            &local_var, &local_var_vreg, &load_offset));
     struct kefir_asmcmp_value target_value;
     if (local_var) {
-        target_value = KEFIR_ASMCMP_MAKE_INDIRECT_LOCAL_AREA(local_var_id, load_offset, target_variant);
+        target_value = KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(local_var_vreg, load_offset, target_variant);
     } else {
         kefir_opt_instruction_ref_t location_ref =
             instruction->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_LOCATION_REF];
@@ -248,16 +253,16 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(long_double_store)(
     REQUIRE(instruction != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer instruction"));
 
     kefir_bool_t local_var;
-    kefir_id_t local_var_id;
+    kefir_asmcmp_virtual_register_index_t local_var_vreg;
     kefir_int64_t load_offset;
     REQUIRE_OK(is_local_var(mem, function, instruction->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_LOCATION_REF],
-                            &local_var, &local_var_id, &load_offset));
+                            &local_var, &local_var_vreg, &load_offset));
     struct kefir_asmcmp_value target_value, target_value2;
     if (local_var) {
-        target_value = KEFIR_ASMCMP_MAKE_INDIRECT_LOCAL_AREA(local_var_id, load_offset + KEFIR_AMD64_ABI_QWORD,
-                                                             KEFIR_ASMCMP_OPERAND_VARIANT_64BIT);
+        target_value = KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(local_var_vreg, load_offset + KEFIR_AMD64_ABI_QWORD,
+                                                          KEFIR_ASMCMP_OPERAND_VARIANT_64BIT);
         target_value2 =
-            KEFIR_ASMCMP_MAKE_INDIRECT_LOCAL_AREA(local_var_id, load_offset, KEFIR_ASMCMP_OPERAND_VARIANT_80BIT);
+            KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(local_var_vreg, load_offset, KEFIR_ASMCMP_OPERAND_VARIANT_80BIT);
     } else {
         kefir_opt_instruction_ref_t location_ref =
             instruction->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_LOCATION_REF];
@@ -288,15 +293,15 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(long_double_store)(
 #define DEFINE_LOAD(_suffix, _width)                                                                                 \
     do {                                                                                                             \
         kefir_bool_t local_var;                                                                                      \
-        kefir_id_t local_var_id;                                                                                     \
+        kefir_asmcmp_virtual_register_index_t local_var_vreg;                                                        \
         kefir_int64_t load_offset;                                                                                   \
         REQUIRE_OK(is_local_var(mem, function,                                                                       \
                                 instruction->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_LOCATION_REF],        \
-                                &local_var, &local_var_id, &load_offset));                                           \
+                                &local_var, &local_var_vreg, &load_offset));                                         \
         struct kefir_asmcmp_value source_value;                                                                      \
         if (local_var) {                                                                                             \
-            source_value = KEFIR_ASMCMP_MAKE_INDIRECT_LOCAL_AREA(local_var_id, load_offset,                          \
-                                                                 KEFIR_ASMCMP_OPERAND_VARIANT_##_width##BIT);        \
+            source_value = KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(local_var_vreg, load_offset,                           \
+                                                              KEFIR_ASMCMP_OPERAND_VARIANT_##_width##BIT);           \
         } else {                                                                                                     \
             kefir_opt_instruction_ref_t location_ref =                                                               \
                 instruction->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_LOCATION_REF];                        \
@@ -319,15 +324,15 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(long_double_store)(
 #define DEFINE_LOAD_NOEXTEND(_width)                                                                                 \
     do {                                                                                                             \
         kefir_bool_t local_var;                                                                                      \
-        kefir_id_t local_var_id;                                                                                     \
+        kefir_asmcmp_virtual_register_index_t local_var_vreg;                                                        \
         kefir_int64_t load_offset;                                                                                   \
         REQUIRE_OK(is_local_var(mem, function,                                                                       \
                                 instruction->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_LOCATION_REF],        \
-                                &local_var, &local_var_id, &load_offset));                                           \
+                                &local_var, &local_var_vreg, &load_offset));                                         \
         struct kefir_asmcmp_value source_value;                                                                      \
         if (local_var) {                                                                                             \
-            source_value = KEFIR_ASMCMP_MAKE_INDIRECT_LOCAL_AREA(local_var_id, load_offset,                          \
-                                                                 KEFIR_ASMCMP_OPERAND_VARIANT_##_width##BIT);        \
+            source_value = KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(local_var_vreg, load_offset,                           \
+                                                              KEFIR_ASMCMP_OPERAND_VARIANT_##_width##BIT);           \
         } else {                                                                                                     \
             kefir_opt_instruction_ref_t location_ref =                                                               \
                 instruction->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_LOCATION_REF];                        \
@@ -412,15 +417,15 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(int32_load)(struct kefir_mem
         case KEFIR_OPT_MEMORY_LOAD_NOEXTEND:
         case KEFIR_OPT_MEMORY_LOAD_ZERO_EXTEND: {
             kefir_bool_t local_var;
-            kefir_id_t local_var_id;
+            kefir_asmcmp_virtual_register_index_t local_var_vreg;
             kefir_int64_t load_offset;
             REQUIRE_OK(is_local_var(mem, function,
                                     instruction->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_LOCATION_REF],
-                                    &local_var, &local_var_id, &load_offset));
+                                    &local_var, &local_var_vreg, &load_offset));
             struct kefir_asmcmp_value source_value;
             if (local_var) {
-                source_value = KEFIR_ASMCMP_MAKE_INDIRECT_LOCAL_AREA(local_var_id, load_offset,
-                                                                     KEFIR_ASMCMP_OPERAND_VARIANT_32BIT);
+                source_value =
+                    KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(local_var_vreg, load_offset, KEFIR_ASMCMP_OPERAND_VARIANT_32BIT);
             } else {
                 kefir_opt_instruction_ref_t location_ref =
                     instruction->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_LOCATION_REF];
@@ -455,14 +460,14 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(float32_load)(struct kefir_m
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Unexpected optimizer floating-point load extension"));
 
     kefir_bool_t local_var;
-    kefir_id_t local_var_id;
+    kefir_asmcmp_virtual_register_index_t local_var_vreg;
     kefir_int64_t load_offset;
     REQUIRE_OK(is_local_var(mem, function, instruction->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_LOCATION_REF],
-                            &local_var, &local_var_id, &load_offset));
+                            &local_var, &local_var_vreg, &load_offset));
     struct kefir_asmcmp_value source_value;
     if (local_var) {
         source_value =
-            KEFIR_ASMCMP_MAKE_INDIRECT_LOCAL_AREA(local_var_id, load_offset, KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT);
+            KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(local_var_vreg, load_offset, KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT);
     } else {
         kefir_opt_instruction_ref_t location_ref =
             instruction->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_LOCATION_REF];
@@ -503,14 +508,14 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(float64_load)(struct kefir_m
     REQUIRE(instruction != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer instruction"));
 
     kefir_bool_t local_var;
-    kefir_id_t local_var_id;
+    kefir_asmcmp_virtual_register_index_t local_var_vreg;
     kefir_int64_t load_offset;
     REQUIRE_OK(is_local_var(mem, function, instruction->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_LOCATION_REF],
-                            &local_var, &local_var_id, &load_offset));
+                            &local_var, &local_var_vreg, &load_offset));
     struct kefir_asmcmp_value source_value;
     if (local_var) {
         source_value =
-            KEFIR_ASMCMP_MAKE_INDIRECT_LOCAL_AREA(local_var_id, load_offset, KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT);
+            KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(local_var_vreg, load_offset, KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT);
     } else {
         kefir_opt_instruction_ref_t location_ref =
             instruction->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_LOCATION_REF];
@@ -538,14 +543,14 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(long_double_load)(struct kef
     REQUIRE(instruction != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer instruction"));
 
     kefir_bool_t local_var;
-    kefir_id_t local_var_id;
+    kefir_asmcmp_virtual_register_index_t local_var_vreg;
     kefir_int64_t load_offset;
     REQUIRE_OK(is_local_var(mem, function, instruction->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_LOCATION_REF],
-                            &local_var, &local_var_id, &load_offset));
+                            &local_var, &local_var_vreg, &load_offset));
     struct kefir_asmcmp_value source_value;
     if (local_var) {
         source_value =
-            KEFIR_ASMCMP_MAKE_INDIRECT_LOCAL_AREA(local_var_id, load_offset, KEFIR_ASMCMP_OPERAND_VARIANT_80BIT);
+            KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(local_var_vreg, load_offset, KEFIR_ASMCMP_OPERAND_VARIANT_80BIT);
     } else {
         kefir_opt_instruction_ref_t location_ref =
             instruction->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_LOCATION_REF];

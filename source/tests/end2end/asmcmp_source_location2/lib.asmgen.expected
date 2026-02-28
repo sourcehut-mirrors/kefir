@@ -34,7 +34,7 @@ factorial:
 #                    }
 #                ],
 #                "labels": [
-#                    30
+#                    32
 #                ],
 #                "source_location": null
 #            },
@@ -54,7 +54,7 @@ factorial:
 #                    }
 #                ],
 #                "labels": [
-#                    34
+#                    36
 #                ],
 #                "source_location": {
 #                    "source_id": "source\/tests\/end2end\/asmcmp_source_location2\/lib.kefir.asmgen.c",
@@ -76,7 +76,7 @@ factorial:
 #                    }
 #                ],
 #                "labels": [
-#                    38
+#                    40
 #                ],
 #                "source_location": {
 #                    "source_id": "source\/tests\/end2end\/asmcmp_source_location2\/lib.kefir.asmgen.c",
@@ -93,7 +93,7 @@ factorial:
 #                    }
 #                ],
 #                "labels": [
-#                    39
+#                    41
 #                ],
 #                "source_location": {
 #                    "source_id": "source\/tests\/end2end\/asmcmp_source_location2\/lib.kefir.asmgen.c",
@@ -117,7 +117,7 @@ factorial:
 #                    }
 #                ],
 #                "labels": [
-#                    46
+#                    48
 #                ],
 #                "source_location": {
 #                    "source_id": "source\/tests\/end2end\/asmcmp_source_location2\/lib.kefir.asmgen.c",
@@ -138,7 +138,7 @@ factorial:
 #                    }
 #                ],
 #                "labels": [
-#                    47
+#                    49
 #                ],
 #                "source_location": {
 #                    "source_id": "source\/tests\/end2end\/asmcmp_source_location2\/lib.kefir.asmgen.c",
@@ -194,7 +194,7 @@ factorial:
 #                    }
 #                ],
 #                "labels": [
-#                    62
+#                    64
 #                ],
 #                "source_location": {
 #                    "source_id": "source\/tests\/end2end\/asmcmp_source_location2\/lib.kefir.asmgen.c",
@@ -269,7 +269,7 @@ factorial:
 #                    }
 #                ],
 #                "labels": [
-#                    66
+#                    68
 #                ],
 #                "source_location": {
 #                    "source_id": "source\/tests\/end2end\/asmcmp_source_location2\/lib.kefir.asmgen.c",
@@ -286,7 +286,7 @@ factorial:
 #                    }
 #                ],
 #                "labels": [
-#                    67
+#                    69
 #                ],
 #                "source_location": {
 #                    "source_id": "source\/tests\/end2end\/asmcmp_source_location2\/lib.kefir.asmgen.c",
@@ -311,7 +311,7 @@ factorial:
 #                    }
 #                ],
 #                "labels": [
-#                    71
+#                    73
 #                ],
 #                "source_location": {
 #                    "source_id": "source\/tests\/end2end\/asmcmp_source_location2\/lib.kefir.asmgen.c",
@@ -357,7 +357,7 @@ factorial:
 #                    }
 #                ],
 #                "labels": [
-#                    81
+#                    85
 #                ],
 #                "source_location": {
 #                    "source_id": "source\/tests\/end2end\/asmcmp_source_location2\/lib.kefir.asmgen.c",
@@ -374,7 +374,7 @@ factorial:
 #                    }
 #                ],
 #                "labels": [
-#                    88
+#                    92
 #                ],
 #                "source_location": {
 #                    "source_id": "source\/tests\/end2end\/asmcmp_source_location2\/lib.kefir.asmgen.c",
@@ -398,7 +398,7 @@ factorial:
 #                    }
 #                ],
 #                "labels": [
-#                    89
+#                    93
 #                ],
 #                "source_location": {
 #                    "source_id": "source\/tests\/end2end\/asmcmp_source_location2\/lib.kefir.asmgen.c",
@@ -410,7 +410,7 @@ factorial:
 #                "opcode": "function_epilogue",
 #                "args": [],
 #                "labels": [
-#                    104
+#                    108
 #                ],
 #                "source_location": {
 #                    "source_id": "source\/tests\/end2end\/asmcmp_source_location2\/lib.kefir.asmgen.c",
@@ -468,7 +468,7 @@ factorial:
 #                    }
 #                ],
 #                "labels": [
-#                    109
+#                    113
 #                ],
 #                "source_location": {
 #                    "source_id": "source\/tests\/end2end\/asmcmp_source_location2\/lib.kefir.asmgen.c",
@@ -489,7 +489,7 @@ factorial:
 #                    }
 #                ],
 #                "labels": [
-#                    113
+#                    117
 #                ],
 #                "source_location": {
 #                    "source_id": "source\/tests\/end2end\/asmcmp_source_location2\/lib.kefir.asmgen.c",
@@ -513,7 +513,7 @@ factorial:
 #                    }
 #                ],
 #                "labels": [
-#                    120
+#                    124
 #                ],
 #                "source_location": {
 #                    "source_id": "source\/tests\/end2end\/asmcmp_source_location2\/lib.kefir.asmgen.c",
@@ -538,7 +538,7 @@ factorial:
 #                    }
 #                ],
 #                "labels": [
-#                    124
+#                    128
 #                ],
 #                "source_location": {
 #                    "source_id": "source\/tests\/end2end\/asmcmp_source_location2\/lib.kefir.asmgen.c",
@@ -555,7 +555,7 @@ factorial:
 #                    }
 #                ],
 #                "labels": [
-#                    125
+#                    129
 #                ],
 #                "source_location": {
 #                    "source_id": "source\/tests\/end2end\/asmcmp_source_location2\/lib.kefir.asmgen.c",
@@ -591,7 +591,7 @@ factorial:
 #                "opcode": "function_epilogue",
 #                "args": [],
 #                "labels": [
-#                    144
+#                    148
 #                ],
 #                "source_location": {
 #                    "source_id": "source\/tests\/end2end\/asmcmp_source_location2\/lib.kefir.asmgen.c",
@@ -654,7 +654,7 @@ factorial:
 #                "opcode": "noop",
 #                "args": [],
 #                "labels": [
-#                    157
+#                    161
 #                ],
 #                "source_location": null
 #            }
@@ -665,49 +665,49 @@ factorial:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-.L__kefir_func_factorial_label30:
+.L__kefir_func_factorial_label32:
     movl %edi, -8(%rbp)
 .loc 0 22 9
-.L__kefir_func_factorial_label34:
+.L__kefir_func_factorial_label36:
     movl -8(%rbp), %eax
-.L__kefir_func_factorial_label38:
+.L__kefir_func_factorial_label40:
     cmp $0, %eax
 .loc 0 22 5
-.L__kefir_func_factorial_label39:
+.L__kefir_func_factorial_label41:
     jl .L__kefir_func_factorial_label16
 .loc 0 24 9
-.L__kefir_func_factorial_label46:
+.L__kefir_func_factorial_label48:
     movl -8(%rbp), %eax
-.L__kefir_func_factorial_label47:
+.L__kefir_func_factorial_label49:
     xor %ecx, %ecx
     cmp $2, %eax
     setl %cl
-.L__kefir_func_factorial_label62:
+.L__kefir_func_factorial_label64:
     xor %edx, %edx
     mov $2, %esi
     cmp %eax, %esi
     sete %dl
-.L__kefir_func_factorial_label66:
+.L__kefir_func_factorial_label68:
     or %rdx, %rcx
 .loc 0 24 5
-.L__kefir_func_factorial_label67:
+.L__kefir_func_factorial_label69:
     jnz .L__kefir_func_factorial_label14
 .loc 0 27 5
-.L__kefir_func_factorial_label71:
+.L__kefir_func_factorial_label73:
     movl $1, -4(%rbp)
 .loc 0 28 12
 .L__kefir_func_factorial_label8:
     movl -8(%rbp), %eax
-.L__kefir_func_factorial_label81:
+.L__kefir_func_factorial_label85:
     cmp $1, %eax
 .loc 0 28 5
-.L__kefir_func_factorial_label88:
+.L__kefir_func_factorial_label92:
     jg .L__kefir_func_factorial_label12
 .loc 0 31 12
-.L__kefir_func_factorial_label89:
+.L__kefir_func_factorial_label93:
     movl -4(%rbp), %eax
 .loc 0 31 5
-.L__kefir_func_factorial_label104:
+.L__kefir_func_factorial_label108:
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -715,23 +715,23 @@ factorial:
 .L__kefir_func_factorial_label12:
     movl -8(%rbp), %eax
 .loc 0 29 9
-.L__kefir_func_factorial_label109:
-    movl -4(%rbp), %ecx
 .L__kefir_func_factorial_label113:
+    movl -4(%rbp), %ecx
+.L__kefir_func_factorial_label117:
     imul %eax, %ecx
-.L__kefir_func_factorial_label120:
+.L__kefir_func_factorial_label124:
     movl %ecx, -4(%rbp)
 .loc 0 28 19
-.L__kefir_func_factorial_label124:
+.L__kefir_func_factorial_label128:
     addl $-1, -8(%rbp)
 .loc 0 28 5
-.L__kefir_func_factorial_label125:
+.L__kefir_func_factorial_label129:
     jmp .L__kefir_func_factorial_label8
 .loc 0 25 16
 .L__kefir_func_factorial_label14:
     movl -8(%rbp), %eax
 .loc 0 25 9
-.L__kefir_func_factorial_label144:
+.L__kefir_func_factorial_label148:
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -741,7 +741,7 @@ factorial:
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_func_factorial_label157:
+.L__kefir_func_factorial_label161:
 .L__kefir_text_func_factorial_end:
 
 .L__kefir_text_section_end:
@@ -994,16 +994,16 @@ __kefir_debug_loclist_section_entry_1:
     .byte 0
 __kefir_debug_loclist_section_entry_6:
     .byte 4
-    .uleb128 .L__kefir_func_factorial_label34 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_factorial_label157 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_factorial_label36 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_factorial_label161 - .L__kefir_text_section_begin
     .byte 2
     .byte 145
     .byte 120
     .byte 0
 __kefir_debug_loclist_section_entry_7:
     .byte 4
-    .uleb128 .L__kefir_func_factorial_label34 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_factorial_label157 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_factorial_label36 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_factorial_label161 - .L__kefir_text_section_begin
     .byte 2
     .byte 145
     .byte 124
@@ -1023,23 +1023,23 @@ __kefir_debug_rnglists_section_begin:
 __kefir_debug_rnglist_section_entry_2:
     .byte 4
     .uleb128 .L__kefir_func_factorial_label16 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_factorial_label157 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_factorial_label161 - .L__kefir_text_section_begin
     .byte 4
-    .uleb128 .L__kefir_func_factorial_label34 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_factorial_label46 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_factorial_label36 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_factorial_label48 - .L__kefir_text_section_begin
     .byte 0
 __kefir_debug_rnglist_section_entry_3:
     .byte 4
     .uleb128 .L__kefir_func_factorial_label14 - .L__kefir_text_section_begin
     .uleb128 .L__kefir_func_factorial_label16 - .L__kefir_text_section_begin
     .byte 4
-    .uleb128 .L__kefir_func_factorial_label46 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_factorial_label71 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_factorial_label48 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_factorial_label73 - .L__kefir_text_section_begin
     .byte 0
 __kefir_debug_rnglist_section_entry_4:
     .byte 4
     .uleb128 .L__kefir_func_factorial_label8 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_factorial_label89 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_factorial_label93 - .L__kefir_text_section_begin
     .byte 4
     .uleb128 .L__kefir_func_factorial_label12 - .L__kefir_text_section_begin
     .uleb128 .L__kefir_func_factorial_label14 - .L__kefir_text_section_begin
@@ -1047,7 +1047,7 @@ __kefir_debug_rnglist_section_entry_4:
 __kefir_debug_rnglist_section_entry_5:
     .byte 4
     .uleb128 .L__kefir_func_factorial_label12 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_factorial_label124 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_factorial_label128 - .L__kefir_text_section_begin
     .byte 0
 __kefir_debug_rnglists_section_end:
 
