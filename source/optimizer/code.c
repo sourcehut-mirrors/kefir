@@ -1983,13 +1983,39 @@ static kefir_result_t inline_asm_update_used_instructions(struct kefir_mem *mem,
 
 static kefir_result_t inline_asm_drop_used_instructions(struct kefir_mem *mem,
                                                         const struct kefir_opt_code_container *code,
-                                                        kefir_opt_instruction_ref_t use_instr_ref,
+                                                        const struct kefir_opt_inline_assembly_node *inline_asm_node,
                                                         const struct kefir_opt_inline_assembly_parameter *param_ptr) {
     if (param_ptr->load_store_ref != KEFIR_ID_NONE) {
-        REQUIRE_OK(remove_used_instructions(mem, code, use_instr_ref, param_ptr->load_store_ref));
+        kefir_bool_t skip = false;
+        for (kefir_size_t i = 0; !skip && i < inline_asm_node->parameter_count; i++) {
+            if (&inline_asm_node->parameters[i] == param_ptr) {
+                continue;
+            }
+
+            if (inline_asm_node->parameters[i].load_store_ref == param_ptr->load_store_ref ||
+                inline_asm_node->parameters[i].read_ref == param_ptr->load_store_ref) {
+                skip = true;
+            }
+        }
+        if (!skip) {
+            REQUIRE_OK(remove_used_instructions(mem, code, inline_asm_node->output_ref, param_ptr->load_store_ref));
+        }
     }
     if (param_ptr->read_ref != KEFIR_ID_NONE) {
-        REQUIRE_OK(remove_used_instructions(mem, code, use_instr_ref, param_ptr->read_ref));
+        kefir_bool_t skip = false;
+        for (kefir_size_t i = 0; !skip && i < inline_asm_node->parameter_count; i++) {
+            if (&inline_asm_node->parameters[i] == param_ptr) {
+                continue;
+            }
+
+            if (inline_asm_node->parameters[i].load_store_ref == param_ptr->read_ref ||
+                inline_asm_node->parameters[i].read_ref == param_ptr->read_ref) {
+                skip = true;
+            }
+        }
+        if (!skip) {
+            REQUIRE_OK(remove_used_instructions(mem, code, inline_asm_node->output_ref, param_ptr->read_ref));
+        }
     }
     return KEFIR_OK;
 }
@@ -2014,8 +2040,8 @@ kefir_result_t kefir_opt_code_container_inline_assembly_set_parameter(
 
     REQUIRE(param_index < inline_asm_node->parameter_count,
             KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Requested parameter is out of inline assembly node bounds"));
-    REQUIRE_OK(inline_asm_drop_used_instructions(mem, code, inline_asm_node->output_ref,
-                                                 &inline_asm_node->parameters[param_index]));
+    REQUIRE_OK(
+        inline_asm_drop_used_instructions(mem, code, inline_asm_node, &inline_asm_node->parameters[param_index]));
     inline_asm_node->parameters[param_index] = *param_ptr;
 
     REQUIRE_OK(inline_asm_update_used_instructions(mem, code, inline_asm_node->output_ref, param_ptr));

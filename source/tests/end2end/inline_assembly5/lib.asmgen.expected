@@ -91,7 +91,7 @@ clear8:
     sub $16, %rsp
     movq %rdi, -8(%rbp)
 movb $0, %al
-    mov %rax, -8(%rbp)
+    movq %rax, -8(%rbp)
     movq -8(%rbp), %rax
     lea (%rbp), %rsp
     pop %rbp
@@ -105,7 +105,7 @@ clear16:
     sub $16, %rsp
     movq %rdi, -8(%rbp)
 movw $0, %ax
-    mov %rax, -8(%rbp)
+    movq %rax, -8(%rbp)
     movq -8(%rbp), %rax
     lea (%rbp), %rsp
     pop %rbp
@@ -119,7 +119,7 @@ clear32:
     sub $16, %rsp
     movq %rdi, -8(%rbp)
 movl $0, %eax
-    mov %rax, -8(%rbp)
+    movq %rax, -8(%rbp)
     movq -8(%rbp), %rax
     lea (%rbp), %rsp
     pop %rbp
@@ -133,7 +133,7 @@ clear64:
     sub $16, %rsp
     movq %rdi, -8(%rbp)
 movq $0, %rax
-    mov %rax, -8(%rbp)
+    movq %rax, -8(%rbp)
     movq -8(%rbp), %rax
     lea (%rbp), %rsp
     pop %rbp

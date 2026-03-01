@@ -26,13 +26,8 @@ test:
 .L__kefir_text_func_test_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $16, %rsp
-    movl $0, -4(%rbp)
 mov $4, %eax
 
-    mov %eax, -4(%rbp)
-    movl -4(%rbp), %eax
-    lea (%rbp), %rsp
     pop %rbp
     ret
 .L__kefir_text_func_test_end:

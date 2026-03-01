@@ -22,7 +22,6 @@ test_syscall:
     mov %rdx, %r12
     mov %rsi, %r13
     mov %rdi, %r14
-    movq $0, -48(%rbp)
     mov %r14, %rax
     mov %r13, %rdi
     mov %r12, %rsi
@@ -31,8 +30,6 @@ test_syscall:
     mov %r11, %r8
     mov %r15, %r9
 call syscall_emu
-    mov %rax, -48(%rbp)
-    movq -48(%rbp), %rax
     lea -40(%rbp), %rsp
     pop %r15
     pop %r14

@@ -160,6 +160,9 @@ kefir_result_t kefir_codegen_amd64_get_argument_register(struct kefir_mem *, str
     _def(float32_load, KEFIR_OPT_OPCODE_FLOAT32_LOAD) _separator \
     _def(float64_load, KEFIR_OPT_OPCODE_FLOAT64_LOAD) _separator \
     _def(long_double_load, KEFIR_OPT_OPCODE_LONG_DOUBLE_LOAD) _separator \
+    _def(int_slot, KEFIR_OPT_OPCODE_INT_SLOT) _separator \
+    _def(int_slot_read, KEFIR_OPT_OPCODE_INT_SLOT_READ) _separator \
+    _def(int_slot_write, KEFIR_OPT_OPCODE_INT_SLOT_WRITE) _separator \
     _def(int_to_float32, KEFIR_OPT_OPCODE_INT_TO_FLOAT32) _separator \
     _def(int_to_float64, KEFIR_OPT_OPCODE_INT_TO_FLOAT64) _separator \
     _def(uint_to_float, KEFIR_OPT_OPCODE_UINT_TO_FLOAT32) _separator \

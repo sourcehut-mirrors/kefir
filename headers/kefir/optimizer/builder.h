@@ -163,6 +163,15 @@ kefir_result_t kefir_opt_code_builder_stack_alloc(struct kefir_mem *, struct kef
 kefir_result_t kefir_opt_code_builder_scope_push(struct kefir_mem *, struct kefir_opt_code_container *,
                                                  kefir_opt_block_id_t, kefir_opt_instruction_ref_t *);
 
+kefir_result_t kefir_opt_code_builder_int_slot(struct kefir_mem *, struct kefir_opt_code_container *,
+                                               kefir_opt_block_id_t, kefir_opt_instruction_ref_t *);
+kefir_result_t kefir_opt_code_builder_int_slot_read(struct kefir_mem *, struct kefir_opt_code_container *,
+                                                    kefir_opt_block_id_t, kefir_opt_instruction_ref_t,
+                                                    kefir_opt_instruction_ref_t *);
+kefir_result_t kefir_opt_code_builder_int_slot_write(struct kefir_mem *, struct kefir_opt_code_container *,
+                                                     kefir_opt_block_id_t, kefir_opt_instruction_ref_t,
+                                                     kefir_opt_instruction_ref_t, kefir_opt_instruction_ref_t *);
+
 kefir_result_t kefir_opt_code_builder_atomic_copy_memory_from(struct kefir_mem *, struct kefir_opt_code_container *,
                                                               kefir_opt_block_id_t, kefir_opt_instruction_ref_t,
                                                               kefir_opt_instruction_ref_t, kefir_opt_memory_order_t,

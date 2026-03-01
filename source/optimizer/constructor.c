@@ -1593,6 +1593,9 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
         case KEFIR_IR_OPCODE_LOCAL_SCOPE:
         case KEFIR_IR_OPCODE_ALLOC_LOCAL:
         case KEFIR_IR_OPCODE_REF_LOCAL:
+        case KEFIR_IR_OPCODE_INT_SLOT:
+        case KEFIR_IR_OPCODE_INT_SLOT_READ:
+        case KEFIR_IR_OPCODE_INT_SLOT_WRITE:
             return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected IR instruction opcode");
     }
     return KEFIR_OK;

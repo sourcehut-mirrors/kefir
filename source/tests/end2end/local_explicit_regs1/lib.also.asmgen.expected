@@ -10,18 +10,13 @@ testfn:
 .L__kefir_text_func_testfn_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $16, %rsp
     mov %rdx, %rcx
     mov %rsi, %r8
     mov %rdi, %r9
-    movq $0, -8(%rbp)
     mov %rcx, %rdi
     mov %r9, %rsi
     mov %r8, %rdx
 call somefn
-    mov %rax, -8(%rbp)
-    movq -8(%rbp), %rax
-    lea (%rbp), %rsp
     pop %rbp
     ret
 .L__kefir_text_func_testfn_end:

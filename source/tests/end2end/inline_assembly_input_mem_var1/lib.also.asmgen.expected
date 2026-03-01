@@ -12,18 +12,13 @@ add:
 .L__kefir_text_func_add_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $16, %rsp
     mov %rdi, %rcx
-    movq %rsi, -8(%rbp)
     pushfq
     sub $8, %rsp
-    mov -8(%rbp), %rax
+    mov %rsi, %rax
 addq  %rax, (%rcx)
     add $8, %rsp
     popfq
-    mov %rax, -8(%rbp)
-    movq -8(%rbp), %rax
-    lea (%rbp), %rsp
     pop %rbp
     ret
 .L__kefir_text_func_add_end:
@@ -32,18 +27,13 @@ add2:
 .L__kefir_text_func_add2_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $16, %rsp
     mov %rdi, %rcx
-    movq %rsi, -8(%rbp)
     pushfq
     sub $8, %rsp
-    mov -8(%rbp), %rax
+    mov %rsi, %rax
 addq  %rax, (%rcx)
     add $8, %rsp
     popfq
-    mov %rax, -8(%rbp)
-    movq -8(%rbp), %rax
-    lea (%rbp), %rsp
     pop %rbp
     ret
 .L__kefir_text_func_add2_end:
