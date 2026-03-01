@@ -68,12 +68,12 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     REQUIRE(inline_asm1 != NULL, KEFIR_INTERNAL_ERROR);
 
     REQUIRE_OK(kefir_ir_inline_assembly_add_parameter(mem, &module.symbols, inline_asm1, "1",
-                                                      KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_LOAD_STORE,
+                                                      KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_INDIRECT_INPUT_OUTPUT,
                                                       &(struct kefir_ir_inline_assembly_parameter_constraints) {
                                                           .general_purpose_register = true, .memory_location = true},
                                                       decl_params, func_params, 0, 0, NULL));
     REQUIRE_OK(kefir_ir_inline_assembly_add_parameter(
-        mem, &module.symbols, inline_asm1, "2", KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ,
+        mem, &module.symbols, inline_asm1, "2", KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_DIRECT_INPUT,
         &(struct kefir_ir_inline_assembly_parameter_constraints) {.general_purpose_register = true}, decl_params,
         func_params, 3, 1, NULL));
     REQUIRE_OK(kefir_ir_inline_assembly_add_clobber(mem, &module.symbols, inline_asm1, "rax"));

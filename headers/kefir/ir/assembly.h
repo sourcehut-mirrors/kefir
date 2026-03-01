@@ -30,11 +30,11 @@
 
 typedef enum kefir_ir_inline_assembly_parameter_class {
     KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_IMMEDIATE,
-    KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ,
-    KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_LOAD,
-    KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_STORE,
-    KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ_STORE,
-    KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_LOAD_STORE
+    KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_DIRECT_INPUT,
+    KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_INDIRECT_INPUT,
+    KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_OUTPUT,
+    KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_DIRECT_INPUT_OUTPUT,
+    KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_INDIRECT_INPUT_OUTPUT
 } kefir_ir_inline_assembly_parameter_class_t;
 
 typedef struct kefir_ir_inline_assembly_parameter_constraints {
@@ -62,17 +62,17 @@ typedef struct kefir_ir_inline_assembly_parameter {
         const struct kefir_ir_type *type;
         kefir_id_t type_id;
         kefir_size_t index;
-    } read_type;
+    } direct_input_type;
     struct {
         const struct kefir_ir_type *type;
         kefir_id_t type_id;
         kefir_size_t index;
-    } type;
+    } indirect_type;
     struct kefir_ir_inline_assembly_parameter_constraints constraints;
     union {
         struct {
-            kefir_size_t read_index;
-            kefir_size_t load_store_index;
+            kefir_size_t direct_input_index;
+            kefir_size_t indirect_index;
         };
         struct {
             kefir_ir_inline_assembly_immediate_type_t immediate_type;
