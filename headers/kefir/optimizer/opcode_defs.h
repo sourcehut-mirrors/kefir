@@ -175,8 +175,9 @@
     OPCODE(BITS_INSERT, "bits_insert", bitfield) SEPARATOR \
     /* Slots */ \
     OPCODE(INT_SLOT, "int_slot", none) SEPARATOR \
-    OPCODE(INT_SLOT_READ, "int_slot_read", ref1) SEPARATOR \
-    OPCODE(INT_SLOT_WRITE, "int_slot_store", ref2) SEPARATOR \
+    OPCODE(FLOAT_SLOT, "float_slot", none) SEPARATOR \
+    OPCODE(SLOT_READ, "slot_read", ref1) SEPARATOR \
+    OPCODE(SLOT_WRITE, "slot_store", ref2) SEPARATOR \
     /* Built-ins */ \
     OPCODE(VARARG_START, "vararg_start", ref1) SEPARATOR \
     OPCODE(VARARG_COPY, "vararg_copy", ref2) SEPARATOR \

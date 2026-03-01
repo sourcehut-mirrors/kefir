@@ -165,6 +165,8 @@ kefir_result_t kefir_opt_code_builder_scope_push(struct kefir_mem *, struct kefi
 
 kefir_result_t kefir_opt_code_builder_int_slot(struct kefir_mem *, struct kefir_opt_code_container *,
                                                kefir_opt_block_id_t, kefir_opt_instruction_ref_t *);
+kefir_result_t kefir_opt_code_builder_float_slot(struct kefir_mem *, struct kefir_opt_code_container *,
+                                                 kefir_opt_block_id_t, kefir_opt_instruction_ref_t *);
 kefir_result_t kefir_opt_code_builder_int_slot_read(struct kefir_mem *, struct kefir_opt_code_container *,
                                                     kefir_opt_block_id_t, kefir_opt_instruction_ref_t,
                                                     kefir_opt_instruction_ref_t *);

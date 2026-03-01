@@ -616,7 +616,7 @@ static kefir_result_t read_input(struct kefir_mem *mem, struct kefir_codegen_amd
                     break;
 
                 case INLINE_ASSEMBLY_PARAMETER_ALLOCATION_SSE_REGISTER:
-                    if (entry->direct_value) {
+                    if (entry->direct_value || is_slot) {
                         REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(
                             mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                             entry->allocation_vreg, location_vreg, NULL));
@@ -1048,7 +1048,8 @@ static kefir_result_t load_inputs(struct kefir_mem *mem, struct kefir_codegen_am
                 const struct kefir_opt_instruction *location_instr;
                 REQUIRE_OK(kefir_opt_code_container_instr(&function->function->code, asm_param->load_store_ref,
                                                           &location_instr));
-                if (location_instr->operation.opcode == KEFIR_OPT_OPCODE_INT_SLOT) {
+                if (location_instr->operation.opcode == KEFIR_OPT_OPCODE_INT_SLOT ||
+                    location_instr->operation.opcode == KEFIR_OPT_OPCODE_FLOAT_SLOT) {
                     is_slot = true;
                 }
             } break;
@@ -1728,7 +1729,8 @@ static kefir_result_t store_outputs(struct kefir_mem *mem, struct kefir_codegen_
         const struct kefir_opt_instruction *location_instr;
         REQUIRE_OK(
             kefir_opt_code_container_instr(&function->function->code, asm_param->load_store_ref, &location_instr));
-        kefir_bool_t is_slot = location_instr->operation.opcode == KEFIR_OPT_OPCODE_INT_SLOT;
+        kefir_bool_t is_slot = location_instr->operation.opcode == KEFIR_OPT_OPCODE_INT_SLOT ||
+                               location_instr->operation.opcode == KEFIR_OPT_OPCODE_FLOAT_SLOT;
         switch (param_type->typecode) {
             case KEFIR_IR_TYPE_INT128:
                 REQUIRE(entry->allocation_type != INLINE_ASSEMBLY_PARAMETER_ALLOCATION_MEMORY,
@@ -1776,7 +1778,11 @@ static kefir_result_t store_outputs(struct kefir_mem *mem, struct kefir_codegen_
                         break;
 
                     case INLINE_ASSEMBLY_PARAMETER_ALLOCATION_SSE_REGISTER:
-                        if (entry->parameter_props.size <= 4) {
+                        if (is_slot) {
+                            REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(
+                                mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                                load_store_vreg, entry->allocation_vreg, NULL));
+                        } else if (entry->parameter_props.size <= 4) {
                             REQUIRE_OK(kefir_asmcmp_amd64_movd(
                                 mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                                 &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(load_store_vreg, 0,
