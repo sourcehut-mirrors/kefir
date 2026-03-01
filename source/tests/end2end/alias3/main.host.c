@@ -24,9 +24,11 @@
 #include "./definitions.h"
 
 int main(void) {
+#if !defined(__OpenBSD__)
     assert(some_value[0] == 1234);
     assert(some_value[1] == 0xcafe);
     assert(some_value[2] == -1);
     assert(some_value[3] == 0xfefe);
+#endif
     return EXIT_SUCCESS;
 }

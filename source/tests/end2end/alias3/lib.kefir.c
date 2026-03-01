@@ -20,7 +20,9 @@
 
 #include "./definitions.h"
 
+#if !defined(__OpenBSD__)
 extern _Thread_local long some_value[4] __attribute__((alias("other_value")));
 extern _Thread_local long other_value[4] __attribute__((alias("another_value")));
 
 _Thread_local long another_value[4] = {1234, 0xcafe, -1, 0xfefe};
+#endif

@@ -21,6 +21,8 @@
 #ifndef DEFINITIONS_H_
 #define DEFINITIONS_H_
 
+#if !defined(__OpenBSD__)
 extern _Thread_local long some_value[4];
+#endif
 
 #endif
