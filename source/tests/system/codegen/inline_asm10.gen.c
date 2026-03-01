@@ -58,6 +58,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
                                                                                        "mov %3, %2\n"
                                                                                        "add %1, %2",
                                                                                        &id1);
+    inline_asm1->slots = 3;
 
     REQUIRE(inline_asm1 != NULL, KEFIR_INTERNAL_ERROR);
 

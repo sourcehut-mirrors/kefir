@@ -65,6 +65,8 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     REQUIRE(inline_asm1 != NULL, KEFIR_INTERNAL_ERROR);
     REQUIRE(inline_asm2 != NULL, KEFIR_INTERNAL_ERROR);
     REQUIRE(inline_asm3 != NULL, KEFIR_INTERNAL_ERROR);
+    inline_asm1->slots = 1;
+    inline_asm3->slots = 1;
 
     REQUIRE_OK(kefir_ir_inline_assembly_add_clobber(mem, &module.symbols, inline_asm1, "bl"));
     REQUIRE_OK(kefir_ir_inline_assembly_add_clobber(mem, &module.symbols, inline_asm1, "memory"));

@@ -34,7 +34,6 @@ static kefir_result_t translate_outputs(struct kefir_mem *mem, const struct kefi
                                         struct kefir_ast_translator_context *context,
                                         struct kefir_ast_inline_assembly *inline_asm,
                                         struct kefir_ir_inline_assembly *ir_inline_asm, kefir_id_t *next_parameter_id,
-                                        kefir_size_t *stack_slot_counter,
                                         const struct kefir_source_location *source_location) {
     char buffer[512];
     for (const struct kefir_list_entry *iter = kefir_list_head(&inline_asm->outputs); iter != NULL;
@@ -96,7 +95,7 @@ static kefir_result_t translate_outputs(struct kefir_mem *mem, const struct kefi
         });
         REQUIRE_OK(KEFIR_IRBUILDER_TYPE_FREE(&ir_type_builder));
 
-        stack_slot = --(*stack_slot_counter);
+        stack_slot = ir_inline_asm->slots++;
 
         REQUIRE_OK(kefir_ast_translate_lvalue(mem, context, builder, param->parameter));
 
@@ -199,7 +198,6 @@ static kefir_result_t translate_inputs(struct kefir_mem *mem, const struct kefir
                                        struct kefir_ast_translator_context *context,
                                        struct kefir_ast_inline_assembly *inline_asm,
                                        struct kefir_ir_inline_assembly *ir_inline_asm, kefir_id_t *next_parameter_id,
-                                       kefir_size_t *stack_slot_counter,
                                        const struct kefir_source_location *source_location) {
     char buffer[512];
     for (const struct kefir_list_entry *iter = kefir_list_head(&inline_asm->inputs); iter != NULL;
@@ -321,7 +319,7 @@ static kefir_result_t translate_inputs(struct kefir_mem *mem, const struct kefir
             }
             klass = KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_IMMEDIATE;
         } else if (constraints.memory_location && param->parameter->properties.expression_props.lvalue) {
-            param_value = --(*stack_slot_counter);
+            param_value = ir_inline_asm->slots++;
             REQUIRE_OK(kefir_ast_translate_lvalue(mem, context, builder, param->parameter));
             klass = KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_INDIRECT_INPUT;
         }
@@ -338,7 +336,7 @@ static kefir_result_t translate_inputs(struct kefir_mem *mem, const struct kefir
                 KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to retrieve inline assembly parameter type"));
 
         if (klass == KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_DIRECT_INPUT) {
-            param_value = --(*stack_slot_counter);
+            param_value = ir_inline_asm->slots++;
             REQUIRE_OK(kefir_ast_translate_expression(mem, param->parameter, builder, context));
         }
 
@@ -408,36 +406,39 @@ kefir_result_t kefir_ast_translate_inline_assembly(struct kefir_mem *mem, const 
     if (builder != NULL) {
         kefir_id_t next_parameter_id = 0;
         char buffer[512];
-        kefir_size_t stack_slot_counter = 0;
-
-        // Calculate amount of stack slots required for parameters
-        stack_slot_counter = kefir_list_length(&inline_asm->outputs);
-        for (const struct kefir_list_entry *iter = kefir_list_head(&inline_asm->inputs); iter != NULL;
-             kefir_list_next(&iter)) {
-
-            ASSIGN_DECL_CAST(const struct kefir_ast_inline_assembly_parameter *, param, iter->value);
-
-            const struct kefir_ast_type *param_type = KEFIR_AST_TYPE_CONV_EXPRESSION_ALL(
-                mem, context->ast_context->type_bundle, param->parameter->properties.type);
-            REQUIRE(param_type != NULL,
-                    KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to retrieve inline assembly parameter type"));
-
-            if ((strchr(param->constraint, 'i') != NULL || strchr(param->constraint, 'n') != NULL) &&
-                param->parameter->properties.expression_props.constant_expression &&
-                KEFIR_AST_TYPE_IS_SCALAR_TYPE(param_type)) {
-                continue;
-            }
-
-            stack_slot_counter++;
-        }
 
         // Translate outputs
         REQUIRE_OK(translate_outputs(mem, node, builder, context, inline_asm, ir_inline_asm, &next_parameter_id,
-                                     &stack_slot_counter, &node->source_location));
+                                     &node->source_location));
 
         // Translate inputs
         REQUIRE_OK(translate_inputs(mem, node, builder, context, inline_asm, ir_inline_asm, &next_parameter_id,
-                                    &stack_slot_counter, &node->source_location));
+                                    &node->source_location));
+
+        for (const struct kefir_list_entry *iter = kefir_list_head(&ir_inline_asm->parameter_list); iter != NULL;
+             kefir_list_next(&iter)) {
+            ASSIGN_DECL_CAST(struct kefir_ir_inline_assembly_parameter *, param, iter->value);
+            switch (param->klass) {
+                case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_IMMEDIATE:
+                    // Intentionally left blank
+                    break;
+
+                case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_DIRECT_INPUT:
+                    param->direct_input_index = ir_inline_asm->slots - param->direct_input_index - 1;
+                    break;
+
+                case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_INDIRECT_INPUT:
+                case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_OUTPUT:
+                case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_INDIRECT_INPUT_OUTPUT:
+                    param->indirect_index = ir_inline_asm->slots - param->indirect_index - 1;
+                    break;
+
+                case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_DIRECT_INPUT_OUTPUT:
+                    param->direct_input_index = ir_inline_asm->slots - param->direct_input_index - 1;
+                    param->indirect_index = ir_inline_asm->slots - param->indirect_index - 1;
+                    break;
+            }
+        }
 
         // Translate clobbers
         for (const struct kefir_list_entry *iter = kefir_list_head(&inline_asm->clobbers); iter != NULL;

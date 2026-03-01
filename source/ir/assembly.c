@@ -71,6 +71,7 @@ struct kefir_ir_inline_assembly *kefir_ir_inline_assembly_alloc(struct kefir_mem
     inline_asm->id = id;
     inline_asm->template = template;
     inline_asm->next_jump_target_id = 0;
+    inline_asm->slots = 0;
 
     kefir_result_t res = kefir_hashtree_init(&inline_asm->parameters, &kefir_hashtree_str_ops);
     REQUIRE_CHAIN(&res, kefir_list_init(&inline_asm->parameter_list));

@@ -110,33 +110,6 @@ static kefir_result_t construct_inline_asm(struct kefir_mem *mem, const struct k
     const struct kefir_ir_inline_assembly *ir_inline_asm =
         kefir_ir_module_get_inline_assembly(module->ir_module, instr->arg.u64);
 
-    kefir_size_t num_of_parameter_indices = 0;
-    for (const struct kefir_list_entry *iter = kefir_list_head(&ir_inline_asm->parameter_list); iter != NULL;
-         kefir_list_next(&iter)) {
-        ASSIGN_DECL_CAST(const struct kefir_ir_inline_assembly_parameter *, asm_param, iter->value);
-
-        switch (asm_param->klass) {
-            case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_INDIRECT_INPUT:
-            case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_OUTPUT:
-            case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_INDIRECT_INPUT_OUTPUT:
-                num_of_parameter_indices = MAX(num_of_parameter_indices, asm_param->indirect_index + 1);
-                break;
-
-            case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_DIRECT_INPUT_OUTPUT:
-                num_of_parameter_indices = MAX(num_of_parameter_indices, asm_param->indirect_index + 1);
-                num_of_parameter_indices = MAX(num_of_parameter_indices, asm_param->direct_input_index + 1);
-                break;
-
-            case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_DIRECT_INPUT:
-                num_of_parameter_indices = MAX(num_of_parameter_indices, asm_param->direct_input_index + 1);
-                break;
-
-            case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_IMMEDIATE:
-                // Intentionally left blank
-                break;
-        }
-    }
-
     kefir_opt_instruction_ref_t instr_ref;
     REQUIRE_OK(
         kefir_opt_code_container_new_inline_assembly(mem, code, state->current_block->block_id, ir_inline_asm->id,
@@ -185,7 +158,7 @@ static kefir_result_t construct_inline_asm(struct kefir_mem *mem, const struct k
     REQUIRE_OK(kefir_opt_code_builder_add_control(code, state->current_block->block_id, instr_ref));
 
     kefir_opt_instruction_ref_t param_ref;
-    while (num_of_parameter_indices--) {
+    for (kefir_size_t i = 0; i < ir_inline_asm->slots; i++) {
         REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &param_ref));
     }
 

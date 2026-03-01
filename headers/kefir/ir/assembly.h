@@ -95,6 +95,7 @@ typedef struct kefir_ir_inline_assembly_jump_target {
 typedef struct kefir_ir_inline_assembly {
     kefir_id_t id;
     const char *template;
+    kefir_size_t slots;
     struct kefir_hashtree parameters;
     struct kefir_list parameter_list;
     struct kefir_hashtree clobbers;

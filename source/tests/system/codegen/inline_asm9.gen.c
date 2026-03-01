@@ -61,6 +61,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
                                                                                        "je %l2\n"
                                                                                        "jmp %l3",
                                                                                        &id1);
+    inline_asm1->slots = 1;
 
     REQUIRE(inline_asm1 != NULL, KEFIR_INTERNAL_ERROR);
 

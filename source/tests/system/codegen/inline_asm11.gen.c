@@ -57,6 +57,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     kefir_id_t id1;
     struct kefir_ir_inline_assembly *inline_asm1 =
         kefir_ir_module_new_inline_assembly(mem, &module, "add %1, %[one]", &id1);
+    inline_asm1->slots = 1;
 
     REQUIRE(inline_asm1 != NULL, KEFIR_INTERNAL_ERROR);
 
