@@ -99,12 +99,12 @@ static kefir_result_t inline_asm_impl(struct kefir_mem *mem, const struct kefir_
 
         if (!(ir_asm_param->constraints.general_purpose_register ||
               ir_asm_param->constraints.floating_point_register) ||
-            ir_asm_param->constraints.memory_location || parameter->load_store_ref == KEFIR_ID_NONE) {
+            ir_asm_param->constraints.memory_location || parameter->location_ref == KEFIR_ID_NONE) {
             continue;
         }
 
         const struct kefir_opt_instruction *location_instr;
-        REQUIRE_OK(kefir_opt_code_container_instr(code, parameter->load_store_ref, &location_instr));
+        REQUIRE_OK(kefir_opt_code_container_instr(code, parameter->location_ref, &location_instr));
         if (location_instr->operation.opcode != KEFIR_OPT_OPCODE_ALLOC_LOCAL) {
             continue;
         }
@@ -114,7 +114,7 @@ static kefir_result_t inline_asm_impl(struct kefir_mem *mem, const struct kefir_
 
         kefir_bool_t same_type;
         REQUIRE_OK(kefir_ir_type_same(alloc_type, location_instr->operation.parameters.type.type_index,
-                                      ir_asm_param->indirect_type.type, ir_asm_param->indirect_type.index, &same_type));
+                                      ir_asm_param->location_type.type, ir_asm_param->location_type.index, &same_type));
         if (!same_type) {
             continue;
         }
@@ -131,10 +131,10 @@ static kefir_result_t inline_asm_impl(struct kefir_mem *mem, const struct kefir_
             case KEFIR_IR_TYPE_INT32:
             case KEFIR_IR_TYPE_INT64: {
                 kefir_opt_instruction_ref_t slot_ref = KEFIR_ID_NONE;
-                REQUIRE_OK(process_slot(mem, code, inline_asm_node, parameter->load_store_ref, true, &slot_ref));
+                REQUIRE_OK(process_slot(mem, code, inline_asm_node, parameter->location_ref, true, &slot_ref));
 
-                struct kefir_opt_inline_assembly_parameter new_parameter = {.read_ref = parameter->read_ref,
-                                                                            .load_store_ref = slot_ref};
+                struct kefir_opt_inline_assembly_parameter new_parameter = {.value_ref = parameter->value_ref,
+                                                                            .location_ref = slot_ref};
                 REQUIRE_OK(kefir_opt_code_container_inline_assembly_set_parameter(
                     mem, code, inline_asm_instr_ref, ir_asm_param->parameter_id, &new_parameter));
             } break;
@@ -142,10 +142,10 @@ static kefir_result_t inline_asm_impl(struct kefir_mem *mem, const struct kefir_
             case KEFIR_IR_TYPE_FLOAT32:
             case KEFIR_IR_TYPE_FLOAT64: {
                 kefir_opt_instruction_ref_t slot_ref = KEFIR_ID_NONE;
-                REQUIRE_OK(process_slot(mem, code, inline_asm_node, parameter->load_store_ref, false, &slot_ref));
+                REQUIRE_OK(process_slot(mem, code, inline_asm_node, parameter->location_ref, false, &slot_ref));
 
-                struct kefir_opt_inline_assembly_parameter new_parameter = {.read_ref = parameter->read_ref,
-                                                                            .load_store_ref = slot_ref};
+                struct kefir_opt_inline_assembly_parameter new_parameter = {.value_ref = parameter->value_ref,
+                                                                            .location_ref = slot_ref};
                 REQUIRE_OK(kefir_opt_code_container_inline_assembly_set_parameter(
                     mem, code, inline_asm_instr_ref, ir_asm_param->parameter_id, &new_parameter));
             } break;

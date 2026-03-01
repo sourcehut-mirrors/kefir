@@ -121,9 +121,9 @@ static kefir_result_t escape_analyze(kefir_opt_instruction_ref_t instr_ref, void
 
             for (kefir_size_t i = 0; i < inline_asm_node->parameter_count; i++) {
                 REQUIRE_OK(kefir_hashtreeset_clean(param->mem, &param->visited_instr));
-                REQUIRE_OK(check_escape(inline_asm_node->parameters[i].load_store_ref, param));
+                REQUIRE_OK(check_escape(inline_asm_node->parameters[i].location_ref, param));
                 REQUIRE_OK(kefir_hashtreeset_clean(param->mem, &param->visited_instr));
-                REQUIRE_OK(check_escape(inline_asm_node->parameters[i].read_ref, param));
+                REQUIRE_OK(check_escape(inline_asm_node->parameters[i].value_ref, param));
             }
         } break;
 

@@ -127,22 +127,22 @@ static kefir_result_t compact_inline_asm(struct kefir_mem *mem, struct compact_p
 
         ASSIGN_DECL_CAST(struct kefir_ir_inline_assembly_parameter *, param, iter->value);
         switch (param->klass) {
-            case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_DIRECT_INPUT:
-            case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_DIRECT_INPUT_OUTPUT:
-                REQUIRE_OK(compact_type(mem, params, (const struct kefir_ir_type **) &param->direct_input_type.type,
-                                        &param->direct_input_type.type_id));
+            case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_VALUE:
+            case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_VALUE_WRITE_LOCATION:
+                REQUIRE_OK(compact_type(mem, params, (const struct kefir_ir_type **) &param->value_type.type,
+                                        &param->value_type.type_id));
                 // Fallthrough
 
-            case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_INDIRECT_INPUT:
-            case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_OUTPUT:
-            case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_INDIRECT_INPUT_OUTPUT:
-                REQUIRE_OK(compact_type(mem, params, (const struct kefir_ir_type **) &param->indirect_type.type,
-                                        &param->indirect_type.type_id));
+            case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ_LOCATION:
+            case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_WRITE_LOCATION:
+            case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ_WRITE_LOCATION:
+                REQUIRE_OK(compact_type(mem, params, (const struct kefir_ir_type **) &param->location_type.type,
+                                        &param->location_type.type_id));
                 break;
 
             case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_IMMEDIATE:
-                REQUIRE_OK(compact_type(mem, params, (const struct kefir_ir_type **) &param->indirect_type.type,
-                                        &param->indirect_type.type_id));
+                REQUIRE_OK(compact_type(mem, params, (const struct kefir_ir_type **) &param->location_type.type,
+                                        &param->location_type.type_id));
                 switch (param->immediate_type) {
                     case KEFIR_IR_INLINE_ASSEMBLY_IMMEDIATE_IDENTIFIER_BASED:
                         REQUIRE_OK(kefir_queue_push(mem, &params->symbol_scan_queue,

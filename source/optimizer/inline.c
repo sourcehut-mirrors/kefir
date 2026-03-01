@@ -699,11 +699,11 @@ static kefir_result_t inline_operation_inline_asm(struct do_inline_param *param,
 
     for (kefir_size_t i = 0; i < src_inline_asm_node->parameter_count; i++) {
         kefir_opt_instruction_ref_t mapped_ref1, mapped_ref2;
-        REQUIRE_OK(get_instr_ref_mapping(param, src_inline_asm_node->parameters[i].load_store_ref, &mapped_ref1));
-        REQUIRE_OK(get_instr_ref_mapping(param, src_inline_asm_node->parameters[i].read_ref, &mapped_ref2));
+        REQUIRE_OK(get_instr_ref_mapping(param, src_inline_asm_node->parameters[i].location_ref, &mapped_ref1));
+        REQUIRE_OK(get_instr_ref_mapping(param, src_inline_asm_node->parameters[i].value_ref, &mapped_ref2));
         REQUIRE_OK(kefir_opt_code_container_inline_assembly_set_parameter(
             param->mem, param->dst_code, inline_asm_instr_ref, i,
-            &(struct kefir_opt_inline_assembly_parameter) {.load_store_ref = mapped_ref1, .read_ref = mapped_ref2}));
+            &(struct kefir_opt_inline_assembly_parameter) {.location_ref = mapped_ref1, .value_ref = mapped_ref2}));
     }
 
     if (src_inline_asm_node->default_jump_target != KEFIR_ID_NONE) {

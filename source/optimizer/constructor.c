@@ -120,31 +120,31 @@ static kefir_result_t construct_inline_asm(struct kefir_mem *mem, const struct k
          kefir_list_next(&iter), param_idx++) {
         ASSIGN_DECL_CAST(const struct kefir_ir_inline_assembly_parameter *, ir_asm_param, iter->value);
 
-        struct kefir_opt_inline_assembly_parameter inline_asm_param = {.load_store_ref = KEFIR_ID_NONE,
-                                                                       .read_ref = KEFIR_ID_NONE};
+        struct kefir_opt_inline_assembly_parameter inline_asm_param = {.location_ref = KEFIR_ID_NONE,
+                                                                       .value_ref = KEFIR_ID_NONE};
         kefir_opt_instruction_ref_t param_ref;
         switch (ir_asm_param->klass) {
-            case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_INDIRECT_INPUT:
-            case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_OUTPUT:
-            case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_INDIRECT_INPUT_OUTPUT:
-                REQUIRE_OK(kefir_opt_constructor_stack_at(mem, state, ir_asm_param->indirect_index, &param_ref));
-                inline_asm_param.load_store_ref = param_ref;
+            case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ_LOCATION:
+            case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_WRITE_LOCATION:
+            case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ_WRITE_LOCATION:
+                REQUIRE_OK(kefir_opt_constructor_stack_at(mem, state, ir_asm_param->location_index, &param_ref));
+                inline_asm_param.location_ref = param_ref;
                 REQUIRE_OK(kefir_opt_code_container_inline_assembly_set_parameter(
                     mem, code, instr_ref, ir_asm_param->parameter_id, &inline_asm_param));
                 break;
 
-            case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_DIRECT_INPUT_OUTPUT:
-                REQUIRE_OK(kefir_opt_constructor_stack_at(mem, state, ir_asm_param->indirect_index, &param_ref));
-                inline_asm_param.load_store_ref = param_ref;
-                REQUIRE_OK(kefir_opt_constructor_stack_at(mem, state, ir_asm_param->direct_input_index, &param_ref));
-                inline_asm_param.read_ref = param_ref;
+            case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_VALUE_WRITE_LOCATION:
+                REQUIRE_OK(kefir_opt_constructor_stack_at(mem, state, ir_asm_param->location_index, &param_ref));
+                inline_asm_param.location_ref = param_ref;
+                REQUIRE_OK(kefir_opt_constructor_stack_at(mem, state, ir_asm_param->value_index, &param_ref));
+                inline_asm_param.value_ref = param_ref;
                 REQUIRE_OK(kefir_opt_code_container_inline_assembly_set_parameter(
                     mem, code, instr_ref, ir_asm_param->parameter_id, &inline_asm_param));
                 break;
 
-            case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_DIRECT_INPUT:
-                REQUIRE_OK(kefir_opt_constructor_stack_at(mem, state, ir_asm_param->direct_input_index, &param_ref));
-                inline_asm_param.read_ref = param_ref;
+            case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_VALUE:
+                REQUIRE_OK(kefir_opt_constructor_stack_at(mem, state, ir_asm_param->value_index, &param_ref));
+                inline_asm_param.value_ref = param_ref;
                 REQUIRE_OK(kefir_opt_code_container_inline_assembly_set_parameter(
                     mem, code, instr_ref, ir_asm_param->parameter_id, &inline_asm_param));
                 break;

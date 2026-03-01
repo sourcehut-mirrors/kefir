@@ -1510,20 +1510,20 @@ static kefir_result_t kefir_opt_code_container_drop_inline_asm(struct kefir_mem 
     inline_asm_node->block_id = KEFIR_ID_NONE;
 
     for (kefir_size_t i = 0; i < inline_asm_node->parameter_count; i++) {
-        if (inline_asm_node->parameters[i].load_store_ref != KEFIR_ID_NONE) {
+        if (inline_asm_node->parameters[i].location_ref != KEFIR_ID_NONE) {
             struct kefir_opt_instruction *used_instr = NULL;
             kefir_result_t res =
-                code_container_instr_mutable(code, inline_asm_node->parameters[i].load_store_ref, &used_instr);
+                code_container_instr_mutable(code, inline_asm_node->parameters[i].location_ref, &used_instr);
             if (res != KEFIR_NOT_FOUND) {
                 REQUIRE_OK(res);
                 REQUIRE_OK(kefir_hashtreeset_delete(mem, &used_instr->uses.instruction,
                                                     (kefir_hashtreeset_entry_t) inline_asm_node->output_ref));
             }
         }
-        if (inline_asm_node->parameters[i].read_ref != KEFIR_ID_NONE) {
+        if (inline_asm_node->parameters[i].value_ref != KEFIR_ID_NONE) {
             struct kefir_opt_instruction *used_instr = NULL;
             kefir_result_t res =
-                code_container_instr_mutable(code, inline_asm_node->parameters[i].read_ref, &used_instr);
+                code_container_instr_mutable(code, inline_asm_node->parameters[i].value_ref, &used_instr);
             if (res != KEFIR_NOT_FOUND) {
                 REQUIRE_OK(res);
                 REQUIRE_OK(kefir_hashtreeset_delete(mem, &used_instr->uses.instruction,
@@ -1882,8 +1882,8 @@ kefir_result_t kefir_opt_code_container_new_inline_assembly(struct kefir_mem *me
                                    "Failed to allocate optimizer inline assembly node parameters");
         });
         for (kefir_size_t i = 0; i < param_count; i++) {
-            inline_asm->parameters[i].read_ref = KEFIR_ID_NONE;
-            inline_asm->parameters[i].load_store_ref = KEFIR_ID_NONE;
+            inline_asm->parameters[i].value_ref = KEFIR_ID_NONE;
+            inline_asm->parameters[i].location_ref = KEFIR_ID_NONE;
         }
     } else {
         inline_asm->parameters = NULL;
@@ -1972,11 +1972,11 @@ static kefir_result_t inline_asm_update_used_instructions(struct kefir_mem *mem,
                                                           const struct kefir_opt_code_container *code,
                                                           kefir_opt_instruction_ref_t use_instr_ref,
                                                           const struct kefir_opt_inline_assembly_parameter *param_ptr) {
-    if (param_ptr->load_store_ref != KEFIR_ID_NONE) {
-        REQUIRE_OK(add_used_instructions(mem, code, use_instr_ref, param_ptr->load_store_ref));
+    if (param_ptr->location_ref != KEFIR_ID_NONE) {
+        REQUIRE_OK(add_used_instructions(mem, code, use_instr_ref, param_ptr->location_ref));
     }
-    if (param_ptr->read_ref != KEFIR_ID_NONE) {
-        REQUIRE_OK(add_used_instructions(mem, code, use_instr_ref, param_ptr->read_ref));
+    if (param_ptr->value_ref != KEFIR_ID_NONE) {
+        REQUIRE_OK(add_used_instructions(mem, code, use_instr_ref, param_ptr->value_ref));
     }
     return KEFIR_OK;
 }
@@ -1985,36 +1985,36 @@ static kefir_result_t inline_asm_drop_used_instructions(struct kefir_mem *mem,
                                                         const struct kefir_opt_code_container *code,
                                                         const struct kefir_opt_inline_assembly_node *inline_asm_node,
                                                         const struct kefir_opt_inline_assembly_parameter *param_ptr) {
-    if (param_ptr->load_store_ref != KEFIR_ID_NONE) {
+    if (param_ptr->location_ref != KEFIR_ID_NONE) {
         kefir_bool_t skip = false;
         for (kefir_size_t i = 0; !skip && i < inline_asm_node->parameter_count; i++) {
             if (&inline_asm_node->parameters[i] == param_ptr) {
                 continue;
             }
 
-            if (inline_asm_node->parameters[i].load_store_ref == param_ptr->load_store_ref ||
-                inline_asm_node->parameters[i].read_ref == param_ptr->load_store_ref) {
+            if (inline_asm_node->parameters[i].location_ref == param_ptr->location_ref ||
+                inline_asm_node->parameters[i].value_ref == param_ptr->location_ref) {
                 skip = true;
             }
         }
         if (!skip) {
-            REQUIRE_OK(remove_used_instructions(mem, code, inline_asm_node->output_ref, param_ptr->load_store_ref));
+            REQUIRE_OK(remove_used_instructions(mem, code, inline_asm_node->output_ref, param_ptr->location_ref));
         }
     }
-    if (param_ptr->read_ref != KEFIR_ID_NONE) {
+    if (param_ptr->value_ref != KEFIR_ID_NONE) {
         kefir_bool_t skip = false;
         for (kefir_size_t i = 0; !skip && i < inline_asm_node->parameter_count; i++) {
             if (&inline_asm_node->parameters[i] == param_ptr) {
                 continue;
             }
 
-            if (inline_asm_node->parameters[i].load_store_ref == param_ptr->read_ref ||
-                inline_asm_node->parameters[i].read_ref == param_ptr->read_ref) {
+            if (inline_asm_node->parameters[i].location_ref == param_ptr->value_ref ||
+                inline_asm_node->parameters[i].value_ref == param_ptr->value_ref) {
                 skip = true;
             }
         }
         if (!skip) {
-            REQUIRE_OK(remove_used_instructions(mem, code, inline_asm_node->output_ref, param_ptr->read_ref));
+            REQUIRE_OK(remove_used_instructions(mem, code, inline_asm_node->output_ref, param_ptr->value_ref));
         }
     }
     return KEFIR_OK;
@@ -3110,8 +3110,8 @@ kefir_result_t kefir_opt_code_container_replace_references_in(struct kefir_mem *
             code_container_inline_assembly_mutable(code, instr->operation.parameters.inline_asm_ref, &inline_asm));
 
         for (kefir_size_t i = 0; i < inline_asm->parameter_count; i++) {
-            REPLACE_REF(&inline_asm->parameters[i].load_store_ref, to_ref, from_ref);
-            REPLACE_REF(&inline_asm->parameters[i].read_ref, to_ref, from_ref);
+            REPLACE_REF(&inline_asm->parameters[i].location_ref, to_ref, from_ref);
+            REPLACE_REF(&inline_asm->parameters[i].value_ref, to_ref, from_ref);
         }
     }
 

@@ -908,9 +908,9 @@ static kefir_result_t format_operation_inline_asm(struct kefir_json_output *json
     for (kefir_size_t i = 0; i < inline_asm->parameter_count; i++) {
         REQUIRE_OK(kefir_json_output_object_begin(json));
         REQUIRE_OK(kefir_json_output_object_key(json, "load_store"));
-        REQUIRE_OK(id_format(json, inline_asm->parameters[i].load_store_ref));
+        REQUIRE_OK(id_format(json, inline_asm->parameters[i].location_ref));
         REQUIRE_OK(kefir_json_output_object_key(json, "read"));
-        REQUIRE_OK(id_format(json, inline_asm->parameters[i].read_ref));
+        REQUIRE_OK(id_format(json, inline_asm->parameters[i].value_ref));
         REQUIRE_OK(kefir_json_output_object_end(json));
     }
 

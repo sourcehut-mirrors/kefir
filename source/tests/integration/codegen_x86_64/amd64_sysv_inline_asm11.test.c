@@ -62,21 +62,21 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
 
     struct kefir_ir_inline_assembly_parameter *param;
     REQUIRE_OK(kefir_ir_inline_assembly_add_parameter(
-        mem, &module.symbols, inline_asm1, "1", KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_INDIRECT_INPUT_OUTPUT,
+        mem, &module.symbols, inline_asm1, "1", KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ_WRITE_LOCATION,
         &(struct kefir_ir_inline_assembly_parameter_constraints) {.general_purpose_register = true}, decl_params,
         func_params, 0, 0, &param));
     REQUIRE_OK(kefir_ir_inline_assembly_add_parameter_alias(mem, &module.symbols, inline_asm1, param, "[param1]"));
     REQUIRE_OK(kefir_ir_inline_assembly_add_parameter_alias(mem, &module.symbols, inline_asm1, param, "[AAA]"));
 
     REQUIRE_OK(kefir_ir_inline_assembly_add_parameter(
-        mem, &module.symbols, inline_asm1, "2", KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_DIRECT_INPUT,
+        mem, &module.symbols, inline_asm1, "2", KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_VALUE,
         &(struct kefir_ir_inline_assembly_parameter_constraints) {.general_purpose_register = true}, decl_params,
         func_params, 0, 1, &param));
     REQUIRE_OK(kefir_ir_inline_assembly_add_parameter_alias(mem, &module.symbols, inline_asm1, param, "[B]"));
     REQUIRE_OK(kefir_ir_inline_assembly_add_parameter_alias(mem, &module.symbols, inline_asm1, param, "param2"));
 
     REQUIRE_OK(kefir_ir_inline_assembly_add_parameter(
-        mem, &module.symbols, inline_asm1, "3", KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_OUTPUT,
+        mem, &module.symbols, inline_asm1, "3", KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_WRITE_LOCATION,
         &(struct kefir_ir_inline_assembly_parameter_constraints) {.memory_location = true}, decl_params, func_params, 0,
         1, &param));
     REQUIRE_OK(kefir_ir_inline_assembly_add_parameter_alias(mem, &module.symbols, inline_asm1, param, "[XXXX]"));

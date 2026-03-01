@@ -421,8 +421,8 @@ static kefir_result_t extract_inputs_inline_asm(const struct kefir_opt_code_cont
     const struct kefir_opt_inline_assembly_node *inline_asm = NULL;
     REQUIRE_OK(kefir_opt_code_container_inline_assembly(code, instr->operation.parameters.inline_asm_ref, &inline_asm));
     for (kefir_size_t i = 0; i < inline_asm->parameter_count; i++) {
-        INPUT_CALLBACK(inline_asm->parameters[i].read_ref, callback, payload);
-        INPUT_CALLBACK(inline_asm->parameters[i].load_store_ref, callback, payload);
+        INPUT_CALLBACK(inline_asm->parameters[i].value_ref, callback, payload);
+        INPUT_CALLBACK(inline_asm->parameters[i].location_ref, callback, payload);
     }
     return KEFIR_OK;
 }

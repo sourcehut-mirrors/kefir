@@ -49,7 +49,8 @@ typedef struct inline_assembly_parameter_allocation_entry {
     kefir_size_t x87_stack_index;
     kefir_asmcmp_virtual_register_index_t allocation_vreg;
 
-    kefir_bool_t direct_value;
+    kefir_bool_t direct_input;
+    kefir_bool_t direct_output;
     kefir_bool_t register_aggregate;
 
     struct {
@@ -255,7 +256,7 @@ static kefir_result_t allocate_memory_parameter(struct kefir_mem *mem, struct ke
                                                 inline_assembly_parameter_type_t param_type) {
     struct inline_assembly_parameter_allocation_entry *entry = &context->parameters[ir_asm_param->parameter_id];
     if (param_type == INLINE_ASSEMBLY_PARAMETER_AGGREGATE ||
-        ir_asm_param->klass != KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_DIRECT_INPUT) {
+        ir_asm_param->klass != KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_VALUE) {
         kefir_asm_amd64_xasmgen_register_t reg = 0;
         REQUIRE_OK(obtain_available_gp_register(mem, function, context, &reg));
         REQUIRE_OK(kefir_asmcmp_virtual_register_new(
@@ -445,41 +446,64 @@ static kefir_result_t allocate_parameters(struct kefir_mem *mem, struct kefir_co
 
         struct inline_assembly_parameter_allocation_entry *entry = &context->parameters[ir_asm_param->parameter_id];
 
+        const struct kefir_opt_inline_assembly_parameter *opt_parameter;
+        REQUIRE_OK(kefir_opt_code_container_inline_assembly_get_parameter(&function->function->code,
+                                                                          context->inline_assembly->output_ref,
+                                                                          ir_asm_param->parameter_id, &opt_parameter));
+
         inline_assembly_parameter_type_t param_read_type = INLINE_ASSEMBLY_PARAMETER_SCALAR,
                                          param_type = INLINE_ASSEMBLY_PARAMETER_SCALAR;
         kefir_size_t param_read_size = 0, param_size = 0;
         kefir_bool_t parameter_immediate = false;
-        kefir_bool_t direct_value = false;
+        kefir_bool_t direct_input = false;
+        kefir_bool_t direct_output = false;
         switch (ir_asm_param->klass) {
-            case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_OUTPUT:
-            case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_INDIRECT_INPUT_OUTPUT:
-            case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_INDIRECT_INPUT:
-                REQUIRE_OK(evaluate_parameter_type(mem, ir_asm_param->indirect_type.type,
-                                                   ir_asm_param->indirect_type.index, &param_type, &param_size));
+            case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_WRITE_LOCATION:
+            case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ_WRITE_LOCATION:
+            case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ_LOCATION:
+                REQUIRE_OK(evaluate_parameter_type(mem, ir_asm_param->location_type.type,
+                                                   ir_asm_param->location_type.index, &param_type, &param_size));
                 break;
 
-            case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_DIRECT_INPUT_OUTPUT:
-                REQUIRE_OK(evaluate_parameter_type(mem, ir_asm_param->indirect_type.type,
-                                                   ir_asm_param->indirect_type.index, &param_type, &param_size));
-                REQUIRE_OK(evaluate_parameter_type(mem, ir_asm_param->direct_input_type.type,
-                                                   ir_asm_param->direct_input_type.index, &param_read_type,
-                                                   &param_read_size));
-                direct_value = true;
+            case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_VALUE_WRITE_LOCATION:
+                REQUIRE_OK(evaluate_parameter_type(mem, ir_asm_param->location_type.type,
+                                                   ir_asm_param->location_type.index, &param_type, &param_size));
+                REQUIRE_OK(evaluate_parameter_type(mem, ir_asm_param->value_type.type, ir_asm_param->value_type.index,
+                                                   &param_read_type, &param_read_size));
+                direct_input = true;
                 break;
 
-            case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_DIRECT_INPUT:
-                REQUIRE_OK(evaluate_parameter_type(mem, ir_asm_param->indirect_type.type,
-                                                   ir_asm_param->indirect_type.index, &param_type, &param_size));
+            case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_VALUE:
+                REQUIRE_OK(evaluate_parameter_type(mem, ir_asm_param->location_type.type,
+                                                   ir_asm_param->location_type.index, &param_type, &param_size));
                 param_read_type = param_type;
                 param_read_size = param_size;
-                direct_value = true;
+                direct_input = true;
                 break;
 
             case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_IMMEDIATE:
-                REQUIRE_OK(evaluate_parameter_type(mem, ir_asm_param->indirect_type.type,
-                                                   ir_asm_param->indirect_type.index, &param_type, &param_size));
+                REQUIRE_OK(evaluate_parameter_type(mem, ir_asm_param->location_type.type,
+                                                   ir_asm_param->location_type.index, &param_type, &param_size));
                 parameter_immediate = true;
                 break;
+        }
+        const struct kefir_opt_instruction *location_instr = NULL;
+        kefir_bool_t location_slot = false;
+        if (opt_parameter->location_ref != KEFIR_ID_NONE) {
+            REQUIRE_OK(kefir_opt_code_container_instr(&function->function->code, opt_parameter->location_ref,
+                                                      &location_instr));
+            location_slot = location_instr->operation.opcode == KEFIR_OPT_OPCODE_INT_SLOT ||
+                            location_instr->operation.opcode == KEFIR_OPT_OPCODE_FLOAT_SLOT;
+        }
+
+        if (ir_asm_param->klass == KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_WRITE_LOCATION ||
+            ir_asm_param->klass == KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ_WRITE_LOCATION ||
+            ir_asm_param->klass == KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_VALUE_WRITE_LOCATION) {
+            direct_output = location_slot;
+        }
+        if (ir_asm_param->klass == KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ_LOCATION ||
+            ir_asm_param->klass == KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ_WRITE_LOCATION) {
+            direct_input = location_slot;
         }
 
         if (!parameter_immediate) {
@@ -510,14 +534,15 @@ static kefir_result_t allocate_parameters(struct kefir_mem *mem, struct kefir_co
 
         entry->parameter_props.size = param_size;
         entry->parameter_props.type = param_type;
-        entry->direct_value = direct_value;
-        if (ir_asm_param->klass == KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_DIRECT_INPUT_OUTPUT ||
-            ir_asm_param->klass == KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_DIRECT_INPUT) {
+        entry->direct_input = direct_input;
+        entry->direct_output = direct_output;
+        if (ir_asm_param->klass == KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_VALUE_WRITE_LOCATION ||
+            ir_asm_param->klass == KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_VALUE) {
             entry->parameter_read_props.type = param_read_type;
             entry->parameter_read_props.size = param_read_size;
         }
 
-        if (direct_value && (entry->allocation_type == INLINE_ASSEMBLY_PARAMETER_ALLOCATION_GP_REGISTER ||
+        if (direct_input && (entry->allocation_type == INLINE_ASSEMBLY_PARAMETER_ALLOCATION_GP_REGISTER ||
                              entry->allocation_type == INLINE_ASSEMBLY_PARAMETER_ALLOCATION_SSE_REGISTER)) {
             REQUIRE_OK(kefir_hashtreeset_add(mem, &context->directly_read_vregs,
                                              (kefir_hashtreeset_entry_t) entry->allocation_vreg));
@@ -552,8 +577,7 @@ kefir_result_t match_vreg_to_size(kefir_asmcmp_virtual_register_index_t in, kefi
 static kefir_result_t read_input(struct kefir_mem *mem, struct kefir_codegen_amd64_function *function,
                                  struct inline_assembly_context *context,
                                  const struct kefir_ir_inline_assembly_parameter *ir_asm_param,
-                                 kefir_asmcmp_virtual_register_index_t location_vreg, kefir_bool_t is_slot,
-                                 kefir_bool_t *has_read) {
+                                 kefir_asmcmp_virtual_register_index_t location_vreg, kefir_bool_t *has_read) {
     const struct kefir_opt_inline_assembly_parameter *asm_param = NULL;
     REQUIRE_OK(kefir_opt_code_container_inline_assembly_get_parameter(
         &function->function->code, context->inline_assembly->output_ref, ir_asm_param->parameter_id, &asm_param));
@@ -562,16 +586,16 @@ static kefir_result_t read_input(struct kefir_mem *mem, struct kefir_codegen_amd
     const struct kefir_ir_typeentry *param_type = NULL;
     *has_read = false;
     switch (ir_asm_param->klass) {
-        case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_DIRECT_INPUT:
-        case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_DIRECT_INPUT_OUTPUT:
-            param_type = kefir_ir_type_at(ir_asm_param->direct_input_type.type, ir_asm_param->direct_input_type.index);
+        case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_VALUE:
+        case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_VALUE_WRITE_LOCATION:
+            param_type = kefir_ir_type_at(ir_asm_param->value_type.type, ir_asm_param->value_type.index);
             break;
 
-        case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_INDIRECT_INPUT:
-        case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_OUTPUT:
-        case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_INDIRECT_INPUT_OUTPUT:
+        case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ_LOCATION:
+        case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_WRITE_LOCATION:
+        case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ_WRITE_LOCATION:
         case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_IMMEDIATE:
-            param_type = kefir_ir_type_at(ir_asm_param->indirect_type.type, ir_asm_param->indirect_type.index);
+            param_type = kefir_ir_type_at(ir_asm_param->location_type.type, ir_asm_param->location_type.index);
             break;
     }
     REQUIRE(param_type != NULL,
@@ -597,7 +621,7 @@ static kefir_result_t read_input(struct kefir_mem *mem, struct kefir_codegen_amd
         case KEFIR_IR_TYPE_DECIMAL128:
             switch (entry->allocation_type) {
                 case INLINE_ASSEMBLY_PARAMETER_ALLOCATION_GP_REGISTER:
-                    if (entry->direct_value || is_slot) {
+                    if (entry->direct_input) {
                         REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(
                             mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                             entry->allocation_vreg, location_vreg, NULL));
@@ -616,7 +640,7 @@ static kefir_result_t read_input(struct kefir_mem *mem, struct kefir_codegen_amd
                     break;
 
                 case INLINE_ASSEMBLY_PARAMETER_ALLOCATION_SSE_REGISTER:
-                    if (entry->direct_value || is_slot) {
+                    if (entry->direct_input) {
                         REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(
                             mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                             entry->allocation_vreg, location_vreg, NULL));
@@ -650,12 +674,12 @@ static kefir_result_t read_input(struct kefir_mem *mem, struct kefir_codegen_amd
                     break;
 
                 case INLINE_ASSEMBLY_PARAMETER_ALLOCATION_REGISTER_INDIRECT:
-                    REQUIRE(!entry->direct_value,
+                    REQUIRE(!entry->direct_input,
                             KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected IR inline assembly parameter properties"));
                     break;
 
                 case INLINE_ASSEMBLY_PARAMETER_ALLOCATION_MEMORY: {
-                    if (entry->direct_value) {
+                    if (entry->direct_input) {
                         REQUIRE_OK(kefir_asmcmp_amd64_mov(
                             mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                             &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(entry->allocation_vreg, 0,
@@ -680,7 +704,7 @@ static kefir_result_t read_input(struct kefir_mem *mem, struct kefir_codegen_amd
         case KEFIR_IR_TYPE_COMPLEX_FLOAT32: {
             kefir_asmcmp_virtual_register_index_t packed_vreg;
 
-            if (entry->direct_value) {
+            if (entry->direct_input) {
                 kefir_asmcmp_virtual_register_index_t real_vreg, imaginary_vreg, tmp_vreg;
                 REQUIRE_OK(
                     kefir_asmcmp_virtual_register_pair_at(&function->code.context, location_vreg, 0, &real_vreg));
@@ -706,7 +730,7 @@ static kefir_result_t read_input(struct kefir_mem *mem, struct kefir_codegen_amd
 
             switch (entry->allocation_type) {
                 case INLINE_ASSEMBLY_PARAMETER_ALLOCATION_GP_REGISTER:
-                    if (entry->direct_value) {
+                    if (entry->direct_input) {
                         REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(
                             mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                             entry->allocation_vreg, packed_vreg, NULL));
@@ -725,7 +749,7 @@ static kefir_result_t read_input(struct kefir_mem *mem, struct kefir_codegen_amd
                     break;
 
                 case INLINE_ASSEMBLY_PARAMETER_ALLOCATION_SSE_REGISTER:
-                    if (entry->direct_value) {
+                    if (entry->direct_input) {
                         REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(
                             mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                             entry->allocation_vreg, packed_vreg, NULL));
@@ -759,12 +783,12 @@ static kefir_result_t read_input(struct kefir_mem *mem, struct kefir_codegen_amd
                     break;
 
                 case INLINE_ASSEMBLY_PARAMETER_ALLOCATION_REGISTER_INDIRECT:
-                    REQUIRE(!entry->direct_value,
+                    REQUIRE(!entry->direct_input,
                             KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected IR inline assembly parameter properties"));
                     break;
 
                 case INLINE_ASSEMBLY_PARAMETER_ALLOCATION_MEMORY: {
-                    if (entry->direct_value) {
+                    if (entry->direct_input) {
                         REQUIRE_OK(kefir_asmcmp_amd64_mov(
                             mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                             &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(entry->allocation_vreg, 0,
@@ -789,7 +813,7 @@ static kefir_result_t read_input(struct kefir_mem *mem, struct kefir_codegen_amd
         case KEFIR_IR_TYPE_COMPLEX_FLOAT64: {
             switch (entry->allocation_type) {
                 case INLINE_ASSEMBLY_PARAMETER_ALLOCATION_GP_REGISTER:
-                    if (entry->direct_value) {
+                    if (entry->direct_input) {
                         return KEFIR_SET_ERROR(
                             KEFIR_INVALID_STATE,
                             "Unable to read complex floating-point value as a direct inline assembly parameter");
@@ -805,7 +829,7 @@ static kefir_result_t read_input(struct kefir_mem *mem, struct kefir_codegen_amd
                     break;
 
                 case INLINE_ASSEMBLY_PARAMETER_ALLOCATION_SSE_REGISTER:
-                    if (entry->direct_value) {
+                    if (entry->direct_input) {
                         kefir_asmcmp_virtual_register_index_t real_vreg, imag_vreg;
                         REQUIRE_OK(kefir_asmcmp_virtual_register_pair_at(&function->code.context, location_vreg, 0,
                                                                          &real_vreg));
@@ -847,12 +871,12 @@ static kefir_result_t read_input(struct kefir_mem *mem, struct kefir_codegen_amd
                     break;
 
                 case INLINE_ASSEMBLY_PARAMETER_ALLOCATION_REGISTER_INDIRECT:
-                    REQUIRE(!entry->direct_value,
+                    REQUIRE(!entry->direct_input,
                             KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected IR inline assembly parameter properties"));
                     break;
 
                 case INLINE_ASSEMBLY_PARAMETER_ALLOCATION_MEMORY: {
-                    if (entry->direct_value) {
+                    if (entry->direct_input) {
                         return KEFIR_SET_ERROR(
                             KEFIR_INVALID_STATE,
                             "Unable to read complex floating-point value as a direct inline assembly parameter");
@@ -880,7 +904,7 @@ static kefir_result_t read_input(struct kefir_mem *mem, struct kefir_codegen_amd
             switch (entry->allocation_type) {
                 case INLINE_ASSEMBLY_PARAMETER_ALLOCATION_GP_REGISTER: {
                     REQUIRE_OK(match_vreg_to_size(entry->allocation_vreg,
-                                                  entry->direct_value
+                                                  entry->direct_input
                                                       ? MIN(entry->parameter_read_props.size, KEFIR_AMD64_ABI_QWORD)
                                                       : entry->parameter_props.size,
                                                   false, &vreg_variant_value));
@@ -929,16 +953,16 @@ static kefir_result_t read_x87_input(struct kefir_mem *mem, struct kefir_codegen
 
     const struct kefir_ir_typeentry *param_type = NULL;
     switch (ir_asm_param->klass) {
-        case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_DIRECT_INPUT:
-        case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_DIRECT_INPUT_OUTPUT:
-            param_type = kefir_ir_type_at(ir_asm_param->direct_input_type.type, ir_asm_param->direct_input_type.index);
+        case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_VALUE:
+        case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_VALUE_WRITE_LOCATION:
+            param_type = kefir_ir_type_at(ir_asm_param->value_type.type, ir_asm_param->value_type.index);
             break;
 
-        case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_INDIRECT_INPUT:
-        case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_OUTPUT:
-        case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_INDIRECT_INPUT_OUTPUT:
+        case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ_LOCATION:
+        case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_WRITE_LOCATION:
+        case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ_WRITE_LOCATION:
         case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_IMMEDIATE:
-            param_type = kefir_ir_type_at(ir_asm_param->indirect_type.type, ir_asm_param->indirect_type.index);
+            param_type = kefir_ir_type_at(ir_asm_param->location_type.type, ir_asm_param->location_type.index);
             break;
     }
     REQUIRE(param_type != NULL,
@@ -947,7 +971,7 @@ static kefir_result_t read_x87_input(struct kefir_mem *mem, struct kefir_codegen
     kefir_asmcmp_virtual_register_index_t tmp_vreg;
     switch (param_type->typecode) {
         case KEFIR_IR_TYPE_FLOAT32:
-            if (entry->direct_value) {
+            if (entry->direct_input) {
                 REQUIRE_OK(kefir_asmcmp_virtual_register_new_spill_space(
                     mem, &function->code.context, kefir_abi_amd64_float_qword_size(function->codegen->abi_variant),
                     kefir_abi_amd64_float_qword_alignment(function->codegen->abi_variant), &tmp_vreg));
@@ -969,7 +993,7 @@ static kefir_result_t read_x87_input(struct kefir_mem *mem, struct kefir_codegen
             break;
 
         case KEFIR_IR_TYPE_FLOAT64:
-            if (entry->direct_value) {
+            if (entry->direct_input) {
                 REQUIRE_OK(kefir_asmcmp_virtual_register_new_spill_space(
                     mem, &function->code.context, kefir_abi_amd64_double_qword_size(function->codegen->abi_variant),
                     kefir_abi_amd64_double_qword_alignment(function->codegen->abi_variant), &tmp_vreg));
@@ -1033,30 +1057,22 @@ static kefir_result_t load_inputs(struct kefir_mem *mem, struct kefir_codegen_am
         }
 
         if (ir_asm_param->klass == KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_IMMEDIATE ||
-            (ir_asm_param->klass == KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_OUTPUT &&
+            (ir_asm_param->klass == KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_WRITE_LOCATION &&
              entry->allocation_type != INLINE_ASSEMBLY_PARAMETER_ALLOCATION_REGISTER_INDIRECT)) {
             continue;
         }
 
         kefir_asmcmp_virtual_register_index_t vreg = KEFIR_ASMCMP_INDEX_NONE;
-        kefir_bool_t is_slot = false;
         switch (ir_asm_param->klass) {
-            case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_INDIRECT_INPUT:
-            case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_OUTPUT:
-            case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_INDIRECT_INPUT_OUTPUT: {
-                REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, asm_param->load_store_ref, &vreg));
-                const struct kefir_opt_instruction *location_instr;
-                REQUIRE_OK(kefir_opt_code_container_instr(&function->function->code, asm_param->load_store_ref,
-                                                          &location_instr));
-                if (location_instr->operation.opcode == KEFIR_OPT_OPCODE_INT_SLOT ||
-                    location_instr->operation.opcode == KEFIR_OPT_OPCODE_FLOAT_SLOT) {
-                    is_slot = true;
-                }
-            } break;
+            case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ_LOCATION:
+            case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_WRITE_LOCATION:
+            case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ_WRITE_LOCATION:
+                REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, asm_param->location_ref, &vreg));
+                break;
 
-            case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_DIRECT_INPUT:
-            case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_DIRECT_INPUT_OUTPUT:
-                REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, asm_param->read_ref, &vreg));
+            case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_VALUE:
+            case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_VALUE_WRITE_LOCATION:
+                REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, asm_param->value_ref, &vreg));
                 break;
 
             case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_IMMEDIATE:
@@ -1066,9 +1082,9 @@ static kefir_result_t load_inputs(struct kefir_mem *mem, struct kefir_codegen_am
 
         if (vreg != KEFIR_ASMCMP_INDEX_NONE) {
             kefir_bool_t has_read = false;
-            if (ir_asm_param->klass != KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_OUTPUT &&
+            if (ir_asm_param->klass != KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_WRITE_LOCATION &&
                 ir_asm_param->klass != KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_IMMEDIATE) {
-                REQUIRE_OK(read_input(mem, function, context, ir_asm_param, vreg, is_slot, &has_read));
+                REQUIRE_OK(read_input(mem, function, context, ir_asm_param, vreg, &has_read));
             }
 
             if (!has_read && !kefir_hashtreeset_has(&context->directly_read_vregs,
@@ -1093,15 +1109,15 @@ static kefir_result_t load_inputs(struct kefir_mem *mem, struct kefir_codegen_am
 
         kefir_asmcmp_virtual_register_index_t vreg = KEFIR_ASMCMP_INDEX_NONE;
         switch (ir_asm_param->klass) {
-            case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_INDIRECT_INPUT:
-            case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_OUTPUT:
-            case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_INDIRECT_INPUT_OUTPUT:
-                REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, asm_param->load_store_ref, &vreg));
+            case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ_LOCATION:
+            case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_WRITE_LOCATION:
+            case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ_WRITE_LOCATION:
+                REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, asm_param->location_ref, &vreg));
                 break;
 
-            case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_DIRECT_INPUT:
-            case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_DIRECT_INPUT_OUTPUT:
-                REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, asm_param->read_ref, &vreg));
+            case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_VALUE:
+            case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_VALUE_WRITE_LOCATION:
+                REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, asm_param->value_ref, &vreg));
                 break;
 
             case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_IMMEDIATE:
@@ -1109,7 +1125,7 @@ static kefir_result_t load_inputs(struct kefir_mem *mem, struct kefir_codegen_am
                 break;
         }
 
-        if (ir_asm_param->klass != KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_OUTPUT &&
+        if (ir_asm_param->klass != KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_WRITE_LOCATION &&
             ir_asm_param->klass != KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_IMMEDIATE) {
             REQUIRE_OK(read_x87_input(mem, function, context, ir_asm_param, vreg));
         }
@@ -1216,7 +1232,7 @@ static kefir_result_t pointer_operand(const struct kefir_ir_inline_assembly_para
                                       kefir_size_t override_size, kefir_asmcmp_operand_variant_t *variant) {
 
     struct kefir_ir_typeentry *typeentry =
-        kefir_ir_type_at(asm_param->indirect_type.type, asm_param->indirect_type.index);
+        kefir_ir_type_at(asm_param->location_type.type, asm_param->location_type.index);
     kefir_size_t param_size = override_size == 0 ? entry->parameter_props.size : override_size;
 
     if (override_size == 0 && entry->parameter_props.type == INLINE_ASSEMBLY_PARAMETER_AGGREGATE &&
@@ -1608,8 +1624,8 @@ static kefir_result_t store_register_aggregate_outputs(struct kefir_mem *mem,
 
         struct inline_assembly_parameter_allocation_entry *entry = &context->parameters[ir_asm_param->parameter_id];
 
-        if (!entry->register_aggregate || ir_asm_param->klass == KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_DIRECT_INPUT ||
-            ir_asm_param->klass == KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_INDIRECT_INPUT ||
+        if (!entry->register_aggregate || ir_asm_param->klass == KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_VALUE ||
+            ir_asm_param->klass == KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ_LOCATION ||
             ir_asm_param->klass == KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_IMMEDIATE) {
             continue;
         }
@@ -1620,7 +1636,7 @@ static kefir_result_t store_register_aggregate_outputs(struct kefir_mem *mem,
 
         if (entry->parameter_props.size == 2 * KEFIR_AMD64_ABI_QWORD) {
             kefir_asmcmp_virtual_register_index_t load_store_vreg;
-            REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, asm_param->load_store_ref, &load_store_vreg));
+            REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, asm_param->location_ref, &load_store_vreg));
             REQUIRE_OK(kefir_asmcmp_amd64_movdqu(
                 mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                 &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(load_store_vreg, 0, KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT),
@@ -1630,7 +1646,7 @@ static kefir_result_t store_register_aggregate_outputs(struct kefir_mem *mem,
             REQUIRE_OK(match_vreg_to_size(entry->allocation_vreg, entry->parameter_props.size, false, &value));
 
             kefir_asmcmp_virtual_register_index_t load_store_vreg;
-            REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, asm_param->load_store_ref, &load_store_vreg));
+            REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, asm_param->location_ref, &load_store_vreg));
             REQUIRE_OK(kefir_asmcmp_amd64_mov(
                 mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                 &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(load_store_vreg, 0, KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT), &value,
@@ -1644,7 +1660,7 @@ static kefir_result_t store_x87_output(struct kefir_mem *mem, struct kefir_codeg
                                        struct inline_assembly_context *context,
                                        const struct kefir_ir_inline_assembly_parameter *ir_asm_param) {
     const struct kefir_ir_typeentry *param_type =
-        kefir_ir_type_at(ir_asm_param->indirect_type.type, ir_asm_param->indirect_type.index);
+        kefir_ir_type_at(ir_asm_param->location_type.type, ir_asm_param->location_type.index);
     REQUIRE(param_type != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to obtain IR inline assembly parameter type"));
 
@@ -1653,7 +1669,7 @@ static kefir_result_t store_x87_output(struct kefir_mem *mem, struct kefir_codeg
         &function->function->code, context->inline_assembly->output_ref, ir_asm_param->parameter_id, &asm_param));
 
     kefir_asmcmp_virtual_register_index_t load_store_vreg;
-    REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, asm_param->load_store_ref, &load_store_vreg));
+    REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, asm_param->location_ref, &load_store_vreg));
     switch (param_type->typecode) {
         case KEFIR_IR_TYPE_FLOAT32:
             REQUIRE_OK(kefir_asmcmp_amd64_fstp(
@@ -1702,8 +1718,8 @@ static kefir_result_t store_outputs(struct kefir_mem *mem, struct kefir_codegen_
          iter != NULL; kefir_list_next(&iter)) {
         ASSIGN_DECL_CAST(const struct kefir_ir_inline_assembly_parameter *, ir_asm_param, iter->value);
 
-        if (ir_asm_param->klass == KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_DIRECT_INPUT ||
-            ir_asm_param->klass == KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_INDIRECT_INPUT ||
+        if (ir_asm_param->klass == KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_VALUE ||
+            ir_asm_param->klass == KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ_LOCATION ||
             ir_asm_param->klass == KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_IMMEDIATE) {
             continue;
         }
@@ -1720,17 +1736,12 @@ static kefir_result_t store_outputs(struct kefir_mem *mem, struct kefir_codegen_
             &function->function->code, context->inline_assembly->output_ref, ir_asm_param->parameter_id, &asm_param));
 
         const struct kefir_ir_typeentry *param_type =
-            kefir_ir_type_at(ir_asm_param->indirect_type.type, ir_asm_param->indirect_type.index);
+            kefir_ir_type_at(ir_asm_param->location_type.type, ir_asm_param->location_type.index);
         REQUIRE(param_type != NULL,
                 KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to obtain IR inline assembly parameter type"));
 
         kefir_asmcmp_virtual_register_index_t load_store_vreg;
-        REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, asm_param->load_store_ref, &load_store_vreg));
-        const struct kefir_opt_instruction *location_instr;
-        REQUIRE_OK(
-            kefir_opt_code_container_instr(&function->function->code, asm_param->load_store_ref, &location_instr));
-        kefir_bool_t is_slot = location_instr->operation.opcode == KEFIR_OPT_OPCODE_INT_SLOT ||
-                               location_instr->operation.opcode == KEFIR_OPT_OPCODE_FLOAT_SLOT;
+        REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, asm_param->location_ref, &load_store_vreg));
         switch (param_type->typecode) {
             case KEFIR_IR_TYPE_INT128:
                 REQUIRE(entry->allocation_type != INLINE_ASSEMBLY_PARAMETER_ALLOCATION_MEMORY,
@@ -1760,7 +1771,7 @@ static kefir_result_t store_outputs(struct kefir_mem *mem, struct kefir_codegen_
             case KEFIR_IR_TYPE_COMPLEX_FLOAT32:
                 switch (entry->allocation_type) {
                     case INLINE_ASSEMBLY_PARAMETER_ALLOCATION_GP_REGISTER:
-                        if (!is_slot) {
+                        if (!entry->direct_output) {
                             struct kefir_asmcmp_value value;
                             REQUIRE_OK(
                                 match_vreg_to_size(entry->allocation_vreg, entry->parameter_props.size, false, &value));
@@ -1778,7 +1789,7 @@ static kefir_result_t store_outputs(struct kefir_mem *mem, struct kefir_codegen_
                         break;
 
                     case INLINE_ASSEMBLY_PARAMETER_ALLOCATION_SSE_REGISTER:
-                        if (is_slot) {
+                        if (entry->direct_output) {
                             REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(
                                 mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                                 load_store_vreg, entry->allocation_vreg, NULL));
@@ -1805,7 +1816,7 @@ static kefir_result_t store_outputs(struct kefir_mem *mem, struct kefir_codegen_
 
                     case INLINE_ASSEMBLY_PARAMETER_ALLOCATION_REGISTER_INDIRECT:
                         REQUIRE(
-                            !entry->direct_value,
+                            !entry->direct_input,
                             KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected IR inline assembly parameter properties"));
                         break;
 
