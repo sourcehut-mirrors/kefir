@@ -358,6 +358,7 @@ typedef struct kefir_opt_call_node {
 typedef struct kefir_opt_inline_assembly_parameter {
     kefir_opt_instruction_ref_t value_ref;
     kefir_opt_instruction_ref_t location_ref;
+    kefir_bool_t location_slot;
 } kefir_opt_inline_assembly_parameter_t;
 
 typedef struct kefir_opt_inline_assembly_node {

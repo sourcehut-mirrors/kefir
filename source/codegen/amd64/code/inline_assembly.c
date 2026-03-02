@@ -487,23 +487,14 @@ static kefir_result_t allocate_parameters(struct kefir_mem *mem, struct kefir_co
                 parameter_immediate = true;
                 break;
         }
-        const struct kefir_opt_instruction *location_instr = NULL;
-        kefir_bool_t location_slot = false;
-        if (opt_parameter->location_ref != KEFIR_ID_NONE) {
-            REQUIRE_OK(kefir_opt_code_container_instr(&function->function->code, opt_parameter->location_ref,
-                                                      &location_instr));
-            location_slot = location_instr->operation.opcode == KEFIR_OPT_OPCODE_INT_SLOT ||
-                            location_instr->operation.opcode == KEFIR_OPT_OPCODE_FLOAT_SLOT;
-        }
-
         if (ir_asm_param->klass == KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_WRITE_LOCATION ||
             ir_asm_param->klass == KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ_WRITE_LOCATION ||
             ir_asm_param->klass == KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_VALUE_WRITE_LOCATION) {
-            direct_output = location_slot;
+            direct_output = opt_parameter->location_slot;
         }
         if (ir_asm_param->klass == KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ_LOCATION ||
             ir_asm_param->klass == KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ_WRITE_LOCATION) {
-            direct_input = location_slot;
+            direct_input = opt_parameter->location_slot;
         }
 
         if (!parameter_immediate) {

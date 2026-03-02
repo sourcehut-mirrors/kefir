@@ -241,8 +241,8 @@ static kefir_result_t inline_asm_impl(struct kefir_mem *mem, const struct kefir_
             kefir_opt_instruction_ref_t slot_ref = KEFIR_ID_NONE;
             REQUIRE_OK(process_slot(mem, code, inline_asm_node, parameter->location_ref, integer, width, &slot_ref));
 
-            struct kefir_opt_inline_assembly_parameter new_parameter = {.value_ref = parameter->value_ref,
-                                                                        .location_ref = slot_ref};
+            struct kefir_opt_inline_assembly_parameter new_parameter = {
+                .value_ref = parameter->value_ref, .location_ref = slot_ref, .location_slot = true};
             REQUIRE_OK(kefir_opt_code_container_inline_assembly_set_parameter(
                 mem, code, inline_asm_instr_ref, ir_asm_param->parameter_id, &new_parameter));
         }
