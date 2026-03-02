@@ -20,27 +20,6 @@
             "identifier": 0,
             "type": [
                 {
-                    "type": "struct",
-                    "fields": [
-                        {
-                            "type": "int8"
-                        },
-                        {
-                            "type": "double"
-                        },
-                        {
-                            "type": "array",
-                            "length": 5,
-                            "element_type": {
-                                "type": "int8"
-                            }
-                        },
-                        {
-                            "type": "int64"
-                        }
-                    ]
-                },
-                {
                     "type": "union",
                     "fields": [
                         {
@@ -64,20 +43,23 @@
             "identifier": 1,
             "type": [
                 {
-                    "type": "union",
+                    "type": "struct",
                     "fields": [
-                        {
-                            "type": "int64"
-                        },
                         {
                             "type": "int8"
                         },
                         {
+                            "type": "double"
+                        },
+                        {
                             "type": "array",
-                            "length": 4,
+                            "length": 5,
                             "element_type": {
-                                "type": "int32"
+                                "type": "int8"
                             }
+                        },
+                        {
+                            "type": "int64"
                         }
                     ]
                 }
@@ -111,7 +93,26 @@
         },
         {
             "identifier": 3,
-            "type": []
+            "type": [
+                {
+                    "type": "union",
+                    "fields": [
+                        {
+                            "type": "int64"
+                        },
+                        {
+                            "type": "int8"
+                        },
+                        {
+                            "type": "array",
+                            "length": 4,
+                            "element_type": {
+                                "type": "int32"
+                            }
+                        }
+                    ]
+                }
+            ]
         },
         {
             "identifier": 4,
@@ -119,29 +120,7 @@
         },
         {
             "identifier": 5,
-            "type": [
-                {
-                    "type": "struct",
-                    "fields": [
-                        {
-                            "type": "int8"
-                        },
-                        {
-                            "type": "double"
-                        },
-                        {
-                            "type": "array",
-                            "length": 5,
-                            "element_type": {
-                                "type": "int8"
-                            }
-                        },
-                        {
-                            "type": "int64"
-                        }
-                    ]
-                }
-            ]
+            "type": []
         },
         {
             "identifier": 6,
@@ -171,7 +150,29 @@
         },
         {
             "identifier": 7,
-            "type": []
+            "type": [
+                {
+                    "type": "struct",
+                    "fields": [
+                        {
+                            "type": "int8"
+                        },
+                        {
+                            "type": "double"
+                        },
+                        {
+                            "type": "array",
+                            "length": 5,
+                            "element_type": {
+                                "type": "int8"
+                            }
+                        },
+                        {
+                            "type": "int64"
+                        }
+                    ]
+                }
+            ]
         },
         {
             "identifier": 8,
@@ -179,6 +180,10 @@
         },
         {
             "identifier": 9,
+            "type": []
+        },
+        {
+            "identifier": 10,
             "type": [
                 {
                     "type": "union",
@@ -201,7 +206,7 @@
             ]
         },
         {
-            "identifier": 10,
+            "identifier": 11,
             "type": [
                 {
                     "type": "union",
@@ -230,18 +235,18 @@
         {
             "identifier": 0,
             "name": "assign_struct",
-            "parameters": 3,
+            "parameters": 4,
             "vararg": false,
-            "returns": 4,
+            "returns": 5,
             "returns_twice": false,
             "no_return": false
         },
         {
             "identifier": 1,
             "name": "assign_union",
-            "parameters": 7,
+            "parameters": 8,
             "vararg": false,
-            "returns": 8,
+            "returns": 9,
             "returns_twice": false,
             "no_return": false
         }
@@ -253,13 +258,13 @@
             "body": [
                 {
                     "opcode": "get_local_scope",
-                    "arg": 0
+                    "arg": 4294967296
                 },
                 {
                     "opcode": "get_local",
-                    "id": 6,
-                    "type": 0,
-                    "type_index": 6
+                    "id": 12884901888,
+                    "type": 3,
+                    "type_index": 0
                 },
                 {
                     "opcode": "vstack_pick",
@@ -268,7 +273,7 @@
                 {
                     "opcode": "zero_memory",
                     "arg": {
-                        "type": 9,
+                        "type": 10,
                         "index": 0
                     }
                 },
@@ -293,7 +298,7 @@
                 {
                     "opcode": "copy_memory",
                     "arg": {
-                        "type": 10,
+                        "type": 11,
                         "index": 0
                     }
                 }
@@ -306,12 +311,12 @@
             "body": [
                 {
                     "opcode": "get_local_scope",
-                    "arg": 0
+                    "arg": 4294967296
                 },
                 {
                     "opcode": "get_local",
-                    "id": 0,
-                    "type": 0,
+                    "id": 8589934592,
+                    "type": 2,
                     "type_index": 0
                 },
                 {
@@ -321,7 +326,7 @@
                 {
                     "opcode": "zero_memory",
                     "arg": {
-                        "type": 5,
+                        "type": 6,
                         "index": 0
                     }
                 },
@@ -346,7 +351,7 @@
                 {
                     "opcode": "copy_memory",
                     "arg": {
-                        "type": 6,
+                        "type": 7,
                         "index": 0
                     }
                 }

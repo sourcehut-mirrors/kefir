@@ -32,14 +32,6 @@
         {
             "identifier": 4,
             "type": []
-        },
-        {
-            "identifier": 5,
-            "type": []
-        },
-        {
-            "identifier": 6,
-            "type": []
         }
     ],
     "data": [],
@@ -48,18 +40,18 @@
         {
             "identifier": 0,
             "name": "switch1",
-            "parameters": 2,
+            "parameters": 1,
             "vararg": false,
-            "returns": 3,
+            "returns": 2,
             "returns_twice": false,
             "no_return": false
         },
         {
             "identifier": 1,
             "name": "switch2",
-            "parameters": 5,
+            "parameters": 3,
             "vararg": false,
-            "returns": 6,
+            "returns": 4,
             "returns_twice": false,
             "no_return": false
         }

@@ -111,34 +111,6 @@
         }
     ],
     "locals": {
-        "layout": [
-            {
-                "type": "struct",
-                "fields": [
-                    {
-                        "type": "double"
-                    },
-                    {
-                        "type": "array",
-                        "length": 32,
-                        "element_type": {
-                            "type": "int8"
-                        }
-                    }
-                ]
-            },
-            {
-                "type": "array",
-                "length": 64,
-                "element_type": {
-                    "type": "array",
-                    "length": 16,
-                    "element_type": {
-                        "type": "int32"
-                    }
-                }
-            }
-        ],
         "variables": [
             {
                 "identifier": "local_var1",
@@ -146,7 +118,7 @@
             },
             {
                 "identifier": "local_var2",
-                "offset": 4
+                "offset": 0
             }
         ]
     }

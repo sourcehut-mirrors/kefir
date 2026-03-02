@@ -40,10 +40,6 @@
         {
             "identifier": 9,
             "type": []
-        },
-        {
-            "identifier": 10,
-            "type": []
         }
     ],
     "data": [],
@@ -52,45 +48,45 @@
         {
             "identifier": 0,
             "name": "left_shift",
-            "parameters": 1,
+            "parameters": 0,
             "vararg": false,
-            "returns": 2,
+            "returns": 1,
             "returns_twice": false,
             "no_return": false
         },
         {
             "identifier": 1,
             "name": "right_shift",
-            "parameters": 3,
+            "parameters": 2,
             "vararg": false,
-            "returns": 4,
+            "returns": 3,
             "returns_twice": false,
             "no_return": false
         },
         {
             "identifier": 2,
             "name": "and",
-            "parameters": 5,
+            "parameters": 4,
             "vararg": false,
-            "returns": 6,
+            "returns": 5,
             "returns_twice": false,
             "no_return": false
         },
         {
             "identifier": 3,
             "name": "or",
-            "parameters": 7,
+            "parameters": 6,
             "vararg": false,
-            "returns": 8,
+            "returns": 7,
             "returns_twice": false,
             "no_return": false
         },
         {
             "identifier": 4,
             "name": "xor",
-            "parameters": 9,
+            "parameters": 8,
             "vararg": false,
-            "returns": 10,
+            "returns": 9,
             "returns_twice": false,
             "no_return": false
         }

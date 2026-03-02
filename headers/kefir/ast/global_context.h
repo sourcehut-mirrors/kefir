@@ -57,6 +57,7 @@ typedef struct kefir_ast_global_context {
     struct {
         kefir_id_t next_id;
     } temporary_ids;
+    kefir_id_t next_context_id;
 
     struct kefir_ast_context_configuration configuration;
 } kefir_ast_global_context_t;

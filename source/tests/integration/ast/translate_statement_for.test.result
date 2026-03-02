@@ -47,27 +47,27 @@
         },
         {
             "identifier": 8,
-            "type": [
-                {
-                    "type": "int32"
-                }
-            ]
+            "type": []
         },
         {
             "identifier": 9,
-            "type": []
-        },
-        {
-            "identifier": 10,
-            "type": []
-        },
-        {
-            "identifier": 11,
             "type": [
                 {
                     "type": "int32"
                 }
             ]
+        },
+        {
+            "identifier": 10,
+            "type": [
+                {
+                    "type": "int32"
+                }
+            ]
+        },
+        {
+            "identifier": 11,
+            "type": []
         },
         {
             "identifier": 12,
@@ -79,6 +79,10 @@
         },
         {
             "identifier": 14,
+            "type": []
+        },
+        {
+            "identifier": 15,
             "type": [
                 {
                     "type": "int32"
@@ -86,36 +90,32 @@
             ]
         },
         {
-            "identifier": 15,
-            "type": []
-        },
-        {
             "identifier": 16,
             "type": []
         },
         {
             "identifier": 17,
-            "type": []
+            "type": [
+                {
+                    "type": "int8"
+                }
+            ]
         },
         {
             "identifier": 18,
-            "type": [
-                {
-                    "type": "int8"
-                }
-            ]
-        },
-        {
-            "identifier": 19,
             "type": []
         },
         {
-            "identifier": 20,
+            "identifier": 19,
             "type": [
                 {
                     "type": "int8"
                 }
             ]
+        },
+        {
+            "identifier": 20,
+            "type": []
         },
         {
             "identifier": 21,
@@ -128,14 +128,6 @@
         {
             "identifier": 23,
             "type": []
-        },
-        {
-            "identifier": 24,
-            "type": []
-        },
-        {
-            "identifier": 25,
-            "type": []
         }
     ],
     "data": [],
@@ -144,90 +136,90 @@
         {
             "identifier": 0,
             "name": "for1",
-            "parameters": 2,
+            "parameters": 1,
             "vararg": false,
-            "returns": 3,
+            "returns": 2,
             "returns_twice": false,
             "no_return": false
         },
         {
             "identifier": 1,
             "name": "body",
-            "parameters": 4,
+            "parameters": 3,
             "vararg": false,
-            "returns": 5,
+            "returns": 4,
             "returns_twice": false,
             "no_return": false
         },
         {
             "identifier": 2,
             "name": "body",
-            "parameters": 6,
+            "parameters": 5,
             "vararg": false,
-            "returns": 7,
+            "returns": 6,
             "returns_twice": false,
             "no_return": false
         },
         {
             "identifier": 3,
             "name": "for2",
-            "parameters": 9,
+            "parameters": 7,
             "vararg": false,
-            "returns": 10,
+            "returns": 8,
             "returns_twice": false,
             "no_return": false
         },
         {
             "identifier": 4,
             "name": "body",
-            "parameters": 12,
+            "parameters": 11,
             "vararg": false,
-            "returns": 13,
+            "returns": 12,
             "returns_twice": false,
             "no_return": false
         },
         {
             "identifier": 5,
             "name": "for3",
-            "parameters": 15,
+            "parameters": 13,
             "vararg": false,
-            "returns": 16,
+            "returns": 14,
             "returns_twice": false,
             "no_return": false
         },
         {
             "identifier": 6,
             "name": "body2",
-            "parameters": 17,
+            "parameters": 16,
             "vararg": false,
-            "returns": 18,
+            "returns": 17,
             "returns_twice": false,
             "no_return": false
         },
         {
             "identifier": 7,
             "name": "body2",
-            "parameters": 19,
+            "parameters": 18,
             "vararg": false,
-            "returns": 20,
+            "returns": 19,
             "returns_twice": false,
             "no_return": false
         },
         {
             "identifier": 8,
             "name": "for4",
-            "parameters": 22,
+            "parameters": 20,
             "vararg": false,
-            "returns": 23,
+            "returns": 21,
             "returns_twice": false,
             "no_return": false
         },
         {
             "identifier": 9,
             "name": "body",
-            "parameters": 24,
+            "parameters": 22,
             "vararg": false,
-            "returns": 25,
+            "returns": 23,
             "returns_twice": false,
             "no_return": false
         }
@@ -257,12 +249,12 @@
             "body": [
                 {
                     "opcode": "get_local_scope",
-                    "arg": 34359738370
+                    "arg": 12884901890
                 },
                 {
                     "opcode": "get_local",
-                    "id": 34359738368,
-                    "type": 8,
+                    "id": 38654705664,
+                    "type": 9,
                     "type_index": 0
                 },
                 {
@@ -284,12 +276,12 @@
                 },
                 {
                     "opcode": "get_local_scope",
-                    "arg": 34359738370
+                    "arg": 12884901890
                 },
                 {
                     "opcode": "get_local",
-                    "id": 34359738368,
-                    "type": 8,
+                    "id": 38654705664,
+                    "type": 9,
                     "type_index": 0
                 },
                 {
@@ -323,12 +315,12 @@
                 },
                 {
                     "opcode": "get_local_scope",
-                    "arg": 34359738370
+                    "arg": 12884901890
                 },
                 {
                     "opcode": "get_local",
-                    "id": 34359738368,
-                    "type": 8,
+                    "id": 38654705664,
+                    "type": 9,
                     "type_index": 0
                 },
                 {
@@ -378,12 +370,12 @@
             "body": [
                 {
                     "opcode": "get_local_scope",
-                    "arg": 60129542145
+                    "arg": 21474836481
                 },
                 {
                     "opcode": "get_local",
-                    "id": 60129542144,
-                    "type": 14,
+                    "id": 64424509440,
+                    "type": 15,
                     "type_index": 0
                 },
                 {
@@ -408,12 +400,12 @@
                 },
                 {
                     "opcode": "get_local_scope",
-                    "arg": 60129542145
+                    "arg": 21474836481
                 },
                 {
                     "opcode": "get_local",
-                    "id": 60129542144,
-                    "type": 14,
+                    "id": 64424509440,
+                    "type": 15,
                     "type_index": 0
                 },
                 {
@@ -439,12 +431,12 @@
                 },
                 {
                     "opcode": "get_local_scope",
-                    "arg": 60129542145
+                    "arg": 21474836481
                 },
                 {
                     "opcode": "get_local",
-                    "id": 60129542144,
-                    "type": 14,
+                    "id": 64424509440,
+                    "type": 15,
                     "type_index": 0
                 },
                 {
@@ -498,12 +490,12 @@
                 },
                 {
                     "opcode": "get_local_scope",
-                    "arg": 60129542145
+                    "arg": 21474836481
                 },
                 {
                     "opcode": "get_local",
-                    "id": 60129542144,
-                    "type": 14,
+                    "id": 64424509440,
+                    "type": 15,
                     "type_index": 0
                 },
                 {

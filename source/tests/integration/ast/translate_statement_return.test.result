@@ -51,7 +51,20 @@
         },
         {
             "identifier": 9,
-            "type": []
+            "type": [
+                {
+                    "type": "struct",
+                    "fields": [
+                        {
+                            "type": "array",
+                            "length": 24,
+                            "element_type": {
+                                "type": "int8"
+                            }
+                        }
+                    ]
+                }
+            ]
         },
         {
             "identifier": 10,
@@ -72,31 +85,6 @@
         },
         {
             "identifier": 11,
-            "type": []
-        },
-        {
-            "identifier": 12,
-            "type": []
-        },
-        {
-            "identifier": 13,
-            "type": [
-                {
-                    "type": "struct",
-                    "fields": [
-                        {
-                            "type": "array",
-                            "length": 24,
-                            "element_type": {
-                                "type": "int8"
-                            }
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "identifier": 14,
             "type": [
                 {
                     "type": "array",
@@ -108,15 +96,11 @@
             ]
         },
         {
-            "identifier": 15,
+            "identifier": 12,
             "type": []
         },
         {
-            "identifier": 16,
-            "type": []
-        },
-        {
-            "identifier": 17,
+            "identifier": 13,
             "type": []
         }
     ],
@@ -134,15 +118,24 @@
         {
             "identifier": 0,
             "name": "return0",
-            "parameters": 2,
+            "parameters": 1,
             "vararg": false,
-            "returns": 3,
+            "returns": 2,
             "returns_twice": false,
             "no_return": false
         },
         {
             "identifier": 1,
             "name": "return1",
+            "parameters": 3,
+            "vararg": false,
+            "returns": 4,
+            "returns_twice": false,
+            "no_return": false
+        },
+        {
+            "identifier": 2,
+            "name": "return2",
             "parameters": 5,
             "vararg": false,
             "returns": 6,
@@ -150,29 +143,20 @@
             "no_return": false
         },
         {
-            "identifier": 2,
-            "name": "return2",
-            "parameters": 8,
-            "vararg": false,
-            "returns": 9,
-            "returns_twice": false,
-            "no_return": false
-        },
-        {
             "identifier": 3,
             "name": "return3",
-            "parameters": 11,
+            "parameters": 7,
             "vararg": false,
-            "returns": 12,
+            "returns": 8,
             "returns_twice": false,
             "no_return": false
         },
         {
             "identifier": 4,
             "name": "return4",
-            "parameters": 16,
+            "parameters": 12,
             "vararg": false,
-            "returns": 17,
+            "returns": 13,
             "returns_twice": false,
             "no_return": false
         }
@@ -251,12 +235,12 @@
             "body": [
                 {
                     "opcode": "get_local_scope",
-                    "arg": 42949672960
+                    "arg": 17179869184
                 },
                 {
                     "opcode": "get_local",
-                    "id": 42949672960,
-                    "type": 10,
+                    "id": 38654705664,
+                    "type": 9,
                     "type_index": 0
                 },
                 {
@@ -266,7 +250,7 @@
                 {
                     "opcode": "zero_memory",
                     "arg": {
-                        "type": 13,
+                        "type": 10,
                         "index": 0
                     }
                 },
@@ -281,7 +265,7 @@
                 {
                     "opcode": "copy_memory",
                     "arg": {
-                        "type": 14,
+                        "type": 11,
                         "index": 0
                     }
                 },

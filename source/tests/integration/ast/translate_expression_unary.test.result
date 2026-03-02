@@ -32,10 +32,6 @@
     "types": [
         {
             "identifier": 0,
-            "type": []
-        },
-        {
-            "identifier": 1,
             "type": [
                 {
                     "type": "union",
@@ -51,7 +47,7 @@
             ]
         },
         {
-            "identifier": 2,
+            "identifier": 1,
             "type": [
                 {
                     "type": "int32"
@@ -59,7 +55,7 @@
             ]
         },
         {
-            "identifier": 3,
+            "identifier": 2,
             "type": [
                 {
                     "type": "array",
@@ -71,7 +67,7 @@
             ]
         },
         {
-            "identifier": 4,
+            "identifier": 3,
             "type": [
                 {
                     "type": "struct",
@@ -85,6 +81,10 @@
                     ]
                 }
             ]
+        },
+        {
+            "identifier": 4,
+            "type": []
         },
         {
             "identifier": 5,
@@ -153,21 +153,13 @@
         {
             "identifier": 21,
             "type": []
-        },
-        {
-            "identifier": 22,
-            "type": []
-        },
-        {
-            "identifier": 23,
-            "type": []
         }
     ],
     "data": [
         {
             "identifier": "W",
             "storage": "global",
-            "type": 1,
+            "type": 0,
             "value": [
                 {
                     "class": "undefined",
@@ -178,7 +170,7 @@
         {
             "identifier": "X",
             "storage": "global",
-            "type": 2,
+            "type": 1,
             "value": [
                 {
                     "class": "undefined"
@@ -188,7 +180,7 @@
         {
             "identifier": "Y",
             "storage": "global",
-            "type": 3,
+            "type": 2,
             "value": [
                 {
                     "class": "undefined",
@@ -199,7 +191,7 @@
         {
             "identifier": "Z",
             "storage": "global",
-            "type": 4,
+            "type": 3,
             "value": [
                 {
                     "class": "undefined",
@@ -213,42 +205,51 @@
         {
             "identifier": 0,
             "name": "plus",
-            "parameters": 5,
+            "parameters": 4,
             "vararg": false,
-            "returns": 6,
+            "returns": 5,
             "returns_twice": false,
             "no_return": false
         },
         {
             "identifier": 1,
             "name": "minus",
-            "parameters": 7,
+            "parameters": 6,
             "vararg": false,
-            "returns": 8,
+            "returns": 7,
             "returns_twice": false,
             "no_return": false
         },
         {
             "identifier": 2,
             "name": "invert",
-            "parameters": 9,
+            "parameters": 8,
             "vararg": false,
-            "returns": 10,
+            "returns": 9,
             "returns_twice": false,
             "no_return": false
         },
         {
             "identifier": 3,
             "name": "logical_negate",
-            "parameters": 11,
+            "parameters": 10,
             "vararg": false,
-            "returns": 12,
+            "returns": 11,
             "returns_twice": false,
             "no_return": false
         },
         {
             "identifier": 4,
             "name": "logical_negate2",
+            "parameters": 12,
+            "vararg": false,
+            "returns": 13,
+            "returns_twice": false,
+            "no_return": false
+        },
+        {
+            "identifier": 5,
+            "name": "sizeof1",
             "parameters": 14,
             "vararg": false,
             "returns": 15,
@@ -256,8 +257,8 @@
             "no_return": false
         },
         {
-            "identifier": 5,
-            "name": "sizeof1",
+            "identifier": 6,
+            "name": "sizeof2",
             "parameters": 16,
             "vararg": false,
             "returns": 17,
@@ -265,8 +266,8 @@
             "no_return": false
         },
         {
-            "identifier": 6,
-            "name": "sizeof2",
+            "identifier": 7,
+            "name": "alignof",
             "parameters": 18,
             "vararg": false,
             "returns": 19,
@@ -274,20 +275,11 @@
             "no_return": false
         },
         {
-            "identifier": 7,
-            "name": "alignof",
+            "identifier": 8,
+            "name": "indirection",
             "parameters": 20,
             "vararg": false,
             "returns": 21,
-            "returns_twice": false,
-            "no_return": false
-        },
-        {
-            "identifier": 8,
-            "name": "indirection",
-            "parameters": 22,
-            "vararg": false,
-            "returns": 23,
             "returns_twice": false,
             "no_return": false
         }

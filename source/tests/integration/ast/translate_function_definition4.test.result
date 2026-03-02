@@ -49,14 +49,19 @@
             "type": [
                 {
                     "type": "int32"
-                },
+                }
+            ]
+        },
+        {
+            "identifier": 5,
+            "type": [
                 {
                     "type": "int32"
                 }
             ]
         },
         {
-            "identifier": 5,
+            "identifier": 6,
             "type": [
                 {
                     "type": "array",
@@ -68,7 +73,7 @@
             ]
         },
         {
-            "identifier": 6,
+            "identifier": 7,
             "type": [
                 {
                     "type": "int32"
@@ -80,7 +85,7 @@
         {
             "identifier": "__kefir_function_factorial_static___func___2",
             "storage": "global",
-            "type": 5,
+            "type": 6,
             "value": [
                 {
                     "class": "string",
@@ -130,7 +135,7 @@
             "body": [
                 {
                     "opcode": "get_local_scope",
-                    "arg": 17179869185
+                    "arg": 4294967297
                 },
                 {
                     "opcode": "local_lifetime_mark"
@@ -141,7 +146,7 @@
                 },
                 {
                     "opcode": "get_local_scope",
-                    "arg": 17179869185
+                    "arg": 4294967297
                 },
                 {
                     "opcode": "get_local",
@@ -161,13 +166,13 @@
                 },
                 {
                     "opcode": "get_local_scope",
-                    "arg": 17179869185
+                    "arg": 4294967297
                 },
                 {
                     "opcode": "get_local",
-                    "id": 17179869185,
-                    "type": 4,
-                    "type_index": 1
+                    "id": 21474836480,
+                    "type": 5,
+                    "type_index": 0
                 },
                 {
                     "opcode": "vstack_pick",
@@ -188,14 +193,14 @@
                 },
                 {
                     "opcode": "get_local_scope",
-                    "arg": 17179869185
+                    "arg": 4294967297
                 },
                 {
                     "opcode": "local_lifetime_mark"
                 },
                 {
                     "opcode": "get_local_scope",
-                    "arg": 17179869185
+                    "arg": 4294967297
                 },
                 {
                     "opcode": "get_local",
@@ -227,7 +232,7 @@
                 },
                 {
                     "opcode": "get_local_scope",
-                    "arg": 17179869185
+                    "arg": 4294967297
                 },
                 {
                     "opcode": "get_local",
@@ -243,13 +248,13 @@
                 },
                 {
                     "opcode": "get_local_scope",
-                    "arg": 17179869185
+                    "arg": 4294967297
                 },
                 {
                     "opcode": "get_local",
-                    "id": 17179869185,
-                    "type": 4,
-                    "type_index": 1
+                    "id": 21474836480,
+                    "type": 5,
+                    "type_index": 0
                 },
                 {
                     "opcode": "vstack_pick",
@@ -291,7 +296,7 @@
                 },
                 {
                     "opcode": "get_local_scope",
-                    "arg": 17179869185
+                    "arg": 4294967297
                 },
                 {
                     "opcode": "get_local",
@@ -339,20 +344,20 @@
                 },
                 {
                     "opcode": "get_local_scope",
-                    "arg": 17179869185
+                    "arg": 4294967297
                 },
                 {
                     "opcode": "local_lifetime_mark"
                 },
                 {
                     "opcode": "get_local_scope",
-                    "arg": 17179869185
+                    "arg": 4294967297
                 },
                 {
                     "opcode": "get_local",
-                    "id": 17179869185,
-                    "type": 4,
-                    "type_index": 1
+                    "id": 21474836480,
+                    "type": 5,
+                    "type_index": 0
                 },
                 {
                     "opcode": "int32_load",
@@ -362,7 +367,7 @@
                 },
                 {
                     "opcode": "get_local_scope",
-                    "arg": 17179869185
+                    "arg": 4294967297
                 },
                 {
                     "opcode": "local_lifetime_mark"
@@ -372,7 +377,7 @@
                 },
                 {
                     "opcode": "get_local_scope",
-                    "arg": 17179869185
+                    "arg": 4294967297
                 },
                 {
                     "opcode": "local_lifetime_mark"

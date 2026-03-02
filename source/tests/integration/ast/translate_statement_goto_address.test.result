@@ -19,11 +19,7 @@
         },
         {
             "identifier": 1,
-            "type": [
-                {
-                    "type": "int16"
-                }
-            ]
+            "type": []
         },
         {
             "identifier": 2,
@@ -31,7 +27,11 @@
         },
         {
             "identifier": 3,
-            "type": []
+            "type": [
+                {
+                    "type": "int16"
+                }
+            ]
         },
         {
             "identifier": 4,
@@ -48,10 +48,6 @@
         {
             "identifier": 6,
             "type": []
-        },
-        {
-            "identifier": 7,
-            "type": []
         }
     ],
     "data": [],
@@ -60,18 +56,18 @@
         {
             "identifier": 0,
             "name": "goto1",
-            "parameters": 2,
+            "parameters": 1,
             "vararg": false,
-            "returns": 3,
+            "returns": 2,
             "returns_twice": false,
             "no_return": false
         },
         {
             "identifier": 1,
             "name": "goto2",
-            "parameters": 6,
+            "parameters": 5,
             "vararg": false,
-            "returns": 7,
+            "returns": 6,
             "returns_twice": false,
             "no_return": false
         }
@@ -87,8 +83,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 4294967296,
-                    "type": 1,
+                    "id": 12884901888,
+                    "type": 3,
                     "type_index": 0
                 },
                 {
@@ -114,8 +110,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 4294967296,
-                    "type": 1,
+                    "id": 12884901888,
+                    "type": 3,
                     "type_index": 0
                 },
                 {
@@ -158,8 +154,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 4294967296,
-                    "type": 1,
+                    "id": 12884901888,
+                    "type": 3,
                     "type_index": 0
                 },
                 {
@@ -211,8 +207,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 4294967296,
-                    "type": 1,
+                    "id": 12884901888,
+                    "type": 3,
                     "type_index": 0
                 },
                 {

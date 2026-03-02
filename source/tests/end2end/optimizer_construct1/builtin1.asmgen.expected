@@ -20,8 +20,8 @@
                                 "id": 5,
                                 "opcode": "alloc_local",
                                 "scope": 0,
-                                "type_id": 92,
-                                "type_index": 1,
+                                "type_id": 93,
+                                "type_index": 0,
                                 "control_next": null,
                                 "ir_instruction": 8
                             },
@@ -37,8 +37,8 @@
                                 "id": 6,
                                 "opcode": "alloc_local",
                                 "scope": 0,
-                                "type_id": 92,
-                                "type_index": 7,
+                                "type_id": 93,
+                                "type_index": 0,
                                 "control_next": null,
                                 "ir_instruction": 11
                             },
@@ -59,7 +59,7 @@
                                 "target": 6,
                                 "source": null,
                                 "type": {
-                                    "id": 94,
+                                    "id": 96,
                                     "index": 0
                                 },
                                 "control_next": 10,
@@ -111,13 +111,13 @@
                 "debug": {
                     "local_variables": [
                         {
-                            "variable_id": 395136991233,
+                            "variable_id": 399431958528,
                             "allocations": [
                                 5
                             ]
                         },
                         {
-                            "variable_id": 395136991239,
+                            "variable_id": 403726925824,
                             "allocations": [
                                 6
                             ]
@@ -196,7 +196,7 @@
                 "debug": {
                     "local_variables": [
                         {
-                            "variable_id": 416611827712,
+                            "variable_id": 425201762304,
                             "allocations": [
                                 2
                             ]

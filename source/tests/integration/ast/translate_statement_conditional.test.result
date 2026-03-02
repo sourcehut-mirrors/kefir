@@ -48,22 +48,6 @@
         {
             "identifier": 8,
             "type": []
-        },
-        {
-            "identifier": 9,
-            "type": []
-        },
-        {
-            "identifier": 10,
-            "type": []
-        },
-        {
-            "identifier": 11,
-            "type": []
-        },
-        {
-            "identifier": 12,
-            "type": []
         }
     ],
     "data": [],
@@ -72,15 +56,24 @@
         {
             "identifier": 0,
             "name": "conditional1",
-            "parameters": 2,
+            "parameters": 1,
             "vararg": false,
-            "returns": 3,
+            "returns": 2,
             "returns_twice": false,
             "no_return": false
         },
         {
             "identifier": 1,
             "name": "conditional2",
+            "parameters": 3,
+            "vararg": false,
+            "returns": 4,
+            "returns_twice": false,
+            "no_return": false
+        },
+        {
+            "identifier": 2,
+            "name": "conditional3",
             "parameters": 5,
             "vararg": false,
             "returns": 6,
@@ -88,20 +81,11 @@
             "no_return": false
         },
         {
-            "identifier": 2,
-            "name": "conditional3",
-            "parameters": 8,
-            "vararg": false,
-            "returns": 9,
-            "returns_twice": false,
-            "no_return": false
-        },
-        {
             "identifier": 3,
             "name": "conditional4",
-            "parameters": 11,
+            "parameters": 7,
             "vararg": false,
-            "returns": 12,
+            "returns": 8,
             "returns_twice": false,
             "no_return": false
         }

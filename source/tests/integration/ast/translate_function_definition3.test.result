@@ -149,7 +149,7 @@
             "body": [
                 {
                     "opcode": "get_local_scope",
-                    "arg": 21474836481
+                    "arg": 4294967297
                 },
                 {
                     "opcode": "local_lifetime_mark"
@@ -160,7 +160,7 @@
                 },
                 {
                     "opcode": "get_local_scope",
-                    "arg": 21474836481
+                    "arg": 4294967297
                 },
                 {
                     "opcode": "get_local",
@@ -180,7 +180,7 @@
                 },
                 {
                     "opcode": "get_local_scope",
-                    "arg": 21474836481
+                    "arg": 4294967297
                 },
                 {
                     "opcode": "get_local",
@@ -202,7 +202,7 @@
                 },
                 {
                     "opcode": "get_local_scope",
-                    "arg": 21474836481
+                    "arg": 4294967297
                 },
                 {
                     "opcode": "get_local",
@@ -234,7 +234,7 @@
                 },
                 {
                     "opcode": "get_local_scope",
-                    "arg": 21474836481
+                    "arg": 4294967297
                 },
                 {
                     "opcode": "get_local",
@@ -278,7 +278,7 @@
                 },
                 {
                     "opcode": "get_local_scope",
-                    "arg": 21474836481
+                    "arg": 4294967297
                 },
                 {
                     "opcode": "local_lifetime_mark"

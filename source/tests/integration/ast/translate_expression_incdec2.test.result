@@ -6,43 +6,48 @@
             "type": [
                 {
                     "type": "int32"
-                },
-                {
-                    "type": "int64"
-                },
-                {
-                    "type": "int64"
-                },
-                {
-                    "type": "float"
-                },
-                {
-                    "type": "int16"
-                },
-                {
-                    "type": "double"
                 }
             ]
         },
         {
             "identifier": 1,
-            "type": []
+            "type": [
+                {
+                    "type": "int64"
+                }
+            ]
         },
         {
             "identifier": 2,
-            "type": []
+            "type": [
+                {
+                    "type": "int64"
+                }
+            ]
         },
         {
             "identifier": 3,
-            "type": []
+            "type": [
+                {
+                    "type": "float"
+                }
+            ]
         },
         {
             "identifier": 4,
-            "type": []
+            "type": [
+                {
+                    "type": "int16"
+                }
+            ]
         },
         {
             "identifier": 5,
-            "type": []
+            "type": [
+                {
+                    "type": "double"
+                }
+            ]
         },
         {
             "identifier": 6,
@@ -98,11 +103,7 @@
         },
         {
             "identifier": 19,
-            "type": [
-                {
-                    "type": "int8"
-                }
-            ]
+            "type": []
         },
         {
             "identifier": 20,
@@ -114,6 +115,30 @@
         },
         {
             "identifier": 22,
+            "type": []
+        },
+        {
+            "identifier": 23,
+            "type": []
+        },
+        {
+            "identifier": 24,
+            "type": [
+                {
+                    "type": "int8"
+                }
+            ]
+        },
+        {
+            "identifier": 25,
+            "type": []
+        },
+        {
+            "identifier": 26,
+            "type": []
+        },
+        {
+            "identifier": 27,
             "type": [
                 {
                     "type": "array",
@@ -125,19 +150,19 @@
             ]
         },
         {
-            "identifier": 23,
+            "identifier": 28,
             "type": []
         },
         {
-            "identifier": 24,
+            "identifier": 29,
             "type": []
         },
         {
-            "identifier": 25,
+            "identifier": 30,
             "type": []
         },
         {
-            "identifier": 26,
+            "identifier": 31,
             "type": []
         }
     ],
@@ -147,87 +172,69 @@
         {
             "identifier": 0,
             "name": "increment_int1",
-            "parameters": 1,
+            "parameters": 6,
             "vararg": false,
-            "returns": 2,
+            "returns": 7,
             "returns_twice": false,
             "no_return": false
         },
         {
             "identifier": 1,
             "name": "increment_int2",
-            "parameters": 3,
+            "parameters": 8,
             "vararg": false,
-            "returns": 4,
+            "returns": 9,
             "returns_twice": false,
             "no_return": false
         },
         {
             "identifier": 2,
             "name": "decrement_int1",
-            "parameters": 5,
+            "parameters": 10,
             "vararg": false,
-            "returns": 6,
+            "returns": 11,
             "returns_twice": false,
             "no_return": false
         },
         {
             "identifier": 3,
             "name": "decrement_int2",
-            "parameters": 7,
+            "parameters": 12,
             "vararg": false,
-            "returns": 8,
+            "returns": 13,
             "returns_twice": false,
             "no_return": false
         },
         {
             "identifier": 4,
             "name": "increment_float",
-            "parameters": 9,
+            "parameters": 14,
             "vararg": false,
-            "returns": 10,
+            "returns": 15,
             "returns_twice": false,
             "no_return": false
         },
         {
             "identifier": 5,
             "name": "increment_double",
-            "parameters": 11,
+            "parameters": 16,
             "vararg": false,
-            "returns": 12,
+            "returns": 17,
             "returns_twice": false,
             "no_return": false
         },
         {
             "identifier": 6,
             "name": "decrement_float",
-            "parameters": 13,
+            "parameters": 18,
             "vararg": false,
-            "returns": 14,
+            "returns": 19,
             "returns_twice": false,
             "no_return": false
         },
         {
             "identifier": 7,
             "name": "decrement_double",
-            "parameters": 15,
-            "vararg": false,
-            "returns": 16,
-            "returns_twice": false,
-            "no_return": false
-        },
-        {
-            "identifier": 8,
-            "name": "increment_pointer1",
-            "parameters": 17,
-            "vararg": false,
-            "returns": 18,
-            "returns_twice": false,
-            "no_return": false
-        },
-        {
-            "identifier": 9,
-            "name": "increment_pointer2",
             "parameters": 20,
             "vararg": false,
             "returns": 21,
@@ -235,20 +242,38 @@
             "no_return": false
         },
         {
+            "identifier": 8,
+            "name": "increment_pointer1",
+            "parameters": 22,
+            "vararg": false,
+            "returns": 23,
+            "returns_twice": false,
+            "no_return": false
+        },
+        {
+            "identifier": 9,
+            "name": "increment_pointer2",
+            "parameters": 25,
+            "vararg": false,
+            "returns": 26,
+            "returns_twice": false,
+            "no_return": false
+        },
+        {
             "identifier": 10,
             "name": "decrement_pointer1",
-            "parameters": 23,
+            "parameters": 28,
             "vararg": false,
-            "returns": 24,
+            "returns": 29,
             "returns_twice": false,
             "no_return": false
         },
         {
             "identifier": 11,
             "name": "decrement_pointer2",
-            "parameters": 25,
+            "parameters": 30,
             "vararg": false,
-            "returns": 26,
+            "returns": 31,
             "returns_twice": false,
             "no_return": false
         }
@@ -260,7 +285,7 @@
             "body": [
                 {
                     "opcode": "get_local_scope",
-                    "arg": 0
+                    "arg": 4294967296
                 },
                 {
                     "opcode": "get_local",
@@ -308,13 +333,13 @@
             "body": [
                 {
                     "opcode": "get_local_scope",
-                    "arg": 0
+                    "arg": 4294967296
                 },
                 {
                     "opcode": "get_local",
-                    "id": 4,
-                    "type": 0,
-                    "type_index": 4
+                    "id": 17179869184,
+                    "type": 4,
+                    "type_index": 0
                 },
                 {
                     "opcode": "vstack_pick",
@@ -356,7 +381,7 @@
             "body": [
                 {
                     "opcode": "get_local_scope",
-                    "arg": 0
+                    "arg": 4294967296
                 },
                 {
                     "opcode": "get_local",
@@ -404,13 +429,13 @@
             "body": [
                 {
                     "opcode": "get_local_scope",
-                    "arg": 0
+                    "arg": 4294967296
                 },
                 {
                     "opcode": "get_local",
-                    "id": 4,
-                    "type": 0,
-                    "type_index": 4
+                    "id": 17179869184,
+                    "type": 4,
+                    "type_index": 0
                 },
                 {
                     "opcode": "vstack_pick",
@@ -452,13 +477,13 @@
             "body": [
                 {
                     "opcode": "get_local_scope",
-                    "arg": 0
+                    "arg": 4294967296
                 },
                 {
                     "opcode": "get_local",
-                    "id": 5,
-                    "type": 0,
-                    "type_index": 5
+                    "id": 21474836480,
+                    "type": 5,
+                    "type_index": 0
                 },
                 {
                     "opcode": "vstack_pick",
@@ -500,13 +525,13 @@
             "body": [
                 {
                     "opcode": "get_local_scope",
-                    "arg": 0
+                    "arg": 4294967296
                 },
                 {
                     "opcode": "get_local",
-                    "id": 1,
-                    "type": 0,
-                    "type_index": 1
+                    "id": 4294967296,
+                    "type": 1,
+                    "type_index": 0
                 },
                 {
                     "opcode": "vstack_pick",
@@ -555,13 +580,13 @@
             "body": [
                 {
                     "opcode": "get_local_scope",
-                    "arg": 0
+                    "arg": 4294967296
                 },
                 {
                     "opcode": "get_local",
-                    "id": 2,
-                    "type": 0,
-                    "type_index": 2
+                    "id": 8589934592,
+                    "type": 2,
+                    "type_index": 0
                 },
                 {
                     "opcode": "vstack_pick",
@@ -610,13 +635,13 @@
             "body": [
                 {
                     "opcode": "get_local_scope",
-                    "arg": 0
+                    "arg": 4294967296
                 },
                 {
                     "opcode": "get_local",
-                    "id": 5,
-                    "type": 0,
-                    "type_index": 5
+                    "id": 21474836480,
+                    "type": 5,
+                    "type_index": 0
                 },
                 {
                     "opcode": "vstack_pick",
@@ -658,13 +683,13 @@
             "body": [
                 {
                     "opcode": "get_local_scope",
-                    "arg": 0
+                    "arg": 4294967296
                 },
                 {
                     "opcode": "get_local",
-                    "id": 1,
-                    "type": 0,
-                    "type_index": 1
+                    "id": 4294967296,
+                    "type": 1,
+                    "type_index": 0
                 },
                 {
                     "opcode": "vstack_pick",
@@ -713,13 +738,13 @@
             "body": [
                 {
                     "opcode": "get_local_scope",
-                    "arg": 0
+                    "arg": 4294967296
                 },
                 {
                     "opcode": "get_local",
-                    "id": 2,
-                    "type": 0,
-                    "type_index": 2
+                    "id": 8589934592,
+                    "type": 2,
+                    "type_index": 0
                 },
                 {
                     "opcode": "vstack_pick",
@@ -768,13 +793,13 @@
             "body": [
                 {
                     "opcode": "get_local_scope",
-                    "arg": 0
+                    "arg": 4294967296
                 },
                 {
                     "opcode": "get_local",
-                    "id": 3,
-                    "type": 0,
-                    "type_index": 3
+                    "id": 12884901888,
+                    "type": 3,
+                    "type_index": 0
                 },
                 {
                     "opcode": "vstack_pick",
@@ -816,13 +841,13 @@
             "body": [
                 {
                     "opcode": "get_local_scope",
-                    "arg": 0
+                    "arg": 4294967296
                 },
                 {
                     "opcode": "get_local",
-                    "id": 3,
-                    "type": 0,
-                    "type_index": 3
+                    "id": 12884901888,
+                    "type": 3,
+                    "type_index": 0
                 },
                 {
                     "opcode": "vstack_pick",

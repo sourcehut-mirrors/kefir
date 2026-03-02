@@ -31,31 +31,29 @@
         },
         {
             "identifier": 4,
+            "type": []
+        },
+        {
+            "identifier": 5,
             "type": [
                 {
                     "type": "int32"
-                },
-                {
-                    "type": "int64"
-                },
-                {
-                    "type": "float"
                 }
             ]
         },
         {
-            "identifier": 5,
-            "type": []
-        },
-        {
             "identifier": 6,
-            "type": []
+            "type": [
+                {
+                    "type": "int64"
+                }
+            ]
         },
         {
             "identifier": 7,
             "type": [
                 {
-                    "type": "int32"
+                    "type": "float"
                 }
             ]
         },
@@ -63,7 +61,7 @@
             "identifier": 8,
             "type": [
                 {
-                    "type": "int64"
+                    "type": "int32"
                 }
             ]
         },
@@ -71,7 +69,7 @@
             "identifier": 9,
             "type": [
                 {
-                    "type": "float"
+                    "type": "int64"
                 }
             ]
         },
@@ -82,6 +80,14 @@
         {
             "identifier": 11,
             "type": []
+        },
+        {
+            "identifier": 12,
+            "type": [
+                {
+                    "type": "float"
+                }
+            ]
         }
     ],
     "data": [],
@@ -90,18 +96,18 @@
         {
             "identifier": 0,
             "name": "compound1",
-            "parameters": 2,
+            "parameters": 1,
             "vararg": false,
-            "returns": 3,
+            "returns": 2,
             "returns_twice": false,
             "no_return": false
         },
         {
             "identifier": 1,
             "name": "compound2",
-            "parameters": 5,
+            "parameters": 3,
             "vararg": false,
-            "returns": 6,
+            "returns": 4,
             "returns_twice": false,
             "no_return": false
         },
@@ -128,12 +134,12 @@
             "body": [
                 {
                     "opcode": "get_local_scope",
-                    "arg": 17179869185
+                    "arg": 8589934593
                 },
                 {
                     "opcode": "get_local",
-                    "id": 17179869184,
-                    "type": 4,
+                    "id": 21474836480,
+                    "type": 5,
                     "type_index": 0
                 },
                 {
@@ -155,13 +161,13 @@
                 },
                 {
                     "opcode": "get_local_scope",
-                    "arg": 17179869185
+                    "arg": 8589934593
                 },
                 {
                     "opcode": "get_local",
-                    "id": 17179869185,
-                    "type": 4,
-                    "type_index": 1
+                    "id": 25769803776,
+                    "type": 6,
+                    "type_index": 0
                 },
                 {
                     "opcode": "vstack_pick",
@@ -185,13 +191,13 @@
                 },
                 {
                     "opcode": "get_local_scope",
-                    "arg": 17179869185
+                    "arg": 8589934593
                 },
                 {
                     "opcode": "get_local",
-                    "id": 17179869186,
-                    "type": 4,
-                    "type_index": 2
+                    "id": 30064771072,
+                    "type": 7,
+                    "type_index": 0
                 },
                 {
                     "opcode": "vstack_pick",
@@ -218,12 +224,12 @@
                 },
                 {
                     "opcode": "get_local_scope",
-                    "arg": 17179869185
+                    "arg": 8589934593
                 },
                 {
                     "opcode": "get_local",
-                    "id": 17179869184,
-                    "type": 4,
+                    "id": 21474836480,
+                    "type": 5,
                     "type_index": 0
                 },
                 {
@@ -237,13 +243,13 @@
                 },
                 {
                     "opcode": "get_local_scope",
-                    "arg": 17179869185
+                    "arg": 8589934593
                 },
                 {
                     "opcode": "get_local",
-                    "id": 17179869185,
-                    "type": 4,
-                    "type_index": 1
+                    "id": 25769803776,
+                    "type": 6,
+                    "type_index": 0
                 },
                 {
                     "opcode": "int64_load",
@@ -259,13 +265,13 @@
                 },
                 {
                     "opcode": "get_local_scope",
-                    "arg": 17179869185
+                    "arg": 8589934593
                 },
                 {
                     "opcode": "get_local",
-                    "id": 17179869186,
-                    "type": 4,
-                    "type_index": 2
+                    "id": 30064771072,
+                    "type": 7,
+                    "type_index": 0
                 },
                 {
                     "opcode": "vstack_exchange",
@@ -290,13 +296,13 @@
                 },
                 {
                     "opcode": "get_local_scope",
-                    "arg": 17179869185
+                    "arg": 8589934593
                 },
                 {
                     "opcode": "get_local",
-                    "id": 17179869186,
-                    "type": 4,
-                    "type_index": 2
+                    "id": 30064771072,
+                    "type": 7,
+                    "type_index": 0
                 },
                 {
                     "opcode": "float32_load",
@@ -306,12 +312,12 @@
                 },
                 {
                     "opcode": "get_local_scope",
-                    "arg": 17179869185
+                    "arg": 8589934593
                 },
                 {
                     "opcode": "get_local",
-                    "id": 17179869184,
-                    "type": 4,
+                    "id": 21474836480,
+                    "type": 5,
                     "type_index": 0
                 },
                 {
@@ -363,13 +369,13 @@
                 },
                 {
                     "opcode": "get_local_scope",
-                    "arg": 17179869185
+                    "arg": 8589934593
                 },
                 {
                     "opcode": "get_local",
-                    "id": 17179869186,
-                    "type": 4,
-                    "type_index": 2
+                    "id": 30064771072,
+                    "type": 7,
+                    "type_index": 0
                 },
                 {
                     "opcode": "float32_load",
@@ -379,13 +385,13 @@
                 },
                 {
                     "opcode": "get_local_scope",
-                    "arg": 17179869185
+                    "arg": 8589934593
                 },
                 {
                     "opcode": "get_local",
-                    "id": 17179869185,
-                    "type": 4,
-                    "type_index": 1
+                    "id": 25769803776,
+                    "type": 6,
+                    "type_index": 0
                 },
                 {
                     "opcode": "vstack_pick",
@@ -471,12 +477,12 @@
                 },
                 {
                     "opcode": "get_local_scope",
-                    "arg": 38654705666
+                    "arg": 12884901890
                 },
                 {
                     "opcode": "get_local",
-                    "id": 38654705664,
-                    "type": 9,
+                    "id": 51539607552,
+                    "type": 12,
                     "type_index": 0
                 },
                 {
@@ -501,12 +507,12 @@
                 },
                 {
                     "opcode": "get_local_scope",
-                    "arg": 38654705666
+                    "arg": 12884901890
                 },
                 {
                     "opcode": "get_local",
-                    "id": 38654705664,
-                    "type": 9,
+                    "id": 51539607552,
+                    "type": 12,
                     "type_index": 0
                 },
                 {

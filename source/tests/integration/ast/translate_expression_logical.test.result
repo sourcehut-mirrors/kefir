@@ -80,46 +80,6 @@
         {
             "identifier": 19,
             "type": []
-        },
-        {
-            "identifier": 20,
-            "type": []
-        },
-        {
-            "identifier": 21,
-            "type": []
-        },
-        {
-            "identifier": 22,
-            "type": []
-        },
-        {
-            "identifier": 23,
-            "type": []
-        },
-        {
-            "identifier": 24,
-            "type": []
-        },
-        {
-            "identifier": 25,
-            "type": []
-        },
-        {
-            "identifier": 26,
-            "type": []
-        },
-        {
-            "identifier": 27,
-            "type": []
-        },
-        {
-            "identifier": 28,
-            "type": []
-        },
-        {
-            "identifier": 29,
-            "type": []
         }
     ],
     "data": [],
@@ -128,15 +88,24 @@
         {
             "identifier": 0,
             "name": "logical_and1",
-            "parameters": 1,
+            "parameters": 0,
             "vararg": false,
-            "returns": 2,
+            "returns": 1,
             "returns_twice": false,
             "no_return": false
         },
         {
             "identifier": 1,
             "name": "logical_and2",
+            "parameters": 2,
+            "vararg": false,
+            "returns": 3,
+            "returns_twice": false,
+            "no_return": false
+        },
+        {
+            "identifier": 2,
+            "name": "logical_and3",
             "parameters": 4,
             "vararg": false,
             "returns": 5,
@@ -144,17 +113,26 @@
             "no_return": false
         },
         {
-            "identifier": 2,
-            "name": "logical_and3",
-            "parameters": 7,
+            "identifier": 3,
+            "name": "logical_and4",
+            "parameters": 6,
             "vararg": false,
-            "returns": 8,
+            "returns": 7,
             "returns_twice": false,
             "no_return": false
         },
         {
-            "identifier": 3,
-            "name": "logical_and4",
+            "identifier": 4,
+            "name": "logical_and5",
+            "parameters": 8,
+            "vararg": false,
+            "returns": 9,
+            "returns_twice": false,
+            "no_return": false
+        },
+        {
+            "identifier": 5,
+            "name": "logical_or1",
             "parameters": 10,
             "vararg": false,
             "returns": 11,
@@ -162,17 +140,26 @@
             "no_return": false
         },
         {
-            "identifier": 4,
-            "name": "logical_and5",
-            "parameters": 13,
+            "identifier": 6,
+            "name": "logical_or2",
+            "parameters": 12,
             "vararg": false,
-            "returns": 14,
+            "returns": 13,
             "returns_twice": false,
             "no_return": false
         },
         {
-            "identifier": 5,
-            "name": "logical_or1",
+            "identifier": 7,
+            "name": "logical_or3",
+            "parameters": 14,
+            "vararg": false,
+            "returns": 15,
+            "returns_twice": false,
+            "no_return": false
+        },
+        {
+            "identifier": 8,
+            "name": "logical_or4",
             "parameters": 16,
             "vararg": false,
             "returns": 17,
@@ -180,38 +167,11 @@
             "no_return": false
         },
         {
-            "identifier": 6,
-            "name": "logical_or2",
-            "parameters": 19,
-            "vararg": false,
-            "returns": 20,
-            "returns_twice": false,
-            "no_return": false
-        },
-        {
-            "identifier": 7,
-            "name": "logical_or3",
-            "parameters": 22,
-            "vararg": false,
-            "returns": 23,
-            "returns_twice": false,
-            "no_return": false
-        },
-        {
-            "identifier": 8,
-            "name": "logical_or4",
-            "parameters": 25,
-            "vararg": false,
-            "returns": 26,
-            "returns_twice": false,
-            "no_return": false
-        },
-        {
             "identifier": 9,
             "name": "logical_or5",
-            "parameters": 28,
+            "parameters": 18,
             "vararg": false,
-            "returns": 29,
+            "returns": 19,
             "returns_twice": false,
             "no_return": false
         }

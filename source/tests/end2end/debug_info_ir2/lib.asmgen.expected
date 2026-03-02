@@ -461,36 +461,23 @@
             ]
         },
         {
-            "identifier": 90,
+            "identifier": 92,
             "type": [
-                {
-                    "type": "int32"
-                },
-                {
-                    "type": "int32"
-                },
-                {
-                    "type": "int64"
-                },
-                {
-                    "type": "float"
-                },
-                {
-                    "type": "double"
-                },
-                {
-                    "type": "complex_float32"
-                },
-                {
-                    "type": "int64"
-                },
                 {
                     "type": "int64"
                 }
             ]
         },
         {
-            "identifier": 91,
+            "identifier": 93,
+            "type": [
+                {
+                    "type": "float"
+                }
+            ]
+        },
+        {
+            "identifier": 94,
             "type": [
                 {
                     "type": "array",
@@ -500,13 +487,29 @@
                     }
                 }
             ]
+        },
+        {
+            "identifier": 95,
+            "type": [
+                {
+                    "type": "double"
+                }
+            ]
+        },
+        {
+            "identifier": 96,
+            "type": [
+                {
+                    "type": "complex_float32"
+                }
+            ]
         }
     ],
     "data": [
         {
             "identifier": "__kefir_function_test1_static___func___4",
             "storage": "global",
-            "type": 91,
+            "type": 94,
             "value": [
                 {
                     "class": "string",
@@ -943,7 +946,7 @@
             "body": [
                 {
                     "opcode": "get_local_scope",
-                    "arg": 386547056641
+                    "arg": 188978561025
                 },
                 {
                     "opcode": "local_lifetime_mark"
@@ -954,12 +957,12 @@
                 },
                 {
                     "opcode": "get_local_scope",
-                    "arg": 386547056641
+                    "arg": 188978561025
                 },
                 {
                     "opcode": "get_local",
                     "id": 386547056640,
-                    "type": 90,
+                    "type": 88,
                     "type_index": 0
                 },
                 {
@@ -974,13 +977,13 @@
                 },
                 {
                     "opcode": "get_local_scope",
-                    "arg": 386547056641
+                    "arg": 188978561025
                 },
                 {
                     "opcode": "get_local",
-                    "id": 386547056641,
-                    "type": 90,
-                    "type_index": 1
+                    "id": 390842023936,
+                    "type": 88,
+                    "type_index": 0
                 },
                 {
                     "opcode": "vstack_pick",
@@ -1000,13 +1003,13 @@
                 },
                 {
                     "opcode": "get_local_scope",
-                    "arg": 386547056641
+                    "arg": 188978561025
                 },
                 {
                     "opcode": "get_local",
-                    "id": 386547056642,
-                    "type": 90,
-                    "type_index": 2
+                    "id": 395136991232,
+                    "type": 92,
+                    "type_index": 0
                 },
                 {
                     "opcode": "vstack_pick",
@@ -1026,13 +1029,13 @@
                 },
                 {
                     "opcode": "get_local_scope",
-                    "arg": 386547056641
+                    "arg": 188978561025
                 },
                 {
                     "opcode": "get_local",
-                    "id": 386547056643,
-                    "type": 90,
-                    "type_index": 3
+                    "id": 399431958528,
+                    "type": 93,
+                    "type_index": 0
                 },
                 {
                     "opcode": "vstack_pick",
@@ -1052,19 +1055,19 @@
                 },
                 {
                     "opcode": "get_local_scope",
-                    "arg": 386547056641
+                    "arg": 188978561025
                 },
                 {
                     "opcode": "local_lifetime_mark"
                 },
                 {
                     "opcode": "get_local_scope",
-                    "arg": 386547056641
+                    "arg": 188978561025
                 },
                 {
                     "opcode": "get_local",
                     "id": 386547056640,
-                    "type": 90,
+                    "type": 88,
                     "type_index": 0
                 },
                 {
@@ -1083,27 +1086,27 @@
                 },
                 {
                     "opcode": "get_local_scope",
-                    "arg": 386547056643
+                    "arg": 188978561027
                 },
                 {
                     "opcode": "local_lifetime_mark"
                 },
                 {
                     "opcode": "get_local_scope",
-                    "arg": 386547056641
+                    "arg": 188978561025
                 },
                 {
                     "opcode": "local_lifetime_mark"
                 },
                 {
                     "opcode": "get_local_scope",
-                    "arg": 386547056643
+                    "arg": 188978561027
                 },
                 {
                     "opcode": "get_local",
-                    "id": 386547056644,
-                    "type": 90,
-                    "type_index": 4
+                    "id": 408021893120,
+                    "type": 95,
+                    "type_index": 0
                 },
                 {
                     "opcode": "vstack_pick",
@@ -1123,40 +1126,40 @@
                 },
                 {
                     "opcode": "get_local_scope",
-                    "arg": 386547056643
+                    "arg": 188978561027
                 },
                 {
                     "opcode": "get_local",
-                    "id": 386547056645,
-                    "type": 90,
-                    "type_index": 5
+                    "id": 412316860416,
+                    "type": 96,
+                    "type_index": 0
                 },
                 {
                     "opcode": "vstack_pop"
                 },
                 {
                     "opcode": "get_local_scope",
-                    "arg": 386547056643
+                    "arg": 188978561027
                 },
                 {
                     "opcode": "local_lifetime_mark"
                 },
                 {
                     "opcode": "get_local_scope",
-                    "arg": 386547056641
+                    "arg": 188978561025
                 },
                 {
                     "opcode": "local_lifetime_mark"
                 },
                 {
                     "opcode": "get_local_scope",
-                    "arg": 386547056641
+                    "arg": 188978561025
                 },
                 {
                     "opcode": "get_local",
-                    "id": 386547056641,
-                    "type": 90,
-                    "type_index": 1
+                    "id": 390842023936,
+                    "type": 88,
+                    "type_index": 0
                 },
                 {
                     "opcode": "int32_load",
@@ -1174,55 +1177,55 @@
                 },
                 {
                     "opcode": "get_local_scope",
-                    "arg": 386547056645
+                    "arg": 188978561029
                 },
                 {
                     "opcode": "local_lifetime_mark"
                 },
                 {
                     "opcode": "get_local_scope",
-                    "arg": 386547056643
+                    "arg": 188978561027
                 },
                 {
                     "opcode": "local_lifetime_mark"
                 },
                 {
                     "opcode": "get_local_scope",
-                    "arg": 386547056641
+                    "arg": 188978561025
                 },
                 {
                     "opcode": "local_lifetime_mark"
                 },
                 {
                     "opcode": "get_local_scope",
-                    "arg": 386547056645
+                    "arg": 188978561029
                 },
                 {
                     "opcode": "get_local",
-                    "id": 386547056646,
-                    "type": 90,
-                    "type_index": 6
+                    "id": 416611827712,
+                    "type": 92,
+                    "type_index": 0
                 },
                 {
                     "opcode": "vstack_pop"
                 },
                 {
                     "opcode": "get_local_scope",
-                    "arg": 386547056645
+                    "arg": 188978561029
                 },
                 {
                     "opcode": "local_lifetime_mark"
                 },
                 {
                     "opcode": "get_local_scope",
-                    "arg": 386547056643
+                    "arg": 188978561027
                 },
                 {
                     "opcode": "local_lifetime_mark"
                 },
                 {
                     "opcode": "get_local_scope",
-                    "arg": 386547056641
+                    "arg": 188978561025
                 },
                 {
                     "opcode": "local_lifetime_mark"
@@ -1233,28 +1236,28 @@
                 },
                 {
                     "opcode": "get_local_scope",
-                    "arg": 386547056643
+                    "arg": 188978561027
                 },
                 {
                     "opcode": "local_lifetime_mark"
                 },
                 {
                     "opcode": "get_local_scope",
-                    "arg": 386547056641
+                    "arg": 188978561025
                 },
                 {
                     "opcode": "local_lifetime_mark"
                 },
                 {
                     "opcode": "get_local_scope",
-                    "arg": 386547056643
+                    "arg": 188978561027
                 },
                 {
                     "opcode": "local_lifetime_mark"
                 },
                 {
                     "opcode": "get_local_scope",
-                    "arg": 386547056641
+                    "arg": 188978561025
                 },
                 {
                     "opcode": "local_lifetime_mark"
@@ -1265,48 +1268,48 @@
                 },
                 {
                     "opcode": "get_local_scope",
-                    "arg": 386547056646
+                    "arg": 188978561030
                 },
                 {
                     "opcode": "local_lifetime_mark"
                 },
                 {
                     "opcode": "get_local_scope",
-                    "arg": 386547056641
+                    "arg": 188978561025
                 },
                 {
                     "opcode": "local_lifetime_mark"
                 },
                 {
                     "opcode": "get_local_scope",
-                    "arg": 386547056646
+                    "arg": 188978561030
                 },
                 {
                     "opcode": "get_local",
-                    "id": 386547056647,
-                    "type": 90,
-                    "type_index": 7
+                    "id": 420906795008,
+                    "type": 92,
+                    "type_index": 0
                 },
                 {
                     "opcode": "vstack_pop"
                 },
                 {
                     "opcode": "get_local_scope",
-                    "arg": 386547056646
+                    "arg": 188978561030
                 },
                 {
                     "opcode": "local_lifetime_mark"
                 },
                 {
                     "opcode": "get_local_scope",
-                    "arg": 386547056641
+                    "arg": 188978561025
                 },
                 {
                     "opcode": "local_lifetime_mark"
                 },
                 {
                     "opcode": "get_local_scope",
-                    "arg": 386547056641
+                    "arg": 188978561025
                 },
                 {
                     "opcode": "local_lifetime_mark"
@@ -1317,7 +1320,7 @@
                 },
                 {
                     "opcode": "get_local_scope",
-                    "arg": 386547056641
+                    "arg": 188978561025
                 },
                 {
                     "opcode": "local_lifetime_mark"
@@ -1327,7 +1330,7 @@
                 },
                 {
                     "opcode": "get_local_scope",
-                    "arg": 386547056641
+                    "arg": 188978561025
                 },
                 {
                     "opcode": "local_lifetime_mark"
@@ -4148,9 +4151,9 @@
                                                             {
                                                                 "tag": "local_variable",
                                                                 "value": {
-                                                                    "variable_id": 386547056646,
-                                                                    "type_id": 90,
-                                                                    "type_index": 6
+                                                                    "variable_id": 416611827712,
+                                                                    "type_id": 97,
+                                                                    "type_index": 0
                                                                 }
                                                             },
                                                             {
@@ -4203,9 +4206,9 @@
                                             {
                                                 "tag": "local_variable",
                                                 "value": {
-                                                    "variable_id": 386547056644,
-                                                    "type_id": 90,
-                                                    "type_index": 4
+                                                    "variable_id": 408021893120,
+                                                    "type_id": 95,
+                                                    "type_index": 0
                                                 }
                                             },
                                             {
@@ -4254,9 +4257,9 @@
                                             {
                                                 "tag": "local_variable",
                                                 "value": {
-                                                    "variable_id": 386547056645,
-                                                    "type_id": 90,
-                                                    "type_index": 5
+                                                    "variable_id": 412316860416,
+                                                    "type_id": 96,
+                                                    "type_index": 0
                                                 }
                                             },
                                             {
@@ -4321,9 +4324,9 @@
                                             {
                                                 "tag": "local_variable",
                                                 "value": {
-                                                    "variable_id": 386547056647,
-                                                    "type_id": 90,
-                                                    "type_index": 7
+                                                    "variable_id": 420906795008,
+                                                    "type_id": 98,
+                                                    "type_index": 0
                                                 }
                                             },
                                             {
@@ -4427,9 +4430,9 @@
                             {
                                 "tag": "local_variable",
                                 "value": {
-                                    "variable_id": 386547056641,
-                                    "type_id": 90,
-                                    "type_index": 1
+                                    "variable_id": 390842023936,
+                                    "type_id": 91,
+                                    "type_index": 0
                                 }
                             },
                             {
@@ -4478,9 +4481,9 @@
                             {
                                 "tag": "local_variable",
                                 "value": {
-                                    "variable_id": 386547056642,
-                                    "type_id": 90,
-                                    "type_index": 2
+                                    "variable_id": 395136991232,
+                                    "type_id": 92,
+                                    "type_index": 0
                                 }
                             },
                             {
@@ -4529,9 +4532,9 @@
                             {
                                 "tag": "local_variable",
                                 "value": {
-                                    "variable_id": 386547056643,
-                                    "type_id": 90,
-                                    "type_index": 3
+                                    "variable_id": 399431958528,
+                                    "type_id": 93,
+                                    "type_index": 0
                                 }
                             },
                             {

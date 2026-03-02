@@ -46,13 +46,17 @@
     "types": [
         {
             "identifier": 0,
-            "type": []
+            "type": [
+                {
+                    "type": "int32"
+                }
+            ]
         },
         {
             "identifier": 1,
             "type": [
                 {
-                    "type": "int32"
+                    "type": "int64"
                 }
             ]
         },
@@ -68,7 +72,7 @@
             "identifier": 3,
             "type": [
                 {
-                    "type": "int64"
+                    "type": "float"
                 }
             ]
         },
@@ -76,7 +80,7 @@
             "identifier": 4,
             "type": [
                 {
-                    "type": "float"
+                    "type": "double"
                 }
             ]
         },
@@ -84,17 +88,13 @@
             "identifier": 5,
             "type": [
                 {
-                    "type": "double"
+                    "type": "int64"
                 }
             ]
         },
         {
             "identifier": 6,
-            "type": [
-                {
-                    "type": "int64"
-                }
-            ]
+            "type": []
         },
         {
             "identifier": 7,
@@ -142,10 +142,6 @@
         },
         {
             "identifier": 18,
-            "type": []
-        },
-        {
-            "identifier": 19,
             "type": [
                 {
                     "type": "int8"
@@ -153,15 +149,15 @@
             ]
         },
         {
+            "identifier": 19,
+            "type": []
+        },
+        {
             "identifier": 20,
             "type": []
         },
         {
             "identifier": 21,
-            "type": []
-        },
-        {
-            "identifier": 22,
             "type": [
                 {
                     "type": "array",
@@ -179,63 +175,63 @@
         {
             "identifier": 0,
             "name": "assign_sub_int",
-            "parameters": 7,
+            "parameters": 6,
             "vararg": false,
-            "returns": 8,
+            "returns": 7,
             "returns_twice": false,
             "no_return": false
         },
         {
             "identifier": 1,
             "name": "assign_sub_ullong",
-            "parameters": 9,
+            "parameters": 8,
             "vararg": false,
-            "returns": 10,
+            "returns": 9,
             "returns_twice": false,
             "no_return": false
         },
         {
             "identifier": 2,
             "name": "assign_sub_float",
-            "parameters": 11,
+            "parameters": 10,
             "vararg": false,
-            "returns": 12,
+            "returns": 11,
             "returns_twice": false,
             "no_return": false
         },
         {
             "identifier": 3,
             "name": "assign_sub_double",
-            "parameters": 13,
+            "parameters": 12,
             "vararg": false,
-            "returns": 14,
+            "returns": 13,
             "returns_twice": false,
             "no_return": false
         },
         {
             "identifier": 4,
             "name": "assign_sub_double_int",
-            "parameters": 15,
+            "parameters": 14,
             "vararg": false,
-            "returns": 16,
+            "returns": 15,
             "returns_twice": false,
             "no_return": false
         },
         {
             "identifier": 5,
             "name": "assign_sub_ptr_int",
-            "parameters": 17,
+            "parameters": 16,
             "vararg": false,
-            "returns": 18,
+            "returns": 17,
             "returns_twice": false,
             "no_return": false
         },
         {
             "identifier": 6,
             "name": "assign_sub_ptr2_int",
-            "parameters": 20,
+            "parameters": 19,
             "vararg": false,
-            "returns": 21,
+            "returns": 20,
             "returns_twice": false,
             "no_return": false
         }

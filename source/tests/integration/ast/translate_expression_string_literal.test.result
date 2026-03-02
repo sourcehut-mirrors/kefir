@@ -24,10 +24,6 @@
         {
             "identifier": 5,
             "type": []
-        },
-        {
-            "identifier": 6,
-            "type": []
         }
     ],
     "data": [],
@@ -58,27 +54,27 @@
         {
             "identifier": 0,
             "name": "string_literal1",
-            "parameters": 1,
+            "parameters": 0,
             "vararg": false,
-            "returns": 2,
+            "returns": 1,
             "returns_twice": false,
             "no_return": false
         },
         {
             "identifier": 1,
             "name": "string_literal2",
-            "parameters": 3,
+            "parameters": 2,
             "vararg": false,
-            "returns": 4,
+            "returns": 3,
             "returns_twice": false,
             "no_return": false
         },
         {
             "identifier": 2,
             "name": "string_literal3",
-            "parameters": 5,
+            "parameters": 4,
             "vararg": false,
-            "returns": 6,
+            "returns": 5,
             "returns_twice": false,
             "no_return": false
         }

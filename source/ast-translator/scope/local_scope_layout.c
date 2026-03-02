@@ -44,9 +44,6 @@ kefir_result_t kefir_ast_translator_local_scope_layout_init(struct kefir_mem *me
     REQUIRE_OK(kefir_list_on_remove(&layout->static_thread_local_objects, kefir_ast_translator_scoped_identifier_remove,
                                     NULL));
     layout->global = global;
-    layout->local_layout = kefir_ir_module_new_type(mem, module, 0, &layout->local_layout_id);
-    layout->local_type_layout = NULL;
-    REQUIRE(layout->local_layout != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate new IR type"));
     return KEFIR_OK;
 }
 
@@ -63,15 +60,10 @@ kefir_result_t kefir_ast_translator_local_scope_layout_free(struct kefir_mem *me
         }
         layout->local_context = NULL;
     }
-    if (layout->local_type_layout != NULL) {
-        REQUIRE_OK(kefir_ast_type_layout_free(mem, layout->local_type_layout));
-        layout->local_type_layout = NULL;
-    }
     REQUIRE_OK(kefir_list_free(mem, &layout->local_objects));
     REQUIRE_OK(kefir_list_free(mem, &layout->static_objects));
     REQUIRE_OK(kefir_list_free(mem, &layout->static_thread_local_objects));
     layout->global = NULL;
-    layout->local_layout = NULL;
     return KEFIR_OK;
 }
 
@@ -132,32 +124,20 @@ static kefir_result_t translate_static_thread_local_identifier(
     return KEFIR_OK;
 }
 
-static kefir_result_t translate_auto_register_identifier(
-    struct kefir_mem *mem, const struct kefir_ast_context *context, struct kefir_irbuilder_type *builder,
-    const struct kefir_ast_translator_environment *env, struct kefir_ast_translator_local_scope_layout *local_layout,
-    const char *identifier, const struct kefir_ast_scoped_identifier *scoped_identifier,
-    struct kefir_ast_type_layout *scope_type_layout, const struct kefir_source_location *source_location) {
+static kefir_result_t translate_auto_register_identifier(struct kefir_mem *mem, const struct kefir_ast_context *context,
+                                                         struct kefir_ir_module *module,
+                                                         const struct kefir_ast_translator_environment *env,
+                                                         struct kefir_ast_translator_local_scope_layout *local_layout,
+                                                         const char *identifier,
+                                                         const struct kefir_ast_scoped_identifier *scoped_identifier,
+                                                         const struct kefir_source_location *source_location) {
     ASSIGN_DECL_CAST(struct kefir_ast_translator_scoped_identifier_object *, scoped_identifier_layout,
                      scoped_identifier->payload.ptr);
     REQUIRE(scoped_identifier_layout->layout == NULL, KEFIR_OK);
 
-    KEFIR_AST_SCOPE_SET_CLEANUP(scoped_identifier, kefir_ast_translator_scoped_identifer_payload_free, NULL);
-    scoped_identifier_layout->identifier = local_layout->global->next_object_identifier++;
-
-    const struct kefir_ast_type *object_type = NULL;
-    REQUIRE_OK(kefir_ast_type_completion(mem, context, &object_type, scoped_identifier->object.type));
-
-    REQUIRE_OK(kefir_ast_translate_object_type(mem, context, object_type, scoped_identifier->object.alignment->value,
-                                               env, builder, &scoped_identifier_layout->layout, source_location));
-    scoped_identifier_layout->type_id = local_layout->local_layout_id;
-    scoped_identifier_layout->type = builder->type;
-    REQUIRE_OK(kefir_list_insert_after(mem, &scope_type_layout->custom_layout.sublayouts,
-                                       kefir_list_tail(&scope_type_layout->custom_layout.sublayouts),
-                                       scoped_identifier_layout->layout));
-    scoped_identifier_layout->layout->parent = scope_type_layout;
-
-    REQUIRE_OK(kefir_ast_translator_evaluate_type_layout(mem, env, scoped_identifier_layout->layout,
-                                                         scoped_identifier_layout->type));
+    struct kefir_ir_type *type;
+    REQUIRE_OK(translate_scoped_identifier_type(mem, context, module, env, local_layout, identifier, scoped_identifier,
+                                                &type, source_location));
     REQUIRE_OK(kefir_ast_translator_scoped_identifier_insert(mem, identifier, scoped_identifier,
                                                              &local_layout->local_objects));
     return KEFIR_OK;
@@ -165,9 +145,8 @@ static kefir_result_t translate_auto_register_identifier(
 
 static kefir_result_t translate_local_scoped_identifier_object(
     struct kefir_mem *mem, const struct kefir_ast_context *context, struct kefir_ir_module *module,
-    struct kefir_irbuilder_type *builder, const char *identifier,
-    const struct kefir_ast_scoped_identifier *scoped_identifier, const struct kefir_ast_translator_environment *env,
-    struct kefir_ast_translator_local_scope_layout *local_layout, struct kefir_ast_type_layout *scope_type_layout,
+    const char *identifier, const struct kefir_ast_scoped_identifier *scoped_identifier,
+    const struct kefir_ast_translator_environment *env, struct kefir_ast_translator_local_scope_layout *local_layout,
     struct kefir_ir_typeentry *wrapper_structure, const struct kefir_source_location *source_location) {
     REQUIRE(scoped_identifier->klass == KEFIR_AST_SCOPE_IDENTIFIER_OBJECT, KEFIR_OK);
     switch (scoped_identifier->object.storage) {
@@ -196,8 +175,8 @@ static kefir_result_t translate_local_scoped_identifier_object(
             if (wrapper_structure != NULL) {
                 wrapper_structure->param++;
             }
-            REQUIRE_OK(translate_auto_register_identifier(mem, context, builder, env, local_layout, identifier,
-                                                          scoped_identifier, scope_type_layout, source_location));
+            REQUIRE_OK(translate_auto_register_identifier(mem, context, module, env, local_layout, identifier,
+                                                          scoped_identifier, source_location));
             break;
 
         case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_TYPEDEF:
@@ -224,17 +203,16 @@ static kefir_result_t translate_local_scoped_identifier_function(
 }
 
 static kefir_result_t translate_local_scoped_identifier(
-    struct kefir_mem *mem, const struct kefir_ast_context *context, struct kefir_irbuilder_type *builder,
-    const char *identifier, const struct kefir_ast_scoped_identifier *scoped_identifier,
-    const struct kefir_ast_translator_environment *env, struct kefir_ast_type_bundle *type_bundle,
-    const struct kefir_ast_type_traits *type_traits, struct kefir_ir_module *module,
-    struct kefir_ast_translator_local_scope_layout *local_layout, struct kefir_ast_type_layout *scope_type_layout,
+    struct kefir_mem *mem, const struct kefir_ast_context *context, const char *identifier,
+    const struct kefir_ast_scoped_identifier *scoped_identifier, const struct kefir_ast_translator_environment *env,
+    struct kefir_ast_type_bundle *type_bundle, const struct kefir_ast_type_traits *type_traits,
+    struct kefir_ir_module *module, struct kefir_ast_translator_local_scope_layout *local_layout,
     struct kefir_ir_typeentry *wrapper_structure) {
     switch (scoped_identifier->klass) {
         case KEFIR_AST_SCOPE_IDENTIFIER_OBJECT:
-            REQUIRE_OK(translate_local_scoped_identifier_object(
-                mem, context, module, builder, identifier, scoped_identifier, env, local_layout, scope_type_layout,
-                wrapper_structure, &scoped_identifier->source_location));
+            REQUIRE_OK(translate_local_scoped_identifier_object(mem, context, module, identifier, scoped_identifier,
+                                                                env, local_layout, wrapper_structure,
+                                                                &scoped_identifier->source_location));
             break;
 
         case KEFIR_AST_SCOPE_IDENTIFIER_FUNCTION:
@@ -288,25 +266,22 @@ static kefir_result_t local_scope_empty(struct kefir_mem *mem, const struct kefi
     return KEFIR_OK;
 }
 
-static kefir_result_t traverse_local_scope_flat(
-    struct kefir_mem *mem, const struct kefir_ast_context *context, const struct kefir_tree_node *root,
-    struct kefir_irbuilder_type *builder, const struct kefir_ast_translator_environment *env,
-    struct kefir_ast_type_bundle *type_bundle, const struct kefir_ast_type_traits *type_traits,
-    struct kefir_ir_module *module, struct kefir_ast_translator_local_scope_layout *local_layout,
-    struct kefir_ast_type_layout **scope_type_layout) {
+static kefir_result_t traverse_local_scope_flat(struct kefir_mem *mem, const struct kefir_ast_context *context,
+                                                const struct kefir_tree_node *root,
+                                                const struct kefir_ast_translator_environment *env,
+                                                struct kefir_ast_type_bundle *type_bundle,
+                                                const struct kefir_ast_type_traits *type_traits,
+                                                struct kefir_ir_module *module,
+                                                struct kefir_ast_translator_local_scope_layout *local_layout) {
     ASSIGN_DECL_CAST(struct kefir_ast_identifier_flat_scope *, scope, root->value);
     kefir_bool_t empty_scope = true;
     REQUIRE_OK(local_scope_empty(mem, root, &empty_scope));
-    if (!empty_scope && *scope_type_layout == NULL) {
-        *scope_type_layout = kefir_ast_new_type_layout(mem, NULL, 0, ~(kefir_uptr_t) 0ull);
-    }
     struct kefir_ast_identifier_flat_scope_iterator iter;
     kefir_result_t res;
     for (res = kefir_ast_identifier_flat_scope_iter(scope, &iter); res == KEFIR_OK;
          res = kefir_ast_identifier_flat_scope_next(scope, &iter)) {
-        REQUIRE_OK(translate_local_scoped_identifier(mem, context, builder, iter.identifier, iter.value, env,
-                                                     type_bundle, type_traits, module, local_layout, *scope_type_layout,
-                                                     NULL));
+        REQUIRE_OK(translate_local_scoped_identifier(mem, context, iter.identifier, iter.value, env, type_bundle,
+                                                     type_traits, module, local_layout, NULL));
     }
     REQUIRE(res == KEFIR_ITERATOR_END, res);
 
@@ -318,14 +293,14 @@ static kefir_result_t traverse_local_scope_flat(
     if (!empty_children) {
         for (struct kefir_tree_node *child = kefir_tree_first_child(root); child != NULL;
              child = kefir_tree_next_sibling(child)) {
-            REQUIRE_OK(traverse_local_scope_flat(mem, context, child, builder, env, type_bundle, type_traits, module,
-                                                 local_layout, scope_type_layout));
+            REQUIRE_OK(
+                traverse_local_scope_flat(mem, context, child, env, type_bundle, type_traits, module, local_layout));
         }
     } else {
         for (struct kefir_tree_node *child = kefir_tree_first_child(root); child != NULL;
              child = kefir_tree_next_sibling(child)) {
-            REQUIRE_OK(traverse_local_scope_flat(mem, context, child, builder, env, type_bundle, type_traits, module,
-                                                 local_layout, scope_type_layout));
+            REQUIRE_OK(
+                traverse_local_scope_flat(mem, context, child, env, type_bundle, type_traits, module, local_layout));
         }
     }
     return KEFIR_OK;
@@ -347,17 +322,9 @@ kefir_result_t kefir_ast_translator_build_local_scope_layout(struct kefir_mem *m
     layout->local_context = context;
 
     if (!kefir_ast_identifier_block_scope_empty(&context->ordinary_scope)) {
-        struct kefir_irbuilder_type builder;
-        REQUIRE_OK(kefir_irbuilder_type_init(mem, &builder, layout->local_layout));
-        REQUIRE_OK(traverse_local_scope_flat(mem, &context->context, &context->ordinary_scope.root, &builder, env,
-                                             context->context.type_bundle, context->context.type_traits, module, layout,
-                                             &layout->local_type_layout));
-        REQUIRE_OK(KEFIR_IRBUILDER_TYPE_FREE(&builder));
-
-        if (layout->local_type_layout != NULL) {
-            REQUIRE_OK(
-                kefir_ast_translator_evaluate_type_layout(mem, env, layout->local_type_layout, layout->local_layout));
-        }
+        REQUIRE_OK(traverse_local_scope_flat(mem, &context->context, &context->ordinary_scope.root, env,
+                                             context->context.type_bundle, context->context.type_traits, module,
+                                             layout));
     }
 
     struct kefir_ast_identifier_flat_scope_iterator iter;

@@ -36,20 +36,10 @@ static kefir_result_t on_structure_member_remove(struct kefir_mem *mem, struct k
     return KEFIR_OK;
 }
 
-static kefir_result_t on_sublayout_remove(struct kefir_mem *mem, struct kefir_list *list,
-                                          struct kefir_list_entry *entry, void *payload) {
-    UNUSED(list);
-    UNUSED(payload);
-    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
-    ASSIGN_DECL_CAST(struct kefir_ast_type_layout *, sublayout, entry->value);
-    REQUIRE(sublayout != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST type layout"));
-    REQUIRE_OK(kefir_ast_type_layout_free(mem, sublayout));
-    return KEFIR_OK;
-}
-
 struct kefir_ast_type_layout *kefir_ast_new_type_layout(struct kefir_mem *mem, const struct kefir_ast_type *type,
                                                         kefir_size_t alignment, kefir_uptr_t value) {
     REQUIRE(mem != NULL, NULL);
+    REQUIRE(type != NULL, NULL);
 
     struct kefir_ast_type_layout *layout = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_type_layout));
     REQUIRE(layout != NULL, NULL);
@@ -61,54 +51,40 @@ struct kefir_ast_type_layout *kefir_ast_new_type_layout(struct kefir_mem *mem, c
     layout->value = value;
     layout->properties.valid = false;
     layout->bitfield = false;
-    if (type == NULL) {
-        kefir_result_t res = kefir_list_init(&layout->custom_layout.sublayouts);
-        REQUIRE_ELSE(res == KEFIR_OK, {
-            KEFIR_FREE(mem, layout);
-            return NULL;
-        });
 
-        res = kefir_list_on_remove(&layout->custom_layout.sublayouts, on_sublayout_remove, NULL);
-        REQUIRE_ELSE(res == KEFIR_OK, {
-            kefir_list_free(mem, &layout->custom_layout.sublayouts);
-            KEFIR_FREE(mem, layout);
-            return NULL;
-        });
-    } else {
-        switch (type->tag) {
-            case KEFIR_AST_TYPE_STRUCTURE:
-            case KEFIR_AST_TYPE_UNION: {
-                kefir_result_t res = kefir_list_init(&layout->structure_layout.member_list);
-                REQUIRE_ELSE(res == KEFIR_OK, {
-                    KEFIR_FREE(mem, layout);
-                    return NULL;
-                });
-                res = kefir_list_on_remove(&layout->structure_layout.member_list, on_structure_member_remove, NULL);
-                REQUIRE_ELSE(res == KEFIR_OK, {
-                    kefir_list_free(mem, &layout->structure_layout.member_list);
-                    KEFIR_FREE(mem, layout);
-                    return NULL;
-                });
-                res = kefir_hashtree_init(&layout->structure_layout.named_members, &kefir_hashtree_str_ops);
-                REQUIRE_ELSE(res == KEFIR_OK, {
-                    kefir_list_free(mem, &layout->structure_layout.member_list);
-                    KEFIR_FREE(mem, layout);
-                    return NULL;
-                });
-            } break;
+    switch (type->tag) {
+        case KEFIR_AST_TYPE_STRUCTURE:
+        case KEFIR_AST_TYPE_UNION: {
+            kefir_result_t res = kefir_list_init(&layout->structure_layout.member_list);
+            REQUIRE_ELSE(res == KEFIR_OK, {
+                KEFIR_FREE(mem, layout);
+                return NULL;
+            });
+            res = kefir_list_on_remove(&layout->structure_layout.member_list, on_structure_member_remove, NULL);
+            REQUIRE_ELSE(res == KEFIR_OK, {
+                kefir_list_free(mem, &layout->structure_layout.member_list);
+                KEFIR_FREE(mem, layout);
+                return NULL;
+            });
+            res = kefir_hashtree_init(&layout->structure_layout.named_members, &kefir_hashtree_str_ops);
+            REQUIRE_ELSE(res == KEFIR_OK, {
+                kefir_list_free(mem, &layout->structure_layout.member_list);
+                KEFIR_FREE(mem, layout);
+                return NULL;
+            });
+        } break;
 
-            case KEFIR_AST_TYPE_ARRAY:
-                if (KEFIR_AST_TYPE_IS_VL_ARRAY(type)) {
-                    layout->vl_array.array_ptr_field = 0;
-                    layout->vl_array.array_size_field = 0;
-                } else {
-                    layout->array_layout.element_type = NULL;
-                }
-                break;
+        case KEFIR_AST_TYPE_ARRAY:
+            if (KEFIR_AST_TYPE_IS_VL_ARRAY(type)) {
+                layout->vl_array.array_ptr_field = 0;
+                layout->vl_array.array_size_field = 0;
+            } else {
+                layout->array_layout.element_type = NULL;
+            }
+            break;
 
-            default:
-                break;
-        }
+        default:
+            break;
     }
     return layout;
 }
@@ -117,25 +93,21 @@ kefir_result_t kefir_ast_type_layout_free(struct kefir_mem *mem, struct kefir_as
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(type_layout != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST type layout"));
 
-    if (type_layout->type == NULL) {
-        REQUIRE_OK(kefir_list_free(mem, &type_layout->custom_layout.sublayouts));
-    } else {
-        switch (type_layout->type->tag) {
-            case KEFIR_AST_TYPE_STRUCTURE:
-            case KEFIR_AST_TYPE_UNION:
-                REQUIRE_OK(kefir_hashtree_free(mem, &type_layout->structure_layout.named_members));
-                REQUIRE_OK(kefir_list_free(mem, &type_layout->structure_layout.member_list));
-                break;
+    switch (type_layout->type->tag) {
+        case KEFIR_AST_TYPE_STRUCTURE:
+        case KEFIR_AST_TYPE_UNION:
+            REQUIRE_OK(kefir_hashtree_free(mem, &type_layout->structure_layout.named_members));
+            REQUIRE_OK(kefir_list_free(mem, &type_layout->structure_layout.member_list));
+            break;
 
-            case KEFIR_AST_TYPE_ARRAY:
-                if (!KEFIR_AST_TYPE_IS_VL_ARRAY(type_layout->type)) {
-                    REQUIRE_OK(kefir_ast_type_layout_free(mem, type_layout->array_layout.element_type));
-                }
-                break;
+        case KEFIR_AST_TYPE_ARRAY:
+            if (!KEFIR_AST_TYPE_IS_VL_ARRAY(type_layout->type)) {
+                REQUIRE_OK(kefir_ast_type_layout_free(mem, type_layout->array_layout.element_type));
+            }
+            break;
 
-            default:
-                break;
-        }
+        default:
+            break;
     }
     KEFIR_FREE(mem, type_layout);
     return KEFIR_OK;

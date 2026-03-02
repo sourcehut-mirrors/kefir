@@ -184,7 +184,7 @@
             "body": [
                 {
                     "opcode": "get_local_scope",
-                    "arg": 0
+                    "arg": 4294967296
                 },
                 {
                     "opcode": "get_local",

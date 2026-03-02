@@ -405,7 +405,7 @@
                                 "id": 3,
                                 "opcode": "alloc_local",
                                 "scope": 0,
-                                "type_id": 104,
+                                "type_id": 92,
                                 "type_index": 0,
                                 "control_next": null,
                                 "ir_instruction": 4
@@ -426,8 +426,8 @@
                                 "id": 5,
                                 "opcode": "alloc_local",
                                 "scope": 0,
-                                "type_id": 104,
-                                "type_index": 1,
+                                "type_id": 106,
+                                "type_index": 0,
                                 "control_next": null,
                                 "ir_instruction": 8
                             },
@@ -609,7 +609,7 @@
                 "debug": {
                     "local_variables": [
                         {
-                            "variable_id": 446676598785,
+                            "variable_id": 455266533376,
                             "allocations": [
                                 5
                             ]

@@ -6,7 +6,12 @@
             "type": [
                 {
                     "type": "int64"
-                },
+                }
+            ]
+        },
+        {
+            "identifier": 1,
+            "type": [
                 {
                     "type": "struct",
                     "fields": [
@@ -23,7 +28,12 @@
                             "type": "int32"
                         }
                     ]
-                },
+                }
+            ]
+        },
+        {
+            "identifier": 2,
+            "type": [
                 {
                     "type": "struct",
                     "fields": [
@@ -52,20 +62,8 @@
             ]
         },
         {
-            "identifier": 1,
-            "type": []
-        },
-        {
-            "identifier": 2,
-            "type": []
-        },
-        {
             "identifier": 3,
-            "type": [
-                {
-                    "type": "int64"
-                }
-            ]
+            "type": []
         },
         {
             "identifier": 4,
@@ -73,10 +71,22 @@
         },
         {
             "identifier": 5,
-            "type": []
+            "type": [
+                {
+                    "type": "int64"
+                }
+            ]
         },
         {
             "identifier": 6,
+            "type": []
+        },
+        {
+            "identifier": 7,
+            "type": []
+        },
+        {
+            "identifier": 8,
             "type": [
                 {
                     "type": "struct",
@@ -98,15 +108,15 @@
             ]
         },
         {
-            "identifier": 7,
-            "type": []
-        },
-        {
-            "identifier": 8,
-            "type": []
-        },
-        {
             "identifier": 9,
+            "type": []
+        },
+        {
+            "identifier": 10,
+            "type": []
+        },
+        {
+            "identifier": 11,
             "type": [
                 {
                     "type": "struct",
@@ -142,27 +152,27 @@
         {
             "identifier": 0,
             "name": "compound_literal1",
-            "parameters": 1,
+            "parameters": 3,
             "vararg": false,
-            "returns": 2,
+            "returns": 4,
             "returns_twice": false,
             "no_return": false
         },
         {
             "identifier": 1,
             "name": "compound_literal2",
-            "parameters": 4,
+            "parameters": 6,
             "vararg": false,
-            "returns": 5,
+            "returns": 7,
             "returns_twice": false,
             "no_return": false
         },
         {
             "identifier": 2,
             "name": "compound_literal3",
-            "parameters": 7,
+            "parameters": 9,
             "vararg": false,
-            "returns": 8,
+            "returns": 10,
             "returns_twice": false,
             "no_return": false
         }
@@ -174,7 +184,7 @@
             "body": [
                 {
                     "opcode": "get_local_scope",
-                    "arg": 0
+                    "arg": 4294967296
                 },
                 {
                     "opcode": "get_local",
@@ -211,13 +221,13 @@
             "body": [
                 {
                     "opcode": "get_local_scope",
-                    "arg": 0
+                    "arg": 4294967296
                 },
                 {
                     "opcode": "get_local",
-                    "id": 1,
-                    "type": 0,
-                    "type_index": 1
+                    "id": 4294967296,
+                    "type": 1,
+                    "type_index": 0
                 },
                 {
                     "opcode": "vstack_pick",
@@ -226,7 +236,7 @@
                 {
                     "opcode": "zero_memory",
                     "arg": {
-                        "type": 6,
+                        "type": 8,
                         "index": 0
                     }
                 },
@@ -319,13 +329,13 @@
             "body": [
                 {
                     "opcode": "get_local_scope",
-                    "arg": 0
+                    "arg": 4294967296
                 },
                 {
                     "opcode": "get_local",
-                    "id": 6,
-                    "type": 0,
-                    "type_index": 6
+                    "id": 8589934592,
+                    "type": 2,
+                    "type_index": 0
                 },
                 {
                     "opcode": "vstack_pick",
@@ -334,7 +344,7 @@
                 {
                     "opcode": "zero_memory",
                     "arg": {
-                        "type": 9,
+                        "type": 11,
                         "index": 0
                     }
                 },

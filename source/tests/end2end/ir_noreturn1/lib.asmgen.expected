@@ -378,7 +378,7 @@
             "type": []
         },
         {
-            "identifier": 99,
+            "identifier": 98,
             "type": [
                 {
                     "type": "array",
@@ -390,7 +390,7 @@
             ]
         },
         {
-            "identifier": 103,
+            "identifier": 101,
             "type": [
                 {
                     "type": "array",
@@ -406,7 +406,7 @@
         {
             "identifier": "__kefir_function_test2_static___func___1",
             "storage": "global",
-            "type": 103,
+            "type": 101,
             "value": [
                 {
                     "class": "string",
@@ -422,7 +422,7 @@
         {
             "identifier": "__kefir_function_test5_static___func___4",
             "storage": "global",
-            "type": 103,
+            "type": 101,
             "value": [
                 {
                     "class": "string",
@@ -438,7 +438,7 @@
         {
             "identifier": "__kefir_function_test4_static___func___3",
             "storage": "global",
-            "type": 103,
+            "type": 101,
             "value": [
                 {
                     "class": "string",
@@ -454,7 +454,7 @@
         {
             "identifier": "__kefir_function_test3_static___func___2",
             "storage": "global",
-            "type": 103,
+            "type": 101,
             "value": [
                 {
                     "class": "string",
@@ -470,7 +470,7 @@
         {
             "identifier": "__kefir_function_test_static___func___0",
             "storage": "global",
-            "type": 99,
+            "type": 98,
             "value": [
                 {
                     "class": "string",

@@ -381,7 +381,7 @@
     ],
     "types": [
         {
-            "identifier": 107,
+            "identifier": 105,
             "type": [
                 {
                     "type": "array",
@@ -393,11 +393,11 @@
             ]
         },
         {
-            "identifier": 112,
+            "identifier": 109,
             "type": []
         },
         {
-            "identifier": 115,
+            "identifier": 111,
             "type": [
                 {
                     "type": "array",
@@ -409,7 +409,7 @@
             ]
         },
         {
-            "identifier": 117,
+            "identifier": 113,
             "type": [
                 {
                     "type": "int32"
@@ -421,7 +421,7 @@
         {
             "identifier": "__kefir_function_test5_static___func___1",
             "storage": "global",
-            "type": 107,
+            "type": 105,
             "value": [
                 {
                     "class": "string",
@@ -437,7 +437,7 @@
         {
             "identifier": "__kefir_function_test4_static___func___0",
             "storage": "global",
-            "type": 107,
+            "type": 105,
             "value": [
                 {
                     "class": "string",
@@ -453,7 +453,7 @@
         {
             "identifier": "__kefir_function_main_static___func___3",
             "storage": "global",
-            "type": 115,
+            "type": 111,
             "value": [
                 {
                     "class": "string",
@@ -469,7 +469,7 @@
         {
             "identifier": "__kefir_function_test6_static___func___2",
             "storage": "global",
-            "type": 107,
+            "type": 105,
             "value": [
                 {
                     "class": "string",
@@ -967,63 +967,63 @@
         {
             "identifier": 50,
             "name": "test4",
-            "parameters": 112,
+            "parameters": 109,
             "vararg": false,
-            "returns": 112,
+            "returns": 109,
             "returns_twice": true,
             "no_return": false
         },
         {
             "identifier": 51,
             "name": "test5",
-            "parameters": 112,
+            "parameters": 109,
             "vararg": false,
-            "returns": 112,
+            "returns": 109,
             "returns_twice": true,
             "no_return": false
         },
         {
             "identifier": 52,
             "name": "test6",
-            "parameters": 112,
+            "parameters": 109,
             "vararg": false,
-            "returns": 112,
+            "returns": 109,
             "returns_twice": true,
             "no_return": false
         },
         {
             "identifier": 53,
             "name": "main",
-            "parameters": 112,
+            "parameters": 109,
             "vararg": false,
-            "returns": 112,
+            "returns": 109,
             "returns_twice": false,
             "no_return": false
         },
         {
             "identifier": 54,
             "name": "test1",
-            "parameters": 112,
+            "parameters": 109,
             "vararg": false,
-            "returns": 117,
+            "returns": 113,
             "returns_twice": true,
             "no_return": false
         },
         {
             "identifier": 55,
             "name": "test2",
-            "parameters": 112,
+            "parameters": 109,
             "vararg": false,
-            "returns": 117,
+            "returns": 113,
             "returns_twice": true,
             "no_return": false
         },
         {
             "identifier": 56,
             "name": "test3",
-            "parameters": 112,
+            "parameters": 109,
             "vararg": false,
-            "returns": 117,
+            "returns": 113,
             "returns_twice": true,
             "no_return": false
         }

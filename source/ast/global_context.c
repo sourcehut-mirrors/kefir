@@ -539,6 +539,7 @@ kefir_result_t kefir_ast_global_context_init(struct kefir_mem *mem, const struct
     context->type_traits = type_traits;
     context->target_env = target_env;
     context->temporary_ids.next_id = 0;
+    context->next_context_id = 0;
     REQUIRE_OK(kefir_ast_identifier_flat_scope_init(&context->tag_scope, 0));
     REQUIRE_OK(kefir_ast_identifier_flat_scope_on_removal(&context->tag_scope, kefir_ast_context_free_scoped_identifier,
                                                           NULL));
@@ -598,6 +599,7 @@ kefir_result_t kefir_ast_global_context_init(struct kefir_mem *mem, const struct
     context->context.function_decl_contexts = &context->function_decl_contexts;
     context->context.surrounding_function = NULL;
     context->context.surrounding_function_name = NULL;
+    context->context.context_id = context->next_context_id++;
     context->encountered_errors = 0;
     context->context.configuration = &context->configuration;
     context->context.payload = context;

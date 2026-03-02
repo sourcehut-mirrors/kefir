@@ -19,11 +19,7 @@
         },
         {
             "identifier": 1,
-            "type": [
-                {
-                    "type": "long_double"
-                }
-            ]
+            "type": []
         },
         {
             "identifier": 2,
@@ -31,7 +27,11 @@
         },
         {
             "identifier": 3,
-            "type": []
+            "type": [
+                {
+                    "type": "long_double"
+                }
+            ]
         }
     ],
     "data": [],
@@ -40,9 +40,9 @@
         {
             "identifier": 0,
             "name": "inline_asm1",
-            "parameters": 2,
+            "parameters": 1,
             "vararg": false,
-            "returns": 3,
+            "returns": 2,
             "returns_twice": false,
             "no_return": false
         }

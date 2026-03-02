@@ -10,24 +10,15 @@
                     "element_type": {
                         "type": "int8"
                     }
-                },
+                }
+            ]
+        },
+        {
+            "identifier": 1,
+            "type": [
                 {
                     "type": "array",
                     "length": 4,
-                    "element_type": {
-                        "type": "int8"
-                    }
-                },
-                {
-                    "type": "array",
-                    "length": 0,
-                    "element_type": {
-                        "type": "int8"
-                    }
-                },
-                {
-                    "type": "array",
-                    "length": 8,
                     "element_type": {
                         "type": "int8"
                     }
@@ -35,19 +26,23 @@
             ]
         },
         {
-            "identifier": 1,
-            "type": []
-        },
-        {
             "identifier": 2,
-            "type": []
+            "type": [
+                {
+                    "type": "array",
+                    "length": 1,
+                    "element_type": {
+                        "type": "int8"
+                    }
+                }
+            ]
         },
         {
             "identifier": 3,
             "type": [
                 {
                     "type": "array",
-                    "length": 14,
+                    "length": 8,
                     "element_type": {
                         "type": "int8"
                     }
@@ -67,7 +62,7 @@
             "type": [
                 {
                     "type": "array",
-                    "length": 4,
+                    "length": 14,
                     "element_type": {
                         "type": "int8"
                     }
@@ -87,7 +82,7 @@
             "type": [
                 {
                     "type": "array",
-                    "length": 0,
+                    "length": 4,
                     "element_type": {
                         "type": "int8"
                     }
@@ -104,6 +99,26 @@
         },
         {
             "identifier": 12,
+            "type": [
+                {
+                    "type": "array",
+                    "length": 0,
+                    "element_type": {
+                        "type": "int8"
+                    }
+                }
+            ]
+        },
+        {
+            "identifier": 13,
+            "type": []
+        },
+        {
+            "identifier": 14,
+            "type": []
+        },
+        {
+            "identifier": 15,
             "type": [
                 {
                     "type": "array",
@@ -136,15 +151,6 @@
         {
             "identifier": 0,
             "name": "compound_literal1",
-            "parameters": 1,
-            "vararg": false,
-            "returns": 2,
-            "returns_twice": false,
-            "no_return": false
-        },
-        {
-            "identifier": 1,
-            "name": "compound_literal2",
             "parameters": 4,
             "vararg": false,
             "returns": 5,
@@ -152,8 +158,8 @@
             "no_return": false
         },
         {
-            "identifier": 2,
-            "name": "compound_literal3",
+            "identifier": 1,
+            "name": "compound_literal2",
             "parameters": 7,
             "vararg": false,
             "returns": 8,
@@ -161,11 +167,20 @@
             "no_return": false
         },
         {
-            "identifier": 3,
-            "name": "compound_literal4",
+            "identifier": 2,
+            "name": "compound_literal3",
             "parameters": 10,
             "vararg": false,
             "returns": 11,
+            "returns_twice": false,
+            "no_return": false
+        },
+        {
+            "identifier": 3,
+            "name": "compound_literal4",
+            "parameters": 13,
+            "vararg": false,
+            "returns": 14,
             "returns_twice": false,
             "no_return": false
         }
@@ -177,7 +192,7 @@
             "body": [
                 {
                     "opcode": "get_local_scope",
-                    "arg": 0
+                    "arg": 4294967296
                 },
                 {
                     "opcode": "get_local",
@@ -192,7 +207,7 @@
                 {
                     "opcode": "zero_memory",
                     "arg": {
-                        "type": 3,
+                        "type": 6,
                         "index": 0
                     }
                 },
@@ -207,7 +222,7 @@
                 {
                     "opcode": "copy_memory",
                     "arg": {
-                        "type": 3,
+                        "type": 6,
                         "index": 0
                     }
                 }
@@ -220,13 +235,13 @@
             "body": [
                 {
                     "opcode": "get_local_scope",
-                    "arg": 0
+                    "arg": 4294967296
                 },
                 {
                     "opcode": "get_local",
-                    "id": 2,
-                    "type": 0,
-                    "type_index": 2
+                    "id": 4294967296,
+                    "type": 1,
+                    "type_index": 0
                 },
                 {
                     "opcode": "vstack_pick",
@@ -235,7 +250,7 @@
                 {
                     "opcode": "zero_memory",
                     "arg": {
-                        "type": 6,
+                        "type": 9,
                         "index": 0
                     }
                 },
@@ -346,13 +361,13 @@
             "body": [
                 {
                     "opcode": "get_local_scope",
-                    "arg": 0
+                    "arg": 4294967296
                 },
                 {
                     "opcode": "get_local",
-                    "id": 4,
-                    "type": 0,
-                    "type_index": 4
+                    "id": 8589934592,
+                    "type": 2,
+                    "type_index": 0
                 },
                 {
                     "opcode": "vstack_pick",
@@ -361,7 +376,7 @@
                 {
                     "opcode": "zero_memory",
                     "arg": {
-                        "type": 9,
+                        "type": 12,
                         "index": 0
                     }
                 }
@@ -374,13 +389,13 @@
             "body": [
                 {
                     "opcode": "get_local_scope",
-                    "arg": 0
+                    "arg": 4294967296
                 },
                 {
                     "opcode": "get_local",
-                    "id": 6,
-                    "type": 0,
-                    "type_index": 6
+                    "id": 12884901888,
+                    "type": 3,
+                    "type_index": 0
                 },
                 {
                     "opcode": "vstack_pick",
@@ -389,7 +404,7 @@
                 {
                     "opcode": "zero_memory",
                     "arg": {
-                        "type": 12,
+                        "type": 15,
                         "index": 0
                     }
                 },
@@ -404,7 +419,7 @@
                 {
                     "opcode": "copy_memory",
                     "arg": {
-                        "type": 12,
+                        "type": 15,
                         "index": 0
                     }
                 }

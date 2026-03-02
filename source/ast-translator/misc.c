@@ -128,20 +128,22 @@ kefir_result_t kefir_ast_translator_resolve_type_layout(struct kefir_irbuilder_b
 #define VARIABLE_ID_UPPER32(_type_id, _type_index) ((kefir_uint32_t) (_type_id))
 #define VARIABLE_ID_LOWER32(_type_id, _type_index) ((kefir_uint32_t) (_type_index))
 kefir_result_t kefir_ast_translator_resolve_local_type_layout(struct kefir_irbuilder_block *builder,
-                                                              kefir_id_t scope_id, kefir_id_t type_id,
+                                                              kefir_id_t scope_id, kefir_id_t context_id,
+                                                              kefir_id_t type_id,
                                                               const struct kefir_ast_type_layout *layout) {
     REQUIRE(builder != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR block builder"));
     REQUIRE(layout != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST type layout"));
 
     if (layout->parent == NULL || (layout->parent->type == NULL && layout->parent->value == ~(kefir_uptr_t) 0ull)) {
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_GET_LOCAL_SCOPE,
-                                                   GET_LOCAL_SCOPE_ID(type_id, scope_id)));
+                                                   GET_LOCAL_SCOPE_ID(context_id, scope_id)));
 
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU32_4(
             builder, KEFIR_IR_OPCODE_GET_LOCAL, VARIABLE_ID_UPPER32(type_id, layout->value),
             VARIABLE_ID_LOWER32(type_id, layout->value), type_id, layout->value));
     } else {
-        REQUIRE_OK(kefir_ast_translator_resolve_local_type_layout(builder, scope_id, type_id, layout->parent));
+        REQUIRE_OK(
+            kefir_ast_translator_resolve_local_type_layout(builder, scope_id, context_id, type_id, layout->parent));
         if (layout->properties.relative_offset != 0) {
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_UINT_CONST,
                                                        layout->properties.relative_offset));
@@ -172,7 +174,7 @@ kefir_result_t kefir_ast_translator_resolve_vla_element(struct kefir_mem *mem,
 
     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(
         builder, KEFIR_IR_OPCODE_GET_LOCAL_SCOPE,
-        GET_LOCAL_SCOPE_ID(scoped_id_layout->type_id, scoped_id->definition_scope->identifier)));
+        GET_LOCAL_SCOPE_ID(context->ast_context->context_id, scoped_id->definition_scope->identifier)));
     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU32_4(
         builder, KEFIR_IR_OPCODE_GET_LOCAL,
         VARIABLE_ID_UPPER32(scoped_id_layout->type_id, scoped_id_layout->layout->value),
@@ -200,10 +202,10 @@ static kefir_result_t mark_flat_scope_objects_lifetime(struct kefir_ast_translat
                  scope_iter.value->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_REGISTER ||
                  scope_iter.value->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_CONSTEXPR)) {
                 if (context->local_scope_layout != NULL && !marked_scope) {
-                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(
-                        builder, KEFIR_IR_OPCODE_GET_LOCAL_SCOPE,
-                        (((kefir_uint64_t) context->local_scope_layout->local_layout_id) << 32) |
-                            (kefir_uint32_t) scope->identifier));
+                    REQUIRE_OK(
+                        KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_GET_LOCAL_SCOPE,
+                                                        (((kefir_uint64_t) context->ast_context->context_id) << 32) |
+                                                            (kefir_uint32_t) scope->identifier));
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_LOCAL_LIFETIME_MARK, 0));
                     marked_scope = true;
                 }

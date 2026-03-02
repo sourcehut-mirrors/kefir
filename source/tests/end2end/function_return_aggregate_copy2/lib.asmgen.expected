@@ -40,7 +40,7 @@
                                 "opcode": "alloc_local",
                                 "scope": 0,
                                 "type_id": 92,
-                                "type_index": 5,
+                                "type_index": 0,
                                 "control_next": null
                             },
                             {
@@ -62,7 +62,7 @@
                                 "target": 8,
                                 "source": 11,
                                 "type": {
-                                    "id": 95,
+                                    "id": 92,
                                     "index": 0
                                 },
                                 "control_next": 18,

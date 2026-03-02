@@ -186,7 +186,11 @@
             "identifier": 15,
             "type": [
                 {
-                    "type": "int64"
+                    "type": "array",
+                    "length": 10,
+                    "element_type": {
+                        "type": "int8"
+                    }
                 }
             ]
         },
@@ -194,11 +198,7 @@
             "identifier": 16,
             "type": [
                 {
-                    "type": "array",
-                    "length": 10,
-                    "element_type": {
-                        "type": "int8"
-                    }
+                    "type": "int64"
                 }
             ]
         },
@@ -216,10 +216,6 @@
         },
         {
             "identifier": 19,
-            "type": []
-        },
-        {
-            "identifier": 20,
             "type": [
                 {
                     "type": "array",
@@ -231,12 +227,24 @@
             ]
         },
         {
+            "identifier": 20,
+            "type": []
+        },
+        {
             "identifier": 21,
             "type": []
         },
         {
             "identifier": 22,
-            "type": []
+            "type": [
+                {
+                    "type": "array",
+                    "length": 10,
+                    "element_type": {
+                        "type": "int8"
+                    }
+                }
+            ]
         },
         {
             "identifier": 23,
@@ -246,32 +254,12 @@
             "identifier": 24,
             "type": [
                 {
-                    "type": "array",
-                    "length": 10,
-                    "element_type": {
-                        "type": "int8"
-                    }
-                }
-            ]
-        },
-        {
-            "identifier": 25,
-            "type": []
-        },
-        {
-            "identifier": 26,
-            "type": [
-                {
                     "type": "int64"
                 }
             ]
         },
         {
-            "identifier": 27,
-            "type": []
-        },
-        {
-            "identifier": 28,
+            "identifier": 25,
             "type": [
                 {
                     "type": "array",
@@ -283,7 +271,7 @@
             ]
         },
         {
-            "identifier": 29,
+            "identifier": 26,
             "type": [
                 {
                     "type": "int64"
@@ -291,7 +279,7 @@
             ]
         },
         {
-            "identifier": 30,
+            "identifier": 27,
             "type": [
                 {
                     "type": "int64"
@@ -314,7 +302,7 @@
         {
             "identifier": "__kefir_function_get_value_static___func___5",
             "storage": "global",
-            "type": 20,
+            "type": 19,
             "value": [
                 {
                     "class": "string",
@@ -330,7 +318,7 @@
         {
             "identifier": "__kefir_function_invoke_callback_static___func___7",
             "storage": "global",
-            "type": 28,
+            "type": 25,
             "value": [
                 {
                     "class": "string",
@@ -346,7 +334,7 @@
         {
             "identifier": "__kefir_function_set_value_static___func___3",
             "storage": "global",
-            "type": 16,
+            "type": 15,
             "value": [
                 {
                     "class": "string",
@@ -362,7 +350,7 @@
         {
             "identifier": "__kefir_function_add_value_static___func___6",
             "storage": "global",
-            "type": 24,
+            "type": 22,
             "value": [
                 {
                     "class": "string",
@@ -473,27 +461,27 @@
         {
             "identifier": 7,
             "name": "add_value",
-            "parameters": 21,
+            "parameters": 20,
             "vararg": false,
-            "returns": 22,
+            "returns": 21,
             "returns_twice": false,
             "no_return": false
         },
         {
             "identifier": 8,
             "name": "invoke_callback",
-            "parameters": 25,
+            "parameters": 23,
             "vararg": false,
-            "returns": 26,
+            "returns": 24,
             "returns_twice": false,
             "no_return": false
         },
         {
             "identifier": 9,
             "name": "value_callback",
-            "parameters": 29,
+            "parameters": 26,
             "vararg": false,
-            "returns": 30,
+            "returns": 27,
             "returns_twice": false,
             "no_return": false
         }
@@ -590,7 +578,7 @@
             "body": [
                 {
                     "opcode": "get_local_scope",
-                    "arg": 64424509441
+                    "arg": 8589934593
                 },
                 {
                     "opcode": "local_lifetime_mark"
@@ -601,12 +589,12 @@
                 },
                 {
                     "opcode": "get_local_scope",
-                    "arg": 64424509441
+                    "arg": 8589934593
                 },
                 {
                     "opcode": "get_local",
-                    "id": 64424509440,
-                    "type": 15,
+                    "id": 68719476736,
+                    "type": 16,
                     "type_index": 0
                 },
                 {
@@ -621,12 +609,12 @@
                 },
                 {
                     "opcode": "get_local_scope",
-                    "arg": 64424509441
+                    "arg": 8589934593
                 },
                 {
                     "opcode": "get_local",
-                    "id": 64424509440,
-                    "type": 15,
+                    "id": 68719476736,
+                    "type": 16,
                     "type_index": 0
                 },
                 {
@@ -664,7 +652,7 @@
                 },
                 {
                     "opcode": "get_local_scope",
-                    "arg": 64424509441
+                    "arg": 8589934593
                 },
                 {
                     "opcode": "local_lifetime_mark"

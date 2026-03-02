@@ -475,8 +475,8 @@
                                 "id": 3,
                                 "opcode": "alloc_local",
                                 "scope": 0,
-                                "type_id": 116,
-                                "type_index": 2,
+                                "type_id": 114,
+                                "type_index": 0,
                                 "control_next": null,
                                 "ir_instruction": 4
                             },
@@ -496,8 +496,8 @@
                                 "id": 6,
                                 "opcode": "alloc_local",
                                 "scope": 0,
-                                "type_id": 116,
-                                "type_index": 1,
+                                "type_id": 117,
+                                "type_index": 0,
                                 "control_next": null,
                                 "ir_instruction": 9
                             },
@@ -692,19 +692,19 @@
                 "debug": {
                     "local_variables": [
                         {
-                            "variable_id": 506806140930,
+                            "variable_id": 506806140928,
                             "allocations": [
                                 3
                             ]
                         },
                         {
-                            "variable_id": 506806140928,
+                            "variable_id": 498216206336,
                             "allocations": [
                                 9
                             ]
                         },
                         {
-                            "variable_id": 506806140929,
+                            "variable_id": 502511173632,
                             "allocations": [
                                 6
                             ]

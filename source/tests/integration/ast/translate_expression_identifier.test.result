@@ -20,7 +20,7 @@
             "identifier": 0,
             "type": [
                 {
-                    "type": "int8"
+                    "type": "int32"
                 }
             ]
         },
@@ -28,7 +28,7 @@
             "identifier": 1,
             "type": [
                 {
-                    "type": "int32"
+                    "type": "int8"
                 }
             ]
         },
@@ -61,7 +61,7 @@
         {
             "identifier": "extern_variable2",
             "storage": "global",
-            "type": 2,
+            "type": 1,
             "value": [
                 {
                     "class": "undefined"
@@ -124,12 +124,12 @@
                 },
                 {
                     "opcode": "get_local_scope",
-                    "arg": 0
+                    "arg": 4294967296
                 },
                 {
                     "opcode": "get_local",
-                    "id": 0,
-                    "type": 0,
+                    "id": 8589934592,
+                    "type": 2,
                     "type_index": 0
                 },
                 {

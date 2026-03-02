@@ -204,7 +204,7 @@
                                 "opcode": "alloc_local",
                                 "scope": 0,
                                 "type_id": 95,
-                                "type_index": 5,
+                                "type_index": 0,
                                 "control_next": null
                             },
                             {
@@ -225,7 +225,7 @@
                                 "target": 8,
                                 "source": 13,
                                 "type": {
-                                    "id": 98,
+                                    "id": 95,
                                     "index": 0
                                 },
                                 "control_next": 20,

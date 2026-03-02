@@ -157,6 +157,8 @@ typedef struct kefir_ast_context {
     const char *surrounding_function_name;
     const struct kefir_ast_context_configuration *configuration;
 
+    kefir_id_t context_id;
+
     const struct kefir_ast_context_extensions *extensions;
     void *extensions_payload;
 

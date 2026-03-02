@@ -8,10 +8,6 @@
         {
             "identifier": 1,
             "type": []
-        },
-        {
-            "identifier": 2,
-            "type": []
         }
     ],
     "data": [],
@@ -20,9 +16,9 @@
         {
             "identifier": 0,
             "name": "func1",
-            "parameters": 1,
+            "parameters": 0,
             "vararg": false,
-            "returns": 2,
+            "returns": 1,
             "returns_twice": false,
             "no_return": false
         }

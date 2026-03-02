@@ -34,7 +34,7 @@ kefir_result_t kefir_ast_translator_resolve_type_layout(struct kefir_irbuilder_b
                                                         const struct kefir_ast_type_layout *,
                                                         const struct kefir_ast_type_layout *);
 kefir_result_t kefir_ast_translator_resolve_local_type_layout(struct kefir_irbuilder_block *, kefir_id_t, kefir_id_t,
-                                                              const struct kefir_ast_type_layout *);
+                                                              kefir_id_t, const struct kefir_ast_type_layout *);
 
 kefir_result_t kefir_ast_translator_resolve_vla_element(struct kefir_mem *, struct kefir_ast_translator_context *,
                                                         struct kefir_irbuilder_block *, kefir_id_t);

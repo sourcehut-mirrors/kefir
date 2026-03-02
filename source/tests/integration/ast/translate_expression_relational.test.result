@@ -102,7 +102,7 @@
         {
             "identifier": "ptr1",
             "storage": "global",
-            "type": 1,
+            "type": 0,
             "value": [
                 {
                     "class": "undefined"
@@ -787,12 +787,12 @@
                 },
                 {
                     "opcode": "get_local_scope",
-                    "arg": 0
+                    "arg": 4294967296
                 },
                 {
                     "opcode": "get_local",
-                    "id": 0,
-                    "type": 0,
+                    "id": 4294967296,
+                    "type": 1,
                     "type_index": 0
                 },
                 {
@@ -810,12 +810,12 @@
                 },
                 {
                     "opcode": "get_local_scope",
-                    "arg": 0
+                    "arg": 4294967296
                 },
                 {
                     "opcode": "get_local",
-                    "id": 0,
-                    "type": 0,
+                    "id": 4294967296,
+                    "type": 1,
                     "type_index": 0
                 },
                 {
@@ -826,12 +826,12 @@
                 },
                 {
                     "opcode": "get_local_scope",
-                    "arg": 0
+                    "arg": 4294967296
                 },
                 {
                     "opcode": "get_local",
-                    "id": 0,
-                    "type": 0,
+                    "id": 4294967296,
+                    "type": 1,
                     "type_index": 0
                 },
                 {
@@ -896,12 +896,12 @@
                 },
                 {
                     "opcode": "get_local_scope",
-                    "arg": 0
+                    "arg": 4294967296
                 },
                 {
                     "opcode": "get_local",
-                    "id": 0,
-                    "type": 0,
+                    "id": 4294967296,
+                    "type": 1,
                     "type_index": 0
                 },
                 {
@@ -916,12 +916,12 @@
                 },
                 {
                     "opcode": "get_local_scope",
-                    "arg": 0
+                    "arg": 4294967296
                 },
                 {
                     "opcode": "get_local",
-                    "id": 0,
-                    "type": 0,
+                    "id": 4294967296,
+                    "type": 1,
                     "type_index": 0
                 },
                 {
@@ -932,12 +932,12 @@
                 },
                 {
                     "opcode": "get_local_scope",
-                    "arg": 0
+                    "arg": 4294967296
                 },
                 {
                     "opcode": "get_local",
-                    "id": 0,
-                    "type": 0,
+                    "id": 4294967296,
+                    "type": 1,
                     "type_index": 0
                 },
                 {
@@ -1120,12 +1120,12 @@
                 },
                 {
                     "opcode": "get_local_scope",
-                    "arg": 0
+                    "arg": 4294967296
                 },
                 {
                     "opcode": "get_local",
-                    "id": 0,
-                    "type": 0,
+                    "id": 4294967296,
+                    "type": 1,
                     "type_index": 0
                 },
                 {
@@ -1136,12 +1136,12 @@
                 },
                 {
                     "opcode": "get_local_scope",
-                    "arg": 0
+                    "arg": 4294967296
                 },
                 {
                     "opcode": "get_local",
-                    "id": 0,
-                    "type": 0,
+                    "id": 4294967296,
+                    "type": 1,
                     "type_index": 0
                 },
                 {
@@ -1203,12 +1203,12 @@
                 },
                 {
                     "opcode": "get_local_scope",
-                    "arg": 0
+                    "arg": 4294967296
                 },
                 {
                     "opcode": "get_local",
-                    "id": 0,
-                    "type": 0,
+                    "id": 4294967296,
+                    "type": 1,
                     "type_index": 0
                 },
                 {
@@ -1219,12 +1219,12 @@
                 },
                 {
                     "opcode": "get_local_scope",
-                    "arg": 0
+                    "arg": 4294967296
                 },
                 {
                     "opcode": "get_local",
-                    "id": 0,
-                    "type": 0,
+                    "id": 4294967296,
+                    "type": 1,
                     "type_index": 0
                 },
                 {
@@ -1286,12 +1286,12 @@
                 },
                 {
                     "opcode": "get_local_scope",
-                    "arg": 0
+                    "arg": 4294967296
                 },
                 {
                     "opcode": "get_local",
-                    "id": 0,
-                    "type": 0,
+                    "id": 4294967296,
+                    "type": 1,
                     "type_index": 0
                 },
                 {
@@ -1302,12 +1302,12 @@
                 },
                 {
                     "opcode": "get_local_scope",
-                    "arg": 0
+                    "arg": 4294967296
                 },
                 {
                     "opcode": "get_local",
-                    "id": 0,
-                    "type": 0,
+                    "id": 4294967296,
+                    "type": 1,
                     "type_index": 0
                 },
                 {
@@ -1369,12 +1369,12 @@
                 },
                 {
                     "opcode": "get_local_scope",
-                    "arg": 0
+                    "arg": 4294967296
                 },
                 {
                     "opcode": "get_local",
-                    "id": 0,
-                    "type": 0,
+                    "id": 4294967296,
+                    "type": 1,
                     "type_index": 0
                 },
                 {
@@ -1385,12 +1385,12 @@
                 },
                 {
                     "opcode": "get_local_scope",
-                    "arg": 0
+                    "arg": 4294967296
                 },
                 {
                     "opcode": "get_local",
-                    "id": 0,
-                    "type": 0,
+                    "id": 4294967296,
+                    "type": 1,
                     "type_index": 0
                 },
                 {

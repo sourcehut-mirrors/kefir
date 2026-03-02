@@ -25,6 +25,42 @@
     "types": [
         {
             "identifier": 0,
+            "type": []
+        },
+        {
+            "identifier": 1,
+            "type": [
+                {
+                    "type": "int32"
+                }
+            ]
+        },
+        {
+            "identifier": 2,
+            "type": []
+        },
+        {
+            "identifier": 3,
+            "type": [
+                {
+                    "type": "int32"
+                }
+            ]
+        },
+        {
+            "identifier": 4,
+            "type": []
+        },
+        {
+            "identifier": 5,
+            "type": [
+                {
+                    "type": "int32"
+                }
+            ]
+        },
+        {
+            "identifier": 6,
             "type": [
                 {
                     "type": "array",
@@ -32,42 +68,6 @@
                     "element_type": {
                         "type": "int8"
                     }
-                }
-            ]
-        },
-        {
-            "identifier": 1,
-            "type": []
-        },
-        {
-            "identifier": 2,
-            "type": [
-                {
-                    "type": "int32"
-                }
-            ]
-        },
-        {
-            "identifier": 3,
-            "type": []
-        },
-        {
-            "identifier": 4,
-            "type": [
-                {
-                    "type": "int32"
-                }
-            ]
-        },
-        {
-            "identifier": 5,
-            "type": []
-        },
-        {
-            "identifier": 6,
-            "type": [
-                {
-                    "type": "int32"
                 }
             ]
         },
@@ -230,27 +230,27 @@
         {
             "identifier": 0,
             "name": "sum",
-            "parameters": 1,
+            "parameters": 0,
             "vararg": false,
-            "returns": 2,
+            "returns": 1,
             "returns_twice": false,
             "no_return": false
         },
         {
             "identifier": 1,
             "name": "sum2",
-            "parameters": 3,
+            "parameters": 2,
             "vararg": false,
-            "returns": 4,
+            "returns": 3,
             "returns_twice": false,
             "no_return": false
         },
         {
             "identifier": 2,
             "name": "sum3",
-            "parameters": 5,
+            "parameters": 4,
             "vararg": true,
-            "returns": 6,
+            "returns": 5,
             "returns_twice": false,
             "no_return": false
         },
@@ -465,12 +465,12 @@
                 },
                 {
                     "opcode": "get_local_scope",
-                    "arg": 0
+                    "arg": 4294967296
                 },
                 {
                     "opcode": "get_local",
-                    "id": 0,
-                    "type": 0,
+                    "id": 25769803776,
+                    "type": 6,
                     "type_index": 0
                 },
                 {

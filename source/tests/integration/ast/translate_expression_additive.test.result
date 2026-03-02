@@ -27,10 +27,6 @@
         },
         {
             "identifier": 6,
-            "type": []
-        },
-        {
-            "identifier": 7,
             "type": [
                 {
                     "type": "int16"
@@ -38,7 +34,7 @@
             ]
         },
         {
-            "identifier": 8,
+            "identifier": 7,
             "type": [
                 {
                     "type": "double"
@@ -46,7 +42,7 @@
             ]
         },
         {
-            "identifier": 9,
+            "identifier": 8,
             "type": [
                 {
                     "type": "array",
@@ -58,12 +54,16 @@
             ]
         },
         {
-            "identifier": 10,
+            "identifier": 9,
             "type": [
                 {
                     "type": "int64"
                 }
             ]
+        },
+        {
+            "identifier": 10,
+            "type": []
         },
         {
             "identifier": 11,
@@ -95,10 +95,6 @@
         },
         {
             "identifier": 18,
-            "type": []
-        },
-        {
-            "identifier": 19,
             "type": [
                 {
                     "type": "int8"
@@ -106,7 +102,7 @@
             ]
         },
         {
-            "identifier": 20,
+            "identifier": 19,
             "type": [
                 {
                     "type": "int16"
@@ -114,7 +110,7 @@
             ]
         },
         {
-            "identifier": 21,
+            "identifier": 20,
             "type": [
                 {
                     "type": "float"
@@ -128,63 +124,63 @@
         {
             "identifier": 0,
             "name": "add_integral",
-            "parameters": 1,
+            "parameters": 0,
             "vararg": false,
-            "returns": 2,
+            "returns": 1,
             "returns_twice": false,
             "no_return": false
         },
         {
             "identifier": 1,
             "name": "add_floating_point",
-            "parameters": 3,
+            "parameters": 2,
             "vararg": false,
-            "returns": 4,
+            "returns": 3,
             "returns_twice": false,
             "no_return": false
         },
         {
             "identifier": 2,
             "name": "add_pointer_int",
-            "parameters": 5,
+            "parameters": 4,
             "vararg": false,
-            "returns": 6,
+            "returns": 5,
             "returns_twice": false,
             "no_return": false
         },
         {
             "identifier": 3,
             "name": "sub_integral",
-            "parameters": 11,
+            "parameters": 10,
             "vararg": false,
-            "returns": 12,
+            "returns": 11,
             "returns_twice": false,
             "no_return": false
         },
         {
             "identifier": 4,
             "name": "sub_floating_point",
-            "parameters": 13,
+            "parameters": 12,
             "vararg": false,
-            "returns": 14,
+            "returns": 13,
             "returns_twice": false,
             "no_return": false
         },
         {
             "identifier": 5,
             "name": "sub_pointers",
-            "parameters": 15,
+            "parameters": 14,
             "vararg": false,
-            "returns": 16,
+            "returns": 15,
             "returns_twice": false,
             "no_return": false
         },
         {
             "identifier": 6,
             "name": "sub_pointer_integer",
-            "parameters": 17,
+            "parameters": 16,
             "vararg": false,
-            "returns": 18,
+            "returns": 17,
             "returns_twice": false,
             "no_return": false
         }

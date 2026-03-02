@@ -358,7 +358,7 @@
             ]
         },
         {
-            "identifier": 95,
+            "identifier": 94,
             "type": [
                 {
                     "type": "array",
@@ -370,7 +370,7 @@
             ]
         },
         {
-            "identifier": 101,
+            "identifier": 99,
             "type": [
                 {
                     "type": "array",
@@ -386,7 +386,7 @@
         {
             "identifier": "__kefir_function_get2_static___func___1",
             "storage": "global",
-            "type": 101,
+            "type": 99,
             "value": [
                 {
                     "class": "string",
@@ -402,7 +402,7 @@
         {
             "identifier": "__kefir_function_get_static___func___0",
             "storage": "global",
-            "type": 95,
+            "type": 94,
             "value": [
                 {
                     "class": "string",
@@ -418,7 +418,7 @@
         {
             "identifier": "__kefir_function_get3_static___func___2",
             "storage": "global",
-            "type": 101,
+            "type": 99,
             "value": [
                 {
                     "class": "string",

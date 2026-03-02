@@ -330,7 +330,7 @@
             ]
         },
         {
-            "identifier": 91,
+            "identifier": 90,
             "type": [
                 {
                     "type": "array",
@@ -346,7 +346,7 @@
         {
             "identifier": "__kefir_function_get_static___func___0",
             "storage": "global",
-            "type": 91,
+            "type": 90,
             "value": [
                 {
                     "class": "string",

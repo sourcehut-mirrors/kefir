@@ -19,11 +19,7 @@
         },
         {
             "identifier": 1,
-            "type": [
-                {
-                    "type": "int8"
-                }
-            ]
+            "type": []
         },
         {
             "identifier": 2,
@@ -35,7 +31,11 @@
         },
         {
             "identifier": 4,
-            "type": []
+            "type": [
+                {
+                    "type": "int8"
+                }
+            ]
         },
         {
             "identifier": 5,
@@ -80,14 +80,6 @@
         {
             "identifier": 12,
             "type": []
-        },
-        {
-            "identifier": 13,
-            "type": []
-        },
-        {
-            "identifier": 14,
-            "type": []
         }
     ],
     "data": [],
@@ -96,18 +88,18 @@
         {
             "identifier": 0,
             "name": "do_while1",
-            "parameters": 2,
+            "parameters": 1,
             "vararg": false,
-            "returns": 3,
+            "returns": 2,
             "returns_twice": false,
             "no_return": false
         },
         {
             "identifier": 1,
             "name": "eval",
-            "parameters": 4,
+            "parameters": 3,
             "vararg": false,
-            "returns": 5,
+            "returns": 4,
             "returns_twice": false,
             "no_return": false
         },
@@ -123,18 +115,18 @@
         {
             "identifier": 3,
             "name": "do_while2",
-            "parameters": 10,
+            "parameters": 9,
             "vararg": false,
-            "returns": 11,
+            "returns": 10,
             "returns_twice": false,
             "no_return": false
         },
         {
             "identifier": 4,
             "name": "do_while3",
-            "parameters": 13,
+            "parameters": 11,
             "vararg": false,
-            "returns": 14,
+            "returns": 12,
             "returns_twice": false,
             "no_return": false
         }
@@ -150,8 +142,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 4294967296,
-                    "type": 1,
+                    "id": 21474836480,
+                    "type": 5,
                     "type_index": 0
                 },
                 {
@@ -184,8 +176,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 4294967296,
-                    "type": 1,
+                    "id": 21474836480,
+                    "type": 5,
                     "type_index": 0
                 },
                 {
@@ -215,8 +207,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 4294967296,
-                    "type": 1,
+                    "id": 21474836480,
+                    "type": 5,
                     "type_index": 0
                 },
                 {
