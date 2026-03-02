@@ -10,7 +10,7 @@ packages:
   - m4
 sources:
   - https://git.sr.ht/~jprotopopov/kefir
-  - https://github.com/csmith-project/csmith
+  - https://github.com/csmith-project/csmith#0ec6f1bad2df865beadf13c6e97ec6505887b0a5
 tasks:
   - build_csmith: |
       mkdir csmith/build
