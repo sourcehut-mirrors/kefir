@@ -27,20 +27,58 @@
 static kefir_result_t generate_slot_to_local_var(struct kefir_mem *mem, struct kefir_opt_code_container *code,
                                                  kefir_opt_block_id_t block_ref,
                                                  kefir_opt_instruction_ref_t insert_after_ref,
-                                                 kefir_opt_instruction_ref_t slot_ref,
-                                                 kefir_opt_instruction_ref_t location_ref) {
+                                                 kefir_opt_instruction_ref_t slot_ref, kefir_bool_t integer,
+                                                 kefir_size_t width, kefir_opt_instruction_ref_t location_ref) {
     kefir_opt_instruction_ref_t location_write_ref, slot_read_ref;
     REQUIRE_OK(kefir_opt_code_builder_int_slot_read(mem, code, block_ref, slot_ref, &slot_read_ref));
     REQUIRE_OK(kefir_opt_code_container_insert_control(code, block_ref, insert_after_ref, slot_read_ref));
-    REQUIRE_OK(kefir_opt_code_builder_int64_store(mem, code, block_ref, location_ref, slot_read_ref,
-                                                  &(struct kefir_opt_memory_access_flags) {0}, &location_write_ref));
+    switch (width) {
+        case 8:
+            REQUIRE_OK(kefir_opt_code_builder_int8_store(mem, code, block_ref, location_ref, slot_read_ref,
+                                                         &(struct kefir_opt_memory_access_flags) {0},
+                                                         &location_write_ref));
+            break;
+
+        case 16:
+            REQUIRE_OK(kefir_opt_code_builder_int16_store(mem, code, block_ref, location_ref, slot_read_ref,
+                                                          &(struct kefir_opt_memory_access_flags) {0},
+                                                          &location_write_ref));
+            break;
+
+        case 32:
+            if (integer) {
+                REQUIRE_OK(kefir_opt_code_builder_int32_store(mem, code, block_ref, location_ref, slot_read_ref,
+                                                              &(struct kefir_opt_memory_access_flags) {0},
+                                                              &location_write_ref));
+            } else {
+                REQUIRE_OK(kefir_opt_code_builder_float32_store(mem, code, block_ref, location_ref, slot_read_ref,
+                                                                &(struct kefir_opt_memory_access_flags) {0},
+                                                                &location_write_ref));
+            }
+            break;
+
+        case 64:
+            if (integer) {
+                REQUIRE_OK(kefir_opt_code_builder_int64_store(mem, code, block_ref, location_ref, slot_read_ref,
+                                                              &(struct kefir_opt_memory_access_flags) {0},
+                                                              &location_write_ref));
+            } else {
+                REQUIRE_OK(kefir_opt_code_builder_float64_store(mem, code, block_ref, location_ref, slot_read_ref,
+                                                                &(struct kefir_opt_memory_access_flags) {0},
+                                                                &location_write_ref));
+            }
+            break;
+
+        default:
+            return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected local variable width");
+    }
     REQUIRE_OK(kefir_opt_code_container_insert_control(code, block_ref, slot_read_ref, location_write_ref));
     return KEFIR_OK;
 }
 
 static kefir_result_t process_slot(struct kefir_mem *mem, struct kefir_opt_code_container *code,
                                    const struct kefir_opt_inline_assembly_node *inline_asm_node,
-                                   kefir_opt_instruction_ref_t location_ref, kefir_bool_t integer,
+                                   kefir_opt_instruction_ref_t location_ref, kefir_bool_t integer, kefir_size_t width,
                                    kefir_opt_instruction_ref_t *slot_ref) {
     if (integer) {
         REQUIRE_OK(kefir_opt_code_builder_int_slot(mem, code, inline_asm_node->block_id, slot_ref));
@@ -50,8 +88,46 @@ static kefir_result_t process_slot(struct kefir_mem *mem, struct kefir_opt_code_
 
     kefir_opt_instruction_ref_t location_read_ref, slot_write_ref, insert_after_ref;
     REQUIRE_OK(kefir_opt_instruction_prev_control(code, inline_asm_node->output_ref, &insert_after_ref));
-    REQUIRE_OK(kefir_opt_code_builder_int64_load(mem, code, inline_asm_node->block_id, location_ref,
-                                                 &(struct kefir_opt_memory_access_flags) {0}, &location_read_ref));
+    switch (width) {
+        case 8:
+            REQUIRE_OK(kefir_opt_code_builder_int8_load(mem, code, inline_asm_node->block_id, location_ref,
+                                                        &(struct kefir_opt_memory_access_flags) {0},
+                                                        &location_read_ref));
+            break;
+
+        case 16:
+            REQUIRE_OK(kefir_opt_code_builder_int16_load(mem, code, inline_asm_node->block_id, location_ref,
+                                                         &(struct kefir_opt_memory_access_flags) {0},
+                                                         &location_read_ref));
+            break;
+
+        case 32:
+            if (integer) {
+                REQUIRE_OK(kefir_opt_code_builder_int32_load(mem, code, inline_asm_node->block_id, location_ref,
+                                                             &(struct kefir_opt_memory_access_flags) {0},
+                                                             &location_read_ref));
+            } else {
+                REQUIRE_OK(kefir_opt_code_builder_float32_load(mem, code, inline_asm_node->block_id, location_ref,
+                                                               &(struct kefir_opt_memory_access_flags) {0},
+                                                               &location_read_ref));
+            }
+            break;
+
+        case 64:
+            if (integer) {
+                REQUIRE_OK(kefir_opt_code_builder_int64_load(mem, code, inline_asm_node->block_id, location_ref,
+                                                             &(struct kefir_opt_memory_access_flags) {0},
+                                                             &location_read_ref));
+            } else {
+                REQUIRE_OK(kefir_opt_code_builder_float64_load(mem, code, inline_asm_node->block_id, location_ref,
+                                                               &(struct kefir_opt_memory_access_flags) {0},
+                                                               &location_read_ref));
+            }
+            break;
+
+        default:
+            return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected local variable width");
+    }
     REQUIRE_OK(
         kefir_opt_code_container_insert_control(code, inline_asm_node->block_id, insert_after_ref, location_read_ref));
     REQUIRE_OK(kefir_opt_code_builder_int_slot_write(mem, code, inline_asm_node->block_id, *slot_ref, location_read_ref,
@@ -61,17 +137,18 @@ static kefir_result_t process_slot(struct kefir_mem *mem, struct kefir_opt_code_
 
     if (inline_asm_node->default_jump_target != KEFIR_ID_NONE) {
         REQUIRE_OK(generate_slot_to_local_var(mem, code, inline_asm_node->default_jump_target, KEFIR_ID_NONE, *slot_ref,
-                                              location_ref));
+                                              integer, width, location_ref));
         struct kefir_hashtree_node_iterator iter;
         for (const struct kefir_hashtree_node *node = kefir_hashtree_iter(&inline_asm_node->jump_targets, &iter);
              node != NULL; node = kefir_hashtree_next(&iter)) {
             ASSIGN_DECL_CAST(kefir_opt_block_id_t, target_block, node->value);
-            REQUIRE_OK(generate_slot_to_local_var(mem, code, target_block, KEFIR_ID_NONE, *slot_ref, location_ref));
+            REQUIRE_OK(generate_slot_to_local_var(mem, code, target_block, KEFIR_ID_NONE, *slot_ref, integer, width,
+                                                  location_ref));
         }
 
     } else {
         REQUIRE_OK(generate_slot_to_local_var(mem, code, inline_asm_node->block_id, inline_asm_node->output_ref,
-                                              *slot_ref, location_ref));
+                                              *slot_ref, integer, width, location_ref));
     }
     return KEFIR_OK;
 }
@@ -125,34 +202,49 @@ static kefir_result_t inline_asm_impl(struct kefir_mem *mem, const struct kefir_
             continue;
         }
 
+        kefir_bool_t integer = true;
+        kefir_size_t width = 64;
+        kefir_bool_t skip = false;
         switch (typeentry->typecode) {
             case KEFIR_IR_TYPE_INT8:
-            case KEFIR_IR_TYPE_INT16:
-            case KEFIR_IR_TYPE_INT32:
-            case KEFIR_IR_TYPE_INT64: {
-                kefir_opt_instruction_ref_t slot_ref = KEFIR_ID_NONE;
-                REQUIRE_OK(process_slot(mem, code, inline_asm_node, parameter->location_ref, true, &slot_ref));
+                width = 8;
+                break;
 
-                struct kefir_opt_inline_assembly_parameter new_parameter = {.value_ref = parameter->value_ref,
-                                                                            .location_ref = slot_ref};
-                REQUIRE_OK(kefir_opt_code_container_inline_assembly_set_parameter(
-                    mem, code, inline_asm_instr_ref, ir_asm_param->parameter_id, &new_parameter));
-            } break;
+            case KEFIR_IR_TYPE_INT16:
+                width = 16;
+                break;
+
+            case KEFIR_IR_TYPE_INT32:
+                width = 32;
+                break;
+
+            case KEFIR_IR_TYPE_INT64:
+                width = 64;
+                break;
 
             case KEFIR_IR_TYPE_FLOAT32:
-            case KEFIR_IR_TYPE_FLOAT64: {
-                kefir_opt_instruction_ref_t slot_ref = KEFIR_ID_NONE;
-                REQUIRE_OK(process_slot(mem, code, inline_asm_node, parameter->location_ref, false, &slot_ref));
+                width = 32;
+                integer = false;
+                break;
 
-                struct kefir_opt_inline_assembly_parameter new_parameter = {.value_ref = parameter->value_ref,
-                                                                            .location_ref = slot_ref};
-                REQUIRE_OK(kefir_opt_code_container_inline_assembly_set_parameter(
-                    mem, code, inline_asm_instr_ref, ir_asm_param->parameter_id, &new_parameter));
-            } break;
+            case KEFIR_IR_TYPE_FLOAT64:
+                width = 64;
+                integer = false;
+                break;
 
             default:
-                // Intentionally left blank
+                skip = true;
                 break;
+        }
+
+        if (!skip) {
+            kefir_opt_instruction_ref_t slot_ref = KEFIR_ID_NONE;
+            REQUIRE_OK(process_slot(mem, code, inline_asm_node, parameter->location_ref, integer, width, &slot_ref));
+
+            struct kefir_opt_inline_assembly_parameter new_parameter = {.value_ref = parameter->value_ref,
+                                                                        .location_ref = slot_ref};
+            REQUIRE_OK(kefir_opt_code_container_inline_assembly_set_parameter(
+                mem, code, inline_asm_instr_ref, ir_asm_param->parameter_id, &new_parameter));
         }
     }
     return KEFIR_OK;

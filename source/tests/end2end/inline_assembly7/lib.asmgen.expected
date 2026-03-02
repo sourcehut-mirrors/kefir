@@ -38,7 +38,7 @@ cast_int:
     movq -16(%rbp), %rcx
     mov %rcx, %rax
 
-    movq %rax, -8(%rbp)
+    movl %eax, -8(%rbp)
     movl -8(%rbp), %eax
     lea (%rbp), %rsp
     pop %rbp
@@ -83,7 +83,7 @@ unwrap_s1:
     movl $0, -4(%rbp)
     mov -8(%rbp), %eax
 
-    movq %rax, -4(%rbp)
+    movl %eax, -4(%rbp)
     movl -4(%rbp), %eax
     lea (%rbp), %rsp
     pop %rbp

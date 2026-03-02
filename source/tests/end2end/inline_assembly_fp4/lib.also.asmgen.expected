@@ -15,8 +15,7 @@ circle_area:
     movd .L__kefir_func_circle_area_label3(%rip), %xmm0
     movd %xmm0, -4(%rbp)
     movd -8(%rbp), %xmm3
-    movq -4(%rbp), %rax
-    movq %rax, %xmm4
+    movd -4(%rbp), %xmm4
     movd .L__kefir_func_circle_area_label4(%rip), %xmm5
     movaps %xmm4, %xmm0
     movaps %xmm3, %xmm1
@@ -24,7 +23,7 @@ circle_area:
 movdqu %xmm1, %xmm0
 mulss %xmm2, %xmm0
 addss %xmm0, %xmm0
-    movq %xmm0, -4(%rbp)
+    movd %xmm0, -4(%rbp)
     movd -4(%rbp), %xmm0
     lea (%rbp), %rsp
     pop %rbp

@@ -14,10 +14,8 @@ custom_hypot:
     movq %xmm1, -24(%rbp)
     movq %xmm0, -16(%rbp)
     movq %xmm0, -8(%rbp)
-    movq -16(%rbp), %rax
-    movq %rax, %xmm3
-    movq -24(%rbp), %rax
-    movq %rax, %xmm4
+    movq -16(%rbp), %xmm3
+    movq -24(%rbp), %xmm4
     movaps %xmm3, %xmm1
     movaps %xmm4, %xmm2
 mulsd %xmm0, %xmm0
