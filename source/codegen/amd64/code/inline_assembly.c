@@ -487,14 +487,16 @@ static kefir_result_t allocate_parameters(struct kefir_mem *mem, struct kefir_co
                 parameter_immediate = true;
                 break;
         }
-        if (ir_asm_param->klass == KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_WRITE_LOCATION ||
-            ir_asm_param->klass == KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ_WRITE_LOCATION ||
-            ir_asm_param->klass == KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_VALUE_WRITE_LOCATION) {
-            direct_output = opt_parameter->location_slot;
+        if (opt_parameter->location_slot &&
+            (ir_asm_param->klass == KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_WRITE_LOCATION ||
+             ir_asm_param->klass == KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ_WRITE_LOCATION ||
+             ir_asm_param->klass == KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_VALUE_WRITE_LOCATION)) {
+            direct_output = true;
         }
-        if (ir_asm_param->klass == KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ_LOCATION ||
-            ir_asm_param->klass == KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ_WRITE_LOCATION) {
-            direct_input = opt_parameter->location_slot;
+        if (opt_parameter->location_slot &&
+            (ir_asm_param->klass == KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ_LOCATION ||
+             ir_asm_param->klass == KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ_WRITE_LOCATION)) {
+            direct_input = true;
         }
 
         if (!parameter_immediate) {

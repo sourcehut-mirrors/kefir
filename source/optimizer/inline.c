@@ -703,7 +703,10 @@ static kefir_result_t inline_operation_inline_asm(struct do_inline_param *param,
         REQUIRE_OK(get_instr_ref_mapping(param, src_inline_asm_node->parameters[i].value_ref, &mapped_ref2));
         REQUIRE_OK(kefir_opt_code_container_inline_assembly_set_parameter(
             param->mem, param->dst_code, inline_asm_instr_ref, i,
-            &(struct kefir_opt_inline_assembly_parameter) {.location_ref = mapped_ref1, .value_ref = mapped_ref2}));
+            &(struct kefir_opt_inline_assembly_parameter) {
+                .location_ref = mapped_ref1,
+                .value_ref = mapped_ref2,
+                .location_slot = src_inline_asm_node->parameters[i].location_slot}));
     }
 
     if (src_inline_asm_node->default_jump_target != KEFIR_ID_NONE) {

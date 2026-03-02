@@ -1884,6 +1884,7 @@ kefir_result_t kefir_opt_code_container_new_inline_assembly(struct kefir_mem *me
         for (kefir_size_t i = 0; i < param_count; i++) {
             inline_asm->parameters[i].value_ref = KEFIR_ID_NONE;
             inline_asm->parameters[i].location_ref = KEFIR_ID_NONE;
+            inline_asm->parameters[i].location_slot = false;
         }
     } else {
         inline_asm->parameters = NULL;
