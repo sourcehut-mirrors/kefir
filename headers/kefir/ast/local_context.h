@@ -32,7 +32,6 @@ typedef struct kefir_ast_local_context {
     struct kefir_ast_context context;
 
     struct kefir_ast_global_context *global;
-    struct kefir_ast_context_type_cache cache;
 
     struct kefir_list identifiers;
 

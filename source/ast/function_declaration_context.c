@@ -506,7 +506,6 @@ kefir_result_t kefir_ast_function_declaration_context_init(struct kefir_mem *mem
     REQUIRE_OK(kefir_ast_identifier_flat_scope_init(&context->tag_scope, 0));
     REQUIRE_OK(kefir_ast_identifier_flat_scope_on_removal(&context->tag_scope, kefir_ast_context_free_scoped_identifier,
                                                           NULL));
-    REQUIRE_OK(kefir_ast_context_type_cache_init(&context->cache, &context->context));
 
     context->context.resolve_ordinary_identifier = context_resolve_ordinary_identifier;
     context->context.resolve_tag_identifier = context_resolve_tag_identifier;
@@ -530,7 +529,7 @@ kefir_result_t kefir_ast_function_declaration_context_init(struct kefir_mem *mem
     context->context.type_analyze_success = type_analyze_success;
     context->context.symbols = parent->symbols;
     context->context.type_bundle = parent->type_bundle;
-    context->context.cache = &context->cache;
+    context->context.cache = parent->cache;
     context->context.bigint_pool = parent->bigint_pool;
     context->context.type_traits = parent->type_traits;
     context->context.target_env = parent->target_env;
@@ -561,7 +560,6 @@ kefir_result_t kefir_ast_function_declaration_context_free(struct kefir_mem *mem
     context->context.extensions = NULL;
     context->context.extensions_payload = NULL;
 
-    REQUIRE_OK(kefir_ast_context_type_cache_free(mem, &context->cache));
     REQUIRE_OK(kefir_ast_identifier_flat_scope_free(mem, &context->tag_scope));
     REQUIRE_OK(kefir_ast_identifier_flat_scope_free(mem, &context->ordinary_scope));
     return KEFIR_OK;

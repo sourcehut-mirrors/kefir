@@ -650,7 +650,6 @@ kefir_result_t kefir_ast_local_context_init(struct kefir_mem *mem, struct kefir_
                                                           kefir_ast_context_free_scoped_identifier, NULL));
     REQUIRE_OK(kefir_ast_flow_control_tree_init(&context->flow_control_tree));
     REQUIRE_OK(kefir_list_init(&context->flow_control_points));
-    REQUIRE_OK(kefir_ast_context_type_cache_init(&context->cache, &context->context));
 
     REQUIRE_OK(kefir_ast_pragma_state_init(&context->pragmas));
     context->pragma_stats.enable_fenv_access = false;
@@ -679,7 +678,7 @@ kefir_result_t kefir_ast_local_context_init(struct kefir_mem *mem, struct kefir_
     context->context.type_analyze_success = type_analyze_success;
     context->context.symbols = &context->global->symbols;
     context->context.type_bundle = &context->global->type_bundle;
-    context->context.cache = &context->cache;
+    context->context.cache = &context->global->cache;
     context->context.bigint_pool = &context->global->bigint_pool;
     context->context.type_traits = context->global->type_traits;
     context->context.target_env = context->global->target_env;
@@ -715,7 +714,6 @@ kefir_result_t kefir_ast_local_context_free(struct kefir_mem *mem, struct kefir_
     REQUIRE_OK(kefir_ast_identifier_flat_scope_free(mem, &context->label_scope));
     REQUIRE_OK(kefir_ast_identifier_block_scope_free(mem, &context->tag_scope));
     REQUIRE_OK(kefir_ast_identifier_block_scope_free(mem, &context->ordinary_scope));
-    REQUIRE_OK(kefir_ast_context_type_cache_free(mem, &context->cache));
     REQUIRE_OK(kefir_list_free(mem, &context->identifiers));
     REQUIRE_OK(kefir_list_free(mem, &context->flow_control_points));
     return KEFIR_OK;
