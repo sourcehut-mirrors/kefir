@@ -349,7 +349,8 @@ static kefir_result_t translate_sizeof(struct kefir_mem *mem, struct kefir_ast_t
                          node->arg->properties.expression_props.scoped_id->payload.ptr);
         REQUIRE_OK(kefir_ast_translator_resolve_local_type_layout(
             builder, node->arg->properties.expression_props.scoped_id->definition_scope->identifier,
-            context->ast_context->context_id, identifier_data->type_id, identifier_data->layout));
+            context->ast_context->context_id, identifier_data->identifier, identifier_data->type_id,
+            identifier_data->layout));
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_UINT_CONST,
                                                    identifier_data->layout->vl_array.array_size_relative_offset));
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT64_ADD, 0));

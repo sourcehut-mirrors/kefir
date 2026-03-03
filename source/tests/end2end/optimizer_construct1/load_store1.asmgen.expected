@@ -692,21 +692,21 @@
                 "debug": {
                     "local_variables": [
                         {
-                            "variable_id": 506806140928,
-                            "allocations": [
-                                3
-                            ]
-                        },
-                        {
-                            "variable_id": 498216206336,
+                            "variable_id": 214748364812,
                             "allocations": [
                                 9
                             ]
                         },
                         {
-                            "variable_id": 502511173632,
+                            "variable_id": 214748364813,
                             "allocations": [
                                 6
+                            ]
+                        },
+                        {
+                            "variable_id": 214748364814,
+                            "allocations": [
+                                3
                             ]
                         }
                     ],

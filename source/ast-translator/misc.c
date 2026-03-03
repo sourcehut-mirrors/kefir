@@ -129,7 +129,7 @@ kefir_result_t kefir_ast_translator_resolve_type_layout(struct kefir_irbuilder_b
 #define VARIABLE_ID_LOWER32(_type_id, _type_index) ((kefir_uint32_t) (_type_index))
 kefir_result_t kefir_ast_translator_resolve_local_type_layout(struct kefir_irbuilder_block *builder,
                                                               kefir_id_t scope_id, kefir_id_t context_id,
-                                                              kefir_id_t type_id,
+                                                              kefir_id_t identifier, kefir_id_t type_id,
                                                               const struct kefir_ast_type_layout *layout) {
     REQUIRE(builder != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR block builder"));
     REQUIRE(layout != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST type layout"));
@@ -139,11 +139,11 @@ kefir_result_t kefir_ast_translator_resolve_local_type_layout(struct kefir_irbui
                                                    GET_LOCAL_SCOPE_ID(context_id, scope_id)));
 
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU32_4(
-            builder, KEFIR_IR_OPCODE_GET_LOCAL, VARIABLE_ID_UPPER32(type_id, layout->value),
-            VARIABLE_ID_LOWER32(type_id, layout->value), type_id, layout->value));
+            builder, KEFIR_IR_OPCODE_GET_LOCAL, VARIABLE_ID_UPPER32(context_id, identifier),
+            VARIABLE_ID_LOWER32(context_id, identifier), type_id, layout->value));
     } else {
-        REQUIRE_OK(
-            kefir_ast_translator_resolve_local_type_layout(builder, scope_id, context_id, type_id, layout->parent));
+        REQUIRE_OK(kefir_ast_translator_resolve_local_type_layout(builder, scope_id, context_id, identifier, type_id,
+                                                                  layout->parent));
         if (layout->properties.relative_offset != 0) {
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_UINT_CONST,
                                                        layout->properties.relative_offset));
@@ -177,8 +177,8 @@ kefir_result_t kefir_ast_translator_resolve_vla_element(struct kefir_mem *mem,
         GET_LOCAL_SCOPE_ID(context->ast_context->context_id, scoped_id->definition_scope->identifier)));
     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU32_4(
         builder, KEFIR_IR_OPCODE_GET_LOCAL,
-        VARIABLE_ID_UPPER32(scoped_id_layout->type_id, scoped_id_layout->layout->value),
-        VARIABLE_ID_LOWER32(scoped_id_layout->type_id, scoped_id_layout->layout->value), scoped_id_layout->type_id,
+        VARIABLE_ID_UPPER32(context->ast_context->context_id, scoped_id_layout->identifier),
+        VARIABLE_ID_LOWER32(context->ast_context->context_id, scoped_id_layout->identifier), scoped_id_layout->type_id,
         scoped_id_layout->layout->value));
     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_UINT_CONST, vla_id));
     REQUIRE_OK(

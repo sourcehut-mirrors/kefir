@@ -169,7 +169,7 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 12884901888,
+                    "id": 4294967297,
                     "type": 3,
                     "type_index": 0
                 },
@@ -206,7 +206,7 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 42949672960,
+                    "id": 8589934594,
                     "type": 10,
                     "type_index": 0
                 },
@@ -216,7 +216,7 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 47244640256,
+                    "id": 8589934595,
                     "type": 11,
                     "type_index": 0
                 },

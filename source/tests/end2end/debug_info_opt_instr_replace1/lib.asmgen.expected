@@ -91,25 +91,25 @@
                 "debug": {
                     "local_variables": [
                         {
-                            "variable_id": 399431958528,
+                            "variable_id": 188978561024,
                             "allocations": [
                                 29
                             ]
                         },
                         {
-                            "variable_id": 420906795008,
+                            "variable_id": 197568495620,
                             "allocations": [
                                 5
                             ]
                         },
                         {
-                            "variable_id": 416611827712,
+                            "variable_id": 197568495619,
                             "allocations": [
                                 3
                             ]
                         },
                         {
-                            "variable_id": 395136991232,
+                            "variable_id": 188978561025,
                             "allocations": [
                                 30
                             ]
@@ -131,15 +131,15 @@
                         {
                             "allocation_ref": 30,
                             "placement": [
-                                2
+                                35,
+                                36,
+                                34
                             ]
                         },
                         {
                             "allocation_ref": 29,
                             "placement": [
-                                35,
-                                36,
-                                34
+                                2
                             ]
                         }
                     ]

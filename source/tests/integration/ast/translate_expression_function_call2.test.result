@@ -371,7 +371,7 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 8589934592,
+                    "id": 4294967296,
                     "type": 2,
                     "type_index": 0
                 },

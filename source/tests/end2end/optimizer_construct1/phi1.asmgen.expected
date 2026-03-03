@@ -539,27 +539,27 @@
                 "debug": {
                     "local_variables": [
                         {
-                            "variable_id": 403726925824,
+                            "variable_id": 188978561024,
+                            "allocations": [
+                                3
+                            ]
+                        },
+                        {
+                            "variable_id": 188978561026,
                             "allocations": [
                                 9
                             ]
                         },
                         {
-                            "variable_id": 408021893120,
-                            "allocations": [
-                                6
-                            ]
-                        },
-                        {
-                            "variable_id": 399431958528,
+                            "variable_id": 188978561025,
                             "allocations": [
                                 12
                             ]
                         },
                         {
-                            "variable_id": 395136991232,
+                            "variable_id": 188978561027,
                             "allocations": [
-                                3
+                                6
                             ]
                         }
                     ],
@@ -1124,19 +1124,19 @@
                 "debug": {
                     "local_variables": [
                         {
-                            "variable_id": 433791696896,
+                            "variable_id": 197568495623,
                             "allocations": [
                                 8
                             ]
                         },
                         {
-                            "variable_id": 425201762304,
+                            "variable_id": 197568495621,
                             "allocations": [
                                 3
                             ]
                         },
                         {
-                            "variable_id": 429496729600,
+                            "variable_id": 197568495622,
                             "allocations": [
                                 5
                             ]

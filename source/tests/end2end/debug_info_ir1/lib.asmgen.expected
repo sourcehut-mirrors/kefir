@@ -1691,7 +1691,7 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 511101108224,
+                    "id": 197568495643,
                     "type": 8,
                     "type_index": 0
                 },
@@ -1715,7 +1715,7 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 506806140928,
+                    "id": 197568495642,
                     "type": 13,
                     "type_index": 0
                 },
@@ -1740,7 +1740,7 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 502511173632,
+                    "id": 197568495641,
                     "type": 8,
                     "type_index": 0
                 },
@@ -1760,7 +1760,7 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 498216206336,
+                    "id": 197568495640,
                     "type": 116,
                     "type_index": 0
                 },
@@ -1793,7 +1793,7 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 515396075520,
+                    "id": 197568495644,
                     "type": 120,
                     "type_index": 0
                 },
@@ -1814,7 +1814,7 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 502511173632,
+                    "id": 197568495641,
                     "type": 8,
                     "type_index": 0
                 },
@@ -1833,7 +1833,7 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 515396075520,
+                    "id": 197568495644,
                     "type": 120,
                     "type_index": 0
                 },
@@ -6635,7 +6635,7 @@
                             {
                                 "tag": "local_variable",
                                 "value": {
-                                    "variable_id": 502511173632,
+                                    "variable_id": 197568495641,
                                     "type_id": 117,
                                     "type_index": 0
                                 }
@@ -6686,7 +6686,7 @@
                             {
                                 "tag": "local_variable",
                                 "value": {
-                                    "variable_id": 506806140928,
+                                    "variable_id": 197568495642,
                                     "type_id": 118,
                                     "type_index": 0
                                 }
@@ -6737,7 +6737,7 @@
                             {
                                 "tag": "local_variable",
                                 "value": {
-                                    "variable_id": 511101108224,
+                                    "variable_id": 197568495643,
                                     "type_id": 119,
                                     "type_index": 0
                                 }
@@ -6788,7 +6788,7 @@
                             {
                                 "tag": "local_variable",
                                 "value": {
-                                    "variable_id": 515396075520,
+                                    "variable_id": 197568495644,
                                     "type_id": 120,
                                     "type_index": 0
                                 }

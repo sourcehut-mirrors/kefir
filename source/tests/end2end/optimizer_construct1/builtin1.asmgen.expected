@@ -111,21 +111,21 @@
                 "debug": {
                     "local_variables": [
                         {
-                            "variable_id": 399431958528,
+                            "variable_id": 188978561024,
+                            "allocations": [
+                                3
+                            ]
+                        },
+                        {
+                            "variable_id": 188978561025,
                             "allocations": [
                                 5
                             ]
                         },
                         {
-                            "variable_id": 403726925824,
+                            "variable_id": 188978561026,
                             "allocations": [
                                 6
-                            ]
-                        },
-                        {
-                            "variable_id": 395136991232,
-                            "allocations": [
-                                3
                             ]
                         }
                     ],
@@ -196,7 +196,7 @@
                 "debug": {
                     "local_variables": [
                         {
-                            "variable_id": 425201762304,
+                            "variable_id": 197568495620,
                             "allocations": [
                                 2
                             ]

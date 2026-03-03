@@ -469,7 +469,7 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 25769803776,
+                    "id": 4294967296,
                     "type": 6,
                     "type_index": 0
                 },
