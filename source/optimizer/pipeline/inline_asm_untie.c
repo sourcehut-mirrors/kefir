@@ -153,9 +153,9 @@ static kefir_result_t process_slot(struct kefir_mem *mem, struct kefir_opt_code_
     return KEFIR_OK;
 }
 
-static kefir_result_t inline_asm_impl(struct kefir_mem *mem, const struct kefir_ir_module *ir_module,
-                                      struct kefir_opt_code_container *code,
-                                      kefir_opt_instruction_ref_t inline_asm_instr_ref) {
+static kefir_result_t inline_asm_untie_impl(struct kefir_mem *mem, const struct kefir_ir_module *ir_module,
+                                            struct kefir_opt_code_container *code,
+                                            kefir_opt_instruction_ref_t inline_asm_instr_ref) {
     UNUSED(mem);
 
     const struct kefir_opt_instruction *inline_asm_instr;
@@ -250,9 +250,9 @@ static kefir_result_t inline_asm_impl(struct kefir_mem *mem, const struct kefir_
     return KEFIR_OK;
 }
 
-static kefir_result_t inline_asm_apply(struct kefir_mem *mem, struct kefir_opt_module *module,
-                                       struct kefir_opt_function *func, const struct kefir_optimizer_pass *pass,
-                                       const struct kefir_optimizer_configuration *config) {
+static kefir_result_t inline_asm_untie_apply(struct kefir_mem *mem, struct kefir_opt_module *module,
+                                             struct kefir_opt_function *func, const struct kefir_optimizer_pass *pass,
+                                             const struct kefir_optimizer_configuration *config) {
     UNUSED(pass);
     UNUSED(config);
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
@@ -268,7 +268,7 @@ static kefir_result_t inline_asm_apply(struct kefir_mem *mem, struct kefir_opt_m
         for (res = kefir_opt_code_block_inline_assembly_head(&func->code, block->id, &instr_ref);
              res == KEFIR_OK && instr_ref != KEFIR_ID_NONE;
              res = kefir_opt_inline_assembly_next_sibling(&func->code, instr_ref, &instr_ref)) {
-            REQUIRE_OK(inline_asm_impl(mem, module->ir_module, &func->code, instr_ref));
+            REQUIRE_OK(inline_asm_untie_impl(mem, module->ir_module, &func->code, instr_ref));
         }
         if (res != KEFIR_ITERATOR_END) {
             REQUIRE_OK(res);
@@ -277,5 +277,5 @@ static kefir_result_t inline_asm_apply(struct kefir_mem *mem, struct kefir_opt_m
     return KEFIR_OK;
 }
 
-const struct kefir_optimizer_pass KefirOptimizerPassInlineAsm = {
-    .name = "inline-asm", .apply = inline_asm_apply, .payload = NULL};
+const struct kefir_optimizer_pass KefirOptimizerPassInlineAsmUntie = {
+    .name = "inline-asm-untie", .apply = inline_asm_untie_apply, .payload = NULL};

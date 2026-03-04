@@ -76,7 +76,7 @@ DECLARE_PASS(LoopRemoval);
 DECLARE_PASS(MemorySSA);
 DECLARE_PASS(SROA);
 DECLARE_PASS(Canonicalize);
-DECLARE_PASS(InlineAsm);
+DECLARE_PASS(InlineAsmUntie);
 #undef DECLARE_PASS
 #endif
 

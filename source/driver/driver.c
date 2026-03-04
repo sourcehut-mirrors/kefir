@@ -36,7 +36,7 @@
 
 // clang-format off
 #define KEFIR_OPTIMIZER_PIPELINE_FULL_SPEC                                                                             \
-    "inline-asm," \
+    "inline-asm-untie," \
     "inline-func," \
     "phi-removal," \
     "constant-fold," \
@@ -65,12 +65,7 @@
     "merge-blocks," \
     "dead-code-elimination," \
     "tail-calls"
-#define KEFIR_OPTIMIZER_PIPELINE_MINI_SPEC "inline-asm,inline-func,local-alloc-sink,dead-code-elimination,dead-alloc,lowering"
-
-#define KEFIR_CODEGEN_AMD64_PIPELINE_FULL_SPEC \
-    ""
-#define KEFIR_CODEGEN_AMD64_PIPELINE_MINI_SPEC \
-    ""
+#define KEFIR_OPTIMIZER_PIPELINE_MINI_SPEC "inline-asm-untie,inline-func,local-alloc-sink,dead-code-elimination,dead-alloc,lowering"
 // clang-format on
 
 static kefir_result_t driver_generate_asm_config(struct kefir_mem *mem, struct kefir_string_pool *symbols,

@@ -403,6 +403,9 @@ Perform tail call optimization.
 .\"
 .It Ar lowering
 Perform target-specific lowering of the SSA representation. Mandatory for bit-precise integer support.
+.\"
+.It Ar inline-asm-untie
+Untie inline assembly non-memory parameters from directly linking to memory locations. Improves integration with mem2reg.
 .El
 .\"
 .Ss TARGET
