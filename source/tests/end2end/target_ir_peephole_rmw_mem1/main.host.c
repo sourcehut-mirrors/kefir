@@ -47,7 +47,7 @@ int main(void) {
             TEST_OPS(xor, ^);
             TEST_OPS(or, |);
             TEST_OPS(and, &);
-            if (i >= 0 && j >= 0 && j < 8) {
+            if (i >= 0 && i <= 127 && j >= 0 && j < 8) {
                 TEST_OPS(shl, <<);
                 TEST_OPS(shr, >>);
             }
