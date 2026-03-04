@@ -236,61 +236,49 @@ __kefir_bigint_signed_compare:
     jmp .L__kefir_runtime_func___kefir_bigint_signed_compare_label3
 .L__kefir_runtime_text_func___kefir_bigint_signed_compare_end:
 
-__kefir_bigint_invert:
-.L__kefir_runtime_text_func___kefir_bigint_invert_begin:
+__kefir_bigint_negate:
+.L__kefir_runtime_text_func___kefir_bigint_negate_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $32, %rsp
-    movq %rsi, -32(%rbp)
-    movq %rdi, -24(%rbp)
+    sub $48, %rsp
+    movq %rsi, -48(%rbp)
+    movq %rdi, -40(%rbp)
+    movq -40(%rbp), %rax
+    movq -48(%rbp), %rcx
+    movq %rcx, -32(%rbp)
+    movq %rax, -16(%rbp)
     movq -32(%rbp), %rax
     add $7, %rax
     mov $8, %ecx
     xor %edx, %edx
     div %rcx
-    movq %rax, -16(%rbp)
+    movq %rax, -24(%rbp)
     xor %eax, %eax
     movq %rax, -8(%rbp)
-.L__kefir_runtime_func___kefir_bigint_invert_label2:
+.L__kefir_runtime_func___kefir_bigint_negate_label3:
     movq -8(%rbp), %rax
-    movq -16(%rbp), %rcx
+    movq -24(%rbp), %rcx
     cmp %rcx, %rax
-    jb .L__kefir_runtime_func___kefir_bigint_invert_label4
-    xor %eax, %eax
-    lea (%rbp), %rsp
-    pop %rbp
-    ret
-.L__kefir_runtime_func___kefir_bigint_invert_label4:
-    movq -24(%rbp), %rax
-    movq -8(%rbp), %rcx
-    movb (%rax, %rcx, 1), %dl
-    movq -24(%rbp), %rax
-    movq -8(%rbp), %rcx
-    and $-1, %dl
-    not %dl
-    movb %dl, (%rax, %rcx, 1)
-    addq $1, -8(%rbp)
-    jmp .L__kefir_runtime_func___kefir_bigint_invert_label2
-.L__kefir_runtime_text_func___kefir_bigint_invert_end:
-
-__kefir_bigint_negate:
-.L__kefir_runtime_text_func___kefir_bigint_negate_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $16, %rsp
-    movq %rsi, -16(%rbp)
-    movq %rdi, -8(%rbp)
-    movq -8(%rbp), %rdi
-    movq -16(%rbp), %rsi
-    call __kefir_bigint_invert
-    movq -8(%rbp), %rdi
-    movq -16(%rbp), %rdx
+    jb .L__kefir_runtime_func___kefir_bigint_negate_label5
+    movq -40(%rbp), %rdi
+    movq -48(%rbp), %rdx
     mov $1, %esi
     call __kefir_bigint_util_add_digit_zero_extended
     xor %eax, %eax
     lea (%rbp), %rsp
     pop %rbp
     ret
+.L__kefir_runtime_func___kefir_bigint_negate_label5:
+    movq -16(%rbp), %rax
+    movq -8(%rbp), %rcx
+    movb (%rax, %rcx, 1), %dl
+    movq -16(%rbp), %rax
+    movq -8(%rbp), %rcx
+    and $-1, %dl
+    not %dl
+    movb %dl, (%rax, %rcx, 1)
+    addq $1, -8(%rbp)
+    jmp .L__kefir_runtime_func___kefir_bigint_negate_label3
 .L__kefir_runtime_text_func___kefir_bigint_negate_end:
 
 __kefir_bigint_unsigned_compare:

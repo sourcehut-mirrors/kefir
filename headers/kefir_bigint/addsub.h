@@ -51,7 +51,8 @@ static __kefir_bigint_result_t __kefir_bigint_util_add_digit_zero_extended(__KEF
     return __KEFIR_BIGINT_OK;
 }
 
-static __kefir_bigint_result_t __kefir_bigint_negate(__KEFIR_BIGINT_DIGIT_T *digits, __KEFIR_BIGINT_WIDTH_T width) {
+static inline __kefir_bigint_result_t __kefir_bigint_negate(__KEFIR_BIGINT_DIGIT_T *digits,
+                                                            __KEFIR_BIGINT_WIDTH_T width) {
     (void) __kefir_bigint_invert(digits, width);
     (void) __kefir_bigint_util_add_digit_zero_extended(digits, 1, width);
 

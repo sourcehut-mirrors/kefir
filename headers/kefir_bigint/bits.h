@@ -168,8 +168,8 @@ static __KEFIR_BIGINT_WIDTH_T __kefir_bigint_nonzero_count(const __KEFIR_BIGINT_
     return count;
 }
 
-static __KEFIR_BIGINT_WIDTH_T __kefir_bigint_parity(const __KEFIR_BIGINT_DIGIT_T *digits,
-                                                    __KEFIR_BIGINT_WIDTH_T width) {
+static inline __KEFIR_BIGINT_WIDTH_T __kefir_bigint_parity(const __KEFIR_BIGINT_DIGIT_T *digits,
+                                                           __KEFIR_BIGINT_WIDTH_T width) {
     return __kefir_bigint_nonzero_count(digits, width) % 2;
 }
 

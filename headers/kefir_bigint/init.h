@@ -80,7 +80,8 @@ static __kefir_bigint_result_t __kefir_bigint_set_unsigned_integer(__KEFIR_BIGIN
     return __KEFIR_BIGINT_OK;
 }
 
-static __kefir_bigint_result_t __kefir_bigint_zero(__KEFIR_BIGINT_DIGIT_T *digits, __KEFIR_BIGINT_WIDTH_T width) {
+static inline __kefir_bigint_result_t __kefir_bigint_zero(__KEFIR_BIGINT_DIGIT_T *digits,
+                                                          __KEFIR_BIGINT_WIDTH_T width) {
     const __KEFIR_BIGINT_WIDTH_T total_digits = __KEFIR_BIGINT_BITS_TO_DIGITS(width);
     for (__KEFIR_BIGINT_WIDTH_T i = 0; i < total_digits; i++) {
         digits[i] = (__KEFIR_BIGINT_DIGIT_T) 0;
@@ -88,9 +89,9 @@ static __kefir_bigint_result_t __kefir_bigint_zero(__KEFIR_BIGINT_DIGIT_T *digit
     return __KEFIR_BIGINT_OK;
 }
 
-static __kefir_bigint_result_t __kefir_bigint_copy(__KEFIR_BIGINT_DIGIT_T *dst_digits,
-                                                   const __KEFIR_BIGINT_DIGIT_T *src_digits,
-                                                   __KEFIR_BIGINT_WIDTH_T width) {
+static inline __kefir_bigint_result_t __kefir_bigint_copy(__KEFIR_BIGINT_DIGIT_T *dst_digits,
+                                                          const __KEFIR_BIGINT_DIGIT_T *src_digits,
+                                                          __KEFIR_BIGINT_WIDTH_T width) {
     const __KEFIR_BIGINT_WIDTH_T total_digits = __KEFIR_BIGINT_BITS_TO_DIGITS(width);
     for (__KEFIR_BIGINT_WIDTH_T i = 0; i < total_digits; i++) {
         dst_digits[i] = src_digits[i];

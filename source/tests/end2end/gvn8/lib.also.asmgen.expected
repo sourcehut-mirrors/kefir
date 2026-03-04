@@ -354,22 +354,22 @@ __kefir_bigint_negate:
 .L__kefir_runtime_text_func___kefir_bigint_negate_begin:
     push %rbp
     mov %rsp, %rbp
-    push %rbx
-    push %r12
-    mov %rsi, %rbx
-    mov %rdi, %r12
-    mov %r12, %rdi
-    mov %rbx, %rsi
-    call __kefir_bigint_invert
-    mov %r12, %rdi
+    mov %rsi, %rdx
+    lea 7(%rdx), %rax
+    shr $3, %rax
+    xor %ecx, %ecx
+.L__kefir_runtime_func___kefir_bigint_negate_label2:
+    cmp %rax, %rcx
+    jb .L__kefir_runtime_func___kefir_bigint_negate_label4
     mov $1, %esi
-    mov %rbx, %rdx
     call __kefir_bigint_util_add_digit_zero_extended
     xor %eax, %eax
-    pop %r12
-    pop %rbx
     pop %rbp
     ret
+.L__kefir_runtime_func___kefir_bigint_negate_label4:
+    notb (%rdi, %rcx, 1)
+    add $1, %rcx
+    jmp .L__kefir_runtime_func___kefir_bigint_negate_label2
 .L__kefir_runtime_text_func___kefir_bigint_negate_end:
 
 __kefir_bigint_parity:
