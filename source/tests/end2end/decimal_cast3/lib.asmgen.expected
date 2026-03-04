@@ -970,8 +970,8 @@ __kefir_bigint_right_shift_whole_digits:
     add %rsi, %r10
     movb (%rdi, %r10, 1), %r11b
     movb %r11b, (%rdi, %r9, 1)
-    add $1, %r8d
-    mov %r8d, %r9d
+    lea 1(%r8d), %r9d
+    mov %r9d, %r8d
     jmp .L__kefir_runtime_func___kefir_bigint_right_shift_whole_digits_label4
 .L__kefir_runtime_func___kefir_bigint_right_shift_whole_digits_label3:
     xor %edx, %edx
@@ -1673,11 +1673,10 @@ __kefir_bigint_get_bits:
     shl %cl, %rdx
     sub $1, %edx
     and %edx, %r11d
-    mov %r11d, %edx
     mov %r10, %rcx
     sub %rsi, %rcx
-    shl %cl, %rdx
-    or %rdx, %r9
+    shl %cl, %r11
+    or %r11, %r9
     mov %rax, %r10
     jmp .L__kefir_runtime_func___kefir_bigint_get_bits_label2
 .L__kefir_runtime_text_func___kefir_bigint_get_bits_end:

@@ -421,6 +421,7 @@ kefir_result_t kefir_codegen_target_ir_amd64_peephole_mov(struct kefir_mem *mem,
     REQUIRE(instr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR instruction"));
     REQUIRE(replaced != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to boolean flag"));
 
+    kefir_codegen_target_ir_instruction_ref_t instr_ref = instr->instr_ref;
     struct kefir_codegen_target_ir_tie_classification classification;
     REQUIRE_OK(kefir_codegen_target_ir_tie_operands(code, instr->instr_ref, &classification));
 
@@ -455,6 +456,29 @@ kefir_result_t kefir_codegen_target_ir_amd64_peephole_mov(struct kefir_mem *mem,
         *replaced = true;
     } else {
         REQUIRE_OK(kefir_codegen_target_ir_amd64_peephole_movx(mem, code, instr, replaced));
+    }
+    REQUIRE(!*replaced, KEFIR_OK);
+
+    if (output_value_type->kind == KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_GENERAL_PURPOSE &&
+        output_value_type->constraint.type != KEFIR_CODEGEN_TARGET_IR_ALLOCATION_REQUIREMENT &&
+        output_value_type->variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_32BIT &&
+        instr->operation.parameters[classification.operands[1].read_index].type ==
+            KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF &&
+        instr->operation.parameters[classification.operands[1].read_index].direct.variant ==
+            output_value_type->variant) {
+        const struct kefir_codegen_target_ir_value_type *input_value_type;
+        REQUIRE_OK(kefir_codegen_target_ir_code_value_props(
+            code, instr->operation.parameters[classification.operands[1].read_index].direct.value_ref,
+            &input_value_type));
+        if (input_value_type->kind == KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_GENERAL_PURPOSE &&
+            input_value_type->constraint.type != KEFIR_CODEGEN_TARGET_IR_ALLOCATION_REQUIREMENT &&
+            input_value_type->variant == output_value_type->variant) {
+            REQUIRE_OK(kefir_codegen_target_ir_code_replace_value(
+                mem, code, instr->operation.parameters[classification.operands[1].read_index].direct.value_ref,
+                output_value_ref));
+            REQUIRE_OK(kefir_codegen_target_ir_code_drop_instruction(mem, code, instr_ref));
+            *replaced = true;
+        }
     }
     return KEFIR_OK;
 }

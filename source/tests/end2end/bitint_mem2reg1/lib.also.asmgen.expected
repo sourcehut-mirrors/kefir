@@ -91,8 +91,8 @@ __kefir_bigint_right_shift_whole_digits:
     add %rsi, %r10
     movb (%rdi, %r10, 1), %r11b
     movb %r11b, (%rdi, %r9, 1)
-    add $1, %r8d
-    mov %r8d, %r9d
+    lea 1(%r8d), %r9d
+    mov %r9d, %r8d
     jmp .L__kefir_runtime_func___kefir_bigint_right_shift_whole_digits_label4
 .L__kefir_runtime_func___kefir_bigint_right_shift_whole_digits_label3:
     xor %edx, %edx

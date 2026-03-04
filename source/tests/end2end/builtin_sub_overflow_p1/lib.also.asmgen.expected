@@ -168,7 +168,6 @@ __kefir_bigint_unsigned_compare:
     shl $3, %r11
     sub %r11d, %ecx
     add $1, %ecx
-    mov %ecx, %ecx
     mov $1, %r11d
     shl %cl, %r11
     sub $1, %r11d

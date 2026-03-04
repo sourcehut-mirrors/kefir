@@ -45,7 +45,6 @@ op_next:
     movl 5128(%rdi), %ecx
     lea 1(%ecx), %edx
     movl %edx, 5128(%rdi)
-    mov %ecx, %ecx
     movsxb (%rax, %rcx, 1), %rax
     lea ops(%rip), %rcx
     movq (%rcx, %rax, 8), %rax
@@ -60,7 +59,6 @@ op_plus:
     movl 5128(%rdi), %ecx
     lea 1(%ecx), %edx
     movl %edx, 5128(%rdi)
-    mov %ecx, %ecx
     movsxb (%rax, %rcx, 1), %rax
     lea ops(%rip), %rcx
     movq (%rcx, %rax, 8), %rax
@@ -74,7 +72,6 @@ op_prev:
     movl 5128(%rdi), %ecx
     lea 1(%ecx), %edx
     movl %edx, 5128(%rdi)
-    mov %ecx, %ecx
     movsxb (%rax, %rcx, 1), %rax
     lea ops(%rip), %rcx
     movq (%rcx, %rax, 8), %rax
@@ -89,7 +86,6 @@ op_minus:
     movl 5128(%rdi), %ecx
     lea 1(%ecx), %edx
     movl %edx, 5128(%rdi)
-    mov %ecx, %ecx
     movsxb (%rax, %rcx, 1), %rax
     lea ops(%rip), %rcx
     movq (%rcx, %rax, 8), %rax
@@ -112,7 +108,6 @@ op_print:
     movl 5128(%rbx), %ecx
     lea 1(%ecx), %edx
     movl %edx, 5128(%rbx)
-    mov %ecx, %ecx
     movsxb (%rax, %rcx, 1), %rax
     lea ops(%rip), %rcx
     movq (%rcx, %rax, 8), %rax
@@ -137,7 +132,6 @@ op_loop_end:
     movl 5128(%rdi), %ecx
     lea 1(%ecx), %edx
     movl %edx, 5128(%rdi)
-    mov %ecx, %ecx
     movsxb (%rax, %rcx, 1), %rax
     lea ops(%rip), %rcx
     movq (%rcx, %rax, 8), %rax
@@ -162,7 +156,6 @@ op_loop_begin:
     movl 5128(%rdi), %edx
     lea 1(%edx), %esi
     movl %esi, 5128(%rdi)
-    mov %edx, %edx
     movb (%rcx, %rdx, 1), %sil
     movsx %sil, %rdx
     lea -1(%eax), %r8d
@@ -180,7 +173,6 @@ op_loop_begin:
     movl 5128(%rdi), %ecx
     lea 1(%ecx), %edx
     movl %edx, 5128(%rdi)
-    mov %ecx, %ecx
     movsxb (%rax, %rcx, 1), %rax
     lea ops(%rip), %rcx
     movq (%rcx, %rax, 8), %rax
