@@ -379,8 +379,10 @@ kefir_result_t kefir_driver_generate_compiler_config(struct kefir_mem *mem, stru
         if (config->flags.omit_frame_pointer == KEFIR_DRIVER_FRAME_POINTER_OMISSION_UNSPECIFIED) {
             compiler_config->codegen.omit_frame_pointer = true;
         }
+        compiler_config->codegen.optimization = true;
     } else {
         compiler_config->optimizer_pipeline_spec = KEFIR_OPTIMIZER_PIPELINE_MINI_SPEC;
+        compiler_config->codegen.optimization = false;
     }
 
     switch (config->assembler.target) {

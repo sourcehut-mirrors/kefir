@@ -30,7 +30,7 @@ KEFIRCC="$KEFIR_BIN_DIR/kefir"
 export LD_LIBRARY_PATH="$KEFIR_BIN_DIR/libs"
 export KEFIR_RTINC="$(dirname $SCRIPT)/../../../headers/kefir/runtime"
 
-KEFIR_CFLAGS=" --target host-none -fPIC -pie -I \"$(dirname $SRC_FILE)\" -I \"$(dirname $SCRIPT)/../../../headers/kefir/runtime/common\""
+KEFIR_CFLAGS=" --target host-none -fPIC -pie -I \"$(dirname $SRC_FILE)\" -I \"$(dirname $SCRIPT)/../../../headers/kefir/runtime/common\" -Wcodegen-optimize"
 
 source "$(dirname $SCRIPT)/common.sh"
 
