@@ -5,6 +5,8 @@
 .type add, @function
 .global addf
 .type addf, @function
+.global addf2
+.type addf2, @function
 
 .section .text
 .L__kefir_text_section_begin:
@@ -26,6 +28,17 @@ addss %xmm1, %xmm0
     pop %rbp
     ret
 .L__kefir_text_func_addf_end:
+
+addf2:
+.L__kefir_text_func_addf2_begin:
+    push %rbp
+    mov %rsp, %rbp
+movaps %xmm0, %xmm2
+addss %xmm1, %xmm2
+    movaps %xmm2, %xmm0
+    pop %rbp
+    ret
+.L__kefir_text_func_addf2_end:
 
 .L__kefir_text_section_end:
 

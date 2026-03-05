@@ -24,6 +24,7 @@
 #ifdef __x86_64__
 int add(int, int);
 float addf(float, float);
+float addf2(float, float);
 #endif
 
 #endif

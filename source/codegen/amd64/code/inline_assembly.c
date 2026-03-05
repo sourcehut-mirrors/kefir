@@ -63,6 +63,7 @@ typedef struct inline_assembly_parameter_allocation_entry {
         kefir_size_t size;
     } parameter_read_props;
 
+    kefir_bool_t pending_allocation;
     kefir_bool_t explicit_register_present;
     kefir_asm_amd64_xasmgen_register_t explicit_register;
 } inline_assembly_parameter_allocation_entry_t;
@@ -529,6 +530,61 @@ static kefir_result_t allocate_x86_rh_register(struct kefir_mem *mem, struct kef
                            "Unable to satisfy inline assembly x86 general purpose register allocation constraints");
 }
 
+static kefir_result_t do_allocate(struct kefir_mem *mem, struct kefir_codegen_amd64_function *function,
+                                  struct inline_assembly_context *context,
+                                  const struct kefir_ir_inline_assembly_parameter *ir_asm_param,
+                                  struct inline_assembly_parameter_allocation_entry *entry,
+                                  inline_assembly_parameter_type_t param_type, kefir_size_t param_size,
+                                  kefir_bool_t allocate_all) {
+
+    if (ir_asm_param->constraints.x87_stack) {
+        REQUIRE_OK(allocate_x87_stack_parameter(function, context, ir_asm_param));
+    } else if (ir_asm_param->constraints.x86_rh_reg) {
+        REQUIRE_OK(allocate_x86_rh_register(mem, function, context, ir_asm_param));
+    } else if (ir_asm_param->constraints.general_purpose_register &&
+               (((!ir_asm_param->constraints.floating_point_register ||
+                  kefir_list_length(&context->available_sse_registers) == 0) &&
+                 !ir_asm_param->constraints.memory_location) ||
+                ((param_type == INLINE_ASSEMBLY_PARAMETER_SCALAR || param_size <= KEFIR_AMD64_ABI_QWORD) &&
+                 kefir_list_length(&context->available_gp_registers) > 1))) {
+        REQUIRE(param_type != INLINE_ASSEMBLY_PARAMETER_AGGREGATE || param_size <= KEFIR_AMD64_ABI_QWORD,
+                KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Unable to satisfy IR inline assembly constraints"));
+
+        kefir_bool_t hint_present = false;
+        kefir_asm_amd64_xasmgen_register_t hint_reg = KEFIR_AMD64_XASMGEN_REGISTER_RAX;
+        REQUIRE_OK(resolve_allocation_hint(function, context, ir_asm_param, &hint_present, &hint_reg));
+
+        if (allocate_all || hint_present || entry->explicit_register_present) {
+            REQUIRE_OK(allocate_register_parameter(mem, function, context, ir_asm_param, param_type, true));
+        } else {
+            entry->pending_allocation = true;
+        }
+    } else if (ir_asm_param->constraints.floating_point_register &&
+               (!ir_asm_param->constraints.memory_location ||
+                ((param_type == INLINE_ASSEMBLY_PARAMETER_SCALAR || param_size <= 2 * KEFIR_AMD64_ABI_QWORD) &&
+                 kefir_list_length(&context->available_sse_registers) > 1))) {
+        kefir_bool_t hint_present = false;
+        kefir_asm_amd64_xasmgen_register_t hint_reg = KEFIR_AMD64_XASMGEN_REGISTER_RAX;
+        REQUIRE_OK(resolve_allocation_hint(function, context, ir_asm_param, &hint_present, &hint_reg));
+
+        if (allocate_all || hint_present || entry->explicit_register_present) {
+            REQUIRE_OK(allocate_register_parameter(mem, function, context, ir_asm_param, param_type, false));
+        } else {
+            entry->pending_allocation = true;
+        }
+    } else if (ir_asm_param->constraints.memory_location) {
+        if (allocate_all || !(param_type == INLINE_ASSEMBLY_PARAMETER_AGGREGATE ||
+                              ir_asm_param->klass != KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_VALUE)) {
+            REQUIRE_OK(allocate_memory_parameter(mem, function, context, ir_asm_param, param_type));
+        } else {
+            entry->pending_allocation = true;
+        }
+    } else {
+        return KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Unexpected IR inline assembly parameter constraint");
+    }
+    return KEFIR_OK;
+}
+
 static kefir_result_t allocate_parameters(struct kefir_mem *mem, struct kefir_codegen_amd64_function *function,
                                           struct inline_assembly_context *context) {
     REQUIRE_OK(init_available_regs(mem, function, context));
@@ -593,30 +649,9 @@ static kefir_result_t allocate_parameters(struct kefir_mem *mem, struct kefir_co
             direct_input = true;
         }
 
+        entry->pending_allocation = false;
         if (!parameter_immediate) {
-            if (ir_asm_param->constraints.x87_stack) {
-                REQUIRE_OK(allocate_x87_stack_parameter(function, context, ir_asm_param));
-            } else if (ir_asm_param->constraints.x86_rh_reg) {
-                REQUIRE_OK(allocate_x86_rh_register(mem, function, context, ir_asm_param));
-            } else if (ir_asm_param->constraints.general_purpose_register &&
-                       (((!ir_asm_param->constraints.floating_point_register ||
-                          kefir_list_length(&context->available_sse_registers) == 0) &&
-                         !ir_asm_param->constraints.memory_location) ||
-                        ((param_type == INLINE_ASSEMBLY_PARAMETER_SCALAR || param_size <= KEFIR_AMD64_ABI_QWORD) &&
-                         kefir_list_length(&context->available_gp_registers) > 1))) {
-                REQUIRE(param_type != INLINE_ASSEMBLY_PARAMETER_AGGREGATE || param_size <= KEFIR_AMD64_ABI_QWORD,
-                        KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Unable to satisfy IR inline assembly constraints"));
-                REQUIRE_OK(allocate_register_parameter(mem, function, context, ir_asm_param, param_type, true));
-            } else if (ir_asm_param->constraints.floating_point_register &&
-                       (!ir_asm_param->constraints.memory_location ||
-                        ((param_type == INLINE_ASSEMBLY_PARAMETER_SCALAR || param_size <= 2 * KEFIR_AMD64_ABI_QWORD) &&
-                         kefir_list_length(&context->available_sse_registers) > 1))) {
-                REQUIRE_OK(allocate_register_parameter(mem, function, context, ir_asm_param, param_type, false));
-            } else if (ir_asm_param->constraints.memory_location) {
-                REQUIRE_OK(allocate_memory_parameter(mem, function, context, ir_asm_param, param_type));
-            } else {
-                return KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Unexpected IR inline assembly parameter constraint");
-            }
+            REQUIRE_OK(do_allocate(mem, function, context, ir_asm_param, entry, param_type, param_size, false));
         }
 
         entry->parameter_props.size = param_size;
@@ -629,8 +664,29 @@ static kefir_result_t allocate_parameters(struct kefir_mem *mem, struct kefir_co
             entry->parameter_read_props.size = param_read_size;
         }
 
-        if (direct_input && (entry->allocation_type == INLINE_ASSEMBLY_PARAMETER_ALLOCATION_GP_REGISTER ||
-                             entry->allocation_type == INLINE_ASSEMBLY_PARAMETER_ALLOCATION_SSE_REGISTER)) {
+        if (!entry->pending_allocation && direct_input &&
+            (entry->allocation_type == INLINE_ASSEMBLY_PARAMETER_ALLOCATION_GP_REGISTER ||
+             entry->allocation_type == INLINE_ASSEMBLY_PARAMETER_ALLOCATION_SSE_REGISTER)) {
+            REQUIRE_OK(kefir_hashtreeset_add(mem, &context->directly_read_vregs,
+                                             (kefir_hashtreeset_entry_t) entry->allocation_vreg));
+        }
+    }
+
+    for (const struct kefir_list_entry *iter = kefir_list_head(&context->ir_inline_assembly->parameter_list);
+         iter != NULL; kefir_list_next(&iter)) {
+        ASSIGN_DECL_CAST(const struct kefir_ir_inline_assembly_parameter *, ir_asm_param, iter->value);
+
+        struct inline_assembly_parameter_allocation_entry *entry = &context->parameters[ir_asm_param->parameter_id];
+        if (!entry->pending_allocation) {
+            continue;
+        }
+
+        REQUIRE_OK(do_allocate(mem, function, context, ir_asm_param, entry, entry->parameter_props.type,
+                               entry->parameter_props.size, true));
+        entry->pending_allocation = false;
+
+        if (entry->direct_input && (entry->allocation_type == INLINE_ASSEMBLY_PARAMETER_ALLOCATION_GP_REGISTER ||
+                                    entry->allocation_type == INLINE_ASSEMBLY_PARAMETER_ALLOCATION_SSE_REGISTER)) {
             REQUIRE_OK(kefir_hashtreeset_add(mem, &context->directly_read_vregs,
                                              (kefir_hashtreeset_entry_t) entry->allocation_vreg));
         }

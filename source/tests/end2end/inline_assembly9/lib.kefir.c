@@ -33,4 +33,10 @@ float addf(float a, float b) {
     return res;
 }
 
+float addf2(float a, float b) {
+    float res;
+    asm("movaps %1, %0\naddss %2, %0" : "=x"(res) : "x"(a), "x"(b));
+    return res;
+}
+
 #endif

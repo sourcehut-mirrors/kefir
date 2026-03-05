@@ -30,6 +30,7 @@ int main(void) {
         for (float y = 0.0; y < 100.0; y += 0.1) {
             assert(add(x, y) == ((int) x) + (int) y);
             assert(fabs(addf(x, y) - (x + y)) <= 1.0e-5);
+            assert(fabs(addf2(x, y) - (x + y)) <= 1.0e-5);
         }
     }
 #endif
