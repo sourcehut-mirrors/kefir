@@ -12,10 +12,10 @@ add:
 .L__kefir_text_func_add_begin:
     push %rbp
     mov %rsp, %rbp
+    mov %rsi, %rax
     mov %rdi, %rcx
     pushfq
     sub $8, %rsp
-    mov %rsi, %rax
 addq  %rax, (%rcx)
     add $8, %rsp
     popfq
@@ -27,10 +27,10 @@ add2:
 .L__kefir_text_func_add2_begin:
     push %rbp
     mov %rsp, %rbp
+    mov %rsi, %rax
     mov %rdi, %rcx
     pushfq
     sub $8, %rsp
-    mov %rsi, %rax
 addq  %rax, (%rcx)
     add $8, %rsp
     popfq

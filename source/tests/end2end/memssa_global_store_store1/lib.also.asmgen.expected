@@ -59,8 +59,8 @@ test3:
     mov %rdi, %rdx
     lock     cmpxchgl %ecx, (%rdx)
     jnz .L__kefir_func_test3_label3
-    movq y@GOTPCREL(%rip), %rcx
-    movl (%rcx), %eax
+    movq y@GOTPCREL(%rip), %rax
+    movl (%rax), %eax
     movsx %eax, %rax
     ret
 .L__kefir_text_func_test3_end:

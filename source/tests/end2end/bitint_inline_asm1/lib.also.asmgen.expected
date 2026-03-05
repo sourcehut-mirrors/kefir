@@ -22,9 +22,8 @@ test1:
     movb %dil, -2(%rbp)
     movb -2(%rbp), %al
     shl $58, %rax
-    mov %rax, %rdx
-    sar $58, %rdx
-    mov %rdx, %rcx
+    mov %rax, %rcx
+    sar $58, %rcx
 mov %cl, %al
 add $1, %al
     mov %al, -1(%rbp)
@@ -44,9 +43,8 @@ test2:
     movw %di, -4(%rbp)
     movw -4(%rbp), %ax
     shl $50, %rax
-    mov %rax, %rdx
-    sar $50, %rdx
-    mov %rdx, %rcx
+    mov %rax, %rcx
+    sar $50, %rcx
 mov %cx, %ax
 add $1, %ax
     mov %ax, -2(%rbp)
@@ -66,9 +64,8 @@ test3:
     movl %edi, -8(%rbp)
     movl -8(%rbp), %eax
     shl $35, %rax
-    mov %rax, %rdx
-    sar $35, %rdx
-    mov %rdx, %rcx
+    mov %rax, %rcx
+    sar $35, %rcx
 mov %ecx, %eax
 add $1, %eax
     mov %eax, -4(%rbp)
@@ -88,9 +85,8 @@ test4:
     movq %rdi, -16(%rbp)
     movq -16(%rbp), %rax
     shl $4, %rax
-    mov %rax, %rdx
-    sar $4, %rdx
-    mov %rdx, %rcx
+    mov %rax, %rcx
+    sar $4, %rcx
 mov %rcx, %rax
 add $1, %rax
     mov %rax, -8(%rbp)

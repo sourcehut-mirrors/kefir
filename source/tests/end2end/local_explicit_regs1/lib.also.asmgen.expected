@@ -10,12 +10,10 @@ testfn:
 .L__kefir_text_func_testfn_begin:
     push %rbp
     mov %rsp, %rbp
-    mov %rdx, %rcx
-    mov %rsi, %r8
-    mov %rdi, %r9
-    mov %rcx, %rdi
-    mov %r9, %rsi
-    mov %r8, %rdx
+    mov %rsi, %rcx
+    mov %rdi, %rsi
+    mov %rdx, %rdi
+    mov %rcx, %rdx
 call somefn
     pop %rbp
     ret

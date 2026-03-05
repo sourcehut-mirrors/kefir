@@ -19,12 +19,9 @@ discriminant:
     movq -24(%rbp), %xmm0
     movq %xmm0, -32(%rbp)
     movq %xmm0, -48(%rbp)
-    movq -40(%rbp), %xmm0
-    movq -16(%rbp), %xmm2
-    movq -32(%rbp), %xmm3
-    movaps %xmm0, %xmm11
-    movaps %xmm2, %xmm1
-    movaps %xmm3, %xmm7
+    movq -40(%rbp), %xmm11
+    movq -16(%rbp), %xmm1
+    movq -32(%rbp), %xmm7
 mulsd %xmm11, %xmm11
 movdqu %xmm1, %xmm0
 mulsd %xmm7, %xmm0

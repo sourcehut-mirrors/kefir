@@ -92,8 +92,8 @@ get_i64:
 
 get_arr1_el:
 .L__kefir_text_func_get_arr1_el_begin:
-    movsx %esi, %rcx
-    movq 96(%rdi, %rcx, 8), %rax
+    movsx %esi, %rax
+    movq 96(%rdi, %rax, 8), %rax
     ret
 .L__kefir_text_func_get_arr1_el_end:
 

@@ -12,8 +12,7 @@ init:
     mov %rsp, %rbp
     sub $16, %rsp
     movq %rdi, -8(%rbp)
-    movq -8(%rbp), %rcx
-    mov %rcx, %rax
+    movq -8(%rbp), %rax
 movl $1, 0(%rax)
 movl $2, 16(%rax)
 movl $3, 32(%rax)

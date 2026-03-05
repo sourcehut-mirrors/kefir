@@ -126,7 +126,8 @@ kefir_result_t kefir_codegen_target_ir_amd64_transform_dead_code_elimination(
                      res == KEFIR_OK && !has_uses;
                      res = kefir_codegen_target_ir_code_value_next(&value_iter, &value_ref, &value_type)) {
                     if (value_type->kind == KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_INDIRECT ||
-                        value_type->constraint.type == KEFIR_CODEGEN_TARGET_IR_ALLOCATION_REQUIREMENT) {
+                        (value_type->constraint.type == KEFIR_CODEGEN_TARGET_IR_ALLOCATION_REQUIREMENT &&
+                         instr->operation.opcode != code->klass->placeholder_opcode)) {
                         has_uses = true;
                     }
                 }

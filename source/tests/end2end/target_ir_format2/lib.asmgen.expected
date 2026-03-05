@@ -1452,38 +1452,6 @@ test2:
 #            "block_ref": 2,
 #            "code": [
 #                {
-#                    "instr_ref": 21,
-#                    "opcode": "placeholder",
-#                    "parameters": [],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "direct_output",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "general_purpose"
-#                            },
-#                            "allocation": {
-#                                "type": "register",
-#                                "register": "rax"
-#                            },
-#                            "constraint": {
-#                                "type": "requirement",
-#                                "register": "rax"
-#                            },
-#                            "metadata": {
-#                                "value_ref": 10
-#                            }
-#                        }
-#                    ],
-#                    "metadata": {
-#                        "source_location": null,
-#                        "code_ref": null
-#                    }
-#                },
-#                {
 #                    "instr_ref": 23,
 #                    "opcode": "mov",
 #                    "parameters": [

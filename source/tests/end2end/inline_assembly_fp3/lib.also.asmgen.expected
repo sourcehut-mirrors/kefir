@@ -24,10 +24,9 @@ sumall:
     movq -16(%rbp), %r10
     movq -16(%rbp), %r11
     movq -16(%rbp), %rbx
-    movq .L__kefir_func_sumall_label3(%rip), %xmm3
+    movq .L__kefir_func_sumall_label3(%rip), %xmm0
     add $64, %r11
     add $72, %rbx
-    movaps %xmm3, %xmm0
     movq (%rax), %xmm1
     movq 8(%rcx), %xmm2
     movq 16(%rdx), %xmm6

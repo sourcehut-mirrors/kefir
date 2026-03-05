@@ -18,8 +18,7 @@ make_s1:
     mov %rsp, %rbp
     sub $16, %rsp
     movl %edi, -8(%rbp)
-    movl -8(%rbp), %ecx
-    mov %ecx, %eax
+    movl -8(%rbp), %eax
 
     mov %eax, -4(%rbp)
     movl -4(%rbp), %eax
@@ -35,8 +34,7 @@ cast_int:
     sub $16, %rsp
     movq %rdi, -16(%rbp)
     movl $0, -8(%rbp)
-    movq -16(%rbp), %rcx
-    mov %rcx, %rax
+    movq -16(%rbp), %rax
 
     movl %eax, -8(%rbp)
     movl -8(%rbp), %eax
@@ -54,13 +52,10 @@ sum3_one:
     movq %rsi, -24(%rbp)
     movq %rdi, -8(%rbp)
     movq $0, -16(%rbp)
-    movq -8(%rbp), %rax
-    movq -24(%rbp), %r8
-    movq -32(%rbp), %r9
+    movq -8(%rbp), %rsi
+    movq -24(%rbp), %rdi
+    movq -32(%rbp), %rdx
     mov $1, %ecx
-    mov %r9, %rdx
-    mov %rax, %rsi
-    mov %r8, %rdi
 add %rsi, %rcx
 add %rdi, %rdx
 add %rdx, %rcx

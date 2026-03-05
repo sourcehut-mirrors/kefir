@@ -10,32 +10,15 @@ test_syscall:
 .L__kefir_text_func_test_syscall_begin:
     push %rbp
     mov %rsp, %rbp
-    push %rbx
-    push %r12
-    push %r13
-    push %r14
-    push %r15
-    sub $8, %rsp
-    mov 16(%rbp), %r15
-    mov %r9, %r11
-    mov %r8, %rbx
-    mov %rdx, %r12
-    mov %rsi, %r13
-    mov %rdi, %r14
-    mov %r14, %rax
-    mov %r13, %rdi
-    mov %r12, %rsi
+    mov 16(%rbp), %r11
+    mov %rdi, %rax
+    mov %rsi, %rdi
+    mov %rdx, %rsi
     mov %rcx, %rdx
-    mov %rbx, %r10
-    mov %r11, %r8
-    mov %r15, %r9
+    mov %r8, %r10
+    mov %r9, %r8
+    mov %r11, %r9
 call syscall_emu
-    lea -40(%rbp), %rsp
-    pop %r15
-    pop %r14
-    pop %r13
-    pop %r12
-    pop %rbx
     pop %rbp
     ret
 .L__kefir_text_func_test_syscall_end:
