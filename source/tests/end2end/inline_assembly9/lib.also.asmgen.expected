@@ -1,0 +1,31 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global add
+.type add, @function
+.global addf
+.type addf, @function
+
+.section .text
+.L__kefir_text_section_begin:
+add:
+.L__kefir_text_func_add_begin:
+    push %rbp
+    mov %rsp, %rbp
+mov %esi, %eax
+add %edi, %eax
+    pop %rbp
+    ret
+.L__kefir_text_func_add_end:
+
+addf:
+.L__kefir_text_func_addf_begin:
+    push %rbp
+    mov %rsp, %rbp
+addss %xmm1, %xmm0
+    pop %rbp
+    ret
+.L__kefir_text_func_addf_end:
+
+.L__kefir_text_section_end:
+

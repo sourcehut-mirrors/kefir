@@ -161,10 +161,22 @@ static kefir_result_t init_available_regs(struct kefir_mem *mem, struct kefir_co
 }
 
 static kefir_result_t obtain_available_gp_register(struct kefir_mem *mem, struct kefir_codegen_amd64_function *function,
-                                                   struct inline_assembly_context *context,
+                                                   struct inline_assembly_context *context, kefir_bool_t hint_present,
+                                                   kefir_asm_amd64_xasmgen_register_t hint_reg,
                                                    kefir_asm_amd64_xasmgen_register_t *reg) {
     REQUIRE(kefir_list_length(&context->available_gp_registers) > 0,
             KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Unable to satisfy IR inline assembly constraints"));
+
+    for (struct kefir_list_entry *iter = kefir_list_head(&context->available_gp_registers);
+         hint_present && iter != NULL; iter = iter->next) {
+        if ((kefir_asm_amd64_xasmgen_register_t) (kefir_uptr_t) iter->value == hint_reg) {
+            REQUIRE_OK(kefir_list_pop(mem, &context->available_gp_registers, iter));
+            *reg = hint_reg;
+            REQUIRE_OK(kefir_codegen_amd64_stack_frame_use_register(mem, &function->stack_frame, *reg));
+            return KEFIR_OK;
+        }
+    }
+
     *reg =
         (kefir_asm_amd64_xasmgen_register_t) ((kefir_uptr_t) kefir_list_head(&context->available_gp_registers)->value);
     REQUIRE_OK(
@@ -175,15 +187,89 @@ static kefir_result_t obtain_available_gp_register(struct kefir_mem *mem, struct
 
 static kefir_result_t obtain_available_sse_register(struct kefir_mem *mem,
                                                     struct kefir_codegen_amd64_function *function,
-                                                    struct inline_assembly_context *context,
+                                                    struct inline_assembly_context *context, kefir_bool_t hint_present,
+                                                    kefir_asm_amd64_xasmgen_register_t hint_reg,
                                                     kefir_asm_amd64_xasmgen_register_t *reg) {
     REQUIRE(kefir_list_length(&context->available_sse_registers) > 0,
             KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Unable to satisfy IR inline assembly constraints"));
+
+    for (struct kefir_list_entry *iter = kefir_list_head(&context->available_sse_registers);
+         hint_present && iter != NULL; iter = iter->next) {
+        if ((kefir_asm_amd64_xasmgen_register_t) (kefir_uptr_t) iter->value == hint_reg) {
+            REQUIRE_OK(kefir_list_pop(mem, &context->available_sse_registers, iter));
+            *reg = hint_reg;
+            REQUIRE_OK(kefir_codegen_amd64_stack_frame_use_register(mem, &function->stack_frame, *reg));
+            return KEFIR_OK;
+        }
+    }
     *reg =
         (kefir_asm_amd64_xasmgen_register_t) ((kefir_uptr_t) kefir_list_head(&context->available_sse_registers)->value);
     REQUIRE_OK(
         kefir_list_pop(mem, &context->available_sse_registers, kefir_list_head(&context->available_sse_registers)));
     REQUIRE_OK(kefir_codegen_amd64_stack_frame_use_register(mem, &function->stack_frame, *reg));
+    return KEFIR_OK;
+}
+
+static kefir_result_t resolve_preallocation(struct kefir_codegen_amd64_function *function,
+                                            kefir_asmcmp_virtual_register_index_t vreg_idx, kefir_size_t depth,
+                                            kefir_asm_amd64_xasmgen_register_t *preallocation_reg) {
+    REQUIRE(depth > 0, KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find virtual register preallocation"));
+
+    const struct kefir_asmcmp_amd64_register_preallocation *preallocation;
+    kefir_result_t res = kefir_asmcmp_amd64_get_register_preallocation(&function->code, vreg_idx, &preallocation);
+    if (res != KEFIR_NOT_FOUND) {
+        REQUIRE_OK(res);
+
+        if (preallocation != NULL) {
+            if (preallocation->type == KEFIR_ASMCMP_AMD64_REGISTER_PREALLOCATION_REQUIREMENT ||
+                preallocation->type == KEFIR_ASMCMP_AMD64_REGISTER_PREALLOCATION_HINT) {
+                *preallocation_reg = preallocation->reg;
+                return KEFIR_OK;
+            } else if (preallocation->type == KEFIR_ASMCMP_AMD64_REGISTER_PREALLOCATION_SAME_AS) {
+                return resolve_preallocation(function, preallocation->vreg, depth - 1, preallocation_reg);
+            }
+        }
+    }
+    return KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find virtual register preallocation");
+}
+
+static kefir_result_t resolve_allocation_hint(struct kefir_codegen_amd64_function *function,
+                                              struct inline_assembly_context *context,
+                                              const struct kefir_ir_inline_assembly_parameter *ir_asm_param,
+                                              kefir_bool_t *hint_present,
+                                              kefir_asm_amd64_xasmgen_register_t *hint_reg) {
+    const struct kefir_opt_inline_assembly_parameter *opt_parm;
+    REQUIRE_OK(kefir_opt_code_container_inline_assembly_get_parameter(
+        &function->function->code, context->inline_assembly->output_ref, ir_asm_param->parameter_id, &opt_parm));
+    kefir_opt_instruction_ref_t instr_ref = opt_parm->value_ref;
+    if (instr_ref == KEFIR_ID_NONE && opt_parm->location_slot) {
+        instr_ref = opt_parm->location_ref;
+    }
+
+    if (instr_ref != KEFIR_ID_NONE) {
+        struct kefir_opt_instruction_use_iterator use_iter;
+        kefir_result_t res;
+        for (res = kefir_opt_code_container_instruction_use_instr_iter(&function->function->code, instr_ref, &use_iter);
+             res == KEFIR_OK && instr_ref != KEFIR_ID_NONE;
+             res = kefir_opt_code_container_instruction_use_next(&use_iter)) {
+            if (use_iter.use_instr_ref != context->inline_assembly->output_ref) {
+                instr_ref = KEFIR_ID_NONE;
+            }
+        }
+    }
+
+    if (instr_ref != KEFIR_ID_NONE) {
+        kefir_asmcmp_virtual_register_index_t vreg_idx;
+        kefir_result_t res = kefir_codegen_amd64_function_vreg_of(function, instr_ref, &vreg_idx);
+        if (res != KEFIR_NOT_FOUND) {
+            REQUIRE_OK(res);
+            res = resolve_preallocation(function, vreg_idx, 4, hint_reg);
+            if (res != KEFIR_NOT_FOUND) {
+                REQUIRE_OK(res);
+                *hint_present = true;
+            }
+        }
+    }
     return KEFIR_OK;
 }
 
@@ -223,7 +309,11 @@ static kefir_result_t allocate_register_parameter(struct kefir_mem *mem, struct 
             entry->allocation_type = allocation_type;
         }
     } else if (general_purpose) {
-        REQUIRE_OK(obtain_available_gp_register(mem, function, context, &reg));
+        kefir_bool_t hint_present = false;
+        kefir_asm_amd64_xasmgen_register_t hint_reg = KEFIR_AMD64_XASMGEN_REGISTER_RAX;
+        REQUIRE_OK(resolve_allocation_hint(function, context, ir_asm_param, &hint_present, &hint_reg));
+
+        REQUIRE_OK(obtain_available_gp_register(mem, function, context, hint_present, hint_reg, &reg));
         REQUIRE_OK(kefir_asmcmp_virtual_register_new(
             mem, &function->code.context, KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &entry->allocation_vreg));
         REQUIRE_OK(kefir_asmcmp_amd64_produce_virtual_register(mem, &function->code,
@@ -233,7 +323,11 @@ static kefir_result_t allocate_register_parameter(struct kefir_mem *mem, struct 
             kefir_asmcmp_amd64_register_allocation_requirement(mem, &function->code, entry->allocation_vreg, reg));
         entry->allocation_type = INLINE_ASSEMBLY_PARAMETER_ALLOCATION_GP_REGISTER;
     } else {
-        REQUIRE_OK(obtain_available_sse_register(mem, function, context, &reg));
+        kefir_bool_t hint_present = false;
+        kefir_asm_amd64_xasmgen_register_t hint_reg = KEFIR_AMD64_XASMGEN_REGISTER_XMM0;
+        REQUIRE_OK(resolve_allocation_hint(function, context, ir_asm_param, &hint_present, &hint_reg));
+
+        REQUIRE_OK(obtain_available_sse_register(mem, function, context, hint_present, hint_reg, &reg));
         REQUIRE_OK(kefir_asmcmp_virtual_register_new(
             mem, &function->code.context, KEFIR_ASMCMP_VIRTUAL_REGISTER_FLOATING_POINT, &entry->allocation_vreg));
         REQUIRE_OK(kefir_asmcmp_amd64_produce_virtual_register(mem, &function->code,
@@ -258,7 +352,7 @@ static kefir_result_t allocate_memory_parameter(struct kefir_mem *mem, struct ke
     if (param_type == INLINE_ASSEMBLY_PARAMETER_AGGREGATE ||
         ir_asm_param->klass != KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_VALUE) {
         kefir_asm_amd64_xasmgen_register_t reg = 0;
-        REQUIRE_OK(obtain_available_gp_register(mem, function, context, &reg));
+        REQUIRE_OK(obtain_available_gp_register(mem, function, context, false, KEFIR_AMD64_XASMGEN_REGISTER_RAX, &reg));
         REQUIRE_OK(kefir_asmcmp_virtual_register_new(
             mem, &function->code.context, KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &entry->allocation_vreg));
         REQUIRE_OK(
