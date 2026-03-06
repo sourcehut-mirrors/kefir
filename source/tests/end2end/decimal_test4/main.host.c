@@ -43,19 +43,19 @@ _Bool decimal128_eq(_Decimal128 a, _Decimal128 b) {
     return diff < 1 && diff > -1;
 }
 
-#define DECIMAL_TYPE _Decimal32
+#define NUMBER_T _Decimal32
 #define ALG_PREFIX ref_dec32
 #include "./common.h"
 
-#undef DECIMAL_TYPE
+#undef NUMBER_T
 #undef ALG_PREFIX
-#define DECIMAL_TYPE _Decimal64
+#define NUMBER_T _Decimal64
 #define ALG_PREFIX ref_dec64
 #include "./common.h"
 
-#undef DECIMAL_TYPE
+#undef NUMBER_T
 #undef ALG_PREFIX
-#define DECIMAL_TYPE _Decimal128
+#define NUMBER_T _Decimal128
 #define ALG_PREFIX ref_dec128
 #include "./common.h"
 

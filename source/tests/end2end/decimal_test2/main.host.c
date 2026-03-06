@@ -43,32 +43,35 @@ _Bool decimal128_eq(_Decimal128 a, _Decimal128 b) {
 }
 
 #define ENABLE_DECIMAL_TEST
-#define DECIMAL_TYPE _Decimal32
+#define NUMBER_T _Decimal32
 #define ALG_PREFIX ref_dec32
 #include "./common.h"
 
-#undef DECIMAL_TYPE
+#undef NUMBER_T
 #undef ALG_PREFIX
-#define DECIMAL_TYPE _Decimal64
+#define NUMBER_T _Decimal64
 #define ALG_PREFIX ref_dec64
 #include "./common.h"
 
-#undef DECIMAL_TYPE
+#undef NUMBER_T
 #undef ALG_PREFIX
-#define DECIMAL_TYPE _Decimal128
+#define NUMBER_T _Decimal128
 #define ALG_PREFIX ref_dec128
 #include "./common.h"
 
-_Decimal32 CONCAT(test_dec32, _simulate)(int, _Decimal32);
-_Decimal64 CONCAT(test_dec64, _simulate)(int, _Decimal64);
-_Decimal128 CONCAT(test_dec128, _simulate)(int, _Decimal128);
+_Decimal32 CONCAT(test_dec32, _simulate)(unsigned int, _Decimal32, _Decimal32, _Decimal32);
+_Decimal64 CONCAT(test_dec64, _simulate)(unsigned int, _Decimal64, _Decimal64, _Decimal64);
+_Decimal128 CONCAT(test_dec128, _simulate)(unsigned int, _Decimal128, _Decimal128, _Decimal128);
 #endif
 
 int main(void) {
 #ifdef ENABLE_DECIMAL_TEST
-    assert(decimal32_eq(CONCAT(test_dec32, _simulate)(1000, 0.01df), CONCAT(ref_dec32, _simulate)(1000, 0.01df)));
-    assert(decimal64_eq(CONCAT(test_dec64, _simulate)(1000, 0.01df), CONCAT(ref_dec64, _simulate)(1000, 0.01df)));
-    assert(decimal128_eq(CONCAT(test_dec128, _simulate)(1000, 0.01df), CONCAT(ref_dec128, _simulate)(1000, 0.01df)));
+    assert(decimal32_eq(CONCAT(test_dec32, _simulate)(1000, 3.14df, 9.81df, 0.01df),
+                        CONCAT(ref_dec32, _simulate)(1000, 3.14df, 9.81df, 0.01df)));
+    assert(decimal64_eq(CONCAT(test_dec64, _simulate)(1000, 3.14df, 9.81df, 0.01df),
+                        CONCAT(ref_dec64, _simulate)(1000, 3.14df, 9.81df, 0.01df)));
+    assert(decimal128_eq(CONCAT(test_dec128, _simulate)(1000, 3.14df, 9.81df, 0.01df),
+                         CONCAT(ref_dec128, _simulate)(1000, 3.14df, 9.81df, 0.01df)));
 #endif
     return EXIT_SUCCESS;
 }

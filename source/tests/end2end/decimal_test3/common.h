@@ -18,16 +18,9 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-// The code below has been produced with assistance of a large language model.
-// The author disclaims any responsibility with respect to it, and it is
-// provided for a sole purpose of creating a sufficiently diverse and
-// sophisticated test case for differential testing against gcc.
-//
-// In case of any doubts regarding potential copyright infringement, please
-// contact the author immediately via <jevgenij@protopopov.lv>.
-//
-// The code implements simulation of implicit 2D heat equation with Conjugate
-// Gradient solver.
+#ifndef NUMBER_T
+#error "NUMBER_T undefined"
+#endif
 
 #ifdef CONCAT
 #undef CONCAT
@@ -44,220 +37,244 @@
 #define DEC_RAW(x, suf) x##suf
 #define DEC(x) DEC_RAW(x, df)
 
-static DECIMAL_TYPE CONCAT(ALG_PREFIX, _sqrt_approx)(DECIMAL_TYPE x) {
-    if (x <= (DECIMAL_TYPE) 0) {
-        return (DECIMAL_TYPE) 0;
+#define SQRT CONCAT(ALG_PREFIX, _sqrt_approx)
+#define STRUCT_GRID CONCAT(ALG_PREFIX, _Grid)
+#define GRID_T CONCAT(ALG_PREFIX, _Grid_t)
+#define GRID_INIT CONCAT(ALG_PREFIX, _grid_init)
+#define GRID_FREE CONCAT(ALG_PREFIX, _grid_free)
+#define INIT_GAUSSIAN CONCAT(ALG_PREFIX, _initialize_gaussian)
+#define LAPLACIAN_APPLY CONCAT(ALG_PREFIX, _laplacian_apply)
+#define AX CONCAT(ALG_PREFIX, _ax)
+#define DOT CONCAT(ALG_PREFIX, _dot)
+#define NORM CONCAT(ALG_PREFIX, _norm)
+#define CG_SOLVE CONCAT(ALG_PREFIX, _cg_solve)
+#define TIMESTEP_IMPLICIT CONCAT(ALG_PREFIX, _timestep_implicit)
+#define RUN_SIMULATION CONCAT(ALG_PREFIX, _run_simulation)
+
+#define GRID_INDEX(_g, _i, _j) ((_i) * ((unsigned long) (_g)->dimension) + (_j))
+
+typedef struct STRUCT_GRID {
+    NUMBER_T grid_spacing;
+    NUMBER_T *field;
+    NUMBER_T *rhs_vector;
+    unsigned long dimension;
+} GRID_T;
+
+static inline NUMBER_T SQRT(NUMBER_T x) {
+    if (x <= (NUMBER_T) 0) {
+        return (NUMBER_T) 0;
     }
-    DECIMAL_TYPE g = x * (DECIMAL_TYPE) 0.5 + (DECIMAL_TYPE) 0.5;
-    for (int i = 0; i < 10; ++i) {
-        g = (g + x / g) * (DECIMAL_TYPE) 0.5;
+#define SQRT_PRECISION 32
+    NUMBER_T estimate = x * 0.5df + 0.5df;
+    for (int i = 0; i < SQRT_PRECISION; i++) {
+        estimate = 0.5df * (estimate + x / estimate);
     }
-    return g;
+    return estimate;
+#undef SQRT_PRECISION
 }
 
-typedef struct CONCAT(ALG_PREFIX, _Grid_t) {
-    unsigned long N;
-    DECIMAL_TYPE hx;
-    DECIMAL_TYPE inv_h2;
-    DECIMAL_TYPE *u;
-    DECIMAL_TYPE *b;
-} CONCAT(ALG_PREFIX, _Grid_t);
+static inline NUMBER_T DOT(const NUMBER_T *a, const NUMBER_T *b, unsigned long length) {
+    NUMBER_T sum = 0;
+    for (unsigned long i = 0; i < length; i++) {
+        sum += a[i] * b[i];
+    }
+    return sum;
+}
 
-static void CONCAT(ALG_PREFIX, _grid_init)(CONCAT(ALG_PREFIX, _Grid_t) * g, unsigned long N) {
-    g->N = N;
-    DECIMAL_TYPE h = ((DECIMAL_TYPE) 1) / (DECIMAL_TYPE) (N + 1);
-    g->hx = h;
-    g->inv_h2 = ((DECIMAL_TYPE) 1) / (h * h);
-    g->u = calloc(N * N, sizeof(DECIMAL_TYPE));
-    g->b = calloc(N * N, sizeof(DECIMAL_TYPE));
-    if (!g->u || !g->b) {
+static inline NUMBER_T NORM(const NUMBER_T *arr, unsigned long len) {
+    return SQRT(DOT(arr, arr, len));
+}
+
+static inline void GRID_INIT(GRID_T *grid, unsigned long dimesion) {
+    const NUMBER_T grid_spacing = ((NUMBER_T) 1) / (NUMBER_T) (dimesion + 1);
+
+    grid->dimension = dimesion;
+    grid->grid_spacing = grid_spacing;
+    grid->field = calloc(dimesion * dimesion, sizeof(NUMBER_T));
+    grid->rhs_vector = calloc(dimesion * dimesion, sizeof(NUMBER_T));
+    if (grid->field == (void *) 0 || grid->rhs_vector == (void *) 0) {
         abort();
     }
 }
 
-static void CONCAT(ALG_PREFIX, _grid_free)(CONCAT(ALG_PREFIX, _Grid_t) * g) {
-    free(g->u);
-    free(g->b);
-    g->u = (g->b = 0);
+static inline void GRID_FREE(GRID_T *g) {
+    free(g->field);
+    free(g->rhs_vector);
+    g->field = ((void *) 0);
+    g->rhs_vector = ((void *) 0);
 }
 
-static inline unsigned long CONCAT(ALG_PREFIX, _idx)(const CONCAT(ALG_PREFIX, _Grid_t) * g, unsigned long i,
-                                                     unsigned long j) {
-    return i * g->N + j;
+#define TOTAL_ENERGY(_g) (NORM((_g)->field, (_g)->dimension * (_g)->dimension))
+
+static void INIT_GAUSSIAN(GRID_T *grid, NUMBER_T amplitude) {
+#define CX ((NUMBER_T) 0.5)
+#define CY ((NUMBER_T) 0.5)
+#define SIGMA ((NUMBER_T) 0.08)
+#define SIGMA_SQR (SIGMA * SIGMA)
+
+    for (unsigned long i = 0; i < grid->dimension; ++i) {
+        for (unsigned long j = 0; j < grid->dimension; ++j) {
+            const NUMBER_T x = ((NUMBER_T) (i + 1)) * grid->grid_spacing;
+            const NUMBER_T y = ((NUMBER_T) (j + 1)) * grid->grid_spacing;
+            const NUMBER_T dx = x - CX;
+            const NUMBER_T dy = y - CY;
+            const NUMBER_T r2 = dx * dx + dy * dy;
+            const NUMBER_T denominator = ((NUMBER_T) 1) + r2 / ((NUMBER_T) 2 * SIGMA_SQR);
+            const NUMBER_T value = amplitude / denominator;
+            grid->field[GRID_INDEX(grid, i, j)] = value;
+            grid->rhs_vector[GRID_INDEX(grid, i, j)] = 0;
+        }
+    }
+
+#undef CX
+#undef CY
+#undef SIGMA
+#undef SIGMA_SQR
 }
 
-static void CONCAT(ALG_PREFIX, _initialize_gaussian)(CONCAT(ALG_PREFIX, _Grid_t) * g, DECIMAL_TYPE amplitude) {
-    unsigned long N = g->N;
-    DECIMAL_TYPE h = g->hx;
-    DECIMAL_TYPE cx = (DECIMAL_TYPE) 0.5;
-    DECIMAL_TYPE cy = (DECIMAL_TYPE) 0.5;
-    DECIMAL_TYPE sigma = (DECIMAL_TYPE) 0.08;
-
-    for (unsigned long i = 0; i < N; ++i) {
-        for (unsigned long j = 0; j < N; ++j) {
-            DECIMAL_TYPE x = ((DECIMAL_TYPE) (i + 1)) * h;
-            DECIMAL_TYPE y = ((DECIMAL_TYPE) (j + 1)) * h;
-            DECIMAL_TYPE dx = x - cx;
-            DECIMAL_TYPE dy = y - cy;
-            DECIMAL_TYPE r2 = dx * dx + dy * dy;
-            DECIMAL_TYPE denom = ((DECIMAL_TYPE) 1) + r2 / ((DECIMAL_TYPE) 2 * sigma * sigma);
-            DECIMAL_TYPE value = amplitude / denom;
-            g->u[CONCAT(ALG_PREFIX, _idx)(g, i, j)] = value;
-            g->b[CONCAT(ALG_PREFIX, _idx)(g, i, j)] = (DECIMAL_TYPE) 0;
+static void LAPLACIAN_APPLY(const GRID_T *grid, const NUMBER_T *p, NUMBER_T *out) {
+    for (unsigned long i = 0; i < grid->dimension; i++) {
+        for (unsigned long j = 0; j < grid->dimension; j++) {
+#define ZERO ((NUMBER_T) 0)
+            const NUMBER_T center = p[GRID_INDEX(grid, i, j)];
+            const NUMBER_T up = i > 0 ? p[GRID_INDEX(grid, i - 1, j)] : ZERO;
+            const NUMBER_T down = i + 1 < grid->dimension ? p[GRID_INDEX(grid, i + 1, j)] : ZERO;
+            const NUMBER_T left = j > 0 ? p[GRID_INDEX(grid, i, j - 1)] : ZERO;
+            const NUMBER_T right = j + 1 < grid->dimension ? p[GRID_INDEX(grid, i, j + 1)] : ZERO;
+#undef ZERO
+#define CENTER_WEIGHT ((NUMBER_T) 4)
+            out[GRID_INDEX(grid, i, j)] =
+                (up + down + left + right - CENTER_WEIGHT * center) / (grid->grid_spacing * grid->grid_spacing);
+#undef CENTER_WEIGHT
         }
     }
 }
 
-static void CONCAT(ALG_PREFIX, _laplacian_apply)(const CONCAT(ALG_PREFIX, _Grid_t) * g, const DECIMAL_TYPE *p,
-                                                 DECIMAL_TYPE *out) {
-    unsigned long N = g->N;
-    DECIMAL_TYPE inv_h2 = g->inv_h2;
-
-    for (unsigned long i = 0; i < N; i++) {
-        for (unsigned long j = 0; j < N; j++) {
-            DECIMAL_TYPE center = p[CONCAT(ALG_PREFIX, _idx)(g, i, j)];
-            DECIMAL_TYPE up = (i > 0) ? p[CONCAT(ALG_PREFIX, _idx)(g, i - 1, j)] : (DECIMAL_TYPE) 0;
-            DECIMAL_TYPE down = (i + 1 < N) ? p[CONCAT(ALG_PREFIX, _idx)(g, i + 1, j)] : (DECIMAL_TYPE) 0;
-            DECIMAL_TYPE left = (j > 0) ? p[CONCAT(ALG_PREFIX, _idx)(g, i, j - 1)] : (DECIMAL_TYPE) 0;
-            DECIMAL_TYPE right = (j + 1 < N) ? p[CONCAT(ALG_PREFIX, _idx)(g, i, j + 1)] : (DECIMAL_TYPE) 0;
-            out[CONCAT(ALG_PREFIX, _idx)(g, i, j)] = (up + down + left + right - (DECIMAL_TYPE) 4 * center) * inv_h2;
-        }
-    }
-}
-
-static void CONCAT(ALG_PREFIX, _ax)(const CONCAT(ALG_PREFIX, _Grid_t) * g, const DECIMAL_TYPE *x, DECIMAL_TYPE *y,
-                                    DECIMAL_TYPE dt) {
-    unsigned long N = g->N;
-    DECIMAL_TYPE *tmp = malloc(N * N * sizeof(DECIMAL_TYPE));
-    if (!tmp) {
+static void AX(const GRID_T *grid, const NUMBER_T *x, NUMBER_T *y, NUMBER_T delta) {
+    const unsigned long area = grid->dimension * grid->dimension;
+    NUMBER_T *const temporary = malloc(area * sizeof(NUMBER_T));
+    if (temporary == (void *) 0) {
         abort();
     }
-    CONCAT(ALG_PREFIX, _laplacian_apply)(g, x, tmp);
-    for (unsigned long k = 0; k < N * N; ++k) {
-        y[k] = x[k] - dt * tmp[k];
+    LAPLACIAN_APPLY(grid, x, temporary);
+    for (unsigned long k = 0; k < area; k++) {
+        y[k] = x[k] - delta * temporary[k];
     }
-    free(tmp);
+    free(temporary);
 }
 
-static DECIMAL_TYPE CONCAT(ALG_PREFIX, _dot)(const DECIMAL_TYPE *a, const DECIMAL_TYPE *b, unsigned long n) {
-    DECIMAL_TYPE s = 0;
-    for (unsigned long i = 0; i < n; i++) {
-        s += a[i] * b[i];
-    }
-    return s;
-}
-
-static DECIMAL_TYPE CONCAT(ALG_PREFIX, _norm)(const DECIMAL_TYPE *a, unsigned long n) {
-    DECIMAL_TYPE s = CONCAT(ALG_PREFIX, _dot)(a, a, n);
-    return CONCAT(ALG_PREFIX, _sqrt_approx)(s);
-}
-
-static int CONCAT(ALG_PREFIX, _cg_solve)(const CONCAT(ALG_PREFIX, _Grid_t) * g, DECIMAL_TYPE *x, const DECIMAL_TYPE *b,
-                                         DECIMAL_TYPE dt, int max_iter, DECIMAL_TYPE tol) {
-    unsigned long n = g->N * g->N;
-    DECIMAL_TYPE *r = malloc(n * sizeof(DECIMAL_TYPE));
-    DECIMAL_TYPE *p = malloc(n * sizeof(DECIMAL_TYPE));
-    DECIMAL_TYPE *Ap = malloc(n * sizeof(DECIMAL_TYPE));
-    if (!r || !p || !Ap) {
+static void CG_SOLVE(const GRID_T *grid, NUMBER_T *solution, const NUMBER_T *rhs_vector, NUMBER_T delta,
+                     unsigned int max_iter, NUMBER_T tolerance) {
+    const unsigned long area = grid->dimension * grid->dimension;
+    NUMBER_T *const residual = malloc(area * sizeof(NUMBER_T));
+    NUMBER_T *const search_dir_vector = malloc(area * sizeof(NUMBER_T));
+    NUMBER_T *const Ap = malloc(area * sizeof(NUMBER_T));
+    if (residual == (void *) 0 || search_dir_vector == (void *) 0 || Ap == (void *) 0) {
         abort();
     }
 
-    CONCAT(ALG_PREFIX, _ax)(g, x, Ap, dt);
-    for (unsigned long i = 0; i < n; i++) {
-        r[i] = b[i] - Ap[i];
+    AX(grid, solution, Ap, delta);
+    for (unsigned long i = 0; i < area; i++) {
+        residual[i] = rhs_vector[i] - Ap[i];
+        search_dir_vector[i] = residual[i];
     }
 
-    for (unsigned long i = 0; i < n; ++i) {
-        p[i] = r[i];
-    }
-
-    DECIMAL_TYPE rsold = CONCAT(ALG_PREFIX, _dot)(r, r, n);
-    DECIMAL_TYPE rs0 = rsold;
-    if (rsold == (DECIMAL_TYPE) 0) {
-        free(r);
-        free(p);
+    NUMBER_T rsold = DOT(residual, residual, area);
+    const NUMBER_T rs0 = rsold;
+    if (rsold == (NUMBER_T) 0) {
+        free(residual);
+        free(search_dir_vector);
         free(Ap);
-        return 0;
+        return;
     }
 
-    int iter = 0;
-    for (iter = 0; iter < max_iter; ++iter) {
-        CONCAT(ALG_PREFIX, _ax)(g, p, Ap, dt);
-        DECIMAL_TYPE alpha = rsold / CONCAT(ALG_PREFIX, _dot)(p, Ap, n);
+    for (unsigned int iter = 0; iter < max_iter; iter++) {
+        AX(grid, search_dir_vector, Ap, delta);
+        const NUMBER_T alpha = rsold / DOT(search_dir_vector, Ap, area);
 
-        for (unsigned long i = 0; i < n; ++i) {
-            x[i] += alpha * p[i];
+        for (unsigned long i = 0; i < area; i++) {
+            solution[i] += alpha * search_dir_vector[i];
         }
-        for (unsigned long i = 0; i < n; ++i) {
-            r[i] -= alpha * Ap[i];
+        for (unsigned long i = 0; i < area; i++) {
+            residual[i] -= alpha * Ap[i];
         }
 
-        DECIMAL_TYPE rsnew = CONCAT(ALG_PREFIX, _dot)(r, r, n);
-        DECIMAL_TYPE rel = CONCAT(ALG_PREFIX, _sqrt_approx)((rsnew) / rs0);
-        if (rel <= tol) {
+        const NUMBER_T rsnew = DOT(residual, residual, area);
+        const NUMBER_T rel = SQRT(rsnew / rs0);
+        if (rel <= tolerance) {
             break;
         }
-        DECIMAL_TYPE beta = rsnew / rsold;
-        for (unsigned long i = 0; i < n; ++i) {
-            p[i] = r[i] + beta * p[i];
+        const NUMBER_T beta = rsnew / rsold;
+        for (unsigned long i = 0; i < area; i++) {
+            search_dir_vector[i] = residual[i] + beta * search_dir_vector[i];
         }
         rsold = rsnew;
     }
 
-    free(r);
-    free(p);
+    free(residual);
+    free(search_dir_vector);
     free(Ap);
-    return iter;
 }
 
-static void CONCAT(ALG_PREFIX, _timestep_implicit)(CONCAT(ALG_PREFIX, _Grid_t) * g, DECIMAL_TYPE dt, int cg_maxit,
-                                                   DECIMAL_TYPE cg_tol) {
-    unsigned long n = g->N * g->N;
+static void TIMESTEP_IMPLICIT(GRID_T *grid, NUMBER_T delta, int max_iterations, NUMBER_T tolerance) {
+    unsigned long area = grid->dimension * grid->dimension;
 
-    DECIMAL_TYPE *rhs = malloc(n * sizeof(DECIMAL_TYPE));
-    DECIMAL_TYPE *u_new = malloc(n * sizeof(DECIMAL_TYPE));
-    if (!rhs || !u_new) {
+    NUMBER_T *const rhs_vector_new = malloc(area * sizeof(NUMBER_T));
+    NUMBER_T *const field_new = malloc(area * sizeof(NUMBER_T));
+    if (rhs_vector_new == (void *) 0 || field_new == (void *) 0) {
         abort();
     }
 
-    for (unsigned long i = 0; i < n; ++i) {
-        rhs[i] = g->u[i];
-        u_new[i] = g->u[i];
+    for (unsigned long i = 0; i < area; i++) {
+        rhs_vector_new[i] = grid->field[i];
+        field_new[i] = grid->field[i];
     }
 
-    int iters = CONCAT(ALG_PREFIX, _cg_solve)(g, u_new, rhs, dt, cg_maxit, cg_tol);
-    (void) iters;
+    CG_SOLVE(grid, field_new, rhs_vector_new, delta, max_iterations, tolerance);
+    free(rhs_vector_new);
 
-    for (unsigned long i = 0; i < n; ++i) {
-        g->u[i] = u_new[i];
+    for (unsigned long i = 0; i < area; i++) {
+        grid->field[i] = field_new[i];
     }
 
-    free(rhs);
-    free(u_new);
+    free(field_new);
 }
 
-static DECIMAL_TYPE CONCAT(ALG_PREFIX, _total_energy)(const CONCAT(ALG_PREFIX, _Grid_t) * g) {
-    unsigned long n = g->N * g->N;
-    return CONCAT(ALG_PREFIX, _norm)(g->u, n);
-}
+NUMBER_T RUN_SIMULATION(unsigned long dimension, unsigned int steps, NUMBER_T delta, int max_iterations,
+                        NUMBER_T tolerance) {
+    GRID_T grid;
+    GRID_INIT(&grid, dimension);
+    INIT_GAUSSIAN(&grid, DEC(1.0));
 
-DECIMAL_TYPE CONCAT(ALG_PREFIX, _run_simulation)(unsigned long N, int steps, DECIMAL_TYPE dt, int cg_maxit,
-                                                 DECIMAL_TYPE cg_tol) {
-    CONCAT(ALG_PREFIX, _Grid_t) grid;
-    CONCAT(ALG_PREFIX, _grid_init)(&grid, N);
-    CONCAT(ALG_PREFIX, _initialize_gaussian)(&grid, DEC(1.0));
-
-    for (int s = 0; s < steps; s++) {
-        DECIMAL_TYPE adaptive_tol = cg_tol;
-        if (s < steps / 3) {
-            adaptive_tol = cg_tol * (DECIMAL_TYPE) 10;
-        } else if (s < 2 * steps / 3) {
-            adaptive_tol = cg_tol * (DECIMAL_TYPE) 2;
+    for (unsigned int i = 0; i < steps; i++) {
+        NUMBER_T adaptive_tolerance;
+        if (i < steps / 3) {
+            adaptive_tolerance = tolerance * (NUMBER_T) 10;
+        } else if (i < 2 * steps / 3) {
+            adaptive_tolerance = tolerance * (NUMBER_T) 2;
+        } else {
+            adaptive_tolerance = tolerance;
         }
-        CONCAT(ALG_PREFIX, _timestep_implicit)(&grid, dt, cg_maxit, adaptive_tol);
+        TIMESTEP_IMPLICIT(&grid, delta, max_iterations, adaptive_tolerance);
     }
 
-    DECIMAL_TYPE energy = CONCAT(ALG_PREFIX, _total_energy)(&grid);
-    CONCAT(ALG_PREFIX, _grid_free)(&grid);
+    const NUMBER_T energy = TOTAL_ENERGY(&grid);
+    GRID_FREE(&grid);
     return energy;
 }
+
+#undef SQRT
+#undef STRUCT_GRID
+#undef GRID_T
+#undef GRID_INIT
+#undef GRID_FREE
+#undef GRID_INDEX
+#undef INIT_GAUSSIAN
+#undef LAPLACIAN_APPLY
+#undef AX
+#undef DOT
+#undef NORM
+#undef CG_SOLVE
+#undef TIMESTEP_IMPLICIT
+#undef TOTAL_ENERGY
+#undef RUN_SIMULATION

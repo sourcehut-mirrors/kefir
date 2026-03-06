@@ -18,18 +18,18 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#line __LINE__ "decimal_test1"
+#line __LINE__ "decimal_test2"
 
 #ifdef __KEFIRCC_DECIMAL_SUPPORT__
-#define DECIMAL_TYPE _Decimal32
+#define NUMBER_T _Decimal32
 #define ALG_PREFIX test_dec32
 #include "./common.h"
 
-#define DECIMAL_TYPE _Decimal64
+#define NUMBER_T _Decimal64
 #define ALG_PREFIX test_dec64
 #include "./common.h"
 
-#define DECIMAL_TYPE _Decimal128
+#define NUMBER_T _Decimal128
 #define ALG_PREFIX test_dec128
 #include "./common.h"
 #endif

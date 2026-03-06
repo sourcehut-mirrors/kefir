@@ -18,17 +18,9 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-// The code below has been produced with assistance of a large language model.
-// The author disclaims any responsibility with respect to it, and it is
-// provided for a sole purpose of creating a sufficiently diverse and
-// sophisticated test case for differential testing against gcc.
-//
-// In case of any doubts regarding potential copyright infringement, please
-// contact the author immediately via <jevgenij@protopopov.lv>.
-//
-// The code implements Simple 2-body gravitational attraction in 2D, with RK4
-// integration.
-//
+#ifndef NUMBER_T
+#error "NUMBER_T undefined"
+#endif
 
 #ifdef CONCAT
 #undef CONCAT
@@ -41,104 +33,134 @@
 #define CONCAT2(a, b) a##b
 #define CONCAT(a, b) CONCAT2(a, b)
 
-typedef struct CONCAT(ALG_PREFIX, _vec2) {
-    DECIMAL_TYPE x;
-    DECIMAL_TYPE y;
-} CONCAT(ALG_PREFIX, _vec2_t);
+#define STRUCT_VEC2 CONCAT(ALG_PREFIX, _vec2)
+#define VEC2_T CONCAT(ALG_PREFIX, _vec2_t)
+#define STRUCT_BODY CONCAT(ALG_PREFIX, _body)
+#define BODY_T CONCAT(ALG_PREFIX, _body_t)
+#define ADD_VECTORS CONCAT(ALG_PREFIX, _add_vectors)
+#define SUB_VECTORS CONCAT(ALG_PREFIX, _sub_vectors)
+#define SCALE_VECTOR CONCAT(ALG_PREFIX, _scale_vector)
+#define SQRT CONCAT(ALG_PREFIX, _sqrt)
+#define GRAVITY_ACCELERATION CONCAT(ALG_PREFIX, _gravity_acceleration)
+#define RK4_STEP CONCAT(ALG_PREFIX, _rk4_step)
+#define SIMULATE CONCAT(ALG_PREFIX, _simulate)
 
-typedef struct CONCAT(ALG_PREFIX, _body) {
-    CONCAT(ALG_PREFIX, _vec2_t) pos;
-    CONCAT(ALG_PREFIX, _vec2_t) vel;
-    DECIMAL_TYPE mass;
-} CONCAT(ALG_PREFIX, _body_t);
+#define EPSILON 1.0e-10df
 
-static inline CONCAT(ALG_PREFIX, _vec2_t)
-    CONCAT(ALG_PREFIX, _addv)(CONCAT(ALG_PREFIX, _vec2_t) a, CONCAT(ALG_PREFIX, _vec2_t) b) {
-    return (CONCAT(ALG_PREFIX, _vec2_t)) {a.x + b.x, a.y + b.y};
+typedef struct STRUCT_VEC2 {
+    NUMBER_T x;
+    NUMBER_T y;
+} VEC2_T;
+
+typedef struct STRUCT_BODY {
+    VEC2_T pos;
+    VEC2_T vel;
+    NUMBER_T mass;
+} BODY_T;
+
+static inline VEC2_T ADD_VECTORS(VEC2_T a, VEC2_T b) {
+    return (VEC2_T) {.x = a.x + b.x, .y = a.y + b.y};
 }
 
-static inline CONCAT(ALG_PREFIX, _vec2_t)
-    CONCAT(ALG_PREFIX, _subv)(CONCAT(ALG_PREFIX, _vec2_t) a, CONCAT(ALG_PREFIX, _vec2_t) b) {
-    return (CONCAT(ALG_PREFIX, _vec2_t)) {a.x - b.x, a.y - b.y};
+static inline VEC2_T SUB_VECTORS(VEC2_T a, VEC2_T b) {
+    return (VEC2_T) {.x = a.x - b.x, .y = a.y - b.y};
 }
 
-static inline CONCAT(ALG_PREFIX, _vec2_t) CONCAT(ALG_PREFIX, _mulv)(CONCAT(ALG_PREFIX, _vec2_t) a, DECIMAL_TYPE s) {
-    return (CONCAT(ALG_PREFIX, _vec2_t)) {a.x * s, a.y * s};
+static inline VEC2_T SCALE_VECTOR(VEC2_T a, NUMBER_T scale) {
+    return (VEC2_T) {.x = a.x * scale, .y = a.y * scale};
 }
 
-DECIMAL_TYPE CONCAT(ALG_PREFIX, _sqrt_approx)(DECIMAL_TYPE x) {
-    DECIMAL_TYPE g = x * 0.5df + 0.5df;
-    for (int i = 0; i < 6; i++) {
-        g = 0.5df * (g + x / g);
+static inline NUMBER_T SQRT(NUMBER_T x) {
+    if (x <= (NUMBER_T) 0) {
+        return (NUMBER_T) 0;
     }
-    return g;
+#define SQRT_PRECISION 32
+    NUMBER_T estimate = x * 0.5df + 0.5df;
+    for (int i = 0; i < SQRT_PRECISION; i++) {
+        estimate = 0.5df * (estimate + x / estimate);
+    }
+    return estimate;
+#undef SQRT_PRECISION
 }
 
-CONCAT(ALG_PREFIX, _vec2_t)
-CONCAT(ALG_PREFIX, _grav_accel)(CONCAT(ALG_PREFIX, _body_t) b1, CONCAT(ALG_PREFIX, _body_t) b2, DECIMAL_TYPE G) {
-    CONCAT(ALG_PREFIX, _vec2_t) r = CONCAT(ALG_PREFIX, _subv)(b2.pos, b1.pos);
-    DECIMAL_TYPE dist2 = r.x * r.x + r.y * r.y + 1.0e-10df;
-    DECIMAL_TYPE inv_dist3 = 1.0df / (dist2 * CONCAT(ALG_PREFIX, _sqrt_approx)(dist2));
-    DECIMAL_TYPE factor = G * b2.mass * inv_dist3;
-    return CONCAT(ALG_PREFIX, _mulv)(r, factor);
+static VEC2_T GRAVITY_ACCELERATION(BODY_T body1, BODY_T body2, NUMBER_T G) {
+    const VEC2_T diff = SUB_VECTORS(body2.pos, body1.pos);
+    const NUMBER_T distance = diff.x * diff.x + diff.y * diff.y + EPSILON;
+    const NUMBER_T distance_impact = 1.0df / (distance * SQRT(distance));
+    const NUMBER_T factor = G * body2.mass * distance_impact;
+    return SCALE_VECTOR(diff, factor);
 }
 
-void CONCAT(ALG_PREFIX, _rk4_step)(CONCAT(ALG_PREFIX, _body_t) * a, CONCAT(ALG_PREFIX, _body_t) * b, DECIMAL_TYPE G,
-                                   DECIMAL_TYPE dt) {
-    CONCAT(ALG_PREFIX, _vec2_t) a0 = CONCAT(ALG_PREFIX, _grav_accel)(*a, *b, G);
-    CONCAT(ALG_PREFIX, _vec2_t) b0 = CONCAT(ALG_PREFIX, _grav_accel)(*b, *a, G);
+static void RK4_STEP(BODY_T *a, BODY_T *b, NUMBER_T G, NUMBER_T delta) {
+    const VEC2_T a_acc1 = GRAVITY_ACCELERATION(*a, *b, G);
+    const VEC2_T b_acc1 = GRAVITY_ACCELERATION(*b, *a, G);
 
-    CONCAT(ALG_PREFIX, _vec2_t) a1_v = CONCAT(ALG_PREFIX, _addv)(a->vel, CONCAT(ALG_PREFIX, _mulv)(a0, dt * 0.5df));
-    CONCAT(ALG_PREFIX, _vec2_t) b1_v = CONCAT(ALG_PREFIX, _addv)(b->vel, CONCAT(ALG_PREFIX, _mulv)(b0, dt * 0.5df));
+#define SCALE 0.5df
+    const VEC2_T a_velocity1 = ADD_VECTORS(a->vel, SCALE_VECTOR(a_acc1, delta * SCALE));
+    const VEC2_T b_velocity1 = ADD_VECTORS(b->vel, SCALE_VECTOR(b_acc1, delta * SCALE));
 
-    CONCAT(ALG_PREFIX, _vec2_t) a1_p = CONCAT(ALG_PREFIX, _addv)(a->pos, CONCAT(ALG_PREFIX, _mulv)(a->vel, dt * 0.5df));
-    CONCAT(ALG_PREFIX, _vec2_t) b1_p = CONCAT(ALG_PREFIX, _addv)(b->pos, CONCAT(ALG_PREFIX, _mulv)(b->vel, dt * 0.5df));
+    const VEC2_T a_position1 = ADD_VECTORS(a->pos, SCALE_VECTOR(a->vel, delta * SCALE));
+    const VEC2_T b_position1 = ADD_VECTORS(b->pos, SCALE_VECTOR(b->vel, delta * SCALE));
+#undef SCALE
 
-    CONCAT(ALG_PREFIX, _body_t) a_tmp = {a1_p, a1_v, a->mass};
-    CONCAT(ALG_PREFIX, _body_t) b_tmp = {b1_p, b1_v, b->mass};
+    const BODY_T a_body1 = {.pos = a_position1, .vel = a_velocity1, .mass = a->mass};
 
-    CONCAT(ALG_PREFIX, _vec2_t) a2 = CONCAT(ALG_PREFIX, _grav_accel)(a_tmp, b_tmp, G);
-    CONCAT(ALG_PREFIX, _vec2_t) b2 = CONCAT(ALG_PREFIX, _grav_accel)(b_tmp, a_tmp, G);
+    const BODY_T b_body1 = {.pos = b_position1, .vel = b_velocity1, .mass = b->mass};
 
-    CONCAT(ALG_PREFIX, _vec2_t) a3_v = CONCAT(ALG_PREFIX, _addv)(a->vel, CONCAT(ALG_PREFIX, _mulv)(a2, dt));
-    CONCAT(ALG_PREFIX, _vec2_t) b3_v = CONCAT(ALG_PREFIX, _addv)(b->vel, CONCAT(ALG_PREFIX, _mulv)(b2, dt));
+    const VEC2_T a_acc2 = GRAVITY_ACCELERATION(a_body1, b_body1, G);
+    const VEC2_T b_acc2 = GRAVITY_ACCELERATION(b_body1, a_body1, G);
 
-    CONCAT(ALG_PREFIX, _vec2_t) a3_p = CONCAT(ALG_PREFIX, _addv)(a->pos, CONCAT(ALG_PREFIX, _mulv)(a->vel, dt));
-    CONCAT(ALG_PREFIX, _vec2_t) b3_p = CONCAT(ALG_PREFIX, _addv)(b->pos, CONCAT(ALG_PREFIX, _mulv)(b->vel, dt));
+    const VEC2_T a_velocity2 = ADD_VECTORS(a->vel, SCALE_VECTOR(a_acc2, delta));
+    const VEC2_T b_velocity2 = ADD_VECTORS(b->vel, SCALE_VECTOR(b_acc2, delta));
 
-    CONCAT(ALG_PREFIX, _vec2_t)
-    a_acc = CONCAT(ALG_PREFIX, _mulv)(
-        CONCAT(ALG_PREFIX, _addv)(
-            CONCAT(ALG_PREFIX, _addv)(a0, CONCAT(ALG_PREFIX, _mulv)(a2, 2.0df)),
-            CONCAT(ALG_PREFIX, _grav_accel)((CONCAT(ALG_PREFIX, _body_t)) {a3_p, a3_v, a->mass},
-                                            (CONCAT(ALG_PREFIX, _body_t)) {b3_p, b3_v, b->mass}, G)),
-        1.0df / 4.0df);
+    const VEC2_T a_position2 = ADD_VECTORS(a->pos, SCALE_VECTOR(a->vel, delta));
+    const VEC2_T b_position2 = ADD_VECTORS(b->pos, SCALE_VECTOR(b->vel, delta));
 
-    CONCAT(ALG_PREFIX, _vec2_t)
-    b_acc = CONCAT(ALG_PREFIX, _mulv)(
-        CONCAT(ALG_PREFIX, _addv)(
-            CONCAT(ALG_PREFIX, _addv)(b0, CONCAT(ALG_PREFIX, _mulv)(b2, 2.0df)),
-            CONCAT(ALG_PREFIX, _grav_accel)((CONCAT(ALG_PREFIX, _body_t)) {b3_p, b3_v, b->mass},
-                                            (CONCAT(ALG_PREFIX, _body_t)) {a3_p, a3_v, a->mass}, G)),
-        1.0df / 4.0df);
+    const BODY_T a_body2 = {.pos = a_position2, .vel = a_velocity2, .mass = a->mass};
 
-    a->vel = CONCAT(ALG_PREFIX, _addv)(a->vel, CONCAT(ALG_PREFIX, _mulv)(a_acc, dt));
-    b->vel = CONCAT(ALG_PREFIX, _addv)(b->vel, CONCAT(ALG_PREFIX, _mulv)(b_acc, dt));
+    const BODY_T b_body2 = {.pos = b_position2, .vel = b_velocity2, .mass = b->mass};
 
-    a->pos = CONCAT(ALG_PREFIX, _addv)(a->pos, CONCAT(ALG_PREFIX, _mulv)(a->vel, dt));
-    b->pos = CONCAT(ALG_PREFIX, _addv)(b->pos, CONCAT(ALG_PREFIX, _mulv)(b->vel, dt));
+#define ACC_SCALE 0.25df
+#define ACC2_IMPACT 2.0df
+    const VEC2_T a_acceleration = SCALE_VECTOR(
+        ADD_VECTORS(ADD_VECTORS(a_acc1, SCALE_VECTOR(a_acc2, ACC2_IMPACT)), GRAVITY_ACCELERATION(a_body2, b_body2, G)),
+        ACC_SCALE);
+
+    const VEC2_T b_acceleration = SCALE_VECTOR(
+        ADD_VECTORS(ADD_VECTORS(b_acc1, SCALE_VECTOR(b_acc2, ACC2_IMPACT)), GRAVITY_ACCELERATION(b_body2, a_body2, G)),
+        ACC_SCALE);
+#undef ACC2_IMPACT
+#undef ACC_SCALE
+
+    a->vel = ADD_VECTORS(a->vel, SCALE_VECTOR(a_acceleration, delta));
+    b->vel = ADD_VECTORS(b->vel, SCALE_VECTOR(b_acceleration, delta));
+
+    a->pos = ADD_VECTORS(a->pos, SCALE_VECTOR(a->vel, delta));
+    b->pos = ADD_VECTORS(b->pos, SCALE_VECTOR(b->vel, delta));
 }
 
-DECIMAL_TYPE CONCAT(ALG_PREFIX, _simulate)(int steps, DECIMAL_TYPE dt) {
-    DECIMAL_TYPE G = 1.0df;
+NUMBER_T SIMULATE(unsigned int steps, NUMBER_T seed, NUMBER_T G, NUMBER_T delta) {
+    BODY_T a = {.pos = {.x = -1.0df * seed, .y = 0.0df}, .vel = {.x = 0.0df, .y = 0.4df * seed}, .mass = 1.0df};
+    BODY_T b = {.pos = {.x = 1.0df * seed, .y = 0.0df}, .vel = {.x = 0.0df, .y = -0.4df * seed}, .mass = 1.0df};
 
-    CONCAT(ALG_PREFIX, _body_t) a = {{-1.0df, 0.0df}, {0.0df, 0.4df}, 1.0df};
-    CONCAT(ALG_PREFIX, _body_t) b = {{1.0df, 0.0df}, {0.0df, -0.4df}, 1.0df};
-
-    for (int i = 0; i < steps; i++) {
-        CONCAT(ALG_PREFIX, _rk4_step)(&a, &b, G, dt);
+    for (unsigned int i = 0; i < steps; i++) {
+        RK4_STEP(&a, &b, G, delta);
     }
 
-    DECIMAL_TYPE energy = 0.5df * (a.vel.x * a.vel.x + a.vel.y * a.vel.y + b.vel.x * b.vel.x + b.vel.y * b.vel.y);
+#define SQR(_x) ((_x) * (_x))
+    const NUMBER_T energy = (SQR(a.vel.x) + SQR(a.vel.y) + SQR(b.vel.x) + SQR(b.vel.y)) / 2;
     return energy;
 }
+
+#undef STRUCT_VEC2
+#undef VEC2_T
+#undef STRUCT_BODY
+#undef BODY_T
+#undef ADD_VECTORS
+#undef SUB_VECTORS
+#undef SCALE_VECTOR
+#undef SQRT
+#undef GRAVITY_ACCELERATION
+#undef RK4_STEP
+#undef SIMULATE
+#undef EPSILON

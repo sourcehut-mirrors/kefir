@@ -18,15 +18,9 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-// The code below has been produced with assistance of a large language model.
-// The author disclaims any responsibility with respect to it, and it is
-// provided for a sole purpose of creating a sufficiently diverse and
-// sophisticated test case for differential testing against gcc.
-//
-// In case of any doubts regarding potential copyright infringement, please
-// contact the author immediately via <jevgenij@protopopov.lv>.
-//
-// The code implements linear regression.
+#ifndef NUMBER_T
+#error "NUMBER_T undefined"
+#endif
 
 #ifdef CONCAT
 #undef CONCAT
@@ -39,51 +33,62 @@
 #define CONCAT2(a, b) a##b
 #define CONCAT(a, b) CONCAT2(a, b)
 
-typedef struct CONCAT(ALG_PREFIX, _Point) {
-    DECIMAL_TYPE x;
-    DECIMAL_TYPE y;
-} CONCAT(ALG_PREFIX, _Point_t);
+#define STRUCT_POINT CONCAT(ALG_PREFIX, _Point)
+#define POINTS_T CONCAT(ALG_PREFIX, _Points_t)
+#define STRUCT_POINTS CONCAT(ALG_PREFIX, _Points)
+#define POINT_T CONCAT(ALG_PREFIX, _Point_t)
+#define MEAN_SQUARED_ERROR CONCAT(ALG_PREFIX, _mean_squared_error)
+#define GRADIENT_DESCENT CONCAT(ALG_PREFIX, _gradient_descent)
+#define LINEAR_REGRESSION CONCAT(ALG_PREFIX, _linear_regression)
 
-static DECIMAL_TYPE CONCAT(ALG_PREFIX, _mean_squared_error)(const CONCAT(ALG_PREFIX, _Point_t) * points,
-                                                            unsigned long n, DECIMAL_TYPE m, DECIMAL_TYPE b) {
-    DECIMAL_TYPE error = 0.0df;
-    for (unsigned long i = 0; i < n; i++) {
-        DECIMAL_TYPE diff = points[i].y - (m * points[i].x + b);
+typedef struct STRUCT_POINT {
+    NUMBER_T x;
+    NUMBER_T y;
+} POINT_T;
+
+typedef struct STRUCT_POINTS {
+    unsigned long length;
+    POINT_T contents[];
+} POINTS_T;
+
+static void GRADIENT_DESCENT(const POINTS_T *points, NUMBER_T *slope_ptr, NUMBER_T *intercept_ptr,
+                             NUMBER_T learning_rate, unsigned int iterations) {
+    for (unsigned int i = 0; i < iterations; i++) {
+        NUMBER_T delta_slope = 0.0df;
+        NUMBER_T delta_intercept = 0.0df;
+        for (unsigned long j = 0; j < points->length; j++) {
+            NUMBER_T prev = (*slope_ptr) * points->contents[j].x + (*intercept_ptr);
+            NUMBER_T diff = prev - points->contents[j].y;
+            delta_slope += 2.0df * diff * points->contents[j].x;
+            delta_intercept += 2.0df * diff;
+        }
+
+        *slope_ptr -= learning_rate * (delta_slope / points->length);
+        *intercept_ptr -= learning_rate * (delta_intercept / points->length);
+    }
+}
+
+static NUMBER_T MEAN_SQUARED_ERROR(const POINTS_T *points, NUMBER_T slope, NUMBER_T intercept) {
+    NUMBER_T error = 0.0df;
+    for (unsigned long i = 0; i < points->length; i++) {
+        const NUMBER_T expected = slope * points->contents[i].x + intercept;
+        const NUMBER_T diff = points->contents[i].y - expected;
         error += diff * diff;
     }
-    return error / (DECIMAL_TYPE) n;
+    return error / points->length;
 }
 
-static void CONCAT(ALG_PREFIX, _gradient_descent)(const CONCAT(ALG_PREFIX, _Point_t) * points, unsigned long n,
-                                                  DECIMAL_TYPE *m, DECIMAL_TYPE *b, DECIMAL_TYPE lr, int iterations) {
-    for (int it = 0; it < iterations; it++) {
-        DECIMAL_TYPE dm = 0.0df;
-        DECIMAL_TYPE db = 0.0df;
-        for (unsigned long i = 0; i < n; i++) {
-            DECIMAL_TYPE pred = (*m) * points[i].x + (*b);
-            DECIMAL_TYPE diff = pred - points[i].y;
-            dm += 2.0df * diff * points[i].x;
-            db += 2.0df * diff;
-        }
-        dm /= (DECIMAL_TYPE) n;
-        db /= (DECIMAL_TYPE) n;
+NUMBER_T LINEAR_REGRESSION(const POINTS_T *points, NUMBER_T learning_rate, int iterations, NUMBER_T *out_m,
+                           NUMBER_T *out_b) {
+    *out_m = 0.0df;
+    *out_b = 0.0df;
 
-        *m -= lr * dm;
-        *b -= lr * db;
-    }
+    GRADIENT_DESCENT(points, out_m, out_b, learning_rate, iterations);
+    return MEAN_SQUARED_ERROR(points, *out_m, *out_b);
 }
 
-DECIMAL_TYPE CONCAT(ALG_PREFIX, _linear_regression)(const CONCAT(ALG_PREFIX, _Point_t) * points, unsigned long n,
-                                                    DECIMAL_TYPE *out_m, DECIMAL_TYPE *out_b) {
-    DECIMAL_TYPE m = 0.0df;
-    DECIMAL_TYPE b = 0.0df;
-    DECIMAL_TYPE learning_rate = 0.1df;
-    int iterations = 100;
-
-    CONCAT(ALG_PREFIX, _gradient_descent)(points, n, &m, &b, learning_rate, iterations);
-
-    *out_m = m;
-    *out_b = b;
-
-    return CONCAT(ALG_PREFIX, _mean_squared_error)(points, n, m, b);
-}
+#undef STRUCT_POINT
+#undef POINT_T
+#undef MEAN_SQUARED_ERROR
+#undef GRADIENT_DESCENT
+#undef LINEAR_REGRESSION

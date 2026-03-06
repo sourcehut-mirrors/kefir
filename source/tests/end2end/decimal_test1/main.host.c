@@ -43,36 +43,36 @@ _Bool decimal128_eq(_Decimal128 a, _Decimal128 b) {
 }
 
 #define ENABLE_DECIMAL_TEST
-#define DECIMAL_TYPE _Decimal32
+#define NUMBER_T _Decimal32
 #define ALG_PREFIX ref_dec32
 #include "./common.h"
 
-#undef DECIMAL_TYPE
+#undef NUMBER_T
 #undef ALG_PREFIX
-#define DECIMAL_TYPE _Decimal64
+#define NUMBER_T _Decimal64
 #define ALG_PREFIX ref_dec64
 #include "./common.h"
 
-#undef DECIMAL_TYPE
+#undef NUMBER_T
 #undef ALG_PREFIX
-#define DECIMAL_TYPE _Decimal128
+#define NUMBER_T _Decimal128
 #define ALG_PREFIX ref_dec128
 #include "./common.h"
 
-_Decimal32 CONCAT(test_dec32, _linear_regression)(const CONCAT(ref_dec32, _Point_t) *, unsigned long, _Decimal32 *,
-                                                  _Decimal32 *);
-_Decimal64 CONCAT(test_dec64, _linear_regression)(const CONCAT(ref_dec64, _Point_t) *, unsigned long, _Decimal64 *,
-                                                  _Decimal64 *);
-_Decimal128 CONCAT(test_dec128, _linear_regression)(const CONCAT(ref_dec128, _Point_t) *, unsigned long, _Decimal128 *,
-                                                    _Decimal128 *);
+_Decimal32 CONCAT(test_dec32, _linear_regression)(const CONCAT(ref_dec32, _Points_t) *, _Decimal32, unsigned int,
+                                                  _Decimal32 *, _Decimal32 *);
+_Decimal64 CONCAT(test_dec64, _linear_regression)(const CONCAT(ref_dec64, _Points_t) *, _Decimal64, unsigned int,
+                                                  _Decimal64 *, _Decimal64 *);
+_Decimal128 CONCAT(test_dec128, _linear_regression)(const CONCAT(ref_dec128, _Points_t) *, _Decimal128, unsigned int,
+                                                    _Decimal128 *, _Decimal128 *);
 
 void test32(void) {
-    CONCAT(ref_dec32, _Point_t)
-    points[5] = {{1.0df, 2.0df}, {2.0df, 4.1df}, {3.0df, 6.0df}, {4.0df, 8.1df}, {5.0df, 10.0df}};
+    static CONCAT(ref_dec32, _Points_t)
+        points = {5, {{1.0df, 2.0df}, {2.0df, 4.1df}, {3.0df, 6.0df}, {4.0df, 8.1df}, {5.0df, 10.0df}}};
     _Decimal32 ref_m, ref_b, test_m, test_b;
 
-    _Decimal32 ref_error = CONCAT(ref_dec32, _linear_regression)(points, 5, &ref_m, &ref_b);
-    _Decimal32 test_error = CONCAT(test_dec32, _linear_regression)(points, 5, &test_m, &test_b);
+    _Decimal32 ref_error = CONCAT(ref_dec32, _linear_regression)(&points, 0.1df, 100, &ref_m, &ref_b);
+    _Decimal32 test_error = CONCAT(test_dec32, _linear_regression)(&points, 0.1df, 100, &test_m, &test_b);
 
     assert(decimal32_eq(ref_m, test_m));
     assert(decimal32_eq(ref_b, test_b));
@@ -80,12 +80,12 @@ void test32(void) {
 }
 
 void test64(void) {
-    CONCAT(ref_dec64, _Point_t)
-    points[5] = {{1.0df, 2.0df}, {2.0df, 4.1df}, {3.0df, 6.0df}, {4.0df, 8.1df}, {5.0df, 10.0df}};
+    static CONCAT(ref_dec64, _Points_t)
+        points = {5, {{1.0df, 2.0df}, {2.0df, 4.1df}, {3.0df, 6.0df}, {4.0df, 8.1df}, {5.0df, 10.0df}}};
     _Decimal64 ref_m, ref_b, test_m, test_b;
 
-    _Decimal64 ref_error = CONCAT(ref_dec64, _linear_regression)(points, 5, &ref_m, &ref_b);
-    _Decimal64 test_error = CONCAT(test_dec64, _linear_regression)(points, 5, &test_m, &test_b);
+    _Decimal64 ref_error = CONCAT(ref_dec64, _linear_regression)(&points, 0.1df, 100, &ref_m, &ref_b);
+    _Decimal64 test_error = CONCAT(test_dec64, _linear_regression)(&points, 0.1df, 100, &test_m, &test_b);
 
     assert(decimal64_eq(ref_m, test_m));
     assert(decimal64_eq(ref_b, test_b));
@@ -93,12 +93,12 @@ void test64(void) {
 }
 
 void test128(void) {
-    CONCAT(ref_dec128, _Point_t)
-    points[5] = {{1.0df, 2.0df}, {2.0df, 4.1df}, {3.0df, 6.0df}, {4.0df, 8.1df}, {5.0df, 10.0df}};
+    static CONCAT(ref_dec128, _Points_t)
+        points = {5, {{1.0df, 2.0df}, {2.0df, 4.1df}, {3.0df, 6.0df}, {4.0df, 8.1df}, {5.0df, 10.0df}}};
     _Decimal128 ref_m, ref_b, test_m, test_b;
 
-    _Decimal128 ref_error = CONCAT(ref_dec128, _linear_regression)(points, 5, &ref_m, &ref_b);
-    _Decimal128 test_error = CONCAT(test_dec128, _linear_regression)(points, 5, &test_m, &test_b);
+    _Decimal128 ref_error = CONCAT(ref_dec128, _linear_regression)(&points, 0.1df, 100, &ref_m, &ref_b);
+    _Decimal128 test_error = CONCAT(test_dec128, _linear_regression)(&points, 0.1df, 100, &test_m, &test_b);
 
     assert(decimal128_eq(ref_m, test_m));
     assert(decimal128_eq(ref_b, test_b));

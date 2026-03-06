@@ -18,16 +18,9 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-// The code below has been produced with assistance of a large language model.
-// The author disclaims any responsibility with respect to it, and it is
-// provided for a sole purpose of creating a sufficiently diverse and
-// sophisticated test case for differential testing against gcc.
-//
-// In case of any doubts regarding potential copyright infringement, please
-// contact the author immediately via <jevgenij@protopopov.lv>.
-//
-// The code implements simulation of a 2D nonlinear reaction–diffusion system
-// (Gray–Scott model).
+#ifndef NUMBER_T
+#error "NUMBER_T undefined"
+#endif
 
 #ifdef CONCAT
 #undef CONCAT
@@ -44,106 +37,129 @@
 #define DEC_RAW(x, suf) x##suf
 #define DEC(x) DEC_RAW(x, df)
 
-typedef struct CONCAT(ALG_PREFIX, _Grid) {
-    unsigned long N;
-    DECIMAL_TYPE dx;
-    DECIMAL_TYPE *U;
-    DECIMAL_TYPE *V;
-} CONCAT(ALG_PREFIX, _Grid_t);
+#define STRUCT_GRID CONCAT(ALG_PREFIX, _Grid)
+#define GRID_T CONCAT(ALG_PREFIX, _Grid_t)
+#define GRID_INIT CONCAT(ALG_PREFIX, _init)
+#define GRID_FREE CONCAT(ALG_PREFIX, _free)
+#define LAPLACIAN CONCAT(ALG_PREFIX, _laplacian)
+#define STEP CONCAT(ALG_PREFIX, _step)
+#define NORM CONCAT(ALG_PREFIX, _norm)
+#define RUN CONCAT(ALG_PREFIX, _run)
 
-static inline unsigned long CONCAT(ALG_PREFIX, _idx)(unsigned long N, unsigned long i, unsigned long j) {
-    return i * N + j;
+typedef struct STRUCT_GRID {
+    NUMBER_T delta;
+    NUMBER_T *field;
+    NUMBER_T *vector;
+    unsigned long dimension;
+} GRID_T;
+
+#define GRID_INDEX(_dim, _i, _j) ((_i) * ((unsigned long) (_dim)) + (_j))
+
+static NUMBER_T NORM(NUMBER_T *arr, unsigned long dimension) {
+    NUMBER_T sum = DEC(0.0);
+    for (unsigned long i = 0; i < dimension * dimension; i++) {
+        sum += arr[i] * arr[i];
+    }
+    return sum;
 }
 
-static void CONCAT(ALG_PREFIX, _init)(CONCAT(ALG_PREFIX, _Grid_t) * g, unsigned long N) {
-    g->N = N;
-    g->dx = DEC(1.0) / (DECIMAL_TYPE) (N + 1);
-    g->U = malloc(N * N * sizeof(DECIMAL_TYPE));
-    g->V = malloc(N * N * sizeof(DECIMAL_TYPE));
-    if (!g->U || !g->V) {
+static void GRID_INIT(GRID_T *grid, unsigned long dimension) {
+    grid->dimension = dimension;
+    grid->delta = DEC(1.0) / (NUMBER_T) (dimension + 1);
+    grid->field = malloc(dimension * dimension * sizeof(NUMBER_T));
+    grid->vector = malloc(dimension * dimension * sizeof(NUMBER_T));
+    if (grid->field == (void *) 0 || grid->vector == (void *) 0) {
         abort();
     }
-    for (unsigned long i = 0; i < N; i++) {
-        for (unsigned long j = 0; j < N; j++) {
-            g->U[CONCAT(ALG_PREFIX, _idx)(N, i, j)] = DEC(1.0);
-            g->V[CONCAT(ALG_PREFIX, _idx)(N, i, j)] = DEC(0.0);
+    for (unsigned long i = 0; i < dimension; i++) {
+        for (unsigned long j = 0; j < dimension; j++) {
+            grid->field[GRID_INDEX(dimension, i, j)] = DEC(1.0);
+            grid->vector[GRID_INDEX(dimension, i, j)] = DEC(0.0);
         }
     }
-    unsigned long c = N / 2;
-    for (unsigned long i = c - 1; i <= c + 1; i++)
+    unsigned long c = dimension / 2;
+    for (unsigned long i = c - 1; i <= c + 1; i++) {
         for (unsigned long j = c - 1; j <= c + 1; j++) {
-            g->V[CONCAT(ALG_PREFIX, _idx)(N, i, j)] = DEC(0.25);
-            g->U[CONCAT(ALG_PREFIX, _idx)(N, i, j)] = DEC(0.50);
-        }
-}
-
-static void CONCAT(ALG_PREFIX, _laplacian)(const DECIMAL_TYPE *field, DECIMAL_TYPE *out, unsigned long N,
-                                           DECIMAL_TYPE dx) {
-    DECIMAL_TYPE inv_dx2 = DEC(1.0) / (dx * dx);
-    for (unsigned long i = 0; i < N; i++) {
-        for (unsigned long j = 0; j < N; j++) {
-            DECIMAL_TYPE center = field[CONCAT(ALG_PREFIX, _idx)(N, i, j)];
-            DECIMAL_TYPE up = (i > 0) ? field[CONCAT(ALG_PREFIX, _idx)(N, i - 1, j)] : DEC(0.0);
-            DECIMAL_TYPE down = (i + 1 < N) ? field[CONCAT(ALG_PREFIX, _idx)(N, i + 1, j)] : DEC(0.0);
-            DECIMAL_TYPE left = (j > 0) ? field[CONCAT(ALG_PREFIX, _idx)(N, i, j - 1)] : DEC(0.0);
-            DECIMAL_TYPE right = (j + 1 < N) ? field[CONCAT(ALG_PREFIX, _idx)(N, i, j + 1)] : DEC(0.0);
-            out[CONCAT(ALG_PREFIX, _idx)(N, i, j)] = (up + down + left + right - DEC(4.0) * center) * inv_dx2;
+            grid->vector[GRID_INDEX(dimension, i, j)] = DEC(0.25);
+            grid->field[GRID_INDEX(dimension, i, j)] = DEC(0.50);
         }
     }
 }
 
-static void CONCAT(ALG_PREFIX, _step)(CONCAT(ALG_PREFIX, _Grid_t) * g, DECIMAL_TYPE F, DECIMAL_TYPE k,
-                                      DECIMAL_TYPE dt) {
-    unsigned long N = g->N;
-    DECIMAL_TYPE *lapU = malloc(N * N * sizeof(DECIMAL_TYPE));
-    DECIMAL_TYPE *lapV = malloc(N * N * sizeof(DECIMAL_TYPE));
-    if (!lapU || !lapV) {
+static inline void GRID_FREE(GRID_T *grid) {
+    free(grid->field);
+    free(grid->vector);
+}
+
+static void LAPLACIAN(const NUMBER_T *field, NUMBER_T *out, unsigned long dimension, NUMBER_T delta) {
+    for (unsigned long i = 0; i < dimension; i++) {
+        for (unsigned long j = 0; j < dimension; j++) {
+            NUMBER_T center = field[GRID_INDEX(dimension, i, j)];
+#define ZERO DEC(0.0)
+            NUMBER_T up = i > 0 ? field[GRID_INDEX(dimension, i - 1, j)] : ZERO;
+            NUMBER_T down = i + 1 < dimension ? field[GRID_INDEX(dimension, i + 1, j)] : ZERO;
+            NUMBER_T left = j > 0 ? field[GRID_INDEX(dimension, i, j - 1)] : ZERO;
+            NUMBER_T right = j + 1 < dimension ? field[GRID_INDEX(dimension, i, j + 1)] : ZERO;
+#undef ZERO
+#define CENTER_WEIGHT DEC(4.0)
+            out[GRID_INDEX(dimension, i, j)] = (up + down + left + right - CENTER_WEIGHT * center) / (delta * delta);
+#undef CENTER_WEIGHT
+        }
+    }
+}
+
+static void STEP(GRID_T *grid, NUMBER_T F, NUMBER_T k, NUMBER_T delta) {
+    const unsigned long area = grid->dimension * grid->dimension;
+    NUMBER_T *const laplacian_field = malloc(area * sizeof(NUMBER_T));
+    NUMBER_T *const laplacian_vector = malloc(area * sizeof(NUMBER_T));
+    if (laplacian_field == (void *) 0 || laplacian_vector == (void *) 0) {
         abort();
     }
 
-    CONCAT(ALG_PREFIX, _laplacian)(g->U, lapU, N, g->dx);
-    CONCAT(ALG_PREFIX, _laplacian)(g->V, lapV, N, g->dx);
+    LAPLACIAN(grid->field, laplacian_field, grid->dimension, grid->delta);
+    LAPLACIAN(grid->vector, laplacian_vector, grid->dimension, grid->delta);
 
-    for (unsigned long i = 0; i < N; i++) {
-        for (unsigned long j = 0; j < N; j++) {
-            unsigned long idx = CONCAT(ALG_PREFIX, _idx)(N, i, j);
-            DECIMAL_TYPE u = g->U[idx];
-            DECIMAL_TYPE v = g->V[idx];
-            DECIMAL_TYPE uvv = u * v * v;
-            g->U[idx] += dt * (lapU[idx] - uvv + F * (DEC(1.0) - u));
-            g->V[idx] += dt * (lapV[idx] + uvv - (F + k) * v);
-            if (g->U[idx] < DEC(0.0)) {
-                g->U[idx] = DEC(0.0);
-            }
-            if (g->V[idx] < DEC(0.0)) {
-                g->V[idx] = DEC(0.0);
-            }
+    for (unsigned long i = 0; i < grid->dimension; i++) {
+        for (unsigned long j = 0; j < grid->dimension; j++) {
+            unsigned long index = GRID_INDEX(grid->dimension, i, j);
+            const NUMBER_T u = grid->field[index];
+            const NUMBER_T v = grid->vector[index];
+            const NUMBER_T uvv = u * v * v;
+            grid->field[index] += delta * (laplacian_field[index] - uvv + F * (DEC(1.0) - u));
+            grid->vector[index] += delta * (laplacian_vector[index] + uvv - (F + k) * v);
+#define CLAMP(_ptr)           \
+    if (*(_ptr) < DEC(0.0)) { \
+        *(_ptr) = DEC(0.0);   \
+    }
+            CLAMP(&grid->field[index]);
+            CLAMP(&grid->vector[index]);
+#undef CLAMP
         }
     }
-    free(lapU);
-    free(lapV);
+    free(laplacian_field);
+    free(laplacian_vector);
 }
 
-static DECIMAL_TYPE CONCAT(ALG_PREFIX, _norm)(DECIMAL_TYPE *f, unsigned long N) {
-    DECIMAL_TYPE s = DEC(0.0);
-    for (unsigned long i = 0; i < N * N; i++) {
-        s += f[i] * f[i];
+NUMBER_T RUN(unsigned long dimension, unsigned int steps) {
+    CONCAT(ALG_PREFIX, _Grid_t) grid;
+    GRID_INIT(&grid, dimension);
+    const NUMBER_T F = DEC(0.04);
+    const NUMBER_T k = DEC(0.06);
+    const NUMBER_T delta = DEC(1.0e-3);
+    for (unsigned int s = 0; s < steps; s++) {
+        STEP(&grid, F, k, delta);
     }
-    return s;
+    const NUMBER_T norm_u = NORM(grid.field, dimension);
+    const NUMBER_T norm_v = NORM(grid.vector, dimension);
+    GRID_FREE(&grid);
+    return norm_u + norm_v;
 }
 
-DECIMAL_TYPE CONCAT(ALG_PREFIX, _run)(unsigned long N, int steps) {
-    CONCAT(ALG_PREFIX, _Grid_t) g;
-    CONCAT(ALG_PREFIX, _init)(&g, N);
-    DECIMAL_TYPE F = DEC(0.04);
-    DECIMAL_TYPE k = DEC(0.06);
-    DECIMAL_TYPE dt = DEC(1.0e-3);
-    for (int s = 0; s < steps; s++) {
-        CONCAT(ALG_PREFIX, _step)(&g, F, k, dt);
-    }
-    DECIMAL_TYPE normU = CONCAT(ALG_PREFIX, _norm)(g.U, N);
-    DECIMAL_TYPE normV = CONCAT(ALG_PREFIX, _norm)(g.V, N);
-    free(g.U);
-    free(g.V);
-    return normU + normV;
-}
+#undef STRUCT_GRID
+#undef GRID_T
+#undef GRID_INDEX
+#undef GRID_INIT
+#undef LAPLACIAN
+#undef STEP
+#undef NORM
+#undef RUN
