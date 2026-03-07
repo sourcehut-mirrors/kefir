@@ -30,18 +30,20 @@ import signal
 import ctypes
 import time
 import re
+import shlex
 import multiprocessing as mp
-from typing import Optional, Tuple
+from typing import Optional, Tuple, Iterable
 from dataclasses import dataclass
 import traceback
 
 class CSmith:
-    def __init__(self, csmith_executable_path: str, seed: Optional[int]):
+    def __init__(self, csmith_executable_path: str, seed: Optional[int], extra_args: Iterable[str]):
         self._csmith = csmith_executable_path
         self._seed = seed
+        self._extra_args = list(extra_args)
     
     def __call__(self) -> str:
-        argv = [self._csmith, '--no-packed-struct']
+        argv = [self._csmith, '--no-packed-struct', *self._extra_args]
         if  self._seed is not None:
             argv.append('--seed')
             argv.append(str(self._seed))
@@ -235,6 +237,7 @@ args_parser.add_argument('--jobs', type=int, default=1, help='Number of parallel
 args_parser.add_argument('--out', type=str, required=True, help='Directory for tests')
 args_parser.add_argument('--seed', type=int, default=None, help='Test seed')
 args_parser.add_argument('--save-all', action=argparse.BooleanOptionalAction, default=False, help='Save test code for successful runs too')
+args_parser.add_argument('--extra-args', type=str, default='', help='Extra arguments passed to csmith')
 
 if __name__ == '__main__':
     args = args_parser.parse_args(sys.argv[1:])
@@ -251,7 +254,7 @@ if __name__ == '__main__':
     if not args.cc:
         print('Expected valid reference C compiler')
         sys.exit(-1)
-    csmith = CSmith(args.csmith, args.seed)
+    csmith = CSmith(args.csmith, args.seed, shlex.split(args.extra_args))
     kefir = Kefir(args.kefir, csmith.include_path)
     cc = CC(args.cc, csmith.include_path)
     try:

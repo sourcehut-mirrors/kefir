@@ -1,6 +1,6 @@
 KEFIR_CSMITH_TEST_VERSION=2.4.0
 KEFIR_CSMITH_TEST_GIT_VERSION=0ec6f1b
-KEFIR_CSMITH_TEST_SEEDS=$(shell cat $(SOURCE_DIR)/tests/csmith/seed.list)
+KEFIR_CSMITH_TEST_SEEDS=$(shell cat $(SOURCE_DIR)/tests/csmith/seed.list | cut -d' ' -f1)
 KEFIR_CSMITH_TESTS_DONE := $(KEFIR_CSMITH_TEST_SEEDS:%=$(KEFIR_BIN_DIR)/tests/csmith/seed-%.test.done)
 
 CSMITH_RANDOM_TESTS ?= 10000
@@ -28,6 +28,7 @@ $(KEFIR_BIN_DIR)/tests/csmith/version:
 	@mv "$@.tmp" "$@"
 
 $(KEFIR_BIN_DIR)/tests/csmith/seed-%.test.done: CSMITH_SEED=$(patsubst seed-%.test.done,%,$(notdir $@))
+$(KEFIR_BIN_DIR)/tests/csmith/seed-%.test.done: CSMITH_EXTRA_ARGS=$(shell cat $(SOURCE_DIR)/tests/csmith/seed.list | grep $(CSMITH_SEED) | cut -s -d' ' -f2-)
 .SECONDEXPANSION:
 $(KEFIR_BIN_DIR)/tests/csmith/seed-%.test.done: $$(CSMITH_KEFIR_RUNNER) $(KEFIR_BIN_DIR)/tests/csmith/version
 	@mkdir -p "$(shell dirname $@)"
@@ -38,6 +39,7 @@ $(KEFIR_BIN_DIR)/tests/csmith/seed-%.test.done: $$(CSMITH_KEFIR_RUNNER) $(KEFIR_
 		--kefir "$(CSMITH_KEFIR_RUNNER)" \
 		--cc "$(CC)" \
 		--seed "$(CSMITH_SEED)" \
+		--extra-args "$(CSMITH_EXTRA_ARGS)" \
 		--jobs 1 \
 		--tests 1 \
 		--out "$(KEFIR_BIN_DIR)/tests/csmith/out-$(CSMITH_SEED)" \
@@ -53,6 +55,7 @@ csmith_random_test: $$(CSMITH_KEFIR_RUNNER)
 		"$(SOURCE_DIR)/tests/csmith/csmith_driver.py" --csmith "$(CSMITH)" \
 		--kefir "$(CSMITH_KEFIR_RUNNER)" \
 		--cc "$(CC)" \
+		--extra-args "--int128 --uint128" \
 		--jobs "$(CSMITH_RANDOM_JOBS)" \
 		--tests "$(CSMITH_RANDOM_TESTS)" \
 		--out "$(KEFIR_BIN_DIR)/tests/csmith/random-out"
