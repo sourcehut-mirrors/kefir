@@ -903,7 +903,12 @@ kefir_result_t kefir_ir_format_type(FILE *fp, const struct kefir_ir_type *type) 
 }
 
 static kefir_result_t kefir_ir_format_function_declaration(struct kefir_json_output *json,
-                                                           struct kefir_ir_function_decl *decl) {
+                                                           struct kefir_ir_function_decl *decl,
+                                                           const struct kefir_ir_format_callbacks *callback) {
+    kefir_bool_t skip;
+    REQUIRE_OK(callback->skip_symbol(decl->name, callback->payload, &skip));
+    REQUIRE(!skip, KEFIR_OK);
+
     REQUIRE_OK(kefir_json_output_object_begin(json));
     REQUIRE_OK(kefir_json_output_object_key(json, "identifier"));
     REQUIRE_OK(kefir_json_output_uinteger(json, decl->id));
@@ -935,8 +940,60 @@ static kefir_result_t kefir_ir_format_function_declaration(struct kefir_json_out
     return KEFIR_OK;
 }
 
-static kefir_result_t kefir_ir_format_function(struct kefir_json_output *json, const struct kefir_ir_module *module,
-                                               const struct kefir_ir_function *func, kefir_bool_t debug_info) {
+static kefir_result_t format_function_body_ir(struct kefir_json_output *json, kefir_id_t func_decl_id, void *payload) {
+    REQUIRE(json != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid JSON output"));
+    ASSIGN_DECL_CAST(const struct kefir_ir_module *, module, payload);
+    REQUIRE(module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR module"));
+
+    const struct kefir_ir_function_decl *func_decl = kefir_ir_module_get_declaration(module, func_decl_id);
+    REQUIRE(func_decl != NULL, KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find IR function declaration"));
+
+    const struct kefir_ir_function *func = kefir_ir_module_get_function(module, func_decl->name);
+    REQUIRE(func != NULL, KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find IR function"));
+
+    REQUIRE_OK(kefir_json_output_object_key(json, "body"));
+    REQUIRE_OK(kefir_json_output_array_begin(json));
+    for (kefir_size_t i = 0; i < kefir_irblock_length(&func->body); i++) {
+        const struct kefir_irinstr *instr = kefir_irblock_at(&func->body, i);
+        REQUIRE_OK(kefir_ir_format_instr(json, module, instr));
+    }
+    REQUIRE_OK(kefir_json_output_array_end(json));
+
+    struct kefir_hashtree_node_iterator iter;
+    REQUIRE_OK(kefir_json_output_object_key(json, "public_labels"));
+    REQUIRE_OK(kefir_json_output_array_begin(json));
+    for (struct kefir_hashtree_node *node = kefir_hashtree_iter(&func->body.public_labels, &iter); node != NULL;
+         node = kefir_hashtree_next(&iter)) {
+        ASSIGN_DECL_CAST(const char *, label, node->key);
+        ASSIGN_DECL_CAST(kefir_size_t, location, node->value);
+
+        REQUIRE_OK(kefir_json_output_object_begin(json));
+        REQUIRE_OK(kefir_json_output_object_key(json, "label"));
+        REQUIRE_OK(kefir_json_output_string(json, label));
+        REQUIRE_OK(kefir_json_output_object_key(json, "location"));
+        REQUIRE_OK(kefir_json_output_uinteger(json, location));
+        REQUIRE_OK(kefir_json_output_object_end(json));
+    }
+    REQUIRE_OK(kefir_json_output_array_end(json));
+    return KEFIR_OK;
+}
+
+static kefir_result_t skip_symbol(const char *symbol, void *payload, kefir_bool_t *skip_ptr) {
+    UNUSED(symbol);
+    UNUSED(payload);
+    REQUIRE(skip_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to bool"));
+
+    *skip_ptr = false;
+    return KEFIR_OK;
+}
+
+static kefir_result_t kefir_ir_format_function(struct kefir_json_output *json, const struct kefir_ir_function *func,
+                                               kefir_bool_t debug_info,
+                                               const struct kefir_ir_format_callbacks *callback) {
+    kefir_bool_t skip;
+    REQUIRE_OK(callback->skip_symbol(func->name, callback->payload, &skip));
+    REQUIRE(!skip, KEFIR_OK);
+
     REQUIRE_OK(kefir_json_output_object_begin(json));
     REQUIRE_OK(kefir_json_output_object_key(json, "identifier"));
     REQUIRE_OK(kefir_json_output_uinteger(json, func->declaration->id));
@@ -973,30 +1030,7 @@ static kefir_result_t kefir_ir_format_function(struct kefir_json_output *json, c
         REQUIRE_OK(kefir_json_output_boolean(json, true));
     }
 
-    REQUIRE_OK(kefir_json_output_object_key(json, "body"));
-    REQUIRE_OK(kefir_json_output_array_begin(json));
-    for (kefir_size_t i = 0; i < kefir_irblock_length(&func->body); i++) {
-        const struct kefir_irinstr *instr = kefir_irblock_at(&func->body, i);
-        REQUIRE_OK(kefir_ir_format_instr(json, module, instr));
-    }
-    REQUIRE_OK(kefir_json_output_array_end(json));
-
-    struct kefir_hashtree_node_iterator iter;
-    REQUIRE_OK(kefir_json_output_object_key(json, "public_labels"));
-    REQUIRE_OK(kefir_json_output_array_begin(json));
-    for (struct kefir_hashtree_node *node = kefir_hashtree_iter(&func->body.public_labels, &iter); node != NULL;
-         node = kefir_hashtree_next(&iter)) {
-        ASSIGN_DECL_CAST(const char *, label, node->key);
-        ASSIGN_DECL_CAST(kefir_size_t, location, node->value);
-
-        REQUIRE_OK(kefir_json_output_object_begin(json));
-        REQUIRE_OK(kefir_json_output_object_key(json, "label"));
-        REQUIRE_OK(kefir_json_output_string(json, label));
-        REQUIRE_OK(kefir_json_output_object_key(json, "location"));
-        REQUIRE_OK(kefir_json_output_uinteger(json, location));
-        REQUIRE_OK(kefir_json_output_object_end(json));
-    }
-    REQUIRE_OK(kefir_json_output_array_end(json));
+    REQUIRE_OK(callback->format_function(json, func->declaration->id, callback->payload));
 
     if (debug_info) {
         REQUIRE_OK(kefir_json_output_object_key(json, "subroutine_id"));
@@ -1037,12 +1071,18 @@ static kefir_result_t kefir_ir_format_function(struct kefir_json_output *json, c
 }
 
 static kefir_result_t format_identifiers(struct kefir_json_output *json, const struct kefir_ir_module *module,
-                                         kefir_bool_t debug_info) {
+                                         kefir_bool_t debug_info, const struct kefir_ir_format_callbacks *callback) {
     REQUIRE_OK(kefir_json_output_array_begin(json));
     struct kefir_hashtree_node_iterator iter;
     const struct kefir_ir_identifier *identifier;
     for (const char *symbol = kefir_ir_module_identifiers_iter(module, &iter, &identifier); symbol != NULL;
          symbol = kefir_ir_module_identifiers_next(&iter, &identifier)) {
+        kefir_bool_t skip;
+        REQUIRE_OK(callback->skip_symbol(symbol, callback->payload, &skip));
+        if (skip) {
+            continue;
+        }
+
         REQUIRE_OK(kefir_json_output_object_begin(json));
         REQUIRE_OK(kefir_json_output_object_key(json, "symbol"));
         REQUIRE_OK(kefir_json_output_string(json, symbol));
@@ -1413,25 +1453,25 @@ static kefir_result_t format_string_literal(struct kefir_json_output *json, cons
     return KEFIR_OK;
 }
 
-static kefir_result_t format_function_declarations(struct kefir_json_output *json,
-                                                   const struct kefir_ir_module *module) {
+static kefir_result_t format_function_declarations(struct kefir_json_output *json, const struct kefir_ir_module *module,
+                                                   const struct kefir_ir_format_callbacks *callback) {
     REQUIRE_OK(kefir_json_output_array_begin(json));
     struct kefir_hashtree_node_iterator iter;
     for (const struct kefir_hashtree_node *node = kefir_hashtree_iter(&module->function_declarations, &iter);
          node != NULL; node = kefir_hashtree_next(&iter)) {
-        REQUIRE_OK(kefir_ir_format_function_declaration(json, (struct kefir_ir_function_decl *) node->value));
+        REQUIRE_OK(kefir_ir_format_function_declaration(json, (struct kefir_ir_function_decl *) node->value, callback));
     }
     REQUIRE_OK(kefir_json_output_array_end(json));
     return KEFIR_OK;
 }
 
 static kefir_result_t format_functions(struct kefir_json_output *json, const struct kefir_ir_module *module,
-                                       kefir_bool_t debug_info) {
+                                       kefir_bool_t debug_info, const struct kefir_ir_format_callbacks *callback) {
     REQUIRE_OK(kefir_json_output_array_begin(json));
     struct kefir_hashtree_node_iterator iter;
     for (const struct kefir_ir_function *func = kefir_ir_module_function_iter(module, &iter); func != NULL;
          func = kefir_ir_module_function_next(&iter)) {
-        REQUIRE_OK(kefir_ir_format_function(json, module, func, debug_info));
+        REQUIRE_OK(kefir_ir_format_function(json, func, debug_info, callback));
     }
     REQUIRE_OK(kefir_json_output_array_end(json));
     return KEFIR_OK;
@@ -1951,12 +1991,17 @@ static kefir_result_t format_debug_entries(struct kefir_json_output *json, const
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_ir_format_module_json(struct kefir_json_output *json, const struct kefir_ir_module *module,
-                                           kefir_bool_t debug_info) {
+kefir_result_t kefir_ir_format_module_json_custom(struct kefir_json_output *json, const struct kefir_ir_module *module,
+                                                  kefir_bool_t debug_info,
+                                                  const struct kefir_ir_format_callbacks *callback) {
+    REQUIRE(json != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid JSON output"));
+    REQUIRE(module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR module"));
+    REQUIRE(callback != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected IR function formal callback"));
+
     REQUIRE_OK(kefir_json_output_object_begin(json));
 
     REQUIRE_OK(kefir_json_output_object_key(json, "identifiers"));
-    REQUIRE_OK(format_identifiers(json, module, debug_info));
+    REQUIRE_OK(format_identifiers(json, module, debug_info, callback));
     REQUIRE_OK(kefir_json_output_object_key(json, "types"));
     REQUIRE_OK(format_types(json, module));
     REQUIRE_OK(kefir_json_output_object_key(json, "data"));
@@ -1964,9 +2009,9 @@ kefir_result_t kefir_ir_format_module_json(struct kefir_json_output *json, const
     REQUIRE_OK(kefir_json_output_object_key(json, "string_literals"));
     REQUIRE_OK(format_string_literal(json, module));
     REQUIRE_OK(kefir_json_output_object_key(json, "function_declarations"));
-    REQUIRE_OK(format_function_declarations(json, module));
+    REQUIRE_OK(format_function_declarations(json, module, callback));
     REQUIRE_OK(kefir_json_output_object_key(json, "functions"));
-    REQUIRE_OK(format_functions(json, module, debug_info));
+    REQUIRE_OK(format_functions(json, module, debug_info, callback));
     REQUIRE_OK(kefir_json_output_object_key(json, "inline_assembly"));
     REQUIRE_OK(format_inline_assembly(json, module));
 
@@ -1989,7 +2034,22 @@ kefir_result_t kefir_ir_format_module_json(struct kefir_json_output *json, const
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_ir_format_module_json(struct kefir_json_output *json, const struct kefir_ir_module *module,
+                                           kefir_bool_t debug_info) {
+    REQUIRE(json != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid JSON output"));
+    REQUIRE(module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR module"));
+
+    REQUIRE_OK(kefir_ir_format_module_json_custom(
+        json, module, debug_info,
+        &(struct kefir_ir_format_callbacks) {
+            .format_function = format_function_body_ir, .skip_symbol = skip_symbol, .payload = (void *) module}));
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_ir_format_module(FILE *fp, const struct kefir_ir_module *module, kefir_bool_t debug_info) {
+    REQUIRE(fp != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid file output"));
+    REQUIRE(module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR module"));
+
     struct kefir_json_output json;
     REQUIRE_OK(kefir_json_output_init(&json, fp, 4));
     REQUIRE_OK(kefir_ir_format_module_json(&json, module, debug_info));

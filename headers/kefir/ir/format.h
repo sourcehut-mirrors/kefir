@@ -26,7 +26,15 @@
 #include "kefir/ir/module.h"
 #include "kefir/util/json.h"
 
+typedef struct kefir_ir_format_callbacks {
+    kefir_result_t (*format_function)(struct kefir_json_output *, kefir_id_t, void *);
+    kefir_result_t (*skip_symbol)(const char *, void *, kefir_bool_t *);
+    void *payload;
+} kefir_ir_format_function_body_callback_t;
+
 kefir_result_t kefir_ir_format_module(FILE *, const struct kefir_ir_module *, kefir_bool_t);
+kefir_result_t kefir_ir_format_module_json_custom(struct kefir_json_output *, const struct kefir_ir_module *,
+                                                  kefir_bool_t, const struct kefir_ir_format_callbacks *);
 kefir_result_t kefir_ir_format_module_json(struct kefir_json_output *, const struct kefir_ir_module *, kefir_bool_t);
 kefir_result_t kefir_ir_format_type(FILE *, const struct kefir_ir_type *);
 kefir_result_t kefir_ir_format_type_json(struct kefir_json_output *, const struct kefir_ir_type *);

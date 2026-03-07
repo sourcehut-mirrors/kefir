@@ -172,6 +172,9 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_strin
         } else if (strcmp("--print-opt", arg) == 0) {
             // Print optimizer code
             config->stage = KEFIR_DRIVER_STAGE_PRINT_OPT;
+        } else if (strcmp("--print-opt-full", arg) == 0) {
+            // Print optimizer code with IR details
+            config->stage = KEFIR_DRIVER_STAGE_PRINT_OPT_FULL;
         } else if (strcmp("-run", arg) == 0) {
             // Run executable
             config->stage = KEFIR_DRIVER_STAGE_RUN;

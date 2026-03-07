@@ -34,5 +34,7 @@ kefir_result_t kefir_opt_code_format(struct kefir_mem *, struct kefir_json_outpu
                                      const struct kefir_opt_code_memssa *, const struct kefir_opt_code_debug_info *);
 kefir_result_t kefir_opt_module_format(struct kefir_mem *, struct kefir_json_output *, const struct kefir_opt_module *,
                                        kefir_bool_t, kefir_bool_t);
+kefir_result_t kefir_opt_module_format_full(struct kefir_mem *, struct kefir_json_output *,
+                                            const struct kefir_opt_module *, kefir_bool_t, kefir_bool_t);
 
 #endif

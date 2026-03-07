@@ -1,0 +1,312 @@
+{
+    "identifiers": [
+        {
+            "symbol": "b",
+            "type": "global_data",
+            "scope": "export",
+            "visibility": "default",
+            "alias": null
+        },
+        {
+            "symbol": "test1",
+            "type": "function",
+            "scope": "import",
+            "visibility": "default",
+            "alias": null
+        },
+        {
+            "symbol": "test2",
+            "type": "function",
+            "scope": "export",
+            "visibility": "default",
+            "alias": "test3"
+        },
+        {
+            "symbol": "test4",
+            "type": "function",
+            "scope": "export",
+            "visibility": "default",
+            "alias": null
+        }
+    ],
+    "types": [
+        {
+            "identifier": 1,
+            "type": [
+                {
+                    "type": "int32"
+                }
+            ]
+        },
+        {
+            "identifier": 97,
+            "type": [
+                {
+                    "type": "array",
+                    "length": 6,
+                    "element_type": {
+                        "type": "int8"
+                    }
+                }
+            ]
+        },
+        {
+            "identifier": 100,
+            "type": [
+                {
+                    "type": "int64"
+                }
+            ]
+        }
+    ],
+    "data": [
+        {
+            "identifier": "b",
+            "storage": "global",
+            "type": 1,
+            "value": [
+                {
+                    "class": "undefined"
+                }
+            ]
+        },
+        {
+            "identifier": "__kefir_function_test4_static___func___3",
+            "storage": "global",
+            "type": 97,
+            "value": [
+                {
+                    "class": "string",
+                    "content": "test4\u0000",
+                    "length": 6
+                },
+                {
+                    "class": "undefined",
+                    "count": 6
+                }
+            ]
+        }
+    ],
+    "string_literals": [
+        {
+            "id": 0,
+            "public": true,
+            "type": "multibyte",
+            "literal": "Hello, world!\u0000",
+            "length": 14
+        },
+        {
+            "id": 1,
+            "public": false,
+            "type": "multibyte",
+            "literal": "test4\u0000",
+            "length": 6
+        }
+    ],
+    "function_declarations": [
+        {
+            "identifier": 0,
+            "name": "test1",
+            "parameters": 2,
+            "vararg": false,
+            "returns": 3,
+            "returns_twice": false,
+            "no_return": false
+        },
+        {
+            "identifier": 1,
+            "name": "test2",
+            "parameters": 4,
+            "vararg": false,
+            "returns": 5,
+            "returns_twice": false,
+            "no_return": false
+        },
+        {
+            "identifier": 2,
+            "name": "test4",
+            "parameters": 6,
+            "vararg": false,
+            "returns": 7,
+            "returns_twice": false,
+            "no_return": false
+        },
+        {
+            "identifier": 46,
+            "name": "test4",
+            "parameters": 1,
+            "vararg": false,
+            "returns": 1,
+            "returns_twice": false,
+            "no_return": false
+        },
+        {
+            "identifier": 47,
+            "name": "test1",
+            "parameters": 1,
+            "vararg": false,
+            "returns": 1,
+            "returns_twice": false,
+            "no_return": false
+        },
+        {
+            "identifier": 48,
+            "name": "test2",
+            "parameters": 100,
+            "vararg": false,
+            "returns": 1,
+            "returns_twice": false,
+            "no_return": false
+        }
+    ],
+    "functions": [
+        {
+            "identifier": 46,
+            "name": "test4",
+            "code": {
+                "entry_point": 0,
+                "blocks": [
+                    {
+                        "id": 0,
+                        "control_flow": 5,
+                        "code": [
+                            {
+                                "id": 2,
+                                "opcode": "get_argument",
+                                "index": 0,
+                                "control_next": null
+                            },
+                            {
+                                "id": 5,
+                                "opcode": "inline_assembly",
+                                "inline_asm_id": 1,
+                                "parameters": [],
+                                "default_jump_target": null,
+                                "jump_targets": [],
+                                "control_next": 8,
+                                "memssa_node_ref": 1
+                            },
+                            {
+                                "id": 7,
+                                "opcode": "string_ref",
+                                "value": 0,
+                                "control_next": null
+                            },
+                            {
+                                "id": 8,
+                                "opcode": "invoke",
+                                "function_declaration_id": 48,
+                                "arguments": [
+                                    7
+                                ],
+                                "return_space": null,
+                                "indirect_ref": null,
+                                "control_next": 11,
+                                "memssa_node_ref": 2
+                            },
+                            {
+                                "id": 10,
+                                "opcode": "int32_sub",
+                                "args": [
+                                    8,
+                                    2
+                                ],
+                                "control_next": null
+                            },
+                            {
+                                "id": 11,
+                                "opcode": "invoke",
+                                "function_declaration_id": 47,
+                                "arguments": [
+                                    10
+                                ],
+                                "return_space": null,
+                                "indirect_ref": null,
+                                "control_next": 13,
+                                "memssa_node_ref": 3
+                            },
+                            {
+                                "id": 12,
+                                "opcode": "int32_add",
+                                "args": [
+                                    2,
+                                    11
+                                ],
+                                "control_next": null
+                            },
+                            {
+                                "id": 13,
+                                "opcode": "return",
+                                "arg": 12,
+                                "control_next": null
+                            }
+                        ],
+                        "public_labels": [],
+                        "properties": {
+                            "successors": [],
+                            "predecessors": [],
+                            "immediate_dominator": null,
+                            "alive_instructions": [
+                                8,
+                                7,
+                                13,
+                                5,
+                                2,
+                                12,
+                                11,
+                                10
+                            ]
+                        }
+                    }
+                ],
+                "memssa": [
+                    {
+                        "node_ref": 0,
+                        "type": "root"
+                    },
+                    {
+                        "node_ref": 1,
+                        "type": "produce",
+                        "predecessor_ref": 0
+                    },
+                    {
+                        "node_ref": 2,
+                        "type": "produce",
+                        "predecessor_ref": 1
+                    },
+                    {
+                        "node_ref": 3,
+                        "type": "produce",
+                        "predecessor_ref": 2
+                    },
+                    {
+                        "node_ref": 4,
+                        "type": "terminate",
+                        "predecessor_ref": 3
+                    }
+                ]
+            }
+        }
+    ],
+    "inline_assembly": [
+        {
+            "identifier": 0,
+            "global": true,
+            "template": "...",
+            "parameters": [],
+            "clobbers": [],
+            "jump_targets": []
+        },
+        {
+            "identifier": 1,
+            "global": false,
+            "template": "LOCAL",
+            "parameters": [],
+            "clobbers": [],
+            "jump_targets": []
+        }
+    ],
+    "meta_info": {
+        "opcode_rev": 1
+    }
+}

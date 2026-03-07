@@ -80,6 +80,10 @@ static kefir_result_t output_compiler_config(FILE *output,
             fprintf(output, " --dump-opt");
             break;
 
+        case KEFIR_COMPILER_RUNNER_ACTION_DUMP_OPT_FULL:
+            fprintf(output, " --dump-opt-full");
+            break;
+
         case KEFIR_COMPILER_RUNNER_ACTION_DUMP_ASSEMBLY:
             // Intentionally left blank
             break;

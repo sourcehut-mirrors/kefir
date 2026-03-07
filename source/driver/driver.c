@@ -235,6 +235,10 @@ kefir_result_t kefir_driver_generate_compiler_config(struct kefir_mem *mem, stru
             compiler_config->action = KEFIR_COMPILER_RUNNER_ACTION_DUMP_OPT;
             break;
 
+        case KEFIR_DRIVER_STAGE_PRINT_OPT_FULL:
+            compiler_config->action = KEFIR_COMPILER_RUNNER_ACTION_DUMP_OPT_FULL;
+            break;
+
         case KEFIR_DRIVER_STAGE_COMPILE:
         case KEFIR_DRIVER_STAGE_ASSEMBLE:
         case KEFIR_DRIVER_STAGE_LINK:
@@ -828,7 +832,8 @@ static kefir_result_t driver_run_argument(struct kefir_mem *mem, struct kefir_st
         case KEFIR_DRIVER_STAGE_PRINT_TOKENS:
         case KEFIR_DRIVER_STAGE_PRINT_AST:
         case KEFIR_DRIVER_STAGE_PRINT_IR:
-        case KEFIR_DRIVER_STAGE_PRINT_OPT: {
+        case KEFIR_DRIVER_STAGE_PRINT_OPT:
+        case KEFIR_DRIVER_STAGE_PRINT_OPT_FULL: {
             char object_filename[PATH_MAX + 1];
             if (config->output_file != NULL && strcmp(config->output_file, "-") != 0) {
                 output_filename = config->output_file;
@@ -926,6 +931,7 @@ static kefir_result_t driver_run_impl(struct kefir_mem *mem, struct kefir_string
         case KEFIR_DRIVER_STAGE_PRINT_AST:
         case KEFIR_DRIVER_STAGE_PRINT_IR:
         case KEFIR_DRIVER_STAGE_PRINT_OPT:
+        case KEFIR_DRIVER_STAGE_PRINT_OPT_FULL:
         case KEFIR_DRIVER_STAGE_COMPILE:
             REQUIRE_OK(kefir_driver_generate_compiler_config(mem, symbols, config, externals, compiler_config));
             break;

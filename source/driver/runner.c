@@ -673,7 +673,11 @@ static kefir_result_t dump_opt_impl(struct kefir_mem *mem, const struct kefir_co
     if (output != NULL) {
         struct kefir_json_output json;
         REQUIRE_OK(kefir_json_output_init(&json, output, 4));
-        REQUIRE_OK(kefir_opt_module_format(mem, &json, &opt_module, true, options->debug_info));
+        if (options->action == KEFIR_COMPILER_RUNNER_ACTION_DUMP_OPT) {
+            REQUIRE_OK(kefir_opt_module_format(mem, &json, &opt_module, true, options->debug_info));
+        } else {
+            REQUIRE_OK(kefir_opt_module_format_full(mem, &json, &opt_module, true, options->debug_info));
+        }
         REQUIRE_OK(kefir_json_output_finalize(&json));
     }
 
@@ -739,6 +743,7 @@ static kefir_result_t (*Actions[])(struct kefir_mem *, const struct kefir_compil
     [KEFIR_COMPILER_RUNNER_ACTION_DUMP_AST] = action_dump_ast,
     [KEFIR_COMPILER_RUNNER_ACTION_DUMP_IR] = action_dump_ir,
     [KEFIR_COMPILER_RUNNER_ACTION_DUMP_OPT] = action_dump_opt,
+    [KEFIR_COMPILER_RUNNER_ACTION_DUMP_OPT_FULL] = action_dump_opt,
     [KEFIR_COMPILER_RUNNER_ACTION_DUMP_ASSEMBLY] = action_dump_asm};
 
 kefir_result_t kefir_run_compiler(struct kefir_mem *mem, const struct kefir_compiler_runner_configuration *options) {

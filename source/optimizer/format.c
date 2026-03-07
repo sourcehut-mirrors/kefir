@@ -22,6 +22,7 @@
 #include "kefir/optimizer/schedule.h"
 #include "kefir/optimizer/topological_schedule.h"
 #include "kefir/optimizer/module_liveness.h"
+#include "kefir/ir/format.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 
@@ -1535,20 +1536,100 @@ static kefir_result_t format_function(struct kefir_mem *mem, struct kefir_json_o
                                       const struct kefir_opt_module *module, const struct kefir_opt_function *function,
                                       const struct kefir_opt_code_control_flow *control_flow,
                                       const struct kefir_opt_code_liveness *liveness,
-                                      const struct kefir_opt_code_memssa *memssa, kefir_bool_t debug_info) {
-    REQUIRE_OK(kefir_json_output_object_begin(json));
-    REQUIRE_OK(kefir_json_output_object_key(json, "id"));
-    REQUIRE_OK(kefir_json_output_uinteger(json, function->ir_func->declaration->id));
-    REQUIRE_OK(kefir_json_output_object_key(json, "name"));
-    if (function->ir_func->declaration->name != NULL) {
-        REQUIRE_OK(kefir_json_output_string(json, function->ir_func->declaration->name));
-    } else {
-        REQUIRE_OK(kefir_json_output_null(json));
+                                      const struct kefir_opt_code_memssa *memssa, kefir_bool_t debug_info,
+                                      kefir_bool_t skip_preamble) {
+    if (!skip_preamble) {
+        REQUIRE_OK(kefir_json_output_object_begin(json));
+        REQUIRE_OK(kefir_json_output_object_key(json, "id"));
+        REQUIRE_OK(kefir_json_output_uinteger(json, function->ir_func->declaration->id));
+        REQUIRE_OK(kefir_json_output_object_key(json, "name"));
+        if (function->ir_func->declaration->name != NULL) {
+            REQUIRE_OK(kefir_json_output_string(json, function->ir_func->declaration->name));
+        } else {
+            REQUIRE_OK(kefir_json_output_null(json));
+        }
     }
     REQUIRE_OK(kefir_json_output_object_key(json, "code"));
     REQUIRE_OK(kefir_opt_code_format(mem, json, module, &function->code, control_flow, liveness, memssa,
                                      debug_info ? &function->debug_info : NULL));
-    REQUIRE_OK(kefir_json_output_object_end(json));
+    if (!skip_preamble) {
+        REQUIRE_OK(kefir_json_output_object_end(json));
+    }
+    return KEFIR_OK;
+}
+
+struct format_function_opt_payload {
+    struct kefir_mem *mem;
+    const struct kefir_opt_module *module;
+    struct kefir_opt_module_liveness *module_liveness;
+    kefir_bool_t analyze;
+    kefir_bool_t debug_info;
+    kefir_bool_t skip_preamble;
+};
+
+static kefir_result_t format_function_opt(struct kefir_json_output *json, kefir_id_t func_decl_id, void *payload) {
+    REQUIRE(json != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid JSON output"));
+    ASSIGN_DECL_CAST(struct format_function_opt_payload *, param, payload);
+    REQUIRE(param != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer function formatting parameter"));
+
+    struct kefir_opt_function *function;
+    REQUIRE_OK(kefir_opt_module_get_function(param->module, func_decl_id, &function));
+
+    kefir_result_t res = KEFIR_OK;
+    struct kefir_opt_code_control_flow control_flow;
+    struct kefir_opt_code_liveness liveness;
+    struct kefir_opt_code_memssa memssa;
+    REQUIRE_CHAIN(&res, kefir_opt_code_control_flow_init(&control_flow));
+    REQUIRE_CHAIN(&res, kefir_opt_code_liveness_init(&liveness));
+    REQUIRE_CHAIN(&res, kefir_opt_code_memssa_init(&memssa));
+
+    if (param->analyze) {
+        REQUIRE_CHAIN(&res, kefir_opt_code_control_flow_build(param->mem, &control_flow, &function->code));
+        REQUIRE_CHAIN(&res, kefir_opt_code_liveness_build(param->mem, &liveness, &control_flow));
+        REQUIRE_CHAIN(&res,
+                      kefir_opt_code_memssa_construct(param->mem, &memssa, &function->code, &control_flow, &liveness));
+    }
+
+    REQUIRE_CHAIN(&res, format_function(param->mem, json, param->module, function,
+                                        param->analyze ? &control_flow : NULL, param->analyze ? &liveness : NULL,
+                                        param->analyze ? &memssa : NULL, param->debug_info, param->skip_preamble));
+
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_opt_code_memssa_free(param->mem, &memssa);
+        kefir_opt_code_liveness_free(param->mem, &liveness);
+        kefir_opt_code_control_flow_free(param->mem, &control_flow);
+        kefir_opt_module_liveness_free(param->mem, param->module_liveness);
+        return res;
+    });
+    res = kefir_opt_code_memssa_free(param->mem, &memssa);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_opt_code_liveness_free(param->mem, &liveness);
+        kefir_opt_code_control_flow_free(param->mem, &control_flow);
+        kefir_opt_module_liveness_free(param->mem, param->module_liveness);
+        return res;
+    });
+    res = kefir_opt_code_liveness_free(param->mem, &liveness);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_opt_code_control_flow_free(param->mem, &control_flow);
+        kefir_opt_module_liveness_free(param->mem, param->module_liveness);
+        return res;
+    });
+    res = kefir_opt_code_control_flow_free(param->mem, &control_flow);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_opt_module_liveness_free(param->mem, param->module_liveness);
+        return res;
+    });
+    return KEFIR_OK;
+}
+
+static kefir_result_t skip_symbol(const char *symbol, void *payload, kefir_bool_t *skip_ptr) {
+    ASSIGN_DECL_CAST(struct format_function_opt_payload *, param, payload);
+    REQUIRE(param != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer function formatting parameter"));
+    REQUIRE(skip_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to bool"));
+
+    *skip_ptr = param->analyze && !kefir_opt_module_is_symbol_alive(param->module_liveness, symbol);
     return KEFIR_OK;
 }
 
@@ -1572,57 +1653,54 @@ kefir_result_t kefir_opt_module_format(struct kefir_mem *mem, struct kefir_json_
     struct kefir_hashtree_node_iterator iter;
     for (const struct kefir_hashtree_node *node = kefir_hashtree_iter(&module->functions, &iter); node != NULL;
          node = kefir_hashtree_next(&iter)) {
-
-        struct kefir_opt_code_control_flow control_flow;
-        struct kefir_opt_code_liveness liveness;
-        struct kefir_opt_code_memssa memssa;
-        REQUIRE_CHAIN(&res, kefir_opt_code_control_flow_init(&control_flow));
-        REQUIRE_CHAIN(&res, kefir_opt_code_liveness_init(&liveness));
-        REQUIRE_CHAIN(&res, kefir_opt_code_memssa_init(&memssa));
-
-        kefir_result_t res = KEFIR_OK;
         ASSIGN_DECL_CAST(const struct kefir_opt_function *, function, node->value);
-        if (analyze) {
-            REQUIRE_CHAIN(&res, kefir_opt_code_control_flow_build(mem, &control_flow, &function->code));
-            REQUIRE_CHAIN(&res, kefir_opt_code_liveness_build(mem, &liveness, &control_flow));
-            REQUIRE_CHAIN(&res,
-                          kefir_opt_code_memssa_construct(mem, &memssa, &function->code, &control_flow, &liveness));
+        if (!analyze || kefir_opt_module_is_symbol_alive(&module_liveness, function->ir_func->name)) {
+            REQUIRE_CHAIN(
+                &res, format_function_opt(json, (kefir_id_t) iter.node->key,
+                                          &(struct format_function_opt_payload) {.mem = mem,
+                                                                                 .module = module,
+                                                                                 .module_liveness = &module_liveness,
+                                                                                 .debug_info = debug_info,
+                                                                                 .analyze = analyze,
+                                                                                 .skip_preamble = false}));
         }
-
-        if (!analyze || kefir_opt_module_is_symbol_alive(&module_liveness, function->ir_func->declaration->name)) {
-            REQUIRE_CHAIN(&res, format_function(mem, json, module, function, analyze ? &control_flow : NULL,
-                                                analyze ? &liveness : NULL, analyze ? &memssa : NULL, debug_info));
-        }
-
-        REQUIRE_ELSE(res == KEFIR_OK, {
-            kefir_opt_code_memssa_free(mem, &memssa);
-            kefir_opt_code_liveness_free(mem, &liveness);
-            kefir_opt_code_control_flow_free(mem, &control_flow);
-            kefir_opt_module_liveness_free(mem, &module_liveness);
-            return res;
-        });
-        res = kefir_opt_code_memssa_free(mem, &memssa);
-        REQUIRE_ELSE(res == KEFIR_OK, {
-            kefir_opt_code_liveness_free(mem, &liveness);
-            kefir_opt_code_control_flow_free(mem, &control_flow);
-            kefir_opt_module_liveness_free(mem, &module_liveness);
-            return res;
-        });
-        res = kefir_opt_code_liveness_free(mem, &liveness);
-        REQUIRE_ELSE(res == KEFIR_OK, {
-            kefir_opt_code_control_flow_free(mem, &control_flow);
-            kefir_opt_module_liveness_free(mem, &module_liveness);
-            return res;
-        });
-        res = kefir_opt_code_control_flow_free(mem, &control_flow);
-        REQUIRE_ELSE(res == KEFIR_OK, {
-            kefir_opt_module_liveness_free(mem, &module_liveness);
-            return res;
-        });
     }
     REQUIRE_CHAIN(&res, kefir_json_output_array_end(json));
 
     REQUIRE_CHAIN(&res, kefir_json_output_object_end(json));
+
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_opt_module_liveness_free(mem, &module_liveness);
+        return res;
+    });
+    REQUIRE_OK(kefir_opt_module_liveness_free(mem, &module_liveness));
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_opt_module_format_full(struct kefir_mem *mem, struct kefir_json_output *json,
+                                            const struct kefir_opt_module *module, kefir_bool_t analyze,
+                                            kefir_bool_t debug_info) {
+    REQUIRE(json != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid json output"));
+    REQUIRE(module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer module"));
+
+    struct kefir_opt_module_liveness module_liveness;
+    REQUIRE_OK(kefir_opt_module_liveness_init(&module_liveness));
+    kefir_result_t res = KEFIR_OK;
+    if (analyze) {
+        res = kefir_opt_module_liveness_trace(mem, &module_liveness, module);
+    }
+
+    struct format_function_opt_payload payload = {.mem = mem,
+                                                  .module = module,
+                                                  .module_liveness = &module_liveness,
+                                                  .debug_info = debug_info,
+                                                  .analyze = analyze,
+                                                  .skip_preamble = true};
+    REQUIRE_CHAIN(&res,
+                  kefir_ir_format_module_json_custom(
+                      json, module->ir_module, debug_info,
+                      &(struct kefir_ir_format_callbacks) {
+                          .format_function = format_function_opt, .skip_symbol = skip_symbol, .payload = &payload}));
 
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_opt_module_liveness_free(mem, &module_liveness);
