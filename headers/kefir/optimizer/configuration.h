@@ -22,6 +22,7 @@
 #define KEFIR_OPTIMIZER_CONFIGURATION_H_
 
 #include "kefir/optimizer/pipeline.h"
+#include "kefir/ir/platform.h"
 #include "kefir/core/data_model.h"
 
 typedef struct kefir_optimizer_configuration {
@@ -33,9 +34,11 @@ typedef struct kefir_optimizer_configuration {
     kefir_size_t imprecise_decimal_bitint_conv;
     kefir_data_model_decimal_encoding_t decimal_encoding;
     const struct kefir_optimizer_target_lowering *target_lowering;
+    const struct kefir_ir_target_platform *target_platform;
 } kefir_optimizer_configuration_t;
 
-kefir_result_t kefir_optimizer_configuration_init(struct kefir_optimizer_configuration *);
+kefir_result_t kefir_optimizer_configuration_init(struct kefir_optimizer_configuration *,
+                                                  const struct kefir_ir_target_platform *);
 kefir_result_t kefir_optimizer_configuration_free(struct kefir_mem *, struct kefir_optimizer_configuration *);
 
 kefir_result_t kefir_optimizer_configuration_add_pipeline_pass(struct kefir_mem *,

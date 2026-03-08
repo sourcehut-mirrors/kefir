@@ -2,9 +2,11 @@
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 
-kefir_result_t kefir_optimizer_configuration_init(struct kefir_optimizer_configuration *conf) {
+kefir_result_t kefir_optimizer_configuration_init(struct kefir_optimizer_configuration *conf,
+                                                  const struct kefir_ir_target_platform *target_platform) {
     REQUIRE(conf != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to optimizer configuration"));
+    REQUIRE(target_platform != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR target platform"));
 
     REQUIRE_OK(kefir_optimizer_pipeline_init(&conf->pipeline));
     conf->max_inline_depth = KEFIR_SIZE_MAX;
@@ -13,6 +15,7 @@ kefir_result_t kefir_optimizer_configuration_init(struct kefir_optimizer_configu
     conf->imprecise_decimal_bitint_conv = false;
     conf->decimal_encoding = KEFIR_DECIMAL_ENCODING_BID;
     conf->target_lowering = NULL;
+    conf->target_platform = target_platform;
     return KEFIR_OK;
 }
 
@@ -46,8 +49,13 @@ kefir_result_t kefir_optimizer_configuration_copy_from(struct kefir_mem *mem,
     REQUIRE(src_conf != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid source optimizer configuration"));
 
+    dst_conf->debug_info = src_conf->debug_info;
     dst_conf->max_inline_depth = src_conf->max_inline_depth;
     dst_conf->max_inlines_per_function = src_conf->max_inlines_per_function;
+    dst_conf->decimal_encoding = src_conf->decimal_encoding;
+    dst_conf->imprecise_decimal_bitint_conv = src_conf->imprecise_decimal_bitint_conv;
+    dst_conf->target_lowering = src_conf->target_lowering;
+    dst_conf->target_platform = src_conf->target_platform;
     for (const struct kefir_list_entry *iter = kefir_list_head(&src_conf->pipeline.pipeline); iter != NULL;
          kefir_list_next(&iter)) {
 

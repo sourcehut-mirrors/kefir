@@ -148,6 +148,7 @@ static kefir_result_t generate_runtime_functions(struct kefir_mem *mem, FILE *ou
 
     kefir_result_t res = kefir_optimizer_configuration_copy_from(mem, &context.optimizer_configuration,
                                                                  &hooks->compiler_context->optimizer_configuration);
+    context.optimizer_configuration.debug_info = false;
     REQUIRE_CHAIN(&res, generate_runtime_functions_impl(mem, output, functions, &context));
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_compiler_context_free(mem, &context);
