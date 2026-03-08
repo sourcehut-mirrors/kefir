@@ -28,8 +28,10 @@
 #include "kefir/optimizer/escape.h"
 #include "kefir/optimizer/code_util.h"
 #include "kefir/optimizer/mem2reg_util.h"
+#include "kefir/optimizer/configuration.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
+#include "kefir/core/bitset.h"
 #include <string.h>
 
 kefir_result_t kefir_opt_code_util_classify_memory_access(const struct kefir_opt_instruction *instr,
@@ -876,8 +878,226 @@ static kefir_result_t do_optimize_nonvolatile_store(
     return KEFIR_OK;
 }
 
+#define BITSET_HAS_ONES(_bitset) (kefir_bitset_find((_bitset), true, 0, NULL) != KEFIR_NOT_FOUND)
+
+static kefir_result_t do_optimize_zero_memory_impl(
+    struct kefir_mem *mem, struct kefir_opt_function *func, const struct kefir_opt_code_escape_analysis *escapes,
+    const struct kefir_ir_module *ir_module, struct kefir_opt_code_memssa *memssa,
+    struct kefir_opt_code_sequencing *sequencing, kefir_opt_instruction_ref_t location1_ref, kefir_size_t size1,
+    kefir_opt_code_memssa_node_ref_t node_ref, struct kefir_bitset *uninit_area, struct kefir_list *queue) {
+
+    kefir_result_t res;
+    kefir_bool_t first_iter = true;
+    kefir_uint64_t key = (((kefir_uint64_t) BITSET_HAS_ONES(uninit_area)) << 32) | (kefir_uint32_t) node_ref;
+    REQUIRE_OK(kefir_list_insert_after(mem, queue, NULL, (void *) (kefir_uptr_t) key));
+    for (struct kefir_list_entry *iter = kefir_list_head(queue); iter != NULL;
+         iter = kefir_list_head(queue), first_iter = false) {
+        ASSIGN_DECL_CAST(kefir_uint64_t, key, (kefir_uptr_t) iter->value);
+        ASSIGN_DECL_CAST(kefir_opt_code_memssa_node_ref_t, iter_ref, (kefir_uint32_t) key);
+        ASSIGN_DECL_CAST(kefir_bool_t, has_uninit_values, key >> 32);
+        REQUIRE_OK(kefir_list_pop(mem, queue, iter));
+
+        kefir_bool_t stop_search = false;
+        if (!first_iter) {
+            const struct kefir_opt_code_memssa_node *iter_node;
+            REQUIRE_OK(kefir_opt_code_memssa_node(memssa, iter_ref, &iter_node));
+
+            switch (iter_node->type) {
+                case KEFIR_OPT_CODE_MEMSSA_ROOT_NODE:
+                    return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected memory ssa node type");
+
+                case KEFIR_OPT_CODE_MEMSSA_TERMINATE_NODE:
+                case KEFIR_OPT_CODE_MEMSSA_PHI_NODE:
+                    stop_search = true;
+                    break;
+
+                case KEFIR_OPT_CODE_MEMSSA_CONSUME_NODE:
+                case KEFIR_OPT_CODE_MEMSSA_PRODUCE_CONSUME_NODE: {
+                    const struct kefir_opt_instruction *iter_instr;
+                    REQUIRE_OK(kefir_opt_code_container_instr(&func->code, iter_node->instr_ref, &iter_instr));
+                    kefir_opt_instruction_ref_t location2_ref;
+                    kefir_size_t size2;
+                    kefir_int64_t offset2;
+                    res = kefir_opt_code_util_classify_memory_access(iter_instr, &location2_ref, &size2, &offset2);
+                    if (res == KEFIR_NO_MATCH) {
+                        location2_ref = iter_instr->id;
+                        size2 = 0;
+                        offset2 = 0;
+                        res = KEFIR_OK;
+                    }
+
+                    kefir_bool_t may_alias;
+                    REQUIRE_OK(kefir_opt_code_may_alias(&func->code, escapes, ir_module, location1_ref, size1, 0,
+                                                        location2_ref, size2, offset2, &may_alias));
+                    if (may_alias) {
+                        stop_search = true;
+                    }
+                } break;
+
+                case KEFIR_OPT_CODE_MEMSSA_PRODUCE_NODE: {
+                    const struct kefir_opt_instruction *iter_instr;
+                    REQUIRE_OK(kefir_opt_code_container_instr(&func->code, iter_node->instr_ref, &iter_instr));
+                    kefir_opt_instruction_ref_t location2_ref;
+                    kefir_size_t size2;
+                    kefir_int64_t offset2;
+                    res = kefir_opt_code_util_classify_memory_access(iter_instr, &location2_ref, &size2, &offset2);
+                    if (res == KEFIR_NO_MATCH) {
+                        location2_ref = iter_instr->id;
+                        size2 = 0;
+                        offset2 = 0;
+                        res = KEFIR_OK;
+                    }
+
+                    const struct kefir_opt_instruction *location_instr;
+                    REQUIRE_OK(kefir_opt_code_container_instr(&func->code, location2_ref, &location_instr));
+                    if (location_instr->operation.opcode == KEFIR_OPT_OPCODE_REF_LOCAL) {
+                        location2_ref = location_instr->operation.parameters.refs[0];
+                        offset2 += location_instr->operation.parameters.offset;
+                    }
+
+                    kefir_bool_t may_alias;
+                    REQUIRE_OK(kefir_opt_code_may_alias(&func->code, escapes, ir_module, location1_ref, size1, 0,
+                                                        location2_ref, size2, offset2, &may_alias));
+                    if (location1_ref == location2_ref) {
+                        kefir_int64_t begin = MAX(offset2, 0);
+                        kefir_int64_t end = MIN(offset2 + size2, size1);
+                        switch (iter_instr->operation.opcode) {
+                            case KEFIR_OPT_OPCODE_INT8_STORE:
+                            case KEFIR_OPT_OPCODE_INT16_STORE:
+                            case KEFIR_OPT_OPCODE_INT32_STORE:
+                            case KEFIR_OPT_OPCODE_INT64_STORE:
+                            case KEFIR_OPT_OPCODE_INT128_STORE:
+                            case KEFIR_OPT_OPCODE_FLOAT32_STORE:
+                            case KEFIR_OPT_OPCODE_FLOAT64_STORE:
+                            case KEFIR_OPT_OPCODE_LONG_DOUBLE_STORE:
+                            case KEFIR_OPT_OPCODE_COMPLEX_FLOAT32_STORE:
+                            case KEFIR_OPT_OPCODE_COMPLEX_FLOAT64_STORE:
+                            case KEFIR_OPT_OPCODE_COMPLEX_LONG_DOUBLE_STORE:
+                            case KEFIR_OPT_OPCODE_BITINT_STORE:
+                            case KEFIR_OPT_OPCODE_BITINT_STORE_PRECISE:
+                            case KEFIR_OPT_OPCODE_DECIMAL32_STORE:
+                            case KEFIR_OPT_OPCODE_DECIMAL64_STORE:
+                            case KEFIR_OPT_OPCODE_DECIMAL128_STORE:
+                                if (end > begin) {
+                                    REQUIRE_OK(kefir_bitset_set_consecutive(uninit_area, begin, end - begin, false));
+                                } else {
+                                    stop_search = true;
+                                }
+                                break;
+
+                            default:
+                                stop_search = true;
+                                break;
+                        }
+                    } else if (may_alias) {
+                        stop_search = true;
+                    }
+                } break;
+            }
+        }
+
+        REQUIRE(!stop_search || !has_uninit_values, KEFIR_OK);
+
+        has_uninit_values = BITSET_HAS_ONES(uninit_area);
+        kefir_bool_t single_producer = false;
+        struct kefir_opt_code_memssa_use_iterator use_iter;
+        kefir_opt_code_memssa_node_ref_t use_node_ref;
+        for (res = kefir_opt_code_memssa_use_iter(memssa, &use_iter, iter_ref, &use_node_ref);
+             !stop_search && res == KEFIR_OK; res = kefir_opt_code_memssa_use_next(&use_iter, &use_node_ref)) {
+
+            const struct kefir_opt_code_memssa_node *use_node;
+            REQUIRE_OK(kefir_opt_code_memssa_node(memssa, use_node_ref, &use_node));
+            if (use_node->type == KEFIR_OPT_CODE_MEMSSA_PRODUCE_NODE ||
+                use_node->type == KEFIR_OPT_CODE_MEMSSA_PRODUCE_CONSUME_NODE) {
+                REQUIRE(!single_producer, KEFIR_OK);
+                single_producer = true;
+            }
+
+            kefir_uint64_t key = (((kefir_uint64_t) has_uninit_values) << 32) | (kefir_uint32_t) use_node_ref;
+            REQUIRE_OK(kefir_list_insert_after(mem, queue, NULL, (void *) (kefir_uptr_t) key));
+        }
+        if (res != KEFIR_ITERATOR_END) {
+            REQUIRE_OK(res);
+        }
+    }
+
+    const struct kefir_opt_code_memssa_node *node;
+    REQUIRE_OK(kefir_opt_code_memssa_node(memssa, node_ref, &node));
+
+    REQUIRE_OK(kefir_opt_code_container_drop_control(&func->code, node->instr_ref));
+    REQUIRE_OK(kefir_opt_code_container_drop_instr(mem, &func->code, node->instr_ref));
+    REQUIRE_OK(kefir_opt_code_sequencing_drop_cache(mem, sequencing));
+    REQUIRE_OK(kefir_opt_code_memssa_replace(mem, memssa, node->predecessor_ref, node_ref));
+    REQUIRE_OK(kefir_opt_code_memssa_unbind(mem, memssa, node_ref));
+
+    return KEFIR_OK;
+}
+
+static kefir_result_t do_optimize_zero_memory(
+    struct kefir_mem *mem, struct kefir_opt_module *module, struct kefir_opt_function *func,
+    const struct kefir_optimizer_configuration *configuration, const struct kefir_opt_code_control_flow *control_flow,
+    struct kefir_opt_code_sequencing *sequencing, struct kefir_opt_code_memssa *memssa,
+    const struct kefir_opt_code_escape_analysis *escapes, const struct kefir_ir_module *ir_module,
+    const struct kefir_opt_instruction *instr) {
+    UNUSED(control_flow);
+    UNUSED(module);
+    UNUSED(sequencing);
+    UNUSED(has_downstream_clobbers);
+    kefir_opt_instruction_ref_t instr_ref = instr->id;
+
+    kefir_opt_code_memssa_node_ref_t node_ref;
+    kefir_result_t res = kefir_opt_code_memssa_instruction_binding(memssa, instr_ref, &node_ref);
+    REQUIRE(res != KEFIR_NOT_FOUND, KEFIR_OK);
+    REQUIRE_OK(res);
+
+    const struct kefir_opt_code_memssa_node *node;
+    REQUIRE_OK(kefir_opt_code_memssa_node(memssa, node_ref, &node));
+    REQUIRE(node->type == KEFIR_OPT_CODE_MEMSSA_PRODUCE_NODE, KEFIR_OK);
+
+    const struct kefir_ir_type *ir_type =
+        kefir_ir_module_get_named_type(module->ir_module, instr->operation.parameters.type.type_id);
+    REQUIRE(ir_type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to retrieve IR type"));
+
+    kefir_ir_target_platform_type_handle_t platform_type;
+    REQUIRE_OK(configuration->target_platform->get_type(mem, configuration->target_platform, ir_type, &platform_type));
+
+    struct kefir_ir_target_platform_typeentry_info typeentry_info;
+    res = configuration->target_platform->typeentry_info(mem, platform_type,
+                                                         instr->operation.parameters.type.type_index, &typeentry_info);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        configuration->target_platform->free_type(mem, platform_type);
+        return KEFIR_OK;
+    });
+    REQUIRE_OK(configuration->target_platform->free_type(mem, platform_type));
+
+    struct kefir_bitset uninit_memory;
+    struct kefir_list queue;
+    REQUIRE_OK(kefir_bitset_init(&uninit_memory));
+    REQUIRE_OK(kefir_list_init(&queue));
+
+    res = kefir_bitset_resize(mem, &uninit_memory, typeentry_info.size);
+    REQUIRE_CHAIN(&res, kefir_bitset_set_consecutive(&uninit_memory, 0, typeentry_info.size, true));
+    REQUIRE_CHAIN(&res, do_optimize_zero_memory_impl(mem, func, escapes, ir_module, memssa, sequencing,
+                                                     instr->operation.parameters.refs[0], typeentry_info.size, node_ref,
+                                                     &uninit_memory, &queue));
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_list_free(mem, &queue);
+        kefir_bitset_free(mem, &uninit_memory);
+        return res;
+    });
+    res = kefir_list_free(mem, &queue);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_bitset_free(mem, &uninit_memory);
+        return res;
+    });
+    REQUIRE_OK(kefir_bitset_free(mem, &uninit_memory));
+
+    return KEFIR_OK;
+}
+
 static kefir_result_t do_optimize(struct kefir_mem *mem, struct kefir_opt_module *module,
                                   struct kefir_opt_function *func,
+                                  const struct kefir_optimizer_configuration *configuration,
                                   const struct kefir_opt_code_control_flow *control_flow,
                                   struct kefir_opt_code_sequencing *sequencing, struct kefir_opt_code_memssa *memssa,
                                   const struct kefir_opt_code_escape_analysis *escapes) {
@@ -946,6 +1166,11 @@ static kefir_result_t do_optimize(struct kefir_mem *mem, struct kefir_opt_module
                     }
                     break;
 
+                case KEFIR_OPT_OPCODE_ZERO_MEMORY:
+                    REQUIRE_OK(do_optimize_zero_memory(mem, module, func, configuration, control_flow, sequencing,
+                                                       memssa, escapes, module->ir_module, instr));
+                    break;
+
                 default:
                     // Intentionally left blank
                     break;
@@ -982,7 +1207,7 @@ static kefir_result_t memory_ssa_apply(struct kefir_mem *mem, struct kefir_opt_m
     REQUIRE_CHAIN(&res, kefir_opt_code_liveness_build(mem, &liveness, &control_flow));
     REQUIRE_CHAIN(&res, kefir_opt_code_memssa_construct(mem, &memssa, &func->code, &control_flow, &liveness));
     REQUIRE_CHAIN(&res, kefir_opt_code_escape_analysis_build(mem, &escapes, &func->code));
-    REQUIRE_CHAIN(&res, do_optimize(mem, module, func, &control_flow, &sequencing, &memssa, &escapes));
+    REQUIRE_CHAIN(&res, do_optimize(mem, module, func, config, &control_flow, &sequencing, &memssa, &escapes));
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_opt_code_escape_analysis_free(mem, &escapes);
         kefir_opt_code_memssa_free(mem, &memssa);

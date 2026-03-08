@@ -41,9 +41,6 @@ test2:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    xor %eax, %eax
-    movq %rax, -12(%rbp)
-    movl %eax, -4(%rbp)
     movl %edi, -12(%rbp)
     lea 1(%edi), %eax
     movl %eax, -8(%rbp)
@@ -111,9 +108,6 @@ test5:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    xor %eax, %eax
-    movq %rax, -12(%rbp)
-    movl %eax, -4(%rbp)
     movl %edi, -12(%rbp)
     lea 1(%edi), %eax
     movl %eax, -8(%rbp)

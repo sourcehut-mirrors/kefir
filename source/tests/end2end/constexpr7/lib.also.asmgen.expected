@@ -26,10 +26,6 @@ getx3:
 
 test2:
 .L__kefir_text_func_test2_begin:
-    xor %eax, %eax
-    movq %rax, (%rdi)
-    movq %rax, 8(%rdi)
-    movq %rax, 16(%rdi)
     movl $-100, (%rdi)
     movl $3, 4(%rdi)
     movl $5, 8(%rdi)

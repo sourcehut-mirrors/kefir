@@ -987,8 +987,6 @@ __kefir_softfloat_fabsl:
     mov %rsp, %rbp
     sub $16, %rsp
     fldt 16(%rbp)
-    xorps %xmm0, %xmm0
-    movdqu %xmm0, -16(%rbp)
     movq $0, -8(%rbp)
     fstpt -16(%rbp)
     andq $32767, -8(%rbp)

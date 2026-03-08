@@ -97,13 +97,12 @@ kefir_result_t kefir_bitset_set(const struct kefir_bitset *bitset, kefir_size_t 
 kefir_result_t kefir_bitset_find(const struct kefir_bitset *bitset, kefir_bool_t value, kefir_size_t begin,
                                  kefir_size_t *result_ptr) {
     REQUIRE(bitset != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid bitset"));
-    REQUIRE(result_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to index"));
 
     for (kefir_size_t i = begin; i < bitset->length; i++) {
         kefir_bool_t bit;
         REQUIRE_OK(kefir_bitset_get(bitset, i, &bit));
         if (bit == value) {
-            *result_ptr = i;
+            ASSIGN_PTR(result_ptr, i);
             return KEFIR_OK;
         }
     }

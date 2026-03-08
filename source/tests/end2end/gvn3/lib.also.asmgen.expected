@@ -178,8 +178,6 @@ neglong:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    xorps %xmm0, %xmm0
-    movdqu %xmm0, -16(%rbp)
     neg %rdi
     movq %rdi, -16(%rbp)
     movq %rdi, -8(%rbp)
@@ -212,8 +210,6 @@ notlong:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    xorps %xmm0, %xmm0
-    movdqu %xmm0, -16(%rbp)
     not %rdi
     movq %rdi, -16(%rbp)
     movq %rdi, -8(%rbp)
@@ -247,8 +243,6 @@ bnotlong:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    xorps %xmm0, %xmm0
-    movdqu %xmm0, -16(%rbp)
     xor %eax, %eax
     test %rdi, %rdi
     sete %al
@@ -285,8 +279,6 @@ boollong:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    xorps %xmm0, %xmm0
-    movdqu %xmm0, -16(%rbp)
     test %rdi, %rdi
     setne %al
     movzx %al, %rax
@@ -442,8 +434,6 @@ conv8long:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    xorps %xmm0, %xmm0
-    movdqu %xmm0, -16(%rbp)
     movsx %dil, %rax
     movq %rax, -16(%rbp)
     movq %rax, -8(%rbp)
@@ -492,8 +482,6 @@ conv16long:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    xorps %xmm0, %xmm0
-    movdqu %xmm0, -16(%rbp)
     movsx %di, %rax
     movq %rax, -16(%rbp)
     movq %rax, -8(%rbp)
@@ -525,8 +513,6 @@ conv32long:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    xorps %xmm0, %xmm0
-    movdqu %xmm0, -16(%rbp)
     movsx %edi, %rax
     movq %rax, -16(%rbp)
     movq %rax, -8(%rbp)
@@ -608,8 +594,6 @@ uconv8long:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    xorps %xmm0, %xmm0
-    movdqu %xmm0, -16(%rbp)
     movzx %dil, %rax
     movq %rax, -16(%rbp)
     movq %rax, -8(%rbp)
@@ -673,8 +657,6 @@ uconv16long:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    xorps %xmm0, %xmm0
-    movdqu %xmm0, -16(%rbp)
     movzx %di, %rax
     movq %rax, -16(%rbp)
     movq %rax, -8(%rbp)
@@ -706,8 +688,6 @@ uconv32long:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    xorps %xmm0, %xmm0
-    movdqu %xmm0, -16(%rbp)
     mov %edi, %eax
     movq %rax, -16(%rbp)
     movq %rax, -8(%rbp)

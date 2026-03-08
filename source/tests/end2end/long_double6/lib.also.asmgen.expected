@@ -12,10 +12,6 @@ init_s:
     mov %rsp, %rbp
     sub $16, %rsp
     fstcw -8(%rbp)
-    xorps %xmm1, %xmm1
-    movdqu %xmm1, (%rdi)
-    movdqu %xmm1, 16(%rdi)
-    movdqu %xmm1, 32(%rdi)
     movsx %esi, %rax
     push %rax
     fildq (%rsp)

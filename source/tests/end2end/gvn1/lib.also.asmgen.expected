@@ -287,8 +287,6 @@ orlong:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    xorps %xmm0, %xmm0
-    movdqu %xmm0, -16(%rbp)
     or %rsi, %rdi
     movq %rdi, -16(%rbp)
     neg %rdi
@@ -397,8 +395,6 @@ addlong:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    xorps %xmm0, %xmm0
-    movdqu %xmm0, -16(%rbp)
     add %rsi, %rdi
     movq %rdi, -16(%rbp)
     neg %rdi
@@ -433,8 +429,6 @@ andlong:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    xorps %xmm0, %xmm0
-    movdqu %xmm0, -16(%rbp)
     and %rsi, %rdi
     movq %rdi, -16(%rbp)
     neg %rdi
@@ -493,8 +487,6 @@ borlong:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    xorps %xmm0, %xmm0
-    movdqu %xmm0, -16(%rbp)
     or %rsi, %rdi
     setne %al
     movzx %al, %rax
@@ -537,8 +529,6 @@ divlong:
     mov %rsp, %rbp
     sub $16, %rsp
     mov %rdi, %rax
-    xorps %xmm0, %xmm0
-    movdqu %xmm0, -16(%rbp)
     cqo
     idiv %rsi
     movq %rax, -16(%rbp)
@@ -578,8 +568,6 @@ modlong:
     mov %rsp, %rbp
     sub $16, %rsp
     mov %rdi, %rax
-    xorps %xmm0, %xmm0
-    movdqu %xmm0, -16(%rbp)
     cqo
     idiv %rsi
     movq %rdx, -16(%rbp)
@@ -617,8 +605,6 @@ mullong:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    xorps %xmm0, %xmm0
-    movdqu %xmm0, -16(%rbp)
     imul %rsi, %rdi
     movq %rdi, -16(%rbp)
     neg %rdi
@@ -674,8 +660,6 @@ sarlong:
     mov %rsp, %rbp
     sub $16, %rsp
     mov %rsi, %rcx
-    xorps %xmm0, %xmm0
-    movdqu %xmm0, -16(%rbp)
     sar %cl, %rdi
     movq %rdi, -16(%rbp)
     neg %rdi
@@ -713,8 +697,6 @@ shllong:
     mov %rsp, %rbp
     sub $16, %rsp
     mov %rsi, %rcx
-    xorps %xmm0, %xmm0
-    movdqu %xmm0, -16(%rbp)
     shl %cl, %rdi
     movq %rdi, -16(%rbp)
     neg %rdi
@@ -768,8 +750,6 @@ sublong:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    xorps %xmm0, %xmm0
-    movdqu %xmm0, -16(%rbp)
     sub %rsi, %rdi
     movq %rdi, -16(%rbp)
     neg %rdi
@@ -804,8 +784,6 @@ xorlong:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    xorps %xmm0, %xmm0
-    movdqu %xmm0, -16(%rbp)
     xor %rsi, %rdi
     movq %rdi, -16(%rbp)
     neg %rdi
@@ -880,8 +858,6 @@ bandlong:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    xorps %xmm0, %xmm0
-    movdqu %xmm0, -16(%rbp)
     test %rdi, %rdi
     setne %al
     test %rsi, %rsi
@@ -1048,8 +1024,6 @@ shrulong:
     mov %rsp, %rbp
     sub $16, %rsp
     mov %rsi, %rcx
-    xorps %xmm0, %xmm0
-    movdqu %xmm0, -16(%rbp)
     shr %cl, %rdi
     movq %rdi, -16(%rbp)
     neg %rdi
@@ -1225,8 +1199,6 @@ udivulong:
     mov %rsp, %rbp
     sub $16, %rsp
     mov %rdi, %rax
-    xorps %xmm0, %xmm0
-    movdqu %xmm0, -16(%rbp)
     xor %edx, %edx
     div %rsi
     movq %rax, -16(%rbp)
@@ -1266,8 +1238,6 @@ umodulong:
     mov %rsp, %rbp
     sub $16, %rsp
     mov %rdi, %rax
-    xorps %xmm0, %xmm0
-    movdqu %xmm0, -16(%rbp)
     xor %edx, %edx
     div %rsi
     movq %rdx, -16(%rbp)
@@ -1305,8 +1275,6 @@ umululong:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    xorps %xmm0, %xmm0
-    movdqu %xmm0, -16(%rbp)
     imul %rsi, %rdi
     movq %rdi, -16(%rbp)
     neg %rdi

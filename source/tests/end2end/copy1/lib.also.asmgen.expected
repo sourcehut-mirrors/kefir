@@ -265,11 +265,10 @@ generate_buf_0:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    xor %al, %al
-    movb %al, -1(%rbp)
     movb $0, -1(%rbp)
     xor %eax, %eax
-    xor %edx, %edx
+    xor %ecx, %ecx
+    mov %rcx, %rdx
     mov %rax, %rcx
 .L__kefir_func_generate_buf_0_label2:
     cmp $1, %edx

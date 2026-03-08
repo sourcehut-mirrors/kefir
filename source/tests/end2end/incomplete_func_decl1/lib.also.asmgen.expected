@@ -16,8 +16,6 @@ get4:
     movq %rdi, -32(%rbp)
     movq -32(%rbp), %rax
     movq %rax, -16(%rbp)
-    xor %eax, %eax
-    movq %rax, -8(%rbp)
     movl -16(%rbp), %eax
     movl -12(%rbp), %ecx
     mov %eax, %edx
@@ -37,8 +35,6 @@ test:
     mov %rsp, %rbp
     push %rbx
     sub $24, %rsp
-    xor %eax, %eax
-    movq %rax, -16(%rbp)
     movl %edi, -16(%rbp)
     movl %esi, -12(%rbp)
     lea -24(%rbp), %rbx
