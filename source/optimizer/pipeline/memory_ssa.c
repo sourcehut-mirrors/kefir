@@ -1033,6 +1033,49 @@ static kefir_result_t do_optimize_zero_memory_impl(
     return KEFIR_OK;
 }
 
+static kefir_result_t scan_uninitialized(struct kefir_mem *mem, const struct kefir_ir_target_platform *target_platform,
+                                         const struct kefir_ir_type *ir_type, kefir_size_t type_index,
+                                         kefir_size_t offset, kefir_ir_target_platform_type_handle_t platform_type,
+                                         struct kefir_bitset *uninit_memory) {
+    const struct kefir_ir_typeentry *typeentry = kefir_ir_type_at(ir_type, type_index);
+    REQUIRE(typeentry != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to retrieve IR type entry"));
+
+    struct kefir_ir_target_platform_typeentry_info typeentry_info;
+    REQUIRE_OK(target_platform->typeentry_info(mem, platform_type, type_index, &typeentry_info));
+
+    switch (typeentry->typecode) {
+        case KEFIR_IR_TYPE_STRUCT:
+        case KEFIR_IR_TYPE_UNION: {
+            kefir_size_t child_index = type_index + 1;
+            for (kefir_size_t i = 0; i < (kefir_size_t) typeentry->param;
+                 i++, child_index += kefir_ir_type_length_of(ir_type, child_index)) {
+                struct kefir_ir_target_platform_typeentry_info child_typeentry_info;
+                REQUIRE_OK(target_platform->typeentry_info(mem, platform_type, child_index, &child_typeentry_info));
+
+                REQUIRE_OK(scan_uninitialized(mem, target_platform, ir_type, child_index,
+                                              offset + child_typeentry_info.relative_offset, platform_type,
+                                              uninit_memory));
+            }
+        } break;
+
+        case KEFIR_IR_TYPE_ARRAY: {
+            struct kefir_ir_target_platform_typeentry_info child_typeentry_info;
+            REQUIRE_OK(target_platform->typeentry_info(mem, platform_type, type_index + 1, &child_typeentry_info));
+            for (kefir_size_t i = 0; i < (kefir_size_t) typeentry->param; i++) {
+                REQUIRE_OK(
+                    scan_uninitialized(mem, target_platform, ir_type, type_index + 1,
+                                       offset + child_typeentry_info.relative_offset + child_typeentry_info.size * i,
+                                       platform_type, uninit_memory));
+            }
+        } break;
+
+        default:
+            REQUIRE_OK(kefir_bitset_set_consecutive(uninit_memory, offset, typeentry_info.size, true));
+            break;
+    }
+    return KEFIR_OK;
+}
+
 static kefir_result_t do_optimize_zero_memory(
     struct kefir_mem *mem, struct kefir_opt_module *module, struct kefir_opt_function *func,
     const struct kefir_optimizer_configuration *configuration, const struct kefir_opt_code_control_flow *control_flow,
@@ -1058,28 +1101,33 @@ static kefir_result_t do_optimize_zero_memory(
         kefir_ir_module_get_named_type(module->ir_module, instr->operation.parameters.type.type_id);
     REQUIRE(ir_type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to retrieve IR type"));
 
+    struct kefir_bitset uninit_memory;
+    struct kefir_list queue;
+    REQUIRE_OK(kefir_bitset_init(&uninit_memory));
+    REQUIRE_OK(kefir_list_init(&queue));
+
     kefir_ir_target_platform_type_handle_t platform_type;
     REQUIRE_OK(configuration->target_platform->get_type(mem, configuration->target_platform, ir_type, &platform_type));
 
     struct kefir_ir_target_platform_typeentry_info typeentry_info;
     res = configuration->target_platform->typeentry_info(mem, platform_type,
                                                          instr->operation.parameters.type.type_index, &typeentry_info);
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        configuration->target_platform->free_type(mem, platform_type);
-        return KEFIR_OK;
-    });
-    REQUIRE_OK(configuration->target_platform->free_type(mem, platform_type));
 
-    struct kefir_bitset uninit_memory;
-    struct kefir_list queue;
-    REQUIRE_OK(kefir_bitset_init(&uninit_memory));
-    REQUIRE_OK(kefir_list_init(&queue));
-
-    res = kefir_bitset_resize(mem, &uninit_memory, typeentry_info.size);
-    REQUIRE_CHAIN(&res, kefir_bitset_set_consecutive(&uninit_memory, 0, typeentry_info.size, true));
+    REQUIRE_CHAIN(&res, kefir_bitset_resize(mem, &uninit_memory, typeentry_info.size));
+    REQUIRE_CHAIN(&res, kefir_bitset_set_consecutive(&uninit_memory, 0, typeentry_info.size, false));
+    REQUIRE_CHAIN(&res,
+                  scan_uninitialized(mem, configuration->target_platform, ir_type,
+                                     instr->operation.parameters.type.type_index, 0, platform_type, &uninit_memory));
     REQUIRE_CHAIN(&res, do_optimize_zero_memory_impl(mem, func, escapes, ir_module, memssa, sequencing,
                                                      instr->operation.parameters.refs[0], typeentry_info.size, node_ref,
                                                      &uninit_memory, &queue));
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        configuration->target_platform->free_type(mem, platform_type);
+        kefir_list_free(mem, &queue);
+        kefir_bitset_free(mem, &uninit_memory);
+        return res;
+    });
+    res = configuration->target_platform->free_type(mem, platform_type);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_list_free(mem, &queue);
         kefir_bitset_free(mem, &uninit_memory);

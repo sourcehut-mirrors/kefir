@@ -12,30 +12,24 @@ get1:
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-    mov %rdi, %rdx
-    mov %rdx, %rdi
-    xor %eax, %eax
-    mov $10, %rcx
-    mov %rax, %rsi
-    rep stosq
-    movl $58472, (%rdx)
+    movl $58472, (%rdi)
     lea .L__kefir_string_literal0(%rip), %rax
-    movq %rax, 8(%rdx)
-    movq $58580, 16(%rdx)
+    movq %rax, 8(%rdi)
+    movq $58580, 16(%rdi)
     movq .L__kefir_func_get1_label3(%rip), %xmm0
-    movq %xmm0, 24(%rdx)
+    movq %xmm0, 24(%rdi)
     movd .L__kefir_func_get1_label4(%rip), %xmm0
     movd .L__kefir_func_get1_label5(%rip), %xmm1
-    movd %xmm0, 32(%rdx)
-    movd %xmm1, 36(%rdx)
-    movl $1, 40(%rdx)
-    movl $2, 44(%rdx)
-    movl $-1, 48(%rdx)
-    movw $50, 56(%rdx)
-    movq $-4451786, 64(%rdx)
+    movd %xmm0, 32(%rdi)
+    movd %xmm1, 36(%rdi)
+    movl $1, 40(%rdi)
+    movl $2, 44(%rdi)
+    movl $-1, 48(%rdi)
+    movw $50, 56(%rdi)
+    movq $-4451786, 64(%rdi)
     movd .L__kefir_func_get1_label6(%rip), %xmm0
-    movd %xmm0, 72(%rdx)
-    mov %rdx, %rax
+    movd %xmm0, 72(%rdi)
+    mov %rdi, %rax
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

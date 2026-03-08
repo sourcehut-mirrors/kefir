@@ -565,14 +565,10 @@ test_dec32_simulate:
     sub $112, %rsp
     movaps %xmm2, -128(%rbp)
     movaps %xmm1, -112(%rbp)
-    movaps %xmm0, -96(%rbp)
+    movaps %xmm0, %xmm1
+    movaps %xmm1, -96(%rbp)
     mov %rdi, %rbx
-    xor %eax, %eax
-    movq %rax, -56(%rbp)
-    movq %rax, -48(%rbp)
-    movl %eax, -40(%rbp)
     movd .L__kefir_func_test_dec32_simulate_label6(%rip), %xmm0
-    movaps -96(%rbp), %xmm1
     call __bid_mulsd3@PLT
     movd %xmm0, -56(%rbp)
     movd .L__kefir_func_test_dec32_simulate_label7(%rip), %xmm0
@@ -585,10 +581,6 @@ test_dec32_simulate:
     movd %xmm0, -44(%rbp)
     movd .L__kefir_func_test_dec32_simulate_label10(%rip), %xmm0
     movd %xmm0, -40(%rbp)
-    xor %eax, %eax
-    movq %rax, -36(%rbp)
-    movq %rax, -28(%rbp)
-    movl %eax, -20(%rbp)
     movd .L__kefir_func_test_dec32_simulate_label11(%rip), %xmm0
     movaps -96(%rbp), %xmm1
     call __bid_mulsd3@PLT
@@ -1321,16 +1313,10 @@ test_dec64_simulate:
     sub $144, %rsp
     movaps %xmm2, -160(%rbp)
     movaps %xmm1, -144(%rbp)
-    movaps %xmm0, -128(%rbp)
+    movaps %xmm0, %xmm1
+    movaps %xmm1, -128(%rbp)
     mov %rdi, %rbx
-    xor %eax, %eax
-    movq %rax, -96(%rbp)
-    movq %rax, -88(%rbp)
-    movq %rax, -80(%rbp)
-    movq %rax, -72(%rbp)
-    movq %rax, -64(%rbp)
     movq .L__kefir_func_test_dec64_simulate_label6(%rip), %xmm0
-    movaps -128(%rbp), %xmm1
     call __bid_muldd3@PLT
     movq %xmm0, -96(%rbp)
     movq .L__kefir_func_test_dec64_simulate_label7(%rip), %xmm0
@@ -1343,12 +1329,6 @@ test_dec64_simulate:
     movq %xmm0, -72(%rbp)
     movq .L__kefir_func_test_dec64_simulate_label10(%rip), %xmm0
     movq %xmm0, -64(%rbp)
-    xor %eax, %eax
-    movq %rax, -56(%rbp)
-    movq %rax, -48(%rbp)
-    movq %rax, -40(%rbp)
-    movq %rax, -32(%rbp)
-    movq %rax, -24(%rbp)
     movq .L__kefir_func_test_dec64_simulate_label11(%rip), %xmm0
     movaps -128(%rbp), %xmm1
     call __bid_muldd3@PLT
@@ -2765,15 +2745,10 @@ test_dec128_simulate:
     sub $224, %rsp
     movaps %xmm2, -240(%rbp)
     movaps %xmm1, -224(%rbp)
-    movaps %xmm0, -208(%rbp)
+    movaps %xmm0, %xmm1
+    movaps %xmm1, -208(%rbp)
     mov %rdi, %rbx
-    lea -176(%rbp), %rdi
-    xor %eax, %eax
-    mov $10, %rcx
-    mov %rax, %rsi
-    rep stosq
     movdqu .L__kefir_func_test_dec128_simulate_label6(%rip), %xmm0
-    movaps -208(%rbp), %xmm1
     call __bid_multd3@PLT
     movdqu %xmm0, -176(%rbp)
     movdqu .L__kefir_func_test_dec128_simulate_label7(%rip), %xmm0
@@ -2786,11 +2761,6 @@ test_dec128_simulate:
     movdqu %xmm0, -128(%rbp)
     movdqu .L__kefir_func_test_dec128_simulate_label10(%rip), %xmm0
     movdqu %xmm0, -112(%rbp)
-    lea -96(%rbp), %rdi
-    xor %eax, %eax
-    mov $10, %rcx
-    mov %rax, %rsi
-    rep stosq
     movdqu .L__kefir_func_test_dec128_simulate_label11(%rip), %xmm0
     movaps -208(%rbp), %xmm1
     call __bid_multd3@PLT

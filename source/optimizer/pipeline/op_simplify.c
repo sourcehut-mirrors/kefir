@@ -1561,6 +1561,21 @@ static kefir_result_t simplify_int_add(struct kefir_mem *mem, struct kefir_opt_f
         REQUIRE_OK(kefir_opt_code_builder_ref_local(
             mem, &func->code, block_id, arg1->operation.parameters.refs[0],
             arg1->operation.parameters.offset + arg2->operation.parameters.imm.integer, replacement_ref));
+    } else if (arg1->operation.opcode == KEFIR_OPT_OPCODE_REF_LOCAL &&
+               arg2->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST) {
+        REQUIRE_OK(kefir_opt_code_builder_ref_local(
+            mem, &func->code, block_id, arg1->operation.parameters.refs[0],
+            arg1->operation.parameters.offset + arg2->operation.parameters.imm.uinteger, replacement_ref));
+    } else if (arg2->operation.opcode == KEFIR_OPT_OPCODE_REF_LOCAL &&
+               arg1->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST) {
+        REQUIRE_OK(kefir_opt_code_builder_ref_local(
+            mem, &func->code, block_id, arg2->operation.parameters.refs[0],
+            arg2->operation.parameters.offset + arg1->operation.parameters.imm.integer, replacement_ref));
+    } else if (arg2->operation.opcode == KEFIR_OPT_OPCODE_REF_LOCAL &&
+               arg1->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST) {
+        REQUIRE_OK(kefir_opt_code_builder_ref_local(
+            mem, &func->code, block_id, arg2->operation.parameters.refs[0],
+            arg2->operation.parameters.offset + arg1->operation.parameters.imm.uinteger, replacement_ref));
     } else if (arg1->operation.opcode == KEFIR_OPT_OPCODE_ALLOC_LOCAL &&
                arg2->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST) {
         REQUIRE_OK(kefir_opt_code_builder_ref_local(
