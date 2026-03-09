@@ -21,6 +21,8 @@
 .type test9, @function
 .global test10
 .type test10, @function
+.global test11
+.type test11, @function
 .extern callback1
 
 .section .text
@@ -155,10 +157,6 @@ test8:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    xor %eax, %eax
-    movq %rax, -32(%rbp)
-    movq %rax, -24(%rbp)
-    movq %rax, -16(%rbp)
     movb $1, -32(%rbp)
     movl $2, -28(%rbp)
     movb %dil, -16(%rbp)
@@ -221,6 +219,36 @@ test10:
     pop %rbp
     jmp callback1@PLT
 .L__kefir_text_func_test10_end:
+
+test11:
+.L__kefir_text_func_test11_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $32, %rsp
+    xor %eax, %eax
+    movq %rax, -32(%rbp)
+    movq %rax, -24(%rbp)
+    movq %rax, -16(%rbp)
+    movb $1, -32(%rbp)
+    movl $2, -28(%rbp)
+    movb %dil, -16(%rbp)
+    mov %rdi, %rax
+    shl $1, %eax
+    movl %eax, -12(%rbp)
+    test %edi, %edi
+    jnz .L__kefir_func_test11_label3
+    xor %eax, %eax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.L__kefir_func_test11_label3:
+    movb $3, -24(%rbp)
+    movl $4, -20(%rbp)
+    movq -16(%rbp), %rdi
+    lea (%rbp), %rsp
+    pop %rbp
+    jmp callback1@PLT
+.L__kefir_text_func_test11_end:
 
 .L__kefir_text_section_end:
 

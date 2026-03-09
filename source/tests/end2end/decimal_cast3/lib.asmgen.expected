@@ -819,8 +819,6 @@ __kefir_bigint_unsigned_from_long_double:
     mov %rsi, %rbx
     fldt 16(%rbp)
     mov %rdi, %r12
-    xorps %xmm0, %xmm0
-    movdqu %xmm0, -64(%rbp)
     movq $0, -56(%rbp)
     fstpt -64(%rbp)
     movq -56(%rbp), %rax
@@ -1496,8 +1494,6 @@ __kefir_bigint_signed_from_long_double:
     mov %rsi, %rbx
     fldt 16(%rbp)
     mov %rdi, %r12
-    xorps %xmm0, %xmm0
-    movdqu %xmm0, -64(%rbp)
     movq $0, -56(%rbp)
     fstpt -64(%rbp)
     movq -56(%rbp), %rax

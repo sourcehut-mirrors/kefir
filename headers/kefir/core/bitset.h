@@ -35,6 +35,8 @@ kefir_result_t kefir_bitset_init(struct kefir_bitset *);
 kefir_result_t kefir_bitset_init_static(struct kefir_bitset *, kefir_uint64_t *, kefir_size_t, kefir_size_t);
 kefir_result_t kefir_bitset_free(struct kefir_mem *, struct kefir_bitset *);
 
+kefir_result_t kefir_bitset_clone(struct kefir_mem *, struct kefir_bitset *, const struct kefir_bitset *);
+
 kefir_result_t kefir_bitset_get(const struct kefir_bitset *, kefir_size_t, kefir_bool_t *);
 kefir_result_t kefir_bitset_set(const struct kefir_bitset *, kefir_size_t, kefir_bool_t);
 kefir_result_t kefir_bitset_find(const struct kefir_bitset *, kefir_bool_t, kefir_size_t, kefir_size_t *);

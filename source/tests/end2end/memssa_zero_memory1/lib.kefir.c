@@ -117,3 +117,13 @@ int test12(int x) {
         return 0;
     }
 }
+
+int test13(int x) {
+    struct S1 s1 = {.b = x * 2};
+    if (x) {
+        s1.a = x;
+        return callback2(s1);
+    } else {
+        return 0;
+    }
+}

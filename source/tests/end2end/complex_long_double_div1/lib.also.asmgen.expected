@@ -755,8 +755,6 @@ __kefir_softfloat_ilogbl:
     sub $80, %rsp
     fstcw -8(%rbp)
     fldt 16(%rbp)
-    xorps %xmm0, %xmm0
-    movdqu %xmm0, -48(%rbp)
     movq $0, -40(%rbp)
     fstpt -48(%rbp)
     movq -48(%rbp), %rax

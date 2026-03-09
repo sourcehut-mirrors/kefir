@@ -38,5 +38,6 @@ int test7(int);
 int test8(int);
 int test9(int);
 int test10(int);
+int test11(int);
 
 #endif

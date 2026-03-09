@@ -50,11 +50,13 @@ int main(void) {
             assert(test7(i) == (i + i + 1 + i + 2 + i + 3));
             assert(test11(i) == (i + i * 2));
             assert(test12(i) == (i + i * 2));
+            assert(test13(i) == (i + i * 2));
         } else {
             assert(test6(i) == 0);
             assert(test7(i) == 0);
             assert(test11(i) == 0);
             assert(test12(i) == 0);
+            assert(test13(i) == 0);
         }
     }
     return EXIT_SUCCESS;

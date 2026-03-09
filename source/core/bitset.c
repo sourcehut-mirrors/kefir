@@ -65,6 +65,20 @@ kefir_result_t kefir_bitset_free(struct kefir_mem *mem, struct kefir_bitset *bit
 
 #define BITS_PER_ENTRY (sizeof(kefir_uint64_t) * CHAR_BIT)
 
+kefir_result_t kefir_bitset_clone(struct kefir_mem *mem, struct kefir_bitset *dst_bitset,
+                                  const struct kefir_bitset *src_bitset) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(dst_bitset != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid bitset"));
+    REQUIRE(src_bitset != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid bitset"));
+
+    REQUIRE_OK(kefir_bitset_resize(mem, dst_bitset, src_bitset->length));
+    if (src_bitset->length > 0) {
+        memcpy(dst_bitset->content, src_bitset->content,
+               (src_bitset->length + BITS_PER_ENTRY - 1) / BITS_PER_ENTRY * sizeof(kefir_uint64_t));
+    }
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_bitset_get(const struct kefir_bitset *bitset, kefir_size_t index, kefir_bool_t *value_ptr) {
     REQUIRE(bitset != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid bitset"));
     REQUIRE(index < bitset->length, KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Requested bit is outside of bitset bounds"));

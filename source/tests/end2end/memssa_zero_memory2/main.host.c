@@ -40,9 +40,11 @@ int main(void) {
         if (i != 0) {
             assert(test7(i) == (((char) i) + i * 2));
             assert(test8(i) == (((char) i) + i * 2));
+            assert(test11(i) == (((char) i) + i * 2));
         } else {
             assert(test7(i) == 0);
             assert(test8(i) == 0);
+            assert(test11(i) == 0);
         }
         assert(test9(i) == (i * 2));
         assert(test10(i) == (((char) i) + i * 2));

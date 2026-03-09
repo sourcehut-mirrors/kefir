@@ -86,3 +86,14 @@ int test10(int a) {
     x[2].a = a;
     return callback1(x[2]);
 }
+
+int test11(int a) {
+    struct S1 x[] = {{1, 2}, {}, {a, a * 2}};
+    if (a) {
+        x[1].a = 3;
+        x[1].b = 4;
+        return callback1(x[2]);
+    } else {
+        return 0;
+    }
+}

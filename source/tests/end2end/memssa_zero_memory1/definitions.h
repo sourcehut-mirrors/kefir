@@ -41,5 +41,6 @@ int test9(int);
 int test10(int);
 int test11(int);
 int test12(int);
+int test13(int);
 
 #endif
