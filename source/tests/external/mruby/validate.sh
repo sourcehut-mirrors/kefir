@@ -2,7 +2,7 @@
 
 LOG_FILE="$1"
 
-if ! grep 'OK: 1626' "$LOG_FILE" >/dev/null; then
+if ! grep 'OK: 1674' "$LOG_FILE" >/dev/null; then
     exit 1
 fi
 

@@ -2,7 +2,7 @@
 
 LOG_FILE="$1"
 
-if ! grep '# PASS:  87' "$LOG_FILE" >/dev/null; then
+if ! grep '# PASS:  88' "$LOG_FILE" >/dev/null; then
     exit 1
 fi
 

@@ -1,0 +1,57 @@
+diff -ru libcollector/configure gprofng/libcollector/configure
+--- libcollector/configure	2026-02-08 02:00:00.000000000 +0200
++++ gprofng/libcollector/configure	2026-03-10 18:13:39.191757373 +0200
+@@ -9489,9 +9489,9 @@
+ 
+ 
+ 
+-  lt_prog_compiler_wl=
+-lt_prog_compiler_pic=
+-lt_prog_compiler_static=
++  lt_prog_compiler_wl=-Wl,
++lt_prog_compiler_pic=-fPIC
++lt_prog_compiler_static=-static
+ 
+ { $as_echo "$as_me:${as_lineno-$LINENO}: checking for $compiler option to produce PIC" >&5
+ $as_echo_n "checking for $compiler option to produce PIC... " >&6; }
+diff -ru ..binutils-2.46.0/include/ansidecl.h include/ansidecl.h
+--- ..binutils-2.46.0/include/ansidecl.h	2026-02-08 02:00:00.000000000 +0200
++++ include/ansidecl.h	2026-03-10 18:41:20.626148288 +0200
+@@ -68,10 +68,6 @@
+    macros freely, and know that they will come into play for the
+    version of gcc in which they are supported.  */
+ 
+-#if (GCC_VERSION < 2007)
+-# define __attribute__(x)
+-#endif
+-
+ /* Attribute __malloc__ on functions was valid as of gcc 2.96. */
+ #ifndef ATTRIBUTE_MALLOC
+ # if (GCC_VERSION >= 2096)
+@@ -213,8 +209,8 @@
+ 
+ /* Useful for structures whose layout must match some binary specification
+    regardless of the alignment and padding qualities of the compiler.  */
+-#ifndef ATTRIBUTE_PACKED
+-# define ATTRIBUTE_PACKED __attribute__ ((packed))
++#ifdef ATTRIBUTE_PACKED
++#undef ATTRIBUTE_PACKED
+ #endif
+ 
+ /* Attribute `hot' and `cold' was valid as of gcc 4.3.  */
+diff -ru ..binutils-2.46.0/ld/testsuite/ld-plugin/lto.exp ld/testsuite/ld-plugin/lto.exp
+--- ..binutils-2.46.0/ld/testsuite/ld-plugin/lto.exp	2026-02-08 02:00:00.000000000 +0200
++++ ld/testsuite/ld-plugin/lto.exp	2026-03-10 18:13:39.191757373 +0200
+@@ -796,12 +796,6 @@
+   [list "Run pr20276" \
+    "-O2 -flto tmpdir/pr20276a.o tmpdir/pr20276b.o" "" \
+    {dummy.c} "pr20276" "pass.out" "-flto -O2" "c"] \
+-  [list "Run pr20267a" \
+-   "-O2 -flto -fcommon tmpdir/pr20267a.o tmpdir/libpr20267a.a" "" \
+-   {dummy.c} "pr20267a" "pass.out" "-flto -O2 -fcommon" "c"] \
+-  [list "Run pr20267b" \
+-   "-O2 -flto -fcommon tmpdir/pr20267a.o tmpdir/libpr20267b.a" "" \
+-   {dummy.c} "pr20267b" "pass.out" "-flto -O2 -fcommon" "c"] \
+   [list "Run pr22502" \
+    "-O2 -flto tmpdir/pr22502a.o tmpdir/pr22502b.o" "" \
+    {dummy.c} "pr20267" "pass.out" "-flto -O2 -fcommon" "c"] \

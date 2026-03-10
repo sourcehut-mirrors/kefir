@@ -1,5 +1,5 @@
---- library/aesni.h     2025-06-30 09:24:52.000000000 +0300
-+++ library/aesni.h 2025-08-19 14:05:10.002082916 +0300
+--- tf-psa-crypto/drivers/builtin/src/aesni.h     2025-06-30 09:24:52.000000000 +0300
++++ tf-psa-crypto/drivers/builtin/src/aesni.h 2025-08-19 14:05:10.002082916 +0300
 @@ -52,7 +52,7 @@
  #if defined(MBEDTLS_AESNI_HAVE_INTRINSICS)
  #define MBEDTLS_AESNI_HAVE_CODE 2 // via intrinsics

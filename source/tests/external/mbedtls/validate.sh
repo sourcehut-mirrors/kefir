@@ -2,6 +2,6 @@
 
 LOG_FILE="$1"
 
-if ! grep 'PASSED (135 suites, 28899 tests run)' "$LOG_FILE" >/dev/null; then
+if ! grep '0 tests failed out of 130' "$LOG_FILE" >/dev/null; then
     exit 1
 fi
