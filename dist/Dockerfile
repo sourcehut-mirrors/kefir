@@ -49,7 +49,8 @@ RUN cd /opt/emsdk-3.1.74 && ./emsdk activate 3.1.74
 RUN echo "export EM_CACHE=\$HOME/.emcache" >> /opt/emsdk-3.1.74/emsdk_env.sh
 
 # CSmith
-RUN cd /tmp && git clone --depth 1 "https://github.com/csmith-project/csmith"
+RUN cd /tmp && git clone "https://github.com/csmith-project/csmith"
+RUN cd /tmp/csmith && git checkout 0ec6f1b
 RUN cd /tmp/csmith && mkdir build
 RUN cd /tmp/csmith/build && cmake -DCMAKE_INSTALL_PREFIX=/opt/csmith ..
 RUN cd /tmp/csmith/build && make -j$(nproc)
