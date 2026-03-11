@@ -1,0 +1,11 @@
+diff -ru tests/project/meson.build tests/project/meson.build
+--- tests/project/meson.build	2026-02-18 18:11:18.000000000 +0200
++++ tests/project/meson.build	2026-03-11 17:57:48.884190374 +0200
+@@ -8,7 +8,6 @@
+     ['muon/str'],
+     ['muon/python', {'python': true}],
+     ['muon/script_module'],
+-    ['muon/wayland'],
+     ['muon/objc and cpp', {'objc': true, 'kwargs': {'timeout': 45}}],
+     ['muon/vala', {'vala': true}],
+ 

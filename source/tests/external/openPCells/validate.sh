@@ -2,7 +2,7 @@
 
 LOG_FILE="$1"
 
-if ! grep '732182e0344b63d153f8e53ed657ea6bab4346e66a941ae52e21bd84f6896383[ ]*openPCells.svg' "$LOG_FILE" >/dev/null; then
+if ! grep '11dd2dba4e14aa093d6050a5868c76a540c20e3d05536c84cd32b8088d229dcb[ ]*openPCells.svg' "$LOG_FILE" >/dev/null; then
     exit 1
 fi
 

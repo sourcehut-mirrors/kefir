@@ -1,5 +1,39 @@
---- ./src/include/port/simd.h	2024-11-18 22:32:12.000000000 +0200
-+++ ./src/include/port/simd.h	2025-01-10 11:57:02.784418454 +0200
+diff -ru src/include/port/atomics/arch-x86.h src/include/port/atomics/arch-x86.h
+--- src/include/port/atomics/arch-x86.h	2026-02-23 23:56:43.000000000 +0200
++++ src/include/port/atomics/arch-x86.h	2026-03-11 20:35:31.491073073 +0200
+@@ -31,7 +31,7 @@
+  * faster in many scenarios.
+  */
+ 
+-#if defined(__GNUC__) || defined(__INTEL_COMPILER)
++#if defined(__GNUC__) || defined(__INTEL_COMPILER) || defined(__KEFIRCC__)
+ #if defined(__i386__) || defined(__i386)
+ #define pg_memory_barrier_impl()		\
+ 	__asm__ __volatile__ ("lock; addl $0,0(%%esp)" : : : "memory", "cc")
+@@ -49,7 +49,7 @@
+  * nice to support older gcc's and the compare/exchange implementation here is
+  * actually more efficient than the * __sync variant.
+  */
+-#if defined(__GNUC__) || defined(__INTEL_COMPILER)
++#if defined(__GNUC__) || defined(__INTEL_COMPILER) || defined(__KEFIRCC__)
+ 
+ #define PG_HAVE_ATOMIC_FLAG_SUPPORT
+ typedef struct pg_atomic_flag
+diff -ru src/include/port/atomics.h src/include/port/atomics.h
+--- src/include/port/atomics.h	2026-02-23 23:56:43.000000000 +0200
++++ src/include/port/atomics.h	2026-03-11 20:35:06.741072973 +0200
+@@ -84,7 +84,7 @@
+ /*
+  * gcc or compatible, including clang and icc.
+  */
+-#if defined(__GNUC__) || defined(__INTEL_COMPILER)
++#if defined(__GNUC__) || defined(__INTEL_COMPILER) || defined(__KEFIRCC__)
+ #include "port/atomics/generic-gcc.h"
+ #elif defined(_MSC_VER)
+ #include "port/atomics/generic-msvc.h"
+diff -ru src/include/port/simd.h src/include/port/simd.h
+--- src/include/port/simd.h	2026-02-23 23:56:43.000000000 +0200
++++ src/include/port/simd.h	2026-03-11 20:34:47.421072894 +0200
 @@ -18,7 +18,7 @@
  #ifndef SIMD_H
  #define SIMD_H
@@ -9,18 +43,19 @@
  /*
   * SSE2 instructions are part of the spec for the 64-bit x86 ISA. We assume
   * that compilers targeting this architecture understand SSE2 intrinsics.
---- ./src/include/storage/s_lock.h	2024-11-18 22:32:12.000000000 +0200
-+++ /home/jprotopopov/postgresql-17.2/src/include/storage/s_lock.h	2025-01-10 08:52:49.900551679 +0200
-@@ -102,7 +102,7 @@
- 
- #ifdef HAVE_SPINLOCKS	/* skip spinlocks if requested */
+diff -ru src/include/storage/s_lock.h src/include/storage/s_lock.h
+--- src/include/storage/s_lock.h	2026-02-23 23:56:43.000000000 +0200
++++ src/include/storage/s_lock.h	2026-03-11 20:34:47.421072894 +0200
+@@ -93,7 +93,7 @@
+ #error "s_lock.h may not be included from frontend code"
+ #endif
  
 -#if defined(__GNUC__) || defined(__INTEL_COMPILER)
 +#if defined(__GNUC__) || defined(__INTEL_COMPILER) || defined(__KEFIRCC__)
  /*************************************************************************
   * All the gcc inlines
   * Gcc consistently defines the CPU as __cpu__.
-@@ -202,6 +202,7 @@
+@@ -193,6 +193,7 @@
  #endif	 /* __i386__ */
  
  
@@ -28,3 +63,4 @@
  #ifdef __x86_64__		/* AMD Opteron, Intel EM64T */
  #define HAS_TEST_AND_SET
  
+Только в src/include/storage: s_lock.h.orig
