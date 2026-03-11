@@ -26,7 +26,7 @@ tasks:
   - lua_tests: |
       cd kefir
       export LC_ALL=C.UTF-8
-      gmake bin/tests/external/lua-548.test.done KEFIR_EXTERNAL_TEST_LUA_CFLAGS="-O1 -fPIC -pie -D__GNUC__=4 -D__GNUC_MINOR__=20 -D__GNUC_STDC_INLINE__=1 -include $HOME/kefir/headers/bootstrap_include/openbsd.h"
+      gmake bin/tests/external/lua-548.test.done KEFIR_EXTERNAL_TEST_LUA_548_CFLAGS="-O1 -fPIC -pie -D__GNUC__=4 -D__GNUC_MINOR__=20 -D__GNUC_STDC_INLINE__=1 -include $HOME/kefir/headers/bootstrap_include/openbsd.h"
   - c_testsuite: |
       cd kefir
       mkdir -p "$HOME/bin"

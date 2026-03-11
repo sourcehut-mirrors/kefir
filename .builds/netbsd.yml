@@ -32,7 +32,7 @@ tasks:
       cd kefir
       export LIBRARY_PATH=$LIBRARY_PATH:/usr/pkg/lib
       export LC_ALL=C.UTF-8
-      gmake bin/tests/external/lua-548.test.done REALPATH=grealpath KEFIR_EXTERNAL_TEST_LUA_CFLAGS="-O1 -fPIC -pie -D__GNUC__=4 -D__GNUC_MINOR__=20 -D__GNUC_STDC_INLINE__=1 -include $HOME/kefir/headers/bootstrap_include/netbsd.h"
+      gmake bin/tests/external/lua-548.test.done REALPATH=grealpath KEFIR_EXTERNAL_TEST_LUA_548_CFLAGS="-O1 -fPIC -pie -D__GNUC__=4 -D__GNUC_MINOR__=20 -D__GNUC_STDC_INLINE__=1 -include $HOME/kefir/headers/bootstrap_include/netbsd.h"
   - c_testsuite: |
       cd kefir
       mkdir -p "$HOME/bin"
