@@ -159,9 +159,10 @@ static kefir_result_t extract_inputs_branch(const struct kefir_opt_code_containe
                                             void *payload) {
     UNUSED(code);
     UNUSED(resolve_phi);
-    INPUT_CALLBACK(instr->operation.parameters.branch.condition_ref, callback, payload);
     if (instr->operation.opcode == KEFIR_OPT_OPCODE_IJUMP) {
         INPUT_CALLBACK(instr->operation.parameters.refs[0], callback, payload);
+    } else {
+        INPUT_CALLBACK(instr->operation.parameters.branch.condition_ref, callback, payload);
     }
     return KEFIR_OK;
 }
