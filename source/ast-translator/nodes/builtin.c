@@ -144,13 +144,20 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
         } break;
 
         case KEFIR_AST_BUILTIN_OFFSETOF: {
-            REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(KEFIR_AST_NODE_BASE(node),
-                                                             KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER),
-                    KEFIR_SET_SOURCE_ERROR(KEFIR_INVALID_STATE, &node->base.source_location,
-                                           "Unexpected constant expression value"));
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(
-                builder, KEFIR_IR_OPCODE_UINT_CONST,
-                KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(KEFIR_AST_NODE_BASE(node))->integer));
+            if (KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(KEFIR_AST_NODE_BASE(node),
+                                                         KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER)) {
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(
+                    builder, KEFIR_IR_OPCODE_UINT_CONST,
+                    KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(KEFIR_AST_NODE_BASE(node))->integer));
+            } else {
+                ASSIGN_DECL_CAST(struct kefir_ast_node_base *, offset_base, iter->value);
+                kefir_list_next(&iter);
+                ASSIGN_DECL_CAST(struct kefir_ast_node_base *, field, iter->value);
+
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT_CONST, 0));
+                REQUIRE_OK(
+                    kefir_ast_translate_member_designator(mem, field, offset_base->properties.type, builder, context));
+            }
         } break;
 
         case KEFIR_AST_BUILTIN_TYPES_COMPATIBLE: {
