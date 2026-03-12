@@ -1,0 +1,88 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global float_store
+.type float_store, @function
+.global float_exchange
+.type float_exchange, @function
+.global float_compare_exchange
+.type float_compare_exchange, @function
+.global double_store
+.type double_store, @function
+.global double_compare_exchange
+.type double_compare_exchange, @function
+.global double_exchange
+.type double_exchange, @function
+
+.section .text
+.L__kefir_text_section_begin:
+float_store:
+.L__kefir_text_func_float_store_begin:
+    movq %xmm0, %rax
+    xchgl %eax, (%rdi)
+    ret
+.L__kefir_text_func_float_store_end:
+
+float_exchange:
+.L__kefir_text_func_float_exchange_begin:
+    movq %xmm0, %rax
+    xchgl (%rdi), %eax
+    movq %rax, %xmm0
+    ret
+.L__kefir_text_func_float_exchange_end:
+
+float_compare_exchange:
+.L__kefir_text_func_float_compare_exchange_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    mov %rdi, %rdx
+    movd %xmm0, -4(%rbp)
+    movq %xmm1, %rcx
+    movl -4(%rbp), %eax
+    lock     cmpxchgl %ecx, (%rdx)
+    je .L__kefir_func_float_compare_exchange_label3
+    movl %eax, -4(%rbp)
+.L__kefir_func_float_compare_exchange_label3:
+    sete %al
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.L__kefir_text_func_float_compare_exchange_end:
+
+double_store:
+.L__kefir_text_func_double_store_begin:
+    movq %xmm0, %rax
+    xchgq %rax, (%rdi)
+    ret
+.L__kefir_text_func_double_store_end:
+
+double_compare_exchange:
+.L__kefir_text_func_double_compare_exchange_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    mov %rdi, %rdx
+    movq %xmm0, -8(%rbp)
+    movq %xmm1, %rcx
+    movq -8(%rbp), %rax
+    lock     cmpxchgq %rcx, (%rdx)
+    je .L__kefir_func_double_compare_exchange_label3
+    movq %rax, -8(%rbp)
+.L__kefir_func_double_compare_exchange_label3:
+    sete %al
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.L__kefir_text_func_double_compare_exchange_end:
+
+double_exchange:
+.L__kefir_text_func_double_exchange_begin:
+    movq %xmm0, %rax
+    xchgq (%rdi), %rax
+    movq %rax, %xmm0
+    ret
+.L__kefir_text_func_double_exchange_end:
+
+.L__kefir_text_section_end:
+

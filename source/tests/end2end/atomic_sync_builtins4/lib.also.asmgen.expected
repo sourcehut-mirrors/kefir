@@ -21,9 +21,6 @@ test_and_set:
 .L__kefir_text_func_test_and_set_begin:
     mov $1, %eax
     xchgb (%rdi), %al
-    test %al, %al
-    setne %al
-    movzx %al, %rax
     ret
 .L__kefir_text_func_test_and_set_end:
 
