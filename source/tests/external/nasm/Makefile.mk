@@ -35,7 +35,7 @@ $(KEFIR_EXTERNAL_TEST_NASM_SOURCE_DIR)/nasm: $(KEFIR_EXTERNAL_TEST_NASM_SOURCE_D
 		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
-		$(MAKE) everything
+		$(MAKE) nasm ndisasm
 
 $(KEFIR_EXTERNAL_TEST_NASM_DIR)/tests.log: $(KEFIR_EXTERNAL_TEST_NASM_SOURCE_DIR)/nasm
 	@echo "Testing nasm $(KEFIR_EXTERNAL_TEST_NASM_VERSION)..."

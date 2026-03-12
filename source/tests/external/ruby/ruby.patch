@@ -1,7 +1,7 @@
-diff -ur ./spec/syntax_suggest/integration/syntax_suggest_spec.rb ./spec/syntax_suggest/integration/syntax_suggest_spec.rb
---- ./spec/syntax_suggest/integration/syntax_suggest_spec.rb	2025-07-15 19:27:14.000000000 +0300
-+++ ./spec/syntax_suggest/integration/syntax_suggest_spec.rb	2025-10-30 09:36:25.670754248 +0200
-@@ -37,30 +37,30 @@
+diff -ru spec/syntax_suggest/integration/syntax_suggest_spec.rb ./spec/syntax_suggest/integration/syntax_suggest_spec.rb
+--- spec/syntax_suggest/integration/syntax_suggest_spec.rb	2026-01-13 04:02:40.000000000 +0200
++++ ./spec/syntax_suggest/integration/syntax_suggest_spec.rb	2026-03-12 19:47:50.993374577 +0200
+@@ -41,30 +41,30 @@
        EOM
      end
  
@@ -56,7 +56,7 @@ diff -ur ./spec/syntax_suggest/integration/syntax_suggest_spec.rb ./spec/syntax_
  
      it "returns good results on routes.rb" do
        source = fixtures_dir.join("routes.rb.txt").read
-@@ -124,46 +124,46 @@
+@@ -128,46 +128,46 @@
        EOM
      end
  
@@ -143,9 +143,9 @@ diff -ur ./spec/syntax_suggest/integration/syntax_suggest_spec.rb ./spec/syntax_
  
      it "ambiguous end" do
        source = <<~EOM
-diff -ur ./test/io/console/test_io_console.rb ./test/io/console/test_io_console.rb
---- ./test/io/console/test_io_console.rb	2025-07-15 19:27:14.000000000 +0300
-+++ ./test/io/console/test_io_console.rb	2025-08-18 14:51:53.446781703 +0300
+diff -ru test/io/console/test_io_console.rb test/io/console/test_io_console.rb
+--- test/io/console/test_io_console.rb	2026-01-13 04:02:40.000000000 +0200
++++ test/io/console/test_io_console.rb	2026-03-12 19:47:50.993374577 +0200
 @@ -545,9 +545,9 @@
        IO.console(:close)
      end
@@ -159,17 +159,17 @@ diff -ur ./test/io/console/test_io_console.rb ./test/io/console/test_io_console.
  
      def test_ttyname
        return unless IO.method_defined?(:ttyname)
-diff -ur ./test/objspace/test_objspace.rb ./test/objspace/test_objspace.rb
---- ./test/objspace/test_objspace.rb	2025-07-15 19:27:14.000000000 +0300
-+++ ./test/objspace/test_objspace.rb	2025-08-18 14:52:57.693448638 +0300
-@@ -305,28 +305,28 @@
+diff -ru test/objspace/test_objspace.rb test/objspace/test_objspace.rb
+--- test/objspace/test_objspace.rb	2026-01-13 04:02:40.000000000 +0200
++++ test/objspace/test_objspace.rb	2026-03-12 19:47:50.993374577 +0200
+@@ -333,28 +333,28 @@
      RUBY
    end
  
 -  def test_trace_object_allocations_compaction_freed_pages
 -    omit "compaction is not supported on this platform" unless GC.respond_to?(:compact)
 -
--    assert_normal_exit(<<~RUBY)
+-    assert_normal_exit(<<~RUBY, timeout: 60)
 -      require "objspace"
 -
 -      objs = []
@@ -191,7 +191,7 @@ diff -ur ./test/objspace/test_objspace.rb ./test/objspace/test_objspace.rb
 +#  def test_trace_object_allocations_compaction_freed_pages
 +#    omit "compaction is not supported on this platform" unless GC.respond_to?(:compact)
 +#
-+#    assert_normal_exit(<<~RUBY)
++#    assert_normal_exit(<<~RUBY, timeout: 60)
 +#      require "objspace"
 +#
 +#      objs = []
@@ -213,9 +213,9 @@ diff -ur ./test/objspace/test_objspace.rb ./test/objspace/test_objspace.rb
  
    def test_dump_flags
      # Ensure that the fstring is promoted to old generation
-diff -ur ./test/ruby/test_argf.rb ./test/ruby/test_argf.rb
---- ./test/ruby/test_argf.rb	2025-07-15 19:27:14.000000000 +0300
-+++ ./test/ruby/test_argf.rb	2025-08-18 14:51:33.523448282 +0300
+diff -ru test/ruby/test_argf.rb test/ruby/test_argf.rb
+--- test/ruby/test_argf.rb	2026-01-13 04:02:40.000000000 +0200
++++ test/ruby/test_argf.rb	2026-03-12 19:47:50.993374577 +0200
 @@ -382,20 +382,21 @@
      assert_equal("foo", File.read(name+suffix))
    end
@@ -252,9 +252,9 @@ diff -ur ./test/ruby/test_argf.rb ./test/ruby/test_argf.rb
  
    def test_encoding
      ruby('-e', "#{<<~"{#"}\n#{<<~'};'}", @t1.path, @t2.path, @t3.path) do |f|
-diff -ur ./test/ruby/test_weakkeymap.rb ./test/ruby/test_weakkeymap.rb
---- ./test/ruby/test_weakkeymap.rb	2025-07-15 19:27:14.000000000 +0300
-+++ ./test/ruby/test_weakkeymap.rb	2025-08-18 15:00:04.160117188 +0300
+diff -ru test/ruby/test_weakkeymap.rb test/ruby/test_weakkeymap.rb
+--- test/ruby/test_weakkeymap.rb	2026-01-13 04:02:40.000000000 +0200
++++ test/ruby/test_weakkeymap.rb	2026-03-12 19:47:50.993374577 +0200
 @@ -61,19 +61,19 @@
      refute @wm[k]
    end
@@ -288,9 +288,9 @@ diff -ur ./test/ruby/test_weakkeymap.rb ./test/ruby/test_weakkeymap.rb
  
    def test_inspect
      x = Object.new
-diff -ur ./test/test_trick.rb ./test/test_trick.rb
---- ./test/test_trick.rb	2025-07-15 19:27:14.000000000 +0300
-+++ ./test/test_trick.rb	2025-08-18 14:52:18.106781808 +0300
+diff -ru test/test_trick.rb test/test_trick.rb
+--- test/test_trick.rb	2026-01-13 04:02:40.000000000 +0200
++++ test/test_trick.rb	2026-03-12 19:48:26.706708053 +0200
 @@ -18,11 +18,11 @@
      assert_equal(expected, File.read(src).chomp.chars.sort.join)
    end
@@ -300,11 +300,11 @@ diff -ur ./test/test_trick.rb ./test/test_trick.rb
 -    ignore_dsp = "def open(_file, _mode); s = ''; def s.flush; self;end; yield s; end;"
 -    assert_in_out_err(["-W0", "--disable-frozen-string-literal"], ignore_dsp + File.read(src), File.read(src).lines(chomp: true), timeout: 60)
 -  end
-+#  def test_mame
-+#    src = File.join(__dir__, "../sample/trick2013/mame/entry.rb")
-+#    ignore_dsp = "def open(_file, _mode); s = ''; def s.flush; self;end; yield s; end;"
-+#    assert_in_out_err(["-W0", "--disable-frozen-string-literal"], ignore_dsp + File.read(src), File.read(src).lines(chomp: true), timeout: 60)
-+#  end
++  #def test_mame
++  #  src = File.join(__dir__, "../sample/trick2013/mame/entry.rb")
++  #  ignore_dsp = "def open(_file, _mode); s = ''; def s.flush; self;end; yield s; end;"
++  #  assert_in_out_err(["-W0", "--disable-frozen-string-literal"], ignore_dsp + File.read(src), File.read(src).lines(chomp: true), timeout: 60)
++  #end
  
    def test_shinh
      src = File.join(__dir__, "../sample/trick2013/shinh/entry.rb")
