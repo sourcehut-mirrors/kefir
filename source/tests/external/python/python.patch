@@ -1,0 +1,83 @@
+diff -ru ../../Python-3.14.3/configure ./configure
+--- ../../Python-3.14.3/configure	2026-02-03 17:32:20.000000000 +0200
++++ ./configure	2026-03-13 15:05:11.140032845 +0200
+@@ -32558,26 +32558,26 @@
+ if test "x$ax_cv_check_cflags__Werror__msse__msse2__msse3__msse4_1__msse4_2" = xyes
+ then :
+ 
+-    LIBHACL_SIMD128_FLAGS="-msse -msse2 -msse3 -msse4.1 -msse4.2"
++#    LIBHACL_SIMD128_FLAGS="-msse -msse2 -msse3 -msse4.1 -msse4.2"
+ 
+ 
+-printf "%s\n" "#define _Py_HACL_CAN_COMPILE_VEC128 1" >>confdefs.h
++#printf "%s\n" "#define _Py_HACL_CAN_COMPILE_VEC128 1" >>confdefs.h
+ 
+ 
+     # macOS universal2 builds *support* the -msse etc flags because they're
+     # available on x86_64. However, performance of the HACL SIMD128 implementation
+     # isn't great, so it's disabled on ARM64.
+-    { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for HACL* SIMD128 implementation" >&5
+-printf %s "checking for HACL* SIMD128 implementation... " >&6; }
+-    if test "$use_hacl_universal2_impl" = "yes"; then
+-      LIBHACL_BLAKE2_SIMD128_OBJS="Modules/_hacl/Hacl_Hash_Blake2s_Simd128_universal2.o"
+-      { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: universal2" >&5
+-printf "%s\n" "universal2" >&6; }
+-    else
+-      LIBHACL_BLAKE2_SIMD128_OBJS="Modules/_hacl/Hacl_Hash_Blake2s_Simd128.o"
+-      { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: standard" >&5
+-printf "%s\n" "standard" >&6; }
+-    fi
++#    { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for HACL* SIMD128 implementation" >&5
++#printf %s "checking for HACL* SIMD128 implementation... " >&6; }
++#    if test "$use_hacl_universal2_impl" = "yes"; then
++#      LIBHACL_BLAKE2_SIMD128_OBJS="Modules/_hacl/Hacl_Hash_Blake2s_Simd128_universal2.o"
++#      { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: universal2" >&5
++#printf "%s\n" "universal2" >&6; }
++#    else
++#      LIBHACL_BLAKE2_SIMD128_OBJS="Modules/_hacl/Hacl_Hash_Blake2s_Simd128.o"
++#      { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: standard" >&5
++#printf "%s\n" "standard" >&6; }
++#    fi
+ 
+ 
+ else case e in #(
+@@ -32635,26 +32635,26 @@
+ if test "x$ax_cv_check_cflags__Werror__mavx2" = xyes
+ then :
+ 
+-    LIBHACL_SIMD256_FLAGS="-mavx2"
++#    LIBHACL_SIMD256_FLAGS="-mavx2"
+ 
+-printf "%s\n" "#define _Py_HACL_CAN_COMPILE_VEC256 1" >>confdefs.h
++#printf "%s\n" "#define _Py_HACL_CAN_COMPILE_VEC256 1" >>confdefs.h
+ 
+ 
+     # macOS universal2 builds *support* the -mavx2 compiler flag because it's
+     # available on x86_64; but the HACL SIMD256 build then fails because the
+     # implementation requires symbols that aren't available on ARM64. Use a
+     # wrapped implementation if we're building for universal2.
+-    { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for HACL* SIMD256 implementation" >&5
+-printf %s "checking for HACL* SIMD256 implementation... " >&6; }
+-    if test "$use_hacl_universal2_impl" = "yes"; then
+-      LIBHACL_BLAKE2_SIMD256_OBJS="Modules/_hacl/Hacl_Hash_Blake2b_Simd256_universal2.o"
+-      { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: universal2" >&5
+-printf "%s\n" "universal2" >&6; }
+-    else
+-      LIBHACL_BLAKE2_SIMD256_OBJS="Modules/_hacl/Hacl_Hash_Blake2b_Simd256.o"
+-      { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: standard" >&5
+-printf "%s\n" "standard" >&6; }
+-    fi
++#    { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for HACL* SIMD256 implementation" >&5
++#printf %s "checking for HACL* SIMD256 implementation... " >&6; }
++#    if test "$use_hacl_universal2_impl" = "yes"; then
++#      LIBHACL_BLAKE2_SIMD256_OBJS="Modules/_hacl/Hacl_Hash_Blake2b_Simd256_universal2.o"
++#      { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: universal2" >&5
++#printf "%s\n" "universal2" >&6; }
++#    else
++#      LIBHACL_BLAKE2_SIMD256_OBJS="Modules/_hacl/Hacl_Hash_Blake2b_Simd256.o"
++#      { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: standard" >&5
++#printf "%s\n" "standard" >&6; }
++#    fi
+ 
+ else case e in #(
+   e) : ;;
