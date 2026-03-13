@@ -1,0 +1,92 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global test1
+.type test1, @function
+.global test2
+.type test2, @function
+.global test3
+.type test3, @function
+.global test4
+.type test4, @function
+
+.section .text
+.L__kefir_text_section_begin:
+test1:
+.L__kefir_text_func_test1_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    mov %rdi, %rdx
+    movb $0, -1(%rbp)
+    mov $1, %ecx
+    movb -1(%rbp), %al
+    lock     cmpxchgb %cl, (%rdx)
+    je .L__kefir_func_test1_label3
+    movb %al, -1(%rbp)
+.L__kefir_func_test1_label3:
+    movb -1(%rbp), %al
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.L__kefir_text_func_test1_end:
+
+test2:
+.L__kefir_text_func_test2_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    mov %rdi, %rdx
+    movw $0, -2(%rbp)
+    mov $1, %ecx
+    movw -2(%rbp), %ax
+    lock     cmpxchgw %cx, (%rdx)
+    je .L__kefir_func_test2_label3
+    movw %ax, -2(%rbp)
+.L__kefir_func_test2_label3:
+    movw -2(%rbp), %ax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.L__kefir_text_func_test2_end:
+
+test3:
+.L__kefir_text_func_test3_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    mov %rdi, %rdx
+    movl $0, -4(%rbp)
+    mov $1, %ecx
+    movl -4(%rbp), %eax
+    lock     cmpxchgl %ecx, (%rdx)
+    je .L__kefir_func_test3_label3
+    movl %eax, -4(%rbp)
+.L__kefir_func_test3_label3:
+    movl -4(%rbp), %eax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.L__kefir_text_func_test3_end:
+
+test4:
+.L__kefir_text_func_test4_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    mov %rdi, %rdx
+    movq $0, -8(%rbp)
+    mov $1, %ecx
+    movq -8(%rbp), %rax
+    lock     cmpxchgq %rcx, (%rdx)
+    je .L__kefir_func_test4_label3
+    movq %rax, -8(%rbp)
+.L__kefir_func_test4_label3:
+    movq -8(%rbp), %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.L__kefir_text_func_test4_end:
+
+.L__kefir_text_section_end:
+

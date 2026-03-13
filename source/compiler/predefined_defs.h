@@ -222,10 +222,10 @@ typedef unsigned __int128 __uint128_t;
                         __atomic_store(sizeof(*(_ptr)), (void *) (_ptr), (_val), (_memorder))))));                 \
     })
 
-#define __atomic_store_n(_ptr, _val, _memorder)           \
-    ({                                                    \
-        __typeof__((void) 0, (_val)) __copy_val = (_val); \
-        __atomic_store((_ptr), &__copy_val, (_memorder)); \
+#define __atomic_store_n(_ptr, _val, _memorder)                   \
+    ({                                                            \
+        __typeof_unqual__((void) 0, *(_ptr)) __copy_val = (_val); \
+        __atomic_store((_ptr), &__copy_val, (_memorder));         \
     })
 
 #define __atomic_load(_ptr, _mem, _memorder)                                                                        \
@@ -261,7 +261,7 @@ typedef unsigned __int128 __uint128_t;
 
 #define __atomic_load_n(_ptr, _memorder)                 \
     ({                                                   \
-        __typeof__((void) 0, *(_ptr)) __target;          \
+        __typeof_unqual__((void) 0, *(_ptr)) __target;   \
         __atomic_load((_ptr), &(__target), (_memorder)); \
         __target;                                        \
     })
@@ -308,8 +308,8 @@ typedef unsigned __int128 __uint128_t;
 
 #define __atomic_exchange_n(_ptr, _val, _memorder)                           \
     ({                                                                       \
-        __typeof__((void) 0, (_val)) __copy_val = (_val);                    \
-        __typeof__((void) 0, *(_ptr)) __ret_val;                             \
+        __typeof_unqual__((void) 0, *(_ptr)) __copy_val = (_val);            \
+        __typeof_unqual__((void) 0, *(_ptr)) __ret_val;                      \
         __atomic_exchange((_ptr), &(__copy_val), &(__ret_val), (_memorder)); \
         __ret_val;                                                           \
     })
@@ -348,7 +348,7 @@ typedef unsigned __int128 __uint128_t;
 
 #define __atomic_compare_exchange_n(_ptr, _expected, _desired, _weak, _success_memorder, _failure_memorder) \
     ({                                                                                                      \
-        __typeof__((void) 0, (_desired)) __copy_desired = (_desired);                                       \
+        __typeof_unqual__((void) 0, *(_ptr)) __copy_desired = (_desired);                                   \
         __atomic_compare_exchange((_ptr), (_expected), &(__copy_desired), (_weak), (_success_memorder),     \
                                   (_failure_memorder));                                                     \
     })
@@ -382,7 +382,7 @@ typedef unsigned __int128 __uint128_t;
 
 #define __atomic_fetch_add(_ptr, _val, _memorder)                                                                   \
     ({                                                                                                              \
-        typedef __typeof__((void) 0, *(_ptr)) __result_t;                                                           \
+        typedef __typeof_unqual__((void) 0, *(_ptr)) __result_t;                                                    \
         extern __UINT8_TYPE__ __kefir_builtin_atomic_fetch_add8(void *, __UINT8_TYPE__, int);                       \
         extern __UINT16_TYPE__ __kefir_builtin_atomic_fetch_add16(void *, __UINT16_TYPE__, int);                    \
         extern __UINT32_TYPE__ __kefir_builtin_atomic_fetch_add32(void *, __UINT32_TYPE__, int);                    \
@@ -590,12 +590,12 @@ typedef unsigned __int128 __uint128_t;
 
 #define __sync_bool_compare_and_swap(_ptr, _oldval, _newval, ...)                                                \
     ({                                                                                                           \
-        __typeof__((void) 0, (_oldval)) __copy_oldval = (_oldval);                                               \
+        __typeof_unqual__((void) 0, *(_ptr)) __copy_oldval = (_oldval);                                          \
         __atomic_compare_exchange_n((_ptr), &(__copy_oldval), (_newval), 0, __ATOMIC_SEQ_CST, __ATOMIC_SEQ_CST); \
     })
 #define __sync_val_compare_and_swap(_ptr, _oldval, _newval, ...)                                                      \
     ({                                                                                                                \
-        __typeof__((void) 0, (_oldval)) __copy_oldval = (_oldval);                                                    \
+        __typeof_unqual__((void) 0, *(_ptr)) __copy_oldval = (_oldval);                                               \
         (void) __atomic_compare_exchange_n((_ptr), &__copy_oldval, (_newval), 0, __ATOMIC_SEQ_CST, __ATOMIC_SEQ_CST); \
         __copy_oldval;                                                                                                \
     })

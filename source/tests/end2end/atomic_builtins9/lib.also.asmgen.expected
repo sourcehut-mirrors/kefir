@@ -1,0 +1,236 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global test_atomic_fetch_add16
+.type test_atomic_fetch_add16, @function
+.global test_atomic_fetch_add32
+.type test_atomic_fetch_add32, @function
+.global test_atomic_fetch_add64
+.type test_atomic_fetch_add64, @function
+.global test_atomic_compare_exchange8
+.type test_atomic_compare_exchange8, @function
+.global test_atomic_exchange8
+.type test_atomic_exchange8, @function
+.global test_atomic_exchange16
+.type test_atomic_exchange16, @function
+.global test_atomic_exchange32
+.type test_atomic_exchange32, @function
+.global test_atomic_exchange64
+.type test_atomic_exchange64, @function
+.global test_atomic_fetch_add8
+.type test_atomic_fetch_add8, @function
+.global test_atomic_compare_exchange16
+.type test_atomic_compare_exchange16, @function
+.global test_atomic_compare_exchange32
+.type test_atomic_compare_exchange32, @function
+.global test_atomic_compare_exchange64
+.type test_atomic_compare_exchange64, @function
+.global test_atomic_load8
+.type test_atomic_load8, @function
+.global test_atomic_load16
+.type test_atomic_load16, @function
+.global test_atomic_load32
+.type test_atomic_load32, @function
+.global test_atomic_load64
+.type test_atomic_load64, @function
+.global test_atomic_store8
+.type test_atomic_store8, @function
+.global test_atomic_store16
+.type test_atomic_store16, @function
+.global test_atomic_store32
+.type test_atomic_store32, @function
+.global test_atomic_store64
+.type test_atomic_store64, @function
+
+.section .text
+.L__kefir_text_section_begin:
+test_atomic_fetch_add16:
+.L__kefir_text_func_test_atomic_fetch_add16_begin:
+    mov %rdi, %rdx
+    mov $40, %eax
+    lock     xaddw %ax, (%rdx)
+    ret
+.L__kefir_text_func_test_atomic_fetch_add16_end:
+
+test_atomic_fetch_add32:
+.L__kefir_text_func_test_atomic_fetch_add32_begin:
+    mov %rdi, %rdx
+    mov $40, %eax
+    lock     xaddl %eax, (%rdx)
+    ret
+.L__kefir_text_func_test_atomic_fetch_add32_end:
+
+test_atomic_fetch_add64:
+.L__kefir_text_func_test_atomic_fetch_add64_begin:
+    mov %rdi, %rdx
+    mov $40, %eax
+    lock     xaddq %rax, (%rdx)
+    ret
+.L__kefir_text_func_test_atomic_fetch_add64_end:
+
+test_atomic_compare_exchange8:
+.L__kefir_text_func_test_atomic_compare_exchange8_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    mov %rdi, %rdx
+    movb $123, -1(%rbp)
+    mov $23, %ecx
+    movb -1(%rbp), %al
+    lock     cmpxchgb %cl, (%rdx)
+    je .L__kefir_func_test_atomic_compare_exchange8_label3
+    movb %al, -1(%rbp)
+.L__kefir_func_test_atomic_compare_exchange8_label3:
+    sete %al
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.L__kefir_text_func_test_atomic_compare_exchange8_end:
+
+test_atomic_exchange8:
+.L__kefir_text_func_test_atomic_exchange8_begin:
+    mov $123, %eax
+    xchgb (%rdi), %al
+    ret
+.L__kefir_text_func_test_atomic_exchange8_end:
+
+test_atomic_exchange16:
+.L__kefir_text_func_test_atomic_exchange16_begin:
+    mov $123, %eax
+    xchgw (%rdi), %ax
+    ret
+.L__kefir_text_func_test_atomic_exchange16_end:
+
+test_atomic_exchange32:
+.L__kefir_text_func_test_atomic_exchange32_begin:
+    mov $123, %eax
+    xchgl (%rdi), %eax
+    ret
+.L__kefir_text_func_test_atomic_exchange32_end:
+
+test_atomic_exchange64:
+.L__kefir_text_func_test_atomic_exchange64_begin:
+    mov $123, %eax
+    xchgq (%rdi), %rax
+    ret
+.L__kefir_text_func_test_atomic_exchange64_end:
+
+test_atomic_fetch_add8:
+.L__kefir_text_func_test_atomic_fetch_add8_begin:
+    mov %rdi, %rdx
+    mov $40, %eax
+    lock     xaddb %al, (%rdx)
+    ret
+.L__kefir_text_func_test_atomic_fetch_add8_end:
+
+test_atomic_compare_exchange16:
+.L__kefir_text_func_test_atomic_compare_exchange16_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    mov %rdi, %rdx
+    movw $123, -2(%rbp)
+    mov $23, %ecx
+    movw -2(%rbp), %ax
+    lock     cmpxchgw %cx, (%rdx)
+    je .L__kefir_func_test_atomic_compare_exchange16_label3
+    movw %ax, -2(%rbp)
+.L__kefir_func_test_atomic_compare_exchange16_label3:
+    sete %al
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.L__kefir_text_func_test_atomic_compare_exchange16_end:
+
+test_atomic_compare_exchange32:
+.L__kefir_text_func_test_atomic_compare_exchange32_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    mov %rdi, %rdx
+    movl $123, -4(%rbp)
+    mov $23, %ecx
+    movl -4(%rbp), %eax
+    lock     cmpxchgl %ecx, (%rdx)
+    je .L__kefir_func_test_atomic_compare_exchange32_label3
+    movl %eax, -4(%rbp)
+.L__kefir_func_test_atomic_compare_exchange32_label3:
+    sete %al
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.L__kefir_text_func_test_atomic_compare_exchange32_end:
+
+test_atomic_compare_exchange64:
+.L__kefir_text_func_test_atomic_compare_exchange64_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    mov %rdi, %rdx
+    movq $123, -8(%rbp)
+    mov $23, %ecx
+    movq -8(%rbp), %rax
+    lock     cmpxchgq %rcx, (%rdx)
+    je .L__kefir_func_test_atomic_compare_exchange64_label3
+    movq %rax, -8(%rbp)
+.L__kefir_func_test_atomic_compare_exchange64_label3:
+    sete %al
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.L__kefir_text_func_test_atomic_compare_exchange64_end:
+
+test_atomic_load8:
+.L__kefir_text_func_test_atomic_load8_begin:
+    movb (%rdi), %al
+    ret
+.L__kefir_text_func_test_atomic_load8_end:
+
+test_atomic_load16:
+.L__kefir_text_func_test_atomic_load16_begin:
+    movw (%rdi), %ax
+    ret
+.L__kefir_text_func_test_atomic_load16_end:
+
+test_atomic_load32:
+.L__kefir_text_func_test_atomic_load32_begin:
+    movl (%rdi), %eax
+    ret
+.L__kefir_text_func_test_atomic_load32_end:
+
+test_atomic_load64:
+.L__kefir_text_func_test_atomic_load64_begin:
+    movq (%rdi), %rax
+    ret
+.L__kefir_text_func_test_atomic_load64_end:
+
+test_atomic_store8:
+.L__kefir_text_func_test_atomic_store8_begin:
+    mov $1, %eax
+    xchgb %al, (%rdi)
+    ret
+.L__kefir_text_func_test_atomic_store8_end:
+
+test_atomic_store16:
+.L__kefir_text_func_test_atomic_store16_begin:
+    mov $1, %eax
+    xchgw %ax, (%rdi)
+    ret
+.L__kefir_text_func_test_atomic_store16_end:
+
+test_atomic_store32:
+.L__kefir_text_func_test_atomic_store32_begin:
+    mov $1, %eax
+    xchgl %eax, (%rdi)
+    ret
+.L__kefir_text_func_test_atomic_store32_end:
+
+test_atomic_store64:
+.L__kefir_text_func_test_atomic_store64_begin:
+    mov $1, %eax
+    xchgq %rax, (%rdi)
+    ret
+.L__kefir_text_func_test_atomic_store64_end:
+
+.L__kefir_text_section_end:
+
