@@ -13,11 +13,11 @@ MUSL_ARCHIVE_FILENAME := musl-$(MUSL_VERSION).tar.gz
 MUSL_ARCHIVE := $(WORK_DIR)/$(MUSL_ARCHIVE_FILENAME)
 MUSL_ARCHIVE_SHA256 := a9a118bbe84d8764da0ea0d28b3ab3fae8477fc7e4085d90102b8596fc7c75e4
 
-BINUTILS_VERSION := 2.45
+BINUTILS_VERSION := 2.46.0
 BINUTILS_ARCHIVE_FILENAME := binutils-$(BINUTILS_VERSION).tar.gz
 BINUTILS_ARCHIVE := $(WORK_DIR)/$(BINUTILS_ARCHIVE_FILENAME)
 BINUTILS_URL := https://sourceware.org/pub/binutils/releases/binutils-$(BINUTILS_VERSION).tar.gz
-BINUTILS_ARCHIVE_SHA256 := 8a3eb4b10e7053312790f21ee1a38f7e2bbd6f4096abb590d3429e5119592d96
+BINUTILS_ARCHIVE_SHA256 := 8608fe44ab7de645f6ad0a898313b75338842490d609adb85c9fb2827c376af2
 
 EXTRAARGS=-Wno-declare-decimal-bitint-conv-support
 ifneq ($(LIBGCC_DIR),)
@@ -73,7 +73,11 @@ $(TARGET_DIR)/lib/libc.a: $(MUSL_ARCHIVE) $(TARGET_DIR)/bin/kefir
 
 $(TARGET_DIR)/bin/ld: $(BINUTILS_ARCHIVE) $(TARGET_DIR)/lib/libc.a
 	@cd "$(WORK_DIR)" && tar xvfz "$(BINUTILS_ARCHIVE_FILENAME)"
+	@cd "$(WORK_DIR)/binutils-$(BINUTILS_VERSION)" && patch -p0 < "$(realpath $(ROOT_DIR))/source/tests/external/binutils/binutils-$(BINUTILS_VERSION).patch"
 	@find "$(WORK_DIR)/binutils-$(BINUTILS_VERSION)" -name "*.c" -exec sed -i "s/__attribute__/__attribute/g" {} \;
+	@find "$(WORK_DIR)/binutils-$(BINUTILS_VERSION)" -name "*.h" -exec sed -i "s/__attribute__/__attribute/g" {} \;
+	@find "$(WORK_DIR)/binutils-$(BINUTILS_VERSION)" -name "*.c" -exec sed -i "s/ATTRIBUTE_PACKED/__attribute((packed))/g" {} \;
+	@find "$(WORK_DIR)/binutils-$(BINUTILS_VERSION)" -name "*.h" -exec sed -i "s/ATTRIBUTE_PACKED/__attribute((packed))/g" {} \;
 	@cd "$(WORK_DIR)/binutils-$(BINUTILS_VERSION)" && \
 		CC="$(realpath $(TARGET_DIR)/bin/kefir)" \
 		CFLAGS="-O1 -static" \
