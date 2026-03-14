@@ -61,8 +61,13 @@ static kefir_result_t translate_outputs(struct kefir_mem *mem, const struct kefi
                                            "Unsupported inline assembly constraint '%s'", param->constraint);
         }
 
+        const char *constraint = param->constraint + 1;
+        if (*constraint == '&') {
+            constraint++;
+        }
+
         REQUIRE_OK(KEFIR_IR_TARGET_PLATFORM_DECODE_INLINE_ASSEMBLY_CONSTRAINTS(
-            context->environment->target_platform, param->constraint + 1, &constraints, &node->source_location));
+            context->environment->target_platform, constraint, &constraints, &node->source_location));
         if (!constraints.general_purpose_register && !constraints.floating_point_register && !constraints.x87_stack &&
             !constraints.memory_location && !constraints.x86_rh_reg) {
             return KEFIR_SET_SOURCE_ERRORF(KEFIR_ANALYSIS_ERROR, &node->source_location,
