@@ -38,6 +38,8 @@ static kefir_result_t next_character(struct kefir_lexer_source_cursor *cursor, k
     } else if (chr == U'\'') {
         *continueScan = false;
     } else {
+        REQUIRE(chr != KEFIR_LEXER_SOURCE_CURSOR_EOF,
+                KEFIR_SET_ERROR(KEFIR_LEXER_ERROR, "Unable to match character constant"));
         *continueScan = true;
         REQUIRE_OK(kefir_lexer_source_cursor_next(cursor, 1));
     }

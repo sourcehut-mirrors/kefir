@@ -71,31 +71,28 @@ kefir_result_t kefir_preprocessor_directive_scanner_restore(
 
 kefir_result_t kefir_preprocessor_directive_scanner_skip_line(
     struct kefir_mem *mem, struct kefir_preprocessor_directive_scanner *directive_scanner) {
-    struct kefir_token next_token;
-    kefir_result_t scan_tokens = true;
-    while (scan_tokens) {
-        kefir_result_t res = kefir_preprocessor_tokenize_next(mem, directive_scanner->lexer,
-                                                              &directive_scanner->tokenizer_context, &next_token);
-        if (res == KEFIR_LEXER_ERROR) {
-            kefir_clear_error();
-            const kefir_char32_t chr = kefir_lexer_source_cursor_at(directive_scanner->lexer->cursor, 0);
-            if (chr == KEFIR_LEXER_SOURCE_CURSOR_EOF) {
-                break;
-            }
-
-            REQUIRE_OK(kefir_lexer_source_cursor_next(directive_scanner->lexer->cursor, 1));
-            if (chr == U'\n') {
-                scan_tokens = false;
-            }
+    UNUSED(mem);
+    for (;;) {
+        kefir_bool_t comment = false;
+        REQUIRE_OK(kefir_lexer_skip_multiline_comment(directive_scanner->lexer->cursor, &comment));
+        if (comment) {
             continue;
         }
 
-        REQUIRE_OK(res);
-        if (next_token.klass == KEFIR_TOKEN_SENTINEL ||
-            (next_token.klass == KEFIR_TOKEN_PP_WHITESPACE && next_token.pp_whitespace.newline)) {
-            scan_tokens = false;
+        REQUIRE_OK(kefir_lexer_skip_oneline_comment(directive_scanner->lexer->context, directive_scanner->lexer->cursor,
+                                                    &comment));
+        if (comment) {
+            break;
         }
-        REQUIRE_OK(kefir_token_free(mem, &next_token));
+
+        const kefir_char32_t chr = kefir_lexer_source_cursor_at(directive_scanner->lexer->cursor, 0);
+        if (chr == KEFIR_LEXER_SOURCE_CURSOR_EOF) {
+            break;
+        }
+        REQUIRE_OK(kefir_lexer_source_cursor_next(directive_scanner->lexer->cursor, 1));
+        if (chr == directive_scanner->lexer->context->newline) {
+            break;
+        }
     }
     directive_scanner->newline_flag = true;
     return KEFIR_OK;
