@@ -1,0 +1,30 @@
+diff -ru configure configure
+--- configure	2024-04-12 04:52:07.000000000 +0300
++++ configure	2026-03-14 21:58:57.774018645 +0200
+@@ -8910,9 +8910,9 @@
+ 
+ 
+ 
+-  lt_prog_compiler_wl=
+-lt_prog_compiler_pic=
+-lt_prog_compiler_static=
++  lt_prog_compiler_wl=-Wl,
++lt_prog_compiler_pic=-fPIC
++lt_prog_compiler_static=-static
+ 
+ 
+   if test yes = "$GCC"; then
+diff -ru include/opus_defines.h include/opus_defines.h
+--- include/opus_defines.h	2024-03-07 21:45:39.000000000 +0200
++++ include/opus_defines.h	2026-03-14 22:06:02.812953482 +0200
+@@ -70,8 +70,8 @@
+ #  else
+ #   define OPUS_EXPORT
+ #  endif
+-# elif defined(__GNUC__) && defined(OPUS_BUILD)
+-#  define OPUS_EXPORT __attribute__ ((visibility ("default")))
++# elif (defined(__GNUC__) || defined(__KEFIRCC__)) && defined(OPUS_BUILD)
++#  define OPUS_EXPORT __attribute ((visibility ("default")))
+ # else
+ #  define OPUS_EXPORT
+ # endif

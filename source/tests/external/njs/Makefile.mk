@@ -1,0 +1,57 @@
+
+KEFIR_EXTERNAL_TEST_NJS_DIR := $(KEFIR_EXTERNAL_TESTS_DIR)/njs
+
+KEFIR_EXTERNAL_TEST_NJS_VERSION := 0.9.6
+KEFIR_EXTERNAL_TEST_NJS_ARCHIVE_FILENAME := $(KEFIR_EXTERNAL_TEST_NJS_VERSION).tar.gz
+KEFIR_EXTERNAL_TEST_NJS_ARCHIVE := $(KEFIR_EXTERNAL_TEST_NJS_DIR)/$(KEFIR_EXTERNAL_TEST_NJS_VERSION).tar.gz
+KEFIR_EXTERNAL_TEST_NJS_URL := https://github.com/nginx/njs/archive/refs/tags/$(KEFIR_EXTERNAL_TEST_NJS_ARCHIVE_FILENAME)
+KEFIR_EXTERNAL_TEST_NJS_SOURCE_DIR := $(KEFIR_EXTERNAL_TEST_NJS_DIR)/njs-$(KEFIR_EXTERNAL_TEST_NJS_VERSION)
+
+KEFIR_EXTERNAL_TEST_NJS_ARCHIVE_SHA256 := 713e931d1ffcd337f6304dc55e512dcf2099ba4cc3a996c9ea14f22d5d9cdd79
+
+$(KEFIR_EXTERNAL_TEST_NJS_ARCHIVE):
+	@mkdir -p $(dir $@)
+	@echo "Downloading $(KEFIR_EXTERNAL_TEST_NJS_URL)"
+	@$(WGET) -O "$@.tmp" "$(KEFIR_EXTERNAL_TEST_NJS_URL)"
+	@$(SCRIPTS_DIR)/checksum_sha256.sh "$@.tmp" "$(KEFIR_EXTERNAL_TEST_NJS_ARCHIVE_SHA256)"
+	@mv "$@.tmp" "$@"
+
+$(KEFIR_EXTERNAL_TEST_NJS_SOURCE_DIR)/.extracted: $(KEFIR_EXTERNAL_TEST_NJS_ARCHIVE)
+	@echo "Extracting $(KEFIR_EXTERNAL_TEST_NJS_ARCHIVE_FILENAME)..."
+	@cd "$(KEFIR_EXTERNAL_TEST_NJS_DIR)" && tar xvfz "$(KEFIR_EXTERNAL_TEST_NJS_ARCHIVE_FILENAME)"
+	@touch "$@"
+
+$(KEFIR_EXTERNAL_TEST_NJS_SOURCE_DIR)/Makefile: $(KEFIR_EXTERNAL_TEST_NJS_SOURCE_DIR)/.extracted $(KEFIR_EXE)
+	@echo "Configuring njs $(KEFIR_EXTERNAL_TEST_NJS_VERSION)..."
+	@cd "$(KEFIR_EXTERNAL_TEST_NJS_SOURCE_DIR)" && \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
+		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
+		CC="$(realpath $(KEFIR_EXE))" \
+		NJS_CC_NAME="$(realpath $(KEFIR_EXE))" \
+		./configure
+
+$(KEFIR_EXTERNAL_TEST_NJS_SOURCE_DIR)/build/njs: $(KEFIR_EXTERNAL_TEST_NJS_SOURCE_DIR)/Makefile
+	@echo "Building njs $(KEFIR_EXTERNAL_TEST_NJS_VERSION)..."
+	@cd "$(KEFIR_EXTERNAL_TEST_NJS_SOURCE_DIR)" && \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
+		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
+		CC="$(realpath $(KEFIR_EXE))" \
+		NJS_CC_NAME="$(realpath $(KEFIR_EXE))" \
+		$(MAKE)
+
+$(KEFIR_EXTERNAL_TEST_NJS_DIR)/tests.log: $(KEFIR_EXTERNAL_TEST_NJS_SOURCE_DIR)/build/njs
+	@echo "Testing njs $(KEFIR_EXTERNAL_TEST_NJS_VERSION)..."
+	@cd "$(KEFIR_EXTERNAL_TEST_NJS_SOURCE_DIR)" && \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
+		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
+		CC="$(realpath $(KEFIR_EXE))" \
+		NJS_CC_NAME="$(realpath $(KEFIR_EXE))" \
+		bash -c 'set -o pipefail; $(MAKE) test 2>&1 | tee "$(shell realpath "$@.tmp")"'
+	@mv "$@.tmp" "$@"
+
+$(KEFIR_EXTERNAL_TESTS_DIR)/njs.test.done: $(KEFIR_EXTERNAL_TEST_NJS_DIR)/tests.log
+	@$(SOURCE_DIR)/tests/external/njs/validate.sh "$(KEFIR_EXTERNAL_TEST_NJS_DIR)/tests.log"
+	@touch "$@"
+	@echo "njs $(KEFIR_EXTERNAL_TEST_NJS_VERSION) test successfully finished"
+
+EXTERNAL_TESTS_FAST_SUITE += $(KEFIR_EXTERNAL_TESTS_DIR)/njs.test.done

@@ -1,0 +1,43 @@
+--- configure	2026-03-14 21:30:04.592213280 +0200
++++ configure	2026-03-14 21:29:43.402598734 +0200
+@@ -9711,9 +9711,9 @@
+ 
+ 
+ 
+-  lt_prog_compiler_wl=
+-lt_prog_compiler_pic=
+-lt_prog_compiler_static=
++  lt_prog_compiler_wl=-Wl,
++lt_prog_compiler_pic=-fPIC
++lt_prog_compiler_static=-static
+ 
+ 
+   if test yes = "$GCC"; then
+diff -ru sharpyuv/sharpyuv.h ./sharpyuv/sharpyuv.h
+--- sharpyuv/sharpyuv.h	2025-07-08 03:20:00.000000000 +0300
++++ sharpyuv/sharpyuv.h	2026-03-14 21:43:29.420906147 +0200
+@@ -24,8 +24,8 @@
+ // signature for e.g., Windows DLL builds.
+ #if defined(_WIN32) && defined(WEBP_DLL)
+ #define SHARPYUV_EXTERN __declspec(dllexport)
+-#elif defined(__GNUC__) && __GNUC__ >= 4
+-#define SHARPYUV_EXTERN extern __attribute__((visibility("default")))
++#elif (defined(__GNUC__) && __GNUC__ >= 4) || defined(__KEFIRCC__)
++#define SHARPYUV_EXTERN extern __attribute((visibility("default")))
+ #else
+ #define SHARPYUV_EXTERN extern
+ #endif /* defined(_WIN32) && defined(WEBP_DLL) */
+diff -ru src/webp/types.h ./src/webp/types.h
+--- src/webp/types.h	2025-07-08 03:20:00.000000000 +0300
++++ src/webp/types.h	2026-03-14 21:43:46.483929091 +0200
+@@ -64,8 +64,8 @@
+ // signature for e.g., Windows DLL builds.
+ # if defined(_WIN32) && defined(WEBP_DLL)
+ #  define WEBP_EXTERN __declspec(dllexport)
+-# elif defined(__GNUC__) && __GNUC__ >= 4
+-#  define WEBP_EXTERN extern __attribute__ ((visibility ("default")))
++# elif (defined(__GNUC__) && __GNUC__ >= 4) || defined(__KEFIRCC__)
++#  define WEBP_EXTERN extern __attribute ((visibility ("default")))
+ # else
+ #  define WEBP_EXTERN extern
+ # endif  /* defined(_WIN32) && defined(WEBP_DLL) */

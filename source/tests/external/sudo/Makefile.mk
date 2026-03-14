@@ -1,0 +1,56 @@
+
+KEFIR_EXTERNAL_TEST_SUDO_DIR := $(KEFIR_EXTERNAL_TESTS_DIR)/sudo
+
+KEFIR_EXTERNAL_TEST_SUDO_VERSION := 1.9.17p2
+KEFIR_EXTERNAL_TEST_SUDO_ARCHIVE_FILENAME := v$(KEFIR_EXTERNAL_TEST_SUDO_VERSION).tar.gz
+KEFIR_EXTERNAL_TEST_SUDO_ARCHIVE := $(KEFIR_EXTERNAL_TEST_SUDO_DIR)/$(KEFIR_EXTERNAL_TEST_SUDO_ARCHIVE_FILENAME)
+KEFIR_EXTERNAL_TEST_SUDO_SOURCE_DIR := $(KEFIR_EXTERNAL_TEST_SUDO_DIR)/sudo-$(KEFIR_EXTERNAL_TEST_SUDO_VERSION)
+KEFIR_EXTERNAL_TEST_SUDO_URL := https://github.com/sudo-project/sudo/archive/refs/tags/$(KEFIR_EXTERNAL_TEST_SUDO_ARCHIVE_FILENAME)
+
+KEFIR_EXTERNAL_TEST_SUDO_ARCHIVE_SHA256 := cabee23359afa698d147478c3a141437dbfecb510382e114eaf4b5087a1f8ca5
+
+$(KEFIR_EXTERNAL_TEST_SUDO_ARCHIVE):
+	@mkdir -p $(dir $@)
+	@echo "Downloading $(KEFIR_EXTERNAL_TEST_SUDO_URL)"
+	@$(WGET) -O "$@.tmp" "$(KEFIR_EXTERNAL_TEST_SUDO_URL)"
+	@$(SCRIPTS_DIR)/checksum_sha256.sh "$@.tmp" "$(KEFIR_EXTERNAL_TEST_SUDO_ARCHIVE_SHA256)"
+	@mv "$@.tmp" "$@"
+
+$(KEFIR_EXTERNAL_TEST_SUDO_SOURCE_DIR)/.extracted: $(KEFIR_EXTERNAL_TEST_SUDO_ARCHIVE)
+	@echo "Extracting $(KEFIR_EXTERNAL_TEST_SUDO_ARCHIVE_FILENAME)..."
+	@cd "$(KEFIR_EXTERNAL_TEST_SUDO_DIR)" && tar xvfz "$(KEFIR_EXTERNAL_TEST_SUDO_ARCHIVE_FILENAME)"
+	@echo "Patching sudo $(KEFIR_EXTERNAL_TEST_SUDO_VERSION)..."
+	@cd "$(KEFIR_EXTERNAL_TEST_SUDO_SOURCE_DIR)" && patch -p0 < "$(realpath $(SOURCE_DIR))/tests/external/sudo/sudo.patch"
+	@touch "$@"
+
+$(KEFIR_EXTERNAL_TEST_SUDO_SOURCE_DIR)/Makefile: $(KEFIR_EXTERNAL_TEST_SUDO_SOURCE_DIR)/.extracted
+	@echo "Building sudo $(KEFIR_EXTERNAL_TEST_SUDO_VERSION)..."
+	@cd "$(KEFIR_EXTERNAL_TEST_SUDO_SOURCE_DIR)" && \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
+		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
+		CC="$(realpath $(KEFIR_EXE))" \
+		./configure
+
+$(KEFIR_EXTERNAL_TEST_SUDO_SOURCE_DIR)/src/sudo: $(KEFIR_EXTERNAL_TEST_SUDO_SOURCE_DIR)/Makefile
+	@echo "Building sudo $(KEFIR_EXTERNAL_TEST_SUDO_VERSION)..."
+	@cd "$(KEFIR_EXTERNAL_TEST_SUDO_SOURCE_DIR)" && \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
+		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
+		CC="$(realpath $(KEFIR_EXE))" \
+		$(MAKE)
+
+$(KEFIR_EXTERNAL_TEST_SUDO_DIR)/tests.log: $(KEFIR_EXTERNAL_TEST_SUDO_SOURCE_DIR)/src/sudo
+	@echo "Testing sudo $(KEFIR_EXTERNAL_TEST_SUDO_VERSION)..."
+	@cd "$(KEFIR_EXTERNAL_TEST_SUDO_SOURCE_DIR)" && \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
+		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
+		CC="$(realpath $(KEFIR_EXE))" \
+		bash -c 'set -o pipefail; $(MAKE) check 2>&1 | tee "$(shell realpath "$@.tmp")"'
+	@mv "$@.tmp" "$@"
+
+$(KEFIR_EXTERNAL_TESTS_DIR)/sudo.test.done: $(KEFIR_EXTERNAL_TEST_SUDO_DIR)/tests.log
+	@$(SOURCE_DIR)/tests/external/sudo/validate.sh "$(KEFIR_EXTERNAL_TEST_SUDO_DIR)/tests.log"
+	@touch "$@"
+	@echo "sudo $(KEFIR_EXTERNAL_TEST_SUDO_VERSION) test successfully finished"
+
+EXTERNAL_TESTS_FAST_SUITE += $(KEFIR_EXTERNAL_TESTS_DIR)/sudo.test.done

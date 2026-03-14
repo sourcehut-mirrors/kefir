@@ -1,0 +1,16 @@
+diff -ru configure configure
+--- configure	2025-07-25 05:22:10.000000000 +0300
++++ configure	2026-03-14 09:43:25.623484022 +0200
+@@ -13417,9 +13417,9 @@
+ 
+ 
+ 
+-  lt_prog_compiler_wl=
+-lt_prog_compiler_pic=
+-lt_prog_compiler_static=
++  lt_prog_compiler_wl=-Wl,
++lt_prog_compiler_pic=-fPIC
++lt_prog_compiler_static=-static
+ 
+ 
+   if test yes = "$GCC"; then
