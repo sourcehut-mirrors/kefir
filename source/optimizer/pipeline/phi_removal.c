@@ -227,7 +227,7 @@ static kefir_result_t scan_scc_inputs(struct kefir_mem *mem, struct kefir_opt_co
                 REQUIRE_OK(res);
             }
 
-            if (do_drop) {
+            if (do_drop && first_link_value_ref != KEFIR_ID_NONE) {
                 REQUIRE_OK(kefir_opt_code_container_replace_references(mem, code, first_link_value_ref, phi_instr_ref));
                 REQUIRE_OK(kefir_hashset_add(mem, removal_set, (kefir_hashset_key_t) phi_instr_ref));
             }
