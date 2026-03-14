@@ -35,3 +35,12 @@ int eval2(int l) {
                sizeof(x);
            });
 }
+
+int eval3(int l) {
+    int x = 1;
+    ({
+        if (l)
+            x = 0;
+    });
+    return x;
+}

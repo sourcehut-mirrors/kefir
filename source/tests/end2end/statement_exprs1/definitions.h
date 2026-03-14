@@ -23,5 +23,6 @@
 
 int eval1(int);
 int eval2(int);
+int eval3(int);
 
 #endif

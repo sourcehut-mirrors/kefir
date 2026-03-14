@@ -29,6 +29,7 @@ int main(void) {
         if (i > 0) {
             assert((long long) eval2(i) == (long long) (i + sizeof(long) * i));
         }
+        assert(eval3(i) == !i);
     }
     return EXIT_SUCCESS;
 }

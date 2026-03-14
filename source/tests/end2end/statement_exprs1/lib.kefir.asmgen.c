@@ -18,20 +18,4 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "./definitions.h"
-
-int eval1(int x) {
-    return ({
-        int a = x + 1;
-        x++;
-        int b = x - 1;
-        ({ a + b; });
-    });
-}
-
-int eval2(int l) {
-    return l + ({
-               long x[l];
-               sizeof(x);
-           });
-}
+#include "./lib.kefir.c"

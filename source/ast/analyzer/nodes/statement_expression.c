@@ -78,13 +78,15 @@ kefir_result_t kefir_ast_analyze_statement_expression_node(struct kefir_mem *mem
         struct kefir_ast_expression_statement *expr_statement = NULL;
 
         REQUIRE_OK(kefir_ast_analyze_node(mem, context, node->result));
-        REQUIRE_MATCH_OK(
-            &res, kefir_ast_downcast_expression_statement(node->result, &expr_statement, false),
-            KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->result->source_location,
-                                   "Last statement of statement expression shall be an expression statement"));
 
-        base->properties.type =
-            KEFIR_AST_TYPE_CONV_EXPRESSION_ALL(mem, context->type_bundle, expr_statement->expression->properties.type);
+        res = kefir_ast_downcast_expression_statement(node->result, &expr_statement, false);
+        if (res != KEFIR_NO_MATCH) {
+            REQUIRE_OK(res);
+            base->properties.type = KEFIR_AST_TYPE_CONV_EXPRESSION_ALL(mem, context->type_bundle,
+                                                                       expr_statement->expression->properties.type);
+        } else {
+            base->properties.type = kefir_ast_type_void();
+        }
     } else {
         base->properties.type = kefir_ast_type_void();
     }

@@ -65,10 +65,19 @@ kefir_result_t kefir_ast_translate_statement_expression_node(struct kefir_mem *m
         kefir_result_t res;
         struct kefir_ast_expression_statement *expr_statement = NULL;
 
-        REQUIRE_MATCH_OK(&res, kefir_ast_downcast_expression_statement(node->result, &expr_statement, false),
-                         KEFIR_SET_ERROR(KEFIR_INVALID_STATE,
-                                         "Last statement of statement expression shall be an expression statement"));
-        REQUIRE_OK(kefir_ast_translate_expression(mem, expr_statement->expression, builder, context));
+        res = kefir_ast_downcast_expression_statement(node->result, &expr_statement, false);
+        if (res != KEFIR_NO_MATCH) {
+            REQUIRE_OK(res);
+            REQUIRE_OK(kefir_ast_translate_expression(mem, expr_statement->expression, builder, context));
+        } else if (node->result->properties.category == KEFIR_AST_NODE_CATEGORY_STATEMENT ||
+                   node->result->properties.category == KEFIR_AST_NODE_CATEGORY_INLINE_ASSEMBLY) {
+            REQUIRE_OK(kefir_ast_translate_statement(mem, node->result, builder, context));
+        } else if (node->result->properties.category == KEFIR_AST_NODE_CATEGORY_DECLARATION ||
+                   node->result->properties.category == KEFIR_AST_NODE_CATEGORY_INIT_DECLARATOR) {
+            REQUIRE_OK(kefir_ast_translate_declaration(mem, node->result, builder, context));
+        } else {
+            return KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Unexpected compound statement item");
+        }
     }
 
     const kefir_size_t statement_end_index = KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder);

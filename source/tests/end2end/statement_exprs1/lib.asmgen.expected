@@ -5,6 +5,8 @@
 .type eval1, @function
 .global eval2
 .type eval2, @function
+.global eval3
+.type eval3, @function
 
 .section .text
 .L__kefir_text_section_begin:
@@ -40,6 +42,15 @@ eval2:
     mov %rax, %rcx
     jmp .L__kefir_func_eval2_label3
 .L__kefir_text_func_eval2_end:
+
+eval3:
+.L__kefir_text_func_eval3_begin:
+    mov $1, %eax
+    xor %ecx, %ecx
+    test %edi, %edi
+    cmovnz %rcx, %rax
+    ret
+.L__kefir_text_func_eval3_end:
 
 .L__kefir_text_section_end:
 
