@@ -255,9 +255,10 @@ kefir_result_t kefir_ast_translator_scope_layout_complete_object_type(
         REQUIRE(object_type != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate bounded array type"));
     }
 
-    if ((object_type->tag == KEFIR_AST_TYPE_STRUCTURE || object_type->tag == KEFIR_AST_TYPE_UNION) &&
+    if ((unqualified_object_type->tag == KEFIR_AST_TYPE_STRUCTURE ||
+         unqualified_object_type->tag == KEFIR_AST_TYPE_UNION) &&
         scoped_identifier->object.initializer != NULL) {
-        REQUIRE_OK(resolve_flexible_array_member(mem, context, object_type, &object_type,
+        REQUIRE_OK(resolve_flexible_array_member(mem, context, unqualified_object_type, &object_type,
                                                  scoped_identifier->object.initializer));
     }
 
