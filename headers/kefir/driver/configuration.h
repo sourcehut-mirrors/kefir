@@ -191,6 +191,7 @@ typedef struct kefir_driver_configuration {
         const char *target_name;
         const char *output_filename;
     } dependency_output;
+    kefir_bool_t output_defined_macros;
 
     struct {
         struct kefir_list args;

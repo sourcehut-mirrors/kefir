@@ -451,6 +451,9 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_strin
                     KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert dependency target name into symbols"));
 
             config->dependency_output.output_filename = output_filename;
+        } else if (strcmp("-dM", arg) == 0) {
+            // Output defined macros
+            config->output_defined_macros = true;
         }
 
         // Assembler options

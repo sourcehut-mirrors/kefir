@@ -249,7 +249,9 @@ kefir_result_t kefir_compiler_preprocessor_tokenize(struct kefir_mem *mem, struc
 kefir_result_t kefir_compiler_preprocess(struct kefir_mem *mem, struct kefir_compiler_context *context,
                                          kefir_preprocessor_mode_t mode, struct kefir_token_allocator *allocator,
                                          struct kefir_token_buffer *buffer, const char *content, kefir_size_t length,
-                                         const char *source_id, const char *filepath) {
+                                         const char *source_id, const char *filepath,
+                                         kefir_result_t (*post_callback)(struct kefir_preprocessor *, void *),
+                                         void *post_callback_payload) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid compiler context"));
     REQUIRE(allocator != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid token allocator"));
@@ -267,6 +269,9 @@ kefir_result_t kefir_compiler_preprocess(struct kefir_mem *mem, struct kefir_com
     preprocessor.mode = mode;
 
     kefir_result_t res = kefir_preprocessor_run(mem, &preprocessor, allocator, buffer);
+    if (post_callback != NULL) {
+        REQUIRE_CHAIN(&res, post_callback(&preprocessor, post_callback_payload));
+    }
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_preprocessor_free(mem, &preprocessor);
         return res;
@@ -340,7 +345,8 @@ kefir_result_t kefir_compiler_preprocess_include(struct kefir_mem *mem, struct k
         KEFIR_PREPROCESSOR_SOURCE_LOCATOR_MODE_NORMAL, &source_file));
 
     res = kefir_compiler_preprocess(mem, context, KEFIR_PREPROCESSOR_MODE_NORMAL, allocator, buffer,
-                                    source_file.cursor.content, source_file.cursor.length, source_id, filepath);
+                                    source_file.cursor.content, source_file.cursor.length, source_id, filepath, NULL,
+                                    NULL);
     REQUIRE_ELSE(res == KEFIR_OK, {
         source_file.close(mem, &source_file);
         return res;

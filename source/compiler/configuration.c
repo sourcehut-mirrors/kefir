@@ -75,6 +75,7 @@ kefir_result_t kefir_compiler_runner_configuration_init(struct kefir_compiler_ru
                               .output_filename = NULL,
                               .output_system_deps = true,
                               .add_phony_targets = false},
+        .output_defined_macros = false,
         .target_profile_config = {.char_signedness = KEFIR_COMPILER_PROFILE_CHAR_SIGNEDNESS_DEFAULT},
         .extension_lib = NULL};
     REQUIRE_OK(kefir_list_init(&options->include_path));

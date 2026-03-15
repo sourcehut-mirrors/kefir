@@ -85,6 +85,7 @@ typedef struct kefir_compiler_runner_configuration {
         kefir_bool_t add_phony_targets;
         const char *output_filename;
     } dependency_output;
+    kefir_bool_t output_defined_macros;
 
     struct {
         kefir_size_t max_inline_depth;

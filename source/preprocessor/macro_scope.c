@@ -37,6 +37,46 @@ static kefir_result_t overlay_locate(const struct kefir_preprocessor_macro_scope
     return KEFIR_OK;
 }
 
+struct overlay_base_iterator_payload {
+    struct kefir_preprocessor_overlay_macro_scope *overlay_scope;
+    kefir_result_t (*callback)(const struct kefir_preprocessor_macro *, void *);
+    void *callback_payload;
+};
+
+static kefir_result_t overlay_base_iterator(const struct kefir_preprocessor_macro *macro, void *payload) {
+    REQUIRE(macro != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid preprocess macro"));
+    ASSIGN_DECL_CAST(struct overlay_base_iterator_payload *, iter_payload, payload);
+    REQUIRE(iter_payload != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid overlay base macro scope iterator payload"));
+
+    const struct kefir_preprocessor_macro *overlay_macro;
+    kefir_result_t res = iter_payload->overlay_scope->overlay->locate(iter_payload->overlay_scope->overlay,
+                                                                      macro->identifier, &overlay_macro);
+    if (res == KEFIR_NOT_FOUND) {
+        REQUIRE_OK(iter_payload->callback(macro, iter_payload->callback_payload));
+    } else {
+        REQUIRE_OK(res);
+    }
+
+    return KEFIR_OK;
+}
+
+kefir_result_t overlay_iterate(const struct kefir_preprocessor_macro_scope *scope,
+                               kefir_result_t (*callback)(const struct kefir_preprocessor_macro *, void *),
+                               void *callback_payload) {
+    REQUIRE(scope != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid overlay macro scope"));
+    REQUIRE(callback != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid macro scope iterator callback"));
+    ASSIGN_DECL_CAST(struct kefir_preprocessor_overlay_macro_scope *, overlay_scope, scope->payload);
+
+    REQUIRE_OK(overlay_scope->base->iterate(
+        overlay_scope->base, overlay_base_iterator,
+        &(struct overlay_base_iterator_payload) {
+            .overlay_scope = overlay_scope, .callback = callback, .callback_payload = callback_payload}));
+    REQUIRE_OK(overlay_scope->overlay->iterate(overlay_scope->overlay, callback, callback_payload));
+
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_preprocessor_overlay_macro_scope_init(struct kefir_preprocessor_overlay_macro_scope *scope,
                                                            const struct kefir_preprocessor_macro_scope *base,
                                                            const struct kefir_preprocessor_macro_scope *overlay) {
@@ -48,5 +88,6 @@ kefir_result_t kefir_preprocessor_overlay_macro_scope_init(struct kefir_preproce
     scope->overlay = overlay;
     scope->scope.payload = scope;
     scope->scope.locate = overlay_locate;
+    scope->scope.iterate = overlay_iterate;
     return KEFIR_OK;
 }

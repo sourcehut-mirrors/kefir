@@ -466,7 +466,8 @@ static kefir_result_t format_string_literal(FILE *out, const struct kefir_token 
 }
 
 static kefir_result_t format_token(FILE *out, const struct kefir_token *token,
-                                   kefir_preprocessor_whitespace_format_t ws_format) {
+                                   kefir_preprocessor_whitespace_format_t ws_format,
+                                   kefir_bool_t *prev_formatted_whitespace) {
     switch (token->klass) {
         case KEFIR_TOKEN_SENTINEL:
             // Intentionally left blank
@@ -498,7 +499,8 @@ static kefir_result_t format_token(FILE *out, const struct kefir_token *token,
         case KEFIR_TOKEN_PP_WHITESPACE:
             if (token->pp_whitespace.newline && ws_format == KEFIR_PREPROCESSOR_WHITESPACE_FORMAT_ORIGINAL) {
                 fprintf(out, "\n");
-            } else {
+            } else if (ws_format != KEFIR_PREPROCESSOR_WHITESPACE_FORMAT_SINGLE_SPACE_COLLAPSE ||
+                       !*prev_formatted_whitespace) {
                 fprintf(out, " ");
             }
             break;
@@ -523,6 +525,7 @@ static kefir_result_t format_token(FILE *out, const struct kefir_token *token,
             REQUIRE_OK(token->extension.klass->format(out, token));
             break;
     }
+    *prev_formatted_whitespace = token->klass == KEFIR_TOKEN_PP_WHITESPACE;
     return KEFIR_OK;
 }
 
@@ -541,6 +544,7 @@ kefir_result_t kefir_preprocessor_format(FILE *out, const struct kefir_token_buf
     kefir_bool_t empty_line = true;
     kefir_bool_t prev_token_non_newline_ws = false;
     kefir_bool_t printed_newline = false;
+    kefir_bool_t prev_formatted_whitespace = false;
     struct kefir_source_location prev_location = {0};
     for (kefir_size_t i = 0; i < buffer_length; i++) {
         const struct kefir_token *token = kefir_token_buffer_at(buffer, i);
@@ -582,7 +586,7 @@ kefir_result_t kefir_preprocessor_format(FILE *out, const struct kefir_token_buf
                  prev_location.line + 1 != token->source_location.line)) {
                 REQUIRE_OK(print_linemarker(out, &token->source_location));
             }
-            REQUIRE_OK(format_token(out, token, ws_format));
+            REQUIRE_OK(format_token(out, token, ws_format, &prev_formatted_whitespace));
             prev_location = token->source_location;
             printed_newline = token->klass == KEFIR_TOKEN_PP_WHITESPACE && token->pp_whitespace.newline;
         }

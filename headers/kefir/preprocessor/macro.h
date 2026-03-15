@@ -42,12 +42,15 @@ typedef struct kefir_preprocessor_macro {
     kefir_result_t (*apply)(struct kefir_mem *, struct kefir_preprocessor *, const struct kefir_preprocessor_macro *,
                             struct kefir_string_pool *, const struct kefir_list *, struct kefir_token_allocator *,
                             struct kefir_token_buffer *, const struct kefir_source_location *);
+    kefir_result_t (*format)(const struct kefir_preprocessor *, const struct kefir_preprocessor_macro *, FILE *);
     void *payload;
 } kefir_preprocessor_macro_t;
 
 typedef struct kefir_preprocessor_macro_scope {
     kefir_result_t (*locate)(const struct kefir_preprocessor_macro_scope *, const char *,
                              const struct kefir_preprocessor_macro **);
+    kefir_result_t (*iterate)(const struct kefir_preprocessor_macro_scope *,
+                              kefir_result_t (*)(const struct kefir_preprocessor_macro *, void *), void *);
     void *payload;
 } kefir_preprocessor_macro_scope_t;
 

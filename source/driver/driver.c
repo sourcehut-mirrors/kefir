@@ -207,6 +207,7 @@ kefir_result_t kefir_driver_generate_compiler_config(struct kefir_mem *mem, stru
     compiler_config->dependency_output.add_phony_targets = config->dependency_output.add_phony_targets;
     compiler_config->dependency_output.target_name = config->dependency_output.target_name;
     compiler_config->dependency_output.output_filename = config->dependency_output.output_filename;
+    compiler_config->output_defined_macros = config->output_defined_macros;
 
     if (externals->source_date_epoch.present) {
         compiler_config->pp_timestamp = externals->source_date_epoch.value;
