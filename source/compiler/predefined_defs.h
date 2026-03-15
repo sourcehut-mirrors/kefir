@@ -34,6 +34,7 @@ __kefir_define_builtin_prefix(__builtin_) __kefir_define_builtin_prefix(__atomic
 
 // Type definitions
 #ifdef __LP64__
+#define _LP64 __LP64__
 #define __SIZE_TYPE__ long unsigned int
 #define __PTRDIFF_TYPE__ long int
 #define __WCHAR_TYPE__ int
