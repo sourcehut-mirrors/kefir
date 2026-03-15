@@ -80,6 +80,13 @@ static kefir_result_t parse_impl_internal(struct kefir_mem *mem, struct kefir_st
             res = KEFIR_OK;
             continue;
         } else if (c == ':') {
+            if (strcmp(long_options[long_option_index].name, argv[optind - 1]) != 0) {
+                if (error_output != NULL) {
+                    fprintf(stderr, "kefir-cc1: unknown command line option '%s'\n", argv[optind - 1]);
+                }
+                res = KEFIR_OK;
+                continue;
+            }
             res = KEFIR_SET_ERRORF(KEFIR_UI_ERROR, "Expected parameter for %s option", argv[optind - 1]);
         } else if (c != 0) {
             cli_option = short_option_map[c];
