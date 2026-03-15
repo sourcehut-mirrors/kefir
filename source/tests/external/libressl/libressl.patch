@@ -1,0 +1,11 @@
+diff -ru crypto/bn/arch/amd64/bn_arch.h crypto/bn/arch/amd64/bn_arch.h
+--- crypto/bn/arch/amd64/bn_arch.h    2025-10-28 15:16:34.000000000 +0200
++++ crypto/bn/arch/amd64/bn_arch.h 2026-03-15 09:30:46.668193783 +0200
+@@ -53,7 +53,7 @@                                                                                                               
+
+ #define HAVE_BN_WORD_CLZ
+
+-#if defined(__GNUC__)
++#if defined(__GNUC__) || defined(__KEFIRCC__)
+
+ #define HAVE_BN_DIV_REM_WORDS_INLINE
