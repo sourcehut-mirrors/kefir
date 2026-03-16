@@ -1,0 +1,19 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global test
+.type test, @function
+
+.section .text
+.L__kefir_text_section_begin:
+test:
+.L__kefir_text_func_test_begin:
+    push %rbp
+    mov %rsp, %rbp
+    xor %eax, %eax
+    pop %rbp
+    ret
+.L__kefir_text_func_test_end:
+
+.L__kefir_text_section_end:
+

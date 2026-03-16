@@ -7,13 +7,3 @@
 -# define __attribute__(_arg_)
  # define ignore_result(x) ((void) (x))
  #endif /* !__GNUC__ */
- 
-@@ -322,7 +321,7 @@
- #define errexec(name)	err(errno == ENOENT ? EX_EXEC_ENOENT : EX_EXEC_FAILED, \
- 			_("failed to execute %s"), name)
- 
--static inline __attribute__((const)) int is_power_of_2(unsigned long num)
-+static inline int is_power_of_2(unsigned long num)
- {
- 	return (num != 0 && ((num & (num - 1)) == 0));
- }

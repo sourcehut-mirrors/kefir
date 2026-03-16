@@ -26,11 +26,16 @@
 
 static kefir_result_t consume_attribute_list_entry(struct kefir_mem *mem, struct kefir_parser_ast_builder *builder,
                                                    struct kefir_parser *parser) {
-    REQUIRE(PARSER_TOKEN_IS_IDENTIFIER(parser, 0),
-            KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(parser, 0),
-                                   "Expected either identifier or closing parentheses"));
-    REQUIRE_OK(
-        kefir_parser_ast_builder_attribute(mem, builder, GNU_ATTRIBUTE_PREFIX, PARSER_CURSOR(parser, 0)->identifier));
+    if (PARSER_TOKEN_IS(parser, 0, KEFIR_TOKEN_KEYWORD)) {
+        REQUIRE_OK(kefir_parser_ast_builder_attribute(mem, builder, GNU_ATTRIBUTE_PREFIX,
+                                                      PARSER_CURSOR(parser, 0)->keyword_spelling));
+    } else {
+        REQUIRE(PARSER_TOKEN_IS_IDENTIFIER(parser, 0),
+                KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(parser, 0),
+                                       "Expected either identifier or closing parentheses"));
+        REQUIRE_OK(kefir_parser_ast_builder_attribute(mem, builder, GNU_ATTRIBUTE_PREFIX,
+                                                      PARSER_CURSOR(parser, 0)->identifier));
+    }
     REQUIRE_OK(PARSER_SHIFT(parser));
 
     if (PARSER_TOKEN_IS_PUNCTUATOR(parser, 0, KEFIR_PUNCTUATOR_LEFT_PARENTHESE)) {
