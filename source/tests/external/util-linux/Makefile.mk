@@ -22,6 +22,8 @@ $(KEFIR_EXTERNAL_TEST_UTIL_LINUX_SOURCE_DIR)/.extracted: $(KEFIR_EXTERNAL_TEST_U
 	@cd "$(KEFIR_EXTERNAL_TEST_UTIL_LINUX_SOURCE_DIR)" && patch -p0 < "$(realpath $(SOURCE_DIR))/tests/external/util-linux/util-linux.patch"
 	@find $(KEFIR_EXTERNAL_TEST_UTIL_LINUX_SOURCE_DIR) -type f -name "*.h" -exec sed -i 's/__attribute__/__attribute/g' {} \;
 	@find $(KEFIR_EXTERNAL_TEST_UTIL_LINUX_SOURCE_DIR) -type f -name "*.c" -exec sed -i 's/__attribute__/__attribute/g' {} \;
+# Fails in the container
+	@rm -rf "$(KEFIR_EXTERNAL_TEST_UTIL_LINUX_SOURCE_DIR)/tests/ts/misc/setarch"
 	@touch "$@"
 
 $(KEFIR_EXTERNAL_TEST_UTIL_LINUX_SOURCE_DIR)/configure: $(KEFIR_EXTERNAL_TEST_UTIL_LINUX_SOURCE_DIR)/.extracted $(KEFIR_EXE)
