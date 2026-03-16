@@ -25,12 +25,7 @@
 kefir_result_t kefir_ast_pragma_state_init(struct kefir_ast_pragma_state *state) {
     REQUIRE(state != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to AST pragma state"));
 
-    state->fp_contract.present = false;
-    state->fenv_access.present = false;
-    state->cx_limited_range.present = false;
-    state->fenv_round.present = false;
-    state->fenv_dec_round.present = false;
-    state->pack.present = false;
+    *state = (struct kefir_ast_pragma_state) {0};
     return KEFIR_OK;
 }
 

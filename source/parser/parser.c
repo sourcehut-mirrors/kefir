@@ -167,6 +167,7 @@ kefir_result_t kefir_parser_checkpoint_save(const struct kefir_parser *parser,
 
     REQUIRE_OK(kefir_parser_token_cursor_save(parser->cursor, &checkpoint->cursor));
     checkpoint->pragmas_file_scope = parser->pragmas.file_scope;
+    checkpoint->pragmas_in_function_scope = parser->pragmas.in_function_scope;
     checkpoint->pack_stack_top = parser->pragmas.pack.stack_top;
     return KEFIR_OK;
 }
