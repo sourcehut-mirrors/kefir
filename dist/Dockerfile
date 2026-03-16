@@ -82,9 +82,9 @@ RUN apt install -y nasm yacc libncurses-dev zlib1g-dev gettext file openssl \
 # Libnettle 3.10
 RUN cd /tmp && wget "https://github.com/gnutls/nettle/archive/refs/tags/nettle_3.10.2_release_20250626.tar.gz"
 RUN cd /tmp && tar xvf nettle_3.10.2_release_20250626.tar.gz
-RUN cd /tmp/nettle_3.10.2_release_20250626 && ./configure --prefix=/usr --libdir=/usr/lib/x86_64-linux-gnu --disable-documentation
-RUN cd /tmp/nettle_3.10.2_release_20250626 && make -j$(nproc)
-RUN cd /tmp/nettle_3.10.2_release_20250626 && make install
+RUN cd /tmp/nettle-nettle_3.10.2_release_20250626 && ./configure --prefix=/usr --libdir=/usr/lib/x86_64-linux-gnu --disable-documentation
+RUN cd /tmp/nettle-nettle_3.10.2_release_20250626 && make -j$(nproc)
+RUN cd /tmp/nettle-nettle_3.10.2_release_20250626 && make install
 
 # Locales
 RUN echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
