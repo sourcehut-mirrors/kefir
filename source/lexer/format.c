@@ -542,10 +542,26 @@ static kefir_result_t format_pragma(struct kefir_json_output *json, kefir_pragma
         case KEFIR_PRAGMA_TOKEN_FENV_DEC_ROUND:
             REQUIRE_OK(kefir_json_output_string(json, "fenv_dec_round"));
             break;
+
+        case KEFIR_PRAGMA_TOKEN_PACK_VALUE:
+            REQUIRE_OK(kefir_json_output_string(json, "pack"));
+            break;
+
+        case KEFIR_PRAGMA_TOKEN_PACK_PUSH:
+            REQUIRE_OK(kefir_json_output_string(json, "pack_push"));
+            break;
+
+        case KEFIR_PRAGMA_TOKEN_PACK_POP:
+            REQUIRE_OK(kefir_json_output_string(json, "pack_pop"));
+            break;
     }
 
     REQUIRE_OK(kefir_json_output_object_key(json, "param"));
-    switch (param) {
+    switch (param.kind) {
+        case KEFIR_PRAGMA_TOKEN_PARAM_IMMEDIATE_INT:
+            REQUIRE_OK(kefir_json_output_integer(json, param.immediate_int));
+            break;
+
         case KEFIR_PRAGMA_TOKEN_PARAM_ON:
             REQUIRE_OK(kefir_json_output_string(json, "on"));
             break;

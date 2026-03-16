@@ -20,6 +20,7 @@
 
 #include "kefir/parser/rule_helpers.h"
 #include "kefir/parser/builder.h"
+#include "kefir/ast/pragma.h"
 #include "kefir/core/source_error.h"
 
 static kefir_result_t parse_compound_statement(struct kefir_mem *mem, struct kefir_parser_ast_builder *builder,
@@ -35,13 +36,14 @@ static kefir_result_t parse_compound_statement(struct kefir_mem *mem, struct kef
     REQUIRE_OK(kefir_ast_pragma_state_init(&pragmas));
     while (PARSER_TOKEN_IS_PRAGMA(builder->parser, 0)) {
         const struct kefir_token *token = PARSER_CURSOR_EXT(builder->parser, 0, false);
-        kefir_result_t res =
-            kefir_parser_scan_pragma(&pragmas, token->pragma, token->pragma_param, &token->source_location);
+        kefir_result_t res = kefir_parser_scan_pragma(mem, &builder->parser->pragmas, &pragmas, token->pragma,
+                                                      token->pragma_param, &token->source_location);
         if (res != KEFIR_NO_MATCH) {
             REQUIRE_OK(res);
         }
         REQUIRE_OK(PARSER_SHIFT_EXT(builder->parser, false));
     }
+    REQUIRE_OK(kefir_ast_pragma_state_merge_pack(&builder->parser->pragmas.file_scope, &pragmas));
 
     REQUIRE_OK(kefir_parser_ast_builder_compound_statement(mem, builder, attributes, &pragmas));
     REQUIRE_OK(kefir_parser_scope_push_block(mem, parser->scope));

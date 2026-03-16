@@ -258,7 +258,12 @@ static kefir_result_t scan_struct_attributes(struct kefir_mem *mem, struct kefir
             } else if (attribute->prefix != NULL &&
                        (strcmp(attribute->prefix, "gnu") == 0 || strcmp(attribute->prefix, "__gnu__") == 0)) {
                 if (strcmp(attribute->name, "packed") == 0 || strcmp(attribute->name, "__packed__") == 0) {
-                    struct_type->packed = true;
+                    struct_type->packed = KEFIR_AST_STRUCT_PACK;
+                }
+            } else if (attribute->prefix != NULL &&
+                       (strcmp(attribute->prefix, "kefir") == 0 || strcmp(attribute->prefix, "__kefir__") == 0)) {
+                if (strcmp(attribute->name, "__pragma_packed__") == 0) {
+                    struct_type->packed = KEFIR_AST_STRUCT_PACK_FORCE;
                 }
             }
         }

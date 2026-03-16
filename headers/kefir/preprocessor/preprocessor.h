@@ -29,6 +29,7 @@
 #include "kefir/preprocessor/source_file.h"
 #include "kefir/preprocessor/directives.h"
 #include "kefir/preprocessor/token_sequence.h"
+#include "kefir/parser/pragma.h"
 #include "kefir/ast/context.h"
 #include "kefir/core/data_model.h"
 #include "kefir/core/hashtree.h"
@@ -135,6 +136,7 @@ typedef struct kefir_preprocessor {
     struct kefir_preprocessor_predefined_macro_scope predefined_macros;
     struct kefir_preprocessor_overlay_macro_scope macro_overlay;
     struct kefir_preprocessor_macro_scope *macros;
+    struct kefir_parser_pragmas pragmas;
     const struct kefir_preprocessor *parent;
     const struct kefir_preprocessor_extensions *extensions;
     kefir_preprocessor_mode_t mode;

@@ -73,11 +73,16 @@ typedef struct kefir_ast_pragma_state {
         kefir_bool_t present;
         kefir_ast_pragma_dec_direction_value_t value;
     } fenv_dec_round;
+
+    struct {
+        kefir_bool_t present;
+        kefir_size_t value;
+    } pack;
 } kefir_parser_pragma_state_t;
 
 #define KEFIR_AST_PRAGMA_STATE_IS_PRESENT(_state)                                                            \
     ((_state)->fp_contract.present || (_state)->fenv_access.present || (_state)->cx_limited_range.present || \
-     (_state)->fenv_round.present || (_state)->fenv_dec_round.present)
+     (_state)->fenv_round.present || (_state)->fenv_dec_round.present || (_state)->pack.present)
 
 #define KEFIR_AST_PRAGMA_STATE_FENV_ACCESS_ON(_state) \
     ((_state)->fenv_access.present && (_state)->fenv_access.value == KEFIR_AST_PRAGMA_VALUE_ON)
@@ -86,5 +91,7 @@ typedef struct kefir_ast_pragma_state {
 
 kefir_result_t kefir_ast_pragma_state_init(struct kefir_ast_pragma_state *);
 kefir_result_t kefir_ast_pragma_state_merge(struct kefir_ast_pragma_state *, const struct kefir_ast_pragma_state *);
+kefir_result_t kefir_ast_pragma_state_merge_pack(struct kefir_ast_pragma_state *,
+                                                 const struct kefir_ast_pragma_state *);
 
 #endif

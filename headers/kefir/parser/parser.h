@@ -83,6 +83,7 @@ typedef struct kefir_parser_checkpoint {
     kefir_size_t cursor;
     struct kefir_ast_pragma_state pragmas_file_scope;
     kefir_bool_t pragmas_in_function_scope;
+    kefir_size_t pack_stack_top;
 } kefir_parser_checkpoint_t;
 
 kefir_result_t kefir_parser_checkpoint_save(const struct kefir_parser *, struct kefir_parser_checkpoint *);

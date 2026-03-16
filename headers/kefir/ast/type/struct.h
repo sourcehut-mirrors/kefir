@@ -37,9 +37,15 @@ typedef struct kefir_ast_struct_field {
     } flags;
 } kefir_ast_struct_field_t;
 
+typedef enum kefir_ast_struct_pack_type {
+    KEFIR_AST_STRUCT_NOPACK,
+    KEFIR_AST_STRUCT_PACK,
+    KEFIR_AST_STRUCT_PACK_FORCE
+} kefir_ast_struct_pack_type_t;
+
 typedef struct kefir_ast_struct_type {
     kefir_bool_t complete;
-    kefir_bool_t packed;
+    kefir_ast_struct_pack_type_t packed;
     const char *identifier;
     struct kefir_list fields;
     struct kefir_hashtree field_index;

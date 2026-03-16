@@ -368,6 +368,16 @@ static kefir_result_t set_packed(const struct kefir_ir_type *type, kefir_size_t 
     return KEFIR_OK;
 }
 
+static kefir_result_t set_packed_force(const struct kefir_ir_type *type, kefir_size_t index,
+                                       const struct kefir_ir_typeentry *typeentry, void *payload) {
+    UNUSED(typeentry);
+    UNUSED(payload);
+    REQUIRE(type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR type"));
+
+    kefir_ir_type_at(type, index)->alignment = 1;
+    return KEFIR_OK;
+}
+
 static kefir_result_t translate_struct_type(struct kefir_mem *mem, const struct kefir_ast_context *context,
                                             const struct kefir_ast_type *type, kefir_size_t alignment,
                                             const struct kefir_ast_translator_environment *env,
@@ -424,9 +434,14 @@ static kefir_result_t translate_struct_type(struct kefir_mem *mem, const struct 
         kefir_ir_type_at(builder->type, type_index)->param++;
     }
 
-    if (type->structure_type.packed) {
+    if (type->structure_type.packed == KEFIR_AST_STRUCT_PACK) {
         struct kefir_ir_type_visitor visitor;
         REQUIRE_OK(kefir_ir_type_visitor_init(&visitor, set_packed));
+        REQUIRE_OK(kefir_ir_type_visitor_list_nodes(builder->type, &visitor, NULL, type_index + 1,
+                                                    kefir_ir_type_at(builder->type, type_index)->param));
+    } else if (type->structure_type.packed == KEFIR_AST_STRUCT_PACK_FORCE) {
+        struct kefir_ir_type_visitor visitor;
+        REQUIRE_OK(kefir_ir_type_visitor_init(&visitor, set_packed_force));
         REQUIRE_OK(kefir_ir_type_visitor_list_nodes(builder->type, &visitor, NULL, type_index + 1,
                                                     kefir_ir_type_at(builder->type, type_index)->param));
     }

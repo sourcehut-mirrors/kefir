@@ -350,7 +350,7 @@ const struct kefir_ast_type *kefir_ast_type_incomplete_structure(struct kefir_me
     type->ops.composite = composite_struct_types;
     type->ops.free = free_structure;
     type->structure_type.complete = false;
-    type->structure_type.packed = false;
+    type->structure_type.packed = KEFIR_AST_STRUCT_NOPACK;
     type->structure_type.identifier = identifier;
     type->structure_type.flags.no_discard = false;
     type->structure_type.flags.no_discard_message = NULL;
@@ -385,7 +385,7 @@ const struct kefir_ast_type *kefir_ast_type_incomplete_union(struct kefir_mem *m
     type->ops.composite = composite_union_types;
     type->ops.free = free_structure;
     type->structure_type.complete = false;
-    type->structure_type.packed = false;
+    type->structure_type.packed = KEFIR_AST_STRUCT_NOPACK;
     type->structure_type.identifier = identifier;
     type->structure_type.flags.no_discard = false;
     type->structure_type.flags.no_discard_message = NULL;
@@ -555,7 +555,7 @@ const struct kefir_ast_type *kefir_ast_type_structure(struct kefir_mem *mem, str
     type->ops.composite = composite_struct_types;
     type->ops.free = free_structure;
     type->structure_type.complete = true;
-    type->structure_type.packed = false;
+    type->structure_type.packed = KEFIR_AST_STRUCT_NOPACK;
     type->structure_type.identifier = identifier;
     type->structure_type.flags.no_discard = false;
     type->structure_type.flags.no_discard_message = NULL;
@@ -610,7 +610,7 @@ const struct kefir_ast_type *kefir_ast_type_union(struct kefir_mem *mem, struct 
     type->ops.composite = composite_union_types;
     type->ops.free = free_structure;
     type->structure_type.complete = true;
-    type->structure_type.packed = false;
+    type->structure_type.packed = KEFIR_AST_STRUCT_NOPACK;
     type->structure_type.identifier = identifier;
     type->structure_type.flags.no_discard = false;
     type->structure_type.flags.no_discard_message = NULL;

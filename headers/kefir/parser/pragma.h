@@ -25,16 +25,30 @@
 #include "kefir/ast/pragma.h"
 #include "kefir/lexer/lexem.h"
 
+typedef struct kefir_parser_pragmas_pack_entry {
+    kefir_size_t prev;
+    kefir_bool_t has_value;
+    kefir_int64_t value;
+} kefir_parser_pragmas_pack_entry_t;
+
 typedef struct kefir_parser_pragmas {
     struct kefir_ast_pragma_state file_scope;
 
     kefir_bool_t in_function_scope;
+
+    struct {
+        struct kefir_parser_pragmas_pack_entry *stack;
+        kefir_size_t stack_length;
+        kefir_size_t stack_top;
+    } pack;
 } kefir_parser_pragmas_t;
 
 kefir_result_t kefir_parser_pragmas_init(struct kefir_parser_pragmas *);
+kefir_result_t kefir_parser_pragmas_free(struct kefir_mem *, struct kefir_parser_pragmas *);
 kefir_result_t kefir_parser_pragmas_collect(struct kefir_ast_pragma_state *, const struct kefir_parser_pragmas *);
 
-kefir_result_t kefir_parser_scan_pragma(struct kefir_ast_pragma_state *, kefir_pragma_token_type_t,
-                                        kefir_pragma_token_parameter_t, const struct kefir_source_location *);
+kefir_result_t kefir_parser_scan_pragma(struct kefir_mem *, struct kefir_parser_pragmas *,
+                                        struct kefir_ast_pragma_state *, kefir_pragma_token_type_t,
+                                        struct kefir_pragma_token_parameter, const struct kefir_source_location *);
 
 #endif

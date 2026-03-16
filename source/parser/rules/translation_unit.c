@@ -23,9 +23,9 @@
 #include "kefir/core/source_error.h"
 
 static kefir_result_t match_on_off_pragma_param(kefir_ast_pragma_on_off_value_t *value_ptr,
-                                                kefir_pragma_token_parameter_t param,
+                                                struct kefir_pragma_token_parameter param,
                                                 const struct kefir_source_location *source_location) {
-    switch (param) {
+    switch (param.kind) {
         case KEFIR_PRAGMA_TOKEN_PARAM_DEFAULT:
             *value_ptr = KEFIR_AST_PRAGMA_VALUE_DEFAULT;
             break;
@@ -45,9 +45,9 @@ static kefir_result_t match_on_off_pragma_param(kefir_ast_pragma_on_off_value_t 
 }
 
 static kefir_result_t match_direction_pragma_param(kefir_ast_pragma_direction_value_t *value_ptr,
-                                                   kefir_pragma_token_parameter_t param,
+                                                   struct kefir_pragma_token_parameter param,
                                                    const struct kefir_source_location *source_location) {
-    switch (param) {
+    switch (param.kind) {
         case KEFIR_PRAGMA_TOKEN_PARAM_FE_DOWNWARD:
             *value_ptr = KEFIR_AST_PRAGMA_VALUE_FE_DOWNWARD;
             break;
@@ -79,9 +79,9 @@ static kefir_result_t match_direction_pragma_param(kefir_ast_pragma_direction_va
 }
 
 static kefir_result_t match_dec_direction_pragma_param(kefir_ast_pragma_dec_direction_value_t *value_ptr,
-                                                       kefir_pragma_token_parameter_t param,
+                                                       struct kefir_pragma_token_parameter param,
                                                        const struct kefir_source_location *source_location) {
-    switch (param) {
+    switch (param.kind) {
         case KEFIR_PRAGMA_TOKEN_PARAM_FE_DEC_DOWNWARD:
             *value_ptr = KEFIR_AST_PRAGMA_VALUE_FE_DEC_DOWNWARD;
             break;
@@ -113,9 +113,12 @@ static kefir_result_t match_dec_direction_pragma_param(kefir_ast_pragma_dec_dire
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_parser_scan_pragma(struct kefir_ast_pragma_state *state, kefir_pragma_token_type_t type,
-                                        kefir_pragma_token_parameter_t param,
+kefir_result_t kefir_parser_scan_pragma(struct kefir_mem *mem, struct kefir_parser_pragmas *pragmas,
+                                        struct kefir_ast_pragma_state *state, kefir_pragma_token_type_t type,
+                                        struct kefir_pragma_token_parameter param,
                                         const struct kefir_source_location *source_location) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(pragmas != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid parser pragmas"));
     REQUIRE(state != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST pragma state"));
 
     switch (type) {
@@ -143,6 +146,54 @@ kefir_result_t kefir_parser_scan_pragma(struct kefir_ast_pragma_state *state, ke
             REQUIRE_OK(match_dec_direction_pragma_param(&state->fenv_dec_round.value, param, source_location));
             state->fenv_dec_round.present = true;
             break;
+
+        case KEFIR_PRAGMA_TOKEN_PACK_VALUE: {
+            if (param.kind == KEFIR_PRAGMA_TOKEN_PARAM_IMMEDIATE_INT) {
+                state->pack.present = true;
+                state->pack.value = param.immediate_int;
+            } else if (param.kind == KEFIR_PRAGMA_TOKEN_PARAM_DEFAULT) {
+                state->pack.present = false;
+            } else {
+                return KEFIR_SET_SOURCE_ERROR(KEFIR_NO_MATCH, source_location, "Unexpected pack pragma");
+            }
+        } break;
+
+        case KEFIR_PRAGMA_TOKEN_PACK_PUSH: {
+            kefir_size_t new_length = pragmas->pack.stack_length + 1;
+            struct kefir_parser_pragmas_pack_entry *entries =
+                KEFIR_REALLOC(mem, pragmas->pack.stack, sizeof(struct kefir_parser_pragmas_pack_entry) * new_length);
+            REQUIRE(entries != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate pack pragma stack"));
+            pragmas->pack.stack = entries;
+            pragmas->pack.stack_length = new_length;
+
+            pragmas->pack.stack[new_length - 1].prev = pragmas->pack.stack_top;
+            pragmas->pack.stack[new_length - 1].has_value = state->pack.present;
+            if (state->pack.present) {
+                pragmas->pack.stack[new_length - 1].value = state->pack.value;
+            }
+            pragmas->pack.stack_top = new_length - 1;
+
+            if (param.kind == KEFIR_PRAGMA_TOKEN_PARAM_IMMEDIATE_INT) {
+                state->pack.present = true;
+                state->pack.value = param.immediate_int;
+            } else if (param.kind == KEFIR_PRAGMA_TOKEN_PARAM_DEFAULT) {
+                // Intentionally left blank
+            } else {
+                return KEFIR_SET_SOURCE_ERROR(KEFIR_NO_MATCH, source_location, "Unexpected pack pragma");
+            }
+        } break;
+
+        case KEFIR_PRAGMA_TOKEN_PACK_POP: {
+            if (pragmas->pack.stack_top != ~0ull) {
+                state->pack.present = pragmas->pack.stack[pragmas->pack.stack_top].has_value;
+                if (state->pack.present) {
+                    state->pack.value = pragmas->pack.stack[pragmas->pack.stack_top].value;
+                }
+                pragmas->pack.stack_top = pragmas->pack.stack[pragmas->pack.stack_top].prev;
+            } else {
+                state->pack.present = false;
+            }
+        } break;
     }
     return KEFIR_OK;
 }
@@ -165,8 +216,8 @@ static kefir_result_t builder_callback(struct kefir_mem *mem, struct kefir_parse
         }
         if (PARSER_TOKEN_IS_PRAGMA(builder->parser, 0)) {
             const struct kefir_token *token = PARSER_CURSOR_EXT(builder->parser, 0, false);
-            res = kefir_parser_scan_pragma(&builder->parser->pragmas.file_scope, token->pragma, token->pragma_param,
-                                           &token->source_location);
+            res = kefir_parser_scan_pragma(mem, &builder->parser->pragmas, &builder->parser->pragmas.file_scope,
+                                           token->pragma, token->pragma_param, &token->source_location);
             if (res != KEFIR_NO_MATCH) {
                 REQUIRE_OK(res);
             }

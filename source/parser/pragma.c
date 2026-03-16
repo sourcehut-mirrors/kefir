@@ -21,12 +21,25 @@
 #include "kefir/parser/pragma.h"
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
+#include <string.h>
 
 kefir_result_t kefir_parser_pragmas_init(struct kefir_parser_pragmas *pragmas) {
     REQUIRE(pragmas != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to parser pragmas"));
 
     REQUIRE_OK(kefir_ast_pragma_state_init(&pragmas->file_scope));
     pragmas->in_function_scope = false;
+    pragmas->pack.stack = NULL;
+    pragmas->pack.stack_length = 0;
+    pragmas->pack.stack_top = ~0ull;
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_parser_pragmas_free(struct kefir_mem *mem, struct kefir_parser_pragmas *pragmas) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected memory allocator"));
+    REQUIRE(pragmas != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid parser pragmas"));
+
+    KEFIR_FREE(mem, pragmas->pack.stack);
+    memset(pragmas, 0, sizeof(struct kefir_parser_pragmas));
     return KEFIR_OK;
 }
 

@@ -95,30 +95,56 @@ static kefir_result_t format_punctuator(FILE *out, kefir_punctuator_token_t punc
 }
 
 static kefir_result_t format_pragma(FILE *out, kefir_pragma_token_type_t pragma, kefir_pragma_token_parameter_t param) {
-    fprintf(out, "\n#pragma STDC ");
+    fprintf(out, "\n#pragma ");
     switch (pragma) {
         case KEFIR_PRAGMA_TOKEN_FP_CONTRACT:
-            fprintf(out, "FP_CONTRACT");
+            fprintf(out, "STDC FP_CONTRACT");
             break;
 
         case KEFIR_PRAGMA_TOKEN_FENV_ACCESS:
-            fprintf(out, "FENV_ACCESS");
+            fprintf(out, "STDC FENV_ACCESS");
             break;
 
         case KEFIR_PRAGMA_TOKEN_CX_LIMITED_RANGE:
-            fprintf(out, "CX_LIMITED_RANGE");
+            fprintf(out, "STDC CX_LIMITED_RANGE");
             break;
 
         case KEFIR_PRAGMA_TOKEN_FENV_ROUND:
-            fprintf(out, "FENV_ROUND");
+            fprintf(out, "STDC FENV_ROUND");
             break;
 
         case KEFIR_PRAGMA_TOKEN_FENV_DEC_ROUND:
-            fprintf(out, "FENV_DEC_ROUND");
+            fprintf(out, "STDC FENV_DEC_ROUND");
             break;
+
+        case KEFIR_PRAGMA_TOKEN_PACK_VALUE:
+            fprintf(out, "pack");
+            if (param.kind == KEFIR_PRAGMA_TOKEN_PARAM_IMMEDIATE_INT) {
+                fprintf(out, "(%" KEFIR_INT64_FMT ")\n", param.immediate_int);
+            } else if (param.kind == KEFIR_PRAGMA_TOKEN_PARAM_DEFAULT) {
+                fprintf(out, "()\n");
+            }
+            return KEFIR_OK;
+
+        case KEFIR_PRAGMA_TOKEN_PACK_PUSH:
+            fprintf(out, "pack");
+            if (param.kind == KEFIR_PRAGMA_TOKEN_PARAM_IMMEDIATE_INT) {
+                fprintf(out, "(push, %" KEFIR_INT64_FMT ")\n", param.immediate_int);
+            } else if (param.kind == KEFIR_PRAGMA_TOKEN_PARAM_DEFAULT) {
+                fprintf(out, "(push)\n");
+            }
+            return KEFIR_OK;
+
+        case KEFIR_PRAGMA_TOKEN_PACK_POP:
+            fprintf(out, "pack(pop)");
+            return KEFIR_OK;
     }
 
-    switch (param) {
+    switch (param.kind) {
+        case KEFIR_PRAGMA_TOKEN_PARAM_IMMEDIATE_INT:
+            fprintf(out, "(%" KEFIR_INT64_FMT ")\n", param.immediate_int);
+            break;
+
         case KEFIR_PRAGMA_TOKEN_PARAM_ON:
             fprintf(out, " ON\n");
             break;

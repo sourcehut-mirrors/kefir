@@ -164,6 +164,7 @@ kefir_result_t kefir_preprocessor_init(struct kefir_mem *mem, struct kefir_prepr
     preprocessor->context = preprocessor_context;
     const kefir_lexer_mode_t lexer_mode =
         preprocessor->context->preprocessor_config->assembly_mode ? KEFIR_LEXER_ASSEMBLY_MODE : KEFIR_LEXER_C_MODE;
+    REQUIRE_OK(kefir_parser_pragmas_init(&preprocessor->pragmas));
     REQUIRE_OK(kefir_lexer_init(mem, &preprocessor->lexer, lexer_mode,
                                 preprocessor->context->preprocessor_config->standard_version, symbols, cursor, context,
                                 extensions != NULL ? extensions->lexer_extensions : NULL));
@@ -212,6 +213,7 @@ kefir_result_t kefir_preprocessor_free(struct kefir_mem *mem, struct kefir_prepr
         preprocessor->extensions = NULL;
         preprocessor->extension_payload = NULL;
     }
+    REQUIRE_OK(kefir_parser_pragmas_free(mem, &preprocessor->pragmas));
     REQUIRE_OK(kefir_preprocessor_predefined_macro_scope_free(mem, &preprocessor->predefined_macros));
     REQUIRE_OK(kefir_lexer_free(mem, &preprocessor->lexer));
     return KEFIR_OK;
@@ -1007,6 +1009,82 @@ static kefir_result_t process_pragma(struct kefir_mem *mem, struct kefir_preproc
                 KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert file path into string pool"));
         REQUIRE_OK(
             kefir_hashtreeset_add(mem, &preprocessor->context->include_once, (kefir_hashtreeset_entry_t) filepath));
+    } else if (token->klass == KEFIR_TOKEN_IDENTIFIER && strcmp(token->identifier, "pack") == 0) {
+        kefir_size_t index = 1;
+#define SKIP_WS                                                       \
+    for (token = kefir_token_buffer_at(&directive->pp_tokens, index); \
+         token != NULL && token->klass == KEFIR_TOKEN_PP_WHITESPACE;  \
+         token = kefir_token_buffer_at(&directive->pp_tokens, ++index)) {}
+
+        SKIP_WS;
+        REQUIRE(token != NULL && token->klass == KEFIR_TOKEN_PUNCTUATOR &&
+                    token->punctuator == KEFIR_PUNCTUATOR_LEFT_PARENTHESE,
+                KEFIR_OK);
+        index++;
+        SKIP_WS;
+        REQUIRE(token != NULL, KEFIR_OK);
+
+        kefir_bool_t valid_pragma = false;
+        kefir_pragma_token_type_t pragma_type;
+        struct kefir_pragma_token_parameter pragma_param = {.kind = KEFIR_PRAGMA_TOKEN_PARAM_DEFAULT};
+        if (token->klass == KEFIR_TOKEN_PP_NUMBER) {
+            valid_pragma = true;
+            pragma_type = KEFIR_PRAGMA_TOKEN_PACK_VALUE;
+            pragma_param.kind = KEFIR_PRAGMA_TOKEN_PARAM_IMMEDIATE_INT;
+            pragma_param.immediate_int = strtoll(token->pp_number.number_literal, NULL, 10);
+            index++;
+        } else if (token->klass == KEFIR_TOKEN_PUNCTUATOR) {
+            REQUIRE(token->punctuator == KEFIR_PUNCTUATOR_RIGHT_PARENTHESE, KEFIR_OK);
+            valid_pragma = true;
+            pragma_type = KEFIR_PRAGMA_TOKEN_PACK_VALUE;
+        } else if (token->klass == KEFIR_TOKEN_IDENTIFIER && strcmp(token->identifier, "push") == 0) {
+            index++;
+            SKIP_WS;
+            REQUIRE(token != NULL && token->klass == KEFIR_TOKEN_PUNCTUATOR, KEFIR_OK);
+            if (token->punctuator == KEFIR_PUNCTUATOR_COMMA) {
+                index++;
+                SKIP_WS;
+                REQUIRE(token != NULL && token->klass == KEFIR_TOKEN_PP_NUMBER, KEFIR_OK);
+                valid_pragma = true;
+                pragma_type = KEFIR_PRAGMA_TOKEN_PACK_PUSH;
+                pragma_param.kind = KEFIR_PRAGMA_TOKEN_PARAM_IMMEDIATE_INT;
+                pragma_param.immediate_int = strtoll(token->pp_number.number_literal, NULL, 10);
+                index++;
+            } else {
+                REQUIRE(token->punctuator == KEFIR_PUNCTUATOR_RIGHT_PARENTHESE, KEFIR_OK);
+                valid_pragma = true;
+                pragma_type = KEFIR_PRAGMA_TOKEN_PACK_PUSH;
+            }
+        } else if (token->klass == KEFIR_TOKEN_IDENTIFIER && strcmp(token->identifier, "pop") == 0) {
+            valid_pragma = true;
+            pragma_type = KEFIR_PRAGMA_TOKEN_PACK_POP;
+            index++;
+        } else {
+            return KEFIR_OK;
+        }
+        SKIP_WS;
+        REQUIRE(token != NULL && token->klass == KEFIR_TOKEN_PUNCTUATOR &&
+                    token->punctuator == KEFIR_PUNCTUATOR_RIGHT_PARENTHESE,
+                KEFIR_OK);
+
+        if (valid_pragma) {
+            struct kefir_token *token;
+            REQUIRE_OK(kefir_token_allocator_allocate_empty(mem, token_allocator, &token));
+            REQUIRE_OK(kefir_token_new_pragma(pragma_type, pragma_param, token));
+            REQUIRE_OK(kefir_token_buffer_emplace(mem, buffer, token));
+            token->source_location = directive->source_location;
+
+            struct kefir_ast_pragma_state pragma_state;
+            REQUIRE_OK(kefir_ast_pragma_state_init(&pragma_state));
+            kefir_result_t res = kefir_parser_scan_pragma(mem, &preprocessor->pragmas, &pragma_state, pragma_type,
+                                                          pragma_param, &token->source_location);
+            if (res != KEFIR_NO_MATCH) {
+                REQUIRE_OK(res);
+                REQUIRE_OK(preprocessor->context->ast_context->update_pragma_state(
+                    mem, preprocessor->context->ast_context, &pragma_state));
+            }
+        }
+#undef SKIP_WS
     } else if (token->klass == KEFIR_TOKEN_IDENTIFIER && strcmp(token->identifier, "STDC") == 0) {
         kefir_size_t index = 1;
         do {
@@ -1017,7 +1095,7 @@ static kefir_result_t process_pragma(struct kefir_mem *mem, struct kefir_preproc
             arg_token = kefir_token_buffer_at(&directive->pp_tokens, index++);
         } while (arg_token != NULL && arg_token->klass == KEFIR_TOKEN_PP_WHITESPACE);
         kefir_pragma_token_type_t pragma_type;
-        kefir_pragma_token_parameter_t pragma_param = KEFIR_PRAGMA_TOKEN_PARAM_DEFAULT;
+        struct kefir_pragma_token_parameter pragma_param = {.kind = KEFIR_PRAGMA_TOKEN_PARAM_DEFAULT};
         if (token != NULL && token->klass == KEFIR_TOKEN_IDENTIFIER) {
             kefir_bool_t valid_pragma = true;
             if (strcmp(token->identifier, "FP_CONTRACT") == 0) {
@@ -1036,35 +1114,35 @@ static kefir_result_t process_pragma(struct kefir_mem *mem, struct kefir_preproc
 
             if (valid_pragma && arg_token != NULL && arg_token->klass == KEFIR_TOKEN_IDENTIFIER) {
                 if (strcmp(arg_token->identifier, "ON") == 0) {
-                    pragma_param = KEFIR_PRAGMA_TOKEN_PARAM_ON;
+                    pragma_param.kind = KEFIR_PRAGMA_TOKEN_PARAM_ON;
                 } else if (strcmp(arg_token->identifier, "OFF") == 0) {
-                    pragma_param = KEFIR_PRAGMA_TOKEN_PARAM_OFF;
+                    pragma_param.kind = KEFIR_PRAGMA_TOKEN_PARAM_OFF;
                 } else if (strcmp(arg_token->identifier, "DEFAULT") == 0) {
-                    pragma_param = KEFIR_PRAGMA_TOKEN_PARAM_DEFAULT;
+                    pragma_param.kind = KEFIR_PRAGMA_TOKEN_PARAM_DEFAULT;
                 } else if (strcmp(arg_token->identifier, "FE_DOWNWARD") == 0) {
-                    pragma_param = KEFIR_PRAGMA_TOKEN_PARAM_FE_DOWNWARD;
+                    pragma_param.kind = KEFIR_PRAGMA_TOKEN_PARAM_FE_DOWNWARD;
                 } else if (strcmp(arg_token->identifier, "FE_TONEAREST") == 0) {
-                    pragma_param = KEFIR_PRAGMA_TOKEN_PARAM_FE_TONEAREST;
+                    pragma_param.kind = KEFIR_PRAGMA_TOKEN_PARAM_FE_TONEAREST;
                 } else if (strcmp(arg_token->identifier, "FE_TONEARESTFROMZERO") == 0) {
-                    pragma_param = KEFIR_PRAGMA_TOKEN_PARAM_FE_TONEARESTFROMZERO;
+                    pragma_param.kind = KEFIR_PRAGMA_TOKEN_PARAM_FE_TONEARESTFROMZERO;
                 } else if (strcmp(arg_token->identifier, "FE_TOWARDZERO") == 0) {
-                    pragma_param = KEFIR_PRAGMA_TOKEN_PARAM_FE_TOWARDZERO;
+                    pragma_param.kind = KEFIR_PRAGMA_TOKEN_PARAM_FE_TOWARDZERO;
                 } else if (strcmp(arg_token->identifier, "FE_UPWARD") == 0) {
-                    pragma_param = KEFIR_PRAGMA_TOKEN_PARAM_FE_UPWARD;
+                    pragma_param.kind = KEFIR_PRAGMA_TOKEN_PARAM_FE_UPWARD;
                 } else if (strcmp(arg_token->identifier, "FE_DYNAMIC") == 0) {
-                    pragma_param = KEFIR_PRAGMA_TOKEN_PARAM_FE_DYNAMIC;
+                    pragma_param.kind = KEFIR_PRAGMA_TOKEN_PARAM_FE_DYNAMIC;
                 } else if (strcmp(arg_token->identifier, "FE_DEC_DOWNWARD") == 0) {
-                    pragma_param = KEFIR_PRAGMA_TOKEN_PARAM_FE_DEC_DOWNWARD;
+                    pragma_param.kind = KEFIR_PRAGMA_TOKEN_PARAM_FE_DEC_DOWNWARD;
                 } else if (strcmp(arg_token->identifier, "FE_DEC_TONEAREST") == 0) {
-                    pragma_param = KEFIR_PRAGMA_TOKEN_PARAM_FE_DEC_TONEAREST;
+                    pragma_param.kind = KEFIR_PRAGMA_TOKEN_PARAM_FE_DEC_TONEAREST;
                 } else if (strcmp(arg_token->identifier, "FE_DEC_TONEARESTFROMZERO") == 0) {
-                    pragma_param = KEFIR_PRAGMA_TOKEN_PARAM_FE_DEC_TONEARESTFROMZERO;
+                    pragma_param.kind = KEFIR_PRAGMA_TOKEN_PARAM_FE_DEC_TONEARESTFROMZERO;
                 } else if (strcmp(arg_token->identifier, "FE_DEC_TOWARDZERO") == 0) {
-                    pragma_param = KEFIR_PRAGMA_TOKEN_PARAM_FE_DEC_TOWARDZERO;
+                    pragma_param.kind = KEFIR_PRAGMA_TOKEN_PARAM_FE_DEC_TOWARDZERO;
                 } else if (strcmp(arg_token->identifier, "FE_DEC_UPWARD") == 0) {
-                    pragma_param = KEFIR_PRAGMA_TOKEN_PARAM_FE_DEC_UPWARD;
+                    pragma_param.kind = KEFIR_PRAGMA_TOKEN_PARAM_FE_DEC_UPWARD;
                 } else if (strcmp(arg_token->identifier, "FE_DEC_DYNAMIC") == 0) {
-                    pragma_param = KEFIR_PRAGMA_TOKEN_PARAM_FE_DEC_DYNAMIC;
+                    pragma_param.kind = KEFIR_PRAGMA_TOKEN_PARAM_FE_DEC_DYNAMIC;
                 } else {
                     valid_pragma = false;
                 }
@@ -1079,8 +1157,8 @@ static kefir_result_t process_pragma(struct kefir_mem *mem, struct kefir_preproc
 
                 struct kefir_ast_pragma_state pragma_state;
                 REQUIRE_OK(kefir_ast_pragma_state_init(&pragma_state));
-                kefir_result_t res =
-                    kefir_parser_scan_pragma(&pragma_state, pragma_type, pragma_param, &token->source_location);
+                kefir_result_t res = kefir_parser_scan_pragma(mem, &preprocessor->pragmas, &pragma_state, pragma_type,
+                                                              pragma_param, &token->source_location);
                 if (res != KEFIR_NO_MATCH) {
                     REQUIRE_OK(res);
                     REQUIRE_OK(preprocessor->context->ast_context->update_pragma_state(

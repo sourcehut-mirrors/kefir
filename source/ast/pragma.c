@@ -30,6 +30,7 @@ kefir_result_t kefir_ast_pragma_state_init(struct kefir_ast_pragma_state *state)
     state->cx_limited_range.present = false;
     state->fenv_round.present = false;
     state->fenv_dec_round.present = false;
+    state->pack.present = false;
     return KEFIR_OK;
 }
 
@@ -49,6 +50,17 @@ kefir_result_t kefir_ast_pragma_state_merge(struct kefir_ast_pragma_state *state
     MERGE(fenv_round)
     MERGE(fenv_dec_round)
     MERGE(cx_limited_range)
+    MERGE(pack)
+
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_ast_pragma_state_merge_pack(struct kefir_ast_pragma_state *state,
+                                                 const struct kefir_ast_pragma_state *merged_state) {
+    REQUIRE(state != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid destination AST pragma state"));
+    REQUIRE(merged_state != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid source AST pragma state"));
+
+    MERGE(pack)
 
 #undef MERGE
     return KEFIR_OK;

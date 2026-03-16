@@ -163,10 +163,14 @@ typedef enum kefir_pragma_token_type {
     KEFIR_PRAGMA_TOKEN_FENV_ACCESS,
     KEFIR_PRAGMA_TOKEN_CX_LIMITED_RANGE,
     KEFIR_PRAGMA_TOKEN_FENV_ROUND,
-    KEFIR_PRAGMA_TOKEN_FENV_DEC_ROUND
+    KEFIR_PRAGMA_TOKEN_FENV_DEC_ROUND,
+    KEFIR_PRAGMA_TOKEN_PACK_VALUE,
+    KEFIR_PRAGMA_TOKEN_PACK_PUSH,
+    KEFIR_PRAGMA_TOKEN_PACK_POP
 } kefir_pragma_token_type_t;
 
-typedef enum kefir_pragma_token_parameter {
+typedef enum kefir_pragma_token_parameter_kind {
+    KEFIR_PRAGMA_TOKEN_PARAM_IMMEDIATE_INT,
     KEFIR_PRAGMA_TOKEN_PARAM_ON,
     KEFIR_PRAGMA_TOKEN_PARAM_OFF,
     KEFIR_PRAGMA_TOKEN_PARAM_DEFAULT,
@@ -182,6 +186,13 @@ typedef enum kefir_pragma_token_parameter {
     KEFIR_PRAGMA_TOKEN_PARAM_FE_DEC_TOWARDZERO,
     KEFIR_PRAGMA_TOKEN_PARAM_FE_DEC_UPWARD,
     KEFIR_PRAGMA_TOKEN_PARAM_FE_DEC_DYNAMIC
+} kefir_pragma_token_parameter_kind_t;
+
+typedef struct kefir_pragma_token_parameter {
+    kefir_pragma_token_parameter_kind_t kind;
+    union {
+        kefir_uint64_t immediate_int;
+    };
 } kefir_pragma_token_parameter_t;
 
 typedef enum kefir_string_literal_token_type {
@@ -334,7 +345,7 @@ typedef struct kefir_token {
         kefir_punctuator_token_t punctuator;
         struct {
             kefir_pragma_token_type_t pragma;
-            kefir_pragma_token_parameter_t pragma_param;
+            struct kefir_pragma_token_parameter pragma_param;
         };
         struct kefir_pptoken_pp_whitespace pp_whitespace;
         struct kefir_pptoken_pp_number pp_number;

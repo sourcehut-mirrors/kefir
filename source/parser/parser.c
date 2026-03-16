@@ -78,9 +78,27 @@ kefir_result_t kefir_parser_free(struct kefir_mem *mem, struct kefir_parser *par
     KEFIR_RUN_EXTENSION0(&res, mem, parser, on_free);
     REQUIRE_OK(res);
 
+    REQUIRE_OK(kefir_parser_pragmas_free(mem, &parser->pragmas));
     REQUIRE_OK(kefir_parser_scope_free(mem, &parser->local_scope));
     parser->cursor = NULL;
     parser->symbols = NULL;
+    return KEFIR_OK;
+}
+
+static kefir_result_t consume_pack_pragmas(struct kefir_mem *mem, struct kefir_parser *parser) {
+    while (PARSER_TOKEN_IS_PRAGMA(parser, 0)) {
+        const struct kefir_token *token = PARSER_CURSOR_EXT(parser, 0, false);
+        if (token->pragma != KEFIR_PRAGMA_TOKEN_PACK_PUSH && token->pragma != KEFIR_PRAGMA_TOKEN_PACK_POP &&
+            token->pragma != KEFIR_PRAGMA_TOKEN_PACK_VALUE) {
+            break;
+        }
+        kefir_result_t res = kefir_parser_scan_pragma(mem, &parser->pragmas, &parser->pragmas.file_scope, token->pragma,
+                                                      token->pragma_param, &token->source_location);
+        if (res != KEFIR_NO_MATCH) {
+            REQUIRE_OK(res);
+        }
+        PARSER_SHIFT_EXT(parser, false);
+    }
     return KEFIR_OK;
 }
 
@@ -95,7 +113,9 @@ kefir_result_t kefir_parser_apply(struct kefir_mem *mem, struct kefir_parser *pa
     REQUIRE_OK(kefir_parser_checkpoint_save(parser, &checkpoint));
     struct kefir_source_location source_location =
         kefir_parser_token_cursor_at(parser->cursor, 0, true)->source_location;
+    REQUIRE_OK(consume_pack_pragmas(mem, parser));
     kefir_result_t res = rule(mem, parser, result, payload);
+    REQUIRE_CHAIN(&res, consume_pack_pragmas(mem, parser));
     if (res == KEFIR_NO_MATCH) {
         REQUIRE_OK(kefir_parser_checkpoint_restore(parser, &checkpoint));
         return res;
@@ -116,7 +136,9 @@ kefir_result_t kefir_parser_try_invoke(struct kefir_mem *mem, struct kefir_parse
 
     struct kefir_parser_checkpoint checkpoint;
     REQUIRE_OK(kefir_parser_checkpoint_save(parser, &checkpoint));
+    REQUIRE_OK(consume_pack_pragmas(mem, parser));
     kefir_result_t res = function(mem, parser, payload);
+    REQUIRE_CHAIN(&res, consume_pack_pragmas(mem, parser));
     if (res == KEFIR_NO_MATCH) {
         REQUIRE_OK(kefir_parser_checkpoint_restore(parser, &checkpoint));
         return res;
@@ -145,7 +167,7 @@ kefir_result_t kefir_parser_checkpoint_save(const struct kefir_parser *parser,
 
     REQUIRE_OK(kefir_parser_token_cursor_save(parser->cursor, &checkpoint->cursor));
     checkpoint->pragmas_file_scope = parser->pragmas.file_scope;
-    checkpoint->pragmas_in_function_scope = parser->pragmas.in_function_scope;
+    checkpoint->pack_stack_top = parser->pragmas.pack.stack_top;
     return KEFIR_OK;
 }
 
@@ -158,6 +180,7 @@ kefir_result_t kefir_parser_checkpoint_restore(struct kefir_parser *parser,
     REQUIRE_OK(kefir_parser_token_cursor_restore(parser->cursor, checkpoint->cursor));
     parser->pragmas.file_scope = checkpoint->pragmas_file_scope;
     parser->pragmas.in_function_scope = checkpoint->pragmas_in_function_scope;
+    parser->pragmas.pack.stack_top = checkpoint->pack_stack_top;
     return KEFIR_OK;
 }
 

@@ -1,0 +1,72 @@
+[
+    {
+        "class": "pragma",
+        "preprocessor": false,
+        "pragma": "pack_push",
+        "param": 1024
+    },
+    {
+        "class": "pragma",
+        "preprocessor": false,
+        "pragma": "pack_push",
+        "param": 1
+    },
+    {
+        "class": "pragma",
+        "preprocessor": false,
+        "pragma": "pack_push",
+        "param": "default"
+    },
+    {
+        "class": "pragma",
+        "preprocessor": false,
+        "pragma": "pack_pop",
+        "param": "default"
+    },
+    {
+        "class": "pragma",
+        "preprocessor": false,
+        "pragma": "pack",
+        "param": 64
+    },
+    {
+        "class": "pragma",
+        "preprocessor": false,
+        "pragma": "pack_pop",
+        "param": "default"
+    },
+    {
+        "class": "pragma",
+        "preprocessor": false,
+        "pragma": "pack",
+        "param": 32
+    },
+    {
+        "class": "pragma",
+        "preprocessor": false,
+        "pragma": "pack_pop",
+        "param": "default"
+    },
+    {
+        "class": "pragma",
+        "preprocessor": false,
+        "pragma": "pack",
+        "param": "default"
+    },
+    {
+        "class": "pragma",
+        "preprocessor": false,
+        "pragma": "pack_pop",
+        "param": "default"
+    },
+    {
+        "class": "pragma",
+        "preprocessor": false,
+        "pragma": "pack",
+        "param": 1
+    },
+    {
+        "class": "sentinel",
+        "preprocessor": false
+    }
+]

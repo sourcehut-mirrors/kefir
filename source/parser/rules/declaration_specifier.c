@@ -228,6 +228,8 @@ static kefir_result_t scan_struct_specifier(struct kefir_mem *mem, struct kefir_
     REQUIRE(payload != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid payload"));
     ASSIGN_DECL_CAST(struct kefir_ast_declarator_specifier **, specifier_ptr, payload);
 
+    struct kefir_ast_pragma_state pragma_state = parser->pragmas.file_scope;
+
     kefir_bool_t structure = PARSER_TOKEN_IS_KEYWORD(parser, 0, KEFIR_KEYWORD_STRUCT);
     REQUIRE_OK(PARSER_SHIFT(parser));
     const char *identifier = NULL;
@@ -298,6 +300,19 @@ static kefir_result_t scan_struct_specifier(struct kefir_mem *mem, struct kefir_
     if (complete) {
         SCAN_ATTRIBUTES(&res, mem, parser, &decl_specifier->attributes);
         REQUIRE_OK(res);
+    }
+
+    if (pragma_state.pack.present && pragma_state.pack.value == 1) {
+        struct kefir_ast_attribute_list *attr_list = kefir_ast_new_attribute_list(mem);
+        REQUIRE(attr_list != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate AST attribute list"));
+
+        struct kefir_ast_attribute *attr;
+        res = kefir_ast_attribute_list_append(mem, parser->symbols, "kefir", "__pragma_packed__", attr_list, &attr);
+        REQUIRE_CHAIN(&res, kefir_ast_node_attributes_append(mem, &decl_specifier->attributes, attr_list));
+        REQUIRE_ELSE(res == KEFIR_OK, {
+            KEFIR_AST_NODE_FREE(mem, KEFIR_AST_NODE_BASE(attr_list));
+            return res;
+        });
     }
 
     return KEFIR_OK;
