@@ -75,7 +75,8 @@ RUN apt install -y nasm yacc libncurses-dev zlib1g-dev gettext file openssl \
     libinotifytools0-dev libtool pkg-config libsqlite3-dev flex libreadline-dev \
     libfont-ttf-perl libsort-versions-perl fonts-liberation libtool-bin libunistring-dev \
     libgc-dev libglib2.0-dev-bin dejagnu locales rake python3-dev libyaml-dev libgtest-dev \
-    libevent-dev libtommath-dev libpsl-dev libgmp-dev libmpfr-dev libmpc-dev
+    libevent-dev libtommath-dev libpsl-dev libgmp-dev libmpfr-dev libmpc-dev acl libacl1-dev \
+    attr libattr1-dev libxxhash-dev libzstd-dev liblz4-dev
 
 # Locales
 RUN echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
