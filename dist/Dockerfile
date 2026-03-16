@@ -76,7 +76,15 @@ RUN apt install -y nasm yacc libncurses-dev zlib1g-dev gettext file openssl \
     libfont-ttf-perl libsort-versions-perl fonts-liberation libtool-bin libunistring-dev \
     libgc-dev libglib2.0-dev-bin dejagnu locales rake python3-dev libyaml-dev libgtest-dev \
     libevent-dev libtommath-dev libpsl-dev libgmp-dev libmpfr-dev libmpc-dev acl libacl1-dev \
-    attr libattr1-dev libxxhash-dev libzstd-dev liblz4-dev libpcre2-dev
+    attr libattr1-dev libxxhash-dev libzstd-dev liblz4-dev libpcre2-dev libtasn1-6-dev libp11-kit-dev \
+    libunbound-dev
+
+# Libnettle 3.10
+RUN cd /tmp && wget "https://github.com/gnutls/nettle/archive/refs/tags/nettle_3.10.2_release_20250626.tar.gz"
+RUN cd /tmp && tar xvf nettle_3.10.2_release_20250626.tar.gz
+RUN cd /tmp/nettle_3.10.2_release_20250626 && ./configure --prefix=/usr --libdir=/usr/lib/x86_64-linux-gnu --disable-documentation
+RUN cd /tmp/nettle_3.10.2_release_20250626 && make -j$(nproc)
+RUN cd /tmp/nettle_3.10.2_release_20250626 && make install
 
 # Locales
 RUN echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
