@@ -79,6 +79,15 @@ kefir_result_t kefir_parser_try_invoke(struct kefir_mem *, struct kefir_parser *
 
 kefir_result_t kefir_parser_set_scope(struct kefir_parser *, struct kefir_parser_scope *);
 
+typedef struct kefir_parser_checkpoint {
+    kefir_size_t cursor;
+    struct kefir_ast_pragma_state pragmas_file_scope;
+    kefir_bool_t pragmas_in_function_scope;
+} kefir_parser_checkpoint_t;
+
+kefir_result_t kefir_parser_checkpoint_save(const struct kefir_parser *, struct kefir_parser_checkpoint *);
+kefir_result_t kefir_parser_checkpoint_restore(struct kefir_parser *, const struct kefir_parser_checkpoint *);
+
 #define KEFIR_PARSER_RULE_FN(_parser, _rule) ((_parser)->ruleset.rules[KEFIR_PARSER_RULESET_IDENTIFIER(_rule)])
 #define KEFIR_PARSER_RULE_APPLY(_mem, _parser, _rule, _result) \
     (kefir_parser_apply((_mem), (_parser), (_result), KEFIR_PARSER_RULE_FN(_parser, _rule), NULL))

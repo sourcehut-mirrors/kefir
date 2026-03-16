@@ -91,13 +91,13 @@ kefir_result_t kefir_parser_apply(struct kefir_mem *mem, struct kefir_parser *pa
     REQUIRE(result != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to AST node"));
     REQUIRE(rule != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid parser rule"));
 
-    kefir_size_t checkpoint;
-    REQUIRE_OK(kefir_parser_token_cursor_save(parser->cursor, &checkpoint));
+    struct kefir_parser_checkpoint checkpoint;
+    REQUIRE_OK(kefir_parser_checkpoint_save(parser, &checkpoint));
     struct kefir_source_location source_location =
         kefir_parser_token_cursor_at(parser->cursor, 0, true)->source_location;
     kefir_result_t res = rule(mem, parser, result, payload);
     if (res == KEFIR_NO_MATCH) {
-        REQUIRE_OK(kefir_parser_token_cursor_restore(parser->cursor, checkpoint));
+        REQUIRE_OK(kefir_parser_checkpoint_restore(parser, &checkpoint));
         return res;
     } else {
         REQUIRE_OK(res);
@@ -114,11 +114,11 @@ kefir_result_t kefir_parser_try_invoke(struct kefir_mem *mem, struct kefir_parse
     REQUIRE(parser != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid parser"));
     REQUIRE(function != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid parser invocable"));
 
-    kefir_size_t checkpoint;
-    REQUIRE_OK(kefir_parser_token_cursor_save(parser->cursor, &checkpoint));
+    struct kefir_parser_checkpoint checkpoint;
+    REQUIRE_OK(kefir_parser_checkpoint_save(parser, &checkpoint));
     kefir_result_t res = function(mem, parser, payload);
     if (res == KEFIR_NO_MATCH) {
-        REQUIRE_OK(kefir_parser_token_cursor_restore(parser->cursor, checkpoint));
+        REQUIRE_OK(kefir_parser_checkpoint_restore(parser, &checkpoint));
         return res;
     } else {
         REQUIRE_OK(res);
@@ -134,6 +134,30 @@ kefir_result_t kefir_parser_set_scope(struct kefir_parser *parser, struct kefir_
     } else {
         parser->scope = &parser->local_scope;
     }
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_parser_checkpoint_save(const struct kefir_parser *parser,
+                                            struct kefir_parser_checkpoint *checkpoint) {
+    REQUIRE(parser != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid parser"));
+    REQUIRE(checkpoint != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to parser checkpoint"));
+
+    REQUIRE_OK(kefir_parser_token_cursor_save(parser->cursor, &checkpoint->cursor));
+    checkpoint->pragmas_file_scope = parser->pragmas.file_scope;
+    checkpoint->pragmas_in_function_scope = parser->pragmas.in_function_scope;
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_parser_checkpoint_restore(struct kefir_parser *parser,
+                                               const struct kefir_parser_checkpoint *checkpoint) {
+    REQUIRE(parser != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid parser"));
+    REQUIRE(checkpoint != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to parser checkpoint"));
+
+    REQUIRE_OK(kefir_parser_token_cursor_restore(parser->cursor, checkpoint->cursor));
+    parser->pragmas.file_scope = checkpoint->pragmas_file_scope;
+    parser->pragmas.in_function_scope = checkpoint->pragmas_in_function_scope;
     return KEFIR_OK;
 }
 

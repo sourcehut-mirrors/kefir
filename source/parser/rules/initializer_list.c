@@ -61,8 +61,8 @@ static kefir_result_t scan_initializer_list(struct kefir_mem *mem, struct kefir_
     kefir_bool_t has_syntax_errors = false;
     kefir_bool_t scan_initializers = !PARSER_TOKEN_IS_RIGHT_BRACE(parser, 0);
     while (scan_initializers) {
-        kefir_size_t cursor_state;
-        kefir_result_t res = kefir_parser_token_cursor_save(parser->cursor, &cursor_state);
+        struct kefir_parser_checkpoint checkpoint;
+        kefir_result_t res = kefir_parser_checkpoint_save(parser, &checkpoint);
         REQUIRE_ELSE(res == KEFIR_OK, {
             kefir_ast_initializer_free(mem, *initializer);
             return res;
@@ -72,7 +72,7 @@ static kefir_result_t scan_initializer_list(struct kefir_mem *mem, struct kefir_
         if (res == KEFIR_SYNTAX_ERROR && KEFIR_PARSER_DO_ERROR_RECOVERY(parser)) {
             has_syntax_errors = true;
             parser->encountered_errors++;
-            res = kefir_parser_token_cursor_restore(parser->cursor, cursor_state);
+            res = kefir_parser_checkpoint_restore(parser, &checkpoint);
             REQUIRE_CHAIN(
                 &res, kefir_parser_error_recovery_skip_garbage(
                           parser, &(struct kefir_parser_error_recovery_context) {

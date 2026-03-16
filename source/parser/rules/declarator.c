@@ -259,16 +259,16 @@ static kefir_result_t scan_array(struct kefir_mem *mem, struct kefir_parser *par
 static kefir_result_t scan_function_parameter_declarator(struct kefir_mem *mem, struct kefir_parser *parser,
                                                          struct kefir_ast_declarator **declarator_ptr) {
     struct kefir_ast_declarator *declarator = NULL;
-    kefir_size_t checkpoint;
-    REQUIRE_OK(kefir_parser_token_cursor_save(parser->cursor, &checkpoint));
+    struct kefir_parser_checkpoint checkpoint;
+    REQUIRE_OK(kefir_parser_checkpoint_save(parser, &checkpoint));
 
     kefir_result_t res = parser->ruleset.declarator(mem, parser, &declarator);
     if (res == KEFIR_NO_MATCH) {
-        REQUIRE_OK(kefir_parser_token_cursor_restore(parser->cursor, checkpoint));
+        REQUIRE_OK(kefir_parser_checkpoint_restore(parser, &checkpoint));
 
         res = parser->ruleset.abstract_declarator(mem, parser, &declarator);
         if (res == KEFIR_NO_MATCH) {
-            REQUIRE_OK(kefir_parser_token_cursor_restore(parser->cursor, checkpoint));
+            REQUIRE_OK(kefir_parser_checkpoint_restore(parser, &checkpoint));
             declarator = kefir_ast_declarator_identifier(mem, NULL, NULL);
             REQUIRE(declarator != NULL,
                     KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate abstract AST identifier declarator"));
@@ -418,12 +418,12 @@ static kefir_result_t scan_function_impl(struct kefir_mem *mem, struct kefir_par
             KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Expected left parenthese"));
     REQUIRE_OK(PARSER_SHIFT(parser));
 
-    kefir_size_t checkpoint;
-    REQUIRE_OK(kefir_parser_token_cursor_save(parser->cursor, &checkpoint));
+    struct kefir_parser_checkpoint checkpoint;
+    REQUIRE_OK(kefir_parser_checkpoint_save(parser, &checkpoint));
 
     kefir_result_t res = scan_function_parameter_list(mem, parser, declarator);
     if (res == KEFIR_NO_MATCH) {
-        REQUIRE_OK(kefir_parser_token_cursor_restore(parser->cursor, checkpoint));
+        REQUIRE_OK(kefir_parser_checkpoint_restore(parser, &checkpoint));
         if (abstract) {
             res = KEFIR_OK;
         } else {
@@ -546,9 +546,9 @@ kefir_result_t kefir_parser_scan_declarator(struct kefir_mem *mem, struct kefir_
 
     *declarator_ptr = NULL;
 
-    kefir_size_t checkpoint;
     kefir_result_t res = KEFIR_OK;
-    REQUIRE_OK(kefir_parser_token_cursor_save(parser->cursor, &checkpoint));
+    struct kefir_parser_checkpoint checkpoint;
+    REQUIRE_OK(kefir_parser_checkpoint_save(parser, &checkpoint));
 
     struct kefir_ast_node_attributes forward_attrs;
     REQUIRE_OK(kefir_ast_node_attributes_init(&forward_attrs));
@@ -556,7 +556,7 @@ kefir_result_t kefir_parser_scan_declarator(struct kefir_mem *mem, struct kefir_
     SCAN_ATTRIBUTES(&res, mem, parser, &forward_attrs);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_ast_node_attributes_free(mem, &forward_attrs);
-        kefir_parser_token_cursor_restore(parser->cursor, checkpoint);
+        kefir_parser_checkpoint_restore(parser, &checkpoint);
         return res;
     });
 
@@ -568,7 +568,7 @@ kefir_result_t kefir_parser_scan_declarator(struct kefir_mem *mem, struct kefir_
 
     if (res == KEFIR_NO_MATCH) {
         REQUIRE_OK(kefir_ast_node_attributes_free(mem, &forward_attrs));
-        REQUIRE_OK(kefir_parser_token_cursor_restore(parser->cursor, checkpoint));
+        REQUIRE_OK(kefir_parser_checkpoint_restore(parser, &checkpoint));
     } else {
         REQUIRE_CHAIN(&res, kefir_ast_node_attributes_move(&(*declarator_ptr)->attributes, &forward_attrs));
         REQUIRE_ELSE(res == KEFIR_OK, {
@@ -590,8 +590,8 @@ static kefir_result_t scan_direct_abstract_declarator_base(struct kefir_mem *mem
                                                            struct kefir_ast_declarator **declarator_ptr) {
     struct kefir_ast_declarator *base_declarator = NULL;
 
-    kefir_size_t checkpoint;
-    REQUIRE_OK(kefir_parser_token_cursor_save(parser->cursor, &checkpoint));
+    struct kefir_parser_checkpoint checkpoint;
+    REQUIRE_OK(kefir_parser_checkpoint_save(parser, &checkpoint));
 
     kefir_result_t res = KEFIR_NO_MATCH;
     if (PARSER_TOKEN_IS_PUNCTUATOR(parser, 0, KEFIR_PUNCTUATOR_LEFT_PARENTHESE)) {
@@ -605,7 +605,7 @@ static kefir_result_t scan_direct_abstract_declarator_base(struct kefir_mem *mem
     }
 
     if (res == KEFIR_NO_MATCH) {
-        res = kefir_parser_token_cursor_restore(parser->cursor, checkpoint);
+        res = kefir_parser_checkpoint_restore(parser, &checkpoint);
         if (res == KEFIR_OK) {
             base_declarator = kefir_ast_declarator_identifier(mem, NULL, NULL);
             REQUIRE_CHAIN_SET(
@@ -661,9 +661,9 @@ kefir_result_t kefir_parser_scan_abstract_declarator(struct kefir_mem *mem, stru
 
     *declarator_ptr = NULL;
 
-    kefir_size_t checkpoint;
     kefir_result_t res = KEFIR_OK;
-    REQUIRE_OK(kefir_parser_token_cursor_save(parser->cursor, &checkpoint));
+    struct kefir_parser_checkpoint checkpoint;
+    REQUIRE_OK(kefir_parser_checkpoint_save(parser, &checkpoint));
 
     struct kefir_ast_node_attributes forward_attrs;
     REQUIRE_OK(kefir_ast_node_attributes_init(&forward_attrs));
@@ -671,7 +671,7 @@ kefir_result_t kefir_parser_scan_abstract_declarator(struct kefir_mem *mem, stru
     SCAN_ATTRIBUTES(&res, mem, parser, &forward_attrs);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_ast_node_attributes_free(mem, &forward_attrs);
-        kefir_parser_token_cursor_restore(parser->cursor, checkpoint);
+        kefir_parser_checkpoint_restore(parser, &checkpoint);
         return res;
     });
 
@@ -682,7 +682,7 @@ kefir_result_t kefir_parser_scan_abstract_declarator(struct kefir_mem *mem, stru
     }
 
     if (res == KEFIR_NO_MATCH) {
-        REQUIRE_OK(kefir_parser_token_cursor_restore(parser->cursor, checkpoint));
+        REQUIRE_OK(kefir_parser_checkpoint_restore(parser, &checkpoint));
     } else {
         REQUIRE_CHAIN(&res, kefir_ast_node_attributes_move(&(*declarator_ptr)->attributes, &forward_attrs));
         REQUIRE_ELSE(res == KEFIR_OK, {

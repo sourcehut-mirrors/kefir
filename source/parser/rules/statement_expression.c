@@ -37,8 +37,8 @@ static kefir_result_t parse_statement_expression(struct kefir_mem *mem, struct k
 
     kefir_bool_t has_syntax_errors = false;
     while (!PARSER_TOKEN_IS_RIGHT_BRACE(parser, 0)) {
-        kefir_size_t cursor_state;
-        REQUIRE_OK(kefir_parser_token_cursor_save(builder->parser->cursor, &cursor_state));
+        struct kefir_parser_checkpoint checkpoint;
+        REQUIRE_OK(kefir_parser_checkpoint_save(builder->parser, &checkpoint));
 
         kefir_result_t res =
             kefir_parser_ast_builder_scan(mem, builder, KEFIR_PARSER_RULE_FN(parser, declaration), NULL);
@@ -47,7 +47,7 @@ static kefir_result_t parse_statement_expression(struct kefir_mem *mem, struct k
         }
 
         if (res == KEFIR_NO_MATCH) {
-            REQUIRE_OK(kefir_parser_token_cursor_restore(builder->parser->cursor, cursor_state));
+            REQUIRE_OK(kefir_parser_checkpoint_restore(builder->parser, &checkpoint));
             res = KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(parser, 0),
                                          "Expected either declaration or statement");
         }
@@ -55,7 +55,7 @@ static kefir_result_t parse_statement_expression(struct kefir_mem *mem, struct k
         if (res == KEFIR_SYNTAX_ERROR && KEFIR_PARSER_DO_ERROR_RECOVERY(parser)) {
             has_syntax_errors = true;
             builder->parser->encountered_errors++;
-            REQUIRE_OK(kefir_parser_token_cursor_restore(builder->parser->cursor, cursor_state));
+            REQUIRE_OK(kefir_parser_checkpoint_restore(builder->parser, &checkpoint));
             REQUIRE_OK(kefir_parser_error_recovery_skip_garbage(
                 builder->parser,
                 &(struct kefir_parser_error_recovery_context) {.sync_points = {.semicolon = true, .pragmas = true}}));

@@ -40,21 +40,21 @@ static kefir_result_t scan_argument_list(struct kefir_mem *mem, struct kefir_par
     REQUIRE_OK(PARSER_SHIFT(builder->parser));
     kefir_bool_t has_syntax_errors = false;
     while (!PARSER_TOKEN_IS_PUNCTUATOR(builder->parser, 0, KEFIR_PUNCTUATOR_RIGHT_PARENTHESE)) {
-        kefir_size_t cursor_state;
-        REQUIRE_OK(kefir_parser_token_cursor_save(builder->parser->cursor, &cursor_state));
+        struct kefir_parser_checkpoint checkpoint;
+        REQUIRE_OK(kefir_parser_checkpoint_save(builder->parser, &checkpoint));
 
         kefir_result_t res;
         res = kefir_parser_ast_builder_scan(mem, builder, KEFIR_PARSER_RULE_FN(builder->parser, assignment_expression),
                                             NULL);
         if (res == KEFIR_NO_MATCH) {
-            REQUIRE_OK(kefir_parser_token_cursor_restore(builder->parser->cursor, cursor_state));
+            REQUIRE_OK(kefir_parser_checkpoint_restore(builder->parser, &checkpoint));
             res = KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(builder->parser, 0),
                                          "Expected assignment expresion");
         }
         if (res == KEFIR_SYNTAX_ERROR && KEFIR_PARSER_DO_ERROR_RECOVERY(builder->parser)) {
             has_syntax_errors = true;
             builder->parser->encountered_errors++;
-            REQUIRE_OK(kefir_parser_token_cursor_restore(builder->parser->cursor, cursor_state));
+            REQUIRE_OK(kefir_parser_checkpoint_restore(builder->parser, &checkpoint));
             REQUIRE_OK(kefir_parser_error_recovery_skip_garbage(
                 builder->parser,
                 &(struct kefir_parser_error_recovery_context) {
