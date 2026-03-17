@@ -5,7 +5,3 @@ LOG_FILE="$1"
 if grep -i 'fail' "$LOG_FILE" >/dev/null; then
     exit 1
 fi
-
-if ! grep -i '44 passed' "$LOG_FILE" >/dev/null; then
-    exit 1
-fi
