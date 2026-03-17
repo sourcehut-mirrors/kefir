@@ -53,6 +53,10 @@ static kefir_bool_t same_enumeration_type(const struct kefir_ast_type *type1, co
     REQUIRE(type1->enumeration_type.flags.no_discard == type2->enumeration_type.flags.no_discard, false);
     REQUIRE(type1->enumeration_type.flags.deprecated == type2->enumeration_type.flags.deprecated, false);
     if (type1->enumeration_type.complete) {
+        REQUIRE(KEFIR_AST_TYPE_SAME(kefir_ast_enumeration_underlying_type(&type1->enumeration_type),
+                                    kefir_ast_enumeration_underlying_type(&type2->enumeration_type)),
+                false);
+        REQUIRE(type1->enumeration_type.alignment == type2->enumeration_type.alignment, false);
         REQUIRE(kefir_list_length(&type1->enumeration_type.enumerators) ==
                     kefir_list_length(&type2->enumeration_type.enumerators),
                 false);
@@ -85,6 +89,7 @@ static kefir_bool_t compatible_enumeration_types(const struct kefir_ast_type_tra
                KEFIR_AST_TYPE_SAME(type1, kefir_ast_enumeration_underlying_type(&type2->enumeration_type))) {
         return true;
     }
+    REQUIRE(type1->enumeration_type.alignment == type2->enumeration_type.alignment, false);
     REQUIRE(type1->tag == KEFIR_AST_TYPE_ENUMERATION && type2->tag == KEFIR_AST_TYPE_ENUMERATION, false);
     REQUIRE((type1->enumeration_type.identifier == NULL && type2->enumeration_type.identifier == NULL) ||
                 (type1->enumeration_type.identifier != NULL && type2->enumeration_type.identifier != NULL &&
@@ -132,6 +137,7 @@ const struct kefir_ast_type *composite_enum_types(struct kefir_mem *mem, struct 
         type = kefir_ast_type_enumeration(mem, type_bundle, type1->enumeration_type.identifier,
                                           type1->enumeration_type.underlying_type, &enum_type);
         REQUIRE(type != NULL, NULL);
+        enum_type->alignment = type1->enumeration_type.alignment;
 
         for (const struct kefir_list_entry *iter = kefir_list_head(&type1->enumeration_type.enumerators); iter != NULL;
              kefir_list_next(&iter)) {
@@ -205,6 +211,7 @@ const struct kefir_ast_type *kefir_ast_type_incomplete_enumeration(struct kefir_
     type->enumeration_type.complete = false;
     type->enumeration_type.identifier = identifier;
     type->enumeration_type.underlying_type = underlying_type;
+    type->enumeration_type.alignment = 0;
     type->enumeration_type.flags.no_discard = false;
     type->enumeration_type.flags.no_discard_message = NULL;
     type->enumeration_type.flags.deprecated = false;
@@ -320,6 +327,7 @@ const struct kefir_ast_type *kefir_ast_type_enumeration(struct kefir_mem *mem,
     type->enumeration_type.complete = true;
     type->enumeration_type.identifier = identifier;
     type->enumeration_type.underlying_type = underlying_type;
+    type->enumeration_type.alignment = 0;
     type->enumeration_type.flags.no_discard = false;
     type->enumeration_type.flags.no_discard_message = NULL;
     type->enumeration_type.flags.deprecated = false;

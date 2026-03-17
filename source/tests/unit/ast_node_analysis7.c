@@ -309,8 +309,8 @@ DEFINE_CASE(ast_node_analysis_init_declarators5, "AST node analysis - declaratio
     ASSERT_OK(kefir_ast_analyze_node(&kft_mem, context, KEFIR_AST_NODE_BASE(decl1_list)));
 
     struct kefir_ast_enum_type *enum_type1 = NULL;
-    const struct kefir_ast_type *type1 = kefir_ast_type_enumeration(
-        &kft_mem, context->type_bundle, "enumeration1", context->type_traits->underlying_enumeration_type, &enum_type1);
+    const struct kefir_ast_type *type1 = kefir_ast_type_enumeration(&kft_mem, context->type_bundle, "enumeration1",
+                                                                    kefir_ast_type_unsigned_int(), &enum_type1);
     ASSERT_OK(kefir_ast_enumeration_type_constant(&kft_mem, context->symbols, enum_type1, "XVAL", 1000));
     ASSERT_OK(kefir_ast_enumeration_type_constant_auto(&kft_mem, context->symbols, enum_type1, "YVAL"));
     ASSERT_OK(kefir_ast_enumeration_type_constant(&kft_mem, context->symbols, enum_type1, "AVAL", 0));
@@ -861,8 +861,8 @@ DEFINE_CASE(ast_node_analysis_init_declarators11, "AST node analysis - declarati
     ASSERT_OK(context->resolve_ordinary_identifier(context, "fun", &scoped_id1));
 
     struct kefir_ast_enum_type *enum_type1 = NULL;
-    const struct kefir_ast_type *type1 = kefir_ast_type_enumeration(
-        &kft_mem, context->type_bundle, "enum1", context->type_traits->underlying_enumeration_type, &enum_type1);
+    const struct kefir_ast_type *type1 =
+        kefir_ast_type_enumeration(&kft_mem, context->type_bundle, "enum1", kefir_ast_type_unsigned_int(), &enum_type1);
     ASSERT_OK(kefir_ast_enumeration_type_constant_auto(&kft_mem, context->symbols, enum_type1, "A"));
     ASSERT_OK(kefir_ast_enumeration_type_constant_auto(&kft_mem, context->symbols, enum_type1, "B"));
     ASSERT_OK(kefir_ast_enumeration_type_constant_auto(&kft_mem, context->symbols, enum_type1, "C"));

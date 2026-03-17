@@ -225,8 +225,8 @@ DEFINE_CASE(ast_declarator_analysis18, "AST declarator analysis - enum type tags
     ASSERT_OK(kefir_ast_enum_specifier_append(&kft_mem, specifier2, context->symbols, "ANOTHER_THING", NULL, NULL));
 
     struct kefir_ast_enum_type *enum_type1 = NULL;
-    const struct kefir_ast_type *type1 = kefir_ast_type_enumeration(
-        &kft_mem, context->type_bundle, "enum1", context->type_traits->underlying_enumeration_type, &enum_type1);
+    const struct kefir_ast_type *type1 =
+        kefir_ast_type_enumeration(&kft_mem, context->type_bundle, "enum1", kefir_ast_type_unsigned_int(), &enum_type1);
     ASSERT_OK(kefir_ast_enumeration_type_constant(&kft_mem, context->symbols, enum_type1, "CONST_A", 100));
     ASSERT_OK(kefir_ast_enumeration_type_constant_auto(&kft_mem, context->symbols, enum_type1, "CONST_B"));
     ASSERT_OK(kefir_ast_enumeration_type_constant_auto(&kft_mem, context->symbols, enum_type1, "CONST_C"));
@@ -235,8 +235,8 @@ DEFINE_CASE(ast_declarator_analysis18, "AST declarator analysis - enum type tags
     ASSERT_OK(kefir_ast_analyze_type(&kft_mem, context, KEFIR_AST_TYPE_ANALYSIS_DEFAULT, type1, NULL));
 
     struct kefir_ast_enum_type *enum_type2 = NULL;
-    const struct kefir_ast_type *type2 = kefir_ast_type_enumeration(
-        &kft_mem, context->type_bundle, "enum2", context->type_traits->underlying_enumeration_type, &enum_type2);
+    const struct kefir_ast_type *type2 =
+        kefir_ast_type_enumeration(&kft_mem, context->type_bundle, "enum2", kefir_ast_type_unsigned_int(), &enum_type2);
     ASSERT_OK(kefir_ast_enumeration_type_constant_auto(&kft_mem, context->symbols, enum_type2, "ONE_THING"));
     ASSERT_OK(kefir_ast_enumeration_type_constant_auto(&kft_mem, context->symbols, enum_type2, "ANOTHER_THING"));
     ASSERT_OK(kefir_ast_analyze_type(&kft_mem, context, KEFIR_AST_TYPE_ANALYSIS_DEFAULT, type2, NULL));

@@ -41,6 +41,8 @@ typedef struct kefir_ast_enum_type {
     struct kefir_list enumerators;
     struct kefir_hashtree enumerator_index;
 
+    kefir_size_t alignment;
+
     struct {
         kefir_bool_t no_discard;
         const char *no_discard_message;

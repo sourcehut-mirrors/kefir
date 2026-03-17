@@ -472,8 +472,8 @@ static kefir_result_t update_enum_constant_type(const struct kefir_ast_context *
     return KEFIR_OK;
 }
 
-static kefir_result_t scan_enum_attributes(struct kefir_mem *mem, struct kefir_string_pool *symbols,
-                                           const struct kefir_ast_node_attributes *attributes,
+static kefir_result_t scan_enum_attributes(struct kefir_mem *mem, const struct kefir_ast_context *context,
+                                           const struct kefir_ast_node_attributes *attributes, kefir_size_t *alignment,
                                            struct kefir_ast_enum_type *enum_type) {
     for (const struct kefir_list_entry *iter = kefir_list_head(&attributes->attributes); iter != NULL;
          kefir_list_next(&iter)) {
@@ -487,12 +487,30 @@ static kefir_result_t scan_enum_attributes(struct kefir_mem *mem, struct kefir_s
                 (strcmp(attribute->name, "nodiscard") == 0 || strcmp(attribute->name, "__nodiscard__") == 0)) {
                 enum_type->flags.no_discard = true;
                 const struct kefir_token *arg = kefir_token_buffer_at(&attribute->unstructured_parameters, 0);
-                REQUIRE_OK(multibyte_string_literal_into(mem, symbols, arg, &enum_type->flags.no_discard_message));
+                REQUIRE_OK(
+                    multibyte_string_literal_into(mem, context->symbols, arg, &enum_type->flags.no_discard_message));
             } else if (attribute->prefix == NULL &&
                        (strcmp(attribute->name, "deprecated") == 0 || strcmp(attribute->name, "__deprecated__") == 0)) {
                 enum_type->flags.deprecated = true;
                 const struct kefir_token *arg = kefir_token_buffer_at(&attribute->unstructured_parameters, 0);
-                REQUIRE_OK(multibyte_string_literal_into(mem, symbols, arg, &enum_type->flags.deprecated_message));
+                REQUIRE_OK(
+                    multibyte_string_literal_into(mem, context->symbols, arg, &enum_type->flags.deprecated_message));
+            } else if (attribute->prefix != NULL &&
+                       (strcmp(attribute->prefix, "gnu") == 0 || strcmp(attribute->prefix, "__gnu__") == 0)) {
+                if (strcmp(attribute->name, "aligned") == 0 || strcmp(attribute->name, "__aligned__") == 0) {
+                    if (kefir_list_length(&attribute->parameters) == 1) {
+                        ASSIGN_DECL_CAST(struct kefir_ast_node_base *, param,
+                                         kefir_list_head(&attribute->parameters)->value);
+                        REQUIRE_OK(kefir_ast_analyze_node(mem, context, param));
+                        REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(param,
+                                                                         KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER),
+                                KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &param->source_location,
+                                                       "Expected integral constant expression"));
+                        *alignment = KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(param)->uinteger;
+                    } else if (kefir_list_length(&attribute->parameters) == 0) {
+                        *alignment = 0;
+                    }
+                }
             }
         }
     }
@@ -536,10 +554,10 @@ static kefir_result_t resolve_enum_type(struct kefir_mem *mem, const struct kefi
     const struct kefir_ast_type *type = NULL;
 
     const struct kefir_ast_type *fixed_underlying_type = NULL;
+    kefir_size_t alignment = 0;
     if (specifier->type_spec.present) {
         kefir_ast_scoped_identifier_storage_t storage = KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_UNKNOWN;
         kefir_ast_function_specifier_t function = KEFIR_AST_FUNCTION_SPECIFIER_NONE;
-        kefir_size_t alignment = 0;
         REQUIRE_OK(kefir_ast_analyze_declaration_specifiers(
             mem, context, &specifier->type_spec.specifier_list, &fixed_underlying_type, &storage, &function, &alignment,
             KEFIR_AST_DECLARATION_ANALYSIS_NORMAL, &decl_specifier->source_location));
@@ -709,8 +727,12 @@ static kefir_result_t resolve_enum_type(struct kefir_mem *mem, const struct kefi
                                                      &decl_specifier->source_location));
         }
 
-        REQUIRE_OK(scan_enum_attributes(mem, context->symbols, &specifiers->attributes, enum_type));
-        REQUIRE_OK(scan_enum_attributes(mem, context->symbols, &decl_specifier->attributes, enum_type));
+        REQUIRE_OK(scan_enum_attributes(mem, context, &specifiers->attributes, &alignment, enum_type));
+        REQUIRE_OK(scan_enum_attributes(mem, context, &decl_specifier->attributes, &alignment, enum_type));
+
+        if (alignment != 0) {
+            enum_type->alignment = alignment;
+        }
     } else {
         if (specifier->identifier != NULL) {
             const struct kefir_ast_scoped_identifier *scoped_identifier = NULL;
