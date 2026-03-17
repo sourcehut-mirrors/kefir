@@ -49,7 +49,7 @@ $(KEFIR_EXTERNAL_TEST_PYTHON_DIR)/tests.log: $(KEFIR_EXTERNAL_TEST_PYTHON_SOURCE
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		LC_ALL=C.UTF-8 \
-		bash -c "set -o pipefail; ./python -m test -x test_gdb test_remote_pdb test_external_inspection  -i "test.test_sys.TestRemoteExec.*" -i test.test_audit.AuditTest.test_sys_remote_exec -i test.test_interpreters.test_queues.LowLevelTests.test_highlevel_reloaded -i test.test_interpreters.test_channels.LowLevelTests.test_highlevel_reloade | tee ../tests.log.tmp"
+		bash -c "set -o pipefail; ./python -m test -x test_gdb test_remote_pdb test_external_inspection test_socket test_socketserver  -i "test.test_sys.TestRemoteExec.*" -i test.test_audit.AuditTest.test_sys_remote_exec -i test.test_interpreters.test_queues.LowLevelTests.test_highlevel_reloaded -i test.test_interpreters.test_channels.LowLevelTests.test_highlevel_reloade | tee ../tests.log.tmp"
 	@mv "$@.tmp" "$@"
 
 $(KEFIR_EXTERNAL_TESTS_DIR)/python.test.done: $(KEFIR_EXTERNAL_TEST_PYTHON_DIR)/tests.log
