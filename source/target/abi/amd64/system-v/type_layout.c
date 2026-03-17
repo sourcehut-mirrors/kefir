@@ -234,8 +234,8 @@ static kefir_result_t calculate_struct_union_layout(const struct kefir_ir_type *
                                                                .extra_align_array = false};
     REQUIRE_OK(kefir_ir_type_visitor_list_nodes(type, compound_type_layout->visitor,
                                                 (void *) &nested_compound_type_layout, index + 1, typeentry->param));
-    data->alignment = nested_compound_type_layout.max_alignment;
-    data->aligned = nested_compound_type_layout.aligned;
+    data->alignment = MAX(nested_compound_type_layout.max_alignment, typeentry->alignment);
+    data->aligned = nested_compound_type_layout.aligned && data->alignment >= nested_compound_type_layout.max_alignment;
     data->size =
         kefir_target_abi_pad_aligned(typeentry->typecode == KEFIR_IR_TYPE_STRUCT ? nested_compound_type_layout.offset
                                                                                  : nested_compound_type_layout.max_size,

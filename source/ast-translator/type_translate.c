@@ -390,7 +390,8 @@ static kefir_result_t translate_struct_type(struct kefir_mem *mem, const struct 
 
     kefir_size_t type_index = kefir_ir_type_length(builder->type);
     REQUIRE_OK(KEFIR_IRBUILDER_TYPE_APPEND(
-        builder, type->tag == KEFIR_AST_TYPE_STRUCTURE ? KEFIR_IR_TYPE_STRUCT : KEFIR_IR_TYPE_UNION, alignment, 0));
+        builder, type->tag == KEFIR_AST_TYPE_STRUCTURE ? KEFIR_IR_TYPE_STRUCT : KEFIR_IR_TYPE_UNION,
+        MAX(alignment, type->structure_type.aggregate_alignment), 0));
 
     kefir_bool_t allocated = false;
     struct kefir_ast_type_layout *layout = NULL;

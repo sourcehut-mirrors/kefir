@@ -37,6 +37,7 @@ static kefir_bool_t same_structure_type(const struct kefir_ast_type *type1, cons
     REQUIRE(type1->tag == KEFIR_AST_TYPE_STRUCTURE && type2->tag == KEFIR_AST_TYPE_STRUCTURE, false);
     REQUIRE(type1->structure_type.complete == type2->structure_type.complete, false);
     REQUIRE(type1->structure_type.packed == type2->structure_type.packed, false);
+    REQUIRE(type1->structure_type.aggregate_alignment == type2->structure_type.aggregate_alignment, false);
     REQUIRE(type1->structure_type.flags.no_discard == type2->structure_type.flags.no_discard, false);
     REQUIRE(type1->structure_type.flags.deprecated == type2->structure_type.flags.deprecated, false);
     REQUIRE(strings_same(type1->structure_type.identifier, type2->structure_type.identifier), false);
@@ -102,6 +103,7 @@ const struct kefir_ast_type *composite_struct_types(struct kefir_mem *mem, struc
             kefir_ast_type_structure(mem, type_bundle, type1->structure_type.identifier, &composite_struct);
         REQUIRE(composite_type != NULL && composite_struct != NULL, NULL);
         composite_struct->packed = type1->structure_type.packed;
+        composite_struct->aggregate_alignment = type1->structure_type.aggregate_alignment;
 
         const struct kefir_list_entry *iter1 = kefir_list_head(&type1->structure_type.fields);
         const struct kefir_list_entry *iter2 = kefir_list_head(&type2->structure_type.fields);
@@ -155,6 +157,7 @@ static kefir_bool_t same_union_type(const struct kefir_ast_type *type1, const st
     REQUIRE(type1->tag == KEFIR_AST_TYPE_UNION && type2->tag == KEFIR_AST_TYPE_UNION, false);
     REQUIRE(type1->structure_type.complete == type2->structure_type.complete, false);
     REQUIRE(type1->structure_type.packed == type2->structure_type.packed, false);
+    REQUIRE(type1->structure_type.aggregate_alignment == type2->structure_type.aggregate_alignment, false);
     REQUIRE(type1->structure_type.flags.no_discard == type2->structure_type.flags.no_discard, false);
     REQUIRE(type1->structure_type.flags.deprecated == type2->structure_type.flags.deprecated, false);
     REQUIRE(strings_same(type1->structure_type.identifier, type2->structure_type.identifier), false);
@@ -186,6 +189,7 @@ static kefir_bool_t compatible_union_types(const struct kefir_ast_type_traits *t
     REQUIRE(type1->tag == KEFIR_AST_TYPE_UNION && type2->tag == KEFIR_AST_TYPE_UNION, false);
     REQUIRE(strings_same(type1->structure_type.identifier, type2->structure_type.identifier), false);
     REQUIRE(type1->structure_type.packed == type2->structure_type.packed, false);
+    REQUIRE(type1->structure_type.aggregate_alignment == type2->structure_type.aggregate_alignment, false);
 
     if (type1->structure_type.complete && type2->structure_type.complete) {
         const struct kefir_list_entry *iter1 = kefir_list_head(&type1->structure_type.fields);
@@ -244,6 +248,7 @@ const struct kefir_ast_type *composite_union_types(struct kefir_mem *mem, struct
         composite_type = kefir_ast_type_union(mem, type_bundle, type1->structure_type.identifier, &composite_union);
         REQUIRE(composite_type != NULL && composite_union != NULL, NULL);
         composite_union->packed = type1->structure_type.packed;
+        composite_union->aggregate_alignment = type1->structure_type.aggregate_alignment;
 
         kefir_result_t res;
         const struct kefir_list_entry *iter1 = kefir_list_head(&type1->structure_type.fields);
@@ -351,6 +356,7 @@ const struct kefir_ast_type *kefir_ast_type_incomplete_structure(struct kefir_me
     type->ops.free = free_structure;
     type->structure_type.complete = false;
     type->structure_type.packed = KEFIR_AST_STRUCT_NOPACK;
+    type->structure_type.aggregate_alignment = 0;
     type->structure_type.identifier = identifier;
     type->structure_type.flags.no_discard = false;
     type->structure_type.flags.no_discard_message = NULL;
@@ -386,6 +392,7 @@ const struct kefir_ast_type *kefir_ast_type_incomplete_union(struct kefir_mem *m
     type->ops.free = free_structure;
     type->structure_type.complete = false;
     type->structure_type.packed = KEFIR_AST_STRUCT_NOPACK;
+    type->structure_type.aggregate_alignment = 0;
     type->structure_type.identifier = identifier;
     type->structure_type.flags.no_discard = false;
     type->structure_type.flags.no_discard_message = NULL;
@@ -556,6 +563,7 @@ const struct kefir_ast_type *kefir_ast_type_structure(struct kefir_mem *mem, str
     type->ops.free = free_structure;
     type->structure_type.complete = true;
     type->structure_type.packed = KEFIR_AST_STRUCT_NOPACK;
+    type->structure_type.aggregate_alignment = 0;
     type->structure_type.identifier = identifier;
     type->structure_type.flags.no_discard = false;
     type->structure_type.flags.no_discard_message = NULL;
@@ -611,6 +619,7 @@ const struct kefir_ast_type *kefir_ast_type_union(struct kefir_mem *mem, struct 
     type->ops.free = free_structure;
     type->structure_type.complete = true;
     type->structure_type.packed = KEFIR_AST_STRUCT_NOPACK;
+    type->structure_type.aggregate_alignment = 0;
     type->structure_type.identifier = identifier;
     type->structure_type.flags.no_discard = false;
     type->structure_type.flags.no_discard_message = NULL;

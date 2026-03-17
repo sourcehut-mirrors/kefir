@@ -45,10 +45,12 @@ typedef enum kefir_ast_struct_pack_type {
 
 typedef struct kefir_ast_struct_type {
     kefir_bool_t complete;
-    kefir_ast_struct_pack_type_t packed;
     const char *identifier;
     struct kefir_list fields;
     struct kefir_hashtree field_index;
+
+    kefir_ast_struct_pack_type_t packed;
+    kefir_size_t aggregate_alignment;
 
     struct {
         kefir_bool_t no_discard;
