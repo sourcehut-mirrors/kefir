@@ -85,7 +85,7 @@ $(TARGET_DIR)/bin/ld: $(BINUTILS_ARCHIVE) $(TARGET_DIR)/lib/libc.a
 		KEFIR_LD="$(LD)" \
 		AS="$(AS)" \
 		KEFIR_AS="$(AS)" \
-		./configure --enable-gprofng=no --prefix=
+		./configure --enable-gprofng=no --without-zstd --prefix=
 	@cd "$(WORK_DIR)/binutils-$(BINUTILS_VERSION)" && \
 		KEFIR_LD="$(LD)" \
 		KEFIR_AS="$(AS)" \
