@@ -103,7 +103,7 @@ typedef struct kefir_ast_context {
                                                struct kefir_ast_temporary_identifier *);
 
     kefir_result_t (*define_tag)(struct kefir_mem *, const struct kefir_ast_context *, const struct kefir_ast_type *,
-                                 const struct kefir_ast_declarator_attributes *, const struct kefir_source_location *);
+                                 const struct kefir_source_location *);
     kefir_result_t (*define_constant)(struct kefir_mem *, const struct kefir_ast_context *, const char *,
                                       const struct kefir_ast_constant_expression_value *, const struct kefir_ast_type *,
                                       const struct kefir_ast_declarator_attributes *,

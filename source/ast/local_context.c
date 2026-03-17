@@ -105,14 +105,13 @@ static kefir_result_t context_allocate_temporary_value(struct kefir_mem *mem, co
 
 static kefir_result_t context_define_tag(struct kefir_mem *mem, const struct kefir_ast_context *context,
                                          const struct kefir_ast_type *type,
-                                         const struct kefir_ast_declarator_attributes *attributes,
                                          const struct kefir_source_location *location) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST context"));
     REQUIRE(type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST type"));
 
     ASSIGN_DECL_CAST(struct kefir_ast_local_context *, local_ctx, context->payload);
-    REQUIRE_OK(kefir_ast_local_context_define_tag(mem, local_ctx, type, attributes, location, NULL));
+    REQUIRE_OK(kefir_ast_local_context_define_tag(mem, local_ctx, type, location, NULL));
     return KEFIR_OK;
 }
 
@@ -216,7 +215,7 @@ static kefir_result_t local_context_define_constexpr(struct kefir_mem *mem, stru
     REQUIRE_OK(kefir_ast_type_apply_qualification(mem, context->context.type_bundle,
                                                   context->context.configuration->standard_version, type,
                                                   &qualifications, &type));
-    ordinary_id->type = type;
+    ordinary_id->object.type = type;
     ordinary_id->object.initializer = initializer;
 
     ordinary_id->object.constant_expression.present = true;
@@ -1059,7 +1058,7 @@ kefir_result_t kefir_ast_local_context_define_static(struct kefir_mem *mem, stru
         REQUIRE(!KEFIR_AST_TYPE_IS_INCOMPLETE(type),
                 KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location,
                                        "Identifier with no linkage shall have complete type"));
-        scoped_id->type = type;
+        scoped_id->object.type = type;
     }
     ASSIGN_PTR(scoped_id_ptr, scoped_id);
     return KEFIR_OK;
@@ -1129,7 +1128,7 @@ kefir_result_t kefir_ast_local_context_define_static_thread_local(
         REQUIRE(!KEFIR_AST_TYPE_IS_INCOMPLETE(type),
                 KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location,
                                        "Identifier with no linkage shall have complete type"));
-        scoped_id->type = type;
+        scoped_id->object.type = type;
     }
     ASSIGN_PTR(scoped_id_ptr, scoped_id);
     return KEFIR_OK;
@@ -1229,7 +1228,7 @@ kefir_result_t kefir_ast_local_context_define_auto(struct kefir_mem *mem, struct
         REQUIRE(!KEFIR_AST_TYPE_IS_INCOMPLETE(type),
                 KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location,
                                        "Identifier with no linkage shall have complete type"));
-        scoped_id->type = type;
+        scoped_id->object.type = type;
     }
 
     if (KEFIR_AST_TYPE_IS_VL_ARRAY(type)) {
@@ -1305,7 +1304,7 @@ kefir_result_t kefir_ast_local_context_define_register(struct kefir_mem *mem, st
         REQUIRE(!KEFIR_AST_TYPE_IS_INCOMPLETE(type),
                 KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location,
                                        "Identifier with no linkage shall have complete type"));
-        scoped_id->type = type;
+        scoped_id->object.type = type;
     }
 
     if (KEFIR_AST_TYPE_IS_VL_ARRAY(type)) {
@@ -1386,10 +1385,8 @@ static kefir_result_t kefir_ast_local_context_refine_constant_type(
 
 kefir_result_t kefir_ast_local_context_define_tag(struct kefir_mem *mem, struct kefir_ast_local_context *context,
                                                   const struct kefir_ast_type *type,
-                                                  const struct kefir_ast_declarator_attributes *attributes,
                                                   const struct kefir_source_location *location,
                                                   const struct kefir_ast_scoped_identifier **scoped_id_ptr) {
-    UNUSED(attributes);
     UNUSED(location);
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST translatation context"));
@@ -1445,7 +1442,7 @@ kefir_result_t kefir_ast_local_context_define_type(struct kefir_mem *mem, struct
                 KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location,
                                        "Unable to redefine different type with the same identifier"));
         if (KEFIR_AST_TYPE_IS_INCOMPLETE(scoped_id->type_definition.type) && !KEFIR_AST_TYPE_IS_INCOMPLETE(type)) {
-            scoped_id->type = type;
+            scoped_id->type_definition.type = type;
         }
         KEFIR_AST_CONTEXT_MERGE_DEPRECATED(&scoped_id->type_definition.flags.deprecated,
                                            &scoped_id->type_definition.flags.deprecated_message, attributes);

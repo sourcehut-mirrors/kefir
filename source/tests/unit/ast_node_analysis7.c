@@ -222,7 +222,7 @@ DEFINE_CASE(ast_node_analysis_init_declarators3, "AST node analysis - declaratio
     const struct kefir_ast_scoped_identifier *scoped_id2 = NULL;
     ASSERT_OK(kefir_ast_local_context_resolve_scoped_tag_identifier(&local_context, "structure1", &scoped_id2));
     ASSERT(scoped_id2->klass == KEFIR_AST_SCOPE_IDENTIFIER_TYPE_TAG);
-    ASSERT(KEFIR_AST_TYPE_SAME(scoped_id2->type, type1));
+    ASSERT(KEFIR_AST_TYPE_SAME(scoped_id2->type_tag.type, type1));
 
     ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(decl1_list)));
     ASSERT_OK(kefir_ast_local_context_free(&kft_mem, &local_context));
@@ -593,7 +593,7 @@ DEFINE_CASE(ast_node_analysis_init_declarators8, "AST node analysis - declaratio
     const struct kefir_ast_scoped_identifier *scoped_id1 = NULL;
     ASSERT_OK(kefir_ast_local_context_resolve_scoped_ordinary_identifier(&local_context, "unionS_t", &scoped_id1));
     ASSERT(scoped_id1->klass == KEFIR_AST_SCOPE_IDENTIFIER_TYPE_DEFINITION);
-    ASSERT(KEFIR_AST_TYPE_SAME(scoped_id1->type, type2));
+    ASSERT(KEFIR_AST_TYPE_SAME(scoped_id1->type_tag.type, type2));
 
     struct kefir_ast_init_declarator *decl2 = NULL;
     struct kefir_ast_declaration *decl2_list = kefir_ast_new_single_declaration(

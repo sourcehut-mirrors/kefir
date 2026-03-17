@@ -69,8 +69,8 @@ static kefir_result_t init_function_declaration(struct kefir_mem *mem, struct ke
             REQUIRE_OK(kefir_ast_translator_function_declaration_init(
                 mem, context->ast_context, context->environment, context->ast_context->type_bundle,
                 context->ast_context->type_traits, context->module, identifier, true,
-                function->base.properties.function_definition.scoped_id->type, NULL, &args->function_declaration,
-                &function->base.source_location));
+                function->base.properties.function_definition.scoped_id->function.type, NULL,
+                &args->function_declaration, &function->base.source_location));
             break;
 
         case KEFIR_AST_FUNCTION_TYPE_PARAM_IDENTIFIERS: {
@@ -437,7 +437,7 @@ kefir_result_t kefir_ast_translator_function_context_translate(
                                                                   scoped_id));
                     REQUIRE_OK(xchg_param_address(builder));
                     REQUIRE_OK(
-                        kefir_ast_translator_store_value(mem, scoped_id->type, context, builder,
+                        kefir_ast_translator_store_value(mem, scoped_id->object.type, context, builder,
                                                          &function_context->function_definition->base.source_location));
                 } else {
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_VSTACK_POP, 0));
@@ -492,7 +492,7 @@ kefir_result_t kefir_ast_translator_function_context_translate(
                     if (param_identifier != NULL && param_identifier->identifier != NULL) {
                         scoped_id = init_decl->base.properties.declaration_props.scoped_id;
                         REQUIRE_OK(generate_parameter_debug_info(mem, function_context, subprogram_entry_id,
-                                                                 param_identifier->identifier, scoped_id->type,
+                                                                 param_identifier->identifier, scoped_id->object.type,
                                                                  parameter_index));
                     } else {
                         REQUIRE_OK(generate_parameter_debug_info(mem, function_context, subprogram_entry_id, NULL,

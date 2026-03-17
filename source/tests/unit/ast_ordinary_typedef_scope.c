@@ -58,15 +58,15 @@ DEFINE_CASE(ast_ordinary_typedef_scope1, "AST ordinary scope - type definitions 
     const struct kefir_ast_scoped_identifier *scoped_id = NULL;
     ASSERT_OK(kefir_ast_local_context_resolve_scoped_ordinary_identifier(&context, "type1", &scoped_id));
     ASSERT(scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_TYPE_DEFINITION);
-    ASSERT(KEFIR_AST_TYPE_SAME(scoped_id->type, kefir_ast_type_void()));
+    ASSERT(KEFIR_AST_TYPE_SAME(scoped_id->type_definition.type, kefir_ast_type_void()));
 
     ASSERT_OK(kefir_ast_local_context_resolve_scoped_ordinary_identifier(&context, "type2", &scoped_id));
     ASSERT(scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_TYPE_DEFINITION);
-    ASSERT(KEFIR_AST_TYPE_SAME(scoped_id->type, kefir_ast_type_signed_long()));
+    ASSERT(KEFIR_AST_TYPE_SAME(scoped_id->type_definition.type, kefir_ast_type_signed_long()));
 
     ASSERT_OK(kefir_ast_local_context_resolve_scoped_ordinary_identifier(&context, "type3", &scoped_id));
     ASSERT(scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_TYPE_DEFINITION);
-    ASSERT(KEFIR_AST_TYPE_SAME(scoped_id->type, kefir_ast_type_float()));
+    ASSERT(KEFIR_AST_TYPE_SAME(scoped_id->type_definition.type, kefir_ast_type_float()));
 
     ASSERT_NOK(kefir_ast_local_context_resolve_scoped_ordinary_identifier(&context, "type4", &scoped_id));
 
@@ -90,7 +90,7 @@ DEFINE_CASE(ast_ordinary_typedef_scope1, "AST ordinary scope - type definitions 
         ASSERT_OK(kefir_ast_local_context_resolve_scoped_ordinary_identifier(&context, "val1", &scoped_id));
         ASSERT(scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_TYPE_DEFINITION);
         ASSERT(KEFIR_AST_TYPE_SAME(
-            scoped_id->type,
+            scoped_id->type_definition.type,
             kefir_ast_type_unbounded_array(&kft_mem, &type_bundle, kefir_ast_type_unsigned_long_long(), NULL)));
 
         do {
@@ -106,7 +106,7 @@ DEFINE_CASE(ast_ordinary_typedef_scope1, "AST ordinary scope - type definitions 
             ASSERT_OK(kefir_ast_local_context_resolve_scoped_ordinary_identifier(&context, "type2", &scoped_id));
             ASSERT(scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_TYPE_DEFINITION);
             ASSERT(KEFIR_AST_TYPE_SAME(
-                scoped_id->type,
+                scoped_id->type_definition.type,
                 kefir_ast_type_qualified(&kft_mem, &type_bundle, kefir_ast_type_boolean(),
                                          (const struct kefir_ast_type_qualification) {
                                              .constant = false, .restricted = true, .volatile_type = false})));
@@ -116,22 +116,22 @@ DEFINE_CASE(ast_ordinary_typedef_scope1, "AST ordinary scope - type definitions 
 
         ASSERT_OK(kefir_ast_local_context_resolve_scoped_ordinary_identifier(&context, "type2", &scoped_id));
         ASSERT(scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_TYPE_DEFINITION);
-        ASSERT(KEFIR_AST_TYPE_SAME(scoped_id->type, kefir_ast_type_signed_long()));
+        ASSERT(KEFIR_AST_TYPE_SAME(scoped_id->type_definition.type, kefir_ast_type_signed_long()));
 
         ASSERT_OK(context.context.pop_block(&kft_mem, &context.context));
     } while (0);
 
     ASSERT_OK(kefir_ast_local_context_resolve_scoped_ordinary_identifier(&context, "type1", &scoped_id));
     ASSERT(scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_TYPE_DEFINITION);
-    ASSERT(KEFIR_AST_TYPE_SAME(scoped_id->type, kefir_ast_type_void()));
+    ASSERT(KEFIR_AST_TYPE_SAME(scoped_id->type_definition.type, kefir_ast_type_void()));
 
     ASSERT_OK(kefir_ast_local_context_resolve_scoped_ordinary_identifier(&context, "type2", &scoped_id));
     ASSERT(scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_TYPE_DEFINITION);
-    ASSERT(KEFIR_AST_TYPE_SAME(scoped_id->type, kefir_ast_type_signed_long()));
+    ASSERT(KEFIR_AST_TYPE_SAME(scoped_id->type_definition.type, kefir_ast_type_signed_long()));
 
     ASSERT_OK(kefir_ast_local_context_resolve_scoped_ordinary_identifier(&context, "type3", &scoped_id));
     ASSERT(scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_TYPE_DEFINITION);
-    ASSERT(KEFIR_AST_TYPE_SAME(scoped_id->type, kefir_ast_type_float()));
+    ASSERT(KEFIR_AST_TYPE_SAME(scoped_id->type_definition.type, kefir_ast_type_float()));
 
     ASSERT_NOK(kefir_ast_local_context_resolve_scoped_ordinary_identifier(&context, "type4", &scoped_id));
 

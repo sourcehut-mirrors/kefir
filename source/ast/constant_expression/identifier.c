@@ -45,7 +45,7 @@ kefir_result_t kefir_ast_evaluate_identifier_node(struct kefir_mem *mem, const s
             if (scoped_id->object.constant_expression.present) {
                 *value = scoped_id->object.constant_expression.value;
             } else {
-                REQUIRE(scoped_id->type->tag == KEFIR_AST_TYPE_ARRAY &&
+                REQUIRE(scoped_id->object.type->tag == KEFIR_AST_TYPE_ARRAY &&
                             (scoped_id->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN ||
                              scoped_id->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC),
                         KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->base.source_location,

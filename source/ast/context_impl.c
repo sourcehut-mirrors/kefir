@@ -41,6 +41,7 @@ kefir_result_t kefir_ast_context_free_scoped_identifier(struct kefir_mem *mem,
             break;
 
         case KEFIR_AST_SCOPE_IDENTIFIER_ENUM_CONSTANT:
+        case KEFIR_AST_SCOPE_IDENTIFIER_TYPE_TAG:
             // Intentionally left blank
             break;
 
@@ -55,9 +56,6 @@ kefir_result_t kefir_ast_context_free_scoped_identifier(struct kefir_mem *mem,
                 REQUIRE_OK(kefir_ast_alignment_free(mem, scoped_id->type_definition.alignment));
             }
             scoped_id->type_definition.type = NULL;
-            break;
-
-        default:
             break;
     }
     KEFIR_FREE(mem, scoped_id);
@@ -145,7 +143,7 @@ struct kefir_ast_scoped_identifier *kefir_ast_context_allocate_scoped_type_tag(
     scoped_id->klass = KEFIR_AST_SCOPE_IDENTIFIER_TYPE_TAG;
     scoped_id->cleanup.callback = NULL;
     scoped_id->cleanup.payload = NULL;
-    scoped_id->type = type;
+    scoped_id->type_tag.type = type;
     if (source_location != NULL) {
         scoped_id->source_location = *source_location;
     } else {
@@ -225,30 +223,32 @@ kefir_result_t kefir_ast_context_update_existing_scoped_type_tag(struct kefir_me
                                                                  const struct kefir_ast_type *type) {
     REQUIRE(scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_TYPE_TAG,
             KEFIR_SET_ERROR(KEFIR_INVALID_CHANGE, "Cannot redefine with different kind of symbol"));
-    REQUIRE(scoped_id->type->tag == type->tag,
+    REQUIRE(scoped_id->type_tag.type->tag == type->tag,
             KEFIR_SET_ERROR(KEFIR_INVALID_CHANGE, "Cannot redefine tag with different type"));
-    switch (scoped_id->type->tag) {
+    switch (scoped_id->type_tag.type->tag) {
         case KEFIR_AST_TYPE_STRUCTURE:
         case KEFIR_AST_TYPE_UNION:
             if (type->structure_type.complete) {
-                if (!scoped_id->type->structure_type.complete) {
-                    scoped_id->type = type;
+                if (!scoped_id->type_tag.type->structure_type.complete) {
+                    scoped_id->type_tag.type = type;
                 } else {
-                    REQUIRE(KEFIR_AST_TYPE_COMPATIBLE(type_traits, scoped_id->type, type),
+                    REQUIRE(KEFIR_AST_TYPE_COMPATIBLE(type_traits, scoped_id->type_tag.type, type),
                             KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected compatible struct/union types"));
-                    scoped_id->type = KEFIR_AST_TYPE_COMPOSITE(mem, type_bundle, type_traits, scoped_id->type, type);
+                    scoped_id->type_tag.type =
+                        KEFIR_AST_TYPE_COMPOSITE(mem, type_bundle, type_traits, scoped_id->type_tag.type, type);
                 }
             }
             return KEFIR_OK;
 
         case KEFIR_AST_TYPE_ENUMERATION:
             if (type->enumeration_type.complete) {
-                if (!scoped_id->type->enumeration_type.complete) {
-                    scoped_id->type = type;
+                if (!scoped_id->type_tag.type->enumeration_type.complete) {
+                    scoped_id->type_tag.type = type;
                 } else {
-                    REQUIRE(KEFIR_AST_TYPE_COMPATIBLE(type_traits, scoped_id->type, type),
+                    REQUIRE(KEFIR_AST_TYPE_COMPATIBLE(type_traits, scoped_id->type_tag.type, type),
                             KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected compatible enum types"));
-                    scoped_id->type = KEFIR_AST_TYPE_COMPOSITE(mem, type_bundle, type_traits, scoped_id->type, type);
+                    scoped_id->type_tag.type =
+                        KEFIR_AST_TYPE_COMPOSITE(mem, type_bundle, type_traits, scoped_id->type_tag.type, type);
                 }
             }
             return KEFIR_OK;

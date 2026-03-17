@@ -46,13 +46,13 @@ DEFINE_CASE(ast_ordinary_scope_composite_objects_external, "AST ordinary scope -
 
     const struct kefir_ast_scoped_identifier *scoped_id = NULL;
     ASSERT_OK(kefir_ast_local_context_resolve_scoped_ordinary_identifier(&context, "array1", &scoped_id));
-    ASSERT(KEFIR_AST_TYPE_SAME(scoped_id->type, array1_type1));
+    ASSERT(KEFIR_AST_TYPE_SAME(scoped_id->object.type, array1_type1));
 
     ASSERT_OK(kefir_ast_global_context_define_external(&kft_mem, &global_context, "array1", array1_type2, NULL, NULL,
                                                        NULL, NULL, NULL));
 
     ASSERT_OK(kefir_ast_local_context_resolve_scoped_ordinary_identifier(&context, "array1", &scoped_id));
-    ASSERT(KEFIR_AST_TYPE_SAME(scoped_id->type, array1_composite));
+    ASSERT(KEFIR_AST_TYPE_SAME(scoped_id->object.type, array1_composite));
 
     ASSERT_OK(kefir_ast_local_context_free(&kft_mem, &context));
     ASSERT_OK(kefir_ast_global_context_free(&kft_mem, &global_context));
@@ -87,13 +87,13 @@ DEFINE_CASE(ast_ordinary_scope_composite_objects_external_declaration,
 
     const struct kefir_ast_scoped_identifier *scoped_id = NULL;
     ASSERT_OK(kefir_ast_local_context_resolve_scoped_ordinary_identifier(&context, "array1", &scoped_id));
-    ASSERT(KEFIR_AST_TYPE_SAME(scoped_id->type, array1_type1));
+    ASSERT(KEFIR_AST_TYPE_SAME(scoped_id->object.type, array1_type1));
 
     ASSERT_OK(kefir_ast_global_context_declare_external(&kft_mem, &global_context, "array1", array1_type2, NULL, NULL,
                                                         NULL, NULL));
 
     ASSERT_OK(kefir_ast_local_context_resolve_scoped_ordinary_identifier(&context, "array1", &scoped_id));
-    ASSERT(KEFIR_AST_TYPE_SAME(scoped_id->type, array1_composite));
+    ASSERT(KEFIR_AST_TYPE_SAME(scoped_id->object.type, array1_composite));
 
     ASSERT_OK(kefir_ast_local_context_free(&kft_mem, &context));
     ASSERT_OK(kefir_ast_global_context_free(&kft_mem, &global_context));
@@ -136,13 +136,13 @@ DEFINE_CASE(ast_ordinary_scope_composite_objects_thread_local_external,
 
     const struct kefir_ast_scoped_identifier *scoped_id = NULL;
     ASSERT_OK(kefir_ast_local_context_resolve_scoped_ordinary_identifier(&context, "func1", &scoped_id));
-    ASSERT(KEFIR_AST_TYPE_SAME(scoped_id->type, func1_type1));
+    ASSERT(KEFIR_AST_TYPE_SAME(scoped_id->object.type, func1_type1));
 
     ASSERT_OK(kefir_ast_global_context_define_external_thread_local(&kft_mem, &global_context, "func1", func1_type2,
                                                                     NULL, NULL, NULL, NULL, NULL));
 
     ASSERT_OK(kefir_ast_local_context_resolve_scoped_ordinary_identifier(&context, "func1", &scoped_id));
-    ASSERT(KEFIR_AST_TYPE_SAME(scoped_id->type, func1_composite));
+    ASSERT(KEFIR_AST_TYPE_SAME(scoped_id->object.type, func1_composite));
 
     ASSERT_OK(kefir_ast_local_context_free(&kft_mem, &context));
     ASSERT_OK(kefir_ast_global_context_free(&kft_mem, &global_context));
@@ -186,13 +186,13 @@ DEFINE_CASE(ast_ordinary_scope_composite_objects_thread_local_external_declarati
 
     const struct kefir_ast_scoped_identifier *scoped_id = NULL;
     ASSERT_OK(kefir_ast_local_context_resolve_scoped_ordinary_identifier(&context, "func1", &scoped_id));
-    ASSERT(KEFIR_AST_TYPE_SAME(scoped_id->type, func1_type1));
+    ASSERT(KEFIR_AST_TYPE_SAME(scoped_id->object.type, func1_type1));
 
     ASSERT_OK(kefir_ast_global_context_define_external_thread_local(&kft_mem, &global_context, "func1", func1_type2,
                                                                     NULL, NULL, NULL, NULL, NULL));
 
     ASSERT_OK(kefir_ast_local_context_resolve_scoped_ordinary_identifier(&context, "func1", &scoped_id));
-    ASSERT(KEFIR_AST_TYPE_SAME(scoped_id->type, func1_composite));
+    ASSERT(KEFIR_AST_TYPE_SAME(scoped_id->object.type, func1_composite));
 
     ASSERT_OK(kefir_ast_local_context_free(&kft_mem, &context));
     ASSERT_OK(kefir_ast_global_context_free(&kft_mem, &global_context));
@@ -254,13 +254,13 @@ DEFINE_CASE(ast_ordinary_scope_composite_objects_static, "AST ordinary scope - c
 
     const struct kefir_ast_scoped_identifier *scoped_id = NULL;
     ASSERT_OK(kefir_ast_local_context_resolve_scoped_ordinary_identifier(&context, "func1", &scoped_id));
-    ASSERT(KEFIR_AST_TYPE_SAME(scoped_id->type, func1_type1));
+    ASSERT(KEFIR_AST_TYPE_SAME(scoped_id->object.type, func1_type1));
 
     ASSERT_OK(kefir_ast_global_context_define_static(&kft_mem, &global_context, "func1", func1_type2, NULL, NULL, NULL,
                                                      NULL, NULL));
 
     ASSERT_OK(kefir_ast_local_context_resolve_scoped_ordinary_identifier(&context, "func1", &scoped_id));
-    ASSERT(KEFIR_AST_TYPE_SAME(scoped_id->type, func1_type3));
+    ASSERT(KEFIR_AST_TYPE_SAME(scoped_id->object.type, func1_type3));
 
     ASSERT_OK(kefir_ast_local_context_free(&kft_mem, &context));
     ASSERT_OK(kefir_ast_global_context_free(&kft_mem, &global_context));
@@ -330,13 +330,13 @@ DEFINE_CASE(ast_ordinary_scope_composite_objects_static_thread_local,
 
     const struct kefir_ast_scoped_identifier *scoped_id = NULL;
     ASSERT_OK(kefir_ast_local_context_resolve_scoped_ordinary_identifier(&context, "func1", &scoped_id));
-    ASSERT(KEFIR_AST_TYPE_SAME(scoped_id->type, func1_type1));
+    ASSERT(KEFIR_AST_TYPE_SAME(scoped_id->object.type, func1_type1));
 
     ASSERT_OK(kefir_ast_global_context_define_static_thread_local(&kft_mem, &global_context, "func1", func1_type2, NULL,
                                                                   NULL, NULL, NULL, NULL));
 
     ASSERT_OK(kefir_ast_local_context_resolve_scoped_ordinary_identifier(&context, "func1", &scoped_id));
-    ASSERT(KEFIR_AST_TYPE_SAME(scoped_id->type, func1_type3));
+    ASSERT(KEFIR_AST_TYPE_SAME(scoped_id->object.type, func1_type3));
 
     ASSERT_OK(kefir_ast_local_context_free(&kft_mem, &context));
     ASSERT_OK(kefir_ast_global_context_free(&kft_mem, &global_context));
@@ -409,13 +409,13 @@ DEFINE_CASE(ast_ordinary_scope_composite_objects_local_external,
 
     const struct kefir_ast_scoped_identifier *scoped_id = NULL;
     ASSERT_OK(kefir_ast_local_context_resolve_scoped_ordinary_identifier(&context, "func1", &scoped_id));
-    ASSERT(KEFIR_AST_TYPE_SAME(scoped_id->type, func1_type1));
+    ASSERT(KEFIR_AST_TYPE_SAME(scoped_id->object.type, func1_type1));
 
     ASSERT_OK(
         kefir_ast_local_context_declare_external(&kft_mem, &context, "func1", func1_type2, NULL, NULL, NULL, NULL));
 
     ASSERT_OK(kefir_ast_local_context_resolve_scoped_ordinary_identifier(&context, "func1", &scoped_id));
-    ASSERT(KEFIR_AST_TYPE_SAME(scoped_id->type, func1_type3));
+    ASSERT(KEFIR_AST_TYPE_SAME(scoped_id->object.type, func1_type3));
 
     ASSERT_OK(kefir_ast_local_context_free(&kft_mem, &context));
     ASSERT_OK(kefir_ast_global_context_free(&kft_mem, &global_context));
@@ -489,13 +489,13 @@ DEFINE_CASE(ast_ordinary_scope_composite_objects_local_thread_local_external,
 
     const struct kefir_ast_scoped_identifier *scoped_id = NULL;
     ASSERT_OK(kefir_ast_local_context_resolve_scoped_ordinary_identifier(&context, "func1", &scoped_id));
-    ASSERT(KEFIR_AST_TYPE_SAME(scoped_id->type, func1_type1));
+    ASSERT(KEFIR_AST_TYPE_SAME(scoped_id->object.type, func1_type1));
 
     ASSERT_OK(kefir_ast_local_context_declare_external_thread_local(&kft_mem, &context, "func1", func1_type2, NULL,
                                                                     NULL, NULL, NULL));
 
     ASSERT_OK(kefir_ast_local_context_resolve_scoped_ordinary_identifier(&context, "func1", &scoped_id));
-    ASSERT(KEFIR_AST_TYPE_SAME(scoped_id->type, func1_type3));
+    ASSERT(KEFIR_AST_TYPE_SAME(scoped_id->object.type, func1_type3));
 
     ASSERT_OK(kefir_ast_local_context_free(&kft_mem, &context));
     ASSERT_OK(kefir_ast_global_context_free(&kft_mem, &global_context));

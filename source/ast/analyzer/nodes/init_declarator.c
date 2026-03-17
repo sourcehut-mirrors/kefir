@@ -104,7 +104,7 @@ kefir_result_t kefir_ast_analyze_init_declarator_node(struct kefir_mem *mem, con
                 break;
 
             case KEFIR_AST_SCOPE_IDENTIFIER_TYPE_DEFINITION:
-                base->properties.type = scoped_id->type;
+                base->properties.type = scoped_id->type_definition.type;
                 base->properties.declaration_props.storage = storage;
                 break;
 

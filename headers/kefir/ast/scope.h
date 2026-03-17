@@ -114,12 +114,14 @@ typedef struct kefir_ast_scoped_identifier {
             } flags;
         } type_definition;
 
-        const struct kefir_ast_type *type;
-
         struct {
             struct kefir_ast_flow_control_point *point;
             const char *public_label;
         } label;
+
+        struct {
+            const struct kefir_ast_type *type;
+        } type_tag;
     };
     struct kefir_source_location source_location;
     struct {

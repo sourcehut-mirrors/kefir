@@ -309,12 +309,12 @@ static kefir_result_t resolve_struct_type(struct kefir_mem *mem, const struct ke
             kefir_result_t res = context->resolve_tag_identifier(context, specifier->identifier, &scoped_identifier);
             if (res == KEFIR_OK) {
                 REQUIRE((decl_specifier->type_specifier.specifier == KEFIR_AST_TYPE_SPECIFIER_STRUCT &&
-                         scoped_identifier->type->tag == KEFIR_AST_TYPE_STRUCTURE) ||
+                         scoped_identifier->type_tag.type->tag == KEFIR_AST_TYPE_STRUCTURE) ||
                             (decl_specifier->type_specifier.specifier == KEFIR_AST_TYPE_SPECIFIER_UNION &&
-                             scoped_identifier->type->tag == KEFIR_AST_TYPE_UNION),
+                             scoped_identifier->type_tag.type->tag == KEFIR_AST_TYPE_UNION),
                         KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
                                                "Tagged type declaration mismatch"));
-                type = scoped_identifier->type;
+                type = scoped_identifier->type_tag.type;
                 resolved = true;
             } else {
                 REQUIRE(res == KEFIR_NOT_FOUND, res);
@@ -330,7 +330,7 @@ static kefir_result_t resolve_struct_type(struct kefir_mem *mem, const struct ke
     }
 
     if (specifier->identifier != NULL && !resolved) {
-        REQUIRE_OK(context->define_tag(mem, context, type, NULL, &decl_specifier->source_location));
+        REQUIRE_OK(context->define_tag(mem, context, type, &decl_specifier->source_location));
     }
     ASSIGN_PTR(base_type, type);
     return KEFIR_OK;
@@ -669,10 +669,10 @@ static kefir_result_t resolve_enum_type(struct kefir_mem *mem, const struct kefi
             const struct kefir_ast_scoped_identifier *scoped_identifier = NULL;
             kefir_result_t res = context->resolve_tag_identifier(context, specifier->identifier, &scoped_identifier);
             if (res == KEFIR_OK) {
-                REQUIRE(scoped_identifier->type->tag == KEFIR_AST_TYPE_ENUMERATION,
+                REQUIRE(scoped_identifier->type_tag.type->tag == KEFIR_AST_TYPE_ENUMERATION,
                         KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
                                                "Tagged type declaration mismatch"));
-                type = scoped_identifier->type;
+                type = scoped_identifier->type_tag.type;
                 resolved = true;
             } else {
                 REQUIRE(res == KEFIR_NOT_FOUND, res);
@@ -691,7 +691,7 @@ static kefir_result_t resolve_enum_type(struct kefir_mem *mem, const struct kefi
     REQUIRE_OK(
         kefir_ast_analyze_type(mem, context, context->type_analysis_context, type, &decl_specifier->source_location));
     if (specifier->identifier != NULL && !resolved) {
-        REQUIRE_OK(context->define_tag(mem, context, type, NULL, &decl_specifier->source_location));
+        REQUIRE_OK(context->define_tag(mem, context, type, &decl_specifier->source_location));
     }
     ASSIGN_PTR(base_type, type);
     return KEFIR_OK;

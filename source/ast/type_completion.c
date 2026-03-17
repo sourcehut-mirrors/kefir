@@ -38,11 +38,11 @@ static kefir_result_t resolve_named_structure(const char *identifier, const stru
     const struct kefir_ast_scoped_identifier *struct_scoped_id = NULL;
     REQUIRE_OK(context->resolve_tag_identifier(context, identifier, &struct_scoped_id));
     REQUIRE(struct_scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_TYPE_TAG &&
-                (struct_scoped_id->type->tag == KEFIR_AST_TYPE_STRUCTURE ||
-                 struct_scoped_id->type->tag == KEFIR_AST_TYPE_UNION) &&
-                struct_scoped_id->type->structure_type.complete,
+                (struct_scoped_id->type_tag.type->tag == KEFIR_AST_TYPE_STRUCTURE ||
+                 struct_scoped_id->type_tag.type->tag == KEFIR_AST_TYPE_UNION) &&
+                struct_scoped_id->type_tag.type->structure_type.complete,
             KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find complete named structure type"));
-    *type_ptr = struct_scoped_id->type;
+    *type_ptr = struct_scoped_id->type_tag.type;
     return KEFIR_OK;
 }
 
