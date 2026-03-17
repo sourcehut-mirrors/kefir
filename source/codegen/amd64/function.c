@@ -1319,6 +1319,40 @@ static kefir_result_t construct_target_ir(struct kefir_mem *mem, struct kefir_co
     return KEFIR_OK;
 }
 
+static kefir_result_t detect_extra_alignment(struct kefir_mem *mem, struct kefir_codegen_amd64_function *func) {
+    struct kefir_hashtree_node_iterator scopes_iter;
+    for (struct kefir_hashtree_node *node = kefir_hashtree_iter(&func->variable_scopes.scope_variables, &scopes_iter);
+         node != NULL; node = kefir_hashtree_next(&scopes_iter)) {
+        ASSIGN_DECL_CAST(struct kefir_opt_code_scope_variables *, scope_vars, node->value);
+
+        kefir_result_t res;
+        kefir_hashset_key_t entry;
+        struct kefir_hashset_iterator iter;
+        for (res = kefir_hashset_iter(&scope_vars->allocations, &iter, &entry); res == KEFIR_OK;
+             res = kefir_hashset_next(&iter, &entry)) {
+            ASSIGN_DECL_CAST(kefir_opt_instruction_ref_t, instr_ref, entry);
+            const struct kefir_opt_instruction *instr;
+            REQUIRE_OK(kefir_opt_code_container_instr(&func->function->code, instr_ref, &instr));
+            REQUIRE(instr->operation.opcode == KEFIR_OPT_OPCODE_ALLOC_LOCAL,
+                    KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected local variable allocation instruction"));
+
+            const struct kefir_abi_amd64_type_layout *type_layout = NULL;
+            const struct kefir_abi_amd64_typeentry_layout *typeentry_layout = NULL;
+            REQUIRE_OK(
+                get_local_variable_type_layout(mem, func, instr->operation.parameters.type.type_id, &type_layout));
+            REQUIRE_OK(kefir_abi_amd64_type_layout_at(type_layout, instr->operation.parameters.type.type_index,
+                                                      &typeentry_layout));
+
+            REQUIRE_OK(
+                kefir_codegen_amd64_stack_frame_require_alignment(&func->stack_frame, typeentry_layout->alignment));
+        }
+        if (res != KEFIR_ITERATOR_END) {
+            REQUIRE_OK(res);
+        }
+    }
+    return KEFIR_OK;
+}
+
 static kefir_result_t kefir_codegen_amd64_function_translate_impl(struct kefir_mem *mem,
                                                                   struct kefir_codegen_amd64 *codegen,
                                                                   struct kefir_codegen_amd64_function *func) {
@@ -1339,6 +1373,7 @@ static kefir_result_t kefir_codegen_amd64_function_translate_impl(struct kefir_m
     REQUIRE_OK(kefir_opt_code_control_flow_build(mem, &func->control_flow, &func->function->code));
     REQUIRE_OK(kefir_opt_code_liveness_build(mem, &func->liveness, &func->control_flow));
     REQUIRE_OK(kefir_opt_code_variable_scopes_build(mem, &func->variable_scopes, &func->liveness));
+    REQUIRE_OK(detect_extra_alignment(mem, func));
     REQUIRE_OK(translate_code(mem, func));
     REQUIRE_OK(kefir_codegen_local_variable_allocator_run(
         mem, &func->variable_allocator, &func->function->code,

@@ -35,6 +35,7 @@ typedef struct kefir_codegen_amd64_stack_frame {
         kefir_size_t spill_area;
         kefir_size_t allocated_size;
         kefir_size_t total_size;
+        kefir_size_t total_alignment;
     } sizes;
 
     struct {
@@ -55,6 +56,7 @@ typedef struct kefir_codegen_amd64_stack_frame {
         kefir_bool_t x87_control_word_save;
         kefir_bool_t mxcsr_save;
         kefir_bool_t frame_pointer;
+        kefir_size_t extra_alignment;
     } requirements;
 
     const struct kefir_codegen_local_variable_allocator *local_variables;
@@ -79,6 +81,9 @@ kefir_result_t kefir_codegen_amd64_stack_frame_varying_stack_pointer(struct kefi
 kefir_result_t kefir_codegen_amd64_stack_frame_preserve_x87_control_word(struct kefir_codegen_amd64_stack_frame *);
 kefir_result_t kefir_codegen_amd64_stack_frame_preserve_mxcsr(struct kefir_codegen_amd64_stack_frame *);
 kefir_result_t kefir_codegen_amd64_stack_frame_require_frame_pointer(struct kefir_codegen_amd64_stack_frame *);
+kefir_result_t kefir_codegen_amd64_stack_frame_require_alignment(struct kefir_codegen_amd64_stack_frame *,
+                                                                 kefir_size_t);
+kefir_bool_t kefir_codegen_amd64_stack_frame_has_extra_alignment(const struct kefir_codegen_amd64_stack_frame *);
 
 kefir_result_t kefir_codegen_amd64_stack_frame_local_variable_offset(const struct kefir_codegen_amd64_stack_frame *,
                                                                      kefir_id_t, kefir_int64_t *);

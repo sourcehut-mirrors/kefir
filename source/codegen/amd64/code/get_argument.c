@@ -254,12 +254,32 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(get_argument)(struct kefir_m
             kefir_int64_t offset;
             REQUIRE_OK(kefir_abi_amd64_function_parameter_memory_location(
                 &function_parameter, KEFIR_ABI_AMD64_FUNCTION_PARAMETER_ADDRESS_CALLEE, &base_reg, &offset));
-            REQUIRE_OK(kefir_asmcmp_virtual_register_new_memory_pointer(
-                mem, &function->code.context, (kefir_asmcmp_physical_register_index_t) base_reg, offset, &vreg));
-            REQUIRE_OK(kefir_codegen_amd64_stack_frame_require_frame_pointer(&function->stack_frame));
 
-            REQUIRE_OK(kefir_asmcmp_amd64_produce_virtual_register(
-                mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), vreg, NULL));
+            if (kefir_codegen_amd64_stack_frame_has_extra_alignment(&function->stack_frame) &&
+                base_reg == KEFIR_AMD64_XASMGEN_REGISTER_RBP) {
+                REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
+                                                             KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &vreg));
+                REQUIRE_OK(kefir_asmcmp_amd64_mov(
+                    mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                    &KEFIR_ASMCMP_MAKE_VREG64(vreg),
+                    &KEFIR_ASMCMP_MAKE_INDIRECT_PHYSICAL(KEFIR_AMD64_XASMGEN_REGISTER_RBP, 2 * KEFIR_AMD64_ABI_QWORD,
+                                                         KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT),
+                    NULL));
+                REQUIRE_OK(kefir_asmcmp_amd64_lea(
+                    mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                    &KEFIR_ASMCMP_MAKE_VREG64(vreg),
+                    &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(vreg, offset - KEFIR_AMD64_ABI_QWORD,
+                                                        KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT),
+                    NULL));
+
+            } else {
+                REQUIRE_OK(kefir_asmcmp_virtual_register_new_memory_pointer(
+                    mem, &function->code.context, (kefir_asmcmp_physical_register_index_t) base_reg, offset, &vreg));
+                REQUIRE_OK(kefir_codegen_amd64_stack_frame_require_frame_pointer(&function->stack_frame));
+
+                REQUIRE_OK(kefir_asmcmp_amd64_produce_virtual_register(
+                    mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), vreg, NULL));
+            }
 
             const struct kefir_ir_typeentry *typeentry =
                 kefir_ir_type_at(function->function->ir_func->declaration->params, param_type_index);

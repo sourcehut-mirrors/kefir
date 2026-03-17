@@ -54,12 +54,28 @@ static kefir_result_t vararg_start_impl(struct kefir_mem *mem, struct kefir_code
                                2 * KEFIR_AMD64_ABI_QWORD * reqs.sse_regs),
         NULL));
 
-    REQUIRE_OK(kefir_asmcmp_amd64_lea(
-        mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-        &KEFIR_ASMCMP_MAKE_VREG64(tmp_vreg),
-        &KEFIR_ASMCMP_MAKE_INDIRECT_PHYSICAL(KEFIR_AMD64_XASMGEN_REGISTER_RBP, 2 * KEFIR_AMD64_ABI_QWORD + reqs.stack,
-                                             KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT),
-        NULL));
+    if (kefir_codegen_amd64_stack_frame_has_extra_alignment(&function->stack_frame)) {
+        REQUIRE_OK(kefir_asmcmp_amd64_mov(
+            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+            &KEFIR_ASMCMP_MAKE_VREG64(tmp_vreg),
+            &KEFIR_ASMCMP_MAKE_INDIRECT_PHYSICAL(KEFIR_AMD64_XASMGEN_REGISTER_RBP, 2 * KEFIR_AMD64_ABI_QWORD,
+                                                 KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT),
+            NULL));
+        REQUIRE_OK(
+            kefir_asmcmp_amd64_lea(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                                   &KEFIR_ASMCMP_MAKE_VREG64(tmp_vreg),
+                                   &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(tmp_vreg, KEFIR_AMD64_ABI_QWORD + reqs.stack,
+                                                                       KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT),
+                                   NULL));
+    } else {
+        REQUIRE_OK(kefir_asmcmp_amd64_lea(mem, &function->code,
+                                          kefir_asmcmp_context_instr_tail(&function->code.context),
+                                          &KEFIR_ASMCMP_MAKE_VREG64(tmp_vreg),
+                                          &KEFIR_ASMCMP_MAKE_INDIRECT_PHYSICAL(KEFIR_AMD64_XASMGEN_REGISTER_RBP,
+                                                                               2 * KEFIR_AMD64_ABI_QWORD + reqs.stack,
+                                                                               KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT),
+                                          NULL));
+    }
 
     REQUIRE_OK(
         kefir_asmcmp_amd64_mov(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
