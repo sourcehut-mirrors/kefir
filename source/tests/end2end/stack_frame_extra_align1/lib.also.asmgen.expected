@@ -19,6 +19,8 @@
 .type test8, @function
 .global test9
 .type test9, @function
+.global test10
+.type test10, @function
 
 .section .text
 .L__kefir_text_section_begin:
@@ -439,6 +441,32 @@ test9:
     pop %rsp
     ret
 .L__kefir_text_func_test9_end:
+
+test10:
+.L__kefir_text_func_test10_begin:
+    mov %rsp, %r10
+    and $-4096, %rsp
+    sub $4072, %rsp
+    push %r10
+    mov (%r10), %r10
+    push %r10
+    push %rbp
+    mov %rsp, %rbp
+    sub $4096, %rsp
+    movl $0, -4096(%rbp)
+    lea -4096(%rbp), %rax
+    xor %edx, %edx
+    mov $4096, %rcx
+    div %rcx
+    xor %eax, %eax
+    cmp $0, %rdx
+    sete %al
+    lea (%rbp), %rsp
+    pop %rbp
+    add $8, %rsp
+    pop %rsp
+    ret
+.L__kefir_text_func_test10_end:
 
 .L__kefir_text_section_end:
 

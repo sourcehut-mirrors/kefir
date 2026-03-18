@@ -94,3 +94,8 @@ void *test9(int level) {
     ptr = &x;
     return test7(level);
 }
+
+int test10() {
+    _Alignas(4096) volatile int x = 0;
+    return ((unsigned long) &x) % 4096 == 0;
+}

@@ -26,6 +26,7 @@
 
 int main(void) {
     assert(test1());
+    assert(test10());
 
     for (long i = -4096; i < 4096; i++) {
         assert(test2((struct S1) {{i, i * 2, i - 1, i + 100, -i, 0, i / 2, i + 1000}}) ==

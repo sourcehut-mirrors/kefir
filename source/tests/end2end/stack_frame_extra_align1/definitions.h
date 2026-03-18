@@ -35,5 +35,6 @@ void *test6(int);
 void *test7(int);
 void *test8(int);
 void *test9(int);
+int test10(void);
 
 #endif
