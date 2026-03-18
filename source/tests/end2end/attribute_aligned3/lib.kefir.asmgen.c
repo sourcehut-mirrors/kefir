@@ -160,3 +160,16 @@ _Static_assert(_Alignof(struct S8) == 32);
 _Static_assert(__builtin_offsetof(struct S8, b) == 32);
 _Static_assert(sizeof(s21) == 64);
 _Static_assert(_Alignof(s21) == 32);
+
+struct S9 {
+    char a;
+} __attribute__((aligned(16)));
+
+struct {
+    struct S9 x[2];
+} s22 = {1, 2};
+
+_Static_assert(sizeof(s22) == 32);
+_Static_assert(_Alignof(s22) == 16);
+_Static_assert(__builtin_offsetof(__typeof__(s22), x[0].a) == 0);
+_Static_assert(__builtin_offsetof(__typeof__(s22), x[1].a) == 16);

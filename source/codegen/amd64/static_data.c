@@ -602,7 +602,9 @@ static kefir_result_t struct_static_data(const struct kefir_ir_type *type, kefir
 
     REQUIRE_OK(align_offset(layout, param));
     kefir_size_t start_offset = param->offset;
+    param->offset = 0;
     REQUIRE_OK(kefir_ir_type_visitor_list_nodes(type, param->visitor, payload, index + 1, typeentry->param));
+    param->offset += start_offset;
 
     REQUIRE_OK(trailing_padding(start_offset, layout, param));
     return KEFIR_OK;
@@ -689,7 +691,10 @@ static kefir_result_t array_static_data(const struct kefir_ir_type *type, kefir_
                     }
                 }
 
+                kefir_size_t current_offset = param->offset;
+                param->offset = 0;
                 REQUIRE_OK(kefir_ir_type_visitor_list_nodes(type, param->visitor, payload, index + 1, 1));
+                param->offset += current_offset;
             }
         } break;
 

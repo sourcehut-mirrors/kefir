@@ -43,6 +43,8 @@
 .type s20, @object
 .global s21
 .type s21, @object
+.global s22
+.type s22, @object
 
 .section .text
 .L__kefir_text_section_begin:
@@ -198,4 +200,11 @@ s21:
     .byte 2
     .quad 3
     .zero 23
+
+    .align 16
+s22:
+    .byte 1
+    .zero 15
+    .byte 2
+    .zero 15
 
