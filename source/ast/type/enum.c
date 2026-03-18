@@ -89,13 +89,13 @@ static kefir_bool_t compatible_enumeration_types(const struct kefir_ast_type_tra
                KEFIR_AST_TYPE_SAME(type1, kefir_ast_enumeration_underlying_type(&type2->enumeration_type))) {
         return true;
     }
-    REQUIRE(type1->enumeration_type.alignment == type2->enumeration_type.alignment, false);
     REQUIRE(type1->tag == KEFIR_AST_TYPE_ENUMERATION && type2->tag == KEFIR_AST_TYPE_ENUMERATION, false);
     REQUIRE((type1->enumeration_type.identifier == NULL && type2->enumeration_type.identifier == NULL) ||
                 (type1->enumeration_type.identifier != NULL && type2->enumeration_type.identifier != NULL &&
                  strcmp(type1->enumeration_type.identifier, type2->enumeration_type.identifier) == 0),
             false);
     if (type1->enumeration_type.complete && type2->enumeration_type.complete) {
+        REQUIRE(type1->enumeration_type.alignment == type2->enumeration_type.alignment, false);
         REQUIRE(kefir_list_length(&type1->enumeration_type.enumerators) ==
                     kefir_list_length(&type2->enumeration_type.enumerators),
                 false);
