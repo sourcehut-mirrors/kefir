@@ -284,6 +284,7 @@ static kefir_result_t scan_struct_attributes(struct kefir_mem *mem, const struct
                        (strcmp(attribute->prefix, "gnu") == 0 || strcmp(attribute->prefix, "__gnu__") == 0)) {
                 if (strcmp(attribute->name, "packed") == 0 || strcmp(attribute->name, "__packed__") == 0) {
                     struct_type->packed = KEFIR_AST_STRUCT_PACK;
+                    struct_type->packed_member_alignment = 1;
                 } else if (strcmp(attribute->name, "aligned") == 0 || strcmp(attribute->name, "__aligned__") == 0) {
                     if (kefir_list_length(&attribute->parameters) == 1) {
                         ASSIGN_DECL_CAST(struct kefir_ast_node_base *, param,
@@ -302,6 +303,18 @@ static kefir_result_t scan_struct_attributes(struct kefir_mem *mem, const struct
                        (strcmp(attribute->prefix, "kefir") == 0 || strcmp(attribute->prefix, "__kefir__") == 0)) {
                 if (strcmp(attribute->name, "__pragma_packed__") == 0) {
                     struct_type->packed = KEFIR_AST_STRUCT_PACK_FORCE;
+                    struct_type->packed_member_alignment = 1;
+                    if (kefir_list_length(&attribute->parameters) == 1) {
+                        ASSIGN_DECL_CAST(struct kefir_ast_node_base *, param,
+                                         kefir_list_head(&attribute->parameters)->value);
+                        REQUIRE_OK(kefir_ast_analyze_node(mem, context, param));
+                        REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(param,
+                                                                         KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER),
+                                KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &param->source_location,
+                                                       "Expected integral constant expression"));
+                        struct_type->packed_member_alignment =
+                            KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(param)->uinteger;
+                    }
                 }
             }
         }

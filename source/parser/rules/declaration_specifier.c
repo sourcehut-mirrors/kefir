@@ -302,7 +302,7 @@ static kefir_result_t scan_struct_specifier(struct kefir_mem *mem, struct kefir_
         REQUIRE_OK(res);
     }
 
-    if (pragma_state.pack.present && pragma_state.pack.value == 1) {
+    if (pragma_state.pack.present) {
         struct kefir_ast_attribute_list *attr_list = kefir_ast_new_attribute_list(mem);
         REQUIRE(attr_list != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate AST attribute list"));
 
@@ -311,6 +311,15 @@ static kefir_result_t scan_struct_specifier(struct kefir_mem *mem, struct kefir_
         REQUIRE_CHAIN(&res, kefir_ast_node_attributes_append(mem, &decl_specifier->attributes, attr_list));
         REQUIRE_ELSE(res == KEFIR_OK, {
             KEFIR_AST_NODE_FREE(mem, KEFIR_AST_NODE_BASE(attr_list));
+            return res;
+        });
+
+        struct kefir_ast_constant *value = kefir_ast_new_constant_uint(mem, pragma_state.pack.value);
+        REQUIRE(value != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate AST constant"));
+        res = kefir_list_insert_after(mem, &attr->parameters, kefir_list_tail(&attr->parameters),
+                                      KEFIR_AST_NODE_BASE(value));
+        REQUIRE_ELSE(res == KEFIR_OK, {
+            KEFIR_AST_NODE_FREE(mem, KEFIR_AST_NODE_BASE(value));
             return res;
         });
     }

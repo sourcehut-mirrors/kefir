@@ -169,7 +169,13 @@
                                     {
                                         "prefix": "kefir",
                                         "name": "__pragma_packed__",
-                                        "parameters": [],
+                                        "parameters": [
+                                            {
+                                                "class": "constant",
+                                                "type": "unsigned_integer",
+                                                "value": 1
+                                            }
+                                        ],
                                         "unstructured_parameters": []
                                     }
                                 ]
@@ -386,7 +392,13 @@
                                     {
                                         "prefix": "kefir",
                                         "name": "__pragma_packed__",
-                                        "parameters": [],
+                                        "parameters": [
+                                            {
+                                                "class": "constant",
+                                                "type": "unsigned_integer",
+                                                "value": 1
+                                            }
+                                        ],
                                         "unstructured_parameters": []
                                     }
                                 ]
@@ -501,7 +513,13 @@
                                     {
                                         "prefix": "kefir",
                                         "name": "__pragma_packed__",
-                                        "parameters": [],
+                                        "parameters": [
+                                            {
+                                                "class": "constant",
+                                                "type": "unsigned_integer",
+                                                "value": 1
+                                            }
+                                        ],
                                         "unstructured_parameters": []
                                     }
                                 ]

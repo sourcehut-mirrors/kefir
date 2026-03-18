@@ -311,8 +311,6 @@ kefir_result_t kefir_ir_type_visitor_list_nodes(const struct kefir_ir_type *type
                 break;
 
             case KEFIR_IR_TYPE_UNION:
-                REQUIRE(typeentry->param > 0,
-                        KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected IR type union to have non-zero member count"));
                 INVOKE(visitor->visit[KEFIR_IR_TYPE_UNION]);
                 break;
 

@@ -356,14 +356,27 @@ static kefir_result_t translate_bitfield(struct kefir_mem *mem, const struct kef
     return KEFIR_OK;
 }
 
+struct packed_param {
+    struct kefir_mem *mem;
+    const struct kefir_ir_target_platform *target_platform;
+    kefir_ir_target_platform_type_handle_t target_type_handle;
+    kefir_size_t alignment;
+};
+
 static kefir_result_t set_packed(const struct kefir_ir_type *type, kefir_size_t index,
                                  const struct kefir_ir_typeentry *typeentry, void *payload) {
     UNUSED(typeentry);
-    UNUSED(payload);
     REQUIRE(type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR type"));
+    ASSIGN_DECL_CAST(struct packed_param *, param, payload);
+    REQUIRE(param != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid packed structure visitor parameter"));
 
     if (kefir_ir_type_at(type, index)->alignment == 0) {
-        kefir_ir_type_at(type, index)->alignment = 1;
+        struct kefir_ir_target_platform_typeentry_info info;
+        REQUIRE_OK(param->target_platform->typeentry_info(param->mem, param->target_type_handle, index, &info));
+        if (info.max_alignment > param->alignment) {
+            kefir_ir_type_at(type, index)->alignment = param->alignment;
+        }
     }
     return KEFIR_OK;
 }
@@ -371,10 +384,16 @@ static kefir_result_t set_packed(const struct kefir_ir_type *type, kefir_size_t 
 static kefir_result_t set_packed_force(const struct kefir_ir_type *type, kefir_size_t index,
                                        const struct kefir_ir_typeentry *typeentry, void *payload) {
     UNUSED(typeentry);
-    UNUSED(payload);
     REQUIRE(type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR type"));
+    ASSIGN_DECL_CAST(struct packed_param *, param, payload);
+    REQUIRE(param != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid packed structure visitor parameter"));
 
-    kefir_ir_type_at(type, index)->alignment = 1;
+    struct kefir_ir_target_platform_typeentry_info info;
+    REQUIRE_OK(param->target_platform->typeentry_info(param->mem, param->target_type_handle, index, &info));
+    if (info.alignment > param->alignment) {
+        kefir_ir_type_at(type, index)->alignment = param->alignment;
+    }
     return KEFIR_OK;
 }
 
@@ -436,15 +455,37 @@ static kefir_result_t translate_struct_type(struct kefir_mem *mem, const struct 
     }
 
     if (type->structure_type.packed == KEFIR_AST_STRUCT_PACK) {
+        struct packed_param param = {.mem = mem,
+                                     .target_platform = env->target_platform,
+                                     .alignment = type->structure_type.packed_member_alignment};
+        REQUIRE_OK(env->target_platform->get_type(mem, env->target_platform, builder->type, &param.target_type_handle));
+
+        kefir_result_t res = KEFIR_OK;
         struct kefir_ir_type_visitor visitor;
-        REQUIRE_OK(kefir_ir_type_visitor_init(&visitor, set_packed));
-        REQUIRE_OK(kefir_ir_type_visitor_list_nodes(builder->type, &visitor, NULL, type_index + 1,
-                                                    kefir_ir_type_at(builder->type, type_index)->param));
+        REQUIRE_CHAIN(&res, kefir_ir_type_visitor_init(&visitor, set_packed));
+        REQUIRE_CHAIN(&res, kefir_ir_type_visitor_list_nodes(builder->type, &visitor, &param, type_index + 1,
+                                                             kefir_ir_type_at(builder->type, type_index)->param));
+        REQUIRE_ELSE(res == KEFIR_OK, {
+            env->target_platform->free_type(mem, param.target_type_handle);
+            return res;
+        });
+        REQUIRE_OK(env->target_platform->free_type(mem, param.target_type_handle));
     } else if (type->structure_type.packed == KEFIR_AST_STRUCT_PACK_FORCE) {
+        struct packed_param param = {.mem = mem,
+                                     .target_platform = env->target_platform,
+                                     .alignment = type->structure_type.packed_member_alignment};
+        REQUIRE_OK(env->target_platform->get_type(mem, env->target_platform, builder->type, &param.target_type_handle));
+
+        kefir_result_t res = KEFIR_OK;
         struct kefir_ir_type_visitor visitor;
-        REQUIRE_OK(kefir_ir_type_visitor_init(&visitor, set_packed_force));
-        REQUIRE_OK(kefir_ir_type_visitor_list_nodes(builder->type, &visitor, NULL, type_index + 1,
-                                                    kefir_ir_type_at(builder->type, type_index)->param));
+        REQUIRE_CHAIN(&res, kefir_ir_type_visitor_init(&visitor, set_packed_force));
+        REQUIRE_CHAIN(&res, kefir_ir_type_visitor_list_nodes(builder->type, &visitor, &param, type_index + 1,
+                                                             kefir_ir_type_at(builder->type, type_index)->param));
+        REQUIRE_ELSE(res == KEFIR_OK, {
+            env->target_platform->free_type(mem, param.target_type_handle);
+            return res;
+        });
+        REQUIRE_OK(env->target_platform->free_type(mem, param.target_type_handle));
     }
 
     REQUIRE_ELSE(res == KEFIR_OK, {
