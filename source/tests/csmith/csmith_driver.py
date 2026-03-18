@@ -43,7 +43,7 @@ class CSmith:
         self._extra_args = list(extra_args)
     
     def __call__(self) -> str:
-        argv = [self._csmith, '--no-packed-struct', *self._extra_args]
+        argv = [self._csmith, *self._extra_args]
         if  self._seed is not None:
             argv.append('--seed')
             argv.append(str(self._seed))
@@ -254,7 +254,7 @@ if __name__ == '__main__':
     if not args.cc:
         print('Expected valid reference C compiler')
         sys.exit(-1)
-    csmith = CSmith(args.csmith, args.seed, shlex.split(args.extra_args))
+    csmith = CSmith(args.csmith, args.seed, shlex.split(args.extra_args.strip()))
     kefir = Kefir(args.kefir, csmith.include_path)
     cc = CC(args.cc, csmith.include_path)
     try:

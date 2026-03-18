@@ -28,7 +28,7 @@ $(KEFIR_BIN_DIR)/tests/csmith/version:
 	@mv "$@.tmp" "$@"
 
 $(KEFIR_BIN_DIR)/tests/csmith/seed-%.test.done: CSMITH_SEED=$(patsubst seed-%.test.done,%,$(notdir $@))
-$(KEFIR_BIN_DIR)/tests/csmith/seed-%.test.done: CSMITH_EXTRA_ARGS=$(shell cat $(SOURCE_DIR)/tests/csmith/seed.list | grep $(CSMITH_SEED) | cut -s -d' ' -f2-)
+$(KEFIR_BIN_DIR)/tests/csmith/seed-%.test.done: CSMITH_EXTRA_ARGS=$(shell printf "%s " `grep $(CSMITH_SEED) $(SOURCE_DIR)/tests/csmith/seed.list | cut -s -d' ' -f2-`)
 .SECONDEXPANSION:
 $(KEFIR_BIN_DIR)/tests/csmith/seed-%.test.done: $$(CSMITH_KEFIR_RUNNER) $(KEFIR_BIN_DIR)/tests/csmith/version
 	@mkdir -p "$(shell dirname $@)"
