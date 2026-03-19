@@ -39,7 +39,7 @@
 
 struct S2 {
     CONTENTS;
-} __attribute__((packed));
+} __attribute((packed));
 
 extern struct S2 s2;
 
