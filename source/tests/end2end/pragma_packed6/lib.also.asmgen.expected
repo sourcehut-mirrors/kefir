@@ -1,0 +1,122 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global s2
+.type s2, @object
+.global s3
+.type s3, @object
+.global s4
+.type s4, @object
+.global s5
+.type s5, @object
+.global s6
+.type s6, @object
+
+.section .text
+.L__kefir_text_section_begin:
+.L__kefir_text_section_end:
+
+.section .data
+s2:
+    .byte 3
+    .byte 0
+    .byte 0
+    .byte 16
+    .byte 0
+    .byte 3
+    .byte 0
+    .byte 0
+    .byte 4
+    .byte 10
+    .byte 0
+    .byte 6
+    .byte 0
+    .byte 0
+    .byte 192
+    .byte 1
+    .byte 0
+
+    .align 2
+s3:
+    .byte 3
+    .byte 0
+    .byte 0
+    .byte 16
+    .byte 0
+    .byte 3
+    .byte 0
+    .byte 0
+    .byte 4
+    .byte 10
+    .byte 0
+    .byte 6
+    .byte 0
+    .byte 0
+    .byte 192
+    .byte 1
+    .byte 0
+    .zero 1
+
+    .align 4
+s4:
+    .byte 3
+    .byte 0
+    .byte 0
+    .byte 16
+    .byte 0
+    .byte 3
+    .byte 0
+    .byte 0
+    .byte 4
+    .byte 10
+    .byte 0
+    .byte 6
+    .byte 0
+    .byte 0
+    .byte 192
+    .byte 1
+    .byte 0
+    .zero 3
+
+    .align 4
+s5:
+    .byte 3
+    .byte 0
+    .byte 0
+    .byte 16
+    .byte 0
+    .byte 3
+    .byte 0
+    .byte 0
+    .byte 4
+    .byte 10
+    .byte 0
+    .byte 6
+    .byte 0
+    .byte 0
+    .byte 192
+    .byte 1
+    .byte 0
+    .zero 3
+
+    .align 4
+s6:
+    .byte 3
+    .byte 0
+    .byte 0
+    .byte 16
+    .byte 0
+    .byte 3
+    .byte 0
+    .byte 0
+    .byte 4
+    .byte 10
+    .byte 0
+    .byte 6
+    .byte 0
+    .byte 0
+    .byte 192
+    .byte 1
+    .byte 0
+    .zero 3
+

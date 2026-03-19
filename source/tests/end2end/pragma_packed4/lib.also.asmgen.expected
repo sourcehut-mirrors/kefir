@@ -1,0 +1,213 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global s2
+.type s2, @object
+.global s3
+.type s3, @object
+.global s4
+.type s4, @object
+.global s5
+.type s5, @object
+.global s6
+.type s6, @object
+
+.section .text
+.L__kefir_text_section_begin:
+.L__kefir_text_section_end:
+
+.section .data
+s2:
+    .byte 1
+    .byte 4
+    .byte 0
+    .byte 0
+    .byte 24
+    .byte 0
+    .byte 0
+    .byte 32
+    .byte 64
+    .byte 1
+    .byte 0
+    .byte 0
+    .quad 6
+    .quad 0
+    .byte 7
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 8
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 9
+    .byte 0
+    .byte 0
+    .byte 0
+    .zero 4
+    .quad 10
+    .zero 8
+    .byte 203
+    .byte 128
+    .byte 6
+    .byte 0
+    .byte 0
+    .byte 0
+
+    .align 2
+s3:
+    .byte 1
+    .byte 4
+    .byte 0
+    .byte 0
+    .byte 24
+    .byte 0
+    .byte 0
+    .byte 32
+    .byte 64
+    .byte 1
+    .byte 0
+    .byte 0
+    .quad 6
+    .quad 0
+    .byte 7
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 8
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 9
+    .byte 0
+    .byte 0
+    .byte 0
+    .zero 4
+    .quad 10
+    .zero 8
+    .byte 203
+    .byte 128
+    .byte 6
+    .byte 0
+    .byte 0
+    .byte 0
+
+    .align 4
+s4:
+    .byte 1
+    .byte 4
+    .byte 0
+    .byte 0
+    .byte 24
+    .byte 0
+    .byte 0
+    .byte 32
+    .byte 64
+    .byte 1
+    .byte 0
+    .byte 0
+    .quad 6
+    .quad 0
+    .byte 7
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 8
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 9
+    .byte 0
+    .byte 0
+    .byte 0
+    .zero 4
+    .quad 10
+    .zero 8
+    .byte 203
+    .byte 128
+    .byte 6
+    .byte 0
+    .byte 0
+    .byte 0
+    .zero 2
+
+    .align 8
+s5:
+    .byte 1
+    .byte 4
+    .byte 0
+    .byte 0
+    .byte 24
+    .byte 0
+    .byte 0
+    .byte 32
+    .byte 64
+    .byte 1
+    .byte 0
+    .byte 0
+    .zero 4
+    .quad 6
+    .quad 0
+    .byte 7
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 8
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 9
+    .byte 0
+    .byte 0
+    .byte 0
+    .zero 4
+    .quad 10
+    .zero 8
+    .byte 203
+    .byte 128
+    .byte 6
+    .byte 0
+    .byte 0
+    .byte 0
+    .zero 2
+
+    .align 16
+s6:
+    .byte 1
+    .byte 4
+    .byte 0
+    .byte 0
+    .byte 24
+    .byte 0
+    .byte 0
+    .byte 32
+    .byte 64
+    .byte 1
+    .byte 0
+    .byte 0
+    .zero 4
+    .quad 6
+    .quad 0
+    .byte 7
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 8
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 9
+    .byte 0
+    .byte 0
+    .byte 0
+    .zero 4
+    .quad 10
+    .zero 8
+    .byte 203
+    .byte 128
+    .byte 6
+    .byte 0
+    .byte 0
+    .byte 0
+    .zero 10
+

@@ -37,8 +37,8 @@ typedef struct kefir_ir_bitfield_allocator {
                            kefir_ir_typecode_t, kefir_int64_t, kefir_uint32_t, struct kefir_ir_typeentry *,
                            struct kefir_ir_bitfield *);
     kefir_result_t (*next_colocated)(struct kefir_mem *, struct kefir_ir_bitfield_allocator *, kefir_bool_t,
-                                     kefir_ir_typecode_t, kefir_int64_t, kefir_uint32_t, struct kefir_ir_typeentry *,
-                                     struct kefir_ir_bitfield *);
+                                     kefir_ir_typecode_t, kefir_int64_t, kefir_uint32_t, kefir_bool_t,
+                                     struct kefir_ir_typeentry *, struct kefir_ir_bitfield *);
     kefir_result_t (*free)(struct kefir_mem *, struct kefir_ir_bitfield_allocator *);
 
     void *payload;
@@ -50,9 +50,9 @@ typedef struct kefir_ir_bitfield_allocator {
                                          bitfield)                                                                   \
     ((allocator)->next((mem), (allocator), (struct_index), (named), (typecode), (typeparam), (width), (typeentry),   \
                        (bitfield)))
-#define KEFIR_IR_BITFIELD_ALLOCATOR_NEXT_COLOCATED(mem, allocator, named, typecode, typeparam, width, typeentry, \
-                                                   bitfield)                                                     \
-    ((allocator)->next_colocated((mem), (allocator), (named), (typecode), (typeparam), (width), (typeentry),     \
+#define KEFIR_IR_BITFIELD_ALLOCATOR_NEXT_COLOCATED(mem, allocator, named, typecode, typeparam, width, packed,          \
+                                                   typeentry, bitfield)                                                \
+    ((allocator)->next_colocated((mem), (allocator), (named), (typecode), (typeparam), (width), (packed), (typeentry), \
                                  (bitfield)))
 #define KEFIR_IR_BITFIELD_ALLOCATOR_FREE(mem, allocator) ((allocator)->free((mem), (allocator)))
 
