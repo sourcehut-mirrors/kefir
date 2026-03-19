@@ -206,8 +206,11 @@ class TestDriver:
                 kefir_finished, kefir_result = kefir_exe(tmpdir, timeout)
                 if not kefir_finished:
                     continue
-                cc_finished, cc_result = cc_exe(tmpdir, timeout)
-                if not cc_finished:
+                try:
+                    cc_finished, cc_result = cc_exe(tmpdir, timeout)
+                    if not cc_finished:
+                        continue
+                except subprocess.CalledProcessError:
                     continue
                 return TestResult(worker_id=worker_id, test_index=test_index, seed=test_seed, timestamp=time.time() * 1000, test_code=test_code, success=(kefir_result == cc_result))
             except:
