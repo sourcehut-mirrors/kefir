@@ -276,34 +276,6 @@
                                             "attributes": [
                                                 {
                                                     "prefix": "decl5",
-                                                    "name": "attr0",
-                                                    "parameters": [],
-                                                    "unstructured_parameters": []
-                                                },
-                                                {
-                                                    "prefix": "decl5",
-                                                    "name": "attr1",
-                                                    "parameters": [],
-                                                    "unstructured_parameters": []
-                                                }
-                                            ]
-                                        },
-                                        {
-                                            "class": "attribute_list",
-                                            "attributes": [
-                                                {
-                                                    "prefix": "decl5",
-                                                    "name": "attr2",
-                                                    "parameters": [],
-                                                    "unstructured_parameters": []
-                                                }
-                                            ]
-                                        },
-                                        {
-                                            "class": "attribute_list",
-                                            "attributes": [
-                                                {
-                                                    "prefix": "decl5",
                                                     "name": "attr3",
                                                     "parameters": [],
                                                     "unstructured_parameters": []
@@ -317,7 +289,36 @@
                                         "class": "init_declarator",
                                         "declarator": {
                                             "class": "abstract",
-                                            "attributes": []
+                                            "attributes": [
+                                                {
+                                                    "class": "attribute_list",
+                                                    "attributes": [
+                                                        {
+                                                            "prefix": "decl5",
+                                                            "name": "attr0",
+                                                            "parameters": [],
+                                                            "unstructured_parameters": []
+                                                        },
+                                                        {
+                                                            "prefix": "decl5",
+                                                            "name": "attr1",
+                                                            "parameters": [],
+                                                            "unstructured_parameters": []
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "class": "attribute_list",
+                                                    "attributes": [
+                                                        {
+                                                            "prefix": "decl5",
+                                                            "name": "attr2",
+                                                            "parameters": [],
+                                                            "unstructured_parameters": []
+                                                        }
+                                                    ]
+                                                }
+                                            ]
                                         },
                                         "initializer": null
                                     }
@@ -365,36 +366,7 @@
                                             "attributes": []
                                         }
                                     ],
-                                    "attributes": [
-                                        {
-                                            "class": "attribute_list",
-                                            "attributes": [
-                                                {
-                                                    "prefix": "decl5",
-                                                    "name": "attr0",
-                                                    "parameters": [],
-                                                    "unstructured_parameters": []
-                                                },
-                                                {
-                                                    "prefix": "decl5",
-                                                    "name": "attr1",
-                                                    "parameters": [],
-                                                    "unstructured_parameters": []
-                                                }
-                                            ]
-                                        },
-                                        {
-                                            "class": "attribute_list",
-                                            "attributes": [
-                                                {
-                                                    "prefix": "decl5",
-                                                    "name": "attr2",
-                                                    "parameters": [],
-                                                    "unstructured_parameters": []
-                                                }
-                                            ]
-                                        }
-                                    ]
+                                    "attributes": []
                                 },
                                 "init_declarators": [
                                     {
@@ -410,6 +382,34 @@
                                                         {
                                                             "prefix": "decl5",
                                                             "name": "attr3",
+                                                            "parameters": [],
+                                                            "unstructured_parameters": []
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "class": "attribute_list",
+                                                    "attributes": [
+                                                        {
+                                                            "prefix": "decl5",
+                                                            "name": "attr0",
+                                                            "parameters": [],
+                                                            "unstructured_parameters": []
+                                                        },
+                                                        {
+                                                            "prefix": "decl5",
+                                                            "name": "attr1",
+                                                            "parameters": [],
+                                                            "unstructured_parameters": []
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "class": "attribute_list",
+                                                    "attributes": [
+                                                        {
+                                                            "prefix": "decl5",
+                                                            "name": "attr2",
                                                             "parameters": [],
                                                             "unstructured_parameters": []
                                                         }
@@ -474,34 +474,6 @@
                                             "attributes": [
                                                 {
                                                     "prefix": "decl6",
-                                                    "name": "attr0",
-                                                    "parameters": [],
-                                                    "unstructured_parameters": []
-                                                },
-                                                {
-                                                    "prefix": "decl6",
-                                                    "name": "attr1",
-                                                    "parameters": [],
-                                                    "unstructured_parameters": []
-                                                }
-                                            ]
-                                        },
-                                        {
-                                            "class": "attribute_list",
-                                            "attributes": [
-                                                {
-                                                    "prefix": "decl6",
-                                                    "name": "attr2",
-                                                    "parameters": [],
-                                                    "unstructured_parameters": []
-                                                }
-                                            ]
-                                        },
-                                        {
-                                            "class": "attribute_list",
-                                            "attributes": [
-                                                {
-                                                    "prefix": "decl6",
                                                     "name": "attr3",
                                                     "parameters": [],
                                                     "unstructured_parameters": []
@@ -546,6 +518,34 @@
                                                         {
                                                             "prefix": "decl6",
                                                             "name": "attr4",
+                                                            "parameters": [],
+                                                            "unstructured_parameters": []
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "class": "attribute_list",
+                                                    "attributes": [
+                                                        {
+                                                            "prefix": "decl6",
+                                                            "name": "attr0",
+                                                            "parameters": [],
+                                                            "unstructured_parameters": []
+                                                        },
+                                                        {
+                                                            "prefix": "decl6",
+                                                            "name": "attr1",
+                                                            "parameters": [],
+                                                            "unstructured_parameters": []
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "class": "attribute_list",
+                                                    "attributes": [
+                                                        {
+                                                            "prefix": "decl6",
+                                                            "name": "attr2",
                                                             "parameters": [],
                                                             "unstructured_parameters": []
                                                         }
@@ -605,34 +605,6 @@
                                         }
                                     ],
                                     "attributes": [
-                                        {
-                                            "class": "attribute_list",
-                                            "attributes": [
-                                                {
-                                                    "prefix": "decl7",
-                                                    "name": "attr0",
-                                                    "parameters": [],
-                                                    "unstructured_parameters": []
-                                                },
-                                                {
-                                                    "prefix": "decl7",
-                                                    "name": "attr1",
-                                                    "parameters": [],
-                                                    "unstructured_parameters": []
-                                                }
-                                            ]
-                                        },
-                                        {
-                                            "class": "attribute_list",
-                                            "attributes": [
-                                                {
-                                                    "prefix": "decl7",
-                                                    "name": "attr2",
-                                                    "parameters": [],
-                                                    "unstructured_parameters": []
-                                                }
-                                            ]
-                                        },
                                         {
                                             "class": "attribute_list",
                                             "attributes": [
@@ -730,6 +702,34 @@
                                                         {
                                                             "prefix": "decl7",
                                                             "name": "attr4",
+                                                            "parameters": [],
+                                                            "unstructured_parameters": []
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "class": "attribute_list",
+                                                    "attributes": [
+                                                        {
+                                                            "prefix": "decl7",
+                                                            "name": "attr0",
+                                                            "parameters": [],
+                                                            "unstructured_parameters": []
+                                                        },
+                                                        {
+                                                            "prefix": "decl7",
+                                                            "name": "attr1",
+                                                            "parameters": [],
+                                                            "unstructured_parameters": []
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "class": "attribute_list",
+                                                    "attributes": [
+                                                        {
+                                                            "prefix": "decl7",
+                                                            "name": "attr2",
                                                             "parameters": [],
                                                             "unstructured_parameters": []
                                                         }

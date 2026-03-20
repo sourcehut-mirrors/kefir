@@ -35,19 +35,7 @@ source/tests/end2end/std_attributes_deprecated9/lib.kefir.asmgen.c@22:16 warning
                                     "attributes": []
                                 }
                             ],
-                            "attributes": [
-                                {
-                                    "class": "attribute_list",
-                                    "attributes": [
-                                        {
-                                            "prefix": null,
-                                            "name": "deprecated",
-                                            "parameters": [],
-                                            "unstructured_parameters": []
-                                        }
-                                    ]
-                                }
-                            ]
+                            "attributes": []
                         },
                         "init_declarators": [
                             {
@@ -56,7 +44,19 @@ source/tests/end2end/std_attributes_deprecated9/lib.kefir.asmgen.c@22:16 warning
                                     "class": "identifier",
                                     "identifier": "a",
                                     "asm_label": null,
-                                    "attributes": []
+                                    "attributes": [
+                                        {
+                                            "class": "attribute_list",
+                                            "attributes": [
+                                                {
+                                                    "prefix": null,
+                                                    "name": "deprecated",
+                                                    "parameters": [],
+                                                    "unstructured_parameters": []
+                                                }
+                                            ]
+                                        }
+                                    ]
                                 },
                                 "initializer": null
                             }
@@ -72,28 +72,7 @@ source/tests/end2end/std_attributes_deprecated9/lib.kefir.asmgen.c@22:16 warning
                                     "attributes": []
                                 }
                             ],
-                            "attributes": [
-                                {
-                                    "class": "attribute_list",
-                                    "attributes": [
-                                        {
-                                            "prefix": null,
-                                            "name": "deprecated",
-                                            "parameters": [],
-                                            "unstructured_parameters": [
-                                                {
-                                                    "class": "string_literal",
-                                                    "preprocessor": false,
-                                                    "raw": false,
-                                                    "type": "multibyte",
-                                                    "content": "DEPRECATED\u0000",
-                                                    "length": 11
-                                                }
-                                            ]
-                                        }
-                                    ]
-                                }
-                            ]
+                            "attributes": []
                         },
                         "init_declarators": [
                             {
@@ -102,7 +81,28 @@ source/tests/end2end/std_attributes_deprecated9/lib.kefir.asmgen.c@22:16 warning
                                     "class": "identifier",
                                     "identifier": "b",
                                     "asm_label": null,
-                                    "attributes": []
+                                    "attributes": [
+                                        {
+                                            "class": "attribute_list",
+                                            "attributes": [
+                                                {
+                                                    "prefix": null,
+                                                    "name": "deprecated",
+                                                    "parameters": [],
+                                                    "unstructured_parameters": [
+                                                        {
+                                                            "class": "string_literal",
+                                                            "preprocessor": false,
+                                                            "raw": false,
+                                                            "type": "multibyte",
+                                                            "content": "DEPRECATED\u0000",
+                                                            "length": 11
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    ]
                                 },
                                 "initializer": null
                             }

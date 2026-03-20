@@ -80,11 +80,20 @@ static kefir_result_t scan_struct_field_declaration(struct kefir_mem *mem, struc
     ASSIGN_DECL_CAST(struct scan_param *, param, payload);
     ASSIGN_DECL_CAST(struct kefir_ast_structure_declaration_entry **, entry_ptr, param->ptr);
 
+    struct kefir_ast_node_attributes attributes;
+    REQUIRE_OK(kefir_ast_node_attributes_init(&attributes));
+
+    kefir_result_t res = KEFIR_OK;
+    SCAN_ATTRIBUTES(&res, mem, parser, &attributes);
+
     struct kefir_ast_structure_declaration_entry *entry = kefir_ast_structure_declaration_entry_alloc(mem);
-    REQUIRE(entry != NULL,
-            KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST structure declaration entry"));
-    kefir_result_t res = parser->ruleset.declaration_specifier_list(mem, parser, &entry->declaration.specifiers);
+    REQUIRE_ELSE(entry != NULL, {
+        kefir_ast_node_attributes_free(mem, &attributes);
+        return KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST structure declaration entry");
+    });
+    res = parser->ruleset.declaration_specifier_list(mem, parser, &entry->declaration.specifiers);
     REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_ast_node_attributes_free(mem, &attributes);
         kefir_ast_structure_declaration_entry_free(mem, entry);
         return res;
     });
@@ -109,6 +118,7 @@ static kefir_result_t scan_struct_field_declaration(struct kefir_mem *mem, struc
             }
         }
         REQUIRE_ELSE(res == KEFIR_OK, {
+            kefir_ast_node_attributes_free(mem, &attributes);
             kefir_ast_structure_declaration_entry_free(mem, entry);
             return res;
         });
@@ -122,13 +132,22 @@ static kefir_result_t scan_struct_field_declaration(struct kefir_mem *mem, struc
                                              "Expected integral constant expression");
             }
             REQUIRE_ELSE(res == KEFIR_OK, {
+                kefir_ast_node_attributes_free(mem, &attributes);
                 kefir_ast_structure_declaration_entry_free(mem, entry);
                 return res;
             });
         }
 
+        res = kefir_ast_node_attributes_clone(mem, &declarator->attributes, &attributes);
+        REQUIRE_ELSE(res == KEFIR_OK, {
+            kefir_ast_node_attributes_free(mem, &attributes);
+            kefir_ast_structure_declaration_entry_free(mem, entry);
+            return res;
+        });
+
         res = kefir_ast_structure_declaration_entry_append(mem, entry, declarator, bitwidth);
         REQUIRE_ELSE(res == KEFIR_OK, {
+            kefir_ast_node_attributes_free(mem, &attributes);
             kefir_ast_structure_declaration_entry_free(mem, entry);
             return res;
         });
@@ -136,6 +155,7 @@ static kefir_result_t scan_struct_field_declaration(struct kefir_mem *mem, struc
         if (PARSER_TOKEN_IS_PUNCTUATOR(parser, 0, KEFIR_PUNCTUATOR_COMMA)) {
             res = PARSER_SHIFT(parser);
             REQUIRE_ELSE(res == KEFIR_OK, {
+                kefir_ast_node_attributes_free(mem, &attributes);
                 kefir_ast_structure_declaration_entry_free(mem, entry);
                 return res;
             });
@@ -149,6 +169,12 @@ static kefir_result_t scan_struct_field_declaration(struct kefir_mem *mem, struc
         &res, PARSER_TOKEN_IS_PUNCTUATOR(parser, 0, KEFIR_PUNCTUATOR_SEMICOLON),
         KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(parser, 0), "Expected semicolon"));
     REQUIRE_CHAIN(&res, PARSER_SHIFT(parser));
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_ast_node_attributes_free(mem, &attributes);
+        kefir_ast_structure_declaration_entry_free(mem, entry);
+        return res;
+    });
+    res = kefir_ast_node_attributes_free(mem, &attributes);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_ast_structure_declaration_entry_free(mem, entry);
         return res;
@@ -815,15 +841,9 @@ static kefir_result_t scan_alignment_specifier(struct kefir_mem *mem, struct kef
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_parser_scan_declaration_specifier(struct kefir_mem *mem, struct kefir_parser *parser,
-                                                       struct kefir_ast_declarator_specifier_list *specifiers) {
-    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
-    REQUIRE(parser != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid parser"));
-    REQUIRE(specifiers != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid declarator specifier list"));
-
+static kefir_result_t kefir_parser_scan_declaration_specifier_impl(
+    struct kefir_mem *mem, struct kefir_parser *parser, struct kefir_ast_declarator_specifier_list *specifiers) {
     kefir_result_t res = KEFIR_OK;
-    SCAN_ATTRIBUTES(&res, mem, parser, &specifiers->attributes);
-    REQUIRE_OK(res);
 
     res = kefir_parser_try_invoke(mem, parser, scan_storage_class, specifiers);
     REQUIRE(res == KEFIR_NO_MATCH, res);
@@ -834,6 +854,21 @@ kefir_result_t kefir_parser_scan_declaration_specifier(struct kefir_mem *mem, st
     res = kefir_parser_try_invoke(mem, parser, scan_function_specifier, specifiers);
     REQUIRE(res == KEFIR_NO_MATCH, res);
     REQUIRE_OK(kefir_parser_try_invoke(mem, parser, scan_alignment_specifier, specifiers));
+
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_parser_scan_declaration_specifier(struct kefir_mem *mem, struct kefir_parser *parser,
+                                                       struct kefir_ast_declarator_specifier_list *specifiers) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(parser != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid parser"));
+    REQUIRE(specifiers != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid declarator specifier list"));
+
+    kefir_result_t res = kefir_parser_scan_declaration_specifier_impl(mem, parser, specifiers);
+    if (res != KEFIR_NO_MATCH) {
+        SCAN_ATTRIBUTES(&res, mem, parser, &specifiers->attributes);
+    }
+    REQUIRE_OK(res);
 
     return KEFIR_OK;
 }

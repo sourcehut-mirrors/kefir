@@ -288,8 +288,15 @@ static kefir_result_t scan_function_parameter(struct kefir_mem *mem, struct kefi
     struct kefir_ast_node_attributes attributes;
     REQUIRE_OK(kefir_ast_node_attributes_init(&attributes));
 
+    kefir_result_t res = KEFIR_OK;
+    SCAN_ATTRIBUTES(&res, mem, parser, &attributes);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_ast_node_attributes_free(mem, &attributes);
+        return res;
+    });
+
     struct kefir_ast_declarator_specifier_list specifiers;
-    kefir_result_t res = kefir_ast_declarator_specifier_list_init(&specifiers);
+    res = kefir_ast_declarator_specifier_list_init(&specifiers);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_ast_node_attributes_free(mem, &attributes);
         return res;

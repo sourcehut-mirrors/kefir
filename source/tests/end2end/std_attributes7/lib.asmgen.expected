@@ -217,26 +217,26 @@
                                             "attributes": []
                                         }
                                     ],
-                                    "attributes": [
-                                        {
-                                            "class": "attribute_list",
-                                            "attributes": [
-                                                {
-                                                    "prefix": null,
-                                                    "name": "attr4",
-                                                    "parameters": [],
-                                                    "unstructured_parameters": []
-                                                }
-                                            ]
-                                        }
-                                    ]
+                                    "attributes": []
                                 },
                                 "init_declarators": [
                                     {
                                         "class": "init_declarator",
                                         "declarator": {
                                             "class": "abstract",
-                                            "attributes": []
+                                            "attributes": [
+                                                {
+                                                    "class": "attribute_list",
+                                                    "attributes": [
+                                                        {
+                                                            "prefix": null,
+                                                            "name": "attr4",
+                                                            "parameters": [],
+                                                            "unstructured_parameters": []
+                                                        }
+                                                    ]
+                                                }
+                                            ]
                                         },
                                         "initializer": null
                                     }
@@ -305,26 +305,26 @@
                                     "attributes": []
                                 }
                             ],
-                            "attributes": [
-                                {
-                                    "class": "attribute_list",
-                                    "attributes": [
-                                        {
-                                            "prefix": null,
-                                            "name": "attr4",
-                                            "parameters": [],
-                                            "unstructured_parameters": []
-                                        }
-                                    ]
-                                }
-                            ]
+                            "attributes": []
                         },
                         "init_declarators": [
                             {
                                 "class": "init_declarator",
                                 "declarator": {
                                     "class": "abstract",
-                                    "attributes": []
+                                    "attributes": [
+                                        {
+                                            "class": "attribute_list",
+                                            "attributes": [
+                                                {
+                                                    "prefix": null,
+                                                    "name": "attr4",
+                                                    "parameters": [],
+                                                    "unstructured_parameters": []
+                                                }
+                                            ]
+                                        }
+                                    ]
                                 },
                                 "initializer": null
                             }

@@ -28,9 +28,24 @@ kefir_result_t KEFIR_PARSER_RULE_FN_PREFIX(type_name)(struct kefir_mem *mem, str
     struct kefir_ast_declarator_specifier_list specifiers;
     struct kefir_ast_declarator *declarator = NULL;
 
-    REQUIRE_OK(kefir_ast_declarator_specifier_list_init(&specifiers));
-    kefir_result_t res = parser->ruleset.declaration_specifier_list(mem, parser, &specifiers);
+    struct kefir_ast_node_attributes attributes;
+    REQUIRE_OK(kefir_ast_node_attributes_init(&attributes));
+
+    kefir_result_t res = KEFIR_OK;
+    SCAN_ATTRIBUTES(&res, mem, parser, &attributes);
     REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_ast_node_attributes_free(mem, &attributes);
+        return res;
+    });
+
+    res = kefir_ast_declarator_specifier_list_init(&specifiers);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_ast_node_attributes_free(mem, &attributes);
+        return res;
+    });
+    res = parser->ruleset.declaration_specifier_list(mem, parser, &specifiers);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_ast_node_attributes_free(mem, &attributes);
         kefir_ast_declarator_specifier_list_free(mem, &specifiers);
         return res;
     });
@@ -39,16 +54,31 @@ kefir_result_t KEFIR_PARSER_RULE_FN_PREFIX(type_name)(struct kefir_mem *mem, str
     if (res == KEFIR_NO_MATCH) {
         declarator = kefir_ast_declarator_identifier(mem, NULL, NULL);
         REQUIRE_ELSE(declarator != NULL, {
+            kefir_ast_node_attributes_free(mem, &attributes);
             kefir_ast_declarator_specifier_list_free(mem, &specifiers);
             return KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate empty AST identifier declarator");
         });
         declarator->source_location = *PARSER_TOKEN_LOCATION(parser, 0);
     } else {
         REQUIRE_ELSE(res == KEFIR_OK, {
+            kefir_ast_node_attributes_free(mem, &attributes);
             kefir_ast_declarator_specifier_list_free(mem, &specifiers);
             return res;
         });
     }
+    res = kefir_ast_node_attributes_move(&declarator->attributes, &attributes);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_ast_node_attributes_free(mem, &attributes);
+        kefir_ast_declarator_free(mem, declarator);
+        kefir_ast_declarator_specifier_list_free(mem, &specifiers);
+        return res;
+    });
+    res = kefir_ast_node_attributes_free(mem, &attributes);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_ast_declarator_free(mem, declarator);
+        kefir_ast_declarator_specifier_list_free(mem, &specifiers);
+        return res;
+    });
 
     struct kefir_ast_type_name *type_name = kefir_ast_new_type_name(mem, declarator);
     REQUIRE_ELSE(type_name != NULL, {
