@@ -54,17 +54,6 @@
                                 "unstructured_parameters": []
                             }
                         ]
-                    },
-                    {
-                        "class": "attribute_list",
-                        "attributes": [
-                            {
-                                "prefix": "var",
-                                "name": "attr5",
-                                "parameters": [],
-                                "unstructured_parameters": []
-                            }
-                        ]
                     }
                 ]
             },
@@ -82,6 +71,17 @@
                                     {
                                         "prefix": "var",
                                         "name": "attr1",
+                                        "parameters": [],
+                                        "unstructured_parameters": []
+                                    }
+                                ]
+                            },
+                            {
+                                "class": "attribute_list",
+                                "attributes": [
+                                    {
+                                        "prefix": "var",
+                                        "name": "attr5",
                                         "parameters": [],
                                         "unstructured_parameters": []
                                     }

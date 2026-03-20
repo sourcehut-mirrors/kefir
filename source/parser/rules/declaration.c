@@ -57,10 +57,11 @@ static kefir_result_t kefir_parser_update_scope_with_declarator(struct kefir_mem
     return KEFIR_OK;
 }
 
-static kefir_result_t scan_specifiers(struct kefir_mem *mem, struct kefir_parser_ast_builder *builder) {
+static kefir_result_t scan_specifiers(struct kefir_mem *mem, struct kefir_parser_ast_builder *builder,
+                                      struct kefir_ast_node_attributes *attributes) {
     struct kefir_ast_declarator_specifier_list list;
     REQUIRE_OK(kefir_ast_declarator_specifier_list_init(&list));
-    kefir_result_t res = builder->parser->ruleset.declaration_specifier_list(mem, builder->parser, &list);
+    kefir_result_t res = builder->parser->ruleset.declaration_specifier_list(mem, builder->parser, &list, attributes);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_ast_declarator_specifier_list_free(mem, &list);
         return res;
@@ -134,7 +135,7 @@ static kefir_result_t builder_callback(struct kefir_mem *mem, struct kefir_parse
     res = KEFIR_OK;
     SCAN_ATTRIBUTES(&res, mem, parser, &attributes);
 
-    REQUIRE_CHAIN(&res, scan_specifiers(mem, builder));
+    REQUIRE_CHAIN(&res, scan_specifiers(mem, builder, &attributes));
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_ast_node_attributes_free(mem, &attributes);
         return res;

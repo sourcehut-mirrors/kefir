@@ -43,7 +43,7 @@ kefir_result_t KEFIR_PARSER_RULE_FN_PREFIX(type_name)(struct kefir_mem *mem, str
         kefir_ast_node_attributes_free(mem, &attributes);
         return res;
     });
-    res = parser->ruleset.declaration_specifier_list(mem, parser, &specifiers);
+    res = parser->ruleset.declaration_specifier_list(mem, parser, &specifiers, &attributes);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_ast_node_attributes_free(mem, &attributes);
         kefir_ast_declarator_specifier_list_free(mem, &specifiers);
