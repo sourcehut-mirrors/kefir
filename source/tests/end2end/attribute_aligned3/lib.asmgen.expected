@@ -107,7 +107,7 @@ s8:
     .quad 2
     .zero 23
 
-    .align 4
+    .align 16
 s9:
     .byte 1
     .quad 2
@@ -139,6 +139,7 @@ s13:
     .quad 2
     .zero 7
 
+    .align 16
 s14:
     .byte 1
     .quad 2

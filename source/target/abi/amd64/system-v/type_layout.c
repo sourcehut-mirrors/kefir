@@ -113,7 +113,8 @@ struct compound_type_layout {
 
 static kefir_result_t update_compound_type_layout(struct compound_type_layout *compound_type_layout,
                                                   struct kefir_abi_amd64_typeentry_layout *data,
-                                                  const struct kefir_ir_typeentry *typeentry) {
+                                                  const struct kefir_ir_typeentry *typeentry,
+                                                  kefir_size_t min_aligment) {
     if (typeentry->atomic) {
         if (data->size <= 2) {
             // Intentionally left blank
@@ -129,7 +130,7 @@ static kefir_result_t update_compound_type_layout(struct compound_type_layout *c
         }
     }
 
-    if (typeentry->alignment != 0) {
+    if (typeentry->alignment != 0 && typeentry->alignment >= min_aligment) {
         data->aligned = typeentry->alignment >= data->alignment;
         data->alignment = typeentry->alignment;
     }
@@ -158,7 +159,7 @@ static kefir_result_t calculate_integer_layout(const struct kefir_ir_type *type,
     REQUIRE_OK(kefir_amd64_sysv_scalar_type_layout(typeentry, &data->size, &data->alignment));
 
     data->aligned = true;
-    return update_compound_type_layout(compound_type_layout, data, typeentry);
+    return update_compound_type_layout(compound_type_layout, data, typeentry, 0);
 }
 
 static kefir_result_t calculate_sse_layout(const struct kefir_ir_type *type, kefir_size_t index,
@@ -187,7 +188,7 @@ static kefir_result_t calculate_sse_layout(const struct kefir_ir_type *type, kef
             return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unexpectedly encountered non-floating point type");
     }
     data->aligned = true;
-    return update_compound_type_layout(compound_type_layout, data, typeentry);
+    return update_compound_type_layout(compound_type_layout, data, typeentry, 0);
 }
 
 static kefir_result_t calculate_complex_layout(const struct kefir_ir_type *type, kefir_size_t index,
@@ -216,7 +217,7 @@ static kefir_result_t calculate_complex_layout(const struct kefir_ir_type *type,
             return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unexpectedly encountered non-complex type");
     }
     data->aligned = true;
-    return update_compound_type_layout(compound_type_layout, data, typeentry);
+    return update_compound_type_layout(compound_type_layout, data, typeentry, 0);
 }
 
 static kefir_result_t calculate_struct_union_layout(const struct kefir_ir_type *type, kefir_size_t index,
@@ -240,7 +241,7 @@ static kefir_result_t calculate_struct_union_layout(const struct kefir_ir_type *
         kefir_target_abi_pad_aligned(typeentry->typecode == KEFIR_IR_TYPE_STRUCT ? nested_compound_type_layout.offset
                                                                                  : nested_compound_type_layout.max_size,
                                      data->alignment);
-    return update_compound_type_layout(compound_type_layout, data, typeentry);
+    return update_compound_type_layout(compound_type_layout, data, typeentry, 0);
 }
 
 static kefir_result_t calculate_array_layout(const struct kefir_ir_type *type, kefir_size_t index,
@@ -261,10 +262,12 @@ static kefir_result_t calculate_array_layout(const struct kefir_ir_type *type, k
     data->alignment = nested_compound_type_layout.max_alignment;
     data->aligned = nested_compound_type_layout.aligned;
     data->size = nested_compound_type_layout.max_size * typeentry->param;
+    kefir_size_t min_aligment = 0;
     if (compound_type_layout->extra_align_array && data->size >= 2 * KEFIR_AMD64_ABI_QWORD) {
-        data->alignment = MAX(data->alignment, 2 * KEFIR_AMD64_ABI_QWORD);
+        min_aligment = 2 * KEFIR_AMD64_ABI_QWORD;
+        data->alignment = MAX(data->alignment, min_aligment);
     }
-    return update_compound_type_layout(compound_type_layout, data, typeentry);
+    return update_compound_type_layout(compound_type_layout, data, typeentry, min_aligment);
 }
 
 static kefir_result_t calculate_decimal_layout(const struct kefir_ir_type *type, kefir_size_t index,
@@ -293,7 +296,7 @@ static kefir_result_t calculate_decimal_layout(const struct kefir_ir_type *type,
             return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unexpectedly encountered non-decimal floating point type");
     }
     data->aligned = true;
-    return update_compound_type_layout(compound_type_layout, data, typeentry);
+    return update_compound_type_layout(compound_type_layout, data, typeentry, 0);
 }
 
 static kefir_result_t calculate_layout(const struct kefir_ir_type *type, kefir_abi_amd64_type_layout_context_t context,
