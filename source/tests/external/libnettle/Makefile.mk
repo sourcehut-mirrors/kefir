@@ -37,7 +37,7 @@ $(KEFIR_EXTERNAL_TEST_LIBNETTLE_SOURCE_DIR)/Makefile: $(KEFIR_EXTERNAL_TEST_LIBN
 		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
-		./configure
+		./configure --disable-documentation
 
 $(KEFIR_EXTERNAL_TEST_LIBNETTLE_SOURCE_DIR)/.lib/libnettle.so: $(KEFIR_EXTERNAL_TEST_LIBNETTLE_SOURCE_DIR)/Makefile
 	@echo "Building nettle $(KEFIR_EXTERNAL_TEST_LIBNETTLE_VERSION)..."
