@@ -248,13 +248,13 @@ static kefir_result_t traverse_aggregate_union_impl(struct kefir_ast_designator 
     }
 
     REQUIRE_ELSE(res == KEFIR_OK, {
-        if (entry_designator == NULL && designator_layer != NULL) {
+        if (designator_layer != NULL && designator_layer != entry_designator) {
             kefir_ast_designator_free(mem, designator_layer);
         }
         return res;
     });
 
-    if (entry_designator == NULL && designator_layer != NULL) {
+    if (designator_layer != NULL && designator_layer != entry_designator) {
         REQUIRE_OK(kefir_ast_designator_free(mem, designator_layer));
     }
     return KEFIR_OK;
