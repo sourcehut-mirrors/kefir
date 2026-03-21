@@ -430,38 +430,43 @@ static kefir_result_t enum_constant_compare(const struct kefir_ast_type_traits *
     return KEFIR_OK;
 }
 
-static kefir_result_t enum_constant_range_fits_signed_int(const struct kefir_ast_type_traits *type_traits,
-                                                          kefir_int64_t min_value, kefir_int64_t max_value,
-                                                          const struct kefir_ast_type *min_value_type,
-                                                          const struct kefir_ast_type *max_value_type,
-                                                          kefir_bool_t *fits_int) {
-    kefir_int_t min_fits_int = 0, max_fits_int = 0;
-    REQUIRE_OK(enum_constant_compare(type_traits, min_value, min_value_type,
-                                     kefir_data_model_descriptor_signed_int_min(type_traits->data_model),
-                                     kefir_ast_type_signed_int(), &min_fits_int));
-    REQUIRE_OK(enum_constant_compare(type_traits, max_value, max_value_type,
-                                     kefir_data_model_descriptor_signed_int_max(type_traits->data_model),
-                                     kefir_ast_type_signed_int(), &max_fits_int));
+#define FITS_FN(_type)                                                                                                 \
+    static kefir_result_t enum_constant_range_fits_signed_##_type(                                                     \
+        const struct kefir_ast_type_traits *type_traits, kefir_int64_t min_value, kefir_int64_t max_value,             \
+        const struct kefir_ast_type *min_value_type, const struct kefir_ast_type *max_value_type,                      \
+        kefir_bool_t *fits_int) {                                                                                      \
+        kefir_int_t min_fits_int = 0, max_fits_int = 0;                                                                \
+        REQUIRE_OK(enum_constant_compare(type_traits, min_value, min_value_type,                                       \
+                                         kefir_data_model_descriptor_signed_##_type##_min(type_traits->data_model),    \
+                                         kefir_ast_type_signed_##_type(), &min_fits_int));                             \
+        REQUIRE_OK(enum_constant_compare(type_traits, max_value, max_value_type,                                       \
+                                         kefir_data_model_descriptor_signed_##_type##_max(type_traits->data_model),    \
+                                         kefir_ast_type_signed_##_type(), &max_fits_int));                             \
+                                                                                                                       \
+        *fits_int = min_fits_int >= 0 && max_fits_int <= 0;                                                            \
+        return KEFIR_OK;                                                                                               \
+    }                                                                                                                  \
+                                                                                                                       \
+    static kefir_result_t enum_constant_range_fits_unsigned_##_type(                                                   \
+        const struct kefir_ast_type_traits *type_traits, kefir_int64_t min_value, kefir_int64_t max_value,             \
+        const struct kefir_ast_type *min_value_type, const struct kefir_ast_type *max_value_type,                      \
+        kefir_bool_t *fits_int) {                                                                                      \
+        kefir_int_t min_fits_int = 0, max_fits_int = 0;                                                                \
+        REQUIRE_OK(enum_constant_compare(type_traits, min_value, min_value_type, 0, kefir_ast_type_unsigned_##_type(), \
+                                         &min_fits_int));                                                              \
+        REQUIRE_OK(enum_constant_compare(type_traits, max_value, max_value_type,                                       \
+                                         kefir_data_model_descriptor_unsigned_##_type##_max(type_traits->data_model),  \
+                                         kefir_ast_type_unsigned_##_type(), &max_fits_int));                           \
+                                                                                                                       \
+        *fits_int = min_fits_int >= 0 && max_fits_int <= 0;                                                            \
+        return KEFIR_OK;                                                                                               \
+    }
 
-    *fits_int = min_fits_int >= 0 && max_fits_int <= 0;
-    return KEFIR_OK;
-}
+FITS_FN(char)
+FITS_FN(short)
+FITS_FN(int)
 
-static kefir_result_t enum_constant_range_fits_unsigned_int(const struct kefir_ast_type_traits *type_traits,
-                                                            kefir_int64_t min_value, kefir_int64_t max_value,
-                                                            const struct kefir_ast_type *min_value_type,
-                                                            const struct kefir_ast_type *max_value_type,
-                                                            kefir_bool_t *fits_int) {
-    kefir_int_t min_fits_int = 0, max_fits_int = 0;
-    REQUIRE_OK(
-        enum_constant_compare(type_traits, min_value, min_value_type, 0, kefir_ast_type_unsigned_int(), &min_fits_int));
-    REQUIRE_OK(enum_constant_compare(type_traits, max_value, max_value_type,
-                                     kefir_data_model_descriptor_unsigned_int_max(type_traits->data_model),
-                                     kefir_ast_type_unsigned_int(), &max_fits_int));
-
-    *fits_int = min_fits_int >= 0 && max_fits_int <= 0;
-    return KEFIR_OK;
-}
+#undef FITS_FN
 
 static kefir_result_t update_enum_constant_type(const struct kefir_ast_context *context, kefir_int64_t value,
                                                 const struct kefir_ast_type **type) {
@@ -487,7 +492,7 @@ static kefir_result_t update_enum_constant_type(const struct kefir_ast_context *
 
 static kefir_result_t scan_enum_attributes(struct kefir_mem *mem, const struct kefir_ast_context *context,
                                            const struct kefir_ast_node_attributes *attributes, kefir_size_t *alignment,
-                                           struct kefir_ast_enum_type *enum_type) {
+                                           kefir_bool_t *packed, struct kefir_ast_enum_type *enum_type) {
     for (const struct kefir_list_entry *iter = kefir_list_head(&attributes->attributes); iter != NULL;
          kefir_list_next(&iter)) {
         ASSIGN_DECL_CAST(struct kefir_ast_attribute_list *, attr_list, iter->value);
@@ -523,6 +528,8 @@ static kefir_result_t scan_enum_attributes(struct kefir_mem *mem, const struct k
                     } else if (kefir_list_length(&attribute->parameters) == 0) {
                         *alignment = 0;
                     }
+                } else if (strcmp(attribute->name, "packed") == 0 || strcmp(attribute->name, "__packed__") == 0) {
+                    *packed = true;
                 }
             }
         }
@@ -695,13 +702,27 @@ static kefir_result_t resolve_enum_type(struct kefir_mem *mem, const struct kefi
             }
         }
 
+        kefir_bool_t packed = false;
+        REQUIRE_OK(scan_enum_attributes(mem, context, &specifiers->attributes, &alignment, &packed, enum_type));
+        REQUIRE_OK(scan_enum_attributes(mem, context, &decl_specifier->attributes, &alignment, &packed, enum_type));
+
         if (fixed_underlying_type == NULL && kefir_list_length(&specifier->entries) > 0) {
             if (has_negative) {
-                kefir_bool_t fits_int;
+                kefir_bool_t fits_char, fits_short, fits_int;
+                REQUIRE_OK(enum_constant_range_fits_signed_char(context->type_traits, min_constant_value,
+                                                                max_constant_value, min_constant_type,
+                                                                max_constant_type, &fits_char));
+                REQUIRE_OK(enum_constant_range_fits_signed_short(context->type_traits, min_constant_value,
+                                                                 max_constant_value, min_constant_type,
+                                                                 max_constant_type, &fits_short));
                 REQUIRE_OK(enum_constant_range_fits_signed_int(context->type_traits, min_constant_value,
                                                                max_constant_value, min_constant_type, max_constant_type,
                                                                &fits_int));
-                if (fits_int) {
+                if (fits_char && packed) {
+                    enum_type->underlying_type = kefir_ast_type_signed_char();
+                } else if (fits_short && packed) {
+                    enum_type->underlying_type = kefir_ast_type_signed_short();
+                } else if (fits_int) {
                     enum_type->underlying_type = kefir_ast_type_signed_int();
                 } else {
                     enum_type->underlying_type = kefir_ast_type_signed_long();
@@ -709,11 +730,21 @@ static kefir_result_t resolve_enum_type(struct kefir_mem *mem, const struct kefi
             } else if (has_overflow64) {
                 enum_type->underlying_type = kefir_ast_type_unsigned_long();
             } else {
-                kefir_bool_t fits_uint;
+                kefir_bool_t fits_uchar, fits_ushort, fits_uint;
+                REQUIRE_OK(enum_constant_range_fits_unsigned_char(context->type_traits, min_constant_value,
+                                                                  max_constant_value, min_constant_type,
+                                                                  max_constant_type, &fits_uchar));
+                REQUIRE_OK(enum_constant_range_fits_unsigned_short(context->type_traits, min_constant_value,
+                                                                   max_constant_value, min_constant_type,
+                                                                   max_constant_type, &fits_ushort));
                 REQUIRE_OK(enum_constant_range_fits_unsigned_int(context->type_traits, min_constant_value,
                                                                  max_constant_value, min_constant_type,
                                                                  max_constant_type, &fits_uint));
-                if (fits_uint) {
+                if (fits_uchar && packed) {
+                    enum_type->underlying_type = kefir_ast_type_unsigned_char();
+                } else if (fits_ushort && packed) {
+                    enum_type->underlying_type = kefir_ast_type_unsigned_short();
+                } else if (fits_uint) {
                     enum_type->underlying_type = kefir_ast_type_unsigned_int();
                 } else {
                     enum_type->underlying_type = kefir_ast_type_unsigned_long();
@@ -739,9 +770,6 @@ static kefir_result_t resolve_enum_type(struct kefir_mem *mem, const struct kefi
             REQUIRE_OK(context->refine_constant_type(mem, context, entry->constant, enumeration_member_type,
                                                      &decl_specifier->source_location));
         }
-
-        REQUIRE_OK(scan_enum_attributes(mem, context, &specifiers->attributes, &alignment, enum_type));
-        REQUIRE_OK(scan_enum_attributes(mem, context, &decl_specifier->attributes, &alignment, enum_type));
 
         if (alignment != 0) {
             enum_type->alignment = alignment;
