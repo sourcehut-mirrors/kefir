@@ -2203,6 +2203,7 @@ static kefir_result_t analyze_declaration_declarator_impl(
 
         case KEFIR_AST_DECLARATOR_POINTER:
             REQUIRE_OK(resolve_pointer_declarator(mem, context, declarator, base_type));
+            ASSIGN_PTR(alignment, 0);
             REQUIRE_OK(analyze_declaration_declarator_impl(mem, context, specifiers, declarator->pointer.declarator,
                                                            identifier, base_type, alignment, flags, attributes));
             break;
@@ -2262,6 +2263,22 @@ kefir_result_t kefir_ast_analyze_declaration_declarator(struct kefir_mem *mem, c
                                                    alignment, flags, attributes));
     REQUIRE_OK(analyze_declaration_declarator_attributes(mem, context, declarator, &specifiers->attributes, base_type,
                                                          alignment, flags, attributes));
+
+    if ((flags & KEFIR_AST_DECLARATION_ANALYSIS_IGNORE_ALIGNMENT_SPECIFIER) == 0) {
+        struct kefir_ast_declarator_specifier *declatator_specifier;
+        for (struct kefir_list_entry *iter =
+                 kefir_ast_declarator_specifier_list_iter(specifiers, &declatator_specifier);
+             iter != NULL; kefir_ast_declarator_specifier_list_next(&iter, &declatator_specifier)) {
+            if (declatator_specifier->klass == KEFIR_AST_ALIGNMENT_SPECIFIER) {
+                kefir_size_t alignment_specifier = 0;
+                REQUIRE_OK(
+                    evaluate_alignment(mem, context, declatator_specifier->alignment_specifier, &alignment_specifier));
+                if (alignment != NULL) {
+                    *alignment = MAX(*alignment, alignment_specifier);
+                }
+            }
+        }
+    }
     return KEFIR_OK;
 }
 
