@@ -221,7 +221,7 @@ static kefir_result_t traverse_aggregate_union_impl(struct kefir_ast_designator 
         if (KEFIR_AST_TYPE_IS_SCALAR_TYPE(entry_type)) {
             const struct kefir_ast_type *type = NULL;
             REQUIRE_OK(kefir_ast_type_traversal_next_recursive(mem, traversal, &type, &layer));
-            REQUIRE_OK(layer_designator(mem, context->symbols, entry_designator, layer, &designator_layer));
+            REQUIRE_OK(layer_designator(mem, context->symbols, NULL, layer, &designator_layer));
 
             INVOKE_TRAVERSAL_CHAIN(&res, initializer_traversal, visit_value, designator_layer,
                                    entry->value->expression);
