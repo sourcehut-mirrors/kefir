@@ -4,7 +4,6 @@ include source/Makefile.mk
 include source/tests/Makefile.mk
 include source/cc1/Makefile.mk
 include source/driver/Makefile.mk
-include source/web/Makefile.mk
 include dist/libgcc/Makefile.mk
 include dist/libatomic/Makefile.mk
 include docs/man/Makefile.mk
@@ -31,8 +30,6 @@ endif
 .EXTERNAL_TESTS_SUITE: .EXTERNAL_TESTS_BASE_SUITE .EXTERNAL_TESTS_FAST_SUITE .EXTERNAL_TESTS_SLOW_SUITE
 .COMPILE_COMMANDS_JSON: $(COMPILE_COMMANDS_JSON)
 .BOOTSTRAP_TEST: $(BOOTSTRAP_TEST)
-.WEB: $(WEB)
-.WEBAPP: $(WEBAPP)
 .MAN_PAGES: $(MAN_PAGES)
 .BOOTSTRAP_LIBGCC_474: $(BOOTSTRAP_LIBGCC_474)
 
@@ -63,10 +60,6 @@ portable_bootstrap:
 	@mkdir -p "$(KEFIR_BIN_DIR)"
 	@$(MAKE) -f dist/portable/Makefile BOOTSTRAP=yes BUILD_LIBGCC=$(PORTABLE_BOOTSTRAP_BUILD_LIBGCC) BIN_DIR=$$($(REALPATH) $(KEFIR_BIN_DIR)) all
 
-web: .WEB
-
-webapp: .WEBAPP
-
 coverage: $(COVERAGE_HTML)
 
 clean:
@@ -83,7 +76,7 @@ build_libatomic: $(KEFIR_DIST_LIBATOMIC_SO)
 
 .NOTPARALLEL: .EXTERNAL_TESTS_SUITE .EXTERNAL_TESTS_BASE_SUITE .EXTERNAL_TESTS_FAST_SUITE .EXTERNAL_TESTS_SLOW_SUITE .EXTERNAL_TESTS_EXTRA_SUITE $(EXTERNAL_TESTS_BASE_SUITE) $(EXTERNAL_TESTS_FAST_SUITE) $(EXTERNAL_TESTS_SLOW_SUITE) $(EXTERNAL_TESTS_EXTRA_SUITE)
 
-.PHONY: all test generate_test_artifacts bootstrap_test web webapp coverage clean help torture_test csmith_test external_test external_extra_test portable portable_bootstrap compile_commands bootstrap_libgcc474 build_libatomic \
+.PHONY: all test generate_test_artifacts bootstrap_test coverage clean help torture_test csmith_test external_test external_extra_test portable portable_bootstrap compile_commands bootstrap_libgcc474 build_libatomic \
         .DEPENDENCIES .COMPILE_DEPS .TEST_ARTIFACTS .ASM_FILES .OBJECT_FILES .BINARIES .TEST_BINARIES .TEST_RESULTS .TESTS .EXTERNAL_TESTS_BASE_SUITE .EXTERNAL_TESTS_FAST_SUITE .EXTERNAL_TESTS_SLOW_SUITE .EXTERNAL_TESTS_EXTRA_SUITE .EXTERNAL_TESTS_SUITE .BOOTSTRAP .MAN_PAGES .BOOTSTRAP_LIBGCC_474
 
 .DEFAULT_GOAL := all

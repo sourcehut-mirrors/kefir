@@ -71,8 +71,6 @@ static kefir_result_t select_host_platform(struct kefir_driver_target *target) {
     target->platform = KEFIR_DRIVER_TARGET_PLATFORM_NETBSD;
 #elif defined(KEFIR_DRAGONFLYBSD_HOST_PLATFORM)
     target->platform = KEFIR_DRIVER_TARGET_PLATFORM_DRAGONFLYBSD;
-#elif defined(KEFIR_EMSCRIPTEN_HOST_PLATFORM)
-    target->platform = KEFIR_DRIVER_TARGET_PLATFORM_LINUX;
 #endif
 #endif
     return KEFIR_OK;

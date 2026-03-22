@@ -187,11 +187,6 @@ fuzz_test () {
     unbuffer make csmith_random_test CSMITH_RANDOM_TESTS=20000 KEFIR_BIN_DIR="$ROOT_DIR/bin/fuzz" -j$(nproc) 2>&1 | tee "$OUTDIR/fuzz/csmith.log"
 }
 
-webapp_build () {
-    log "Building webapp"
-    make KEFIR_BIN_DIR="$ROOT_DIR/bin/webapp" webapp -j$(nproc)
-}
-
 main () {
     log "Kefir pre-release test script"
     log "Writing all outputs to $OUTDIR"
@@ -206,7 +201,6 @@ main () {
     portable_bootstrap_test
     external_test_suite
     fuzz_test
-    webapp_build
     log "End of Kefir pre-release test"
 }
 

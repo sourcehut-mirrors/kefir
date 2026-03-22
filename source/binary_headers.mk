@@ -64,10 +64,6 @@ $(BIN_HEADERS_DESTDIR)/driver/main.deps: $(BIN_HEADERS_DESTDIR)/driver/help.bina
 	@mkdir -p $(shell dirname "$@")
 	@echo '-I$(shell dirname "$@") -DKEFIR_DRIVER_HELP_INCLUDE=help.binary.h' > $@
 
-$(BIN_HEADERS_DESTDIR)/web/main.deps: $(BIN_HEADERS_DESTDIR)/driver/help.binary.h
-	@mkdir -p $(shell dirname "$@")
-	@echo '-I$(shell dirname "$@")/../driver -DKEFIR_DRIVER_HELP_INCLUDE=help.binary.h' > $@
-
 $(BIN_HEADERS_DESTDIR)/compiler/runtime.deps: $(BIN_HEADERS_DESTDIR)/compiler/kefir_bigint.binary.h $(BIN_HEADERS_DESTDIR)/compiler/kefir_softfloat.binary.h
 	@mkdir -p $(shell dirname "$@")
 	@echo "-I$(shell dirname "$@") -DKEFIR_COMPILER_RUNTIME_KEFIR_BIGINT_INCLUDE=kefir_bigint.binary.h" >> $@

@@ -79,8 +79,6 @@ static kefir_result_t print_compiler_info(FILE *out, const char *exec_name) {
             "netbsd"
 #elif defined(KEFIR_UNIX_HOST_PLATFORM)
             "unix"
-#elif defined(KEFIR_EMSCRIPTEN_HOST_PLATFORM)
-            "emscripten"
 #else
             "unknown"
 #endif
@@ -98,9 +96,6 @@ static kefir_result_t print_compiler_info(FILE *out, const char *exec_name) {
 #if defined(__KEFIRCC__)
     fprintf(out, "    Compiler: Kefir\n");
     fprintf(out, "    Compiler version: %s\n", __KEFIRCC_VERSION__);
-#elif defined(__EMSCRIPTEN__)
-    fprintf(out, "    Compiler: Emscripten\n");
-    fprintf(out, "    Compiler version: %s\n", __clang_version__);
 #elif defined(__clang__)
     fprintf(out, "    Compiler: Clang\n");
     fprintf(out, "    Compiler version: %s\n", __clang_version__);

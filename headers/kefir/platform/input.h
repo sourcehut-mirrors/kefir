@@ -31,10 +31,6 @@ typedef struct kefir_cli_input {
 
     kefir_size_t length;
     void *content;
-
-#ifdef KEFIR_EMSCRIPTEN_HOST_PLATFORM
-    int file_descriptor;
-#endif
 } kefir_cli_input_t;
 
 kefir_result_t kefir_cli_input_open(struct kefir_mem *, struct kefir_cli_input *, const char *, FILE *);

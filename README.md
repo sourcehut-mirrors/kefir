@@ -154,23 +154,6 @@ make portable_bootstrap -j$(nproc)
 # Build artifact is located in bin/portable/kefir-portable-*.tar.gz
 ```
 
-### Web playground
-
-For demonstration purposes, Kefir provides an optional web playground page,
-similar to a simplistic [Godbolt](https://godbolt.org/) version. The web
-playground version hosted at [project's
-website](https://kefir.protopopov.lv/playground/) provides latest released Kefir
-version with musl libc headers. Please note that the playground runs with
-JavaScript and WebAssembly, and requires particular Emscripten version to build
-(see `dist/Dockerfile` for precise setup):
-```bash
-make webapp -j$(nproc)
-```
-
-Please also note that WebAssembly environment is not a normal Kefir operating
-environment, and certain bugs or issues might be uncovered that are not present
-normally.
-
 ## Supported environments
 Kefir targets x86_64 instruction set architecture and System-V AMD64 ABI.
 Supported platforms include modern versions of Linux (glibc & musl libc),
@@ -532,7 +515,7 @@ following artifacts:
   test suite in all configurations (with glibc & musl gcc/kefir host, clang
   host), reproducible bootstrap test in all configurations (GNU As & Yasm
   targets with glibc & musl libc), portable bootstrap run, run of the external
-  test suite (with exception for zig-bootstrap), a build of web playground. A
+  test suite (with exception for zig-bootstrap). A
   complete set of logs for the whole run will be preserved and published, along
   with an archive of external test sources and a container image with the test
   execution environment and all build artifacts and intermediate files.
@@ -919,7 +902,6 @@ Supplementary information:
 Kefir-specific links:
 * [Author's personal website](https://www.protopopov.lv)
 * [Kefir website](https://kefir.protopopov.lv)
-* [Kefir Web playground](https://kefir.protopopov.lv/playground/)
 * [Kefir external test archive](https://kefir.protopopov.lv/archive/third-party/)
 * [Kefir project at Sourcehut](https://sr.ht/~jprotopopov/kefir/) -- the primary development repository.
 * [Kefir mirror in author's personal git repository](http://git.protopopov.lv/kefir) --

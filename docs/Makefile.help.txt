@@ -2,8 +2,6 @@ Build target                Description
 ============================================================================================
 all                         All binaries and manual pages
 bootstrap                   Compiler bootstrap
-web                         WASM build of the compiler
-webapp                      Playground web-application
 test                        Run own test suite
 torture_test                Run GCC Torture tests
 csmith_test                 Run CSmith seeded tests
@@ -33,7 +31,6 @@ CC                          C compiler                  *cc
 LD                          Linker                      *$(CC)
 AS                          Assembler                   *as
 AR                          Archiver                    *ar
-EMCC                        Emscripten compiler         *emcc
 GZIP                        Compressor                  *gzip
 REALPATH                    Realpath coreutil           *realpath | grealpath
 CSMITH                      Absolute path to csmith     

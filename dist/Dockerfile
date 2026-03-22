@@ -26,7 +26,7 @@ RUN apt install -y build-essential gcc-14 clang-16 groff m4
 RUN apt install -y musl-dev musl-tools
 
 ########################################################################
-# Dev image includes base image + all remaining packages necessary for local development + emscripten for webapp builds
+# Dev image includes base image + all remaining packages necessary for local development
 FROM base AS dev
 
 RUN apt install -y valgrind unminimize wget yasm cmake git
@@ -40,13 +40,6 @@ RUN cd /tmp && tar xvf make-4.4.1.tar.gz
 RUN cd /tmp/make-4.4.1 && ./configure --prefix=/opt/make-4.4.1
 RUN cd /tmp/make-4.4.1 && make -j$(nproc)
 RUN cd /tmp/make-4.4.1 && make install
-
-# Emscripten
-RUN cd /tmp && wget "https://github.com/emscripten-core/emsdk/archive/refs/tags/3.1.74.tar.gz"
-RUN cd /opt && tar xvf /tmp/3.1.74.tar.gz
-RUN cd /opt/emsdk-3.1.74 && ./emsdk install 3.1.74
-RUN cd /opt/emsdk-3.1.74 && ./emsdk activate 3.1.74
-RUN echo "export EM_CACHE=\$HOME/.emcache" >> /opt/emsdk-3.1.74/emsdk_env.sh
 
 # CSmith
 RUN cd /tmp && git clone "https://github.com/csmith-project/csmith"
