@@ -2,48 +2,44 @@
 
 Kefir is an independent compiler for the C17/C23 programming language, developed
 by [Jevgenij Protopopov](https://www.protopopov.lv). Kefir has been validated
-with a test suite of 80 software projects, among which are GNU core- and
+with a test suite of 100 software projects, among which are GNU core- and
 binutils, Curl, Nginx, OpenSSL, Perl, Postgresql, Tcl and many others. The
 compiler targets x86_64 architecture and System-V AMD64 ABI, supporting Linux,
-FreeBSD, NetBSD an OpenBSD. While the primary priority is compatibility and
-compliance, Kefir also features conservative SSA-based optimization pipeline,
-debug information generation, position-independent code, and implements
-bit-identical bootstrap. Kefir focuses on C source code translation to assembly,
-and integrates with the rest of system toolchain (assembler, linker, standard
-library) for other tasks.
-
-**Warning:** the following document might be perceived as overly heavyweight,
-long and dense. Audiences less engaged into compiler development technicalities
-might want to read [TLDR.md](TLDR.md).
+FreeBSD, NetBSD, OpenBSD and DragonflyBSD. The project intends to provide a
+well-rounded, compatible and compliant compiler, including SSA-based
+optimization pipeline, debug information generation, position-independent code
+support, and bit-identical bootstrap. Kefir integrates with the rest of system
+toolchain --- assembler, linked and shared library.
 
 ## At a glance
 
 Kefir:
-* Supports the C17 standard -- including complex numbers, atomics,
+* Supports the C17 standard -- including complex and imaginary numbers, atomics,
   variable-length arrays, etc. (see *Implementation quirks*).
-* Supports the C23 standard -- excluding `_Decimal` numbers, but including the
-  rest (see *Implementation quirks*).
+* Supports the C23 standard -- including bit-precise integers and `_Decimal`
+  floating-point support (see *Implementation quirks*).
 * Supports some of widespread GNU C built-ins, certain extensions, inline
-  assembly.
+  assembly, 128 bit integers.
 * Is written in C11 -- runtime dependencies are limited to the standard library,
   bits of POSIX and the shell.
 * Targets x86_64 and System-V ABI -- primarily Linux (both glibc and musl libc),
-  secondarily FreeBSD, NetBSD and OpenBSD (see *Supported environments*).
+  secondarily FreeBSD, NetBSD, OpenBSD and DragonflyBSD (see *Supported
+  environments*).
 * Is extensively validated on real-world open source software test suites --
   including dozens of well-known projects (see *Testing and validation*).
-* Implements conservative SSA-based optimizations -- primarily targetting local
-  integral scalars: local variable promotion to registers, dead code
-  elimination, constant folding, global value numbering, loop-invariant code
-  motion, function inlining, tail-call optimization (see *Optimization and
-  codegen*).
+* Implements two-stage SSA-based optimization pipeline -- primarily targetting
+  local scalars: local variable promotion to registers, dead code elimination,
+  constant folding, global value numbering, loop-invariant code motion, function
+  inlining, tail-call optimization, but also providing conservative global
+  memory access optimization (see *Optimization and codegen*).
 * Supports DWARF5 debug information, position-independent code, AT&T and Intel
   syntaxes of GNU As and has limited support for Yasm.
 * Implements bit-identical bootstrap -- within fixed environment, Kefir produces
   identical copies of itself.
 * Is able to generate freestanding assembly code -- with the exception for
-  thread-local storage (might require external calls per ABI) and atomic
-  operations of non-platform native sizes, which require `libatomic`-compatible
-  library.
+  thread-local storage (might require external calls per ABI), `_Decimal`
+  floating-point numbers, and atomic operations of non-platform native sizes,
+  which require `libatomic`-compatible library.
 * Provides `cc`-compatible command line interface.
 * Is able to output internal representations (tokens, abstract syntax tree,
   intermediate representation) in machine-readable JSON form.
@@ -102,6 +98,7 @@ Kefir runtime dependencies are:
     * External startfiles -- `crti.o`, `Scrt.o`, etc.
     * `libatomic`-compatible library (i.e. `libatomic` of gcc or `compiler_rt`
       of clang).
+    * `libgcc` in case decimal floating-number support is desired.
 
 Users can consult `dist/Dockerfile*` files that document the necessary
 environment for Ubuntu (`base` target), Fedora and Alpine, respectively, as well
@@ -119,7 +116,31 @@ and `full` targets.
 
 At the moment, Kefir is automatically tested in Ubuntu 24.04, FreeBSD 14.x,
 OpenBSD 7.5 and NetBSD 10.x environments; Arch Linux used as the primary
-development environment.
+development environment. DragonflyBSD support is tested manually prior to
+release.
+
+#### Decimal floating-point support
+Kefir provides support for `_Decimal` floating-point numbers relying on `libgcc`
+arithmetic routines. In order to enable the support, Kefir shall be compiled
+directly or transitively (i.e. bootstrapped) by gcc host compiler. Decimal
+arithmetic code produced by Kefir requires linkage with `libgcc`; if conversion
+between bit-precise integers and decimal floating-point numbers is desired,
+`libgcc` of version 14 or newer is required.
+
+Both BID and DPD encodings are supported, BID being the default one. To enable
+DPD, passs the following Make option when building Kefir:
+`EXTRA_CFLAGS="-DKEFIR_PLATFORM_DECIMAL_DPD"`.
+
+Kefir can bootstrap `libgcc` version 4.7.4 automatically:
+```bash
+make bootstrap_libgcc474 -j$(nproc)
+```
+
+#### Libatomic
+Kefir can build requires libatomic routines from `compiler_rt` project via:
+```bash
+make build_libatomic -j$(nproc)
+```
 
 ### Usage
 
@@ -157,8 +178,8 @@ make portable_bootstrap -j$(nproc)
 ## Supported environments
 Kefir targets x86_64 instruction set architecture and System-V AMD64 ABI.
 Supported platforms include modern versions of Linux (glibc & musl libc),
-FreeBSD, OpenBSD, NetBSD operating systems. A platform is considered supported
-if:
+FreeBSD, OpenBSD, NetBSD and DragonflyBSD operating systems. A platform is
+considered supported if:
 
 * Kefir can be built with system compiler and successfully executes own test
   suite (see *Testing and validation*).
@@ -204,9 +225,9 @@ for successful builds.
 
 The following details need to be taken into account:
 
-* Kefir implementation of C23 standard misses the support for `_Decimal`
-  floating-point types. The standard designates this feature as optional,
-  conditioned on `__STDC_IEC_60559_DFP__` presence.
+* Kefir implementation of C23 standard provides the support for `_Decimal`
+  floating-point numbers relying on `libgcc` routines for decimal arithmetics
+  (see *Installation and usage*).
 * The C23 standard mandates use of Unicode for `char8_t`, `char16_t` and
   `char32_t` types and literals. Kefir relies on the standard library wide
   character encoding facilities, and thus implements this requirement under
@@ -366,18 +387,18 @@ On all supported platforms, Kefir executes the following external test suites:
   cases, and comparing their output to an expected snapshot. Out of 220 tests, 3
   test files rely on non-standard extensions and are skipped, the rest shall
   pass.
-* GCC Torture suite -- a test suite imported from gcc 15.1.0, consists of
+* GCC Torture suite -- a test suite imported from gcc 15.2.0, consists of
   independent test cases that perform self-testing in a form of assertions. The
   test suite heavily relies on gcc-specific features, therefore higher degree of
   failures is expected. As of current version, out of 3663 tests, Kefir fails
-  455 and skips 29. Note that the exact number of failed tests might slightly
+  431 and skips 29. Note that the exact number of failed tests might slightly
   vary depending on the target platform and hardware performance (due to
   enforced 10 second timeout for execution). Reported number is the best-case
   result on Ubuntu glibc. Furthermore, note that in order for test to succeed,
   none of the failures shall be caused by fatal issues, aborts, segmentation
   faults or caught signals, either on runtime or in compile time.
 * GCC test suite `_BitInt` bits -- a separate set of 71 tests imported from gcc
-  15.1.0 to ensure correct implementation of bit-precise integers from the C23
+  15.2.0 to ensure correct implementation of bit-precise integers from the C23
   standard. All tests from this suite shall run successfully.
 
 ### Lua basic test suite
@@ -391,15 +412,16 @@ reasons.
 
 ### Fuzz testing
 
-Starting from the release 0.4.1, each Kefir pre-release testing includes
-differential testing against the most recent version of gcc with at least 10000
-randomly generated test cases (via csmith). For all test cases that can be
-compiled and executed by both kefir and gcc within given timeout, outputs shall
-be identical. All failing cases are fixed and added to the own test suite.
+After release 0.5.0, Kefir testing discipline has been expanded to include
+20'000 randomly generated csmith cases per nightly test suite run. Thus far,
+Kefir has successfully passed at least 2'500'000 random tests so far. Testing is
+differential against gcc --- for all test cases that can be compiled and
+executed by both kefir and gcc within given timeout, outputs shall be identical.
+All failing cases are fixed and added to the own test suite.
 
 ### External test suite
 
-This is a suite of 80 third-party open source projects that are built using
+This is a suite of 100 third-party open source projects that are built using
 Kefir with subsequent validation: for most projects, their test suite is
 executed; where this is not possible, a custom smoke test is performed; for the
 minority, the fact of a successful build is considered sufficient. Purpose of
@@ -430,14 +452,12 @@ The external test suite (except for zig-bootstrap) is executed on a daily basis
 on current development version of Kefir, as well as at pre-release stage.
 
 All source archives of third-party software included in the external test suite
-are mirrored at [project's
-website](https://kefir.protopopov.lv/archive/third-party/) for reproducibility
-and completeness purposes. This mirror contents track the current state of
-`master` branch along with recent additions to the `develop` branch. The author
-intends to provide separate archival versions for each released Kefir version
-starting from the version 0.5.0. By default, all external tests still use the
-original upstream links to the third-party software sources, however these can
-optionally be replaced with an archival version.
+are mirrored at [project's website](https://kefir.protopopov.lv/) under release
+validation section for reproducibility and completeness purposes, starting from
+version 0.5.0. By default, all external tests still use the original upstream
+links to the third-party software sources, however these can optionally be
+replaced with an archival version. Kefir provides necessary scripts for
+transparent redirection of upstream links to the archive.
 
 #### Limitations
 
@@ -475,8 +495,8 @@ release.
   GNU Awk, Git, Guile, Gzip, ImageMagick, libraries such as
   expat/gmp/jpeg/png/uv/xml2, Lua, GNU Make, Memcached, Musl, Nano, Nasm, Nginx,
   OCaml, OpenSSH, OpenSSL, PCRe2, Perl, PHP, PostgreSQL, Python, Redis, Ruby,
-  SQLite, tar, Tcl, Vim, Wget, xz, zlib, zsh, zstd, and a few others. This is
-  the largest group, and it serves all purposes outlined above: correctness,
+  SQLite, tar, Tcl, Vim, Wget, xz, zlib, zsh, zstd, and some others. This is the
+  largest group, and it serves all purposes outlined above: correctness,
   regression tracking, and documenting real-world build capability and
   challenges. GCC 4.0.4 bootstrap procedure also belongs to this group.
   * zig-bootstrap technically belongs to this group too, but due to unreasonable
@@ -691,14 +711,15 @@ accesses within a function.
 
 #### Runtime library
 
-With exception for non-native atomic operations which require `libatomic`, Kefir
-generates self-contained assembly listings and requires no runtime library of
-its own. Code generator typically inlines implementations for most of
-instructions into the target function directly. The sole exception to this are
-arbitrary-precision arithmetics instructions, that are necessary to support
-`_BitInt` feature of the C23 standard. For these instructions, Kefir issues
-function calls and appends necessary functions with internal linkage to the end
-of the generated assembly listing.
+With exception for non-native atomic operations which require `libatomic`,
+decimal floating-point (`libgcc`) and thread-local storage, Kefir generates
+self-contained assembly listings and requires no runtime library of its own.
+Code generator typically inlines implementations for most of operations into the
+target function directly. The sole exception to this are arbitrary-precision
+arithmetics operations, that are necessary to support `_BitInt` feature of the
+C23 standard, and certain software floating-point operations for complex
+numbers. For these operations, Kefir issues function calls and appends necessary
+functions with internal linkage to the end of the generated assembly listing.
 
 ## Goals and priorities
 
@@ -821,9 +842,12 @@ In addition, the author maintains two `PKGBUILD` build scripts at ArchLinux User
 Repository: [kefir](https://aur.archlinux.org/packages/kefir) and
 [kefir-git](https://aur.archlinux.org/packages/kefir).
 
-The author is aware of binary packages of kefir produced by the third parties.
-The author is not affiliated with any of these package maintainers, so use at your own discretion:
+The author is aware of kefir packages produced by the third parties. The author
+is not affiliated with any of these package maintainers, so use at your own
+discretion. Packages might be outdated or otherwise problematic:
 
+* [GNU Guix](https://packages.guix.gnu.org/packages/kefir/0.5.0/)
+* [FreeBSD](https://www.freshports.org/lang/kefir)
 * [Fedora package](https://packages.fedoraproject.org/pkgs/kefir/kefir/)
 * [Alpine package](https://pkgs.alpinelinux.org/package/edge/community/x86_64/kefir)
 * [Ubuntu PPA](https://codeberg.org/tkchia/ppa-de-rebus)
