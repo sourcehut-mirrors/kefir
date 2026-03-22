@@ -102,21 +102,6 @@ static kefir_result_t string_literal_stop_fn(struct kefir_ast_node_base *node,
     return KEFIR_OK;
 }
 
-static kefir_result_t layer_designator(struct kefir_mem *mem, struct kefir_string_pool *symbols,
-                                       struct kefir_ast_designator *current_designator,
-                                       const struct kefir_ast_type_traversal_layer *layer,
-                                       struct kefir_ast_designator **result) {
-    struct kefir_ast_designator *designator = current_designator;
-
-    if (designator == NULL) {
-        designator = kefir_ast_type_traversal_layer_designator(mem, symbols, layer);
-        REQUIRE(designator != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Unable to derive a designator"));
-    }
-
-    *result = designator;
-    return KEFIR_OK;
-}
-
 static kefir_result_t assign_string(struct kefir_mem *mem, const struct kefir_ast_context *context,
                                     struct kefir_ast_initializer_list_entry *entry,
                                     struct kefir_ast_type_traversal *traversal,
@@ -130,7 +115,8 @@ static kefir_result_t assign_string(struct kefir_mem *mem, const struct kefir_as
     REQUIRE_OK(string_literal_stop_fn(node, context->type_traits, &stop_fn, &stop_payload));
 
     REQUIRE_OK(kefir_ast_type_traversal_next_recursive2(mem, traversal, stop_fn, stop_payload, &type, &layer));
-    REQUIRE_OK(layer_designator(mem, context->symbols, entry->designator, layer, &designator_layer));
+    designator_layer = kefir_ast_type_traversal_layer_designator(mem, context->symbols, layer);
+    REQUIRE(designator_layer != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Unable to derive a designator"));
 
     kefir_result_t res = KEFIR_OK;
     if (stop_fn(type, stop_payload) && (type->array_type.boundary == KEFIR_AST_ARRAY_BOUNDED ||
@@ -145,13 +131,13 @@ static kefir_result_t assign_string(struct kefir_mem *mem, const struct kefir_as
     }
 
     REQUIRE_ELSE(res == KEFIR_OK, {
-        if (entry->designator == NULL && designator_layer != NULL) {
+        if (designator_layer != NULL) {
             kefir_ast_designator_free(mem, designator_layer);
         }
         return res;
     });
 
-    if (entry->designator == NULL && designator_layer != NULL) {
+    if (designator_layer != NULL) {
         REQUIRE_OK(kefir_ast_designator_free(mem, designator_layer));
     }
     return KEFIR_OK;
@@ -209,7 +195,9 @@ static kefir_result_t traverse_aggregate_union_impl(struct kefir_ast_designator 
         }
 
         if (!anonymous_nested_aggregate_field) {
-            REQUIRE_OK(layer_designator(mem, context->symbols, entry_designator, layer, &designator_layer));
+            designator_layer = kefir_ast_type_traversal_layer_designator(mem, context->symbols, layer);
+            REQUIRE(designator_layer != NULL,
+                    KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Unable to derive a designator"));
 
             INVOKE_TRAVERSAL_CHAIN(&res, initializer_traversal, visit_initializer_list, designator_layer, entry->value);
         }
@@ -221,7 +209,9 @@ static kefir_result_t traverse_aggregate_union_impl(struct kefir_ast_designator 
         if (KEFIR_AST_TYPE_IS_SCALAR_TYPE(entry_type)) {
             const struct kefir_ast_type *type = NULL;
             REQUIRE_OK(kefir_ast_type_traversal_next_recursive(mem, traversal, &type, &layer));
-            REQUIRE_OK(layer_designator(mem, context->symbols, NULL, layer, &designator_layer));
+            designator_layer = kefir_ast_type_traversal_layer_designator(mem, context->symbols, layer);
+            REQUIRE(designator_layer != NULL,
+                    KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Unable to derive a designator"));
 
             INVOKE_TRAVERSAL_CHAIN(&res, initializer_traversal, visit_value, designator_layer,
                                    entry->value->expression);
@@ -240,7 +230,9 @@ static kefir_result_t traverse_aggregate_union_impl(struct kefir_ast_designator 
                         "Initializer expression shall be convertible to corresponding field/element type"));
             }
             REQUIRE_OK(res);
-            REQUIRE_OK(layer_designator(mem, context->symbols, entry_designator, layer, &designator_layer));
+            designator_layer = kefir_ast_type_traversal_layer_designator(mem, context->symbols, layer);
+            REQUIRE(designator_layer != NULL,
+                    KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Unable to derive a designator"));
 
             INVOKE_TRAVERSAL_CHAIN(&res, initializer_traversal, visit_value, designator_layer,
                                    entry->value->expression);
@@ -248,13 +240,13 @@ static kefir_result_t traverse_aggregate_union_impl(struct kefir_ast_designator 
     }
 
     REQUIRE_ELSE(res == KEFIR_OK, {
-        if (designator_layer != NULL && designator_layer != entry_designator) {
+        if (designator_layer != NULL) {
             kefir_ast_designator_free(mem, designator_layer);
         }
         return res;
     });
 
-    if (designator_layer != NULL && designator_layer != entry_designator) {
+    if (designator_layer != NULL) {
         REQUIRE_OK(kefir_ast_designator_free(mem, designator_layer));
     }
     return KEFIR_OK;
