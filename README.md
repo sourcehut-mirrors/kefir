@@ -509,36 +509,42 @@ release.
   projects that have acknowledged Kefir existence in some way, often early on.
   As a gesture of reciprocity, they are included in the external test suite.
 
-#### Execution schedule and environment
+#### Nightly and pre-release test runs
 
-Due to resource limitations, the external test suite is executed outside of
-normal continuous integration pipeline on a dedicated hardware. The computer has
-an Intel i5-6500 CPU with 4 cores, 8 GB of RAM and the same amount of swap
-space. All external tests except for zig-bootstrap are executed in a container
-as defined by `dist/Dockerfile`. Zig-bootstrap is excluded from the
-containerized runs and is executed on author's personal development machine due
-to its higher memory requirements.
+Nightly and pre-release test runs largely coincide for Linux platform, and are
+encoded by `scripts/pre_release_test.sh` script that encompasses all stages
+described above. The script is to be executed in the environment as defined by
+`dist/Dockerfile`. In addition, nightly runs include at least 4 CI manifests
+randomly sampled from `.builds` directory. Pre-relase run imposes additional
+requirements:
+* All CI manifests from `.builds` directory shall run and pass.
+* DragonflyBSD tests as specified by `.builds/dragonflybsd.sh` script shall
+  pass.
+* Zig-bootstrap test shall pass in the environment as specified by
+  `dist/Dockerfile`.
 
-The external test suite is executed daily on a `develop` branch of Kefir,
-provided there have been any changes to that branch. The execution schedule is
-manually managed by the author. While the logs and any other artifacts from each
-run are not published, the author intends to publish complete set of external
-test logs before each Kefir release.
+`scripts/pre_release_test.sh` discipline includes own test suite in all
+configurations (with glibc & musl gcc/kefir host, clang host), reproducible
+bootstrap test in all configurations (GNU As & Yasm targets with glibc & musl
+libc), portable bootstrap run, run of the external test suite (with exception
+for zig-bootstrap).
+
+Nightly tests are executed upon every change to the codebase, batched per day,
+on a shared-processor VPS with the following specs: AMD EPYC Rome CPU (4 cores),
+8 GB of RAM and 8 GB of swap.
+
+Pre-release tests are executed upon every merge to the `master` branch, which
+coincides with tagging a release.
 
 ### Pre-release testing
 
 Starting from the version 0.5.0, each Kefir release will be accompanied with the
 following artifacts:
 
-* A complete set of Linux tests as specified by `scripts/pre_release_test.sh` in
-  the environment as specified by `dist/Dockerfile`. These tests include own
-  test suite in all configurations (with glibc & musl gcc/kefir host, clang
-  host), reproducible bootstrap test in all configurations (GNU As & Yasm
-  targets with glibc & musl libc), portable bootstrap run, run of the external
-  test suite (with exception for zig-bootstrap). A
-  complete set of logs for the whole run will be preserved and published, along
-  with an archive of external test sources and a container image with the test
-  execution environment and all build artifacts and intermediate files.
+* A complete set of logs for the whole run of `scripts/pre_release_test.sh` will
+  be preserved and published, along with an archive of external test sources and
+  a container image with the test execution environment and all build artifacts
+  and intermediate files.
 * zig-bootstrap external test will be performed in the same environment on a
   different machine. A complete set of logs and a container image will be
   published too.
@@ -554,6 +560,243 @@ key](https://www.protopopov.lv/static/files/jprotopopov.gpg).
 ## Optimization and codegen
 
 ### Intermediate representations
+Kefir structures compilation pipeline into multiple intermediate represetations
+between AST and code emission.
+
+![Kefir optimization & code generation pipeline](docs/img/kefir_pipeline.drawio.svg)
+
+The pipeline is segmented by abstraction level into 2.5 parts.
+Target-independent part includes high-level representations that share the same
+execution semantics (core set of opcodes), but differ by control & data flow
+representation: linear stack-based IR and structured optimizer SSA (memory SSA
+is complementary and derived from optimizer SSA as part of some optimization
+passes). Target-specific part is further segmented based on resource management
+strategy: virtual representations use virtualized CPU registers characterized by
+type and allocation constraints, whereas physical 3AC encodes actual register
+names. Target-specific part too includes representations with different control
+& data flow shape sharing the same execution semantics.
+
+Philosophically, Kefir optimization pipeline is structured among two dimensions:
+abstraction level and concern. The abstraction level defines the degree of
+source language and machine-specific information available at a particular
+point, specifying set of available operations and data types. The concern
+defines raison d'etre for the particular intermediate representation ---
+executable or analytical --- and thus specifies shape of control & data flow
+serving stated goal. Core idea is that executable IRs (stack-based and 3-address
+code) shall have reasonable operational semantics allowing for direct execution
+by a (virtual) machine of appropriate architecture, whereas analytical
+representations shall be amenable for analysis and transformation. Furthermore,
+Kefir enforces hard boundaries between IR families sharing the same abstraction
+level, ensuring that each family is self-sufficient and carries all information
+necessary to express program semantics. Each lowering boundary targets
+executable form of the underlying family, thus enabling simple procedural
+lowering relieved from the need to construct appropriate control & data flow
+structures. Therefore, Kefir optimization pipeline can be imagined as vertical
+zigzag shape in two-dimensional space.
+
+Such design philosophy may contradict fashionable modern approaches (e.g. MLIR).
+The author motivates this structure as better suitable to satisfy the following
+requirements:
+* Evolvability --- deliberate separation between executable and analytical forms
+  enables early code emission, thus facilitating faster feedback loop at early
+  stages of compiler construction. Kefir project evolution follows this pattern:
+  early versions of the compiler used stack-based IR as actual operational model
+  for code emission, generating stack-based threaded code for x86_64, optimizer
+  SSA and 3AC were added later, superseding the original backend, and target SSA
+  was elaborated from the devirtualization of 3AC as the final development.
+* Debuggability --- each abstraction-sharing IR family provides complete set of
+  primitives to express program semantics, which enables quicker isolation of
+  transformation/lowering issues and facilitates reasoning about each individual
+  stage. The author has found that approaches that mix different abstraction
+  levels (dialects) within the same pipeline with complex legalization rules
+  lead to worse comprehension of program semantics and available operations at
+  each particular point. In Kefir pipeline, legalization largely coincides with
+  lowering between IR families.
+* Extensibility --- each individual intermediate representation might serve as a
+  separate, stable target for adding extensions and plug-ins. Each extension is
+  provided with a coherent and complete view of a program at desired abstraction
+  level without need to concern itself with available operations and
+  transformation passes that preceed or succeed the extension point. While Kefir
+  currently does not offer extension mechanism outside of front-end, such
+  integrations are in principle possible within the current design.
+* Flexibility --- while might seem contradictory at first, the author considers
+  this compilation scheme to be more flexible. It does not require pre-emptive
+  commitment to exact transformation pipeline structure, beyond defining for
+  semantics of each abstraction level. Transformations for each abstraction
+  family can be freely re-ordered and restructured, as each abstraction provides
+  coherent view of a program with rich set of available operations that act as a
+  substrate for any transformation at that level.
+
+#### Stack-based IR
+
+Stack-based IR is a complete representation of an executable module. Apart from
+executable code, it includes symbol information, type & function signatures,
+global data definitions, string literals, inline assembly fragments.
+
+From execution perspective, each function of stack-based IR is characterized by:
+* A virtual unbounded stack. The stack has no fixed element type or width,
+  scalar and complex values are handled uniformly. Aggregates are operated
+  by-reference.
+* Unstructured linear flow of instructions that operate on the stack, governed
+  by unconditional jumps and branches. Each instruction might have optional
+  immediate, type identifier or code reference parameters.
+* A set of typed addressable local variable slots with unique identifiers and
+  optional scopes. The slots are defined within the instruction flow and
+  instantiated upon first reference.
+
+The stack-based IR provides and isolation level between the frontend and middle-
+and backend of Kefir, encapsulating all target-specific details and providing a
+unified abstraction to upper layers. Beyond the container for the code,
+stack-based IR provides a set of APIs for the frontend to retrieve
+target-specific information (type layouts, sizes, alignments, etc).
+
+List of stack-based IR opcodes is available in
+[headers/kefir/optimizer/opcode_defs.h](headers/kefir/optimizer/opcode_defs.h)
+and [headers/kefir/ir/opcode_defs.h](headers/kefir/ir/opcode_defs.h) (the former
+file includes several SSA-specific opcodes too).
+
+Stack-based IR represents executable form along concern dimension. Earlier
+versions of kefir used it as operational model for generating stack-based
+threaded code.
+
+#### Optimizer IR
+
+Optimizer IR is an analytical counterpart to the stack-based IR. It uses a
+flavour of SSA form with partial ordering of side-effect free operations.
+Optimizer IR is characterized by:
+* An explicit control flow graph of basic blocks, owning individual
+  instructions.
+* Tight correspondence between instructions and values. Each instruction itself
+  represents a value, a concept of variable and copying operation does not
+  exist. Optimizer SSA is always in non-conventional form.
+* A linear "control flow" chain of side effectful instructions within each basic
+  block. Side effectful instructions include function calls, memory operations,
+  inline assembly, block terminators. In principle, instruction opcode does not
+  determine whether it belongs to the control flow chain (except for block
+  terminators): there may exist partially ordered calls or memory accesses
+  outside of the control flow chain, as long as they operate on a disjoint
+  segment of program state. Rather, this chain reflects source-level side effect
+  order of the program.
+* A directed acyclic graph of side-effect free instructions (i.e. pure
+  computations) within each basic block. Position of each individual instruction
+  within the graph is determined solely by its incoming data flow edges without
+  additional ordering constraints.
+* Each instruction, irrespective of its type, can depend both on side effectful
+  and side effect-free instructions from current or other basic blocks.
+  Therefore, dominance relation is relaxed reflect relative sequencing of
+  instructions based on their data flow dependencies and position in control
+  flow. Such structure provides a set of constraints for scheduling without
+  specifying the exact schedule. Compiler is free to assume any legal
+  linearization.
+* Data flow is organized via usual phi-instructions. Phi is always side-effect
+  free.
+
+Outside of code representation, the optimizer IR shares other aspects of program
+sematics (symbols, type & function signatures, etc) with stack-based IR. List of
+optimizer IR opcodes is available in
+[headers/kefir/optimizer/opcode_defs.h](headers/kefir/optimizer/opcode_defs.h).
+
+The author considers the outlined design to be the most suitable for C
+compilation and overall beneficially-positioned within the spectrum of SSA forms
+between LLVM IR and Sea-of-Nodes style extremes. In particular,
+* The design naturally mirrors distinction between pure computation and
+  side-effectful operation present in many programming language. In C, this
+  distinction is especially pronounced as the standard deliberately defines the
+  abstract machine semantics in terms of sequence points and "as-if" rule.
+* Side-effectful operations are organized in familiar fashion via basic blocks
+  and linear chains of operations within them. Cerain portion of criticisms of
+  Sea-of-Nodes approach focuses on complexity of unified representation for data
+  & control flow dependencies, which harms debuggability and comprehension.
+  Kefir tries to avoid this by preserving traditional approach.
+* Side effect-free operations use block-local directed acyclic graph without
+  well-defined position an instruction within its basic block. In terms of
+  theoretical expressivity, it is not different from block-locally linear
+  approach of LLVM which permits rescheduling respecting data flow. However, the
+  author considers modification and transformation of such structure to be
+  simpler task as it does not require specifying precise insertion points for
+  new instructions. Majority of the instructions are side effect-free and
+  therefore many transformation passes can just "throw" instruction DAG
+  fragments into their respective basic blocks without regard for precise
+  position, which will be determined later at scheduling stage. In principle,
+  block-local linearization similar to LLVM can be achieved simply by
+  over-specifying control flow chain, however Kefir does not any re-scheduling
+  facilities to account for such over-specification.
+* This structure naturally induces dead-code elimination upon traversal of
+  control flow chain and transitive data dependencies of reachable basic blocks
+  upon scheduling. Kefir provides separate DCE transformation pass only for
+  canonicalization measure to simplify certain other passes.
+
+##### Memory SSA
+
+Memory SSA is subordinate to optimizer IR and is constructed from it for certain
+optimization passes. Memory SSA is constructed by scanning alive instructions
+within optimizer IR CFG for memory effects (memory accesses, function calls,
+inline assembly), resulting in a graph consisting of the following nodes: root
+(function entry point), terminate (function return), produce (write-only memory
+operations), consume (read-only memory operations), produce-comsume (read-write)
+and phi. Produce/consume nodes link back to their inducing optimizer IR
+instructions. Root, produce and produce-consume nodes define a new version of
+the entire memory which can be consumed by consume, produce-consume and
+terminate nodes. Distinction between produce and produce-consume nodes serves to
+reflect the behavior of an operation with respect to memory location it modifies.
+
+Compared to optimizer IR, memory SSA omits basic block structure and linearizes
+partial ordering of optimizer IR into an arbitrary total order permited by
+control & data flow. The latter transformation is valid because the optimizer IR
+shall ensure that any two partially memory accesses necessarily operate on
+disjoint segments of memory. Omission of basic blocks is possible because memory
+SSA does not represent control flow or any other computations explicitly. 
+
+#### Virtual three-address code
+
+Virtual 3AC represents a shift along the abstraction dimension axis into the
+target-specific family with virtualized resource management. In principle,
+virtual 3AC can be viewed as x86_64 assembly with virtual registers and spill
+area segments, but technically Kefir separates the container for 3AC
+(instruction structure, values, label attachment, virtual register types and
+constraints) from specific instantiation for x86_64. Kefir implements lowering
+from optimizer IR into x86_64 3AC via simple procedural instruction selection
+with minimal number of instruction variants and minimal fusion of particularly
+suitable optimizer IR opcodes. Many optimality concerns, including alternative
+instruction variants, larger patterns, fusion, addressing modes are shifted into
+target SSA stage. Furthermore, virtual 3AC does not concern itself with legality
+of any specific instruction shape, accepting any combination of operands ---
+legalization happens only upon destruction of target SSA into physical 3AC.
+
+The dominating approach to encoding precise register requirements are virtual
+register constraints that specify pre-coloring for register allocator. Virtual
+register constraints are used to encode both ABI (e.g. calling convention) and
+ISA (e.g. implicit register operands) specific requirements. Typically, for
+constrained virtual register, instruction selector also issues special
+instructions (see below) to ensure minimum required lifetime. While 3AC provides
+a way to specify physical registers directly, appeance of these at virtual stage
+is limited by very specific code fragments in function prologue and epilogue,
+special registers that cannot be allocated (e.g. `rsp`, `rbp`, segment
+registers), or placements that are guarded by constraints of surrounding virtual
+registers (vanishingly small number of cases). In the latter case, instruction
+selector shall guarantee the guarding invariant and rest of the pipeline assumes
+that no occurence of physical register may interfere in virtual register
+allocation.
+
+General set of supported x86-64 opcodes is available in
+[headers/kefir/target/asm/amd64/db.h](headers/kefir/target/asm/amd64/db.h) and
+special opcodes are in
+[headers/kefir/codegen/amd64/asmcmp.h](headers/kefir/codegen/amd64/asmcmp.h).
+Among special opcodes, `link` is used as a polymorphic `mov` operation between
+virtual registers of any type, `touch` and `weak_touch` represent virtual
+register lifetime extension operations, with the latter being reserved for
+ABI-induced restrictions (erased after target SSA contruction), `produce`
+represents fresh definition of virtual register with unspecified value --- this
+one is necessary because in x86-64 use-define chains are often blurry and
+certain instructions (e.g. `xor %eax, %eax`) provide pure definitions while
+technically being RMW with no-op uses.
+
+Virtual 3AC represents executable form along concern dimension. While it shall
+be executable by a virtual x86-64 CPU with unbounded number of registers,
+historically Kefir used it in conjunction with physical 3AC, implementing simple
+register allocation and devirtualization scheme for legalization of instruction
+shapes.
+
 Kefir uses multiple different intermediate representations (IR) throughout the
 compilation pipeline:
 
@@ -926,7 +1169,6 @@ Supplementary information:
 Kefir-specific links:
 * [Author's personal website](https://www.protopopov.lv)
 * [Kefir website](https://kefir.protopopov.lv)
-* [Kefir external test archive](https://kefir.protopopov.lv/archive/third-party/)
 * [Kefir project at Sourcehut](https://sr.ht/~jprotopopov/kefir/) -- the primary development repository.
 * [Kefir mirror in author's personal git repository](http://git.protopopov.lv/kefir) --
   a mirror.
