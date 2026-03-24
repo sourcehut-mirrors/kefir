@@ -505,6 +505,19 @@ static kefir_result_t do_embed(struct kefir_mem *mem, struct kefir_token_allocat
             REQUIRE_OK(kefir_token_buffer_emplace(mem, buffer, allocated_token));
         } else {
             REQUIRE_OK(kefir_token_buffer_copy(mem, buffer, prefix_buffer));
+            if (kefir_token_buffer_length(prefix_buffer) > 0) {
+#define INSERT_WHITESPACE                                                                                   \
+    do {                                                                                                    \
+        REQUIRE_OK(kefir_token_new_pp_whitespace(false, &token));                                           \
+        kefir_result_t res = kefir_token_allocator_emplace(mem, token_allocator, &token, &allocated_token); \
+        REQUIRE_ELSE(res == KEFIR_OK, {                                                                     \
+            kefir_token_free(mem, &token);                                                                  \
+            return res;                                                                                     \
+        });                                                                                                 \
+        REQUIRE_OK(kefir_token_buffer_emplace(mem, buffer, allocated_token));                               \
+    } while (0)
+                INSERT_WHITESPACE;
+            }
         }
 
         int len = snprintf(buf, sizeof(buf) - 1, "%" KEFIR_UINT8_FMT, value);
@@ -519,6 +532,9 @@ static kefir_result_t do_embed(struct kefir_mem *mem, struct kefir_token_allocat
     }
 
     if (length > 0) {
+        if (kefir_token_buffer_length(suffix_buffer) > 0) {
+            INSERT_WHITESPACE;
+        }
         REQUIRE_OK(kefir_token_buffer_copy(mem, buffer, suffix_buffer));
     } else {
         REQUIRE_OK(kefir_token_buffer_copy(mem, buffer, if_empty_buffer));
