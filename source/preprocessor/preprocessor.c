@@ -540,6 +540,8 @@ kefir_result_t kefir_preprocessor_collect_balanced_parentheses_into(
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(seq != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid token sequence"));
 
+    REQUIRE_OK(kefir_preprocessor_token_sequence_skip_whitespaces(mem, seq, NULL, NULL));
+
     const struct kefir_token *token;
     kefir_result_t res = kefir_preprocessor_token_sequence_next(mem, seq, &token, NULL);
     if (res == KEFIR_ITERATOR_END) {
