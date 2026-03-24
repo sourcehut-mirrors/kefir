@@ -704,7 +704,7 @@ between LLVM IR and Sea-of-Nodes style extremes. In particular,
   distinction is especially pronounced as the standard deliberately defines the
   abstract machine semantics in terms of sequence points and "as-if" rule.
 * Side-effectful operations are organized in familiar fashion via basic blocks
-  and linear chains of operations within them. Cerain portion of criticisms of
+  and linear chains of operations within them. Certain portion of criticisms of
   Sea-of-Nodes approach focuses on complexity of unified representation for data
   & control flow dependencies, which harms debuggability and comprehension.
   Kefir tries to avoid this by preserving traditional approach.
