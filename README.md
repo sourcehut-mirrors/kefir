@@ -602,7 +602,7 @@ requirements:
   stages of compiler construction. Kefir project evolution follows this pattern:
   early versions of the compiler used stack-based IR as actual operational model
   for code emission, generating stack-based threaded code for x86_64, optimizer
-  SSA and 3AC were added later, superseding the original backend, and target SSA
+  SSA and 3AC were added later, superseding the original backend, and target IR
   was elaborated from the devirtualization of 3AC as the final development.
 * Debuggability --- each abstraction-sharing IR family provides complete set of
   primitives to express program semantics, which enables quicker isolation of
@@ -634,6 +634,7 @@ executable code, it includes symbol information, type & function signatures,
 global data definitions, string literals, inline assembly fragments.
 
 From execution perspective, each function of stack-based IR is characterized by:
+
 * A virtual unbounded stack. The stack has no fixed element type or width,
   scalar and complex values are handled uniformly. Aggregates are operated
   by-reference.
@@ -664,6 +665,7 @@ threaded code.
 Optimizer IR is an analytical counterpart to the stack-based IR. It uses a
 flavour of SSA form with partial ordering of side-effect free operations.
 Optimizer IR is characterized by:
+
 * An explicit control flow graph of basic blocks, owning individual
   instructions.
 * Tight correspondence between instructions and values. Each instruction itself
@@ -699,6 +701,7 @@ optimizer IR opcodes is available in
 The author considers the outlined design to be the most suitable for C
 compilation and overall beneficially-positioned within the spectrum of SSA forms
 between LLVM IR and Sea-of-Nodes style extremes. In particular,
+
 * The design naturally mirrors distinction between pure computation and
   side-effectful operation present in many programming language. In C, this
   distinction is especially pronounced as the standard deliberately defines the
@@ -747,6 +750,86 @@ shall ensure that any two partially memory accesses necessarily operate on
 disjoint segments of memory. Omission of basic blocks is possible because memory
 SSA does not represent control flow or any other computations explicitly. 
 
+##### Optimization pipeline
+
+Kefir includes the following high-level optimization passes at `-O1` level:
+
+* Function inlining -- the optimizer performs inlining early on in the pipeline,
+  guided exclusively by the annotations provided by the programmer at source
+  code level. Kefir does not implement any heuristics for inlining a function,
+  however certain inlinings might be disabled due to
+  excessive inlining depth. The author does not view this as an optimization per
+  se, but as faithful implementation of programmer's annotations.
+* Local variable promotion to registers (`mem2reg`) -- the optimizer identifies
+  scalar and complex local variables whose addresses never escape a function and
+  never alias, and promotes these local variables into SSA values. This is a
+  cornerstone optimization that effectively enables most further analyses.
+* Phi removal -- the optimizer identifies redundant SSA phi nodes and webs that
+  can be eliminated.
+* Constant folding -- the optimizer identifies all constant subtrees of SSA and
+  folds them.
+* Simplification -- these optimization passes combine canonicalization,
+  optimization and simplification of many diverse instruction shapes.
+  Simplification is implemented as ad-hoc pattern matching upon the optimizer IR
+  and runs until fixpoint is reached.
+* Local allocation sinking -- the local variable allocations that have not been
+  eliminated by the `mem2reg` pass are moved closer to their actual uses to
+  make stack frame layout more dense.
+* Memory SSA -- the optimizer constructs memory SSA representation out of
+  optimizer IR and performs load-load, store-store, store-load and zeroing-store
+  optimizations. Currently, the efficiency of this optimization passes are
+  limited primarily by conservative non-path-sensitive alias and escape
+  analyses.
+* Scalar replacement of aggregates -- the optimizer pass piggybacks on `mem2reg`
+  and alias analysis infrastructure, identifying segments of local variables
+  that are accessed in disjoint non-aliasing manner and never escape. As a
+  result, these fragments get promoted into SSA values. This optimizatiom pass
+  can be viewed as generalization of `mem2reg`.
+* Global value numeric (`gvn`) -- the optimizer identifies instruction subtrees
+  that are identical across the function code, and de-duplicates them. Where
+  necessary, the de-duplicated subtrees are hoisted. The `gvn` pass only works
+  on integral scalar instruction subtrees that do not contain side effects, thus
+  it is very conservative. By preceeding it with mem2reg, memory SSA and sroa
+  passes, certain portion of memory accesses get promoted into SSA values which
+  makes GVN transformation more capable.
+* Loop-invariant code motion (`licm`) -- the optimizer identifies loops and
+  groups them into nests. Instruction subtrees within a loop that are not
+  dependent on any of loop values are hoisted to the outer levels of loop nests
+  or outside it. As opposed to GVN, LICM integrates memory SSA to hoist
+  side-effect free memory loads, and loop-invariant stores in cases where the
+  loop is guaranteed to execute.
+* Loop removal -- under assumption of side-effect free loop termination provided
+  by the C language standard, certain loops are eliminated.
+* Dead code and allocation elimination -- the optimizer identifies and
+  eliminates dead instruction and local variable allocations. While this pass is
+  not necessary for code generation within current optimizer IR framework, it
+  simplifies certain subsequent passes that do not need to consider instruction
+  dependencies anymore.
+* Block merging -- the optimizer identifies basic blocks that can be safely
+  merged, does the merge and eliminates the control flow edge.
+* Tail call optimization -- as the final part of the optimization pipeline, the
+  optimizer identifies potential tail calls. It performs conservative escape
+  analysis to verify that none of local variable adresses could have escaped the
+  function. The optimization pass does not consider any target-specific aspects,
+  therefore the final decision to perform a tail call is done at code generation stage.
+
+All optimization passes as described above are strictly optional from code
+correctness perspective. In addition to these passes, Kefir implements a
+lowering pass as part of the pipeline. The lowering pass is necessary to
+transform arbitrary-precision arithmetic instructions (used for implementing
+`_BitInt` from the C23 standard) and certain software floating point operations
+into either optimizer-native instruction arithmetic instructions or supporting
+routine calls (see *Runtime library* below). Lowering does not introduce any
+target-specific details into the IR.
+
+**Optimization levels:** at the moment, Kefir supports two optimization levels
+`-O0` and `-O1` (anything else is considered equivalent to `-O1`). Both levels
+include function inlining, local allocation sinking, dead code and dead
+allocation elimination and lowering passes. In addition, `-O1` contains all
+passes described above with some repetitions. Consult `source/driver/driver.c`
+for the precise optimization pipeline, and consult the manual page for
+command-line options to define the optimization pipeline passes explicitly.
+
 #### Virtual three-address code
 
 Virtual 3AC represents a shift along the abstraction dimension axis into the
@@ -759,24 +842,25 @@ from optimizer IR into x86_64 3AC via simple procedural instruction selection
 with minimal number of instruction variants and minimal fusion of particularly
 suitable optimizer IR opcodes. Many optimality concerns, including alternative
 instruction variants, larger patterns, fusion, addressing modes are shifted into
-target SSA stage. Furthermore, virtual 3AC does not concern itself with legality
+target IR stage. Furthermore, virtual 3AC does not concern itself with legality
 of any specific instruction shape, accepting any combination of operands ---
-legalization happens only upon destruction of target SSA into physical 3AC.
+legalization happens only upon destruction of target IR into physical 3AC.
 
-The dominating approach to encoding precise register requirements are virtual
+The predominant approach to encoding precise register requirements are virtual
 register constraints that specify pre-coloring for register allocator. Virtual
 register constraints are used to encode both ABI (e.g. calling convention) and
-ISA (e.g. implicit register operands) specific requirements. Typically, for
-constrained virtual register, instruction selector also issues special
-instructions (see below) to ensure minimum required lifetime. While 3AC provides
-a way to specify physical registers directly, appeance of these at virtual stage
-is limited by very specific code fragments in function prologue and epilogue,
-special registers that cannot be allocated (e.g. `rsp`, `rbp`, segment
-registers), or placements that are guarded by constraints of surrounding virtual
-registers (vanishingly small number of cases). In the latter case, instruction
-selector shall guarantee the guarding invariant and rest of the pipeline assumes
-that no occurence of physical register may interfere in virtual register
-allocation.
+ISA (e.g. implicit register operands) specific requirements, therefore relieving
+post-instruction selection stages from reasoning about these requirements
+outside of mechanical constraint satisfaction. Typically, for constrained
+virtual register, instruction selector also issues special instructions (see
+below) to ensure minimum required lifetime. While 3AC provides a way to specify
+physical registers directly, appeance of these at virtual stage is limited by
+very specific code fragments in function prologue and epilogue, special
+non-allocatable registers (e.g. `rsp`, `rbp`, segment registers), or placements
+that are guarded by constraints of surrounding virtual registers (vanishingly
+small number of cases). In all cases, the rest of pipeline is allowed to operate
+under assumption that specified physical registers never interfere with register
+allocation or any other decisions.
 
 General set of supported x86-64 opcodes is available in
 [headers/kefir/target/asm/amd64/db.h](headers/kefir/target/asm/amd64/db.h) and
@@ -785,9 +869,9 @@ special opcodes are in
 Among special opcodes, `link` is used as a polymorphic `mov` operation between
 virtual registers of any type, `touch` and `weak_touch` represent virtual
 register lifetime extension operations, with the latter being reserved for
-ABI-induced restrictions (erased after target SSA contruction), `produce`
-represents fresh definition of virtual register with unspecified value --- this
-one is necessary because in x86-64 use-define chains are often blurry and
+ABI-induced restrictions (erased after target IR contruction), `produce`
+represents fresh definition of a virtual register with unspecified value ---
+this one is necessary because in x86-64 use-define chains are often blurry and
 certain instructions (e.g. `xor %eax, %eax`) provide pure definitions while
 technically being RMW with no-op uses.
 
@@ -795,70 +879,125 @@ Virtual 3AC represents executable form along concern dimension. While it shall
 be executable by a virtual x86-64 CPU with unbounded number of registers,
 historically Kefir used it in conjunction with physical 3AC, implementing simple
 register allocation and devirtualization scheme for legalization of instruction
-shapes.
+shapes. In current version, virtual 3AC gets converted into target IR for more
+powerful optimizations.
 
-Kefir uses multiple different intermediate representations (IR) throughout the
-compilation pipeline:
+#### Target IR
 
-* Stack-based IR -- is a complete intermediate representation that separates the
-  AST translation part from any layer below and abstracts out target machine
-  details. The stack-based provides facilities to encode type information,
-  function signatures and properties, function bodies, inline assembly fragments
-  into a unified module. Function bodies are represented by unstructured
-  instruction flow. Each instruction operates on a virtual stack, and may have
-  immediate parameters. The virtual stack has no fixed element type or width,
-  scalar and complex values can be stored uniformly; aggregate values are
-  operated on only by reference. The AST translator emits exclusively
-  stack-based IR modules.
-* Optimizer IR -- is a single static assignment (SSA) based representation that
-  is constructed from the stack-based IR before any further transformations.
-  This IR encodes stack-based instructions into a SSA form with explicit basic
-  block structure, partially defined schedule within the basic block and
-  explicit data dependencies. The optimizer IR shares all other aspects (type
-  information, function signatures) with the stack-based IR, and thus modules of
-  these two IR are tightly coupled after construction. Furthermore, most
-  instruction opcodes have one-to-one correspondence between these two IRs, with
-  an exception for virtual stack and local variable management instructions. \
-  **Note on the partially defined schedule:** by design, within each basic block
-  only the instructions that produce side effects (e.g. function calls, certain
-  memory accesses, inline assembly, control flow) have strict order. All other
-  instructions are left "floating" in the basic block and are scheduled only at
-  code generation stage. This design ensures flexibility in optimizations and
-  code generation, while preserving simple control flow structure within a
-  function. In addition, floating instruction scheduling happens only if they
-  are direct or transitive dependencies of the side effect instructions, which
-  brings dead code elimination at the code generation stage for free.
-* Three-address code -- the final intermediate representation that is used
-  exclusively in the code generator. The three address code is referred to as
-  "virtualized assembly", as its instructions mostly directly correspond to the
-  target machine instruction set (ISA), with an addition of several special
-  virtual instructions, whereas its operands typically involve virtual
-  registers. Virtual registers have certain type (e.g. general purpose, floating
-  point, spill space), and their number is unbounded. Upon generation of
-  virtualized assembly from the optimizer IR, each optimizer IR instruction can
-  freely use virtual registers to store outputs and intermediate results. When
-  certain virtual register mapping to the physical registers is necessary (e.g.
-  to uphold function calling convention, use ISA instruction with specific
-  requirements, etc), the code generator might express such requirements on
-  per-virtual register level. The virtualized assembly is constructed for each
-  function individually and disposed immediately after function code generation.
-  Register allocation runs on the virtualized assembly, assigning each virtual
-  register a physical register or spill slot in accordance with explicit
-  requirements, virtual register type and current physical register
-  availability. Then the virtual assembly is "devirtualized" by replacing all
-  virtual registers with respective physical operands, inserting spill code,
-  etc. Certain peephole optimizations run on three-address code level, both
-  before and after devirtualization.
-  * After devirtualization, the devirtualized assembly is directly mapped into
-    textual assembly form. Kefir supports three dialects of GNU As (AT&T, Intel,
-    and Intel dialect with prefixes), as well as limited support for Yasm.
+Target IR is an analytical counterpart to target-specific Virtual 3AC. It
+represents state of x86-64 machine with virtualized resource management in SSA
+form. Target IR is characterized by:
 
-As a general rule, the author has completely separated target- and ABI-specific
-concerns from the optimization pipeline. The optimizer IR is not aware of any of
-these details, and all necessary information (e.g. type layouts) are
-communicated from the target ABI module via clearly designed interface. While
-this rule excludes or complicates some lower-level optimizations, the author
-considers it good for concern separation and maintainability.
+* An explicit control flow of basic blocks, with total linear order of
+  instructions within basic block
+* One-to-many relationship between instructions and values. Each instruction may
+  have zero or multiple output values, each value is uniquely identified by a
+  pair of instruction identifier and an aspect identifier.
+* Value aspect identifies class of the value: direct (represents virtualized
+  resources such as general purpose and floating-point registers), resource
+  (represents unique named entities within machine state such as individual
+  flags, x87 stack) and indirect (represents memory effect). An instruction may
+  produce multiple values with the same aspect class, distinguished by sequence
+  numbers.
+* Each value is associated with a type which is characterized by kind, variant
+  and constraint. Kinds of direct values include general-purpose,
+  floating-point, spill space, external memory pointers, kinds of resources and
+  indirect values are fixed. Variant specifies portion of the output storage
+  (e.g. 8/16/32/64 bits) computed by the instruction directly. Note that the
+  output stoage (register, spill space slot, etc) is assumed to be modified in
+  entirety irrespective of variant, which only serves to distinguish direct
+  computation result from tied portion transferred from the input operand.
+  Constraint is communicated to the register allocator.
+* Each instruction has zero or multiple operands, whose structure mirrors
+  virtual 3AC operands, substituting virtual registers with value references and
+  label with block references. Value references have variant and tied flag,
+  where the variant indicates portion of the value used for computation directly
+  and tied flag marks whether the instruction might transfer other bits from
+  this input parameter onto its output value.
+* Compared to virtual 3AC, each instruction might have higher number of input
+  operands and outputs because upon construction of target IR all implicit
+  parameters and effects are made explicit.
+* Read-modify-write instruction parameters are decomposed into input parameter
+  and outputs upon construction from virtual 3AC. Tying parameters back happens
+  during destruction, or temporarily in certain passes that need to distinguish
+  precise instruction shape.
+* Values of direct and resource class behave identically upon construction and
+  transformation. Distinction appears during register allocation and
+  destruction, where direct values are assigned with appropriate backing storage
+  automatically, whereas resources are assumed to be well-behaved without
+  enforcement. Thus, for resources SSA form serves as explicit data flow
+  bookkeeping to be preserved by any transformations. The difference is
+  justified by the fact that target architecture may lack mechanisms for
+  efficient manipulation of individual resources (e.g. individual CPU flags)
+  which would make automatic management of backing storage problematic.
+* Target IR permits presence of physical registers in principle, however these
+  may only appear under assumption that they may never interfere with register
+  allocation or any other decisions taken by target IR, in the same sense as
+  explained in virtual 3AC section.
+
+To illustrate the target IR structure, consider a code fragment representing
+`cdq -> idiv` operation in x86-64 which normally includes multiple implicit
+registers with RMW operations and modifies CPU flags:
+```
+(%42:direct[0] gp variant default requires rdx) = cdq (%41:direct[0] variant 32bit !tied)
+(%43:direct[0] gp variant default requires rax), (%43:direct[1] gp variant default requires rdx),
+    (%43:flag_sf), (%43:flag_of), (%43:flag_pf), (%43:flag_cf), (%43:flag_zf) =
+    idiv (%40:direct[0] variant 32bit !tied) (%41:direct[0] variant 32bit tied) (%42:direct[0] variant 32bit tied)
+```
+Which can be compared against [the equivalent](https://godbolt.org/z/fxbEzhn7M)
+in MachineIR of LLVM.
+
+The author considers target IR design to have the following beneficial
+properties:
+
+* Uniform representation of most relevant x86-64 machine resources. Target IR
+  avoids the need specify ad-hoc properties and special forms outside of SSA
+  framework.
+* Explicit and complete representation of inputs and outputs, including for RMW
+  operations. Target IR lifts these into SSA form, and for most used resources
+  ensures automatic backing storage management. The number of instructions with
+  special handling is minimized.
+* SSA-native live range and use tracking for all values. target IR discourages
+  direct encoding of physical registers, instead attaching allocation
+  constraints to values. Therefore, standard data flow analyses are available
+  without need to track special attributes.
+
+With this, target IR implements following transformations:
+
+* Global "peephole" optimizations --- many traditional peephole optimizations
+  are relaxed to match patterns in data flow across the entire function. These
+  include selection of different instruction shapes, various simplifications,
+  dead code elimination, constant propagation, folding instruction sequences
+  into sophisticated addressing modes.
+* Multi-stage register allocation --- target IR undergoes reversible out-of-SSA
+  transformation prior to register allocation. Currently target IR implements
+  simple evicting register allocator without live range splitting. Upon
+  obtaining preliminary register assignment, the target IR code is trivially
+  restored back into SSA form for further optimizations guided by spilling
+  information generated by the register allocator, before the final register
+  allocation pass. This scheme mitigates certain weaknesses of simplistic
+  register allocator while keeping the pipeline tractable.
+* Local hot copy insertion and rematerialization guided by preliminary register
+  allocation results.
+
+#### Physical 3AC
+
+Physical 3AC represents the lowest-level abstraction family in it's executable
+form. It encodes target machine-specific representation of the code with already
+allocated physical resources. Physical 3AC is characterized by:
+
+* Shared container with virtual 3AC. Both IRs use the same instruction
+  structures, with primary difference being the type of register operand.
+  Physical 3AC disallows presence of virtual registers.
+* All instructions should appear in legalized form as a result of target IR
+  destruction. Code emission from physical 3AC is trivial single-pass operation.
+* Physical 3AC permits several special forms of spill space addressing (spill
+  slots, local variables). Code emitter is supplied with stack frame layout that
+  is used to resolve these into frame base relative addresses.
+* Physical 3AC is generally encoded as x86-64 instruction sequence with operand
+  order corresponding to Intel syntax. Code emitter for physical 3AC implements
+  several possible syntax targets (GNU As AT&T, Intel with/without prefixes,
+  Yasm).
 
 ### Debugging information
 
@@ -868,89 +1007,6 @@ assembly instructions and source code locations, variable locations, type
 information, function signatures. The author has made best-effort attempt to
 preserve variable locations across the optimizer pipeline, however certain
 optimizations at `-O1` level might disrupt debugging experience significantly.
-
-### Optimization pipeline
-
-Kefir includes the following optimization passes at `-O1` level:
-* Function inlining -- the optimizer performs inlining early on in the pipeline.
-  The inlining is guided exclusively by the annotations provided by the
-  programmer at source code level. Kefir does not implement any heuristics for
-  inlining a function, however some annotated function might not get inlined to
-  avoid recursion and excessive inlining depth. The author does not view this as
-  an optimization per se, but as faithful implementation of programmer's
-  annotations.
-* Local variable promotion to registers (`mem2reg`) -- the optimizer identifies
-  scalar and complex local variables whose addresses never escape a function and
-  never alias, and promotes these local variables into SSA registers. This is a
-  cornerstone optimization that effectively enables many further analyses.
-* Phi propagation -- the optimizer identifies SSA phi nodes that can be replaced
-  by direct SSA instruction references.
-* Constant folding -- the optimizer identifies all constant subtrees of SSA and
-  folds them.
-* Simplification -- this optimization pass combines canonicalization,
-  optimization and simplification of many diverse instruction shapes.
-  Simplification is implemented as ad-hoc pattern matching upon the optimizer IR
-  and runs until fixpoint is reached.
-* Local allocation sinking -- the local variable allocations that have not been
-  eliminated by the `mem2reg` pass are moved closer to their actual uses to
-  make stack frame layout more dense.
-* Global value numeric (`gvn`) -- the optimizer identifies instruction subtrees
-  that are identical across the function code, and de-duplicates them. Where
-  necessary, the de-duplicated subtrees are hoisted. The `gvn` pass only works
-  on integral scalar instruction subtrees that do not contain side effects
-  (including any memory loads not eliminated by `mem2reg`). Therefore, it is
-  very conservative. The author views this as a reasonable trade-off in absence
-  of generic alias analysis.
-* Loop-invariant code motion (`licm`) -- the optimizer identifies loops and
-  groups them into nests. Instruction subtrees within a loop that are not
-  dependent on any of loop instructions are hoisted to the outer levels of loop
-  nests or outside it. This optimization pass has the same limitations of `gvn`
-  pass, as it operates only on side-effect free integral scalar instruction
-  subtrees. The author views this pass as a precursor for future more aggressive
-  loop optimizations, which are possible only once more sophisticated code
-  generation optimizations (incl. rematerialization) are available along with
-  better register allocation and target machine cost model.
-* Dead code and allocation elimination -- the optimizer identifies and
-  eliminates dead instruction and local variable allocations. While this pass is
-  not necessary for code generation within current optimizer IR framework, it
-  simplifies certain subsequent passes that do not need to consider dead code
-  anymore.
-* Block merging -- the optimizer identifies basic blocks that can be safely
-  merged, does the merge and eliminates the control flow edge.
-* Tail call optimization -- as the final part of the optimization pipeline, the
-  optimizer identifies potential tail calls. It performs conservative escape
-  analysis to verify that none of local variable adresses could have escaped the
-  function. The optimization pass does not consider any target-specific aspects,
-  therefore the final decision to perform a tail call is done at code generation stage.
-
-In addition, Kefir implements several peephole optimizations at (de-)virtualized
-assembly level.
-
-All optimization passes as described above are strictly optional from code
-correctness perspective. In addition to these passes, Kefir implements a
-lowering pass as part of the pipeline. The lowering pass is necessary to
-transform arbitrary-precision arithmetic instructions (used for implementing
-`_BitInt` from the C23 standard) into either optimizer-native instruction
-arithmetic instructions or supporting routine calls (see *Runtime library* below).
-
-**Optimization levels:** at the moment, Kefir supports two optimization levels
-`-O0` and `-O1` (anything else is considered equivalent to `-O1`). Both levels
-include function inlining, local allocation sinking, dead code and dead
-allocation elimination and lowering passes. In addition, `-O1` contains all
-passes described above with some repetitions. Consult `source/driver/driver.c`
-for the precise optimization pipeline, and consult the manual page for
-command-line options to define the optimization pipeline passes explicitly.
-
-Kefir focuses the optimizations predominantly on integral scalars limited to a
-single function scope. Floating-point optimizations are more limited, whereas
-aggregate values are mostly optimized with respect to redundant copy elimination
-upon function calls. Inter-procedural optimizations are limited to function
-inlining. Both alias analysis and escape analysis are very rudimentary, and are
-limited to the needs of very specific optimization passes. The author sees no
-major obstacles for implementing more aggressive optimizations within current
-optimizer IR framework, however current pipeline has been characterized by the
-author as conservative as it does not change the order of non-local memory
-accesses within a function.
 
 #### Runtime library
 
