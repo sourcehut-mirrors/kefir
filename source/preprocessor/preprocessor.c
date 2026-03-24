@@ -482,7 +482,8 @@ static kefir_result_t process_include(struct kefir_mem *mem, struct kefir_prepro
 static kefir_result_t do_embed(struct kefir_mem *mem, struct kefir_token_allocator *token_allocator,
                                struct kefir_token_buffer *buffer, struct kefir_preprocessor_embed_file *embed_file,
                                kefir_size_t limit, struct kefir_token_buffer *prefix_buffer,
-                               struct kefir_token_buffer *suffix_buffer, struct kefir_token_buffer *if_empty_buffer) {
+                               struct kefir_token_buffer *suffix_buffer, struct kefir_token_buffer *if_empty_buffer,
+                               const struct kefir_source_location *source_location) {
     char buf[32];
     struct kefir_token token;
     const struct kefir_token *allocated_token;
@@ -497,10 +498,12 @@ static kefir_result_t do_embed(struct kefir_mem *mem, struct kefir_token_allocat
 
         if (length > 0) {
             REQUIRE_OK(kefir_token_new_punctuator(KEFIR_PUNCTUATOR_COMMA, &token));
+            token.source_location = *source_location;
             REQUIRE_OK(kefir_token_allocator_emplace(mem, token_allocator, &token, &allocated_token));
             REQUIRE_OK(kefir_token_buffer_emplace(mem, buffer, allocated_token));
 
             REQUIRE_OK(kefir_token_new_pp_whitespace(length % 16 == 0, &token));
+            token.source_location = *source_location;
             REQUIRE_OK(kefir_token_allocator_emplace(mem, token_allocator, &token, &allocated_token));
             REQUIRE_OK(kefir_token_buffer_emplace(mem, buffer, allocated_token));
         } else {
@@ -509,6 +512,7 @@ static kefir_result_t do_embed(struct kefir_mem *mem, struct kefir_token_allocat
 #define INSERT_WHITESPACE                                                                                   \
     do {                                                                                                    \
         REQUIRE_OK(kefir_token_new_pp_whitespace(false, &token));                                           \
+        token.source_location = *source_location;                                                           \
         kefir_result_t res = kefir_token_allocator_emplace(mem, token_allocator, &token, &allocated_token); \
         REQUIRE_ELSE(res == KEFIR_OK, {                                                                     \
             kefir_token_free(mem, &token);                                                                  \
@@ -523,6 +527,7 @@ static kefir_result_t do_embed(struct kefir_mem *mem, struct kefir_token_allocat
         int len = snprintf(buf, sizeof(buf) - 1, "%" KEFIR_UINT8_FMT, value);
 
         REQUIRE_OK(kefir_token_new_pp_number(mem, buf, len, &token));
+        token.source_location = *source_location;
         kefir_result_t res = kefir_token_allocator_emplace(mem, token_allocator, &token, &allocated_token);
         REQUIRE_ELSE(res == KEFIR_OK, {
             kefir_token_free(mem, &token);
@@ -541,6 +546,7 @@ static kefir_result_t do_embed(struct kefir_mem *mem, struct kefir_token_allocat
     }
 
     REQUIRE_OK(kefir_token_new_pp_whitespace(true, &token));
+    token.source_location = *source_location;
     REQUIRE_OK(kefir_token_allocator_emplace(mem, token_allocator, &token, &allocated_token));
     REQUIRE_OK(kefir_token_buffer_emplace(mem, buffer, allocated_token));
     return KEFIR_OK;
@@ -694,7 +700,8 @@ static kefir_result_t process_embed_impl(
     REQUIRE_OK(preprocessor->context->source_locator->open_embed(
         mem, preprocessor->context->source_locator, embed_path, system_embed, preprocessor->current_file, &embed_file));
 
-    res = do_embed(mem, token_allocator, buffer, &embed_file, limit, prefix_buffer, suffix_buffer, if_empty_buffer);
+    res = do_embed(mem, token_allocator, buffer, &embed_file, limit, prefix_buffer, suffix_buffer, if_empty_buffer,
+                   &directive->source_location);
     REQUIRE_ELSE(res == KEFIR_OK, {
         embed_file.close(mem, &embed_file);
         return res;
