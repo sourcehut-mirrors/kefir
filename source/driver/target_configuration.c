@@ -541,7 +541,6 @@ kefir_result_t kefir_driver_apply_target_linker_final_configuration(
                 REQUIRE_OK(link_libgcc(mem, linker_config, externals->gnu.library_path));
                 if (linker_config->flags.link_libc) {
                     REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, "-lc"));
-                    REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, "-lm"));
                 }
                 if (linker_config->flags.link_atomics) {
                     REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, "--push-state"));
@@ -601,7 +600,6 @@ kefir_result_t kefir_driver_apply_target_linker_final_configuration(
 
             if (linker_config->flags.link_libc) {
                 REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, "-lc"));
-                REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, "-lm"));
             }
         }
 
@@ -630,7 +628,6 @@ kefir_result_t kefir_driver_apply_target_linker_final_configuration(
 
             if (linker_config->flags.link_libc) {
                 REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, "-lc"));
-                REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, "-lm"));
             }
         }
 
@@ -654,7 +651,6 @@ kefir_result_t kefir_driver_apply_target_linker_final_configuration(
         if (linker_config->flags.link_default_libs) {
             if (linker_config->flags.link_libc) {
                 REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, "-lc"));
-                REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, "-lm"));
             }
 
             if (linker_config->flags.link_atomics) {
@@ -687,7 +683,6 @@ kefir_result_t kefir_driver_apply_target_linker_final_configuration(
         if (linker_config->flags.link_default_libs) {
             if (linker_config->flags.link_libc) {
                 REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, "-lc"));
-                REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, "-lm"));
             }
         }
 

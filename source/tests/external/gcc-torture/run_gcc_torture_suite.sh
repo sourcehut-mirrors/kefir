@@ -47,7 +47,7 @@ function is_test_skipped {
 function run_test {(
     set -e
     if [[ "x$2" == "xexecute" ]]; then
-      $TIMEOUT $KEFIRCC $KEFIRFLAGS -o test.bin "$1"
+      $TIMEOUT $KEFIRCC $KEFIRFLAGS -o test.bin "$1" -lm
       $TIMEOUT ./test.bin
     else
       $TIMEOUT $KEFIRCC $KEFIRFLAGS -S -o test.s "$1"
