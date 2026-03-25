@@ -565,18 +565,18 @@ between AST and code emission.
 
 ![Kefir optimization & code generation pipeline](docs/img/kefir_pipeline.drawio.svg)
 
-The pipeline is segmented by abstraction level into 2.5 parts.
-Target-independent part includes high-level representations that share the same
-execution semantics (core set of opcodes), but differ by control & data flow
-representation: linear stack-based IR and structured optimizer SSA (memory SSA
-is complementary and derived from optimizer SSA as part of some optimization
-passes). Target-specific part is further segmented based on resource management
-strategy: virtual representations use virtualized CPU registers characterized by
-type and allocation constraints, whereas physical 3AC encodes actual register
-names. Target-specific part too includes representations with different control
-& data flow shape sharing the same execution semantics.
+The pipeline is segmented by abstraction level into 3 parts. Target-independent
+part includes high-level representations that share the same execution semantics
+(core set of opcodes), but differ by control & data flow representation: linear
+stack-based IR and structured optimizer SSA (memory SSA is complementary and
+derived from optimizer SSA as part of some optimization passes). Target-specific
+part is further segmented based on resource management strategy: virtual
+representations use virtualized CPU registers characterized by type and
+allocation constraints, whereas physical 3AC encodes actual register names.
+Target-specific part too includes representations with different control & data
+flow shape sharing the same execution semantics.
 
-Philosophically, Kefir optimization pipeline is structured among two dimensions:
+Philosophically, Kefir optimization pipeline is structured along two dimensions:
 abstraction level and concern. The abstraction level defines the degree of
 source language and machine-specific information available at a particular
 point, specifying set of available operations and data types. The concern
@@ -610,8 +610,9 @@ requirements:
   stage. The author has found that approaches that mix different abstraction
   levels (dialects) within the same pipeline with complex legalization rules
   lead to worse comprehension of program semantics and available operations at
-  each particular point. In Kefir pipeline, legalization largely coincides with
-  lowering between IR families.
+  each particular point, as well as dupliction of equivalent operations across
+  dialects. In Kefir pipeline, legalization largely coincides with lowering
+  between IR families.
 * Extensibility --- each individual intermediate representation might serve as a
   separate, stable target for adding extensions and plug-ins. Each extension is
   provided with a coherent and complete view of a program at desired abstraction
@@ -619,13 +620,13 @@ requirements:
   transformation passes that preceed or succeed the extension point. While Kefir
   currently does not offer extension mechanism outside of front-end, such
   integrations are in principle possible within the current design.
-* Flexibility --- while might seem contradictory at first, the author considers
-  this compilation scheme to be more flexible. It does not require pre-emptive
-  commitment to exact transformation pipeline structure, beyond defining for
-  semantics of each abstraction level. Transformations for each abstraction
-  family can be freely re-ordered and restructured, as each abstraction provides
-  coherent view of a program with rich set of available operations that act as a
-  substrate for any transformation at that level.
+* Flexibility --- while this might seem contradictory at first, the author
+  considers this compilation scheme to be more flexible. It does not require
+  pre-emptive commitment to exact transformation pipeline structure, beyond
+  defining for semantics of each abstraction level. Transformations for each
+  abstraction family can be freely re-ordered and restructured, as each
+  abstraction provides coherent view of a program with rich set of available
+  operations that act as a substrate for any transformation at that level.
 
 #### Stack-based IR
 
@@ -636,7 +637,7 @@ global data definitions, string literals, inline assembly fragments.
 From execution perspective, each function of stack-based IR is characterized by:
 
 * A virtual unbounded stack. The stack has no fixed element type or width,
-  scalar and complex values are handled uniformly. Aggregates are operated
+  scalar and complex values are handled uniformly. Aggregates are managed
   by-reference.
 * Unstructured linear flow of instructions that operate on the stack, governed
   by unconditional jumps and branches. Each instruction might have optional
@@ -937,7 +938,9 @@ form. Target IR is characterized by:
 
 To illustrate the target IR structure, consider a code fragment representing
 `cdq -> idiv` operation in x86-64 which normally includes multiple implicit
-registers with RMW operations and modifies CPU flags:
+registers with RMW operations and modifies CPU flags (note: kefir prints IR in
+JSON format, syntax below is semantically equivalent but manually condensed for
+brevity).
 ```
 (%42:direct[0] gp variant default requires rdx) = cdq (%41:direct[0] variant 32bit !tied)
 (%43:direct[0] gp variant default requires rax), (%43:direct[1] gp variant default requires rdx),
