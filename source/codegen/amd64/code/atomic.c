@@ -33,6 +33,11 @@ kefir_result_t kefir_codegen_amd64_get_atomic_memorder(kefir_opt_memory_order_t 
 
     *memorder = LIBATOMIC_SEQ_CST;
     switch (model) {
+        case KEFIR_OPT_MEMORY_ORDER_RELAXED:
+        case KEFIR_OPT_MEMORY_ORDER_CONSUME:
+        case KEFIR_OPT_MEMORY_ORDER_ACQUIRE:
+        case KEFIR_OPT_MEMORY_ORDER_RELEASE:
+        case KEFIR_OPT_MEMORY_ORDER_ACQ_REL:
         case KEFIR_OPT_MEMORY_ORDER_SEQ_CST:
             // Intentionally left blank
             break;

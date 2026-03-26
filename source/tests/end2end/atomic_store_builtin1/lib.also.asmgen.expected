@@ -1,0 +1,945 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global test2_atomic_store16_acq_rel
+.type test2_atomic_store16_acq_rel, @function
+.global test2_atomic_store16_acquire
+.type test2_atomic_store16_acquire, @function
+.global test2_atomic_store16_consume
+.type test2_atomic_store16_consume, @function
+.global test2_atomic_store16_relaxed
+.type test2_atomic_store16_relaxed, @function
+.global test2_atomic_store16_release
+.type test2_atomic_store16_release, @function
+.global test2_atomic_store16_seq_cst
+.type test2_atomic_store16_seq_cst, @function
+.global test2_atomic_store32_acq_rel
+.type test2_atomic_store32_acq_rel, @function
+.global test2_atomic_store32_acquire
+.type test2_atomic_store32_acquire, @function
+.global test2_atomic_store32_consume
+.type test2_atomic_store32_consume, @function
+.global test2_atomic_store32_relaxed
+.type test2_atomic_store32_relaxed, @function
+.global test2_atomic_store32_release
+.type test2_atomic_store32_release, @function
+.global test2_atomic_store32_seq_cst
+.type test2_atomic_store32_seq_cst, @function
+.global test2_atomic_store64_acq_rel
+.type test2_atomic_store64_acq_rel, @function
+.global test2_atomic_store64_acquire
+.type test2_atomic_store64_acquire, @function
+.global test2_atomic_store64_consume
+.type test2_atomic_store64_consume, @function
+.global test2_atomic_store64_relaxed
+.type test2_atomic_store64_relaxed, @function
+.global test2_atomic_store64_release
+.type test2_atomic_store64_release, @function
+.global test2_atomic_store64_seq_cst
+.type test2_atomic_store64_seq_cst, @function
+.extern __atomic_store
+.global test_atomic_store8_acq_rel
+.type test_atomic_store8_acq_rel, @function
+.global test_atomic_store8_acquire
+.type test_atomic_store8_acquire, @function
+.global test_atomic_store8_consume
+.type test_atomic_store8_consume, @function
+.global test_atomic_store8_relaxed
+.type test_atomic_store8_relaxed, @function
+.global test_atomic_store8_release
+.type test_atomic_store8_release, @function
+.global test_atomic_store8_seq_cst
+.type test_atomic_store8_seq_cst, @function
+.global test_atomic_store128_acq_rel
+.type test_atomic_store128_acq_rel, @function
+.global test_atomic_store128_acquire
+.type test_atomic_store128_acquire, @function
+.global test_atomic_store128_consume
+.type test_atomic_store128_consume, @function
+.global test_atomic_store128_relaxed
+.type test_atomic_store128_relaxed, @function
+.global test_atomic_store128_release
+.type test_atomic_store128_release, @function
+.global test_atomic_store128_seq_cst
+.type test_atomic_store128_seq_cst, @function
+.global test_atomic_store256_acq_rel
+.type test_atomic_store256_acq_rel, @function
+.global test_atomic_store256_acquire
+.type test_atomic_store256_acquire, @function
+.global test_atomic_store256_consume
+.type test_atomic_store256_consume, @function
+.global test_atomic_store256_relaxed
+.type test_atomic_store256_relaxed, @function
+.global test_atomic_store256_release
+.type test_atomic_store256_release, @function
+.global test_atomic_store256_seq_cst
+.type test_atomic_store256_seq_cst, @function
+.global test2_atomic_store128_acq_rel
+.type test2_atomic_store128_acq_rel, @function
+.global test2_atomic_store128_acquire
+.type test2_atomic_store128_acquire, @function
+.global test2_atomic_store128_consume
+.type test2_atomic_store128_consume, @function
+.global test2_atomic_store128_relaxed
+.type test2_atomic_store128_relaxed, @function
+.global test2_atomic_store128_release
+.type test2_atomic_store128_release, @function
+.global test2_atomic_store128_seq_cst
+.type test2_atomic_store128_seq_cst, @function
+.global test2_atomic_store256_acq_rel
+.type test2_atomic_store256_acq_rel, @function
+.global test2_atomic_store256_acquire
+.type test2_atomic_store256_acquire, @function
+.global test2_atomic_store256_consume
+.type test2_atomic_store256_consume, @function
+.global test2_atomic_store256_relaxed
+.type test2_atomic_store256_relaxed, @function
+.global test2_atomic_store256_release
+.type test2_atomic_store256_release, @function
+.global test2_atomic_store256_seq_cst
+.type test2_atomic_store256_seq_cst, @function
+.global test2_atomic_store8_acq_rel
+.type test2_atomic_store8_acq_rel, @function
+.global test2_atomic_store8_acquire
+.type test2_atomic_store8_acquire, @function
+.global test2_atomic_store8_consume
+.type test2_atomic_store8_consume, @function
+.global test2_atomic_store8_relaxed
+.type test2_atomic_store8_relaxed, @function
+.global test2_atomic_store8_release
+.type test2_atomic_store8_release, @function
+.global test2_atomic_store8_seq_cst
+.type test2_atomic_store8_seq_cst, @function
+.global test_atomic_store16_acq_rel
+.type test_atomic_store16_acq_rel, @function
+.global test_atomic_store16_acquire
+.type test_atomic_store16_acquire, @function
+.global test_atomic_store16_consume
+.type test_atomic_store16_consume, @function
+.global test_atomic_store16_relaxed
+.type test_atomic_store16_relaxed, @function
+.global test_atomic_store16_release
+.type test_atomic_store16_release, @function
+.global test_atomic_store16_seq_cst
+.type test_atomic_store16_seq_cst, @function
+.global test_atomic_store32_acq_rel
+.type test_atomic_store32_acq_rel, @function
+.global test_atomic_store32_acquire
+.type test_atomic_store32_acquire, @function
+.global test_atomic_store32_consume
+.type test_atomic_store32_consume, @function
+.global test_atomic_store32_relaxed
+.type test_atomic_store32_relaxed, @function
+.global test_atomic_store32_release
+.type test_atomic_store32_release, @function
+.global test_atomic_store32_seq_cst
+.type test_atomic_store32_seq_cst, @function
+.global test_atomic_store64_acq_rel
+.type test_atomic_store64_acq_rel, @function
+.global test_atomic_store64_acquire
+.type test_atomic_store64_acquire, @function
+.global test_atomic_store64_consume
+.type test_atomic_store64_consume, @function
+.global test_atomic_store64_relaxed
+.type test_atomic_store64_relaxed, @function
+.global test_atomic_store64_release
+.type test_atomic_store64_release, @function
+.global test_atomic_store64_seq_cst
+.type test_atomic_store64_seq_cst, @function
+
+.section .text
+.L__kefir_text_section_begin:
+test2_atomic_store16_acq_rel:
+.L__kefir_text_func_test2_atomic_store16_acq_rel_begin:
+    xchgw %si, (%rdi)
+    ret
+.L__kefir_text_func_test2_atomic_store16_acq_rel_end:
+
+test2_atomic_store16_acquire:
+.L__kefir_text_func_test2_atomic_store16_acquire_begin:
+    xchgw %si, (%rdi)
+    ret
+.L__kefir_text_func_test2_atomic_store16_acquire_end:
+
+test2_atomic_store16_consume:
+.L__kefir_text_func_test2_atomic_store16_consume_begin:
+    xchgw %si, (%rdi)
+    ret
+.L__kefir_text_func_test2_atomic_store16_consume_end:
+
+test2_atomic_store16_relaxed:
+.L__kefir_text_func_test2_atomic_store16_relaxed_begin:
+    movw %si, (%rdi)
+    ret
+.L__kefir_text_func_test2_atomic_store16_relaxed_end:
+
+test2_atomic_store16_release:
+.L__kefir_text_func_test2_atomic_store16_release_begin:
+    movw %si, (%rdi)
+    ret
+.L__kefir_text_func_test2_atomic_store16_release_end:
+
+test2_atomic_store16_seq_cst:
+.L__kefir_text_func_test2_atomic_store16_seq_cst_begin:
+    xchgw %si, (%rdi)
+    ret
+.L__kefir_text_func_test2_atomic_store16_seq_cst_end:
+
+test2_atomic_store32_acq_rel:
+.L__kefir_text_func_test2_atomic_store32_acq_rel_begin:
+    xchgl %esi, (%rdi)
+    ret
+.L__kefir_text_func_test2_atomic_store32_acq_rel_end:
+
+test2_atomic_store32_acquire:
+.L__kefir_text_func_test2_atomic_store32_acquire_begin:
+    xchgl %esi, (%rdi)
+    ret
+.L__kefir_text_func_test2_atomic_store32_acquire_end:
+
+test2_atomic_store32_consume:
+.L__kefir_text_func_test2_atomic_store32_consume_begin:
+    xchgl %esi, (%rdi)
+    ret
+.L__kefir_text_func_test2_atomic_store32_consume_end:
+
+test2_atomic_store32_relaxed:
+.L__kefir_text_func_test2_atomic_store32_relaxed_begin:
+    movl %esi, (%rdi)
+    ret
+.L__kefir_text_func_test2_atomic_store32_relaxed_end:
+
+test2_atomic_store32_release:
+.L__kefir_text_func_test2_atomic_store32_release_begin:
+    movl %esi, (%rdi)
+    ret
+.L__kefir_text_func_test2_atomic_store32_release_end:
+
+test2_atomic_store32_seq_cst:
+.L__kefir_text_func_test2_atomic_store32_seq_cst_begin:
+    xchgl %esi, (%rdi)
+    ret
+.L__kefir_text_func_test2_atomic_store32_seq_cst_end:
+
+test2_atomic_store64_acq_rel:
+.L__kefir_text_func_test2_atomic_store64_acq_rel_begin:
+    xchgq %rsi, (%rdi)
+    ret
+.L__kefir_text_func_test2_atomic_store64_acq_rel_end:
+
+test2_atomic_store64_acquire:
+.L__kefir_text_func_test2_atomic_store64_acquire_begin:
+    xchgq %rsi, (%rdi)
+    ret
+.L__kefir_text_func_test2_atomic_store64_acquire_end:
+
+test2_atomic_store64_consume:
+.L__kefir_text_func_test2_atomic_store64_consume_begin:
+    xchgq %rsi, (%rdi)
+    ret
+.L__kefir_text_func_test2_atomic_store64_consume_end:
+
+test2_atomic_store64_relaxed:
+.L__kefir_text_func_test2_atomic_store64_relaxed_begin:
+    movq %rsi, (%rdi)
+    ret
+.L__kefir_text_func_test2_atomic_store64_relaxed_end:
+
+test2_atomic_store64_release:
+.L__kefir_text_func_test2_atomic_store64_release_begin:
+    movq %rsi, (%rdi)
+    ret
+.L__kefir_text_func_test2_atomic_store64_release_end:
+
+test2_atomic_store64_seq_cst:
+.L__kefir_text_func_test2_atomic_store64_seq_cst_begin:
+    xchgq %rsi, (%rdi)
+    ret
+.L__kefir_text_func_test2_atomic_store64_seq_cst_end:
+
+test_atomic_store8_acq_rel:
+.L__kefir_text_func_test_atomic_store8_acq_rel_begin:
+    xchgb %sil, (%rdi)
+    ret
+.L__kefir_text_func_test_atomic_store8_acq_rel_end:
+
+test_atomic_store8_acquire:
+.L__kefir_text_func_test_atomic_store8_acquire_begin:
+    xchgb %sil, (%rdi)
+    ret
+.L__kefir_text_func_test_atomic_store8_acquire_end:
+
+test_atomic_store8_consume:
+.L__kefir_text_func_test_atomic_store8_consume_begin:
+    xchgb %sil, (%rdi)
+    ret
+.L__kefir_text_func_test_atomic_store8_consume_end:
+
+test_atomic_store8_relaxed:
+.L__kefir_text_func_test_atomic_store8_relaxed_begin:
+    movb %sil, (%rdi)
+    ret
+.L__kefir_text_func_test_atomic_store8_relaxed_end:
+
+test_atomic_store8_release:
+.L__kefir_text_func_test_atomic_store8_release_begin:
+    movb %sil, (%rdi)
+    ret
+.L__kefir_text_func_test_atomic_store8_release_end:
+
+test_atomic_store8_seq_cst:
+.L__kefir_text_func_test_atomic_store8_seq_cst_begin:
+    xchgb %sil, (%rdi)
+    ret
+.L__kefir_text_func_test_atomic_store8_seq_cst_end:
+
+test_atomic_store128_acq_rel:
+.L__kefir_text_func_test_atomic_store128_acq_rel_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    fldt 16(%rbp)
+    mov %rdi, %rsi
+    movq $0, -8(%rbp)
+    fstpt -16(%rbp)
+    mov $16, %edi
+    lea -16(%rbp), %rdx
+    mov $4, %ecx
+    call __atomic_store@PLT
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.L__kefir_text_func_test_atomic_store128_acq_rel_end:
+
+test_atomic_store128_acquire:
+.L__kefir_text_func_test_atomic_store128_acquire_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    fldt 16(%rbp)
+    mov %rdi, %rsi
+    movq $0, -8(%rbp)
+    fstpt -16(%rbp)
+    mov $16, %edi
+    lea -16(%rbp), %rdx
+    mov $2, %ecx
+    call __atomic_store@PLT
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.L__kefir_text_func_test_atomic_store128_acquire_end:
+
+test_atomic_store128_consume:
+.L__kefir_text_func_test_atomic_store128_consume_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    fldt 16(%rbp)
+    mov %rdi, %rsi
+    movq $0, -8(%rbp)
+    fstpt -16(%rbp)
+    mov $16, %edi
+    lea -16(%rbp), %rdx
+    mov $1, %ecx
+    call __atomic_store@PLT
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.L__kefir_text_func_test_atomic_store128_consume_end:
+
+test_atomic_store128_relaxed:
+.L__kefir_text_func_test_atomic_store128_relaxed_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    fldt 16(%rbp)
+    mov %rdi, %rsi
+    movq $0, -8(%rbp)
+    fstpt -16(%rbp)
+    mov $16, %edi
+    lea -16(%rbp), %rdx
+    xor %ecx, %ecx
+    call __atomic_store@PLT
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.L__kefir_text_func_test_atomic_store128_relaxed_end:
+
+test_atomic_store128_release:
+.L__kefir_text_func_test_atomic_store128_release_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    fldt 16(%rbp)
+    mov %rdi, %rsi
+    movq $0, -8(%rbp)
+    fstpt -16(%rbp)
+    mov $16, %edi
+    lea -16(%rbp), %rdx
+    mov $3, %ecx
+    call __atomic_store@PLT
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.L__kefir_text_func_test_atomic_store128_release_end:
+
+test_atomic_store128_seq_cst:
+.L__kefir_text_func_test_atomic_store128_seq_cst_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    fldt 16(%rbp)
+    mov %rdi, %rsi
+    movq $0, -8(%rbp)
+    fstpt -16(%rbp)
+    mov $16, %edi
+    lea -16(%rbp), %rdx
+    mov $5, %ecx
+    call __atomic_store@PLT
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.L__kefir_text_func_test_atomic_store128_seq_cst_end:
+
+test_atomic_store256_acq_rel:
+.L__kefir_text_func_test_atomic_store256_acq_rel_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $48, %rsp
+    fstcw -8(%rbp)
+    lea 16(%rbp), %rax
+    mov %rdi, %rsi
+    fldt 16(%rax)
+    movq $0, -24(%rbp)
+    fstpt -32(%rbp)
+    fldt (%rax)
+    movq $0, -40(%rbp)
+    fstpt -48(%rbp)
+    mov $32, %edi
+    lea -48(%rbp), %rdx
+    mov $4, %ecx
+    call __atomic_store@PLT
+    fldcw -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.L__kefir_text_func_test_atomic_store256_acq_rel_end:
+
+test_atomic_store256_acquire:
+.L__kefir_text_func_test_atomic_store256_acquire_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $48, %rsp
+    fstcw -8(%rbp)
+    lea 16(%rbp), %rax
+    mov %rdi, %rsi
+    fldt 16(%rax)
+    movq $0, -24(%rbp)
+    fstpt -32(%rbp)
+    fldt (%rax)
+    movq $0, -40(%rbp)
+    fstpt -48(%rbp)
+    mov $32, %edi
+    lea -48(%rbp), %rdx
+    mov $2, %ecx
+    call __atomic_store@PLT
+    fldcw -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.L__kefir_text_func_test_atomic_store256_acquire_end:
+
+test_atomic_store256_consume:
+.L__kefir_text_func_test_atomic_store256_consume_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $48, %rsp
+    fstcw -8(%rbp)
+    lea 16(%rbp), %rax
+    mov %rdi, %rsi
+    fldt 16(%rax)
+    movq $0, -24(%rbp)
+    fstpt -32(%rbp)
+    fldt (%rax)
+    movq $0, -40(%rbp)
+    fstpt -48(%rbp)
+    mov $32, %edi
+    lea -48(%rbp), %rdx
+    mov $1, %ecx
+    call __atomic_store@PLT
+    fldcw -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.L__kefir_text_func_test_atomic_store256_consume_end:
+
+test_atomic_store256_relaxed:
+.L__kefir_text_func_test_atomic_store256_relaxed_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $48, %rsp
+    fstcw -8(%rbp)
+    lea 16(%rbp), %rax
+    mov %rdi, %rsi
+    fldt 16(%rax)
+    movq $0, -24(%rbp)
+    fstpt -32(%rbp)
+    fldt (%rax)
+    movq $0, -40(%rbp)
+    fstpt -48(%rbp)
+    mov $32, %edi
+    lea -48(%rbp), %rdx
+    xor %ecx, %ecx
+    call __atomic_store@PLT
+    fldcw -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.L__kefir_text_func_test_atomic_store256_relaxed_end:
+
+test_atomic_store256_release:
+.L__kefir_text_func_test_atomic_store256_release_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $48, %rsp
+    fstcw -8(%rbp)
+    lea 16(%rbp), %rax
+    mov %rdi, %rsi
+    fldt 16(%rax)
+    movq $0, -24(%rbp)
+    fstpt -32(%rbp)
+    fldt (%rax)
+    movq $0, -40(%rbp)
+    fstpt -48(%rbp)
+    mov $32, %edi
+    lea -48(%rbp), %rdx
+    mov $3, %ecx
+    call __atomic_store@PLT
+    fldcw -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.L__kefir_text_func_test_atomic_store256_release_end:
+
+test_atomic_store256_seq_cst:
+.L__kefir_text_func_test_atomic_store256_seq_cst_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $48, %rsp
+    fstcw -8(%rbp)
+    lea 16(%rbp), %rax
+    mov %rdi, %rsi
+    fldt 16(%rax)
+    movq $0, -24(%rbp)
+    fstpt -32(%rbp)
+    fldt (%rax)
+    movq $0, -40(%rbp)
+    fstpt -48(%rbp)
+    mov $32, %edi
+    lea -48(%rbp), %rdx
+    mov $5, %ecx
+    call __atomic_store@PLT
+    fldcw -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.L__kefir_text_func_test_atomic_store256_seq_cst_end:
+
+test2_atomic_store128_acq_rel:
+.L__kefir_text_func_test2_atomic_store128_acq_rel_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    fldt 16(%rbp)
+    mov %rdi, %rsi
+    movq $0, -8(%rbp)
+    fstpt -16(%rbp)
+    mov $16, %edi
+    lea -16(%rbp), %rdx
+    mov $4, %ecx
+    call __atomic_store@PLT
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.L__kefir_text_func_test2_atomic_store128_acq_rel_end:
+
+test2_atomic_store128_acquire:
+.L__kefir_text_func_test2_atomic_store128_acquire_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    fldt 16(%rbp)
+    mov %rdi, %rsi
+    movq $0, -8(%rbp)
+    fstpt -16(%rbp)
+    mov $16, %edi
+    lea -16(%rbp), %rdx
+    mov $2, %ecx
+    call __atomic_store@PLT
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.L__kefir_text_func_test2_atomic_store128_acquire_end:
+
+test2_atomic_store128_consume:
+.L__kefir_text_func_test2_atomic_store128_consume_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    fldt 16(%rbp)
+    mov %rdi, %rsi
+    movq $0, -8(%rbp)
+    fstpt -16(%rbp)
+    mov $16, %edi
+    lea -16(%rbp), %rdx
+    mov $1, %ecx
+    call __atomic_store@PLT
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.L__kefir_text_func_test2_atomic_store128_consume_end:
+
+test2_atomic_store128_relaxed:
+.L__kefir_text_func_test2_atomic_store128_relaxed_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    fldt 16(%rbp)
+    mov %rdi, %rsi
+    movq $0, -8(%rbp)
+    fstpt -16(%rbp)
+    mov $16, %edi
+    lea -16(%rbp), %rdx
+    xor %ecx, %ecx
+    call __atomic_store@PLT
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.L__kefir_text_func_test2_atomic_store128_relaxed_end:
+
+test2_atomic_store128_release:
+.L__kefir_text_func_test2_atomic_store128_release_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    fldt 16(%rbp)
+    mov %rdi, %rsi
+    movq $0, -8(%rbp)
+    fstpt -16(%rbp)
+    mov $16, %edi
+    lea -16(%rbp), %rdx
+    mov $3, %ecx
+    call __atomic_store@PLT
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.L__kefir_text_func_test2_atomic_store128_release_end:
+
+test2_atomic_store128_seq_cst:
+.L__kefir_text_func_test2_atomic_store128_seq_cst_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    fldt 16(%rbp)
+    mov %rdi, %rsi
+    movq $0, -8(%rbp)
+    fstpt -16(%rbp)
+    mov $16, %edi
+    lea -16(%rbp), %rdx
+    mov $5, %ecx
+    call __atomic_store@PLT
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.L__kefir_text_func_test2_atomic_store128_seq_cst_end:
+
+test2_atomic_store256_acq_rel:
+.L__kefir_text_func_test2_atomic_store256_acq_rel_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $48, %rsp
+    fstcw -8(%rbp)
+    lea 16(%rbp), %rax
+    mov %rdi, %rsi
+    fldt 16(%rax)
+    movq $0, -24(%rbp)
+    fstpt -32(%rbp)
+    fldt (%rax)
+    movq $0, -40(%rbp)
+    fstpt -48(%rbp)
+    mov $32, %edi
+    lea -48(%rbp), %rdx
+    mov $4, %ecx
+    call __atomic_store@PLT
+    fldcw -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.L__kefir_text_func_test2_atomic_store256_acq_rel_end:
+
+test2_atomic_store256_acquire:
+.L__kefir_text_func_test2_atomic_store256_acquire_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $48, %rsp
+    fstcw -8(%rbp)
+    lea 16(%rbp), %rax
+    mov %rdi, %rsi
+    fldt 16(%rax)
+    movq $0, -24(%rbp)
+    fstpt -32(%rbp)
+    fldt (%rax)
+    movq $0, -40(%rbp)
+    fstpt -48(%rbp)
+    mov $32, %edi
+    lea -48(%rbp), %rdx
+    mov $2, %ecx
+    call __atomic_store@PLT
+    fldcw -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.L__kefir_text_func_test2_atomic_store256_acquire_end:
+
+test2_atomic_store256_consume:
+.L__kefir_text_func_test2_atomic_store256_consume_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $48, %rsp
+    fstcw -8(%rbp)
+    lea 16(%rbp), %rax
+    mov %rdi, %rsi
+    fldt 16(%rax)
+    movq $0, -24(%rbp)
+    fstpt -32(%rbp)
+    fldt (%rax)
+    movq $0, -40(%rbp)
+    fstpt -48(%rbp)
+    mov $32, %edi
+    lea -48(%rbp), %rdx
+    mov $1, %ecx
+    call __atomic_store@PLT
+    fldcw -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.L__kefir_text_func_test2_atomic_store256_consume_end:
+
+test2_atomic_store256_relaxed:
+.L__kefir_text_func_test2_atomic_store256_relaxed_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $48, %rsp
+    fstcw -8(%rbp)
+    lea 16(%rbp), %rax
+    mov %rdi, %rsi
+    fldt 16(%rax)
+    movq $0, -24(%rbp)
+    fstpt -32(%rbp)
+    fldt (%rax)
+    movq $0, -40(%rbp)
+    fstpt -48(%rbp)
+    mov $32, %edi
+    lea -48(%rbp), %rdx
+    xor %ecx, %ecx
+    call __atomic_store@PLT
+    fldcw -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.L__kefir_text_func_test2_atomic_store256_relaxed_end:
+
+test2_atomic_store256_release:
+.L__kefir_text_func_test2_atomic_store256_release_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $48, %rsp
+    fstcw -8(%rbp)
+    lea 16(%rbp), %rax
+    mov %rdi, %rsi
+    fldt 16(%rax)
+    movq $0, -24(%rbp)
+    fstpt -32(%rbp)
+    fldt (%rax)
+    movq $0, -40(%rbp)
+    fstpt -48(%rbp)
+    mov $32, %edi
+    lea -48(%rbp), %rdx
+    mov $3, %ecx
+    call __atomic_store@PLT
+    fldcw -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.L__kefir_text_func_test2_atomic_store256_release_end:
+
+test2_atomic_store256_seq_cst:
+.L__kefir_text_func_test2_atomic_store256_seq_cst_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $48, %rsp
+    fstcw -8(%rbp)
+    lea 16(%rbp), %rax
+    mov %rdi, %rsi
+    fldt 16(%rax)
+    movq $0, -24(%rbp)
+    fstpt -32(%rbp)
+    fldt (%rax)
+    movq $0, -40(%rbp)
+    fstpt -48(%rbp)
+    mov $32, %edi
+    lea -48(%rbp), %rdx
+    mov $5, %ecx
+    call __atomic_store@PLT
+    fldcw -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.L__kefir_text_func_test2_atomic_store256_seq_cst_end:
+
+test2_atomic_store8_acq_rel:
+.L__kefir_text_func_test2_atomic_store8_acq_rel_begin:
+    xchgb %sil, (%rdi)
+    ret
+.L__kefir_text_func_test2_atomic_store8_acq_rel_end:
+
+test2_atomic_store8_acquire:
+.L__kefir_text_func_test2_atomic_store8_acquire_begin:
+    xchgb %sil, (%rdi)
+    ret
+.L__kefir_text_func_test2_atomic_store8_acquire_end:
+
+test2_atomic_store8_consume:
+.L__kefir_text_func_test2_atomic_store8_consume_begin:
+    xchgb %sil, (%rdi)
+    ret
+.L__kefir_text_func_test2_atomic_store8_consume_end:
+
+test2_atomic_store8_relaxed:
+.L__kefir_text_func_test2_atomic_store8_relaxed_begin:
+    movb %sil, (%rdi)
+    ret
+.L__kefir_text_func_test2_atomic_store8_relaxed_end:
+
+test2_atomic_store8_release:
+.L__kefir_text_func_test2_atomic_store8_release_begin:
+    movb %sil, (%rdi)
+    ret
+.L__kefir_text_func_test2_atomic_store8_release_end:
+
+test2_atomic_store8_seq_cst:
+.L__kefir_text_func_test2_atomic_store8_seq_cst_begin:
+    xchgb %sil, (%rdi)
+    ret
+.L__kefir_text_func_test2_atomic_store8_seq_cst_end:
+
+test_atomic_store16_acq_rel:
+.L__kefir_text_func_test_atomic_store16_acq_rel_begin:
+    xchgw %si, (%rdi)
+    ret
+.L__kefir_text_func_test_atomic_store16_acq_rel_end:
+
+test_atomic_store16_acquire:
+.L__kefir_text_func_test_atomic_store16_acquire_begin:
+    xchgw %si, (%rdi)
+    ret
+.L__kefir_text_func_test_atomic_store16_acquire_end:
+
+test_atomic_store16_consume:
+.L__kefir_text_func_test_atomic_store16_consume_begin:
+    xchgw %si, (%rdi)
+    ret
+.L__kefir_text_func_test_atomic_store16_consume_end:
+
+test_atomic_store16_relaxed:
+.L__kefir_text_func_test_atomic_store16_relaxed_begin:
+    movw %si, (%rdi)
+    ret
+.L__kefir_text_func_test_atomic_store16_relaxed_end:
+
+test_atomic_store16_release:
+.L__kefir_text_func_test_atomic_store16_release_begin:
+    movw %si, (%rdi)
+    ret
+.L__kefir_text_func_test_atomic_store16_release_end:
+
+test_atomic_store16_seq_cst:
+.L__kefir_text_func_test_atomic_store16_seq_cst_begin:
+    xchgw %si, (%rdi)
+    ret
+.L__kefir_text_func_test_atomic_store16_seq_cst_end:
+
+test_atomic_store32_acq_rel:
+.L__kefir_text_func_test_atomic_store32_acq_rel_begin:
+    xchgl %esi, (%rdi)
+    ret
+.L__kefir_text_func_test_atomic_store32_acq_rel_end:
+
+test_atomic_store32_acquire:
+.L__kefir_text_func_test_atomic_store32_acquire_begin:
+    xchgl %esi, (%rdi)
+    ret
+.L__kefir_text_func_test_atomic_store32_acquire_end:
+
+test_atomic_store32_consume:
+.L__kefir_text_func_test_atomic_store32_consume_begin:
+    xchgl %esi, (%rdi)
+    ret
+.L__kefir_text_func_test_atomic_store32_consume_end:
+
+test_atomic_store32_relaxed:
+.L__kefir_text_func_test_atomic_store32_relaxed_begin:
+    movl %esi, (%rdi)
+    ret
+.L__kefir_text_func_test_atomic_store32_relaxed_end:
+
+test_atomic_store32_release:
+.L__kefir_text_func_test_atomic_store32_release_begin:
+    movl %esi, (%rdi)
+    ret
+.L__kefir_text_func_test_atomic_store32_release_end:
+
+test_atomic_store32_seq_cst:
+.L__kefir_text_func_test_atomic_store32_seq_cst_begin:
+    xchgl %esi, (%rdi)
+    ret
+.L__kefir_text_func_test_atomic_store32_seq_cst_end:
+
+test_atomic_store64_acq_rel:
+.L__kefir_text_func_test_atomic_store64_acq_rel_begin:
+    xchgq %rsi, (%rdi)
+    ret
+.L__kefir_text_func_test_atomic_store64_acq_rel_end:
+
+test_atomic_store64_acquire:
+.L__kefir_text_func_test_atomic_store64_acquire_begin:
+    xchgq %rsi, (%rdi)
+    ret
+.L__kefir_text_func_test_atomic_store64_acquire_end:
+
+test_atomic_store64_consume:
+.L__kefir_text_func_test_atomic_store64_consume_begin:
+    xchgq %rsi, (%rdi)
+    ret
+.L__kefir_text_func_test_atomic_store64_consume_end:
+
+test_atomic_store64_relaxed:
+.L__kefir_text_func_test_atomic_store64_relaxed_begin:
+    movq %rsi, (%rdi)
+    ret
+.L__kefir_text_func_test_atomic_store64_relaxed_end:
+
+test_atomic_store64_release:
+.L__kefir_text_func_test_atomic_store64_release_begin:
+    movq %rsi, (%rdi)
+    ret
+.L__kefir_text_func_test_atomic_store64_release_end:
+
+test_atomic_store64_seq_cst:
+.L__kefir_text_func_test_atomic_store64_seq_cst_begin:
+    xchgq %rsi, (%rdi)
+    ret
+.L__kefir_text_func_test_atomic_store64_seq_cst_end:
+
+.L__kefir_text_section_end:
+

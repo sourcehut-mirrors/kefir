@@ -561,6 +561,29 @@ static kefir_result_t format_operation_bitint_store(struct kefir_json_output *js
     return KEFIR_OK;
 }
 
+static const char *get_atomic_memorder_mnemonic(kefir_opt_memory_order_t memorder) {
+    switch (memorder) {
+        case KEFIR_OPT_MEMORY_ORDER_RELAXED:
+            return "relaxed";
+
+        case KEFIR_OPT_MEMORY_ORDER_CONSUME:
+            return "consume";
+
+        case KEFIR_OPT_MEMORY_ORDER_ACQUIRE:
+            return "acquire";
+
+        case KEFIR_OPT_MEMORY_ORDER_RELEASE:
+            return "release";
+
+        case KEFIR_OPT_MEMORY_ORDER_ACQ_REL:
+            return "acq_rel";
+
+        case KEFIR_OPT_MEMORY_ORDER_SEQ_CST:
+            return "seq_cst";
+    }
+    return NULL;
+}
+
 static kefir_result_t format_operation_bitint_atomic(struct kefir_json_output *json,
                                                      const struct kefir_opt_module *module,
                                                      const struct kefir_opt_code_container *code,
@@ -614,14 +637,9 @@ static kefir_result_t format_operation_bitint_atomic(struct kefir_json_output *j
     REQUIRE_OK(kefir_json_output_boolean(json, oper->parameters.bitint_memflags.volatile_access));
     REQUIRE_OK(kefir_json_output_object_end(json));
     REQUIRE_OK(kefir_json_output_object_key(json, "atomic_model"));
-    switch (oper->parameters.bitint_atomic_memorder) {
-        case KEFIR_OPT_MEMORY_ORDER_SEQ_CST:
-            REQUIRE_OK(kefir_json_output_string(json, "seq_cst"));
-            break;
-
-        default:
-            return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected atomic model");
-    }
+    const char *memorder_mnemonic = get_atomic_memorder_mnemonic(oper->parameters.bitint_atomic_memorder);
+    REQUIRE(memorder_mnemonic != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected atomic model"));
+    REQUIRE_OK(kefir_json_output_string(json, memorder_mnemonic));
     return KEFIR_OK;
 }
 
@@ -1024,14 +1042,9 @@ static kefir_result_t format_operation_atomic_op(struct kefir_json_output *json,
             return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected optimizer operation code");
     }
     REQUIRE_OK(kefir_json_output_object_key(json, "atomic_model"));
-    switch (oper->parameters.atomic_op.model) {
-        case KEFIR_OPT_MEMORY_ORDER_SEQ_CST:
-            REQUIRE_OK(kefir_json_output_string(json, "seq_cst"));
-            break;
-
-        default:
-            return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected atomic model");
-    }
+    const char *memorder_mnemonic = get_atomic_memorder_mnemonic(oper->parameters.atomic_op.model);
+    REQUIRE(memorder_mnemonic != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected atomic model"));
+    REQUIRE_OK(kefir_json_output_string(json, memorder_mnemonic));
     return KEFIR_OK;
 }
 

@@ -102,48 +102,92 @@ static kefir_result_t translate_atomic_store(struct kefir_mem *mem, struct kefir
                                              const struct kefir_opt_instruction *instruction,
                                              const struct kefir_opt_call_node *call_node, kefir_size_t width) {
     UNUSED(instruction);
-    kefir_asmcmp_virtual_register_index_t ptr_vreg, value_vreg, tmp_vreg;
+    kefir_asmcmp_virtual_register_index_t ptr_vreg, value_vreg;
 
     REQUIRE(call_node->argument_count == 3,
             KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected three arguments for __kefir_builtin_atomic_store"));
     REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, call_node->arguments[0], &ptr_vreg));
     REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, call_node->arguments[1], &value_vreg));
-    REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
-                                                 KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &tmp_vreg));
 
-    REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(
-        mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), tmp_vreg, value_vreg, NULL));
-    switch (width) {
-        case 8:
-            REQUIRE_OK(kefir_asmcmp_amd64_xchg(
-                mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-                &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(ptr_vreg, 0, KEFIR_ASMCMP_OPERAND_VARIANT_8BIT),
-                &KEFIR_ASMCMP_MAKE_VREG8(tmp_vreg), NULL));
-            break;
+    const struct kefir_opt_instruction *order_instr;
+    REQUIRE_OK(kefir_opt_code_container_instr(&function->function->code, call_node->arguments[2], &order_instr));
+    kefir_bool_t do_exchange = !((order_instr->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST ||
+                                  order_instr->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST) &&
+                                 (order_instr->operation.parameters.imm.uinteger == KEFIR_OPT_MEMORY_ORDER_RELAXED ||
+                                  order_instr->operation.parameters.imm.uinteger == KEFIR_OPT_MEMORY_ORDER_RELEASE));
 
-        case 16:
-            REQUIRE_OK(kefir_asmcmp_amd64_xchg(
-                mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-                &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(ptr_vreg, 0, KEFIR_ASMCMP_OPERAND_VARIANT_16BIT),
-                &KEFIR_ASMCMP_MAKE_VREG16(tmp_vreg), NULL));
-            break;
+    if (do_exchange) {
+        kefir_asmcmp_virtual_register_index_t tmp_vreg;
+        REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
+                                                     KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &tmp_vreg));
+        REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(mem, &function->code,
+                                                             kefir_asmcmp_context_instr_tail(&function->code.context),
+                                                             tmp_vreg, value_vreg, NULL));
+        switch (width) {
+            case 8:
+                REQUIRE_OK(kefir_asmcmp_amd64_xchg(
+                    mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                    &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(ptr_vreg, 0, KEFIR_ASMCMP_OPERAND_VARIANT_8BIT),
+                    &KEFIR_ASMCMP_MAKE_VREG8(tmp_vreg), NULL));
+                break;
 
-        case 32:
-            REQUIRE_OK(kefir_asmcmp_amd64_xchg(
-                mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-                &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(ptr_vreg, 0, KEFIR_ASMCMP_OPERAND_VARIANT_32BIT),
-                &KEFIR_ASMCMP_MAKE_VREG32(tmp_vreg), NULL));
-            break;
+            case 16:
+                REQUIRE_OK(kefir_asmcmp_amd64_xchg(
+                    mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                    &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(ptr_vreg, 0, KEFIR_ASMCMP_OPERAND_VARIANT_16BIT),
+                    &KEFIR_ASMCMP_MAKE_VREG16(tmp_vreg), NULL));
+                break;
 
-        case 64:
-            REQUIRE_OK(kefir_asmcmp_amd64_xchg(
-                mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-                &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(ptr_vreg, 0, KEFIR_ASMCMP_OPERAND_VARIANT_64BIT),
-                &KEFIR_ASMCMP_MAKE_VREG64(tmp_vreg), NULL));
-            break;
+            case 32:
+                REQUIRE_OK(kefir_asmcmp_amd64_xchg(
+                    mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                    &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(ptr_vreg, 0, KEFIR_ASMCMP_OPERAND_VARIANT_32BIT),
+                    &KEFIR_ASMCMP_MAKE_VREG32(tmp_vreg), NULL));
+                break;
 
-        default:
-            return KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Unexpected atomic store operation width");
+            case 64:
+                REQUIRE_OK(kefir_asmcmp_amd64_xchg(
+                    mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                    &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(ptr_vreg, 0, KEFIR_ASMCMP_OPERAND_VARIANT_64BIT),
+                    &KEFIR_ASMCMP_MAKE_VREG64(tmp_vreg), NULL));
+                break;
+
+            default:
+                return KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Unexpected atomic store operation width");
+        }
+    } else {
+        switch (width) {
+            case 8:
+                REQUIRE_OK(kefir_asmcmp_amd64_mov(
+                    mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                    &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(ptr_vreg, 0, KEFIR_ASMCMP_OPERAND_VARIANT_8BIT),
+                    &KEFIR_ASMCMP_MAKE_VREG8(value_vreg), NULL));
+                break;
+
+            case 16:
+                REQUIRE_OK(kefir_asmcmp_amd64_mov(
+                    mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                    &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(ptr_vreg, 0, KEFIR_ASMCMP_OPERAND_VARIANT_16BIT),
+                    &KEFIR_ASMCMP_MAKE_VREG16(value_vreg), NULL));
+                break;
+
+            case 32:
+                REQUIRE_OK(kefir_asmcmp_amd64_mov(
+                    mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                    &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(ptr_vreg, 0, KEFIR_ASMCMP_OPERAND_VARIANT_32BIT),
+                    &KEFIR_ASMCMP_MAKE_VREG32(value_vreg), NULL));
+                break;
+
+            case 64:
+                REQUIRE_OK(kefir_asmcmp_amd64_mov(
+                    mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                    &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(ptr_vreg, 0, KEFIR_ASMCMP_OPERAND_VARIANT_64BIT),
+                    &KEFIR_ASMCMP_MAKE_VREG64(value_vreg), NULL));
+                break;
+
+            default:
+                return KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Unexpected atomic store operation width");
+        }
     }
     return KEFIR_OK;
 }

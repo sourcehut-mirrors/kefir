@@ -52,7 +52,14 @@ typedef struct kefir_opt_memory_access_flags {
     kefir_bool_t volatile_access;
 } kefir_opt_memory_access_flags_t;
 
-typedef enum kefir_opt_memory_order { KEFIR_OPT_MEMORY_ORDER_SEQ_CST } kefir_opt_memory_order_t;
+typedef enum kefir_opt_memory_order {
+    KEFIR_OPT_MEMORY_ORDER_RELAXED,
+    KEFIR_OPT_MEMORY_ORDER_CONSUME,
+    KEFIR_OPT_MEMORY_ORDER_ACQUIRE,
+    KEFIR_OPT_MEMORY_ORDER_RELEASE,
+    KEFIR_OPT_MEMORY_ORDER_ACQ_REL,
+    KEFIR_OPT_MEMORY_ORDER_SEQ_CST
+} kefir_opt_memory_order_t;
 
 typedef enum kefir_opt_comparison_operation {
     KEFIR_OPT_COMPARISON_INT8_EQUALS,
