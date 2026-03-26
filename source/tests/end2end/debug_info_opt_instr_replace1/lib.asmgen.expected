@@ -78,9 +78,9 @@
                             "immediate_dominator": null,
                             "alive_instructions": [
                                 35,
+                                37,
                                 33,
                                 36,
-                                37,
                                 34,
                                 2,
                                 38
@@ -90,12 +90,6 @@
                 ],
                 "debug": {
                     "local_variables": [
-                        {
-                            "variable_id": 188978561024,
-                            "allocations": [
-                                29
-                            ]
-                        },
                         {
                             "variable_id": 197568495620,
                             "allocations": [
@@ -109,6 +103,12 @@
                             ]
                         },
                         {
+                            "variable_id": 188978561024,
+                            "allocations": [
+                                29
+                            ]
+                        },
+                        {
                             "variable_id": 188978561025,
                             "allocations": [
                                 30
@@ -116,18 +116,6 @@
                         }
                     ],
                     "allocation_placement": [
-                        {
-                            "allocation_ref": 3,
-                            "placement": [
-                                2
-                            ]
-                        },
-                        {
-                            "allocation_ref": 5,
-                            "placement": [
-                                37
-                            ]
-                        },
                         {
                             "allocation_ref": 30,
                             "placement": [
@@ -140,6 +128,18 @@
                             "allocation_ref": 29,
                             "placement": [
                                 2
+                            ]
+                        },
+                        {
+                            "allocation_ref": 3,
+                            "placement": [
+                                2
+                            ]
+                        },
+                        {
+                            "allocation_ref": 5,
+                            "placement": [
+                                37
                             ]
                         }
                     ]

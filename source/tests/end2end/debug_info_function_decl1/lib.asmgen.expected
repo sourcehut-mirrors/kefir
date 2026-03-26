@@ -26,18 +26,18 @@ temp:
 .L__kefir_func_temp_label162:
     call test1@PLT
 .loc 0 30 5
-.L__kefir_func_temp_label332:
+.L__kefir_func_temp_label163:
     mov $1, %edi
     mov $2, %esi
     mov $3, %edx
     xor %eax, %eax
     call test2@PLT
 .loc 0 31 5
-.L__kefir_func_temp_label333:
+.L__kefir_func_temp_label337:
     fldt .L__kefir_func_temp_label336(%rip)
 .L__kefir_func_temp_label338:
     fldt .L__kefir_func_temp_label341(%rip)
-.L__kefir_func_temp_label350:
+.L__kefir_func_temp_label343:
     fstpt -32(%rbp)
     fstpt -48(%rbp)
 .L__kefir_func_temp_label530:
@@ -51,7 +51,7 @@ temp:
     call test3@PLT
     add $32, %rsp
 .loc 0 32 5
-.L__kefir_func_temp_label531:
+.L__kefir_func_temp_label712:
     mov $1, %edi
     mov $2, %esi
     mov $3, %edx
@@ -70,9 +70,9 @@ temp:
     movq .L__kefir_func_temp_label886(%rip), %xmm0
 .L__kefir_func_temp_label892:
     movd .L__kefir_func_temp_label891(%rip), %xmm1
-.L__kefir_func_temp_label897:
+.L__kefir_func_temp_label893:
     movd .L__kefir_func_temp_label896(%rip), %xmm2
-.L__kefir_func_temp_label898:
+.L__kefir_func_temp_label1093:
     mov $1, %edi
     mov $2, %esi
     insertps $16, %xmm2, %xmm1

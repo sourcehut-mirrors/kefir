@@ -321,15 +321,15 @@ __kefir_softfloat_complex_double_mul:
     orpd %xmm12, %xmm4
     jmp .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label12
 .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label48:
-    movq %xmm11, %rsi
     movq %xmm4, %rdx
+    movq %xmm11, %rsi
     test %r10b, %r10b
-    cmovz %rdx, %rsi
+    cmovz %rsi, %rdx
     movdqu .L__kefir_runtime_constant_copysign(%rip), %xmm4
     movaps %xmm4, %xmm11
     andpd %xmm0, %xmm11
     movaps %xmm11, %xmm0
-    movq %rsi, %xmm11
+    movq %rdx, %xmm11
     andnpd %xmm11, %xmm4
     orpd %xmm0, %xmm4
     movq .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label71(%rip), %xmm0
@@ -380,10 +380,10 @@ __kefir_softfloat_complex_double_mul:
 .section .rodata
     .align 8
 .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label57:
-    .quad 0
+    .quad 4607182418800017408
     .align 8
 .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label58:
-    .quad 4607182418800017408
+    .quad 0
     .align 8
 .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label59:
     .quad 0

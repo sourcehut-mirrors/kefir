@@ -48,18 +48,18 @@ sum3_one:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    movq %rdx, -32(%rbp)
-    movq %rsi, -24(%rbp)
+    movq %rdx, -24(%rbp)
+    movq %rsi, -32(%rbp)
     movq %rdi, -8(%rbp)
     movq $0, -16(%rbp)
     movq -8(%rbp), %rsi
-    movq -24(%rbp), %rdi
-    movq -32(%rbp), %rdx
+    movq -32(%rbp), %rdi
+    movq -24(%rbp), %rdx
     mov $1, %ecx
 add %rsi, %rcx
 add %rdi, %rdx
 add %rdx, %rcx
-    movq %rdx, -32(%rbp)
+    movq %rdx, -24(%rbp)
     movq %rcx, -16(%rbp)
     movq -16(%rbp), %rax
     lea (%rbp), %rsp

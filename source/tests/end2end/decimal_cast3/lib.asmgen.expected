@@ -101,29 +101,29 @@ d64_to_ubitint24:
     fcomi %st(1)
     jnb .L__kefir_func_d64_to_ubitint24_label3
     fstp %st(1)
-    fnstcww -16(%rbp)
-    movw -16(%rbp), %ax
+    fnstcww -32(%rbp)
+    movw -32(%rbp), %ax
     or $3072, %ax
-    movw %ax, -32(%rbp)
+    movw %ax, -24(%rbp)
+    fldcww -24(%rbp)
+    fistpq -16(%rbp)
+    mov -16(%rbp), %rax
     fldcww -32(%rbp)
-    fistpq -24(%rbp)
-    mov -24(%rbp), %rax
-    fldcww -16(%rbp)
 .L__kefir_func_d64_to_ubitint24_label4:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
 .L__kefir_func_d64_to_ubitint24_label3:
-    fnstcww -16(%rbp)
+    fnstcww -32(%rbp)
     fsubp
-    movw -16(%rbp), %ax
+    movw -32(%rbp), %ax
     or $3072, %ax
-    movw %ax, -32(%rbp)
+    movw %ax, -24(%rbp)
+    fldcww -24(%rbp)
+    fistpq -16(%rbp)
+    mov -16(%rbp), %rax
     fldcww -32(%rbp)
-    fistpq -24(%rbp)
-    mov -24(%rbp), %rax
-    fldcww -16(%rbp)
     btc $63, %rax
     jmp .L__kefir_func_d64_to_ubitint24_label4
 .L__kefir_text_func_d64_to_ubitint24_end:
@@ -231,29 +231,29 @@ d128_to_ubitint24:
     fcomi %st(1)
     jnb .L__kefir_func_d128_to_ubitint24_label3
     fstp %st(1)
-    fnstcww -16(%rbp)
-    movw -16(%rbp), %ax
+    fnstcww -32(%rbp)
+    movw -32(%rbp), %ax
     or $3072, %ax
-    movw %ax, -32(%rbp)
+    movw %ax, -24(%rbp)
+    fldcww -24(%rbp)
+    fistpq -16(%rbp)
+    mov -16(%rbp), %rax
     fldcww -32(%rbp)
-    fistpq -24(%rbp)
-    mov -24(%rbp), %rax
-    fldcww -16(%rbp)
 .L__kefir_func_d128_to_ubitint24_label4:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
 .L__kefir_func_d128_to_ubitint24_label3:
-    fnstcww -16(%rbp)
+    fnstcww -32(%rbp)
     fsubp
-    movw -16(%rbp), %ax
+    movw -32(%rbp), %ax
     or $3072, %ax
-    movw %ax, -32(%rbp)
+    movw %ax, -24(%rbp)
+    fldcww -24(%rbp)
+    fistpq -16(%rbp)
+    mov -16(%rbp), %rax
     fldcww -32(%rbp)
-    fistpq -24(%rbp)
-    mov -24(%rbp), %rax
-    fldcww -16(%rbp)
     btc $63, %rax
     jmp .L__kefir_func_d128_to_ubitint24_label4
 .L__kefir_text_func_d128_to_ubitint24_end:
@@ -386,29 +386,29 @@ d32_to_ubitint24:
     fcomi %st(1)
     jnb .L__kefir_func_d32_to_ubitint24_label3
     fstp %st(1)
-    fnstcww -16(%rbp)
-    movw -16(%rbp), %ax
+    fnstcww -32(%rbp)
+    movw -32(%rbp), %ax
     or $3072, %ax
-    movw %ax, -32(%rbp)
+    movw %ax, -24(%rbp)
+    fldcww -24(%rbp)
+    fistpq -16(%rbp)
+    mov -16(%rbp), %rax
     fldcww -32(%rbp)
-    fistpq -24(%rbp)
-    mov -24(%rbp), %rax
-    fldcww -16(%rbp)
 .L__kefir_func_d32_to_ubitint24_label4:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
 .L__kefir_func_d32_to_ubitint24_label3:
-    fnstcww -16(%rbp)
+    fnstcww -32(%rbp)
     fsubp
-    movw -16(%rbp), %ax
+    movw -32(%rbp), %ax
     or $3072, %ax
-    movw %ax, -32(%rbp)
+    movw %ax, -24(%rbp)
+    fldcww -24(%rbp)
+    fistpq -16(%rbp)
+    mov -16(%rbp), %rax
     fldcww -32(%rbp)
-    fistpq -24(%rbp)
-    mov -24(%rbp), %rax
-    fldcww -16(%rbp)
     btc $63, %rax
     jmp .L__kefir_func_d32_to_ubitint24_label4
 .L__kefir_text_func_d32_to_ubitint24_end:
@@ -824,10 +824,10 @@ __kefir_bigint_unsigned_from_long_double:
     movq -56(%rbp), %rax
     movq -64(%rbp), %rdx
     mov %rax, %r14
-    and $32768, %r14
+    and $32767, %r14
     mov %rax, %r13
-    and $32767, %r13
-    lea -16383(%r13), %rax
+    and $32768, %r13
+    lea -16383(%r14), %rax
     lea 7(%rbx), %r15
     cmp $0, %rax
     jl .L__kefir_runtime_func___kefir_bigint_unsigned_from_long_double_label23
@@ -838,12 +838,12 @@ __kefir_bigint_unsigned_from_long_double:
     mov %r12, %rdi
     mov %rbx, %rsi
     call __kefir_bigint_set_unsigned_integer
-    lea -16446(%r13), %rsi
+    lea -16446(%r14), %rsi
     mov %r12, %rdi
     mov %rbx, %rdx
     call __kefir_bigint_left_shift
 .L__kefir_runtime_func___kefir_bigint_unsigned_from_long_double_label15:
-    test %r14, %r14
+    test %r13, %r13
     jnz .L__kefir_runtime_func___kefir_bigint_unsigned_from_long_double_label17
 .L__kefir_runtime_func___kefir_bigint_unsigned_from_long_double_label20:
     xor %eax, %eax
@@ -872,7 +872,7 @@ __kefir_bigint_unsigned_from_long_double:
     jmp .L__kefir_runtime_func___kefir_bigint_unsigned_from_long_double_label18
 .L__kefir_runtime_func___kefir_bigint_unsigned_from_long_double_label14:
     mov $16446, %eax
-    sub %r13, %rax
+    sub %r14, %rax
     mov %rax, %rcx
     shr %cl, %rdx
     mov %r12, %rdi
@@ -880,7 +880,7 @@ __kefir_bigint_unsigned_from_long_double:
     call __kefir_bigint_set_unsigned_integer
     jmp .L__kefir_runtime_func___kefir_bigint_unsigned_from_long_double_label15
 .L__kefir_runtime_func___kefir_bigint_unsigned_from_long_double_label4:
-    test %r14, %r14
+    test %r13, %r13
     jnz .L__kefir_runtime_func___kefir_bigint_unsigned_from_long_double_label6
     shr $3, %r15
     xor %eax, %eax
@@ -934,12 +934,12 @@ __kefir_bigint_unsigned_from_long_double:
 
 __kefir_bigint_right_shift_whole_digits:
 .L__kefir_runtime_text_func___kefir_bigint_right_shift_whole_digits_begin:
+    sub $-7, %rcx
+    shr $3, %rcx
     mov $-1, %rax
     xor %r8d, %r8d
     test %edx, %edx
     cmovz %r8, %rax
-    sub $-7, %rcx
-    shr $3, %rcx
     mov %rcx, %rdx
     sub %rsi, %rdx
     cmp %rcx, %rsi
@@ -1498,11 +1498,11 @@ __kefir_bigint_signed_from_long_double:
     fstpt -64(%rbp)
     movq -56(%rbp), %rax
     movq -64(%rbp), %rdx
-    lea 7(%rbx), %r14
-    mov %rax, %r15
-    and $32768, %r15
+    mov %rax, %r14
+    and $32768, %r14
     mov %rax, %r13
     and $32767, %r13
+    lea 7(%rbx), %r15
     lea -16383(%r13), %rax
     cmp $0, %rax
     jl .L__kefir_runtime_func___kefir_bigint_signed_from_long_double_label15
@@ -1518,7 +1518,7 @@ __kefir_bigint_signed_from_long_double:
     mov %rbx, %rdx
     call __kefir_bigint_left_shift
 .L__kefir_runtime_func___kefir_bigint_signed_from_long_double_label7:
-    test %r15, %r15
+    test %r14, %r14
     jnz .L__kefir_runtime_func___kefir_bigint_signed_from_long_double_label9
 .L__kefir_runtime_func___kefir_bigint_signed_from_long_double_label12:
     xor %eax, %eax
@@ -1531,10 +1531,10 @@ __kefir_bigint_signed_from_long_double:
     pop %rbp
     ret
 .L__kefir_runtime_func___kefir_bigint_signed_from_long_double_label9:
-    shr $3, %r14
+    shr $3, %r15
     xor %eax, %eax
 .L__kefir_runtime_func___kefir_bigint_signed_from_long_double_label10:
-    cmp %r14, %rax
+    cmp %r15, %rax
     jb .L__kefir_runtime_func___kefir_bigint_signed_from_long_double_label13
     mov %r12, %rdi
     mov $1, %esi
@@ -1573,10 +1573,10 @@ __kefir_bigint_signed_from_long_double:
     pop %rbp
     ret
 .L__kefir_runtime_func___kefir_bigint_signed_from_long_double_label15:
-    shr $3, %r14
+    shr $3, %r15
     xor %eax, %eax
 .L__kefir_runtime_func___kefir_bigint_signed_from_long_double_label16:
-    cmp %r14, %rax
+    cmp %r15, %rax
     jb .L__kefir_runtime_func___kefir_bigint_signed_from_long_double_label18
     xor %eax, %eax
     lea -40(%rbp), %rsp
@@ -1646,33 +1646,36 @@ __kefir_bigint_get_bits:
     mov $8, %r11
     div %r11
     cmp $0, %rdx
-    je .L__kefir_runtime_func___kefir_bigint_get_bits_label8
-    lea 7(%r10), %rcx
-    shr $3, %rcx
-    shl $3, %rcx
+    je .L__kefir_runtime_func___kefir_bigint_get_bits_label6
+    lea 7(%r10), %rax
+    shr $3, %rax
+    shl $3, %rax
 .L__kefir_runtime_func___kefir_bigint_get_bits_label8:
-    mov %r10, %rdx
-    shr $3, %rdx
-    movzxb (%rdi, %rdx, 1), %r11
-    cmp %r8, %rcx
-    mov %rcx, %rax
-    cmova %r8, %rax
-    shl $3, %rdx
     mov %r10, %rcx
-    sub %rdx, %rcx
-    sar %cl, %r11d
+    shr $3, %rcx
+    movzxb (%rdi, %rcx, 1), %rdx
+    shl $3, %rcx
+    mov %r10, %r11
+    sub %rcx, %r11
+    mov %r11, %rcx
+    sar %cl, %edx
+    cmp %r8, %rax
+    cmova %r8, %rax
     mov %rax, %rcx
     sub %r10, %rcx
-    mov $1, %edx
-    shl %cl, %rdx
-    sub $1, %edx
-    and %edx, %r11d
+    mov $1, %r11d
+    shl %cl, %r11
+    sub $1, %r11d
+    and %r11d, %edx
     mov %r10, %rcx
     sub %rsi, %rcx
-    shl %cl, %r11
-    or %r11, %r9
+    shl %cl, %rdx
+    or %rdx, %r9
     mov %rax, %r10
     jmp .L__kefir_runtime_func___kefir_bigint_get_bits_label2
+.L__kefir_runtime_func___kefir_bigint_get_bits_label6:
+    mov %rcx, %rax
+    jmp .L__kefir_runtime_func___kefir_bigint_get_bits_label8
 .L__kefir_runtime_text_func___kefir_bigint_get_bits_end:
 
 __kefir_bigint_get_sign:

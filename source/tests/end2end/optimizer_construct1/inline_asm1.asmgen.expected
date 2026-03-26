@@ -86,12 +86,12 @@
                             ],
                             "immediate_dominator": null,
                             "alive_instructions": [
-                                0,
                                 4,
-                                1,
-                                2,
                                 3,
-                                5
+                                5,
+                                0,
+                                1,
+                                2
                             ]
                         }
                     },
@@ -395,11 +395,11 @@
                             "immediate_dominator": 1,
                             "alive_instructions": [
                                 18,
+                                15,
                                 19,
                                 17,
                                 14,
                                 13,
-                                15,
                                 16
                             ]
                         }
@@ -454,9 +454,9 @@
                             ],
                             "immediate_dominator": 0,
                             "alive_instructions": [
-                                7,
+                                8,
                                 6,
-                                8
+                                7
                             ]
                         }
                     }
@@ -509,6 +509,11 @@
                         ]
                     },
                     {
+                        "node_ref": 9,
+                        "type": "consume",
+                        "predecessor_ref": 2
+                    },
+                    {
                         "node_ref": 10,
                         "type": "produce",
                         "predecessor_ref": 2
@@ -536,11 +541,6 @@
                         "node_ref": 12,
                         "type": "terminate",
                         "predecessor_ref": 11
-                    },
-                    {
-                        "node_ref": 9,
-                        "type": "consume",
-                        "predecessor_ref": 2
                     },
                     {
                         "node_ref": 8,

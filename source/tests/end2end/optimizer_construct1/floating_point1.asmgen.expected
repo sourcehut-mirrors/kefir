@@ -252,30 +252,30 @@
                             "immediate_dominator": null,
                             "alive_instructions": [
                                 24,
-                                19,
-                                18,
-                                3,
-                                15,
-                                0,
-                                10,
-                                20,
-                                5,
-                                1,
-                                23,
                                 22,
-                                8,
-                                16,
-                                4,
+                                15,
+                                5,
+                                18,
                                 17,
                                 14,
                                 21,
-                                13,
+                                23,
                                 6,
-                                7,
-                                2,
                                 11,
+                                16,
+                                20,
+                                2,
                                 9,
-                                12
+                                3,
+                                1,
+                                8,
+                                19,
+                                13,
+                                0,
+                                7,
+                                12,
+                                4,
+                                10
                             ]
                         }
                     }
@@ -283,27 +283,27 @@
                 "debug": {
                     "local_variables": [
                         {
-                            "variable_id": 188978561024,
-                            "allocations": [
-                                3
-                            ]
-                        },
-                        {
                             "variable_id": 188978561026,
                             "allocations": [
                                 9
                             ]
                         },
                         {
-                            "variable_id": 188978561025,
-                            "allocations": [
-                                12
-                            ]
-                        },
-                        {
                             "variable_id": 188978561027,
                             "allocations": [
                                 6
+                            ]
+                        },
+                        {
+                            "variable_id": 188978561024,
+                            "allocations": [
+                                3
+                            ]
+                        },
+                        {
+                            "variable_id": 188978561025,
+                            "allocations": [
+                                12
                             ]
                         }
                     ],
@@ -614,30 +614,30 @@
                             "immediate_dominator": null,
                             "alive_instructions": [
                                 24,
-                                19,
-                                18,
-                                3,
-                                15,
-                                0,
-                                10,
-                                20,
-                                5,
-                                1,
-                                23,
                                 22,
-                                8,
-                                16,
-                                4,
+                                15,
+                                5,
+                                18,
                                 17,
                                 14,
                                 21,
-                                13,
+                                23,
                                 6,
-                                7,
-                                2,
                                 11,
+                                16,
+                                20,
+                                2,
                                 9,
-                                12
+                                3,
+                                1,
+                                8,
+                                19,
+                                13,
+                                0,
+                                7,
+                                12,
+                                4,
+                                10
                             ]
                         }
                     }
@@ -645,15 +645,15 @@
                 "debug": {
                     "local_variables": [
                         {
-                            "variable_id": 197568495623,
-                            "allocations": [
-                                9
-                            ]
-                        },
-                        {
                             "variable_id": 197568495622,
                             "allocations": [
                                 12
+                            ]
+                        },
+                        {
+                            "variable_id": 197568495623,
+                            "allocations": [
+                                9
                             ]
                         },
                         {

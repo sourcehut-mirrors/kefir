@@ -14,16 +14,16 @@ test:
     mov %rsp, %rbp
     sub $48, %rsp
     xor %eax, %eax
-    movl %edi, -48(%rbp)
+    movl %edi, -40(%rbp)
     sub $16, %rsp
     movq %rax, (%rsp)
     mov %rsp, %rcx
     lea -16(%rbp), %rdx
     movq %rax, (%rdx)
-    movl -48(%rbp), %eax
+    movl -40(%rbp), %eax
     movsx %eax, %rax
     shl $2, %rax
-    movq %rax, -32(%rbp)
+    movq %rax, -24(%rbp)
     sub %rax, %rsp
     mov $16, %rax
     cmp $4, %rax
@@ -32,17 +32,17 @@ test:
     neg %rax
     and %rax, %rsp
     mov %rsp, %rax
-    movq %rax, -40(%rbp)
-    movq -40(%rbp), %rax
-    movq %rax, -24(%rbp)
+    movq %rax, -32(%rbp)
+    movq -32(%rbp), %rax
+    movq %rax, -48(%rbp)
 .L__kefir_func_test_label2:
-    addl $-1, -48(%rbp)
-    lea -40(%rbp), %rax
+    addl $-1, -40(%rbp)
+    lea -32(%rbp), %rax
     movq (%rax), %rax
-    movq -24(%rbp), %rdx
+    movq -48(%rbp), %rdx
     cmp %rdx, %rax
     jnz .L__kefir_func_test_label6
-    movl -48(%rbp), %eax
+    movl -40(%rbp), %eax
     cmp $1, %eax
     jg .L__kefir_func_test_label2
     mov $1, %eax
@@ -71,7 +71,7 @@ test2:
     movl -64(%rbp), %eax
     movsx %eax, %rax
     shl $2, %rax
-    movq %rax, -32(%rbp)
+    movq %rax, -48(%rbp)
     sub %rax, %rsp
     mov $16, %rax
     cmp $4, %rax
@@ -80,7 +80,7 @@ test2:
     neg %rax
     and %rax, %rsp
     mov %rsp, %rax
-    movq %rax, -40(%rbp)
+    movq %rax, -56(%rbp)
 .L__kefir_func_test2_label2:
     sub $16, %rsp
     movq %rcx, (%rsp)
@@ -90,7 +90,7 @@ test2:
     movl -64(%rbp), %ecx
     movsx %ecx, %rcx
     shl $2, %rcx
-    movq %rcx, -48(%rbp)
+    movq %rcx, -32(%rbp)
     sub %rcx, %rsp
     mov $16, %rcx
     cmp $4, %rcx
@@ -99,7 +99,7 @@ test2:
     neg %rcx
     and %rcx, %rsp
     mov %rsp, %rcx
-    movq %rcx, -56(%rbp)
+    movq %rcx, -40(%rbp)
     cmp $0, %rax
     jz .L__kefir_func_test2_label6
     mov %rax, %rsp

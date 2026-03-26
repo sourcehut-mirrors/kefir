@@ -160,7 +160,7 @@ add64x:
 .L__kefir_func_add64x_label21:
     faddp
 .loc 0 68 5
-.L__kefir_func_add64x_label25:
+.L__kefir_func_add64x_label30:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -183,7 +183,7 @@ div64x:
 .L__kefir_func_div64x_label21:
     fdivp
 .loc 0 80 5
-.L__kefir_func_div64x_label25:
+.L__kefir_func_div64x_label30:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -206,7 +206,7 @@ mul64x:
 .L__kefir_func_mul64x_label21:
     fmulp
 .loc 0 76 5
-.L__kefir_func_mul64x_label25:
+.L__kefir_func_mul64x_label30:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -250,7 +250,7 @@ sub64x:
 .L__kefir_func_sub64x_label21:
     fsubp
 .loc 0 72 5
-.L__kefir_func_sub64x_label25:
+.L__kefir_func_sub64x_label30:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

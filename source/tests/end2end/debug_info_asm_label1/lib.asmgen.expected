@@ -26,12 +26,12 @@ SOMEFN1:
 .loc 0 27 12
 .L__kefir_func_SOMEFN1_label175:
     movd .L__kefir_func_SOMEFN1_label174(%rip), %xmm1
-.L__kefir_func_SOMEFN1_label179:
+.L__kefir_func_SOMEFN1_label176:
     movaps %xmm1, %xmm2
     addss %xmm0, %xmm2
     movaps %xmm2, %xmm0
 .loc 0 27 5
-.L__kefir_func_SOMEFN1_label180:
+.L__kefir_func_SOMEFN1_label191:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

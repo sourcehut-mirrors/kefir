@@ -256,8 +256,8 @@
                                 22,
                                 6,
                                 3,
-                                23,
-                                0
+                                0,
+                                23
                             ]
                         }
                     },
@@ -372,13 +372,13 @@
                             ],
                             "immediate_dominator": 1,
                             "alive_instructions": [
-                                26,
-                                6,
                                 27,
-                                29,
                                 3,
                                 0,
-                                28
+                                26,
+                                6,
+                                28,
+                                29
                             ]
                         }
                     },
@@ -428,10 +428,10 @@
                             ],
                             "immediate_dominator": 4,
                             "alive_instructions": [
-                                35,
+                                0,
                                 36,
                                 34,
-                                0
+                                35
                             ]
                         }
                     },
@@ -476,11 +476,11 @@
                             ],
                             "immediate_dominator": 4,
                             "alive_instructions": [
-                                32,
                                 0,
+                                31,
                                 3,
                                 33,
-                                31
+                                32
                             ]
                         }
                     },
@@ -526,11 +526,11 @@
                             "immediate_dominator": 0,
                             "alive_instructions": [
                                 20,
-                                0,
                                 19,
-                                6,
                                 3,
                                 21,
+                                0,
+                                6,
                                 9
                             ]
                         }
@@ -539,27 +539,27 @@
                 "debug": {
                     "local_variables": [
                         {
-                            "variable_id": 188978561024,
-                            "allocations": [
-                                3
-                            ]
-                        },
-                        {
                             "variable_id": 188978561026,
                             "allocations": [
                                 9
                             ]
                         },
                         {
-                            "variable_id": 188978561025,
-                            "allocations": [
-                                12
-                            ]
-                        },
-                        {
                             "variable_id": 188978561027,
                             "allocations": [
                                 6
+                            ]
+                        },
+                        {
+                            "variable_id": 188978561024,
+                            "allocations": [
+                                3
+                            ]
+                        },
+                        {
+                            "variable_id": 188978561025,
+                            "allocations": [
+                                12
                             ]
                         }
                     ],

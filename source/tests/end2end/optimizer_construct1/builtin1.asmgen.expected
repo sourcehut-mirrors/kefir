@@ -96,14 +96,14 @@
                             "immediate_dominator": null,
                             "alive_instructions": [
                                 8,
+                                9,
                                 7,
                                 5,
                                 0,
-                                10,
                                 6,
                                 1,
                                 11,
-                                9
+                                10
                             ]
                         }
                     }

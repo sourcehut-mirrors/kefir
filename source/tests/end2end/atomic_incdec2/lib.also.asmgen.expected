@@ -70,8 +70,8 @@ postdec_ld:
     fnstenv -112(%rbp)
     stmxcsr -84(%rbp)
     fnclex
-    movq ld@GOTPCREL(%rip), %rbx
     fldt .L__kefir_func_postdec_ld_label6(%rip)
+    movq ld@GOTPCREL(%rip), %rbx
     fstpt -80(%rbp)
 .L__kefir_func_postdec_ld_label2:
     lea -64(%rbp), %rdx
@@ -151,8 +151,8 @@ postinc_ld:
     fnstenv -112(%rbp)
     stmxcsr -84(%rbp)
     fnclex
-    movq ld@GOTPCREL(%rip), %rbx
     fldt .L__kefir_func_postinc_ld_label6(%rip)
+    movq ld@GOTPCREL(%rip), %rbx
     fstpt -80(%rbp)
 .L__kefir_func_postinc_ld_label2:
     lea -64(%rbp), %rdx
@@ -215,8 +215,8 @@ postdec_f32:
     fnstenv -48(%rbp)
     stmxcsr -20(%rbp)
     fnclex
-    movq f32@GOTPCREL(%rip), %rsi
     movd .L__kefir_func_postdec_f32_label6(%rip), %xmm0
+    movq f32@GOTPCREL(%rip), %rsi
 .L__kefir_func_postdec_f32_label2:
     movl (%rsi), %eax
     mov %eax, %edi
@@ -261,8 +261,8 @@ postdec_f64:
     fnstenv -48(%rbp)
     stmxcsr -20(%rbp)
     fnclex
-    movq f64@GOTPCREL(%rip), %rsi
     movq .L__kefir_func_postdec_f64_label6(%rip), %xmm0
+    movq f64@GOTPCREL(%rip), %rsi
 .L__kefir_func_postdec_f64_label2:
     movq (%rsi), %rax
     mov %rax, %rdi
@@ -368,8 +368,8 @@ postinc_f32:
     fnstenv -48(%rbp)
     stmxcsr -20(%rbp)
     fnclex
-    movq f32@GOTPCREL(%rip), %rsi
     movd .L__kefir_func_postinc_f32_label6(%rip), %xmm0
+    movq f32@GOTPCREL(%rip), %rsi
 .L__kefir_func_postinc_f32_label2:
     movl (%rsi), %eax
     mov %eax, %edi
@@ -414,8 +414,8 @@ postinc_f64:
     fnstenv -48(%rbp)
     stmxcsr -20(%rbp)
     fnclex
-    movq f64@GOTPCREL(%rip), %rsi
     movq .L__kefir_func_postinc_f64_label6(%rip), %xmm0
+    movq f64@GOTPCREL(%rip), %rsi
 .L__kefir_func_postinc_f64_label2:
     movq (%rsi), %rax
     mov %rax, %rdi

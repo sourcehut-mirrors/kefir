@@ -190,12 +190,12 @@
                             "immediate_dominator": 0,
                             "alive_instructions": [
                                 15,
-                                16,
                                 14,
                                 13,
-                                12,
+                                16,
                                 11,
-                                10
+                                10,
+                                12
                             ]
                         }
                     },
@@ -260,12 +260,12 @@
                             ],
                             "immediate_dominator": 1,
                             "alive_instructions": [
-                                20,
-                                22,
-                                19,
                                 17,
+                                19,
+                                18,
                                 21,
-                                18
+                                22,
+                                20
                             ]
                         }
                     },
@@ -615,12 +615,12 @@
                             "immediate_dominator": 0,
                             "alive_instructions": [
                                 8,
+                                9,
                                 7,
                                 13,
-                                10,
                                 12,
                                 11,
-                                9
+                                10
                             ]
                         }
                     }

@@ -31,15 +31,15 @@ process:
     mov %r8, -224(%rbp)
     mov %r9, -216(%rbp)
     xor %eax, %eax
-    movl %esi, -80(%rbp)
-    movq %rdi, -72(%rbp)
-    movl $16, -64(%rbp)
-    movl $48, -60(%rbp)
+    movl %esi, -48(%rbp)
+    movq %rdi, -56(%rbp)
+    movl $16, -80(%rbp)
+    movl $48, -76(%rbp)
     lea 16(%rbp), %rcx
-    movq %rcx, -56(%rbp)
+    movq %rcx, -72(%rbp)
     lea -256(%rbp), %rcx
-    movq %rcx, -48(%rbp)
-    movl -80(%rbp), %ecx
+    movq %rcx, -64(%rbp)
+    movl -48(%rbp), %ecx
     cmp $0, %ecx
     jg .L__kefir_func_process_label5
     xor %eax, %eax
@@ -54,7 +54,7 @@ process:
     mov %rsp, %rbx
     lea -40(%rbp), %rcx
     movq %rax, (%rcx)
-    movl -80(%rbp), %eax
+    movl -48(%rbp), %eax
     movsx %eax, %rax
     shl $2, %rax
     movq %rax, -24(%rbp)
@@ -67,16 +67,16 @@ process:
     and %rax, %rsp
     mov %rsp, %rax
     movq %rax, -32(%rbp)
-    movl $0, -76(%rbp)
+    movl $0, -44(%rbp)
 .L__kefir_func_process_label6:
-    movl -76(%rbp), %eax
-    movl -80(%rbp), %ecx
+    movl -44(%rbp), %eax
+    movl -48(%rbp), %ecx
     cmp %ecx, %eax
     jl .L__kefir_func_process_label8
-    movq -72(%rbp), %r12
+    movq -56(%rbp), %r12
     lea -32(%rbp), %rax
     movq (%rax), %rdi
-    movl -80(%rbp), %esi
+    movl -48(%rbp), %esi
     call *%r12
     lea -16(%rbp), %rsp
     pop %r12
@@ -84,25 +84,25 @@ process:
     pop %rbp
     ret
 .L__kefir_func_process_label8:
-    movl -64(%rbp), %eax
+    movl -80(%rbp), %eax
     cmp $48, %eax
     jae .L__kefir_func_process_label10
     lea 8(%rax), %rax
-    movl %eax, -64(%rbp)
-    add -48(%rbp), %rax
+    movl %eax, -80(%rbp)
+    add -64(%rbp), %rax
     mov -8(%rax), %rcx
 .L__kefir_func_process_label11:
     lea -32(%rbp), %rax
     movq (%rax), %rax
-    movl -76(%rbp), %edx
+    movl -44(%rbp), %edx
     movsx %edx, %rdx
     movl %ecx, (%rax, %rdx, 4)
-    addl $1, -76(%rbp)
+    addl $1, -44(%rbp)
     jmp .L__kefir_func_process_label6
 .L__kefir_func_process_label10:
-    mov -56(%rbp), %rax
+    mov -72(%rbp), %rax
     lea 8(%rax), %rcx
-    mov %rcx, -56(%rbp)
+    mov %rcx, -72(%rbp)
     mov (%rax), %rax
     mov %rax, %rcx
     jmp .L__kefir_func_process_label11

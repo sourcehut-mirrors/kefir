@@ -141,28 +141,26 @@ __kefir_bigint_signed_compare:
     shl $3, %rcx
     sub %rcx, %rax
     mov %rax, %rcx
-    sar %cl, %r8d
-    and $1, %r8d
-    xor %ecx, %ecx
-    test %r8d, %r8d
-    mov %rcx, %r10
-    sete %r10b
-    mov %rax, %rcx
     sar %cl, %r9d
     and $1, %r9d
-    setne %al
-    movzx %al, %rax
-    test %r8d, %r8d
     setne %cl
+    movzx %cl, %r10
+    mov %rax, %rcx
+    sar %cl, %r8d
+    and $1, %r8d
+    setne %al
+    xor %ecx, %ecx
+    test %r8d, %r8d
+    sete %cl
     test %r9d, %r9d
     sete %r9b
     test %r8d, %r8d
     setne %r8b
     and %r9b, %r8b
     jnz .L__kefir_runtime_func___kefir_bigint_signed_compare_label6
-    test %cl, %cl
-    cmovz %rax, %r10
-    test %r10d, %r10d
+    test %al, %al
+    cmovz %r10, %rcx
+    test %ecx, %ecx
     jnz .L__kefir_runtime_func___kefir_bigint_signed_compare_label4
     jmp __kefir_bigint_unsigned_compare
 .L__kefir_runtime_func___kefir_bigint_signed_compare_label4:

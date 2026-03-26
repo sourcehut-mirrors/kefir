@@ -517,7 +517,7 @@ kefir_result_t kefir_bigint_unsigned_parse10(struct kefir_mem *mem, struct kefir
         input_length = input_strlen;
     }
 
-    const kefir_size_t num_of_bits = 1 + (kefir_size_t) ceil(input_length * 3.322 /* log2(10) */);
+    const kefir_size_t num_of_bits = 1 + (kefir_size_t) (input_length * 3322 + 999) / 1000 /* log2(10) */;
     REQUIRE_OK(kefir_bigint_resize_cast_unsigned(mem, bigint, num_of_bits));
     REQUIRE_OK(kefir_bigint_unsigned_parse10_into(mem, bigint, input, input_length));
 
@@ -834,7 +834,7 @@ kefir_result_t kefir_bigint_unsigned_format10(struct kefir_mem *mem, struct kefi
     REQUIRE(bigint != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid big integer"));
     REQUIRE(output_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to output string"));
 
-    const kefir_size_t output_length = 1 + (kefir_size_t) ceil(bigint->bitwidth * 0.302 /* log10(2) */);
+    const kefir_size_t output_length = 1 + (kefir_size_t) (bigint->bitwidth * 302 + 999) / 1000 /* log10(2) */;
     char *output = KEFIR_MALLOC(mem, sizeof(char) * output_length);
     REQUIRE(output != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate formatted big integer"));
     kefir_result_t res = kefir_bigint_unsigned_format10_into(mem, bigint, output, output_length);

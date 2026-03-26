@@ -104,18 +104,18 @@
                             "predecessors": [],
                             "immediate_dominator": null,
                             "alive_instructions": [
-                                54,
-                                53,
-                                57,
                                 50,
-                                48,
-                                9,
-                                56,
-                                51,
-                                55,
+                                49,
                                 52,
+                                56,
+                                54,
+                                55,
+                                57,
+                                53,
+                                48,
+                                51,
                                 2,
-                                49
+                                9
                             ]
                         }
                     }

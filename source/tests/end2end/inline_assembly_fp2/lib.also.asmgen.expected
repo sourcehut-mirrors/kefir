@@ -11,21 +11,21 @@ custom_discriminant:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    movq %xmm2, -32(%rbp)
-    movq %xmm1, -24(%rbp)
-    movq %xmm0, -16(%rbp)
+    movq %xmm2, -24(%rbp)
+    movq %xmm1, -32(%rbp)
     movq %xmm0, -8(%rbp)
-    movq -24(%rbp), %xmm1
-    movq -16(%rbp), %xmm2
-    movq -32(%rbp), %xmm3
+    movq %xmm0, -16(%rbp)
+    movq -32(%rbp), %xmm1
+    movq -8(%rbp), %xmm2
+    movq -24(%rbp), %xmm3
 mulsd %xmm1, %xmm1
 movq %xmm2, %xmm0
 mulsd %xmm3, %xmm0
 addsd %xmm0, %xmm0
 addsd %xmm0, %xmm0
 subsd %xmm0, %xmm1
-    movq %xmm1, -8(%rbp)
-    movq -8(%rbp), %xmm0
+    movq %xmm1, -16(%rbp)
+    movq -16(%rbp), %xmm0
     lea (%rbp), %rsp
     pop %rbp
     ret

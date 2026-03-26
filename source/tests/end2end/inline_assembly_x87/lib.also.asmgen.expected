@@ -16,13 +16,13 @@ discriminant:
     mov %rsp, %rbp
     sub $64, %rsp
     fstcw -8(%rbp)
-    movq %xmm2, -40(%rbp)
-    movq %xmm1, -32(%rbp)
+    movq %xmm2, -32(%rbp)
+    movq %xmm1, -40(%rbp)
     movq %xmm0, -16(%rbp)
     movq %xmm0, -24(%rbp)
     movq -16(%rbp), %xmm0
-    movq -32(%rbp), %xmm1
-    movq -40(%rbp), %xmm2
+    movq -40(%rbp), %xmm1
+    movq -32(%rbp), %xmm2
     movq %xmm2, -64(%rbp)
     fldl -64(%rbp)
     movq %xmm1, -56(%rbp)
@@ -52,13 +52,13 @@ discriminantf:
     mov %rsp, %rbp
     sub $48, %rsp
     fstcw -8(%rbp)
-    movd %xmm2, -24(%rbp)
-    movd %xmm1, -20(%rbp)
+    movd %xmm2, -20(%rbp)
+    movd %xmm1, -24(%rbp)
     movd %xmm0, -12(%rbp)
     movd %xmm0, -16(%rbp)
     movd -12(%rbp), %xmm0
-    movd -20(%rbp), %xmm1
-    movd -24(%rbp), %xmm2
+    movd -24(%rbp), %xmm1
+    movd -20(%rbp), %xmm2
     movd %xmm2, -48(%rbp)
     flds -48(%rbp)
     movd %xmm1, -40(%rbp)
@@ -91,18 +91,18 @@ discriminantl:
     fldt 48(%rbp)
     fldt 32(%rbp)
     fldt 16(%rbp)
-    movq $0, -72(%rbp)
-    fxch %st(1)
-    fxch %st(2)
-    fstpt -80(%rbp)
     movq $0, -56(%rbp)
     fxch %st(1)
+    fxch %st(2)
     fstpt -64(%rbp)
+    movq $0, -72(%rbp)
+    fxch %st(1)
+    fstpt -80(%rbp)
     movq $0, -24(%rbp)
     fstpt -32(%rbp)
     fldt -32(%rbp)
-    fldt -64(%rbp)
     fldt -80(%rbp)
+    fldt -64(%rbp)
     fstpt -128(%rbp)
     fstpt -112(%rbp)
     fstpt -96(%rbp)

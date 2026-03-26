@@ -28,7 +28,7 @@ test1:
     mov %rcx, -200(%rbp)
     mov %r8, -192(%rbp)
     mov %r9, -184(%rbp)
-    movl %edi, -48(%rbp)
+    movl %edi, -40(%rbp)
     movl $8, -32(%rbp)
     movl $48, -28(%rbp)
     lea 16(%rbp), %rax
@@ -44,13 +44,13 @@ test1:
     add -16(%rbp), %rax
     mov -8(%rax), %rax
 .L__kefir_func_test1_label7:
-    movq %rax, -40(%rbp)
-    movl -48(%rbp), %eax
+    movq %rax, -48(%rbp)
+    movl -40(%rbp), %eax
     lea -1(%eax), %ecx
-    movl %ecx, -48(%rbp)
+    movl %ecx, -40(%rbp)
     test %eax, %eax
     jnz .L__kefir_func_test1_label4
-    movq -40(%rbp), %rax
+    movq -48(%rbp), %rax
     shl $21, %rax
     sar $21, %rax
     lea (%rbp), %rsp

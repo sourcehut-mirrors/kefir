@@ -35,6 +35,12 @@ jmp .L__kefir_func_fn1_label5
     mov %rax, %r8
     pop %rbp
     ret
+.L__kefir_func_fn1_label3:
+    mov %rdx, 0
+    mov [%rdx], %rax
+    mov %rax, 0
+    mov [%rax], %rcx
+    jmp .L__kefir_func_fn1_label6
 .L__kefir_func_fn1_label4:
     mov %rdx, 0
     mov [%rdx], %rax
@@ -43,12 +49,6 @@ jmp .L__kefir_func_fn1_label5
     mov %rax, %r8
     pop %rbp
     ret
-.L__kefir_func_fn1_label3:
-    mov %rdx, 0
-    mov [%rdx], %rax
-    mov %rax, 0
-    mov [%rax], %rcx
-    jmp .L__kefir_func_fn1_label6
 .L__kefir_text_func_fn1_end:
 
 .L__kefir_text_section_end:

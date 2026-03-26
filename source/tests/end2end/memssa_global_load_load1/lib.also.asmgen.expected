@@ -195,8 +195,8 @@ test12:
 .L__kefir_func_test12_label4:
     movl (%rsi), %eax
     movl (%rdi), %eax
-    add $1, %edx
     add %eax, %ecx
+    add $1, %edx
     jmp .L__kefir_func_test12_label2
 .L__kefir_text_func_test12_end:
 

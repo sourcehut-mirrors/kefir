@@ -132,7 +132,8 @@ kefir_result_t kefir_hashset_add(struct kefir_mem *mem, struct kefir_hashset *ha
     REQUIRE(hashset != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid hashset"));
 
     kefir_bool_t did_rehash = false;
-    if (hashset->capacity == 0 || hashset->occupied >= KEFIR_REHASH_OCCUPATION_THRESHOLD * hashset->capacity) {
+    if (hashset->capacity == 0 ||
+        hashset->occupied >= KEFIR_REHASH_OCCUPATION_THRESHOLD_PCT * hashset->capacity / 100) {
         REQUIRE_OK(rehash(mem, hashset, KEFIR_HASHTABLE_CAPACITY_GROW(hashset->capacity)));
         did_rehash = true;
     }
@@ -159,7 +160,7 @@ kefir_result_t kefir_hashset_trim(struct kefir_mem *mem, struct kefir_hashset *h
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(hashset != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid hashset"));
 
-    if (hashset->capacity * KEFIR_REHASH_TRIM_THRESHOLD > hashset->occupied) {
+    if (hashset->capacity * KEFIR_REHASH_TRIM_THRESHOLD_PCT / 100 > hashset->occupied) {
         kefir_size_t trimmed_capacity = next_power_of_2(KEFIR_HASHTABLE_CAPACITY_TRIM(hashset->occupied));
         if (trimmed_capacity < hashset->capacity) {
             REQUIRE_OK(rehash(mem, hashset, trimmed_capacity));

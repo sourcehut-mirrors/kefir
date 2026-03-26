@@ -140,7 +140,8 @@ kefir_result_t kefir_hashtable_insert(struct kefir_mem *mem, struct kefir_hashta
     REQUIRE(hashtable != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid hashtable"));
 
     kefir_bool_t did_rehash = false;
-    if (hashtable->capacity == 0 || hashtable->occupied >= KEFIR_REHASH_OCCUPATION_THRESHOLD * hashtable->capacity) {
+    if (hashtable->capacity == 0 ||
+        hashtable->occupied >= KEFIR_REHASH_OCCUPATION_THRESHOLD_PCT * hashtable->capacity / 100) {
         REQUIRE_OK(rehash(mem, hashtable, KEFIR_HASHTABLE_CAPACITY_GROW(hashtable->capacity)));
         did_rehash = true;
     }
@@ -203,7 +204,7 @@ static kefir_uint64_t next_power_of_2(kefir_uint64_t x) {
 kefir_result_t kefir_hashtable_trim(struct kefir_mem *mem, struct kefir_hashtable *hashtable) {
     REQUIRE(hashtable != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid hashtable"));
 
-    if (hashtable->capacity * KEFIR_REHASH_TRIM_THRESHOLD > hashtable->occupied) {
+    if (hashtable->capacity * KEFIR_REHASH_TRIM_THRESHOLD_PCT / 100 > hashtable->occupied) {
         kefir_size_t trimmed_capacity = next_power_of_2(KEFIR_HASHTABLE_CAPACITY_TRIM(hashtable->occupied));
         if (trimmed_capacity < hashtable->capacity) {
             REQUIRE_OK(rehash(mem, hashtable, trimmed_capacity));

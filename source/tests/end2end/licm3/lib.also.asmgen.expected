@@ -19,14 +19,13 @@ test1:
     xor %ecx, %ecx
     mov %rcx, %r8
 .L__kefir_func_test1_label2:
-    movsx %r8d, %rcx
-    imul $40, %rcx, %rcx
-    mov %rdi, %r9
-    add %rcx, %r9
     mov %rdx, %rcx
-    mov %r8, %r10
-    shl %cl, %r10d
-    mov %r10, %rcx
+    mov %r8, %r9
+    shl %cl, %r9d
+    mov %r9, %rcx
+    movsx %r8d, %r9
+    imul $40, %r9, %r9
+    add %rdi, %r9
     cmp %esi, %r8d
     je .L__kefir_func_test1_label8
     xor %r10d, %r10d

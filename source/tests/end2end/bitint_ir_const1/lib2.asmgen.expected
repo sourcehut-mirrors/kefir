@@ -36,8 +36,8 @@
                             "predecessors": [],
                             "immediate_dominator": null,
                             "alive_instructions": [
-                                1,
                                 0,
+                                1,
                                 2
                             ]
                         }

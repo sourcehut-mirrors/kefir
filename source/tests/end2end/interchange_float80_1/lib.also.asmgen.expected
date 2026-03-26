@@ -54,7 +54,7 @@ add80:
 .L__kefir_func_add80_label21:
     faddp
 .loc 0 68 5
-.L__kefir_func_add80_label25:
+.L__kefir_func_add80_label30:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -183,7 +183,7 @@ div80:
 .L__kefir_func_div80_label21:
     fdivp
 .loc 0 80 5
-.L__kefir_func_div80_label25:
+.L__kefir_func_div80_label30:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -206,7 +206,7 @@ mul80:
 .L__kefir_func_mul80_label21:
     fmulp
 .loc 0 76 5
-.L__kefir_func_mul80_label25:
+.L__kefir_func_mul80_label30:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -250,7 +250,7 @@ sub80:
 .L__kefir_func_sub80_label21:
     fsubp
 .loc 0 72 5
-.L__kefir_func_sub80_label25:
+.L__kefir_func_sub80_label30:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

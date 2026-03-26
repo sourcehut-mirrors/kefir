@@ -14,13 +14,13 @@ getb:
     push %rbx
     sub $24, %rsp
     mov %rdi, %rbx
-    movl %esi, -20(%rbp)
+    movl %esi, -16(%rbp)
     mov %rbx, %rdi
     xor %eax, %eax
     mov $30, %rcx
     mov %rax, %rsi
     rep stosq
-    movl -20(%rbp), %edi
+    movl -16(%rbp), %edi
     call getinteger@PLT
     movl %eax, -12(%rbp)
     movl %eax, (%rbx)
@@ -122,29 +122,29 @@ getb:
     movl %eax, 156(%rbx)
     movl -12(%rbp), %eax
     movl %eax, 196(%rbx)
-    movl -20(%rbp), %eax
+    movl -16(%rbp), %eax
     shl $1, %eax
     mov %eax, %edi
     call getinteger@PLT
-    movl %eax, -16(%rbp)
+    movl %eax, -20(%rbp)
     movl %eax, 200(%rbx)
-    movl -16(%rbp), %eax
+    movl -20(%rbp), %eax
     movl %eax, 204(%rbx)
-    movl -16(%rbp), %eax
+    movl -20(%rbp), %eax
     movl %eax, 208(%rbx)
-    movl -16(%rbp), %eax
+    movl -20(%rbp), %eax
     movl %eax, 212(%rbx)
-    movl -16(%rbp), %eax
+    movl -20(%rbp), %eax
     movl %eax, 216(%rbx)
-    movl -16(%rbp), %eax
+    movl -20(%rbp), %eax
     movl %eax, 220(%rbx)
-    movl -16(%rbp), %eax
+    movl -20(%rbp), %eax
     movl %eax, 224(%rbx)
-    movl -16(%rbp), %eax
+    movl -20(%rbp), %eax
     movl %eax, 228(%rbx)
-    movl -16(%rbp), %eax
+    movl -20(%rbp), %eax
     movl %eax, 232(%rbx)
-    movl -16(%rbp), %eax
+    movl -20(%rbp), %eax
     movl %eax, 236(%rbx)
     mov %rbx, %rax
     lea -8(%rbp), %rsp

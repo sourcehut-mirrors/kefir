@@ -272,11 +272,11 @@ test13:
 
 test14:
 .L__kefir_text_func_test14_begin:
-    movq b@GOTPCREL(%rip), %rax
+    movq a@GOTPCREL(%rip), %rax
     movsx %edi, %rcx
     shl $2, %rcx
     add %rcx, %rax
-    movq a@GOTPCREL(%rip), %rdx
+    movq b@GOTPCREL(%rip), %rdx
     add %rcx, %rdx
     xor %ecx, %ecx
 .L__kefir_func_test14_label2:
@@ -285,8 +285,8 @@ test14:
     ret
 .L__kefir_func_test14_label4:
     movsx %ecx, %rsi
-    movl (%rax, %rsi, 4), %edi
-    addl %edi, (%rdx, %rsi, 4)
+    movl (%rdx, %rsi, 4), %edi
+    addl %edi, (%rax, %rsi, 4)
     add $1, %ecx
     jmp .L__kefir_func_test14_label2
 .L__kefir_text_func_test14_end:

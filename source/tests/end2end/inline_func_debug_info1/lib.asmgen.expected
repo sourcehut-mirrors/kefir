@@ -16,7 +16,7 @@ main:
 .L__kefir_func_main_label10:
     movq x@GOTPCREL(%rip), %rax
 .loc 0 25 13
-.L__kefir_func_main_label14:
+.L__kefir_func_main_label11:
     addl $1, (%rax)
 .loc 0 30 16
 .L__kefir_func_main_label18:
@@ -28,10 +28,10 @@ main:
 .L__kefir_func_main_label23:
     movq x@GOTPCREL(%rip), %rax
 .loc 0 25 13
-.L__kefir_func_main_label30:
+.L__kefir_func_main_label27:
     addl $-1, (%rax)
 .loc 0 42 5
-.L__kefir_func_main_label31:
+.L__kefir_func_main_label42:
     xor %eax, %eax
     ret
 .L__kefir_func_main_label43:
@@ -456,7 +456,7 @@ __kefir_debug_rnglist_section_entry_7:
 __kefir_debug_rnglist_section_entry_11:
     .byte 4
     .uleb128 .L__kefir_func_main_label23 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_main_label31 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_main_label42 - .L__kefir_text_section_begin
     .byte 0
 __kefir_debug_rnglists_section_end:
 

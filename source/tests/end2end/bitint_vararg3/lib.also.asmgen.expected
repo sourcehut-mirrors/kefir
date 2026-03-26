@@ -29,7 +29,7 @@ test1:
     mov %rcx, -392(%rbp)
     mov %r8, -384(%rbp)
     mov %r9, -376(%rbp)
-    movl %esi, -112(%rbp)
+    movl %esi, -48(%rbp)
     movl $16, -32(%rbp)
     movl $48, -28(%rbp)
     lea 16(%rbp), %rax
@@ -62,25 +62,25 @@ test1:
     addl $64, -32(%rbp)
 .L__kefir_func_test1_label7:
     movdqu -240(%rbp), %xmm0
-    movdqu %xmm0, -104(%rbp)
+    movdqu %xmm0, -112(%rbp)
     movdqu -224(%rbp), %xmm0
-    movdqu %xmm0, -88(%rbp)
+    movdqu %xmm0, -96(%rbp)
     movdqu -208(%rbp), %xmm0
-    movdqu %xmm0, -72(%rbp)
+    movdqu %xmm0, -80(%rbp)
     movdqu -192(%rbp), %xmm0
-    movdqu %xmm0, -56(%rbp)
-    movl -112(%rbp), %eax
+    movdqu %xmm0, -64(%rbp)
+    movl -48(%rbp), %eax
     lea -1(%eax), %ecx
-    movl %ecx, -112(%rbp)
+    movl %ecx, -48(%rbp)
     test %eax, %eax
     jnz .L__kefir_func_test1_label4
-    movdqu -104(%rbp), %xmm0
+    movdqu -112(%rbp), %xmm0
     movdqu %xmm0, -176(%rbp)
-    movdqu -88(%rbp), %xmm0
+    movdqu -96(%rbp), %xmm0
     movdqu %xmm0, -160(%rbp)
-    movdqu -72(%rbp), %xmm0
+    movdqu -80(%rbp), %xmm0
     movdqu %xmm0, -144(%rbp)
-    movdqu -56(%rbp), %xmm0
+    movdqu -64(%rbp), %xmm0
     movdqu %xmm0, -128(%rbp)
     mov %r10, %rax
     movdqu -176(%rbp), %xmm0
