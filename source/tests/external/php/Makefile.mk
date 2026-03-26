@@ -20,7 +20,7 @@ $(KEFIR_EXTERNAL_TEST_PHP_SOURCE_DIR)/.extracted: $(KEFIR_EXTERNAL_TEST_PHP_ARCH
 	@echo "Extracting $(KEFIR_EXTERNAL_TEST_PHP_ARCHIVE_FILENAME)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_PHP_DIR)" && tar xvfz "$(KEFIR_EXTERNAL_TEST_PHP_ARCHIVE_FILENAME)"
 	@echo "Applying $(SOURCE_DIR)/tests/external/php/php-8.4.2.patch..."
-	@cd "$(KEFIR_EXTERNAL_TEST_PHP_SOURCE_DIR)" && patch -p0 < "$(realpath $(SOURCE_DIR))/tests/external/php/php-8.4.2.patch"
+	@cd "$(KEFIR_EXTERNAL_TEST_PHP_SOURCE_DIR)" && patch -p0 < "$(realpath $(SOURCE_DIR))/tests/external/php/php.patch"
 	@rm -f "$(KEFIR_EXTERNAL_TEST_PHP_SOURCE_DIR)/ext/dom/tests/gh16535.phpt"
 	@touch "$@"
 

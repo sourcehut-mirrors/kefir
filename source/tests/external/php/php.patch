@@ -1,0 +1,33 @@
+diff -ru ext/pcre/pcre2lib/sljit/sljitNativeX86_common.c ext/pcre/pcre2lib/sljit/sljitNativeX86_common.c
+--- ext/pcre/pcre2lib/sljit/sljitNativeX86_common.c	2026-02-10 20:25:51.000000000 +0200
++++ ext/pcre/pcre2lib/sljit/sljitNativeX86_common.c	2026-03-26 21:39:38.282502612 +0200
+@@ -429,7 +429,7 @@
+ 
+ 	__cpuidex((int*)info, (int)info[0], (int)info[2]);
+ 
+-#elif defined(__GNUC__) || defined(__INTEL_COMPILER) || defined(__SUNPRO_C) || defined(__TINYC__)
++#elif defined(__GNUC__) || defined(__INTEL_COMPILER) || defined(__SUNPRO_C) || defined(__KEFIRCC__)
+ 
+ 	/* AT&T syntax. */
+ 	__asm__ (
+@@ -499,7 +499,7 @@
+ 
+ 	xcr0 = (sljit_u32)_xgetbv(0);
+ 
+-#elif defined(__GNUC__) || defined(__INTEL_COMPILER) || defined(__SUNPRO_C) || defined(__TINYC__)
++#elif defined(__GNUC__) || defined(__INTEL_COMPILER) || defined(__SUNPRO_C) || defined(__KEFIRCC__)
+ 
+ 	/* AT&T syntax. */
+ 	__asm__ (
+diff -ru Zend/zend_atomic.h Zend/zend_atomic.h
+--- Zend/zend_atomic.h	2026-02-10 20:25:51.000000000 +0200
++++ Zend/zend_atomic.h	2026-03-26 21:38:55.662324883 +0200
+@@ -25,7 +25,7 @@
+ /* Builtins are used to avoid library linkage */
+ #if __has_feature(c_atomic) && defined(__clang__)
+ #define	HAVE_C11_ATOMICS 1
+-#elif ZEND_GCC_PREREQ(4, 7)
++#elif ZEND_GCC_PREREQ(4, 7) || defined(__KEFIRCC__)
+ #define	HAVE_GNUC_ATOMICS 1
+ #elif defined(__GNUC__)
+ #define	HAVE_SYNC_ATOMICS 1
