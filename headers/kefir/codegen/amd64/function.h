@@ -768,6 +768,10 @@ kefir_result_t kefir_codegen_amd64_function_location_map_get(const struct kefir_
 #define BUILTIN_POPCOUNTL_FN "__kefir_builtin_popcountl"
 #define BUILTIN_PARITY_FN "__kefir_builtin_parity"
 #define BUILTIN_PARITYL_FN "__kefir_builtin_parityl"
+#define BUILTIN_ATOMIC_FETCH_ADD8_FN "__kefir_builtin_atomic_fetch_add8"
+#define BUILTIN_ATOMIC_FETCH_ADD16_FN "__kefir_builtin_atomic_fetch_add16"
+#define BUILTIN_ATOMIC_FETCH_ADD32_FN "__kefir_builtin_atomic_fetch_add32"
+#define BUILTIN_ATOMIC_FETCH_ADD64_FN "__kefir_builtin_atomic_fetch_add64"
 
 #define LIBATOMIC_SEQ_CST 5
 

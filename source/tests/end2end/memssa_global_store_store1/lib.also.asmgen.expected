@@ -43,22 +43,18 @@ test2:
 test3:
 .L__kefir_text_func_test3_begin:
     mov %rdi, %rax
+    movq y@GOTPCREL(%rip), %rdx
+    xchgl (%rdx), %eax
+    mov $1, %eax
+    lock     xaddl %eax, (%rdx)
     movq y@GOTPCREL(%rip), %rsi
-    xchgl (%rsi), %eax
 .L__kefir_func_test3_label2:
     movl (%rsi), %eax
-    lea 1(%eax), %ecx
-    mov %rsi, %rdx
-    lock     cmpxchgl %ecx, (%rdx)
-    movq y@GOTPCREL(%rip), %rdi
-    jnz .L__kefir_func_test3_label2
-.L__kefir_func_test3_label3:
-    movl (%rdi), %eax
     mov %rax, %rcx
     shl $1, %ecx
-    mov %rdi, %rdx
+    mov %rsi, %rdx
     lock     cmpxchgl %ecx, (%rdx)
-    jnz .L__kefir_func_test3_label3
+    jnz .L__kefir_func_test3_label2
     movq y@GOTPCREL(%rip), %rax
     movl (%rax), %eax
     movsx %eax, %rax

@@ -1,0 +1,280 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global add8
+.type add8, @function
+.global add16
+.type add16, @function
+.global add32
+.type add32, @function
+.global add64
+.type add64, @function
+.global add8r
+.type add8r, @function
+.global add16r
+.type add16r, @function
+.global add32r
+.type add32r, @function
+.global add64r
+.type add64r, @function
+.global addf32
+.type addf32, @function
+.global addf64
+.type addf64, @function
+.global addf32r
+.type addf32r, @function
+.global addf64r
+.type addf64r, @function
+
+.section .text
+.L__kefir_text_section_begin:
+add8:
+.L__kefir_text_func_add8_begin:
+    movsx %sil, %rsi
+.L__kefir_func_add8_label2:
+    movb (%rdi), %al
+    movsx %al, %rcx
+    add %esi, %ecx
+    mov %rdi, %rdx
+    lock     cmpxchgb %cl, (%rdx)
+    jnz .L__kefir_func_add8_label2
+    ret
+.L__kefir_text_func_add8_end:
+
+add16:
+.L__kefir_text_func_add16_begin:
+    movsx %si, %rsi
+.L__kefir_func_add16_label2:
+    movw (%rdi), %ax
+    movsx %ax, %rcx
+    add %esi, %ecx
+    mov %rdi, %rdx
+    lock     cmpxchgw %cx, (%rdx)
+    jnz .L__kefir_func_add16_label2
+    ret
+.L__kefir_text_func_add16_end:
+
+add32:
+.L__kefir_text_func_add32_begin:
+    mov %rsi, %rax
+    mov %rdi, %rdx
+    lock     xaddl %eax, (%rdx)
+    ret
+.L__kefir_text_func_add32_end:
+
+add64:
+.L__kefir_text_func_add64_begin:
+    mov %rsi, %rax
+    mov %rdi, %rdx
+    lock     xaddq %rax, (%rdx)
+    ret
+.L__kefir_text_func_add64_end:
+
+add8r:
+.L__kefir_text_func_add8r_begin:
+    movsx %sil, %rsi
+.L__kefir_func_add8r_label2:
+    movb (%rdi), %al
+    movsx %al, %rcx
+    mov %rcx, %r8
+    add %esi, %r8d
+    mov %rdi, %rdx
+    mov %r8d, %ecx
+    lock     cmpxchgb %cl, (%rdx)
+    jnz .L__kefir_func_add8r_label2
+    mov %r8d, %eax
+    ret
+.L__kefir_text_func_add8r_end:
+
+add16r:
+.L__kefir_text_func_add16r_begin:
+    movsx %si, %rsi
+.L__kefir_func_add16r_label2:
+    movw (%rdi), %ax
+    movsx %ax, %rcx
+    mov %rcx, %r8
+    add %esi, %r8d
+    mov %rdi, %rdx
+    mov %r8d, %ecx
+    lock     cmpxchgw %cx, (%rdx)
+    jnz .L__kefir_func_add16r_label2
+    mov %r8d, %eax
+    ret
+.L__kefir_text_func_add16r_end:
+
+add32r:
+.L__kefir_text_func_add32r_begin:
+.L__kefir_func_add32r_label2:
+    movl (%rdi), %eax
+    mov %rax, %r8
+    add %esi, %r8d
+    mov %rdi, %rdx
+    mov %r8d, %ecx
+    lock     cmpxchgl %ecx, (%rdx)
+    jnz .L__kefir_func_add32r_label2
+    mov %r8d, %eax
+    ret
+.L__kefir_text_func_add32r_end:
+
+add64r:
+.L__kefir_text_func_add64r_begin:
+.L__kefir_func_add64r_label2:
+    movq (%rdi), %rax
+    mov %rax, %r8
+    add %rsi, %r8
+    mov %rdi, %rdx
+    mov %r8, %rcx
+    lock     cmpxchgq %rcx, (%rdx)
+    jnz .L__kefir_func_add64r_label2
+    mov %r8, %rax
+    ret
+.L__kefir_text_func_add64r_end:
+
+addf32:
+.L__kefir_text_func_addf32_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $48, %rsp
+    stmxcsr -8(%rbp)
+    fnstenv -48(%rbp)
+    stmxcsr -20(%rbp)
+    fnclex
+.L__kefir_func_addf32_label2:
+    movl (%rdi), %eax
+    movq %rax, %xmm1
+    addss %xmm0, %xmm1
+    mov %rdi, %rdx
+    movq %xmm1, %rcx
+    lock     cmpxchgl %ecx, (%rdx)
+    jnz .L__kefir_func_addf32_label4
+    stmxcsr -16(%rbp)
+    mov -16(%rbp), %rcx
+    fnstsw %ax
+    or %ecx, %eax
+    and $63, %eax
+    fldenv -48(%rbp)
+    ldmxcsr -20(%rbp)
+    stmxcsr -16(%rbp)
+    orl %eax, -16(%rbp)
+    ldmxcsr -16(%rbp)
+    ldmxcsr -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.L__kefir_func_addf32_label4:
+    fnclex
+    jmp .L__kefir_func_addf32_label2
+.L__kefir_text_func_addf32_end:
+
+addf64:
+.L__kefir_text_func_addf64_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $48, %rsp
+    stmxcsr -8(%rbp)
+    fnstenv -48(%rbp)
+    stmxcsr -20(%rbp)
+    fnclex
+.L__kefir_func_addf64_label2:
+    movq (%rdi), %rax
+    movq %rax, %xmm1
+    addsd %xmm0, %xmm1
+    mov %rdi, %rdx
+    movq %xmm1, %rcx
+    lock     cmpxchgq %rcx, (%rdx)
+    jnz .L__kefir_func_addf64_label4
+    stmxcsr -16(%rbp)
+    mov -16(%rbp), %rcx
+    fnstsw %ax
+    or %ecx, %eax
+    and $63, %eax
+    fldenv -48(%rbp)
+    ldmxcsr -20(%rbp)
+    stmxcsr -16(%rbp)
+    orl %eax, -16(%rbp)
+    ldmxcsr -16(%rbp)
+    ldmxcsr -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.L__kefir_func_addf64_label4:
+    fnclex
+    jmp .L__kefir_func_addf64_label2
+.L__kefir_text_func_addf64_end:
+
+addf32r:
+.L__kefir_text_func_addf32r_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $48, %rsp
+    stmxcsr -8(%rbp)
+    fnstenv -48(%rbp)
+    stmxcsr -20(%rbp)
+    fnclex
+.L__kefir_func_addf32r_label2:
+    movl (%rdi), %eax
+    movq %rax, %xmm1
+    addss %xmm0, %xmm1
+    mov %rdi, %rdx
+    movq %xmm1, %rcx
+    lock     cmpxchgl %ecx, (%rdx)
+    jnz .L__kefir_func_addf32r_label4
+    stmxcsr -16(%rbp)
+    mov -16(%rbp), %rcx
+    fnstsw %ax
+    or %ecx, %eax
+    and $63, %eax
+    fldenv -48(%rbp)
+    ldmxcsr -20(%rbp)
+    stmxcsr -16(%rbp)
+    orl %eax, -16(%rbp)
+    ldmxcsr -16(%rbp)
+    movaps %xmm1, %xmm0
+    ldmxcsr -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.L__kefir_func_addf32r_label4:
+    fnclex
+    jmp .L__kefir_func_addf32r_label2
+.L__kefir_text_func_addf32r_end:
+
+addf64r:
+.L__kefir_text_func_addf64r_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $48, %rsp
+    stmxcsr -8(%rbp)
+    fnstenv -48(%rbp)
+    stmxcsr -20(%rbp)
+    fnclex
+.L__kefir_func_addf64r_label2:
+    movq (%rdi), %rax
+    movq %rax, %xmm1
+    addsd %xmm0, %xmm1
+    mov %rdi, %rdx
+    movq %xmm1, %rcx
+    lock     cmpxchgq %rcx, (%rdx)
+    jnz .L__kefir_func_addf64r_label4
+    stmxcsr -16(%rbp)
+    mov -16(%rbp), %rcx
+    fnstsw %ax
+    or %ecx, %eax
+    and $63, %eax
+    fldenv -48(%rbp)
+    ldmxcsr -20(%rbp)
+    stmxcsr -16(%rbp)
+    orl %eax, -16(%rbp)
+    ldmxcsr -16(%rbp)
+    movaps %xmm1, %xmm0
+    ldmxcsr -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.L__kefir_func_addf64r_label4:
+    fnclex
+    jmp .L__kefir_func_addf64r_label2
+.L__kefir_text_func_addf64r_end:
+
+.L__kefir_text_section_end:
+

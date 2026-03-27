@@ -108,11 +108,11 @@ test6:
     movq z@GOTPCREL(%rip), %rcx
     xor %eax, %eax
     xchgl (%rcx), %eax
-    movq z@GOTPCREL(%rip), %rsi
+    movq z@GOTPCREL(%rip), %rcx
     xor %eax, %eax
-    mov %rax, %r8
+    mov %rax, %rsi
 .L__kefir_func_test6_label2:
-    cmp %edi, %r8d
+    cmp %edi, %esi
     jl .L__kefir_func_test6_label4
     movq z@GOTPCREL(%rip), %rcx
     mov %rdi, %rax
@@ -121,15 +121,10 @@ test6:
     movsx %eax, %rax
     ret
 .L__kefir_func_test6_label4:
-    movl (%rsi), %eax
-    lea 1(%eax), %ecx
-    mov %rsi, %rdx
-    lock     cmpxchgl %ecx, (%rdx)
-    sete %al
-    lea 1(%r8d), %ecx
-    test %al, %al
-    jz .L__kefir_func_test6_label4
-    mov %ecx, %r8d
+    mov %rcx, %rdx
+    mov $1, %eax
+    lock     xaddl %eax, (%rdx)
+    add $1, %esi
     jmp .L__kefir_func_test6_label2
 .L__kefir_text_func_test6_end:
 

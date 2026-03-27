@@ -91,6 +91,11 @@ struct lowering_param {
         kefir_id_t sofxfloat_complex_double_div;
         kefir_id_t sofxfloat_complex_long_double_div;
 
+        kefir_id_t kefir_builtin_atomic_fetch_add8;
+        kefir_id_t kefir_builtin_atomic_fetch_add16;
+        kefir_id_t kefir_builtin_atomic_fetch_add32;
+        kefir_id_t kefir_builtin_atomic_fetch_add64;
+
         kefir_id_t libgcc_udivti3;
         kefir_id_t libgcc_divti3;
         kefir_id_t libgcc_umodti3;
@@ -547,6 +552,30 @@ DECL_BUILTIN_RUNTIME_FN(builtin_parity, BUILTIN_PARITY_FN, 1, 1, {
 DECL_BUILTIN_RUNTIME_FN(builtin_parityl, BUILTIN_PARITYL_FN, 1, 1, {
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_INT32, 0, 0));
+})
+DECL_BUILTIN_RUNTIME_FN(kefir_builtin_atomic_fetch_add8, BUILTIN_ATOMIC_FETCH_ADD8_FN, 3, 1, {
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT8, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_INT8, 0, 0));
+})
+DECL_BUILTIN_RUNTIME_FN(kefir_builtin_atomic_fetch_add16, BUILTIN_ATOMIC_FETCH_ADD16_FN, 3, 1, {
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT16, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_INT16, 0, 0));
+})
+DECL_BUILTIN_RUNTIME_FN(kefir_builtin_atomic_fetch_add32, BUILTIN_ATOMIC_FETCH_ADD32_FN, 3, 1, {
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT32, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_INT32, 0, 0));
+})
+DECL_BUILTIN_RUNTIME_FN(kefir_builtin_atomic_fetch_add64, BUILTIN_ATOMIC_FETCH_ADD64_FN, 3, 1, {
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_INT64, 0, 0));
 })
 DECL_RUNTIME_FN(sofxfloat_complex_float_mul, KEFIR_SOFTFLOAT_COMPLEX_FLOAT_MUL, 4, 1, {
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_FLOAT32, 0, 0));
@@ -1045,6 +1074,124 @@ static kefir_result_t new_bitint_low_level_type(struct kefir_mem *mem, struct ke
     REQUIRE_OK(kefir_irbuilder_type_append(mem, type, KEFIR_IR_TYPE_ARRAY, 0, (width + 7) / 8));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, type, KEFIR_IR_TYPE_INT8, 0, 0));
     ASSIGN_PTR(type_ptr, type);
+    return KEFIR_OK;
+}
+
+static kefir_result_t lower_atomic_cmpxchg(struct kefir_mem *mem, struct kefir_opt_module *module,
+                                           struct kefir_opt_function *func, const struct kefir_opt_instruction *instr,
+                                           struct lowering_param *param) {
+    UNUSED(mem);
+    kefir_opt_instruction_ref_t instr_ref = instr->id, location_ref = instr->operation.parameters.refs[0],
+                                old_value_ref = instr->operation.parameters.refs[1],
+                                new_value_ref = instr->operation.parameters.refs[2], branch_ref;
+
+    kefir_opt_instruction_ref_t sole_use_ref;
+    REQUIRE_OK(kefir_opt_instruction_get_sole_use(&func->code, new_value_ref, &sole_use_ref));
+    REQUIRE(sole_use_ref == instr_ref, KEFIR_OK);
+    REQUIRE_OK(kefir_opt_instruction_get_sole_use(&func->code, instr_ref, &branch_ref));
+    REQUIRE(branch_ref != KEFIR_ID_NONE, KEFIR_OK);
+
+    const struct kefir_opt_instruction *old_value_instr, *new_value_instr, *branch_instr;
+    REQUIRE_OK(kefir_opt_code_container_instr(&func->code, old_value_ref, &old_value_instr));
+    REQUIRE_OK(kefir_opt_code_container_instr(&func->code, new_value_ref, &new_value_instr));
+    REQUIRE_OK(kefir_opt_code_container_instr(&func->code, branch_ref, &branch_instr));
+
+    REQUIRE(old_value_instr->block_id == instr->block_id, KEFIR_OK);
+    REQUIRE(new_value_instr->block_id == instr->block_id, KEFIR_OK);
+    REQUIRE(branch_instr->block_id == instr->block_id, KEFIR_OK);
+
+    REQUIRE((old_value_instr->operation.opcode == KEFIR_OPT_OPCODE_ATOMIC_LOAD8 &&
+             new_value_instr->operation.opcode == KEFIR_OPT_OPCODE_INT8_ADD &&
+             instr->operation.opcode == KEFIR_OPT_OPCODE_ATOMIC_CMPXCHG8) ||
+                (old_value_instr->operation.opcode == KEFIR_OPT_OPCODE_ATOMIC_LOAD16 &&
+                 new_value_instr->operation.opcode == KEFIR_OPT_OPCODE_INT16_ADD &&
+                 instr->operation.opcode == KEFIR_OPT_OPCODE_ATOMIC_CMPXCHG16) ||
+                (old_value_instr->operation.opcode == KEFIR_OPT_OPCODE_ATOMIC_LOAD32 &&
+                 new_value_instr->operation.opcode == KEFIR_OPT_OPCODE_INT32_ADD &&
+                 instr->operation.opcode == KEFIR_OPT_OPCODE_ATOMIC_CMPXCHG32) ||
+                (old_value_instr->operation.opcode == KEFIR_OPT_OPCODE_ATOMIC_LOAD64 &&
+                 new_value_instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_ADD &&
+                 instr->operation.opcode == KEFIR_OPT_OPCODE_ATOMIC_CMPXCHG64),
+            KEFIR_OK);
+    REQUIRE(branch_instr->operation.opcode == KEFIR_OPT_OPCODE_BRANCH, KEFIR_OK);
+
+    kefir_opt_instruction_ref_t operand_ref = KEFIR_ID_NONE;
+    if (new_value_instr->operation.parameters.refs[0] == old_value_ref) {
+        REQUIRE(new_value_instr->operation.parameters.refs[1] != old_value_ref, KEFIR_OK);
+        operand_ref = new_value_instr->operation.parameters.refs[1];
+    } else {
+        REQUIRE(new_value_instr->operation.parameters.refs[0] != old_value_ref, KEFIR_OK);
+        REQUIRE(new_value_instr->operation.parameters.refs[1] == old_value_ref, KEFIR_OK);
+        operand_ref = new_value_instr->operation.parameters.refs[0];
+    }
+    REQUIRE(location_ref == old_value_instr->operation.parameters.refs[0], KEFIR_OK);
+    REQUIRE(branch_instr->operation.parameters.branch.condition_ref == instr_ref, KEFIR_OK);
+    REQUIRE(branch_instr->operation.parameters.branch.target_block != instr->block_id, KEFIR_OK);
+    REQUIRE(branch_instr->operation.parameters.branch.alternative_block == instr->block_id, KEFIR_OK);
+
+    kefir_opt_instruction_ref_t control_iter_ref;
+    REQUIRE_OK(kefir_opt_code_block_instr_control_head(&func->code, instr->block_id, &control_iter_ref));
+    REQUIRE(control_iter_ref == old_value_ref, KEFIR_OK);
+    REQUIRE_OK(kefir_opt_instruction_next_control(&func->code, control_iter_ref, &control_iter_ref));
+    REQUIRE(control_iter_ref == instr_ref, KEFIR_OK);
+    REQUIRE_OK(kefir_opt_instruction_next_control(&func->code, control_iter_ref, &control_iter_ref));
+    REQUIRE(control_iter_ref == branch_ref, KEFIR_OK);
+
+    kefir_result_t res;
+    struct kefir_opt_instruction_use_iterator use_iter;
+    for (res = kefir_opt_code_container_instruction_use_instr_iter(&func->code, old_value_ref, &use_iter);
+         res == KEFIR_OK; res = kefir_opt_code_container_instruction_use_next(&use_iter)) {
+        REQUIRE(use_iter.use_instr_ref == new_value_ref || use_iter.use_instr_ref == instr_ref, KEFIR_OK);
+    }
+    if (res != KEFIR_ITERATOR_END) {
+        REQUIRE_OK(res);
+    }
+
+    kefir_id_t func_decl_id = KEFIR_ID_NONE;
+    switch (instr->operation.opcode) {
+        case KEFIR_OPT_OPCODE_ATOMIC_CMPXCHG8:
+            REQUIRE_OK(get_kefir_builtin_atomic_fetch_add8_function_decl_id(mem, module, param, &func_decl_id));
+            break;
+
+        case KEFIR_OPT_OPCODE_ATOMIC_CMPXCHG16:
+            REQUIRE_OK(get_kefir_builtin_atomic_fetch_add16_function_decl_id(mem, module, param, &func_decl_id));
+            break;
+
+        case KEFIR_OPT_OPCODE_ATOMIC_CMPXCHG32:
+            REQUIRE_OK(get_kefir_builtin_atomic_fetch_add32_function_decl_id(mem, module, param, &func_decl_id));
+            break;
+
+        case KEFIR_OPT_OPCODE_ATOMIC_CMPXCHG64:
+            REQUIRE_OK(get_kefir_builtin_atomic_fetch_add64_function_decl_id(mem, module, param, &func_decl_id));
+            break;
+
+        default:
+            return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected optimizer instruction opcode");
+    }
+
+    kefir_opt_block_id_t block_ref = instr->block_id,
+                         target_block_ref = branch_instr->operation.parameters.branch.target_block;
+
+    kefir_opt_instruction_ref_t memorder_ref, call_ref;
+    REQUIRE_OK(kefir_opt_code_builder_int_constant(mem, &func->code, block_ref,
+                                                   instr->operation.parameters.atomic_op.model, &memorder_ref));
+    REQUIRE_OK(
+        kefir_opt_code_container_new_call(mem, &func->code, block_ref, func_decl_id, 3, KEFIR_ID_NONE, &call_ref));
+
+    REQUIRE_OK(kefir_opt_code_container_call_set_argument(mem, &func->code, call_ref, 0, location_ref));
+    REQUIRE_OK(kefir_opt_code_container_call_set_argument(mem, &func->code, call_ref, 1, operand_ref));
+    REQUIRE_OK(kefir_opt_code_container_call_set_argument(mem, &func->code, call_ref, 2, memorder_ref));
+
+    REQUIRE_OK(kefir_opt_code_container_drop_control(&func->code, old_value_ref));
+    REQUIRE_OK(kefir_opt_code_container_drop_control(&func->code, instr_ref));
+    REQUIRE_OK(kefir_opt_code_container_drop_control(&func->code, branch_ref));
+    REQUIRE_OK(kefir_opt_code_container_drop_instr(mem, &func->code, branch_ref));
+    REQUIRE_OK(kefir_opt_code_container_drop_instr(mem, &func->code, instr_ref));
+    REQUIRE_OK(kefir_opt_code_container_drop_instr(mem, &func->code, new_value_ref));
+    REQUIRE_OK(kefir_opt_code_container_drop_instr(mem, &func->code, old_value_ref));
+
+    REQUIRE_OK(kefir_opt_code_container_insert_control(&func->code, block_ref, KEFIR_ID_NONE, call_ref));
+    REQUIRE_OK(kefir_opt_code_builder_finalize_jump(mem, &func->code, block_ref, target_block_ref, NULL));
     return KEFIR_OK;
 }
 
@@ -4803,6 +4950,13 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_opt_
             }
         } break;
 
+        case KEFIR_OPT_OPCODE_ATOMIC_CMPXCHG8:
+        case KEFIR_OPT_OPCODE_ATOMIC_CMPXCHG16:
+        case KEFIR_OPT_OPCODE_ATOMIC_CMPXCHG32:
+        case KEFIR_OPT_OPCODE_ATOMIC_CMPXCHG64:
+            REQUIRE_OK(lower_atomic_cmpxchg(mem, module, func, instr, param));
+            break;
+
         default:
             // Intentionally left blank
             break;
@@ -4823,7 +4977,15 @@ static kefir_result_t lower_function(struct kefir_mem *mem, struct kefir_opt_mod
 
         for (kefir_opt_code_block_instr_head(&func->code, block->id, &instr_id); instr_id != KEFIR_ID_NONE;) {
             REQUIRE_OK(kefir_opt_code_debug_info_next_instruction_code_reference_of(&func->debug_info, instr_id));
-            REQUIRE_OK(kefir_opt_code_container_instr(&func->code, instr_id, &instr));
+            kefir_result_t res = kefir_opt_code_container_instr(&func->code, instr_id, &instr);
+            if (res == KEFIR_NOT_FOUND) {
+                kefir_opt_code_block_instr_head(&func->code, block->id, &instr_id);
+                continue;
+            }
+            REQUIRE_OK(res);
+
+            kefir_opt_instruction_ref_t next_instr_ref;
+            REQUIRE_OK(kefir_opt_instruction_next_sibling(&func->code, instr_id, &next_instr_ref));
 
             kefir_opt_instruction_ref_t replacement_ref = KEFIR_ID_NONE;
             REQUIRE_OK(lower_instruction(mem, module, func, configuration, param, instr, &replacement_ref));
@@ -4845,7 +5007,7 @@ static kefir_result_t lower_function(struct kefir_mem *mem, struct kefir_opt_mod
                 REQUIRE_OK(kefir_opt_instruction_next_sibling(&func->code, instr_id, &instr_id));
                 REQUIRE_OK(kefir_opt_code_container_drop_instr(mem, &func->code, prev_instr_id));
             } else {
-                REQUIRE_OK(kefir_opt_instruction_next_sibling(&func->code, instr_id, &instr_id));
+                instr_id = next_instr_ref;
             }
 
             REQUIRE_OK(kefir_opt_code_debug_info_next_instruction_code_reference(
@@ -4920,6 +5082,11 @@ kefir_result_t kefir_codegen_amd64_lower_function(struct kefir_mem *mem, struct 
                                                   .sofxfloat_complex_float_div = KEFIR_ID_NONE,
                                                   .sofxfloat_complex_double_div = KEFIR_ID_NONE,
                                                   .sofxfloat_complex_long_double_div = KEFIR_ID_NONE,
+
+                                                  .kefir_builtin_atomic_fetch_add8 = KEFIR_ID_NONE,
+                                                  .kefir_builtin_atomic_fetch_add16 = KEFIR_ID_NONE,
+                                                  .kefir_builtin_atomic_fetch_add32 = KEFIR_ID_NONE,
+                                                  .kefir_builtin_atomic_fetch_add64 = KEFIR_ID_NONE,
 
                                                   .libgcc_udivti3 = KEFIR_ID_NONE,
                                                   .libgcc_divti3 = KEFIR_ID_NONE,
