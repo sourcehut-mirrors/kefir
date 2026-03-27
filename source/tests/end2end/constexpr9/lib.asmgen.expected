@@ -51,7 +51,7 @@ get_d:
 .L__kefir_text_func_get_d_begin:
     lea d(%rip), %rcx
     mov %rdi, %rax
-    movq (%rcx), %rdx
+    movq d(%rip), %rdx
     movq %rdx, (%rax)
     movq 8(%rcx), %rdx
     movq %rdx, 8(%rax)

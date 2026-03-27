@@ -40,9 +40,8 @@ get3:
     sub $512, %rsp
     mov %rsi, %r12
     mov %rdi, %rsi
-    lea ptr(%rip), %rax
-    lea -528(%rbp), %rcx
-    movq %rcx, (%rax)
+    lea -528(%rbp), %rax
+    movq %rax, ptr(%rip)
     lea -272(%rbp), %rbx
     mov %rbx, %rdi
     call get@PLT

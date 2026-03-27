@@ -23,7 +23,7 @@
 get_a:
 .L__kefir_text_func_get_a_begin:
     lea value(%rip), %rax
-    movq (%rax), %rdx
+    movq value(%rip), %rdx
     movzxw 8(%rax), %rax
     mov $48, %ecx
     shld $48, %rdx, %rax
@@ -129,7 +129,7 @@ set_a:
     mov %rsp, %rbp
     sub $16, %rsp
     lea value(%rip), %rax
-    movq (%rax), %rdx
+    movq value(%rip), %rdx
     mov %rcx, %r8
     movw 8(%rax), %r8w
     mov $1, %r9d
@@ -165,7 +165,7 @@ set_a:
     and %r10w, %r8w
     or %rdx, %r9
     or %r8w, %si
-    movq %r9, (%rax)
+    movq %r9, value(%rip)
     movw %si, 8(%rax)
     lea (%rbp), %rsp
     pop %rbp

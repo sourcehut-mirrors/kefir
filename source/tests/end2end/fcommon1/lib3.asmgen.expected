@@ -68,8 +68,7 @@ gety:
 
 getz:
 .L__kefir_text_func_getz_begin:
-    lea z(%rip), %rax
-    movl (%rax), %eax
+    movl z(%rip), %eax
     ret
 .L__kefir_text_func_getz_end:
 

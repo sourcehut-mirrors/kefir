@@ -17,8 +17,9 @@ gety:
 mov value(%rip), %rax
 add __kefir_function_gety_static_y_3(%rip), %rax
     movq %rax, -8(%rbp)
-    lea __kefir_function_gety_static_y_3(%rip), %rax
-    addq $1, (%rax)
+    movq __kefir_function_gety_static_y_3(%rip), %rax
+    add $1, %rax
+    movq %rax, __kefir_function_gety_static_y_3(%rip)
     movq -8(%rbp), %rax
     lea (%rbp), %rsp
     pop %rbp
@@ -32,8 +33,7 @@ setx:
     sub $16, %rsp
     movq %rdi, -8(%rbp)
     movq -8(%rbp), %rax
-    lea value(%rip), %rcx
-    movq %rax, (%rcx)
+    movq %rax, value(%rip)
     lea (%rbp), %rsp
     pop %rbp
     ret

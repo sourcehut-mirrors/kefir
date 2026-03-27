@@ -39,9 +39,8 @@ test2:
 test3:
 .L__kefir_text_func_test3_begin:
     movl (%rdi), %eax
-    lea __kefir_function_test3_static_z_10(%rip), %rcx
-    mov $1, %edx
-    xchgl %edx, (%rcx)
+    mov $1, %ecx
+    xchgl %ecx, __kefir_function_test3_static_z_10(%rip)
     movl (%rdi), %ecx
     add %ecx, %eax
     ret
@@ -50,9 +49,8 @@ test3:
 test4:
 .L__kefir_text_func_test4_begin:
     movl (%rdi), %eax
-    lea __kefir_function_test4_static_z_16(%rip), %rcx
-    mov $1, %edx
-    xchgl %edx, (%rcx)
+    mov $1, %ecx
+    xchgl %ecx, __kefir_function_test4_static_z_16(%rip)
     movl (%rdi), %ecx
     add %ecx, %eax
     ret

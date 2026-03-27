@@ -144,6 +144,17 @@ static kefir_result_t peephole_indirect(struct kefir_mem *mem, struct kefir_code
             oper.parameters[i].indirect.offset += offset;
             oper.parameters[i].indirect.variant = variant;
             replace = true;
+        } else if (base_instr->operation.opcode == KEFIR_TARGET_IR_AMD64_OPCODE(lea) &&
+                   base_instr->operation.parameters[0].type ==
+                       KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_RIP_INDIRECT_EXTERNAL &&
+                   oper.parameters[i].indirect.index_type == KEFIR_CODEGEN_TARGET_IR_INDIRECT_INDEX_NONE &&
+                   oper.parameters[i].indirect.offset == 0) {
+            kefir_codegen_target_ir_operand_variant_t variant = oper.parameters[i].indirect.variant;
+            oper.parameters[i].type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_RIP_INDIRECT_EXTERNAL;
+            oper.parameters[i].rip_indirection = base_instr->operation.parameters[0].rip_indirection;
+            oper.parameters[i].rip_indirection = base_instr->operation.parameters[0].rip_indirection;
+            oper.parameters[i].rip_indirection.variant = variant;
+            replace = true;
         } else if (oper.parameters[i].indirect.index_type == KEFIR_CODEGEN_TARGET_IR_INDIRECT_INDEX_NONE &&
                    base_instr->operation.opcode == KEFIR_TARGET_IR_AMD64_OPCODE(add) &&
                    base_instr->operation.parameters[0].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF &&

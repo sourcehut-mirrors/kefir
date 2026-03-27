@@ -13,8 +13,7 @@ get_real_value:
 .L__kefir_text_func_get_real_value_begin:
     push %rbp
     mov %rsp, %rbp
-    lea real_value(%rip), %rax
-    movq (%rax), %rax
+    movq real_value(%rip), %rax
     pop %rbp
     ret
 .L__kefir_text_func_get_real_value_end:

@@ -16,7 +16,7 @@ get1:
     mov %rsp, %rbp
     sub $48, %rsp
     lea arr(%rip), %rax
-    movq (%rax), %rcx
+    movq arr(%rip), %rcx
     movq %rcx, -48(%rbp)
     movq 8(%rax), %rcx
     movq %rcx, -40(%rbp)
@@ -70,7 +70,7 @@ get3:
     mov %rsp, %rbp
     sub $48, %rsp
     lea uarr(%rip), %rax
-    movq (%rax), %rcx
+    movq uarr(%rip), %rcx
     movq %rcx, -48(%rbp)
     movq 8(%rax), %rcx
     movq %rcx, -40(%rbp)

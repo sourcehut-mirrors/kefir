@@ -1349,12 +1349,6 @@ static kefir_result_t devirtualize_instr_arg(struct destructor_state *state, str
             }
             break;
 
-        case KEFIR_ASMCMP_VALUE_TYPE_RIP_INDIRECT_INTERNAL:
-        case KEFIR_ASMCMP_VALUE_TYPE_RIP_INDIRECT_EXTERNAL:
-            REQUIRE(DEVIRT_HAS_FLAG(op_flags, KEFIR_AMD64_INSTRDB_ANY_MEMORY) && !no_memory_arg,
-                    KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to devirtualize instruction"));
-            break;
-
         case KEFIR_ASMCMP_VALUE_TYPE_INTERNAL_LABEL:
         case KEFIR_ASMCMP_VALUE_TYPE_EXTERNAL_LABEL:
             REQUIRE(DEVIRT_HAS_FLAG(op_flags, KEFIR_AMD64_INSTRDB_LABEL),
@@ -1435,12 +1429,18 @@ static kefir_result_t devirtualize_instr_arg(struct destructor_state *state, str
             break;
 
         case KEFIR_ASMCMP_VALUE_TYPE_INDIRECT:
+        case KEFIR_ASMCMP_VALUE_TYPE_RIP_INDIRECT_INTERNAL:
+        case KEFIR_ASMCMP_VALUE_TYPE_RIP_INDIRECT_EXTERNAL:
             if (!DEVIRT_HAS_FLAG(op_flags, KEFIR_AMD64_INSTRDB_ANY_MEMORY) || no_memory_arg) {
                 if (DEVIRT_HAS_FLAG(op_flags, KEFIR_AMD64_INSTRDB_GP_REGISTER)) {
                     REQUIRE_OK(allocate_scratch_register(state, &tmp_reg, TEMPORARY_REGISTER_GP, insert_idx));
                     struct kefir_asmcmp_value original = instr->args[arg_idx];
                     kefir_asm_amd64_xasmgen_register_t tmp_reg_variant = tmp_reg;
-                    REQUIRE_OK(match_physical_reg_variant(&tmp_reg_variant, original.indirect.variant, false));
+                    REQUIRE_OK(match_physical_reg_variant(&tmp_reg_variant,
+                                                          original.type == KEFIR_ASMCMP_VALUE_TYPE_INDIRECT
+                                                              ? original.indirect.variant
+                                                              : original.rip_indirection.variant,
+                                                          false));
                     instr->args[arg_idx] = KEFIR_ASMCMP_MAKE_PHREG(tmp_reg_variant);
                     if (DEVIRT_HAS_FLAG(op_flags, KEFIR_AMD64_INSTRDB_READ)) {
                         REQUIRE_OK(kefir_asmcmp_amd64_mov(state->mem, state->asmcmp_ctx, *insert_idx,

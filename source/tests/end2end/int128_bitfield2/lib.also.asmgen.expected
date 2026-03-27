@@ -14,8 +14,7 @@
 .L__kefir_text_section_begin:
 get_a:
 .L__kefir_text_func_get_a_begin:
-    lea value(%rip), %rax
-    movl (%rax), %eax
+    movl value(%rip), %eax
     xor %edx, %edx
     mov $96, %ecx
     shld $96, %rax, %rdx
@@ -65,29 +64,28 @@ set_a:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    lea value(%rip), %rax
-    movl (%rax), %edx
+    movl value(%rip), %eax
     mov $32, %ecx
-    movabs $4294967296, %rsi
-    xor %r8d, %r8d
-    test $64, %cl
-    cmove %rsi, %r8
-    sub $1, %r8
-    and %r8, %rdi
-    xor %ecx, %ecx
-    shl $0, %rdi
+    movabs $4294967296, %rdx
     xor %esi, %esi
     test $64, %cl
-    cmove %rdi, %rsi
+    cmove %rdx, %rsi
+    sub $1, %rsi
+    and %rsi, %rdi
     xor %ecx, %ecx
-    shl $0, %r8
+    shl $0, %rdi
+    xor %edx, %edx
+    test $64, %cl
+    cmove %rdi, %rdx
+    xor %ecx, %ecx
+    shl $0, %rsi
     xor %edi, %edi
     test $64, %cl
-    cmove %r8, %rdi
+    cmove %rsi, %rdi
     not %edi
-    and %edi, %edx
-    or %edx, %esi
-    movl %esi, (%rax)
+    and %edi, %eax
+    or %eax, %edx
+    movl %edx, value(%rip)
     lea (%rbp), %rsp
     pop %rbp
     ret

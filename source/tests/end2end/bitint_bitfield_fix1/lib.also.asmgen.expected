@@ -13,7 +13,7 @@ test1:
     push %rbx
     sub $184, %rsp
     lea value(%rip), %rbx
-    movq (%rbx), %rax
+    movq value(%rip), %rax
     movq %rax, -192(%rbp)
     movq 8(%rbx), %rax
     movq %rax, -184(%rbp)
@@ -76,7 +76,7 @@ test1:
     mov $304, %edx
     call __kefir_bigint_or
     movq -152(%rbp), %rax
-    movq %rax, (%rbx)
+    movq %rax, value(%rip)
     movq -144(%rbp), %rax
     movq %rax, 8(%rbx)
     movq -136(%rbp), %rax
@@ -87,7 +87,7 @@ test1:
     movl %eax, 32(%rbx)
     movw -116(%rbp), %ax
     movw %ax, 36(%rbx)
-    movq (%rbx), %rax
+    movq value(%rip), %rax
     movq %rax, -192(%rbp)
     movq 8(%rbx), %rax
     movq %rax, -184(%rbp)

@@ -13,8 +13,7 @@ somefn:
     sub $16, %rsp
     xor %eax, %eax
     movq %rax, -8(%rbp)
-    lea .L__kefir_string_literal0(%rip), %rax
-    movq (%rax), %rax
+    movq .L__kefir_string_literal0(%rip), %rax
     movq %rax, -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

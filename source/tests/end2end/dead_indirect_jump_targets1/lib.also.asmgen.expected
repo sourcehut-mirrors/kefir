@@ -43,8 +43,7 @@ test3:
 .L__kefir_text_func_test3_begin:
     push %rbp
     mov %rsp, %rbp
-    lea __kefir_function_test3_static_x_4(%rip), %rax
-    movq (%rax), %rax
+    movq __kefir_function_test3_static_x_4(%rip), %rax
     jmp *%rax
 .L__kefir_func_test3_label2:
 _kefir_local_public_label_test3_L1:

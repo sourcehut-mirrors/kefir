@@ -39,8 +39,7 @@ get_T2:
     add %rcx, %rax
     ret
 .L__kefir_func_get_T2_label6:
-    lea T1(%rip), %rax
-    movl (%rax), %ecx
+    movl T1(%rip), %ecx
     xor %eax, %eax
     cmp %ecx, %edi
     setl %al

@@ -124,9 +124,8 @@ test5:
     push %rbp
     mov %rsp, %rbp
     sub $400, %rsp
-    lea __kefir_function_test5_static_leak_23(%rip), %rax
-    lea -400(%rbp), %rcx
-    movq %rcx, (%rax)
+    lea -400(%rbp), %rax
+    movq %rax, __kefir_function_test5_static_leak_23(%rip)
     movl $0, -40(%rbp)
     movl %edi, -200(%rbp)
     xor %eax, %eax

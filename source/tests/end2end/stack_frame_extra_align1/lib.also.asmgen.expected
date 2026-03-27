@@ -408,9 +408,8 @@ test8:
     mov %rsp, %rbp
     sub $128, %rsp
     movl $0, -128(%rbp)
-    lea __kefir_function_test8_static_ptr_29(%rip), %rax
-    lea -128(%rbp), %rcx
-    movq %rcx, (%rax)
+    lea -128(%rbp), %rax
+    movq %rax, __kefir_function_test8_static_ptr_29(%rip)
     call test6
     lea (%rbp), %rsp
     pop %rbp
@@ -431,9 +430,8 @@ test9:
     mov %rsp, %rbp
     sub $128, %rsp
     movl $0, -128(%rbp)
-    lea __kefir_function_test9_static_ptr_33(%rip), %rax
-    lea -128(%rbp), %rcx
-    movq %rcx, (%rax)
+    lea -128(%rbp), %rax
+    movq %rax, __kefir_function_test9_static_ptr_33(%rip)
     call test7
     lea (%rbp), %rsp
     pop %rbp
