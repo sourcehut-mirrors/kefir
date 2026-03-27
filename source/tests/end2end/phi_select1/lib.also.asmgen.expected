@@ -135,31 +135,17 @@ select9:
 .L__kefir_text_func_select9_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $256, %rsp
     mov %rdi, %rdx
-    lea 144(%rbp), %rcx
-    lea 16(%rbp), %r8
-    mov %rsi, %rax
-    lea -256(%rbp), %rdi
+    lea 144(%rbp), %rax
+    lea 16(%rbp), %rcx
+    test %esi, %esi
+    cmovz %rax, %rcx
+    mov %rdx, %rax
+    mov %rax, %rdi
     mov %rcx, %rsi
     cld
     mov $16, %rcx
     rep movsq
-    lea -128(%rbp), %rdi
-    mov %r8, %rsi
-    cld
-    mov $16, %rcx
-    rep movsq
-    lea -128(%rbp), %rsi
-    lea -256(%rbp), %rcx
-    test %eax, %eax
-    cmovz %rcx, %rsi
-    mov %rdx, %rax
-    mov %rax, %rdi
-    cld
-    mov $16, %rcx
-    rep movsq
-    lea (%rbp), %rsp
     pop %rbp
     ret
 .L__kefir_text_func_select9_end:

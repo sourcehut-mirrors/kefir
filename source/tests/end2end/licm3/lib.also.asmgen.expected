@@ -59,15 +59,16 @@ test2:
     mov %rcx, %r8
 .L__kefir_func_test2_label2:
 _kefir_local_public_label_test2_outer:
-    mov %rax, %r9
-    or %esi, %r9d
+    movsx %r8d, %rcx
+    imul $40, %rcx, %rcx
+    mov %rdi, %r9
+    add %rcx, %r9
     mov %rdx, %rcx
     mov %r8, %r10
     shl %cl, %r10d
     mov %r10, %rcx
-    movsx %r8d, %r10
-    imul $40, %r10, %r10
-    add %rdi, %r10
+    mov %rax, %r10
+    or %esi, %r10d
     cmp %esi, %r8d
     je .L__kefir_func_test2_label8
     xor %r11d, %r11d
@@ -76,10 +77,10 @@ _kefir_local_public_label_test2_outer:
     cmp %edx, %r11d
     je .L__kefir_func_test2_label10
     movsx %r11d, %rbx
-    mov %r9d, %r12d
+    mov %r10d, %r12d
     sub %r11d, %r12d
     add %ecx, %r12d
-    movl %r12d, (%r10, %rbx, 4)
+    movl %r12d, (%r9, %rbx, 4)
     add $1, %r11d
     jmp .L__kefir_func_test2_label4
 .L__kefir_func_test2_label10:

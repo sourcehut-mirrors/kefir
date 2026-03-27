@@ -485,9 +485,8 @@ borlong:
     or %rsi, %rdi
     setne %al
     movzx %al, %rax
-    movsx %eax, %rcx
-    movq %rcx, -16(%rbp)
     movsx %eax, %rax
+    movq %rax, -16(%rbp)
     movq %rax, -8(%rbp)
     movq -16(%rbp), %rax
     movq -8(%rbp), %rdx
@@ -876,9 +875,8 @@ bandlong:
     setne %cl
     and %al, %cl
     movzx %cl, %rax
-    movsx %eax, %rcx
-    movq %rcx, -16(%rbp)
     movsx %eax, %rax
+    movq %rax, -16(%rbp)
     movq %rax, -8(%rbp)
     movq -16(%rbp), %rax
     movq -8(%rbp), %rdx

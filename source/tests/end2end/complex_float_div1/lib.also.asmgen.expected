@@ -186,11 +186,11 @@ __kefir_softfloat_complex_float_div:
     jnz .L__kefir_runtime_func___kefir_softfloat_complex_float_div_label33
 .L__kefir_runtime_func___kefir_softfloat_complex_float_div_label28:
     test %eax, %eax
-    jnz .L__kefir_runtime_func___kefir_softfloat_complex_float_div_label32
+    jnz .L__kefir_runtime_func___kefir_softfloat_complex_float_div_label30
     movaps %xmm0, %xmm1
     movaps -64(%rbp), %xmm0
     jmp .L__kefir_runtime_func___kefir_softfloat_complex_float_div_label7
-.L__kefir_runtime_func___kefir_softfloat_complex_float_div_label32:
+.L__kefir_runtime_func___kefir_softfloat_complex_float_div_label30:
     mov -112(%rbp), %rax
     mov %rax, %rcx
     and $2147483647, %ecx

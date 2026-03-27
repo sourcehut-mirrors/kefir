@@ -158,14 +158,16 @@ op_loop_begin:
     movl %esi, 5128(%rdi)
     movb (%rcx, %rdx, 1), %sil
     movsx %sil, %rdx
-    lea -1(%eax), %r8d
-    lea 1(%eax), %ecx
-    movsx %sil, %rsi
-    cmp $91, %esi
-    je .L__kefir_func_op_loop_begin_label7
+    lea -1(%eax), %ecx
     cmp $93, %edx
-    cmove %r8, %rax
-.L__kefir_func_op_loop_begin_label9:
+    mov %rax, %rsi
+    cmove %rcx, %rsi
+    mov %rsi, %rcx
+    add $1, %eax
+    cmp $91, %edx
+    mov %rcx, %rdx
+    cmove %rax, %rdx
+    mov %rdx, %rax
     cmp $0, %eax
     ja .L__kefir_func_op_loop_begin_label5
 .L__kefir_func_op_loop_begin_label4:
@@ -177,9 +179,6 @@ op_loop_begin:
     lea ops(%rip), %rcx
     movq (%rcx, %rax, 8), %rax
     jmp *%rax
-.L__kefir_func_op_loop_begin_label7:
-    mov %ecx, %eax
-    jmp .L__kefir_func_op_loop_begin_label9
 .L__kefir_func_op_loop_begin_label3:
     movl 5128(%rdi), %eax
     movb 5134(%rdi), %cl

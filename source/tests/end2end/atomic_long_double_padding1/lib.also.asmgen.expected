@@ -22,16 +22,16 @@ add_ld1:
     sub $56, %rsp
     fstcw -16(%rbp)
     fldt 16(%rbp)
-    movq ld1@GOTPCREL(%rip), %rsi
+    movq ld1@GOTPCREL(%rip), %rbx
     fstpt -64(%rbp)
     mov $16, %edi
+    mov %rbx, %rsi
     lea -32(%rbp), %rdx
     mov $2, %ecx
     call __atomic_load@PLT
     fldt -32(%rbp)
     movq $0, -40(%rbp)
     fstpt -48(%rbp)
-    movq ld1@GOTPCREL(%rip), %rbx
 .L__kefir_func_add_ld1_label2:
     fldt -48(%rbp)
     fldt -64(%rbp)
@@ -64,8 +64,9 @@ add_cld1:
     sub $80, %rsp
     fstcw -24(%rbp)
     lea 16(%rbp), %rbx
-    movq cld1@GOTPCREL(%rip), %rsi
+    movq cld1@GOTPCREL(%rip), %r12
     mov $32, %edi
+    mov %r12, %rsi
     lea -64(%rbp), %rdx
     mov $2, %ecx
     call __atomic_load@PLT
@@ -76,7 +77,6 @@ add_cld1:
     fstpt -80(%rbp)
     movq $0, -88(%rbp)
     fstpt -96(%rbp)
-    movq cld1@GOTPCREL(%rip), %r12
 .L__kefir_func_add_cld1_label2:
     fldt -80(%rbp)
     fldt -96(%rbp)

@@ -52,8 +52,9 @@
     "licm," \
     "gvn," \
     "memory-ssa," \
-    "lowering," \
     "dead-code-elimination," \
+    "merge-blocks," \
+    "lowering," \
     "dead-alloc," \
     "phi-removal," \
     "constant-fold," \

@@ -113,40 +113,39 @@ __kefir_bigint_trailing_zeros:
     mov %r8, %r10
     movb (%rdi, %r9, 1), %r10b
     lea 8(%rcx), %r8
+    add $1, %r9
+    lea -1(%rdx), %r11
+    shl $3, %r11
+    mov %rsi, %rbx
+    sub %r11, %rbx
+    mov %rbx, %r11
+    mov $8, %ebx
+    cmp %rdx, %r9
+    cmovae %r11, %rbx
     movzx %r10b, %r11
-    lea 1(%r9), %rbx
-    lea -1(%rdx), %r12
-    shl $3, %r12
-    mov %rsi, %r13
-    sub %r12, %r13
-    mov %r13, %r12
-    mov $8, %r13d
-    cmp %rdx, %rbx
-    cmovae %r12, %r13
     movzx %r10b, %r10
     cmp $0, %r10d
     je .L__kefir_runtime_func___kefir_bigint_trailing_zeros_label7
-    xor %r10d, %r10d
+    xor %r8d, %r8d
+    mov %r8, %r10
     mov %rcx, %r8
-    mov %r10, %rcx
 .L__kefir_runtime_func___kefir_bigint_trailing_zeros_label9:
-    cmp %r13, %rcx
+    cmp %rbx, %r10
     jb .L__kefir_runtime_func___kefir_bigint_trailing_zeros_label11
     mov %r8, %rcx
-.L__kefir_runtime_func___kefir_bigint_trailing_zeros_label8:
-    add $1, %r9
     jmp .L__kefir_runtime_func___kefir_bigint_trailing_zeros_label3
 .L__kefir_runtime_func___kefir_bigint_trailing_zeros_label11:
-    lea 1(%r8), %r10
-    lea 1(%rcx), %rbx
-    mov %r11, %r12
-    sar %cl, %r12d
-    mov %r12, %rcx
+    lea 1(%r8), %r12
+    lea 1(%r10), %r13
+    mov %r10, %rcx
+    mov %r11, %r10
+    sar %cl, %r10d
+    mov %r10, %rcx
     and $1, %ecx
     cmp $1, %ecx
     je .L__kefir_runtime_func___kefir_bigint_trailing_zeros_label13
-    mov %r10, %r8
-    mov %rbx, %rcx
+    mov %r13, %r10
+    mov %r12, %r8
     jmp .L__kefir_runtime_func___kefir_bigint_trailing_zeros_label9
 .L__kefir_runtime_func___kefir_bigint_trailing_zeros_label13:
     mov %r8, %rax
@@ -158,7 +157,7 @@ __kefir_bigint_trailing_zeros:
     ret
 .L__kefir_runtime_func___kefir_bigint_trailing_zeros_label7:
     mov %r8, %rcx
-    jmp .L__kefir_runtime_func___kefir_bigint_trailing_zeros_label8
+    jmp .L__kefir_runtime_func___kefir_bigint_trailing_zeros_label3
 .L__kefir_runtime_func___kefir_bigint_trailing_zeros_label15:
     lea -24(%rbp), %rsp
     pop %r13

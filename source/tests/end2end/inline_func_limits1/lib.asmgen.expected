@@ -12,10 +12,7 @@ main:
     push %rbp
     mov %rsp, %rbp
     movq A@GOTPCREL(%rip), %rax
-    movl (%rax), %eax
-    movq A@GOTPCREL(%rip), %rcx
-    sub $236, %eax
-    movl %eax, (%rcx)
+    subl $236, (%rax)
     mov $1000, %edi
     call test1
     mov $2000, %edi

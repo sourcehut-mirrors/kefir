@@ -174,11 +174,11 @@ test8:
     push %rbp
     mov %rsp, %rbp
     call fn@PLT
-    movq d@GOTPCREL(%rip), %rax
-    movq e@GOTPCREL(%rip), %rcx
+    movq e@GOTPCREL(%rip), %rax
+    movq d@GOTPCREL(%rip), %rcx
 .L__kefir_func_test8_label2:
-    movl (%rax), %edx
-    addl %edx, 4(%rcx)
+    movl (%rcx), %edx
+    addl %edx, 4(%rax)
     jmp .L__kefir_func_test8_label2
 .L__kefir_text_func_test8_end:
 

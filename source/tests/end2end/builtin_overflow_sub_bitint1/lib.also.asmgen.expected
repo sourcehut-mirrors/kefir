@@ -317,19 +317,18 @@ __kefir_bigint_redundant_sign_bits:
     lea 7(%rsi), %rax
     shr $3, %rax
     lea -1(%rax), %rcx
-    movzxb -1(%rdi, %rax, 1), %rdx
-    shl $3, %rcx
-    mov %rsi, %r8
-    sub %rcx, %r8
-    sub $1, %rsi
-    mov %rsi, %r9
-    sub %rcx, %r9
+    movzxb -1(%rdi, %rax, 1), %r8
+    lea -1(%rsi), %r9
+    mov %rcx, %rdx
+    shl $3, %rdx
     mov %r9, %rcx
-    sar %cl, %edx
-    and $1, %edx
+    sub %rdx, %rcx
+    sar %cl, %r8d
+    and $1, %r8d
+    sub %rdx, %rsi
     xor %ecx, %ecx
-    xor %esi, %esi
-    mov %rsi, %r9
+    xor %edx, %edx
+    mov %rdx, %r9
 .L__kefir_runtime_func___kefir_bigint_redundant_sign_bits_label3:
     cmp %rax, %r9
     jb .L__kefir_runtime_func___kefir_bigint_redundant_sign_bits_label5
@@ -341,25 +340,25 @@ __kefir_bigint_redundant_sign_bits:
     pop %rbp
     ret
 .L__kefir_runtime_func___kefir_bigint_redundant_sign_bits_label5:
-    mov %rax, %rsi
-    sub %r9, %rsi
-    movzxb -1(%rdi, %rsi, 1), %r10
-    mov $8, %esi
+    mov %rax, %rdx
+    sub %r9, %rdx
+    movzxb -1(%rdi, %rdx, 1), %r10
+    mov $8, %edx
     cmp $0, %r9
-    mov %rsi, %r11
-    cmovbe %r8, %r11
-    xor %esi, %esi
-    mov %rsi, %rbx
-    mov %rcx, %rsi
+    mov %rdx, %r11
+    cmovbe %rsi, %r11
+    xor %edx, %edx
+    mov %rdx, %rbx
+    mov %rcx, %rdx
 .L__kefir_runtime_func___kefir_bigint_redundant_sign_bits_label6:
     lea 1(%r9), %r12
     cmp %r11, %rbx
     jb .L__kefir_runtime_func___kefir_bigint_redundant_sign_bits_label8
-    mov %rsi, %rcx
+    mov %rdx, %rcx
     mov %r12, %r9
     jmp .L__kefir_runtime_func___kefir_bigint_redundant_sign_bits_label3
 .L__kefir_runtime_func___kefir_bigint_redundant_sign_bits_label8:
-    lea 1(%rsi), %r12
+    lea 1(%rdx), %r12
     lea 1(%rbx), %r13
     mov %r11, %rcx
     sub %rbx, %rcx
@@ -368,9 +367,9 @@ __kefir_bigint_redundant_sign_bits:
     sar %cl, %ebx
     mov %rbx, %rcx
     and $1, %ecx
-    cmp %edx, %ecx
+    cmp %r8d, %ecx
     je .L__kefir_runtime_func___kefir_bigint_redundant_sign_bits_label16
-    lea -1(%rsi), %rax
+    lea -1(%rdx), %rax
     lea -24(%rbp), %rsp
     pop %r13
     pop %r12
@@ -379,7 +378,7 @@ __kefir_bigint_redundant_sign_bits:
     ret
 .L__kefir_runtime_func___kefir_bigint_redundant_sign_bits_label16:
     mov %r13, %rbx
-    mov %r12, %rsi
+    mov %r12, %rdx
     jmp .L__kefir_runtime_func___kefir_bigint_redundant_sign_bits_label6
 .L__kefir_runtime_func___kefir_bigint_redundant_sign_bits_label13:
     xor %eax, %eax

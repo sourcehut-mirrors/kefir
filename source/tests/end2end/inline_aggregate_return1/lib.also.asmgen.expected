@@ -54,8 +54,7 @@ gets1:
     movdqu %xmm0, 32(%rdi)
     movdqu -16(%rbp), %xmm0
     movdqu %xmm0, 48(%rdi)
-    movsx %esi, %rax
-    movl %esi, (%rdi, %rax, 4)
+    movl %esi, (%rdi, %rcx, 4)
     mov %rdi, %rax
     lea (%rbp), %rsp
     pop %rbp
