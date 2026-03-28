@@ -77,8 +77,10 @@
                                 &(struct kefir_codegen_target_ir_operation) {                                          \
                                     .opcode = code->klass->assign_opcode,                                              \
                                     .parameters[0] = {.type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INTEGER,            \
-                                                      .immediate.int_immediate = result,                               \
-                                                      .immediate.variant = value_type->variant}},                      \
+                                                      .immediate.int_immediate = kefir_codegen_target_ir_zero_extend(  \
+                                                          result, value_type->variant),                                \
+                                                      .immediate.variant =                                             \
+                                                          KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT}},           \
                                 NULL));                                                                                \
                             *replaced = true;                                                                          \
                             return KEFIR_OK;                                                                           \

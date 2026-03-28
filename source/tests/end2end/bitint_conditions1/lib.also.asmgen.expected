@@ -35,7 +35,7 @@ test1:
     pop %rbp
     ret
 .L__kefir_func_test1_label4:
-    mov $-1, %rax
+    mov $-1, %eax
     jmp .L__kefir_func_test1_label3
 .L__kefir_text_func_test1_end:
 
@@ -58,7 +58,7 @@ test2:
     pop %rbp
     ret
 .L__kefir_func_test2_label4:
-    mov $-1, %rax
+    mov $-1, %eax
     jmp .L__kefir_func_test2_label3
 .L__kefir_text_func_test2_end:
 
@@ -81,7 +81,7 @@ test3:
     pop %rbp
     ret
 .L__kefir_func_test3_label4:
-    mov $-1, %rax
+    mov $-1, %eax
     jmp .L__kefir_func_test3_label3
 .L__kefir_text_func_test3_end:
 
@@ -104,7 +104,7 @@ test4:
     pop %rbp
     ret
 .L__kefir_func_test4_label4:
-    mov $-1, %rax
+    mov $-1, %eax
     jmp .L__kefir_func_test4_label3
 .L__kefir_text_func_test4_end:
 
@@ -130,7 +130,7 @@ test5:
     pop %rbp
     ret
 .L__kefir_func_test5_label4:
-    mov $-1, %rax
+    mov $-1, %eax
     jmp .L__kefir_func_test5_label3
 .L__kefir_text_func_test5_end:
 
@@ -163,7 +163,7 @@ test6:
     pop %rbp
     ret
 .L__kefir_func_test6_label4:
-    mov $-1, %rax
+    mov $-1, %eax
     jmp .L__kefir_func_test6_label3
 .L__kefir_text_func_test6_end:
 

@@ -78,7 +78,7 @@ quad_equation:
     stmxcsr -24(%rbp)
     mov %rdi, %rbx
     movaps %xmm0, -64(%rbp)
-    mov $-1, %r12
+    mov $-1, %r12d
     movaps %xmm1, -48(%rbp)
     movdqu -48(%rbp), %xmm0
     xorpd .L__kefir_constant_float64_neg(%rip), %xmm0

@@ -1313,6 +1313,18 @@ static kefir_result_t is_spill_range_available_for_output(struct destructor_stat
     return KEFIR_OK;
 }
 
+static kefir_int64_t sign_extend_immediate(kefir_int64_t value, kefir_asmcmp_operand_variant_t variant) {
+    if (variant == KEFIR_ASMCMP_OPERAND_VARIANT_32BIT) {
+        return (kefir_int32_t) value;
+    } else if (variant == KEFIR_ASMCMP_OPERAND_VARIANT_16BIT) {
+        return (kefir_int16_t) value;
+    } else if (variant == KEFIR_ASMCMP_OPERAND_VARIANT_8BIT) {
+        return (kefir_int8_t) value;
+    } else {
+        return value;
+    }
+}
+
 #define DEVIRT_HAS_FLAG(_flags, _flag) (((_flags) & (_flag)) != 0)
 static kefir_result_t devirtualize_instr_arg(struct destructor_state *state, struct kefir_asmcmp_instruction *instr,
                                              kefir_size_t arg_idx, kefir_uint64_t op_flags, kefir_bool_t no_memory_arg,
@@ -1320,15 +1332,8 @@ static kefir_result_t devirtualize_instr_arg(struct destructor_state *state, str
     kefir_asm_amd64_xasmgen_register_t tmp_reg;
     switch (instr->args[arg_idx].type) {
         case KEFIR_ASMCMP_VALUE_TYPE_INTEGER:
-            if (instr->args[arg_idx].immediate_variant == KEFIR_ASMCMP_OPERAND_VARIANT_64BIT) {
-                // Intentionally left blank
-            } else if (instr->args[arg_idx].immediate_variant == KEFIR_ASMCMP_OPERAND_VARIANT_32BIT) {
-                instr->args[arg_idx].int_immediate = (kefir_int32_t) instr->args[arg_idx].int_immediate;
-            } else if (instr->args[arg_idx].immediate_variant == KEFIR_ASMCMP_OPERAND_VARIANT_16BIT) {
-                instr->args[arg_idx].int_immediate = (kefir_int16_t) instr->args[arg_idx].int_immediate;
-            } else if (instr->args[arg_idx].immediate_variant == KEFIR_ASMCMP_OPERAND_VARIANT_8BIT) {
-                instr->args[arg_idx].int_immediate = (kefir_int8_t) instr->args[arg_idx].int_immediate;
-            }
+            instr->args[arg_idx].int_immediate =
+                sign_extend_immediate(instr->args[arg_idx].int_immediate, instr->args[arg_idx].immediate_variant);
 
             if ((instr->args[arg_idx].int_immediate > KEFIR_INT32_MAX ||
                  instr->args[arg_idx].int_immediate < KEFIR_INT32_MIN) &&
@@ -1562,51 +1567,71 @@ static kefir_result_t load_into_allocation(struct destructor_state *state,
                 case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_UPSILON:
                     return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected target IR operand type");
 
-                case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INTEGER:
+                case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INTEGER: {
                     REQUIRE_OK(resolve_operand(state, operand, &operand_value));
+                    kefir_asmcmp_operand_variant_t variant = KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT;
+                    REQUIRE_OK(resolve_variant(operand->immediate.variant, &variant, NULL));
+                    kefir_int64_t imm_value = sign_extend_immediate(operand->immediate.int_immediate, variant);
                     switch (alloc->type) {
                         case KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_NA:
                             return KEFIR_SET_ERROR(KEFIR_INVALID_STATE,
                                                    "Unexpected target IR register allocation type");
 
                         case KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_GP:
-                            if (operand->immediate.int_immediate >= KEFIR_INT32_MIN &&
-                                operand->immediate.int_immediate <= KEFIR_INT32_MAX) {
+                            if (kefir_asm_amd64_xasmgen_register_is_wide(alloc->reg.value, 64) && imm_value >= 0 &&
+                                imm_value <= KEFIR_UINT32_MAX) {
+                                union {
+                                    kefir_uint32_t u32;
+                                    kefir_int32_t i32;
+                                } value = {.u32 = operand->immediate.int_immediate};
                                 kefir_asm_amd64_xasmgen_register_t reg = alloc->reg.value;
-                                if (kefir_asm_amd64_xasmgen_register_is_wide(reg, 64) &&
-                                    operand->immediate.int_immediate >= 0) {
+                                REQUIRE_OK(kefir_asm_amd64_xasmgen_register32(reg, &reg));
+                                REQUIRE_OK(kefir_asmcmp_amd64_mov(
+                                    state->mem, state->asmcmp_ctx,
+                                    kefir_asmcmp_context_instr_tail(&state->asmcmp_ctx->context),
+                                    &KEFIR_ASMCMP_MAKE_PHREG(reg), &KEFIR_ASMCMP_MAKE_INT(value.i32), NULL));
+                            } else if (imm_value >= KEFIR_INT32_MIN && imm_value <= KEFIR_INT32_MAX) {
+                                kefir_asm_amd64_xasmgen_register_t reg = alloc->reg.value;
+                                if (kefir_asm_amd64_xasmgen_register_is_wide(reg, 64) && imm_value >= 0) {
                                     REQUIRE_OK(kefir_asm_amd64_xasmgen_register32(reg, &reg));
                                 }
                                 REQUIRE_OK(kefir_asmcmp_amd64_mov(
                                     state->mem, state->asmcmp_ctx,
                                     kefir_asmcmp_context_instr_tail(&state->asmcmp_ctx->context),
-                                    &KEFIR_ASMCMP_MAKE_PHREG(reg),
-                                    &KEFIR_ASMCMP_MAKE_INT(operand->immediate.int_immediate), NULL));
+                                    &KEFIR_ASMCMP_MAKE_PHREG(reg), &KEFIR_ASMCMP_MAKE_INT(imm_value), NULL));
                             } else {
                                 REQUIRE_OK(kefir_asmcmp_amd64_movabs(
                                     state->mem, state->asmcmp_ctx,
                                     kefir_asmcmp_context_instr_tail(&state->asmcmp_ctx->context),
-                                    &KEFIR_ASMCMP_MAKE_PHREG(alloc->reg.value),
-                                    &KEFIR_ASMCMP_MAKE_INT(operand->immediate.int_immediate), NULL));
+                                    &KEFIR_ASMCMP_MAKE_PHREG(alloc->reg.value), &KEFIR_ASMCMP_MAKE_INT(imm_value),
+                                    NULL));
                             }
                             break;
 
                         case KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_SSE: {
                             kefir_asm_amd64_xasmgen_register_t phreg;
                             REQUIRE_OK(allocate_scratch_register(state, &phreg, TEMPORARY_REGISTER_GP, NULL));
-                            if (operand->immediate.int_immediate >= KEFIR_INT32_MIN &&
-                                operand->immediate.int_immediate <= KEFIR_INT32_MAX) {
+                            if (imm_value >= 0 && imm_value <= KEFIR_UINT32_MAX) {
+                                union {
+                                    kefir_uint32_t u32;
+                                    kefir_int32_t i32;
+                                } value = {.u32 = operand->immediate.int_immediate};
+                                kefir_asm_amd64_xasmgen_register_t reg;
+                                REQUIRE_OK(kefir_asm_amd64_xasmgen_register32(phreg, &reg));
                                 REQUIRE_OK(kefir_asmcmp_amd64_mov(
                                     state->mem, state->asmcmp_ctx,
                                     kefir_asmcmp_context_instr_tail(&state->asmcmp_ctx->context),
-                                    &KEFIR_ASMCMP_MAKE_PHREG(phreg),
-                                    &KEFIR_ASMCMP_MAKE_INT(operand->immediate.int_immediate), NULL));
+                                    &KEFIR_ASMCMP_MAKE_PHREG(reg), &KEFIR_ASMCMP_MAKE_INT(value.i32), NULL));
+                            } else if (imm_value >= KEFIR_INT32_MIN && imm_value <= KEFIR_INT32_MAX) {
+                                REQUIRE_OK(kefir_asmcmp_amd64_mov(
+                                    state->mem, state->asmcmp_ctx,
+                                    kefir_asmcmp_context_instr_tail(&state->asmcmp_ctx->context),
+                                    &KEFIR_ASMCMP_MAKE_PHREG(phreg), &KEFIR_ASMCMP_MAKE_INT(imm_value), NULL));
                             } else {
                                 REQUIRE_OK(kefir_asmcmp_amd64_movabs(
                                     state->mem, state->asmcmp_ctx,
                                     kefir_asmcmp_context_instr_tail(&state->asmcmp_ctx->context),
-                                    &KEFIR_ASMCMP_MAKE_PHREG(phreg),
-                                    &KEFIR_ASMCMP_MAKE_INT(operand->immediate.int_immediate), NULL));
+                                    &KEFIR_ASMCMP_MAKE_PHREG(phreg), &KEFIR_ASMCMP_MAKE_INT(imm_value), NULL));
                             }
                             REQUIRE_OK(kefir_asmcmp_amd64_movq(
                                 state->mem, state->asmcmp_ctx,
@@ -1616,22 +1641,20 @@ static kefir_result_t load_into_allocation(struct destructor_state *state,
                         } break;
 
                         case KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_SPILL:
-                            if (operand->immediate.int_immediate >= KEFIR_INT32_MIN &&
-                                operand->immediate.int_immediate <= KEFIR_INT32_MAX) {
+                            if (imm_value >= KEFIR_INT32_MIN && imm_value <= KEFIR_INT32_MAX) {
                                 REQUIRE_OK(kefir_asmcmp_amd64_mov(
                                     state->mem, state->asmcmp_ctx,
                                     kefir_asmcmp_context_instr_tail(&state->asmcmp_ctx->context),
                                     &KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(alloc->spill_area.index, 0,
                                                                       KEFIR_ASMCMP_OPERAND_VARIANT_64BIT),
-                                    &KEFIR_ASMCMP_MAKE_INT(operand->immediate.int_immediate), NULL));
+                                    &KEFIR_ASMCMP_MAKE_INT(imm_value), NULL));
                             } else {
                                 kefir_asm_amd64_xasmgen_register_t phreg;
                                 REQUIRE_OK(allocate_scratch_register(state, &phreg, TEMPORARY_REGISTER_GP, NULL));
                                 REQUIRE_OK(kefir_asmcmp_amd64_movabs(
                                     state->mem, state->asmcmp_ctx,
                                     kefir_asmcmp_context_instr_tail(&state->asmcmp_ctx->context),
-                                    &KEFIR_ASMCMP_MAKE_PHREG(phreg),
-                                    &KEFIR_ASMCMP_MAKE_INT(operand->immediate.int_immediate), NULL));
+                                    &KEFIR_ASMCMP_MAKE_PHREG(phreg), &KEFIR_ASMCMP_MAKE_INT(imm_value), NULL));
                                 REQUIRE_OK(kefir_asmcmp_amd64_mov(
                                     state->mem, state->asmcmp_ctx,
                                     kefir_asmcmp_context_instr_tail(&state->asmcmp_ctx->context),
@@ -1642,7 +1665,7 @@ static kefir_result_t load_into_allocation(struct destructor_state *state,
                             }
                             break;
                     }
-                    break;
+                } break;
 
                 case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_PHYSICAL_REGISTER:
                     REQUIRE_OK(resolve_operand(state, operand, &operand_value));

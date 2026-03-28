@@ -269,7 +269,7 @@ __kefir_bigint_unsigned_compare:
     addq $-1, -24(%rbp)
     jmp .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label2
 .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label8:
-    mov $-1, %rax
+    mov $-1, %eax
     lea (%rbp), %rsp
     pop %rbp
     ret

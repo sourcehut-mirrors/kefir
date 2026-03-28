@@ -261,7 +261,7 @@ __kefir_bigint_right_shift_whole_digits:
     movl -32(%rbp), %eax
     test %eax, %eax
     jz .L__kefir_runtime_func___kefir_bigint_right_shift_whole_digits_label20
-    mov $-1, %rcx
+    mov $-1, %ecx
     lea -28(%rbp), %rax
 .L__kefir_runtime_func___kefir_bigint_right_shift_whole_digits_label5:
     movb %cl, (%rax)
@@ -505,7 +505,7 @@ __kefir_bigint_signed_to_double:
     jz .L__kefir_runtime_func___kefir_bigint_signed_to_double_label17
     movq -112(%rbp), %rdi
     movq -136(%rbp), %rsi
-    mov $-1, %rax
+    mov $-1, %eax
     movsx %eax, %rdx
     call __kefir_bigint_set_signed_integer
     movq -112(%rbp), %rdi
@@ -852,7 +852,7 @@ __kefir_bigint_cast_signed:
 .L__kefir_runtime_func___kefir_bigint_cast_signed_label14:
     movq -24(%rbp), %rax
     movq -8(%rbp), %rcx
-    mov $-1, %rdx
+    mov $-1, %edx
     movb %dl, (%rax, %rcx, 1)
     jmp .L__kefir_runtime_func___kefir_bigint_cast_signed_label13
 .L__kefir_runtime_func___kefir_bigint_cast_signed_label5:
@@ -1188,7 +1188,7 @@ __kefir_bigint_unsigned_to_double:
     jz .L__kefir_runtime_func___kefir_bigint_unsigned_to_double_label17
     movq -112(%rbp), %rdi
     movq -136(%rbp), %rsi
-    mov $-1, %rax
+    mov $-1, %eax
     movsx %eax, %rdx
     call __kefir_bigint_set_signed_integer
     movq -112(%rbp), %rdi
@@ -1549,7 +1549,7 @@ __kefir_bigint_unsigned_to_long_double:
     jz .L__kefir_runtime_func___kefir_bigint_unsigned_to_long_double_label17
     movq -136(%rbp), %rdi
     movq -152(%rbp), %rsi
-    mov $-1, %rax
+    mov $-1, %eax
     movsx %eax, %rdx
     call __kefir_bigint_set_signed_integer
     movq -136(%rbp), %rdi
@@ -2294,7 +2294,7 @@ __kefir_bigint_unsigned_to_float:
     jz .L__kefir_runtime_func___kefir_bigint_unsigned_to_float_label17
     movq -120(%rbp), %rdi
     movq -136(%rbp), %rsi
-    mov $-1, %rax
+    mov $-1, %eax
     movsx %eax, %rdx
     call __kefir_bigint_set_signed_integer
     movq -120(%rbp), %rdi
@@ -2789,7 +2789,7 @@ __kefir_bigint_signed_to_long_double:
     jz .L__kefir_runtime_func___kefir_bigint_signed_to_long_double_label17
     movq -136(%rbp), %rdi
     movq -152(%rbp), %rsi
-    mov $-1, %rax
+    mov $-1, %eax
     movsx %eax, %rdx
     call __kefir_bigint_set_signed_integer
     movq -136(%rbp), %rdi
@@ -3346,7 +3346,7 @@ __kefir_bigint_signed_to_float:
     jz .L__kefir_runtime_func___kefir_bigint_signed_to_float_label17
     movq -120(%rbp), %rdi
     movq -136(%rbp), %rsi
-    mov $-1, %rax
+    mov $-1, %eax
     movsx %eax, %rdx
     call __kefir_bigint_set_signed_integer
     movq -120(%rbp), %rdi

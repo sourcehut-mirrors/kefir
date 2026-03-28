@@ -83,8 +83,9 @@ kefir_result_t kefir_codegen_target_ir_amd64_peephole_add(struct kefir_mem *mem,
                         &(struct kefir_codegen_target_ir_operation) {
                             .opcode = code->klass->assign_opcode,
                             .parameters[0] = {.type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INTEGER,
-                                              .immediate.int_immediate = result,
-                                              .immediate.variant = value_type->variant}},
+                                              .immediate.int_immediate =
+                                                  kefir_codegen_target_ir_zero_extend(result, value_type->variant),
+                                              .immediate.variant = KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT}},
                         NULL));
                     *replaced = true;
                     return KEFIR_OK;
@@ -391,8 +392,9 @@ kefir_result_t kefir_codegen_target_ir_amd64_peephole_sbb(struct kefir_mem *mem,
                 &(struct kefir_codegen_target_ir_operation) {                                                          \
                     .opcode = code->klass->assign_opcode,                                                              \
                     .parameters[0] = {.type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INTEGER,                            \
-                                      .immediate.int_immediate = _op(value),                                           \
-                                      .immediate.variant = instr->operation.parameters[0].immediate.variant}},         \
+                                      .immediate.int_immediate = kefir_codegen_target_ir_zero_extend(                  \
+                                          _op(value), instr->operation.parameters[0].immediate.variant),               \
+                                      .immediate.variant = KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT}},          \
                 NULL));                                                                                                \
             *replaced = true;                                                                                          \
             return KEFIR_OK;                                                                                           \

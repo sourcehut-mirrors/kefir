@@ -249,7 +249,7 @@ __kefir_bigint_right_shift_whole_digits:
     movl -32(%rbp), %eax
     test %eax, %eax
     jz .L__kefir_runtime_func___kefir_bigint_right_shift_whole_digits_label20
-    mov $-1, %rcx
+    mov $-1, %ecx
     lea -28(%rbp), %rax
 .L__kefir_runtime_func___kefir_bigint_right_shift_whole_digits_label5:
     movb %cl, (%rax)
@@ -425,7 +425,7 @@ __kefir_bigint_cast_signed:
 .L__kefir_runtime_func___kefir_bigint_cast_signed_label14:
     movq -24(%rbp), %rax
     movq -8(%rbp), %rcx
-    mov $-1, %rdx
+    mov $-1, %edx
     movb %dl, (%rax, %rcx, 1)
     jmp .L__kefir_runtime_func___kefir_bigint_cast_signed_label13
 .L__kefir_runtime_func___kefir_bigint_cast_signed_label5:

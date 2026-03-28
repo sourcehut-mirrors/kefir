@@ -44,7 +44,7 @@ get1:
 .L__kefir_text_func_get1_begin:
     push %rbp
     mov %rsp, %rbp
-    mov $-3, %rax
+    mov $-3, %eax
     movsx %eax, %rax
     shl $58, %rax
     sar $58, %rax
@@ -65,7 +65,7 @@ get3:
 .L__kefir_text_func_get3_begin:
     push %rbp
     mov %rsp, %rbp
-    mov $-4096, %rax
+    mov $-4096, %eax
     movsx %eax, %rax
     shl $50, %rax
     sar $50, %rax
@@ -86,7 +86,7 @@ get5:
 .L__kefir_text_func_get5_begin:
     push %rbp
     mov %rsp, %rbp
-    mov $-831467, %rax
+    mov $-831467, %eax
     movsx %eax, %rax
     shl $40, %rax
     sar $40, %rax
@@ -391,7 +391,7 @@ __kefir_bigint_cast_signed:
 .L__kefir_runtime_func___kefir_bigint_cast_signed_label14:
     movq -24(%rbp), %rax
     movq -8(%rbp), %rcx
-    mov $-1, %rdx
+    mov $-1, %edx
     movb %dl, (%rax, %rcx, 1)
     jmp .L__kefir_runtime_func___kefir_bigint_cast_signed_label13
 .L__kefir_runtime_func___kefir_bigint_cast_signed_label5:

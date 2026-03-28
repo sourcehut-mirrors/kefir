@@ -69,8 +69,34 @@ static kefir_result_t build_operand(const struct kefir_asmcmp_amd64 *target,
             return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected amd64 asmcmp value type");
 
         case KEFIR_ASMCMP_VALUE_TYPE_INTEGER:
-            arg_state->operand =
-                kefir_asm_amd64_xasmgen_operand_imm(&arg_state->base_operands[0], value->int_immediate);
+            switch (value->immediate_variant) {
+                case KEFIR_ASMCMP_OPERAND_VARIANT_8BIT:
+                    arg_state->operand = kefir_asm_amd64_xasmgen_operand_imm(&arg_state->base_operands[0],
+                                                                             (kefir_int8_t) value->int_immediate);
+                    break;
+
+                case KEFIR_ASMCMP_OPERAND_VARIANT_16BIT:
+                    arg_state->operand = kefir_asm_amd64_xasmgen_operand_imm(&arg_state->base_operands[0],
+                                                                             (kefir_int16_t) value->int_immediate);
+                    break;
+
+                case KEFIR_ASMCMP_OPERAND_VARIANT_32BIT:
+                    arg_state->operand = kefir_asm_amd64_xasmgen_operand_imm(&arg_state->base_operands[0],
+                                                                             (kefir_int32_t) value->int_immediate);
+                    break;
+
+                case KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT:
+                case KEFIR_ASMCMP_OPERAND_VARIANT_64BIT:
+                    arg_state->operand =
+                        kefir_asm_amd64_xasmgen_operand_imm(&arg_state->base_operands[0], value->int_immediate);
+                    break;
+
+                case KEFIR_ASMCMP_OPERAND_VARIANT_80BIT:
+                case KEFIR_ASMCMP_OPERAND_VARIANT_128BIT:
+                case KEFIR_ASMCMP_OPERAND_VARIANT_FP_SINGLE:
+                case KEFIR_ASMCMP_OPERAND_VARIANT_FP_DOUBLE:
+                    return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected immediate value variant");
+            }
             break;
 
         case KEFIR_ASMCMP_VALUE_TYPE_PHYSICAL_REGISTER:
