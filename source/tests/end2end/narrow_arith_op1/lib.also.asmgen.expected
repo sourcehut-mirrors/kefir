@@ -1,0 +1,30 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global test1
+.type test1, @function
+.global test2
+.type test2, @function
+
+.section .text
+.L__kefir_text_section_begin:
+test1:
+.L__kefir_text_func_test1_begin:
+    add %dl, %sil
+    sub %cl, %sil
+    neg %sil
+    movb %sil, (%rdi)
+    ret
+.L__kefir_text_func_test1_end:
+
+test2:
+.L__kefir_text_func_test2_begin:
+    add %dx, %si
+    sub %cx, %si
+    neg %si
+    movw %si, (%rdi)
+    ret
+.L__kefir_text_func_test2_end:
+
+.L__kefir_text_section_end:
+

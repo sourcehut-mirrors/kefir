@@ -106,18 +106,18 @@ test_char:
     movq c1@GOTPCREL(%rip), %rax
     movb %dil, (%rax)
     movq c2@GOTPCREL(%rip), %rax
-    movsx %dil, %rcx
-    mov %rcx, %rdx
-    add $1, %dl
-    movb %dl, (%rax)
+    mov %rdi, %rcx
+    add $1, %cl
+    movb %cl, (%rax)
     movq c3@GOTPCREL(%rip), %rax
-    mov %rcx, %rsi
+    movsx %dil, %rdx
+    mov %rdx, %rsi
     shl $1, %esi
     movb %sil, (%rax)
-    movsx %dl, %rax
-    add %eax, %ecx
+    movsx %cl, %rax
+    add %eax, %edx
     movsx %sil, %rax
-    add %ecx, %eax
+    add %edx, %eax
     ret
 .L__kefir_text_func_test_char_end:
 
@@ -179,18 +179,18 @@ test_short:
     movq s1@GOTPCREL(%rip), %rax
     movw %di, (%rax)
     movq s2@GOTPCREL(%rip), %rax
-    movsx %di, %rcx
-    mov %rcx, %rdx
-    add $1, %dx
-    movw %dx, (%rax)
+    mov %rdi, %rcx
+    add $1, %cx
+    movw %cx, (%rax)
     movq s3@GOTPCREL(%rip), %rax
-    mov %rcx, %rsi
+    movsx %di, %rdx
+    mov %rdx, %rsi
     shl $1, %esi
     movw %si, (%rax)
-    movsx %dx, %rax
-    add %eax, %ecx
+    movsx %cx, %rax
+    add %eax, %edx
     movsx %si, %rax
-    add %ecx, %eax
+    add %edx, %eax
     ret
 .L__kefir_text_func_test_short_end:
 

@@ -30,27 +30,19 @@
 .L__kefir_text_section_begin:
 sub8:
 .L__kefir_text_func_sub8_begin:
-    movsx %sil, %rsi
-.L__kefir_func_sub8_label2:
-    movb (%rdi), %al
-    movsx %al, %rcx
-    sub %esi, %ecx
     mov %rdi, %rdx
-    lock     cmpxchgb %cl, (%rdx)
-    jnz .L__kefir_func_sub8_label2
+    mov %rsi, %rax
+    neg %al
+    lock     xaddb %al, (%rdx)
     ret
 .L__kefir_text_func_sub8_end:
 
 sub16:
 .L__kefir_text_func_sub16_begin:
-    movsx %si, %rsi
-.L__kefir_func_sub16_label2:
-    movw (%rdi), %ax
-    movsx %ax, %rcx
-    sub %esi, %ecx
     mov %rdi, %rdx
-    lock     cmpxchgw %cx, (%rdx)
-    jnz .L__kefir_func_sub16_label2
+    mov %rsi, %rax
+    neg %ax
+    lock     xaddw %ax, (%rdx)
     ret
 .L__kefir_text_func_sub16_end:
 

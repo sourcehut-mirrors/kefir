@@ -709,6 +709,25 @@ static kefir_result_t builder_int_not(struct kefir_mem *mem, struct kefir_opt_co
     return KEFIR_OK;
 }
 
+#define INSTR_USE_OF_WIDTH(_width)                                                     \
+    (((sole_use_instr->operation.opcode == KEFIR_OPT_OPCODE_INT##_width##_STORE ||     \
+       sole_use_instr->operation.opcode == KEFIR_OPT_OPCODE_ATOMIC_STORE##_width ||    \
+       sole_use_instr->operation.opcode == KEFIR_OPT_OPCODE_ATOMIC_CMPXCHG##_width) && \
+      sole_use_instr->operation.parameters.refs[0] != instr->id) ||                    \
+     sole_use_instr->operation.opcode == KEFIR_OPT_OPCODE_INT##_width##_ADD ||         \
+     sole_use_instr->operation.opcode == KEFIR_OPT_OPCODE_INT##_width##_SUB ||         \
+     sole_use_instr->operation.opcode == KEFIR_OPT_OPCODE_INT##_width##_MUL ||         \
+     sole_use_instr->operation.opcode == KEFIR_OPT_OPCODE_UINT##_width##_MUL ||        \
+     sole_use_instr->operation.opcode == KEFIR_OPT_OPCODE_INT##_width##_DIV ||         \
+     sole_use_instr->operation.opcode == KEFIR_OPT_OPCODE_UINT##_width##_DIV ||        \
+     sole_use_instr->operation.opcode == KEFIR_OPT_OPCODE_INT##_width##_MOD ||         \
+     sole_use_instr->operation.opcode == KEFIR_OPT_OPCODE_UINT##_width##_MOD ||        \
+     sole_use_instr->operation.opcode == KEFIR_OPT_OPCODE_INT##_width##_AND ||         \
+     sole_use_instr->operation.opcode == KEFIR_OPT_OPCODE_INT##_width##_OR ||          \
+     sole_use_instr->operation.opcode == KEFIR_OPT_OPCODE_INT##_width##_XOR ||         \
+     sole_use_instr->operation.opcode == KEFIR_OPT_OPCODE_INT##_width##_NEG ||         \
+     sole_use_instr->operation.opcode == KEFIR_OPT_OPCODE_INT##_width##_NOT)
+
 static kefir_result_t simplify_int_not(struct kefir_mem *mem, struct kefir_opt_function *func,
                                        const struct kefir_opt_instruction *instr,
                                        kefir_opt_instruction_ref_t *replacement_ref) {
@@ -739,6 +758,85 @@ static kefir_result_t simplify_int_not(struct kefir_mem *mem, struct kefir_opt_f
                 arg1->operation.opcode == KEFIR_OPT_OPCODE_INT64_ZERO_EXTEND_32BITS)) {
         REQUIRE_OK(builder_int_not(mem, &func->code, block_id, arg1->operation.parameters.refs[0], replacement_ref,
                                    original_opcode));
+    } else {
+        kefir_opt_instruction_ref_t sole_use_ref;
+        REQUIRE_OK(kefir_opt_instruction_get_sole_use(&func->code, instr->id, &sole_use_ref));
+
+        if (sole_use_ref != KEFIR_ID_NONE) {
+            const struct kefir_opt_instruction *sole_use_instr;
+            REQUIRE_OK(kefir_opt_code_container_instr(&func->code, sole_use_ref, &sole_use_instr));
+            if ((instr->operation.opcode == KEFIR_OPT_OPCODE_INT16_NOT ||
+                 instr->operation.opcode == KEFIR_OPT_OPCODE_INT32_NOT ||
+                 instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_NOT) &&
+                INSTR_USE_OF_WIDTH(8)) {
+                REQUIRE_OK(kefir_opt_code_builder_int8_not(mem, &func->code, block_id,
+                                                           instr->operation.parameters.refs[0], replacement_ref));
+            } else if ((instr->operation.opcode == KEFIR_OPT_OPCODE_INT32_NOT ||
+                        instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_NOT) &&
+                       INSTR_USE_OF_WIDTH(16)) {
+                REQUIRE_OK(kefir_opt_code_builder_int16_not(mem, &func->code, block_id,
+                                                            instr->operation.parameters.refs[0], replacement_ref));
+            } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_NOT && INSTR_USE_OF_WIDTH(32)) {
+                REQUIRE_OK(kefir_opt_code_builder_int32_not(mem, &func->code, block_id,
+                                                            instr->operation.parameters.refs[0], replacement_ref));
+            }
+        }
+    }
+    return KEFIR_OK;
+}
+
+static kefir_result_t simplify_int_neg(struct kefir_mem *mem, struct kefir_opt_function *func,
+                                       const struct kefir_opt_instruction *instr,
+                                       kefir_opt_instruction_ref_t *replacement_ref) {
+    const kefir_opt_block_id_t block_id = instr->block_id;
+
+    const struct kefir_opt_instruction *arg1;
+    REQUIRE_OK(kefir_opt_code_container_instr(&func->code, instr->operation.parameters.refs[0], &arg1));
+
+    if (instr->operation.opcode == KEFIR_OPT_OPCODE_INT8_NEG &&
+        (arg1->operation.opcode == KEFIR_OPT_OPCODE_INT64_SIGN_EXTEND_8BITS ||
+         arg1->operation.opcode == KEFIR_OPT_OPCODE_INT64_ZERO_EXTEND_8BITS ||
+         arg1->operation.opcode == KEFIR_OPT_OPCODE_INT64_SIGN_EXTEND_16BITS ||
+         arg1->operation.opcode == KEFIR_OPT_OPCODE_INT64_ZERO_EXTEND_16BITS ||
+         arg1->operation.opcode == KEFIR_OPT_OPCODE_INT64_SIGN_EXTEND_32BITS ||
+         arg1->operation.opcode == KEFIR_OPT_OPCODE_INT64_ZERO_EXTEND_32BITS)) {
+        REQUIRE_OK(kefir_opt_code_builder_int8_neg(mem, &func->code, block_id, arg1->operation.parameters.refs[0],
+                                                   replacement_ref));
+    } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_INT16_NEG &&
+               (arg1->operation.opcode == KEFIR_OPT_OPCODE_INT64_SIGN_EXTEND_16BITS ||
+                arg1->operation.opcode == KEFIR_OPT_OPCODE_INT64_ZERO_EXTEND_16BITS ||
+                arg1->operation.opcode == KEFIR_OPT_OPCODE_INT64_SIGN_EXTEND_32BITS ||
+                arg1->operation.opcode == KEFIR_OPT_OPCODE_INT64_ZERO_EXTEND_32BITS)) {
+        REQUIRE_OK(kefir_opt_code_builder_int16_neg(mem, &func->code, block_id, arg1->operation.parameters.refs[0],
+                                                    replacement_ref));
+    } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_INT32_NEG &&
+               (arg1->operation.opcode == KEFIR_OPT_OPCODE_INT64_SIGN_EXTEND_32BITS ||
+                arg1->operation.opcode == KEFIR_OPT_OPCODE_INT64_ZERO_EXTEND_32BITS)) {
+        REQUIRE_OK(kefir_opt_code_builder_int32_neg(mem, &func->code, block_id, arg1->operation.parameters.refs[0],
+                                                    replacement_ref));
+    } else {
+        kefir_opt_instruction_ref_t sole_use_ref;
+        REQUIRE_OK(kefir_opt_instruction_get_sole_use(&func->code, instr->id, &sole_use_ref));
+
+        if (sole_use_ref != KEFIR_ID_NONE) {
+            const struct kefir_opt_instruction *sole_use_instr;
+            REQUIRE_OK(kefir_opt_code_container_instr(&func->code, sole_use_ref, &sole_use_instr));
+            if ((instr->operation.opcode == KEFIR_OPT_OPCODE_INT16_NEG ||
+                 instr->operation.opcode == KEFIR_OPT_OPCODE_INT32_NEG ||
+                 instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_NEG) &&
+                INSTR_USE_OF_WIDTH(8)) {
+                REQUIRE_OK(kefir_opt_code_builder_int8_neg(mem, &func->code, block_id,
+                                                           instr->operation.parameters.refs[0], replacement_ref));
+            } else if ((instr->operation.opcode == KEFIR_OPT_OPCODE_INT32_NEG ||
+                        instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_NEG) &&
+                       INSTR_USE_OF_WIDTH(16)) {
+                REQUIRE_OK(kefir_opt_code_builder_int16_neg(mem, &func->code, block_id,
+                                                            instr->operation.parameters.refs[0], replacement_ref));
+            } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_NEG && INSTR_USE_OF_WIDTH(32)) {
+                REQUIRE_OK(kefir_opt_code_builder_int32_neg(mem, &func->code, block_id,
+                                                            instr->operation.parameters.refs[0], replacement_ref));
+            }
+        }
     }
     return KEFIR_OK;
 }
@@ -1022,6 +1120,32 @@ static kefir_result_t simplify_int_and(struct kefir_mem *mem, struct kefir_opt_f
 
         REQUIRE_OK(builder_int_and(mem, &func->code, block_id, arg1_unwrapped_ref, arg2_unwrapped_ref, replacement_ref,
                                    original_opcode));
+    } else {
+        kefir_opt_instruction_ref_t sole_use_ref;
+        REQUIRE_OK(kefir_opt_instruction_get_sole_use(&func->code, instr->id, &sole_use_ref));
+
+        if (sole_use_ref != KEFIR_ID_NONE) {
+            const struct kefir_opt_instruction *sole_use_instr;
+            REQUIRE_OK(kefir_opt_code_container_instr(&func->code, sole_use_ref, &sole_use_instr));
+            if ((instr->operation.opcode == KEFIR_OPT_OPCODE_INT16_AND ||
+                 instr->operation.opcode == KEFIR_OPT_OPCODE_INT32_AND ||
+                 instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_AND) &&
+                INSTR_USE_OF_WIDTH(8)) {
+                REQUIRE_OK(builder_int_and(mem, &func->code, block_id, instr->operation.parameters.refs[0],
+                                           instr->operation.parameters.refs[1], replacement_ref,
+                                           KEFIR_OPT_OPCODE_INT8_AND));
+            } else if ((instr->operation.opcode == KEFIR_OPT_OPCODE_INT32_AND ||
+                        instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_AND) &&
+                       INSTR_USE_OF_WIDTH(16)) {
+                REQUIRE_OK(builder_int_and(mem, &func->code, block_id, instr->operation.parameters.refs[0],
+                                           instr->operation.parameters.refs[1], replacement_ref,
+                                           KEFIR_OPT_OPCODE_INT16_AND));
+            } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_AND && INSTR_USE_OF_WIDTH(32)) {
+                REQUIRE_OK(builder_int_and(mem, &func->code, block_id, instr->operation.parameters.refs[0],
+                                           instr->operation.parameters.refs[1], replacement_ref,
+                                           KEFIR_OPT_OPCODE_INT32_AND));
+            }
+        }
     }
     return KEFIR_OK;
 }
@@ -1226,6 +1350,32 @@ static kefir_result_t simplify_int_or(struct kefir_mem *mem, struct kefir_opt_fu
 
         REQUIRE_OK(builder_int_or(mem, &func->code, block_id, arg1_unwrapped_ref, arg2_unwrapped_ref, replacement_ref,
                                   original_opcode));
+    } else {
+        kefir_opt_instruction_ref_t sole_use_ref;
+        REQUIRE_OK(kefir_opt_instruction_get_sole_use(&func->code, instr->id, &sole_use_ref));
+
+        if (sole_use_ref != KEFIR_ID_NONE) {
+            const struct kefir_opt_instruction *sole_use_instr;
+            REQUIRE_OK(kefir_opt_code_container_instr(&func->code, sole_use_ref, &sole_use_instr));
+            if ((instr->operation.opcode == KEFIR_OPT_OPCODE_INT16_OR ||
+                 instr->operation.opcode == KEFIR_OPT_OPCODE_INT32_OR ||
+                 instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_OR) &&
+                INSTR_USE_OF_WIDTH(8)) {
+                REQUIRE_OK(builder_int_or(mem, &func->code, block_id, instr->operation.parameters.refs[0],
+                                          instr->operation.parameters.refs[1], replacement_ref,
+                                          KEFIR_OPT_OPCODE_INT8_OR));
+            } else if ((instr->operation.opcode == KEFIR_OPT_OPCODE_INT32_OR ||
+                        instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_OR) &&
+                       INSTR_USE_OF_WIDTH(16)) {
+                REQUIRE_OK(builder_int_or(mem, &func->code, block_id, instr->operation.parameters.refs[0],
+                                          instr->operation.parameters.refs[1], replacement_ref,
+                                          KEFIR_OPT_OPCODE_INT16_OR));
+            } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_OR && INSTR_USE_OF_WIDTH(32)) {
+                REQUIRE_OK(builder_int_or(mem, &func->code, block_id, instr->operation.parameters.refs[0],
+                                          instr->operation.parameters.refs[1], replacement_ref,
+                                          KEFIR_OPT_OPCODE_INT32_OR));
+            }
+        }
     }
     return KEFIR_OK;
 }
@@ -1430,6 +1580,32 @@ static kefir_result_t simplify_int_xor(struct kefir_mem *mem, struct kefir_opt_f
 
         REQUIRE_OK(builder_int_xor(mem, &func->code, block_id, arg1_unwrapped_ref, arg2_unwrapped_ref, replacement_ref,
                                    original_opcode));
+    } else {
+        kefir_opt_instruction_ref_t sole_use_ref;
+        REQUIRE_OK(kefir_opt_instruction_get_sole_use(&func->code, instr->id, &sole_use_ref));
+
+        if (sole_use_ref != KEFIR_ID_NONE) {
+            const struct kefir_opt_instruction *sole_use_instr;
+            REQUIRE_OK(kefir_opt_code_container_instr(&func->code, sole_use_ref, &sole_use_instr));
+            if ((instr->operation.opcode == KEFIR_OPT_OPCODE_INT16_XOR ||
+                 instr->operation.opcode == KEFIR_OPT_OPCODE_INT32_XOR ||
+                 instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_XOR) &&
+                INSTR_USE_OF_WIDTH(8)) {
+                REQUIRE_OK(builder_int_xor(mem, &func->code, block_id, instr->operation.parameters.refs[0],
+                                           instr->operation.parameters.refs[1], replacement_ref,
+                                           KEFIR_OPT_OPCODE_INT8_XOR));
+            } else if ((instr->operation.opcode == KEFIR_OPT_OPCODE_INT32_XOR ||
+                        instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_XOR) &&
+                       INSTR_USE_OF_WIDTH(16)) {
+                REQUIRE_OK(builder_int_xor(mem, &func->code, block_id, instr->operation.parameters.refs[0],
+                                           instr->operation.parameters.refs[1], replacement_ref,
+                                           KEFIR_OPT_OPCODE_INT16_XOR));
+            } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_XOR && INSTR_USE_OF_WIDTH(32)) {
+                REQUIRE_OK(builder_int_xor(mem, &func->code, block_id, instr->operation.parameters.refs[0],
+                                           instr->operation.parameters.refs[1], replacement_ref,
+                                           KEFIR_OPT_OPCODE_INT32_XOR));
+            }
+        }
     }
     return KEFIR_OK;
 }
@@ -1879,6 +2055,32 @@ static kefir_result_t simplify_int_add(struct kefir_mem *mem, struct kefir_opt_f
 
         REQUIRE_OK(builder_int_add(mem, &func->code, block_id, arg1_unwrapped_ref, arg2_unwrapped_ref, replacement_ref,
                                    original_opcode));
+    } else {
+        kefir_opt_instruction_ref_t sole_use_ref;
+        REQUIRE_OK(kefir_opt_instruction_get_sole_use(&func->code, instr->id, &sole_use_ref));
+
+        if (sole_use_ref != KEFIR_ID_NONE) {
+            const struct kefir_opt_instruction *sole_use_instr;
+            REQUIRE_OK(kefir_opt_code_container_instr(&func->code, sole_use_ref, &sole_use_instr));
+            if ((instr->operation.opcode == KEFIR_OPT_OPCODE_INT16_ADD ||
+                 instr->operation.opcode == KEFIR_OPT_OPCODE_INT32_ADD ||
+                 instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_ADD) &&
+                INSTR_USE_OF_WIDTH(8)) {
+                REQUIRE_OK(builder_int_add(mem, &func->code, block_id, instr->operation.parameters.refs[0],
+                                           instr->operation.parameters.refs[1], replacement_ref,
+                                           KEFIR_OPT_OPCODE_INT8_ADD));
+            } else if ((instr->operation.opcode == KEFIR_OPT_OPCODE_INT32_ADD ||
+                        instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_ADD) &&
+                       INSTR_USE_OF_WIDTH(16)) {
+                REQUIRE_OK(builder_int_add(mem, &func->code, block_id, instr->operation.parameters.refs[0],
+                                           instr->operation.parameters.refs[1], replacement_ref,
+                                           KEFIR_OPT_OPCODE_INT16_ADD));
+            } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_ADD && INSTR_USE_OF_WIDTH(32)) {
+                REQUIRE_OK(builder_int_add(mem, &func->code, block_id, instr->operation.parameters.refs[0],
+                                           instr->operation.parameters.refs[1], replacement_ref,
+                                           KEFIR_OPT_OPCODE_INT32_ADD));
+            }
+        }
     }
     return KEFIR_OK;
 }
@@ -2127,6 +2329,32 @@ static kefir_result_t simplify_int_sub(struct kefir_mem *mem, struct kefir_opt_f
 
         REQUIRE_OK(builder_int_sub(mem, &func->code, block_id, arg1_unwrapped_ref, arg2_unwrapped_ref, replacement_ref,
                                    original_opcode));
+    } else {
+        kefir_opt_instruction_ref_t sole_use_ref;
+        REQUIRE_OK(kefir_opt_instruction_get_sole_use(&func->code, instr->id, &sole_use_ref));
+
+        if (sole_use_ref != KEFIR_ID_NONE) {
+            const struct kefir_opt_instruction *sole_use_instr;
+            REQUIRE_OK(kefir_opt_code_container_instr(&func->code, sole_use_ref, &sole_use_instr));
+            if ((instr->operation.opcode == KEFIR_OPT_OPCODE_INT16_SUB ||
+                 instr->operation.opcode == KEFIR_OPT_OPCODE_INT32_SUB ||
+                 instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_SUB) &&
+                INSTR_USE_OF_WIDTH(8)) {
+                REQUIRE_OK(builder_int_sub(mem, &func->code, block_id, instr->operation.parameters.refs[0],
+                                           instr->operation.parameters.refs[1], replacement_ref,
+                                           KEFIR_OPT_OPCODE_INT8_SUB));
+            } else if ((instr->operation.opcode == KEFIR_OPT_OPCODE_INT32_SUB ||
+                        instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_SUB) &&
+                       INSTR_USE_OF_WIDTH(16)) {
+                REQUIRE_OK(builder_int_sub(mem, &func->code, block_id, instr->operation.parameters.refs[0],
+                                           instr->operation.parameters.refs[1], replacement_ref,
+                                           KEFIR_OPT_OPCODE_INT16_SUB));
+            } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_SUB && INSTR_USE_OF_WIDTH(32)) {
+                REQUIRE_OK(builder_int_sub(mem, &func->code, block_id, instr->operation.parameters.refs[0],
+                                           instr->operation.parameters.refs[1], replacement_ref,
+                                           KEFIR_OPT_OPCODE_INT32_SUB));
+            }
+        }
     }
     return KEFIR_OK;
 }
@@ -3979,6 +4207,13 @@ static kefir_result_t op_simplify_apply_impl(struct kefir_mem *mem, const struct
                     case KEFIR_OPT_OPCODE_INT32_NOT:
                     case KEFIR_OPT_OPCODE_INT64_NOT:
                         REQUIRE_OK(simplify_int_not(mem, func, instr, &replacement_ref));
+                        break;
+
+                    case KEFIR_OPT_OPCODE_INT8_NEG:
+                    case KEFIR_OPT_OPCODE_INT16_NEG:
+                    case KEFIR_OPT_OPCODE_INT32_NEG:
+                    case KEFIR_OPT_OPCODE_INT64_NEG:
+                        REQUIRE_OK(simplify_int_neg(mem, func, instr, &replacement_ref));
                         break;
 
                     case KEFIR_OPT_OPCODE_INT8_AND:

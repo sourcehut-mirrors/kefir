@@ -126,20 +126,20 @@ test_char:
     data16     lea c2@tlsgd(%rip), %rdi
     .word 26214
     rex.W     call __tls_get_addr@PLT
-    movsx %bl, %rbx
     mov %rbx, %r12
     add $1, %r12b
     movb %r12b, (%rax)
     data16     lea c3@tlsgd(%rip), %rdi
     .word 26214
     rex.W     call __tls_get_addr@PLT
-    mov %rbx, %rcx
-    shl $1, %ecx
-    movb %cl, (%rax)
+    movsx %bl, %rcx
+    mov %rcx, %rdx
+    shl $1, %edx
+    movb %dl, (%rax)
     movsx %r12b, %rax
-    add %eax, %ebx
-    movsx %cl, %rax
-    add %ebx, %eax
+    add %eax, %ecx
+    movsx %dl, %rax
+    add %ecx, %eax
     pop %r12
     pop %rbx
     ret
@@ -234,20 +234,20 @@ test_short:
     data16     lea s2@tlsgd(%rip), %rdi
     .word 26214
     rex.W     call __tls_get_addr@PLT
-    movsx %bx, %rbx
     mov %rbx, %r12
     add $1, %r12w
     movw %r12w, (%rax)
     data16     lea s3@tlsgd(%rip), %rdi
     .word 26214
     rex.W     call __tls_get_addr@PLT
-    mov %rbx, %rcx
-    shl $1, %ecx
-    movw %cx, (%rax)
+    movsx %bx, %rcx
+    mov %rcx, %rdx
+    shl $1, %edx
+    movw %dx, (%rax)
     movsx %r12w, %rax
-    add %eax, %ebx
-    movsx %cx, %rax
-    add %ebx, %eax
+    add %eax, %ecx
+    movsx %dx, %rax
+    add %ecx, %eax
     pop %r12
     pop %rbx
     ret

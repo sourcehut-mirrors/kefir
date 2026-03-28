@@ -1,0 +1,232 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global or8
+.type or8, @function
+.global add8
+.type add8, @function
+.global and8
+.type and8, @function
+.global neg8
+.type neg8, @function
+.global not8
+.type not8, @function
+.global or16
+.type or16, @function
+.global or32
+.type or32, @function
+.global or64
+.type or64, @function
+.global sub8
+.type sub8, @function
+.global xor8
+.type xor8, @function
+.global add16
+.type add16, @function
+.global add32
+.type add32, @function
+.global add64
+.type add64, @function
+.global and16
+.type and16, @function
+.global and32
+.type and32, @function
+.global and64
+.type and64, @function
+.global neg16
+.type neg16, @function
+.global neg32
+.type neg32, @function
+.global neg64
+.type neg64, @function
+.global not16
+.type not16, @function
+.global not32
+.type not32, @function
+.global not64
+.type not64, @function
+.global sub16
+.type sub16, @function
+.global sub32
+.type sub32, @function
+.global sub64
+.type sub64, @function
+.global xor16
+.type xor16, @function
+.global xor32
+.type xor32, @function
+.global xor64
+.type xor64, @function
+
+.section .text
+.L__kefir_text_section_begin:
+or8:
+.L__kefir_text_func_or8_begin:
+    orb %sil, (%rdi)
+    ret
+.L__kefir_text_func_or8_end:
+
+add8:
+.L__kefir_text_func_add8_begin:
+    addb %sil, (%rdi)
+    ret
+.L__kefir_text_func_add8_end:
+
+and8:
+.L__kefir_text_func_and8_begin:
+    andb %sil, (%rdi)
+    ret
+.L__kefir_text_func_and8_end:
+
+neg8:
+.L__kefir_text_func_neg8_begin:
+    negb (%rdi)
+    ret
+.L__kefir_text_func_neg8_end:
+
+not8:
+.L__kefir_text_func_not8_begin:
+    notb (%rdi)
+    ret
+.L__kefir_text_func_not8_end:
+
+or16:
+.L__kefir_text_func_or16_begin:
+    orw %si, (%rdi)
+    ret
+.L__kefir_text_func_or16_end:
+
+or32:
+.L__kefir_text_func_or32_begin:
+    orl %esi, (%rdi)
+    ret
+.L__kefir_text_func_or32_end:
+
+or64:
+.L__kefir_text_func_or64_begin:
+    orq %rsi, (%rdi)
+    ret
+.L__kefir_text_func_or64_end:
+
+sub8:
+.L__kefir_text_func_sub8_begin:
+    subb %sil, (%rdi)
+    ret
+.L__kefir_text_func_sub8_end:
+
+xor8:
+.L__kefir_text_func_xor8_begin:
+    xorb %sil, (%rdi)
+    ret
+.L__kefir_text_func_xor8_end:
+
+add16:
+.L__kefir_text_func_add16_begin:
+    addw %si, (%rdi)
+    ret
+.L__kefir_text_func_add16_end:
+
+add32:
+.L__kefir_text_func_add32_begin:
+    addl %esi, (%rdi)
+    ret
+.L__kefir_text_func_add32_end:
+
+add64:
+.L__kefir_text_func_add64_begin:
+    addq %rsi, (%rdi)
+    ret
+.L__kefir_text_func_add64_end:
+
+and16:
+.L__kefir_text_func_and16_begin:
+    andw %si, (%rdi)
+    ret
+.L__kefir_text_func_and16_end:
+
+and32:
+.L__kefir_text_func_and32_begin:
+    andl %esi, (%rdi)
+    ret
+.L__kefir_text_func_and32_end:
+
+and64:
+.L__kefir_text_func_and64_begin:
+    andq %rsi, (%rdi)
+    ret
+.L__kefir_text_func_and64_end:
+
+neg16:
+.L__kefir_text_func_neg16_begin:
+    negw (%rdi)
+    ret
+.L__kefir_text_func_neg16_end:
+
+neg32:
+.L__kefir_text_func_neg32_begin:
+    negl (%rdi)
+    ret
+.L__kefir_text_func_neg32_end:
+
+neg64:
+.L__kefir_text_func_neg64_begin:
+    negq (%rdi)
+    ret
+.L__kefir_text_func_neg64_end:
+
+not16:
+.L__kefir_text_func_not16_begin:
+    notw (%rdi)
+    ret
+.L__kefir_text_func_not16_end:
+
+not32:
+.L__kefir_text_func_not32_begin:
+    notl (%rdi)
+    ret
+.L__kefir_text_func_not32_end:
+
+not64:
+.L__kefir_text_func_not64_begin:
+    notq (%rdi)
+    ret
+.L__kefir_text_func_not64_end:
+
+sub16:
+.L__kefir_text_func_sub16_begin:
+    subw %si, (%rdi)
+    ret
+.L__kefir_text_func_sub16_end:
+
+sub32:
+.L__kefir_text_func_sub32_begin:
+    subl %esi, (%rdi)
+    ret
+.L__kefir_text_func_sub32_end:
+
+sub64:
+.L__kefir_text_func_sub64_begin:
+    subq %rsi, (%rdi)
+    ret
+.L__kefir_text_func_sub64_end:
+
+xor16:
+.L__kefir_text_func_xor16_begin:
+    xorw %si, (%rdi)
+    ret
+.L__kefir_text_func_xor16_end:
+
+xor32:
+.L__kefir_text_func_xor32_begin:
+    xorl %esi, (%rdi)
+    ret
+.L__kefir_text_func_xor32_end:
+
+xor64:
+.L__kefir_text_func_xor64_begin:
+    xorq %rsi, (%rdi)
+    ret
+.L__kefir_text_func_xor64_end:
+
+.L__kefir_text_section_end:
+

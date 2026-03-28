@@ -301,12 +301,12 @@ __kefir_bigint_arithmetic_right_shift:
     mov %rcx, %rdx
     shr $3, %rdx
     movzxb (%r12, %rdx, 1), %rdi
+    lea 7(%rax), %r8
+    mov %r8, %r15
+    shr $3, %r15
     shl $3, %rdx
     mov %rcx, %r13
     sub %rdx, %r13
-    lea 7(%rax), %rcx
-    mov %rcx, %r15
-    shr $3, %r15
     mov %r13, %rcx
     sar %cl, %edi
     mov %edi, %r14d
@@ -589,13 +589,13 @@ __kefir_bigint_signed_multiply:
     shr $3, %rax
     xor %ecx, %ecx
 .L__kefir_runtime_func___kefir_bigint_signed_multiply_label2:
-    cmpq $0, -56(%rbp)
-    sete %dl
     cmp $0, %rbx
+    sete %dl
+    cmpq $0, -56(%rbp)
     sete %sil
     cmp %rax, %rcx
     jb .L__kefir_runtime_func___kefir_bigint_signed_multiply_label26
-    or %sil, %dl
+    or %dl, %sil
     jnz .L__kefir_runtime_func___kefir_bigint_signed_multiply_label25
     lea 7(%rbx), %rax
     mov %rax, -88(%rbp)

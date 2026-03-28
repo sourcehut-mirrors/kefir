@@ -267,8 +267,7 @@ generate_buf_0:
     sub $16, %rsp
     movb $0, -1(%rbp)
     xor %eax, %eax
-    xor %ecx, %ecx
-    mov %rcx, %rdx
+    xor %edx, %edx
     mov %rax, %rcx
 .L__kefir_func_generate_buf_0_label2:
     cmp $1, %edx
@@ -297,7 +296,8 @@ generate_buf_1:
     movw %ax, -2(%rbp)
     movb $0, -2(%rbp)
     xor %eax, %eax
-    xor %edx, %edx
+    xor %ecx, %ecx
+    mov %rcx, %rdx
     mov %rax, %rcx
 .L__kefir_func_generate_buf_1_label2:
     cmp $2, %edx
@@ -327,7 +327,8 @@ generate_buf_2:
     movb %al, -1(%rbp)
     movb $0, -3(%rbp)
     xor %eax, %eax
-    xor %edx, %edx
+    xor %ecx, %ecx
+    mov %rcx, %rdx
     mov %rax, %rcx
 .L__kefir_func_generate_buf_2_label2:
     cmp $3, %edx
@@ -360,7 +361,8 @@ generate_buf_3:
     movl %eax, -4(%rbp)
     movb $0, -4(%rbp)
     xor %eax, %eax
-    xor %edx, %edx
+    xor %ecx, %ecx
+    mov %rcx, %rdx
     mov %rax, %rcx
 .L__kefir_func_generate_buf_3_label2:
     cmp $4, %edx
@@ -390,7 +392,8 @@ generate_buf_4:
     movb %al, -1(%rbp)
     movb $0, -5(%rbp)
     xor %eax, %eax
-    xor %edx, %edx
+    xor %ecx, %ecx
+    mov %rcx, %rdx
     mov %rax, %rcx
 .L__kefir_func_generate_buf_4_label2:
     cmp $5, %edx
@@ -423,7 +426,8 @@ generate_buf_5:
     movw %ax, -2(%rbp)
     movb $0, -6(%rbp)
     xor %eax, %eax
-    xor %edx, %edx
+    xor %ecx, %ecx
+    mov %rcx, %rdx
     mov %rax, %rcx
 .L__kefir_func_generate_buf_5_label2:
     cmp $6, %edx
@@ -493,7 +497,8 @@ generate_buf_7:
     movq %rax, -8(%rbp)
     movb $0, -8(%rbp)
     xor %eax, %eax
-    xor %edx, %edx
+    xor %ecx, %ecx
+    mov %rcx, %rdx
     mov %rax, %rcx
 .L__kefir_func_generate_buf_7_label2:
     cmp $8, %edx
@@ -523,7 +528,8 @@ generate_buf_8:
     movb %al, -1(%rbp)
     movb $0, -9(%rbp)
     xor %eax, %eax
-    xor %edx, %edx
+    xor %ecx, %ecx
+    mov %rcx, %rdx
     mov %rax, %rcx
 .L__kefir_func_generate_buf_8_label2:
     cmp $9, %edx
@@ -555,7 +561,8 @@ generate_buf_9:
     movw %ax, -2(%rbp)
     movb $0, -10(%rbp)
     xor %eax, %eax
-    xor %edx, %edx
+    xor %ecx, %ecx
+    mov %rcx, %rdx
     mov %rax, %rcx
 .L__kefir_func_generate_buf_9_label2:
     cmp $10, %edx
@@ -624,7 +631,8 @@ generate_buf_11:
     movl %eax, -4(%rbp)
     movb $0, -12(%rbp)
     xor %eax, %eax
-    xor %edx, %edx
+    xor %ecx, %ecx
+    mov %rcx, %rdx
     mov %rax, %rcx
 .L__kefir_func_generate_buf_11_label2:
     cmp $12, %edx

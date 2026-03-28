@@ -827,8 +827,8 @@ __kefir_bigint_unsigned_from_long_double:
     and $32767, %r14
     mov %rax, %r13
     and $32768, %r13
-    lea -16383(%r14), %rax
     lea 7(%rbx), %r15
+    lea -16383(%r14), %rax
     cmp $0, %rax
     jl .L__kefir_runtime_func___kefir_bigint_unsigned_from_long_double_label23
     cmp %rbx, %rax

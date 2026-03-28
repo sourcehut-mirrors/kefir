@@ -2630,12 +2630,23 @@ __kefir_bigint_invert:
 #                "labels": []
 #            },
 #            {
-#                "opcode": "movzx",
+#                "opcode": "produce_virtual_register",
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
 #                        "index": 14,
-#                        "variant": "64bit"
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "mov",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 14,
+#                        "variant": "8bit"
 #                    },
 #                    {
 #                        "type": "indirect",
@@ -2669,7 +2680,7 @@ __kefir_bigint_invert:
 #                    {
 #                        "type": "virtual_register",
 #                        "index": 15,
-#                        "variant": "32bit"
+#                        "variant": "8bit"
 #                    }
 #                ],
 #                "labels": []
