@@ -1101,16 +1101,20 @@ static kefir_result_t lower_atomic_cmpxchg(struct kefir_mem *mem, struct kefir_o
     REQUIRE(branch_instr->block_id == instr->block_id, KEFIR_OK);
 
     REQUIRE((old_value_instr->operation.opcode == KEFIR_OPT_OPCODE_ATOMIC_LOAD8 &&
-             new_value_instr->operation.opcode == KEFIR_OPT_OPCODE_INT8_ADD &&
+             (new_value_instr->operation.opcode == KEFIR_OPT_OPCODE_INT8_ADD ||
+              new_value_instr->operation.opcode == KEFIR_OPT_OPCODE_INT8_SUB) &&
              instr->operation.opcode == KEFIR_OPT_OPCODE_ATOMIC_CMPXCHG8) ||
                 (old_value_instr->operation.opcode == KEFIR_OPT_OPCODE_ATOMIC_LOAD16 &&
-                 new_value_instr->operation.opcode == KEFIR_OPT_OPCODE_INT16_ADD &&
+                 (new_value_instr->operation.opcode == KEFIR_OPT_OPCODE_INT16_ADD ||
+                  new_value_instr->operation.opcode == KEFIR_OPT_OPCODE_INT16_SUB) &&
                  instr->operation.opcode == KEFIR_OPT_OPCODE_ATOMIC_CMPXCHG16) ||
                 (old_value_instr->operation.opcode == KEFIR_OPT_OPCODE_ATOMIC_LOAD32 &&
-                 new_value_instr->operation.opcode == KEFIR_OPT_OPCODE_INT32_ADD &&
+                 (new_value_instr->operation.opcode == KEFIR_OPT_OPCODE_INT32_ADD ||
+                  new_value_instr->operation.opcode == KEFIR_OPT_OPCODE_INT32_SUB) &&
                  instr->operation.opcode == KEFIR_OPT_OPCODE_ATOMIC_CMPXCHG32) ||
                 (old_value_instr->operation.opcode == KEFIR_OPT_OPCODE_ATOMIC_LOAD64 &&
-                 new_value_instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_ADD &&
+                 (new_value_instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_ADD ||
+                  new_value_instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_SUB) &&
                  instr->operation.opcode == KEFIR_OPT_OPCODE_ATOMIC_CMPXCHG64),
             KEFIR_OK);
     REQUIRE(branch_instr->operation.opcode == KEFIR_OPT_OPCODE_BRANCH, KEFIR_OK);
@@ -1120,6 +1124,11 @@ static kefir_result_t lower_atomic_cmpxchg(struct kefir_mem *mem, struct kefir_o
         REQUIRE(new_value_instr->operation.parameters.refs[1] != old_value_ref, KEFIR_OK);
         operand_ref = new_value_instr->operation.parameters.refs[1];
     } else {
+        REQUIRE(new_value_instr->operation.opcode == KEFIR_OPT_OPCODE_INT8_ADD ||
+                    new_value_instr->operation.opcode == KEFIR_OPT_OPCODE_INT16_ADD ||
+                    new_value_instr->operation.opcode == KEFIR_OPT_OPCODE_INT32_ADD ||
+                    new_value_instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_ADD,
+                KEFIR_OK);
         REQUIRE(new_value_instr->operation.parameters.refs[0] != old_value_ref, KEFIR_OK);
         REQUIRE(new_value_instr->operation.parameters.refs[1] == old_value_ref, KEFIR_OK);
         operand_ref = new_value_instr->operation.parameters.refs[0];
@@ -1171,10 +1180,32 @@ static kefir_result_t lower_atomic_cmpxchg(struct kefir_mem *mem, struct kefir_o
 
     kefir_opt_block_id_t block_ref = instr->block_id,
                          target_block_ref = branch_instr->operation.parameters.branch.target_block;
+    kefir_opt_memory_order_t memorder = instr->operation.parameters.atomic_op.model;
+
+    switch (new_value_instr->operation.opcode) {
+        case KEFIR_OPT_OPCODE_INT8_SUB:
+            REQUIRE_OK(kefir_opt_code_builder_int8_neg(mem, &func->code, block_ref, operand_ref, &operand_ref));
+            break;
+
+        case KEFIR_OPT_OPCODE_INT16_SUB:
+            REQUIRE_OK(kefir_opt_code_builder_int16_neg(mem, &func->code, block_ref, operand_ref, &operand_ref));
+            break;
+
+        case KEFIR_OPT_OPCODE_INT32_SUB:
+            REQUIRE_OK(kefir_opt_code_builder_int32_neg(mem, &func->code, block_ref, operand_ref, &operand_ref));
+            break;
+
+        case KEFIR_OPT_OPCODE_INT64_SUB:
+            REQUIRE_OK(kefir_opt_code_builder_int64_neg(mem, &func->code, block_ref, operand_ref, &operand_ref));
+            break;
+
+        default:
+            // Intentionally left blank
+            break;
+    }
 
     kefir_opt_instruction_ref_t memorder_ref, call_ref;
-    REQUIRE_OK(kefir_opt_code_builder_int_constant(mem, &func->code, block_ref,
-                                                   instr->operation.parameters.atomic_op.model, &memorder_ref));
+    REQUIRE_OK(kefir_opt_code_builder_int_constant(mem, &func->code, block_ref, memorder, &memorder_ref));
     REQUIRE_OK(
         kefir_opt_code_container_new_call(mem, &func->code, block_ref, func_decl_id, 3, KEFIR_ID_NONE, &call_ref));
 
