@@ -1080,14 +1080,10 @@ static kefir_result_t new_bitint_low_level_type(struct kefir_mem *mem, struct ke
 static kefir_result_t lower_atomic_cmpxchg(struct kefir_mem *mem, struct kefir_opt_module *module,
                                            struct kefir_opt_function *func, const struct kefir_opt_instruction *instr,
                                            struct lowering_param *param) {
-    UNUSED(mem);
     kefir_opt_instruction_ref_t instr_ref = instr->id, location_ref = instr->operation.parameters.refs[0],
                                 old_value_ref = instr->operation.parameters.refs[1],
                                 new_value_ref = instr->operation.parameters.refs[2], branch_ref;
 
-    kefir_opt_instruction_ref_t sole_use_ref;
-    REQUIRE_OK(kefir_opt_instruction_get_sole_use(&func->code, new_value_ref, &sole_use_ref));
-    REQUIRE(sole_use_ref == instr_ref, KEFIR_OK);
     REQUIRE_OK(kefir_opt_instruction_get_sole_use(&func->code, instr_ref, &branch_ref));
     REQUIRE(branch_ref != KEFIR_ID_NONE, KEFIR_OK);
 
@@ -1156,22 +1152,38 @@ static kefir_result_t lower_atomic_cmpxchg(struct kefir_mem *mem, struct kefir_o
         REQUIRE_OK(res);
     }
 
+    kefir_bool_t has_other_uses = false;
+    for (res = kefir_opt_code_container_instruction_use_instr_iter(&func->code, new_value_ref, &use_iter);
+         res == KEFIR_OK && !has_other_uses; res = kefir_opt_code_container_instruction_use_next(&use_iter)) {
+        if (use_iter.use_instr_ref != new_value_ref && use_iter.use_instr_ref != instr_ref) {
+            has_other_uses = true;
+        }
+    }
+    if (res != KEFIR_ITERATOR_END) {
+        REQUIRE_OK(res);
+    }
+
     kefir_id_t func_decl_id = KEFIR_ID_NONE;
+    kefir_size_t width = 0;
     switch (instr->operation.opcode) {
         case KEFIR_OPT_OPCODE_ATOMIC_CMPXCHG8:
             REQUIRE_OK(get_kefir_builtin_atomic_fetch_add8_function_decl_id(mem, module, param, &func_decl_id));
+            width = 8;
             break;
 
         case KEFIR_OPT_OPCODE_ATOMIC_CMPXCHG16:
             REQUIRE_OK(get_kefir_builtin_atomic_fetch_add16_function_decl_id(mem, module, param, &func_decl_id));
+            width = 16;
             break;
 
         case KEFIR_OPT_OPCODE_ATOMIC_CMPXCHG32:
             REQUIRE_OK(get_kefir_builtin_atomic_fetch_add32_function_decl_id(mem, module, param, &func_decl_id));
+            width = 32;
             break;
 
         case KEFIR_OPT_OPCODE_ATOMIC_CMPXCHG64:
             REQUIRE_OK(get_kefir_builtin_atomic_fetch_add64_function_decl_id(mem, module, param, &func_decl_id));
+            width = 64;
             break;
 
         default:
@@ -1212,6 +1224,35 @@ static kefir_result_t lower_atomic_cmpxchg(struct kefir_mem *mem, struct kefir_o
     REQUIRE_OK(kefir_opt_code_container_call_set_argument(mem, &func->code, call_ref, 0, location_ref));
     REQUIRE_OK(kefir_opt_code_container_call_set_argument(mem, &func->code, call_ref, 1, operand_ref));
     REQUIRE_OK(kefir_opt_code_container_call_set_argument(mem, &func->code, call_ref, 2, memorder_ref));
+
+    if (has_other_uses) {
+        kefir_opt_instruction_ref_t recomputed_ref;
+        switch (width) {
+            case 8:
+                REQUIRE_OK(kefir_opt_code_builder_int8_add(mem, &func->code, block_ref, call_ref, operand_ref,
+                                                           &recomputed_ref));
+                break;
+
+            case 16:
+                REQUIRE_OK(kefir_opt_code_builder_int16_add(mem, &func->code, block_ref, call_ref, operand_ref,
+                                                            &recomputed_ref));
+                break;
+
+            case 32:
+                REQUIRE_OK(kefir_opt_code_builder_int32_add(mem, &func->code, block_ref, call_ref, operand_ref,
+                                                            &recomputed_ref));
+                break;
+
+            case 64:
+                REQUIRE_OK(kefir_opt_code_builder_int64_add(mem, &func->code, block_ref, call_ref, operand_ref,
+                                                            &recomputed_ref));
+                break;
+
+            default:
+                return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unexpected operation width");
+        }
+        REQUIRE_OK(kefir_opt_code_container_replace_references(mem, &func->code, recomputed_ref, new_value_ref));
+    }
 
     REQUIRE_OK(kefir_opt_code_container_drop_control(&func->code, old_value_ref));
     REQUIRE_OK(kefir_opt_code_container_drop_control(&func->code, instr_ref));
