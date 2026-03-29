@@ -403,8 +403,8 @@ On all supported platforms, Kefir executes the following external test suites:
 
 ### Lua basic test suite
 
-On all supported platforms, Kefir is used to build Lua 5.4.8 and execute its
-basic test suite, which should pass completely. Purpose of this test is
+On all supported platforms, Kefir is used to build Lua 5.4.8/5.5.0 and execute
+its basic test suite, which should pass completely. Purpose of this test is
 demonstration that Kefir is able to successfully build non-trivial software on
 the target platform. Technically, this is a part of the external test suite (see
 below), and its inclusion into the general test runs has happened for historical
@@ -1099,31 +1099,15 @@ about the release).
   correctness and compatibility, significant extension of the external test
   suite.
 * 0.5.0 -- released in September 2025. Includes substantial refactoring and
-  improvement of optimizer IR structure, new optimization passes, another
-  significant extension of real-world compatibility.
+  improvement of optimizer IR structure, new optimization passes, C23 support,
+  another significant extension of real-world compatibility.
 
-After 0.5.0, the author plans to make a minor release 0.5.1, content of which is
-subject to feedback received on 0.5.0. At this point, it shall be noted, that
-due to the nature of work on the project, the author does not want to make any
-explicit or implicit promises or commitments. In essence, any commit to the
-project might be the last one without prior notice. Nevertheless, in the event
-of terminating (or indefinitely pausing) development of Kefir, the author will
-make an attempt to communicate it cleanly.
-
-While not having a definite roadmap, future developments of Kefir might include:
-
-* Improvements in optimization and code generation. 
-* General refactoring and optimization of the compiler itself.
-* Porting Kefir to non-Unix operating systems and non-x86_64 targets.
-* Extending Kefir with a custom assembler and linker, tailored specifically to
-  Kefir needs.
-* Creating spin-off compilers that use Kefir as a platform.
-* Refactoring Kefir to enable bootstrap in environments missing standard
-  library.
-
-The above list is neither complete, nor definitive, and shall serve just as an
-informative note on the areas that the author considers worthy of exploration at
-the moment.
+The author does not make any promises or commitments regarding future
+development. Any commit to the project might be the final one without prior
+notice. Nevertheless, if development is terminated or indefinitely paused, the
+author will attempt to communicate this clearly. Furthermore, should any bugs in
+already published code be discovered after active development cessation, the
+author might issue limited fixes addressing the issue.
 
 ## Distribution
 
@@ -1150,9 +1134,10 @@ discretion. Packages might be outdated or otherwise problematic:
 
 * [GNU Guix](https://packages.guix.gnu.org/packages/kefir/0.5.0/)
 * [FreeBSD](https://www.freshports.org/lang/kefir)
-* [Fedora package](https://packages.fedoraproject.org/pkgs/kefir/kefir/)
-* [Alpine package](https://pkgs.alpinelinux.org/package/edge/community/x86_64/kefir)
 * [Ubuntu PPA](https://codeberg.org/tkchia/ppa-de-rebus)
+* [Alpine package](https://pkgs.alpinelinux.org/package/edge/community/x86_64/kefir)
+* [Fedora package](https://packages.fedoraproject.org/pkgs/kefir/kefir/)
+* [Nelson H. F. Beebe's builds](https://www.math.utah.edu/~beebe/kefir/README.html)
 
 ## License
 
