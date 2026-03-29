@@ -517,7 +517,8 @@ kefir_result_t kefir_codegen_target_ir_amd64_peephole_movabs(struct kefir_mem *m
                 &(struct kefir_codegen_target_ir_operation) {
                     .opcode = code->klass->assign_opcode,
                     .parameters[0] = {.type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INTEGER,
-                                      .immediate = {.int_immediate = value, .variant = operand->immediate.variant}}},
+                                      .immediate = {.int_immediate = value,
+                                                    .variant = KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT}}},
                 NULL));
             *replaced = true;
         }
