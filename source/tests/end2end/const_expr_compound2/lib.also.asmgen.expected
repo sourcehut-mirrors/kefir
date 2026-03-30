@@ -1,0 +1,71 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global init
+.type init, @function
+
+.section .text
+.L__kefir_text_section_begin:
+init:
+.L__kefir_text_func_init_begin:
+    lea s3(%rip), %rax
+    movl s3(%rip), %ecx
+    movl %ecx, (%rdi)
+    movq 8(%rax), %rcx
+    movq %rcx, 8(%rdi)
+    movl 16(%rax), %ecx
+    movl %ecx, 16(%rdi)
+    movq 24(%rax), %rcx
+    movq %rcx, 24(%rdi)
+    movb 32(%rax), %cl
+    movb %cl, 32(%rdi)
+    movl 40(%rax), %ecx
+    movl %ecx, 40(%rdi)
+    movq 48(%rax), %rcx
+    movq %rcx, 48(%rdi)
+    movb 56(%rax), %cl
+    movb %cl, 56(%rdi)
+    movl 64(%rax), %ecx
+    movl %ecx, 64(%rdi)
+    movq 72(%rax), %rcx
+    movq %rcx, 72(%rdi)
+    movb 80(%rax), %cl
+    movb %cl, 80(%rdi)
+    movl 88(%rax), %ecx
+    movl %ecx, 88(%rdi)
+    movq 96(%rax), %rcx
+    movq %rcx, 96(%rdi)
+    movb 104(%rax), %cl
+    movb %cl, 104(%rdi)
+    ret
+.L__kefir_text_func_init_end:
+
+.L__kefir_text_section_end:
+
+.section .rodata
+    .align 8
+s3:
+    .long 1000
+    .zero 4
+    .quad 123
+    .long 2000
+    .zero 4
+    .quad 5678
+    .byte 45
+    .zero 7
+    .long 1
+    .zero 4
+    .quad 18446744073709551596
+    .byte 30
+    .zero 7
+    .long 4294967173
+    .zero 4
+    .quad 4521
+    .byte 119
+    .zero 7
+    .long 4294967096
+    .zero 4
+    .quad 300
+    .byte 10
+    .zero 7
+

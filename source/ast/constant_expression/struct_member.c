@@ -74,12 +74,38 @@ static kefir_result_t retrieve_scalar_initializer_visit_value(const struct kefir
     return KEFIR_OK;
 }
 
+static kefir_result_t get_initializer_list(const struct kefir_ast_type_traits *type_traits,
+                                           const struct kefir_ast_initializer *initializer,
+                                           const struct kefir_ast_type *type,
+                                           const struct kefir_ast_initializer **initializer_ptr) {
+    if (initializer->type == KEFIR_AST_INITIALIZER_EXPRESSION &&
+        KEFIR_AST_TYPE_COMPATIBLE(type_traits, kefir_ast_unqualified_type(type),
+                                  kefir_ast_unqualified_type(initializer->expression->properties.type))) {
+        struct kefir_ast_compound_literal *compound_literal;
+        REQUIRE_OK(kefir_ast_downcast_compound_literal(initializer->expression, &compound_literal, false));
+
+        REQUIRE(compound_literal->initializer->type == KEFIR_AST_INITIALIZER_LIST,
+                KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected compound literal to have initializer list"));
+        *initializer_ptr = compound_literal->initializer;
+    } else {
+        *initializer_ptr = initializer;
+    }
+    return KEFIR_OK;
+}
+
 static kefir_result_t retrieve_scalar_initializer(struct kefir_mem *mem, const struct kefir_ast_context *context,
                                                   const char *member_name, const struct kefir_ast_type *type,
                                                   const struct kefir_ast_initializer *initializer,
                                                   struct kefir_ast_node_base **initializer_expr) {
     struct kefir_ast_initializer_traversal initializer_traversal;
     KEFIR_AST_INITIALIZER_TRAVERSAL_INIT(&initializer_traversal);
+
+    kefir_result_t res = get_initializer_list(context->type_traits, initializer, type, &initializer);
+    if (res == KEFIR_NO_MATCH) {
+        res = KEFIR_SET_SOURCE_ERRORF(KEFIR_NOT_CONSTANT, &initializer->source_location,
+                                      "Unable to retrieve member '%s' in constant expression evaluation", member_name);
+    }
+    REQUIRE_OK(res);
 
     struct compound_traversal_param param = {
         .mem = mem, .context = context, .member_name = member_name, .initializer_expr = initializer_expr};
@@ -88,7 +114,7 @@ static kefir_result_t retrieve_scalar_initializer(struct kefir_mem *mem, const s
     initializer_traversal.payload = &param;
 
     *initializer_expr = NULL;
-    kefir_result_t res = kefir_ast_traverse_initializer(mem, context, initializer, type, &initializer_traversal);
+    res = kefir_ast_traverse_initializer(mem, context, initializer, type, &initializer_traversal);
     if (res == KEFIR_YIELD) {
         res = KEFIR_OK;
     }
@@ -167,6 +193,41 @@ static kefir_result_t derive_desgination_with_base(struct kefir_mem *mem, struct
     return KEFIR_OK;
 }
 
+static kefir_result_t copy_subobject_initializer(struct kefir_mem *mem,
+                                                 struct kefir_ast_initializer_list *subobj_initializer,
+                                                 const struct kefir_list_entry *iter) {
+    for (; iter != NULL; kefir_list_next(&iter)) {
+        ASSIGN_DECL_CAST(struct kefir_ast_initializer_list_entry *, entry, iter->value);
+
+        struct kefir_ast_initializer_designation *designation_clone = NULL;
+        if (entry->designation != NULL) {
+            designation_clone = kefir_ast_initializer_designation_clone(mem, entry->designation);
+            REQUIRE(designation_clone != NULL,
+                    KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to clone AST initializer designation"));
+        }
+
+        struct kefir_ast_initializer *initializer_clone = kefir_ast_initializer_clone(mem, entry->value);
+        REQUIRE_ELSE(initializer_clone != NULL, {
+            if (designation_clone != NULL) {
+                kefir_ast_initializer_designation_free(mem, designation_clone);
+            }
+            return KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to clone AST initializer");
+        });
+
+        kefir_result_t res =
+            kefir_ast_initializer_list_append(mem, subobj_initializer, designation_clone, initializer_clone);
+        REQUIRE_ELSE(res == KEFIR_OK, {
+            if (designation_clone != NULL) {
+                kefir_ast_initializer_designation_free(mem, designation_clone);
+            }
+            kefir_ast_initializer_free(mem, initializer_clone);
+            return res;
+        });
+    }
+
+    return KEFIR_OK;
+}
+
 static kefir_result_t retrieve_subobject_initializer_visit_value(const struct kefir_ast_designator *designator,
                                                                  struct kefir_ast_node_base *expression,
                                                                  void *payload) {
@@ -179,21 +240,42 @@ static kefir_result_t retrieve_subobject_initializer_visit_value(const struct ke
         struct kefir_ast_initializer_designation *designation;
         REQUIRE_OK(derive_desgination_with_base(param->mem, param->context->symbols, designator, &designation));
 
-        struct kefir_ast_initializer *expr_init =
-            kefir_ast_new_expression_initializer(param->mem, KEFIR_AST_NODE_REF(expression));
-        REQUIRE_ELSE(expr_init != NULL, {
-            KEFIR_AST_NODE_FREE(param->mem, expression);
-            kefir_ast_initializer_designation_free(param->mem, designation);
-            return KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate expression initializer");
-        });
+        if (designation != NULL) {
+            struct kefir_ast_initializer *expr_init =
+                kefir_ast_new_expression_initializer(param->mem, KEFIR_AST_NODE_REF(expression));
+            REQUIRE_ELSE(expr_init != NULL, {
+                KEFIR_AST_NODE_FREE(param->mem, expression);
+                kefir_ast_initializer_designation_free(param->mem, designation);
+                return KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate expression initializer");
+            });
 
-        kefir_result_t res =
-            kefir_ast_initializer_list_append(param->mem, &param->subobj_initializer->list, designation, expr_init);
-        REQUIRE_ELSE(res == KEFIR_OK, {
-            kefir_ast_initializer_free(param->mem, expr_init);
-            kefir_ast_initializer_designation_free(param->mem, designation);
-            return res;
-        });
+            kefir_result_t res =
+                kefir_ast_initializer_list_append(param->mem, &param->subobj_initializer->list, designation, expr_init);
+            REQUIRE_ELSE(res == KEFIR_OK, {
+                kefir_ast_initializer_free(param->mem, expr_init);
+                kefir_ast_initializer_designation_free(param->mem, designation);
+                return res;
+            });
+        } else {
+            REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(expression, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPOUND),
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &expression->source_location,
+                                           "Expected compound constant expression"));
+
+            const struct kefir_ast_initializer *initializer = NULL;
+
+            kefir_result_t res = get_initializer_list(
+                param->context->type_traits, KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(expression)->compound.initializer,
+                KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(expression)->compound.type, &initializer);
+            if (res == KEFIR_NO_MATCH) {
+                res = KEFIR_SET_SOURCE_ERRORF(KEFIR_NOT_CONSTANT, &initializer->source_location,
+                                              "Unable to retrieve member '%s' in constant expression evaluation",
+                                              param->member_name);
+            }
+            REQUIRE_OK(res);
+
+            REQUIRE_OK(copy_subobject_initializer(param->mem, &param->subobj_initializer->list,
+                                                  kefir_list_head(&initializer->list.initializers)));
+        }
     }
 
     return KEFIR_OK;
@@ -259,35 +341,8 @@ static kefir_result_t retrieve_subobject_initializer_visit_initializer_list(
                 return res;
             });
         } else {
-            for (const struct kefir_list_entry *iter = kefir_list_head(&initializer->list.initializers); iter != NULL;
-                 kefir_list_next(&iter)) {
-                ASSIGN_DECL_CAST(struct kefir_ast_initializer_list_entry *, entry, iter->value);
-
-                struct kefir_ast_initializer_designation *designation_clone = NULL;
-                if (entry->designation != NULL) {
-                    designation_clone = kefir_ast_initializer_designation_clone(param->mem, entry->designation);
-                    REQUIRE(designation_clone != NULL,
-                            KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to clone AST initializer designation"));
-                }
-
-                struct kefir_ast_initializer *initializer_clone = kefir_ast_initializer_clone(param->mem, entry->value);
-                REQUIRE_ELSE(initializer_clone != NULL, {
-                    if (designation_clone != NULL) {
-                        kefir_ast_initializer_designation_free(param->mem, designation_clone);
-                    }
-                    return KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to clone AST initializer");
-                });
-
-                kefir_result_t res = kefir_ast_initializer_list_append(param->mem, &param->subobj_initializer->list,
-                                                                       designation_clone, initializer_clone);
-                REQUIRE_ELSE(res == KEFIR_OK, {
-                    if (designation_clone != NULL) {
-                        kefir_ast_initializer_designation_free(param->mem, designation_clone);
-                    }
-                    kefir_ast_initializer_free(param->mem, initializer_clone);
-                    return res;
-                });
-            }
+            REQUIRE_OK(copy_subobject_initializer(param->mem, &param->subobj_initializer->list,
+                                                  kefir_list_head(&initializer->list.initializers)));
         }
     }
     return KEFIR_OK;
@@ -382,9 +437,19 @@ kefir_result_t kefir_ast_evaluate_struct_member_node(struct kefir_mem *mem, cons
         initializer_traversal.visit_initializer_list = retrieve_subobject_initializer_visit_initializer_list;
         initializer_traversal.payload = &param;
 
-        REQUIRE_OK(kefir_ast_traverse_initializer(
-            mem, context, KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->structure)->compound.initializer,
-            KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->structure)->compound.type, &initializer_traversal));
+        const struct kefir_ast_initializer *initializer = NULL;
+        res = get_initializer_list(
+            context->type_traits, KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->structure)->compound.initializer,
+            KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->structure)->compound.type, &initializer);
+        if (res == KEFIR_NO_MATCH) {
+            res = KEFIR_SET_SOURCE_ERRORF(KEFIR_NOT_CONSTANT, &initializer->source_location,
+                                          "Unable to retrieve member '%s' in constant expression evaluation",
+                                          node->member);
+        }
+        REQUIRE_OK(res);
+
+        const struct kefir_ast_type *type = KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->structure)->compound.type;
+        REQUIRE_OK(kefir_ast_traverse_initializer(mem, context, initializer, type, &initializer_traversal));
 
         struct kefir_ast_initializer_properties props;
         REQUIRE_OK(
