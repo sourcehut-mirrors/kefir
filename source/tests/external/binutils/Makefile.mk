@@ -23,8 +23,6 @@ $(KEFIR_EXTERNAL_TEST_BINUTILS_SOURCE_DIR)/.extracted: $(KEFIR_EXTERNAL_TEST_BIN
 	@cd "$(KEFIR_EXTERNAL_TEST_BINUTILS_SOURCE_DIR)" && patch -p0 < "$(realpath $(SOURCE_DIR))/tests/external/binutils/binutils-$(KEFIR_EXTERNAL_TEST_BINUTILS_VERSION).patch"
 	@rm "$(KEFIR_EXTERNAL_TEST_BINUTILS_SOURCE_DIR)/libctf/testsuite/libctf-lookup/unnamed-field-info.c"
 	@rm "$(KEFIR_EXTERNAL_TEST_BINUTILS_SOURCE_DIR)/libctf/testsuite/libctf-lookup/unnamed-field-info.lk"
-	@find "$(KEFIR_EXTERNAL_TEST_BINUTILS_SOURCE_DIR)" -name "*.c" -exec sed -i "s/__attribute__/__attribute/g" {} \;
-	@find "$(KEFIR_EXTERNAL_TEST_BINUTILS_SOURCE_DIR)" -name "*.h" -exec sed -i "s/__attribute__/__attribute/g" {} \;
 	@find "$(KEFIR_EXTERNAL_TEST_BINUTILS_SOURCE_DIR)" -name "*.c" -exec sed -i "s/ATTRIBUTE_PACKED/__attribute((packed))/g" {} \;
 	@find "$(KEFIR_EXTERNAL_TEST_BINUTILS_SOURCE_DIR)" -name "*.h" -exec sed -i "s/ATTRIBUTE_PACKED/__attribute((packed))/g" {} \;
 	@touch "$@"

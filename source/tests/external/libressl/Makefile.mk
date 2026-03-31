@@ -20,8 +20,6 @@ $(KEFIR_EXTERNAL_TEST_LIBRESSL_SOURCE_DIR)/.extracted: $(KEFIR_EXTERNAL_TEST_LIB
 	@echo "Extracting $(KEFIR_EXTERNAL_TEST_LIBRESSL_ARCHIVE_FILENAME)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_LIBRESSL_DIR)" && tar xvfz "$(KEFIR_EXTERNAL_TEST_LIBRESSL_ARCHIVE_FILENAME)"
 	@cd "$(KEFIR_EXTERNAL_TEST_LIBRESSL_SOURCE_DIR)" && patch -p0 < "$(realpath $(SOURCE_DIR))/tests/external/libressl/libressl.patch"
-	@find $(KEFIR_EXTERNAL_TEST_LIBRESSL_SOURCE_DIR) -type f -name "*.h" -exec sed -i 's/__attribute__/__attribute/g' {} \;
-	@find $(KEFIR_EXTERNAL_TEST_LIBRESSL_SOURCE_DIR) -type f -name "*.c" -exec sed -i 's/__attribute__/__attribute/g' {} \;
 	@sed -i \
 		-e '0,/^[ ]*lt_prog_compiler_wl=$$/s//lt_prog_compiler_wl=-Wl,/' \
 		-e '0,/^[ ]*lt_prog_compiler_pic=$$/s//lt_prog_compiler_pic=-fPIC/' \

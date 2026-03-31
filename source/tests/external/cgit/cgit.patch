@@ -1,0 +1,12 @@
+diff -ru git/git-compat-util.h git/git-compat-util.h
+--- git/git-compat-util.h	2026-02-02 04:15:01.000000000 +0200
++++ git/git-compat-util.h	2026-04-01 18:40:48.126917336 +0300
+@@ -383,7 +383,7 @@
+ #else
+ #define NORETURN
+ #define NORETURN_PTR
+-#ifndef __GNUC__
++#if !defined(__GNUC__) && !defined(__KEFIRCC__)
+ #ifndef __attribute__
+ #define __attribute__(x)
+ #endif

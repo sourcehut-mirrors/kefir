@@ -21,8 +21,6 @@ $(KEFIR_EXTERNAL_TEST_REDIS_SOURCE_DIR)/.extracted: $(KEFIR_EXTERNAL_TEST_REDIS_
 	@cd "$(KEFIR_EXTERNAL_TEST_REDIS_DIR)" && tar xvfz "$(KEFIR_EXTERNAL_TEST_REDIS_ARCHIVE_FILENAME)"
 	@echo "Pathcing Redis $(KEFIR_EXTERNAL_TEST_REDIS_VERSION)..."
 	@cd $(KEFIR_EXTERNAL_TEST_REDIS_SOURCE_DIR) && patch -p0 < "$(realpath $(SOURCE_DIR))/tests/external/redis/redismodule.patch"
-	@find $(KEFIR_EXTERNAL_TEST_REDIS_SOURCE_DIR) -type f -name "*.h" -exec sed -i 's/__attribute__/__attribute/g' {} \;
-	@find $(KEFIR_EXTERNAL_TEST_REDIS_SOURCE_DIR) -type f -name "*.c" -exec sed -i 's/__attribute__/__attribute/g' {} \;
 	@rm "$(KEFIR_EXTERNAL_TEST_REDIS_SOURCE_DIR)/tests/integration/logging.tcl"
 # Unstable in runtime
 	@rm "$(KEFIR_EXTERNAL_TEST_REDIS_SOURCE_DIR)/tests/integration/replication-rdbchannel.tcl"

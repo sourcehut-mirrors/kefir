@@ -6,9 +6,8 @@ diff -ru include/uv.h include/uv.h
  #   define UV_EXTERN /* nothing */
  # endif
 -#elif defined(__GNUC__)
--# define UV_EXTERN __attribute__((visibility("default")))
 +#elif defined(__GNUC__) || defined(__KEFIRCC__)
-+# define UV_EXTERN __attribute((visibility("default")))
+ # define UV_EXTERN __attribute__((visibility("default")))
  #else
  # define UV_EXTERN /* nothing */
  #endif

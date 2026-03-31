@@ -22,9 +22,8 @@ diff -ru include/opus_defines.h include/opus_defines.h
  #   define OPUS_EXPORT
  #  endif
 -# elif defined(__GNUC__) && defined(OPUS_BUILD)
--#  define OPUS_EXPORT __attribute__ ((visibility ("default")))
 +# elif (defined(__GNUC__) || defined(__KEFIRCC__)) && defined(OPUS_BUILD)
-+#  define OPUS_EXPORT __attribute ((visibility ("default")))
+ #  define OPUS_EXPORT __attribute__ ((visibility ("default")))
  # else
  #  define OPUS_EXPORT
  # endif

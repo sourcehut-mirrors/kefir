@@ -19,8 +19,6 @@ $(KEFIR_EXTERNAL_TEST_GNUTLS_ARCHIVE):
 $(KEFIR_EXTERNAL_TEST_GNUTLS_SOURCE_DIR)/.extracted: $(KEFIR_EXTERNAL_TEST_GNUTLS_ARCHIVE)
 	@echo "Extracting $(KEFIR_EXTERNAL_TEST_GNUTLS_ARCHIVE_FILENAME)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_GNUTLS_DIR)" && tar xvf "$(KEFIR_EXTERNAL_TEST_GNUTLS_ARCHIVE_FILENAME)"
-	@find $(KEFIR_EXTERNAL_TEST_GNUTLS_SOURCE_DIR) -type f -name "*.h" -exec sed -i 's/__attribute__/__attribute/g' {} \;
-	@find $(KEFIR_EXTERNAL_TEST_GNUTLS_SOURCE_DIR) -type f -name "*.c" -exec sed -i 's/__attribute__/__attribute/g' {} \;
 	@sed -i \
 		-e '0,/^[ ]*lt_prog_compiler_wl=$$/s//lt_prog_compiler_wl=-Wl,/' \
 		-e '0,/^[ ]*lt_prog_compiler_pic=$$/s//lt_prog_compiler_pic=-fPIC/' \

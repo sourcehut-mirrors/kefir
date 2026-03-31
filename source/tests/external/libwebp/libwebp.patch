@@ -21,9 +21,8 @@ diff -ru sharpyuv/sharpyuv.h ./sharpyuv/sharpyuv.h
  #if defined(_WIN32) && defined(WEBP_DLL)
  #define SHARPYUV_EXTERN __declspec(dllexport)
 -#elif defined(__GNUC__) && __GNUC__ >= 4
--#define SHARPYUV_EXTERN extern __attribute__((visibility("default")))
 +#elif (defined(__GNUC__) && __GNUC__ >= 4) || defined(__KEFIRCC__)
-+#define SHARPYUV_EXTERN extern __attribute((visibility("default")))
+ #define SHARPYUV_EXTERN extern __attribute__((visibility("default")))
  #else
  #define SHARPYUV_EXTERN extern
  #endif /* defined(_WIN32) && defined(WEBP_DLL) */
@@ -35,9 +34,8 @@ diff -ru src/webp/types.h ./src/webp/types.h
  # if defined(_WIN32) && defined(WEBP_DLL)
  #  define WEBP_EXTERN __declspec(dllexport)
 -# elif defined(__GNUC__) && __GNUC__ >= 4
--#  define WEBP_EXTERN extern __attribute__ ((visibility ("default")))
 +# elif (defined(__GNUC__) && __GNUC__ >= 4) || defined(__KEFIRCC__)
-+#  define WEBP_EXTERN extern __attribute ((visibility ("default")))
+ #  define WEBP_EXTERN extern __attribute__ ((visibility ("default")))
  # else
  #  define WEBP_EXTERN extern
  # endif  /* defined(_WIN32) && defined(WEBP_DLL) */

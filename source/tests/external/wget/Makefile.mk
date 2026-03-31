@@ -19,9 +19,6 @@ $(KEFIR_EXTERNAL_TEST_WGET_ARCHIVE):
 $(KEFIR_EXTERNAL_TEST_WGET_SOURCE_DIR)/.extracted: $(KEFIR_EXTERNAL_TEST_WGET_ARCHIVE)
 	@echo "Extracting $(KEFIR_EXTERNAL_TEST_WGET_ARCHIVE_FILENAME)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_WGET_DIR)" && tar xvfz "$(KEFIR_EXTERNAL_TEST_WGET_ARCHIVE_FILENAME)"
-	@echo "Patching wget $(KEFIR_EXTERNAL_TEST_WGET_VERSION)..."
-	@find $(KEFIR_EXTERNAL_TEST_WGET_SOURCE_DIR) -type f -name "*.h" -exec sed -i 's/__attribute__/__attribute/g' {} \;
-	@find $(KEFIR_EXTERNAL_TEST_WGET_SOURCE_DIR) -type f -name "*.c" -exec sed -i 's/__attribute__/__attribute/g' {} \;
 	@touch "$@"
 
 $(KEFIR_EXTERNAL_TEST_WGET_SOURCE_DIR)/Makefile: $(KEFIR_EXTERNAL_TEST_WGET_SOURCE_DIR)/.extracted $(KEFIR_EXE)
