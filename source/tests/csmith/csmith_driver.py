@@ -71,7 +71,7 @@ class Kefir:
         with tempfile.NamedTemporaryFile(mode='r+b', dir=tmpdir) as out:
             subprocess.run([self._kefir,
                 '-O1', '-fPIC',
-                '-I', self._csmith_include,
+                '-idirafter', self._csmith_include,
                 '-o', out.name, '-'],
                 input=code.encode(), shell=False, check=True)
             return out.read()
@@ -91,7 +91,7 @@ class CC:
                 input.flush()
                 subprocess.run([self._cc,
                     '-w', '-O2', '-fPIC',
-                    '-I', self._csmith_include,
+                    '-idirafter', self._csmith_include,
                     '-o', out.name, input.name],
                     shell=False, check=True)
             return out.read()
