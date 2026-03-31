@@ -27,8 +27,8 @@
     SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef KEFIR_RUNTIME_LINUX_GNU_BITS_FLOATN_COMMON_H_
-#define KEFIR_RUNTIME_LINUX_GNU_BITS_FLOATN_COMMON_H_
+#ifndef __KEFIR_RUNTIME_LINUX_GNU_BITS_FLOATN_COMMON_H_
+#define __KEFIR_RUNTIME_LINUX_GNU_BITS_FLOATN_COMMON_H_
 
 #ifndef __KEFIRCC__
 #error "Included bits/floatn-common.h is inteded to be used strictly with Kefir C compiler."
