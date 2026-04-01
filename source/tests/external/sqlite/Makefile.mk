@@ -28,6 +28,7 @@ $(KEFIR_EXTERNAL_TEST_SQLITE_SOURCE_DIR)/Makefile: $(KEFIR_EXTERNAL_TEST_SQLITE_
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		CC_FOR_BUILD="$(realpath $(KEFIR_EXE))" \
+		CFLAGS="-O1 -fPIC -g -D_GNU_SOURCE" \
 		./configure
 
 $(KEFIR_EXTERNAL_TEST_SQLITE_SOURCE_DIR)/sqlite3: $(KEFIR_EXTERNAL_TEST_SQLITE_SOURCE_DIR)/Makefile

@@ -27,7 +27,7 @@ $(KEFIR_EXTERNAL_TEST_TCL_SOURCE_DIR)/unix/Makefile: $(KEFIR_EXTERNAL_TEST_TCL_S
 		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
-		CFLAGS="-O1 -fPIC -pie -g -DMP_64BIT -isystem $(realpath $(SOURCE_DIR))/tests/external/tcl/include" \
+		CFLAGS="-O1 -fPIC -pie -g -DMP_64BIT -D_GNU_SOURCE" \
 		./configure
 
 $(KEFIR_EXTERNAL_TEST_TCL_SOURCE_DIR)/unix/tclsh: $(KEFIR_EXTERNAL_TEST_TCL_SOURCE_DIR)/unix/Makefile

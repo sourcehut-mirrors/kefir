@@ -43,7 +43,7 @@ $(KEFIR_EXTERNAL_TEST_LIBJPEG_DIR)/tests.log: $(KEFIR_EXTERNAL_TEST_LIBJPEG_SOUR
 		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
-		CFLAGS="-isystem $(realpath $(SOURCE_DIR))/tests/external/libjpeg/include" \
+		CFLAGS="" \
 		bash -c 'set -o pipefail; $(MAKE) check 2>&1 | tee "$(shell realpath "$@.tmp")"'
 	@mv "$@.tmp" "$@"
 

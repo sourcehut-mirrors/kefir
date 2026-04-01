@@ -26,7 +26,7 @@ $(KEFIR_EXTERNAL_TEST_LIGHTTPD_SOURCE_DIR)/configure: $(KEFIR_EXTERNAL_TEST_LIGH
 		KEFIR_RTINC="$(shell $(REALPATH) $(HEADERS_DIR)/kefir/runtime)" \
 		CC="$(shell $(REALPATH) $(KEFIR_EXE))" \
 		CC_FOR_BUILD="$(shell $(REALPATH) $(KEFIR_EXE))" \
-		CFLAGS="-O1 -g -isystem $(realpath $(SOURCE_DIR))/tests/external/lighttpd/include" \
+		CFLAGS="-O1 -g" \
 		sh autogen.sh
 	@sed -i \
 		-e '0,/^[ ]*lt_prog_compiler_wl=$$/s//lt_prog_compiler_wl=-Wl,/' \
@@ -41,7 +41,7 @@ $(KEFIR_EXTERNAL_TEST_LIGHTTPD_SOURCE_DIR)/Makefile: $(KEFIR_EXTERNAL_TEST_LIGHT
 		KEFIR_RTINC="$(shell $(REALPATH) $(HEADERS_DIR)/kefir/runtime)" \
 		CC="$(shell $(REALPATH) $(KEFIR_EXE))" \
 		CC_FOR_BUILD="$(shell $(REALPATH) $(KEFIR_EXE))" \
-		CFLAGS="-O1 -g -isystem $(realpath $(SOURCE_DIR))/tests/external/lighttpd/include" \
+		CFLAGS="-O1 -g" \
 		./configure
 	@touch "$@"
 
@@ -52,7 +52,7 @@ $(KEFIR_EXTERNAL_TEST_LIGHTTPD_SOURCE_DIR)/src/lighttpd: $(KEFIR_EXTERNAL_TEST_L
 		KEFIR_RTINC="$(shell $(REALPATH) $(HEADERS_DIR)/kefir/runtime)" \
 		CC="$(shell $(REALPATH) $(KEFIR_EXE))" \
 		CC_FOR_BUILD="$(shell $(REALPATH) $(KEFIR_EXE))" \
-		CFLAGS="-O1 -g -isystem $(realpath $(SOURCE_DIR))/tests/external/lighttpd/include" \
+		CFLAGS="-O1 -g" \
 		$(MAKE)
 
 $(KEFIR_EXTERNAL_TEST_LIGHTTPD_DIR)/tests.log: $(KEFIR_EXTERNAL_TEST_LIGHTTPD_SOURCE_DIR)/src/lighttpd
@@ -62,7 +62,7 @@ $(KEFIR_EXTERNAL_TEST_LIGHTTPD_DIR)/tests.log: $(KEFIR_EXTERNAL_TEST_LIGHTTPD_SO
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(shell $(REALPATH) $(KEFIR_EXE))" \
 		CC_FOR_BUILD="$(shell $(REALPATH) $(KEFIR_EXE))" \
-		CFLAGS="-O1 -g -isystem $(realpath $(SOURCE_DIR))/tests/external/lighttpd/include" \
+		CFLAGS="-O1 -g" \
 		bash -c 'set -o pipefail; $(MAKE) check 2>&1 | tee "$(shell realpath "$@.tmp")"'
 	@mv "$@.tmp" "$@"
 

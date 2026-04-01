@@ -46,7 +46,7 @@ $(KEFIR_EXTERNAL_TEST_NGINX_SOURCE_DIR)/Makefile: $(KEFIR_EXTERNAL_TEST_NGINX_SO
 		LD_LIBRARY_PATH="$(shell $(REALPATH) $(LIB_DIR)):$$LD_LIBRARY_PATH" \
 		KEFIR_RTINC="$(shell $(REALPATH) $(HEADERS_DIR)/kefir/runtime)" \
 		CC="$(shell $(REALPATH) $(KEFIR_EXE))" \
-		CFLAGS="-O1 -g -isystem $(realpath $(SOURCE_DIR))/tests/external/nginx/include" \
+		CFLAGS="-O1 -g" \
 		./configure
 	@touch "$@"
 
@@ -56,7 +56,7 @@ $(KEFIR_EXTERAL_TEST_NGINX_EXE): $(KEFIR_EXTERNAL_TEST_NGINX_SOURCE_DIR)/Makefil
 		LD_LIBRARY_PATH="$(shell $(REALPATH) $(LIB_DIR)):$$LD_LIBRARY_PATH" \
 		KEFIR_RTINC="$(shell $(REALPATH) $(HEADERS_DIR)/kefir/runtime)" \
 		CC="$(shell $(REALPATH) $(KEFIR_EXE))" \
-		CFLAGS="-O1 -g -isystem $(realpath $(SOURCE_DIR))/tests/external/nginx/include" \
+		CFLAGS="-O1 -g" \
 		$(MAKE)
 
 $(KEFIR_EXTERNAL_TEST_NGINX_DIR)/tests.log: $(KEFIR_EXTERAL_TEST_NGINX_EXE) $(KEFIR_EXTERNAL_TEST_NGINX_TESTS_SOURCE_DIR)/.extracted

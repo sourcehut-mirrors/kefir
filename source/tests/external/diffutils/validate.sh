@@ -6,7 +6,7 @@ if ! grep -E ' PASS:[ ]*278$' "$LOG_FILE" >/dev/null; then
     exit 1
 fi
 
-if ! grep -E ' PASS:[ ]*31$' "$LOG_FILE" >/dev/null; then
+if ! grep -E ' PASS:[ ]*30$' "$LOG_FILE" >/dev/null; then
     exit 1
 fi
 

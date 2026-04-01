@@ -31,7 +31,7 @@ $(KEFIR_EXTERNAL_TEST_RUBY_OPT_SOURCE_DIR)/configure: $(KEFIR_EXTERNAL_TEST_RUBY
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		LC_ALL=C.UTF-8 \
 		CC="$(realpath $(KEFIR_EXE))" \
-		CFLAGS="-O1 -g -isystem $(realpath $(SOURCE_DIR))/tests/external/ruby/include" \
+		CFLAGS="-O1 -g" \
 		sh autogen.sh
 
 $(KEFIR_EXTERNAL_TEST_RUBY_OPT_SOURCE_DIR)/Makefile: $(KEFIR_EXTERNAL_TEST_RUBY_OPT_SOURCE_DIR)/configure
@@ -41,7 +41,7 @@ $(KEFIR_EXTERNAL_TEST_RUBY_OPT_SOURCE_DIR)/Makefile: $(KEFIR_EXTERNAL_TEST_RUBY_
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		LC_ALL=C.UTF-8 \
 		CC="$(realpath $(KEFIR_EXE))" \
-		CFLAGS="-O1 -g -isystem $(realpath $(SOURCE_DIR))/tests/external/ruby/include" \
+		CFLAGS="-O1 -g" \
 		./configure --disable-install-rdoc
 
 $(KEFIR_EXTERNAL_TEST_RUBY_OPT_SOURCE_DIR)/ruby: $(KEFIR_EXTERNAL_TEST_RUBY_OPT_SOURCE_DIR)/Makefile
@@ -51,7 +51,7 @@ $(KEFIR_EXTERNAL_TEST_RUBY_OPT_SOURCE_DIR)/ruby: $(KEFIR_EXTERNAL_TEST_RUBY_OPT_
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		LC_ALL=C.UTF-8 \
 		CC="$(realpath $(KEFIR_EXE))" \
-		CFLAGS="-O1 -g -isystem $(realpath $(SOURCE_DIR))/tests/external/ruby/include" \
+		CFLAGS="-O1 -g" \
 		$(MAKE)
 
 $(KEFIR_EXTERNAL_TEST_RUBY_OPT_DIR)/tests.log: $(KEFIR_EXTERNAL_TEST_RUBY_OPT_SOURCE_DIR)/ruby
@@ -61,7 +61,7 @@ $(KEFIR_EXTERNAL_TEST_RUBY_OPT_DIR)/tests.log: $(KEFIR_EXTERNAL_TEST_RUBY_OPT_SO
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		LC_ALL=C.UTF-8 \
 		CC="$(realpath $(KEFIR_EXE))" \
-		CFLAGS="-O1 -g -isystem $(realpath $(SOURCE_DIR))/tests/external/ruby/include" \
+		CFLAGS="-O1 -g" \
 		bash -c 'set -o pipefail; $(MAKE) check 2>&1 | tee "$(shell realpath "$@.tmp")"'
 	@mv "$@.tmp" "$@"
 

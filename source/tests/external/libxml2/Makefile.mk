@@ -35,7 +35,6 @@ $(KEFIR_EXTERNAL_TEST_LIBXML2_SOURCE_DIR)/Makefile: $(KEFIR_EXTERNAL_TEST_LIBXML
 		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
-		CFLAGS="-isystem $(realpath $(SOURCE_DIR))/tests/external/libxml2/include" \
 		sh autogen.sh
 
 $(KEFIR_EXTERNAL_TEST_LIBXML2_SOURCE_DIR)/libxml2.la: $(KEFIR_EXTERNAL_TEST_LIBXML2_SOURCE_DIR)/Makefile
@@ -44,7 +43,6 @@ $(KEFIR_EXTERNAL_TEST_LIBXML2_SOURCE_DIR)/libxml2.la: $(KEFIR_EXTERNAL_TEST_LIBX
 		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
-		CFLAGS="-isystem $(realpath $(SOURCE_DIR))/tests/external/libxml2/include" \
 		$(MAKE)
 
 $(KEFIR_EXTERNAL_TEST_LIBXML2_DIR)/tests.log: $(KEFIR_EXTERNAL_TEST_LIBXML2_SOURCE_DIR)/libxml2.la
@@ -53,7 +51,6 @@ $(KEFIR_EXTERNAL_TEST_LIBXML2_DIR)/tests.log: $(KEFIR_EXTERNAL_TEST_LIBXML2_SOUR
 		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
-		CFLAGS="-isystem $(realpath $(SOURCE_DIR))/tests/external/libxml2/include" \
 		bash -c 'set -o pipefail; $(MAKE) check 2>&1 | tee "$(shell realpath "$@.tmp")"'
 	@mv "$@.tmp" "$@"
 
