@@ -31,7 +31,8 @@ static kefir_result_t generate_lexical_block_abbrev(struct kefir_codegen_amd64 *
     context->abbrev.entries.lexical_block = KEFIR_CODEGEN_AMD64_DWARF_NEXT_ABBREV_ENTRY_ID(context);
 
     REQUIRE_OK(KEFIR_AMD64_DWARF_ENTRY_ABBREV(&codegen->xasmgen, context->abbrev.entries.lexical_block,
-                                              KEFIR_DWARF(DW_TAG_lexical_block), KEFIR_DWARF(DW_CHILDREN_yes)));
+                                              KEFIR_DWARF(DW_TAG_lexical_block), KEFIR_DWARF(DW_CHILDREN_yes),
+                                              codegen->symbol_prefix));
     REQUIRE_OK(KEFIR_AMD64_DWARF_ATTRIBUTE_ABBREV(&codegen->xasmgen, KEFIR_DWARF(DW_AT_ranges),
                                                   KEFIR_DWARF(DW_FORM_sec_offset)));
     REQUIRE_OK(KEFIR_AMD64_DWARF_ENTRY_ABBREV_END(&codegen->xasmgen));
@@ -59,13 +60,15 @@ static kefir_result_t generate_lexical_block_info(struct kefir_mem *mem,
     const kefir_codegen_amd64_dwarf_entry_id_t block_entry_id = KEFIR_CODEGEN_AMD64_DWARF_NEXT_INFO_ENTRY_ID(context);
     ASSIGN_PTR(dwarf_entry_id, block_entry_id);
     REQUIRE_OK(KEFIR_AMD64_DWARF_ENTRY_INFO(&codegen_function->codegen->xasmgen, block_entry_id,
-                                            context->abbrev.entries.lexical_block));
+                                            context->abbrev.entries.lexical_block,
+                                            codegen_function->codegen->symbol_prefix));
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
         &codegen_function->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_DOUBLE, 1,
         kefir_asm_amd64_xasmgen_operand_label(
             &codegen_function->codegen->xasmgen_helpers.operands[1], KEFIR_AMD64_XASMGEN_SYMBOL_ABSOLUTE,
             kefir_asm_amd64_xasmgen_helpers_format(&codegen_function->codegen->xasmgen_helpers,
-                                                   KEFIR_AMD64_DWARF_DEBUG_RNGLIST_ENTRY, rnglist_entry_id))));
+                                                   KEFIR_AMD64_DWARF_DEBUG_RNGLIST_ENTRY,
+                                                   codegen_function->codegen->symbol_prefix, rnglist_entry_id))));
 
     REQUIRE_OK(
         kefir_codegen_amd64_dwarf_generate_lexical_block_content(mem, codegen_function, context, liveness, entry_id));
@@ -88,7 +91,7 @@ static kefir_result_t generate_lexical_block_ranges(struct kefir_mem *mem,
     ASSIGN_DECL_CAST(kefir_codegen_amd64_dwarf_entry_id_t, rnglist_entry_id, node->value);
 
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(&codegen_function->codegen->xasmgen, KEFIR_AMD64_DWARF_DEBUG_RNGLIST_ENTRY,
-                                         rnglist_entry_id));
+                                         codegen_function->codegen->symbol_prefix, rnglist_entry_id));
 
     const struct kefir_ir_debug_entry_attribute *attr;
     REQUIRE_OK(kefir_ir_debug_entry_get_attribute(&codegen_function->module->ir_module->debug_info.entries, entry_id,

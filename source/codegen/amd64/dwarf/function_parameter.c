@@ -38,9 +38,9 @@ static kefir_result_t generate_parameter_abbrev(struct kefir_mem *mem,
     REQUIRE(context->abbrev.entries.subprogram_parameter == KEFIR_CODEGEN_AMD64_DWARF_ENTRY_NULL, KEFIR_OK);
     context->abbrev.entries.subprogram_parameter = KEFIR_CODEGEN_AMD64_DWARF_NEXT_ABBREV_ENTRY_ID(context);
 
-    REQUIRE_OK(KEFIR_AMD64_DWARF_ENTRY_ABBREV(&codegen_function->codegen->xasmgen,
-                                              context->abbrev.entries.subprogram_parameter,
-                                              KEFIR_DWARF(DW_TAG_formal_parameter), KEFIR_DWARF(DW_CHILDREN_no)));
+    REQUIRE_OK(KEFIR_AMD64_DWARF_ENTRY_ABBREV(
+        &codegen_function->codegen->xasmgen, context->abbrev.entries.subprogram_parameter,
+        KEFIR_DWARF(DW_TAG_formal_parameter), KEFIR_DWARF(DW_CHILDREN_no), codegen_function->codegen->symbol_prefix));
     REQUIRE_OK(KEFIR_AMD64_DWARF_ATTRIBUTE_ABBREV(&codegen_function->codegen->xasmgen, KEFIR_DWARF(DW_AT_name),
                                                   KEFIR_DWARF(DW_FORM_strp)));
     REQUIRE_OK(KEFIR_AMD64_DWARF_ATTRIBUTE_ABBREV(&codegen_function->codegen->xasmgen, KEFIR_DWARF(DW_AT_type),
@@ -62,9 +62,9 @@ static kefir_result_t generate_anonymous_parameter_abbrev(struct kefir_mem *mem,
     REQUIRE(context->abbrev.entries.anonymous_subprogram_parameter == KEFIR_CODEGEN_AMD64_DWARF_ENTRY_NULL, KEFIR_OK);
     context->abbrev.entries.anonymous_subprogram_parameter = KEFIR_CODEGEN_AMD64_DWARF_NEXT_ABBREV_ENTRY_ID(context);
 
-    REQUIRE_OK(KEFIR_AMD64_DWARF_ENTRY_ABBREV(&codegen_function->codegen->xasmgen,
-                                              context->abbrev.entries.anonymous_subprogram_parameter,
-                                              KEFIR_DWARF(DW_TAG_formal_parameter), KEFIR_DWARF(DW_CHILDREN_no)));
+    REQUIRE_OK(KEFIR_AMD64_DWARF_ENTRY_ABBREV(
+        &codegen_function->codegen->xasmgen, context->abbrev.entries.anonymous_subprogram_parameter,
+        KEFIR_DWARF(DW_TAG_formal_parameter), KEFIR_DWARF(DW_CHILDREN_no), codegen_function->codegen->symbol_prefix));
     REQUIRE_OK(KEFIR_AMD64_DWARF_ATTRIBUTE_ABBREV(&codegen_function->codegen->xasmgen, KEFIR_DWARF(DW_AT_type),
                                                   KEFIR_DWARF(DW_FORM_ref4)));
     REQUIRE_OK(KEFIR_AMD64_DWARF_ENTRY_ABBREV_END(&codegen_function->codegen->xasmgen));
@@ -84,9 +84,9 @@ static kefir_result_t generate_parameter_with_location_abbrev(struct kefir_mem *
     REQUIRE(context->abbrev.entries.subprogram_parameter_location == KEFIR_CODEGEN_AMD64_DWARF_ENTRY_NULL, KEFIR_OK);
     context->abbrev.entries.subprogram_parameter_location = KEFIR_CODEGEN_AMD64_DWARF_NEXT_ABBREV_ENTRY_ID(context);
 
-    REQUIRE_OK(KEFIR_AMD64_DWARF_ENTRY_ABBREV(&codegen_function->codegen->xasmgen,
-                                              context->abbrev.entries.subprogram_parameter_location,
-                                              KEFIR_DWARF(DW_TAG_formal_parameter), KEFIR_DWARF(DW_CHILDREN_no)));
+    REQUIRE_OK(KEFIR_AMD64_DWARF_ENTRY_ABBREV(
+        &codegen_function->codegen->xasmgen, context->abbrev.entries.subprogram_parameter_location,
+        KEFIR_DWARF(DW_TAG_formal_parameter), KEFIR_DWARF(DW_CHILDREN_no), codegen_function->codegen->symbol_prefix));
     REQUIRE_OK(KEFIR_AMD64_DWARF_ATTRIBUTE_ABBREV(&codegen_function->codegen->xasmgen, KEFIR_DWARF(DW_AT_name),
                                                   KEFIR_DWARF(DW_FORM_strp)));
     REQUIRE_OK(KEFIR_AMD64_DWARF_ATTRIBUTE_ABBREV(&codegen_function->codegen->xasmgen, KEFIR_DWARF(DW_AT_type),
@@ -111,9 +111,9 @@ static kefir_result_t generate_anonymous_parameter_with_location_abbrev(
     context->abbrev.entries.anonymous_subprogram_parameter_location =
         KEFIR_CODEGEN_AMD64_DWARF_NEXT_ABBREV_ENTRY_ID(context);
 
-    REQUIRE_OK(KEFIR_AMD64_DWARF_ENTRY_ABBREV(&codegen_function->codegen->xasmgen,
-                                              context->abbrev.entries.anonymous_subprogram_parameter_location,
-                                              KEFIR_DWARF(DW_TAG_formal_parameter), KEFIR_DWARF(DW_CHILDREN_no)));
+    REQUIRE_OK(KEFIR_AMD64_DWARF_ENTRY_ABBREV(
+        &codegen_function->codegen->xasmgen, context->abbrev.entries.anonymous_subprogram_parameter_location,
+        KEFIR_DWARF(DW_TAG_formal_parameter), KEFIR_DWARF(DW_CHILDREN_no), codegen_function->codegen->symbol_prefix));
     REQUIRE_OK(KEFIR_AMD64_DWARF_ATTRIBUTE_ABBREV(&codegen_function->codegen->xasmgen, KEFIR_DWARF(DW_AT_type),
                                                   KEFIR_DWARF(DW_FORM_ref4)));
     REQUIRE_OK(KEFIR_AMD64_DWARF_ATTRIBUTE_ABBREV(&codegen_function->codegen->xasmgen, KEFIR_DWARF(DW_AT_location),
@@ -131,6 +131,8 @@ static kefir_result_t generate_parameter_with_location_info(struct kefir_mem *me
         KEFIR_CODEGEN_AMD64_DWARF_NEXT_INFO_ENTRY_ID(context);
     ASSIGN_PTR(dwarf_entry_id, parameter_entry_id);
 
+    struct kefir_asm_amd64_xasmgen_helpers xasmgen_helpers2;
+
     kefir_codegen_amd64_dwarf_entry_id_t parameter_type_id;
     const struct kefir_ir_debug_entry_attribute *attr;
     REQUIRE_OK(kefir_ir_debug_entry_get_attribute(&codegen_function->module->ir_module->debug_info.entries, entry_id,
@@ -139,10 +141,12 @@ static kefir_result_t generate_parameter_with_location_info(struct kefir_mem *me
                                               context, attr->type_id, &parameter_type_id));
 
     REQUIRE_OK(KEFIR_AMD64_DWARF_ENTRY_INFO(&codegen_function->codegen->xasmgen, parameter_entry_id,
-                                            context->abbrev.entries.subprogram_parameter_location));
+                                            context->abbrev.entries.subprogram_parameter_location,
+                                            codegen_function->codegen->symbol_prefix));
     REQUIRE_OK(kefir_ir_debug_entry_get_attribute(&codegen_function->module->ir_module->debug_info.entries, entry_id,
                                                   KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_NAME, &attr));
-    REQUIRE_OK(kefir_codegen_amd64_dwarf_generate_strp(mem, &codegen_function->codegen->xasmgen, context, attr->name));
+    REQUIRE_OK(kefir_codegen_amd64_dwarf_generate_strp(mem, &codegen_function->codegen->xasmgen, context,
+                                                       codegen_function->codegen->symbol_prefix, attr->name));
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
         &codegen_function->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_DOUBLE, 1,
         kefir_asm_amd64_xasmgen_operand_subtract(
@@ -150,10 +154,12 @@ static kefir_result_t generate_parameter_with_location_info(struct kefir_mem *me
             kefir_asm_amd64_xasmgen_operand_label(
                 &codegen_function->codegen->xasmgen_helpers.operands[1], KEFIR_AMD64_XASMGEN_SYMBOL_ABSOLUTE,
                 kefir_asm_amd64_xasmgen_helpers_format(&codegen_function->codegen->xasmgen_helpers,
-                                                       KEFIR_AMD64_DWARF_DEBUG_INFO_ENTRY, parameter_type_id)),
-            kefir_asm_amd64_xasmgen_operand_label(&codegen_function->codegen->xasmgen_helpers.operands[2],
-                                                  KEFIR_AMD64_XASMGEN_SYMBOL_ABSOLUTE,
-                                                  KEFIR_AMD64_DWARF_DEBUG_INFO_SECTION))));
+                                                       KEFIR_AMD64_DWARF_DEBUG_INFO_ENTRY,
+                                                       codegen_function->codegen->symbol_prefix, parameter_type_id)),
+            kefir_asm_amd64_xasmgen_operand_label(
+                &codegen_function->codegen->xasmgen_helpers.operands[2], KEFIR_AMD64_XASMGEN_SYMBOL_ABSOLUTE,
+                kefir_asm_amd64_xasmgen_helpers_format(&xasmgen_helpers2, KEFIR_AMD64_DWARF_DEBUG_INFO_SECTION,
+                                                       codegen_function->codegen->symbol_prefix)))));
 
     kefir_codegen_amd64_dwarf_entry_id_t loclist_entry_id = KEFIR_CODEGEN_AMD64_DWARF_NEXT_LOCLIST_ENTRY_ID(context);
     REQUIRE_OK(kefir_hashtree_insert(mem, &context->loclists.entries.ir_debug_entries, (kefir_hashtree_key_t) entry_id,
@@ -163,7 +169,8 @@ static kefir_result_t generate_parameter_with_location_info(struct kefir_mem *me
         kefir_asm_amd64_xasmgen_operand_label(
             &codegen_function->codegen->xasmgen_helpers.operands[1], KEFIR_AMD64_XASMGEN_SYMBOL_ABSOLUTE,
             kefir_asm_amd64_xasmgen_helpers_format(&codegen_function->codegen->xasmgen_helpers,
-                                                   KEFIR_AMD64_DWARF_DEBUG_LOCLIST_ENTRY, loclist_entry_id))));
+                                                   KEFIR_AMD64_DWARF_DEBUG_LOCLIST_ENTRY,
+                                                   codegen_function->codegen->symbol_prefix, loclist_entry_id))));
     return KEFIR_OK;
 }
 
@@ -175,6 +182,8 @@ static kefir_result_t generate_anonymous_parameter_with_location_info(
         KEFIR_CODEGEN_AMD64_DWARF_NEXT_INFO_ENTRY_ID(context);
     ASSIGN_PTR(dwarf_entry_id, parameter_entry_id);
 
+    struct kefir_asm_amd64_xasmgen_helpers xasmgen_helpers2;
+
     kefir_codegen_amd64_dwarf_entry_id_t parameter_type_id;
     const struct kefir_ir_debug_entry_attribute *attr;
     REQUIRE_OK(kefir_ir_debug_entry_get_attribute(&codegen_function->module->ir_module->debug_info.entries, entry_id,
@@ -183,7 +192,8 @@ static kefir_result_t generate_anonymous_parameter_with_location_info(
                                               context, attr->type_id, &parameter_type_id));
 
     REQUIRE_OK(KEFIR_AMD64_DWARF_ENTRY_INFO(&codegen_function->codegen->xasmgen, parameter_entry_id,
-                                            context->abbrev.entries.anonymous_subprogram_parameter_location));
+                                            context->abbrev.entries.anonymous_subprogram_parameter_location,
+                                            codegen_function->codegen->symbol_prefix));
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
         &codegen_function->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_DOUBLE, 1,
         kefir_asm_amd64_xasmgen_operand_subtract(
@@ -191,10 +201,12 @@ static kefir_result_t generate_anonymous_parameter_with_location_info(
             kefir_asm_amd64_xasmgen_operand_label(
                 &codegen_function->codegen->xasmgen_helpers.operands[1], KEFIR_AMD64_XASMGEN_SYMBOL_ABSOLUTE,
                 kefir_asm_amd64_xasmgen_helpers_format(&codegen_function->codegen->xasmgen_helpers,
-                                                       KEFIR_AMD64_DWARF_DEBUG_INFO_ENTRY, parameter_type_id)),
-            kefir_asm_amd64_xasmgen_operand_label(&codegen_function->codegen->xasmgen_helpers.operands[2],
-                                                  KEFIR_AMD64_XASMGEN_SYMBOL_ABSOLUTE,
-                                                  KEFIR_AMD64_DWARF_DEBUG_INFO_SECTION))));
+                                                       KEFIR_AMD64_DWARF_DEBUG_INFO_ENTRY,
+                                                       codegen_function->codegen->symbol_prefix, parameter_type_id)),
+            kefir_asm_amd64_xasmgen_operand_label(
+                &codegen_function->codegen->xasmgen_helpers.operands[2], KEFIR_AMD64_XASMGEN_SYMBOL_ABSOLUTE,
+                kefir_asm_amd64_xasmgen_helpers_format(&xasmgen_helpers2, KEFIR_AMD64_DWARF_DEBUG_INFO_SECTION,
+                                                       codegen_function->codegen->symbol_prefix)))));
 
     kefir_codegen_amd64_dwarf_entry_id_t loclist_entry_id = KEFIR_CODEGEN_AMD64_DWARF_NEXT_LOCLIST_ENTRY_ID(context);
     REQUIRE_OK(kefir_hashtree_insert(mem, &context->loclists.entries.ir_debug_entries, (kefir_hashtree_key_t) entry_id,
@@ -204,7 +216,8 @@ static kefir_result_t generate_anonymous_parameter_with_location_info(
         kefir_asm_amd64_xasmgen_operand_label(
             &codegen_function->codegen->xasmgen_helpers.operands[1], KEFIR_AMD64_XASMGEN_SYMBOL_ABSOLUTE,
             kefir_asm_amd64_xasmgen_helpers_format(&codegen_function->codegen->xasmgen_helpers,
-                                                   KEFIR_AMD64_DWARF_DEBUG_LOCLIST_ENTRY, loclist_entry_id))));
+                                                   KEFIR_AMD64_DWARF_DEBUG_LOCLIST_ENTRY,
+                                                   codegen_function->codegen->symbol_prefix, loclist_entry_id))));
     return KEFIR_OK;
 }
 
@@ -217,6 +230,8 @@ static kefir_result_t generate_parameter_info(struct kefir_mem *mem,
         KEFIR_CODEGEN_AMD64_DWARF_NEXT_INFO_ENTRY_ID(context);
     ASSIGN_PTR(dwarf_entry_id, parameter_entry_id);
 
+    struct kefir_asm_amd64_xasmgen_helpers xasmgen_helpers2;
+
     kefir_codegen_amd64_dwarf_entry_id_t parameter_type_id;
     const struct kefir_ir_debug_entry_attribute *attr;
     REQUIRE_OK(kefir_ir_debug_entry_get_attribute(&codegen_function->module->ir_module->debug_info.entries, entry_id,
@@ -225,10 +240,12 @@ static kefir_result_t generate_parameter_info(struct kefir_mem *mem,
                                               context, attr->type_id, &parameter_type_id));
 
     REQUIRE_OK(KEFIR_AMD64_DWARF_ENTRY_INFO(&codegen_function->codegen->xasmgen, parameter_entry_id,
-                                            context->abbrev.entries.subprogram_parameter));
+                                            context->abbrev.entries.subprogram_parameter,
+                                            codegen_function->codegen->symbol_prefix));
     REQUIRE_OK(kefir_ir_debug_entry_get_attribute(&codegen_function->module->ir_module->debug_info.entries, entry_id,
                                                   KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_NAME, &attr));
-    REQUIRE_OK(kefir_codegen_amd64_dwarf_generate_strp(mem, &codegen_function->codegen->xasmgen, context, attr->name));
+    REQUIRE_OK(kefir_codegen_amd64_dwarf_generate_strp(mem, &codegen_function->codegen->xasmgen, context,
+                                                       codegen_function->codegen->symbol_prefix, attr->name));
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
         &codegen_function->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_DOUBLE, 1,
         kefir_asm_amd64_xasmgen_operand_subtract(
@@ -236,10 +253,12 @@ static kefir_result_t generate_parameter_info(struct kefir_mem *mem,
             kefir_asm_amd64_xasmgen_operand_label(
                 &codegen_function->codegen->xasmgen_helpers.operands[1], KEFIR_AMD64_XASMGEN_SYMBOL_ABSOLUTE,
                 kefir_asm_amd64_xasmgen_helpers_format(&codegen_function->codegen->xasmgen_helpers,
-                                                       KEFIR_AMD64_DWARF_DEBUG_INFO_ENTRY, parameter_type_id)),
-            kefir_asm_amd64_xasmgen_operand_label(&codegen_function->codegen->xasmgen_helpers.operands[2],
-                                                  KEFIR_AMD64_XASMGEN_SYMBOL_ABSOLUTE,
-                                                  KEFIR_AMD64_DWARF_DEBUG_INFO_SECTION))));
+                                                       KEFIR_AMD64_DWARF_DEBUG_INFO_ENTRY,
+                                                       codegen_function->codegen->symbol_prefix, parameter_type_id)),
+            kefir_asm_amd64_xasmgen_operand_label(
+                &codegen_function->codegen->xasmgen_helpers.operands[2], KEFIR_AMD64_XASMGEN_SYMBOL_ABSOLUTE,
+                kefir_asm_amd64_xasmgen_helpers_format(&xasmgen_helpers2, KEFIR_AMD64_DWARF_DEBUG_INFO_SECTION,
+                                                       codegen_function->codegen->symbol_prefix)))));
     return KEFIR_OK;
 }
 
@@ -252,6 +271,8 @@ static kefir_result_t generate_anonymous_parameter_info(struct kefir_mem *mem,
         KEFIR_CODEGEN_AMD64_DWARF_NEXT_INFO_ENTRY_ID(context);
     ASSIGN_PTR(dwarf_entry_id, parameter_entry_id);
 
+    struct kefir_asm_amd64_xasmgen_helpers xasmgen_helpers2;
+
     kefir_codegen_amd64_dwarf_entry_id_t parameter_type_id;
     const struct kefir_ir_debug_entry_attribute *attr;
     REQUIRE_OK(kefir_ir_debug_entry_get_attribute(&codegen_function->module->ir_module->debug_info.entries, entry_id,
@@ -260,7 +281,8 @@ static kefir_result_t generate_anonymous_parameter_info(struct kefir_mem *mem,
                                               context, attr->type_id, &parameter_type_id));
 
     REQUIRE_OK(KEFIR_AMD64_DWARF_ENTRY_INFO(&codegen_function->codegen->xasmgen, parameter_entry_id,
-                                            context->abbrev.entries.anonymous_subprogram_parameter));
+                                            context->abbrev.entries.anonymous_subprogram_parameter,
+                                            codegen_function->codegen->symbol_prefix));
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
         &codegen_function->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_DOUBLE, 1,
         kefir_asm_amd64_xasmgen_operand_subtract(
@@ -268,10 +290,12 @@ static kefir_result_t generate_anonymous_parameter_info(struct kefir_mem *mem,
             kefir_asm_amd64_xasmgen_operand_label(
                 &codegen_function->codegen->xasmgen_helpers.operands[1], KEFIR_AMD64_XASMGEN_SYMBOL_ABSOLUTE,
                 kefir_asm_amd64_xasmgen_helpers_format(&codegen_function->codegen->xasmgen_helpers,
-                                                       KEFIR_AMD64_DWARF_DEBUG_INFO_ENTRY, parameter_type_id)),
-            kefir_asm_amd64_xasmgen_operand_label(&codegen_function->codegen->xasmgen_helpers.operands[2],
-                                                  KEFIR_AMD64_XASMGEN_SYMBOL_ABSOLUTE,
-                                                  KEFIR_AMD64_DWARF_DEBUG_INFO_SECTION))));
+                                                       KEFIR_AMD64_DWARF_DEBUG_INFO_ENTRY,
+                                                       codegen_function->codegen->symbol_prefix, parameter_type_id)),
+            kefir_asm_amd64_xasmgen_operand_label(
+                &codegen_function->codegen->xasmgen_helpers.operands[2], KEFIR_AMD64_XASMGEN_SYMBOL_ABSOLUTE,
+                kefir_asm_amd64_xasmgen_helpers_format(&xasmgen_helpers2, KEFIR_AMD64_DWARF_DEBUG_INFO_SECTION,
+                                                       codegen_function->codegen->symbol_prefix)))));
     return KEFIR_OK;
 }
 
@@ -284,7 +308,7 @@ static kefir_result_t generate_function_parameter_loclists(struct kefir_mem *mem
     ASSIGN_DECL_CAST(kefir_codegen_amd64_dwarf_entry_id_t, loclist_entry_id, node->value);
 
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(&codegen_function->codegen->xasmgen, KEFIR_AMD64_DWARF_DEBUG_LOCLIST_ENTRY,
-                                         loclist_entry_id));
+                                         codegen_function->codegen->symbol_prefix, loclist_entry_id));
 
     const struct kefir_ir_debug_entry_attribute *attr;
     REQUIRE_OK(kefir_ir_debug_entry_get_attribute(&codegen_function->module->ir_module->debug_info.entries, entry_id,
@@ -376,7 +400,8 @@ kefir_result_t kefir_codegen_amd64_dwarf_generate_unspecified_function_parameter
         kefir_codegen_amd64_dwarf_entry_id_t parameters_entry_id =
             KEFIR_CODEGEN_AMD64_DWARF_NEXT_INFO_ENTRY_ID(context);
         REQUIRE_OK(KEFIR_AMD64_DWARF_ENTRY_INFO(&codegen_function->codegen->xasmgen, parameters_entry_id,
-                                                context->abbrev.entries.unspecified_paramters));
+                                                context->abbrev.entries.unspecified_paramters,
+                                                codegen_function->codegen->symbol_prefix));
         ASSIGN_PTR(dwarf_entry_id, parameters_entry_id);
     }
 

@@ -186,7 +186,8 @@ kefir_result_t kefir_codegen_amd64_dwarf_generate_range_list(struct kefir_mem *,
 kefir_result_t kefir_codegen_amd64_dwarf_insert_string(struct kefir_mem *, struct kefir_codegen_amd64_dwarf_context *,
                                                        const char *, kefir_codegen_amd64_dwarf_entry_id_t *);
 kefir_result_t kefir_codegen_amd64_dwarf_generate_strp(struct kefir_mem *, struct kefir_amd64_xasmgen *,
-                                                       struct kefir_codegen_amd64_dwarf_context *, const char *);
+                                                       struct kefir_codegen_amd64_dwarf_context *, const char *,
+                                                       const char *);
 
 #endif
 

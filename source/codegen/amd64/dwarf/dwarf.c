@@ -59,9 +59,11 @@ kefir_result_t kefir_codegen_amd64_generate_dwarf_debug_info(struct kefir_mem *m
     struct kefir_codegen_amd64_dwarf_context context;
     REQUIRE_OK(kefir_codegen_amd64_dwarf_context_init(&context));
     KEFIR_DWARF_GENERATOR_DEBUG_INFO(&context.section) {
-        kefir_result_t res = KEFIR_AMD64_DWARF_SECTION_INIT(&codegen_module->codegen->xasmgen, context.section);
+        kefir_result_t res = KEFIR_AMD64_DWARF_SECTION_INIT(&codegen_module->codegen->xasmgen, context.section,
+                                                            codegen_module->codegen->symbol_prefix);
         REQUIRE_CHAIN(&res, kefir_codegen_amd64_dwarf_context_generate_compile_unit(mem, codegen_module, &context));
-        REQUIRE_CHAIN(&res, KEFIR_AMD64_DWARF_SECTION_FINALIZE(&codegen_module->codegen->xasmgen, context.section));
+        REQUIRE_CHAIN(&res, KEFIR_AMD64_DWARF_SECTION_FINALIZE(&codegen_module->codegen->xasmgen, context.section,
+                                                               codegen_module->codegen->symbol_prefix));
         REQUIRE_ELSE(res == KEFIR_OK, {
             kefir_codegen_amd64_dwarf_context_free(mem, &context);
             return res;
@@ -98,7 +100,7 @@ kefir_result_t kefir_codegen_amd64_dwarf_insert_string(struct kefir_mem *mem,
 
 kefir_result_t kefir_codegen_amd64_dwarf_generate_strp(struct kefir_mem *mem, struct kefir_amd64_xasmgen *xasmgen,
                                                        struct kefir_codegen_amd64_dwarf_context *context,
-                                                       const char *string) {
+                                                       const char *symbol_prefix, const char *string) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(xasmgen != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid amd64 xasmgen"));
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid amd64 dwarf context"));
@@ -112,6 +114,7 @@ kefir_result_t kefir_codegen_amd64_dwarf_generate_strp(struct kefir_mem *mem, st
         xasmgen, KEFIR_AMD64_XASMGEN_DATA_DOUBLE, 1,
         kefir_asm_amd64_xasmgen_operand_label(
             &xasmgen_helpers.operands[0], KEFIR_AMD64_XASMGEN_SYMBOL_ABSOLUTE,
-            kefir_asm_amd64_xasmgen_helpers_format(&xasmgen_helpers, KEFIR_AMD64_DWARF_DEBUG_STR_ENTRY, entry_id))));
+            kefir_asm_amd64_xasmgen_helpers_format(&xasmgen_helpers, KEFIR_AMD64_DWARF_DEBUG_STR_ENTRY, symbol_prefix,
+                                                   entry_id))));
     return KEFIR_OK;
 }
