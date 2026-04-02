@@ -125,6 +125,7 @@ typedef struct kefir_compiler_runner_configuration {
         kefir_uint32_t max_parser_errors;
         kefir_uint32_t max_analyzer_errors;
         kefir_bool_t error_compiler_ref;
+        kefir_bool_t freestanding;
     } features;
 
     struct {

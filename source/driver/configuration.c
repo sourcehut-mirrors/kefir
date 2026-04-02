@@ -161,6 +161,7 @@ kefir_result_t kefir_driver_configuration_init(struct kefir_driver_configuration
     config->flags.preprocessor_linemarkers = false;
     config->flags.fast_math = false;
     config->flags.cx_limited_range = false;
+    config->flags.freestanding = false;
 
     config->dependency_output.output_dependencies = false;
     config->dependency_output.output_system_deps = true;

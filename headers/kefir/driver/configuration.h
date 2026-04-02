@@ -182,6 +182,7 @@ typedef struct kefir_driver_configuration {
         kefir_bool_t preprocessor_linemarkers;
         kefir_bool_t fast_math;
         kefir_bool_t cx_limited_range;
+        kefir_bool_t freestanding;
     } flags;
 
     struct {

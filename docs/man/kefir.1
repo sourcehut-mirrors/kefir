@@ -138,6 +138,15 @@ Currently only enables \-fcx-limited-range option. [default: off]
 .It Fl fcx-limited-range
 Perform more efficient handling of complex floating-point multiplication and division at the expense of correctness in edge cases [default: off]
 .\"
+.It Fl ffreestanding
+Assert that compilation targets freestanding environment [default: off]
+.\"
+.It Fl fno-freestanding
+Assert that compilation targets hosted environment
+.\"
+.It Fl fhosted
+Assert that compilation targets hosted environment [default: on]
+.\"
 .It Fl D Ar name[=value]
 Define preprocessor macro
 .\"

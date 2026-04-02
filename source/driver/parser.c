@@ -287,6 +287,10 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_strin
             config->compiler.tentative_definition_placement = KEFIR_DRIVER_TENTATIVE_DEFINITION_PLACEMENT_COMMON;
         } else if (STRNCMP("-fno-common", arg) == 0) {
             config->compiler.tentative_definition_placement = KEFIR_DRIVER_TENTATIVE_DEFINITION_PLACEMENT_NO_COMMON;
+        } else if (STRNCMP("-ffreestanding", arg) == 0) {
+            config->flags.freestanding = true;
+        } else if (STRNCMP("-fno-freestanding", arg) == 0 || STRNCMP("-fhosted", arg) == 0) {
+            config->flags.freestanding = false;
         } else if (STRNCMP("-fvisibility=", arg) == 0) {
             const char *visibility = &arg[13];
             if (strcmp(visibility, "default") == 0) {

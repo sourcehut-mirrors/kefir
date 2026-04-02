@@ -217,6 +217,7 @@ static kefir_result_t output_compiler_config(FILE *output,
     FEATURE(switch_case_ranges, "switch-case-ranges")
     FEATURE(designator_subscript_ranges, "designator-subscript-ranges")
     FEATURE(imprecise_decimal_bitint_conv, "imprecise-decimal-bitint-conv")
+    FEATURE(freestanding, "freestanding")
 #undef FEATURE
 
 #define CODEGEN(_id, _name)                         \

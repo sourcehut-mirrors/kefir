@@ -301,6 +301,7 @@ struct kefir_cli_option KefirCompilerConfigurationOptions[] = {
     FEATURE("switch-case-ranges", features.switch_case_ranges),
     FEATURE("designator-subscript-ranges", features.designator_subscript_ranges),
     FEATURE("imprecise-decimal-bitint-conv", features.imprecise_decimal_bitint_conv),
+    FEATURE("freestanding", features.freestanding),
 
     SIMPLE(0, "preprocessor-assembly-mode", false, KEFIR_CLI_OPTION_ACTION_ASSIGN_CONSTANT, true,
            preprocessor_assembly_mode),

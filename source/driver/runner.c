@@ -204,6 +204,7 @@ static kefir_result_t dump_action_impl(struct kefir_mem *mem, const struct kefir
     compiler.preprocessor_configuration.va_args_concat = options->features.va_args_concat;
     compiler.preprocessor_configuration.standard_version = options->standard_version;
     compiler.preprocessor_context.environment.stdc_no_atomics = !options->features.declare_atomic_support;
+    compiler.preprocessor_context.environment.hosted = !options->features.freestanding;
     if (options->features.declare_decimal_support) {
         compiler.preprocessor_context.environment.kefir_decimal_bitint_conv_support =
             options->features.declare_decimal_bitint_conv_support &&
