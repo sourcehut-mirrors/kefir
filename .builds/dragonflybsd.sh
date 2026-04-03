@@ -54,7 +54,7 @@ gmake bin/tests/external/c-testsuite.test.done LD=/usr/local/bin/ld AS=/usr/loca
 gmake bootstrap_test BOOTSTRAP_EXTRA_CFLAGS="-O1 -g" REALPATH=grealpath  AS=/usr/local/bin/as
 
 # Lua
-gmake bin/tests/external/lua.test.done LD=/usr/local/bin/ld AS=/usr/local/bin/as KEFIR_EXTERNAL_TEST_LUA_CFLAGS="-O1 -fPIC -pie -g -D__GNUC__=4 -D__GNUC_MINOR__=20 -D__GNUC_STDC_INLINE__=1 -include $PWD/headers/bootstrap_include/dragonflybsd.h" 
+gmake bin/tests/external/lua-548.test.done LD=/usr/local/bin/ld AS=/usr/local/bin/as KEFIR_EXTERNAL_TEST_LUA_548_CFLAGS="-O1 -fPIC -pie -g -D__GNUC__=4 -D__GNUC_MINOR__=20 -D__GNUC_STDC_INLINE__=1 -include $PWD/headers/bootstrap_include/dragonflybsd.h" 
 
 # self-host test suite run
 gmake clean
