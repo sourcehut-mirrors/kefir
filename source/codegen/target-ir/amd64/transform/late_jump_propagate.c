@@ -22,7 +22,8 @@
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 
-static kefir_result_t do_jump_propagation(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code, const struct kefir_codegen_target_ir_regalloc *regalloc,
+static kefir_result_t do_jump_propagation(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code,
+                                          const struct kefir_codegen_target_ir_regalloc *regalloc,
                                           kefir_codegen_target_ir_block_ref_t block_ref, kefir_bool_t *fixpoint) {
     kefir_codegen_target_ir_instruction_ref_t tail_ref =
         kefir_codegen_target_ir_code_block_control_tail(code, block_ref);
@@ -63,9 +64,9 @@ static kefir_result_t do_jump_propagation(struct kefir_mem *mem, struct kefir_co
         }
 
         kefir_bool_t skip = false;
-        for (kefir_codegen_target_ir_instruction_ref_t iter_ref = kefir_codegen_target_ir_code_block_control_head(code, tail_instr->operation.parameters[i].block_ref);
-            iter_ref != KEFIR_ID_NONE && !skip;
-            iter_ref = kefir_codegen_target_ir_code_control_next(code, iter_ref)) {
+        for (kefir_codegen_target_ir_instruction_ref_t iter_ref =
+                 kefir_codegen_target_ir_code_block_control_head(code, tail_instr->operation.parameters[i].block_ref);
+             iter_ref != KEFIR_ID_NONE && !skip; iter_ref = kefir_codegen_target_ir_code_control_next(code, iter_ref)) {
             if (iter_ref == target_tail_ref) {
                 continue;
             }
@@ -73,16 +74,19 @@ static kefir_result_t do_jump_propagation(struct kefir_mem *mem, struct kefir_co
             const struct kefir_codegen_target_ir_instruction *iter_instr;
             REQUIRE_OK(kefir_codegen_target_ir_code_instruction(code, iter_ref, &iter_instr));
             if (iter_instr->operation.opcode == code->klass->upsilon_opcode) {
-                if (KEFIR_CODEGEN_TARGET_IR_VALUE_IS_DIRECT_OUTPUT(iter_instr->operation.parameters[0].upsilon_ref.aspect)) {
+                if (KEFIR_CODEGEN_TARGET_IR_VALUE_IS_DIRECT_OUTPUT(
+                        iter_instr->operation.parameters[0].upsilon_ref.aspect)) {
                     kefir_codegen_target_ir_regalloc_allocation_t src_alloc, dst_alloc;
-                    kefir_result_t res = kefir_codegen_target_ir_regalloc_get(regalloc, iter_instr->operation.parameters[0].upsilon_ref, &dst_alloc);
+                    kefir_result_t res = kefir_codegen_target_ir_regalloc_get(
+                        regalloc, iter_instr->operation.parameters[0].upsilon_ref, &dst_alloc);
                     if (res == KEFIR_NOT_FOUND) {
                         skip = true;
                         break;
                     }
                     REQUIRE_OK(res);
 
-                    res = kefir_codegen_target_ir_regalloc_get(regalloc, iter_instr->operation.parameters[1].direct.value_ref, &src_alloc);
+                    res = kefir_codegen_target_ir_regalloc_get(
+                        regalloc, iter_instr->operation.parameters[1].direct.value_ref, &src_alloc);
                     if (res == KEFIR_NOT_FOUND) {
                         skip = true;
                         break;
@@ -94,19 +98,21 @@ static kefir_result_t do_jump_propagation(struct kefir_mem *mem, struct kefir_co
                     }
                 }
             } else if (iter_instr->operation.opcode == code->klass->assign_opcode &&
-                iter_instr->operation.parameters[0].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF) {
+                       iter_instr->operation.parameters[0].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF) {
                 kefir_codegen_target_ir_regalloc_allocation_t src_alloc, dst_alloc;
-                kefir_result_t res = kefir_codegen_target_ir_regalloc_get(regalloc, (kefir_codegen_target_ir_value_ref_t) {
-                    .instr_ref = iter_ref,
-                    .aspect = KEFIR_CODEGEN_TARGET_IR_VALUE_DIRECT_OUTPUT(0)
-                }, &dst_alloc);
+                kefir_result_t res = kefir_codegen_target_ir_regalloc_get(
+                    regalloc,
+                    (kefir_codegen_target_ir_value_ref_t) {.instr_ref = iter_ref,
+                                                           .aspect = KEFIR_CODEGEN_TARGET_IR_VALUE_DIRECT_OUTPUT(0)},
+                    &dst_alloc);
                 if (res == KEFIR_NOT_FOUND) {
                     skip = true;
                     break;
                 }
                 REQUIRE_OK(res);
 
-                res = kefir_codegen_target_ir_regalloc_get(regalloc, iter_instr->operation.parameters[0].direct.value_ref, &src_alloc);
+                res = kefir_codegen_target_ir_regalloc_get(
+                    regalloc, iter_instr->operation.parameters[0].direct.value_ref, &src_alloc);
                 if (res == KEFIR_NOT_FOUND) {
                     skip = true;
                     break;
@@ -140,9 +146,9 @@ static kefir_result_t do_jump_propagation(struct kefir_mem *mem, struct kefir_co
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_codegen_target_ir_amd64_transform_late_jump_propagation(struct kefir_mem *mem,
-                                                                struct kefir_codegen_target_ir_code *code,
-                                                                const struct kefir_codegen_target_ir_regalloc *regalloc) {
+kefir_result_t kefir_codegen_target_ir_amd64_transform_late_jump_propagation(
+    struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code,
+    const struct kefir_codegen_target_ir_regalloc *regalloc) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR code"));
     REQUIRE(regalloc != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR register allocator"));

@@ -64,19 +64,19 @@ GEN_STORE(seq_cst, __ATOMIC_SEQ_CST)
 #if !defined(__DragonFly__) || defined(KEFIR_END2END_ASMGEN)
 #define GEN_STORE(_id, _order)                                                                      \
     void test_atomic_store128_##_id(_Atomic long double *ptr, long double val) {                    \
-        __atomic_store(ptr, &val, _order);                                                \
+        __atomic_store(ptr, &val, _order);                                                          \
     }                                                                                               \
                                                                                                     \
     void test_atomic_store256_##_id(_Atomic _Complex long double *ptr, _Complex long double val) {  \
-        __atomic_store(ptr, &val, _order);                                                \
+        __atomic_store(ptr, &val, _order);                                                          \
     }                                                                                               \
                                                                                                     \
     void test2_atomic_store128_##_id(_Atomic long double *ptr, long double val) {                   \
-        __atomic_store_n(ptr, val, _order);                                               \
+        __atomic_store_n(ptr, val, _order);                                                         \
     }                                                                                               \
                                                                                                     \
     void test2_atomic_store256_##_id(_Atomic _Complex long double *ptr, _Complex long double val) { \
-        __atomic_store_n(ptr, val, _order);                                               \
+        __atomic_store_n(ptr, val, _order);                                                         \
     }
 
 GEN_STORE(relaxed, __ATOMIC_RELAXED)

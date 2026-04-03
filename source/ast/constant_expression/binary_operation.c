@@ -612,9 +612,11 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
             REQUIRE_OK(kefir_ast_constant_expression_value_cast(
                 mem, context, &rhs_value, KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg2), node->arg2,
                 common_arith_type, node->arg2->properties.type));
-                
-            REQUIRE(lhs_value.klass != KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS, KEFIR_SET_ERROR(KEFIR_NOT_CONSTANT, "Unable to evaluate constant expression"));
-            REQUIRE(rhs_value.klass != KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS, KEFIR_SET_ERROR(KEFIR_NOT_CONSTANT, "Unable to evaluate constant expression"));
+
+            REQUIRE(lhs_value.klass != KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS,
+                    KEFIR_SET_ERROR(KEFIR_NOT_CONSTANT, "Unable to evaluate constant expression"));
+            REQUIRE(rhs_value.klass != KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS,
+                    KEFIR_SET_ERROR(KEFIR_NOT_CONSTANT, "Unable to evaluate constant expression"));
 
             REQUIRE(lhs_value.klass != KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS,
                     KEFIR_SET_ERROR(KEFIR_NOT_CONSTANT, "Unable to evaluate constant expression"));

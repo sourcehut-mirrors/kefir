@@ -37,6 +37,7 @@ typedef struct kefir_opt_code_variable_scopes {
 kefir_result_t kefir_opt_code_variable_scopes_init(struct kefir_opt_code_variable_scopes *);
 kefir_result_t kefir_opt_code_variable_scopes_free(struct kefir_mem *, struct kefir_opt_code_variable_scopes *);
 
-kefir_result_t kefir_opt_code_variable_scopes_build(struct kefir_mem *, struct kefir_opt_code_variable_scopes *, const struct kefir_opt_code_liveness *);
+kefir_result_t kefir_opt_code_variable_scopes_build(struct kefir_mem *, struct kefir_opt_code_variable_scopes *,
+                                                    const struct kefir_opt_code_liveness *);
 
 #endif

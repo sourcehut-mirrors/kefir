@@ -299,30 +299,31 @@ kefir_result_t kefir_codegen_target_ir_amd64_transform_late_peephole(
                     .args[1] = {.type = KEFIR_ASMCMP_VALUE_TYPE_PHYSICAL_REGISTER, .phreg = lhs_reg}};
                 return KEFIR_OK;
             }
-        } else 
-        if (instr->operation.opcode == KEFIR_TARGET_IR_AMD64_OPCODE(and) &&
-            classification.classification.operands[0].class == KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_READ_WRITE &&
-            classification.classification.operands[1].class == KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_READ &&
-            classification.operands[0].read_index != KEFIR_CODEGEN_TARGET_IR_TIED_READ_INDEX_NONE &&
-            classification.operands[1].read_index != KEFIR_CODEGEN_TARGET_IR_TIED_READ_INDEX_NONE &&
-            instr->operation.parameters[classification.operands[0].read_index].type ==
-                KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF &&
-            (instr->operation.parameters[classification.operands[0].read_index].direct.variant ==
-                 KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT ||
-             instr->operation.parameters[classification.operands[0].read_index].direct.variant ==
-                 KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_64BIT ||
-             instr->operation.parameters[classification.operands[0].read_index].direct.variant ==
-                 KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_32BIT) &&
-            instr->operation.parameters[classification.operands[1].read_index].type ==
-                KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INTEGER) {
+        } else if (instr->operation.opcode == KEFIR_TARGET_IR_AMD64_OPCODE(and) &&
+                   classification.classification.operands[0].class ==
+                       KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_READ_WRITE &&
+                   classification.classification.operands[1].class == KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_READ &&
+                   classification.operands[0].read_index != KEFIR_CODEGEN_TARGET_IR_TIED_READ_INDEX_NONE &&
+                   classification.operands[1].read_index != KEFIR_CODEGEN_TARGET_IR_TIED_READ_INDEX_NONE &&
+                   instr->operation.parameters[classification.operands[0].read_index].type ==
+                       KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF &&
+                   (instr->operation.parameters[classification.operands[0].read_index].direct.variant ==
+                        KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT ||
+                    instr->operation.parameters[classification.operands[0].read_index].direct.variant ==
+                        KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_64BIT ||
+                    instr->operation.parameters[classification.operands[0].read_index].direct.variant ==
+                        KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_32BIT) &&
+                   instr->operation.parameters[classification.operands[1].read_index].type ==
+                       KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INTEGER) {
 
             union kefir_codegen_target_ir_amd64_regalloc_entry src_regalloc_entry, dst_regalloc_entry;
             kefir_result_t res = kefir_codegen_target_ir_regalloc_get(regalloc, classification.operands[0].output,
                                                                       &dst_regalloc_entry.allocation);
             REQUIRE(res != KEFIR_NOT_FOUND, NO_MATCH_ERROR);
             REQUIRE_OK(res);
-            res = kefir_codegen_target_ir_regalloc_get(regalloc, instr->operation.parameters[classification.operands[0].read_index].direct.value_ref,
-                                                                      &src_regalloc_entry.allocation);
+            res = kefir_codegen_target_ir_regalloc_get(
+                regalloc, instr->operation.parameters[classification.operands[0].read_index].direct.value_ref,
+                &src_regalloc_entry.allocation);
             REQUIRE(res != KEFIR_NOT_FOUND, NO_MATCH_ERROR);
             REQUIRE_OK(res);
 
@@ -339,12 +340,12 @@ kefir_result_t kefir_codegen_target_ir_amd64_transform_late_peephole(
                 REQUIRE_OK(res);
             }
 
-            kefir_int64_t mask = kefir_codegen_target_ir_sign_extend(instr->operation.parameters[classification.operands[1].read_index].immediate.int_immediate,
+            kefir_int64_t mask = kefir_codegen_target_ir_sign_extend(
+                instr->operation.parameters[classification.operands[1].read_index].immediate.int_immediate,
                 instr->operation.parameters[classification.operands[1].read_index].immediate.variant);
 
             if (src_regalloc_entry.allocation == dst_regalloc_entry.allocation &&
-                src_regalloc_entry.type == KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_GP &&
-                mask == 0xff) {
+                src_regalloc_entry.type == KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_GP && mask == 0xff) {
                 kefir_asm_amd64_xasmgen_register_t src_reg, dst_reg = dst_regalloc_entry.reg.value;
                 REQUIRE_OK(kefir_asm_amd64_xasmgen_register8(src_regalloc_entry.reg.value, &src_reg));
                 REQUIRE_OK(kefir_asm_amd64_xasmgen_register32(dst_regalloc_entry.reg.value, &dst_reg));
@@ -352,12 +353,10 @@ kefir_result_t kefir_codegen_target_ir_amd64_transform_late_peephole(
                 *asmcmp_instr = (struct kefir_asmcmp_instruction) {
                     .opcode = KEFIR_ASMCMP_AMD64_OPCODE(movzx),
                     .args[0] = {.type = KEFIR_ASMCMP_VALUE_TYPE_PHYSICAL_REGISTER, .phreg = dst_reg},
-                    .args[1] = {.type = KEFIR_ASMCMP_VALUE_TYPE_PHYSICAL_REGISTER, .phreg = src_reg}
-                };
+                    .args[1] = {.type = KEFIR_ASMCMP_VALUE_TYPE_PHYSICAL_REGISTER, .phreg = src_reg}};
                 return KEFIR_OK;
             } else if (src_regalloc_entry.allocation == dst_regalloc_entry.allocation &&
-                src_regalloc_entry.type == KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_GP &&
-                mask == 0xffff) {
+                       src_regalloc_entry.type == KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_GP && mask == 0xffff) {
                 kefir_asm_amd64_xasmgen_register_t src_reg, dst_reg = dst_regalloc_entry.reg.value;
                 REQUIRE_OK(kefir_asm_amd64_xasmgen_register16(src_regalloc_entry.reg.value, &src_reg));
                 REQUIRE_OK(kefir_asm_amd64_xasmgen_register32(dst_regalloc_entry.reg.value, &dst_reg));
@@ -365,8 +364,7 @@ kefir_result_t kefir_codegen_target_ir_amd64_transform_late_peephole(
                 *asmcmp_instr = (struct kefir_asmcmp_instruction) {
                     .opcode = KEFIR_ASMCMP_AMD64_OPCODE(movzx),
                     .args[0] = {.type = KEFIR_ASMCMP_VALUE_TYPE_PHYSICAL_REGISTER, .phreg = dst_reg},
-                    .args[1] = {.type = KEFIR_ASMCMP_VALUE_TYPE_PHYSICAL_REGISTER, .phreg = src_reg}
-                };
+                    .args[1] = {.type = KEFIR_ASMCMP_VALUE_TYPE_PHYSICAL_REGISTER, .phreg = src_reg}};
                 return KEFIR_OK;
             }
         }

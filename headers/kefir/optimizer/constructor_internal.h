@@ -74,11 +74,9 @@ kefir_result_t kefir_opt_constructor_stack_exchange(struct kefir_mem *, struct k
                                                     kefir_size_t);
 
 kefir_result_t kefir_opt_constructor_get_local_allocation(struct kefir_mem *, struct kefir_opt_constructor_state *,
-                                                            kefir_opt_instruction_ref_t,
-                                                          kefir_uint64_t, kefir_id_t, kefir_size_t,
-                                                          kefir_opt_instruction_ref_t *);
+                                                          kefir_opt_instruction_ref_t, kefir_uint64_t, kefir_id_t,
+                                                          kefir_size_t, kefir_opt_instruction_ref_t *);
 kefir_result_t kefir_opt_constructor_get_local_scope(struct kefir_mem *, struct kefir_opt_constructor_state *,
-                                                          kefir_uint64_t,
-                                                          kefir_opt_instruction_ref_t *);
+                                                     kefir_uint64_t, kefir_opt_instruction_ref_t *);
 
 #endif
