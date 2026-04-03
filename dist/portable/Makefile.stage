@@ -74,8 +74,6 @@ $(TARGET_DIR)/lib/libc.a: $(MUSL_ARCHIVE) $(TARGET_DIR)/bin/kefir
 $(TARGET_DIR)/bin/ld: $(BINUTILS_ARCHIVE) $(TARGET_DIR)/lib/libc.a
 	@cd "$(WORK_DIR)" && tar xvfz "$(BINUTILS_ARCHIVE_FILENAME)"
 	@cd "$(WORK_DIR)/binutils-$(BINUTILS_VERSION)" && patch -p0 < "$(realpath $(ROOT_DIR))/source/tests/external/binutils/binutils-$(BINUTILS_VERSION).patch"
-	@find "$(WORK_DIR)/binutils-$(BINUTILS_VERSION)" -name "*.c" -exec sed -i "s/__attribute__/__attribute/g" {} \;
-	@find "$(WORK_DIR)/binutils-$(BINUTILS_VERSION)" -name "*.h" -exec sed -i "s/__attribute__/__attribute/g" {} \;
 	@find "$(WORK_DIR)/binutils-$(BINUTILS_VERSION)" -name "*.c" -exec sed -i "s/ATTRIBUTE_PACKED/__attribute((packed))/g" {} \;
 	@find "$(WORK_DIR)/binutils-$(BINUTILS_VERSION)" -name "*.h" -exec sed -i "s/ATTRIBUTE_PACKED/__attribute((packed))/g" {} \;
 	@cd "$(WORK_DIR)/binutils-$(BINUTILS_VERSION)" && \
