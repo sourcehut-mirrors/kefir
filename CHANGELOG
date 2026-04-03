@@ -2,6 +2,16 @@
 
 This file documents notable changes to the project.
 
+## [0.5.1] - 2026-04-05
+Project release:
+* Completion of C23 support (incl. decimal floating-point, imaginary numbers,
+  STDC pragmas).
+* Major rewrite of code generation layer, introducing target-specific SSA with
+  optimizations.
+* Optimizer improvements, integration of conservative memory analysis via memory
+  SSA.
+* Extension of external test suite, improving compatibility and correctness.
+
 ## [0.5.0] - 2025-09-09
 Project release:
 * Implementation of C23 support (except _Decimal) as specified by the first C2Y
