@@ -606,6 +606,7 @@ kefir_result_t kefir_driver_apply_target_linker_final_configuration(
                 REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, "--pop-state"));
             }
 
+            REQUIRE_OK(link_libgcc(mem, linker_config, externals->freebsd.library_path));
             if (linker_config->flags.link_libc) {
                 REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, "-lc"));
             }
@@ -634,6 +635,7 @@ kefir_result_t kefir_driver_apply_target_linker_final_configuration(
                 REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, "-lcompiler_rt"));
             }
 
+            REQUIRE_OK(link_libgcc(mem, linker_config, externals->openbsd.library_path));
             if (linker_config->flags.link_libc) {
                 REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, "-lc"));
             }
@@ -657,6 +659,7 @@ kefir_result_t kefir_driver_apply_target_linker_final_configuration(
         REQUIRE_OK(add_library_paths(mem, linker_config, externals->netbsd.library_path));
 
         if (linker_config->flags.link_default_libs) {
+            REQUIRE_OK(link_libgcc(mem, linker_config, externals->netbsd.library_path));
             if (linker_config->flags.link_libc) {
                 REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, "-lc"));
             }
@@ -689,6 +692,7 @@ kefir_result_t kefir_driver_apply_target_linker_final_configuration(
         REQUIRE_OK(add_library_paths(mem, linker_config, externals->dragonflybsd.library_path));
 
         if (linker_config->flags.link_default_libs) {
+            REQUIRE_OK(link_libgcc(mem, linker_config, externals->dragonflybsd.library_path));
             if (linker_config->flags.link_libc) {
                 REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, "-lc"));
             }
