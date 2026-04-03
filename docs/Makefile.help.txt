@@ -8,6 +8,8 @@ csmith_test                 Run CSmith seeded tests
 csmith_random_test          Run CSmith random tests
 external_test               Run external tests
 external_extra_test         Run extra external tests
+bootstrap_libgcc474         Bootstrap libgcc from gcc 4.7.4
+build_libatomic             Build libatomic from compiler_rt
 generate_test_artifacts     Rebuild test artifacts
 clean                       Clean all build files
 help                        Print this help text
@@ -23,6 +25,7 @@ USE_SHARED                  Produce shared libraries            *yes | no
 USE_SANITIZER               Compile with UB sanitizer           yes | *no
 USE_VALGRIND                Run tests with Valgrind             yes | *no
 USE_EXTENSION_SUPPORT       Build kefir with extension support  yes | *no
+KEFIR_TEST_USE_MUSL         Assume musl when running tests      yes | *no
 PLATFORM                    Host platform                       linux | freebsd | openbsd | netbsd | (*autodetect)
 ============================================================================================
                                      Tools
