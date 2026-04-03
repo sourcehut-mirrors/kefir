@@ -9,7 +9,7 @@ FreeBSD, NetBSD, OpenBSD and DragonflyBSD. The project intends to provide a
 well-rounded, compatible and compliant compiler, including SSA-based
 optimization pipeline, debug information generation, position-independent code
 support, and bit-identical bootstrap. Kefir integrates with the rest of system
-toolchain --- assembler, linked and shared library.
+toolchain --- assembler, linker and shared library.
 
 ## At a glance
 
@@ -27,11 +27,12 @@ Kefir:
   environments*).
 * Is extensively validated on real-world open source software test suites --
   including dozens of well-known projects (see *Testing and validation*).
-* Implements two-stage SSA-based optimization pipeline -- primarily targetting
-  local scalars: local variable promotion to registers, dead code elimination,
-  constant folding, global value numbering, loop-invariant code motion, function
-  inlining, tail-call optimization, but also providing conservative global
-  memory access optimization (see *Optimization and codegen*).
+* Implements SSA-based optimization pipeline with two SSA phases -- primarily
+  targetting local scalars: local variable promotion to registers, dead code
+  elimination, constant folding, global value numbering, loop-invariant code
+  motion, function inlining, tail-call optimization, but also providing
+  conservative global memory access optimization, as well as target-specific
+  optimizations (see *Optimization and codegen*).
 * Supports DWARF5 debug information, position-independent code, AT&T and Intel
   syntaxes of GNU As and has limited support for Yasm.
 * Implements bit-identical bootstrap -- within fixed environment, Kefir produces
@@ -74,6 +75,7 @@ make test all USE_SHARED=no CC=musl-gcc KEFIR_TEST_USE_MUSL=yes   # Linux musl
 gmake test all CC=clang        # FreeBSD
 gmake test all CC=clang AS=gas # OpenBSD
 gmake test all CC=gcc AS=gas   # NetBSD
+gmake test all LD=/usr/local/bin/ld AS=/usr/local/bin/as # DragonflyBSD
 ```
 The installation is done via `(g)make install prefix=...`. The default prefix is
 `/opt/kefir`.
@@ -115,7 +117,7 @@ full test suite dependencies. For these, please consult `dist/Dockerfile` `dev`
 and `full` targets.
 
 At the moment, Kefir is automatically tested in Ubuntu 24.04, FreeBSD 14.x,
-OpenBSD 7.5 and NetBSD 10.x environments; Arch Linux used as the primary
+OpenBSD 7.7 and NetBSD 10.x environments; Arch Linux used as the primary
 development environment. DragonflyBSD support is tested manually prior to
 release.
 
@@ -128,7 +130,7 @@ between bit-precise integers and decimal floating-point numbers is desired,
 `libgcc` of version 14 or newer is required.
 
 Both BID and DPD encodings are supported, BID being the default one. To enable
-DPD, passs the following Make option when building Kefir:
+DPD, pass the following Make option when building Kefir:
 `EXTRA_CFLAGS="-DKEFIR_PLATFORM_DECIMAL_DPD"`.
 
 Kefir can bootstrap `libgcc` version 4.7.4 automatically:
@@ -137,7 +139,7 @@ make bootstrap_libgcc474 -j$(nproc)
 ```
 
 #### Libatomic
-Kefir can build requires libatomic routines from `compiler_rt` project via:
+Kefir can build required libatomic routines from `compiler_rt` project via:
 ```bash
 make build_libatomic -j$(nproc)
 ```
@@ -199,7 +201,7 @@ single platform. Please note that libc header quirks are generally the main
 offender of compatibility, thus additional macro definitions or individual
 header overrides might be necessary. Musl libc provides the most smooth
 experience, however Kefir has accumulated sufficient support for GNU C
-extensions to use glibc and BSD libc implentations reasonably (consult
+extensions to use glibc and BSD libc implementations reasonably (consult
 *Implementation quirks* and the external test suite part of *Testing and
 validation*, as well as respective `.build/*.yml` files for platform of choice
 for detailed examples).
@@ -245,20 +247,20 @@ The following details need to be taken into account:
   features on non-mainstream compilers. For instance, glibc overrides
   `__attribute__` specificaton with an empty macro, omits `packed` attributes,
   etc., breaking compatibility despite the fact that respective features are
-  supported by Kefir. The author recommends getting acquainted with project
-  build configurations from the external test suite (see *Testing and
-  validation*) to learn about fixups for typical issues. While such fixups could
-  be provided along with other Kefir runtime headers, the author has
-  deliberately avoided including any library- or platform-specific hacks into
-  Kefir.
-* Atomic operations implement sequentially-consistent semantics irrespective of
-  specified memory order. This behavior is safe and shall not break any
-  software. Atomic operations of non-native sizes rely on external software
-  atomic library (`libatomic` from gcc, or `compiler_rt` from clang). Kefir
-  links resulting executables with the library automatically in all
-  configurations except musl libc. Furthermore, use of `<stdatomic.h>` system
-  header from Clang requires `-D__GNUC__=4 -D__GNUC_MINOR__=20` command line
-  arguments.
+  supported by Kefir. Kefir installation includes shim wrapper for
+  `<sys/cdefs.h>` header to fix up the most prominent issues, however absolute
+  compatibility cannot be guaranteed. The author recommends getting acquainted
+  with project build configurations from the external test suite (see *Testing
+  and validation*).
+* Atomic operations predominantly implement sequentially-consistent semantics
+  irrespective of specified memory order, with an exception for native scalar
+  atomic stores that distinguish between `release` and `seq_cst` sematics. This
+  behavior is safe and shall not break any software. Atomic operations of
+  non-native sizes rely on external software atomic library (`libatomic` from
+  gcc, or `compiler_rt` from clang). Kefir links resulting executables with the
+  library automatically in all configurations except musl libc. Furthermore, use
+  of `<stdatomic.h>` system header from Clang requires `-D__GNUC__=4
+  -D__GNUC_MINOR__=20` command line arguments.
 * Should atomic operations on long double variables (both scalar and complex) be
   used, care needs to be taken due to the fact that the last 48 bits of each
   long double storage unit may be uninitialized. Kefir implements zeroing of
@@ -391,12 +393,12 @@ On all supported platforms, Kefir executes the following external test suites:
   independent test cases that perform self-testing in a form of assertions. The
   test suite heavily relies on gcc-specific features, therefore higher degree of
   failures is expected. As of current version, out of 3663 tests, Kefir fails
-  431 and skips 29. Note that the exact number of failed tests might slightly
+  429 and skips 29. Note that the exact number of failed tests might slightly
   vary depending on the target platform and hardware performance (due to
   enforced 10 second timeout for execution). Reported number is the best-case
   result on Ubuntu glibc. Furthermore, note that in order for test to succeed,
   none of the failures shall be caused by fatal issues, aborts, segmentation
-  faults or caught signals, either on runtime or in compile time.
+  faults or caught signals, either at runtime or in compile time.
 * GCC test suite `_BitInt` bits -- a separate set of 71 tests imported from gcc
   15.2.0 to ensure correct implementation of bit-precise integers from the C23
   standard. All tests from this suite shall run successfully.
@@ -1101,9 +1103,15 @@ about the release).
 * 0.5.0 -- released in September 2025. Includes substantial refactoring and
   improvement of optimizer IR structure, new optimization passes, C23 support,
   another significant extension of real-world compatibility.
+* 0.5.1 -- released in April 2026. Includes completion of C23 support (decimal
+  floating-point, imaginary floating-point, `STDC` pragmas), substantial rewrite
+  of code generation layer (see "Target IR" section of *Optimization &
+  codegen*), optimizer improvements including integation of conservative memory
+  analysis via memory SSA, 128-bit integer support, extension of real-world
+  compatibility.
 
-The author does not make any promises or commitments regarding future
-development. Any commit to the project might be the final one without prior
+**The author does not make any promises or commitments regarding future
+development**. Any commit to the project might be the final one without prior
 notice. Nevertheless, if development is terminated or indefinitely paused, the
 author will attempt to communicate this clearly. Furthermore, should any bugs in
 already published code be discovered after active development cessation, the
@@ -1159,14 +1167,6 @@ license in any way.
 
 For clarity, most source files in the repository include a license and copyright headers.
 
-### External test suite exceptions
-The author must note that there exist several files as part of the external test
-suite glibc fixups (see, for instance,
-`source/tests/external/nginx/include/sys/cdefs.h`) that are modified excerprts
-of glibc source code. Kefir author makes no claims with respect to such files
-and provides them only as means to successfully compile the respective external
-test.
-
 ## Contributing
 
 The author works on the project in accordance with extreme [cathedral
@@ -1220,6 +1220,7 @@ Kefir-specific links:
 * [Author's PGP key](https://www.protopopov.lv/static/files/jprotopopov.gpg) --
   all git tags, releases and related artifacts will be signed with it until
   further notice.
+* [A talk on Kefir at Coffee Compiler Club](https://www.youtube.com/watch?v=MFdRccQ1y6M)
 
 Trivia:
 * [Fermented milk drink](https://en.wikipedia.org/wiki/Kefir)
@@ -1240,7 +1241,8 @@ on Kefir:
   creation of Kefir.
 * The authors and contributors of software projects that Kefir relies upon in
   any way in its build or development process: Linux kernel, FreeBSD, OpenBSD,
-  NetBSD, GNU project, Clang, Musl libc, CSmith, and any other smaller projects.
+  NetBSD, DragonflyBSD, GNU project, Clang, Musl libc, CSmith, and any other
+  smaller projects.
 * In particular, the author wants to emphasize the [Record and Replay
   framework](https://rr-project.org/) project. While less known, it has been
   instrumental in investigating failures in Kefir and software compiled by it,
