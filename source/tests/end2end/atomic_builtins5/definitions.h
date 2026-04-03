@@ -31,31 +31,34 @@ DECL_FETCH(add_char, char);
 DECL_FETCH(add_short, short);
 DECL_FETCH(add_int, int);
 DECL_FETCH(add_long, long);
-DECL_FETCH(add128, struct i128);
 
 DECL_FETCH(sub_char, char);
 DECL_FETCH(sub_short, short);
 DECL_FETCH(sub_int, int);
 DECL_FETCH(sub_long, long);
-DECL_FETCH(sub128, struct i128);
 
 DECL_FETCH(or_char, char);
 DECL_FETCH(or_short, short);
 DECL_FETCH(or_int, int);
 DECL_FETCH(or_long, long);
-DECL_FETCH(or128, struct i128);
 
 DECL_FETCH(and_char, char);
 DECL_FETCH(and_short, short);
 DECL_FETCH(and_int, int);
 DECL_FETCH(and_long, long);
-DECL_FETCH(and128, struct i128);
 
 DECL_FETCH(xor_char, char);
 DECL_FETCH(xor_short, short);
 DECL_FETCH(xor_int, int);
 DECL_FETCH(xor_long, long);
+
+#if !defined(__DragonFly__) || defined(KEFIR_END2END_ASMGEN)
+DECL_FETCH(add128, struct i128);
+DECL_FETCH(sub128, struct i128);
+DECL_FETCH(or128, struct i128);
+DECL_FETCH(and128, struct i128);
 DECL_FETCH(xor128, struct i128);
+#endif
 
 #undef DECL_FETCH
 

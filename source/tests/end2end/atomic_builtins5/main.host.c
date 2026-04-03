@@ -30,7 +30,6 @@ int main(void) {
             _Atomic short shrt = x;
             _Atomic int integer = x;
             _Atomic long lng = x;
-            _Atomic struct i128 i128 = (struct i128) {{x, x >= 0 ? 0 : -1}};
 
             assert(test_fetch_add_char(&chr, (char) y) == (char) x);
             assert(chr == (char) (x + y));
@@ -40,6 +39,8 @@ int main(void) {
             assert(integer == (int) (x + y));
             assert(test_fetch_add_long(&lng, (long) y) == (long) x);
             assert(lng == (long) (x + y));
+#if !defined(__DragonFly__)
+            _Atomic struct i128 i128 = (struct i128) {{x, x >= 0 ? 0 : -1}};
             struct i128 res;
             res = test_fetch_add128(&i128, (struct i128) {{y, y >= 0 ? 0 : -1}});
             assert(res.arr[0] == (unsigned long) x);
@@ -47,12 +48,12 @@ int main(void) {
             struct i128 copy = i128;
             assert(copy.arr[0] == (unsigned long) (x + y));
             assert(copy.arr[1] == (unsigned long) ((x + y) >= 0 ? 0 : -1));
+#endif
 
             chr = x;
             shrt = x;
             integer = x;
             lng = x;
-            i128 = (struct i128) {{x, x >= 0 ? 0 : -1}};
 
             assert(test_fetch_sub_char(&chr, (char) y) == (char) x);
             assert(chr == (char) (x - y));
@@ -62,18 +63,20 @@ int main(void) {
             assert(integer == (int) (x - y));
             assert(test_fetch_sub_long(&lng, (long) y) == (long) x);
             assert(lng == (long) (x - y));
+#if !defined(__DragonFly__)
+            i128 = (struct i128) {{x, x >= 0 ? 0 : -1}};
             res = test_fetch_sub128(&i128, (struct i128) {{y, y >= 0 ? 0 : -1}});
             assert(res.arr[0] == (unsigned long) x);
             assert(res.arr[1] == (unsigned long) (x >= 0 ? 0 : -1));
             copy = i128;
             assert(copy.arr[0] == (unsigned long) (x - y));
             assert(copy.arr[1] == (unsigned long) ((x - y) >= 0 ? 0 : -1));
+#endif
 
             chr = x;
             shrt = x;
             integer = x;
             lng = x;
-            i128 = (struct i128) {{x, x >= 0 ? 0 : -1}};
 
             assert(test_fetch_or_char(&chr, (char) y) == (char) x);
             assert(chr == (char) (x | y));
@@ -83,18 +86,20 @@ int main(void) {
             assert(integer == (int) (x | y));
             assert(test_fetch_or_long(&lng, (long) y) == (long) x);
             assert(lng == (long) (x | y));
+#if !defined(__DragonFly__)
+            i128 = (struct i128) {{x, x >= 0 ? 0 : -1}};
             res = test_fetch_or128(&i128, (struct i128) {{y, y >= 0 ? 0 : -1}});
             assert(res.arr[0] == (unsigned long) x);
             assert(res.arr[1] == (unsigned long) (x >= 0 ? 0 : -1));
             copy = i128;
             assert(copy.arr[0] == (unsigned long) (x | y));
             assert(copy.arr[1] == (unsigned long) ((x | y) >= 0 ? 0 : -1));
+#endif
 
             chr = x;
             shrt = x;
             integer = x;
             lng = x;
-            i128 = (struct i128) {{x, x >= 0 ? 0 : -1}};
 
             assert(test_fetch_and_char(&chr, (char) y) == (char) x);
             assert(chr == (char) (x & y));
@@ -104,18 +109,20 @@ int main(void) {
             assert(integer == (int) (x & y));
             assert(test_fetch_and_long(&lng, (long) y) == (long) x);
             assert(lng == (long) (x & y));
+#if !defined(__DragonFly__)
+            i128 = (struct i128) {{x, x >= 0 ? 0 : -1}};
             res = test_fetch_and128(&i128, (struct i128) {{y, y >= 0 ? 0 : -1}});
             assert(res.arr[0] == (unsigned long) x);
             assert(res.arr[1] == (unsigned long) (x >= 0 ? 0 : -1));
             copy = i128;
             assert(copy.arr[0] == (unsigned long) (x & y));
             assert(copy.arr[1] == (unsigned long) ((x & y) >= 0 ? 0 : -1));
+#endif
 
             chr = x;
             shrt = x;
             integer = x;
             lng = x;
-            i128 = (struct i128) {{x, x >= 0 ? 0 : -1}};
 
             assert(test_fetch_xor_char(&chr, (char) y) == (char) x);
             assert(chr == (char) (x ^ y));
@@ -125,12 +132,15 @@ int main(void) {
             assert(integer == (int) (x ^ y));
             assert(test_fetch_xor_long(&lng, (long) y) == (long) x);
             assert(lng == (long) (x ^ y));
+#if !defined(__DragonFly__)
+            i128 = (struct i128) {{x, x >= 0 ? 0 : -1}};
             res = test_fetch_xor128(&i128, (struct i128) {{y, y >= 0 ? 0 : -1}});
             assert(res.arr[0] == (unsigned long) x);
             assert(res.arr[1] == (unsigned long) (x >= 0 ? 0 : -1));
             copy = i128;
             assert(copy.arr[0] == (unsigned long) (x ^ y));
             assert(copy.arr[1] == (unsigned long) ((x ^ y) >= 0 ? 0 : -1));
+#endif
         }
     }
     return EXIT_SUCCESS;

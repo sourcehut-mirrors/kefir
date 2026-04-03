@@ -25,6 +25,7 @@
 #include "./definitions.h"
 
 int main(void) {
+#if !defined(__DragonFly__)
     _Atomic struct i128 arg = (struct i128) {{1234, -5678}};
     struct i128 res = load_i128(&arg);
     assert(res.arr[0] == 1234);
@@ -57,5 +58,6 @@ int main(void) {
     val = arg;
     assert(val.arr[0] == 93813909);
     assert(val.arr[1] == (unsigned long) -381929);
+#endif
     return EXIT_SUCCESS;
 }

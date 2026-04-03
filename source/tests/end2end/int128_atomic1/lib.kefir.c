@@ -18,6 +18,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#if !defined(__DragonFly__) || defined(KEFIR_END2END_ASMGEN)
 __int128 load_i128(_Atomic __int128 *ptr) {
     return *ptr;
 }
@@ -41,3 +42,4 @@ __int128 add_i128(_Atomic __int128 *ptr, __int128 value) {
 unsigned __int128 add_u128(_Atomic unsigned __int128 *ptr, unsigned __int128 value) {
     return *ptr += value;
 }
+#endif

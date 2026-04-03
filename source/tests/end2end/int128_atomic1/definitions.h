@@ -25,6 +25,7 @@ struct i128 {
     unsigned long arr[2];
 };
 
+#if !defined(__DragonFly__) || defined(KEFIR_END2END_ASMGEN)
 struct i128 load_i128(_Atomic struct i128 *);
 struct i128 load_u128(_Atomic struct i128 *);
 
@@ -33,5 +34,6 @@ void store_u128(_Atomic struct i128 *, struct i128);
 
 struct i128 add_i128(_Atomic struct i128 *, struct i128);
 struct i128 add_u128(_Atomic struct i128 *, struct i128);
+#endif
 
 #endif
