@@ -21,7 +21,7 @@
 # Fedora builds, as the author is aware that third parties rely on that.
 # The "official" complete Dockefile is for Ubuntu.
 
-FROM fedora:42 AS base
+FROM fedora:43 AS base
 
 RUN dnf update -y
 # Minimum build dependencies -- either gcc or clang are sufficient

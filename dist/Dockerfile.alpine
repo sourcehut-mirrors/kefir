@@ -21,7 +21,7 @@
 # Alpine builds, as the author is aware that third parties rely on that.
 # The "official" complete Dockefile is for Ubuntu.
 
-FROM alpine:3.22 AS base
+FROM alpine:3.23 AS base
 
 # Update package index
 RUN apk update
