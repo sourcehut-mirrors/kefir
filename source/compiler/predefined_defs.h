@@ -130,6 +130,9 @@ typedef unsigned __int128 __uint128_t;
 #define __FLT_IS_IEC_60559__ 1
 #define __DBL_IS_IEC_60559__ 1
 #define __LDBL_IS_IEC_60559__ 1
+#define __FLT_HAS_QUIET_NAN__ 1
+#define __DBL_HAS_QUIET_NAN__ 1
+#define __LDBL_HAS_QUIET_NAN__ 1
 
 // Decimal floating-point
 #define __DEC32_EPSILON__ 1E-6DF
