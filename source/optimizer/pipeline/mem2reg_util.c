@@ -308,7 +308,7 @@ kefir_result_t kefir_opt_code_util_mem2reg_classify_opcode(const struct kefir_op
 }
 
 kefir_bool_t kefir_opt_code_util_mem2reg_compare_classification(kefir_uint64_t c1, kefir_uint64_t c2) {
-    return true || c1 == c2 || (((kefir_uint32_t) c1) == CANDIDATE_INT && ((kefir_uint32_t) c2) == CANDIDATE_FLOAT32) ||
+    return c1 == c2 || (((kefir_uint32_t) c1) == CANDIDATE_INT && ((kefir_uint32_t) c2) == CANDIDATE_FLOAT32) ||
            (((kefir_uint32_t) c1) == CANDIDATE_INT && ((kefir_uint32_t) c2) == CANDIDATE_FLOAT64) ||
            (((kefir_uint32_t) c2) == CANDIDATE_INT && ((kefir_uint32_t) c1) == CANDIDATE_FLOAT32) ||
            (((kefir_uint32_t) c2) == CANDIDATE_INT && ((kefir_uint32_t) c1) == CANDIDATE_FLOAT64);
