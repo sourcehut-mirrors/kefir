@@ -37,13 +37,18 @@
 #define KEFIR_UNIX_HOST_PLATFORM
 #endif
 
-#if (defined(__STDC_IEC_60559_DFP__) || (defined(__GNUC__) && !defined(__clang__) && !defined(__KEFIRCC__)) || \
-     defined(__KEFIRCC_DECIMAL_SUPPORT__)) &&                                                                  \
-    !defined(KEFIR_NETBSD_HOST_PLATFORM) && !defined(KEFIR_DRAGONFLYBSD_HOST_PLATFORM)
+#if defined(__STDC_IEC_60559_DFP__) ||                                                                                 \
+    (((defined(__GNUC__) && !defined(__clang__)) || (defined(__KEFIRCC__) && defined(__KEFIRCC_DECIMAL_SUPPORT__))) && \
+     (defined(__DECIMAL_BID_FORMAT__) || defined(__DECIMAL_DPD_FORMAT__) || defined(KEFIR_PLATFORM_DECIMAL_BID) ||     \
+      defined(KEFIR_PLATFORM_DECIMAL_DPD)))
 #define KEFIR_PLATFORM_HAS_DECIMAL_FP
 
 #if !defined(KEFIR_PLATFORM_DECIMAL_BID) && !defined(KEFIR_PLATFORM_DECIMAL_DPD)
+#ifndef __DECIMAL_DPD_FORMAT__
 #define KEFIR_PLATFORM_DECIMAL_BID
+#else
+#define KEFIR_PLATFORM_DECIMAL_DPD
+#endif
 #endif
 
 #if (__GNUC__ >= 14 || defined(__KEFIRCC_DECIMAL_BITINT_CONV_SUPPORT__)) && defined(KEFIR_PLATFORM_DECIMAL_BID)
