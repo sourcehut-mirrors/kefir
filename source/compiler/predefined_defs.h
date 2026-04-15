@@ -167,6 +167,13 @@ typedef unsigned __int128 __uint128_t;
 
 #define __KEFIRCC_DECIMAL_SUPPORT_BID__ 1
 #define __KEFIRCC_DECIMAL_SUPPORT_DPD__ 2
+#ifdef __KEFIRCC_DECIMAL_SUPPORT__
+#if __KEFIRCC_DECIMAL_SUPPORT__ == __KEFIRCC_DECIMAL_SUPPORT_BID__
+#define __DECIMAL_BID_FORMAT__ 1
+#elif __KEFIRCC_DECIMAL_SUPPORT__ == __KEFIRCC_DECIMAL_SUPPORT_DPD__
+#define __DECIMAL_DPD_FORMAT__ 1
+#endif
+#endif
 
 // Type width
 #ifdef __LP64__
