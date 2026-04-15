@@ -68,7 +68,11 @@ const char KefirPredefinedDefs[] = {
 };
 kefir_uint64_t KefirPredefinedDefsLength = sizeof(KefirPredefinedDefs);
 
-static kefir_result_t load_predefined_defs(struct kefir_mem *mem, struct kefir_compiler_context *context) {
+kefir_result_t kefir_compiler_context_load_predefined_defs(struct kefir_mem *mem,
+                                                           struct kefir_compiler_context *context) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid compiler context"));
+
     const char *filename = "<predefined-defs>";
 
     struct kefir_token_buffer buffer;
@@ -144,9 +148,6 @@ kefir_result_t kefir_compiler_context_init(struct kefir_mem *mem, struct kefir_c
     context->preprocessor_context.environment.data_model = profile->ir_target_platform.data_model;
     context->profile = profile;
     context->source_locator = source_locator;
-
-    context->extensions = NULL;
-    res = load_predefined_defs(mem, context);
 
     context->extensions = extensions;
     context->extension_payload = NULL;

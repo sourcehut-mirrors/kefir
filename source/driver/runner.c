@@ -231,6 +231,8 @@ static kefir_result_t dump_action_impl(struct kefir_mem *mem, const struct kefir
                                          (kefir_hashtreeset_entry_t) *builtin));
     }
 
+    REQUIRE_OK(kefir_compiler_context_load_predefined_defs(mem, &compiler));
+
     compiler.parser_configuration.fail_on_attributes = options->features.fail_on_attributes;
     compiler.parser_configuration.implicit_function_definition_int = options->features.missing_function_return_type;
     compiler.parser_configuration.designated_initializer_colons = options->features.designated_initializer_colons;

@@ -85,6 +85,7 @@ kefir_result_t kefir_compiler_context_init(struct kefir_mem *, struct kefir_comp
                                            const struct kefir_preprocessor_source_locator *,
                                            const struct kefir_compiler_extensions *);
 kefir_result_t kefir_compiler_context_free(struct kefir_mem *, struct kefir_compiler_context *);
+kefir_result_t kefir_compiler_context_load_predefined_defs(struct kefir_mem *, struct kefir_compiler_context *);
 kefir_result_t kefir_compiler_preprocessor_tokenize(struct kefir_mem *, struct kefir_compiler_context *,
                                                     struct kefir_token_allocator *, struct kefir_token_buffer *,
                                                     const char *, kefir_size_t, const char *);
