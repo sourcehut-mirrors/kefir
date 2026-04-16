@@ -26,7 +26,7 @@ USE_SANITIZER               Compile with UB sanitizer           yes | *no
 USE_VALGRIND                Run tests with Valgrind             yes | *no
 USE_EXTENSION_SUPPORT       Build kefir with extension support  yes | *no
 KEFIR_TEST_USE_MUSL         Assume musl when running tests      yes | *no
-PLATFORM                    Host platform                       linux | freebsd | openbsd | netbsd | (*autodetect)
+PLATFORM                    Host platform                       linux | freebsd | openbsd | netbsd | dragonfly | (*autodetect)
 ============================================================================================
                                      Tools
 ============================================================================================
