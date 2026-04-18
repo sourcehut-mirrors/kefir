@@ -283,6 +283,7 @@ typedef struct kefir_asmcmp_instruction {
 } kefir_asmcmp_instruction_t;
 
 typedef struct kefir_asmcmp_instruction_handle {
+    struct kefir_asmcmp_instruction instr;
     kefir_asmcmp_instruction_index_t index;
 
     struct {
@@ -290,7 +291,6 @@ typedef struct kefir_asmcmp_instruction_handle {
         kefir_asmcmp_instruction_index_t next;
     } siblings;
 
-    struct kefir_asmcmp_instruction instr;
 } kefir_asmcmp_instruction_handle_t;
 
 typedef struct kefir_asmcmp_label {
@@ -339,6 +339,7 @@ typedef struct kefir_asmcmp_context {
     struct kefir_asmcmp_instruction_handle *code_content;
     kefir_size_t code_length;
     kefir_size_t code_capacity;
+    kefir_bool_t lock_resize;
 
     struct {
         kefir_asmcmp_instruction_index_t head;
@@ -384,10 +385,17 @@ kefir_asmcmp_instruction_index_t kefir_asmcmp_context_instr_next(const struct ke
 kefir_asmcmp_instruction_index_t kefir_asmcmp_context_instr_head(const struct kefir_asmcmp_context *);
 kefir_asmcmp_instruction_index_t kefir_asmcmp_context_instr_tail(const struct kefir_asmcmp_context *);
 kefir_asmcmp_instruction_index_t kefir_asmcmp_context_instr_length(const struct kefir_asmcmp_context *);
+kefir_result_t kefir_asmcmp_context_instr_alloc_uninit(struct kefir_mem *, struct kefir_asmcmp_context *, kefir_size_t,
+                                                       kefir_bool_t, struct kefir_asmcmp_instruction **);
+kefir_result_t kefir_asmcmp_context_unlock_resize(struct kefir_asmcmp_context *);
 kefir_result_t kefir_asmcmp_context_instr_insert_after(struct kefir_mem *, struct kefir_asmcmp_context *,
                                                        kefir_asmcmp_instruction_index_t,
                                                        const struct kefir_asmcmp_instruction *,
                                                        kefir_asmcmp_instruction_index_t *);
+kefir_result_t kefir_asmcmp_context_instr_insert_after_own(struct kefir_mem *, struct kefir_asmcmp_context *,
+                                                           kefir_asmcmp_instruction_index_t,
+                                                           const struct kefir_asmcmp_instruction *,
+                                                           kefir_asmcmp_instruction_index_t *);
 kefir_result_t kefir_asmcmp_context_instr_drop(struct kefir_asmcmp_context *, kefir_asmcmp_instruction_index_t);
 kefir_result_t kefir_asmcmp_context_instr_replace(struct kefir_asmcmp_context *, kefir_asmcmp_instruction_index_t,
                                                   const struct kefir_asmcmp_instruction *);
