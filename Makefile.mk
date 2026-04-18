@@ -4,6 +4,7 @@ USE_SHARED=yes
 USE_SANITIZER=no
 USE_VALGRIND=no
 USE_GCOV=no
+USE_LTO=no
 USE_EXTENSION_SUPPORT=no
 USE_GEN_COMPILE_COMMANDS?=no
 PORTABLE_BOOTSTRAP_BUILD_LIBGCC=no
@@ -50,6 +51,10 @@ EXTRA_LDFLAGS=
 SANITIZER_FLAGS=
 ifeq ($(USE_SHARED),yes)
 CFLAGS+=-fPIC
+endif
+ifeq ($(USE_LTO),yes)
+CFLAGS+=-flto
+LDFLAGS+=-flto
 endif
 WARNING_CFLAGS=-Wall -Wextra -pedantic -Wno-overlength-strings -Wstrict-prototypes -Wformat=2 -Wno-format-nonliteral -Wundef -Wunreachable-code 
 ifeq ($(PROFILE),debug)
