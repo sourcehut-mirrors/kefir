@@ -23,8 +23,16 @@
 #include <stdarg.h>
 #include <stdio.h>
 
-static _Thread_local kefir_size_t next_error_index = 0;
-static _Thread_local struct kefir_error error_stack[KEFIR_ERROR_STACK_SIZE];
+#ifdef KEFIR_ASSUME_MULTI_THREAD
+#define THREAD_LOCAL _Thread_local
+#else
+#define THREAD_LOCAL
+#endif
+
+static THREAD_LOCAL kefir_size_t next_error_index = 0;
+static THREAD_LOCAL struct kefir_error error_stack[KEFIR_ERROR_STACK_SIZE];
+
+#undef THREAD_LOCAL
 
 const struct kefir_error *kefir_current_error(void) {
     if (next_error_index != 0) {
@@ -75,7 +83,7 @@ kefir_result_t kefir_set_error(kefir_result_t code, const char *message, const c
         current_error->prev_error = NULL;
     }
     current_error->error_overflow = ++next_error_index == KEFIR_ERROR_STACK_SIZE;
-    memset(current_error->payload, 0, KEFIR_ERROR_PAYLOAD_LENGTH);
+    current_error->payload[0] = '\0';
     current_error->payload_type = KEFIR_ERROR_PAYLOAD_NONE;
     if (error_ptr != NULL) {
         *error_ptr = current_error;
