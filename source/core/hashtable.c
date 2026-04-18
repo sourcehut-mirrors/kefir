@@ -70,7 +70,13 @@ static kefir_result_t find_position_for_insert(const struct kefir_hashtable_ops 
                                                struct kefir_hashtable_entry *entries, kefir_uint8_t *entry_states,
                                                kefir_size_t capacity, kefir_hashtable_key_t key,
                                                kefir_size_t *position_ptr, kefir_size_t *collisions_ptr) {
-    KEFIR_HASHTABLE_FIND_POSITION_FOR_INSERT(ops, entries, entry_states, capacity, key, position_ptr, collisions_ptr);
+    if (ops == &kefir_hashtable_uint_ops) {
+        KEFIR_HASHTABLE_FIND_POSITION_FOR_INSERT(kefir_hashtable_uint_hash, kefir_hashtable_uint_equal, NULL, entries,
+                                                 entry_states, capacity, key, position_ptr, collisions_ptr);
+    } else {
+        KEFIR_HASHTABLE_FIND_POSITION_FOR_INSERT(ops->hash, ops->equal, ops->payload, entries, entry_states, capacity,
+                                                 key, position_ptr, collisions_ptr);
+    }
 }
 
 static kefir_result_t rehash(struct kefir_mem *, struct kefir_hashtable *, kefir_size_t);
@@ -156,18 +162,26 @@ kefir_result_t kefir_hashtable_delete(struct kefir_mem *mem, struct kefir_hashta
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(hashtable != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid hashtable"));
 
-    KEFIR_HASHTABLE_HAS(
-        hashtable, key,
-        {
-            if (hashtable->cleanup.callback != NULL) {
-                REQUIRE_OK(hashtable->cleanup.callback(mem, hashtable, hashtable->entries[index].key,
-                                                       hashtable->entries[index].value, hashtable->cleanup.payload));
-            }
-            hashtable->entry_states[index] = KEFIR_HASHTABLE_ENTRY_DELETED;
-            hashtable->occupied--;
-            return KEFIR_OK;
-        },
+#define DELETE(_ops_hash, _ops_equal, _ops_payload)                                                                   \
+    KEFIR_HASHTABLE_HAS(                                                                                              \
+        hashtable, _ops_hash, _ops_equal, _ops_payload, key,                                                          \
+        {                                                                                                             \
+            if (hashtable->cleanup.callback != NULL) {                                                                \
+                REQUIRE_OK(hashtable->cleanup.callback(mem, hashtable, hashtable->entries[index].key,                 \
+                                                       hashtable->entries[index].value, hashtable->cleanup.payload)); \
+            }                                                                                                         \
+            hashtable->entry_states[index] = KEFIR_HASHTABLE_ENTRY_DELETED;                                           \
+            hashtable->occupied--;                                                                                    \
+            return KEFIR_OK;                                                                                          \
+        },                                                                                                            \
         return KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Entry with provided key does not exist in the hashtable"););
+
+    if (hashtable->ops == &kefir_hashtable_uint_ops) {
+        DELETE(kefir_hashtable_uint_hash, kefir_hashtable_uint_equal, NULL);
+    } else {
+        DELETE(hashtable->ops->hash, hashtable->ops->equal, hashtable->ops->payload);
+    }
+#undef DELETE
 }
 
 kefir_result_t kefir_hashtable_clear(struct kefir_mem *mem, struct kefir_hashtable *hashtable) {
@@ -227,27 +241,59 @@ kefir_result_t kefir_hashtable_at_mut(const struct kefir_hashtable *hashtable, k
                                       kefir_hashtable_value_t **value_ptr) {
     REQUIRE(hashtable != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid hashtable"));
 
-    KEFIR_HASHTABLE_HAS(
-        hashtable, key,
-        {
-            ASSIGN_PTR(value_ptr, &hashtable->entries[index].value);
-            return KEFIR_OK;
-        },
+#define AT_MUT(_ops_hash, _ops_equal, _ops_payload)                  \
+    KEFIR_HASHTABLE_HAS(                                             \
+        hashtable, _ops_hash, _ops_equal, _ops_payload, key,         \
+        {                                                            \
+            ASSIGN_PTR(value_ptr, &hashtable->entries[index].value); \
+            return KEFIR_OK;                                         \
+        },                                                           \
         return KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find requested key in the hashtable"););
+
+    if (hashtable->ops == &kefir_hashtable_uint_ops) {
+        AT_MUT(kefir_hashtable_uint_hash, kefir_hashtable_uint_equal, NULL);
+    } else {
+        AT_MUT(hashtable->ops->hash, hashtable->ops->equal, hashtable->ops->payload);
+    }
+
+#undef AT_MUT
 }
 
 kefir_result_t kefir_hashtable_at(const struct kefir_hashtable *hashtable, kefir_hashtable_key_t key,
                                   kefir_hashtable_value_t *value_ptr) {
-    kefir_hashtable_value_t *ptr;
-    REQUIRE_OK(kefir_hashtable_at_mut(hashtable, key, &ptr));
-    ASSIGN_PTR(value_ptr, *ptr);
-    return KEFIR_OK;
+    REQUIRE(hashtable != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid hashtable"));
+
+#define AT(_ops_hash, _ops_equal, _ops_payload)                     \
+    KEFIR_HASHTABLE_HAS(                                            \
+        hashtable, _ops_hash, _ops_equal, _ops_payload, key,        \
+        {                                                           \
+            ASSIGN_PTR(value_ptr, hashtable->entries[index].value); \
+            return KEFIR_OK;                                        \
+        },                                                          \
+        return KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find requested key in the hashtable"););
+
+    if (hashtable->ops == &kefir_hashtable_uint_ops) {
+        AT(kefir_hashtable_uint_hash, kefir_hashtable_uint_equal, NULL);
+    } else {
+        AT(hashtable->ops->hash, hashtable->ops->equal, hashtable->ops->payload);
+    }
+
+#undef AT_MUT
 }
 
 kefir_bool_t kefir_hashtable_has(const struct kefir_hashtable *hashtable, kefir_hashtable_key_t key) {
     REQUIRE(hashtable != NULL, false);
 
-    KEFIR_HASHTABLE_HAS(hashtable, key, return true;, return false;);
+#define HAS(_ops_hash, _ops_equal, _ops_payload) \
+    KEFIR_HASHTABLE_HAS(hashtable, _ops_hash, _ops_equal, _ops_payload, key, return true;, return false;);
+
+    if (hashtable->ops == &kefir_hashtable_uint_ops) {
+        HAS(kefir_hashtable_uint_hash, kefir_hashtable_uint_equal, NULL);
+    } else {
+        HAS(hashtable->ops->hash, hashtable->ops->equal, hashtable->ops->payload);
+    }
+
+#undef HAS
 }
 
 kefir_result_t kefir_hashtable_iter(const struct kefir_hashtable *hashtable, struct kefir_hashtable_iterator *iter,
@@ -285,16 +331,5 @@ kefir_result_t kefir_hashtable_next(struct kefir_hashtable_iterator *iter, kefir
     return KEFIR_SET_ERROR(KEFIR_ITERATOR_END, "End of hashtable iterator");
 }
 
-static kefir_hashtable_hash_t uint_hash(kefir_hashtable_key_t key, void *payload) {
-    UNUSED(payload);
-
-    return kefir_splitmix64((kefir_uint64_t) key);
-}
-
-static kefir_bool_t uint_equal(kefir_hashtable_key_t key1, kefir_hashtable_key_t key2, void *payload) {
-    UNUSED(payload);
-
-    return key1 == key2;
-}
-
-const struct kefir_hashtable_ops kefir_hashtable_uint_ops = {.hash = uint_hash, .equal = uint_equal, .payload = NULL};
+const struct kefir_hashtable_ops kefir_hashtable_uint_ops = {
+    .hash = kefir_hashtable_uint_hash, .equal = kefir_hashtable_uint_equal, .payload = NULL};

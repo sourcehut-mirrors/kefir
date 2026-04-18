@@ -50,7 +50,13 @@ static kefir_result_t find_position_for_insert(const struct kefir_hashtable_ops 
                                                struct kefir_hashset_entry *entries, kefir_uint8_t *entry_states,
                                                kefir_size_t capacity, kefir_hashset_key_t key,
                                                kefir_size_t *position_ptr, kefir_size_t *collisions_ptr) {
-    KEFIR_HASHTABLE_FIND_POSITION_FOR_INSERT(ops, entries, entry_states, capacity, key, position_ptr, collisions_ptr);
+    if (ops == &kefir_hashtable_uint_ops) {
+        KEFIR_HASHTABLE_FIND_POSITION_FOR_INSERT(kefir_hashtable_uint_hash, kefir_hashtable_uint_equal, NULL, entries,
+                                                 entry_states, capacity, key, position_ptr, collisions_ptr);
+    } else {
+        KEFIR_HASHTABLE_FIND_POSITION_FOR_INSERT(ops->hash, ops->equal, ops->payload, entries, entry_states, capacity,
+                                                 key, position_ptr, collisions_ptr);
+    }
 }
 
 static kefir_result_t rehash(struct kefir_mem *, struct kefir_hashset *, kefir_size_t);
@@ -182,15 +188,22 @@ kefir_result_t kefir_hashset_ensure(struct kefir_mem *mem, struct kefir_hashset 
 
 kefir_result_t kefir_hashset_delete(struct kefir_hashset *hashset, kefir_hashset_key_t key) {
     REQUIRE(hashset != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid hashset"));
+#define DELETE(_hash, _equal, _payload)                                   \
+    KEFIR_HASHTABLE_HAS(                                                  \
+        hashset, _hash, _equal, _payload, key,                            \
+        {                                                                 \
+            hashset->entry_states[index] = KEFIR_HASHTABLE_ENTRY_DELETED; \
+            hashset->occupied--;                                          \
+            return KEFIR_OK;                                              \
+        },                                                                \
+        return KEFIR_OK;)
 
-    KEFIR_HASHTABLE_HAS(
-        hashset, key,
-        {
-            hashset->entry_states[index] = KEFIR_HASHTABLE_ENTRY_DELETED;
-            hashset->occupied--;
-            return KEFIR_OK;
-        },
-        return KEFIR_OK;);
+    if (hashset->ops == &kefir_hashtable_uint_ops) {
+        DELETE(kefir_hashtable_uint_hash, kefir_hashtable_uint_equal, NULL);
+    } else {
+        DELETE(hashset->ops->hash, hashset->ops->equal, hashset->ops->payload);
+    }
+#undef DELETE
 }
 
 kefir_result_t kefir_hashset_merge(struct kefir_mem *mem, struct kefir_hashset *dst_hashset,
@@ -226,7 +239,16 @@ kefir_result_t kefir_hashset_subtract(struct kefir_hashset *dst_hashset, const s
 kefir_bool_t kefir_hashset_has(const struct kefir_hashset *hashset, kefir_hashset_key_t key) {
     REQUIRE(hashset != NULL, false);
 
-    KEFIR_HASHTABLE_HAS(hashset, key, return true;, return false;);
+#define HAS(_hash, _equal, _payload)                                                                               \
+    KEFIR_HASHTABLE_HAS(hashset, hashset->ops->hash, hashset->ops->equal, hashset->ops->payload, key, return true; \
+                        , return false;)
+
+    if (hashset->ops == &kefir_hashtable_uint_ops) {
+        HAS(kefir_hashtable_uint_hash, kefir_hashtable_uint_equal, NULL);
+    } else {
+        HAS(hashset->ops->hash, hashset->ops->equal, hashset->ops->payload);
+    }
+#undef HAS
 }
 
 kefir_bool_t kefir_hashset_has_difference(const struct kefir_hashset *hashset, const struct kefir_hashset *hashset2) {
