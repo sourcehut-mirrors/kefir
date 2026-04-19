@@ -161,8 +161,8 @@ test10:
     mov %rdx, %rax
     ret
 .L__kefir_func_test10_label7:
-    mov %edi, %edx
     mov %esi, %ecx
+    mov %edi, %edx
     jmp .L__kefir_func_test10_label2
 .L__kefir_text_func_test10_end:
 

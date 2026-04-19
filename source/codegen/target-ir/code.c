@@ -468,23 +468,22 @@ static kefir_result_t store_strings_in_operand(struct kefir_mem *mem, struct kef
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_codegen_target_ir_code_new_instruction(
+kefir_result_t kefir_codegen_target_ir_code_new_instruction_inplace(
     struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code, kefir_codegen_target_ir_block_ref_t block_ref,
-    kefir_codegen_target_ir_instruction_ref_t after_instr_ref,
-    const struct kefir_codegen_target_ir_operation *operation,
-    const struct kefir_codegen_target_ir_instruction_metadata *metadata,
+    struct kefir_codegen_target_ir_operation **operation,
+    const struct kefir_codegen_target_ir_instruction_metadata *metadata, kefir_size_t reserve,
     kefir_codegen_target_ir_instruction_ref_t *instr_ref_ptr) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR code"));
     REQUIRE(block_ref != KEFIR_ID_NONE && block_ref < code->blocks_length,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR block reference"));
-    REQUIRE(operation != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR operation"));
+    REQUIRE(operation != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to target IR operation"));
 
-    struct kefir_codegen_target_ir_block *block = &code->blocks[block_ref];
-    struct kefir_codegen_target_ir_instruction *after_instr = NULL, *instr = NULL;
+    struct kefir_codegen_target_ir_instruction *instr = NULL;
 
-    if (code->code_length + 1 >= code->code_capacity) {
-        kefir_size_t new_capacity = MAX(code->code_capacity * 9 / 8, 128);
+    if (code->code_length + 1 + reserve >= code->code_capacity) {
+        kefir_size_t new_capacity = MAX(code->code_capacity * 9 / 8 + 1 + reserve, 128);
         struct kefir_codegen_target_ir_instruction *new_code =
             KEFIR_REALLOC(mem, code->code, sizeof(struct kefir_codegen_target_ir_instruction) * new_capacity);
         REQUIRE(new_code != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate target IR code"));
@@ -492,19 +491,10 @@ kefir_result_t kefir_codegen_target_ir_code_new_instruction(
         code->code = new_code;
     }
 
-    if (after_instr_ref != KEFIR_ID_NONE) {
-        REQUIRE(after_instr_ref < code->code_length,
-                KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target codeblock reference"));
-        after_instr = &code->code[after_instr_ref];
-        REQUIRE(after_instr->block_ref == block_ref,
-                KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST,
-                                "Expected target IR predecessor instruction to belong to the same block"));
-    }
     instr = &code->code[code->code_length];
 
     instr->instr_ref = code->code_length;
     instr->block_ref = block_ref;
-    instr->operation = *operation;
     if (metadata != NULL) {
         instr->metadata = *metadata;
     } else {
@@ -520,6 +510,42 @@ kefir_result_t kefir_codegen_target_ir_code_new_instruction(
                 KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Unable to insert source location into string pool"));
     }
 
+    REQUIRE_OK(kefir_hashtable_init(&instr->aspects.all, &kefir_hashtable_uint_ops));
+    for (kefir_size_t i = 0; i < KEFIR_CODEGEN_TARGET_IR_OPERATION_DIRECT_OUTPUT_ASPECT_CACHE; i++) {
+        instr->aspects.direct_output[i] = ~0ull;
+    }
+    for (kefir_size_t i = 0; i < KEFIR_CODEGEN_TARGET_IR_OPERATION_INDIRECT_OUTPUT_ASPECT_CACHE; i++) {
+        instr->aspects.indirect_output[i] = ~0ull;
+    }
+    instr->use_entry_top = (kefir_size_t) ~0ull;
+
+    code->code_length++;
+    *operation = &instr->operation;
+    ASSIGN_PTR(instr_ref_ptr, instr->instr_ref);
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_codegen_target_ir_code_finalize_instruction_inplace(
+    struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code,
+    kefir_codegen_target_ir_instruction_ref_t after_instr_ref, kefir_codegen_target_ir_instruction_ref_t instr_ref) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR code"));
+    REQUIRE(instr_ref != KEFIR_ID_NONE && instr_ref < code->code_length,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR instruction reference"));
+
+    struct kefir_codegen_target_ir_instruction *instr = &code->code[instr_ref];
+    struct kefir_codegen_target_ir_block *block = &code->blocks[instr->block_ref];
+
+    struct kefir_codegen_target_ir_instruction *after_instr = NULL;
+    if (after_instr_ref != KEFIR_ID_NONE) {
+        REQUIRE(after_instr_ref < code->code_length,
+                KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target codeblock reference"));
+        after_instr = &code->code[after_instr_ref];
+        REQUIRE(after_instr->block_ref == instr->block_ref,
+                KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST,
+                                "Expected target IR predecessor instruction to belong to the same block"));
+    }
+
     if (instr->operation.opcode == code->klass->phi_opcode) {
         instr->operation.phi_node.links = NULL;
         instr->operation.phi_node.links_length = 0;
@@ -533,7 +559,7 @@ kefir_result_t kefir_codegen_target_ir_code_new_instruction(
                 kefir_codegen_target_ir_code_new_block(mem, code, &instr->operation.inline_asm_node.gate_block_ref));
             REQUIRE_OK(kefir_hashset_add(mem, &code->gate_blocks,
                                          (kefir_hashset_key_t) instr->operation.inline_asm_node.gate_block_ref));
-            block = &code->blocks[block_ref];
+            block = &code->blocks[instr->block_ref];
         } else {
             instr->operation.inline_asm_node.gate_block_ref = KEFIR_ID_NONE;
         }
@@ -550,14 +576,6 @@ kefir_result_t kefir_codegen_target_ir_code_new_instruction(
             REQUIRE_OK(store_strings_in_operand(mem, code, &instr->operation.parameters[i]));
         }
     }
-    REQUIRE_OK(kefir_hashtable_init(&instr->aspects.all, &kefir_hashtable_uint_ops));
-    for (kefir_size_t i = 0; i < KEFIR_CODEGEN_TARGET_IR_OPERATION_DIRECT_OUTPUT_ASPECT_CACHE; i++) {
-        instr->aspects.direct_output[i] = ~0ull;
-    }
-    for (kefir_size_t i = 0; i < KEFIR_CODEGEN_TARGET_IR_OPERATION_INDIRECT_OUTPUT_ASPECT_CACHE; i++) {
-        instr->aspects.indirect_output[i] = ~0ull;
-    }
-    instr->use_entry_top = (kefir_size_t) ~0ull;
 
     if (after_instr == NULL) {
         if (block->control_flow.head != KEFIR_ID_NONE) {
@@ -585,9 +603,29 @@ kefir_result_t kefir_codegen_target_ir_code_new_instruction(
         }
     }
 
-    code->code_length++;
     REQUIRE_OK(record_uses(mem, code, instr->instr_ref, true));
-    ASSIGN_PTR(instr_ref_ptr, instr->instr_ref);
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_codegen_target_ir_code_new_instruction(
+    struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code, kefir_codegen_target_ir_block_ref_t block_ref,
+    kefir_codegen_target_ir_instruction_ref_t after_instr_ref,
+    const struct kefir_codegen_target_ir_operation *operation,
+    const struct kefir_codegen_target_ir_instruction_metadata *metadata,
+    kefir_codegen_target_ir_instruction_ref_t *instr_ref_ptr) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR code"));
+    REQUIRE(block_ref != KEFIR_ID_NONE && block_ref < code->blocks_length,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR block reference"));
+    REQUIRE(operation != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR operation"));
+
+    kefir_codegen_target_ir_instruction_ref_t instr_ref;
+    struct kefir_codegen_target_ir_operation *oper = NULL;
+    REQUIRE_OK(
+        kefir_codegen_target_ir_code_new_instruction_inplace(mem, code, block_ref, &oper, metadata, 0, &instr_ref));
+    *oper = *operation;
+    REQUIRE_OK(kefir_codegen_target_ir_code_finalize_instruction_inplace(mem, code, after_instr_ref, instr_ref));
+    ASSIGN_PTR(instr_ref_ptr, instr_ref);
     return KEFIR_OK;
 }
 

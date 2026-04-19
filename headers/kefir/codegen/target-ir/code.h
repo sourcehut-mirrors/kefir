@@ -468,6 +468,14 @@ kefir_result_t kefir_codegen_target_ir_code_new_instruction(struct kefir_mem *, 
                                                             const struct kefir_codegen_target_ir_operation *,
                                                             const struct kefir_codegen_target_ir_instruction_metadata *,
                                                             kefir_codegen_target_ir_instruction_ref_t *);
+kefir_result_t kefir_codegen_target_ir_code_new_instruction_inplace(
+    struct kefir_mem *, struct kefir_codegen_target_ir_code *, kefir_codegen_target_ir_block_ref_t,
+    struct kefir_codegen_target_ir_operation **, const struct kefir_codegen_target_ir_instruction_metadata *,
+    kefir_size_t, kefir_codegen_target_ir_instruction_ref_t *);
+kefir_result_t kefir_codegen_target_ir_code_finalize_instruction_inplace(struct kefir_mem *,
+                                                                         struct kefir_codegen_target_ir_code *,
+                                                                         kefir_codegen_target_ir_instruction_ref_t,
+                                                                         kefir_codegen_target_ir_instruction_ref_t);
 kefir_codegen_target_ir_instruction_ref_t kefir_codegen_target_ir_code_control_next(
     const struct kefir_codegen_target_ir_code *, kefir_codegen_target_ir_instruction_ref_t);
 kefir_codegen_target_ir_instruction_ref_t kefir_codegen_target_ir_code_control_prev(

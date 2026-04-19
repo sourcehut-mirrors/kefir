@@ -248,8 +248,8 @@ test_dec32_norm:
     mov %rsi, %rbx
     imul %rsi, %rbx
     xor %eax, %eax
-    mov %rax, %r13
     movaps %xmm0, -48(%rbp)
+    mov %rax, %r13
 .L__kefir_func_test_dec32_norm_label2:
     cmp %rbx, %r13
     jb .L__kefir_func_test_dec32_norm_label4
@@ -610,8 +610,8 @@ test_dec64_norm:
     mov %rsi, %rbx
     imul %rsi, %rbx
     xor %eax, %eax
-    mov %rax, %r13
     movaps %xmm0, -48(%rbp)
+    mov %rax, %r13
 .L__kefir_func_test_dec64_norm_label2:
     cmp %rbx, %r13
     jb .L__kefir_func_test_dec64_norm_label4
@@ -1484,8 +1484,8 @@ test_dec128_norm:
     mov %rsi, %rbx
     imul %rsi, %rbx
     xor %eax, %eax
-    mov %rax, %r13
     movaps %xmm0, -48(%rbp)
+    mov %rax, %r13
 .L__kefir_func_test_dec128_norm_label2:
     cmp %rbx, %r13
     jb .L__kefir_func_test_dec128_norm_label4

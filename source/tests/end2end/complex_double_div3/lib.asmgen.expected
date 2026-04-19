@@ -410,8 +410,8 @@ __kefir_softfloat_complex_double_div:
     movaps -160(%rbp), %xmm0
     mov %r12d, %edi
     call __kefir_softfloat_scalbn
-    mov %rbx, %rax
     movaps %xmm0, -160(%rbp)
+    mov %rbx, %rax
     jmp .L__kefir_runtime_func___kefir_softfloat_complex_double_div_label3
 .L__kefir_runtime_text_func___kefir_softfloat_complex_double_div_end:
 .section .rodata
@@ -702,8 +702,8 @@ __kefir_softfloat_ilogb:
     shr $63, %rdi
     cmp $0, %rax
     jne .L__kefir_runtime_func___kefir_softfloat_ilogb_label4
-    mov %esi, %edx
     mov %rdi, %rax
+    mov %esi, %edx
     jmp .L__kefir_runtime_func___kefir_softfloat_ilogb_label8
 .L__kefir_runtime_func___kefir_softfloat_ilogb_label12:
     movq .L__kefir_runtime_func___kefir_softfloat_ilogb_label16(%rip), %xmm0

@@ -110,8 +110,7 @@ testx:
     lea 16(%rax), %rcx
     movq %rcx, -24(%rbp)
     movq (%rax), %rcx
-    movq 8(%rax), %rax
-    mov %rax, %rdx
+    movq 8(%rax), %rdx
     mov %rcx, %rax
     jmp .L__kefir_func_testx_label8
 .L__kefir_func_testx_label9:
