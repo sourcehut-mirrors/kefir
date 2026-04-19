@@ -552,7 +552,7 @@ static kefir_result_t attach_label_to_instr(struct kefir_mem *mem, struct kefir_
                 label->siblings.next == KEFIR_ASMCMP_INDEX_NONE,
             KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected asmcmp label state"));
 
-    kefir_asmcmp_label_index_t prev_label_idx = KEFIR_ASMCMP_INDEX_NONE;
+    kefir_asmcmp_label_index_t next_label_idx = KEFIR_ASMCMP_INDEX_NONE;
     struct kefir_hashtree_node *node;
     kefir_result_t res = kefir_hashtree_at(&context->label_positions, (kefir_hashtree_key_t) target_instr, &node);
     if (res == KEFIR_NOT_FOUND) {
@@ -560,15 +560,13 @@ static kefir_result_t attach_label_to_instr(struct kefir_mem *mem, struct kefir_
                                          (kefir_hashtree_value_t) label->label));
     } else {
         REQUIRE_OK(res);
-        struct kefir_asmcmp_label *prev_label = &context->labels[(kefir_asmcmp_label_index_t) node->value];
-        for (; prev_label->siblings.next != KEFIR_ASMCMP_INDEX_NONE;
-             prev_label = &context->labels[prev_label->siblings.next])
-            ;
-        prev_label->siblings.next = label->label;
-        prev_label_idx = prev_label->label;
+        struct kefir_asmcmp_label *next_label = &context->labels[(kefir_asmcmp_label_index_t) node->value];
+        next_label->siblings.prev = label->label;
+        next_label_idx = next_label->label;
+        node->value = label->label;
     }
 
-    label->siblings.prev = prev_label_idx;
+    label->siblings.next = next_label_idx;
     label->position = target_instr;
     label->attached = true;
     return KEFIR_OK;
