@@ -1452,7 +1452,7 @@ test2:
 #            "block_ref": 2,
 #            "code": [
 #                {
-#                    "instr_ref": 23,
+#                    "instr_ref": 22,
 #                    "opcode": "mov",
 #                    "parameters": [
 #                        {
@@ -1501,7 +1501,7 @@ test2:
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 23,
+#                            "instr_ref": 22,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -2008,7 +2008,7 @@ test2:
 #            "block_ref": 5,
 #            "code": [
 #                {
-#                    "instr_ref": 47,
+#                    "instr_ref": 46,
 #                    "opcode": "assign",
 #                    "parameters": [
 #                        {
@@ -2066,7 +2066,7 @@ test2:
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 47,
+#                            "instr_ref": 46,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -2087,7 +2087,7 @@ test2:
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 47,
+#                            "instr_ref": 46,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -3828,7 +3828,7 @@ test4:
 #            "block_ref": 3,
 #            "code": [
 #                {
-#                    "instr_ref": 16,
+#                    "instr_ref": 15,
 #                    "opcode": "mov",
 #                    "parameters": [
 #                        {
@@ -3908,7 +3908,7 @@ test4:
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 16,
+#                            "instr_ref": 15,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0

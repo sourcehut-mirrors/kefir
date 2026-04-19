@@ -425,10 +425,12 @@ static kefir_result_t resolve_input_virtual_register(struct constructor_state *s
             return KEFIR_SET_ERROR(KEFIR_INVALID_STATE,
                                    "Failed to resolve input virtual register in target IR construction");
         } else {
-            struct kefir_codegen_target_ir_operation operation = {.opcode = state->code->klass->phi_opcode};
-            REQUIRE_OK(kefir_codegen_target_ir_code_new_instruction(state->mem, state->code, block_state->block_ref,
-                                                                    KEFIR_ID_NONE, &operation, NULL,
-                                                                    &value_ref->instr_ref));
+            struct kefir_codegen_target_ir_operation *operation;
+            REQUIRE_OK(kefir_codegen_target_ir_code_new_instruction_inplace(
+                state->mem, state->code, block_state->block_ref, &operation, NULL, 0, &value_ref->instr_ref));
+            operation->opcode = state->code->klass->phi_opcode;
+            REQUIRE_OK(kefir_codegen_target_ir_code_finalize_instruction_inplace(state->mem, state->code, KEFIR_ID_NONE,
+                                                                                 value_ref->instr_ref));
             value_ref->aspect = KEFIR_CODEGEN_TARGET_IR_VALUE_DIRECT_OUTPUT(0);
             REQUIRE_OK(store_virtual_reigster_output(state, block_state, vreg_idx,
                                                      KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT, *value_ref));
@@ -439,6 +441,15 @@ static kefir_result_t resolve_input_virtual_register(struct constructor_state *s
     return KEFIR_OK;
 }
 
+#define INIT_OPERATION_WITH(_oper, _opcode)                                                      \
+    do {                                                                                         \
+        (_oper)->opcode = (_opcode);                                                             \
+        for (kefir_size_t i = 0; i < KEFIR_CODEGEN_TARGET_IR_OPERATION_NUM_OF_PARAMETERS; i++) { \
+            (_oper)->parameters[i].type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_NONE;             \
+            (_oper)->parameters[i].segment.present = false;                                      \
+        }                                                                                        \
+    } while (0)
+
 static kefir_result_t resolve_resource(struct constructor_state *state, struct code_block_state *block_state,
                                        kefir_codegen_target_ir_resource_id_t resource_id,
                                        struct kefir_codegen_target_ir_value_ref *value_ref) {
@@ -448,9 +459,12 @@ static kefir_result_t resolve_resource(struct constructor_state *state, struct c
         REQUIRE_OK(res);
         *value_ref = KEFIR_CODEGEN_TARGET_IR_VALUE_REF_FROM(value);
     } else if (block_state->block_ref == state->code->entry_block) {
-        struct kefir_codegen_target_ir_operation operation = {.opcode = state->code->klass->placeholder_opcode};
-        REQUIRE_OK(kefir_codegen_target_ir_code_new_instruction(
-            state->mem, state->code, block_state->block_ref, KEFIR_ID_NONE, &operation, NULL, &value_ref->instr_ref));
+        struct kefir_codegen_target_ir_operation *operation;
+        REQUIRE_OK(kefir_codegen_target_ir_code_new_instruction_inplace(state->mem, state->code, block_state->block_ref,
+                                                                        &operation, NULL, 0, &value_ref->instr_ref));
+        INIT_OPERATION_WITH(operation, state->code->klass->placeholder_opcode);
+        REQUIRE_OK(kefir_codegen_target_ir_code_finalize_instruction_inplace(state->mem, state->code, KEFIR_ID_NONE,
+                                                                             value_ref->instr_ref));
         value_ref->aspect = KEFIR_CODEGEN_TARGET_IR_VALUE_RESOURCE(resource_id);
         REQUIRE_OK(kefir_codegen_target_ir_code_add_aspect(
             state->mem, state->code, *value_ref,
@@ -465,9 +479,12 @@ static kefir_result_t resolve_resource(struct constructor_state *state, struct c
             kefir_hashset_add(state->mem, &state->block_resource_defs,
                               (kefir_hashtable_key_t) (((kefir_uint64_t) block_state->block_ref) << 32) | resource_id));
     } else {
-        struct kefir_codegen_target_ir_operation operation = {.opcode = state->code->klass->phi_opcode};
-        REQUIRE_OK(kefir_codegen_target_ir_code_new_instruction(
-            state->mem, state->code, block_state->block_ref, KEFIR_ID_NONE, &operation, NULL, &value_ref->instr_ref));
+        struct kefir_codegen_target_ir_operation *operation;
+        REQUIRE_OK(kefir_codegen_target_ir_code_new_instruction_inplace(state->mem, state->code, block_state->block_ref,
+                                                                        &operation, NULL, 0, &value_ref->instr_ref));
+        operation->opcode = state->code->klass->phi_opcode;
+        REQUIRE_OK(kefir_codegen_target_ir_code_finalize_instruction_inplace(state->mem, state->code, KEFIR_ID_NONE,
+                                                                             value_ref->instr_ref));
         value_ref->aspect = KEFIR_CODEGEN_TARGET_IR_VALUE_RESOURCE(resource_id);
         REQUIRE_OK(kefir_codegen_target_ir_code_add_aspect(
             state->mem, state->code, *value_ref,
@@ -679,13 +696,16 @@ static kefir_result_t terminate_current_block(struct constructor_state *state,
     kefir_codegen_target_ir_instruction_ref_t current_block_tail_ref =
         kefir_codegen_target_ir_code_block_control_tail(state->code, current_block_state->block_ref);
     if (current_block_tail_ref == KEFIR_ID_NONE) {
-        struct kefir_codegen_target_ir_operation operation = {0};
-        REQUIRE_OK(state->code->klass->make_unconditional_jump(next_block_state->block_ref, &operation,
+        kefir_codegen_target_ir_instruction_ref_t instr_ref;
+        struct kefir_codegen_target_ir_operation *operation;
+        REQUIRE_OK(kefir_codegen_target_ir_code_new_instruction_inplace(
+            state->mem, state->code, current_block_state->block_ref, &operation, NULL, 0, &instr_ref));
+        INIT_OPERATION_WITH(operation, 0);
+        REQUIRE_OK(state->code->klass->make_unconditional_jump(next_block_state->block_ref, operation,
                                                                state->code->klass->payload));
-        REQUIRE_OK(kefir_codegen_target_ir_code_new_instruction(
-            state->mem, state->code, current_block_state->block_ref,
-            kefir_codegen_target_ir_code_block_control_tail(state->code, current_block_state->block_ref), &operation,
-            NULL, NULL));
+        REQUIRE_OK(kefir_codegen_target_ir_code_finalize_instruction_inplace(
+            state->mem, state->code,
+            kefir_codegen_target_ir_code_block_control_tail(state->code, current_block_state->block_ref), instr_ref));
         return KEFIR_OK;
     }
 
@@ -698,22 +718,28 @@ static kefir_result_t terminate_current_block(struct constructor_state *state,
                                                        state->code->klass->payload));
 
     if (!terminator_props.block_terminator) {
-        struct kefir_codegen_target_ir_operation operation = {0};
-        REQUIRE_OK(state->code->klass->make_unconditional_jump(next_block_state->block_ref, &operation,
+        kefir_codegen_target_ir_instruction_ref_t instr_ref;
+        struct kefir_codegen_target_ir_operation *operation;
+        REQUIRE_OK(kefir_codegen_target_ir_code_new_instruction_inplace(
+            state->mem, state->code, current_block_state->block_ref, &operation, &metadata, 0, &instr_ref));
+        INIT_OPERATION_WITH(operation, 0);
+        REQUIRE_OK(state->code->klass->make_unconditional_jump(next_block_state->block_ref, operation,
                                                                state->code->klass->payload));
-        REQUIRE_OK(kefir_codegen_target_ir_code_new_instruction(
-            state->mem, state->code, current_block_state->block_ref,
-            kefir_codegen_target_ir_code_block_control_tail(state->code, current_block_state->block_ref), &operation,
-            &metadata, NULL));
+        REQUIRE_OK(kefir_codegen_target_ir_code_finalize_instruction_inplace(
+            state->mem, state->code,
+            kefir_codegen_target_ir_code_block_control_tail(state->code, current_block_state->block_ref), instr_ref));
     } else if (terminator_props.fallthrough) {
-        struct kefir_codegen_target_ir_operation operation = {0};
+        kefir_codegen_target_ir_instruction_ref_t instr_ref;
+        struct kefir_codegen_target_ir_operation *operation;
+        REQUIRE_OK(kefir_codegen_target_ir_code_new_instruction_inplace(
+            state->mem, state->code, current_block_state->block_ref, &operation, &metadata, 0, &instr_ref));
+        INIT_OPERATION_WITH(operation, 0);
         REQUIRE_OK(state->code->klass->finalize_conditional_jump(
-            &current_block_tail->operation, next_block_state->block_ref, &operation, state->code->klass->payload));
+            &current_block_tail->operation, next_block_state->block_ref, operation, state->code->klass->payload));
+        REQUIRE_OK(kefir_codegen_target_ir_code_finalize_instruction_inplace(
+            state->mem, state->code,
+            kefir_codegen_target_ir_code_block_control_tail(state->code, current_block_state->block_ref), instr_ref));
         REQUIRE_OK(kefir_codegen_target_ir_code_drop_instruction(state->mem, state->code, current_block_tail_ref));
-        REQUIRE_OK(kefir_codegen_target_ir_code_new_instruction(
-            state->mem, state->code, current_block_state->block_ref,
-            kefir_codegen_target_ir_code_block_control_tail(state->code, current_block_state->block_ref), &operation,
-            &metadata, NULL));
     } else if (terminator_props.undefined_target && !terminator_props.inline_assembly &&
                state->code->indirect_jump_gate_block == KEFIR_ID_NONE) {
         REQUIRE(
@@ -819,29 +845,26 @@ static kefir_result_t link_vregs_impl(struct constructor_state *state, struct co
                 KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected linking virtual register pair"));
         REQUIRE(vreg2->type != KEFIR_ASMCMP_VIRTUAL_REGISTER_PAIR,
                 KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected linking virtual register pair"));
-        struct kefir_codegen_target_ir_operation operation = {
-            .opcode = state->code->klass->assign_opcode,
-            .parameters[0].type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_NONE,
-            .parameters[1].type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_NONE,
-            .parameters[2].type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_NONE,
-            .parameters[3].type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_NONE};
+        struct kefir_codegen_target_ir_operation *operation;
 
-        if (vreg2->type == KEFIR_ASMCMP_VIRTUAL_REGISTER_IMMEDIATE_INTEGER) {
-            operation.parameters[0].type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INTEGER;
-            operation.parameters[0].immediate.int_immediate = vreg2->parameters.immediate_int;
-            operation.parameters[0].immediate.variant = KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT;
-        } else {
-            operation.parameters[0].type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF;
-            REQUIRE_OK(resolve_input_virtual_register(state, current_block_state, vreg2_idx,
-                                                      &operation.parameters[0].direct.value_ref));
-            operation.parameters[0].direct.variant = KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT;
-            operation.parameters[0].direct.tied = true;
-        }
         kefir_codegen_target_ir_instruction_ref_t instr_ref;
-        REQUIRE_OK(kefir_codegen_target_ir_code_new_instruction(
-            state->mem, state->code, current_block_state->block_ref,
-            kefir_codegen_target_ir_code_block_control_tail(state->code, current_block_state->block_ref), &operation,
-            metadata, &instr_ref));
+        REQUIRE_OK(kefir_codegen_target_ir_code_new_instruction_inplace(
+            state->mem, state->code, current_block_state->block_ref, &operation, metadata, 0, &instr_ref));
+        INIT_OPERATION_WITH(operation, state->code->klass->assign_opcode);
+        if (vreg2->type == KEFIR_ASMCMP_VIRTUAL_REGISTER_IMMEDIATE_INTEGER) {
+            operation->parameters[0].type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INTEGER;
+            operation->parameters[0].immediate.int_immediate = vreg2->parameters.immediate_int;
+            operation->parameters[0].immediate.variant = KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT;
+        } else {
+            operation->parameters[0].type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF;
+            REQUIRE_OK(resolve_input_virtual_register(state, current_block_state, vreg2_idx,
+                                                      &operation->parameters[0].direct.value_ref));
+            operation->parameters[0].direct.variant = KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT;
+            operation->parameters[0].direct.tied = true;
+        }
+        REQUIRE_OK(kefir_codegen_target_ir_code_finalize_instruction_inplace(
+            state->mem, state->code,
+            kefir_codegen_target_ir_code_block_control_tail(state->code, current_block_state->block_ref), instr_ref));
         REQUIRE_OK(store_virtual_reigster_output(
             state, current_block_state, vreg1_idx, KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT,
             (struct kefir_codegen_target_ir_value_ref) {.instr_ref = instr_ref,
@@ -862,23 +885,21 @@ static kefir_result_t touch_vreg_impl(struct constructor_state *state, struct co
     } else {
         REQUIRE(vreg1->type != KEFIR_ASMCMP_VIRTUAL_REGISTER_PAIR,
                 KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected linking virtual register pair"));
-        struct kefir_codegen_target_ir_operation operation = {
-            .opcode = state->code->klass->touch_opcode,
-            .parameters[0].type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_NONE,
-            .parameters[1].type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_NONE,
-            .parameters[2].type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_NONE,
-            .parameters[3].type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_NONE};
-
-        operation.parameters[0].type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF;
-        REQUIRE_OK(resolve_input_virtual_register(state, current_block_state, vreg1_idx,
-                                                  &operation.parameters[0].direct.value_ref));
-        operation.parameters[0].direct.variant = KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT;
-        operation.parameters[0].direct.tied = true;
+        struct kefir_codegen_target_ir_operation *operation;
         kefir_codegen_target_ir_instruction_ref_t instr_ref;
-        REQUIRE_OK(kefir_codegen_target_ir_code_new_instruction(
-            state->mem, state->code, current_block_state->block_ref,
-            kefir_codegen_target_ir_code_block_control_tail(state->code, current_block_state->block_ref), &operation,
-            metadata, &instr_ref));
+        REQUIRE_OK(kefir_codegen_target_ir_code_new_instruction_inplace(
+            state->mem, state->code, current_block_state->block_ref, &operation, metadata, 0, &instr_ref));
+        INIT_OPERATION_WITH(operation, state->code->klass->touch_opcode);
+
+        operation->parameters[0].type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF;
+        REQUIRE_OK(resolve_input_virtual_register(state, current_block_state, vreg1_idx,
+                                                  &operation->parameters[0].direct.value_ref));
+        operation->parameters[0].direct.variant = KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT;
+        operation->parameters[0].direct.tied = true;
+
+        REQUIRE_OK(kefir_codegen_target_ir_code_finalize_instruction_inplace(
+            state->mem, state->code,
+            kefir_codegen_target_ir_code_block_control_tail(state->code, current_block_state->block_ref), instr_ref));
     }
     return KEFIR_OK;
 }
@@ -894,13 +915,16 @@ static kefir_result_t produce_vreg_impl(struct constructor_state *state, struct 
         REQUIRE_OK(
             produce_vreg_impl(state, current_block_state, asmcmp_vreg->parameters.pair.virtual_registers[1], metadata));
     } else {
-        struct kefir_codegen_target_ir_operation operation = {.opcode = state->code->klass->placeholder_opcode};
+        struct kefir_codegen_target_ir_operation *operation;
         struct kefir_codegen_target_ir_value_ref value_ref;
-        REQUIRE_OK(kefir_codegen_target_ir_code_new_instruction(
-            state->mem, state->code, current_block_state->block_ref,
-            kefir_codegen_target_ir_code_block_control_tail(state->code, current_block_state->block_ref), &operation,
-            metadata, &value_ref.instr_ref));
+        REQUIRE_OK(kefir_codegen_target_ir_code_new_instruction_inplace(
+            state->mem, state->code, current_block_state->block_ref, &operation, metadata, 0, &value_ref.instr_ref));
+        INIT_OPERATION_WITH(operation, state->code->klass->placeholder_opcode);
         value_ref.aspect = KEFIR_CODEGEN_TARGET_IR_VALUE_DIRECT_OUTPUT(0);
+        REQUIRE_OK(kefir_codegen_target_ir_code_finalize_instruction_inplace(
+            state->mem, state->code,
+            kefir_codegen_target_ir_code_block_control_tail(state->code, current_block_state->block_ref),
+            value_ref.instr_ref));
         REQUIRE_OK(store_virtual_reigster_output(state, current_block_state, vreg1_idx,
                                                  KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT, value_ref));
     }
@@ -990,12 +1014,16 @@ static kefir_result_t scan_instructions(struct constructor_state *state) {
             }
 
             kefir_codegen_target_ir_instruction_ref_t inline_asm_ref;
-            REQUIRE_OK(kefir_codegen_target_ir_code_new_instruction(
-                state->mem, state->code, current_block_state->block_ref,
+            struct kefir_codegen_target_ir_operation *inline_asm_oper;
+            REQUIRE_OK(kefir_codegen_target_ir_code_new_instruction_inplace(
+                state->mem, state->code, current_block_state->block_ref, &inline_asm_oper, &metadata, 0,
+                &inline_asm_ref));
+            *inline_asm_oper = (struct kefir_codegen_target_ir_operation) {
+                .opcode = classification.opcode, .inline_asm_node.target_block_ref = target_block_ref};
+            REQUIRE_OK(kefir_codegen_target_ir_code_finalize_instruction_inplace(
+                state->mem, state->code,
                 kefir_codegen_target_ir_code_block_control_tail(state->code, current_block_state->block_ref),
-                &(struct kefir_codegen_target_ir_operation) {.opcode = classification.opcode,
-                                                             .inline_asm_node.target_block_ref = target_block_ref},
-                &metadata, &inline_asm_ref));
+                inline_asm_ref));
 
             struct kefir_asmcmp_inline_assembly_fragment_iterator iter;
             for (res = kefir_asmcmp_inline_assembly_fragment_iter(state->asmcmp_ctx,
@@ -1027,7 +1055,15 @@ static kefir_result_t scan_instructions(struct constructor_state *state) {
             continue;
         }
 
-        struct kefir_codegen_target_ir_operation operation = {.opcode = classification.opcode};
+        kefir_codegen_target_ir_instruction_ref_t instr_ref;
+        struct kefir_codegen_target_ir_operation *operation;
+        REQUIRE_OK(kefir_codegen_target_ir_code_new_instruction_inplace(
+            state->mem, state->code, current_block_state->block_ref, &operation, &metadata, 64, &instr_ref));
+        operation->opcode = classification.opcode;
+        for (kefir_size_t i = 0; i < KEFIR_CODEGEN_TARGET_IR_OPERATION_NUM_OF_PARAMETERS; i++) {
+            operation->parameters[i].type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_NONE;
+            operation->parameters[i].segment.present = false;
+        }
         _Static_assert(KEFIR_CODEGEN_TARGET_IR_OPERATION_NUM_OF_PARAMETERS >= KEFIR_ASMCMP_INSTRUCTION_NUM_OF_OPERANDS,
                        "Expected number of target IR instruction parameters to exceed or be equal to the number of "
                        "asmcmp instruction operands");
@@ -1045,19 +1081,20 @@ static kefir_result_t scan_instructions(struct constructor_state *state) {
                 const struct kefir_asmcmp_virtual_register *vreg = NULL;
                 REQUIRE_OK(kefir_asmcmp_virtual_register_get(state->asmcmp_ctx, vreg_idx, &vreg));
                 if (vreg->type == KEFIR_ASMCMP_VIRTUAL_REGISTER_IMMEDIATE_INTEGER) {
-                    operation.parameters[input_index].type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INTEGER;
-                    operation.parameters[input_index].immediate.int_immediate = vreg->parameters.immediate_int;
-                    operation.parameters[input_index].immediate.variant =
+                    operation->parameters[input_index].type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INTEGER;
+                    operation->parameters[input_index].immediate.int_immediate = vreg->parameters.immediate_int;
+                    operation->parameters[input_index].immediate.variant =
                         KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT;
                 } else {
                     if (classification.operands[i].class == KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_READ ||
                         classification.operands[i].class == KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_READ_WRITE) {
-                        operation.parameters[input_index].type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF;
-                        REQUIRE_OK(resolve_input_virtual_register(state, current_block_state, vreg_idx,
-                                                                  &operation.parameters[input_index].direct.value_ref));
-                        operation.parameters[input_index].direct.variant =
+                        operation->parameters[input_index].type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF;
+                        REQUIRE_OK(
+                            resolve_input_virtual_register(state, current_block_state, vreg_idx,
+                                                           &operation->parameters[input_index].direct.value_ref));
+                        operation->parameters[input_index].direct.variant =
                             classification.operands[i].implicit_parameter.variant;
-                        operation.parameters[input_index].direct.tied =
+                        operation->parameters[input_index].direct.tied =
                             (classification.operands[i].class == KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_READ_WRITE);
                     }
                     if (classification.operands[i].class == KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_WRITE ||
@@ -1066,11 +1103,11 @@ static kefir_result_t scan_instructions(struct constructor_state *state) {
                     }
                 }
             } else {
-                REQUIRE_OK(init_operand(state, current_block_state, &operation.parameters[input_index],
+                REQUIRE_OK(init_operand(state, current_block_state, &operation->parameters[input_index],
                                         &asmcmp_instr->args[classification.operands[i].index],
                                         &classification.operands[i], &output_vreg, &output_variant));
             }
-            if (operation.parameters[input_index].type != KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_NONE) {
+            if (operation->parameters[input_index].type != KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_NONE) {
                 input_index++;
             }
             if (output_vreg != KEFIR_ASMCMP_INDEX_NONE ||
@@ -1082,8 +1119,8 @@ static kefir_result_t scan_instructions(struct constructor_state *state) {
         }
 
         kefir_uint64_t produced_resources = 0, consumed_resources = 0;
-        REQUIRE_OK(state->code->klass->instruction_resources(operation.opcode, &produced_resources, &consumed_resources,
-                                                             state->code->klass->payload));
+        REQUIRE_OK(state->code->klass->instruction_resources(operation->opcode, &produced_resources,
+                                                             &consumed_resources, state->code->klass->payload));
 
         if (consumed_resources) {
             for (kefir_size_t i = 0; i < sizeof(kefir_uint64_t) * CHAR_BIT; i++) {
@@ -1093,20 +1130,18 @@ static kefir_result_t scan_instructions(struct constructor_state *state) {
                                             "Input parameter index is out of target IR instruction bounds"));
                     ;
                     REQUIRE_OK(resolve_resource(state, current_block_state, i,
-                                                &operation.parameters[input_index].direct.value_ref));
-                    operation.parameters[input_index].type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF;
-                    operation.parameters[input_index].direct.variant = KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT;
-                    operation.parameters[input_index].direct.tied = true;
+                                                &operation->parameters[input_index].direct.value_ref));
+                    operation->parameters[input_index].type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF;
+                    operation->parameters[input_index].direct.variant = KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT;
+                    operation->parameters[input_index].direct.tied = true;
                     input_index++;
                 }
             }
         }
 
-        kefir_codegen_target_ir_instruction_ref_t instr_ref;
-        REQUIRE_OK(kefir_codegen_target_ir_code_new_instruction(
-            state->mem, state->code, current_block_state->block_ref,
-            kefir_codegen_target_ir_code_block_control_tail(state->code, current_block_state->block_ref), &operation,
-            &metadata, &instr_ref));
+        REQUIRE_OK(kefir_codegen_target_ir_code_finalize_instruction_inplace(
+            state->mem, state->code,
+            kefir_codegen_target_ir_code_block_control_tail(state->code, current_block_state->block_ref), instr_ref));
 
         kefir_size_t output_regs = 0;
         for (kefir_size_t i = 0; i < output_index; i++) {
@@ -1244,15 +1279,12 @@ static kefir_result_t insert_vreg_phis(struct constructor_state *state,
             if (!kefir_hashtable_has(&frontier_block_state->block_inputs, (kefir_hashtree_key_t) vreg_idx) &&
                 !kefir_hashtable_has(&frontier_block_state->virtual_register_refs, (kefir_hashtree_key_t) vreg_idx)) {
                 kefir_codegen_target_ir_instruction_ref_t frontier_phi_instr_ref;
-                struct kefir_codegen_target_ir_operation operation = {
-                    .opcode = state->code->klass->phi_opcode,
-                    .parameters[0].type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_NONE,
-                    .parameters[1].type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_NONE,
-                    .parameters[2].type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_NONE,
-                    .parameters[3].type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_NONE};
-                REQUIRE_OK(kefir_codegen_target_ir_code_new_instruction(state->mem, state->code, frontier_block_ref,
-                                                                        KEFIR_ID_NONE, &operation, NULL,
-                                                                        &frontier_phi_instr_ref));
+                struct kefir_codegen_target_ir_operation *operation;
+                REQUIRE_OK(kefir_codegen_target_ir_code_new_instruction_inplace(
+                    state->mem, state->code, frontier_block_ref, &operation, NULL, 0, &frontier_phi_instr_ref));
+                operation->opcode = state->code->klass->phi_opcode;
+                REQUIRE_OK(kefir_codegen_target_ir_code_finalize_instruction_inplace(
+                    state->mem, state->code, KEFIR_ID_NONE, frontier_phi_instr_ref));
                 REQUIRE_OK(kefir_list_insert_after(state->mem, &state->queue, kefir_list_tail(&state->queue),
                                                    (void *) (kefir_uptr_t) frontier_block_ref));
                 REQUIRE_OK(kefir_hashtable_insert(state->mem, &frontier_block_state->block_inputs,
@@ -1324,10 +1356,12 @@ static kefir_result_t insert_resource_phis(struct constructor_state *state,
                                      (kefir_hashtree_key_t) resource_id) &&
                 !kefir_hashtable_has(&frontier_block_state->resource_refs, (kefir_hashtree_key_t) resource_id)) {
                 kefir_codegen_target_ir_instruction_ref_t frontier_phi_instr_ref;
-                struct kefir_codegen_target_ir_operation operation = {.opcode = state->code->klass->phi_opcode};
-                REQUIRE_OK(kefir_codegen_target_ir_code_new_instruction(state->mem, state->code, frontier_block_ref,
-                                                                        KEFIR_ID_NONE, &operation, NULL,
-                                                                        &frontier_phi_instr_ref));
+                struct kefir_codegen_target_ir_operation *operation;
+                REQUIRE_OK(kefir_codegen_target_ir_code_new_instruction_inplace(
+                    state->mem, state->code, frontier_block_ref, &operation, NULL, 0, &frontier_phi_instr_ref));
+                operation->opcode = state->code->klass->phi_opcode;
+                REQUIRE_OK(kefir_codegen_target_ir_code_finalize_instruction_inplace(
+                    state->mem, state->code, KEFIR_ID_NONE, frontier_phi_instr_ref));
                 REQUIRE_OK(kefir_list_insert_after(state->mem, &state->queue, kefir_list_tail(&state->queue),
                                                    (void *) (kefir_uptr_t) frontier_block_ref));
                 REQUIRE_OK(kefir_hashtable_insert(state->mem, &frontier_block_state->block_resource_inputs,
@@ -1424,9 +1458,12 @@ static kefir_result_t find_link_for(struct constructor_state *state, struct phi_
 
     if (kefir_hashset_has(&state->inserted_phis, (kefir_hashset_key_t) phi_instr_ref)) {
         kefir_codegen_target_ir_instruction_ref_t placeholder_instr_ref;
-        struct kefir_codegen_target_ir_operation operation = {.opcode = state->code->klass->placeholder_opcode};
-        REQUIRE_OK(kefir_codegen_target_ir_code_new_instruction(
-            state->mem, state->code, predecessor_block_ref, KEFIR_ID_NONE, &operation, NULL, &placeholder_instr_ref));
+        struct kefir_codegen_target_ir_operation *operation;
+        REQUIRE_OK(kefir_codegen_target_ir_code_new_instruction_inplace(state->mem, state->code, predecessor_block_ref,
+                                                                        &operation, NULL, 0, &placeholder_instr_ref));
+        INIT_OPERATION_WITH(operation, state->code->klass->placeholder_opcode);
+        REQUIRE_OK(kefir_codegen_target_ir_code_finalize_instruction_inplace(state->mem, state->code, KEFIR_ID_NONE,
+                                                                             placeholder_instr_ref));
         *value_ref = (kefir_codegen_target_ir_value_ref_t) {.instr_ref = placeholder_instr_ref,
                                                             .aspect = KEFIR_CODEGEN_TARGET_IR_VALUE_DIRECT_OUTPUT(0)};
         REQUIRE_OK(store_virtual_register_aspect(state, vreg_idx, KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT,
@@ -1453,9 +1490,12 @@ static kefir_result_t find_resource_link_for(struct constructor_state *state, st
     }
 
     kefir_codegen_target_ir_instruction_ref_t placeholder_instr_ref;
-    struct kefir_codegen_target_ir_operation operation = {.opcode = state->code->klass->placeholder_opcode};
-    REQUIRE_OK(kefir_codegen_target_ir_code_new_instruction(state->mem, state->code, predecessor_block_ref,
-                                                            KEFIR_ID_NONE, &operation, NULL, &placeholder_instr_ref));
+    struct kefir_codegen_target_ir_operation *operation;
+    REQUIRE_OK(kefir_codegen_target_ir_code_new_instruction_inplace(state->mem, state->code, predecessor_block_ref,
+                                                                    &operation, NULL, 0, &placeholder_instr_ref));
+    INIT_OPERATION_WITH(operation, state->code->klass->placeholder_opcode);
+    REQUIRE_OK(kefir_codegen_target_ir_code_finalize_instruction_inplace(state->mem, state->code, KEFIR_ID_NONE,
+                                                                         placeholder_instr_ref));
     *value_ref = (kefir_codegen_target_ir_value_ref_t) {.instr_ref = placeholder_instr_ref,
                                                         .aspect = KEFIR_CODEGEN_TARGET_IR_VALUE_RESOURCE(resource_id)};
     REQUIRE_OK(kefir_codegen_target_ir_code_add_aspect(

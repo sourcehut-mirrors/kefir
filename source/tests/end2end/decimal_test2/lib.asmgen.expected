@@ -1719,8 +1719,8 @@ test_dec32_gravity_acceleration:
     movaps %xmm0, %xmm1
     movaps -112(%rbp), %xmm0
     call __bid_mulsd3@PLT
-    movaps %xmm0, -160(%rbp)
     mov %ebx, %eax
+    movaps %xmm0, -160(%rbp)
     jmp .L__kefir_func_test_dec32_gravity_acceleration_label6
 .L__kefir_func_test_dec32_gravity_acceleration_label3:
     movd .L__kefir_func_test_dec32_gravity_acceleration_label17(%rip), %xmm0

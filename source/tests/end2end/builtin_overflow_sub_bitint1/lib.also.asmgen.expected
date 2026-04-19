@@ -351,11 +351,11 @@ __kefir_bigint_redundant_sign_bits:
     mov %rdx, %rbx
     mov %rcx, %rdx
 .L__kefir_runtime_func___kefir_bigint_redundant_sign_bits_label6:
-    lea 1(%r9), %r12
+    lea 1(%r9), %rcx
     cmp %r11, %rbx
     jb .L__kefir_runtime_func___kefir_bigint_redundant_sign_bits_label8
+    mov %rcx, %r9
     mov %rdx, %rcx
-    mov %r12, %r9
     jmp .L__kefir_runtime_func___kefir_bigint_redundant_sign_bits_label3
 .L__kefir_runtime_func___kefir_bigint_redundant_sign_bits_label8:
     lea 1(%rdx), %r12

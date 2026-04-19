@@ -186,8 +186,8 @@ test8:
     xor $0, %eax
     ret
 .L__kefir_func_test8_label7:
-    mov %edx, %eax
     mov %esi, %ecx
+    mov %edx, %eax
     jmp .L__kefir_func_test8_label2
 .L__kefir_text_func_test8_end:
 
