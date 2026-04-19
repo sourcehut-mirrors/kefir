@@ -114,7 +114,7 @@ kefir_result_t kefir_asmcmp_context_init(const struct kefir_asmcmp_context_class
     context->code_content = NULL;
     context->code_capacity = 0;
     context->code_length = 0;
-    context->lock_resize = false;
+    context->lock_code_resize = false;
     context->labels = NULL;
     context->labels_length = 0;
     context->labels_capacity = 0;
@@ -346,15 +346,15 @@ static kefir_result_t allocate_value_symbols(struct kefir_mem *mem, struct kefir
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_asmcmp_context_instr_alloc_uninit(struct kefir_mem *mem, struct kefir_asmcmp_context *context,
-                                                       kefir_size_t reserve, kefir_bool_t lock_resize,
-                                                       struct kefir_asmcmp_instruction **instr_ptr) {
+kefir_result_t kefir_asmcmp_context_instr_alloc_inplace(struct kefir_mem *mem, struct kefir_asmcmp_context *context,
+                                                        kefir_size_t reserve, kefir_bool_t lock_resize,
+                                                        struct kefir_asmcmp_instruction **instr_ptr) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmgen context"));
     REQUIRE(instr_ptr != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to asmgen instruction"));
 
-    REQUIRE(context->code_capacity - context->code_length >= 1 + reserve || !context->lock_resize,
+    REQUIRE(context->code_capacity - context->code_length >= 1 + reserve || !context->lock_code_resize,
             KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Asmcmp context resize is locked"));
     REQUIRE_OK(ensure_availability(mem, (void **) &context->code_content, &context->code_length,
                                    &context->code_capacity, sizeof(struct kefir_asmcmp_instruction_handle),
@@ -365,20 +365,20 @@ kefir_result_t kefir_asmcmp_context_instr_alloc_uninit(struct kefir_mem *mem, st
     *instr_ptr = &handle->instr;
 
     context->code_length++;
-    context->lock_resize = context->lock_resize || lock_resize;
+    context->lock_code_resize = context->lock_code_resize || lock_resize;
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_asmcmp_context_unlock_resize(struct kefir_asmcmp_context *context) {
+kefir_result_t kefir_asmcmp_context_unlock_code_resize(struct kefir_asmcmp_context *context) {
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmgen context"));
 
-    context->lock_resize = false;
+    context->lock_code_resize = false;
     return KEFIR_OK;
 }
 
 static kefir_result_t kefir_asmcmp_context_instr_insert_after_impl(
     struct kefir_mem *mem, struct kefir_asmcmp_context *context, kefir_asmcmp_instruction_index_t after_index,
-    const struct kefir_asmcmp_instruction *instr, kefir_asmcmp_instruction_index_t *index_ptr, kefir_bool_t own) {
+    const struct kefir_asmcmp_instruction *instr, kefir_asmcmp_instruction_index_t *index_ptr, kefir_bool_t inplace) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmgen context"));
     REQUIRE(VALID_INSTR_IDX(context, after_index) || after_index == KEFIR_ASMCMP_INDEX_NONE,
@@ -393,11 +393,13 @@ static kefir_result_t kefir_asmcmp_context_instr_insert_after_impl(
 
     struct kefir_asmcmp_instruction_handle *handle = NULL;
     kefir_asmcmp_instruction_index_t index;
-    if (own && instr >= &context->code_content[0].instr && instr < &context->code_content[context->code_length].instr) {
+    if (inplace) {
+        REQUIRE(instr >= &context->code_content[0].instr && instr < &context->code_content[context->code_length].instr,
+                KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected asmcmp instruction allocated in-place"));
         handle = (struct kefir_asmcmp_instruction_handle *) instr;
         index = handle->index;
     } else {
-        REQUIRE(context->code_capacity - context->code_length >= 1 || !context->lock_resize,
+        REQUIRE(context->code_capacity - context->code_length >= 1 || !context->lock_code_resize,
                 KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Asmcmp context resize is locked"));
         REQUIRE_OK(ensure_availability(mem, (void **) &context->code_content, &context->code_length,
                                        &context->code_capacity, sizeof(struct kefir_asmcmp_instruction_handle), 1));
@@ -463,10 +465,11 @@ kefir_result_t kefir_asmcmp_context_instr_insert_after(struct kefir_mem *mem, st
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_asmcmp_context_instr_insert_after_own(struct kefir_mem *mem, struct kefir_asmcmp_context *context,
-                                                           kefir_asmcmp_instruction_index_t after_index,
-                                                           const struct kefir_asmcmp_instruction *instr,
-                                                           kefir_asmcmp_instruction_index_t *index_ptr) {
+kefir_result_t kefir_asmcmp_context_instr_inplace_insert_after(struct kefir_mem *mem,
+                                                               struct kefir_asmcmp_context *context,
+                                                               kefir_asmcmp_instruction_index_t after_index,
+                                                               const struct kefir_asmcmp_instruction *instr,
+                                                               kefir_asmcmp_instruction_index_t *index_ptr) {
     REQUIRE_OK(kefir_asmcmp_context_instr_insert_after_impl(mem, context, after_index, instr, index_ptr, true));
     return KEFIR_OK;
 }
