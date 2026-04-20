@@ -408,7 +408,7 @@ typedef struct kefir_codegen_target_ir_code_class {
 
 typedef struct kefir_codegen_target_ir_code {
     struct kefir_string_pool strings;
-    struct kefir_codegen_target_ir_instruction *code;
+    struct kefir_codegen_target_ir_instruction *code_content;
     kefir_size_t code_length;
     kefir_size_t code_capacity;
 
