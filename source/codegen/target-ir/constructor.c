@@ -849,7 +849,7 @@ static kefir_result_t link_vregs_impl(struct constructor_state *state, struct co
 
         kefir_codegen_target_ir_instruction_ref_t instr_ref;
         REQUIRE_OK(kefir_codegen_target_ir_code_new_instruction_inplace(
-            state->mem, state->code, current_block_state->block_ref, &operation, metadata, 0, &instr_ref));
+            state->mem, state->code, current_block_state->block_ref, &operation, metadata, 64, &instr_ref));
         INIT_OPERATION_WITH(operation, state->code->klass->assign_opcode);
         if (vreg2->type == KEFIR_ASMCMP_VIRTUAL_REGISTER_IMMEDIATE_INTEGER) {
             operation->parameters[0].type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INTEGER;
