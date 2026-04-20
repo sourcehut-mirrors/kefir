@@ -247,7 +247,7 @@ kefir_result_t kefir_asmcmp_amd64_get_register_preallocation(
         REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));        \
         REQUIRE(target != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmgen amd64 target"));  \
         struct kefir_asmcmp_instruction *instr;                                                                   \
-        REQUIRE_OK(kefir_asmcmp_context_instr_alloc_inplace(mem, &target->context, 0, false, &instr));            \
+        REQUIRE_OK(kefir_asmcmp_context_instr_alloc_inplace(mem, &target->context, &instr));                      \
         instr->opcode = KEFIR_ASMCMP_AMD64_OPCODE(_opcode);                                                       \
         instr->args[0].type = KEFIR_ASMCMP_VALUE_TYPE_NONE;                                                       \
         instr->args[1].type = KEFIR_ASMCMP_VALUE_TYPE_NONE;                                                       \
@@ -263,7 +263,7 @@ kefir_result_t kefir_asmcmp_amd64_get_register_preallocation(
         REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));        \
         REQUIRE(target != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmgen amd64 target"));  \
         struct kefir_asmcmp_instruction *instr;                                                                   \
-        REQUIRE_OK(kefir_asmcmp_context_instr_alloc_inplace(mem, &target->context, 0, false, &instr));            \
+        REQUIRE_OK(kefir_asmcmp_context_instr_alloc_inplace(mem, &target->context, &instr));                      \
         instr->opcode = KEFIR_ASMCMP_AMD64_OPCODE(_opcode);                                                       \
         instr->args[0].type = KEFIR_ASMCMP_VALUE_TYPE_NONE;                                                       \
         instr->args[1].type = KEFIR_ASMCMP_VALUE_TYPE_NONE;                                                       \
@@ -282,7 +282,7 @@ kefir_result_t kefir_asmcmp_amd64_get_register_preallocation(
         REQUIRE(target != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmgen amd64 target"));  \
         REQUIRE(arg1 != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmgen amd64 value"));     \
         struct kefir_asmcmp_instruction *instr;                                                                   \
-        REQUIRE_OK(kefir_asmcmp_context_instr_alloc_inplace(mem, &target->context, 0, false, &instr));            \
+        REQUIRE_OK(kefir_asmcmp_context_instr_alloc_inplace(mem, &target->context, &instr));                      \
         instr->opcode = KEFIR_ASMCMP_AMD64_OPCODE(_opcode);                                                       \
         instr->args[0] = *arg1;                                                                                   \
         instr->args[1].type = KEFIR_ASMCMP_VALUE_TYPE_NONE;                                                       \
@@ -300,7 +300,7 @@ kefir_result_t kefir_asmcmp_amd64_get_register_preallocation(
         REQUIRE(target != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmgen amd64 target"));  \
         REQUIRE(arg1 != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmgen amd64 value"));     \
         struct kefir_asmcmp_instruction *instr;                                                                   \
-        REQUIRE_OK(kefir_asmcmp_context_instr_alloc_inplace(mem, &target->context, 0, false, &instr));            \
+        REQUIRE_OK(kefir_asmcmp_context_instr_alloc_inplace(mem, &target->context, &instr));                      \
         instr->opcode = KEFIR_ASMCMP_AMD64_OPCODE(_opcode);                                                       \
         instr->args[0] = *arg1;                                                                                   \
         instr->args[1] = *arg2;                                                                                   \
@@ -319,7 +319,7 @@ kefir_result_t kefir_asmcmp_amd64_get_register_preallocation(
         REQUIRE(arg1 != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmgen amd64 value"));     \
         REQUIRE(arg2 != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmgen amd64 value"));     \
         struct kefir_asmcmp_instruction *instr;                                                                   \
-        REQUIRE_OK(kefir_asmcmp_context_instr_alloc_inplace(mem, &target->context, 0, false, &instr));            \
+        REQUIRE_OK(kefir_asmcmp_context_instr_alloc_inplace(mem, &target->context, &instr));                      \
         instr->opcode = KEFIR_ASMCMP_AMD64_OPCODE(_opcode);                                                       \
         instr->args[0] = *arg1;                                                                                   \
         instr->args[1] = *arg2;                                                                                   \
@@ -341,7 +341,7 @@ kefir_result_t kefir_asmcmp_amd64_get_register_preallocation(
         REQUIRE(arg2 != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmgen amd64 value"));     \
         REQUIRE(arg3 != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmgen amd64 value"));     \
         struct kefir_asmcmp_instruction *instr;                                                                   \
-        REQUIRE_OK(kefir_asmcmp_context_instr_alloc_inplace(mem, &target->context, 0, false, &instr));            \
+        REQUIRE_OK(kefir_asmcmp_context_instr_alloc_inplace(mem, &target->context, &instr));                      \
         instr->opcode = KEFIR_ASMCMP_AMD64_OPCODE(_opcode);                                                       \
         instr->args[0] = *arg1;                                                                                   \
         instr->args[1] = *arg2;                                                                                   \

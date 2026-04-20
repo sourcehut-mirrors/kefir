@@ -335,11 +335,15 @@ typedef struct kefir_asmcmp_context_class {
     kefir_result_t (*register_mnemonic)(kefir_asmcmp_physical_register_index_t, const char **, void *);
 } kefir_asmcmp_context_class_t;
 
+#define KEFIR_ASMCMP_HANDLE_CHUNK_CAPACITY_LOG2 12
+
+typedef struct kefir_asmcmp_handle_chunk {
+    struct kefir_asmcmp_instruction_handle content[1ull << KEFIR_ASMCMP_HANDLE_CHUNK_CAPACITY_LOG2];
+} kefir_asmcmp_handle_chunk_t;
+
 typedef struct kefir_asmcmp_context {
-    struct kefir_asmcmp_instruction_handle *code_content;
+    struct kefir_asmcmp_handle_chunk **code_chunks;
     kefir_size_t code_length;
-    kefir_size_t code_capacity;
-    kefir_bool_t lock_code_resize;
 
     struct {
         kefir_asmcmp_instruction_index_t head;
@@ -385,9 +389,8 @@ kefir_asmcmp_instruction_index_t kefir_asmcmp_context_instr_next(const struct ke
 kefir_asmcmp_instruction_index_t kefir_asmcmp_context_instr_head(const struct kefir_asmcmp_context *);
 kefir_asmcmp_instruction_index_t kefir_asmcmp_context_instr_tail(const struct kefir_asmcmp_context *);
 kefir_asmcmp_instruction_index_t kefir_asmcmp_context_instr_length(const struct kefir_asmcmp_context *);
-kefir_result_t kefir_asmcmp_context_instr_alloc_inplace(struct kefir_mem *, struct kefir_asmcmp_context *, kefir_size_t,
-                                                        kefir_bool_t, struct kefir_asmcmp_instruction **);
-kefir_result_t kefir_asmcmp_context_unlock_code_resize(struct kefir_asmcmp_context *);
+kefir_result_t kefir_asmcmp_context_instr_alloc_inplace(struct kefir_mem *, struct kefir_asmcmp_context *,
+                                                        struct kefir_asmcmp_instruction **);
 kefir_result_t kefir_asmcmp_context_instr_insert_after(struct kefir_mem *, struct kefir_asmcmp_context *,
                                                        kefir_asmcmp_instruction_index_t,
                                                        const struct kefir_asmcmp_instruction *,
