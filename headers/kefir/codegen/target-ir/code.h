@@ -406,11 +406,16 @@ typedef struct kefir_codegen_target_ir_code_class {
     void *payload;
 } kefir_codegen_target_ir_code_class_t;
 
+#define KEFIR_CODEGEN_TARGET_IR_CODE_CHUNK_CAPACITY_LOG2 12
+
+typedef struct kefir_codegen_target_ir_code_chunk {
+    struct kefir_codegen_target_ir_instruction content[1ull << KEFIR_CODEGEN_TARGET_IR_CODE_CHUNK_CAPACITY_LOG2];
+} kefir_codegen_target_ir_code_chunk_t;
+
 typedef struct kefir_codegen_target_ir_code {
     struct kefir_string_pool strings;
-    struct kefir_codegen_target_ir_instruction *code_content;
+    struct kefir_codegen_target_ir_code_chunk **code_chunks;
     kefir_size_t code_length;
-    kefir_size_t code_capacity;
 
     struct kefir_codegen_target_ir_block *blocks;
     kefir_size_t blocks_length;
@@ -471,7 +476,7 @@ kefir_result_t kefir_codegen_target_ir_code_new_instruction(struct kefir_mem *, 
 kefir_result_t kefir_codegen_target_ir_code_new_instruction_inplace(
     struct kefir_mem *, struct kefir_codegen_target_ir_code *, kefir_codegen_target_ir_block_ref_t,
     struct kefir_codegen_target_ir_operation **, const struct kefir_codegen_target_ir_instruction_metadata *,
-    kefir_size_t, kefir_codegen_target_ir_instruction_ref_t *);
+    kefir_codegen_target_ir_instruction_ref_t *);
 kefir_result_t kefir_codegen_target_ir_code_finalize_instruction_inplace(struct kefir_mem *,
                                                                          struct kefir_codegen_target_ir_code *,
                                                                          kefir_codegen_target_ir_instruction_ref_t,
