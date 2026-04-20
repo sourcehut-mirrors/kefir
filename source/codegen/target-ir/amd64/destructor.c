@@ -2213,8 +2213,7 @@ static kefir_result_t translate_instruction(struct destructor_state *state,
     REQUIRE_OK(build_current_instr_state(state, instr_ref, &classification.classification));
 
     struct kefir_asmcmp_instruction *asmcmp_instruction;
-    REQUIRE_OK(kefir_asmcmp_context_instr_alloc_inplace(state->mem, &state->asmcmp_ctx->context, 32, true,
-                                                        &asmcmp_instruction));
+    REQUIRE_OK(kefir_asmcmp_context_instr_alloc_inplace(state->mem, &state->asmcmp_ctx->context, &asmcmp_instruction));
     asmcmp_instruction->opcode = classification.classification.opcode;
     asmcmp_instruction->args[0].type = KEFIR_ASMCMP_VALUE_TYPE_NONE;
     asmcmp_instruction->args[1].type = KEFIR_ASMCMP_VALUE_TYPE_NONE;
@@ -2869,7 +2868,7 @@ static kefir_result_t translate_block(struct destructor_state *state, kefir_code
     REQUIRE_OK(
         kefir_asmcmp_context_bind_label_after_tail(state->mem, &state->asmcmp_ctx->context, block_state->asmcmp_label));
     struct kefir_asmcmp_instruction *instr;
-    REQUIRE_OK(kefir_asmcmp_context_instr_alloc_inplace(state->mem, &state->asmcmp_ctx->context, 0, false, &instr));
+    REQUIRE_OK(kefir_asmcmp_context_instr_alloc_inplace(state->mem, &state->asmcmp_ctx->context, &instr));
     instr->opcode = state->destructor_ops->noop_opcode;
     instr->args[0].type = KEFIR_ASMCMP_VALUE_TYPE_NONE;
     instr->args[1].type = KEFIR_ASMCMP_VALUE_TYPE_NONE;
@@ -2966,7 +2965,6 @@ static kefir_result_t translate_block(struct destructor_state *state, kefir_code
         }
 
         REQUIRE_OK(translate_instruction(state, instr_ref));
-        REQUIRE_OK(kefir_asmcmp_context_unlock_code_resize(&state->asmcmp_ctx->context));
 
         if (state->constructor_metadata != NULL) {
             REQUIRE_OK(kefir_asmcmp_context_bind_label_after_tail(state->mem, &state->asmcmp_ctx->context, end_label));
@@ -3015,8 +3013,7 @@ static kefir_result_t translate_blocks(struct destructor_state *state) {
             REQUIRE_OK(kefir_asmcmp_context_bind_label_after_tail(state->mem, &state->asmcmp_ctx->context,
                                                                   block_state->asmcmp_label));
             struct kefir_asmcmp_instruction *instr;
-            REQUIRE_OK(
-                kefir_asmcmp_context_instr_alloc_inplace(state->mem, &state->asmcmp_ctx->context, 0, false, &instr));
+            REQUIRE_OK(kefir_asmcmp_context_instr_alloc_inplace(state->mem, &state->asmcmp_ctx->context, &instr));
             instr->opcode = state->destructor_ops->unreachable_opcode;
             instr->args[0].type = KEFIR_ASMCMP_VALUE_TYPE_NONE;
             instr->args[1].type = KEFIR_ASMCMP_VALUE_TYPE_NONE;
@@ -3032,7 +3029,7 @@ static kefir_result_t translate_blocks(struct destructor_state *state) {
     }
 
     struct kefir_asmcmp_instruction *instr;
-    REQUIRE_OK(kefir_asmcmp_context_instr_alloc_inplace(state->mem, &state->asmcmp_ctx->context, 0, false, &instr));
+    REQUIRE_OK(kefir_asmcmp_context_instr_alloc_inplace(state->mem, &state->asmcmp_ctx->context, &instr));
     instr->opcode = state->destructor_ops->noop_opcode;
     instr->args[0].type = KEFIR_ASMCMP_VALUE_TYPE_NONE;
     instr->args[1].type = KEFIR_ASMCMP_VALUE_TYPE_NONE;

@@ -28,7 +28,13 @@
 #define VALID_INSTR_IDX(_ctx, _idx) ((_idx) < (_ctx)->code_length)
 #define VALID_LABEL_IDX(_ctx, _idx) ((_idx) < (_ctx)->labels_length)
 #define VALID_VREG_IDX(_ctx, _idx) ((_idx) < (_ctx)->virtual_register_length)
-#define HANDLE_AT(_ctx, _idx) ((_idx) != KEFIR_ASMCMP_INDEX_NONE ? &(_ctx)->code_content[(_idx)] : NULL)
+
+#define CHUNK_INDEX(_idx) ((_idx) >> KEFIR_ASMCMP_HANDLE_CHUNK_CAPACITY_LOG2)
+#define CHUNK_OFFSET(_idx) ((_idx) & ((1ull << KEFIR_ASMCMP_HANDLE_CHUNK_CAPACITY_LOG2) - 1))
+#define CHUNK_COUNT(_idx) (CHUNK_INDEX(_idx) + (CHUNK_OFFSET(_idx) != 0))
+
+#define HANDLE_AT_UNSAFE(_code, _idx) (&(_code)->code_chunks[CHUNK_INDEX((_idx))]->content[CHUNK_OFFSET((_idx))])
+#define HANDLE_AT(_ctx, _idx) ((_idx) != KEFIR_ASMCMP_INDEX_NONE ? HANDLE_AT_UNSAFE((_ctx), (_idx)) : NULL)
 
 static kefir_result_t free_inline_asm(struct kefir_mem *mem, struct kefir_hashtree *tree, kefir_hashtree_key_t key,
                                       kefir_hashtree_value_t value, void *payload) {
@@ -111,10 +117,8 @@ kefir_result_t kefir_asmcmp_context_init(const struct kefir_asmcmp_context_class
     REQUIRE_OK(kefir_asmcmp_debug_info_init(&context->debug_info));
     context->klass = klass;
     context->payload = payload;
-    context->code_content = NULL;
-    context->code_capacity = 0;
+    context->code_chunks = NULL;
     context->code_length = 0;
-    context->lock_code_resize = false;
     context->labels = NULL;
     context->labels_length = 0;
     context->labels_capacity = 0;
@@ -136,10 +140,11 @@ kefir_result_t kefir_asmcmp_context_free(struct kefir_mem *mem, struct kefir_asm
     REQUIRE_OK(kefir_hashtree_free(mem, &context->inline_assembly));
     REQUIRE_OK(kefir_string_pool_free(mem, &context->strings));
     REQUIRE_OK(kefir_hashtree_free(mem, &context->label_positions));
-    if (context->code_content != NULL) {
-        memset(context->code_content, 0, sizeof(struct kefir_asmcmp_instruction) * context->code_length);
+    for (kefir_size_t i = 0; i < CHUNK_COUNT(context->code_length); i++) {
+        KEFIR_FREE(mem, context->code_chunks[i]);
     }
-    KEFIR_FREE(mem, context->code_content);
+    KEFIR_FREE(mem, context->code_chunks);
+    context->code_chunks = NULL;
     if (context->labels != NULL) {
         for (kefir_size_t i = 0; i < context->labels_length; i++) {
             REQUIRE_OK(kefir_hashtreeset_free(mem, &context->labels[i].public_labels));
@@ -165,7 +170,7 @@ kefir_result_t kefir_asmcmp_context_instr_at(const struct kefir_asmcmp_context *
     REQUIRE(instr_ptr != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to asmgen instruction"));
 
-    *instr_ptr = &context->code_content[index].instr;
+    *instr_ptr = &HANDLE_AT_UNSAFE(context, index)->instr;
     return KEFIR_OK;
 }
 
@@ -174,7 +179,7 @@ kefir_asmcmp_instruction_index_t kefir_asmcmp_context_instr_prev(const struct ke
     REQUIRE(context != NULL, KEFIR_ASMCMP_INDEX_NONE);
     REQUIRE(VALID_INSTR_IDX(context, index), KEFIR_ASMCMP_INDEX_NONE);
 
-    return context->code_content[index].siblings.prev;
+    return HANDLE_AT_UNSAFE(context, index)->siblings.prev;
 }
 
 kefir_asmcmp_instruction_index_t kefir_asmcmp_context_instr_next(const struct kefir_asmcmp_context *context,
@@ -182,7 +187,7 @@ kefir_asmcmp_instruction_index_t kefir_asmcmp_context_instr_next(const struct ke
     REQUIRE(context != NULL, KEFIR_ASMCMP_INDEX_NONE);
     REQUIRE(VALID_INSTR_IDX(context, index), KEFIR_ASMCMP_INDEX_NONE);
 
-    return context->code_content[index].siblings.next;
+    return HANDLE_AT_UNSAFE(context, index)->siblings.next;
 }
 
 kefir_asmcmp_instruction_index_t kefir_asmcmp_context_instr_head(const struct kefir_asmcmp_context *context) {
@@ -346,33 +351,40 @@ static kefir_result_t allocate_value_symbols(struct kefir_mem *mem, struct kefir
     return KEFIR_OK;
 }
 
+static kefir_result_t ensure_chunks(struct kefir_mem *mem, struct kefir_asmcmp_context *context) {
+    if (CHUNK_OFFSET(context->code_length) == 0) {
+        struct kefir_asmcmp_handle_chunk *new_chunk = KEFIR_MALLOC(mem, sizeof(struct kefir_asmcmp_handle_chunk));
+        REQUIRE(new_chunk != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate asmcmp code chunk"));
+
+        struct kefir_asmcmp_handle_chunk **new_code =
+            KEFIR_REALLOC(mem, context->code_chunks,
+                          sizeof(struct kefir_asmcmp_handle_chunk *) * (CHUNK_COUNT(context->code_length) + 1));
+        REQUIRE_ELSE(new_code != NULL, {
+            KEFIR_FREE(mem, new_chunk);
+            return KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate asmcmp code chunk");
+        });
+
+        new_code[CHUNK_INDEX(context->code_length)] = new_chunk;
+        context->code_chunks = new_code;
+    }
+
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_asmcmp_context_instr_alloc_inplace(struct kefir_mem *mem, struct kefir_asmcmp_context *context,
-                                                        kefir_size_t reserve, kefir_bool_t lock_resize,
                                                         struct kefir_asmcmp_instruction **instr_ptr) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmgen context"));
     REQUIRE(instr_ptr != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to asmgen instruction"));
 
-    REQUIRE(context->code_capacity - context->code_length >= 1 + reserve || !context->lock_code_resize,
-            KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Asmcmp context resize is locked"));
-    REQUIRE_OK(ensure_availability(mem, (void **) &context->code_content, &context->code_length,
-                                   &context->code_capacity, sizeof(struct kefir_asmcmp_instruction_handle),
-                                   1 + reserve));
+    REQUIRE_OK(ensure_chunks(mem, context));
 
-    struct kefir_asmcmp_instruction_handle *handle = &context->code_content[context->code_length];
+    struct kefir_asmcmp_instruction_handle *handle = HANDLE_AT_UNSAFE(context, context->code_length);
     handle->index = context->code_length;
     *instr_ptr = &handle->instr;
 
     context->code_length++;
-    context->lock_code_resize = context->lock_code_resize || lock_resize;
-    return KEFIR_OK;
-}
-
-kefir_result_t kefir_asmcmp_context_unlock_code_resize(struct kefir_asmcmp_context *context) {
-    REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmgen context"));
-
-    context->lock_code_resize = false;
     return KEFIR_OK;
 }
 
@@ -394,18 +406,13 @@ static kefir_result_t kefir_asmcmp_context_instr_insert_after_impl(
     struct kefir_asmcmp_instruction_handle *handle = NULL;
     kefir_asmcmp_instruction_index_t index;
     if (inplace) {
-        REQUIRE(instr >= &context->code_content[0].instr && instr < &context->code_content[context->code_length].instr,
-                KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected asmcmp instruction allocated in-place"));
         handle = (struct kefir_asmcmp_instruction_handle *) instr;
         index = handle->index;
     } else {
-        REQUIRE(context->code_capacity - context->code_length >= 1 || !context->lock_code_resize,
-                KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Asmcmp context resize is locked"));
-        REQUIRE_OK(ensure_availability(mem, (void **) &context->code_content, &context->code_length,
-                                       &context->code_capacity, sizeof(struct kefir_asmcmp_instruction_handle), 1));
+        REQUIRE_OK(ensure_chunks(mem, context));
 
         index = context->code_length++;
-        handle = &context->code_content[index];
+        handle = HANDLE_AT_UNSAFE(context, index);
         handle->index = index;
         memcpy(&handle->instr, instr, sizeof(struct kefir_asmcmp_instruction));
     }
@@ -480,7 +487,7 @@ kefir_result_t kefir_asmcmp_context_instr_drop(struct kefir_asmcmp_context *cont
     REQUIRE(VALID_INSTR_IDX(context, instr_idx),
             KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Provided asmgen instruction index is out of context bounds"));
 
-    struct kefir_asmcmp_instruction_handle *const handle = &context->code_content[instr_idx];
+    struct kefir_asmcmp_instruction_handle *const handle = HANDLE_AT_UNSAFE(context, instr_idx);
     REQUIRE(!kefir_hashtree_has(&context->label_positions, (kefir_hashtree_key_t) instr_idx),
             KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to drop asmgen instruction with attached labels"));
 
@@ -518,7 +525,7 @@ kefir_result_t kefir_asmcmp_context_instr_replace(struct kefir_asmcmp_context *c
             KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Provided asmgen instruction index is out of context bounds"));
     REQUIRE(instr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmgen instruction"));
 
-    struct kefir_asmcmp_instruction_handle *const handle = &context->code_content[instr_idx];
+    struct kefir_asmcmp_instruction_handle *const handle = HANDLE_AT_UNSAFE(context, instr_idx);
     handle->instr = *instr;
     return KEFIR_OK;
 }
@@ -531,12 +538,14 @@ kefir_result_t kefir_asmcmp_context_instr_drop_code(struct kefir_mem *mem, struc
     for (kefir_size_t i = 0; i < context->labels_length; i++) {
         REQUIRE_OK(kefir_hashtreeset_free(mem, &context->labels[i].public_labels));
     }
-    KEFIR_FREE(mem, context->code_content);
+    for (kefir_size_t i = 0; i < CHUNK_COUNT(context->code_length); i++) {
+        KEFIR_FREE(mem, context->code_chunks[i]);
+    }
+    KEFIR_FREE(mem, context->code_chunks);
     KEFIR_FREE(mem, context->labels);
-    context->code_content = NULL;
+    context->code_chunks = NULL;
     context->labels = NULL;
     context->code_length = 0;
-    context->code_capacity = 0;
     context->labels_length = 0;
     context->labels_capacity = 0;
     context->code.head = KEFIR_ASMCMP_INDEX_NONE;
@@ -1415,9 +1424,9 @@ kefir_result_t kefir_asmcmp_replace_labels(const struct kefir_asmcmp_context *co
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmcmp label"));
 
     for (kefir_asmcmp_instruction_index_t i = 0; i < context->code_length; i++) {
-        REQUIRE_OK(replace_labels(&context->code_content[i].instr.args[0], dst_label, src_label));
-        REQUIRE_OK(replace_labels(&context->code_content[i].instr.args[1], dst_label, src_label));
-        REQUIRE_OK(replace_labels(&context->code_content[i].instr.args[2], dst_label, src_label));
+        REQUIRE_OK(replace_labels(&HANDLE_AT_UNSAFE(context, i)->instr.args[0], dst_label, src_label));
+        REQUIRE_OK(replace_labels(&HANDLE_AT_UNSAFE(context, i)->instr.args[1], dst_label, src_label));
+        REQUIRE_OK(replace_labels(&HANDLE_AT_UNSAFE(context, i)->instr.args[2], dst_label, src_label));
     }
     return KEFIR_OK;
 }
