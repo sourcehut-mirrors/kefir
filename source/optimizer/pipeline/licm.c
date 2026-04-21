@@ -356,7 +356,7 @@ static kefir_result_t distribute_condition_dependencies_over_phis(struct licm_st
                 }
 
                 kefir_bool_t transitive_uses = false;
-                REQUIRE_OK(has_transitive_use(state, 32, state->loop->loop_entry_block_id, use_iter.use_instr_ref,
+                REQUIRE_OK(has_transitive_use(state, 8, state->loop->loop_entry_block_id, use_iter.use_instr_ref,
                                               entry_tail_ref, &transitive_uses));
                 if (!transitive_uses) {
                     continue;
