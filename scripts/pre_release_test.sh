@@ -169,11 +169,11 @@ external_test_suite () {
     make KEFIR_BIN_DIR="$ROOT_DIR/bin/external" -j$(nproc)
     print_make_deps "$ROOT_DIR/bin/external" .EXTERNAL_TESTS_BASE_SUITE .EXTERNAL_TESTS_FAST_SUITE .EXTERNAL_TESTS_SLOW_SUITE | while read TEST_TARGET; do
         log "External test: $(basename $TEST_TARGET)"
-        unbuffer make "$TEST_TARGET" KEFIR_BIN_DIR="$ROOT_DIR/bin/external" -j$(nproc) 2>&1 | tee "$OUTDIR/external/$(basename $TEST_TARGET).log"
+        unbuffer make "$TEST_TARGET" KEFIR_BIN_DIR="$ROOT_DIR/bin/external" USE_LTO=yes -j$(nproc) 2>&1 | tee "$OUTDIR/external/$(basename $TEST_TARGET).log"
     done
 
     log "Uncaptured external tests"
-    unbuffer make .EXTERNAL_TESTS_SUITE KEFIR_BIN_DIR="$ROOT_DIR/bin/external" -j$(nproc) 2>&1 | tee "$OUTDIR/external/uncaptured.log"
+    unbuffer make .EXTERNAL_TESTS_SUITE KEFIR_BIN_DIR="$ROOT_DIR/bin/external" USE_LTO=yes -j$(nproc) 2>&1 | tee "$OUTDIR/external/uncaptured.log"
 
     if [[ "x$DPD_GCC" != "x" ]]; then
         log "Torture test suite with DPD decimals"
@@ -184,7 +184,7 @@ external_test_suite () {
 fuzz_test () {
     mkdir -p "$OUTDIR/fuzz"
 
-    unbuffer make csmith_random_test CSMITH_RANDOM_TESTS=20000 KEFIR_BIN_DIR="$ROOT_DIR/bin/fuzz" -j$(nproc) 2>&1 | tee "$OUTDIR/fuzz/csmith.log"
+    unbuffer make csmith_random_test CSMITH_RANDOM_TESTS=20000 KEFIR_BIN_DIR="$ROOT_DIR/bin/fuzz" USE_LTO=yes -j$(nproc) 2>&1 | tee "$OUTDIR/fuzz/csmith.log"
 }
 
 main () {
