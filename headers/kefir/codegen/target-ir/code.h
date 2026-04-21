@@ -416,6 +416,8 @@ typedef struct kefir_codegen_target_ir_code {
     struct kefir_string_pool strings;
     struct kefir_codegen_target_ir_code_chunk **code_chunks;
     kefir_size_t code_length;
+    kefir_size_t allocated_chunks;
+    kefir_size_t chunk_preallocation;
 
     struct kefir_codegen_target_ir_block *blocks;
     kefir_size_t blocks_length;
