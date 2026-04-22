@@ -59,6 +59,7 @@ static kefir_result_t on_free(struct kefir_mem *mem, struct kefir_parser *parser
 }
 
 kefir_result_t kefir_int_test(struct kefir_mem *mem) {
+#ifdef KEFIR_EXTENSION_SUPPORT
     struct kefir_string_pool symbols;
     struct kefir_token TOKENS[1024];
     struct kefir_parser_token_cursor cursor;
@@ -109,5 +110,77 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
         REQUIRE_OK(kefir_token_free(mem, &TOKENS[i]));
     }
     REQUIRE_OK(kefir_string_pool_free(mem, &symbols));
+#else
+    UNUSED(mem);
+    UNUSED(on_init);
+    UNUSED(on_free);
+
+    const char *EXPECTED[] = {"[\n",
+                              "    {\n",
+                              "        \"class\": \"expression_statement\",\n",
+                              "        \"expression\": null,\n",
+                              "        \"attributes\": []\n",
+                              "    },\n",
+                              "    {\n",
+                              "        \"class\": \"expression_statement\",\n",
+                              "        \"expression\": {\n",
+                              "            \"class\": \"function_call\",\n",
+                              "            \"function\": {\n",
+                              "                \"class\": \"identifier\",\n",
+                              "                \"identifier\": \"__runtime_entry_point\"\n",
+                              "            },\n",
+                              "            \"arguments\": [\n",
+                              "                {\n",
+                              "                    \"class\": \"identifier\",\n",
+                              "                    \"identifier\": \"var1\"\n",
+                              "                },\n",
+                              "                {\n",
+                              "                    \"class\": \"binary_operation\",\n",
+                              "                    \"type\": \"add\",\n",
+                              "                    \"left\": {\n",
+                              "                        \"class\": \"identifier\",\n",
+                              "                        \"identifier\": \"var2\"\n",
+                              "                    },\n",
+                              "                    \"right\": {\n",
+                              "                        \"class\": \"function_call\",\n",
+                              "                        \"function\": {\n",
+                              "                            \"class\": \"identifier\",\n",
+                              "                            \"identifier\": \"__runtime_entry_point\"\n",
+                              "                        },\n",
+                              "                        \"arguments\": []\n",
+                              "                    }\n",
+                              "                }\n",
+                              "            ]\n",
+                              "        },\n",
+                              "        \"attributes\": []\n",
+                              "    },\n",
+                              "    {\n",
+                              "        \"class\": \"expression_statement\",\n",
+                              "        \"expression\": {\n",
+                              "            \"class\": \"array_subscript\",\n",
+                              "            \"array\": {\n",
+                              "                \"class\": \"function_call\",\n",
+                              "                \"function\": {\n",
+                              "                    \"class\": \"identifier\",\n",
+                              "                    \"identifier\": \"__runtime_entry_point\"\n",
+                              "                },\n",
+                              "                \"arguments\": []\n",
+                              "            },\n",
+                              "            \"subscript\": {\n",
+                              "                \"class\": \"function_call\",\n",
+                              "                \"function\": {\n",
+                              "                    \"class\": \"identifier\",\n",
+                              "                    \"identifier\": \"__runtime_entry_point\"\n",
+                              "                },\n",
+                              "                \"arguments\": []\n",
+                              "            }\n",
+                              "        },\n",
+                              "        \"attributes\": []\n",
+                              "    }\n",
+                              "]"};
+    for (kefir_size_t i = 0; i < sizeof(EXPECTED) / sizeof(EXPECTED[0]); i++) {
+        fprintf(stdout, "%s", EXPECTED[i]);
+    }
+#endif
     return KEFIR_OK;
 }

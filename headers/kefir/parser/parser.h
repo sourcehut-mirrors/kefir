@@ -89,9 +89,15 @@ typedef struct kefir_parser_checkpoint {
 kefir_result_t kefir_parser_checkpoint_save(const struct kefir_parser *, struct kefir_parser_checkpoint *);
 kefir_result_t kefir_parser_checkpoint_restore(struct kefir_parser *, const struct kefir_parser_checkpoint *);
 
+#define KEFIR_PARSER_RULE_FN_PREFIX(_id) kefir_parser_apply_rule_##_id
 #define KEFIR_PARSER_RULE_FN(_parser, _rule) ((_parser)->ruleset.rules[KEFIR_PARSER_RULESET_IDENTIFIER(_rule)])
+#ifndef KEFIR_EXTENSION_SUPPORT
+#define KEFIR_PARSER_RULE_APPLY(_mem, _parser, _rule, _result) \
+    (kefir_parser_apply((_mem), (_parser), (_result), KEFIR_PARSER_RULE_FN_PREFIX(_rule), NULL))
+#else
 #define KEFIR_PARSER_RULE_APPLY(_mem, _parser, _rule, _result) \
     (kefir_parser_apply((_mem), (_parser), (_result), KEFIR_PARSER_RULE_FN(_parser, _rule), NULL))
+#endif
 #define KEFIR_PARSER_NEXT_EXPRESSION(_mem, _parser, _result) \
     KEFIR_PARSER_RULE_APPLY((_mem), (_parser), expression, (_result))
 #define KEFIR_PARSER_NEXT_DECLARATION_LIST(_mem, _parser, _result) \
