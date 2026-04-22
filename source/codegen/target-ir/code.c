@@ -99,7 +99,7 @@ kefir_result_t kefir_codegen_target_ir_code_free(struct kefir_mem *mem, struct k
     KEFIR_FREE(mem, code->use_entries);
     KEFIR_FREE(mem, code->value_types);
     KEFIR_FREE(mem, code->blocks);
-    for (kefir_size_t i = 0; i < CHUNK_COUNT(code->code_length); i++) {
+    for (kefir_size_t i = 0; i < code->allocated_chunks; i++) {
         KEFIR_FREE(mem, code->code_chunks[i]);
     }
     KEFIR_FREE(mem, code->code_chunks);
@@ -129,7 +129,7 @@ kefir_result_t kefir_codegen_target_ir_code_reset(struct kefir_mem *mem, struct 
     KEFIR_FREE(mem, code->use_entries);
     KEFIR_FREE(mem, code->value_types);
     KEFIR_FREE(mem, code->blocks);
-    for (kefir_size_t i = 0; i < CHUNK_COUNT(code->code_length); i++) {
+    for (kefir_size_t i = 0; i < code->allocated_chunks; i++) {
         KEFIR_FREE(mem, code->code_chunks[i]);
     }
     KEFIR_FREE(mem, code->code_chunks);
@@ -507,12 +507,13 @@ kefir_result_t kefir_codegen_target_ir_code_new_instruction_inplace(
                sizeof(struct kefir_codegen_target_ir_code_chunk *) * (new_allocated_chunks - code->allocated_chunks));
         code->code_chunks = new_code;
 
-        for (kefir_size_t i = code->allocated_chunks; i < new_allocated_chunks; i++) {
+        kefir_size_t prev_allocated_chunks = code->allocated_chunks;
+        code->allocated_chunks = new_allocated_chunks;
+        for (kefir_size_t i = prev_allocated_chunks; i < new_allocated_chunks; i++) {
             code->code_chunks[i] = KEFIR_MALLOC(mem, sizeof(struct kefir_codegen_target_ir_code_chunk));
             REQUIRE(new_code[i] != NULL,
                     KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate target IR code chunk"));
         }
-        code->allocated_chunks = new_allocated_chunks;
     }
 
     instr = INSTR_AT_UNSAFE(code, code->code_length);
