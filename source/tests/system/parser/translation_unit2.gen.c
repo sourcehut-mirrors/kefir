@@ -33,6 +33,7 @@
 #include "kefir/ast-translator/context.h"
 #include "kefir/ast-translator/scope/translator.h"
 #include "kefir/parser/parser.h"
+#include "kefir/parser/rules.h"
 #include "kefir/lexer/lexer.h"
 #include "kefir/lexer/format.h"
 #include "kefir/test/util.h"
