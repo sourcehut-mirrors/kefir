@@ -37,9 +37,9 @@ static kefir_result_t parse_labelled_stmt(struct kefir_mem *mem, struct kefir_pa
         REQUIRE_OK(res);
 
         kefir_bool_t empty_statement = false;
-        res = kefir_parser_ast_builder_scan(mem, builder, KEFIR_PARSER_RULE_FN(parser, declaration), NULL);
+        res = kefir_parser_ast_builder_scan_impl(mem, builder, KEFIR_PARSER_RULE_FN(parser, declaration), NULL);
         if (res == KEFIR_NO_MATCH) {
-            res = kefir_parser_ast_builder_scan(mem, builder, KEFIR_PARSER_RULE_FN(parser, statement), NULL);
+            res = kefir_parser_ast_builder_scan_impl(mem, builder, KEFIR_PARSER_RULE_FN(parser, statement), NULL);
         }
         if (res == KEFIR_NO_MATCH) {
             REQUIRE(PARSER_TOKEN_IS_RIGHT_BRACE(parser, 0),
@@ -58,27 +58,28 @@ static kefir_result_t parse_labelled_stmt(struct kefir_mem *mem, struct kefir_pa
     } else if (PARSER_TOKEN_IS_KEYWORD(parser, 0, KEFIR_KEYWORD_CASE)) {
         REQUIRE_OK(PARSER_SHIFT(parser));
         REQUIRE_MATCH_OK(
-            &res, kefir_parser_ast_builder_scan(mem, builder, KEFIR_PARSER_RULE_FN(parser, constant_expression), NULL),
+            &res,
+            kefir_parser_ast_builder_scan_impl(mem, builder, KEFIR_PARSER_RULE_FN(parser, constant_expression), NULL),
             KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(parser, 0),
                                    "Expected constant expression"));
         kefir_bool_t range_expr = false;
         if (PARSER_TOKEN_IS_PUNCTUATOR(parser, 0, KEFIR_PUNCTUATOR_ELLIPSIS) &&
             parser->configuration->switch_case_ranges) {
             REQUIRE_OK(PARSER_SHIFT(parser));
-            REQUIRE_MATCH_OK(
-                &res,
-                kefir_parser_ast_builder_scan(mem, builder, KEFIR_PARSER_RULE_FN(parser, constant_expression), NULL),
-                KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(parser, 0),
-                                       "Expected constant expression"));
+            REQUIRE_MATCH_OK(&res,
+                             kefir_parser_ast_builder_scan_impl(
+                                 mem, builder, KEFIR_PARSER_RULE_FN(parser, constant_expression), NULL),
+                             KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(parser, 0),
+                                                    "Expected constant expression"));
             range_expr = true;
         }
         REQUIRE(PARSER_TOKEN_IS_PUNCTUATOR(parser, 0, KEFIR_PUNCTUATOR_COLON),
                 KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(parser, 0), "Expected colon"));
         REQUIRE_OK(PARSER_SHIFT(parser));
         kefir_bool_t empty_statement = false;
-        res = kefir_parser_ast_builder_scan(mem, builder, KEFIR_PARSER_RULE_FN(parser, declaration), NULL);
+        res = kefir_parser_ast_builder_scan_impl(mem, builder, KEFIR_PARSER_RULE_FN(parser, declaration), NULL);
         if (res == KEFIR_NO_MATCH) {
-            res = kefir_parser_ast_builder_scan(mem, builder, KEFIR_PARSER_RULE_FN(parser, statement), NULL);
+            res = kefir_parser_ast_builder_scan_impl(mem, builder, KEFIR_PARSER_RULE_FN(parser, statement), NULL);
         }
         if (res == KEFIR_NO_MATCH) {
             REQUIRE(PARSER_TOKEN_IS_RIGHT_BRACE(parser, 0),
@@ -108,9 +109,9 @@ static kefir_result_t parse_labelled_stmt(struct kefir_mem *mem, struct kefir_pa
         REQUIRE_OK(PARSER_SHIFT(parser));
         kefir_result_t res;
         kefir_bool_t empty_statement = false;
-        res = kefir_parser_ast_builder_scan(mem, builder, KEFIR_PARSER_RULE_FN(parser, declaration), NULL);
+        res = kefir_parser_ast_builder_scan_impl(mem, builder, KEFIR_PARSER_RULE_FN(parser, declaration), NULL);
         if (res == KEFIR_NO_MATCH) {
-            res = kefir_parser_ast_builder_scan(mem, builder, KEFIR_PARSER_RULE_FN(parser, statement), NULL);
+            res = kefir_parser_ast_builder_scan_impl(mem, builder, KEFIR_PARSER_RULE_FN(parser, statement), NULL);
         }
         if (res == KEFIR_NO_MATCH) {
             REQUIRE(PARSER_TOKEN_IS_RIGHT_BRACE(parser, 0),
@@ -157,6 +158,6 @@ static kefir_result_t builder_callback(struct kefir_mem *mem, struct kefir_parse
 kefir_result_t KEFIR_PARSER_RULE_FN_PREFIX(labeled_statement)(struct kefir_mem *mem, struct kefir_parser *parser,
                                                               struct kefir_ast_node_base **result, void *payload) {
     APPLY_PROLOGUE(mem, parser, result, payload);
-    REQUIRE_OK(kefir_parser_ast_builder_wrap(mem, parser, result, builder_callback, NULL));
+    REQUIRE_OK(kefir_parser_ast_builder_wrap_impl(mem, parser, result, builder_callback, NULL));
     return KEFIR_OK;
 }

@@ -26,6 +26,8 @@
 #include "kefir/parser/scope.h"
 #include "kefir/parser/ruleset.h"
 #include "kefir/parser/pragma.h"
+#include "kefir/core/error.h"
+#include "kefir/core/util.h"
 #include "kefir/ast/node.h"
 
 typedef struct kefir_parser kefir_parser_t;
@@ -73,9 +75,6 @@ typedef kefir_result_t (*kefir_parser_invocable_fn_t)(struct kefir_mem *, struct
 kefir_result_t kefir_parser_init(struct kefir_mem *, struct kefir_parser *, struct kefir_string_pool *,
                                  struct kefir_parser_token_cursor *, const struct kefir_parser_extensions *);
 kefir_result_t kefir_parser_free(struct kefir_mem *, struct kefir_parser *);
-kefir_result_t kefir_parser_apply(struct kefir_mem *, struct kefir_parser *, struct kefir_ast_node_base **,
-                                  kefir_parser_rule_fn_t, void *);
-kefir_result_t kefir_parser_try_invoke(struct kefir_mem *, struct kefir_parser *, kefir_parser_invocable_fn_t, void *);
 
 kefir_result_t kefir_parser_set_scope(struct kefir_parser *, struct kefir_parser_scope *);
 
@@ -88,15 +87,67 @@ typedef struct kefir_parser_checkpoint {
 
 kefir_result_t kefir_parser_checkpoint_save(const struct kefir_parser *, struct kefir_parser_checkpoint *);
 kefir_result_t kefir_parser_checkpoint_restore(struct kefir_parser *, const struct kefir_parser_checkpoint *);
+kefir_result_t kefir_parser_consume_pack_pragmas(struct kefir_mem *, struct kefir_parser *);
 
-#define KEFIR_PARSER_RULE_FN_PREFIX(_id) kefir_parser_apply_rule_##_id
+kefir_result_t kefir_parser_try_invoke(struct kefir_mem *, struct kefir_parser *, kefir_parser_invocable_fn_t, void *);
+kefir_result_t kefir_parser_apply(struct kefir_mem *, struct kefir_parser *, struct kefir_ast_node_base **,
+                                  kefir_parser_rule_fn_t, void *);
+
+static inline kefir_result_t kefir_parser_try_invoke_impl(struct kefir_mem *mem, struct kefir_parser *parser,
+                                                          kefir_parser_invocable_fn_t function, void *payload) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(parser != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid parser"));
+    REQUIRE(function != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid parser invocable"));
+
+    struct kefir_parser_checkpoint checkpoint;
+    REQUIRE_OK(kefir_parser_checkpoint_save(parser, &checkpoint));
+    REQUIRE_OK(kefir_parser_consume_pack_pragmas(mem, parser));
+    kefir_result_t res = function(mem, parser, payload);
+    REQUIRE_CHAIN(&res, kefir_parser_consume_pack_pragmas(mem, parser));
+    if (res == KEFIR_NO_MATCH) {
+        REQUIRE_OK(kefir_parser_checkpoint_restore(parser, &checkpoint));
+        return res;
+    } else {
+        REQUIRE_OK(res);
+    }
+    return KEFIR_OK;
+}
+
+static inline kefir_result_t kefir_parser_apply_impl(struct kefir_mem *mem, struct kefir_parser *parser,
+                                                     struct kefir_ast_node_base **result, kefir_parser_rule_fn_t rule,
+                                                     void *payload) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(parser != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid parser"));
+    REQUIRE(result != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to AST node"));
+    REQUIRE(rule != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid parser rule"));
+
+    struct kefir_parser_checkpoint checkpoint;
+    REQUIRE_OK(kefir_parser_checkpoint_save(parser, &checkpoint));
+    struct kefir_source_location source_location =
+        kefir_parser_token_cursor_at(parser->cursor, 0, true)->source_location;
+    REQUIRE_OK(kefir_parser_consume_pack_pragmas(mem, parser));
+    kefir_result_t res = rule(mem, parser, result, payload);
+    REQUIRE_CHAIN(&res, kefir_parser_consume_pack_pragmas(mem, parser));
+    if (res == KEFIR_NO_MATCH) {
+        REQUIRE_OK(kefir_parser_checkpoint_restore(parser, &checkpoint));
+        return res;
+    } else {
+        REQUIRE_OK(res);
+        if (*result != NULL) {
+            (*result)->source_location = source_location;
+        }
+    }
+    return KEFIR_OK;
+}
+
+#define KEFIR_PARSER_RULE_FN_PREFIX(_id) kefir_parser_apply_impl_rule_##_id
 #define KEFIR_PARSER_RULE_FN(_parser, _rule) ((_parser)->ruleset.rules[KEFIR_PARSER_RULESET_IDENTIFIER(_rule)])
 #ifndef KEFIR_EXTENSION_SUPPORT
 #define KEFIR_PARSER_RULE_APPLY(_mem, _parser, _rule, _result) \
-    (kefir_parser_apply((_mem), (_parser), (_result), KEFIR_PARSER_RULE_FN_PREFIX(_rule), NULL))
+    (kefir_parser_apply_impl((_mem), (_parser), (_result), KEFIR_PARSER_RULE_FN_PREFIX(_rule), NULL))
 #else
 #define KEFIR_PARSER_RULE_APPLY(_mem, _parser, _rule, _result) \
-    (kefir_parser_apply((_mem), (_parser), (_result), KEFIR_PARSER_RULE_FN(_parser, _rule), NULL))
+    (kefir_parser_apply_impl((_mem), (_parser), (_result), KEFIR_PARSER_RULE_FN(_parser, _rule), NULL))
 #endif
 #define KEFIR_PARSER_NEXT_EXPRESSION(_mem, _parser, _result) \
     KEFIR_PARSER_RULE_APPLY((_mem), (_parser), expression, (_result))

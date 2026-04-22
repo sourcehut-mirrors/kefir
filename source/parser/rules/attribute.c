@@ -31,11 +31,11 @@ static kefir_result_t consume_gnu_attribute_parameters(struct kefir_mem *mem, st
             consume_attribute_parameters = false;
         } else {
             kefir_result_t res;
-            REQUIRE_MATCH_OK(
-                &res,
-                kefir_parser_ast_builder_scan(mem, builder, KEFIR_PARSER_RULE_FN(parser, assignment_expression), NULL),
-                KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(parser, 0),
-                                       "Expected assignment expression"));
+            REQUIRE_MATCH_OK(&res,
+                             kefir_parser_ast_builder_scan_impl(
+                                 mem, builder, KEFIR_PARSER_RULE_FN(parser, assignment_expression), NULL),
+                             KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(parser, 0),
+                                                    "Expected assignment expression"));
             REQUIRE_OK(kefir_parser_ast_builder_attribute_parameter(mem, builder));
 
             if (!PARSER_TOKEN_IS_PUNCTUATOR(parser, 0, KEFIR_PUNCTUATOR_RIGHT_PARENTHESE)) {
@@ -136,7 +136,8 @@ static kefir_result_t builder_callback(struct kefir_mem *mem, struct kefir_parse
     if (PARSER_TOKEN_IS_KEYWORD(parser, 0, KEFIR_KEYWORD_ATTRIBUTE)) {
         kefir_result_t res;
         REQUIRE_MATCH_OK(
-            &res, kefir_parser_ast_builder_scan(mem, builder, KEFIR_PARSER_RULE_FN(parser, gnu_attribute_list), NULL),
+            &res,
+            kefir_parser_ast_builder_scan_impl(mem, builder, KEFIR_PARSER_RULE_FN(parser, gnu_attribute_list), NULL),
             KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(parser, 0), "Expected GNU attribute"));
         return KEFIR_OK;
     }
@@ -178,6 +179,6 @@ static kefir_result_t builder_callback(struct kefir_mem *mem, struct kefir_parse
 kefir_result_t KEFIR_PARSER_RULE_FN_PREFIX(attribute_list)(struct kefir_mem *mem, struct kefir_parser *parser,
                                                            struct kefir_ast_node_base **result, void *payload) {
     APPLY_PROLOGUE(mem, parser, result, payload);
-    REQUIRE_OK(kefir_parser_ast_builder_wrap(mem, parser, result, builder_callback, NULL));
+    REQUIRE_OK(kefir_parser_ast_builder_wrap_impl(mem, parser, result, builder_callback, NULL));
     return KEFIR_OK;
 }

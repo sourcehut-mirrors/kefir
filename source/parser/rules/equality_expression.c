@@ -28,25 +28,26 @@ static kefir_result_t builder_callback(struct kefir_mem *mem, struct kefir_parse
     REQUIRE(builder != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid parser AST builder"));
     struct kefir_parser *parser = builder->parser;
 
-    REQUIRE_OK(kefir_parser_ast_builder_scan(mem, builder, KEFIR_PARSER_RULE_FN(parser, relational_expression), NULL));
+    REQUIRE_OK(
+        kefir_parser_ast_builder_scan_impl(mem, builder, KEFIR_PARSER_RULE_FN(parser, relational_expression), NULL));
     kefir_bool_t scan_additive = true;
     do {
         kefir_result_t res;
         if (PARSER_TOKEN_IS_PUNCTUATOR(parser, 0, KEFIR_PUNCTUATOR_EQUAL)) {
             REQUIRE_OK(PARSER_SHIFT(parser));
-            REQUIRE_MATCH_OK(
-                &res,
-                kefir_parser_ast_builder_scan(mem, builder, KEFIR_PARSER_RULE_FN(parser, relational_expression), NULL),
-                KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(parser, 0),
-                                       "Expected relational expression"));
+            REQUIRE_MATCH_OK(&res,
+                             kefir_parser_ast_builder_scan_impl(
+                                 mem, builder, KEFIR_PARSER_RULE_FN(parser, relational_expression), NULL),
+                             KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(parser, 0),
+                                                    "Expected relational expression"));
             REQUIRE_OK(kefir_parser_ast_builder_binary_operation(mem, builder, KEFIR_AST_OPERATION_EQUAL));
         } else if (PARSER_TOKEN_IS_PUNCTUATOR(parser, 0, KEFIR_PUNCTUATOR_NOT_EQUAL)) {
             REQUIRE_OK(PARSER_SHIFT(parser));
-            REQUIRE_MATCH_OK(
-                &res,
-                kefir_parser_ast_builder_scan(mem, builder, KEFIR_PARSER_RULE_FN(parser, relational_expression), NULL),
-                KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(parser, 0),
-                                       "Expected relational expression"));
+            REQUIRE_MATCH_OK(&res,
+                             kefir_parser_ast_builder_scan_impl(
+                                 mem, builder, KEFIR_PARSER_RULE_FN(parser, relational_expression), NULL),
+                             KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(parser, 0),
+                                                    "Expected relational expression"));
             REQUIRE_OK(kefir_parser_ast_builder_binary_operation(mem, builder, KEFIR_AST_OPERATION_NOT_EQUAL));
         } else {
             scan_additive = false;
@@ -59,6 +60,6 @@ static kefir_result_t builder_callback(struct kefir_mem *mem, struct kefir_parse
 kefir_result_t KEFIR_PARSER_RULE_FN_PREFIX(equality_expression)(struct kefir_mem *mem, struct kefir_parser *parser,
                                                                 struct kefir_ast_node_base **result, void *payload) {
     APPLY_PROLOGUE(mem, parser, result, payload);
-    REQUIRE_OK(kefir_parser_ast_builder_wrap(mem, parser, result, builder_callback, NULL));
+    REQUIRE_OK(kefir_parser_ast_builder_wrap_impl(mem, parser, result, builder_callback, NULL));
     return KEFIR_OK;
 }

@@ -144,6 +144,6 @@ kefir_result_t kefir_parser_scan_initializer_designation(struct kefir_mem *mem, 
     REQUIRE(designation != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to initializer designation"));
 
-    REQUIRE_OK(kefir_parser_try_invoke(mem, parser, scan_designation, designation));
+    REQUIRE_OK(kefir_parser_try_invoke_impl(mem, parser, scan_designation, designation));
     return KEFIR_OK;
 }

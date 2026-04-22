@@ -225,8 +225,8 @@ static kefir_result_t builder_callback(struct kefir_mem *mem, struct kefir_parse
             continue;
         }
         if (!PARSER_TOKEN_IS_SENTINEL(builder->parser, 0)) {
-            res = kefir_parser_ast_builder_scan(mem, builder,
-                                                KEFIR_PARSER_RULE_FN(builder->parser, external_declaration), NULL);
+            res = kefir_parser_ast_builder_scan_impl(mem, builder,
+                                                     KEFIR_PARSER_RULE_FN(builder->parser, external_declaration), NULL);
             if (res == KEFIR_NO_MATCH) {
                 REQUIRE_OK(kefir_parser_token_cursor_restore(builder->parser->cursor, cursor_state));
                 res = KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(builder->parser, 0),
@@ -254,6 +254,6 @@ static kefir_result_t builder_callback(struct kefir_mem *mem, struct kefir_parse
 kefir_result_t KEFIR_PARSER_RULE_FN_PREFIX(translation_unit)(struct kefir_mem *mem, struct kefir_parser *parser,
                                                              struct kefir_ast_node_base **result, void *payload) {
     APPLY_PROLOGUE(mem, parser, result, payload);
-    REQUIRE_OK(kefir_parser_ast_builder_wrap(mem, parser, result, builder_callback, NULL));
+    REQUIRE_OK(kefir_parser_ast_builder_wrap_impl(mem, parser, result, builder_callback, NULL));
     return KEFIR_OK;
 }
