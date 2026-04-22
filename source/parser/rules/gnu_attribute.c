@@ -97,6 +97,10 @@ static kefir_result_t builder_callback(struct kefir_mem *mem, struct kefir_parse
             PARSER_TOKEN_IS_PUNCTUATOR(parser, 1, KEFIR_PUNCTUATOR_RIGHT_PARENTHESE)) {
             consume_attribute_list = false;
         } else {
+            if (PARSER_TOKEN_IS_PUNCTUATOR(parser, 0, KEFIR_PUNCTUATOR_COMMA)) {
+                REQUIRE_OK(PARSER_SHIFT(parser));
+                continue;
+            }
             REQUIRE_OK(consume_attribute_list_entry(mem, builder, parser));
 
             if (PARSER_TOKEN_IS_PUNCTUATOR(parser, 0, KEFIR_PUNCTUATOR_COMMA)) {
