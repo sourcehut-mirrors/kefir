@@ -27,12 +27,12 @@ static kefir_result_t scan_cast(struct kefir_mem *mem, struct kefir_parser *pars
     REQUIRE(PARSER_TOKEN_IS_PUNCTUATOR(parser, 0, KEFIR_PUNCTUATOR_LEFT_PARENTHESE),
             KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to match cast operator"));
     REQUIRE_OK(PARSER_SHIFT(parser));
-    REQUIRE_OK(kefir_parser_ast_builder_scan(mem, builder, KEFIR_PARSER_RULE_FN(parser, type_name), NULL));
+    REQUIRE_OK(kefir_parser_ast_builder_scan_impl(mem, builder, KEFIR_PARSER_RULE_FN(parser, type_name), NULL));
     REQUIRE(PARSER_TOKEN_IS_PUNCTUATOR(parser, 0, KEFIR_PUNCTUATOR_RIGHT_PARENTHESE),
             KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(parser, 0), "Expected right parenthese"));
     REQUIRE_OK(PARSER_SHIFT(parser));
     kefir_result_t res =
-        kefir_parser_ast_builder_scan(mem, builder, KEFIR_PARSER_RULE_FN(parser, cast_expression), NULL);
+        kefir_parser_ast_builder_scan_impl(mem, builder, KEFIR_PARSER_RULE_FN(parser, cast_expression), NULL);
     if (res == KEFIR_NO_MATCH) {
         REQUIRE(PARSER_TOKEN_IS_LEFT_BRACE(parser, 0),
                 KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(parser, 0),
@@ -49,9 +49,10 @@ static kefir_result_t builder_callback(struct kefir_mem *mem, struct kefir_parse
     REQUIRE(builder != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid parser AST builder"));
     struct kefir_parser *parser = builder->parser;
 
-    kefir_result_t res = kefir_parser_try_invoke(mem, parser, scan_cast, builder);
+    kefir_result_t res = kefir_parser_try_invoke_impl(mem, parser, scan_cast, builder);
     if (res == KEFIR_NO_MATCH) {
-        REQUIRE_OK(kefir_parser_ast_builder_scan(mem, builder, KEFIR_PARSER_RULE_FN(parser, unary_expression), NULL));
+        REQUIRE_OK(
+            kefir_parser_ast_builder_scan_impl(mem, builder, KEFIR_PARSER_RULE_FN(parser, unary_expression), NULL));
     } else {
         REQUIRE_OK(res);
     }
@@ -61,6 +62,6 @@ static kefir_result_t builder_callback(struct kefir_mem *mem, struct kefir_parse
 kefir_result_t KEFIR_PARSER_RULE_FN_PREFIX(cast_expression)(struct kefir_mem *mem, struct kefir_parser *parser,
                                                             struct kefir_ast_node_base **result, void *payload) {
     APPLY_PROLOGUE(mem, parser, result, payload);
-    REQUIRE_OK(kefir_parser_ast_builder_wrap(mem, parser, result, builder_callback, NULL));
+    REQUIRE_OK(kefir_parser_ast_builder_wrap_impl(mem, parser, result, builder_callback, NULL));
     return KEFIR_OK;
 }

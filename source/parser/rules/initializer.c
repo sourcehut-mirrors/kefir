@@ -51,6 +51,6 @@ kefir_result_t kefir_parser_scan_initializer(struct kefir_mem *mem, struct kefir
     REQUIRE(parser != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid parser"));
     REQUIRE(initializer != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to AST initializer"));
 
-    REQUIRE_OK(kefir_parser_try_invoke(mem, parser, scan_initializer, initializer));
+    REQUIRE_OK(kefir_parser_try_invoke_impl(mem, parser, scan_initializer, initializer));
     return KEFIR_OK;
 }

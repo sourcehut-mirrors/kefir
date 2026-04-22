@@ -30,14 +30,15 @@ static kefir_result_t builder_callback(struct kefir_mem *mem, struct kefir_parse
     REQUIRE(builder != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid parser AST builder"));
     struct kefir_parser *parser = builder->parser;
 
-    REQUIRE_OK(kefir_parser_ast_builder_scan(mem, builder, KEFIR_PARSER_RULE_FN(parser, conditional_expression), NULL));
+    REQUIRE_OK(
+        kefir_parser_ast_builder_scan_impl(mem, builder, KEFIR_PARSER_RULE_FN(parser, conditional_expression), NULL));
 
     kefir_result_t res;
     if (PARSER_TOKEN_IS_PUNCTUATOR(parser, 0, KEFIR_PUNCTUATOR_ASSIGN)) {
         REQUIRE_OK(PARSER_SHIFT(parser));
         REQUIRE_MATCH_OK(
             &res,
-            kefir_parser_ast_builder_scan(mem, builder, KEFIR_PARSER_RULE_FN(parser, assignment_expression), NULL),
+            kefir_parser_ast_builder_scan_impl(mem, builder, KEFIR_PARSER_RULE_FN(parser, assignment_expression), NULL),
             KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(parser, 0),
                                    "Expected assignment expression"));
         REQUIRE_OK(kefir_parser_ast_builder_assignment_operator(mem, builder, KEFIR_AST_ASSIGNMENT_SIMPLE));
@@ -45,7 +46,7 @@ static kefir_result_t builder_callback(struct kefir_mem *mem, struct kefir_parse
         REQUIRE_OK(PARSER_SHIFT(parser));
         REQUIRE_MATCH_OK(
             &res,
-            kefir_parser_ast_builder_scan(mem, builder, KEFIR_PARSER_RULE_FN(parser, assignment_expression), NULL),
+            kefir_parser_ast_builder_scan_impl(mem, builder, KEFIR_PARSER_RULE_FN(parser, assignment_expression), NULL),
             KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(parser, 0),
                                    "Expected assignment expression"));
         REQUIRE_OK(kefir_parser_ast_builder_assignment_operator(mem, builder, KEFIR_AST_ASSIGNMENT_MULTIPLY));
@@ -53,7 +54,7 @@ static kefir_result_t builder_callback(struct kefir_mem *mem, struct kefir_parse
         REQUIRE_OK(PARSER_SHIFT(parser));
         REQUIRE_MATCH_OK(
             &res,
-            kefir_parser_ast_builder_scan(mem, builder, KEFIR_PARSER_RULE_FN(parser, assignment_expression), NULL),
+            kefir_parser_ast_builder_scan_impl(mem, builder, KEFIR_PARSER_RULE_FN(parser, assignment_expression), NULL),
             KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(parser, 0),
                                    "Expected assignment expression"));
         REQUIRE_OK(kefir_parser_ast_builder_assignment_operator(mem, builder, KEFIR_AST_ASSIGNMENT_DIVIDE));
@@ -61,7 +62,7 @@ static kefir_result_t builder_callback(struct kefir_mem *mem, struct kefir_parse
         REQUIRE_OK(PARSER_SHIFT(parser));
         REQUIRE_MATCH_OK(
             &res,
-            kefir_parser_ast_builder_scan(mem, builder, KEFIR_PARSER_RULE_FN(parser, assignment_expression), NULL),
+            kefir_parser_ast_builder_scan_impl(mem, builder, KEFIR_PARSER_RULE_FN(parser, assignment_expression), NULL),
             KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(parser, 0),
                                    "Expected assignment expression"));
         REQUIRE_OK(kefir_parser_ast_builder_assignment_operator(mem, builder, KEFIR_AST_ASSIGNMENT_MODULO));
@@ -69,7 +70,7 @@ static kefir_result_t builder_callback(struct kefir_mem *mem, struct kefir_parse
         REQUIRE_OK(PARSER_SHIFT(parser));
         REQUIRE_MATCH_OK(
             &res,
-            kefir_parser_ast_builder_scan(mem, builder, KEFIR_PARSER_RULE_FN(parser, assignment_expression), NULL),
+            kefir_parser_ast_builder_scan_impl(mem, builder, KEFIR_PARSER_RULE_FN(parser, assignment_expression), NULL),
             KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(parser, 0),
                                    "Expected assignment expression"));
         REQUIRE_OK(kefir_parser_ast_builder_assignment_operator(mem, builder, KEFIR_AST_ASSIGNMENT_ADD));
@@ -77,7 +78,7 @@ static kefir_result_t builder_callback(struct kefir_mem *mem, struct kefir_parse
         REQUIRE_OK(PARSER_SHIFT(parser));
         REQUIRE_MATCH_OK(
             &res,
-            kefir_parser_ast_builder_scan(mem, builder, KEFIR_PARSER_RULE_FN(parser, assignment_expression), NULL),
+            kefir_parser_ast_builder_scan_impl(mem, builder, KEFIR_PARSER_RULE_FN(parser, assignment_expression), NULL),
             KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(parser, 0),
                                    "Expected assignment expression"));
         REQUIRE_OK(kefir_parser_ast_builder_assignment_operator(mem, builder, KEFIR_AST_ASSIGNMENT_SUBTRACT));
@@ -85,7 +86,7 @@ static kefir_result_t builder_callback(struct kefir_mem *mem, struct kefir_parse
         REQUIRE_OK(PARSER_SHIFT(parser));
         REQUIRE_MATCH_OK(
             &res,
-            kefir_parser_ast_builder_scan(mem, builder, KEFIR_PARSER_RULE_FN(parser, assignment_expression), NULL),
+            kefir_parser_ast_builder_scan_impl(mem, builder, KEFIR_PARSER_RULE_FN(parser, assignment_expression), NULL),
             KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(parser, 0),
                                    "Expected assignment expression"));
         REQUIRE_OK(kefir_parser_ast_builder_assignment_operator(mem, builder, KEFIR_AST_ASSIGNMENT_SHIFT_LEFT));
@@ -93,7 +94,7 @@ static kefir_result_t builder_callback(struct kefir_mem *mem, struct kefir_parse
         REQUIRE_OK(PARSER_SHIFT(parser));
         REQUIRE_MATCH_OK(
             &res,
-            kefir_parser_ast_builder_scan(mem, builder, KEFIR_PARSER_RULE_FN(parser, assignment_expression), NULL),
+            kefir_parser_ast_builder_scan_impl(mem, builder, KEFIR_PARSER_RULE_FN(parser, assignment_expression), NULL),
             KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(parser, 0),
                                    "Expected assignment expression"));
         REQUIRE_OK(kefir_parser_ast_builder_assignment_operator(mem, builder, KEFIR_AST_ASSIGNMENT_SHIFT_RIGHT));
@@ -101,7 +102,7 @@ static kefir_result_t builder_callback(struct kefir_mem *mem, struct kefir_parse
         REQUIRE_OK(PARSER_SHIFT(parser));
         REQUIRE_MATCH_OK(
             &res,
-            kefir_parser_ast_builder_scan(mem, builder, KEFIR_PARSER_RULE_FN(parser, assignment_expression), NULL),
+            kefir_parser_ast_builder_scan_impl(mem, builder, KEFIR_PARSER_RULE_FN(parser, assignment_expression), NULL),
             KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(parser, 0),
                                    "Expected assignment expression"));
         REQUIRE_OK(kefir_parser_ast_builder_assignment_operator(mem, builder, KEFIR_AST_ASSIGNMENT_BITWISE_AND));
@@ -109,7 +110,7 @@ static kefir_result_t builder_callback(struct kefir_mem *mem, struct kefir_parse
         REQUIRE_OK(PARSER_SHIFT(parser));
         REQUIRE_MATCH_OK(
             &res,
-            kefir_parser_ast_builder_scan(mem, builder, KEFIR_PARSER_RULE_FN(parser, assignment_expression), NULL),
+            kefir_parser_ast_builder_scan_impl(mem, builder, KEFIR_PARSER_RULE_FN(parser, assignment_expression), NULL),
             KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(parser, 0),
                                    "Expected assignment expression"));
         REQUIRE_OK(kefir_parser_ast_builder_assignment_operator(mem, builder, KEFIR_AST_ASSIGNMENT_BITWISE_XOR));
@@ -117,7 +118,7 @@ static kefir_result_t builder_callback(struct kefir_mem *mem, struct kefir_parse
         REQUIRE_OK(PARSER_SHIFT(parser));
         REQUIRE_MATCH_OK(
             &res,
-            kefir_parser_ast_builder_scan(mem, builder, KEFIR_PARSER_RULE_FN(parser, assignment_expression), NULL),
+            kefir_parser_ast_builder_scan_impl(mem, builder, KEFIR_PARSER_RULE_FN(parser, assignment_expression), NULL),
             KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(parser, 0),
                                    "Expected assignment expression"));
         REQUIRE_OK(kefir_parser_ast_builder_assignment_operator(mem, builder, KEFIR_AST_ASSIGNMENT_BITWISE_OR));
@@ -129,13 +130,13 @@ static kefir_result_t builder_callback(struct kefir_mem *mem, struct kefir_parse
 static kefir_result_t reduce_assignment(struct kefir_mem *mem, struct kefir_parser *parser,
                                         struct kefir_ast_node_base **result, void *payload) {
     APPLY_PROLOGUE(mem, parser, result, payload);
-    REQUIRE_OK(kefir_parser_ast_builder_wrap(mem, parser, result, builder_callback, NULL));
+    REQUIRE_OK(kefir_parser_ast_builder_wrap_impl(mem, parser, result, builder_callback, NULL));
     return KEFIR_OK;
 }
 
 kefir_result_t KEFIR_PARSER_RULE_FN_PREFIX(assignment_expression)(struct kefir_mem *mem, struct kefir_parser *parser,
                                                                   struct kefir_ast_node_base **result, void *payload) {
     APPLY_PROLOGUE(mem, parser, result, payload);
-    REQUIRE_OK(kefir_parser_apply(mem, parser, result, reduce_assignment, NULL));
+    REQUIRE_OK(kefir_parser_apply_impl(mem, parser, result, reduce_assignment, NULL));
     return KEFIR_OK;
 }

@@ -47,7 +47,7 @@ static kefir_result_t consume_attribute_list_entry(struct kefir_mem *mem, struct
             } else {
                 kefir_result_t res;
                 REQUIRE_MATCH_OK(&res,
-                                 kefir_parser_ast_builder_scan(
+                                 kefir_parser_ast_builder_scan_impl(
                                      mem, builder, KEFIR_PARSER_RULE_FN(parser, assignment_expression), NULL),
                                  KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(parser, 0),
                                                         "Expected assignment expression"));
@@ -117,6 +117,6 @@ static kefir_result_t builder_callback(struct kefir_mem *mem, struct kefir_parse
 kefir_result_t KEFIR_PARSER_RULE_FN_PREFIX(gnu_attribute_list)(struct kefir_mem *mem, struct kefir_parser *parser,
                                                                struct kefir_ast_node_base **result, void *payload) {
     APPLY_PROLOGUE(mem, parser, result, payload);
-    REQUIRE_OK(kefir_parser_ast_builder_wrap(mem, parser, result, builder_callback, NULL));
+    REQUIRE_OK(kefir_parser_ast_builder_wrap_impl(mem, parser, result, builder_callback, NULL));
     return KEFIR_OK;
 }

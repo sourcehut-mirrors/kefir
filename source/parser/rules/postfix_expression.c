@@ -27,7 +27,7 @@ static kefir_result_t scan_subscript(struct kefir_mem *mem, struct kefir_parser_
     REQUIRE_OK(PARSER_SHIFT(builder->parser));
     kefir_result_t res;
     REQUIRE_MATCH_OK(
-        &res, kefir_parser_ast_builder_scan(mem, builder, KEFIR_PARSER_RULE_FN(builder->parser, expression), NULL),
+        &res, kefir_parser_ast_builder_scan_impl(mem, builder, KEFIR_PARSER_RULE_FN(builder->parser, expression), NULL),
         KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(builder->parser, 0), "Expected expression"));
     REQUIRE(PARSER_TOKEN_IS_RIGHT_BRACKET(builder->parser, 0),
             KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(builder->parser, 0),
@@ -44,8 +44,8 @@ static kefir_result_t scan_argument_list(struct kefir_mem *mem, struct kefir_par
         REQUIRE_OK(kefir_parser_checkpoint_save(builder->parser, &checkpoint));
 
         kefir_result_t res;
-        res = kefir_parser_ast_builder_scan(mem, builder, KEFIR_PARSER_RULE_FN(builder->parser, assignment_expression),
-                                            NULL);
+        res = kefir_parser_ast_builder_scan_impl(mem, builder,
+                                                 KEFIR_PARSER_RULE_FN(builder->parser, assignment_expression), NULL);
         if (res == KEFIR_NO_MATCH) {
             REQUIRE_OK(kefir_parser_checkpoint_restore(builder->parser, &checkpoint));
             res = KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(builder->parser, 0),
@@ -133,11 +133,11 @@ static kefir_result_t scan_builtin(struct kefir_mem *mem, struct kefir_parser_as
     kefir_result_t res;
     switch (builtin_op) {
         case KEFIR_AST_BUILTIN_OFFSETOF:
-            REQUIRE_MATCH_OK(
-                &res,
-                kefir_parser_ast_builder_scan(mem, builder, KEFIR_PARSER_RULE_FN(builder->parser, type_name), NULL),
-                KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(builder->parser, 0),
-                                       "Expected type name"));
+            REQUIRE_MATCH_OK(&res,
+                             kefir_parser_ast_builder_scan_impl(mem, builder,
+                                                                KEFIR_PARSER_RULE_FN(builder->parser, type_name), NULL),
+                             KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(builder->parser, 0),
+                                                    "Expected type name"));
             REQUIRE_OK(kefir_parser_ast_builder_builtin_append(mem, builder));
             REQUIRE(PARSER_TOKEN_IS_PUNCTUATOR(builder->parser, 0, KEFIR_PUNCTUATOR_COMMA),
                     KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(builder->parser, 0),
@@ -201,10 +201,10 @@ static kefir_result_t scan_builtin(struct kefir_mem *mem, struct kefir_parser_as
         case KEFIR_AST_BUILTIN_KEFIR_NANSF:
         case KEFIR_AST_BUILTIN_KEFIR_NANSL:
             while (!PARSER_TOKEN_IS_PUNCTUATOR(builder->parser, 0, KEFIR_PUNCTUATOR_RIGHT_PARENTHESE)) {
-                res =
-                    kefir_parser_ast_builder_scan(mem, builder, KEFIR_PARSER_RULE_FN(builder->parser, type_name), NULL);
+                res = kefir_parser_ast_builder_scan_impl(mem, builder, KEFIR_PARSER_RULE_FN(builder->parser, type_name),
+                                                         NULL);
                 if (res == KEFIR_NO_MATCH) {
-                    res = kefir_parser_ast_builder_scan(
+                    res = kefir_parser_ast_builder_scan_impl(
                         mem, builder, KEFIR_PARSER_RULE_FN(builder->parser, assignment_expression), NULL);
                 }
                 if (res == KEFIR_NO_MATCH) {
@@ -257,11 +257,11 @@ static kefir_result_t builder_callback(struct kefir_mem *mem, struct kefir_parse
     }
 
     if (res == KEFIR_NOT_FOUND) {
-        res =
-            kefir_parser_ast_builder_scan(mem, builder, KEFIR_PARSER_RULE_FN(builder->parser, compound_literal), NULL);
+        res = kefir_parser_ast_builder_scan_impl(mem, builder, KEFIR_PARSER_RULE_FN(builder->parser, compound_literal),
+                                                 NULL);
         if (res == KEFIR_NO_MATCH) {
-            res = kefir_parser_ast_builder_scan(mem, builder, KEFIR_PARSER_RULE_FN(builder->parser, primary_expression),
-                                                NULL);
+            res = kefir_parser_ast_builder_scan_impl(mem, builder,
+                                                     KEFIR_PARSER_RULE_FN(builder->parser, primary_expression), NULL);
         }
         REQUIRE_CHAIN(&res, scan_postfixes(mem, builder));
     }
@@ -272,6 +272,6 @@ static kefir_result_t builder_callback(struct kefir_mem *mem, struct kefir_parse
 kefir_result_t KEFIR_PARSER_RULE_FN_PREFIX(postfix_expression)(struct kefir_mem *mem, struct kefir_parser *parser,
                                                                struct kefir_ast_node_base **result, void *payload) {
     APPLY_PROLOGUE(mem, parser, result, payload);
-    REQUIRE_OK(kefir_parser_ast_builder_wrap(mem, parser, result, builder_callback, NULL));
+    REQUIRE_OK(kefir_parser_ast_builder_wrap_impl(mem, parser, result, builder_callback, NULL));
     return KEFIR_OK;
 }

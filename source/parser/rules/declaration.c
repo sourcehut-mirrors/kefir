@@ -126,7 +126,7 @@ static kefir_result_t builder_callback(struct kefir_mem *mem, struct kefir_parse
     struct kefir_parser *parser = builder->parser;
 
     kefir_result_t res =
-        kefir_parser_ast_builder_scan(mem, builder, KEFIR_PARSER_RULE_FN(parser, static_assertion), NULL);
+        kefir_parser_ast_builder_scan_impl(mem, builder, KEFIR_PARSER_RULE_FN(parser, static_assertion), NULL);
     REQUIRE(res == KEFIR_NO_MATCH, res);
 
     struct kefir_ast_node_attributes attributes;
@@ -199,7 +199,7 @@ kefir_result_t KEFIR_PARSER_RULE_FN_PREFIX(declaration)(struct kefir_mem *mem, s
     kefir_result_t res = KEFIR_PARSER_RULE_APPLY(mem, parser, attribute_declaration, result);
     REQUIRE(res == KEFIR_NO_MATCH, res);
 
-    REQUIRE_OK(kefir_parser_ast_builder_wrap(mem, parser, result, builder_callback, NULL));
+    REQUIRE_OK(kefir_parser_ast_builder_wrap_impl(mem, parser, result, builder_callback, NULL));
 
     struct kefir_ast_declaration *decl_list = NULL;
     res = kefir_ast_downcast_declaration(*result, &decl_list, false);

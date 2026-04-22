@@ -219,9 +219,9 @@ static kefir_result_t scan_struct_specifier_body(struct kefir_mem *mem, struct k
     struct kefir_ast_structure_declaration_entry *entry = NULL;
     while (scan_declarations) {
         struct scan_param param = {.ptr = &entry, .attributes = attributes};
-        kefir_result_t res = kefir_parser_try_invoke(mem, parser, scan_struct_field_declaration, &param);
+        kefir_result_t res = kefir_parser_try_invoke_impl(mem, parser, scan_struct_field_declaration, &param);
         if (res == KEFIR_NO_MATCH) {
-            res = kefir_parser_try_invoke(mem, parser, scan_struct_static_assert, &entry);
+            res = kefir_parser_try_invoke_impl(mem, parser, scan_struct_static_assert, &entry);
         }
         if (res == KEFIR_NO_MATCH && PARSER_TOKEN_IS_PUNCTUATOR(parser, 0, KEFIR_PUNCTUATOR_SEMICOLON)) {
             // Skip empty declaration
@@ -400,7 +400,7 @@ static kefir_result_t scan_enum_specifier_body(struct kefir_mem *mem, struct kef
 
     kefir_bool_t scan_constants = true;
     while (scan_constants) {
-        REQUIRE_OK(kefir_parser_try_invoke(mem, parser, scan_enum_field_declaration, specifier));
+        REQUIRE_OK(kefir_parser_try_invoke_impl(mem, parser, scan_enum_field_declaration, specifier));
 
         if (PARSER_TOKEN_IS_PUNCTUATOR(parser, 0, KEFIR_PUNCTUATOR_COMMA)) {
             REQUIRE_OK(PARSER_SHIFT(parser));
@@ -638,11 +638,11 @@ static kefir_result_t scan_type_specifier(struct kefir_mem *mem, struct kefir_pa
             KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(parser, 0), "Expected right parenthese"));
         REQUIRE_OK(PARSER_SHIFT(parser));
     } else if (PARSER_TOKEN_IS_KEYWORD(parser, 0, KEFIR_KEYWORD_STRUCT)) {
-        REQUIRE_OK(kefir_parser_try_invoke(mem, parser, scan_struct_specifier, &specifier));
+        REQUIRE_OK(kefir_parser_try_invoke_impl(mem, parser, scan_struct_specifier, &specifier));
     } else if (PARSER_TOKEN_IS_KEYWORD(parser, 0, KEFIR_KEYWORD_UNION)) {
-        REQUIRE_OK(kefir_parser_try_invoke(mem, parser, scan_struct_specifier, &specifier));
+        REQUIRE_OK(kefir_parser_try_invoke_impl(mem, parser, scan_struct_specifier, &specifier));
     } else if (PARSER_TOKEN_IS_KEYWORD(parser, 0, KEFIR_KEYWORD_ENUM)) {
-        REQUIRE_OK(kefir_parser_try_invoke(mem, parser, scan_enum_specifier, &specifier));
+        REQUIRE_OK(kefir_parser_try_invoke_impl(mem, parser, scan_enum_specifier, &specifier));
     } else if (PARSER_TOKEN_IS_KEYWORD(parser, 0, KEFIR_KEYWORD_TYPEOF) ||
                PARSER_TOKEN_IS_KEYWORD(parser, 0, KEFIR_KEYWORD_TYPEOF_UNQUAL)) {
         REQUIRE(
@@ -846,7 +846,7 @@ static kefir_result_t kefir_parser_scan_declaration_specifier_impl(
     struct kefir_ast_node_attributes *attributes) {
     kefir_result_t res = KEFIR_OK;
 
-    res = kefir_parser_try_invoke(mem, parser, scan_storage_class, specifiers);
+    res = kefir_parser_try_invoke_impl(mem, parser, scan_storage_class, specifiers);
     if (res != KEFIR_NO_MATCH) {
         SCAN_ATTRIBUTES(&res, mem, parser, attributes);
         REQUIRE_OK(res);
@@ -854,13 +854,13 @@ static kefir_result_t kefir_parser_scan_declaration_specifier_impl(
     }
 
     REQUIRE(res == KEFIR_NO_MATCH, res);
-    res = kefir_parser_try_invoke(mem, parser, scan_type_specifier, specifiers);
+    res = kefir_parser_try_invoke_impl(mem, parser, scan_type_specifier, specifiers);
     REQUIRE(res == KEFIR_NO_MATCH, res);
-    res = kefir_parser_try_invoke(mem, parser, scan_type_qualifier, specifiers);
+    res = kefir_parser_try_invoke_impl(mem, parser, scan_type_qualifier, specifiers);
     REQUIRE(res == KEFIR_NO_MATCH, res);
-    res = kefir_parser_try_invoke(mem, parser, scan_function_specifier, specifiers);
+    res = kefir_parser_try_invoke_impl(mem, parser, scan_function_specifier, specifiers);
     REQUIRE(res == KEFIR_NO_MATCH, res);
-    REQUIRE_OK(kefir_parser_try_invoke(mem, parser, scan_alignment_specifier, specifiers));
+    REQUIRE_OK(kefir_parser_try_invoke_impl(mem, parser, scan_alignment_specifier, specifiers));
 
     return KEFIR_OK;
 }
