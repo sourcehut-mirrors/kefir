@@ -1,0 +1,953 @@
+{
+    "class": "translation_unit",
+    "external_declarations": [
+        {
+            "class": "declaration",
+            "specifiers": {
+                "list": [
+                    {
+                        "class": "type_specifier",
+                        "specifier": "int",
+                        "attributes": []
+                    },
+                    {
+                        "class": "type_specifier",
+                        "specifier": "long",
+                        "attributes": []
+                    }
+                ],
+                "attributes": [
+                    {
+                        "class": "attribute_list",
+                        "attributes": [
+                            {
+                                "prefix": "gnu",
+                                "name": "test2",
+                                "parameters": [
+                                    {
+                                        "class": "string_literal",
+                                        "type": "multibyte",
+                                        "content": "string\u0000",
+                                        "length": 7
+                                    },
+                                    {
+                                        "class": "constant",
+                                        "type": "integer",
+                                        "value": 2
+                                    }
+                                ],
+                                "unstructured_parameters": []
+                            },
+                            {
+                                "prefix": "gnu",
+                                "name": "test3",
+                                "parameters": [],
+                                "unstructured_parameters": []
+                            },
+                            {
+                                "prefix": "gnu",
+                                "name": "test4",
+                                "parameters": [
+                                    {
+                                        "class": "constant",
+                                        "type": "integer",
+                                        "value": 12
+                                    },
+                                    {
+                                        "class": "constant",
+                                        "type": "integer",
+                                        "value": 3
+                                    }
+                                ],
+                                "unstructured_parameters": []
+                            }
+                        ]
+                    },
+                    {
+                        "class": "attribute_list",
+                        "attributes": [
+                            {
+                                "prefix": "gnu",
+                                "name": "test3",
+                                "parameters": [
+                                    {
+                                        "class": "constant",
+                                        "type": "integer",
+                                        "value": 100
+                                    },
+                                    {
+                                        "class": "string_literal",
+                                        "type": "multibyte",
+                                        "content": "string\u0000",
+                                        "length": 7
+                                    },
+                                    {
+                                        "class": "binary_operation",
+                                        "type": "add",
+                                        "left": {
+                                            "class": "constant",
+                                            "type": "double",
+                                            "value": 3.120000
+                                        },
+                                        "right": {
+                                            "class": "constant",
+                                            "type": "integer",
+                                            "value": 1
+                                        }
+                                    }
+                                ],
+                                "unstructured_parameters": []
+                            },
+                            {
+                                "prefix": "gnu",
+                                "name": "test4",
+                                "parameters": [],
+                                "unstructured_parameters": []
+                            }
+                        ]
+                    }
+                ]
+            },
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": {
+                        "class": "identifier",
+                        "identifier": "INTEGER",
+                        "asm_label": null,
+                        "attributes": [
+                            {
+                                "class": "attribute_list",
+                                "attributes": [
+                                    {
+                                        "prefix": "gnu",
+                                        "name": "attr",
+                                        "parameters": [],
+                                        "unstructured_parameters": []
+                                    },
+                                    {
+                                        "prefix": "gnu",
+                                        "name": "test5",
+                                        "parameters": [
+                                            {
+                                                "class": "constant",
+                                                "type": "integer",
+                                                "value": 123
+                                            }
+                                        ],
+                                        "unstructured_parameters": []
+                                    }
+                                ]
+                            },
+                            {
+                                "class": "attribute_list",
+                                "attributes": [
+                                    {
+                                        "prefix": "gnu",
+                                        "name": "test1",
+                                        "parameters": [],
+                                        "unstructured_parameters": []
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    "initializer": {
+                        "type": "expression",
+                        "expression": {
+                            "class": "constant",
+                            "type": "integer",
+                            "value": 192739
+                        }
+                    }
+                },
+                {
+                    "class": "init_declarator",
+                    "declarator": {
+                        "class": "identifier",
+                        "identifier": "INTEGER2",
+                        "asm_label": null,
+                        "attributes": [
+                            {
+                                "class": "attribute_list",
+                                "attributes": [
+                                    {
+                                        "prefix": "gnu",
+                                        "name": "test100",
+                                        "parameters": [],
+                                        "unstructured_parameters": []
+                                    },
+                                    {
+                                        "prefix": "gnu",
+                                        "name": "test6",
+                                        "parameters": [
+                                            {
+                                                "class": "string_literal",
+                                                "type": "multibyte",
+                                                "content": "hello\u0000",
+                                                "length": 6
+                                            }
+                                        ],
+                                        "unstructured_parameters": []
+                                    }
+                                ]
+                            },
+                            {
+                                "class": "attribute_list",
+                                "attributes": [
+                                    {
+                                        "prefix": "gnu",
+                                        "name": "test2000",
+                                        "parameters": [],
+                                        "unstructured_parameters": []
+                                    }
+                                ]
+                            },
+                            {
+                                "class": "attribute_list",
+                                "attributes": [
+                                    {
+                                        "prefix": "gnu",
+                                        "name": "test1",
+                                        "parameters": [],
+                                        "unstructured_parameters": []
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    "initializer": {
+                        "type": "expression",
+                        "expression": {
+                            "class": "unary_operation",
+                            "type": "negate",
+                            "argument": {
+                                "class": "constant",
+                                "type": "integer",
+                                "value": 282761
+                            }
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": {
+                "list": [
+                    {
+                        "class": "type_specifier",
+                        "specifier": "struct",
+                        "identifier": "Test",
+                        "members": [
+                            {
+                                "type": "declaration",
+                                "specifiers": {
+                                    "list": [
+                                        {
+                                            "class": "type_specifier",
+                                            "specifier": "long",
+                                            "attributes": []
+                                        }
+                                    ],
+                                    "attributes": []
+                                },
+                                "declarators": [
+                                    {
+                                        "declarator": {
+                                            "class": "identifier",
+                                            "identifier": "x",
+                                            "asm_label": null,
+                                            "attributes": []
+                                        },
+                                        "bitwidth": null
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "declaration",
+                                "specifiers": {
+                                    "list": [
+                                        {
+                                            "class": "type_specifier",
+                                            "specifier": "long",
+                                            "attributes": []
+                                        }
+                                    ],
+                                    "attributes": []
+                                },
+                                "declarators": [
+                                    {
+                                        "declarator": {
+                                            "class": "identifier",
+                                            "identifier": "y",
+                                            "asm_label": null,
+                                            "attributes": []
+                                        },
+                                        "bitwidth": null
+                                    }
+                                ]
+                            }
+                        ],
+                        "attributes": [
+                            {
+                                "class": "attribute_list",
+                                "attributes": [
+                                    {
+                                        "prefix": "gnu",
+                                        "name": "STRUCTURE",
+                                        "parameters": [],
+                                        "unstructured_parameters": []
+                                    },
+                                    {
+                                        "prefix": "gnu",
+                                        "name": "x",
+                                        "parameters": [],
+                                        "unstructured_parameters": []
+                                    },
+                                    {
+                                        "prefix": "gnu",
+                                        "name": "y",
+                                        "parameters": [],
+                                        "unstructured_parameters": []
+                                    },
+                                    {
+                                        "prefix": "gnu",
+                                        "name": "z",
+                                        "parameters": [],
+                                        "unstructured_parameters": []
+                                    }
+                                ]
+                            },
+                            {
+                                "class": "attribute_list",
+                                "attributes": [
+                                    {
+                                        "prefix": "gnu",
+                                        "name": "STRUCT",
+                                        "parameters": [
+                                            {
+                                                "class": "string_literal",
+                                                "type": "multibyte",
+                                                "content": "X\u0000",
+                                                "length": 2
+                                            },
+                                            {
+                                                "class": "identifier",
+                                                "identifier": "x"
+                                            }
+                                        ],
+                                        "unstructured_parameters": []
+                                    },
+                                    {
+                                        "prefix": "gnu",
+                                        "name": "test2",
+                                        "parameters": [],
+                                        "unstructured_parameters": []
+                                    }
+                                ]
+                            },
+                            {
+                                "class": "attribute_list",
+                                "attributes": [
+                                    {
+                                        "prefix": "gnu",
+                                        "name": "TAIL",
+                                        "parameters": [],
+                                        "unstructured_parameters": []
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ],
+                "attributes": []
+            },
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": null,
+                    "initializer": null
+                }
+            ]
+        },
+        {
+            "class": "function_definition",
+            "specifiers": {
+                "list": [
+                    {
+                        "class": "type_specifier",
+                        "specifier": "long",
+                        "attributes": []
+                    }
+                ],
+                "attributes": [
+                    {
+                        "class": "attribute_list",
+                        "attributes": [
+                            {
+                                "prefix": "gnu",
+                                "name": "FN",
+                                "parameters": [
+                                    {
+                                        "class": "string_literal",
+                                        "type": "multibyte",
+                                        "content": "sum\u0000",
+                                        "length": 4
+                                    }
+                                ],
+                                "unstructured_parameters": []
+                            }
+                        ]
+                    }
+                ]
+            },
+            "declarator": {
+                "class": "function",
+                "declarator": {
+                    "class": "identifier",
+                    "identifier": "sum",
+                    "asm_label": null,
+                    "attributes": []
+                },
+                "ellipsis": false,
+                "parameters": [
+                    {
+                        "class": "declaration",
+                        "specifiers": {
+                            "list": [
+                                {
+                                    "class": "type_specifier",
+                                    "specifier": "struct",
+                                    "identifier": "Test",
+                                    "members": null,
+                                    "attributes": [
+                                        {
+                                            "class": "attribute_list",
+                                            "attributes": [
+                                                {
+                                                    "prefix": "gnu",
+                                                    "name": "param",
+                                                    "parameters": [],
+                                                    "unstructured_parameters": []
+                                                },
+                                                {
+                                                    "prefix": "gnu",
+                                                    "name": "param2",
+                                                    "parameters": [],
+                                                    "unstructured_parameters": []
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ],
+                            "attributes": []
+                        },
+                        "init_declarators": [
+                            {
+                                "class": "init_declarator",
+                                "declarator": {
+                                    "class": "identifier",
+                                    "identifier": "t",
+                                    "asm_label": null,
+                                    "attributes": []
+                                },
+                                "initializer": null
+                            }
+                        ]
+                    }
+                ],
+                "attributes": [
+                    {
+                        "class": "attribute_list",
+                        "attributes": [
+                            {
+                                "prefix": "gnu",
+                                "name": "TAIL",
+                                "parameters": [],
+                                "unstructured_parameters": []
+                            }
+                        ]
+                    },
+                    {
+                        "class": "attribute_list",
+                        "attributes": [
+                            {
+                                "prefix": "gnu",
+                                "name": "X",
+                                "parameters": [],
+                                "unstructured_parameters": []
+                            },
+                            {
+                                "prefix": "gnu",
+                                "name": "Y",
+                                "parameters": [],
+                                "unstructured_parameters": []
+                            }
+                        ]
+                    }
+                ]
+            },
+            "declarations": [],
+            "body": {
+                "class": "compound_statement",
+                "items": [
+                    {
+                        "class": "declaration",
+                        "specifiers": {
+                            "list": [
+                                {
+                                    "class": "storage_class",
+                                    "storage": "static",
+                                    "attributes": []
+                                },
+                                {
+                                    "class": "type_qualifier",
+                                    "qualifier": "const",
+                                    "attributes": []
+                                },
+                                {
+                                    "class": "type_specifier",
+                                    "specifier": "char",
+                                    "attributes": []
+                                }
+                            ],
+                            "attributes": []
+                        },
+                        "init_declarators": [
+                            {
+                                "class": "init_declarator",
+                                "declarator": {
+                                    "class": "array",
+                                    "declarator": {
+                                        "class": "identifier",
+                                        "identifier": "__func__",
+                                        "asm_label": null,
+                                        "attributes": []
+                                    },
+                                    "type": "unbounded",
+                                    "static": false,
+                                    "type_qualifiers": [],
+                                    "attributes": []
+                                },
+                                "initializer": {
+                                    "type": "expression",
+                                    "expression": {
+                                        "class": "string_literal",
+                                        "type": "multibyte",
+                                        "content": "sum\u0000",
+                                        "length": 4
+                                    }
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "class": "goto_statement",
+                        "identifier": "body",
+                        "attributes": []
+                    },
+                    {
+                        "class": "return_statement",
+                        "expression": {
+                            "class": "constant",
+                            "type": "integer",
+                            "value": 0
+                        },
+                        "attributes": []
+                    },
+                    {
+                        "class": "labeled_statement",
+                        "label": "body",
+                        "statement": {
+                            "class": "expression_statement",
+                            "expression": null,
+                            "attributes": []
+                        },
+                        "attributes": []
+                    },
+                    {
+                        "class": "attribute_declaration",
+                        "attributes": [
+                            {
+                                "class": "attribute_list",
+                                "attributes": [
+                                    {
+                                        "prefix": "gnu",
+                                        "name": "another_attribute",
+                                        "parameters": [],
+                                        "unstructured_parameters": []
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "class": "return_statement",
+                        "expression": {
+                            "class": "binary_operation",
+                            "type": "add",
+                            "left": {
+                                "class": "struct_member",
+                                "structure": {
+                                    "class": "identifier",
+                                    "identifier": "t"
+                                },
+                                "member": "x"
+                            },
+                            "right": {
+                                "class": "struct_member",
+                                "structure": {
+                                    "class": "identifier",
+                                    "identifier": "t"
+                                },
+                                "member": "y"
+                            }
+                        },
+                        "attributes": []
+                    }
+                ],
+                "attributes": []
+            }
+        },
+        {
+            "class": "declaration",
+            "specifiers": {
+                "list": [
+                    {
+                        "class": "type_specifier",
+                        "specifier": "enum",
+                        "identifier": "Enum",
+                        "members": [
+                            {
+                                "identifier": "ONE",
+                                "value": {
+                                    "class": "constant",
+                                    "type": "integer",
+                                    "value": 1
+                                },
+                                "attributes": [
+                                    {
+                                        "class": "attribute_list",
+                                        "attributes": []
+                                    },
+                                    {
+                                        "class": "attribute_list",
+                                        "attributes": [
+                                            {
+                                                "prefix": "gnu",
+                                                "name": "test",
+                                                "parameters": [],
+                                                "unstructured_parameters": []
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "identifier": "TWO",
+                                "value": {
+                                    "class": "constant",
+                                    "type": "integer",
+                                    "value": 2
+                                },
+                                "attributes": [
+                                    {
+                                        "class": "attribute_list",
+                                        "attributes": []
+                                    },
+                                    {
+                                        "class": "attribute_list",
+                                        "attributes": [
+                                            {
+                                                "prefix": "gnu",
+                                                "name": "test",
+                                                "parameters": [],
+                                                "unstructured_parameters": []
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ],
+                        "attributes": [
+                            {
+                                "class": "attribute_list",
+                                "attributes": [
+                                    {
+                                        "prefix": "gnu",
+                                        "name": "ENUMERATOR",
+                                        "parameters": [],
+                                        "unstructured_parameters": []
+                                    }
+                                ]
+                            },
+                            {
+                                "class": "attribute_list",
+                                "attributes": [
+                                    {
+                                        "prefix": "gnu",
+                                        "name": "ENUMERATOR",
+                                        "parameters": [
+                                            {
+                                                "class": "string_literal",
+                                                "type": "multibyte",
+                                                "content": "enum\u0000",
+                                                "length": 5
+                                            },
+                                            {
+                                                "class": "identifier",
+                                                "identifier": "enumerator"
+                                            },
+                                            {
+                                                "class": "unary_operation",
+                                                "type": "negate",
+                                                "argument": {
+                                                    "class": "constant",
+                                                    "type": "integer",
+                                                    "value": 1
+                                                }
+                                            }
+                                        ],
+                                        "unstructured_parameters": []
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ],
+                "attributes": []
+            },
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": null,
+                    "initializer": null
+                }
+            ]
+        },
+        {
+            "class": "function_definition",
+            "specifiers": {
+                "list": [
+                    {
+                        "class": "type_specifier",
+                        "specifier": "long",
+                        "attributes": []
+                    }
+                ],
+                "attributes": []
+            },
+            "declarator": {
+                "class": "function",
+                "declarator": {
+                    "class": "identifier",
+                    "identifier": "get_one",
+                    "asm_label": null,
+                    "attributes": []
+                },
+                "ellipsis": false,
+                "parameters": [],
+                "attributes": [
+                    {
+                        "class": "attribute_list",
+                        "attributes": []
+                    },
+                    {
+                        "class": "attribute_list",
+                        "attributes": []
+                    }
+                ]
+            },
+            "declarations": [],
+            "body": {
+                "class": "compound_statement",
+                "items": [
+                    {
+                        "class": "declaration",
+                        "specifiers": {
+                            "list": [
+                                {
+                                    "class": "storage_class",
+                                    "storage": "static",
+                                    "attributes": []
+                                },
+                                {
+                                    "class": "type_qualifier",
+                                    "qualifier": "const",
+                                    "attributes": []
+                                },
+                                {
+                                    "class": "type_specifier",
+                                    "specifier": "char",
+                                    "attributes": []
+                                }
+                            ],
+                            "attributes": []
+                        },
+                        "init_declarators": [
+                            {
+                                "class": "init_declarator",
+                                "declarator": {
+                                    "class": "array",
+                                    "declarator": {
+                                        "class": "identifier",
+                                        "identifier": "__func__",
+                                        "asm_label": null,
+                                        "attributes": []
+                                    },
+                                    "type": "unbounded",
+                                    "static": false,
+                                    "type_qualifiers": [],
+                                    "attributes": []
+                                },
+                                "initializer": {
+                                    "type": "expression",
+                                    "expression": {
+                                        "class": "string_literal",
+                                        "type": "multibyte",
+                                        "content": "get_one\u0000",
+                                        "length": 8
+                                    }
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "class": "return_statement",
+                        "expression": {
+                            "class": "identifier",
+                            "identifier": "ONE"
+                        },
+                        "attributes": []
+                    }
+                ],
+                "attributes": []
+            }
+        },
+        {
+            "class": "function_definition",
+            "specifiers": {
+                "list": [
+                    {
+                        "class": "type_specifier",
+                        "specifier": "long",
+                        "attributes": []
+                    }
+                ],
+                "attributes": [
+                    {
+                        "class": "attribute_list",
+                        "attributes": []
+                    },
+                    {
+                        "class": "attribute_list",
+                        "attributes": [
+                            {
+                                "prefix": "gnu",
+                                "name": "NONE",
+                                "parameters": [
+                                    {
+                                        "class": "identifier",
+                                        "identifier": "none"
+                                    }
+                                ],
+                                "unstructured_parameters": []
+                            }
+                        ]
+                    }
+                ]
+            },
+            "declarator": {
+                "class": "function",
+                "declarator": {
+                    "class": "identifier",
+                    "identifier": "get_two",
+                    "asm_label": null,
+                    "attributes": []
+                },
+                "ellipsis": false,
+                "parameters": [],
+                "attributes": [
+                    {
+                        "class": "attribute_list",
+                        "attributes": [
+                            {
+                                "prefix": "gnu",
+                                "name": "ONE",
+                                "parameters": [],
+                                "unstructured_parameters": []
+                            }
+                        ]
+                    }
+                ]
+            },
+            "declarations": [],
+            "body": {
+                "class": "compound_statement",
+                "items": [
+                    {
+                        "class": "declaration",
+                        "specifiers": {
+                            "list": [
+                                {
+                                    "class": "storage_class",
+                                    "storage": "static",
+                                    "attributes": []
+                                },
+                                {
+                                    "class": "type_qualifier",
+                                    "qualifier": "const",
+                                    "attributes": []
+                                },
+                                {
+                                    "class": "type_specifier",
+                                    "specifier": "char",
+                                    "attributes": []
+                                }
+                            ],
+                            "attributes": []
+                        },
+                        "init_declarators": [
+                            {
+                                "class": "init_declarator",
+                                "declarator": {
+                                    "class": "array",
+                                    "declarator": {
+                                        "class": "identifier",
+                                        "identifier": "__func__",
+                                        "asm_label": null,
+                                        "attributes": []
+                                    },
+                                    "type": "unbounded",
+                                    "static": false,
+                                    "type_qualifiers": [],
+                                    "attributes": []
+                                },
+                                "initializer": {
+                                    "type": "expression",
+                                    "expression": {
+                                        "class": "string_literal",
+                                        "type": "multibyte",
+                                        "content": "get_two\u0000",
+                                        "length": 8
+                                    }
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "class": "return_statement",
+                        "expression": {
+                            "class": "identifier",
+                            "identifier": "TWO"
+                        },
+                        "attributes": []
+                    }
+                ],
+                "attributes": []
+            }
+        }
+    ]
+}

@@ -149,7 +149,12 @@ static kefir_result_t builder_callback(struct kefir_mem *mem, struct kefir_parse
 
     REQUIRE_OK(kefir_parser_ast_builder_attribute_list(mem, builder));
 
-    while (PARSER_TOKEN_IS_IDENTIFIER(parser, 0) || PARSER_TOKEN_IS(parser, 0, KEFIR_TOKEN_KEYWORD)) {
+    while (PARSER_TOKEN_IS_IDENTIFIER(parser, 0) || PARSER_TOKEN_IS(parser, 0, KEFIR_TOKEN_KEYWORD) ||
+           PARSER_TOKEN_IS_PUNCTUATOR(parser, 0, KEFIR_PUNCTUATOR_COMMA)) {
+        if (PARSER_TOKEN_IS_PUNCTUATOR(parser, 0, KEFIR_PUNCTUATOR_COMMA)) {
+            REQUIRE_OK(PARSER_SHIFT(parser));
+            continue;
+        }
         REQUIRE_OK(consume_attribute(mem, builder, parser));
 
         if (PARSER_TOKEN_IS_PUNCTUATOR(parser, 0, KEFIR_PUNCTUATOR_COMMA)) {
