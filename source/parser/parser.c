@@ -91,12 +91,14 @@ kefir_result_t kefir_parser_consume_pack_pragmas(struct kefir_mem *mem, struct k
 
     while (PARSER_TOKEN_IS_PRAGMA(parser, 0)) {
         const struct kefir_token *token = PARSER_CURSOR_EXT(parser, 0, false);
-        if (token->pragma != KEFIR_PRAGMA_TOKEN_PACK_PUSH && token->pragma != KEFIR_PRAGMA_TOKEN_PACK_POP &&
-            token->pragma != KEFIR_PRAGMA_TOKEN_PACK_VALUE) {
+        if (token->pragma->pragma != KEFIR_PRAGMA_TOKEN_PACK_PUSH &&
+            token->pragma->pragma != KEFIR_PRAGMA_TOKEN_PACK_POP &&
+            token->pragma->pragma != KEFIR_PRAGMA_TOKEN_PACK_VALUE) {
             break;
         }
-        kefir_result_t res = kefir_parser_scan_pragma(mem, &parser->pragmas, &parser->pragmas.file_scope, token->pragma,
-                                                      token->pragma_param, &token->source_location);
+        kefir_result_t res =
+            kefir_parser_scan_pragma(mem, &parser->pragmas, &parser->pragmas.file_scope, token->pragma->pragma,
+                                     token->pragma->pragma_param, &token->source_location);
         if (res != KEFIR_NO_MATCH) {
             REQUIRE_OK(res);
         }

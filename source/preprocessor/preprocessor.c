@@ -1096,7 +1096,7 @@ static kefir_result_t process_pragma(struct kefir_mem *mem, struct kefir_preproc
         if (valid_pragma) {
             struct kefir_token *token;
             REQUIRE_OK(kefir_token_allocator_allocate_empty(mem, token_allocator, &token));
-            REQUIRE_OK(kefir_token_new_pragma(pragma_type, pragma_param, token));
+            REQUIRE_OK(kefir_token_new_pragma(mem, pragma_type, pragma_param, token));
             REQUIRE_OK(kefir_token_buffer_emplace(mem, buffer, token));
             token->source_location = directive->source_location;
 
@@ -1177,7 +1177,7 @@ static kefir_result_t process_pragma(struct kefir_mem *mem, struct kefir_preproc
             if (valid_pragma) {
                 struct kefir_token *token;
                 REQUIRE_OK(kefir_token_allocator_allocate_empty(mem, token_allocator, &token));
-                REQUIRE_OK(kefir_token_new_pragma(pragma_type, pragma_param, token));
+                REQUIRE_OK(kefir_token_new_pragma(mem, pragma_type, pragma_param, token));
                 REQUIRE_OK(kefir_token_buffer_emplace(mem, buffer, token));
                 token->source_location = directive->source_location;
 

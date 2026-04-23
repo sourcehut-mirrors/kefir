@@ -970,7 +970,7 @@ kefir_result_t kefir_token_format(struct kefir_json_output *json, const struct k
             REQUIRE_OK(kefir_json_output_string(json, "pragma"));
             REQUIRE_OK(kefir_json_output_object_key(json, "preprocessor"));
             REQUIRE_OK(kefir_json_output_boolean(json, false));
-            REQUIRE_OK(format_pragma(json, token->pragma, token->pragma_param));
+            REQUIRE_OK(format_pragma(json, token->pragma->pragma, token->pragma->pragma_param));
             break;
 
         case KEFIR_TOKEN_KEYWORD:

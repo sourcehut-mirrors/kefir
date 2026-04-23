@@ -846,13 +846,18 @@ kefir_result_t kefir_token_new_punctuator(kefir_punctuator_token_t punctuator, s
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_token_new_pragma(kefir_pragma_token_type_t pragma, kefir_pragma_token_parameter_t param,
-                                      struct kefir_token *token) {
+kefir_result_t kefir_token_new_pragma(struct kefir_mem *mem, kefir_pragma_token_type_t pragma,
+                                      kefir_pragma_token_parameter_t param, struct kefir_token *token) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(token != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to token"));
     REQUIRE_OK(kefir_source_location_empty(&token->source_location));
+
+    token->pragma = KEFIR_MALLOC(mem, sizeof(struct kefir_pragma_token));
+    REQUIRE_ELSE(token->pragma != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate pragma token"));
+
     token->klass = KEFIR_TOKEN_PRAGMA;
-    token->pragma = pragma;
-    token->pragma_param = param;
+    token->pragma->pragma = pragma;
+    token->pragma->pragma_param = param;
     token->macro_expansions = NULL;
     return KEFIR_OK;
 }
@@ -990,6 +995,10 @@ kefir_result_t kefir_token_copy(struct kefir_mem *mem, struct kefir_token *dst, 
         dst->constant = KEFIR_MALLOC(mem, sizeof(struct kefir_constant_token));
         REQUIRE(dst->constant != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate constant token"));
         memcpy(dst->constant, src->constant, sizeof(struct kefir_constant_token));
+    } else if (src->klass == KEFIR_TOKEN_PRAGMA) {
+        dst->pragma = KEFIR_MALLOC(mem, sizeof(struct kefir_pragma_token));
+        REQUIRE(dst->pragma != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate pragma token"));
+        memcpy(dst->pragma, src->pragma, sizeof(struct kefir_pragma_token));
     }
 
     if (src->macro_expansions != NULL) {
