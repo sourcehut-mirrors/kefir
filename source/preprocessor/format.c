@@ -519,7 +519,7 @@ static kefir_result_t format_token(FILE *out, const struct kefir_token *token,
             break;
 
         case KEFIR_TOKEN_PRAGMA:
-            REQUIRE_OK(format_pragma(out, token->pragma, token->pragma_param));
+            REQUIRE_OK(format_pragma(out, token->pragma->pragma, token->pragma->pragma_param));
             break;
 
         case KEFIR_TOKEN_PP_WHITESPACE:

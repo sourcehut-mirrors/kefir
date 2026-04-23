@@ -331,6 +331,11 @@ typedef struct kefir_token_macro_expansions {
     struct kefir_hashtree macro_expansions;
 } kefir_token_macro_expansions_t;
 
+typedef struct kefir_pragma_token {
+    kefir_pragma_token_type_t pragma;
+    struct kefir_pragma_token_parameter pragma_param;
+} kefir_pragma_token_t;
+
 typedef struct kefir_token {
     kefir_token_class_t klass;
     struct kefir_token_macro_expansions *macro_expansions;
@@ -343,10 +348,7 @@ typedef struct kefir_token {
         struct kefir_constant_token *constant;
         struct kefir_string_literal_token *string_literal;
         kefir_punctuator_token_t punctuator;
-        struct {
-            kefir_pragma_token_type_t pragma;
-            struct kefir_pragma_token_parameter pragma_param;
-        };
+        struct kefir_pragma_token *pragma;
         struct kefir_pptoken_pp_whitespace pp_whitespace;
         struct kefir_pptoken_pp_number pp_number;
         struct kefir_pptoken_pp_header_name pp_header_name;
@@ -427,7 +429,8 @@ kefir_bool_t kefir_token_string_literal_type_concat(kefir_string_literal_token_t
                                                     kefir_string_literal_token_type_t,
                                                     kefir_string_literal_token_type_t *);
 kefir_result_t kefir_token_new_punctuator(kefir_punctuator_token_t, struct kefir_token *);
-kefir_result_t kefir_token_new_pragma(kefir_pragma_token_type_t, kefir_pragma_token_parameter_t, struct kefir_token *);
+kefir_result_t kefir_token_new_pragma(struct kefir_mem *, kefir_pragma_token_type_t, kefir_pragma_token_parameter_t,
+                                      struct kefir_token *);
 kefir_result_t kefir_token_new_pp_whitespace(kefir_bool_t, struct kefir_token *);
 kefir_result_t kefir_token_new_pp_number(struct kefir_mem *, const char *, kefir_size_t, struct kefir_token *);
 kefir_result_t kefir_token_new_pp_header_name(struct kefir_mem *, kefir_bool_t, const char *, kefir_size_t,
