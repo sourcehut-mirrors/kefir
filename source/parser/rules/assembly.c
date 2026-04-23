@@ -48,13 +48,13 @@ static kefir_result_t scan_assembly_template(struct kefir_mem *mem, struct kefir
             KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(builder->parser, 0),
                                    "Expected assembler template"));
     const struct kefir_token *token = PARSER_CURSOR(builder->parser, 0);
-    REQUIRE(!token->string_literal.raw_literal,
+    REQUIRE(!token->string_literal->raw_literal,
             KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected raw string literal in parsing phase"));
-    switch (token->string_literal.type) {
+    switch (token->string_literal->type) {
         case KEFIR_STRING_LITERAL_TOKEN_MULTIBYTE:
         case KEFIR_STRING_LITERAL_TOKEN_UNICODE8: {
             const char *asm_template =
-                kefir_string_pool_insert(mem, builder->parser->symbols, token->string_literal.literal, NULL);
+                kefir_string_pool_insert(mem, builder->parser->symbols, token->string_literal->literal, NULL);
             REQUIRE(asm_template != NULL,
                     KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert assembly template into string pool"));
             REQUIRE_OK(kefir_parser_ast_builder_inline_assembly(mem, builder, *qualifiers, asm_template));
@@ -92,12 +92,12 @@ static kefir_result_t scan_operand(struct kefir_mem *mem, struct kefir_parser_as
             KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(builder->parser, 0),
                                    "Expected output constraint string literal"));
     const struct kefir_token *token = PARSER_CURSOR(builder->parser, 0);
-    REQUIRE(!token->string_literal.raw_literal,
+    REQUIRE(!token->string_literal->raw_literal,
             KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected raw string literal in parsing phase"));
-    switch (token->string_literal.type) {
+    switch (token->string_literal->type) {
         case KEFIR_STRING_LITERAL_TOKEN_MULTIBYTE:
         case KEFIR_STRING_LITERAL_TOKEN_UNICODE8:
-            constraint = token->string_literal.literal;
+            constraint = token->string_literal->literal;
             break;
 
         case KEFIR_STRING_LITERAL_TOKEN_UNICODE16:
@@ -161,13 +161,13 @@ static kefir_result_t scan_clobbers(struct kefir_mem *mem, struct kefir_parser_a
                     KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(builder->parser, 0),
                                            "Expected clobber string literal"));
             const struct kefir_token *token = PARSER_CURSOR(builder->parser, 0);
-            REQUIRE(!token->string_literal.raw_literal,
+            REQUIRE(!token->string_literal->raw_literal,
                     KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected raw string literal in parsing phase"));
-            switch (token->string_literal.type) {
+            switch (token->string_literal->type) {
                 case KEFIR_STRING_LITERAL_TOKEN_MULTIBYTE:
                 case KEFIR_STRING_LITERAL_TOKEN_UNICODE8:
                     REQUIRE_OK(kefir_parser_ast_builder_inline_assembly_add_clobber(mem, builder,
-                                                                                    token->string_literal.literal));
+                                                                                    token->string_literal->literal));
                     break;
 
                 case KEFIR_STRING_LITERAL_TOKEN_UNICODE16:

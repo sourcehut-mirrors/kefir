@@ -312,7 +312,7 @@ kefir_result_t kefir_preprocessor_convert_raw_string_into_multibyte(struct kefir
         return res;
     });
 
-    *str = kefir_string_pool_insert(mem, symbols, string_token.string_literal.literal, NULL);
+    *str = kefir_string_pool_insert(mem, symbols, string_token.string_literal->literal, NULL);
     REQUIRE_ELSE(*str != NULL, {
         kefir_token_free(mem, &string_token);
         return KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert string literal into symbol table");
@@ -417,8 +417,8 @@ static kefir_result_t process_include(struct kefir_mem *mem, struct kefir_prepro
         include_path = token->pp_header_name.header_name;
         system_include = token->pp_header_name.system;
     } else if (token->klass == KEFIR_TOKEN_STRING_LITERAL &&
-               token->string_literal.type == KEFIR_STRING_LITERAL_TOKEN_MULTIBYTE &&
-               token->string_literal.raw_literal) {
+               token->string_literal->type == KEFIR_STRING_LITERAL_TOKEN_MULTIBYTE &&
+               token->string_literal->raw_literal) {
         REQUIRE_OK(kefir_preprocessor_convert_raw_string_into_multibyte(mem, preprocessor->lexer.symbols, token,
                                                                         &include_path));
     } else {
@@ -660,8 +660,8 @@ static kefir_result_t process_embed_impl(
         embed_path = token->pp_header_name.header_name;
         system_embed = token->pp_header_name.system;
     } else if (token->klass == KEFIR_TOKEN_STRING_LITERAL &&
-               token->string_literal.type == KEFIR_STRING_LITERAL_TOKEN_MULTIBYTE &&
-               token->string_literal.raw_literal) {
+               token->string_literal->type == KEFIR_STRING_LITERAL_TOKEN_MULTIBYTE &&
+               token->string_literal->raw_literal) {
         REQUIRE_OK(
             kefir_preprocessor_convert_raw_string_into_multibyte(mem, preprocessor->lexer.symbols, token, &embed_path));
     } else {
@@ -1000,8 +1000,8 @@ static kefir_result_t process_line(struct kefir_mem *mem, struct kefir_preproces
         token = kefir_token_buffer_at(&directive->pp_tokens, i);
         if (token->klass != KEFIR_TOKEN_PP_WHITESPACE) {
             REQUIRE(token->klass == KEFIR_TOKEN_STRING_LITERAL &&
-                        token->string_literal.type == KEFIR_STRING_LITERAL_TOKEN_MULTIBYTE &&
-                        token->string_literal.raw_literal,
+                        token->string_literal->type == KEFIR_STRING_LITERAL_TOKEN_MULTIBYTE &&
+                        token->string_literal->raw_literal,
                     KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, &token->source_location, "Expected valid file name"));
 
             REQUIRE_OK(kefir_preprocessor_convert_raw_string_into_multibyte(mem, preprocessor->lexer.symbols, token,

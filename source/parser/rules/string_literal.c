@@ -28,34 +28,34 @@ kefir_result_t KEFIR_PARSER_RULE_FN_PREFIX(string_literal)(struct kefir_mem *mem
     REQUIRE(PARSER_TOKEN_IS_STRING_LITERAL(parser, 0),
             KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Expected string literal token"));
     const struct kefir_token *token = PARSER_CURSOR(parser, 0);
-    REQUIRE(!token->string_literal.raw_literal,
+    REQUIRE(!token->string_literal->raw_literal,
             KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected raw string literal in parsing phase"));
-    switch (token->string_literal.type) {
+    switch (token->string_literal->type) {
         case KEFIR_STRING_LITERAL_TOKEN_MULTIBYTE:
         case KEFIR_STRING_LITERAL_TOKEN_UNICODE8:
             REQUIRE_ALLOC(result,
                           KEFIR_AST_NODE_BASE(kefir_ast_new_string_literal_multibyte(
-                              mem, (const char *) token->string_literal.literal, token->string_literal.length)),
+                              mem, (const char *) token->string_literal->literal, token->string_literal->length)),
                           "Failed to allocate AST string literal");
             break;
 
         case KEFIR_STRING_LITERAL_TOKEN_UNICODE16:
             REQUIRE_ALLOC(result,
-                          KEFIR_AST_NODE_BASE(kefir_ast_new_string_literal_unicode16(mem, token->string_literal.literal,
-                                                                                     token->string_literal.length)),
+                          KEFIR_AST_NODE_BASE(kefir_ast_new_string_literal_unicode16(
+                              mem, token->string_literal->literal, token->string_literal->length)),
                           "Failed to allocate AST string literal");
             break;
         case KEFIR_STRING_LITERAL_TOKEN_UNICODE32:
             REQUIRE_ALLOC(result,
-                          KEFIR_AST_NODE_BASE(kefir_ast_new_string_literal_unicode32(mem, token->string_literal.literal,
-                                                                                     token->string_literal.length)),
+                          KEFIR_AST_NODE_BASE(kefir_ast_new_string_literal_unicode32(
+                              mem, token->string_literal->literal, token->string_literal->length)),
                           "Failed to allocate AST string literal");
             break;
 
         case KEFIR_STRING_LITERAL_TOKEN_WIDE:
             REQUIRE_ALLOC(result,
-                          KEFIR_AST_NODE_BASE(kefir_ast_new_string_literal_wide(mem, token->string_literal.literal,
-                                                                                token->string_literal.length)),
+                          KEFIR_AST_NODE_BASE(kefir_ast_new_string_literal_wide(mem, token->string_literal->literal,
+                                                                                token->string_literal->length)),
                           "Failed to allocate AST string literal");
             break;
     }
