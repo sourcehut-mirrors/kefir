@@ -142,10 +142,10 @@ DEFINE_CASE(parser_lexem_construction_constants, "Parser - constant tokens") {
     struct kefir_token token;
 #define ASSERT_CONSTANT(_fn, _type, _field, _value)    \
     do {                                               \
-        ASSERT_OK(_fn((_value), &token));              \
+        ASSERT_OK(_fn(&kft_mem, (_value), &token));    \
         ASSERT(token.klass == KEFIR_TOKEN_CONSTANT);   \
-        ASSERT(token.constant.type == (_type));        \
-        ASSERT(token.constant._field == (_value));     \
+        ASSERT(token.constant->type == (_type));       \
+        ASSERT(token.constant->_field == (_value));    \
         ASSERT_OK(kefir_token_free(&kft_mem, &token)); \
     } while (0)
 
@@ -166,46 +166,48 @@ DEFINE_CASE(parser_lexem_construction_constants, "Parser - constant tokens") {
         ASSERT_CONSTANT(kefir_token_new_constant_unicode32_char, KEFIR_CONSTANT_TOKEN_UNICODE32_CHAR, unicode32_char,
                         U'D' + i);
 
-        ASSERT_OK(kefir_token_new_constant_float(((kefir_float32_t) i) / 10, &token));
+        ASSERT_OK(kefir_token_new_constant_float(&kft_mem, ((kefir_float32_t) i) / 10, &token));
         ASSERT(token.klass == KEFIR_TOKEN_CONSTANT);
-        ASSERT(token.constant.type == KEFIR_CONSTANT_TOKEN_FLOAT);
-        ASSERT(FLOAT_EQUALS(token.constant.float32, ((kefir_float32_t) i) / 10, FLOAT_EPSILON));
+        ASSERT(token.constant->type == KEFIR_CONSTANT_TOKEN_FLOAT);
+        ASSERT(FLOAT_EQUALS(token.constant->float32, ((kefir_float32_t) i) / 10, FLOAT_EPSILON));
         ASSERT_OK(kefir_token_free(&kft_mem, &token));
 
-        ASSERT_OK(kefir_token_new_constant_double(((kefir_float64_t) i) / 10, &token));
+        ASSERT_OK(kefir_token_new_constant_double(&kft_mem, ((kefir_float64_t) i) / 10, &token));
         ASSERT(token.klass == KEFIR_TOKEN_CONSTANT);
-        ASSERT(token.constant.type == KEFIR_CONSTANT_TOKEN_DOUBLE);
-        ASSERT(DOUBLE_EQUALS(token.constant.float64, ((kefir_float64_t) i) / 10, DOUBLE_EPSILON));
+        ASSERT(token.constant->type == KEFIR_CONSTANT_TOKEN_DOUBLE);
+        ASSERT(DOUBLE_EQUALS(token.constant->float64, ((kefir_float64_t) i) / 10, DOUBLE_EPSILON));
         ASSERT_OK(kefir_token_free(&kft_mem, &token));
 
-        ASSERT_OK(kefir_token_new_constant_long_double(((kefir_long_double_t) i) / 10, &token));
+        ASSERT_OK(kefir_token_new_constant_long_double(&kft_mem, ((kefir_long_double_t) i) / 10, &token));
         ASSERT(token.klass == KEFIR_TOKEN_CONSTANT);
-        ASSERT(token.constant.type == KEFIR_CONSTANT_TOKEN_LONG_DOUBLE);
-        ASSERT(LONG_DOUBLE_EQUALS(token.constant.long_double, ((kefir_long_double_t) i) / 10, LONG_DOUBLE_EPSILON));
+        ASSERT(token.constant->type == KEFIR_CONSTANT_TOKEN_LONG_DOUBLE);
+        ASSERT(LONG_DOUBLE_EQUALS(token.constant->long_double, ((kefir_long_double_t) i) / 10, LONG_DOUBLE_EPSILON));
         ASSERT_OK(kefir_token_free(&kft_mem, &token));
 
         for (double j = -10.0; j < 10.0; j += 0.1) {
-            ASSERT_OK(kefir_token_new_constant_complex_float(((kefir_float32_t) i) / 10, (kefir_float32_t) j, &token));
+            ASSERT_OK(kefir_token_new_constant_complex_float(&kft_mem, ((kefir_float32_t) i) / 10, (kefir_float32_t) j,
+                                                             &token));
             ASSERT(token.klass == KEFIR_TOKEN_CONSTANT);
-            ASSERT(token.constant.type == KEFIR_CONSTANT_TOKEN_COMPLEX_FLOAT);
-            ASSERT(FLOAT_EQUALS(token.constant.complex_float32.real, ((kefir_float32_t) i) / 10, FLOAT_EPSILON));
-            ASSERT(FLOAT_EQUALS(token.constant.complex_float32.imaginary, (kefir_float32_t) j, FLOAT_EPSILON));
+            ASSERT(token.constant->type == KEFIR_CONSTANT_TOKEN_COMPLEX_FLOAT);
+            ASSERT(FLOAT_EQUALS(token.constant->complex_float32.real, ((kefir_float32_t) i) / 10, FLOAT_EPSILON));
+            ASSERT(FLOAT_EQUALS(token.constant->complex_float32.imaginary, (kefir_float32_t) j, FLOAT_EPSILON));
             ASSERT_OK(kefir_token_free(&kft_mem, &token));
 
-            ASSERT_OK(kefir_token_new_constant_complex_double(((kefir_float64_t) i) / 10, (kefir_float64_t) j, &token));
+            ASSERT_OK(kefir_token_new_constant_complex_double(&kft_mem, ((kefir_float64_t) i) / 10, (kefir_float64_t) j,
+                                                              &token));
             ASSERT(token.klass == KEFIR_TOKEN_CONSTANT);
-            ASSERT(token.constant.type == KEFIR_CONSTANT_TOKEN_COMPLEX_DOUBLE);
-            ASSERT(DOUBLE_EQUALS(token.constant.complex_float64.real, ((kefir_float64_t) i) / 10, DOUBLE_EPSILON));
-            ASSERT(DOUBLE_EQUALS(token.constant.complex_float64.imaginary, (kefir_float64_t) j, DOUBLE_EPSILON));
+            ASSERT(token.constant->type == KEFIR_CONSTANT_TOKEN_COMPLEX_DOUBLE);
+            ASSERT(DOUBLE_EQUALS(token.constant->complex_float64.real, ((kefir_float64_t) i) / 10, DOUBLE_EPSILON));
+            ASSERT(DOUBLE_EQUALS(token.constant->complex_float64.imaginary, (kefir_float64_t) j, DOUBLE_EPSILON));
             ASSERT_OK(kefir_token_free(&kft_mem, &token));
 
-            ASSERT_OK(kefir_token_new_constant_complex_long_double(((kefir_long_double_t) i) / 10,
+            ASSERT_OK(kefir_token_new_constant_complex_long_double(&kft_mem, ((kefir_long_double_t) i) / 10,
                                                                    (kefir_long_double_t) j, &token));
             ASSERT(token.klass == KEFIR_TOKEN_CONSTANT);
-            ASSERT(token.constant.type == KEFIR_CONSTANT_TOKEN_COMPLEX_LONG_DOUBLE);
-            ASSERT(LONG_DOUBLE_EQUALS(token.constant.complex_long_double.real, ((kefir_long_double_t) i) / 10,
+            ASSERT(token.constant->type == KEFIR_CONSTANT_TOKEN_COMPLEX_LONG_DOUBLE);
+            ASSERT(LONG_DOUBLE_EQUALS(token.constant->complex_long_double.real, ((kefir_long_double_t) i) / 10,
                                       LONG_DOUBLE_EPSILON));
-            ASSERT(LONG_DOUBLE_EQUALS(token.constant.complex_long_double.imaginary, (kefir_long_double_t) j,
+            ASSERT(LONG_DOUBLE_EQUALS(token.constant->complex_long_double.imaginary, (kefir_long_double_t) j,
                                       LONG_DOUBLE_EPSILON));
             ASSERT_OK(kefir_token_free(&kft_mem, &token));
         }
@@ -522,11 +524,11 @@ DEFINE_CASE(parser_lexem_move, "Parser - moving tokens") {
     ASSERT(strcmp(dst.identifier, "testTEST") == 0);
     ASSERT_OK(kefir_token_free(&kft_mem, &dst));
 
-    ASSERT_OK(kefir_token_new_constant_double(7.5926, &src));
+    ASSERT_OK(kefir_token_new_constant_double(&kft_mem, 7.5926, &src));
     ASSERT_OK(kefir_token_move(&dst, &src));
     ASSERT(dst.klass == KEFIR_TOKEN_CONSTANT);
-    ASSERT(dst.constant.type == KEFIR_CONSTANT_TOKEN_DOUBLE);
-    ASSERT(DOUBLE_EQUALS(dst.constant.float64, 7.5926, DOUBLE_EPSILON));
+    ASSERT(dst.constant->type == KEFIR_CONSTANT_TOKEN_DOUBLE);
+    ASSERT(DOUBLE_EQUALS(dst.constant->float64, 7.5926, DOUBLE_EPSILON));
     ASSERT_OK(kefir_token_free(&kft_mem, &dst));
 
     const char MSG[] = "\0\0\0TEST...TEST...TEST...HELLO!!!!\0";
@@ -634,14 +636,14 @@ DEFINE_CASE(parser_lexem_copy, "Parser - copying tokens") {
     ASSERT_OK(kefir_token_free(&kft_mem, &src));
     ASSERT_OK(kefir_token_free(&kft_mem, &dst));
 
-    ASSERT_OK(kefir_token_new_constant_double(7.5926, &src));
+    ASSERT_OK(kefir_token_new_constant_double(&kft_mem, 7.5926, &src));
     ASSERT_OK(kefir_token_copy(&kft_mem, &dst, &src));
     ASSERT(src.klass == KEFIR_TOKEN_CONSTANT);
-    ASSERT(src.constant.type == KEFIR_CONSTANT_TOKEN_DOUBLE);
-    ASSERT(DOUBLE_EQUALS(src.constant.float64, 7.5926, DOUBLE_EPSILON));
+    ASSERT(src.constant->type == KEFIR_CONSTANT_TOKEN_DOUBLE);
+    ASSERT(DOUBLE_EQUALS(src.constant->float64, 7.5926, DOUBLE_EPSILON));
     ASSERT(dst.klass == KEFIR_TOKEN_CONSTANT);
-    ASSERT(dst.constant.type == KEFIR_CONSTANT_TOKEN_DOUBLE);
-    ASSERT(DOUBLE_EQUALS(dst.constant.float64, 7.5926, DOUBLE_EPSILON));
+    ASSERT(dst.constant->type == KEFIR_CONSTANT_TOKEN_DOUBLE);
+    ASSERT(DOUBLE_EQUALS(dst.constant->float64, 7.5926, DOUBLE_EPSILON));
     ASSERT_OK(kefir_token_free(&kft_mem, &src));
     ASSERT_OK(kefir_token_free(&kft_mem, &dst));
 
