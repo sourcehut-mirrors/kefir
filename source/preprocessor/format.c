@@ -331,7 +331,7 @@ static kefir_result_t format_wchar(FILE *out, wchar_t chr) {
 }
 
 static kefir_result_t format_constant(FILE *out, const struct kefir_token *token) {
-    switch (token->constant.type) {
+    switch (token->constant->type) {
         case KEFIR_CONSTANT_TOKEN_INTEGER:
         case KEFIR_CONSTANT_TOKEN_LONG_INTEGER:
         case KEFIR_CONSTANT_TOKEN_LONG_LONG_INTEGER:
@@ -364,41 +364,41 @@ static kefir_result_t format_constant(FILE *out, const struct kefir_token *token
 
         case KEFIR_CONSTANT_TOKEN_CHAR:
             fprintf(out, "'");
-            REQUIRE_OK(format_char(out, token->constant.character));
+            REQUIRE_OK(format_char(out, token->constant->character));
             fprintf(out, "'");
             break;
 
         case KEFIR_CONSTANT_TOKEN_UNICODE8_CHAR:
             fprintf(out, "u8'");
-            REQUIRE_OK(format_char(out, token->constant.character));
+            REQUIRE_OK(format_char(out, token->constant->character));
             fprintf(out, "'");
             break;
 
         case KEFIR_CONSTANT_TOKEN_WIDE_CHAR:
             fprintf(out, "L'");
-            REQUIRE_OK(format_wchar(out, token->constant.wide_char));
+            REQUIRE_OK(format_wchar(out, token->constant->wide_char));
             fprintf(out, "'");
             break;
 
         case KEFIR_CONSTANT_TOKEN_UNICODE16_CHAR: {
             char buffer[MB_LEN_MAX];
             mbstate_t mbstate = {0};
-            int sz = (int) c16rtomb(buffer, token->constant.unicode16_char, &mbstate);
+            int sz = (int) c16rtomb(buffer, token->constant->unicode16_char, &mbstate);
             if (sz >= 0) {
                 fprintf(out, "u'%.*s'", sz, buffer);
             } else {
-                fprintf(out, "u'%c'", token->constant.unicode16_char);
+                fprintf(out, "u'%c'", token->constant->unicode16_char);
             }
         } break;
 
         case KEFIR_CONSTANT_TOKEN_UNICODE32_CHAR: {
             char buffer[MB_LEN_MAX];
             mbstate_t mbstate = {0};
-            int sz = (int) c32rtomb(buffer, token->constant.unicode32_char, &mbstate);
+            int sz = (int) c32rtomb(buffer, token->constant->unicode32_char, &mbstate);
             if (sz >= 0) {
                 fprintf(out, "U'%.*s'", sz, buffer);
             } else {
-                fprintf(out, "U'\\x%x'", token->constant.unicode32_char);
+                fprintf(out, "U'\\x%x'", token->constant->unicode32_char);
             }
         } break;
     }

@@ -25,7 +25,7 @@
 
 DEFINE_CASE(parser_token_cursor1, "Parser - token array stream") {
     struct kefir_token TOKENS[10];
-    ASSERT_OK(kefir_token_new_constant_char('X', &TOKENS[0]));
+    ASSERT_OK(kefir_token_new_constant_char(&kft_mem, 'X', &TOKENS[0]));
     ASSERT_OK(kefir_token_new_identifier(NULL, NULL, "ident1", &TOKENS[1]));
     ASSERT_OK(kefir_token_new_keyword(KEFIR_KEYWORD_ALIGNAS, &TOKENS[2]));
     ASSERT_OK(kefir_token_new_punctuator(KEFIR_PUNCTUATOR_RIGHT_ARROW, &TOKENS[3]));
@@ -39,8 +39,8 @@ DEFINE_CASE(parser_token_cursor1, "Parser - token array stream") {
         token = kefir_parser_token_cursor_at(&cursor, 0, true);
         ASSERT(token != NULL);
         ASSERT(token->klass == KEFIR_TOKEN_CONSTANT);
-        ASSERT(token->constant.type == KEFIR_CONSTANT_TOKEN_CHAR);
-        ASSERT(token->constant.character == 'X');
+        ASSERT(token->constant->type == KEFIR_CONSTANT_TOKEN_CHAR);
+        ASSERT(token->constant->character == 'X');
 
         token = kefir_parser_token_cursor_at(&cursor, 1, true);
         ASSERT(token != NULL);
@@ -130,8 +130,8 @@ DEFINE_CASE(parser_token_cursor1, "Parser - token array stream") {
         token = kefir_parser_token_cursor_at(&cursor, 0, true);
         ASSERT(token != NULL);
         ASSERT(token->klass == KEFIR_TOKEN_CONSTANT);
-        ASSERT(token->constant.type == KEFIR_CONSTANT_TOKEN_CHAR);
-        ASSERT(token->constant.character == 'X');
+        ASSERT(token->constant->type == KEFIR_CONSTANT_TOKEN_CHAR);
+        ASSERT(token->constant->character == 'X');
 
         token = kefir_parser_token_cursor_at(&cursor, 1, true);
         ASSERT(token != NULL);

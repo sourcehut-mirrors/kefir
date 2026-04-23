@@ -199,42 +199,42 @@ static kefir_result_t make_integral_constant(struct kefir_mem *mem, const struct
             REQUIRE_OK(parse_integer_constant(literal, base, &value));
             REQUIRE(value <= context->integer_max_value,
                     KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Provided constant exceeds maximum value of its type"));
-            REQUIRE_OK(kefir_token_new_constant_int((kefir_int64_t) value, token));
+            REQUIRE_OK(kefir_token_new_constant_int(mem, (kefir_int64_t) value, token));
             break;
 
         case CONSTANT_UNSIGNED_INT:
             REQUIRE_OK(parse_integer_constant(literal, base, &value));
             REQUIRE(value <= context->uinteger_max_value,
                     KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Provided constant exceeds maximum value of its type"));
-            REQUIRE_OK(kefir_token_new_constant_uint(value, token));
+            REQUIRE_OK(kefir_token_new_constant_uint(mem, value, token));
             break;
 
         case CONSTANT_LONG:
             REQUIRE_OK(parse_integer_constant(literal, base, &value));
             REQUIRE(value <= context->long_max_value,
                     KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Provided constant exceeds maximum value of its type"));
-            REQUIRE_OK(kefir_token_new_constant_long((kefir_int64_t) value, token));
+            REQUIRE_OK(kefir_token_new_constant_long(mem, (kefir_int64_t) value, token));
             break;
 
         case CONSTANT_UNSIGNED_LONG:
             REQUIRE_OK(parse_integer_constant(literal, base, &value));
             REQUIRE(value <= context->ulong_max_value,
                     KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Provided constant exceeds maximum value of its type"));
-            REQUIRE_OK(kefir_token_new_constant_ulong(value, token));
+            REQUIRE_OK(kefir_token_new_constant_ulong(mem, value, token));
             break;
 
         case CONSTANT_LONG_LONG:
             REQUIRE_OK(parse_integer_constant(literal, base, &value));
             REQUIRE(value <= context->long_long_max_value,
                     KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Provided constant exceeds maximum value of its type"));
-            REQUIRE_OK(kefir_token_new_constant_long_long((kefir_int64_t) value, token));
+            REQUIRE_OK(kefir_token_new_constant_long_long(mem, (kefir_int64_t) value, token));
             break;
 
         case CONSTANT_UNSIGNED_LONG_LONG:
             REQUIRE_OK(parse_integer_constant(literal, base, &value));
             REQUIRE(value <= context->ulong_long_max_value,
                     KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Provided constant exceeds maximum value of its type"));
-            REQUIRE_OK(kefir_token_new_constant_ulong_long(value, token));
+            REQUIRE_OK(kefir_token_new_constant_ulong_long(mem, value, token));
             break;
 
         case CONSTANT_UNSIGNED_BIT_PRECISE: {
@@ -264,7 +264,7 @@ static kefir_result_t make_integral_constant(struct kefir_mem *mem, const struct
             }
             REQUIRE_CHAIN(&res,
                           kefir_bigint_resize_cast_unsigned(mem, &bigint, kefir_bigint_min_unsigned_width(&bigint)));
-            REQUIRE_CHAIN(&res, kefir_token_new_constant_unsigned_bit_precise(&bigint, token));
+            REQUIRE_CHAIN(&res, kefir_token_new_constant_unsigned_bit_precise(mem, &bigint, token));
             REQUIRE_ELSE(res == KEFIR_OK, { kefir_bigint_free(mem, &bigint); });
         } break;
 
@@ -295,7 +295,7 @@ static kefir_result_t make_integral_constant(struct kefir_mem *mem, const struct
             }
             REQUIRE_CHAIN(
                 &res, kefir_bigint_resize_cast_unsigned(mem, &bigint, kefir_bigint_min_unsigned_width(&bigint) + 1));
-            REQUIRE_CHAIN(&res, kefir_token_new_constant_bit_precise(&bigint, token));
+            REQUIRE_CHAIN(&res, kefir_token_new_constant_bit_precise(mem, &bigint, token));
             REQUIRE_ELSE(res == KEFIR_OK, { kefir_bigint_free(mem, &bigint); });
         } break;
     }

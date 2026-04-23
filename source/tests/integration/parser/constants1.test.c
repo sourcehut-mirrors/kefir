@@ -34,19 +34,19 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
 
     kefir_size_t counter = 0;
 
-    REQUIRE_OK(kefir_token_new_constant_char('x', &TOKENS[counter++]));
-    REQUIRE_OK(kefir_token_new_constant_wide_char(L'X', &TOKENS[counter++]));
-    REQUIRE_OK(kefir_token_new_constant_unicode16_char(u'a', &TOKENS[counter++]));
-    REQUIRE_OK(kefir_token_new_constant_unicode32_char(U'P', &TOKENS[counter++]));
-    REQUIRE_OK(kefir_token_new_constant_int(-100, &TOKENS[counter++]));
-    REQUIRE_OK(kefir_token_new_constant_uint(101, &TOKENS[counter++]));
-    REQUIRE_OK(kefir_token_new_constant_long(8917, &TOKENS[counter++]));
-    REQUIRE_OK(kefir_token_new_constant_ulong(273617, &TOKENS[counter++]));
-    REQUIRE_OK(kefir_token_new_constant_long_long(-10029, &TOKENS[counter++]));
-    REQUIRE_OK(kefir_token_new_constant_ulong_long(183191, &TOKENS[counter++]));
-    REQUIRE_OK(kefir_token_new_constant_float(0.182f, &TOKENS[counter++]));
-    REQUIRE_OK(kefir_token_new_constant_double(10028.8, &TOKENS[counter++]));
-    REQUIRE_OK(kefir_token_new_constant_long_double(-1.0023e10, &TOKENS[counter++]));
+    REQUIRE_OK(kefir_token_new_constant_char(mem, 'x', &TOKENS[counter++]));
+    REQUIRE_OK(kefir_token_new_constant_wide_char(mem, L'X', &TOKENS[counter++]));
+    REQUIRE_OK(kefir_token_new_constant_unicode16_char(mem, u'a', &TOKENS[counter++]));
+    REQUIRE_OK(kefir_token_new_constant_unicode32_char(mem, U'P', &TOKENS[counter++]));
+    REQUIRE_OK(kefir_token_new_constant_int(mem, -100, &TOKENS[counter++]));
+    REQUIRE_OK(kefir_token_new_constant_uint(mem, 101, &TOKENS[counter++]));
+    REQUIRE_OK(kefir_token_new_constant_long(mem, 8917, &TOKENS[counter++]));
+    REQUIRE_OK(kefir_token_new_constant_ulong(mem, 273617, &TOKENS[counter++]));
+    REQUIRE_OK(kefir_token_new_constant_long_long(mem, -10029, &TOKENS[counter++]));
+    REQUIRE_OK(kefir_token_new_constant_ulong_long(mem, 183191, &TOKENS[counter++]));
+    REQUIRE_OK(kefir_token_new_constant_float(mem, 0.182f, &TOKENS[counter++]));
+    REQUIRE_OK(kefir_token_new_constant_double(mem, 10028.8, &TOKENS[counter++]));
+    REQUIRE_OK(kefir_token_new_constant_long_double(mem, -1.0023e10, &TOKENS[counter++]));
 
     REQUIRE_OK(kefir_parser_token_cursor_init_direct(&cursor, TOKENS, counter));
     REQUIRE_OK(kefir_parser_init(mem, &parser, &symbols, &cursor, NULL));

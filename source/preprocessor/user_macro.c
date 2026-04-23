@@ -205,14 +205,14 @@ static kefir_result_t concat_tokens_impl(struct kefir_mem *mem, struct kefir_str
                                          const struct kefir_token *right, struct kefir_token_buffer *buffer) {
     REQUIRE(
         right->klass == KEFIR_TOKEN_IDENTIFIER || right->klass == KEFIR_TOKEN_PP_NUMBER ||
-            (right->klass == KEFIR_TOKEN_CONSTANT && right->constant.type == KEFIR_CONSTANT_TOKEN_CHAR) ||
+            (right->klass == KEFIR_TOKEN_CONSTANT && right->constant->type == KEFIR_CONSTANT_TOKEN_CHAR) ||
             (right->klass == KEFIR_TOKEN_STRING_LITERAL &&
              right->string_literal.type == KEFIR_STRING_LITERAL_TOKEN_MULTIBYTE && right->string_literal.raw_literal),
         KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, &right->source_location,
                                "Expected either identifier, character or preprocessor number"));
     kefir_result_t res;
 
-    if (right->klass == KEFIR_TOKEN_CONSTANT && right->constant.type == KEFIR_CONSTANT_TOKEN_CHAR) {
+    if (right->klass == KEFIR_TOKEN_CONSTANT && right->constant->type == KEFIR_CONSTANT_TOKEN_CHAR) {
         REQUIRE(left->klass == KEFIR_TOKEN_IDENTIFIER,
                 KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, &left->source_location, "Expected character literal prefix"));
 
@@ -220,15 +220,15 @@ static kefir_result_t concat_tokens_impl(struct kefir_mem *mem, struct kefir_str
         REQUIRE_OK(kefir_token_allocator_allocate_empty(mem, token_allocator, &allocated_token));
 
         if (strcmp(left->identifier, "L") == 0) {
-            REQUIRE_OK(kefir_token_new_constant_wide_char(right->constant.character, allocated_token));
+            REQUIRE_OK(kefir_token_new_constant_wide_char(mem, right->constant->character, allocated_token));
         } else if (strcmp(left->identifier, "u8") == 0) {
-            REQUIRE_OK(kefir_token_new_constant_unicode8_char(right->constant.character, allocated_token));
+            REQUIRE_OK(kefir_token_new_constant_unicode8_char(mem, right->constant->character, allocated_token));
         } else if (strcmp(left->identifier, "u") == 0) {
-            REQUIRE_OK(
-                kefir_token_new_constant_unicode16_char((kefir_char16_t) right->constant.character, allocated_token));
+            REQUIRE_OK(kefir_token_new_constant_unicode16_char(mem, (kefir_char16_t) right->constant->character,
+                                                               allocated_token));
         } else if (strcmp(left->identifier, "U") == 0) {
-            REQUIRE_OK(
-                kefir_token_new_constant_unicode32_char((kefir_char32_t) right->constant.character, allocated_token));
+            REQUIRE_OK(kefir_token_new_constant_unicode32_char(mem, (kefir_char32_t) right->constant->character,
+                                                               allocated_token));
         } else {
             return KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, &left->source_location,
                                           "Expected character literal prefix");

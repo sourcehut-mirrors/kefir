@@ -340,7 +340,7 @@ typedef struct kefir_token {
             const char *keyword_spelling;
         };
         const char *identifier;
-        struct kefir_constant_token constant;
+        struct kefir_constant_token *constant;
         struct kefir_string_literal_token string_literal;
         kefir_punctuator_token_t punctuator;
         struct {
@@ -369,41 +369,48 @@ kefir_result_t kefir_token_new_keyword(kefir_keyword_token_t, struct kefir_token
 kefir_result_t kefir_token_new_keyword_with_spelling(kefir_keyword_token_t, const char *, struct kefir_token *);
 kefir_result_t kefir_token_new_identifier(struct kefir_mem *, struct kefir_string_pool *, const char *,
                                           struct kefir_token *);
-kefir_result_t kefir_token_new_constant_int(kefir_int64_t, struct kefir_token *);
-kefir_result_t kefir_token_new_constant_uint(kefir_uint64_t, struct kefir_token *);
-kefir_result_t kefir_token_new_constant_long(kefir_int64_t, struct kefir_token *);
-kefir_result_t kefir_token_new_constant_ulong(kefir_uint64_t, struct kefir_token *);
-kefir_result_t kefir_token_new_constant_long_long(kefir_int64_t, struct kefir_token *);
-kefir_result_t kefir_token_new_constant_ulong_long(kefir_uint64_t, struct kefir_token *);
-kefir_result_t kefir_token_new_constant_bit_precise(struct kefir_bigint *, struct kefir_token *);
-kefir_result_t kefir_token_new_constant_unsigned_bit_precise(struct kefir_bigint *, struct kefir_token *);
-kefir_result_t kefir_token_new_constant_char(kefir_int_t, struct kefir_token *);
-kefir_result_t kefir_token_new_constant_unicode8_char(kefir_int_t, struct kefir_token *);
-kefir_result_t kefir_token_new_constant_wide_char(kefir_wchar_t, struct kefir_token *);
-kefir_result_t kefir_token_new_constant_unicode16_char(kefir_char16_t, struct kefir_token *);
-kefir_result_t kefir_token_new_constant_unicode32_char(kefir_char32_t, struct kefir_token *);
-kefir_result_t kefir_token_new_constant_float(kefir_float32_t, struct kefir_token *);
-kefir_result_t kefir_token_new_constant_float32(kefir_float32_t, struct kefir_token *);
-kefir_result_t kefir_token_new_constant_float32x(kefir_float64_t, struct kefir_token *);
-kefir_result_t kefir_token_new_constant_double(kefir_float64_t, struct kefir_token *);
-kefir_result_t kefir_token_new_constant_float64(kefir_float64_t, struct kefir_token *);
-kefir_result_t kefir_token_new_constant_float64x(kefir_long_double_t, struct kefir_token *);
-kefir_result_t kefir_token_new_constant_long_double(kefir_long_double_t, struct kefir_token *);
-kefir_result_t kefir_token_new_constant_float80(kefir_long_double_t, struct kefir_token *);
-kefir_result_t kefir_token_new_constant_complex_float(kefir_float32_t, kefir_float32_t, struct kefir_token *);
-kefir_result_t kefir_token_new_constant_complex_float32(kefir_float32_t, kefir_float32_t, struct kefir_token *);
-kefir_result_t kefir_token_new_constant_complex_double(kefir_float64_t, kefir_float64_t, struct kefir_token *);
-kefir_result_t kefir_token_new_constant_complex_float32x(kefir_float64_t, kefir_float64_t, struct kefir_token *);
-kefir_result_t kefir_token_new_constant_complex_float64(kefir_float64_t, kefir_float64_t, struct kefir_token *);
-kefir_result_t kefir_token_new_constant_complex_long_double(kefir_long_double_t, kefir_long_double_t,
-                                                            struct kefir_token *);
-kefir_result_t kefir_token_new_constant_complex_float64x(kefir_long_double_t, kefir_long_double_t,
+kefir_result_t kefir_token_new_constant_int(struct kefir_mem *, kefir_int64_t, struct kefir_token *);
+kefir_result_t kefir_token_new_constant_uint(struct kefir_mem *, kefir_uint64_t, struct kefir_token *);
+kefir_result_t kefir_token_new_constant_long(struct kefir_mem *, kefir_int64_t, struct kefir_token *);
+kefir_result_t kefir_token_new_constant_ulong(struct kefir_mem *, kefir_uint64_t, struct kefir_token *);
+kefir_result_t kefir_token_new_constant_long_long(struct kefir_mem *, kefir_int64_t, struct kefir_token *);
+kefir_result_t kefir_token_new_constant_ulong_long(struct kefir_mem *, kefir_uint64_t, struct kefir_token *);
+kefir_result_t kefir_token_new_constant_bit_precise(struct kefir_mem *, struct kefir_bigint *, struct kefir_token *);
+kefir_result_t kefir_token_new_constant_unsigned_bit_precise(struct kefir_mem *, struct kefir_bigint *,
+                                                             struct kefir_token *);
+kefir_result_t kefir_token_new_constant_char(struct kefir_mem *, kefir_int_t, struct kefir_token *);
+kefir_result_t kefir_token_new_constant_unicode8_char(struct kefir_mem *, kefir_int_t, struct kefir_token *);
+kefir_result_t kefir_token_new_constant_wide_char(struct kefir_mem *, kefir_wchar_t, struct kefir_token *);
+kefir_result_t kefir_token_new_constant_unicode16_char(struct kefir_mem *, kefir_char16_t, struct kefir_token *);
+kefir_result_t kefir_token_new_constant_unicode32_char(struct kefir_mem *, kefir_char32_t, struct kefir_token *);
+kefir_result_t kefir_token_new_constant_float(struct kefir_mem *, kefir_float32_t, struct kefir_token *);
+kefir_result_t kefir_token_new_constant_float32(struct kefir_mem *, kefir_float32_t, struct kefir_token *);
+kefir_result_t kefir_token_new_constant_float32x(struct kefir_mem *, kefir_float64_t, struct kefir_token *);
+kefir_result_t kefir_token_new_constant_double(struct kefir_mem *, kefir_float64_t, struct kefir_token *);
+kefir_result_t kefir_token_new_constant_float64(struct kefir_mem *, kefir_float64_t, struct kefir_token *);
+kefir_result_t kefir_token_new_constant_float64x(struct kefir_mem *, kefir_long_double_t, struct kefir_token *);
+kefir_result_t kefir_token_new_constant_long_double(struct kefir_mem *, kefir_long_double_t, struct kefir_token *);
+kefir_result_t kefir_token_new_constant_float80(struct kefir_mem *, kefir_long_double_t, struct kefir_token *);
+kefir_result_t kefir_token_new_constant_complex_float(struct kefir_mem *, kefir_float32_t, kefir_float32_t,
+                                                      struct kefir_token *);
+kefir_result_t kefir_token_new_constant_complex_float32(struct kefir_mem *, kefir_float32_t, kefir_float32_t,
+                                                        struct kefir_token *);
+kefir_result_t kefir_token_new_constant_complex_double(struct kefir_mem *, kefir_float64_t, kefir_float64_t,
+                                                       struct kefir_token *);
+kefir_result_t kefir_token_new_constant_complex_float32x(struct kefir_mem *, kefir_float64_t, kefir_float64_t,
                                                          struct kefir_token *);
-kefir_result_t kefir_token_new_constant_complex_float80(kefir_long_double_t, kefir_long_double_t, struct kefir_token *);
-kefir_result_t kefir_token_new_constant_decimal32(kefir_dfp_decimal32_t, struct kefir_token *);
-kefir_result_t kefir_token_new_constant_decimal64(kefir_dfp_decimal64_t, struct kefir_token *);
-kefir_result_t kefir_token_new_constant_decimal128(kefir_dfp_decimal128_t, struct kefir_token *);
-kefir_result_t kefir_token_new_constant_decimal64x(kefir_dfp_decimal128_t, struct kefir_token *);
+kefir_result_t kefir_token_new_constant_complex_float64(struct kefir_mem *, kefir_float64_t, kefir_float64_t,
+                                                        struct kefir_token *);
+kefir_result_t kefir_token_new_constant_complex_long_double(struct kefir_mem *, kefir_long_double_t,
+                                                            kefir_long_double_t, struct kefir_token *);
+kefir_result_t kefir_token_new_constant_complex_float64x(struct kefir_mem *, kefir_long_double_t, kefir_long_double_t,
+                                                         struct kefir_token *);
+kefir_result_t kefir_token_new_constant_complex_float80(struct kefir_mem *, kefir_long_double_t, kefir_long_double_t,
+                                                        struct kefir_token *);
+kefir_result_t kefir_token_new_constant_decimal32(struct kefir_mem *, kefir_dfp_decimal32_t, struct kefir_token *);
+kefir_result_t kefir_token_new_constant_decimal64(struct kefir_mem *, kefir_dfp_decimal64_t, struct kefir_token *);
+kefir_result_t kefir_token_new_constant_decimal128(struct kefir_mem *, kefir_dfp_decimal128_t, struct kefir_token *);
+kefir_result_t kefir_token_new_constant_decimal64x(struct kefir_mem *, kefir_dfp_decimal128_t, struct kefir_token *);
 kefir_result_t kefir_token_new_string_literal_multibyte(struct kefir_mem *, const char *, kefir_size_t,
                                                         struct kefir_token *);
 kefir_result_t kefir_token_new_string_literal_unicode8(struct kefir_mem *, const char *, kefir_size_t,
