@@ -40,7 +40,7 @@ static kefir_result_t scan_literals(struct kefir_mem *mem, struct kefir_lexer *l
             scan = false;
         } else {
             REQUIRE_OK(res);
-            scan = kefir_token_string_literal_type_concat(type, token.string_literal.type, &type);
+            scan = kefir_token_string_literal_type_concat(type, token.string_literal->type, &type);
             if (!scan) {
                 REQUIRE_OK(kefir_token_free(mem, &token));
                 REQUIRE_OK(kefir_lexer_source_cursor_restore(lexer->cursor, &cursor_state));

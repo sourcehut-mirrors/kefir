@@ -341,7 +341,7 @@ typedef struct kefir_token {
         };
         const char *identifier;
         struct kefir_constant_token *constant;
-        struct kefir_string_literal_token string_literal;
+        struct kefir_string_literal_token *string_literal;
         kefir_punctuator_token_t punctuator;
         struct {
             kefir_pragma_token_type_t pragma;

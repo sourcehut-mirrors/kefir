@@ -365,13 +365,13 @@ FUNCTION_MACRO(has_include) {
     kefir_result_t res;
     struct kefir_preprocessor_source_file source_file;
     if (arg->klass == KEFIR_TOKEN_STRING_LITERAL) {
-        REQUIRE(arg->string_literal.type == KEFIR_STRING_LITERAL_TOKEN_MULTIBYTE ||
-                    arg->string_literal.type == KEFIR_STRING_LITERAL_TOKEN_UNICODE8,
+        REQUIRE(arg->string_literal->type == KEFIR_STRING_LITERAL_TOKEN_MULTIBYTE ||
+                    arg->string_literal->type == KEFIR_STRING_LITERAL_TOKEN_UNICODE8,
                 KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, source_location,
                                        "Macro __has_include expects a single header name argument"));
 
-        const char *filepath = arg->string_literal.literal;
-        if (arg->string_literal.raw_literal) {
+        const char *filepath = arg->string_literal->literal;
+        if (arg->string_literal->raw_literal) {
             REQUIRE_OK(
                 kefir_preprocessor_convert_raw_string_into_multibyte(mem, preprocessor->lexer.symbols, arg, &filepath));
         }
@@ -422,13 +422,13 @@ FUNCTION_MACRO(has_include_next) {
     kefir_result_t res;
     struct kefir_preprocessor_source_file source_file;
     if (arg->klass == KEFIR_TOKEN_STRING_LITERAL) {
-        REQUIRE(arg->string_literal.type == KEFIR_STRING_LITERAL_TOKEN_MULTIBYTE ||
-                    arg->string_literal.type == KEFIR_STRING_LITERAL_TOKEN_UNICODE8,
+        REQUIRE(arg->string_literal->type == KEFIR_STRING_LITERAL_TOKEN_MULTIBYTE ||
+                    arg->string_literal->type == KEFIR_STRING_LITERAL_TOKEN_UNICODE8,
                 KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, source_location,
                                        "Macro __has_include_next expects a single header name argument"));
 
-        const char *filepath = arg->string_literal.literal;
-        if (arg->string_literal.raw_literal) {
+        const char *filepath = arg->string_literal->literal;
+        if (arg->string_literal->raw_literal) {
             REQUIRE_OK(
                 kefir_preprocessor_convert_raw_string_into_multibyte(mem, preprocessor->lexer.symbols, arg, &filepath));
         }
@@ -475,13 +475,13 @@ static kefir_result_t has_embed_impl(struct kefir_mem *mem, struct kefir_preproc
     kefir_result_t res;
     if (arg->klass == KEFIR_TOKEN_STRING_LITERAL) {
         REQUIRE(
-            arg->string_literal.type == KEFIR_STRING_LITERAL_TOKEN_MULTIBYTE ||
-                arg->string_literal.type == KEFIR_STRING_LITERAL_TOKEN_UNICODE8,
+            arg->string_literal->type == KEFIR_STRING_LITERAL_TOKEN_MULTIBYTE ||
+                arg->string_literal->type == KEFIR_STRING_LITERAL_TOKEN_UNICODE8,
             KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, source_location,
                                    "Macro __has_embed expects a single header name argument with optional parameters"));
 
-        const char *filepath = arg->string_literal.literal;
-        if (arg->string_literal.raw_literal) {
+        const char *filepath = arg->string_literal->literal;
+        if (arg->string_literal->raw_literal) {
             REQUIRE_OK(
                 kefir_preprocessor_convert_raw_string_into_multibyte(mem, preprocessor->lexer.symbols, arg, &filepath));
         }

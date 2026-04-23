@@ -110,10 +110,10 @@ kefir_result_t kefir_preprocessor_token_convert_buffer(struct kefir_mem *mem, st
                        (kefir_token_buffer_at(src, i)->klass == KEFIR_TOKEN_STRING_LITERAL ||
                         kefir_token_buffer_at(src, i)->klass == KEFIR_TOKEN_PP_WHITESPACE)) {
                     if (kefir_token_buffer_at(src, i)->klass == KEFIR_TOKEN_STRING_LITERAL) {
-                        REQUIRE(kefir_token_buffer_at(src, i)->string_literal.raw_literal,
+                        REQUIRE(kefir_token_buffer_at(src, i)->string_literal->raw_literal,
                                 KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected raw string literal"));
                         if (!kefir_token_string_literal_type_concat(
-                                type, kefir_token_buffer_at(src, i)->string_literal.type, &type)) {
+                                type, kefir_token_buffer_at(src, i)->string_literal->type, &type)) {
                             break;
                         }
                         res = kefir_list_insert_after(mem, &literals, kefir_list_tail(&literals),

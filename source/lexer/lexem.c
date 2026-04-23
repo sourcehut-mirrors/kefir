@@ -643,11 +643,18 @@ kefir_result_t kefir_token_new_string_literal_multibyte(struct kefir_mem *mem, c
     char *dest_content = KEFIR_MALLOC(mem, length);
     REQUIRE(dest_content != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate string literal"));
     memcpy(dest_content, content, length);
+
+    token->string_literal = KEFIR_MALLOC(mem, sizeof(struct kefir_string_literal_token));
+    REQUIRE_ELSE(token->string_literal != NULL, {
+        KEFIR_FREE(mem, dest_content);
+        return KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate string literal token");
+    });
+
     token->klass = KEFIR_TOKEN_STRING_LITERAL;
-    token->string_literal.raw_literal = false;
-    token->string_literal.type = KEFIR_STRING_LITERAL_TOKEN_MULTIBYTE;
-    token->string_literal.literal = dest_content;
-    token->string_literal.length = length;
+    token->string_literal->raw_literal = false;
+    token->string_literal->type = KEFIR_STRING_LITERAL_TOKEN_MULTIBYTE;
+    token->string_literal->literal = dest_content;
+    token->string_literal->length = length;
     token->macro_expansions = NULL;
     return KEFIR_OK;
 }
@@ -663,11 +670,18 @@ kefir_result_t kefir_token_new_string_literal_unicode8(struct kefir_mem *mem, co
     REQUIRE(dest_content != NULL,
             KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate unicode8 string literal"));
     memcpy(dest_content, content, length);
+
+    token->string_literal = KEFIR_MALLOC(mem, sizeof(struct kefir_string_literal_token));
+    REQUIRE_ELSE(token->string_literal != NULL, {
+        KEFIR_FREE(mem, dest_content);
+        return KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate string literal token");
+    });
+
     token->klass = KEFIR_TOKEN_STRING_LITERAL;
-    token->string_literal.raw_literal = false;
-    token->string_literal.type = KEFIR_STRING_LITERAL_TOKEN_UNICODE8;
-    token->string_literal.literal = dest_content;
-    token->string_literal.length = length;
+    token->string_literal->raw_literal = false;
+    token->string_literal->type = KEFIR_STRING_LITERAL_TOKEN_UNICODE8;
+    token->string_literal->literal = dest_content;
+    token->string_literal->length = length;
     token->macro_expansions = NULL;
     return KEFIR_OK;
 }
@@ -684,11 +698,18 @@ kefir_result_t kefir_token_new_string_literal_unicode16(struct kefir_mem *mem, c
     REQUIRE(dest_content != NULL,
             KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate unicode16 string literal"));
     memcpy(dest_content, content, sz);
+
+    token->string_literal = KEFIR_MALLOC(mem, sizeof(struct kefir_string_literal_token));
+    REQUIRE_ELSE(token->string_literal != NULL, {
+        KEFIR_FREE(mem, dest_content);
+        return KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate string literal token");
+    });
+
     token->klass = KEFIR_TOKEN_STRING_LITERAL;
-    token->string_literal.raw_literal = false;
-    token->string_literal.type = KEFIR_STRING_LITERAL_TOKEN_UNICODE16;
-    token->string_literal.literal = dest_content;
-    token->string_literal.length = length;
+    token->string_literal->raw_literal = false;
+    token->string_literal->type = KEFIR_STRING_LITERAL_TOKEN_UNICODE16;
+    token->string_literal->literal = dest_content;
+    token->string_literal->length = length;
     token->macro_expansions = NULL;
     return KEFIR_OK;
 }
@@ -705,11 +726,18 @@ kefir_result_t kefir_token_new_string_literal_unicode32(struct kefir_mem *mem, c
     REQUIRE(dest_content != NULL,
             KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate unicode32 string literal"));
     memcpy(dest_content, content, sz);
+
+    token->string_literal = KEFIR_MALLOC(mem, sizeof(struct kefir_string_literal_token));
+    REQUIRE_ELSE(token->string_literal != NULL, {
+        KEFIR_FREE(mem, dest_content);
+        return KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate string literal token");
+    });
+
     token->klass = KEFIR_TOKEN_STRING_LITERAL;
-    token->string_literal.raw_literal = false;
-    token->string_literal.type = KEFIR_STRING_LITERAL_TOKEN_UNICODE32;
-    token->string_literal.literal = dest_content;
-    token->string_literal.length = length;
+    token->string_literal->raw_literal = false;
+    token->string_literal->type = KEFIR_STRING_LITERAL_TOKEN_UNICODE32;
+    token->string_literal->literal = dest_content;
+    token->string_literal->length = length;
     token->macro_expansions = NULL;
     return KEFIR_OK;
 }
@@ -725,11 +753,18 @@ kefir_result_t kefir_token_new_string_literal_wide(struct kefir_mem *mem, const 
     char *dest_content = KEFIR_MALLOC(mem, sz);
     REQUIRE(dest_content != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate wide string literal"));
     memcpy(dest_content, content, sz);
+
+    token->string_literal = KEFIR_MALLOC(mem, sizeof(struct kefir_string_literal_token));
+    REQUIRE_ELSE(token->string_literal != NULL, {
+        KEFIR_FREE(mem, dest_content);
+        return KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate string literal token");
+    });
+
     token->klass = KEFIR_TOKEN_STRING_LITERAL;
-    token->string_literal.raw_literal = false;
-    token->string_literal.type = KEFIR_STRING_LITERAL_TOKEN_WIDE;
-    token->string_literal.literal = dest_content;
-    token->string_literal.length = length;
+    token->string_literal->raw_literal = false;
+    token->string_literal->type = KEFIR_STRING_LITERAL_TOKEN_WIDE;
+    token->string_literal->literal = dest_content;
+    token->string_literal->length = length;
     token->macro_expansions = NULL;
     return KEFIR_OK;
 }
@@ -747,11 +782,18 @@ kefir_result_t kefir_token_new_string_literal_raw(struct kefir_mem *mem, kefir_s
     REQUIRE(dest_content != NULL,
             KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate unicode32 string literal"));
     memcpy(dest_content, content, sz);
+
+    token->string_literal = KEFIR_MALLOC(mem, sizeof(struct kefir_string_literal_token));
+    REQUIRE_ELSE(token->string_literal != NULL, {
+        KEFIR_FREE(mem, dest_content);
+        return KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate string literal token");
+    });
+
     token->klass = KEFIR_TOKEN_STRING_LITERAL;
-    token->string_literal.raw_literal = true;
-    token->string_literal.type = type;
-    token->string_literal.literal = dest_content;
-    token->string_literal.length = length;
+    token->string_literal->raw_literal = true;
+    token->string_literal->type = type;
+    token->string_literal->literal = dest_content;
+    token->string_literal->length = length;
     token->macro_expansions = NULL;
     return KEFIR_OK;
 }
@@ -892,36 +934,43 @@ kefir_result_t kefir_token_copy(struct kefir_mem *mem, struct kefir_token *dst, 
     memcpy(dst, src, sizeof(struct kefir_token));
     if (src->klass == KEFIR_TOKEN_STRING_LITERAL) {
         kefir_size_t sz = 0;
-        if (src->string_literal.raw_literal) {
-            sz = sizeof(kefir_char32_t) * src->string_literal.length;
+        if (src->string_literal->raw_literal) {
+            sz = sizeof(kefir_char32_t) * src->string_literal->length;
         } else {
-            switch (src->string_literal.type) {
+            switch (src->string_literal->type) {
                 case KEFIR_STRING_LITERAL_TOKEN_MULTIBYTE:
                 case KEFIR_STRING_LITERAL_TOKEN_UNICODE8:
-                    sz = src->string_literal.length;
+                    sz = src->string_literal->length;
                     break;
 
                 case KEFIR_STRING_LITERAL_TOKEN_UNICODE16:
-                    sz = sizeof(kefir_char16_t) * src->string_literal.length;
+                    sz = sizeof(kefir_char16_t) * src->string_literal->length;
                     break;
 
                 case KEFIR_STRING_LITERAL_TOKEN_UNICODE32:
-                    sz = sizeof(kefir_char32_t) * src->string_literal.length;
+                    sz = sizeof(kefir_char32_t) * src->string_literal->length;
                     break;
 
                 case KEFIR_STRING_LITERAL_TOKEN_WIDE:
-                    sz = sizeof(kefir_wchar_t) * src->string_literal.length;
+                    sz = sizeof(kefir_wchar_t) * src->string_literal->length;
                     break;
             }
         }
 
         char *content = KEFIR_MALLOC(mem, sz);
         REQUIRE(content != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate string literal"));
-        memcpy(content, src->string_literal.literal, sz);
-        dst->string_literal.raw_literal = src->string_literal.raw_literal;
-        dst->string_literal.type = src->string_literal.type;
-        dst->string_literal.literal = content;
-        dst->string_literal.length = src->string_literal.length;
+        memcpy(content, src->string_literal->literal, sz);
+
+        dst->string_literal = KEFIR_MALLOC(mem, sizeof(struct kefir_string_literal_token));
+        REQUIRE_ELSE(dst->string_literal != NULL, {
+            KEFIR_FREE(mem, content);
+            return KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate string literal");
+        });
+
+        dst->string_literal->raw_literal = src->string_literal->raw_literal;
+        dst->string_literal->type = src->string_literal->type;
+        dst->string_literal->literal = content;
+        dst->string_literal->length = src->string_literal->length;
     } else if (src->klass == KEFIR_TOKEN_PP_NUMBER) {
         char *clone_number_literal = KEFIR_MALLOC(mem, strlen(src->pp_number.number_literal) + 1);
         REQUIRE(clone_number_literal != NULL,
@@ -975,9 +1024,11 @@ kefir_result_t kefir_token_free(struct kefir_mem *mem, struct kefir_token *token
     }
     switch (token->klass) {
         case KEFIR_TOKEN_STRING_LITERAL:
-            KEFIR_FREE(mem, token->string_literal.literal);
-            token->string_literal.literal = NULL;
-            token->string_literal.length = 0;
+            KEFIR_FREE(mem, token->string_literal->literal);
+            token->string_literal->literal = NULL;
+            token->string_literal->length = 0;
+            KEFIR_FREE(mem, token->string_literal);
+            token->string_literal = NULL;
             break;
 
         case KEFIR_TOKEN_PP_NUMBER:

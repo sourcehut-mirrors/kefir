@@ -512,12 +512,12 @@ static kefir_result_t scan_asm_label(struct kefir_mem *mem, struct kefir_parser 
             KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(parser, 2), "Expected right parenthese"));
 
     const struct kefir_token *token = PARSER_CURSOR(parser, 1);
-    REQUIRE(!token->string_literal.raw_literal,
+    REQUIRE(!token->string_literal->raw_literal,
             KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected raw string literal in parsing phase"));
-    switch (token->string_literal.type) {
+    switch (token->string_literal->type) {
         case KEFIR_STRING_LITERAL_TOKEN_MULTIBYTE:
         case KEFIR_STRING_LITERAL_TOKEN_UNICODE8: {
-            const char *asm_label = token->string_literal.literal;
+            const char *asm_label = token->string_literal->literal;
             asm_label = kefir_string_pool_insert(mem, parser->symbols, asm_label, NULL);
             REQUIRE(asm_label != NULL,
                     KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert assembly label into string pool"));

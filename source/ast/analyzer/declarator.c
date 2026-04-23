@@ -73,8 +73,8 @@ static struct kefir_ast_alignment *wrap_alignment(struct kefir_mem *mem, kefir_s
 static kefir_result_t multibyte_string_literal_into(struct kefir_mem *mem, struct kefir_string_pool *symbols,
                                                     const struct kefir_token *token, const char **literal) {
     if (token != NULL && token->klass == KEFIR_TOKEN_STRING_LITERAL &&
-        token->string_literal.type == KEFIR_STRING_LITERAL_TOKEN_MULTIBYTE) {
-        *literal = kefir_string_pool_insert(mem, symbols, token->string_literal.literal, NULL);
+        token->string_literal->type == KEFIR_STRING_LITERAL_TOKEN_MULTIBYTE) {
+        *literal = kefir_string_pool_insert(mem, symbols, token->string_literal->literal, NULL);
         REQUIRE(*literal != NULL,
                 KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert nodiscard message into string pool"));
     }
