@@ -381,7 +381,7 @@ FUNCTION_MACRO(has_include) {
                                                           KEFIR_PREPROCESSOR_SOURCE_LOCATOR_MODE_NORMAL, &source_file);
     } else if (arg->klass == KEFIR_TOKEN_PP_HEADER_NAME) {
         res = preprocessor->context->source_locator->open(
-            mem, preprocessor->context->source_locator, arg->pp_header_name.header_name, arg->pp_header_name.system,
+            mem, preprocessor->context->source_locator, arg->pp_header_name->header_name, arg->pp_header_name->system,
             preprocessor->current_file, KEFIR_PREPROCESSOR_SOURCE_LOCATOR_MODE_NORMAL, &source_file);
     } else {
         const char *header_name;
@@ -438,7 +438,7 @@ FUNCTION_MACRO(has_include_next) {
                                                           KEFIR_PREPROCESSOR_SOURCE_LOCATOR_MODE_NEXT, &source_file);
     } else if (arg->klass == KEFIR_TOKEN_PP_HEADER_NAME) {
         res = preprocessor->context->source_locator->open(
-            mem, preprocessor->context->source_locator, arg->pp_header_name.header_name, arg->pp_header_name.system,
+            mem, preprocessor->context->source_locator, arg->pp_header_name->header_name, arg->pp_header_name->system,
             preprocessor->current_file, KEFIR_PREPROCESSOR_SOURCE_LOCATOR_MODE_NEXT, &source_file);
     } else {
         const char *header_name;
@@ -490,7 +490,7 @@ static kefir_result_t has_embed_impl(struct kefir_mem *mem, struct kefir_preproc
                                                                 false, preprocessor->current_file, &embed_file);
     } else if (arg->klass == KEFIR_TOKEN_PP_HEADER_NAME) {
         res = preprocessor->context->source_locator->open_embed(
-            mem, preprocessor->context->source_locator, arg->pp_header_name.header_name, arg->pp_header_name.system,
+            mem, preprocessor->context->source_locator, arg->pp_header_name->header_name, arg->pp_header_name->system,
             preprocessor->current_file, &embed_file);
     } else {
         const char *header_name;

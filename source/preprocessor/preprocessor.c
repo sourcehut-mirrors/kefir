@@ -414,8 +414,8 @@ static kefir_result_t process_include(struct kefir_mem *mem, struct kefir_prepro
     const char *include_path = NULL;
     kefir_bool_t system_include = false;
     if (token->klass == KEFIR_TOKEN_PP_HEADER_NAME) {
-        include_path = token->pp_header_name.header_name;
-        system_include = token->pp_header_name.system;
+        include_path = token->pp_header_name->header_name;
+        system_include = token->pp_header_name->system;
     } else if (token->klass == KEFIR_TOKEN_STRING_LITERAL &&
                token->string_literal->type == KEFIR_STRING_LITERAL_TOKEN_MULTIBYTE &&
                token->string_literal->raw_literal) {
@@ -657,8 +657,8 @@ static kefir_result_t process_embed_impl(
     const char *embed_path = NULL;
     kefir_bool_t system_embed = false;
     if (token->klass == KEFIR_TOKEN_PP_HEADER_NAME) {
-        embed_path = token->pp_header_name.header_name;
-        system_embed = token->pp_header_name.system;
+        embed_path = token->pp_header_name->header_name;
+        system_embed = token->pp_header_name->system;
     } else if (token->klass == KEFIR_TOKEN_STRING_LITERAL &&
                token->string_literal->type == KEFIR_STRING_LITERAL_TOKEN_MULTIBYTE &&
                token->string_literal->raw_literal) {
