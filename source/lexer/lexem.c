@@ -1027,11 +1027,14 @@ kefir_result_t kefir_token_free(struct kefir_mem *mem, struct kefir_token *token
             token->constant = NULL;
             break;
 
+        case KEFIR_TOKEN_PRAGMA:
+            KEFIR_FREE(mem, token->pragma);
+            break;
+
         case KEFIR_TOKEN_IDENTIFIER:
         case KEFIR_TOKEN_SENTINEL:
         case KEFIR_TOKEN_KEYWORD:
         case KEFIR_TOKEN_PUNCTUATOR:
-        case KEFIR_TOKEN_PRAGMA:
         case KEFIR_TOKEN_PP_WHITESPACE:
         case KEFIR_TOKEN_PP_PLACEMAKER:
             break;
