@@ -198,10 +198,9 @@ kefir_result_t kefir_ast_translate_declaration(struct kefir_mem *mem, const stru
         struct kefir_ast_declaration *declaration = NULL;
         REQUIRE_MATCH_OK(&res, kefir_ast_downcast_declaration(node, &declaration, false),
                          KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected declaration AST node"));
-        for (const struct kefir_list_entry *iter = kefir_list_head(&declaration->init_declarators); iter != NULL;
-             kefir_list_next(&iter)) {
-            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, decl, iter->value);
-            REQUIRE_OK(translate_init_declarator(mem, decl, builder, context));
+        for (kefir_size_t i = 0; i < declaration->init_declarators_length; i++) {
+            REQUIRE_OK(translate_init_declarator(mem, KEFIR_AST_NODE_BASE(declaration->init_declarators[i]), builder,
+                                                 context));
         }
     } else {
         return KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected declaration AST node");

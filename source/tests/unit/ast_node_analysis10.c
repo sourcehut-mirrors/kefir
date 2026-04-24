@@ -399,9 +399,8 @@ DEFINE_CASE(ast_node_analysis_for_statements2, "AST node analysis - for statemen
     ASSERT(stmt1->base.properties.statement_props.flow_control_statement->value.loop.end != NULL);
     ASSERT(stmt1->init->properties.category == KEFIR_AST_NODE_CATEGORY_DECLARATION);
     ASSIGN_DECL_CAST(struct kefir_ast_declaration *, stmt1_init_decl_list, stmt1->init->self);
-    ASSERT(kefir_list_length(&stmt1_init_decl_list->init_declarators) == 1);
-    ASSIGN_DECL_CAST(struct kefir_ast_node_base *, stmt1_init_decl,
-                     kefir_list_head(&stmt1_init_decl_list->init_declarators)->value);
+    ASSERT(stmt1_init_decl_list->init_declarators_length == 1);
+    struct kefir_ast_node_base *stmt1_init_decl = KEFIR_AST_NODE_BASE(stmt1_init_decl_list->init_declarators[0]);
     ASSERT(stmt1_init_decl->properties.declaration_props.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_AUTO);
     ASSERT(!stmt1_init_decl->properties.declaration_props.static_assertion);
     ASSERT(stmt1_init_decl->properties.declaration_props.function == KEFIR_AST_FUNCTION_SPECIFIER_NONE);
@@ -471,9 +470,8 @@ DEFINE_CASE(ast_node_analysis_for_statements3, "AST node analysis - for statemen
     ASSERT(stmt2->base.properties.statement_props.flow_control_statement->value.loop.end != NULL);
     ASSERT(stmt2->init->properties.category == KEFIR_AST_NODE_CATEGORY_DECLARATION);
     ASSIGN_DECL_CAST(struct kefir_ast_declaration *, stmt2_init_decl_list, stmt2->init->self);
-    ASSERT(kefir_list_length(&stmt2_init_decl_list->init_declarators) == 1);
-    ASSIGN_DECL_CAST(struct kefir_ast_node_base *, stmt2_init_decl,
-                     kefir_list_head(&stmt2_init_decl_list->init_declarators)->value);
+    ASSERT(stmt2_init_decl_list->init_declarators_length == 1);
+    struct kefir_ast_node_base *stmt2_init_decl = KEFIR_AST_NODE_BASE(stmt2_init_decl_list->init_declarators[0]);
     ASSERT(stmt2_init_decl->properties.declaration_props.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_REGISTER);
     ASSERT(!stmt2_init_decl->properties.declaration_props.static_assertion);
     ASSERT(stmt2_init_decl->properties.declaration_props.function == KEFIR_AST_FUNCTION_SPECIFIER_NONE);

@@ -43,6 +43,8 @@ kefir_result_t kefir_ast_compound_literal_set_initializer(struct kefir_mem *, st
 struct kefir_ast_declaration *kefir_ast_new_single_declaration(struct kefir_mem *, struct kefir_ast_declarator *,
                                                                struct kefir_ast_initializer *,
                                                                struct kefir_ast_init_declarator **);
+kefir_result_t kefir_ast_declaration_add_declarator(struct kefir_mem *, struct kefir_ast_declaration *,
+                                                    struct kefir_ast_init_declarator *);
 
 kefir_result_t kefir_ast_declaration_unpack_single(struct kefir_ast_declaration *, struct kefir_ast_init_declarator **);
 
