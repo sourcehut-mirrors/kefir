@@ -536,10 +536,10 @@ static kefir_result_t format_token(FILE *out, const struct kefir_token *token,
             break;
 
         case KEFIR_TOKEN_PP_HEADER_NAME:
-            if (token->pp_header_name.system) {
-                fprintf(out, "<%s>", token->pp_header_name.header_name);
+            if (token->pp_header_name->system) {
+                fprintf(out, "<%s>", token->pp_header_name->header_name);
             } else {
-                fprintf(out, "\"%s\"", token->pp_header_name.header_name);
+                fprintf(out, "\"%s\"", token->pp_header_name->header_name);
             }
             break;
 

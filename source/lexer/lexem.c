@@ -898,13 +898,14 @@ kefir_result_t kefir_token_new_pp_header_name(struct kefir_mem *mem, kefir_bool_
     REQUIRE(token != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to token"));
     REQUIRE_OK(kefir_source_location_empty(&token->source_location));
 
-    char *clone_header_name = KEFIR_MALLOC(mem, length + 1);
-    REQUIRE(clone_header_name != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate pp header name"));
-    memcpy(clone_header_name, header_name, length);
-    clone_header_name[length] = '\0';
+    token->pp_header_name = KEFIR_MALLOC(mem, sizeof(struct kefir_pptoken_pp_header_name) + length + 1);
+    REQUIRE(token->pp_header_name != NULL,
+            KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate pp header name"));
+    memcpy(token->pp_header_name->header_name, header_name, length);
+    token->pp_header_name->header_name[length] = '\0';
+
     token->klass = KEFIR_TOKEN_PP_HEADER_NAME;
-    token->pp_header_name.system = system;
-    token->pp_header_name.header_name = clone_header_name;
+    token->pp_header_name->system = system;
     token->macro_expansions = NULL;
     return KEFIR_OK;
 }
@@ -988,11 +989,13 @@ kefir_result_t kefir_token_copy(struct kefir_mem *mem, struct kefir_token *dst, 
         strcpy(clone_number_literal, src->pp_number.number_literal);
         dst->pp_number.number_literal = clone_number_literal;
     } else if (src->klass == KEFIR_TOKEN_PP_HEADER_NAME) {
-        char *clone_header_name = KEFIR_MALLOC(mem, strlen(src->pp_header_name.header_name) + 1);
-        REQUIRE(clone_header_name != NULL,
+        dst->pp_header_name = KEFIR_MALLOC(
+            mem, sizeof(struct kefir_pptoken_pp_header_name) + strlen(src->pp_header_name->header_name) + 1);
+        REQUIRE(dst->pp_header_name != NULL,
                 KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate pp header name"));
-        strcpy(clone_header_name, src->pp_header_name.header_name);
-        dst->pp_header_name.header_name = clone_header_name;
+        strcpy(dst->pp_header_name->header_name, src->pp_header_name->header_name);
+
+        dst->pp_header_name->system = src->pp_header_name->system;
     } else if (src->klass == KEFIR_TOKEN_EXTENSION) {
         REQUIRE(src->extension->klass != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Invalid extension token"));
         REQUIRE_OK(src->extension->klass->copy(mem, dst, src));
@@ -1051,8 +1054,7 @@ kefir_result_t kefir_token_free(struct kefir_mem *mem, struct kefir_token *token
             break;
 
         case KEFIR_TOKEN_PP_HEADER_NAME:
-            KEFIR_FREE(mem, (void *) token->pp_header_name.header_name);
-            token->pp_header_name.header_name = NULL;
+            KEFIR_FREE(mem, token->pp_header_name);
             break;
 
         case KEFIR_TOKEN_EXTENSION:

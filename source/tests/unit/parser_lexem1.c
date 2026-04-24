@@ -479,8 +479,8 @@ DEFINE_CASE(parser_lexem_construction_pp_header_name, "Parser - pp header names"
         struct kefir_token token;                                                                         \
         ASSERT_OK(kefir_token_new_pp_header_name(&kft_mem, (_system), LITERAL, sizeof(LITERAL), &token)); \
         ASSERT(token.klass == KEFIR_TOKEN_PP_HEADER_NAME);                                                \
-        ASSERT(token.pp_header_name.system == (_system));                                                 \
-        ASSERT(memcmp(token.pp_header_name.header_name, LITERAL, sizeof(LITERAL)) == 0);                  \
+        ASSERT(token.pp_header_name->system == (_system));                                                \
+        ASSERT(memcmp(token.pp_header_name->header_name, LITERAL, sizeof(LITERAL)) == 0);                 \
         ASSERT_OK(kefir_token_free(&kft_mem, &token));                                                    \
     } while (0)
 
@@ -593,8 +593,8 @@ DEFINE_CASE(parser_lexem_move, "Parser - moving tokens") {
     ASSERT_OK(kefir_token_new_pp_header_name(&kft_mem, true, LITERAL2, sizeof(LITERAL2), &src));
     ASSERT_OK(kefir_token_move(&dst, &src));
     ASSERT(dst.klass == KEFIR_TOKEN_PP_HEADER_NAME);
-    ASSERT(dst.pp_header_name.system);
-    ASSERT(strcmp(LITERAL2, dst.pp_header_name.header_name) == 0);
+    ASSERT(dst.pp_header_name->system);
+    ASSERT(strcmp(LITERAL2, dst.pp_header_name->header_name) == 0);
     ASSERT_OK(kefir_token_free(&kft_mem, &dst));
 
     ASSERT_OK(kefir_string_pool_free(&kft_mem, &symbols));
@@ -753,14 +753,14 @@ DEFINE_CASE(parser_lexem_copy, "Parser - copying tokens") {
     ASSERT_OK(kefir_token_new_pp_header_name(&kft_mem, false, LITERAL2, sizeof(LITERAL2), &src));
     ASSERT_OK(kefir_token_copy(&kft_mem, &dst, &src));
     ASSERT(src.klass == KEFIR_TOKEN_PP_HEADER_NAME);
-    ASSERT(!src.pp_header_name.system);
-    ASSERT(strcmp(LITERAL2, src.pp_header_name.header_name) == 0);
-    ASSERT(src.pp_header_name.header_name != LITERAL2);
+    ASSERT(!src.pp_header_name->system);
+    ASSERT(strcmp(LITERAL2, src.pp_header_name->header_name) == 0);
+    ASSERT(src.pp_header_name->header_name != LITERAL2);
     ASSERT(dst.klass == KEFIR_TOKEN_PP_HEADER_NAME);
-    ASSERT(!dst.pp_header_name.system);
-    ASSERT(strcmp(LITERAL2, dst.pp_header_name.header_name) == 0);
-    ASSERT(dst.pp_header_name.header_name != LITERAL2);
-    ASSERT(dst.pp_header_name.header_name != src.pp_header_name.header_name);
+    ASSERT(!dst.pp_header_name->system);
+    ASSERT(strcmp(LITERAL2, dst.pp_header_name->header_name) == 0);
+    ASSERT(dst.pp_header_name->header_name != LITERAL2);
+    ASSERT(dst.pp_header_name->header_name != src.pp_header_name->header_name);
     ASSERT_OK(kefir_token_free(&kft_mem, &src));
     ASSERT_OK(kefir_token_free(&kft_mem, &dst));
 

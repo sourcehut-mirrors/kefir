@@ -309,7 +309,7 @@ typedef struct kefir_pptoken_pp_number {
 
 typedef struct kefir_pptoken_pp_header_name {
     kefir_bool_t system;
-    const char *header_name;
+    char header_name[];
 } kefir_pptoken_pp_header_name_t;
 
 typedef struct kefir_token_extension_class {
@@ -351,7 +351,7 @@ typedef struct kefir_token {
         struct kefir_pragma_token *pragma;
         struct kefir_pptoken_pp_whitespace pp_whitespace;
         struct kefir_pptoken_pp_number pp_number;
-        struct kefir_pptoken_pp_header_name pp_header_name;
+        struct kefir_pptoken_pp_header_name *pp_header_name;
         struct kefir_token_extension *extension;
     };
 
