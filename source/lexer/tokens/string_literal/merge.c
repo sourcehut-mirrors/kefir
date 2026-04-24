@@ -11,7 +11,7 @@ static kefir_result_t merge_literals(struct kefir_mem *mem, const struct kefir_l
     for (const struct kefir_list_entry *iter = kefir_list_head(literals); iter != NULL; kefir_list_next(&iter)) {
         ASSIGN_DECL_CAST(const struct kefir_token *, token, iter->value);
 
-        const kefir_char32_t *content = token->string_literal->literal;
+        const kefir_char32_t *content = (kefir_char32_t *) token->string_literal->literal;
         kefir_size_t length = token->string_literal->length;
         REQUIRE(length > 0, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected non-empty raw string literal"));
         length--;  // Drop trailing null character

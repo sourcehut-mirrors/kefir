@@ -237,8 +237,8 @@ typedef struct kefir_constant_token {
 typedef struct kefir_string_literal_token {
     kefir_bool_t raw_literal;
     kefir_string_literal_token_type_t type;
-    void *literal;
     kefir_size_t length;
+    _Alignas(kefir_char32_t) char literal[];
 } kefir_string_literal_token_t;
 
 typedef enum kefir_punctuator_token {
