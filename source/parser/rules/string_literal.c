@@ -42,20 +42,20 @@ kefir_result_t KEFIR_PARSER_RULE_FN_PREFIX(string_literal)(struct kefir_mem *mem
         case KEFIR_STRING_LITERAL_TOKEN_UNICODE16:
             REQUIRE_ALLOC(result,
                           KEFIR_AST_NODE_BASE(kefir_ast_new_string_literal_unicode16(
-                              mem, token->string_literal->literal, token->string_literal->length)),
+                              mem, (kefir_char16_t *) token->string_literal->literal, token->string_literal->length)),
                           "Failed to allocate AST string literal");
             break;
         case KEFIR_STRING_LITERAL_TOKEN_UNICODE32:
             REQUIRE_ALLOC(result,
                           KEFIR_AST_NODE_BASE(kefir_ast_new_string_literal_unicode32(
-                              mem, token->string_literal->literal, token->string_literal->length)),
+                              mem, (kefir_char32_t *) token->string_literal->literal, token->string_literal->length)),
                           "Failed to allocate AST string literal");
             break;
 
         case KEFIR_STRING_LITERAL_TOKEN_WIDE:
             REQUIRE_ALLOC(result,
-                          KEFIR_AST_NODE_BASE(kefir_ast_new_string_literal_wide(mem, token->string_literal->literal,
-                                                                                token->string_literal->length)),
+                          KEFIR_AST_NODE_BASE(kefir_ast_new_string_literal_wide(
+                              mem, (kefir_wchar_t *) token->string_literal->literal, token->string_literal->length)),
                           "Failed to allocate AST string literal");
             break;
     }

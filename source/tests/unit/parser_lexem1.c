@@ -287,7 +287,7 @@ DEFINE_CASE(parser_lexem_construction_unicode16_string_literals, "Parser - unico
         ASSERT(token.klass == KEFIR_TOKEN_STRING_LITERAL);                                                  \
         ASSERT(token.string_literal->type == KEFIR_STRING_LITERAL_TOKEN_UNICODE16);                         \
         ASSERT(token.string_literal->literal != NULL);                                                      \
-        ASSERT(token.string_literal->literal != (_literal));                                                \
+        ASSERT(token.string_literal->literal != (void *) (_literal));                                       \
         ASSERT(token.string_literal->length == (_length));                                                  \
         ASSERT(memcmp(token.string_literal->literal, (_literal), (_length) * sizeof(kefir_char16_t)) == 0); \
         ASSERT_OK(kefir_token_free(&kft_mem, &token));                                                      \
@@ -315,7 +315,7 @@ DEFINE_CASE(parser_lexem_construction_unicode32_string_literals, "Parser - unico
         ASSERT(token.klass == KEFIR_TOKEN_STRING_LITERAL);                                                  \
         ASSERT(token.string_literal->type == KEFIR_STRING_LITERAL_TOKEN_UNICODE32);                         \
         ASSERT(token.string_literal->literal != NULL);                                                      \
-        ASSERT(token.string_literal->literal != (_literal));                                                \
+        ASSERT(token.string_literal->literal != (void *) (_literal));                                       \
         ASSERT(token.string_literal->length == (_length));                                                  \
         ASSERT(memcmp(token.string_literal->literal, (_literal), (_length) * sizeof(kefir_char32_t)) == 0); \
         ASSERT_OK(kefir_token_free(&kft_mem, &token));                                                      \
@@ -343,7 +343,7 @@ DEFINE_CASE(parser_lexem_construction_wide_string_literals, "Parser - wide strin
         ASSERT(token.klass == KEFIR_TOKEN_STRING_LITERAL);                                                 \
         ASSERT(token.string_literal->type == KEFIR_STRING_LITERAL_TOKEN_WIDE);                             \
         ASSERT(token.string_literal->literal != NULL);                                                     \
-        ASSERT(token.string_literal->literal != (_literal));                                               \
+        ASSERT(token.string_literal->literal != (void *) (_literal));                                      \
         ASSERT(token.string_literal->length == (_length));                                                 \
         ASSERT(memcmp(token.string_literal->literal, (_literal), (_length) * sizeof(kefir_wchar_t)) == 0); \
         ASSERT_OK(kefir_token_free(&kft_mem, &token));                                                     \
@@ -686,12 +686,12 @@ DEFINE_CASE(parser_lexem_copy, "Parser - copying tokens") {
     ASSERT(src.string_literal->type == KEFIR_STRING_LITERAL_TOKEN_UNICODE16);
     ASSERT(src.string_literal->length == sizeof(MSG3) / sizeof(MSG3[0]));
     ASSERT(memcmp(MSG3, src.string_literal->literal, sizeof(MSG3)) == 0);
-    ASSERT(src.string_literal->literal != MSG3);
+    ASSERT(src.string_literal->literal != (void *) MSG3);
     ASSERT(dst.klass == KEFIR_TOKEN_STRING_LITERAL);
     ASSERT(dst.string_literal->type == KEFIR_STRING_LITERAL_TOKEN_UNICODE16);
     ASSERT(dst.string_literal->length == sizeof(MSG3) / sizeof(MSG3[0]));
     ASSERT(memcmp(MSG3, dst.string_literal->literal, sizeof(MSG3)) == 0);
-    ASSERT(dst.string_literal->literal != MSG3);
+    ASSERT(dst.string_literal->literal != (void *) MSG3);
     ASSERT_OK(kefir_token_free(&kft_mem, &src));
     ASSERT_OK(kefir_token_free(&kft_mem, &dst));
 
@@ -702,12 +702,12 @@ DEFINE_CASE(parser_lexem_copy, "Parser - copying tokens") {
     ASSERT(src.string_literal->type == KEFIR_STRING_LITERAL_TOKEN_UNICODE32);
     ASSERT(src.string_literal->length == sizeof(MSG4) / sizeof(MSG4[0]));
     ASSERT(memcmp(MSG4, src.string_literal->literal, sizeof(MSG4)) == 0);
-    ASSERT(src.string_literal->literal != MSG4);
+    ASSERT(src.string_literal->literal != (void *) MSG4);
     ASSERT(dst.klass == KEFIR_TOKEN_STRING_LITERAL);
     ASSERT(dst.string_literal->type == KEFIR_STRING_LITERAL_TOKEN_UNICODE32);
     ASSERT(dst.string_literal->length == sizeof(MSG4) / sizeof(MSG4[0]));
     ASSERT(memcmp(MSG4, dst.string_literal->literal, sizeof(MSG4)) == 0);
-    ASSERT(dst.string_literal->literal != MSG4);
+    ASSERT(dst.string_literal->literal != (void *) MSG4);
     ASSERT_OK(kefir_token_free(&kft_mem, &src));
     ASSERT_OK(kefir_token_free(&kft_mem, &dst));
 
@@ -718,12 +718,12 @@ DEFINE_CASE(parser_lexem_copy, "Parser - copying tokens") {
     ASSERT(src.string_literal->type == KEFIR_STRING_LITERAL_TOKEN_WIDE);
     ASSERT(src.string_literal->length == sizeof(MSG5) / sizeof(MSG5[0]));
     ASSERT(memcmp(MSG5, src.string_literal->literal, sizeof(MSG5)) == 0);
-    ASSERT(src.string_literal->literal != MSG5);
+    ASSERT(src.string_literal->literal != (void *) MSG5);
     ASSERT(dst.klass == KEFIR_TOKEN_STRING_LITERAL);
     ASSERT(dst.string_literal->type == KEFIR_STRING_LITERAL_TOKEN_WIDE);
     ASSERT(dst.string_literal->length == sizeof(MSG5) / sizeof(MSG5[0]));
     ASSERT(memcmp(MSG5, dst.string_literal->literal, sizeof(MSG5)) == 0);
-    ASSERT(dst.string_literal->literal != MSG5);
+    ASSERT(dst.string_literal->literal != (void *) MSG5);
     ASSERT_OK(kefir_token_free(&kft_mem, &src));
     ASSERT_OK(kefir_token_free(&kft_mem, &dst));
 
