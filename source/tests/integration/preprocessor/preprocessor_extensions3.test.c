@@ -31,14 +31,14 @@
 
 static kefir_result_t ext_free(struct kefir_mem *mem, struct kefir_token *token) {
     UNUSED(mem);
-    token->extension.klass = NULL;
-    token->extension.payload = NULL;
+    token->extension->klass = NULL;
+    token->extension->payload = NULL;
     return KEFIR_OK;
 }
 
 static kefir_result_t ext_copy(struct kefir_mem *mem, struct kefir_token *dst, const struct kefir_token *src) {
     UNUSED(mem);
-    REQUIRE_OK(kefir_token_new_extension(src->extension.klass, NULL, dst));
+    REQUIRE_OK(kefir_token_new_extension(mem, src->extension->klass, NULL, dst));
     return KEFIR_OK;
 }
 
@@ -76,7 +76,7 @@ static struct kefir_token_extension_class EXT_CLASS = {.free = ext_free,
 static kefir_result_t failed_lex(struct kefir_mem *mem, struct kefir_lexer *lexer, struct kefir_token *token) {
     UNUSED(mem);
     if (kefir_lexer_source_cursor_at(lexer->cursor, 0) == U'@') {
-        REQUIRE_OK(kefir_token_new_extension(&EXT_CLASS, NULL, token));
+        REQUIRE_OK(kefir_token_new_extension(mem, &EXT_CLASS, NULL, token));
         REQUIRE_OK(kefir_lexer_source_cursor_next(lexer->cursor, 1));
         return KEFIR_OK;
     }

@@ -547,8 +547,8 @@ static kefir_result_t format_token(FILE *out, const struct kefir_token *token,
             break;
 
         case KEFIR_TOKEN_EXTENSION:
-            REQUIRE(token->extension.klass != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Invalid extension token"));
-            REQUIRE_OK(token->extension.klass->format(out, token));
+            REQUIRE(token->extension->klass != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Invalid extension token"));
+            REQUIRE_OK(token->extension->klass->format(out, token));
             break;
     }
     *prev_formatted_whitespace = token->klass == KEFIR_TOKEN_PP_WHITESPACE;
