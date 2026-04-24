@@ -184,9 +184,8 @@ kefir_result_t kefir_parser_update_scope_with_declaration(struct kefir_mem *mem,
     REQUIRE(parser != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid parser"));
     REQUIRE(declaration != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST declaration"));
 
-    for (const struct kefir_list_entry *iter = kefir_list_head(&declaration->init_declarators); iter != NULL;
-         kefir_list_next(&iter)) {
-        ASSIGN_DECL_CAST(struct kefir_ast_init_declarator *, init_declarator, iter->value);
+    for (kefir_size_t i = 0; i < declaration->init_declarators_length; i++) {
+        struct kefir_ast_init_declarator *init_declarator = declaration->init_declarators[i];
         REQUIRE_OK(kefir_parser_update_scope_with_declarator(mem, parser, declaration, init_declarator->declarator));
     }
     return KEFIR_OK;

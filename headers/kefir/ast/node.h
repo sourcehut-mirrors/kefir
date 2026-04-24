@@ -87,7 +87,9 @@ KEFIR_AST_NODE_STRUCT(kefir_ast_init_declarator, {
 
 KEFIR_AST_NODE_STRUCT(kefir_ast_declaration, {
     struct kefir_ast_declarator_specifier_list specifiers;
-    struct kefir_list init_declarators;
+    struct kefir_ast_init_declarator **init_declarators;
+    kefir_size_t init_declarators_length;
+    kefir_size_t init_declarators_capacity;
     struct kefir_ast_pragma_state pragmas;
 });
 

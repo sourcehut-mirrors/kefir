@@ -652,9 +652,8 @@ DEFINE_CASE(ast_node_analysis_compound_statements3, "AST node analysis - compoun
     ASSIGN_DECL_CAST(struct kefir_ast_node_base *, item2, iter->value);
     ASSERT(item2->properties.category == KEFIR_AST_NODE_CATEGORY_DECLARATION);
     ASSIGN_DECL_CAST(struct kefir_ast_declaration *, item2_decl_list, item2->self);
-    ASSERT(kefir_list_length(&item2_decl_list->init_declarators) == 1);
-    ASSIGN_DECL_CAST(struct kefir_ast_node_base *, item2_decl,
-                     kefir_list_head(&item2_decl_list->init_declarators)->value);
+    ASSERT(item2_decl_list->init_declarators_length == 1);
+    struct kefir_ast_node_base *item2_decl = KEFIR_AST_NODE_BASE(item2_decl_list->init_declarators[0]);
     ASSERT(strcmp(item2_decl->properties.declaration_props.identifier, "var1") == 0);
     ASSERT(item2_decl->properties.declaration_props.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_AUTO);
     ASSERT(item2_decl->properties.declaration_props.alignment == 0);
@@ -669,9 +668,8 @@ DEFINE_CASE(ast_node_analysis_compound_statements3, "AST node analysis - compoun
     ASSIGN_DECL_CAST(struct kefir_ast_node_base *, item3, iter->value);
     ASSERT(item3->properties.category == KEFIR_AST_NODE_CATEGORY_DECLARATION);
     ASSIGN_DECL_CAST(struct kefir_ast_declaration *, item3_decl_list, item3->self);
-    ASSERT(kefir_list_length(&item3_decl_list->init_declarators) == 1);
-    ASSIGN_DECL_CAST(struct kefir_ast_node_base *, item3_decl,
-                     kefir_list_head(&item3_decl_list->init_declarators)->value);
+    ASSERT(item3_decl_list->init_declarators_length == 1);
+    struct kefir_ast_node_base *item3_decl = KEFIR_AST_NODE_BASE(item3_decl_list->init_declarators[0]);
     ASSERT(strcmp(item3_decl->properties.declaration_props.identifier, "X") == 0);
     ASSERT(item3_decl->properties.declaration_props.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_TYPEDEF);
     ASSERT(item3_decl->properties.declaration_props.alignment == 0);

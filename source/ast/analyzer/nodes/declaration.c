@@ -49,20 +49,16 @@ kefir_result_t kefir_ast_analyze_declaration_node(struct kefir_mem *mem, const s
                                                         &node->base.source_location));
 
     REQUIRE(
-        !KEFIR_AST_TYPE_IS_AUTO(base_type) || kefir_list_length(&node->init_declarators) == 1,
+        !KEFIR_AST_TYPE_IS_AUTO(base_type) || node->init_declarators_length == 1,
         KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &base->source_location,
                                "Auto type specifier shall be used only for declarations with a single initializer"));
 
-    for (const struct kefir_list_entry *iter = kefir_list_head(&node->init_declarators); iter != NULL;
-         kefir_list_next(&iter)) {
-        ASSIGN_DECL_CAST(struct kefir_ast_node_base *, subnode, iter->value);
-        REQUIRE(subnode->klass->type == KEFIR_AST_INIT_DECLARATOR,
-                KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &subnode->source_location,
-                                       "Declaration list shall contain exclusively init declarators"));
-        ASSIGN_DECL_CAST(struct kefir_ast_init_declarator *, init_decl, subnode->self);
+    for (kefir_size_t i = 0; i < node->init_declarators_length; i++) {
+        struct kefir_ast_init_declarator *init_decl = node->init_declarators[i];
 
-        REQUIRE_OK(kefir_ast_analyze_init_declarator_node(mem, context, &node->specifiers, init_decl, subnode,
-                                                          base_type, storage, function, alignment));
+        REQUIRE_OK(kefir_ast_analyze_init_declarator_node(mem, context, &node->specifiers, init_decl,
+                                                          KEFIR_AST_NODE_BASE(init_decl), base_type, storage, function,
+                                                          alignment));
     }
     return KEFIR_OK;
 }

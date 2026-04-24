@@ -33,6 +33,7 @@
 #include "kefir/core/error.h"
 #include "kefir/ast-translator/function_definition.h"
 #include "kefir/ast/runtime.h"
+#include "kefir/core/source_error.h"
 #include <stdio.h>
 
 static kefir_result_t init_function_declaration(struct kefir_mem *mem, struct kefir_ast_translator_context *context,
@@ -86,13 +87,12 @@ static kefir_result_t init_function_declaration(struct kefir_mem *mem, struct ke
                 REQUIRE_MATCH(&res, kefir_ast_downcast_declaration(decl_node, &decl_list, false),
                               KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected AST declaration"));
 
-                for (const struct kefir_list_entry *decl_iter = kefir_list_head(&decl_list->init_declarators);
-                     decl_iter != NULL && res == KEFIR_OK; kefir_list_next(&decl_iter)) {
-                    ASSIGN_DECL_CAST(struct kefir_ast_node_base *, decl, decl_iter->value);
+                for (kefir_size_t i = 0; i < decl_list->init_declarators_length; i++) {
+                    struct kefir_ast_init_declarator *decl = decl_list->init_declarators[i];
                     REQUIRE_CHAIN(&res, kefir_hashtree_insert(
                                             mem, &declarations,
-                                            (kefir_hashtree_key_t) decl->properties.declaration_props.identifier,
-                                            (kefir_hashtree_value_t) decl));
+                                            (kefir_hashtree_key_t) decl->base.properties.declaration_props.identifier,
+                                            (kefir_hashtree_value_t) KEFIR_AST_NODE_BASE(decl)));
                 }
             }
 
@@ -420,11 +420,10 @@ kefir_result_t kefir_ast_translator_function_context_translate(
             REQUIRE_MATCH_OK(
                 &res, kefir_ast_downcast_declaration(param, &param_decl, false),
                 KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected function parameter to be an AST declaration"));
-            REQUIRE(kefir_list_length(&param_decl->init_declarators) == 1,
+            REQUIRE(param_decl->init_declarators_length == 1,
                     KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected function parameter to have exactly one declarator"));
 
-            ASSIGN_DECL_CAST(struct kefir_ast_init_declarator *, init_decl,
-                             kefir_list_head(&param_decl->init_declarators)->value);
+            struct kefir_ast_init_declarator *init_decl = param_decl->init_declarators[0];
             struct kefir_ast_declarator_identifier *param_identifier = NULL;
             REQUIRE_OK(kefir_ast_declarator_unpack_identifier(init_decl->declarator, &param_identifier));
             REQUIRE(init_decl->base.properties.type != NULL,
@@ -483,9 +482,10 @@ kefir_result_t kefir_ast_translator_function_context_translate(
                 REQUIRE_MATCH_OK(
                     &res, kefir_ast_downcast_declaration(param, &param_decl, false),
                     KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected function parameter to be an AST declaration"));
+                REQUIRE(param_decl->init_declarators_length >= 1,
+                        KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected function parameter to have one declarator"));
 
-                ASSIGN_DECL_CAST(struct kefir_ast_init_declarator *, init_decl,
-                                 kefir_list_head(&param_decl->init_declarators)->value);
+                struct kefir_ast_init_declarator *init_decl = param_decl->init_declarators[0];
                 struct kefir_ast_declarator_identifier *param_identifier = NULL;
                 REQUIRE_OK(kefir_ast_declarator_unpack_identifier(init_decl->declarator, &param_identifier));
                 if (init_decl->base.properties.type->tag != KEFIR_AST_TYPE_VOID) {
@@ -529,11 +529,10 @@ kefir_result_t kefir_ast_translator_function_context_translate(
             REQUIRE_MATCH_OK(
                 &res, kefir_ast_downcast_declaration(param, &param_decl, false),
                 KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected function parameter to be an AST declaration"));
-            REQUIRE(kefir_list_length(&param_decl->init_declarators) == 1,
+            REQUIRE(param_decl->init_declarators_length == 1,
                     KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected function parameter to have exactly one declarator"));
 
-            ASSIGN_DECL_CAST(struct kefir_ast_init_declarator *, init_decl,
-                             kefir_list_head(&param_decl->init_declarators)->value);
+            struct kefir_ast_init_declarator *init_decl = param_decl->init_declarators[0];
 
             REQUIRE_OK(kefir_ast_type_list_variable_modificators(
                 init_decl->base.properties.declaration_props.original_type, translate_variably_modified,
@@ -549,10 +548,8 @@ kefir_result_t kefir_ast_translator_function_context_translate(
         REQUIRE_MATCH_OK(&res, kefir_ast_downcast_declaration(decl_node, &decl_list, false),
                          KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected AST node to be a declaration"));
 
-        for (const struct kefir_list_entry *decl_iter = kefir_list_head(&decl_list->init_declarators);
-             decl_iter != NULL; decl_list = kefir_list_next(&decl_iter)) {
-
-            ASSIGN_DECL_CAST(struct kefir_ast_init_declarator *, decl, decl_iter->value);
+        for (kefir_size_t i = 0; i < decl_list->init_declarators_length; i++) {
+            struct kefir_ast_init_declarator *decl = decl_list->init_declarators[i];
 
             REQUIRE_OK(kefir_ast_type_list_variable_modificators(
                 decl->base.properties.declaration_props.original_type, translate_variably_modified,
