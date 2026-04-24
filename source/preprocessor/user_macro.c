@@ -377,7 +377,7 @@ static kefir_result_t macro_concatenation_impl(struct kefir_mem *mem, struct kef
                 if (right->klass != KEFIR_TOKEN_EXTENSION) {
                     REQUIRE_OK(concat_tokens_impl(mem, symbols, token_allocator, left, right, buffer));
                 } else {
-                    REQUIRE_OK(concat_extension(mem, left, right, token_allocator, buffer, right->extension.klass));
+                    REQUIRE_OK(concat_extension(mem, left, right, token_allocator, buffer, right->extension->klass));
                 }
                 break;
 
@@ -405,7 +405,7 @@ static kefir_result_t macro_concatenation_impl(struct kefir_mem *mem, struct kef
                         REQUIRE_OK(res);
                     }
                 } else {
-                    REQUIRE_OK(concat_extension(mem, left, right, token_allocator, buffer, right->extension.klass));
+                    REQUIRE_OK(concat_extension(mem, left, right, token_allocator, buffer, right->extension->klass));
                 }
             } break;
 
@@ -417,7 +417,7 @@ static kefir_result_t macro_concatenation_impl(struct kefir_mem *mem, struct kef
                 if (right->klass != KEFIR_TOKEN_EXTENSION) {
                     REQUIRE_OK(concat_tokens_impl(mem, symbols, token_allocator, left, right, buffer));
                 } else {
-                    REQUIRE_OK(concat_extension(mem, left, right, token_allocator, buffer, right->extension.klass));
+                    REQUIRE_OK(concat_extension(mem, left, right, token_allocator, buffer, right->extension->klass));
                 }
                 break;
 
@@ -430,7 +430,7 @@ static kefir_result_t macro_concatenation_impl(struct kefir_mem *mem, struct kef
                                               "Unexpected placemaker token");
 
             case KEFIR_TOKEN_EXTENSION:
-                REQUIRE_OK(concat_extension(mem, left, right, token_allocator, buffer, left->extension.klass));
+                REQUIRE_OK(concat_extension(mem, left, right, token_allocator, buffer, left->extension->klass));
                 break;
         }
     }
