@@ -101,8 +101,7 @@ DEFINE_CASE(ast_node_analysis_conditinal_statements2, "AST node analysis - condi
         NULL);
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &decl2->specifiers,
                                                          kefir_ast_type_specifier_long(&kft_mem)));
-    ASSERT_OK(kefir_list_insert_after(&kft_mem, &compound1->block_items, kefir_list_tail(&compound1->block_items),
-                                      KEFIR_AST_NODE_BASE(decl2)));
+    ASSERT_OK(kefir_ast_compound_statement_append(&kft_mem, compound1, KEFIR_AST_NODE_BASE(decl2)));
 
     struct kefir_ast_compound_statement *compound2 = kefir_ast_new_compound_statement(&kft_mem);
     struct kefir_ast_declaration *decl3 = kefir_ast_new_single_declaration(
@@ -111,8 +110,7 @@ DEFINE_CASE(ast_node_analysis_conditinal_statements2, "AST node analysis - condi
         NULL);
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &decl3->specifiers,
                                                          kefir_ast_type_specifier_float(&kft_mem)));
-    ASSERT_OK(kefir_list_insert_after(&kft_mem, &compound2->block_items, kefir_list_tail(&compound2->block_items),
-                                      KEFIR_AST_NODE_BASE(decl3)));
+    ASSERT_OK(kefir_ast_compound_statement_append(&kft_mem, compound2, KEFIR_AST_NODE_BASE(decl3)));
 
     struct kefir_ast_conditional_statement *stmt1 = kefir_ast_new_conditional_statement(
         &kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(&kft_mem, context->symbols, "x")),
@@ -262,26 +260,26 @@ DEFINE_CASE(ast_node_analysis_switch_statements1, "AST node analysis - switch st
         &kft_mem, NULL, KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement(&kft_mem, NULL))));
 
     struct kefir_ast_compound_statement *compound1 = kefir_ast_new_compound_statement(&kft_mem);
-    ASSERT_OK(
-        kefir_list_insert_after(&kft_mem, &compound1->block_items, kefir_list_tail(&compound1->block_items), case1));
-    ASSERT_OK(kefir_list_insert_after(&kft_mem, &compound1->block_items, kefir_list_tail(&compound1->block_items),
-                                      KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement(
-                                          &kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char(&kft_mem, 'a'))))));
-    ASSERT_OK(
-        kefir_list_insert_after(&kft_mem, &compound1->block_items, kefir_list_tail(&compound1->block_items), case2));
-    ASSERT_OK(kefir_list_insert_after(&kft_mem, &compound1->block_items, kefir_list_tail(&compound1->block_items),
-                                      KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement(
-                                          &kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char(&kft_mem, 'b'))))));
-    ASSERT_OK(
-        kefir_list_insert_after(&kft_mem, &compound1->block_items, kefir_list_tail(&compound1->block_items), case3));
-    ASSERT_OK(kefir_list_insert_after(&kft_mem, &compound1->block_items, kefir_list_tail(&compound1->block_items),
-                                      KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement(
-                                          &kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char(&kft_mem, 'c'))))));
-    ASSERT_OK(
-        kefir_list_insert_after(&kft_mem, &compound1->block_items, kefir_list_tail(&compound1->block_items), case4));
-    ASSERT_OK(kefir_list_insert_after(&kft_mem, &compound1->block_items, kefir_list_tail(&compound1->block_items),
-                                      KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement(
-                                          &kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char(&kft_mem, 'd'))))));
+    ASSERT_OK(kefir_ast_compound_statement_append(&kft_mem, compound1, case1));
+    ASSERT_OK(kefir_ast_compound_statement_append(
+        &kft_mem, compound1,
+        KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement(
+            &kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char(&kft_mem, 'a'))))));
+    ASSERT_OK(kefir_ast_compound_statement_append(&kft_mem, compound1, case2));
+    ASSERT_OK(kefir_ast_compound_statement_append(
+        &kft_mem, compound1,
+        KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement(
+            &kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char(&kft_mem, 'b'))))));
+    ASSERT_OK(kefir_ast_compound_statement_append(&kft_mem, compound1, case3));
+    ASSERT_OK(kefir_ast_compound_statement_append(
+        &kft_mem, compound1,
+        KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement(
+            &kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char(&kft_mem, 'c'))))));
+    ASSERT_OK(kefir_ast_compound_statement_append(&kft_mem, compound1, case4));
+    ASSERT_OK(kefir_ast_compound_statement_append(
+        &kft_mem, compound1,
+        KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement(
+            &kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char(&kft_mem, 'd'))))));
 
     struct kefir_ast_declaration *decl1 = kefir_ast_new_single_declaration(
         &kft_mem, kefir_ast_declarator_identifier(&kft_mem, context->symbols, "value"), NULL, NULL);
@@ -364,10 +362,8 @@ DEFINE_CASE(ast_node_analysis_switch_statements2, "AST node analysis - switch st
                                      KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement(&kft_mem, NULL))));
 
     struct kefir_ast_compound_statement *compound1 = kefir_ast_new_compound_statement(&kft_mem);
-    ASSERT_OK(
-        kefir_list_insert_after(&kft_mem, &compound1->block_items, kefir_list_tail(&compound1->block_items), case1));
-    ASSERT_OK(
-        kefir_list_insert_after(&kft_mem, &compound1->block_items, kefir_list_tail(&compound1->block_items), case2));
+    ASSERT_OK(kefir_ast_compound_statement_append(&kft_mem, compound1, case1));
+    ASSERT_OK(kefir_ast_compound_statement_append(&kft_mem, compound1, case2));
 
     struct kefir_ast_switch_statement *switch1 = kefir_ast_new_switch_statement(
         &kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 0)), KEFIR_AST_NODE_BASE(compound1));
@@ -384,12 +380,9 @@ DEFINE_CASE(ast_node_analysis_switch_statements2, "AST node analysis - switch st
         &kft_mem, NULL, KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement(&kft_mem, NULL))));
 
     struct kefir_ast_compound_statement *compound2 = kefir_ast_new_compound_statement(&kft_mem);
-    ASSERT_OK(
-        kefir_list_insert_after(&kft_mem, &compound2->block_items, kefir_list_tail(&compound2->block_items), case3));
-    ASSERT_OK(
-        kefir_list_insert_after(&kft_mem, &compound2->block_items, kefir_list_tail(&compound2->block_items), case4));
-    ASSERT_OK(
-        kefir_list_insert_after(&kft_mem, &compound2->block_items, kefir_list_tail(&compound2->block_items), case5));
+    ASSERT_OK(kefir_ast_compound_statement_append(&kft_mem, compound2, case3));
+    ASSERT_OK(kefir_ast_compound_statement_append(&kft_mem, compound2, case4));
+    ASSERT_OK(kefir_ast_compound_statement_append(&kft_mem, compound2, case5));
 
     struct kefir_ast_switch_statement *switch2 = kefir_ast_new_switch_statement(
         &kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 0)), KEFIR_AST_NODE_BASE(compound2));
@@ -431,12 +424,9 @@ DEFINE_CASE(ast_node_analysis_switch_statements3, "AST node analysis - switch st
         &kft_mem, case_labels[2], KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement(&kft_mem, NULL))));
 
     struct kefir_ast_compound_statement *compound1 = kefir_ast_new_compound_statement(&kft_mem);
-    ASSERT_OK(
-        kefir_list_insert_after(&kft_mem, &compound1->block_items, kefir_list_tail(&compound1->block_items), case1));
-    ASSERT_OK(
-        kefir_list_insert_after(&kft_mem, &compound1->block_items, kefir_list_tail(&compound1->block_items), case2));
-    ASSERT_OK(
-        kefir_list_insert_after(&kft_mem, &compound1->block_items, kefir_list_tail(&compound1->block_items), case3));
+    ASSERT_OK(kefir_ast_compound_statement_append(&kft_mem, compound1, case1));
+    ASSERT_OK(kefir_ast_compound_statement_append(&kft_mem, compound1, case2));
+    ASSERT_OK(kefir_ast_compound_statement_append(&kft_mem, compound1, case3));
 
     struct kefir_ast_switch_statement *switch1 = kefir_ast_new_switch_statement(
         &kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 0)), KEFIR_AST_NODE_BASE(compound1));
@@ -452,12 +442,9 @@ DEFINE_CASE(ast_node_analysis_switch_statements3, "AST node analysis - switch st
         &kft_mem, case_labels[5], KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement(&kft_mem, NULL))));
 
     struct kefir_ast_compound_statement *compound2 = kefir_ast_new_compound_statement(&kft_mem);
-    ASSERT_OK(
-        kefir_list_insert_after(&kft_mem, &compound2->block_items, kefir_list_tail(&compound2->block_items), case4));
-    ASSERT_OK(
-        kefir_list_insert_after(&kft_mem, &compound2->block_items, kefir_list_tail(&compound2->block_items), case5));
-    ASSERT_OK(
-        kefir_list_insert_after(&kft_mem, &compound2->block_items, kefir_list_tail(&compound2->block_items), case6));
+    ASSERT_OK(kefir_ast_compound_statement_append(&kft_mem, compound2, case4));
+    ASSERT_OK(kefir_ast_compound_statement_append(&kft_mem, compound2, case5));
+    ASSERT_OK(kefir_ast_compound_statement_append(&kft_mem, compound2, case6));
 
     struct kefir_ast_switch_statement *switch2 = kefir_ast_new_switch_statement(
         &kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 0)), KEFIR_AST_NODE_BASE(compound2));
@@ -568,12 +555,9 @@ DEFINE_CASE(ast_node_analysis_switch_statements4, "AST node analysis - switch st
         &kft_mem, case_labels[2], KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement(&kft_mem, NULL))));
 
     struct kefir_ast_compound_statement *compound1 = kefir_ast_new_compound_statement(&kft_mem);
-    ASSERT_OK(
-        kefir_list_insert_after(&kft_mem, &compound1->block_items, kefir_list_tail(&compound1->block_items), case1));
-    ASSERT_OK(
-        kefir_list_insert_after(&kft_mem, &compound1->block_items, kefir_list_tail(&compound1->block_items), case2));
-    ASSERT_OK(
-        kefir_list_insert_after(&kft_mem, &compound1->block_items, kefir_list_tail(&compound1->block_items), case3));
+    ASSERT_OK(kefir_ast_compound_statement_append(&kft_mem, compound1, case1));
+    ASSERT_OK(kefir_ast_compound_statement_append(&kft_mem, compound1, case2));
+    ASSERT_OK(kefir_ast_compound_statement_append(&kft_mem, compound1, case3));
 
     struct kefir_ast_switch_statement *switch1 = kefir_ast_new_switch_statement(
         &kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 0)), KEFIR_AST_NODE_BASE(compound1));
@@ -588,12 +572,9 @@ DEFINE_CASE(ast_node_analysis_switch_statements4, "AST node analysis - switch st
         &kft_mem, case_labels[5], KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement(&kft_mem, NULL))));
 
     struct kefir_ast_compound_statement *compound2 = kefir_ast_new_compound_statement(&kft_mem);
-    ASSERT_OK(
-        kefir_list_insert_after(&kft_mem, &compound2->block_items, kefir_list_tail(&compound2->block_items), case4));
-    ASSERT_OK(
-        kefir_list_insert_after(&kft_mem, &compound2->block_items, kefir_list_tail(&compound2->block_items), case5));
-    ASSERT_OK(
-        kefir_list_insert_after(&kft_mem, &compound2->block_items, kefir_list_tail(&compound2->block_items), case6));
+    ASSERT_OK(kefir_ast_compound_statement_append(&kft_mem, compound2, case4));
+    ASSERT_OK(kefir_ast_compound_statement_append(&kft_mem, compound2, case5));
+    ASSERT_OK(kefir_ast_compound_statement_append(&kft_mem, compound2, case6));
 
     struct kefir_ast_switch_statement *switch2 = kefir_ast_new_switch_statement(
         &kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 0)), KEFIR_AST_NODE_BASE(compound2));
@@ -707,12 +688,9 @@ DEFINE_CASE(ast_node_analysis_switch_statements5, "AST node analysis - switch st
         &kft_mem, case_labels[2], KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement(&kft_mem, NULL))));
 
     struct kefir_ast_compound_statement *compound1 = kefir_ast_new_compound_statement(&kft_mem);
-    ASSERT_OK(
-        kefir_list_insert_after(&kft_mem, &compound1->block_items, kefir_list_tail(&compound1->block_items), case1));
-    ASSERT_OK(
-        kefir_list_insert_after(&kft_mem, &compound1->block_items, kefir_list_tail(&compound1->block_items), case2_if));
-    ASSERT_OK(
-        kefir_list_insert_after(&kft_mem, &compound1->block_items, kefir_list_tail(&compound1->block_items), case3));
+    ASSERT_OK(kefir_ast_compound_statement_append(&kft_mem, compound1, case1));
+    ASSERT_OK(kefir_ast_compound_statement_append(&kft_mem, compound1, case2_if));
+    ASSERT_OK(kefir_ast_compound_statement_append(&kft_mem, compound1, case3));
 
     struct kefir_ast_switch_statement *switch1 = kefir_ast_new_switch_statement(
         &kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 0)), KEFIR_AST_NODE_BASE(compound1));

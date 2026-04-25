@@ -55,12 +55,9 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
         mem, context->symbols, "C",
         KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement(
             mem, KEFIR_AST_NODE_BASE(kefir_ast_new_label_address(mem, context->symbols, "A")))));
-    REQUIRE_OK(kefir_list_insert_after(mem, &compound1->block_items, kefir_list_tail(&compound1->block_items),
-                                       KEFIR_AST_NODE_BASE(label1)));
-    REQUIRE_OK(kefir_list_insert_after(mem, &compound1->block_items, kefir_list_tail(&compound1->block_items),
-                                       KEFIR_AST_NODE_BASE(label2)));
-    REQUIRE_OK(kefir_list_insert_after(mem, &compound1->block_items, kefir_list_tail(&compound1->block_items),
-                                       KEFIR_AST_NODE_BASE(label3)));
+    REQUIRE_OK(kefir_ast_compound_statement_append(mem, compound1, KEFIR_AST_NODE_BASE(label1)));
+    REQUIRE_OK(kefir_ast_compound_statement_append(mem, compound1, KEFIR_AST_NODE_BASE(label2)));
+    REQUIRE_OK(kefir_ast_compound_statement_append(mem, compound1, KEFIR_AST_NODE_BASE(label3)));
 
     REQUIRE_OK(kefir_ast_analyze_node(mem, context, KEFIR_AST_NODE_BASE(compound1)));
 

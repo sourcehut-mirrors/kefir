@@ -72,54 +72,52 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
             kefir_ast_declarator_specifier_list_append(mem, &decl2->specifiers, kefir_ast_type_specifier_long(mem)));
 
         struct kefir_ast_compound_statement *compound1 = kefir_ast_new_compound_statement(mem);
-        REQUIRE_OK(kefir_list_insert_after(
-            mem, &compound1->block_items, kefir_list_tail(&compound1->block_items),
+        REQUIRE_OK(kefir_ast_compound_statement_append(
+            mem, compound1,
             KEFIR_AST_NODE_BASE(kefir_ast_new_case_statement(
                 mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 1)),
                 KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement(
                     mem, KEFIR_AST_NODE_BASE(kefir_ast_new_simple_assignment(
                              mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "response")),
                              KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, -1))))))))));
-        REQUIRE_OK(kefir_list_insert_after(mem, &compound1->block_items, kefir_list_tail(&compound1->block_items),
-                                           KEFIR_AST_NODE_BASE(kefir_ast_new_break_statement(mem))));
-        REQUIRE_OK(kefir_list_insert_after(
-            mem, &compound1->block_items, kefir_list_tail(&compound1->block_items),
+        REQUIRE_OK(kefir_ast_compound_statement_append(mem, compound1,
+                                                       KEFIR_AST_NODE_BASE(kefir_ast_new_break_statement(mem))));
+        REQUIRE_OK(kefir_ast_compound_statement_append(
+            mem, compound1,
             KEFIR_AST_NODE_BASE(kefir_ast_new_case_statement(
                 mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 2)),
                 KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement(
                     mem, KEFIR_AST_NODE_BASE(kefir_ast_new_simple_assignment(
                              mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "response")),
                              KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, -2))))))))));
-        REQUIRE_OK(kefir_list_insert_after(mem, &compound1->block_items, kefir_list_tail(&compound1->block_items),
-                                           KEFIR_AST_NODE_BASE(kefir_ast_new_break_statement(mem))));
-        REQUIRE_OK(kefir_list_insert_after(
-            mem, &compound1->block_items, kefir_list_tail(&compound1->block_items),
+        REQUIRE_OK(kefir_ast_compound_statement_append(mem, compound1,
+                                                       KEFIR_AST_NODE_BASE(kefir_ast_new_break_statement(mem))));
+        REQUIRE_OK(kefir_ast_compound_statement_append(
+            mem, compound1,
             KEFIR_AST_NODE_BASE(kefir_ast_new_case_statement(
                 mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 3)),
                 KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement(
                     mem, KEFIR_AST_NODE_BASE(kefir_ast_new_simple_assignment(
                              mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "response")),
                              KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, -3))))))))));
-        REQUIRE_OK(kefir_list_insert_after(mem, &compound1->block_items, kefir_list_tail(&compound1->block_items),
-                                           KEFIR_AST_NODE_BASE(kefir_ast_new_break_statement(mem))));
-        REQUIRE_OK(kefir_list_insert_after(
-            mem, &compound1->block_items, kefir_list_tail(&compound1->block_items),
+        REQUIRE_OK(kefir_ast_compound_statement_append(mem, compound1,
+                                                       KEFIR_AST_NODE_BASE(kefir_ast_new_break_statement(mem))));
+        REQUIRE_OK(kefir_ast_compound_statement_append(
+            mem, compound1,
             KEFIR_AST_NODE_BASE(kefir_ast_new_case_statement(
                 mem, NULL,
                 KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement(
                     mem, KEFIR_AST_NODE_BASE(kefir_ast_new_simple_assignment(
                              mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "response")),
                              KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 0))))))))));
-        REQUIRE_OK(kefir_list_insert_after(mem, &compound1->block_items, kefir_list_tail(&compound1->block_items),
-                                           KEFIR_AST_NODE_BASE(kefir_ast_new_break_statement(mem))));
+        REQUIRE_OK(kefir_ast_compound_statement_append(mem, compound1,
+                                                       KEFIR_AST_NODE_BASE(kefir_ast_new_break_statement(mem))));
 
         struct kefir_ast_compound_statement *compound2 = kefir_ast_new_compound_statement(mem);
-        REQUIRE_OK(kefir_list_insert_after(mem, &compound2->block_items, kefir_list_tail(&compound2->block_items),
-                                           KEFIR_AST_NODE_BASE(decl1)));
-        REQUIRE_OK(kefir_list_insert_after(mem, &compound2->block_items, kefir_list_tail(&compound2->block_items),
-                                           KEFIR_AST_NODE_BASE(decl2)));
-        REQUIRE_OK(kefir_list_insert_after(
-            mem, &compound2->block_items, kefir_list_tail(&compound2->block_items),
+        REQUIRE_OK(kefir_ast_compound_statement_append(mem, compound2, KEFIR_AST_NODE_BASE(decl1)));
+        REQUIRE_OK(kefir_ast_compound_statement_append(mem, compound2, KEFIR_AST_NODE_BASE(decl2)));
+        REQUIRE_OK(kefir_ast_compound_statement_append(
+            mem, compound2,
             KEFIR_AST_NODE_BASE(kefir_ast_new_switch_statement(
                 mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "request")),
                 KEFIR_AST_NODE_BASE(compound1)))));
@@ -151,55 +149,53 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
             kefir_ast_declarator_specifier_list_append(mem, &decl2->specifiers, kefir_ast_type_specifier_long(mem)));
 
         struct kefir_ast_compound_statement *compound1 = kefir_ast_new_compound_statement(mem);
-        REQUIRE_OK(kefir_list_insert_after(
-            mem, &compound1->block_items, kefir_list_tail(&compound1->block_items),
+        REQUIRE_OK(kefir_ast_compound_statement_append(
+            mem, compound1,
             KEFIR_AST_NODE_BASE(kefir_ast_new_case_statement(
                 mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 1)),
                 KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement(
                     mem, KEFIR_AST_NODE_BASE(kefir_ast_new_simple_assignment(
                              mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "response")),
                              KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 0))))))))));
-        REQUIRE_OK(kefir_list_insert_after(mem, &compound1->block_items, kefir_list_tail(&compound1->block_items),
-                                           KEFIR_AST_NODE_BASE(kefir_ast_new_break_statement(mem))));
-        REQUIRE_OK(kefir_list_insert_after(
-            mem, &compound1->block_items, kefir_list_tail(&compound1->block_items),
+        REQUIRE_OK(kefir_ast_compound_statement_append(mem, compound1,
+                                                       KEFIR_AST_NODE_BASE(kefir_ast_new_break_statement(mem))));
+        REQUIRE_OK(kefir_ast_compound_statement_append(
+            mem, compound1,
             KEFIR_AST_NODE_BASE(kefir_ast_new_case_statement(
                 mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 0)),
                 KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement(
                     mem, KEFIR_AST_NODE_BASE(kefir_ast_new_simple_assignment(
                              mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "response")),
                              KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 1))))))))));
-        REQUIRE_OK(kefir_list_insert_after(mem, &compound1->block_items, kefir_list_tail(&compound1->block_items),
-                                           KEFIR_AST_NODE_BASE(kefir_ast_new_break_statement(mem))));
+        REQUIRE_OK(kefir_ast_compound_statement_append(mem, compound1,
+                                                       KEFIR_AST_NODE_BASE(kefir_ast_new_break_statement(mem))));
 
         struct kefir_ast_compound_statement *compound2 = kefir_ast_new_compound_statement(mem);
-        REQUIRE_OK(kefir_list_insert_after(
-            mem, &compound2->block_items, kefir_list_tail(&compound2->block_items),
+        REQUIRE_OK(kefir_ast_compound_statement_append(
+            mem, compound2,
             KEFIR_AST_NODE_BASE(kefir_ast_new_case_statement(
                 mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, -1)),
                 KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement(
                     mem, KEFIR_AST_NODE_BASE(kefir_ast_new_simple_assignment(
                              mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "response")),
                              KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 10))))))))));
-        REQUIRE_OK(kefir_list_insert_after(mem, &compound2->block_items, kefir_list_tail(&compound2->block_items),
-                                           KEFIR_AST_NODE_BASE(kefir_ast_new_break_statement(mem))));
-        REQUIRE_OK(kefir_list_insert_after(
-            mem, &compound2->block_items, kefir_list_tail(&compound2->block_items),
+        REQUIRE_OK(kefir_ast_compound_statement_append(mem, compound2,
+                                                       KEFIR_AST_NODE_BASE(kefir_ast_new_break_statement(mem))));
+        REQUIRE_OK(kefir_ast_compound_statement_append(
+            mem, compound2,
             KEFIR_AST_NODE_BASE(kefir_ast_new_case_statement(
                 mem, NULL,
                 KEFIR_AST_NODE_BASE(kefir_ast_new_switch_statement(
                     mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "request")),
                     KEFIR_AST_NODE_BASE(compound1)))))));
-        REQUIRE_OK(kefir_list_insert_after(mem, &compound2->block_items, kefir_list_tail(&compound2->block_items),
-                                           KEFIR_AST_NODE_BASE(kefir_ast_new_break_statement(mem))));
+        REQUIRE_OK(kefir_ast_compound_statement_append(mem, compound2,
+                                                       KEFIR_AST_NODE_BASE(kefir_ast_new_break_statement(mem))));
 
         struct kefir_ast_compound_statement *compound3 = kefir_ast_new_compound_statement(mem);
-        REQUIRE_OK(kefir_list_insert_after(mem, &compound3->block_items, kefir_list_tail(&compound3->block_items),
-                                           KEFIR_AST_NODE_BASE(decl1)));
-        REQUIRE_OK(kefir_list_insert_after(mem, &compound3->block_items, kefir_list_tail(&compound3->block_items),
-                                           KEFIR_AST_NODE_BASE(decl2)));
-        REQUIRE_OK(kefir_list_insert_after(
-            mem, &compound3->block_items, kefir_list_tail(&compound3->block_items),
+        REQUIRE_OK(kefir_ast_compound_statement_append(mem, compound3, KEFIR_AST_NODE_BASE(decl1)));
+        REQUIRE_OK(kefir_ast_compound_statement_append(mem, compound3, KEFIR_AST_NODE_BASE(decl2)));
+        REQUIRE_OK(kefir_ast_compound_statement_append(
+            mem, compound3,
             KEFIR_AST_NODE_BASE(kefir_ast_new_switch_statement(
                 mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "request")),
                 KEFIR_AST_NODE_BASE(compound2)))));

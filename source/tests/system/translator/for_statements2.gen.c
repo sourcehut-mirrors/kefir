@@ -122,8 +122,7 @@ static kefir_result_t define_conditional_function(struct kefir_mem *mem, struct 
                                                           kefir_ast_type_specifier_long(mem)));
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &temp_variable->specifiers,
                                                           kefir_ast_type_specifier_long(mem)));
-    REQUIRE_OK(kefir_list_insert_after(mem, &inner_body->block_items, kefir_list_tail(&inner_body->block_items),
-                                       KEFIR_AST_NODE_BASE(temp_variable)));
+    REQUIRE_OK(kefir_ast_compound_statement_append(mem, inner_body, KEFIR_AST_NODE_BASE(temp_variable)));
 
     struct kefir_ast_node_base *inner_body_stmt1 = KEFIR_AST_NODE_BASE(kefir_ast_new_simple_assignment(
         mem,
@@ -145,8 +144,8 @@ static kefir_result_t define_conditional_function(struct kefir_mem *mem, struct 
                     KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "j")),
                     KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "dim")))),
                 KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "i"))))))));
-    REQUIRE_OK(kefir_list_insert_after(mem, &inner_body->block_items, kefir_list_tail(&inner_body->block_items),
-                                       KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement(mem, inner_body_stmt1))));
+    REQUIRE_OK(kefir_ast_compound_statement_append(
+        mem, inner_body, KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement(mem, inner_body_stmt1))));
 
     struct kefir_ast_node_base *inner_body_stmt2 = KEFIR_AST_NODE_BASE(kefir_ast_new_simple_assignment(
         mem,
@@ -160,8 +159,8 @@ static kefir_result_t define_conditional_function(struct kefir_mem *mem, struct 
                     KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "dim")))),
                 KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "i")))))),
         KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "tmp"))));
-    REQUIRE_OK(kefir_list_insert_after(mem, &inner_body->block_items, kefir_list_tail(&inner_body->block_items),
-                                       KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement(mem, inner_body_stmt2))));
+    REQUIRE_OK(kefir_ast_compound_statement_append(
+        mem, inner_body, KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement(mem, inner_body_stmt2))));
 
     struct kefir_ast_node_base *inner_loop =
         KEFIR_AST_NODE_BASE(kefir_ast_new_for_statement(mem, KEFIR_AST_NODE_BASE(inner_loop_init), inner_loop_condition,

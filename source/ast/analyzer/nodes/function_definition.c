@@ -326,9 +326,8 @@ kefir_result_t kefir_ast_analyze_function_definition_node(struct kefir_mem *mem,
     }
 
     kefir_bool_t has_analysis_errors = false;
-    for (const struct kefir_list_entry *iter = kefir_list_head(&node->body->block_items); iter != NULL;
-         kefir_list_next(&iter)) {
-        ASSIGN_DECL_CAST(struct kefir_ast_node_base *, item, iter->value);
+    for (kefir_size_t i = 0; i < node->body->block_length; i++) {
+        struct kefir_ast_node_base *item = node->body->block_items[i];
         res = kefir_ast_analyze_node(mem, &local_context->context, item);
         REQUIRE_CHAIN_SET(
             &res,

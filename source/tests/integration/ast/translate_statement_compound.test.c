@@ -110,20 +110,13 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
                      KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "z")))));
 
         struct kefir_ast_compound_statement *compound1 = kefir_ast_new_compound_statement(mem);
-        REQUIRE_OK(kefir_list_insert_after(mem, &compound1->block_items, kefir_list_tail(&compound1->block_items),
-                                           KEFIR_AST_NODE_BASE(decl1)));
-        REQUIRE_OK(kefir_list_insert_after(mem, &compound1->block_items, kefir_list_tail(&compound1->block_items),
-                                           KEFIR_AST_NODE_BASE(decl2)));
-        REQUIRE_OK(kefir_list_insert_after(mem, &compound1->block_items, kefir_list_tail(&compound1->block_items),
-                                           KEFIR_AST_NODE_BASE(decl3)));
-        REQUIRE_OK(kefir_list_insert_after(mem, &compound1->block_items, kefir_list_tail(&compound1->block_items),
-                                           KEFIR_AST_NODE_BASE(expr1)));
-        REQUIRE_OK(kefir_list_insert_after(mem, &compound1->block_items, kefir_list_tail(&compound1->block_items),
-                                           KEFIR_AST_NODE_BASE(assign1)));
-        REQUIRE_OK(kefir_list_insert_after(mem, &compound1->block_items, kefir_list_tail(&compound1->block_items),
-                                           KEFIR_AST_NODE_BASE(assign2)));
-        REQUIRE_OK(kefir_list_insert_after(mem, &compound1->block_items, kefir_list_tail(&compound1->block_items),
-                                           KEFIR_AST_NODE_BASE(assign3)));
+        REQUIRE_OK(kefir_ast_compound_statement_append(mem, compound1, KEFIR_AST_NODE_BASE(decl1)));
+        REQUIRE_OK(kefir_ast_compound_statement_append(mem, compound1, KEFIR_AST_NODE_BASE(decl2)));
+        REQUIRE_OK(kefir_ast_compound_statement_append(mem, compound1, KEFIR_AST_NODE_BASE(decl3)));
+        REQUIRE_OK(kefir_ast_compound_statement_append(mem, compound1, KEFIR_AST_NODE_BASE(expr1)));
+        REQUIRE_OK(kefir_ast_compound_statement_append(mem, compound1, KEFIR_AST_NODE_BASE(assign1)));
+        REQUIRE_OK(kefir_ast_compound_statement_append(mem, compound1, KEFIR_AST_NODE_BASE(assign2)));
+        REQUIRE_OK(kefir_ast_compound_statement_append(mem, compound1, KEFIR_AST_NODE_BASE(assign3)));
 
         struct kefir_ast_node_base *node = KEFIR_AST_NODE_BASE(compound1);
         REQUIRE_OK(kefir_ast_analyze_node(mem, context, node));
@@ -164,20 +157,14 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
                      KEFIR_AST_NODE_BASE(kefir_ast_new_constant_float(mem, 12.1f)))));
 
         struct kefir_ast_compound_statement *compound1 = kefir_ast_new_compound_statement(mem);
-        REQUIRE_OK(kefir_list_insert_after(mem, &compound1->block_items, kefir_list_tail(&compound1->block_items),
-                                           KEFIR_AST_NODE_BASE(decl2)));
-        REQUIRE_OK(kefir_list_insert_after(mem, &compound1->block_items, kefir_list_tail(&compound1->block_items),
-                                           KEFIR_AST_NODE_BASE(assign2)));
+        REQUIRE_OK(kefir_ast_compound_statement_append(mem, compound1, KEFIR_AST_NODE_BASE(decl2)));
+        REQUIRE_OK(kefir_ast_compound_statement_append(mem, compound1, KEFIR_AST_NODE_BASE(assign2)));
 
         struct kefir_ast_compound_statement *compound2 = kefir_ast_new_compound_statement(mem);
-        REQUIRE_OK(kefir_list_insert_after(mem, &compound2->block_items, kefir_list_tail(&compound2->block_items),
-                                           KEFIR_AST_NODE_BASE(decl1)));
-        REQUIRE_OK(kefir_list_insert_after(mem, &compound2->block_items, kefir_list_tail(&compound2->block_items),
-                                           KEFIR_AST_NODE_BASE(assign1)));
-        REQUIRE_OK(kefir_list_insert_after(mem, &compound2->block_items, kefir_list_tail(&compound2->block_items),
-                                           KEFIR_AST_NODE_BASE(compound1)));
-        REQUIRE_OK(kefir_list_insert_after(mem, &compound2->block_items, kefir_list_tail(&compound2->block_items),
-                                           KEFIR_AST_NODE_BASE(assign3)));
+        REQUIRE_OK(kefir_ast_compound_statement_append(mem, compound2, KEFIR_AST_NODE_BASE(decl1)));
+        REQUIRE_OK(kefir_ast_compound_statement_append(mem, compound2, KEFIR_AST_NODE_BASE(assign1)));
+        REQUIRE_OK(kefir_ast_compound_statement_append(mem, compound2, KEFIR_AST_NODE_BASE(compound1)));
+        REQUIRE_OK(kefir_ast_compound_statement_append(mem, compound2, KEFIR_AST_NODE_BASE(assign3)));
 
         struct kefir_ast_node_base *node = KEFIR_AST_NODE_BASE(compound2);
         REQUIRE_OK(kefir_ast_analyze_node(mem, context, node));

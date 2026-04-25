@@ -114,8 +114,7 @@ static kefir_result_t insert_function_name_builtin(struct kefir_mem *mem, struct
     APPEND_SPECIFIER(kefir_ast_type_specifier_char(mem));
 #undef APPEND_SPECIFIER
 
-    kefir_result_t res =
-        kefir_list_insert_after(mem, &body->block_items, NULL, KEFIR_AST_NODE_BASE(func_name_declaration));
+    kefir_result_t res = kefir_ast_compound_statement_prepend(mem, body, KEFIR_AST_NODE_BASE(func_name_declaration));
     REQUIRE_ELSE(res == KEFIR_OK, {
         KEFIR_AST_NODE_FREE(mem, KEFIR_AST_NODE_BASE(func_name_declaration));
         return res;

@@ -54,8 +54,8 @@ static kefir_result_t define_unit1(struct kefir_mem *mem, const struct kefir_ast
                      mem, kefir_ast_declarator_identifier(mem, context->symbols, "get_character1"))),
         body1);
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &func1->specifiers, kefir_ast_type_specifier_char(mem)));
-    REQUIRE_OK(kefir_list_insert_after(
-        mem, &body1->block_items, kefir_list_tail(&body1->block_items),
+    REQUIRE_OK(kefir_ast_compound_statement_append(
+        mem, body1,
         KEFIR_AST_NODE_BASE(kefir_ast_new_return_statement(
             mem, KEFIR_AST_NODE_BASE(kefir_ast_new_unary_operation(
                      mem, KEFIR_AST_OPERATION_ADDRESS,
@@ -85,8 +85,8 @@ static kefir_result_t define_unit2(struct kefir_mem *mem, const struct kefir_ast
         body1);
     REQUIRE_OK(
         kefir_ast_declarator_specifier_list_append(mem, &func1->specifiers, kefir_ast_type_specifier_unsigned(mem)));
-    REQUIRE_OK(kefir_list_insert_after(
-        mem, &body1->block_items, kefir_list_tail(&body1->block_items),
+    REQUIRE_OK(kefir_ast_compound_statement_append(
+        mem, body1,
         KEFIR_AST_NODE_BASE(kefir_ast_new_return_statement(
             mem, KEFIR_AST_NODE_BASE(kefir_ast_new_unary_operation(
                      mem, KEFIR_AST_OPERATION_ADDRESS,
@@ -113,8 +113,8 @@ static kefir_result_t define_unit3(struct kefir_mem *mem, const struct kefir_ast
                                                                                  mem, context->symbols, "get_long1"))),
         body1);
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &func1->specifiers, kefir_ast_type_specifier_long(mem)));
-    REQUIRE_OK(kefir_list_insert_after(
-        mem, &body1->block_items, kefir_list_tail(&body1->block_items),
+    REQUIRE_OK(kefir_ast_compound_statement_append(
+        mem, body1,
         KEFIR_AST_NODE_BASE(kefir_ast_new_return_statement(
             mem, KEFIR_AST_NODE_BASE(kefir_ast_new_unary_operation(
                      mem, KEFIR_AST_OPERATION_ADDRESS,
@@ -143,8 +143,8 @@ static kefir_result_t define_unit4(struct kefir_mem *mem, const struct kefir_ast
         body1);
     REQUIRE_OK(
         kefir_ast_declarator_specifier_list_append(mem, &func1->specifiers, kefir_ast_type_specifier_float(mem)));
-    REQUIRE_OK(kefir_list_insert_after(
-        mem, &body1->block_items, kefir_list_tail(&body1->block_items),
+    REQUIRE_OK(kefir_ast_compound_statement_append(
+        mem, body1,
         KEFIR_AST_NODE_BASE(kefir_ast_new_return_statement(
             mem, KEFIR_AST_NODE_BASE(kefir_ast_new_unary_operation(
                      mem, KEFIR_AST_OPERATION_ADDRESS,
@@ -174,8 +174,8 @@ static kefir_result_t define_unit5(struct kefir_mem *mem, const struct kefir_ast
         body1);
     REQUIRE_OK(
         kefir_ast_declarator_specifier_list_append(mem, &func1->specifiers, kefir_ast_type_specifier_double(mem)));
-    REQUIRE_OK(kefir_list_insert_after(
-        mem, &body1->block_items, kefir_list_tail(&body1->block_items),
+    REQUIRE_OK(kefir_ast_compound_statement_append(
+        mem, body1,
         KEFIR_AST_NODE_BASE(kefir_ast_new_return_statement(
             mem, KEFIR_AST_NODE_BASE(kefir_ast_new_unary_operation(
                      mem, KEFIR_AST_OPERATION_ADDRESS,
@@ -205,8 +205,8 @@ static kefir_result_t define_unit6(struct kefir_mem *mem, const struct kefir_ast
                                               mem, kefir_ast_declarator_identifier(mem, context->symbols, "get_str1"))),
         body1);
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &func1->specifiers, kefir_ast_type_specifier_char(mem)));
-    REQUIRE_OK(kefir_list_insert_after(
-        mem, &body1->block_items, kefir_list_tail(&body1->block_items),
+    REQUIRE_OK(kefir_ast_compound_statement_append(
+        mem, body1,
         KEFIR_AST_NODE_BASE(kefir_ast_new_return_statement(
             mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "str1"))))));
     REQUIRE_OK(kefir_list_insert_after(mem, unit, kefir_list_tail(unit), KEFIR_AST_NODE_BASE(func1)));
@@ -234,8 +234,8 @@ static kefir_result_t define_unit7(struct kefir_mem *mem, const struct kefir_ast
                               mem, kefir_ast_declarator_identifier(mem, context->symbols, "get_str2")))),
         body1);
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &func1->specifiers, kefir_ast_type_specifier_char(mem)));
-    REQUIRE_OK(kefir_list_insert_after(
-        mem, &body1->block_items, kefir_list_tail(&body1->block_items),
+    REQUIRE_OK(kefir_ast_compound_statement_append(
+        mem, body1,
         KEFIR_AST_NODE_BASE(kefir_ast_new_return_statement(
             mem, KEFIR_AST_NODE_BASE(kefir_ast_new_unary_operation(
                      mem, KEFIR_AST_OPERATION_ADDRESS,
@@ -265,8 +265,8 @@ static kefir_result_t define_unit8(struct kefir_mem *mem, const struct kefir_ast
                               mem, kefir_ast_declarator_identifier(mem, context->symbols, "get_str3")))),
         body1);
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &func1->specifiers, kefir_ast_type_specifier_char(mem)));
-    REQUIRE_OK(kefir_list_insert_after(
-        mem, &body1->block_items, kefir_list_tail(&body1->block_items),
+    REQUIRE_OK(kefir_ast_compound_statement_append(
+        mem, body1,
         KEFIR_AST_NODE_BASE(kefir_ast_new_return_statement(
             mem, KEFIR_AST_NODE_BASE(kefir_ast_new_unary_operation(
                      mem, KEFIR_AST_OPERATION_ADDRESS,
@@ -300,8 +300,8 @@ static kefir_result_t define_unit9(struct kefir_mem *mem, const struct kefir_ast
         body1);
     REQUIRE_OK(
         kefir_ast_declarator_specifier_list_append(mem, &func1->specifiers, kefir_ast_type_specifier_unsigned(mem)));
-    REQUIRE_OK(kefir_list_insert_after(
-        mem, &body1->block_items, kefir_list_tail(&body1->block_items),
+    REQUIRE_OK(kefir_ast_compound_statement_append(
+        mem, body1,
         KEFIR_AST_NODE_BASE(kefir_ast_new_return_statement(
             mem, KEFIR_AST_NODE_BASE(kefir_ast_new_unary_operation(
                      mem, KEFIR_AST_OPERATION_ADDRESS,
@@ -330,8 +330,8 @@ static kefir_result_t define_unit10(struct kefir_mem *mem, const struct kefir_as
                                                                                  mem, context->symbols, "get_fnptr"))),
         body1);
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &func1->specifiers, kefir_ast_type_specifier_void(mem)));
-    REQUIRE_OK(kefir_list_insert_after(
-        mem, &body1->block_items, kefir_list_tail(&body1->block_items),
+    REQUIRE_OK(kefir_ast_compound_statement_append(
+        mem, body1,
         KEFIR_AST_NODE_BASE(kefir_ast_new_return_statement(
             mem, KEFIR_AST_NODE_BASE(kefir_ast_new_unary_operation(
                      mem, KEFIR_AST_OPERATION_ADDRESS,
@@ -360,8 +360,8 @@ static kefir_result_t define_unit11(struct kefir_mem *mem, const struct kefir_as
                               mem, kefir_ast_declarator_identifier(mem, context->symbols, "get_null_ptr")))),
         body1);
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &func1->specifiers, kefir_ast_type_specifier_void(mem)));
-    REQUIRE_OK(kefir_list_insert_after(
-        mem, &body1->block_items, kefir_list_tail(&body1->block_items),
+    REQUIRE_OK(kefir_ast_compound_statement_append(
+        mem, body1,
         KEFIR_AST_NODE_BASE(kefir_ast_new_return_statement(
             mem, KEFIR_AST_NODE_BASE(kefir_ast_new_unary_operation(
                      mem, KEFIR_AST_OPERATION_ADDRESS,

@@ -29,7 +29,10 @@ kefir_result_t ast_compound_statement_free(struct kefir_mem *mem, struct kefir_a
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(base != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST node base"));
     ASSIGN_DECL_CAST(struct kefir_ast_compound_statement *, node, base->self);
-    REQUIRE_OK(kefir_list_free(mem, &node->block_items));
+    for (kefir_size_t i = 0; i < node->block_length; i++) {
+        REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, node->block_items[i]));
+    }
+    KEFIR_FREE(mem, node->block_items);
     REQUIRE_OK(kefir_ast_node_attributes_free(mem, &node->attributes));
     KEFIR_FREE(mem, node);
     return KEFIR_OK;
@@ -37,18 +40,6 @@ kefir_result_t ast_compound_statement_free(struct kefir_mem *mem, struct kefir_a
 
 const struct kefir_ast_node_class AST_COMPOUND_STATEMENT_CLASS = {
     .type = KEFIR_AST_COMPOUND_STATEMENT, .visit = ast_compound_statement_visit, .free = ast_compound_statement_free};
-
-static kefir_result_t free_block_item(struct kefir_mem *mem, struct kefir_list *list, struct kefir_list_entry *entry,
-                                      void *payload) {
-    UNUSED(list);
-    UNUSED(payload);
-    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
-    REQUIRE(entry != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid list entry"));
-
-    ASSIGN_DECL_CAST(struct kefir_ast_node_base *, item_base, entry->value);
-    REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, item_base));
-    return KEFIR_OK;
-}
 
 struct kefir_ast_compound_statement *kefir_ast_new_compound_statement(struct kefir_mem *mem) {
     REQUIRE(mem != NULL, NULL);
@@ -58,24 +49,15 @@ struct kefir_ast_compound_statement *kefir_ast_new_compound_statement(struct kef
     stmt->base.refcount = 1;
     stmt->base.klass = &AST_COMPOUND_STATEMENT_CLASS;
     stmt->base.self = stmt;
+    stmt->block_items = NULL;
+    stmt->block_capacity = 0;
+    stmt->block_length = 0;
     kefir_result_t res = kefir_ast_node_properties_init(&stmt->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
         KEFIR_FREE(mem, stmt);
         return NULL;
     });
     res = kefir_source_location_empty(&stmt->base.source_location);
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, stmt);
-        return NULL;
-    });
-
-    res = kefir_list_init(&stmt->block_items);
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, stmt);
-        return NULL;
-    });
-
-    res = kefir_list_on_remove(&stmt->block_items, free_block_item, NULL);
     REQUIRE_ELSE(res == KEFIR_OK, {
         KEFIR_FREE(mem, stmt);
         return NULL;

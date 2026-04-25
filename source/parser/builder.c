@@ -765,7 +765,7 @@ kefir_result_t kefir_parser_ast_builder_compound_statement_append(struct kefir_m
     });
 
     ASSIGN_DECL_CAST(struct kefir_ast_compound_statement *, compound, compound_stmt->self);
-    res = kefir_list_insert_after(mem, &compound->block_items, kefir_list_tail(&compound->block_items), stmt);
+    res = kefir_ast_compound_statement_append(mem, compound, stmt);
     REQUIRE_ELSE(res == KEFIR_OK, {
         KEFIR_AST_NODE_FREE(mem, compound_stmt);
         KEFIR_AST_NODE_FREE(mem, stmt);
