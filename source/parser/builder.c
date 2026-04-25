@@ -1403,7 +1403,7 @@ kefir_result_t kefir_parser_ast_builder_translation_unit_append(struct kefir_mem
     });
     ASSIGN_DECL_CAST(struct kefir_ast_translation_unit *, unit, unit_node->self);
 
-    res = kefir_list_insert_after(mem, &unit->external_definitions, kefir_list_tail(&unit->external_definitions), node);
+    res = kefir_ast_translation_unit_append(mem, unit, node);
     REQUIRE_ELSE(res == KEFIR_OK, {
         KEFIR_AST_NODE_FREE(mem, unit_node);
         KEFIR_AST_NODE_FREE(mem, node);

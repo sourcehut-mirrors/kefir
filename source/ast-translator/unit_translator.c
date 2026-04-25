@@ -64,9 +64,8 @@ static kefir_result_t allocate_function_context(struct kefir_mem *mem, struct ke
 static kefir_result_t translate_unit_impl(struct kefir_mem *mem, struct kefir_ast_translation_unit *unit,
                                           struct kefir_ast_translator_context *context,
                                           struct kefir_list *function_translator_contexts) {
-    for (const struct kefir_list_entry *iter = kefir_list_head(&unit->external_definitions); iter != NULL;
-         kefir_list_next(&iter)) {
-        ASSIGN_DECL_CAST(struct kefir_ast_node_base *, external_definition, iter->value);
+    for (kefir_size_t i = 0; i < unit->external_definitions_length; i++) {
+        struct kefir_ast_node_base *external_definition = unit->external_definitions[i];
 
         switch (external_definition->properties.category) {
             case KEFIR_AST_NODE_CATEGORY_DECLARATION:
