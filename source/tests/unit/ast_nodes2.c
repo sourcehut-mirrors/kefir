@@ -345,8 +345,8 @@ DEFINE_CASE(ast_nodes_comma_operators, "AST nodes - comma operators") {
     for (kefir_size_t i = 0; i < 10; i++) {
         ASSERT_OK(
             kefir_ast_comma_append(&kft_mem, comma, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, i))));
-        ASSERT(kefir_list_length(&comma->expressions) == i + 1);
-        ASSIGN_DECL_CAST(struct kefir_ast_node_base *, expr, kefir_list_tail(&comma->expressions)->value);
+        ASSERT(comma->expressions_length == i + 1);
+        struct kefir_ast_node_base *expr = comma->expressions[comma->expressions_length - 1];
         ASSERT(expr->klass->type == KEFIR_AST_CONSTANT);
         ASSIGN_DECL_CAST(struct kefir_ast_constant *, cnst, expr->self);
         ASSERT(cnst->type == KEFIR_AST_INT_CONSTANT);

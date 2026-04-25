@@ -160,7 +160,11 @@ KEFIR_AST_NODE_STRUCT(kefir_ast_assignment_operator, {
     struct kefir_ast_node_base *value;
 });
 
-KEFIR_AST_NODE_STRUCT(kefir_ast_comma_operator, { struct kefir_list expressions; });
+KEFIR_AST_NODE_STRUCT(kefir_ast_comma_operator, {
+    struct kefir_ast_node_base **expressions;
+    kefir_size_t expressions_length;
+    kefir_size_t expressions_capacity;
+});
 
 KEFIR_AST_NODE_STRUCT(kefir_ast_static_assertion, {
     struct kefir_ast_node_base *condition;

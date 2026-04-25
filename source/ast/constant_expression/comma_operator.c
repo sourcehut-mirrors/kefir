@@ -35,17 +35,17 @@ kefir_result_t kefir_ast_evaluate_comma_operator_node(struct kefir_mem *mem, con
             KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->base.source_location,
                                    "Expected constant expression AST node"));
 
-    const struct kefir_list_entry *iter = kefir_list_head(&node->expressions);
-    for (; iter != NULL && iter->next != NULL; iter = iter->next) {
-        ASSIGN_DECL_CAST(const struct kefir_ast_node_base *, subnode, iter->value);
+    for (kefir_size_t i = 0; node->expressions_length > 0 && i < node->expressions_length - 1; i++) {
+        const struct kefir_ast_node_base *subnode = node->expressions[i];
         REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION(subnode),
                 KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &subnode->source_location,
                                        "Unable to evaluate constant expression"));
     }
 
-    REQUIRE(iter != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected non-empty AST comma operator"));
+    REQUIRE(node->expressions_length > 0,
+            KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected non-empty AST comma operator"));
 
-    ASSIGN_DECL_CAST(const struct kefir_ast_node_base *, subnode, iter->value);
+    const struct kefir_ast_node_base *subnode = node->expressions[node->expressions_length - 1];
     REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION(subnode),
             KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &subnode->source_location,
                                    "Unable to evaluate constant expression"));

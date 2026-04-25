@@ -33,12 +33,11 @@ kefir_result_t kefir_ast_translate_comma_operator_node(struct kefir_mem *mem,
     REQUIRE(builder != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR block builder"));
     REQUIRE(node != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST comma operator node"));
 
-    for (const struct kefir_list_entry *iter = kefir_list_head(&node->expressions); iter != NULL;
-         kefir_list_next(&iter)) {
-        ASSIGN_DECL_CAST(struct kefir_ast_node_base *, expr, iter->value);
+    for (kefir_size_t i = 0; i < node->expressions_length; i++) {
+        struct kefir_ast_node_base *expr = node->expressions[i];
         REQUIRE_OK(kefir_ast_translate_expression(mem, expr, builder, context));
         const struct kefir_ast_type *normalized_type = kefir_ast_translator_normalize_type(expr->properties.type);
-        if (iter->next != NULL && normalized_type->tag != KEFIR_AST_TYPE_VOID) {
+        if (i + 1 < node->expressions_length && normalized_type->tag != KEFIR_AST_TYPE_VOID) {
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_VSTACK_POP, 0));
         }
     }
