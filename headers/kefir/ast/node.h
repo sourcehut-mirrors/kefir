@@ -250,7 +250,9 @@ KEFIR_AST_NODE_STRUCT(kefir_ast_return_statement, {
 KEFIR_AST_NODE_STRUCT(kefir_ast_function_definition, {
     struct kefir_ast_declarator_specifier_list specifiers;
     struct kefir_ast_declarator *declarator;
-    struct kefir_list declarations;
+    struct kefir_ast_node_base **declarations;
+    kefir_size_t declarations_length;
+    kefir_size_t declarations_capacity;
     struct kefir_ast_compound_statement *body;
     struct kefir_ast_pragma_state pragmas;
 });

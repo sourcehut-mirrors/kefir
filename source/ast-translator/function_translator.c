@@ -78,10 +78,9 @@ static kefir_result_t init_function_declaration(struct kefir_mem *mem, struct ke
             struct kefir_hashtree declarations;
 
             kefir_result_t res = kefir_hashtree_init(&declarations, &kefir_hashtree_str_ops);
-            for (const struct kefir_list_entry *iter = kefir_list_head(&function->declarations);
-                 res == KEFIR_OK && iter != NULL; kefir_list_next(&iter)) {
+            for (kefir_size_t i = 0; res == KEFIR_OK && i < function->declarations_length; i++) {
 
-                ASSIGN_DECL_CAST(struct kefir_ast_node_base *, decl_node, iter->value);
+                struct kefir_ast_node_base *decl_node = function->declarations[i];
                 struct kefir_ast_declaration *decl_list = NULL;
                 REQUIRE_MATCH(&res, kefir_ast_downcast_declaration(decl_node, &decl_list, false),
                               KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected AST declaration"));
@@ -534,10 +533,9 @@ kefir_result_t kefir_ast_translator_function_context_translate(
         }
     }
 
-    for (const struct kefir_list_entry *iter = kefir_list_head(&function_context->function_definition->declarations);
-         iter != NULL; kefir_list_next(&iter)) {
+    for (kefir_size_t i = 0; i < function_context->function_definition->declarations_length; i++) {
 
-        ASSIGN_DECL_CAST(struct kefir_ast_node_base *, decl_node, iter->value);
+        struct kefir_ast_node_base *decl_node = function_context->function_definition->declarations[i];
         struct kefir_ast_declaration *decl_list = NULL;
         REQUIRE_MATCH_OK(&res, kefir_ast_downcast_declaration(decl_node, &decl_list, false),
                          KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected AST node to be a declaration"));

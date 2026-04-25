@@ -43,6 +43,9 @@ kefir_result_t kefir_ast_compound_statement_prepend(struct kefir_mem *, struct k
                                                     struct kefir_ast_node_base *);
 kefir_result_t kefir_ast_translation_unit_append(struct kefir_mem *, struct kefir_ast_translation_unit *,
                                                  struct kefir_ast_node_base *);
+kefir_result_t kefir_ast_function_definition_append_declaration(struct kefir_mem *,
+                                                                struct kefir_ast_function_definition *,
+                                                                struct kefir_ast_node_base *);
 
 kefir_result_t kefir_ast_compound_literal_set_initializer(struct kefir_mem *, struct kefir_ast_compound_literal *,
                                                           struct kefir_ast_initializer *);

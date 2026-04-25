@@ -80,11 +80,11 @@ static struct kefir_ast_function_definition *define_sum_function(struct kefir_me
     REQUIRE(kefir_ast_declarator_specifier_list_append(mem, &function1->specifiers,
                                                        kefir_ast_type_specifier_int(mem)) == KEFIR_OK,
             NULL);
-    REQUIRE(kefir_list_insert_after(mem, &function1->declarations, kefir_list_tail(&function1->declarations),
-                                    function1_param1) == KEFIR_OK,
+    REQUIRE(kefir_ast_function_definition_append_declaration(mem, function1, KEFIR_AST_NODE_BASE(function1_param1)) ==
+                KEFIR_OK,
             NULL);
-    REQUIRE(kefir_list_insert_after(mem, &function1->declarations, kefir_list_tail(&function1->declarations),
-                                    function1_param2) == KEFIR_OK,
+    REQUIRE(kefir_ast_function_definition_append_declaration(mem, function1, KEFIR_AST_NODE_BASE(function1_param2)) ==
+                KEFIR_OK,
             NULL);
 
     return function1;

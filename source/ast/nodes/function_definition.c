@@ -33,7 +33,10 @@ kefir_result_t ast_function_definition_free(struct kefir_mem *mem, struct kefir_
 
     REQUIRE_OK(kefir_ast_declarator_specifier_list_free(mem, &node->specifiers));
     REQUIRE_OK(kefir_ast_declarator_free(mem, node->declarator));
-    REQUIRE_OK(kefir_list_free(mem, &node->declarations));
+    for (kefir_size_t i = 0; i < node->declarations_length; i++) {
+        REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, node->declarations[i]));
+    }
+    KEFIR_FREE(mem, node->declarations);
     REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, KEFIR_AST_NODE_BASE(node->body)));
     KEFIR_FREE(mem, node);
     return KEFIR_OK;
@@ -42,18 +45,6 @@ kefir_result_t ast_function_definition_free(struct kefir_mem *mem, struct kefir_
 const struct kefir_ast_node_class AST_FUNCTION_DEFINITION_CLASS = {.type = KEFIR_AST_FUNCTION_DEFINITION,
                                                                    .visit = ast_function_definition_visit,
                                                                    .free = ast_function_definition_free};
-
-static kefir_result_t declaration_entry_free(struct kefir_mem *mem, struct kefir_list *list,
-                                             struct kefir_list_entry *entry, void *payload) {
-    UNUSED(list);
-    UNUSED(payload);
-    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
-    REQUIRE(entry != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid list entry"));
-
-    ASSIGN_DECL_CAST(struct kefir_ast_node_base *, decl, entry->value);
-    REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, decl));
-    return KEFIR_OK;
-}
 
 static kefir_result_t insert_function_name_builtin(struct kefir_mem *mem, struct kefir_ast_declarator *declarator,
                                                    struct kefir_ast_compound_statement *body) {
@@ -137,6 +128,9 @@ struct kefir_ast_function_definition *kefir_ast_new_function_definition(struct k
     func->base.refcount = 1;
     func->base.klass = &AST_FUNCTION_DEFINITION_CLASS;
     func->base.self = func;
+    func->declarations = NULL;
+    func->declarations_capacity = 0;
+    func->declarations_length = 0;
     res = kefir_ast_node_properties_init(&func->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
         KEFIR_FREE(mem, func);
@@ -156,14 +150,26 @@ struct kefir_ast_function_definition *kefir_ast_new_function_definition(struct k
         KEFIR_FREE(mem, func);
         return NULL;
     });
-
-    res = kefir_list_init(&func->declarations);
-    REQUIRE_CHAIN(&res, kefir_list_on_remove(&func->declarations, declaration_entry_free, NULL));
-    REQUIRE_CHAIN(&res, kefir_ast_pragma_state_init(&func->pragmas));
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        kefir_ast_declarator_specifier_list_free(mem, &func->specifiers);
-        KEFIR_FREE(mem, func);
-        return NULL;
-    });
     return func;
+}
+
+kefir_result_t kefir_ast_function_definition_append_declaration(struct kefir_mem *mem,
+                                                                struct kefir_ast_function_definition *node,
+                                                                struct kefir_ast_node_base *declaration) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(node != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST function definition"));
+    REQUIRE(declaration != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST node"));
+
+    if (node->declarations_length + 1 > node->declarations_capacity) {
+        kefir_size_t new_capacity = MAX(1, 2 * node->declarations_capacity);
+        struct kefir_ast_node_base **new_decls =
+            KEFIR_REALLOC(mem, node->declarations, sizeof(struct kefir_ast_node_base *) * new_capacity);
+        REQUIRE(new_decls != NULL,
+                KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST function definition declarations"));
+
+        node->declarations_capacity = new_capacity;
+        node->declarations = new_decls;
+    }
+    node->declarations[node->declarations_length++] = declaration;
+    return KEFIR_OK;
 }

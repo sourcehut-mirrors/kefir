@@ -205,7 +205,7 @@ DEFINE_CASE(ast_nodes_function_definitions1, "AST nodes - function definitions #
     struct kefir_ast_function_definition *func1 = kefir_ast_new_function_definition(&kft_mem, decl1, body1);
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &func1->specifiers,
                                                          kefir_ast_type_specifier_int(&kft_mem)));
-    ASSERT_OK(kefir_list_insert_after(&kft_mem, &func1->declarations, kefir_list_tail(&func1->declarations), param2));
+    ASSERT_OK(kefir_ast_function_definition_append_declaration(&kft_mem, func1, KEFIR_AST_NODE_BASE(param2)));
 
     ASSERT(func1 != NULL);
     ASSERT(func1->base.klass->type == KEFIR_AST_FUNCTION_DEFINITION);
@@ -220,11 +220,8 @@ DEFINE_CASE(ast_nodes_function_definitions1, "AST nodes - function definitions #
     ASSERT(iter == NULL);
 
     ASSERT(func1->declarator == decl1);
-    const struct kefir_list_entry *iter2 = kefir_list_head(&func1->declarations);
-    ASSERT(iter2 != NULL);
-    ASSERT(iter2->value == param2);
-    kefir_list_next(&iter2);
-    ASSERT(iter2 == NULL);
+    ASSERT(func1->declarations_length == 1);
+    ASSERT(func1->declarations[0] == KEFIR_AST_NODE_BASE(param2));
     ASSERT(func1->body == body1);
 
     ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(func1)));
