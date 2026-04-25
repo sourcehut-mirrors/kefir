@@ -70,12 +70,11 @@ static kefir_result_t init_function_declaration(struct kefir_mem *mem, struct ke
             REQUIRE_OK(kefir_ast_translator_function_declaration_init(
                 mem, context->ast_context, context->environment, context->ast_context->type_bundle,
                 context->ast_context->type_traits, context->module, identifier, true,
-                function->base.properties.function_definition.scoped_id->function.type, NULL,
+                function->base.properties.function_definition.scoped_id->function.type, NULL, 0,
                 &args->function_declaration, &function->base.source_location));
             break;
 
         case KEFIR_AST_FUNCTION_TYPE_PARAM_IDENTIFIERS: {
-            struct kefir_list declaration_list;
             struct kefir_hashtree declarations;
 
             kefir_result_t res = kefir_hashtree_init(&declarations, &kefir_hashtree_str_ops);
@@ -96,14 +95,16 @@ static kefir_result_t init_function_declaration(struct kefir_mem *mem, struct ke
                 }
             }
 
-            REQUIRE_CHAIN(&res, kefir_list_init(&declaration_list));
-            REQUIRE_ELSE(res == KEFIR_OK, {
+            struct kefir_ast_node_base **declaration_list =
+                KEFIR_MALLOC(mem, sizeof(struct kefir_ast_node_base *) * kefir_list_length(&decl_func->parameters));
+            REQUIRE_ELSE(declaration_list != NULL, {
                 kefir_hashtree_free(mem, &declarations);
-                return res;
+                return KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST declarations");
             });
 
+            kefir_size_t declaration_index = 0;
             for (const struct kefir_list_entry *iter = kefir_list_head(&decl_func->parameters);
-                 res == KEFIR_OK && iter != NULL; kefir_list_next(&iter)) {
+                 res == KEFIR_OK && iter != NULL; declaration_index++, kefir_list_next(&iter)) {
 
                 struct kefir_hashtree_node *tree_node = NULL;
                 ASSIGN_DECL_CAST(struct kefir_ast_node_base *, param, iter->value);
@@ -116,12 +117,11 @@ static kefir_result_t init_function_declaration(struct kefir_mem *mem, struct ke
                                                 (kefir_hashtree_key_t) param->properties.expression_props.identifier,
                                                 &tree_node));
 
-                REQUIRE_CHAIN(&res, kefir_list_insert_after(mem, &declaration_list, kefir_list_tail(&declaration_list),
-                                                            (struct kefir_ast_node_base *) tree_node->value));
+                declaration_list[declaration_index] = (struct kefir_ast_node_base *) tree_node->value;
             }
 
             REQUIRE_ELSE(res == KEFIR_OK, {
-                kefir_list_free(mem, &declaration_list);
+                KEFIR_FREE(mem, declaration_list);
                 kefir_hashtree_free(mem, &declarations);
                 return res;
             });
@@ -129,21 +129,15 @@ static kefir_result_t init_function_declaration(struct kefir_mem *mem, struct ke
             res = kefir_ast_translator_function_declaration_init(
                 mem, context->ast_context, context->environment, context->ast_context->type_bundle,
                 context->ast_context->type_traits, context->module, identifier, true, function->base.properties.type,
-                &declaration_list, &args->function_declaration, &function->base.source_location);
+                declaration_list, kefir_list_length(&decl_func->parameters), &args->function_declaration,
+                &function->base.source_location);
             REQUIRE_ELSE(res == KEFIR_OK, {
-                kefir_list_free(mem, &declaration_list);
+                KEFIR_FREE(mem, declaration_list);
                 kefir_hashtree_free(mem, &declarations);
                 return res;
             });
 
-            res = kefir_list_free(mem, &declaration_list);
-            REQUIRE_ELSE(res == KEFIR_OK, {
-                if (args->function_declaration != NULL) {
-                    kefir_ast_translator_function_declaration_free(mem, args->function_declaration);
-                }
-                kefir_hashtree_free(mem, &declarations);
-                return res;
-            });
+            KEFIR_FREE(mem, declaration_list);
 
             res = kefir_hashtree_free(mem, &declarations);
             REQUIRE_ELSE(res == KEFIR_OK, {

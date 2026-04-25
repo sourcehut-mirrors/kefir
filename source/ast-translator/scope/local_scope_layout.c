@@ -197,7 +197,7 @@ static kefir_result_t translate_local_scoped_identifier_function(
         KEFIR_AST_SCOPE_SET_CLEANUP(scoped_identifier, kefir_ast_translator_scoped_identifer_payload_free, NULL);
         REQUIRE_OK(kefir_ast_translator_function_declaration_init(
             mem, context, env, type_bundle, type_traits, module, identifier, false, scoped_identifier->function.type,
-            NULL, &scoped_identifier_func->declaration, source_location));
+            NULL, 0, &scoped_identifier_func->declaration, source_location));
     }
     return KEFIR_OK;
 }

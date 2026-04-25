@@ -67,9 +67,8 @@ kefir_result_t kefir_ast_analyze_function_call_node(struct kefir_mem *mem, const
     REQUIRE_OK(kefir_ast_node_properties_init(&base->properties));
 
     REQUIRE_OK(kefir_ast_analyze_node(mem, context, node->function));
-    const struct kefir_list_entry *iter;
-    for (iter = kefir_list_head(&node->arguments); iter != NULL; kefir_list_next(&iter)) {
-        ASSIGN_DECL_CAST(struct kefir_ast_node_base *, arg, iter->value);
+    for (kefir_size_t i = 0; i < node->argument_length; i++) {
+        struct kefir_ast_node_base *arg = node->arguments[i];
         REQUIRE_OK(kefir_ast_analyze_node(mem, context, arg));
     }
 
@@ -82,12 +81,12 @@ kefir_result_t kefir_ast_analyze_function_call_node(struct kefir_mem *mem, const
     const struct kefir_ast_type *function_type = func_type->referenced_type;
 
     if (function_type->function_type.mode == KEFIR_AST_FUNCTION_TYPE_PARAMETERS) {
-        const struct kefir_list_entry *arg_value_iter = kefir_list_head(&node->arguments);
+        kefir_size_t arg_value_index = 0;
         const struct kefir_list_entry *arg_type_iter = kefir_list_head(&function_type->function_type.parameters);
-        for (; arg_value_iter != NULL && arg_type_iter != NULL;
-             kefir_list_next(&arg_type_iter), kefir_list_next(&arg_value_iter)) {
+        for (; arg_value_index < node->argument_length && arg_type_iter != NULL;
+             kefir_list_next(&arg_type_iter), arg_value_index++) {
             ASSIGN_DECL_CAST(struct kefir_ast_function_type_parameter *, parameter, arg_type_iter->value);
-            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, arg, arg_value_iter->value);
+            struct kefir_ast_node_base *arg = node->arguments[arg_value_index];
 
             const struct kefir_ast_type *param_type = kefir_ast_unqualified_type(parameter->adjusted_type);
             kefir_result_t res;
@@ -103,7 +102,7 @@ kefir_result_t kefir_ast_analyze_function_call_node(struct kefir_mem *mem, const
                         kefir_ast_type_function_parameter_count(&function_type->function_type) == 1,
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->base.source_location,
                                            "Function call parameter count does not match prototype"));
-        } else if (arg_value_iter != NULL) {
+        } else if (arg_value_index != node->argument_length) {
             REQUIRE(function_type->function_type.ellipsis,
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->base.source_location,
                                            "Function call parameter count does not match prototype"));

@@ -36,12 +36,12 @@ static kefir_result_t translate_parameters(struct kefir_mem *mem, struct kefir_a
                                            struct kefir_irbuilder_block *builder,
                                            const struct kefir_ast_function_call *node,
                                            struct kefir_ast_translator_function_declaration *func_decl) {
-    const struct kefir_list_entry *arg_value_iter = kefir_list_head(&node->arguments);
+    kefir_size_t arg_value_index = 0;
     const struct kefir_list_entry *decl_arg_iter = kefir_list_head(&func_decl->argument_layouts);
-    for (; arg_value_iter != NULL && decl_arg_iter != NULL;
-         kefir_list_next(&arg_value_iter), kefir_list_next(&decl_arg_iter)) {
+    for (; arg_value_index < node->argument_length && decl_arg_iter != NULL;
+         arg_value_index++, kefir_list_next(&decl_arg_iter)) {
         ASSIGN_DECL_CAST(struct kefir_ast_type_layout *, parameter_layout, decl_arg_iter->value);
-        ASSIGN_DECL_CAST(struct kefir_ast_node_base *, parameter_value, arg_value_iter->value);
+        struct kefir_ast_node_base *parameter_value = node->arguments[arg_value_index];
 
         const struct kefir_ast_type *param_init_normalized_type =
             kefir_ast_translator_normalize_type(parameter_value->properties.type);
@@ -107,8 +107,8 @@ kefir_result_t kefir_ast_translate_function_call_node(struct kefir_mem *mem,
             struct kefir_ast_translator_function_declaration *func_decl = NULL;
             REQUIRE_OK(kefir_ast_translator_function_declaration_init(
                 mem, context->ast_context, context->environment, context->ast_context->type_bundle,
-                context->ast_context->type_traits, context->module, function_name, true, function_type,
-                &node->arguments, &func_decl, &node->base.source_location));
+                context->ast_context->type_traits, context->module, function_name, true, function_type, node->arguments,
+                node->argument_length, &func_decl, &node->base.source_location));
             ir_decl = func_decl->ir_function_decl;
             if (ir_decl->name == NULL) {
                 REQUIRE_OK(kefir_ast_translate_expression(mem, node->function, builder, context));
@@ -127,8 +127,8 @@ kefir_result_t kefir_ast_translate_function_call_node(struct kefir_mem *mem,
             struct kefir_ast_translator_function_declaration *func_decl = NULL;
             REQUIRE_OK(kefir_ast_translator_function_declaration_init(
                 mem, context->ast_context, context->environment, context->ast_context->type_bundle,
-                context->ast_context->type_traits, context->module, function_name, true, function_type,
-                &node->arguments, &func_decl, &node->base.source_location));
+                context->ast_context->type_traits, context->module, function_name, true, function_type, node->arguments,
+                node->argument_length, &func_decl, &node->base.source_location));
             ir_decl = func_decl->ir_function_decl;
             if (ir_decl->name == NULL) {
                 REQUIRE_OK(kefir_ast_translate_expression(mem, node->function, builder, context));
@@ -147,8 +147,8 @@ kefir_result_t kefir_ast_translate_function_call_node(struct kefir_mem *mem,
             struct kefir_ast_translator_function_declaration *func_decl = NULL;
             REQUIRE_OK(kefir_ast_translator_function_declaration_init(
                 mem, context->ast_context, context->environment, context->ast_context->type_bundle,
-                context->ast_context->type_traits, context->module, function_name, true, function_type,
-                &node->arguments, &func_decl, &node->base.source_location));
+                context->ast_context->type_traits, context->module, function_name, true, function_type, node->arguments,
+                node->argument_length, &func_decl, &node->base.source_location));
             ir_decl = func_decl->ir_function_decl;
             if (ir_decl->name == NULL) {
                 REQUIRE_OK(kefir_ast_translate_expression(mem, node->function, builder, context));

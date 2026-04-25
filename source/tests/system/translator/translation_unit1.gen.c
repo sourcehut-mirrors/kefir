@@ -125,8 +125,8 @@ kefir_result_t make_unit(struct kefir_mem *mem, const struct kefir_ast_context *
         kefir_ast_declarator_function(mem, kefir_ast_declarator_identifier(mem, context->symbols, "invoke_callback"));
     struct kefir_ast_function_call *func4_stmt1 = kefir_ast_new_function_call(
         mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "value_callback")));
-    REQUIRE_OK(kefir_list_insert_after(mem, &func4_stmt1->arguments, kefir_list_tail(&func4_stmt1->arguments),
-                                       KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "value"))));
+    REQUIRE_OK(kefir_ast_function_call_append(
+        mem, func4_stmt1, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "value"))));
     REQUIRE_OK(kefir_list_insert_after(
         mem, &func4_body->block_items, kefir_list_tail(&func4_body->block_items),
         KEFIR_AST_NODE_BASE(kefir_ast_new_return_statement(mem, KEFIR_AST_NODE_BASE(func4_stmt1)))));
