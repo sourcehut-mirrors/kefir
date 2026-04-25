@@ -31,7 +31,11 @@ kefir_result_t ast_generic_selection_free(struct kefir_mem *mem, struct kefir_as
     REQUIRE(base != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST node base"));
     ASSIGN_DECL_CAST(struct kefir_ast_generic_selection *, node, base->self);
     REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, node->control));
-    REQUIRE_OK(kefir_list_free(mem, &node->associations));
+    for (kefir_size_t i = 0; i < node->associations_length; i++) {
+        REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, KEFIR_AST_NODE_BASE(node->associations[i].type_name)));
+        REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, node->associations[i].expr));
+    }
+    KEFIR_FREE(mem, node->associations);
     if (node->default_assoc != NULL) {
         REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, node->default_assoc));
     }
@@ -41,19 +45,6 @@ kefir_result_t ast_generic_selection_free(struct kefir_mem *mem, struct kefir_as
 
 const struct kefir_ast_node_class AST_GENERIC_SELECTION_CLASS = {
     .type = KEFIR_AST_GENERIC_SELECTION, .visit = ast_generic_selection_visit, .free = ast_generic_selection_free};
-
-static kefir_result_t assoc_free(struct kefir_mem *mem, struct kefir_list *list, struct kefir_list_entry *entry,
-                                 void *payload) {
-    UNUSED(list);
-    UNUSED(payload);
-    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Expected valid memory allocator"));
-    REQUIRE(entry != NULL, KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Expected valid list entry"));
-    ASSIGN_DECL_CAST(struct kefir_ast_generic_selection_assoc *, assoc, entry->value);
-    REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, KEFIR_AST_NODE_BASE(assoc->type_name)));
-    REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, assoc->expr));
-    KEFIR_FREE(mem, assoc);
-    return KEFIR_OK;
-}
 
 struct kefir_ast_generic_selection *kefir_ast_new_generic_selection(struct kefir_mem *mem,
                                                                     struct kefir_ast_node_base *control) {
@@ -77,17 +68,9 @@ struct kefir_ast_generic_selection *kefir_ast_new_generic_selection(struct kefir
     });
     selection->control = control;
     selection->default_assoc = NULL;
-    res = kefir_list_init(&selection->associations);
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, selection);
-        return NULL;
-    });
-    res = kefir_list_on_remove(&selection->associations, assoc_free, NULL);
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        kefir_list_free(mem, &selection->associations);
-        KEFIR_FREE(mem, selection);
-        return NULL;
-    });
+    selection->associations = NULL;
+    selection->associations_capacity = 0;
+    selection->associations_length = 0;
     return selection;
 }
 
@@ -99,18 +82,19 @@ kefir_result_t kefir_ast_generic_selection_append(struct kefir_mem *mem, struct 
     REQUIRE(expr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST expression"));
 
     if (type_name != NULL) {
-        struct kefir_ast_generic_selection_assoc *assoc =
-            KEFIR_MALLOC(mem, sizeof(struct kefir_ast_generic_selection_assoc));
-        REQUIRE(assoc != NULL,
-                KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST generic selection association"));
-        assoc->type_name = type_name;
-        assoc->expr = expr;
-        kefir_result_t res =
-            kefir_list_insert_after(mem, &selection->associations, kefir_list_tail(&selection->associations), assoc);
-        REQUIRE_ELSE(res == KEFIR_OK, {
-            KEFIR_FREE(mem, assoc);
-            return res;
-        });
+        if (selection->associations_length + 1 > selection->associations_capacity) {
+            kefir_size_t new_capacity = MAX(1, 2 * selection->associations_capacity);
+            struct kefir_ast_generic_selection_assoc *new_assoc = KEFIR_REALLOC(
+                mem, selection->associations, sizeof(struct kefir_ast_generic_selection_assoc) * new_capacity);
+            REQUIRE(new_assoc != NULL,
+                    KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate generic selection associations"));
+
+            selection->associations = new_assoc;
+            selection->associations_capacity = new_capacity;
+        }
+
+        selection->associations[selection->associations_length].type_name = type_name;
+        selection->associations[selection->associations_length++].expr = expr;
     } else {
         REQUIRE(
             selection->default_assoc == NULL,

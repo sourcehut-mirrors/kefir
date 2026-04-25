@@ -41,9 +41,8 @@ kefir_result_t kefir_ast_analyze_generic_selection_node(struct kefir_mem *mem, c
 
     base->properties.category = KEFIR_AST_NODE_CATEGORY_EXPRESSION;
     kefir_bool_t matched = false;
-    for (const struct kefir_list_entry *iter = kefir_list_head(&node->associations); iter != NULL;
-         kefir_list_next(&iter)) {
-        ASSIGN_DECL_CAST(struct kefir_ast_generic_selection_assoc *, assoc, iter->value);
+    for (kefir_size_t i = 0; i < node->associations_length; i++) {
+        struct kefir_ast_generic_selection_assoc *assoc = &node->associations[i];
         REQUIRE_OK(kefir_ast_analyze_node(mem, context, KEFIR_AST_NODE_BASE(assoc->type_name)));
         REQUIRE_OK(kefir_ast_analyze_node(mem, context, assoc->expr));
         if (!matched &&

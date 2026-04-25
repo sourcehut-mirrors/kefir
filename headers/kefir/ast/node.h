@@ -104,7 +104,9 @@ typedef struct kefir_ast_generic_selection_assoc {
 
 KEFIR_AST_NODE_STRUCT(kefir_ast_generic_selection, {
     struct kefir_ast_node_base *control;
-    struct kefir_list associations;
+    struct kefir_ast_generic_selection_assoc *associations;
+    kefir_size_t associations_length;
+    kefir_size_t associations_capacity;
     struct kefir_ast_node_base *default_assoc;
 });
 

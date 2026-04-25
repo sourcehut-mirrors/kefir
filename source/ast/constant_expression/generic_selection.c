@@ -40,9 +40,8 @@ kefir_result_t kefir_ast_evaluate_generic_selection_node(struct kefir_mem *mem, 
         node->control->properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION
             ? KEFIR_AST_TYPE_CONV_EXPRESSION_ALL(mem, context->type_bundle, node->control->properties.type)
             : node->control->properties.type;
-    for (const struct kefir_list_entry *iter = kefir_list_head(&node->associations); iter != NULL;
-         kefir_list_next(&iter)) {
-        ASSIGN_DECL_CAST(struct kefir_ast_generic_selection_assoc *, assoc, iter->value);
+    for (kefir_size_t i = 0; i < node->associations_length; i++) {
+        struct kefir_ast_generic_selection_assoc *assoc = &node->associations[i];
         if (KEFIR_AST_TYPE_COMPATIBLE(context->type_traits, control_type, assoc->type_name->base.properties.type)) {
             REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION(assoc->expr),
                     KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &assoc->expr->source_location,

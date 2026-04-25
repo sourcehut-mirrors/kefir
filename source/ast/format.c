@@ -1258,9 +1258,8 @@ static kefir_result_t visit_generic_selection(const struct kefir_ast_visitor *vi
     REQUIRE_OK(kefir_ast_format(json, node->control, param->display_source_location));
     REQUIRE_OK(kefir_json_output_object_key(json, "associations"));
     REQUIRE_OK(kefir_json_output_array_begin(json));
-    for (const struct kefir_list_entry *iter = kefir_list_head(&node->associations); iter != NULL;
-         kefir_list_next(&iter)) {
-        ASSIGN_DECL_CAST(struct kefir_ast_generic_selection_assoc *, assoc, iter->value);
+    for (kefir_size_t i = 0; i < node->associations_length; i++) {
+        struct kefir_ast_generic_selection_assoc *assoc = &node->associations[i];
 
         REQUIRE_OK(kefir_json_output_object_begin(json));
         REQUIRE_OK(kefir_json_output_object_key(json, "type_name"));
