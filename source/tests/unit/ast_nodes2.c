@@ -22,13 +22,12 @@
 #include "kefir/test/unit_test.h"
 #include "kefir/ast/node.h"
 
-#define ASSERT_ASSOC(_selection, _index, _type_name, _expr)                            \
-    do {                                                                               \
-        ASSIGN_DECL_CAST(struct kefir_ast_generic_selection_assoc *, assoc,            \
-                         kefir_list_at(&(_selection)->associations, (_index))->value); \
-        ASSERT(assoc != NULL);                                                         \
-        ASSERT(assoc->type_name == (_type_name));                                      \
-        _expr;                                                                         \
+#define ASSERT_ASSOC(_selection, _index, _type_name, _expr)                                      \
+    do {                                                                                         \
+        struct kefir_ast_generic_selection_assoc *assoc = &(_selection)->associations[(_index)]; \
+        ASSERT(assoc != NULL);                                                                   \
+        ASSERT(assoc->type_name == (_type_name));                                                \
+        _expr;                                                                                   \
     } while (0)
 
 DEFINE_CASE(ast_nodes_generic_selections, "AST nodes - generic selections") {
@@ -47,7 +46,7 @@ DEFINE_CASE(ast_nodes_generic_selections, "AST nodes - generic selections") {
     ASSERT(selection1->control->klass->type == KEFIR_AST_CONSTANT);
     ASSERT(((struct kefir_ast_constant *) selection1->control->self)->type == KEFIR_AST_INT_CONSTANT);
     ASSERT(((struct kefir_ast_constant *) selection1->control->self)->value.integer == 5);
-    ASSERT(kefir_list_length(&selection1->associations) == 0);
+    ASSERT(selection1->associations_length == 0);
     ASSERT(selection1->default_assoc == NULL);
 
     struct kefir_ast_type_name *type_name1 =
@@ -57,7 +56,7 @@ DEFINE_CASE(ast_nodes_generic_selections, "AST nodes - generic selections") {
 
     ASSERT_OK(kefir_ast_generic_selection_append(&kft_mem, selection1, type_name1,
                                                  KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bool(&kft_mem, true))));
-    ASSERT(kefir_list_length(&selection1->associations) == 1);
+    ASSERT(selection1->associations_length == 1);
     ASSERT_ASSOC(selection1, 0, type_name1, {
         ASSERT(assoc->expr->klass->type == KEFIR_AST_CONSTANT);
         ASSERT(((struct kefir_ast_constant *) assoc->expr->self)->type == KEFIR_AST_BOOL_CONSTANT);
@@ -74,7 +73,7 @@ DEFINE_CASE(ast_nodes_generic_selections, "AST nodes - generic selections") {
 
     ASSERT_OK(kefir_ast_generic_selection_append(
         &kft_mem, selection1, type_name3, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(&kft_mem, &symbols, "true"))));
-    ASSERT(kefir_list_length(&selection1->associations) == 2);
+    ASSERT(selection1->associations_length == 2);
     ASSERT_ASSOC(selection1, 0, type_name1, {
         ASSERT(assoc->expr->klass->type == KEFIR_AST_CONSTANT);
         ASSERT(((struct kefir_ast_constant *) assoc->expr->self)->type == KEFIR_AST_BOOL_CONSTANT);
@@ -95,7 +94,7 @@ DEFINE_CASE(ast_nodes_generic_selections, "AST nodes - generic selections") {
     ASSERT_OK(kefir_ast_generic_selection_append(
         &kft_mem, selection1, type_name4,
         KEFIR_AST_NODE_BASE(KEFIR_AST_MAKE_STRING_LITERAL_MULTIBYTE(&kft_mem, "Hello, world!"))));
-    ASSERT(kefir_list_length(&selection1->associations) == 3);
+    ASSERT(selection1->associations_length == 3);
     ASSERT_ASSOC(selection1, 0, type_name1, {
         ASSERT(assoc->expr->klass->type == KEFIR_AST_CONSTANT);
         ASSERT(((struct kefir_ast_constant *) assoc->expr->self)->type == KEFIR_AST_BOOL_CONSTANT);
@@ -115,7 +114,7 @@ DEFINE_CASE(ast_nodes_generic_selections, "AST nodes - generic selections") {
 
     ASSERT_OK(kefir_ast_generic_selection_append(&kft_mem, selection1, NULL,
                                                  KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char(&kft_mem, 'H'))));
-    ASSERT(kefir_list_length(&selection1->associations) == 3);
+    ASSERT(selection1->associations_length == 3);
     ASSERT_ASSOC(selection1, 0, type_name1, {
         ASSERT(assoc->expr->klass->type == KEFIR_AST_CONSTANT);
         ASSERT(((struct kefir_ast_constant *) assoc->expr->self)->type == KEFIR_AST_BOOL_CONSTANT);
@@ -138,7 +137,7 @@ DEFINE_CASE(ast_nodes_generic_selections, "AST nodes - generic selections") {
 
     struct kefir_ast_constant *cnst2 = kefir_ast_new_constant_char(&kft_mem, 'H');
     ASSERT_NOK(kefir_ast_generic_selection_append(&kft_mem, selection1, NULL, KEFIR_AST_NODE_BASE(cnst2)));
-    ASSERT(kefir_list_length(&selection1->associations) == 3);
+    ASSERT(selection1->associations_length == 3);
     ASSERT(selection1->default_assoc != NULL);
     ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(cnst2)));
 
