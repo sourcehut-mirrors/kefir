@@ -255,7 +255,11 @@ KEFIR_AST_NODE_STRUCT(kefir_ast_function_definition, {
     struct kefir_ast_pragma_state pragmas;
 });
 
-KEFIR_AST_NODE_STRUCT(kefir_ast_translation_unit, { struct kefir_list external_definitions; });
+KEFIR_AST_NODE_STRUCT(kefir_ast_translation_unit, {
+    struct kefir_ast_node_base **external_definitions;
+    kefir_size_t external_definitions_length;
+    kefir_size_t external_definitions_capacity;
+});
 
 KEFIR_AST_NODE_STRUCT(kefir_ast_builtin, {
     kefir_ast_builtin_operator_t builtin;

@@ -40,10 +40,9 @@ kefir_result_t kefir_ast_analyze_translation_unit_node(struct kefir_mem *mem, co
     base->properties.category = KEFIR_AST_NODE_CATEGORY_TRANSLATION_UNIT;
 
     kefir_bool_t has_analysis_errors = false;
-    for (const struct kefir_list_entry *iter = kefir_list_head(&node->external_definitions); iter != NULL;
-         kefir_list_next(&iter)) {
+    for (kefir_size_t i = 0; i < node->external_definitions_length; i++) {
 
-        ASSIGN_DECL_CAST(struct kefir_ast_node_base *, entry, iter->value);
+        struct kefir_ast_node_base *entry = node->external_definitions[i];
         kefir_result_t res = kefir_ast_analyze_node(mem, context, entry);
         REQUIRE_CHAIN_SET(&res,
                           entry->properties.category == KEFIR_AST_NODE_CATEGORY_DECLARATION ||

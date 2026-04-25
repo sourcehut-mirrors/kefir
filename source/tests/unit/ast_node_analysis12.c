@@ -348,8 +348,7 @@ DEFINE_CASE(ast_node_analysis_translation_unit1, "AST node analysis - translatio
                                                          kefir_ast_storage_class_specifier_extern(&kft_mem)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &decl1->specifiers,
                                                          kefir_ast_type_specifier_int(&kft_mem)));
-    ASSERT_OK(kefir_list_insert_after(&kft_mem, &unit->external_definitions,
-                                      kefir_list_tail(&unit->external_definitions), KEFIR_AST_NODE_BASE(decl1)));
+    ASSERT_OK(kefir_ast_translation_unit_append(&kft_mem, unit, KEFIR_AST_NODE_BASE(decl1)));
 
     struct kefir_ast_declaration *func1_param1 = kefir_ast_new_single_declaration(
         &kft_mem, kefir_ast_declarator_identifier(&kft_mem, global_context.context.symbols, "value"), NULL, NULL);
@@ -372,8 +371,7 @@ DEFINE_CASE(ast_node_analysis_translation_unit1, "AST node analysis - translatio
     struct kefir_ast_function_definition *func1 = kefir_ast_new_function_definition(&kft_mem, func1_decl, body);
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &func1->specifiers,
                                                          kefir_ast_type_specifier_int(&kft_mem)));
-    ASSERT_OK(kefir_list_insert_after(&kft_mem, &unit->external_definitions,
-                                      kefir_list_tail(&unit->external_definitions), KEFIR_AST_NODE_BASE(func1)));
+    ASSERT_OK(kefir_ast_translation_unit_append(&kft_mem, unit, KEFIR_AST_NODE_BASE(func1)));
 
     ASSERT_OK(kefir_ast_analyze_node(&kft_mem, &global_context.context, KEFIR_AST_NODE_BASE(unit)));
 
@@ -415,15 +413,13 @@ DEFINE_CASE(ast_node_analysis_translation_unit2, "AST node analysis - translatio
     ASSERT(unit1->base.properties.category == KEFIR_AST_NODE_CATEGORY_TRANSLATION_UNIT);
 
     struct kefir_ast_translation_unit *unit2 = kefir_ast_new_translation_unit(&kft_mem);
-    ASSERT_OK(kefir_list_insert_after(&kft_mem, &unit2->external_definitions,
-                                      kefir_list_tail(&unit2->external_definitions),
-                                      KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 0))));
+    ASSERT_OK(kefir_ast_translation_unit_append(&kft_mem, unit2,
+                                                KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 0))));
     ASSERT_NOK(kefir_ast_analyze_node(&kft_mem, &global_context.context, KEFIR_AST_NODE_BASE(unit2)));
 
     struct kefir_ast_translation_unit *unit3 = kefir_ast_new_translation_unit(&kft_mem);
-    ASSERT_OK(kefir_list_insert_after(&kft_mem, &unit3->external_definitions,
-                                      kefir_list_tail(&unit3->external_definitions),
-                                      KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement(&kft_mem, NULL))));
+    ASSERT_OK(kefir_ast_translation_unit_append(
+        &kft_mem, unit3, KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement(&kft_mem, NULL))));
     ASSERT_NOK(kefir_ast_analyze_node(&kft_mem, &global_context.context, KEFIR_AST_NODE_BASE(unit3)));
 
     ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(unit1)));

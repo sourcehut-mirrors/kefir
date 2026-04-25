@@ -244,7 +244,7 @@ DEFINE_CASE(ast_nodes_translation_units1, "AST nodes - translation units #1") {
     ASSERT(unit1 != NULL);
     ASSERT(unit1->base.klass->type == KEFIR_AST_TRANSLATION_UNIT);
     ASSERT(unit1->base.self == unit1);
-    ASSERT(kefir_list_length(&unit1->external_definitions) == 0);
+    ASSERT(unit1->external_definitions_length == 0);
 
     struct kefir_ast_declaration *decl1 = kefir_ast_new_single_declaration(
         &kft_mem, kefir_ast_declarator_identifier(&kft_mem, &symbols, "xyz"),
@@ -252,8 +252,7 @@ DEFINE_CASE(ast_nodes_translation_units1, "AST nodes - translation units #1") {
         NULL);
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &decl1->specifiers,
                                                          kefir_ast_type_specifier_char(&kft_mem)));
-    ASSERT_OK(kefir_list_insert_after(&kft_mem, &unit1->external_definitions,
-                                      kefir_list_tail(&unit1->external_definitions), KEFIR_AST_NODE_BASE(decl1)));
+    ASSERT_OK(kefir_ast_translation_unit_append(&kft_mem, unit1, KEFIR_AST_NODE_BASE(decl1)));
 
     struct kefir_ast_declaration *decl2 = kefir_ast_new_single_declaration(
         &kft_mem, kefir_ast_declarator_pointer(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, &symbols, "abc")),
@@ -261,8 +260,7 @@ DEFINE_CASE(ast_nodes_translation_units1, "AST nodes - translation units #1") {
         NULL);
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &decl2->specifiers,
                                                          kefir_ast_type_specifier_void(&kft_mem)));
-    ASSERT_OK(kefir_list_insert_after(&kft_mem, &unit1->external_definitions,
-                                      kefir_list_tail(&unit1->external_definitions), KEFIR_AST_NODE_BASE(decl2)));
+    ASSERT_OK(kefir_ast_translation_unit_append(&kft_mem, unit1, KEFIR_AST_NODE_BASE(decl2)));
 
     struct kefir_ast_declarator *decl3 =
         kefir_ast_declarator_function(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, &symbols, "fn1"));
@@ -270,20 +268,12 @@ DEFINE_CASE(ast_nodes_translation_units1, "AST nodes - translation units #1") {
     struct kefir_ast_function_definition *func1 = kefir_ast_new_function_definition(&kft_mem, decl3, body1);
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &func1->specifiers,
                                                          kefir_ast_type_specifier_void(&kft_mem)));
-    ASSERT_OK(kefir_list_insert_after(&kft_mem, &unit1->external_definitions,
-                                      kefir_list_tail(&unit1->external_definitions), KEFIR_AST_NODE_BASE(func1)));
+    ASSERT_OK(kefir_ast_translation_unit_append(&kft_mem, unit1, KEFIR_AST_NODE_BASE(func1)));
 
-    const struct kefir_list_entry *iter = kefir_list_head(&unit1->external_definitions);
-    ASSERT(iter != NULL);
-    ASSERT(iter->value == KEFIR_AST_NODE_BASE(decl1));
-    kefir_list_next(&iter);
-    ASSERT(iter != NULL);
-    ASSERT(iter->value == KEFIR_AST_NODE_BASE(decl2));
-    kefir_list_next(&iter);
-    ASSERT(iter != NULL);
-    ASSERT(iter->value == KEFIR_AST_NODE_BASE(func1));
-    kefir_list_next(&iter);
-    ASSERT(iter == NULL);
+    ASSERT(unit1->external_definitions_length == 3);
+    ASSERT(unit1->external_definitions[0] == KEFIR_AST_NODE_BASE(decl1));
+    ASSERT(unit1->external_definitions[1] == KEFIR_AST_NODE_BASE(decl2));
+    ASSERT(unit1->external_definitions[2] == KEFIR_AST_NODE_BASE(func1));
 
     ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(unit1)));
     ASSERT_OK(kefir_ast_type_bundle_free(&kft_mem, &type_bundle));
