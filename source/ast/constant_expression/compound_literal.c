@@ -31,9 +31,8 @@ static kefir_result_t is_initializer_constant(const struct kefir_ast_initializer
 
         case KEFIR_AST_INITIALIZER_LIST:
             *constant = true;
-            for (const struct kefir_list_entry *iter = kefir_list_head(&initializer->list.initializers);
-                 iter != NULL && *constant; kefir_list_next(&iter)) {
-                ASSIGN_DECL_CAST(const struct kefir_ast_initializer_list_entry *, entry, iter->value);
+            for (kefir_size_t i = 0; i < initializer->list.entries_length; i++) {
+                const struct kefir_ast_initializer_list_entry *entry = &initializer->list.entries[i];
                 kefir_bool_t is_constant_entry = true;
                 REQUIRE_OK(is_initializer_constant(entry->value, &is_constant_entry));
                 *constant = *constant && is_constant_entry;

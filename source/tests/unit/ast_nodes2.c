@@ -376,7 +376,7 @@ DEFINE_CASE(ast_nodes_compound_literals, "AST nodes - compound literals") {
     ASSERT(compound != NULL);
     ASSERT(compound->base.klass->type == KEFIR_AST_COMPOUND_LITERAL);
     ASSERT(compound->base.self == compound);
-    ASSERT(kefir_list_length(&compound->initializer->list.initializers) == 0);
+    ASSERT(compound->initializer->list.entries_length == 0);
 
     ASSERT_OK(kefir_ast_initializer_list_append(
         &kft_mem, &compound->initializer->list,
@@ -387,7 +387,7 @@ DEFINE_CASE(ast_nodes_compound_literals, "AST nodes - compound literals") {
                 kefir_ast_new_initializer_member_designation(&kft_mem, &symbols, "world", NULL))),
         kefir_ast_new_expression_initializer(&kft_mem,
                                              KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bool(&kft_mem, true)))));
-    ASSERT(kefir_list_length(&compound->initializer->list.initializers) == 1);
+    ASSERT(compound->initializer->list.entries_length == 1);
 
     struct kefir_ast_initializer *initializer1 = kefir_ast_new_list_initializer(&kft_mem);
     ASSERT_OK(kefir_ast_initializer_list_append(
@@ -395,7 +395,7 @@ DEFINE_CASE(ast_nodes_compound_literals, "AST nodes - compound literals") {
         kefir_ast_new_expression_initializer(&kft_mem,
                                              KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(&kft_mem, &symbols, "x")))));
     ASSERT_OK(kefir_ast_initializer_list_append(&kft_mem, &compound->initializer->list, NULL, initializer1));
-    ASSERT(kefir_list_length(&compound->initializer->list.initializers) == 2);
+    ASSERT(compound->initializer->list.entries_length == 2);
     ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(compound)));
 
     struct kefir_ast_type_name *type_name2 =
@@ -429,27 +429,27 @@ DEFINE_CASE(ast_nodes_compound_literals, "AST nodes - compound literals") {
     ASSERT(compound != NULL);
     ASSERT(compound->base.klass->type == KEFIR_AST_COMPOUND_LITERAL);
     ASSERT(compound->base.self == compound);
-    ASSERT(kefir_list_length(&compound->initializer->list.initializers) == 0);
+    ASSERT(compound->initializer->list.entries_length == 0);
 
     ASSERT_OK(kefir_ast_initializer_list_append(
         &kft_mem, &compound->initializer->list, NULL,
         kefir_ast_new_expression_initializer(&kft_mem,
                                              KEFIR_AST_NODE_BASE(kefir_ast_new_constant_double(&kft_mem, 3.14)))));
-    ASSERT(kefir_list_length(&compound->initializer->list.initializers) == 1);
+    ASSERT(compound->initializer->list.entries_length == 1);
     ASSERT_OK(kefir_ast_initializer_list_append(
         &kft_mem, &compound->initializer->list, NULL,
         kefir_ast_new_expression_initializer(&kft_mem,
                                              KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char(&kft_mem, 'a')))));
-    ASSERT(kefir_list_length(&compound->initializer->list.initializers) == 2);
+    ASSERT(compound->initializer->list.entries_length == 2);
     ASSERT_OK(kefir_ast_initializer_list_append(
         &kft_mem, &compound->initializer->list, NULL,
         kefir_ast_new_expression_initializer(&kft_mem,
                                              KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bool(&kft_mem, true)))));
-    ASSERT(kefir_list_length(&compound->initializer->list.initializers) == 3);
+    ASSERT(compound->initializer->list.entries_length == 3);
     ASSERT_OK(kefir_ast_initializer_list_append(
         &kft_mem, &compound->initializer->list, NULL,
         kefir_ast_new_expression_initializer(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 5)))));
-    ASSERT(kefir_list_length(&compound->initializer->list.initializers) == 4);
+    ASSERT(compound->initializer->list.entries_length == 4);
     ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(compound)));
 
     ASSERT_OK(kefir_ast_type_bundle_free(&kft_mem, &type_bundle));

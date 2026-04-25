@@ -195,9 +195,10 @@ static kefir_result_t derive_desgination_with_base(struct kefir_mem *mem, struct
 
 static kefir_result_t copy_subobject_initializer(struct kefir_mem *mem,
                                                  struct kefir_ast_initializer_list *subobj_initializer,
-                                                 const struct kefir_list_entry *iter) {
-    for (; iter != NULL; kefir_list_next(&iter)) {
-        ASSIGN_DECL_CAST(struct kefir_ast_initializer_list_entry *, entry, iter->value);
+                                                 const struct kefir_ast_initializer_list_entry *entries,
+                                                 kefir_size_t entries_length) {
+    for (kefir_size_t i = 0; i < entries_length; i++) {
+        const struct kefir_ast_initializer_list_entry *entry = &entries[i];
 
         struct kefir_ast_initializer_designation *designation_clone = NULL;
         if (entry->designation != NULL) {
@@ -274,7 +275,7 @@ static kefir_result_t retrieve_subobject_initializer_visit_value(const struct ke
             REQUIRE_OK(res);
 
             REQUIRE_OK(copy_subobject_initializer(param->mem, &param->subobj_initializer->list,
-                                                  kefir_list_head(&initializer->list.initializers)));
+                                                  initializer->list.entries, initializer->list.entries_length));
         }
     }
 
@@ -342,7 +343,7 @@ static kefir_result_t retrieve_subobject_initializer_visit_initializer_list(
             });
         } else {
             REQUIRE_OK(copy_subobject_initializer(param->mem, &param->subobj_initializer->list,
-                                                  kefir_list_head(&initializer->list.initializers)));
+                                                  initializer->list.entries, initializer->list.entries_length));
         }
     }
     return KEFIR_OK;

@@ -53,7 +53,9 @@ typedef enum kefir_ast_initializer_type {
 } kefir_ast_initializer_type_t;
 
 typedef struct kefir_ast_initializer_list {
-    struct kefir_list initializers;
+    struct kefir_ast_initializer_list_entry *entries;
+    kefir_size_t entries_length;
+    kefir_size_t entries_capacity;
 } kefir_ast_initializer_list_t;
 
 typedef struct kefir_ast_initializer {
