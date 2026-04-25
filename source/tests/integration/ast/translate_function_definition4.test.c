@@ -96,8 +96,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
         kefir_ast_new_function_definition(mem, function1_decl, function1_body);
     REQUIRE_OK(
         kefir_ast_declarator_specifier_list_append(mem, &function1->specifiers, kefir_ast_type_specifier_int(mem)));
-    REQUIRE_OK(kefir_list_insert_after(mem, &function1->declarations, kefir_list_tail(&function1->declarations),
-                                       KEFIR_AST_NODE_BASE(function1_param1)));
+    REQUIRE_OK(kefir_ast_function_definition_append_declaration(mem, function1, KEFIR_AST_NODE_BASE(function1_param1)));
 
     REQUIRE_OK(kefir_ast_analyze_node(mem, &global_context.context, KEFIR_AST_NODE_BASE(function1)));
 

@@ -35,7 +35,7 @@ static kefir_result_t analyze_function_parameters(const struct kefir_ast_functio
                                                   const struct kefir_ast_declarator_function *decl_func,
                                                   kefir_bool_t *has_long_double_params) {
     REQUIRE(
-        kefir_list_length(&node->declarations) == 0,
+        node->declarations_length == 0,
         KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->base.source_location,
                                "Function definition with non-empty parameter list shall not contain any declarations"));
 
@@ -71,10 +71,9 @@ static kefir_result_t analyze_function_parameter_identifiers_impl(
     const struct kefir_ast_declarator_function *decl_func, struct kefir_ast_local_context *local_context,
     const struct kefir_hashtree *argtree, kefir_bool_t *has_long_double_params) {
     kefir_result_t res;
-    for (const struct kefir_list_entry *iter = kefir_list_head(&node->declarations); iter != NULL;
-         kefir_list_next(&iter)) {
+    for (kefir_size_t i = 0; i < node->declarations_length; i++) {
 
-        ASSIGN_DECL_CAST(struct kefir_ast_node_base *, decl_node, iter->value);
+        struct kefir_ast_node_base *decl_node = node->declarations[i];
         struct kefir_ast_declaration *decl_list = NULL;
         REQUIRE_MATCH_OK(
             &res, kefir_ast_downcast_declaration(decl_node, &decl_list, false),
@@ -318,7 +317,7 @@ kefir_result_t kefir_ast_analyze_function_definition_node(struct kefir_mem *mem,
             break;
 
         case KEFIR_AST_FUNCTION_TYPE_PARAM_EMPTY:
-            REQUIRE(kefir_list_length(&node->declarations) == 0,
+            REQUIRE(node->declarations_length == 0,
                     KEFIR_SET_SOURCE_ERROR(
                         KEFIR_ANALYSIS_ERROR, &node->base.source_location,
                         "Function definition with empty parameter list shall not contain any declarations"));

@@ -54,7 +54,9 @@ static kefir_result_t free_declaration(struct kefir_mem *mem, struct kefir_list 
     REQUIRE(entry != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid list entry"));
 
     ASSIGN_DECL_CAST(struct kefir_ast_node_base *, node, entry->value);
-    REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, node));
+    if (node != NULL) {
+        REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, node));
+    }
     return KEFIR_OK;
 }
 
@@ -229,12 +231,16 @@ kefir_result_t KEFIR_PARSER_RULE_FN_PREFIX(function_definition)(struct kefir_mem
         return res;
     });
 
-    res = kefir_list_move_all(&func_definition->declarations, &declaration_list);
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_AST_NODE_FREE(mem, KEFIR_AST_NODE_BASE(func_definition));
-        kefir_list_free(mem, &declaration_list);
-        return res;
-    });
+    for (struct kefir_list_entry *iter = kefir_list_head(&declaration_list); iter != NULL; iter = iter->next) {
+        res = kefir_ast_function_definition_append_declaration(mem, func_definition,
+                                                               (struct kefir_ast_node_base *) iter->value);
+        REQUIRE_ELSE(res == KEFIR_OK, {
+            KEFIR_AST_NODE_FREE(mem, KEFIR_AST_NODE_BASE(func_definition));
+            kefir_list_free(mem, &declaration_list);
+            return res;
+        });
+        iter->value = NULL;
+    }
 
     res = kefir_list_free(mem, &declaration_list);
     REQUIRE_ELSE(res == KEFIR_OK, {
