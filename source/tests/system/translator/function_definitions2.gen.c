@@ -67,8 +67,8 @@ static struct kefir_ast_function_definition *define_sum_function(struct kefir_me
 
     struct kefir_ast_compound_statement *function1_body = kefir_ast_new_compound_statement(mem);
     REQUIRE(
-        kefir_list_insert_after(
-            mem, &function1_body->block_items, kefir_list_tail(&function1_body->block_items),
+        kefir_ast_compound_statement_append(
+            mem, function1_body,
             KEFIR_AST_NODE_BASE(kefir_ast_new_return_statement(
                 mem, KEFIR_AST_NODE_BASE(kefir_ast_new_array_subscript(
                          mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "arr")),

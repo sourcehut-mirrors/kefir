@@ -556,9 +556,8 @@ kefir_result_t kefir_ast_translator_function_context_translate(
                                                   subprogram_entry_id,
                                                   &KEFIR_IR_DEBUG_ENTRY_ATTR_CODE_BEGIN(function_begin_index)));
 
-    for (const struct kefir_list_entry *iter = kefir_list_head(&function->body->block_items); iter != NULL;
-         kefir_list_next(&iter)) {
-        ASSIGN_DECL_CAST(struct kefir_ast_node_base *, item, iter->value);
+    for (kefir_size_t i = 0; i < function->body->block_length; i++) {
+        struct kefir_ast_node_base *item = function->body->block_items[i];
 
         if (item->properties.category == KEFIR_AST_NODE_CATEGORY_STATEMENT ||
             item->properties.category == KEFIR_AST_NODE_CATEGORY_INLINE_ASSEMBLY) {

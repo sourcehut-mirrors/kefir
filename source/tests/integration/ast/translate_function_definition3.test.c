@@ -81,8 +81,8 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
                                        KEFIR_AST_NODE_BASE(function1_param1)));
 
     struct kefir_ast_compound_statement *function1_body = kefir_ast_new_compound_statement(mem);
-    REQUIRE_OK(kefir_list_insert_after(
-        mem, &function1_body->block_items, kefir_list_tail(&function1_body->block_items),
+    REQUIRE_OK(kefir_ast_compound_statement_append(
+        mem, function1_body,
         KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement(
             mem,
             KEFIR_AST_NODE_BASE(kefir_ast_new_simple_assignment(

@@ -78,8 +78,7 @@ static kefir_result_t define_conditional_function(struct kefir_mem *mem, struct 
                                                           kefir_ast_type_specifier_unsigned(mem)));
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &declarationLength->specifiers,
                                                           kefir_ast_type_specifier_long(mem)));
-    REQUIRE_OK(kefir_list_insert_after(mem, &compound0->block_items, kefir_list_tail(&compound0->block_items),
-                                       KEFIR_AST_NODE_BASE(declarationLength)));
+    REQUIRE_OK(kefir_ast_compound_statement_append(mem, compound0, KEFIR_AST_NODE_BASE(declarationLength)));
 
     struct kefir_ast_node_base *condition = KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation(
         mem, KEFIR_AST_OPERATION_NOT_EQUAL,
@@ -94,12 +93,11 @@ static kefir_result_t define_conditional_function(struct kefir_mem *mem, struct 
                  KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "length"))))));
 
     struct kefir_ast_node_base *loop = KEFIR_AST_NODE_BASE(kefir_ast_new_while_statement(mem, condition, body));
-    REQUIRE_OK(kefir_list_insert_after(mem, &compound0->block_items, kefir_list_tail(&compound0->block_items), loop));
+    REQUIRE_OK(kefir_ast_compound_statement_append(mem, compound0, loop));
 
     struct kefir_ast_return_statement *returnStatement = kefir_ast_new_return_statement(
         mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "length")));
-    REQUIRE_OK(kefir_list_insert_after(mem, &compound0->block_items, kefir_list_tail(&compound0->block_items),
-                                       KEFIR_AST_NODE_BASE(returnStatement)));
+    REQUIRE_OK(kefir_ast_compound_statement_append(mem, compound0, KEFIR_AST_NODE_BASE(returnStatement)));
 
     func->body = KEFIR_AST_NODE_BASE(compound0);
 

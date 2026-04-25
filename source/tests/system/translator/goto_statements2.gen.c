@@ -84,8 +84,7 @@ static kefir_result_t define_conditional_function(struct kefir_mem *mem, struct 
         kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 0))), NULL);
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &declarationResult->specifiers,
                                                           kefir_ast_type_specifier_int(mem)));
-    REQUIRE_OK(kefir_list_insert_after(mem, &compound0->block_items, kefir_list_tail(&compound0->block_items),
-                                       KEFIR_AST_NODE_BASE(declarationResult)));
+    REQUIRE_OK(kefir_ast_compound_statement_append(mem, compound0, KEFIR_AST_NODE_BASE(declarationResult)));
 
     struct kefir_ast_node_base *loop_condition = KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation(
         mem, KEFIR_AST_OPERATION_NOT_EQUAL,
@@ -110,21 +109,19 @@ static kefir_result_t define_conditional_function(struct kefir_mem *mem, struct 
 
     struct kefir_ast_node_base *loop =
         KEFIR_AST_NODE_BASE(kefir_ast_new_for_statement(mem, NULL, loop_condition, loop_tail, loop_body));
-    REQUIRE_OK(kefir_list_insert_after(mem, &compound0->block_items, kefir_list_tail(&compound0->block_items), loop));
+    REQUIRE_OK(kefir_ast_compound_statement_append(mem, compound0, loop));
 
     struct kefir_ast_node_base *reset_result = KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement(
         mem, KEFIR_AST_NODE_BASE(kefir_ast_new_simple_assignment(
                  mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "result")),
                  KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, -1))))));
-    REQUIRE_OK(
-        kefir_list_insert_after(mem, &compound0->block_items, kefir_list_tail(&compound0->block_items), reset_result));
+    REQUIRE_OK(kefir_ast_compound_statement_append(mem, compound0, reset_result));
 
     struct kefir_ast_node_base *returnStatement = KEFIR_AST_NODE_BASE(kefir_ast_new_labeled_statement(
         mem, context_manager->current->symbols, "end",
         KEFIR_AST_NODE_BASE(kefir_ast_new_return_statement(
             mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "result"))))));
-    REQUIRE_OK(kefir_list_insert_after(mem, &compound0->block_items, kefir_list_tail(&compound0->block_items),
-                                       returnStatement));
+    REQUIRE_OK(kefir_ast_compound_statement_append(mem, compound0, returnStatement));
 
     func->body = KEFIR_AST_NODE_BASE(compound0);
 

@@ -83,3 +83,48 @@ kefir_result_t kefir_ast_comma_append(struct kefir_mem *mem, struct kefir_ast_co
     comma->expressions[comma->expressions_length++] = base;
     return KEFIR_OK;
 }
+
+kefir_result_t kefir_ast_compound_statement_prepend(struct kefir_mem *mem, struct kefir_ast_compound_statement *node,
+                                                    struct kefir_ast_node_base *item) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(node != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST compound statement"));
+    REQUIRE(item != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST node"));
+
+    if (node->block_length + 1 > node->block_capacity) {
+        kefir_size_t new_capacity = MAX(1, 2 * node->block_capacity);
+        struct kefir_ast_node_base **new_items =
+            KEFIR_REALLOC(mem, node->block_items, sizeof(struct kefir_ast_node_base *) * new_capacity);
+        REQUIRE(new_items != NULL,
+                KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST compound statment items"));
+
+        node->block_capacity = new_capacity;
+        node->block_items = new_items;
+    }
+    if (node->block_length > 0) {
+        memmove(&node->block_items[1], &node->block_items[0],
+                sizeof(struct kefir_ast_node_base *) * node->block_length);
+    }
+    node->block_items[0] = item;
+    node->block_length++;
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_ast_compound_statement_append(struct kefir_mem *mem, struct kefir_ast_compound_statement *node,
+                                                   struct kefir_ast_node_base *item) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(node != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST compound statement"));
+    REQUIRE(item != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST node"));
+
+    if (node->block_length + 1 > node->block_capacity) {
+        kefir_size_t new_capacity = MAX(1, 2 * node->block_capacity);
+        struct kefir_ast_node_base **new_items =
+            KEFIR_REALLOC(mem, node->block_items, sizeof(struct kefir_ast_node_base *) * new_capacity);
+        REQUIRE(new_items != NULL,
+                KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST compound statment items"));
+
+        node->block_capacity = new_capacity;
+        node->block_items = new_items;
+    }
+    node->block_items[node->block_length++] = item;
+    return KEFIR_OK;
+}

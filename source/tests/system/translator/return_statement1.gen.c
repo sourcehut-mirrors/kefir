@@ -49,8 +49,8 @@ kefir_result_t make_unit(struct kefir_mem *mem, const struct kefir_ast_context *
     REQUIRE_OK(kefir_list_insert_after(mem, &func1_decl->function.parameters,
                                        kefir_list_tail(&func1_decl->function.parameters),
                                        KEFIR_AST_NODE_BASE(func1_param1)));
-    REQUIRE_OK(kefir_list_insert_after(
-        mem, &func1_body->block_items, kefir_list_tail(&func1_body->block_items),
+    REQUIRE_OK(kefir_ast_compound_statement_append(
+        mem, func1_body,
         KEFIR_AST_NODE_BASE(kefir_ast_new_return_statement(
             mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "value"))))));
     struct kefir_ast_function_definition *func1 = kefir_ast_new_function_definition(mem, func1_decl, func1_body);
@@ -69,8 +69,8 @@ kefir_result_t make_unit(struct kefir_mem *mem, const struct kefir_ast_context *
     REQUIRE_OK(kefir_list_insert_after(mem, &func2_decl->function.parameters,
                                        kefir_list_tail(&func2_decl->function.parameters),
                                        KEFIR_AST_NODE_BASE(func2_param1)));
-    REQUIRE_OK(kefir_list_insert_after(
-        mem, &func2_body->block_items, kefir_list_tail(&func2_body->block_items),
+    REQUIRE_OK(kefir_ast_compound_statement_append(
+        mem, func2_body,
         KEFIR_AST_NODE_BASE(kefir_ast_new_return_statement(
             mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "value"))))));
     struct kefir_ast_function_definition *func2 = kefir_ast_new_function_definition(mem, func2_decl, func2_body);

@@ -161,8 +161,7 @@ static kefir_result_t define_conditional_function(struct kefir_mem *mem, struct 
             KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "num")),
             KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 6)))),
         condition5, condition9));
-    REQUIRE_OK(kefir_list_insert_after(mem, &compound1->block_items, kefir_list_tail(&compound1->block_items),
-                                       conditionFinal));
+    REQUIRE_OK(kefir_ast_compound_statement_append(mem, compound1, conditionFinal));
 
     struct kefir_ast_node_base *conditionLast = KEFIR_AST_NODE_BASE(kefir_ast_new_conditional_statement(
         mem,
@@ -173,13 +172,11 @@ static kefir_result_t define_conditional_function(struct kefir_mem *mem, struct 
         KEFIR_AST_NODE_BASE(
             kefir_ast_new_return_statement(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 3628800)))),
         NULL));
-    REQUIRE_OK(
-        kefir_list_insert_after(mem, &compound1->block_items, kefir_list_tail(&compound1->block_items), conditionLast));
+    REQUIRE_OK(kefir_ast_compound_statement_append(mem, compound1, conditionLast));
 
     struct kefir_ast_node_base *returnResult = KEFIR_AST_NODE_BASE(
         kefir_ast_new_return_statement(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, -1))));
-    REQUIRE_OK(
-        kefir_list_insert_after(mem, &compound1->block_items, kefir_list_tail(&compound1->block_items), returnResult));
+    REQUIRE_OK(kefir_ast_compound_statement_append(mem, compound1, returnResult));
 
     func->body = KEFIR_AST_NODE_BASE(compound1);
 

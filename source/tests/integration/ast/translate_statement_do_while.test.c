@@ -86,12 +86,9 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
             kefir_ast_new_do_while_statement(mem, condition, KEFIR_AST_NODE_BASE(body));
 
         struct kefir_ast_compound_statement *compound1 = kefir_ast_new_compound_statement(mem);
-        REQUIRE_OK(kefir_list_insert_after(mem, &compound1->block_items, kefir_list_tail(&compound1->block_items),
-                                           KEFIR_AST_NODE_BASE(decl1)));
-        REQUIRE_OK(kefir_list_insert_after(mem, &compound1->block_items, kefir_list_tail(&compound1->block_items),
-                                           KEFIR_AST_NODE_BASE(decl2)));
-        REQUIRE_OK(kefir_list_insert_after(mem, &compound1->block_items, kefir_list_tail(&compound1->block_items),
-                                           KEFIR_AST_NODE_BASE(do_while1)));
+        REQUIRE_OK(kefir_ast_compound_statement_append(mem, compound1, KEFIR_AST_NODE_BASE(decl1)));
+        REQUIRE_OK(kefir_ast_compound_statement_append(mem, compound1, KEFIR_AST_NODE_BASE(decl2)));
+        REQUIRE_OK(kefir_ast_compound_statement_append(mem, compound1, KEFIR_AST_NODE_BASE(do_while1)));
 
         struct kefir_ast_node_base *node = KEFIR_AST_NODE_BASE(compound1);
         REQUIRE_OK(kefir_ast_analyze_node(mem, context, node));
@@ -116,16 +113,16 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
             kefir_ast_declarator_specifier_list_append(mem, &decl1->specifiers, kefir_ast_type_specifier_boolean(mem)));
 
         struct kefir_ast_compound_statement *body = kefir_ast_new_compound_statement(mem);
-        REQUIRE_OK(kefir_list_insert_after(
-            mem, &body->block_items, kefir_list_tail(&body->block_items),
+        REQUIRE_OK(kefir_ast_compound_statement_append(
+            mem, body,
             KEFIR_AST_NODE_BASE(kefir_ast_new_conditional_statement(
                 mem,
                 KEFIR_AST_NODE_BASE(kefir_ast_new_unary_operation(
                     mem, KEFIR_AST_OPERATION_INDIRECTION,
                     KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "flag")))),
                 KEFIR_AST_NODE_BASE(kefir_ast_new_continue_statement(mem)), NULL))));
-        REQUIRE_OK(kefir_list_insert_after(mem, &body->block_items, kefir_list_tail(&body->block_items),
-                                           KEFIR_AST_NODE_BASE(kefir_ast_new_break_statement(mem))));
+        REQUIRE_OK(
+            kefir_ast_compound_statement_append(mem, body, KEFIR_AST_NODE_BASE(kefir_ast_new_break_statement(mem))));
 
         struct kefir_ast_node_base *condition = KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bool(mem, true));
 
@@ -133,10 +130,8 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
             kefir_ast_new_do_while_statement(mem, condition, KEFIR_AST_NODE_BASE(body));
 
         struct kefir_ast_compound_statement *compound1 = kefir_ast_new_compound_statement(mem);
-        REQUIRE_OK(kefir_list_insert_after(mem, &compound1->block_items, kefir_list_tail(&compound1->block_items),
-                                           KEFIR_AST_NODE_BASE(decl1)));
-        REQUIRE_OK(kefir_list_insert_after(mem, &compound1->block_items, kefir_list_tail(&compound1->block_items),
-                                           KEFIR_AST_NODE_BASE(do_while1)));
+        REQUIRE_OK(kefir_ast_compound_statement_append(mem, compound1, KEFIR_AST_NODE_BASE(decl1)));
+        REQUIRE_OK(kefir_ast_compound_statement_append(mem, compound1, KEFIR_AST_NODE_BASE(do_while1)));
 
         struct kefir_ast_node_base *node = KEFIR_AST_NODE_BASE(compound1);
         REQUIRE_OK(kefir_ast_analyze_node(mem, context, node));
@@ -159,8 +154,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
             kefir_ast_new_do_while_statement(mem, condition, KEFIR_AST_NODE_BASE(body));
 
         struct kefir_ast_compound_statement *compound1 = kefir_ast_new_compound_statement(mem);
-        REQUIRE_OK(kefir_list_insert_after(mem, &compound1->block_items, kefir_list_tail(&compound1->block_items),
-                                           KEFIR_AST_NODE_BASE(do_while1)));
+        REQUIRE_OK(kefir_ast_compound_statement_append(mem, compound1, KEFIR_AST_NODE_BASE(do_while1)));
 
         struct kefir_ast_node_base *node = KEFIR_AST_NODE_BASE(compound1);
         REQUIRE_OK(kefir_ast_analyze_node(mem, context, node));
