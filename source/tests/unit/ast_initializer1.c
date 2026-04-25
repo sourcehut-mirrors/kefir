@@ -81,23 +81,23 @@ DEFINE_CASE(ast_initializer_construction2, "AST initializer - construction #2") 
 
     struct kefir_ast_initializer *init1 = kefir_ast_new_list_initializer(&kft_mem);
     ASSERT(init1 != NULL);
-    ASSERT(kefir_list_length(&init1->list.initializers) == 0);
+    ASSERT(init1->list.entries_length == 0);
 
     ASSERT_OK(kefir_ast_initializer_list_append(
         &kft_mem, &init1->list, NULL,
         kefir_ast_new_expression_initializer(&kft_mem,
                                              KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bool(&kft_mem, true)))));
-    ASSERT(kefir_list_length(&init1->list.initializers) == 1);
+    ASSERT(init1->list.entries_length == 1);
 
     ASSERT_OK(kefir_ast_initializer_list_append(
         &kft_mem, &init1->list, NULL,
         kefir_ast_new_expression_initializer(
             &kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(&kft_mem, context->symbols, "abc")))));
-    ASSERT(kefir_list_length(&init1->list.initializers) == 2);
+    ASSERT(init1->list.entries_length == 2);
 
     ASSERT_OK(
         kefir_ast_initializer_list_append(&kft_mem, &init1->list, NULL, kefir_ast_new_list_initializer(&kft_mem)));
-    ASSERT(kefir_list_length(&init1->list.initializers) == 3);
+    ASSERT(init1->list.entries_length == 3);
     ASSERT_OK(kefir_ast_initializer_free(&kft_mem, init1));
 
     ASSERT_OK(kefir_ast_local_context_free(&kft_mem, &local_context));

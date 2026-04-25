@@ -97,9 +97,8 @@ kefir_result_t kefir_ast_format_initializer(struct kefir_json_output *json,
             REQUIRE_OK(kefir_json_output_string(json, "list"));
             REQUIRE_OK(kefir_json_output_object_key(json, "list"));
             REQUIRE_OK(kefir_json_output_array_begin(json));
-            for (const struct kefir_list_entry *iter = kefir_list_head(&initializer->list.initializers); iter != NULL;
-                 kefir_list_next(&iter)) {
-                ASSIGN_DECL_CAST(struct kefir_ast_initializer_list_entry *, entry, iter->value);
+            for (kefir_size_t i = 0; i < initializer->list.entries_length; i++) {
+                struct kefir_ast_initializer_list_entry *entry = &initializer->list.entries[i];
 
                 REQUIRE_OK(kefir_json_output_object_begin(json));
                 REQUIRE_OK(kefir_json_output_object_key(json, "designation"));

@@ -50,9 +50,8 @@ static kefir_result_t preanalyze_initializer(struct kefir_mem *mem, const struct
             }
         }
     } else {
-        for (const struct kefir_list_entry *iter = kefir_list_head(&initializer->list.initializers); iter != NULL;
-             kefir_list_next(&iter)) {
-            ASSIGN_DECL_CAST(struct kefir_ast_initializer_list_entry *, entry, iter->value);
+        for (kefir_size_t i = 0; i < initializer->list.entries_length; i++) {
+            struct kefir_ast_initializer_list_entry *entry = &initializer->list.entries[i];
             if (entry->designation != NULL && entry->designator == NULL) {
                 REQUIRE_OK(
                     kefir_ast_evaluate_initializer_designation(mem, context, entry->designation, &entry->designator));
@@ -214,9 +213,9 @@ static kefir_result_t traverse_aggregate_union_impl(struct kefir_ast_designator 
 static kefir_result_t traverse_aggregate_union(struct kefir_mem *mem, const struct kefir_ast_context *context,
                                                const struct kefir_ast_initializer *initializer,
                                                struct kefir_ast_type_traversal *traversal) {
-    const struct kefir_list_entry *init_iter = kefir_list_head(&initializer->list.initializers);
-    for (; init_iter != NULL; kefir_list_next(&init_iter)) {
-        ASSIGN_DECL_CAST(struct kefir_ast_initializer_list_entry *, entry, init_iter->value);
+    kefir_size_t i = 0;
+    for (; i < initializer->list.entries_length; i++) {
+        struct kefir_ast_initializer_list_entry *entry = &initializer->list.entries[i];
 
         kefir_result_t res = kefir_ast_designator_unroll(
             entry->designator, traverse_aggregate_union_impl,

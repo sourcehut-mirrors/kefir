@@ -96,20 +96,12 @@ static kefir_result_t initialize_aggregate_with_scalar(
     struct kefir_ast_initializer_list_entry virtual_expr_initializer_entry = {
         .designation = NULL, .designator = NULL, .value = &virtual_expr_initializer};
 
-    REQUIRE_OK(kefir_list_init(&virtual_initializer.list.initializers));
-    REQUIRE_OK(kefir_list_insert_after(mem, &virtual_initializer.list.initializers,
-                                       kefir_list_tail(&virtual_initializer.list.initializers),
-                                       &virtual_expr_initializer_entry));
+    virtual_initializer.list.entries = &virtual_expr_initializer_entry;
+    virtual_initializer.list.entries_capacity = 1;
+    virtual_initializer.list.entries_length = 1;
 
-    kefir_result_t res =
-        kefir_ast_translate_initializer_impl(mem, context, builder, type_layout->type, &virtual_initializer,
-                                             repeated_expressions, true, use_constant_values);
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        kefir_list_free(mem, &virtual_initializer.list.initializers);
-        return res;
-    });
-
-    REQUIRE_OK(kefir_list_free(mem, &virtual_initializer.list.initializers));
+    REQUIRE_OK(kefir_ast_translate_initializer_impl(mem, context, builder, type_layout->type, &virtual_initializer,
+                                                    repeated_expressions, true, use_constant_values));
     return KEFIR_OK;
 }
 
