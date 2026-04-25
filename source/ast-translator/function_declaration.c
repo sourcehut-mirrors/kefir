@@ -64,14 +64,15 @@ static kefir_result_t translate_object_type(struct kefir_mem *mem, const struct 
 static kefir_result_t kefir_ast_translator_function_declaration_alloc_args(
     struct kefir_mem *mem, const struct kefir_ast_context *context, const struct kefir_ast_translator_environment *env,
     struct kefir_ast_type_bundle *type_bundle, const struct kefir_ast_type_traits *type_traits,
-    kefir_bool_t complete_function, const struct kefir_ast_type *func_type, const struct kefir_list *parameters,
-    struct kefir_ast_translator_function_declaration *func_decl, kefir_bool_t *actual_parameters_exceed_declared) {
+    kefir_bool_t complete_function, const struct kefir_ast_type *func_type, struct kefir_ast_node_base **parameters,
+    kefir_size_t parameters_length, struct kefir_ast_translator_function_declaration *func_decl,
+    kefir_bool_t *actual_parameters_exceed_declared) {
     struct kefir_irbuilder_type builder;
     REQUIRE_OK(kefir_irbuilder_type_init(mem, &builder, func_decl->ir_argument_type));
 
-    const struct kefir_list_entry *param_iter = kefir_list_head(parameters);
+    kefir_size_t param_index = 0;
     for (const struct kefir_list_entry *iter = kefir_list_head(&func_type->function_type.parameters); iter != NULL;
-         kefir_list_next(&iter), kefir_list_next(&param_iter)) {
+         kefir_list_next(&iter), param_index++) {
         ASSIGN_DECL_CAST(struct kefir_ast_function_type_parameter *, parameter, iter->value);
 
         struct kefir_ast_type_layout *parameter_layout = NULL;
@@ -79,8 +80,8 @@ static kefir_result_t kefir_ast_translator_function_declaration_alloc_args(
         const struct kefir_source_location *source_location = NULL;
         if (parameter->adjusted_type != NULL) {
             param_type = parameter->adjusted_type;
-        } else if (param_iter != NULL) {
-            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, param, param_iter->value);
+        } else if (param_index < parameters_length) {
+            struct kefir_ast_node_base *param = parameters[param_index];
             source_location = &param->source_location;
             REQUIRE(
                 param->properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION ||
@@ -118,10 +119,10 @@ static kefir_result_t kefir_ast_translator_function_declaration_alloc_args(
         });
     }
 
-    *actual_parameters_exceed_declared = param_iter != NULL;
+    *actual_parameters_exceed_declared = param_index < parameters_length;
 
-    for (; param_iter != NULL; kefir_list_next(&param_iter)) {
-        ASSIGN_DECL_CAST(struct kefir_ast_node_base *, param, param_iter->value);
+    for (; param_index < parameters_length; param_index++) {
+        struct kefir_ast_node_base *param = parameters[param_index];
 
         const struct kefir_ast_type *param_type = kefir_ast_type_function_default_argument_convertion_promotion(
             mem, type_bundle, type_traits, param->properties.type);
@@ -194,7 +195,7 @@ static kefir_result_t kefir_ast_translator_function_declaration_alloc(
     struct kefir_mem *mem, const struct kefir_ast_context *context, const struct kefir_ast_translator_environment *env,
     struct kefir_ast_type_bundle *type_bundle, const struct kefir_ast_type_traits *type_traits,
     struct kefir_ir_module *module, const char *identifier, kefir_bool_t complete_function,
-    const struct kefir_ast_type *func_type, const struct kefir_list *parameters,
+    const struct kefir_ast_type *func_type, struct kefir_ast_node_base **parameters, kefir_size_t parameters_length,
     struct kefir_ast_translator_function_declaration *func_decl, const struct kefir_source_location *source_location) {
     func_decl->function_type = func_type;
     REQUIRE_OK(kefir_list_init(&func_decl->argument_layouts));
@@ -206,8 +207,8 @@ static kefir_result_t kefir_ast_translator_function_declaration_alloc(
 
     kefir_bool_t actual_parameters_exceed_declared = false;
     kefir_result_t res = kefir_ast_translator_function_declaration_alloc_args(
-        mem, context, env, type_bundle, type_traits, complete_function, func_type, parameters, func_decl,
-        &actual_parameters_exceed_declared);
+        mem, context, env, type_bundle, type_traits, complete_function, func_type, parameters, parameters_length,
+        func_decl, &actual_parameters_exceed_declared);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_list_free(mem, &func_decl->argument_layouts);
         return res;
@@ -240,7 +241,7 @@ kefir_result_t kefir_ast_translator_function_declaration_init(
     struct kefir_mem *mem, const struct kefir_ast_context *context, const struct kefir_ast_translator_environment *env,
     struct kefir_ast_type_bundle *type_bundle, const struct kefir_ast_type_traits *type_traits,
     struct kefir_ir_module *module, const char *identifier, kefir_bool_t complete_function,
-    const struct kefir_ast_type *func_type, const struct kefir_list *parameters,
+    const struct kefir_ast_type *func_type, struct kefir_ast_node_base **parameters, kefir_size_t parameters_length,
     struct kefir_ast_translator_function_declaration **func_decl, const struct kefir_source_location *source_location) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST context"));
@@ -259,7 +260,7 @@ kefir_result_t kefir_ast_translator_function_declaration_init(
 
     kefir_result_t res = kefir_ast_translator_function_declaration_alloc(
         mem, context, env, type_bundle, type_traits, module, identifier, complete_function, func_type, parameters,
-        function_declaration, source_location);
+        parameters_length, function_declaration, source_location);
     REQUIRE_ELSE(res == KEFIR_OK, {
         KEFIR_FREE(mem, function_declaration);
         return res;

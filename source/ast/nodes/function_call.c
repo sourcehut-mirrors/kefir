@@ -30,22 +30,16 @@ kefir_result_t ast_function_call_free(struct kefir_mem *mem, struct kefir_ast_no
     REQUIRE(base != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST node base"));
     ASSIGN_DECL_CAST(struct kefir_ast_function_call *, node, base->self);
     REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, node->function));
-    REQUIRE_OK(kefir_list_free(mem, &node->arguments));
+    for (kefir_size_t i = 0; i < node->argument_length; i++) {
+        REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, node->arguments[i]));
+    }
+    KEFIR_FREE(mem, node->arguments);
     KEFIR_FREE(mem, node);
     return KEFIR_OK;
 }
 
 const struct kefir_ast_node_class AST_FUNCTION_CALL_CLASS = {
     .type = KEFIR_AST_FUNCTION_CALL, .visit = ast_function_call_visit, .free = ast_function_call_free};
-
-static kefir_result_t function_call_argument_free(struct kefir_mem *mem, struct kefir_list *list,
-                                                  struct kefir_list_entry *entry, void *payload) {
-    UNUSED(list);
-    UNUSED(payload);
-    ASSIGN_DECL_CAST(struct kefir_ast_node_base *, node, entry->value);
-    REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, node));
-    return KEFIR_OK;
-}
 
 struct kefir_ast_function_call *kefir_ast_new_function_call(struct kefir_mem *mem,
                                                             struct kefir_ast_node_base *function) {
@@ -67,17 +61,9 @@ struct kefir_ast_function_call *kefir_ast_new_function_call(struct kefir_mem *me
         return NULL;
     });
     function_call->function = function;
-    res = kefir_list_init(&function_call->arguments);
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, function_call);
-        return NULL;
-    });
-    res = kefir_list_on_remove(&function_call->arguments, function_call_argument_free, NULL);
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        kefir_list_free(mem, &function_call->arguments);
-        KEFIR_FREE(mem, function_call);
-        return NULL;
-    });
+    function_call->arguments = NULL;
+    function_call->argument_length = 0;
+    function_call->argument_capacity = 0;
     return function_call;
 }
 
@@ -86,6 +72,17 @@ kefir_result_t kefir_ast_function_call_append(struct kefir_mem *mem, struct kefi
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(call != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST function call"));
     REQUIRE(arg != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid function parameter AST node"));
-    REQUIRE_OK(kefir_list_insert_after(mem, &call->arguments, kefir_list_tail(&call->arguments), arg));
+
+    if (call->argument_length + 1 > call->argument_capacity) {
+        kefir_size_t new_capacity = MAX(1, 2 * call->argument_capacity);
+        struct kefir_ast_node_base **new_arguments =
+            KEFIR_REALLOC(mem, call->arguments, sizeof(struct kefir_ast_node_base *) * new_capacity);
+        REQUIRE(new_arguments != NULL,
+                KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST function call arguments"));
+
+        call->arguments = new_arguments;
+        call->argument_capacity = new_capacity;
+    }
+    call->arguments[call->argument_length++] = arg;
     return KEFIR_OK;
 }

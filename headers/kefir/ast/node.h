@@ -127,7 +127,9 @@ KEFIR_AST_NODE_STRUCT(kefir_ast_array_subscript, {
 
 KEFIR_AST_NODE_STRUCT(kefir_ast_function_call, {
     struct kefir_ast_node_base *function;
-    struct kefir_list arguments;
+    struct kefir_ast_node_base **arguments;
+    kefir_size_t argument_length;
+    kefir_size_t argument_capacity;
 });
 
 KEFIR_AST_NODE_STRUCT(kefir_ast_struct_member, {

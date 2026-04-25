@@ -188,10 +188,9 @@ kefir_result_t kefir_ast_evaluate_function_call_node(struct kefir_mem *mem, cons
                                                           "Expected constant expression AST node"));
 
     if (strcmp(function_name, "__kefir_builtin_ffs") == 0) {
-        REQUIRE(kefir_list_length(&node->arguments) == 1,
-                KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->base.source_location,
-                                       "Expected single argument to __builtin_ffs"));
-        ASSIGN_DECL_CAST(const struct kefir_ast_node_base *, subnode, kefir_list_head(&node->arguments)->value);
+        REQUIRE(node->argument_length == 1, KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->base.source_location,
+                                                                   "Expected single argument to __builtin_ffs"));
+        const struct kefir_ast_node_base *subnode = node->arguments[0];
         REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(subnode, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER),
                 KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &subnode->source_location,
                                        "Unable to evaluate constant expression"));
@@ -199,10 +198,9 @@ kefir_result_t kefir_ast_evaluate_function_call_node(struct kefir_mem *mem, cons
             KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(subnode)->uinteger,
             context->type_traits->data_model->scalar_width.int_bits, value));
     } else if (strcmp(function_name, "__kefir_builtin_ffsl") == 0) {
-        REQUIRE(kefir_list_length(&node->arguments) == 1,
-                KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->base.source_location,
-                                       "Expected single argument to __builtin_ffsl"));
-        ASSIGN_DECL_CAST(const struct kefir_ast_node_base *, subnode, kefir_list_head(&node->arguments)->value);
+        REQUIRE(node->argument_length == 1, KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->base.source_location,
+                                                                   "Expected single argument to __builtin_ffsl"));
+        const struct kefir_ast_node_base *subnode = node->arguments[0];
         REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(subnode, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER),
                 KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &subnode->source_location,
                                        "Unable to evaluate constant expression"));
@@ -210,10 +208,9 @@ kefir_result_t kefir_ast_evaluate_function_call_node(struct kefir_mem *mem, cons
             KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(subnode)->uinteger,
             context->type_traits->data_model->scalar_width.long_bits, value));
     } else if (strcmp(function_name, "__kefir_builtin_ffsll") == 0) {
-        REQUIRE(kefir_list_length(&node->arguments) == 1,
-                KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->base.source_location,
-                                       "Expected single argument to __builtin_ffsll"));
-        ASSIGN_DECL_CAST(const struct kefir_ast_node_base *, subnode, kefir_list_head(&node->arguments)->value);
+        REQUIRE(node->argument_length == 1, KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->base.source_location,
+                                                                   "Expected single argument to __builtin_ffsll"));
+        const struct kefir_ast_node_base *subnode = node->arguments[0];
         REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(subnode, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER),
                 KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &subnode->source_location,
                                        "Unable to evaluate constant expression"));
@@ -221,10 +218,9 @@ kefir_result_t kefir_ast_evaluate_function_call_node(struct kefir_mem *mem, cons
             KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(subnode)->uinteger,
             context->type_traits->data_model->scalar_width.long_long_bits, value));
     } else if (strcmp(function_name, "__kefir_builtin_clz") == 0) {
-        REQUIRE(kefir_list_length(&node->arguments) == 1,
-                KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->base.source_location,
-                                       "Expected single argument to __builtin_clz"));
-        ASSIGN_DECL_CAST(const struct kefir_ast_node_base *, subnode, kefir_list_head(&node->arguments)->value);
+        REQUIRE(node->argument_length == 1, KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->base.source_location,
+                                                                   "Expected single argument to __builtin_clz"));
+        const struct kefir_ast_node_base *subnode = node->arguments[0];
         REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(subnode, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER),
                 KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &subnode->source_location,
                                        "Unable to evaluate constant expression"));
@@ -232,10 +228,9 @@ kefir_result_t kefir_ast_evaluate_function_call_node(struct kefir_mem *mem, cons
             KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(subnode)->uinteger,
             context->type_traits->data_model->scalar_width.int_bits, NULL, value, &node->base.source_location));
     } else if (strcmp(function_name, "__kefir_builtin_clzl") == 0) {
-        REQUIRE(kefir_list_length(&node->arguments) == 1,
-                KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->base.source_location,
-                                       "Expected single argument to __builtin_clzl"));
-        ASSIGN_DECL_CAST(const struct kefir_ast_node_base *, subnode, kefir_list_head(&node->arguments)->value);
+        REQUIRE(node->argument_length == 1, KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->base.source_location,
+                                                                   "Expected single argument to __builtin_clzl"));
+        const struct kefir_ast_node_base *subnode = node->arguments[0];
         REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(subnode, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER),
                 KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &subnode->source_location,
                                        "Unable to evaluate constant expression"));
@@ -243,10 +238,9 @@ kefir_result_t kefir_ast_evaluate_function_call_node(struct kefir_mem *mem, cons
             KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(subnode)->uinteger,
             context->type_traits->data_model->scalar_width.long_bits, NULL, value, &node->base.source_location));
     } else if (strcmp(function_name, "__kefir_builtin_clzll") == 0) {
-        REQUIRE(kefir_list_length(&node->arguments) == 1,
-                KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->base.source_location,
-                                       "Expected single argument to __builtin_clzll"));
-        ASSIGN_DECL_CAST(const struct kefir_ast_node_base *, subnode, kefir_list_head(&node->arguments)->value);
+        REQUIRE(node->argument_length == 1, KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->base.source_location,
+                                                                   "Expected single argument to __builtin_clzll"));
+        const struct kefir_ast_node_base *subnode = node->arguments[0];
         REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(subnode, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER),
                 KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &subnode->source_location,
                                        "Unable to evaluate constant expression"));
@@ -254,10 +248,9 @@ kefir_result_t kefir_ast_evaluate_function_call_node(struct kefir_mem *mem, cons
             KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(subnode)->uinteger,
             context->type_traits->data_model->scalar_width.long_long_bits, NULL, value, &node->base.source_location));
     } else if (strcmp(function_name, "__kefir_builtin_ctz") == 0) {
-        REQUIRE(kefir_list_length(&node->arguments) == 1,
-                KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->base.source_location,
-                                       "Expected single argument to __builtin_ctz"));
-        ASSIGN_DECL_CAST(const struct kefir_ast_node_base *, subnode, kefir_list_head(&node->arguments)->value);
+        REQUIRE(node->argument_length == 1, KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->base.source_location,
+                                                                   "Expected single argument to __builtin_ctz"));
+        const struct kefir_ast_node_base *subnode = node->arguments[0];
         REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(subnode, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER),
                 KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &subnode->source_location,
                                        "Unable to evaluate constant expression"));
@@ -265,10 +258,9 @@ kefir_result_t kefir_ast_evaluate_function_call_node(struct kefir_mem *mem, cons
             KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(subnode)->uinteger,
             context->type_traits->data_model->scalar_width.int_bits, NULL, value, &node->base.source_location));
     } else if (strcmp(function_name, "__kefir_builtin_ctzl") == 0) {
-        REQUIRE(kefir_list_length(&node->arguments) == 1,
-                KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->base.source_location,
-                                       "Expected single argument to __builtin_ctzl"));
-        ASSIGN_DECL_CAST(const struct kefir_ast_node_base *, subnode, kefir_list_head(&node->arguments)->value);
+        REQUIRE(node->argument_length == 1, KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->base.source_location,
+                                                                   "Expected single argument to __builtin_ctzl"));
+        const struct kefir_ast_node_base *subnode = node->arguments[0];
         REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(subnode, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER),
                 KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &subnode->source_location,
                                        "Unable to evaluate constant expression"));
@@ -276,10 +268,9 @@ kefir_result_t kefir_ast_evaluate_function_call_node(struct kefir_mem *mem, cons
             KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(subnode)->uinteger,
             context->type_traits->data_model->scalar_width.long_bits, NULL, value, &node->base.source_location));
     } else if (strcmp(function_name, "__kefir_builtin_ctzll") == 0) {
-        REQUIRE(kefir_list_length(&node->arguments) == 1,
-                KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->base.source_location,
-                                       "Expected single argument to __builtin_ctzll"));
-        ASSIGN_DECL_CAST(const struct kefir_ast_node_base *, subnode, kefir_list_head(&node->arguments)->value);
+        REQUIRE(node->argument_length == 1, KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->base.source_location,
+                                                                   "Expected single argument to __builtin_ctzll"));
+        const struct kefir_ast_node_base *subnode = node->arguments[0];
         REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(subnode, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER),
                 KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &subnode->source_location,
                                        "Unable to evaluate constant expression"));
@@ -287,10 +278,9 @@ kefir_result_t kefir_ast_evaluate_function_call_node(struct kefir_mem *mem, cons
             KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(subnode)->uinteger,
             context->type_traits->data_model->scalar_width.long_long_bits, NULL, value, &node->base.source_location));
     } else if (strcmp(function_name, "__kefir_builtin_clrsb") == 0) {
-        REQUIRE(kefir_list_length(&node->arguments) == 1,
-                KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->base.source_location,
-                                       "Expected single argument to __builtin_clrsb"));
-        ASSIGN_DECL_CAST(const struct kefir_ast_node_base *, subnode, kefir_list_head(&node->arguments)->value);
+        REQUIRE(node->argument_length == 1, KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->base.source_location,
+                                                                   "Expected single argument to __builtin_clrsb"));
+        const struct kefir_ast_node_base *subnode = node->arguments[0];
         REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(subnode, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER),
                 KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &subnode->source_location,
                                        "Unable to evaluate constant expression"));
@@ -298,10 +288,9 @@ kefir_result_t kefir_ast_evaluate_function_call_node(struct kefir_mem *mem, cons
             KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(subnode)->uinteger,
             context->type_traits->data_model->scalar_width.int_bits, value));
     } else if (strcmp(function_name, "__kefir_builtin_clrsbl") == 0) {
-        REQUIRE(kefir_list_length(&node->arguments) == 1,
-                KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->base.source_location,
-                                       "Expected single argument to __builtin_clrsbl"));
-        ASSIGN_DECL_CAST(const struct kefir_ast_node_base *, subnode, kefir_list_head(&node->arguments)->value);
+        REQUIRE(node->argument_length == 1, KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->base.source_location,
+                                                                   "Expected single argument to __builtin_clrsbl"));
+        const struct kefir_ast_node_base *subnode = node->arguments[0];
         REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(subnode, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER),
                 KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &subnode->source_location,
                                        "Unable to evaluate constant expression"));
@@ -309,10 +298,9 @@ kefir_result_t kefir_ast_evaluate_function_call_node(struct kefir_mem *mem, cons
             KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(subnode)->uinteger,
             context->type_traits->data_model->scalar_width.long_bits, value));
     } else if (strcmp(function_name, "__kefir_builtin_clrsbll") == 0) {
-        REQUIRE(kefir_list_length(&node->arguments) == 1,
-                KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->base.source_location,
-                                       "Expected single argument to __builtin_clrsbll"));
-        ASSIGN_DECL_CAST(const struct kefir_ast_node_base *, subnode, kefir_list_head(&node->arguments)->value);
+        REQUIRE(node->argument_length == 1, KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->base.source_location,
+                                                                   "Expected single argument to __builtin_clrsbll"));
+        const struct kefir_ast_node_base *subnode = node->arguments[0];
         REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(subnode, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER),
                 KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &subnode->source_location,
                                        "Unable to evaluate constant expression"));
@@ -320,10 +308,9 @@ kefir_result_t kefir_ast_evaluate_function_call_node(struct kefir_mem *mem, cons
             KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(subnode)->uinteger,
             context->type_traits->data_model->scalar_width.long_long_bits, value));
     } else if (strcmp(function_name, "__kefir_builtin_popcount") == 0) {
-        REQUIRE(kefir_list_length(&node->arguments) == 1,
-                KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->base.source_location,
-                                       "Expected single argument to __builtin_popcount"));
-        ASSIGN_DECL_CAST(const struct kefir_ast_node_base *, subnode, kefir_list_head(&node->arguments)->value);
+        REQUIRE(node->argument_length == 1, KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->base.source_location,
+                                                                   "Expected single argument to __builtin_popcount"));
+        const struct kefir_ast_node_base *subnode = node->arguments[0];
         REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(subnode, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER),
                 KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &subnode->source_location,
                                        "Unable to evaluate constant expression"));
@@ -331,10 +318,9 @@ kefir_result_t kefir_ast_evaluate_function_call_node(struct kefir_mem *mem, cons
             KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(subnode)->uinteger,
             context->type_traits->data_model->scalar_width.int_bits, value));
     } else if (strcmp(function_name, "__kefir_builtin_popcountl") == 0) {
-        REQUIRE(kefir_list_length(&node->arguments) == 1,
-                KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->base.source_location,
-                                       "Expected single argument to __builtin_popcountl"));
-        ASSIGN_DECL_CAST(const struct kefir_ast_node_base *, subnode, kefir_list_head(&node->arguments)->value);
+        REQUIRE(node->argument_length == 1, KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->base.source_location,
+                                                                   "Expected single argument to __builtin_popcountl"));
+        const struct kefir_ast_node_base *subnode = node->arguments[0];
         REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(subnode, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER),
                 KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &subnode->source_location,
                                        "Unable to evaluate constant expression"));
@@ -342,10 +328,9 @@ kefir_result_t kefir_ast_evaluate_function_call_node(struct kefir_mem *mem, cons
             KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(subnode)->uinteger,
             context->type_traits->data_model->scalar_width.long_bits, value));
     } else if (strcmp(function_name, "__kefir_builtin_popcountll") == 0) {
-        REQUIRE(kefir_list_length(&node->arguments) == 1,
-                KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->base.source_location,
-                                       "Expected single argument to __builtin_popcountll"));
-        ASSIGN_DECL_CAST(const struct kefir_ast_node_base *, subnode, kefir_list_head(&node->arguments)->value);
+        REQUIRE(node->argument_length == 1, KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->base.source_location,
+                                                                   "Expected single argument to __builtin_popcountll"));
+        const struct kefir_ast_node_base *subnode = node->arguments[0];
         REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(subnode, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER),
                 KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &subnode->source_location,
                                        "Unable to evaluate constant expression"));
@@ -353,10 +338,9 @@ kefir_result_t kefir_ast_evaluate_function_call_node(struct kefir_mem *mem, cons
             KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(subnode)->uinteger,
             context->type_traits->data_model->scalar_width.long_long_bits, value));
     } else if (strcmp(function_name, "__kefir_builtin_parity") == 0) {
-        REQUIRE(kefir_list_length(&node->arguments) == 1,
-                KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->base.source_location,
-                                       "Expected single argument to __builtin_parity"));
-        ASSIGN_DECL_CAST(const struct kefir_ast_node_base *, subnode, kefir_list_head(&node->arguments)->value);
+        REQUIRE(node->argument_length == 1, KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->base.source_location,
+                                                                   "Expected single argument to __builtin_parity"));
+        const struct kefir_ast_node_base *subnode = node->arguments[0];
         REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(subnode, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER),
                 KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &subnode->source_location,
                                        "Unable to evaluate constant expression"));
@@ -364,10 +348,9 @@ kefir_result_t kefir_ast_evaluate_function_call_node(struct kefir_mem *mem, cons
             KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(subnode)->uinteger,
             context->type_traits->data_model->scalar_width.int_bits, value));
     } else if (strcmp(function_name, "__kefir_builtin_parityl") == 0) {
-        REQUIRE(kefir_list_length(&node->arguments) == 1,
-                KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->base.source_location,
-                                       "Expected single argument to __builtin_parityl"));
-        ASSIGN_DECL_CAST(const struct kefir_ast_node_base *, subnode, kefir_list_head(&node->arguments)->value);
+        REQUIRE(node->argument_length == 1, KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->base.source_location,
+                                                                   "Expected single argument to __builtin_parityl"));
+        const struct kefir_ast_node_base *subnode = node->arguments[0];
         REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(subnode, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER),
                 KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &subnode->source_location,
                                        "Unable to evaluate constant expression"));
@@ -375,10 +358,9 @@ kefir_result_t kefir_ast_evaluate_function_call_node(struct kefir_mem *mem, cons
             KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(subnode)->uinteger,
             context->type_traits->data_model->scalar_width.long_bits, value));
     } else if (strcmp(function_name, "__kefir_builtin_parityll") == 0) {
-        REQUIRE(kefir_list_length(&node->arguments) == 1,
-                KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->base.source_location,
-                                       "Expected single argument to __builtin_parityll"));
-        ASSIGN_DECL_CAST(const struct kefir_ast_node_base *, subnode, kefir_list_head(&node->arguments)->value);
+        REQUIRE(node->argument_length == 1, KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->base.source_location,
+                                                                   "Expected single argument to __builtin_parityll"));
+        const struct kefir_ast_node_base *subnode = node->arguments[0];
         REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(subnode, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER),
                 KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &subnode->source_location,
                                        "Unable to evaluate constant expression"));

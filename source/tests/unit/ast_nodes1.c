@@ -434,13 +434,10 @@ DEFINE_CASE(ast_nodes_function_calls, "AST nodes - function calls") {
             &kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(&kft_mem, &symbols, "array1")),
             KEFIR_AST_NODE_BASE(kefir_ast_new_constant_uint(&kft_mem, 5))))));
     ASSERT(call->function->klass->type == KEFIR_AST_IDENTIFIER);
-    ASSERT(kefir_list_length(&call->arguments) == 3);
-    ASSERT(((struct kefir_ast_node_base *) kefir_list_at(&call->arguments, 0)->value)->klass->type ==
-           KEFIR_AST_IDENTIFIER);
-    ASSERT(((struct kefir_ast_node_base *) kefir_list_at(&call->arguments, 1)->value)->klass->type ==
-           KEFIR_AST_CONSTANT);
-    ASSERT(((struct kefir_ast_node_base *) kefir_list_at(&call->arguments, 2)->value)->klass->type ==
-           KEFIR_AST_ARRAY_SUBSCRIPT);
+    ASSERT(call->argument_length == 3);
+    ASSERT(call->arguments[0]->klass->type == KEFIR_AST_IDENTIFIER);
+    ASSERT(call->arguments[1]->klass->type == KEFIR_AST_CONSTANT);
+    ASSERT(call->arguments[2]->klass->type == KEFIR_AST_ARRAY_SUBSCRIPT);
     ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(call)));
     ASSERT_OK(kefir_string_pool_free(&kft_mem, &symbols));
 }
