@@ -610,13 +610,15 @@ static kefir_result_t dump_ast_impl(struct kefir_mem *mem, const struct kefir_co
                                     kefir_size_t length, FILE *output) {
     UNUSED(options);
     struct kefir_token_buffer tokens;
+    struct kefir_token_cursor_handle tokens_handle;
     struct kefir_token_allocator token_allocator;
     struct kefir_ast_translation_unit *unit = NULL;
 
     REQUIRE_OK(kefir_token_buffer_init(&tokens));
+    REQUIRE_OK(kefir_token_buffer_cursor_handle(&tokens, &tokens_handle));
     REQUIRE_OK(kefir_token_allocator_init(&token_allocator));
     REQUIRE_OK(lex_file(mem, options, compiler, &token_allocator, source_id, source, length, &tokens));
-    REQUIRE_OK(kefir_compiler_parse(mem, compiler, &tokens, &unit));
+    REQUIRE_OK(kefir_compiler_parse(mem, compiler, &tokens_handle, &unit));
     REQUIRE_OK(kefir_compiler_analyze(mem, compiler, KEFIR_AST_NODE_BASE(unit)));
 
     REQUIRE_OK(kefir_token_buffer_free(mem, &tokens));
@@ -644,14 +646,16 @@ static kefir_result_t dump_ir_impl(struct kefir_mem *mem, const struct kefir_com
                                    kefir_size_t length, FILE *output) {
     UNUSED(options);
     struct kefir_token_buffer tokens;
+    struct kefir_token_cursor_handle tokens_handle;
     struct kefir_token_allocator token_allocator;
     struct kefir_ast_translation_unit *unit = NULL;
     struct kefir_ir_module module;
 
     REQUIRE_OK(kefir_token_buffer_init(&tokens));
+    REQUIRE_OK(kefir_token_buffer_cursor_handle(&tokens, &tokens_handle));
     REQUIRE_OK(kefir_token_allocator_init(&token_allocator));
     REQUIRE_OK(lex_file(mem, options, compiler, &token_allocator, source_id, source, length, &tokens));
-    REQUIRE_OK(kefir_compiler_parse(mem, compiler, &tokens, &unit));
+    REQUIRE_OK(kefir_compiler_parse(mem, compiler, &tokens_handle, &unit));
     REQUIRE_OK(kefir_compiler_analyze(mem, compiler, KEFIR_AST_NODE_BASE(unit)));
 
     REQUIRE_OK(kefir_token_buffer_free(mem, &tokens));
@@ -680,15 +684,17 @@ static kefir_result_t dump_opt_impl(struct kefir_mem *mem, const struct kefir_co
                                     kefir_size_t length, FILE *output) {
     UNUSED(options);
     struct kefir_token_buffer tokens;
+    struct kefir_token_cursor_handle tokens_handle;
     struct kefir_token_allocator token_allocator;
     struct kefir_ast_translation_unit *unit = NULL;
     struct kefir_ir_module module;
     struct kefir_opt_module opt_module;
 
     REQUIRE_OK(kefir_token_buffer_init(&tokens));
+    REQUIRE_OK(kefir_token_buffer_cursor_handle(&tokens, &tokens_handle));
     REQUIRE_OK(kefir_token_allocator_init(&token_allocator));
     REQUIRE_OK(lex_file(mem, options, compiler, &token_allocator, source_id, source, length, &tokens));
-    REQUIRE_OK(kefir_compiler_parse(mem, compiler, &tokens, &unit));
+    REQUIRE_OK(kefir_compiler_parse(mem, compiler, &tokens_handle, &unit));
     REQUIRE_OK(kefir_compiler_analyze(mem, compiler, KEFIR_AST_NODE_BASE(unit)));
 
     REQUIRE_OK(kefir_token_buffer_free(mem, &tokens));
@@ -729,15 +735,17 @@ static kefir_result_t dump_asm_impl(struct kefir_mem *mem, const struct kefir_co
                                     kefir_size_t length, FILE *output) {
     UNUSED(options);
     struct kefir_token_buffer tokens;
+    struct kefir_token_cursor_handle tokens_handle;
     struct kefir_token_allocator token_allocator;
     struct kefir_ast_translation_unit *unit = NULL;
     struct kefir_ir_module module;
     struct kefir_opt_module opt_module;
 
     REQUIRE_OK(kefir_token_buffer_init(&tokens));
+    REQUIRE_OK(kefir_token_buffer_cursor_handle(&tokens, &tokens_handle));
     REQUIRE_OK(kefir_token_allocator_init(&token_allocator));
     REQUIRE_OK(lex_file(mem, options, compiler, &token_allocator, source_id, source, length, &tokens));
-    REQUIRE_OK(kefir_compiler_parse(mem, compiler, &tokens, &unit));
+    REQUIRE_OK(kefir_compiler_parse(mem, compiler, &tokens_handle, &unit));
     REQUIRE_OK(kefir_compiler_analyze(mem, compiler, KEFIR_AST_NODE_BASE(unit)));
 
     REQUIRE_OK(kefir_token_buffer_free(mem, &tokens));
