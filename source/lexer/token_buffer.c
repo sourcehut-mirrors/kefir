@@ -259,22 +259,13 @@ static kefir_result_t token_cursor_get_token(kefir_size_t index, const struct ke
     return KEFIR_OK;
 }
 
-static kefir_result_t token_cursor_length(kefir_size_t *length_ptr, const struct kefir_token_cursor_handle *handle) {
-    REQUIRE(length_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to length"));
-    REQUIRE(handle != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid token cursor handle"));
-
-    ASSIGN_DECL_CAST(const struct kefir_token_buffer *, tokens, handle->payload[0]);
-    *length_ptr = kefir_token_buffer_length(tokens);
-    return KEFIR_OK;
-}
-
 kefir_result_t kefir_token_buffer_cursor_handle(const struct kefir_token_buffer *buffer,
                                                 struct kefir_token_cursor_handle *handle_ptr) {
     REQUIRE(buffer != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid token buffer"));
     REQUIRE(handle_ptr != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to token cursor handle"));
 
-    *handle_ptr = (struct kefir_token_cursor_handle) {
-        .get_token = token_cursor_get_token, .length = token_cursor_length, .payload = {(kefir_uptr_t) buffer}};
+    *handle_ptr =
+        (struct kefir_token_cursor_handle) {.get_token = token_cursor_get_token, .payload = {(kefir_uptr_t) buffer}};
     return KEFIR_OK;
 }
