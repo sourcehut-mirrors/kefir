@@ -150,6 +150,11 @@ struct kefir_ast_function_definition *kefir_ast_new_function_definition(struct k
         KEFIR_FREE(mem, func);
         return NULL;
     });
+    res = kefir_ast_pragma_state_init(&func->pragmas);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        KEFIR_FREE(mem, func);
+        return NULL;
+    });
     return func;
 }
 
