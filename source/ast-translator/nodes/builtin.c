@@ -53,22 +53,21 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
     REQUIRE(builder != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR block builder"));
     REQUIRE(node != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST builtin node"));
 
-    const struct kefir_list_entry *iter = kefir_list_head(&node->arguments);
     switch (node->builtin) {
         case KEFIR_AST_BUILTIN_VA_START: {
-            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, vararg, iter->value);
+            struct kefir_ast_node_base *vararg = node->arguments[0];
             REQUIRE_OK(resolve_vararg(mem, context, builder, vararg));
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_VARARG_START, 0));
         } break;
 
         case KEFIR_AST_BUILTIN_VA_END: {
-            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, vararg, iter->value);
+            struct kefir_ast_node_base *vararg = node->arguments[0];
             REQUIRE_OK(resolve_vararg(mem, context, builder, vararg));
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_VARARG_END, 0));
         } break;
 
         case KEFIR_AST_BUILTIN_VA_ARG: {
-            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, vararg, iter->value);
+            struct kefir_ast_node_base *vararg = node->arguments[0];
             REQUIRE_OK(resolve_vararg(mem, context, builder, vararg));
             if (node->base.properties.expression_props.temporary_identifier.scoped_id != NULL) {
                 REQUIRE_OK(kefir_ast_translator_fetch_temporary(
@@ -77,8 +76,7 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
                 REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_NULL_REF, 0));
             }
 
-            kefir_list_next(&iter);
-            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, type_arg, iter->value);
+            struct kefir_ast_node_base *type_arg = node->arguments[1];
 
             kefir_id_t va_type_id;
             struct kefir_irbuilder_type type_builder;
@@ -108,17 +106,16 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
         } break;
 
         case KEFIR_AST_BUILTIN_VA_COPY: {
-            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, dst_vararg, iter->value);
+            struct kefir_ast_node_base *dst_vararg = node->arguments[0];
             REQUIRE_OK(resolve_vararg(mem, context, builder, dst_vararg));
 
-            kefir_list_next(&iter);
-            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, src_vararg, iter->value);
+            struct kefir_ast_node_base *src_vararg = node->arguments[1];
             REQUIRE_OK(resolve_vararg(mem, context, builder, src_vararg));
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_VARARG_COPY, 0));
         } break;
 
         case KEFIR_AST_BUILTIN_ALLOCA: {
-            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, size, iter->value);
+            struct kefir_ast_node_base *size = node->arguments[0];
             REQUIRE_OK(kefir_ast_translate_expression(mem, size, builder, context));
             REQUIRE_OK(kefir_ast_translate_typeconv(mem, context->module, builder, context->ast_context->type_traits,
                                                     size->properties.type,
@@ -129,13 +126,13 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
 
         case KEFIR_AST_BUILTIN_ALLOCA_WITH_ALIGN:
         case KEFIR_AST_BUILTIN_ALLOCA_WITH_ALIGN_AND_MAX: {
-            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, size, iter->value);
+            struct kefir_ast_node_base *size = node->arguments[0];
             REQUIRE_OK(kefir_ast_translate_expression(mem, size, builder, context));
             REQUIRE_OK(kefir_ast_translate_typeconv(mem, context->module, builder, context->ast_context->type_traits,
                                                     size->properties.type,
                                                     context->ast_context->type_traits->size_type));
-            kefir_list_next(&iter);
-            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, alignment, iter->value);
+
+            struct kefir_ast_node_base *alignment = node->arguments[1];
             REQUIRE_OK(kefir_ast_translate_expression(mem, alignment, builder, context));
             REQUIRE_OK(kefir_ast_translate_typeconv(mem, context->module, builder, context->ast_context->type_traits,
                                                     size->properties.type,
@@ -150,9 +147,8 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
                     builder, KEFIR_IR_OPCODE_UINT_CONST,
                     KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(KEFIR_AST_NODE_BASE(node))->integer));
             } else {
-                ASSIGN_DECL_CAST(struct kefir_ast_node_base *, offset_base, iter->value);
-                kefir_list_next(&iter);
-                ASSIGN_DECL_CAST(struct kefir_ast_node_base *, field, iter->value);
+                struct kefir_ast_node_base *offset_base = node->arguments[0];
+                struct kefir_ast_node_base *field = node->arguments[1];
 
                 REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT_CONST, 0));
                 REQUIRE_OK(
@@ -161,9 +157,8 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
         } break;
 
         case KEFIR_AST_BUILTIN_TYPES_COMPATIBLE: {
-            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, type1_node, iter->value);
-            kefir_list_next(&iter);
-            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, type2_node, iter->value);
+            struct kefir_ast_node_base *type1_node = node->arguments[0];
+            struct kefir_ast_node_base *type2_node = node->arguments[1];
 
             const struct kefir_ast_type *type1 = kefir_ast_unqualified_type(type1_node->properties.type);
             const struct kefir_ast_type *type2 = kefir_ast_unqualified_type(type2_node->properties.type);
@@ -174,11 +169,9 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
         } break;
 
         case KEFIR_AST_BUILTIN_CHOOSE_EXPRESSION: {
-            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, cond_node, iter->value);
-            kefir_list_next(&iter);
-            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, expr1_node, iter->value);
-            kefir_list_next(&iter);
-            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, expr2_node, iter->value);
+            struct kefir_ast_node_base *cond_node = node->arguments[0];
+            struct kefir_ast_node_base *expr1_node = node->arguments[1];
+            struct kefir_ast_node_base *expr2_node = node->arguments[2];
 
             REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(cond_node, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER),
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &cond_node->source_location,
@@ -202,13 +195,13 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
         } break;
 
         case KEFIR_AST_BUILTIN_CONSTANT: {
-            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, node, iter->value);
+            struct kefir_ast_node_base *arg = node->arguments[0];
 
-            if (!KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION(node)) {
+            if (!KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION(arg)) {
                 REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_UINT_CONST, 0));
             } else {
                 const struct kefir_ast_constant_expression_value *node_value =
-                    KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node);
+                    KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(arg);
                 kefir_bool_t is_statically_known;
                 REQUIRE_OK(kefir_ast_constant_expression_is_statically_known(node_value, &is_statically_known));
                 REQUIRE_OK(
@@ -217,9 +210,9 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
         } break;
 
         case KEFIR_AST_BUILTIN_KEFIR_CONSTANT: {
-            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, node, iter->value);
+            struct kefir_ast_node_base *arg = node->arguments[0];
 
-            if (!KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION(node)) {
+            if (!KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION(arg)) {
                 REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_UINT_CONST, 0));
             } else {
                 REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_UINT_CONST, 1));
@@ -227,10 +220,10 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
         } break;
 
         case KEFIR_AST_BUILTIN_CLASSIFY_TYPE: {
-            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, node, iter->value);
+            struct kefir_ast_node_base *arg = node->arguments[0];
 
             kefir_int_t klass;
-            REQUIRE_OK(kefir_ast_type_classify(node->properties.type, &klass));
+            REQUIRE_OK(kefir_ast_type_classify(arg->properties.type, &klass));
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT_CONST, klass));
         } break;
 
@@ -247,21 +240,21 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
             break;
 
         case KEFIR_AST_BUILTIN_NAN_FLOAT32: {
-            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, arg1_node, iter->value);
+            struct kefir_ast_node_base *arg1_node = node->arguments[0];
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDF32(
                 builder, KEFIR_IR_OPCODE_FLOAT32_CONST,
                 nan(arg1_node->properties.expression_props.string_literal.content), 0.0f));
         } break;
 
         case KEFIR_AST_BUILTIN_NAN_FLOAT64: {
-            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, arg1_node, iter->value);
+            struct kefir_ast_node_base *arg1_node = node->arguments[0];
             REQUIRE_OK(
                 KEFIR_IRBUILDER_BLOCK_APPENDF64(builder, KEFIR_IR_OPCODE_FLOAT64_CONST,
                                                 nan(arg1_node->properties.expression_props.string_literal.content)));
         } break;
 
         case KEFIR_AST_BUILTIN_NAN_LONG_DOUBLE: {
-            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, arg1_node, iter->value);
+            struct kefir_ast_node_base *arg1_node = node->arguments[0];
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPEND_LONG_DOUBLE(
                 builder, KEFIR_IR_OPCODE_LONG_DOUBLE_CONST,
                 nan(arg1_node->properties.expression_props.string_literal.content)));
@@ -276,11 +269,9 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
         case KEFIR_AST_BUILTIN_ADD_OVERFLOW:
         case KEFIR_AST_BUILTIN_SUB_OVERFLOW:
         case KEFIR_AST_BUILTIN_MUL_OVERFLOW: {
-            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, arg1_node, iter->value);
-            kefir_list_next(&iter);
-            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, arg2_node, iter->value);
-            kefir_list_next(&iter);
-            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, ptr_node, iter->value);
+            struct kefir_ast_node_base *arg1_node = node->arguments[0];
+            struct kefir_ast_node_base *arg2_node = node->arguments[1];
+            struct kefir_ast_node_base *ptr_node = node->arguments[2];
 
             const struct kefir_ast_type *arg1_type = kefir_ast_unqualified_type(arg1_node->properties.type);
             const struct kefir_ast_type *arg2_type = kefir_ast_unqualified_type(arg2_node->properties.type);
@@ -494,13 +485,13 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
         } break;
 
         case KEFIR_AST_BUILTIN_FFSG: {
-            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, node, iter->value);
-            const struct kefir_ast_type *unqualified_type = kefir_ast_unqualified_type(node->properties.type);
+            struct kefir_ast_node_base *arg = node->arguments[0];
+            const struct kefir_ast_type *unqualified_type = kefir_ast_unqualified_type(arg->properties.type);
             if (unqualified_type->tag == KEFIR_AST_TYPE_ENUMERATION) {
                 unqualified_type = unqualified_type->enumeration_type.underlying_type;
             }
 
-            REQUIRE_OK(kefir_ast_translate_expression(mem, node, builder, context));
+            REQUIRE_OK(kefir_ast_translate_expression(mem, arg, builder, context));
 
             kefir_ast_type_data_model_classification_t classification;
             REQUIRE_OK(kefir_ast_type_data_model_classify(context->ast_context->type_traits, unqualified_type,
@@ -601,18 +592,17 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
         } break;
 
         case KEFIR_AST_BUILTIN_CLZG: {
-            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, node, iter->value);
+            struct kefir_ast_node_base *arg = node->arguments[0];
             struct kefir_ast_node_base *default_value_node = NULL;
-            kefir_list_next(&iter);
-            if (iter != NULL) {
-                default_value_node = (struct kefir_ast_node_base *) iter->value;
+            if (node->argument_length > 1) {
+                default_value_node = node->arguments[1];
             }
-            const struct kefir_ast_type *unqualified_type = kefir_ast_unqualified_type(node->properties.type);
+            const struct kefir_ast_type *unqualified_type = kefir_ast_unqualified_type(arg->properties.type);
             if (unqualified_type->tag == KEFIR_AST_TYPE_ENUMERATION) {
                 unqualified_type = unqualified_type->enumeration_type.underlying_type;
             }
 
-            REQUIRE_OK(kefir_ast_translate_expression(mem, node, builder, context));
+            REQUIRE_OK(kefir_ast_translate_expression(mem, arg, builder, context));
 
             kefir_ast_type_data_model_classification_t classification;
             REQUIRE_OK(kefir_ast_type_data_model_classify(context->ast_context->type_traits, unqualified_type,
@@ -851,18 +841,17 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
         } break;
 
         case KEFIR_AST_BUILTIN_CTZG: {
-            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, node, iter->value);
+            struct kefir_ast_node_base *arg = node->arguments[0];
             struct kefir_ast_node_base *default_value_node = NULL;
-            kefir_list_next(&iter);
-            if (iter != NULL) {
-                default_value_node = (struct kefir_ast_node_base *) iter->value;
+            if (node->argument_length > 1) {
+                default_value_node = node->arguments[1];
             }
-            const struct kefir_ast_type *unqualified_type = kefir_ast_unqualified_type(node->properties.type);
+            const struct kefir_ast_type *unqualified_type = kefir_ast_unqualified_type(arg->properties.type);
             if (unqualified_type->tag == KEFIR_AST_TYPE_ENUMERATION) {
                 unqualified_type = unqualified_type->enumeration_type.underlying_type;
             }
 
-            REQUIRE_OK(kefir_ast_translate_expression(mem, node, builder, context));
+            REQUIRE_OK(kefir_ast_translate_expression(mem, arg, builder, context));
 
             kefir_ast_type_data_model_classification_t classification;
             REQUIRE_OK(kefir_ast_type_data_model_classify(context->ast_context->type_traits, unqualified_type,
@@ -1098,13 +1087,13 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
         } break;
 
         case KEFIR_AST_BUILTIN_CLRSBG: {
-            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, node, iter->value);
-            const struct kefir_ast_type *unqualified_type = kefir_ast_unqualified_type(node->properties.type);
+            struct kefir_ast_node_base *arg = node->arguments[0];
+            const struct kefir_ast_type *unqualified_type = kefir_ast_unqualified_type(arg->properties.type);
             if (unqualified_type->tag == KEFIR_AST_TYPE_ENUMERATION) {
                 unqualified_type = unqualified_type->enumeration_type.underlying_type;
             }
 
-            REQUIRE_OK(kefir_ast_translate_expression(mem, node, builder, context));
+            REQUIRE_OK(kefir_ast_translate_expression(mem, arg, builder, context));
 
             kefir_ast_type_data_model_classification_t classification;
             REQUIRE_OK(kefir_ast_type_data_model_classify(context->ast_context->type_traits, unqualified_type,
@@ -1209,13 +1198,13 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
         } break;
 
         case KEFIR_AST_BUILTIN_POPCOUNTG: {
-            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, node, iter->value);
-            const struct kefir_ast_type *unqualified_type = kefir_ast_unqualified_type(node->properties.type);
+            struct kefir_ast_node_base *arg = node->arguments[0];
+            const struct kefir_ast_type *unqualified_type = kefir_ast_unqualified_type(arg->properties.type);
             if (unqualified_type->tag == KEFIR_AST_TYPE_ENUMERATION) {
                 unqualified_type = unqualified_type->enumeration_type.underlying_type;
             }
 
-            REQUIRE_OK(kefir_ast_translate_expression(mem, node, builder, context));
+            REQUIRE_OK(kefir_ast_translate_expression(mem, arg, builder, context));
 
             kefir_ast_type_data_model_classification_t classification;
             REQUIRE_OK(kefir_ast_type_data_model_classify(context->ast_context->type_traits, unqualified_type,
@@ -1316,13 +1305,13 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
         } break;
 
         case KEFIR_AST_BUILTIN_PARITYG: {
-            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, node, iter->value);
-            const struct kefir_ast_type *unqualified_type = kefir_ast_unqualified_type(node->properties.type);
+            struct kefir_ast_node_base *arg = node->arguments[0];
+            const struct kefir_ast_type *unqualified_type = kefir_ast_unqualified_type(arg->properties.type);
             if (unqualified_type->tag == KEFIR_AST_TYPE_ENUMERATION) {
                 unqualified_type = unqualified_type->enumeration_type.underlying_type;
             }
 
-            REQUIRE_OK(kefir_ast_translate_expression(mem, node, builder, context));
+            REQUIRE_OK(kefir_ast_translate_expression(mem, arg, builder, context));
 
             kefir_ast_type_data_model_classification_t classification;
             REQUIRE_OK(kefir_ast_type_data_model_classify(context->ast_context->type_traits, unqualified_type,
@@ -1423,9 +1412,9 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
         } break;
 
         case KEFIR_AST_BUILTIN_KEFIR_INT_PRECISION: {
-            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, node, iter->value);
+            struct kefir_ast_node_base *arg = node->arguments[0];
 
-            const struct kefir_ast_type *unqualified_type = kefir_ast_unqualified_type(node->properties.type);
+            const struct kefir_ast_type *unqualified_type = kefir_ast_unqualified_type(arg->properties.type);
             kefir_ast_type_data_model_classification_t classification;
             REQUIRE_OK(kefir_ast_type_data_model_classify(context->ast_context->type_traits, unqualified_type,
                                                           &classification));
@@ -1456,15 +1445,15 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
                     break;
 
                 default:
-                    return KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->source_location,
+                    return KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &arg->source_location,
                                                   "Expected integral type");
             }
         } break;
 
         case KEFIR_AST_BUILTIN_KEFIR_IS_UNSIGNED: {
-            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, node, iter->value);
+            struct kefir_ast_node_base *arg = node->arguments[0];
 
-            const struct kefir_ast_type *unqualified_type = kefir_ast_unqualified_type(node->properties.type);
+            const struct kefir_ast_type *unqualified_type = kefir_ast_unqualified_type(arg->properties.type);
             kefir_bool_t is_signed;
             REQUIRE_OK(kefir_ast_type_is_signed(context->ast_context->type_traits, unqualified_type, &is_signed));
 
@@ -1472,20 +1461,20 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
         } break;
 
         case KEFIR_AST_BUILTIN_KEFIR_BITFIELD_WIDTH: {
-            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, node, iter->value);
-            if (node->properties.expression_props.bitfield_props.bitfield) {
+            struct kefir_ast_node_base *arg = node->arguments[0];
+            if (arg->properties.expression_props.bitfield_props.bitfield) {
                 REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT_CONST,
-                                                           node->properties.expression_props.bitfield_props.width));
+                                                           arg->properties.expression_props.bitfield_props.width));
             } else {
                 REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT_CONST, -1));
             }
         } break;
 
         case KEFIR_AST_BUILTIN_KEFIR_ISNAN: {
-            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, node, iter->value);
-            const struct kefir_ast_type *unqualified_type = kefir_ast_unqualified_type(node->properties.type);
+            struct kefir_ast_node_base *arg = node->arguments[0];
+            const struct kefir_ast_type *unqualified_type = kefir_ast_unqualified_type(arg->properties.type);
 
-            REQUIRE_OK(kefir_ast_translate_expression(mem, node, builder, context));
+            REQUIRE_OK(kefir_ast_translate_expression(mem, arg, builder, context));
 
             const struct kefir_ir_function_decl *ir_decl;
 #define DEF_BUILTIN(_id, _type)                                                                                    \
@@ -1539,16 +1528,16 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
                     break;
 
                 default:
-                    return KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->source_location,
+                    return KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &arg->source_location,
                                                   "Expected floating-point type argument");
             }
         } break;
 
         case KEFIR_AST_BUILTIN_KEFIR_ISINF: {
-            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, node, iter->value);
-            const struct kefir_ast_type *unqualified_type = kefir_ast_unqualified_type(node->properties.type);
+            struct kefir_ast_node_base *arg = node->arguments[0];
+            const struct kefir_ast_type *unqualified_type = kefir_ast_unqualified_type(arg->properties.type);
 
-            REQUIRE_OK(kefir_ast_translate_expression(mem, node, builder, context));
+            REQUIRE_OK(kefir_ast_translate_expression(mem, arg, builder, context));
 
             const struct kefir_ir_function_decl *ir_decl;
             switch (unqualified_type->tag) {
@@ -1573,7 +1562,7 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
                     break;
 
                 case KEFIR_AST_TYPE_SCALAR_DECIMAL32: {
-                    REQUIRE_OK(kefir_dfp_require_supported(&node->source_location));
+                    REQUIRE_OK(kefir_dfp_require_supported(&arg->source_location));
                     kefir_dfp_decimal32_t pos_inf = kefir_dfp_decimal32_inf();
                     kefir_dfp_decimal32_t neg_inf = kefir_dfp_decimal32_neg(kefir_dfp_decimal32_inf());
 
@@ -1591,7 +1580,7 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
                 } break;
 
                 case KEFIR_AST_TYPE_SCALAR_DECIMAL64: {
-                    REQUIRE_OK(kefir_dfp_require_supported(&node->source_location));
+                    REQUIRE_OK(kefir_dfp_require_supported(&arg->source_location));
                     kefir_dfp_decimal64_t pos_inf = kefir_dfp_decimal64_from_decimal32(kefir_dfp_decimal32_inf());
                     kefir_dfp_decimal64_t neg_inf =
                         kefir_dfp_decimal64_neg(kefir_dfp_decimal64_from_decimal32(kefir_dfp_decimal32_inf()));
@@ -1611,7 +1600,7 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
 
                 case KEFIR_AST_TYPE_SCALAR_DECIMAL128:
                 case KEFIR_AST_TYPE_SCALAR_EXTENDED_DECIMAL64: {
-                    REQUIRE_OK(kefir_dfp_require_supported(&node->source_location));
+                    REQUIRE_OK(kefir_dfp_require_supported(&arg->source_location));
                     kefir_dfp_decimal128_t pos_inf = kefir_dfp_decimal128_from_decimal32(kefir_dfp_decimal32_inf());
                     kefir_dfp_decimal128_t neg_inf =
                         kefir_dfp_decimal128_neg(kefir_dfp_decimal128_from_decimal32(kefir_dfp_decimal32_inf()));
@@ -1631,16 +1620,15 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
 #undef DEF_BUILTIN
 
                 default:
-                    return KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->source_location,
+                    return KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &arg->source_location,
                                                   "Expected floating-point type argument");
             }
         } break;
 
 #define DEF_COPYSIGN(_id, _ast_type, _ir_type)                                                                     \
     do {                                                                                                           \
-        ASSIGN_DECL_CAST(struct kefir_ast_node_base *, arg1_node, iter->value);                                    \
-        kefir_list_next(&iter);                                                                                    \
-        ASSIGN_DECL_CAST(struct kefir_ast_node_base *, arg2_node, iter->value);                                    \
+        struct kefir_ast_node_base *arg1_node = node->arguments[0];                                                \
+        struct kefir_ast_node_base *arg2_node = node->arguments[1];                                                \
                                                                                                                    \
         const struct kefir_ast_type *arg1_type = kefir_ast_unqualified_type(arg1_node->properties.type);           \
         const struct kefir_ast_type *arg2_type = kefir_ast_unqualified_type(arg2_node->properties.type);           \
@@ -1685,9 +1673,8 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
 #undef DEF_COPYSIGN
 
         case KEFIR_AST_BUILTIN_KEFIR_CONSTRUCT_COMPLEX_FLOAT: {
-            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, arg1_node, iter->value);
-            kefir_list_next(&iter);
-            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, arg2_node, iter->value);
+            struct kefir_ast_node_base *arg1_node = node->arguments[0];
+            struct kefir_ast_node_base *arg2_node = node->arguments[1];
 
             const struct kefir_ast_type *arg1_type = kefir_ast_unqualified_type(arg1_node->properties.type);
             const struct kefir_ast_type *arg2_type = kefir_ast_unqualified_type(arg2_node->properties.type);
@@ -1702,9 +1689,8 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
         } break;
 
         case KEFIR_AST_BUILTIN_KEFIR_CONSTRUCT_COMPLEX_DOUBLE: {
-            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, arg1_node, iter->value);
-            kefir_list_next(&iter);
-            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, arg2_node, iter->value);
+            struct kefir_ast_node_base *arg1_node = node->arguments[0];
+            struct kefir_ast_node_base *arg2_node = node->arguments[1];
 
             const struct kefir_ast_type *arg1_type = kefir_ast_unqualified_type(arg1_node->properties.type);
             const struct kefir_ast_type *arg2_type = kefir_ast_unqualified_type(arg2_node->properties.type);
@@ -1719,9 +1705,8 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
         } break;
 
         case KEFIR_AST_BUILTIN_KEFIR_CONSTRUCT_COMPLEX_LONG_DOUBLE: {
-            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, arg1_node, iter->value);
-            kefir_list_next(&iter);
-            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, arg2_node, iter->value);
+            struct kefir_ast_node_base *arg1_node = node->arguments[0];
+            struct kefir_ast_node_base *arg2_node = node->arguments[1];
 
             const struct kefir_ast_type *arg1_type = kefir_ast_unqualified_type(arg1_node->properties.type);
             const struct kefir_ast_type *arg2_type = kefir_ast_unqualified_type(arg2_node->properties.type);
@@ -1736,10 +1721,10 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
         } break;
 
         case KEFIR_AST_BUILTIN_KEFIR_ISFINITE: {
-            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, node, iter->value);
-            const struct kefir_ast_type *unqualified_type = kefir_ast_unqualified_type(node->properties.type);
+            struct kefir_ast_node_base *arg = node->arguments[0];
+            const struct kefir_ast_type *unqualified_type = kefir_ast_unqualified_type(arg->properties.type);
 
-            REQUIRE_OK(kefir_ast_translate_expression(mem, node, builder, context));
+            REQUIRE_OK(kefir_ast_translate_expression(mem, arg, builder, context));
 
             const struct kefir_ir_function_decl *ir_decl;
 #define DEF_BUILTIN(_id, _type)                                                                                    \
@@ -1780,7 +1765,7 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
                     break;
 
                 case KEFIR_AST_TYPE_SCALAR_DECIMAL32: {
-                    REQUIRE_OK(kefir_dfp_require_supported(&node->source_location));
+                    REQUIRE_OK(kefir_dfp_require_supported(&arg->source_location));
                     kefir_dfp_decimal32_t pos_inf = kefir_dfp_decimal32_inf();
                     kefir_dfp_decimal32_t neg_inf = kefir_dfp_decimal32_neg(kefir_dfp_decimal32_inf());
 
@@ -1800,7 +1785,7 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
                 } break;
 
                 case KEFIR_AST_TYPE_SCALAR_DECIMAL64: {
-                    REQUIRE_OK(kefir_dfp_require_supported(&node->source_location));
+                    REQUIRE_OK(kefir_dfp_require_supported(&arg->source_location));
                     kefir_dfp_decimal64_t pos_inf = kefir_dfp_decimal64_from_decimal32(kefir_dfp_decimal32_inf());
                     kefir_dfp_decimal64_t neg_inf =
                         kefir_dfp_decimal64_from_decimal32(kefir_dfp_decimal32_neg(kefir_dfp_decimal32_inf()));
@@ -1822,7 +1807,7 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
 
                 case KEFIR_AST_TYPE_SCALAR_DECIMAL128:
                 case KEFIR_AST_TYPE_SCALAR_EXTENDED_DECIMAL64: {
-                    REQUIRE_OK(kefir_dfp_require_supported(&node->source_location));
+                    REQUIRE_OK(kefir_dfp_require_supported(&arg->source_location));
                     kefir_dfp_decimal128_t pos_inf = kefir_dfp_decimal128_from_decimal32(kefir_dfp_decimal32_inf());
                     kefir_dfp_decimal128_t neg_inf =
                         kefir_dfp_decimal128_from_decimal32(kefir_dfp_decimal32_neg(kefir_dfp_decimal32_inf()));
@@ -1843,7 +1828,7 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
                 } break;
 
                 default:
-                    return KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->source_location,
+                    return KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &arg->source_location,
                                                   "Expected floating-point type argument");
             }
 #undef DEF_BUILTIN

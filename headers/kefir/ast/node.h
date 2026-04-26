@@ -265,7 +265,9 @@ KEFIR_AST_NODE_STRUCT(kefir_ast_translation_unit, {
 
 KEFIR_AST_NODE_STRUCT(kefir_ast_builtin, {
     kefir_ast_builtin_operator_t builtin;
-    struct kefir_list arguments;
+    struct kefir_ast_node_base **arguments;
+    kefir_size_t argument_length;
+    kefir_size_t argument_capacity;
 });
 
 KEFIR_AST_NODE_STRUCT(kefir_ast_statement_expression, {

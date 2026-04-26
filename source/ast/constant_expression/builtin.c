@@ -135,12 +135,10 @@ kefir_result_t kefir_ast_evaluate_builtin_node(struct kefir_mem *mem, const stru
             KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->base.source_location,
                                    "Expected constant expression AST node"));
 
-    const struct kefir_list_entry *iter = kefir_list_head(&node->arguments);
     switch (node->builtin) {
         case KEFIR_AST_BUILTIN_OFFSETOF: {
-            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, offset_base, iter->value);
-            kefir_list_next(&iter);
-            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, member_designator, iter->value);
+            struct kefir_ast_node_base *offset_base = node->arguments[0];
+            struct kefir_ast_node_base *member_designator = node->arguments[1];
 
             struct kefir_ast_designator *designator = NULL;
             REQUIRE_OK(build_member_designator(mem, context, member_designator, &designator));
@@ -166,9 +164,8 @@ kefir_result_t kefir_ast_evaluate_builtin_node(struct kefir_mem *mem, const stru
         } break;
 
         case KEFIR_AST_BUILTIN_TYPES_COMPATIBLE: {
-            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, type1_node, iter->value);
-            kefir_list_next(&iter);
-            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, type2_node, iter->value);
+            struct kefir_ast_node_base *type1_node = node->arguments[0];
+            struct kefir_ast_node_base *type2_node = node->arguments[1];
 
             const struct kefir_ast_type *type1 = kefir_ast_unqualified_type(type1_node->properties.type);
             const struct kefir_ast_type *type2 = kefir_ast_unqualified_type(type2_node->properties.type);
@@ -178,11 +175,9 @@ kefir_result_t kefir_ast_evaluate_builtin_node(struct kefir_mem *mem, const stru
         } break;
 
         case KEFIR_AST_BUILTIN_CHOOSE_EXPRESSION: {
-            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, cond_node, iter->value);
-            kefir_list_next(&iter);
-            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, expr1_node, iter->value);
-            kefir_list_next(&iter);
-            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, expr2_node, iter->value);
+            struct kefir_ast_node_base *cond_node = node->arguments[0];
+            struct kefir_ast_node_base *expr1_node = node->arguments[1];
+            struct kefir_ast_node_base *expr2_node = node->arguments[2];
 
             REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(cond_node, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER),
                     KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &cond_node->source_location,
@@ -202,24 +197,24 @@ kefir_result_t kefir_ast_evaluate_builtin_node(struct kefir_mem *mem, const stru
         } break;
 
         case KEFIR_AST_BUILTIN_CONSTANT: {
-            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, node, iter->value);
+            struct kefir_ast_node_base *arg = node->arguments[0];
 
             value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
-            if (!node->properties.expression_props.constant_expression) {
+            if (!arg->properties.expression_props.constant_expression) {
                 value->integer = 0;
             } else {
                 kefir_bool_t is_statically_known;
                 REQUIRE_OK(kefir_ast_constant_expression_is_statically_known(
-                    KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node), &is_statically_known));
+                    KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(arg), &is_statically_known));
                 value->integer = is_statically_known ? 1 : 0;
             }
         } break;
 
         case KEFIR_AST_BUILTIN_KEFIR_CONSTANT: {
-            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, node, iter->value);
+            struct kefir_ast_node_base *arg = node->arguments[0];
 
             value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
-            if (!node->properties.expression_props.constant_expression) {
+            if (!arg->properties.expression_props.constant_expression) {
                 value->integer = 0;
             } else {
                 value->integer = 1;
@@ -227,11 +222,11 @@ kefir_result_t kefir_ast_evaluate_builtin_node(struct kefir_mem *mem, const stru
         } break;
 
         case KEFIR_AST_BUILTIN_CLASSIFY_TYPE: {
-            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, node, iter->value);
+            struct kefir_ast_node_base *arg = node->arguments[0];
 
             value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
             kefir_int_t klass;
-            REQUIRE_OK(kefir_ast_type_classify(node->properties.type, &klass));
+            REQUIRE_OK(kefir_ast_type_classify(arg->properties.type, &klass));
             value->integer = klass;
         } break;
 
@@ -245,14 +240,14 @@ kefir_result_t kefir_ast_evaluate_builtin_node(struct kefir_mem *mem, const stru
         case KEFIR_AST_BUILTIN_NAN_FLOAT32:
         case KEFIR_AST_BUILTIN_NAN_FLOAT64:
         case KEFIR_AST_BUILTIN_NAN_LONG_DOUBLE: {
-            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, node, iter->value);
+            struct kefir_ast_node_base *arg = node->arguments[0];
             value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT;
-            value->floating_point = nanl(node->properties.expression_props.string_literal.content);
+            value->floating_point = nanl(arg->properties.expression_props.string_literal.content);
         } break;
 
         case KEFIR_AST_BUILTIN_KEFIR_ISNAN: {
-            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, node, iter->value);
-            const struct kefir_ast_type *unqualified_type = kefir_ast_unqualified_type(node->properties.type);
+            struct kefir_ast_node_base *arg = node->arguments[0];
+            const struct kefir_ast_type *unqualified_type = kefir_ast_unqualified_type(arg->properties.type);
 
             value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
             switch (unqualified_type->tag) {
@@ -264,33 +259,33 @@ kefir_result_t kefir_ast_evaluate_builtin_node(struct kefir_mem *mem, const stru
                 case KEFIR_AST_TYPE_SCALAR_INTERCHANGE_FLOAT80:
                 case KEFIR_AST_TYPE_SCALAR_EXTENDED_FLOAT32:
                 case KEFIR_AST_TYPE_SCALAR_EXTENDED_FLOAT64:
-                    REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(node, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT),
-                            KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->source_location,
+                    REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(arg, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT),
+                            KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &arg->source_location,
                                                    "Expected floating-point constant expression"));
-                    value->integer = (_Bool) isnan(KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node)->floating_point);
+                    value->integer = (_Bool) isnan(KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(arg)->floating_point);
                     break;
 
                 case KEFIR_AST_TYPE_SCALAR_DECIMAL32:
                 case KEFIR_AST_TYPE_SCALAR_DECIMAL64:
                 case KEFIR_AST_TYPE_SCALAR_DECIMAL128:
                 case KEFIR_AST_TYPE_SCALAR_EXTENDED_DECIMAL64:
-                    REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(node, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_DECIMAL),
-                            KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->source_location,
+                    REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(arg, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_DECIMAL),
+                            KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &arg->source_location,
                                                    "Expected floating-point constant expression"));
-                    REQUIRE_OK(kefir_dfp_require_supported(&node->source_location));
+                    REQUIRE_OK(kefir_dfp_require_supported(&arg->source_location));
                     value->integer =
-                        (_Bool) kefir_dfp_decimal128_isnan(KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node)->decimal);
+                        (_Bool) kefir_dfp_decimal128_isnan(KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(arg)->decimal);
                     break;
 
                 default:
-                    return KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->source_location,
+                    return KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &arg->source_location,
                                                   "Expected floating-point constant expression");
             }
         } break;
 
         case KEFIR_AST_BUILTIN_KEFIR_ISINF: {
-            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, node, iter->value);
-            const struct kefir_ast_type *unqualified_type = kefir_ast_unqualified_type(node->properties.type);
+            struct kefir_ast_node_base *arg = node->arguments[0];
+            const struct kefir_ast_type *unqualified_type = kefir_ast_unqualified_type(arg->properties.type);
 
             value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
             switch (unqualified_type->tag) {
@@ -302,11 +297,11 @@ kefir_result_t kefir_ast_evaluate_builtin_node(struct kefir_mem *mem, const stru
                 case KEFIR_AST_TYPE_SCALAR_INTERCHANGE_FLOAT80:
                 case KEFIR_AST_TYPE_SCALAR_EXTENDED_FLOAT32:
                 case KEFIR_AST_TYPE_SCALAR_EXTENDED_FLOAT64: {
-                    REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(node, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT),
-                            KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->source_location,
+                    REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(arg, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT),
+                            KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &arg->source_location,
                                                    "Expected floating-point constant expression"));
                     const kefir_ast_constant_expression_float_t fp_value =
-                        KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node)->floating_point;
+                        KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(arg)->floating_point;
                     if (getenv(KEFIR_DISABLE_LONG_DOUBLE_FLAG) == NULL) {
                         value->integer = isinf(fp_value) ? (isgreater(fp_value, 0.0) ? 1 : -1) : 0;
                     } else {
@@ -320,13 +315,13 @@ kefir_result_t kefir_ast_evaluate_builtin_node(struct kefir_mem *mem, const stru
                 case KEFIR_AST_TYPE_SCALAR_DECIMAL64:
                 case KEFIR_AST_TYPE_SCALAR_DECIMAL128:
                 case KEFIR_AST_TYPE_SCALAR_EXTENDED_DECIMAL64:
-                    REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(node, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_DECIMAL),
-                            KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->source_location,
+                    REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(arg, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_DECIMAL),
+                            KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &arg->source_location,
                                                    "Expected floating-point constant expression"));
-                    REQUIRE_OK(kefir_dfp_require_supported(&node->source_location));
-                    if (kefir_dfp_decimal128_isinf(KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node)->decimal)) {
+                    REQUIRE_OK(kefir_dfp_require_supported(&arg->source_location));
+                    if (kefir_dfp_decimal128_isinf(KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(arg)->decimal)) {
                         value->integer =
-                            kefir_dfp_decimal128_less(KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node)->decimal,
+                            kefir_dfp_decimal128_less(KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(arg)->decimal,
                                                       kefir_dfp_decimal128_from_int64(0))
                                 ? -1
                                 : 1;
@@ -336,7 +331,7 @@ kefir_result_t kefir_ast_evaluate_builtin_node(struct kefir_mem *mem, const stru
                     break;
 
                 default:
-                    return KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->source_location,
+                    return KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &arg->source_location,
                                                   "Expected floating-point constant expression");
             }
         } break;
@@ -344,9 +339,8 @@ kefir_result_t kefir_ast_evaluate_builtin_node(struct kefir_mem *mem, const stru
         case KEFIR_AST_BUILTIN_KEFIR_COPYSIGNF:
         case KEFIR_AST_BUILTIN_KEFIR_COPYSIGN:
         case KEFIR_AST_BUILTIN_KEFIR_COPYSIGNL: {
-            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, arg1_node, iter->value);
-            kefir_list_next(&iter);
-            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, arg2_node, iter->value);
+            struct kefir_ast_node_base *arg1_node = node->arguments[0];
+            struct kefir_ast_node_base *arg2_node = node->arguments[1];
 
             REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(arg1_node, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT),
                     KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &arg1_node->source_location,
@@ -363,9 +357,8 @@ kefir_result_t kefir_ast_evaluate_builtin_node(struct kefir_mem *mem, const stru
         case KEFIR_AST_BUILTIN_KEFIR_CONSTRUCT_COMPLEX_FLOAT:
         case KEFIR_AST_BUILTIN_KEFIR_CONSTRUCT_COMPLEX_DOUBLE:
         case KEFIR_AST_BUILTIN_KEFIR_CONSTRUCT_COMPLEX_LONG_DOUBLE: {
-            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, arg1_node, iter->value);
-            kefir_list_next(&iter);
-            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, arg2_node, iter->value);
+            struct kefir_ast_node_base *arg1_node = node->arguments[0];
+            struct kefir_ast_node_base *arg2_node = node->arguments[1];
 
             REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(arg1_node, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT),
                     KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &arg1_node->source_location,
@@ -381,7 +374,7 @@ kefir_result_t kefir_ast_evaluate_builtin_node(struct kefir_mem *mem, const stru
         } break;
 
         case KEFIR_AST_BUILTIN_KEFIR_ISFINITE: {
-            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, arg1_node, iter->value);
+            struct kefir_ast_node_base *arg1_node = node->arguments[0];
             const struct kefir_ast_type *arg1_type = kefir_ast_unqualified_type(arg1_node->properties.type);
 
             value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
@@ -445,8 +438,8 @@ kefir_result_t kefir_ast_evaluate_builtin_node(struct kefir_mem *mem, const stru
         } break;
 
         case KEFIR_AST_BUILTIN_FFSG: {
-            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, node, iter->value);
-            const struct kefir_ast_type *unqualified_type = kefir_ast_unqualified_type(node->properties.type);
+            struct kefir_ast_node_base *arg = node->arguments[0];
+            const struct kefir_ast_type *unqualified_type = kefir_ast_unqualified_type(arg->properties.type);
             if (unqualified_type->tag == KEFIR_AST_TYPE_ENUMERATION) {
                 unqualified_type = unqualified_type->enumeration_type.underlying_type;
             }
@@ -454,34 +447,34 @@ kefir_result_t kefir_ast_evaluate_builtin_node(struct kefir_mem *mem, const stru
             kefir_ast_type_data_model_classification_t classification;
             REQUIRE_OK(kefir_ast_type_data_model_classify(context->type_traits, unqualified_type, &classification));
             value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
-            REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(node, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER),
-                    KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->source_location,
+            REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(arg, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER),
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &arg->source_location,
                                            "Expected integral constant expression"));
             switch (classification) {
                 case KEFIR_AST_TYPE_DATA_MODEL_INT8:
                     REQUIRE_OK(kefir_ast_evaluate_builtin_ffs_constant_expression_value(
-                        KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node)->uinteger, 8, value));
+                        KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(arg)->uinteger, 8, value));
                     break;
 
                 case KEFIR_AST_TYPE_DATA_MODEL_INT16:
                     REQUIRE_OK(kefir_ast_evaluate_builtin_ffs_constant_expression_value(
-                        KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node)->uinteger, 16, value));
+                        KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(arg)->uinteger, 16, value));
                     break;
 
                 case KEFIR_AST_TYPE_DATA_MODEL_INT32:
                     REQUIRE_OK(kefir_ast_evaluate_builtin_ffs_constant_expression_value(
-                        KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node)->uinteger, 32, value));
+                        KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(arg)->uinteger, 32, value));
                     break;
 
                 case KEFIR_AST_TYPE_DATA_MODEL_INT64:
                     REQUIRE_OK(kefir_ast_evaluate_builtin_ffs_constant_expression_value(
-                        KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node)->uinteger, 64, value));
+                        KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(arg)->uinteger, 64, value));
                     break;
 
                 case KEFIR_AST_TYPE_DATA_MODEL_INT128:
                 case KEFIR_AST_TYPE_DATA_MODEL_BITINT: {
                     const struct kefir_ast_constant_expression_value *node_value =
-                        KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node);
+                        KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(arg);
                     if (node_value->bitprecise != NULL) {
                         kefir_size_t index;
                         REQUIRE_OK(kefir_bigint_least_significant_nonzero(node_value->bitprecise, &index));
@@ -499,13 +492,12 @@ kefir_result_t kefir_ast_evaluate_builtin_node(struct kefir_mem *mem, const stru
         } break;
 
         case KEFIR_AST_BUILTIN_CLZG: {
-            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, node, iter->value);
+            struct kefir_ast_node_base *arg = node->arguments[0];
             struct kefir_ast_node_base *default_value_node = NULL;
-            kefir_list_next(&iter);
-            if (iter != NULL) {
-                default_value_node = (struct kefir_ast_node_base *) iter->value;
+            if (node->argument_capacity > 1) {
+                default_value_node = node->arguments[1];
             }
-            const struct kefir_ast_type *unqualified_type = kefir_ast_unqualified_type(node->properties.type);
+            const struct kefir_ast_type *unqualified_type = kefir_ast_unqualified_type(arg->properties.type);
             if (unqualified_type->tag == KEFIR_AST_TYPE_ENUMERATION) {
                 unqualified_type = unqualified_type->enumeration_type.underlying_type;
             }
@@ -514,7 +506,7 @@ kefir_result_t kefir_ast_evaluate_builtin_node(struct kefir_mem *mem, const stru
             if (default_value_node != NULL) {
                 REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(default_value_node,
                                                                  KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER),
-                        KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->source_location,
+                        KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &arg->source_location,
                                                "Expected integral constant expression"));
                 default_value = &KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(default_value_node)->integer;
             }
@@ -522,52 +514,52 @@ kefir_result_t kefir_ast_evaluate_builtin_node(struct kefir_mem *mem, const stru
             kefir_ast_type_data_model_classification_t classification;
             REQUIRE_OK(kefir_ast_type_data_model_classify(context->type_traits, unqualified_type, &classification));
             value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
-            REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(node, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER),
-                    KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->source_location,
+            REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(arg, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER),
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &arg->source_location,
                                            "Expected integral constant expression"));
             switch (classification) {
                 case KEFIR_AST_TYPE_DATA_MODEL_INT8:
                     REQUIRE_OK(kefir_ast_evaluate_builtin_clz_constant_expression_value(
-                        KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node)->uinteger, 8, default_value, value,
-                        &node->source_location));
+                        KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(arg)->uinteger, 8, default_value, value,
+                        &arg->source_location));
                     break;
 
                 case KEFIR_AST_TYPE_DATA_MODEL_INT16:
                     REQUIRE_OK(kefir_ast_evaluate_builtin_clz_constant_expression_value(
-                        KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node)->uinteger, 16, default_value, value,
-                        &node->source_location));
+                        KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(arg)->uinteger, 16, default_value, value,
+                        &arg->source_location));
                     break;
 
                 case KEFIR_AST_TYPE_DATA_MODEL_INT32:
                     REQUIRE_OK(kefir_ast_evaluate_builtin_clz_constant_expression_value(
-                        KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node)->uinteger, 32, default_value, value,
-                        &node->source_location));
+                        KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(arg)->uinteger, 32, default_value, value,
+                        &arg->source_location));
                     break;
 
                 case KEFIR_AST_TYPE_DATA_MODEL_INT64:
                     REQUIRE_OK(kefir_ast_evaluate_builtin_clz_constant_expression_value(
-                        KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node)->uinteger, 64, default_value, value,
-                        &node->source_location));
+                        KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(arg)->uinteger, 64, default_value, value,
+                        &arg->source_location));
                     break;
 
                 case KEFIR_AST_TYPE_DATA_MODEL_INT128:
                 case KEFIR_AST_TYPE_DATA_MODEL_BITINT: {
                     const struct kefir_ast_constant_expression_value *node_value =
-                        KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node);
+                        KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(arg);
                     if (node_value->bitprecise != NULL) {
                         kefir_size_t count = 0;
                         if (default_value != NULL) {
                             REQUIRE_OK(kefir_bigint_leading_zeros(node_value->bitprecise, &count, *default_value));
                         } else {
                             REQUIRE_OK(kefir_bigint_leading_zeros(node_value->bitprecise, &count, ~0ull));
-                            REQUIRE(count != ~0ull, KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->source_location,
+                            REQUIRE(count != ~0ull, KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &arg->source_location,
                                                                            "Expected constant expression AST node"));
                         }
                         value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
                         value->uinteger = count;
                     } else {
                         REQUIRE_OK(kefir_ast_evaluate_builtin_clz_constant_expression_value(
-                            node_value->uinteger, 64, default_value, value, &node->source_location));
+                            node_value->uinteger, 64, default_value, value, &arg->source_location));
                     }
                 } break;
 
@@ -577,13 +569,12 @@ kefir_result_t kefir_ast_evaluate_builtin_node(struct kefir_mem *mem, const stru
         } break;
 
         case KEFIR_AST_BUILTIN_CTZG: {
-            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, node, iter->value);
+            struct kefir_ast_node_base *arg = node->arguments[0];
             struct kefir_ast_node_base *default_value_node = NULL;
-            kefir_list_next(&iter);
-            if (iter != NULL) {
-                default_value_node = (struct kefir_ast_node_base *) iter->value;
+            if (node->argument_length > 1) {
+                default_value_node = node->arguments[1];
             }
-            const struct kefir_ast_type *unqualified_type = kefir_ast_unqualified_type(node->properties.type);
+            const struct kefir_ast_type *unqualified_type = kefir_ast_unqualified_type(arg->properties.type);
             if (unqualified_type->tag == KEFIR_AST_TYPE_ENUMERATION) {
                 unqualified_type = unqualified_type->enumeration_type.underlying_type;
             }
@@ -592,7 +583,7 @@ kefir_result_t kefir_ast_evaluate_builtin_node(struct kefir_mem *mem, const stru
             if (default_value_node != NULL) {
                 REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(default_value_node,
                                                                  KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER),
-                        KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->source_location,
+                        KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &arg->source_location,
                                                "Expected integral constant expression"));
                 default_value = &KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(default_value_node)->integer;
             }
@@ -600,52 +591,52 @@ kefir_result_t kefir_ast_evaluate_builtin_node(struct kefir_mem *mem, const stru
             kefir_ast_type_data_model_classification_t classification;
             REQUIRE_OK(kefir_ast_type_data_model_classify(context->type_traits, unqualified_type, &classification));
             value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
-            REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(node, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER),
-                    KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->source_location,
+            REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(arg, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER),
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &arg->source_location,
                                            "Expected integral constant expression"));
             switch (classification) {
                 case KEFIR_AST_TYPE_DATA_MODEL_INT8:
                     REQUIRE_OK(kefir_ast_evaluate_builtin_ctz_constant_expression_value(
-                        KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node)->uinteger, 8, default_value, value,
-                        &node->source_location));
+                        KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(arg)->uinteger, 8, default_value, value,
+                        &arg->source_location));
                     break;
 
                 case KEFIR_AST_TYPE_DATA_MODEL_INT16:
                     REQUIRE_OK(kefir_ast_evaluate_builtin_ctz_constant_expression_value(
-                        KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node)->uinteger, 16, default_value, value,
-                        &node->source_location));
+                        KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(arg)->uinteger, 16, default_value, value,
+                        &arg->source_location));
                     break;
 
                 case KEFIR_AST_TYPE_DATA_MODEL_INT32:
                     REQUIRE_OK(kefir_ast_evaluate_builtin_ctz_constant_expression_value(
-                        KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node)->uinteger, 32, default_value, value,
-                        &node->source_location));
+                        KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(arg)->uinteger, 32, default_value, value,
+                        &arg->source_location));
                     break;
 
                 case KEFIR_AST_TYPE_DATA_MODEL_INT64:
                     REQUIRE_OK(kefir_ast_evaluate_builtin_ctz_constant_expression_value(
-                        KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node)->uinteger, 64, default_value, value,
-                        &node->source_location));
+                        KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(arg)->uinteger, 64, default_value, value,
+                        &arg->source_location));
                     break;
 
                 case KEFIR_AST_TYPE_DATA_MODEL_INT128:
                 case KEFIR_AST_TYPE_DATA_MODEL_BITINT: {
                     const struct kefir_ast_constant_expression_value *node_value =
-                        KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node);
+                        KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(arg);
                     if (node_value->bitprecise != NULL) {
                         kefir_size_t count = 0;
                         if (default_value != NULL) {
                             REQUIRE_OK(kefir_bigint_trailing_zeros(node_value->bitprecise, &count, *default_value));
                         } else {
                             REQUIRE_OK(kefir_bigint_trailing_zeros(node_value->bitprecise, &count, ~0ull));
-                            REQUIRE(count != ~0ull, KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->source_location,
+                            REQUIRE(count != ~0ull, KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &arg->source_location,
                                                                            "Expected constant expression AST node"));
                         }
                         value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
                         value->uinteger = count;
                     } else {
                         REQUIRE_OK(kefir_ast_evaluate_builtin_ctz_constant_expression_value(
-                            node_value->uinteger, 64, default_value, value, &node->source_location));
+                            node_value->uinteger, 64, default_value, value, &arg->source_location));
                     }
                 } break;
 
@@ -655,8 +646,8 @@ kefir_result_t kefir_ast_evaluate_builtin_node(struct kefir_mem *mem, const stru
         } break;
 
         case KEFIR_AST_BUILTIN_CLRSBG: {
-            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, node, iter->value);
-            const struct kefir_ast_type *unqualified_type = kefir_ast_unqualified_type(node->properties.type);
+            struct kefir_ast_node_base *arg = node->arguments[0];
+            const struct kefir_ast_type *unqualified_type = kefir_ast_unqualified_type(arg->properties.type);
             if (unqualified_type->tag == KEFIR_AST_TYPE_ENUMERATION) {
                 unqualified_type = unqualified_type->enumeration_type.underlying_type;
             }
@@ -664,34 +655,34 @@ kefir_result_t kefir_ast_evaluate_builtin_node(struct kefir_mem *mem, const stru
             kefir_ast_type_data_model_classification_t classification;
             REQUIRE_OK(kefir_ast_type_data_model_classify(context->type_traits, unqualified_type, &classification));
             value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
-            REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(node, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER),
-                    KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->source_location,
+            REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(arg, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER),
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &arg->source_location,
                                            "Expected integral constant expression"));
             switch (classification) {
                 case KEFIR_AST_TYPE_DATA_MODEL_INT8:
                     REQUIRE_OK(kefir_ast_evaluate_builtin_clrsb_constant_expression_value(
-                        KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node)->uinteger, 8, value));
+                        KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(arg)->uinteger, 8, value));
                     break;
 
                 case KEFIR_AST_TYPE_DATA_MODEL_INT16:
                     REQUIRE_OK(kefir_ast_evaluate_builtin_clrsb_constant_expression_value(
-                        KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node)->uinteger, 16, value));
+                        KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(arg)->uinteger, 16, value));
                     break;
 
                 case KEFIR_AST_TYPE_DATA_MODEL_INT32:
                     REQUIRE_OK(kefir_ast_evaluate_builtin_clrsb_constant_expression_value(
-                        KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node)->uinteger, 32, value));
+                        KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(arg)->uinteger, 32, value));
                     break;
 
                 case KEFIR_AST_TYPE_DATA_MODEL_INT64:
                     REQUIRE_OK(kefir_ast_evaluate_builtin_clrsb_constant_expression_value(
-                        KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node)->uinteger, 64, value));
+                        KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(arg)->uinteger, 64, value));
                     break;
 
                 case KEFIR_AST_TYPE_DATA_MODEL_INT128:
                 case KEFIR_AST_TYPE_DATA_MODEL_BITINT: {
                     const struct kefir_ast_constant_expression_value *node_value =
-                        KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node);
+                        KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(arg);
                     if (node_value->bitprecise != NULL) {
                         kefir_size_t count;
                         REQUIRE_OK(kefir_bigint_redundant_sign_bits(node_value->bitprecise, &count));
@@ -709,8 +700,8 @@ kefir_result_t kefir_ast_evaluate_builtin_node(struct kefir_mem *mem, const stru
         } break;
 
         case KEFIR_AST_BUILTIN_POPCOUNTG: {
-            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, node, iter->value);
-            const struct kefir_ast_type *unqualified_type = kefir_ast_unqualified_type(node->properties.type);
+            struct kefir_ast_node_base *arg = node->arguments[0];
+            const struct kefir_ast_type *unqualified_type = kefir_ast_unqualified_type(arg->properties.type);
             if (unqualified_type->tag == KEFIR_AST_TYPE_ENUMERATION) {
                 unqualified_type = unqualified_type->enumeration_type.underlying_type;
             }
@@ -718,34 +709,34 @@ kefir_result_t kefir_ast_evaluate_builtin_node(struct kefir_mem *mem, const stru
             kefir_ast_type_data_model_classification_t classification;
             REQUIRE_OK(kefir_ast_type_data_model_classify(context->type_traits, unqualified_type, &classification));
             value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
-            REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(node, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER),
-                    KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->source_location,
+            REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(arg, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER),
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &arg->source_location,
                                            "Expected integral constant expression"));
             switch (classification) {
                 case KEFIR_AST_TYPE_DATA_MODEL_INT8:
                     REQUIRE_OK(kefir_ast_evaluate_builtin_popcount_constant_expression_value(
-                        KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node)->uinteger, 8, value));
+                        KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(arg)->uinteger, 8, value));
                     break;
 
                 case KEFIR_AST_TYPE_DATA_MODEL_INT16:
                     REQUIRE_OK(kefir_ast_evaluate_builtin_popcount_constant_expression_value(
-                        KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node)->uinteger, 16, value));
+                        KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(arg)->uinteger, 16, value));
                     break;
 
                 case KEFIR_AST_TYPE_DATA_MODEL_INT32:
                     REQUIRE_OK(kefir_ast_evaluate_builtin_popcount_constant_expression_value(
-                        KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node)->uinteger, 32, value));
+                        KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(arg)->uinteger, 32, value));
                     break;
 
                 case KEFIR_AST_TYPE_DATA_MODEL_INT64:
                     REQUIRE_OK(kefir_ast_evaluate_builtin_popcount_constant_expression_value(
-                        KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node)->uinteger, 64, value));
+                        KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(arg)->uinteger, 64, value));
                     break;
 
                 case KEFIR_AST_TYPE_DATA_MODEL_INT128:
                 case KEFIR_AST_TYPE_DATA_MODEL_BITINT: {
                     const struct kefir_ast_constant_expression_value *node_value =
-                        KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node);
+                        KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(arg);
                     if (node_value->bitprecise != NULL) {
                         kefir_size_t count;
                         REQUIRE_OK(kefir_bigint_nonzero_count(node_value->bitprecise, &count));
@@ -763,8 +754,8 @@ kefir_result_t kefir_ast_evaluate_builtin_node(struct kefir_mem *mem, const stru
         } break;
 
         case KEFIR_AST_BUILTIN_PARITYG: {
-            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, node, iter->value);
-            const struct kefir_ast_type *unqualified_type = kefir_ast_unqualified_type(node->properties.type);
+            struct kefir_ast_node_base *arg = node->arguments[0];
+            const struct kefir_ast_type *unqualified_type = kefir_ast_unqualified_type(arg->properties.type);
             if (unqualified_type->tag == KEFIR_AST_TYPE_ENUMERATION) {
                 unqualified_type = unqualified_type->enumeration_type.underlying_type;
             }
@@ -772,34 +763,34 @@ kefir_result_t kefir_ast_evaluate_builtin_node(struct kefir_mem *mem, const stru
             kefir_ast_type_data_model_classification_t classification;
             REQUIRE_OK(kefir_ast_type_data_model_classify(context->type_traits, unqualified_type, &classification));
             value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
-            REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(node, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER),
-                    KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->source_location,
+            REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(arg, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER),
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &arg->source_location,
                                            "Expected integral constant expression"));
             switch (classification) {
                 case KEFIR_AST_TYPE_DATA_MODEL_INT8:
                     REQUIRE_OK(kefir_ast_evaluate_builtin_parity_constant_expression_value(
-                        KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node)->uinteger, 8, value));
+                        KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(arg)->uinteger, 8, value));
                     break;
 
                 case KEFIR_AST_TYPE_DATA_MODEL_INT16:
                     REQUIRE_OK(kefir_ast_evaluate_builtin_parity_constant_expression_value(
-                        KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node)->uinteger, 16, value));
+                        KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(arg)->uinteger, 16, value));
                     break;
 
                 case KEFIR_AST_TYPE_DATA_MODEL_INT32:
                     REQUIRE_OK(kefir_ast_evaluate_builtin_parity_constant_expression_value(
-                        KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node)->uinteger, 32, value));
+                        KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(arg)->uinteger, 32, value));
                     break;
 
                 case KEFIR_AST_TYPE_DATA_MODEL_INT64:
                     REQUIRE_OK(kefir_ast_evaluate_builtin_parity_constant_expression_value(
-                        KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node)->uinteger, 64, value));
+                        KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(arg)->uinteger, 64, value));
                     break;
 
                 case KEFIR_AST_TYPE_DATA_MODEL_INT128:
                 case KEFIR_AST_TYPE_DATA_MODEL_BITINT: {
                     const struct kefir_ast_constant_expression_value *node_value =
-                        KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node);
+                        KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(arg);
                     if (node_value->bitprecise != NULL) {
                         kefir_size_t count;
                         REQUIRE_OK(kefir_bigint_parity(node_value->bitprecise, &count));
@@ -817,9 +808,9 @@ kefir_result_t kefir_ast_evaluate_builtin_node(struct kefir_mem *mem, const stru
         } break;
 
         case KEFIR_AST_BUILTIN_KEFIR_INT_PRECISION: {
-            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, node, iter->value);
+            struct kefir_ast_node_base *arg = node->arguments[0];
 
-            const struct kefir_ast_type *unqualified_type = kefir_ast_unqualified_type(node->properties.type);
+            const struct kefir_ast_type *unqualified_type = kefir_ast_unqualified_type(arg->properties.type);
             kefir_ast_type_data_model_classification_t classification;
             REQUIRE_OK(kefir_ast_type_data_model_classify(context->type_traits, unqualified_type, &classification));
             value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
@@ -849,15 +840,15 @@ kefir_result_t kefir_ast_evaluate_builtin_node(struct kefir_mem *mem, const stru
                     break;
 
                 default:
-                    return KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->source_location,
+                    return KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &arg->source_location,
                                                   "Expected integral type");
             }
         } break;
 
         case KEFIR_AST_BUILTIN_KEFIR_IS_UNSIGNED: {
-            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, node, iter->value);
+            struct kefir_ast_node_base *arg = node->arguments[0];
 
-            const struct kefir_ast_type *unqualified_type = kefir_ast_unqualified_type(node->properties.type);
+            const struct kefir_ast_type *unqualified_type = kefir_ast_unqualified_type(arg->properties.type);
             kefir_bool_t is_signed;
             REQUIRE_OK(kefir_ast_type_is_signed(context->type_traits, unqualified_type, &is_signed));
 
@@ -866,10 +857,10 @@ kefir_result_t kefir_ast_evaluate_builtin_node(struct kefir_mem *mem, const stru
         } break;
 
         case KEFIR_AST_BUILTIN_KEFIR_BITFIELD_WIDTH: {
-            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, node, iter->value);
+            struct kefir_ast_node_base *arg = node->arguments[0];
             value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
-            if (node->properties.expression_props.bitfield_props.bitfield) {
-                value->integer = node->properties.expression_props.bitfield_props.width;
+            if (arg->properties.expression_props.bitfield_props.bitfield) {
+                value->integer = arg->properties.expression_props.bitfield_props.width;
             } else {
                 value->integer = -1;
             }
