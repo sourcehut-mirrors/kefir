@@ -61,6 +61,8 @@ kefir_result_t kefir_ast_translate_inline_assembly(struct kefir_mem *, const str
 
 kefir_result_t kefir_ast_translate_unit(struct kefir_mem *, const struct kefir_ast_node_base *,
                                         struct kefir_ast_translator_context *);
+kefir_result_t kefir_ast_translate_unit_consume(struct kefir_mem *, struct kefir_ast_node_base *,
+                                                struct kefir_ast_translator_context *);
 
 kefir_result_t kefir_ast_try_translate_constant(struct kefir_mem *, const struct kefir_ast_type *,
                                                 const struct kefir_ast_constant_expression_value *,
