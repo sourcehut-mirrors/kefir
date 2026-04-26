@@ -271,7 +271,10 @@ KEFIR_AST_NODE_STRUCT(kefir_ast_builtin, {
 });
 
 KEFIR_AST_NODE_STRUCT(kefir_ast_statement_expression, {
-    struct kefir_list block_items;
+    struct kefir_ast_node_base **block_items;
+    kefir_size_t block_capacity;
+    kefir_size_t block_length;
+
     struct kefir_ast_node_base *result;
     struct kefir_ast_node_attributes attributes;
 });

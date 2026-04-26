@@ -1554,7 +1554,7 @@ kefir_result_t kefir_parser_ast_builder_statement_expression_append(struct kefir
     ASSIGN_DECL_CAST(struct kefir_ast_statement_expression *, expr, stmt_expr->self);
 
     if (expr->result != NULL) {
-        res = kefir_list_insert_after(mem, &expr->block_items, kefir_list_tail(&expr->block_items), expr->result);
+        res = kefir_ast_statement_expression_append(mem, expr, expr->result);
         REQUIRE_ELSE(res == KEFIR_OK, {
             KEFIR_AST_NODE_FREE(mem, stmt_expr);
             KEFIR_AST_NODE_FREE(mem, stmt);
