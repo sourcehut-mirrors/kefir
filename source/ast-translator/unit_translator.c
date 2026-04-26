@@ -40,7 +40,7 @@ static kefir_result_t allocate_function_context(struct kefir_mem *mem, struct ke
 }
 
 static kefir_result_t translate_unit_impl(struct kefir_mem *mem, struct kefir_ast_translation_unit *unit,
-                                          struct kefir_ast_translator_context *context) {
+                                          struct kefir_ast_translator_context *context, kefir_bool_t consume) {
     for (kefir_size_t i = 0; i < unit->external_definitions_length; i++) {
         struct kefir_ast_node_base *external_definition = unit->external_definitions[i];
 
@@ -61,6 +61,11 @@ static kefir_result_t translate_unit_impl(struct kefir_mem *mem, struct kefir_as
                     return res;
                 });
                 REQUIRE_OK(kefir_ast_translator_function_context_free(mem, &func_ctx));
+
+                if (consume) {
+                    REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, external_definition));
+                    unit->external_definitions[i] = NULL;
+                }
             } break;
 
             case KEFIR_AST_NODE_CATEGORY_INLINE_ASSEMBLY:
@@ -86,6 +91,22 @@ kefir_result_t kefir_ast_translate_unit(struct kefir_mem *mem, const struct kefi
     REQUIRE_MATCH_OK(&res, kefir_ast_downcast_translation_unit(node, &unit, false),
                      KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST translator context"));
 
-    REQUIRE_OK(translate_unit_impl(mem, unit, context));
+    REQUIRE_OK(translate_unit_impl(mem, unit, context, false));
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_ast_translate_unit_consume(struct kefir_mem *mem, struct kefir_ast_node_base *node,
+                                                struct kefir_ast_translator_context *context) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(node != NULL && node->properties.category == KEFIR_AST_NODE_CATEGORY_TRANSLATION_UNIT,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST translation unit"));
+    REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST translator context"));
+
+    kefir_result_t res;
+    struct kefir_ast_translation_unit *unit = NULL;
+    REQUIRE_MATCH_OK(&res, kefir_ast_downcast_translation_unit(node, &unit, false),
+                     KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST translator context"));
+
+    REQUIRE_OK(translate_unit_impl(mem, unit, context, true));
     return KEFIR_OK;
 }

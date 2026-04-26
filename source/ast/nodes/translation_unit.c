@@ -31,7 +31,9 @@ kefir_result_t ast_translation_unit_free(struct kefir_mem *mem, struct kefir_ast
     ASSIGN_DECL_CAST(struct kefir_ast_translation_unit *, node, base->self);
 
     for (kefir_size_t i = 0; i < node->external_definitions_length; i++) {
-        REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, node->external_definitions[i]));
+        if (node->external_definitions[i] != NULL) {
+            REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, node->external_definitions[i]));
+        }
     }
     KEFIR_FREE(mem, node->external_definitions);
     KEFIR_FREE(mem, node);

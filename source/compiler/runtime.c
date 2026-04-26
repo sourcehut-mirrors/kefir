@@ -91,7 +91,7 @@ static kefir_result_t generate_runtime_functions_impl(struct kefir_mem *mem, FIL
         return res;
     });
 
-    res = kefir_compiler_translate(mem, context, defs_unit, &ir_module, false);
+    res = kefir_compiler_translate(mem, context, defs_unit, &ir_module, false, true);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_ir_module_free(mem, &ir_module);
         KEFIR_AST_NODE_FREE(mem, KEFIR_AST_NODE_BASE(defs_unit));

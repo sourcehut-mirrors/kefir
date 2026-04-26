@@ -109,7 +109,8 @@ kefir_result_t kefir_compiler_parse_source(struct kefir_mem *, struct kefir_comp
 kefir_result_t kefir_compiler_analyze(struct kefir_mem *, struct kefir_compiler_context *,
                                       struct kefir_ast_node_base *);
 kefir_result_t kefir_compiler_translate(struct kefir_mem *, struct kefir_compiler_context *,
-                                        struct kefir_ast_translation_unit *, struct kefir_ir_module *, kefir_bool_t);
+                                        struct kefir_ast_translation_unit *, struct kefir_ir_module *, kefir_bool_t,
+                                        kefir_bool_t);
 kefir_result_t kefir_compiler_optimize(struct kefir_mem *, struct kefir_compiler_context *, struct kefir_ir_module *,
                                        struct kefir_opt_module *);
 kefir_result_t kefir_compiler_codegen(struct kefir_mem *, struct kefir_compiler_context *, struct kefir_ir_module *,

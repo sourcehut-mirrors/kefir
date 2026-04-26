@@ -472,7 +472,7 @@ kefir_result_t kefir_compiler_analyze(struct kefir_mem *mem, struct kefir_compil
 
 kefir_result_t kefir_compiler_translate(struct kefir_mem *mem, struct kefir_compiler_context *context,
                                         struct kefir_ast_translation_unit *unit, struct kefir_ir_module *module,
-                                        kefir_bool_t compaction) {
+                                        kefir_bool_t compaction, kefir_bool_t consume) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid compiler context"));
     REQUIRE(unit != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST translation unit"));
@@ -494,7 +494,11 @@ kefir_result_t kefir_compiler_translate(struct kefir_mem *mem, struct kefir_comp
     res = kefir_ast_translator_build_global_scope_layout(mem, module, &context->ast_global_context,
                                                          translator_context.environment,
                                                          translator_context.debug_entries, &global_scope);
-    REQUIRE_CHAIN(&res, kefir_ast_translate_unit(mem, KEFIR_AST_NODE_BASE(unit), &translator_context));
+    if (consume) {
+        REQUIRE_CHAIN(&res, kefir_ast_translate_unit_consume(mem, KEFIR_AST_NODE_BASE(unit), &translator_context));
+    } else {
+        REQUIRE_CHAIN(&res, kefir_ast_translate_unit(mem, KEFIR_AST_NODE_BASE(unit), &translator_context));
+    }
     REQUIRE_CHAIN(&res,
                   kefir_ast_translate_global_scope(mem, &context->ast_global_context.context, module, &global_scope));
     REQUIRE_ELSE(res == KEFIR_OK, {
