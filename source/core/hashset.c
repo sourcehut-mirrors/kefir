@@ -28,6 +28,9 @@ kefir_result_t kefir_hashset_init(struct kefir_hashset *hashset, const struct ke
     REQUIRE(hashset != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to hashset"));
     REQUIRE(ops != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid hashset operations"));
 
+    UNUSED(kefir_hashtable_str_hash);
+    UNUSED(kefir_hashtable_str_equal);
+
     hashset->entries = NULL;
     hashset->entry_states = NULL;
     hashset->capacity = 0;
@@ -52,6 +55,9 @@ static kefir_result_t find_position_for_insert(const struct kefir_hashtable_ops 
                                                kefir_size_t *position_ptr, kefir_size_t *collisions_ptr) {
     if (ops == &kefir_hashtable_uint_ops) {
         KEFIR_HASHTABLE_FIND_POSITION_FOR_INSERT(kefir_hashtable_uint_hash, kefir_hashtable_uint_equal, NULL, entries,
+                                                 entry_states, capacity, key, position_ptr, collisions_ptr);
+    } else if (ops == &kefir_hashtable_str_ops) {
+        KEFIR_HASHTABLE_FIND_POSITION_FOR_INSERT(kefir_hashtable_str_hash, kefir_hashtable_str_equal, NULL, entries,
                                                  entry_states, capacity, key, position_ptr, collisions_ptr);
     } else {
         KEFIR_HASHTABLE_FIND_POSITION_FOR_INSERT(ops->hash, ops->equal, ops->payload, entries, entry_states, capacity,
@@ -200,6 +206,8 @@ kefir_result_t kefir_hashset_delete(struct kefir_hashset *hashset, kefir_hashset
 
     if (hashset->ops == &kefir_hashtable_uint_ops) {
         DELETE(kefir_hashtable_uint_hash, kefir_hashtable_uint_equal, NULL);
+    } else if (hashset->ops == &kefir_hashtable_str_ops) {
+        DELETE(kefir_hashtable_str_hash, kefir_hashtable_str_equal, NULL);
     } else {
         DELETE(hashset->ops->hash, hashset->ops->equal, hashset->ops->payload);
     }
@@ -245,6 +253,8 @@ kefir_bool_t kefir_hashset_has(const struct kefir_hashset *hashset, kefir_hashse
 
     if (hashset->ops == &kefir_hashtable_uint_ops) {
         HAS(kefir_hashtable_uint_hash, kefir_hashtable_uint_equal, NULL);
+    } else if (hashset->ops == &kefir_hashtable_str_ops) {
+        HAS(kefir_hashtable_str_hash, kefir_hashtable_str_equal, NULL);
     } else {
         HAS(hashset->ops->hash, hashset->ops->equal, hashset->ops->payload);
     }
