@@ -73,6 +73,9 @@ static kefir_result_t find_position_for_insert(const struct kefir_hashtable_ops 
     if (ops == &kefir_hashtable_uint_ops) {
         KEFIR_HASHTABLE_FIND_POSITION_FOR_INSERT(kefir_hashtable_uint_hash, kefir_hashtable_uint_equal, NULL, entries,
                                                  entry_states, capacity, key, position_ptr, collisions_ptr);
+    } else if (ops == &kefir_hashtable_str_ops) {
+        KEFIR_HASHTABLE_FIND_POSITION_FOR_INSERT(kefir_hashtable_str_hash, kefir_hashtable_str_equal, NULL, entries,
+                                                 entry_states, capacity, key, position_ptr, collisions_ptr);
     } else {
         KEFIR_HASHTABLE_FIND_POSITION_FOR_INSERT(ops->hash, ops->equal, ops->payload, entries, entry_states, capacity,
                                                  key, position_ptr, collisions_ptr);
@@ -178,6 +181,8 @@ kefir_result_t kefir_hashtable_delete(struct kefir_mem *mem, struct kefir_hashta
 
     if (hashtable->ops == &kefir_hashtable_uint_ops) {
         DELETE(kefir_hashtable_uint_hash, kefir_hashtable_uint_equal, NULL);
+    } else if (hashtable->ops == &kefir_hashtable_str_ops) {
+        DELETE(kefir_hashtable_str_hash, kefir_hashtable_str_equal, NULL);
     } else {
         DELETE(hashtable->ops->hash, hashtable->ops->equal, hashtable->ops->payload);
     }
@@ -252,6 +257,8 @@ kefir_result_t kefir_hashtable_at_mut(const struct kefir_hashtable *hashtable, k
 
     if (hashtable->ops == &kefir_hashtable_uint_ops) {
         AT_MUT(kefir_hashtable_uint_hash, kefir_hashtable_uint_equal, NULL);
+    } else if (hashtable->ops == &kefir_hashtable_str_ops) {
+        AT_MUT(kefir_hashtable_str_hash, kefir_hashtable_str_equal, NULL);
     } else {
         AT_MUT(hashtable->ops->hash, hashtable->ops->equal, hashtable->ops->payload);
     }
@@ -274,11 +281,38 @@ kefir_result_t kefir_hashtable_at(const struct kefir_hashtable *hashtable, kefir
 
     if (hashtable->ops == &kefir_hashtable_uint_ops) {
         AT(kefir_hashtable_uint_hash, kefir_hashtable_uint_equal, NULL);
+    } else if (hashtable->ops == &kefir_hashtable_str_ops) {
+        AT(kefir_hashtable_str_hash, kefir_hashtable_str_equal, NULL);
     } else {
         AT(hashtable->ops->hash, hashtable->ops->equal, hashtable->ops->payload);
     }
 
-#undef AT_MUT
+#undef AT
+}
+
+kefir_result_t kefir_hashtable_at2(const struct kefir_hashtable *hashtable, kefir_hashtable_key_t key,
+                                   kefir_hashtable_key_t *key_ptr, kefir_hashtable_value_t *value_ptr) {
+    REQUIRE(hashtable != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid hashtable"));
+
+#define AT(_ops_hash, _ops_equal, _ops_payload)                     \
+    KEFIR_HASHTABLE_HAS(                                            \
+        hashtable, _ops_hash, _ops_equal, _ops_payload, key,        \
+        {                                                           \
+            ASSIGN_PTR(key_ptr, hashtable->entries[index].key);     \
+            ASSIGN_PTR(value_ptr, hashtable->entries[index].value); \
+            return KEFIR_OK;                                        \
+        },                                                          \
+        return KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find requested key in the hashtable"););
+
+    if (hashtable->ops == &kefir_hashtable_uint_ops) {
+        AT(kefir_hashtable_uint_hash, kefir_hashtable_uint_equal, NULL);
+    } else if (hashtable->ops == &kefir_hashtable_str_ops) {
+        AT(kefir_hashtable_str_hash, kefir_hashtable_str_equal, NULL);
+    } else {
+        AT(hashtable->ops->hash, hashtable->ops->equal, hashtable->ops->payload);
+    }
+
+#undef AT
 }
 
 kefir_bool_t kefir_hashtable_has(const struct kefir_hashtable *hashtable, kefir_hashtable_key_t key) {
@@ -289,6 +323,8 @@ kefir_bool_t kefir_hashtable_has(const struct kefir_hashtable *hashtable, kefir_
 
     if (hashtable->ops == &kefir_hashtable_uint_ops) {
         HAS(kefir_hashtable_uint_hash, kefir_hashtable_uint_equal, NULL);
+    } else if (hashtable->ops == &kefir_hashtable_str_ops) {
+        HAS(kefir_hashtable_str_hash, kefir_hashtable_str_equal, NULL);
     } else {
         HAS(hashtable->ops->hash, hashtable->ops->equal, hashtable->ops->payload);
     }
@@ -333,3 +369,6 @@ kefir_result_t kefir_hashtable_next(struct kefir_hashtable_iterator *iter, kefir
 
 const struct kefir_hashtable_ops kefir_hashtable_uint_ops = {
     .hash = kefir_hashtable_uint_hash, .equal = kefir_hashtable_uint_equal, .payload = NULL};
+
+const struct kefir_hashtable_ops kefir_hashtable_str_ops = {
+    .hash = kefir_hashtable_str_hash, .equal = kefir_hashtable_str_equal, .payload = NULL};

@@ -23,6 +23,7 @@
 
 #include "kefir/core/basic-types.h"
 #include "kefir/core/mem.h"
+#include <string.h>
 
 typedef kefir_uptr_t kefir_hashtable_key_t;
 typedef kefir_uptr_t kefir_hashtable_value_t;
@@ -80,6 +81,8 @@ kefir_result_t kefir_hashtable_ensure(struct kefir_mem *, struct kefir_hashtable
 kefir_result_t kefir_hashtable_at_mut(const struct kefir_hashtable *, kefir_hashtable_key_t,
                                       kefir_hashtable_value_t **);
 kefir_result_t kefir_hashtable_at(const struct kefir_hashtable *, kefir_hashtable_key_t, kefir_hashtable_value_t *);
+kefir_result_t kefir_hashtable_at2(const struct kefir_hashtable *, kefir_hashtable_key_t, kefir_hashtable_key_t *,
+                                   kefir_hashtable_value_t *);
 kefir_bool_t kefir_hashtable_has(const struct kefir_hashtable *, kefir_hashtable_key_t);
 
 typedef struct kefir_hashtable_iterator {
@@ -93,6 +96,7 @@ kefir_result_t kefir_hashtable_next(struct kefir_hashtable_iterator *, kefir_has
                                     kefir_hashtable_value_t *);
 
 extern const struct kefir_hashtable_ops kefir_hashtable_uint_ops;
+extern const struct kefir_hashtable_ops kefir_hashtable_str_ops;
 
 #ifdef KEFIR_HASHTABLE_INTERNAL
 #include "kefir/core/hash.h"
@@ -108,6 +112,32 @@ static kefir_bool_t kefir_hashtable_uint_equal(kefir_hashtable_key_t key1, kefir
     UNUSED(payload);
 
     return key1 == key2;
+}
+
+static kefir_hashtable_hash_t kefir_hashtable_str_hash(kefir_hashtable_key_t key, void *payload) {
+    UNUSED(payload);
+
+    const char *str = (const char *) key;
+    REQUIRE(str != NULL, 0);
+    kefir_hashtable_hash_t hash = 7;
+    const kefir_size_t length = strlen(str);
+    for (kefir_size_t i = 0; i < length; i++) {
+        hash = (hash * 31) + str[i];
+    }
+    return hash;
+}
+
+static kefir_bool_t kefir_hashtable_str_equal(kefir_hashtable_key_t key1, kefir_hashtable_key_t key2, void *payload) {
+    UNUSED(payload);
+    const char *str1 = (const char *) key1;
+    const char *str2 = (const char *) key2;
+    if (str1 == str2) {
+        return 1;
+    } else if (str1 == NULL || str2 == NULL) {
+        return 0;
+    }
+
+    return strcmp(str1, str2) == 0;
 }
 
 #define KEFIR_REHASH_OCCUPATION_THRESHOLD_PCT 80
