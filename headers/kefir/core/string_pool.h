@@ -23,11 +23,11 @@
 
 #include "kefir/core/basic-types.h"
 #include "kefir/core/mem.h"
-#include "kefir/core/hashtree.h"
+#include "kefir/core/hashtable.h"
 
 typedef struct kefir_string_pool {
-    struct kefir_hashtree strings;
-    struct kefir_hashtree named_strings;
+    struct kefir_hashtable strings;
+    struct kefir_hashtable named_strings;
     kefir_size_t next_id;
 } kefir_string_pool_t;
 
