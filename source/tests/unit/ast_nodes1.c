@@ -457,13 +457,10 @@ DEFINE_CASE(ast_nodes_builtins, "AST nodes - builtins") {
             &kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(&kft_mem, &symbols, "array1")),
             KEFIR_AST_NODE_BASE(kefir_ast_new_constant_uint(&kft_mem, 5))))));
     ASSERT(builtin->builtin == KEFIR_AST_BUILTIN_VA_ARG);
-    ASSERT(kefir_list_length(&builtin->arguments) == 3);
-    ASSERT(((struct kefir_ast_node_base *) kefir_list_at(&builtin->arguments, 0)->value)->klass->type ==
-           KEFIR_AST_IDENTIFIER);
-    ASSERT(((struct kefir_ast_node_base *) kefir_list_at(&builtin->arguments, 1)->value)->klass->type ==
-           KEFIR_AST_CONSTANT);
-    ASSERT(((struct kefir_ast_node_base *) kefir_list_at(&builtin->arguments, 2)->value)->klass->type ==
-           KEFIR_AST_ARRAY_SUBSCRIPT);
+    ASSERT(builtin->argument_length == 3);
+    ASSERT(builtin->arguments[0]->klass->type == KEFIR_AST_IDENTIFIER);
+    ASSERT(builtin->arguments[1]->klass->type == KEFIR_AST_CONSTANT);
+    ASSERT(builtin->arguments[2]->klass->type == KEFIR_AST_ARRAY_SUBSCRIPT);
     ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(builtin)));
     ASSERT_OK(kefir_string_pool_free(&kft_mem, &symbols));
 }

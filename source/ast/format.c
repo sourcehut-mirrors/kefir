@@ -661,9 +661,8 @@ static kefir_result_t visit_builtin(const struct kefir_ast_visitor *visitor, con
     }
     REQUIRE_OK(kefir_json_output_object_key(json, "arguments"));
     REQUIRE_OK(kefir_json_output_array_begin(json));
-    for (const struct kefir_list_entry *iter = kefir_list_head(&node->arguments); iter != NULL;
-         kefir_list_next(&iter)) {
-        ASSIGN_DECL_CAST(struct kefir_ast_node_base *, arg, iter->value);
+    for (kefir_size_t i = 0; i < node->argument_length; i++) {
+        struct kefir_ast_node_base *arg = node->arguments[i];
         REQUIRE_OK(kefir_ast_format(json, arg, param->display_source_location));
     }
     REQUIRE_OK(kefir_json_output_array_end(json));
