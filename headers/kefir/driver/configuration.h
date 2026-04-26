@@ -23,6 +23,7 @@
 
 #include "kefir/core/list.h"
 #include "kefir/core/string_pool.h"
+#include "kefir/core/hashtree.h"
 #include "kefir/core/standard_version.h"
 #include "kefir/driver/target.h"
 

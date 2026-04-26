@@ -26,6 +26,7 @@
 #include "kefir/core/basic-types.h"
 #include "kefir/core/string_pool.h"
 #include "kefir/core/source_location.h"
+#include "kefir/core/hashtree.h"
 #include "kefir/util/bigint.h"
 #include "kefir/util/dfp.h"
 #include <stdio.h>
