@@ -102,8 +102,8 @@ kefir_result_t kefir_compiler_preprocess_include(struct kefir_mem *, struct kefi
                                                  const char *, const char *);
 kefir_result_t kefir_compiler_lex(struct kefir_mem *, struct kefir_compiler_context *, struct kefir_token_allocator *,
                                   struct kefir_token_buffer *, const char *, kefir_size_t, const char *);
-kefir_result_t kefir_compiler_parse(struct kefir_mem *, struct kefir_compiler_context *, struct kefir_token_buffer *,
-                                    struct kefir_ast_translation_unit **);
+kefir_result_t kefir_compiler_parse(struct kefir_mem *, struct kefir_compiler_context *,
+                                    const struct kefir_token_cursor_handle *, struct kefir_ast_translation_unit **);
 kefir_result_t kefir_compiler_parse_source(struct kefir_mem *, struct kefir_compiler_context *, const char *,
                                            kefir_size_t, const char *, struct kefir_ast_translation_unit **);
 kefir_result_t kefir_compiler_analyze(struct kefir_mem *, struct kefir_compiler_context *,

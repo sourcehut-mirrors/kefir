@@ -69,15 +69,17 @@ static kefir_result_t generate_runtime_functions_impl(struct kefir_mem *mem, FIL
     const char *filename = "<kefir-inline-runtime>";
 
     struct kefir_token_buffer buffer;
+    struct kefir_token_cursor_handle tokens_handle;
     struct kefir_ast_translation_unit *defs_unit;
     struct kefir_ir_module ir_module;
     struct kefir_opt_module opt_module;
     REQUIRE_OK(kefir_token_buffer_init(&buffer));
+    REQUIRE_OK(kefir_token_buffer_cursor_handle(&buffer, &tokens_handle));
 
     kefir_result_t res = kefir_compiler_preprocess_lex(
         mem, context, KEFIR_PREPROCESSOR_MODE_NORMAL, &context->builtin_token_allocator, &buffer,
         KeifrCodegenInlineRuntime, KeifrCodegenInlineRuntimeLength, filename, filename);
-    REQUIRE_CHAIN(&res, kefir_compiler_parse(mem, context, &buffer, &defs_unit));
+    REQUIRE_CHAIN(&res, kefir_compiler_parse(mem, context, &tokens_handle, &defs_unit));
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_token_buffer_free(mem, &buffer);
         return res;
