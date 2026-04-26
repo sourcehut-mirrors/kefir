@@ -28,8 +28,8 @@
 typedef struct kefir_opt_module {
     struct kefir_ir_module *ir_module;
 
-    struct kefir_hashtree type_descriptors;
-    struct kefir_hashtree functions;
+    struct kefir_hashtable type_descriptors;
+    struct kefir_hashtable functions;
     struct kefir_hashtreeset runtime_functions;
 } kefir_opt_module_t;
 
