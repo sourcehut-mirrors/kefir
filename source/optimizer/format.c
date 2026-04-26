@@ -1663,13 +1663,15 @@ kefir_result_t kefir_opt_module_format(struct kefir_mem *mem, struct kefir_json_
 
     REQUIRE_CHAIN(&res, kefir_json_output_object_key(json, "functions"));
     REQUIRE_CHAIN(&res, kefir_json_output_array_begin(json));
-    struct kefir_hashtree_node_iterator iter;
-    for (const struct kefir_hashtree_node *node = kefir_hashtree_iter(&module->functions, &iter); node != NULL;
-         node = kefir_hashtree_next(&iter)) {
-        ASSIGN_DECL_CAST(const struct kefir_opt_function *, function, node->value);
+    struct kefir_hashtable_iterator iter;
+    kefir_hashtable_key_t table_key;
+    kefir_hashtable_value_t table_value;
+    for (res = kefir_hashtable_iter(&module->functions, &iter, &table_key, &table_value); res == KEFIR_OK;
+         res = kefir_hashtable_next(&iter, &table_key, &table_value)) {
+        ASSIGN_DECL_CAST(const struct kefir_opt_function *, function, table_value);
         if (!analyze || kefir_opt_module_is_symbol_alive(&module_liveness, function->ir_func->name)) {
             REQUIRE_CHAIN(
-                &res, format_function_opt(json, (kefir_id_t) iter.node->key,
+                &res, format_function_opt(json, (kefir_id_t) table_key,
                                           &(struct format_function_opt_payload) {.mem = mem,
                                                                                  .module = module,
                                                                                  .module_liveness = &module_liveness,
@@ -1677,6 +1679,9 @@ kefir_result_t kefir_opt_module_format(struct kefir_mem *mem, struct kefir_json_
                                                                                  .analyze = analyze,
                                                                                  .skip_preamble = false}));
         }
+    }
+    if (res == KEFIR_ITERATOR_END) {
+        res = KEFIR_OK;
     }
     REQUIRE_CHAIN(&res, kefir_json_output_array_end(json));
 

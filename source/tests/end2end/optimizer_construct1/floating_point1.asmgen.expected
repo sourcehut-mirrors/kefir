@@ -1,6 +1,183 @@
 {
     "functions": [
         {
+            "id": 51,
+            "name": "comparison2",
+            "code": {
+                "entry_point": 0,
+                "blocks": [
+                    {
+                        "id": 0,
+                        "control_flow": 31,
+                        "code": [
+                            {
+                                "id": 31,
+                                "opcode": "return",
+                                "arg": null,
+                                "control_next": null,
+                                "ir_instruction": null
+                            }
+                        ],
+                        "public_labels": [],
+                        "properties": {
+                            "successors": [],
+                            "predecessors": [],
+                            "immediate_dominator": null,
+                            "alive_instructions": [
+                                31
+                            ]
+                        }
+                    }
+                ],
+                "debug": {
+                    "local_variables": [
+                        {
+                            "variable_id": 214748364813,
+                            "allocations": [
+                                6
+                            ]
+                        },
+                        {
+                            "variable_id": 214748364814,
+                            "allocations": [
+                                3
+                            ]
+                        }
+                    ],
+                    "allocation_placement": []
+                },
+                "memssa": [
+                    {
+                        "node_ref": 0,
+                        "type": "root"
+                    },
+                    {
+                        "node_ref": 1,
+                        "type": "terminate",
+                        "predecessor_ref": 0
+                    }
+                ]
+            }
+        },
+        {
+            "id": 50,
+            "name": "comparison1",
+            "code": {
+                "entry_point": 0,
+                "blocks": [
+                    {
+                        "id": 0,
+                        "control_flow": 31,
+                        "code": [
+                            {
+                                "id": 31,
+                                "opcode": "return",
+                                "arg": null,
+                                "control_next": null,
+                                "ir_instruction": null
+                            }
+                        ],
+                        "public_labels": [],
+                        "properties": {
+                            "successors": [],
+                            "predecessors": [],
+                            "immediate_dominator": null,
+                            "alive_instructions": [
+                                31
+                            ]
+                        }
+                    }
+                ],
+                "debug": {
+                    "local_variables": [
+                        {
+                            "variable_id": 206158430218,
+                            "allocations": [
+                                6
+                            ]
+                        },
+                        {
+                            "variable_id": 206158430219,
+                            "allocations": [
+                                3
+                            ]
+                        }
+                    ],
+                    "allocation_placement": []
+                },
+                "memssa": [
+                    {
+                        "node_ref": 0,
+                        "type": "root"
+                    },
+                    {
+                        "node_ref": 1,
+                        "type": "terminate",
+                        "predecessor_ref": 0
+                    }
+                ]
+            }
+        },
+        {
+            "id": 52,
+            "name": "conversion",
+            "code": {
+                "entry_point": 0,
+                "blocks": [
+                    {
+                        "id": 0,
+                        "control_flow": 28,
+                        "code": [
+                            {
+                                "id": 28,
+                                "opcode": "return",
+                                "arg": null,
+                                "control_next": null,
+                                "ir_instruction": null
+                            }
+                        ],
+                        "public_labels": [],
+                        "properties": {
+                            "successors": [],
+                            "predecessors": [],
+                            "immediate_dominator": null,
+                            "alive_instructions": [
+                                28
+                            ]
+                        }
+                    }
+                ],
+                "debug": {
+                    "local_variables": [
+                        {
+                            "variable_id": 223338299408,
+                            "allocations": [
+                                6
+                            ]
+                        },
+                        {
+                            "variable_id": 223338299409,
+                            "allocations": [
+                                3
+                            ]
+                        }
+                    ],
+                    "allocation_placement": []
+                },
+                "memssa": [
+                    {
+                        "node_ref": 0,
+                        "type": "root"
+                    },
+                    {
+                        "node_ref": 1,
+                        "type": "terminate",
+                        "predecessor_ref": 0
+                    }
+                ]
+            }
+        },
+        {
             "id": 48,
             "name": "arith1",
             "code": {
@@ -720,183 +897,6 @@
                         "node_ref": 8,
                         "type": "consume",
                         "predecessor_ref": 4
-                    }
-                ]
-            }
-        },
-        {
-            "id": 50,
-            "name": "comparison1",
-            "code": {
-                "entry_point": 0,
-                "blocks": [
-                    {
-                        "id": 0,
-                        "control_flow": 31,
-                        "code": [
-                            {
-                                "id": 31,
-                                "opcode": "return",
-                                "arg": null,
-                                "control_next": null,
-                                "ir_instruction": null
-                            }
-                        ],
-                        "public_labels": [],
-                        "properties": {
-                            "successors": [],
-                            "predecessors": [],
-                            "immediate_dominator": null,
-                            "alive_instructions": [
-                                31
-                            ]
-                        }
-                    }
-                ],
-                "debug": {
-                    "local_variables": [
-                        {
-                            "variable_id": 206158430218,
-                            "allocations": [
-                                6
-                            ]
-                        },
-                        {
-                            "variable_id": 206158430219,
-                            "allocations": [
-                                3
-                            ]
-                        }
-                    ],
-                    "allocation_placement": []
-                },
-                "memssa": [
-                    {
-                        "node_ref": 0,
-                        "type": "root"
-                    },
-                    {
-                        "node_ref": 1,
-                        "type": "terminate",
-                        "predecessor_ref": 0
-                    }
-                ]
-            }
-        },
-        {
-            "id": 51,
-            "name": "comparison2",
-            "code": {
-                "entry_point": 0,
-                "blocks": [
-                    {
-                        "id": 0,
-                        "control_flow": 31,
-                        "code": [
-                            {
-                                "id": 31,
-                                "opcode": "return",
-                                "arg": null,
-                                "control_next": null,
-                                "ir_instruction": null
-                            }
-                        ],
-                        "public_labels": [],
-                        "properties": {
-                            "successors": [],
-                            "predecessors": [],
-                            "immediate_dominator": null,
-                            "alive_instructions": [
-                                31
-                            ]
-                        }
-                    }
-                ],
-                "debug": {
-                    "local_variables": [
-                        {
-                            "variable_id": 214748364813,
-                            "allocations": [
-                                6
-                            ]
-                        },
-                        {
-                            "variable_id": 214748364814,
-                            "allocations": [
-                                3
-                            ]
-                        }
-                    ],
-                    "allocation_placement": []
-                },
-                "memssa": [
-                    {
-                        "node_ref": 0,
-                        "type": "root"
-                    },
-                    {
-                        "node_ref": 1,
-                        "type": "terminate",
-                        "predecessor_ref": 0
-                    }
-                ]
-            }
-        },
-        {
-            "id": 52,
-            "name": "conversion",
-            "code": {
-                "entry_point": 0,
-                "blocks": [
-                    {
-                        "id": 0,
-                        "control_flow": 28,
-                        "code": [
-                            {
-                                "id": 28,
-                                "opcode": "return",
-                                "arg": null,
-                                "control_next": null,
-                                "ir_instruction": null
-                            }
-                        ],
-                        "public_labels": [],
-                        "properties": {
-                            "successors": [],
-                            "predecessors": [],
-                            "immediate_dominator": null,
-                            "alive_instructions": [
-                                28
-                            ]
-                        }
-                    }
-                ],
-                "debug": {
-                    "local_variables": [
-                        {
-                            "variable_id": 223338299408,
-                            "allocations": [
-                                6
-                            ]
-                        },
-                        {
-                            "variable_id": 223338299409,
-                            "allocations": [
-                                3
-                            ]
-                        }
-                    ],
-                    "allocation_placement": []
-                },
-                "memssa": [
-                    {
-                        "node_ref": 0,
-                        "type": "root"
-                    },
-                    {
-                        "node_ref": 1,
-                        "type": "terminate",
-                        "predecessor_ref": 0
                     }
                 ]
             }

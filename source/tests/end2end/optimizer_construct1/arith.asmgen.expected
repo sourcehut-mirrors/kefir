@@ -1,52 +1,6 @@
 {
     "functions": [
         {
-            "id": 46,
-            "name": "none",
-            "code": {
-                "entry_point": 0,
-                "blocks": [
-                    {
-                        "id": 0,
-                        "control_flow": 5,
-                        "code": [
-                            {
-                                "id": 5,
-                                "opcode": "return",
-                                "arg": null,
-                                "control_next": null,
-                                "ir_instruction": null
-                            }
-                        ],
-                        "public_labels": [],
-                        "properties": {
-                            "successors": [],
-                            "predecessors": [],
-                            "immediate_dominator": null,
-                            "alive_instructions": [
-                                5
-                            ]
-                        }
-                    }
-                ],
-                "debug": {
-                    "local_variables": [],
-                    "allocation_placement": []
-                },
-                "memssa": [
-                    {
-                        "node_ref": 0,
-                        "type": "root"
-                    },
-                    {
-                        "node_ref": 1,
-                        "type": "terminate",
-                        "predecessor_ref": 0
-                    }
-                ]
-            }
-        },
-        {
             "id": 47,
             "name": "test1",
             "code": {
@@ -638,6 +592,52 @@
                         "node_ref": 2,
                         "type": "terminate",
                         "predecessor_ref": 0
+                    },
+                    {
+                        "node_ref": 1,
+                        "type": "terminate",
+                        "predecessor_ref": 0
+                    }
+                ]
+            }
+        },
+        {
+            "id": 46,
+            "name": "none",
+            "code": {
+                "entry_point": 0,
+                "blocks": [
+                    {
+                        "id": 0,
+                        "control_flow": 5,
+                        "code": [
+                            {
+                                "id": 5,
+                                "opcode": "return",
+                                "arg": null,
+                                "control_next": null,
+                                "ir_instruction": null
+                            }
+                        ],
+                        "public_labels": [],
+                        "properties": {
+                            "successors": [],
+                            "predecessors": [],
+                            "immediate_dominator": null,
+                            "alive_instructions": [
+                                5
+                            ]
+                        }
+                    }
+                ],
+                "debug": {
+                    "local_variables": [],
+                    "allocation_placement": []
+                },
+                "memssa": [
+                    {
+                        "node_ref": 0,
+                        "type": "root"
                     },
                     {
                         "node_ref": 1,

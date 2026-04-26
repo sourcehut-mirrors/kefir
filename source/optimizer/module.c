@@ -25,9 +25,9 @@
 #include "kefir/core/util.h"
 #include <string.h>
 
-static kefir_result_t free_type_descriptor(struct kefir_mem *mem, struct kefir_hashtree *tree, kefir_hashtree_key_t key,
-                                           kefir_hashtree_value_t value, void *payload) {
-    UNUSED(tree);
+static kefir_result_t free_type_descriptor(struct kefir_mem *mem, struct kefir_hashtable *table,
+                                           kefir_hashtable_key_t key, kefir_hashtable_value_t value, void *payload) {
+    UNUSED(table);
     UNUSED(key);
     UNUSED(payload);
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
@@ -39,9 +39,9 @@ static kefir_result_t free_type_descriptor(struct kefir_mem *mem, struct kefir_h
     return KEFIR_OK;
 }
 
-static kefir_result_t free_function(struct kefir_mem *mem, struct kefir_hashtree *tree, kefir_hashtree_key_t key,
-                                    kefir_hashtree_value_t value, void *payload) {
-    UNUSED(tree);
+static kefir_result_t free_function(struct kefir_mem *mem, struct kefir_hashtable *table, kefir_hashtable_key_t key,
+                                    kefir_hashtable_value_t value, void *payload) {
+    UNUSED(table);
     UNUSED(key);
     UNUSED(payload);
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
@@ -65,8 +65,8 @@ static kefir_result_t add_type_descr(struct kefir_mem *mem, struct kefir_opt_mod
         return res;
     });
 
-    res = kefir_hashtree_insert(mem, &module->type_descriptors, (kefir_hashtree_key_t) ir_type_id,
-                                (kefir_hashtree_value_t) descr);
+    res = kefir_hashtable_insert(mem, &module->type_descriptors, (kefir_hashtable_key_t) ir_type_id,
+                                 (kefir_hashtable_value_t) descr);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_opt_type_descriptor_free(mem, descr);
         KEFIR_FREE(mem, descr);
@@ -86,8 +86,8 @@ static kefir_result_t add_func(struct kefir_mem *mem, struct kefir_opt_module *m
         return res;
     });
 
-    res = kefir_hashtree_insert(mem, &module->functions, (kefir_hashtree_key_t) func->ir_func->declaration->id,
-                                (kefir_hashtree_value_t) func);
+    res = kefir_hashtable_insert(mem, &module->functions, (kefir_hashtable_key_t) func->ir_func->declaration->id,
+                                 (kefir_hashtable_value_t) func);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_opt_function_free(mem, func);
         KEFIR_FREE(mem, func);
@@ -104,11 +104,11 @@ kefir_result_t kefir_opt_module_init(struct kefir_mem *mem, struct kefir_ir_modu
     REQUIRE(ir_module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR module"));
     REQUIRE(module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to optimizer module"));
 
-    REQUIRE_OK(kefir_hashtree_init(&module->type_descriptors, &kefir_hashtree_uint_ops));
-    REQUIRE_OK(kefir_hashtree_on_removal(&module->type_descriptors, free_type_descriptor, NULL));
+    REQUIRE_OK(kefir_hashtable_init(&module->type_descriptors, &kefir_hashtable_uint_ops));
+    REQUIRE_OK(kefir_hashtable_on_removal(&module->type_descriptors, free_type_descriptor, NULL));
 
-    REQUIRE_OK(kefir_hashtree_init(&module->functions, &kefir_hashtree_uint_ops));
-    REQUIRE_OK(kefir_hashtree_on_removal(&module->functions, free_function, NULL));
+    REQUIRE_OK(kefir_hashtable_init(&module->functions, &kefir_hashtable_uint_ops));
+    REQUIRE_OK(kefir_hashtable_on_removal(&module->functions, free_function, NULL));
 
     REQUIRE_OK(kefir_hashtreeset_init(&module->runtime_functions, &kefir_hashtree_str_ops));
 
@@ -144,8 +144,8 @@ kefir_result_t kefir_opt_module_free(struct kefir_mem *mem, struct kefir_opt_mod
     REQUIRE(module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to optimizer module"));
 
     REQUIRE_OK(kefir_hashtreeset_free(mem, &module->runtime_functions));
-    REQUIRE_OK(kefir_hashtree_free(mem, &module->type_descriptors));
-    REQUIRE_OK(kefir_hashtree_free(mem, &module->functions));
+    REQUIRE_OK(kefir_hashtable_free(mem, &module->type_descriptors));
+    REQUIRE_OK(kefir_hashtable_free(mem, &module->functions));
 
     module->ir_module = NULL;
     return KEFIR_OK;
@@ -157,14 +157,14 @@ kefir_result_t kefir_opt_module_get_type(const struct kefir_opt_module *module, 
     REQUIRE(type_descr_ptr != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to optimizer type descriptor"));
 
-    struct kefir_hashtree_node *node = NULL;
-    kefir_result_t res = kefir_hashtree_at(&module->type_descriptors, (kefir_hashtree_key_t) ir_type_id, &node);
+    kefir_hashtable_value_t value;
+    kefir_result_t res = kefir_hashtable_at(&module->type_descriptors, (kefir_hashtree_key_t) ir_type_id, &value);
     if (res == KEFIR_NOT_FOUND) {
         res = KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find requested optimizer type descriptor in the registry");
     }
     REQUIRE_OK(res);
 
-    *type_descr_ptr = (const struct kefir_opt_type_descriptor *) node->value;
+    *type_descr_ptr = (const struct kefir_opt_type_descriptor *) value;
     return KEFIR_OK;
 }
 
@@ -174,14 +174,14 @@ kefir_result_t kefir_opt_module_get_function(const struct kefir_opt_module *modu
     REQUIRE(function_ptr != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to optimizer function"));
 
-    struct kefir_hashtree_node *node = NULL;
-    kefir_result_t res = kefir_hashtree_at(&module->functions, (kefir_hashtree_key_t) identifier, &node);
+    kefir_hashtable_value_t value;
+    kefir_result_t res = kefir_hashtable_at(&module->functions, (kefir_hashtree_key_t) identifier, &value);
     if (res == KEFIR_NOT_FOUND) {
         res = KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find requested optimizer type descriptor in the registry");
     }
     REQUIRE_OK(res);
 
-    *function_ptr = (struct kefir_opt_function *) node->value;
+    *function_ptr = (struct kefir_opt_function *) value;
     return KEFIR_OK;
 }
 
