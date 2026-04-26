@@ -4266,7 +4266,7 @@ init_array:
 #                            "operand": {
 #                                "type": "external_label",
 #                                "type": "absolute",
-#                                "label": ".L__kefir_string_literal0",
+#                                "label": ".L__kefir_string_literal4",
 #                                "offset": 2
 #                            }
 #                        },
@@ -4470,7 +4470,7 @@ lea test4, %rax
 mov %rax, (__kefir_function_init_array_static_array_13)
 lea __kefir_function_init_array_static_array_13 + 20, %rax
 mov %rax, (__kefir_function_init_array_static_array_13 + 4)
-lea .L__kefir_string_literal0 + 2, %rax
+lea .L__kefir_string_literal4 + 2, %rax
 mov %rax, (__kefir_function_init_array_static_array_13 + 8)
 lea __kefir_function_init_array_static_x_12, %rax
 mov %rax, (__kefir_function_init_array_static_array_13 + 12)
@@ -4500,5 +4500,5 @@ __kefir_function_init_array_static_array_13:
     .skip 40
 
 .section .rodata
-.L__kefir_string_literal0:
+.L__kefir_string_literal4:
     .ascii "Hello\000"
