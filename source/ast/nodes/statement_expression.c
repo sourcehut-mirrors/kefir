@@ -29,7 +29,10 @@ kefir_result_t ast_statement_expression_free(struct kefir_mem *mem, struct kefir
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(base != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST node base"));
     ASSIGN_DECL_CAST(struct kefir_ast_statement_expression *, node, base->self);
-    REQUIRE_OK(kefir_list_free(mem, &node->block_items));
+    for (kefir_size_t i = 0; i < node->block_length; i++) {
+        REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, node->block_items[i]));
+    }
+    KEFIR_FREE(mem, node->block_items);
     if (node->result != NULL) {
         REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, node->result));
         node->result = NULL;
@@ -43,18 +46,6 @@ const struct kefir_ast_node_class AST_STATEMENT_EXPRESSION_CLASS = {.type = KEFI
                                                                     .visit = ast_statement_expression_visit,
                                                                     .free = ast_statement_expression_free};
 
-static kefir_result_t free_block_item(struct kefir_mem *mem, struct kefir_list *list, struct kefir_list_entry *entry,
-                                      void *payload) {
-    UNUSED(list);
-    UNUSED(payload);
-    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
-    REQUIRE(entry != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid list entry"));
-
-    ASSIGN_DECL_CAST(struct kefir_ast_node_base *, item_base, entry->value);
-    REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, item_base));
-    return KEFIR_OK;
-}
-
 struct kefir_ast_statement_expression *kefir_ast_new_statement_expression(struct kefir_mem *mem) {
     REQUIRE(mem != NULL, NULL);
 
@@ -63,24 +54,15 @@ struct kefir_ast_statement_expression *kefir_ast_new_statement_expression(struct
     stmt->base.refcount = 1;
     stmt->base.klass = &AST_STATEMENT_EXPRESSION_CLASS;
     stmt->base.self = stmt;
+    stmt->block_items = NULL;
+    stmt->block_capacity = 0;
+    stmt->block_length = 0;
     kefir_result_t res = kefir_ast_node_properties_init(&stmt->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
         KEFIR_FREE(mem, stmt);
         return NULL;
     });
     res = kefir_source_location_empty(&stmt->base.source_location);
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, stmt);
-        return NULL;
-    });
-
-    res = kefir_list_init(&stmt->block_items);
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, stmt);
-        return NULL;
-    });
-
-    res = kefir_list_on_remove(&stmt->block_items, free_block_item, NULL);
     REQUIRE_ELSE(res == KEFIR_OK, {
         KEFIR_FREE(mem, stmt);
         return NULL;
@@ -94,4 +76,24 @@ struct kefir_ast_statement_expression *kefir_ast_new_statement_expression(struct
 
     stmt->result = NULL;
     return stmt;
+}
+
+kefir_result_t kefir_ast_statement_expression_append(struct kefir_mem *mem, struct kefir_ast_statement_expression *node,
+                                                     struct kefir_ast_node_base *item) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(node != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST compound statement"));
+    REQUIRE(item != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST node"));
+
+    if (node->block_length + 1 > node->block_capacity) {
+        kefir_size_t new_capacity = MAX(1, 2 * node->block_capacity);
+        struct kefir_ast_node_base **new_items =
+            KEFIR_REALLOC(mem, node->block_items, sizeof(struct kefir_ast_node_base *) * new_capacity);
+        REQUIRE(new_items != NULL,
+                KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST statment expression items"));
+
+        node->block_capacity = new_capacity;
+        node->block_items = new_items;
+    }
+    node->block_items[node->block_length++] = item;
+    return KEFIR_OK;
 }

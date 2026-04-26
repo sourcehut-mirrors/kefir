@@ -46,9 +46,8 @@ kefir_result_t kefir_ast_translate_statement_expression_node(struct kefir_mem *m
     REQUIRE_OK(kefir_ast_translator_mark_associated_scope_objects_lifetime(
         mem, context, builder, node->base.properties.expression_props.flow_control_statement));
 
-    for (const struct kefir_list_entry *iter = kefir_list_head(&node->block_items); iter != NULL;
-         kefir_list_next(&iter)) {
-        ASSIGN_DECL_CAST(struct kefir_ast_node_base *, item, iter->value);
+    for (kefir_size_t i = 0; i < node->block_length; i++) {
+        struct kefir_ast_node_base *item = node->block_items[i];
 
         if (item->properties.category == KEFIR_AST_NODE_CATEGORY_STATEMENT ||
             item->properties.category == KEFIR_AST_NODE_CATEGORY_INLINE_ASSEMBLY) {

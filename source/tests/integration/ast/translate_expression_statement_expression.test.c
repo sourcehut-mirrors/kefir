@@ -49,33 +49,40 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     REQUIRE_OK(kefir_ast_analyze_node(mem, context, KEFIR_AST_NODE_BASE(expr1)));
 
     struct kefir_ast_statement_expression *expr2 = kefir_ast_new_statement_expression(mem);
-    REQUIRE_OK(kefir_list_insert_after(mem, &expr2->block_items, kefir_list_tail(&expr2->block_items),
-                                       KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement(
-                                           mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char(mem, 'A'))))));
+    REQUIRE_OK(
+        kefir_ast_statement_expression_append(mem, expr2,
+                                              KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement(
+                                                  mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char(mem, 'A'))))));
     REQUIRE_OK(kefir_ast_analyze_node(mem, context, KEFIR_AST_NODE_BASE(expr2)));
 
     struct kefir_ast_statement_expression *expr3 = kefir_ast_new_statement_expression(mem);
-    REQUIRE_OK(kefir_list_insert_after(mem, &expr3->block_items, kefir_list_tail(&expr3->block_items),
-                                       KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement(
-                                           mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char(mem, 'B'))))));
-    REQUIRE_OK(kefir_list_insert_after(mem, &expr3->block_items, kefir_list_tail(&expr3->block_items),
-                                       KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement(
-                                           mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char(mem, 'C'))))));
-    REQUIRE_OK(kefir_list_insert_after(mem, &expr3->block_items, kefir_list_tail(&expr3->block_items),
-                                       KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement(
-                                           mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char(mem, 'D'))))));
+    REQUIRE_OK(
+        kefir_ast_statement_expression_append(mem, expr3,
+                                              KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement(
+                                                  mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char(mem, 'B'))))));
+    REQUIRE_OK(
+        kefir_ast_statement_expression_append(mem, expr3,
+                                              KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement(
+                                                  mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char(mem, 'C'))))));
+    REQUIRE_OK(
+        kefir_ast_statement_expression_append(mem, expr3,
+                                              KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement(
+                                                  mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char(mem, 'D'))))));
     REQUIRE_OK(kefir_ast_analyze_node(mem, context, KEFIR_AST_NODE_BASE(expr3)));
 
     struct kefir_ast_statement_expression *expr4 = kefir_ast_new_statement_expression(mem);
-    REQUIRE_OK(kefir_list_insert_after(mem, &expr4->block_items, kefir_list_tail(&expr4->block_items),
-                                       KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement(
-                                           mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char(mem, 'E'))))));
-    REQUIRE_OK(kefir_list_insert_after(mem, &expr4->block_items, kefir_list_tail(&expr4->block_items),
-                                       KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement(
-                                           mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char(mem, 'F'))))));
-    REQUIRE_OK(kefir_list_insert_after(mem, &expr4->block_items, kefir_list_tail(&expr4->block_items),
-                                       KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement(
-                                           mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char(mem, 'G'))))));
+    REQUIRE_OK(
+        kefir_ast_statement_expression_append(mem, expr4,
+                                              KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement(
+                                                  mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char(mem, 'E'))))));
+    REQUIRE_OK(
+        kefir_ast_statement_expression_append(mem, expr4,
+                                              KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement(
+                                                  mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char(mem, 'F'))))));
+    REQUIRE_OK(
+        kefir_ast_statement_expression_append(mem, expr4,
+                                              KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement(
+                                                  mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char(mem, 'G'))))));
     expr4->result = KEFIR_AST_NODE_BASE(
         kefir_ast_new_expression_statement(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char(mem, 'H'))));
     REQUIRE_OK(kefir_ast_analyze_node(mem, context, KEFIR_AST_NODE_BASE(expr4)));

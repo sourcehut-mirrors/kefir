@@ -52,9 +52,8 @@ kefir_result_t kefir_ast_analyze_statement_expression_node(struct kefir_mem *mem
                                                 &base->properties.expression_props.flow_control_statement));
 
     kefir_bool_t has_analysis_errors = false;
-    for (const struct kefir_list_entry *iter = kefir_list_head(&node->block_items); iter != NULL;
-         kefir_list_next(&iter)) {
-        ASSIGN_DECL_CAST(struct kefir_ast_node_base *, item, iter->value);
+    for (kefir_size_t i = 0; i < node->block_length; i++) {
+        struct kefir_ast_node_base *item = node->block_items[i];
         kefir_result_t res = kefir_ast_analyze_node(mem, context, item);
         REQUIRE_CHAIN_SET(
             &res,
