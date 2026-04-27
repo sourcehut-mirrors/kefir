@@ -160,8 +160,27 @@ kefir_result_t kefir_preprocessor_run_substitutions(struct kefir_mem *, struct k
                                                     struct kefir_token_allocator *, struct kefir_token_buffer *,
                                                     const struct kefir_preprocessor_token_sequence_source *,
                                                     kefir_preprocessor_substitution_context_t);
+kefir_result_t kefir_preprocessor_run_substitutions_on(struct kefir_mem *, struct kefir_preprocessor *,
+                                                       struct kefir_token_allocator *, struct kefir_token_buffer *,
+                                                       struct kefir_preprocessor_token_sequence *,
+                                                       kefir_preprocessor_substitution_context_t);
 kefir_result_t kefir_preprocessor_run(struct kefir_mem *, struct kefir_preprocessor *, struct kefir_token_allocator *,
                                       struct kefir_token_buffer *);
+
+typedef struct kefir_preprocessor_state {
+    struct kefir_preprocessor *preprocessor;
+    struct kefir_token_allocator *token_allocator;
+    struct kefir_list condition_stack;
+    struct kefir_preprocessor_token_sequence_source seq_source;
+    struct kefir_preprocessor_token_sequence seq;
+} kefir_preprocessor_state_t;
+
+kefir_result_t kefir_preprocessor_state_init(struct kefir_mem *, struct kefir_preprocessor *,
+                                             struct kefir_token_allocator *, struct kefir_token_buffer *,
+                                             struct kefir_preprocessor_state *);
+kefir_result_t kefir_preprocessor_state_free(struct kefir_mem *, struct kefir_preprocessor_state *);
+kefir_result_t kefir_preprocessor_state_run(struct kefir_mem *, struct kefir_preprocessor_state *,
+                                            struct kefir_token_buffer *);
 
 kefir_result_t kefir_preprocessor_token_convert(struct kefir_mem *, struct kefir_preprocessor *, struct kefir_token *,
                                                 const struct kefir_token *);
