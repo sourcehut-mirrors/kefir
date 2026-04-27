@@ -52,6 +52,7 @@ kefir_result_t kefir_preprocessor_token_sequence_push_front(struct kefir_mem *,
 kefir_result_t kefir_preprocessor_token_sequence_next(struct kefir_mem *, struct kefir_preprocessor_token_sequence *,
                                                       const struct kefir_token **,
                                                       kefir_preprocessor_token_destination_t *);
+kefir_bool_t kefir_preprocessor_token_sequence_has_available(const struct kefir_preprocessor_token_sequence *);
 kefir_result_t kefir_preprocessor_token_sequence_shift(struct kefir_mem *, struct kefir_preprocessor_token_sequence *,
                                                        struct kefir_token_buffer *);
 kefir_result_t kefir_preprocessor_token_sequence_current(struct kefir_mem *, struct kefir_preprocessor_token_sequence *,

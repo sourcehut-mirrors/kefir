@@ -121,6 +121,18 @@ kefir_result_t kefir_preprocessor_token_sequence_next(struct kefir_mem *mem,
     return KEFIR_OK;
 }
 
+kefir_bool_t kefir_preprocessor_token_sequence_has_available(const struct kefir_preprocessor_token_sequence *seq) {
+    REQUIRE(seq != NULL, false);
+
+    for (struct kefir_list_entry *entry = kefir_list_tail(&seq->buffer_stack); entry != NULL; entry = entry->prev) {
+        ASSIGN_DECL_CAST(struct buffer_element *, elt, entry->value);
+        if (elt->index < kefir_token_buffer_length(&elt->buffer)) {
+            return true;
+        }
+    }
+    return false;
+}
+
 kefir_result_t kefir_preprocessor_token_sequence_shift(struct kefir_mem *mem,
                                                        struct kefir_preprocessor_token_sequence *seq,
                                                        struct kefir_token_buffer *buffer) {

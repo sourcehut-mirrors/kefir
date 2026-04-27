@@ -1379,17 +1379,11 @@ static kefir_result_t insert_sentinel(struct kefir_mem *mem, struct kefir_prepro
     return KEFIR_OK;
 }
 
-struct next_buffer_for_token_seq_params {
-    struct kefir_preprocessor *preprocessor;
-    struct kefir_token_allocator *token_allocator;
-    struct kefir_list condition_stack;
-};
-
 static kefir_result_t next_buffer_for_token_seq(struct kefir_mem *mem, struct kefir_preprocessor_token_sequence *seq,
                                                 void *payload) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(seq != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid token sequence"));
-    ASSIGN_DECL_CAST(struct next_buffer_for_token_seq_params *, params, payload);
+    ASSIGN_DECL_CAST(struct kefir_preprocessor_state *, params, payload);
     REQUIRE(params != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid token sequence source parameters"));
 
@@ -1440,7 +1434,7 @@ kefir_result_t kefir_preprocessor_run(struct kefir_mem *mem, struct kefir_prepro
 
     struct kefir_preprocessor_state state;
     REQUIRE_OK(kefir_preprocessor_state_init(mem, preprocessor, token_allocator, buffer, &state));
-    res = kefir_preprocessor_state_run(mem, &state, buffer);
+    res = kefir_preprocessor_state_run(mem, &state, buffer, 0, NULL);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_preprocessor_state_free(mem, &state);
         return res;
@@ -1459,7 +1453,6 @@ kefir_result_t kefir_preprocessor_state_init(struct kefir_mem *mem, struct kefir
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(preprocessor != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid preprocessor"));
     REQUIRE(token_allocator != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid token allocator"));
-    REQUIRE(buffer != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid token buffer"));
     REQUIRE(state != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to preprocessor state"));
 
     state->preprocessor = preprocessor;
@@ -1469,13 +1462,15 @@ kefir_result_t kefir_preprocessor_state_init(struct kefir_mem *mem, struct kefir
 
     REQUIRE_OK(kefir_list_init(&state->condition_stack));
     REQUIRE_OK(kefir_preprocessor_token_sequence_init(&state->seq, &state->seq_source));
-    kefir_result_t res = kefir_preprocessor_token_sequence_push_front(mem, &state->seq, buffer,
-                                                                      KEFIR_PREPROCESSOR_TOKEN_DESTINATION_NORMAL);
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        kefir_preprocessor_token_sequence_free(mem, &state->seq);
-        kefir_list_free(mem, &state->condition_stack);
-        return res;
-    });
+    if (buffer != NULL) {
+        kefir_result_t res = kefir_preprocessor_token_sequence_push_front(mem, &state->seq, buffer,
+                                                                          KEFIR_PREPROCESSOR_TOKEN_DESTINATION_NORMAL);
+        REQUIRE_ELSE(res == KEFIR_OK, {
+            kefir_preprocessor_token_sequence_free(mem, &state->seq);
+            kefir_list_free(mem, &state->condition_stack);
+            return res;
+        });
+    }
     return KEFIR_OK;
 }
 
@@ -1489,27 +1484,34 @@ kefir_result_t kefir_preprocessor_state_free(struct kefir_mem *mem, struct kefir
 }
 
 kefir_result_t kefir_preprocessor_state_run(struct kefir_mem *mem, struct kefir_preprocessor_state *state,
-                                            struct kefir_token_buffer *buffer) {
+                                            struct kefir_token_buffer *buffer, kefir_size_t limit,
+                                            kefir_bool_t *finished_ptr) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(state != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to preprocessor state"));
     REQUIRE(buffer != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid token buffer"));
 
+    kefir_bool_t finished = false;
     REQUIRE_OK(kefir_preprocessor_run_substitutions_on(mem, state->preprocessor, state->token_allocator, buffer,
-                                                       &state->seq, KEFIR_PREPROCESSOR_SUBSTITUTION_NORMAL));
+                                                       &state->seq, KEFIR_PREPROCESSOR_SUBSTITUTION_NORMAL, limit,
+                                                       &finished));
 
-    struct kefir_preprocessor_directive directive;
-    REQUIRE_OK(kefir_preprocessor_directive_scanner_next(mem, &state->preprocessor->directive_scanner,
-                                                         state->token_allocator, &directive));
-    REQUIRE_ELSE(directive.type == KEFIR_PREPROCESSOR_DIRECTIVE_SENTINEL, {
-        kefir_preprocessor_directive_free(mem, &directive);
-        return KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, &directive.source_location,
-                                      "Unexpected preprocessor directive/token");
-    });
-    kefir_result_t res = insert_sentinel(mem, &directive, state->token_allocator, buffer);
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        kefir_preprocessor_directive_free(mem, &directive);
-        return res;
-    });
-    REQUIRE_OK(kefir_preprocessor_directive_free(mem, &directive));
+    if (finished) {
+        struct kefir_preprocessor_directive directive;
+        REQUIRE_OK(kefir_preprocessor_directive_scanner_next(mem, &state->preprocessor->directive_scanner,
+                                                             state->token_allocator, &directive));
+        REQUIRE_ELSE(directive.type == KEFIR_PREPROCESSOR_DIRECTIVE_SENTINEL, {
+            kefir_preprocessor_directive_free(mem, &directive);
+            return KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, &directive.source_location,
+                                          "Unexpected preprocessor directive/token");
+        });
+        kefir_result_t res = insert_sentinel(mem, &directive, state->token_allocator, buffer);
+        REQUIRE_ELSE(res == KEFIR_OK, {
+            kefir_preprocessor_directive_free(mem, &directive);
+            return res;
+        });
+        REQUIRE_OK(kefir_preprocessor_directive_free(mem, &directive));
+    }
+
+    ASSIGN_PTR(finished_ptr, finished);
     return KEFIR_OK;
 }
