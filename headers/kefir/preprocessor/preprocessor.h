@@ -163,7 +163,8 @@ kefir_result_t kefir_preprocessor_run_substitutions(struct kefir_mem *, struct k
 kefir_result_t kefir_preprocessor_run_substitutions_on(struct kefir_mem *, struct kefir_preprocessor *,
                                                        struct kefir_token_allocator *, struct kefir_token_buffer *,
                                                        struct kefir_preprocessor_token_sequence *,
-                                                       kefir_preprocessor_substitution_context_t);
+                                                       kefir_preprocessor_substitution_context_t, kefir_size_t,
+                                                       kefir_bool_t *);
 kefir_result_t kefir_preprocessor_run(struct kefir_mem *, struct kefir_preprocessor *, struct kefir_token_allocator *,
                                       struct kefir_token_buffer *);
 
@@ -180,7 +181,7 @@ kefir_result_t kefir_preprocessor_state_init(struct kefir_mem *, struct kefir_pr
                                              struct kefir_preprocessor_state *);
 kefir_result_t kefir_preprocessor_state_free(struct kefir_mem *, struct kefir_preprocessor_state *);
 kefir_result_t kefir_preprocessor_state_run(struct kefir_mem *, struct kefir_preprocessor_state *,
-                                            struct kefir_token_buffer *);
+                                            struct kefir_token_buffer *, kefir_size_t, kefir_bool_t *);
 
 kefir_result_t kefir_preprocessor_token_convert(struct kefir_mem *, struct kefir_preprocessor *, struct kefir_token *,
                                                 const struct kefir_token *);
