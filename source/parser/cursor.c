@@ -45,6 +45,8 @@ kefir_result_t kefir_parser_token_cursor_init(struct kefir_parser_token_cursor *
     cursor->handle = handle;
     cursor->index = 0;
     REQUIRE_OK(kefir_token_new_sentinel(&cursor->sentinel));
+
+    cursor->failure_res = KEFIR_OK;
     return KEFIR_OK;
 }
 
@@ -60,10 +62,12 @@ kefir_result_t kefir_parser_token_cursor_init_direct(struct kefir_parser_token_c
     cursor->handle = &cursor->direct_cursor.handle;
     cursor->index = 0;
     REQUIRE_OK(kefir_token_new_sentinel(&cursor->sentinel));
+
+    cursor->failure_res = KEFIR_OK;
     return KEFIR_OK;
 }
 
-static void cursor_skip_pragmas(const struct kefir_parser_token_cursor *cursor, kefir_size_t *offset) {
+static void cursor_skip_pragmas(struct kefir_parser_token_cursor *cursor, kefir_size_t *offset) {
     do {
         const struct kefir_token *token;
         kefir_result_t res = cursor->handle->get_token(*offset, &token, cursor->handle);
@@ -71,12 +75,14 @@ static void cursor_skip_pragmas(const struct kefir_parser_token_cursor *cursor, 
         if (res == KEFIR_OK && token != NULL && token->klass == KEFIR_TOKEN_PRAGMA) {
             (*offset)++;
             continue;
+        } else if (res != KEFIR_OK && res != KEFIR_ITERATOR_END) {
+            cursor->failure_res = res;
         }
     } while (false);
 }
 
-const struct kefir_token *kefir_parser_token_cursor_at(const struct kefir_parser_token_cursor *cursor,
-                                                       kefir_size_t offset, kefir_bool_t skip_pragmas) {
+const struct kefir_token *kefir_parser_token_cursor_at(struct kefir_parser_token_cursor *cursor, kefir_size_t offset,
+                                                       kefir_bool_t skip_pragmas) {
     REQUIRE(cursor != NULL, NULL);
 
     kefir_size_t token_index = cursor->index;
@@ -97,6 +103,10 @@ const struct kefir_token *kefir_parser_token_cursor_at(const struct kefir_parser
     }
 
     kefir_result_t res = cursor->handle->get_token(token_index, &token, cursor->handle);
+    if (res != KEFIR_OK && res != KEFIR_ITERATOR_END) {
+        cursor->failure_res = res;
+        return &cursor->sentinel;
+    }
     REQUIRE(res == KEFIR_OK, &cursor->sentinel);
     if (token != NULL) {
         return token;

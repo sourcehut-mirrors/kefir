@@ -31,14 +31,15 @@ typedef struct kefir_parser_token_cursor {
     struct {
         struct kefir_token_cursor_handle handle;
     } direct_cursor;
+
+    kefir_result_t failure_res;
 } kefir_parser_token_cursor_t;
 
 kefir_result_t kefir_parser_token_cursor_init(struct kefir_parser_token_cursor *,
                                               const struct kefir_token_cursor_handle *);
 kefir_result_t kefir_parser_token_cursor_init_direct(struct kefir_parser_token_cursor *, struct kefir_token *,
                                                      kefir_size_t);
-const struct kefir_token *kefir_parser_token_cursor_at(const struct kefir_parser_token_cursor *, kefir_size_t,
-                                                       kefir_bool_t);
+const struct kefir_token *kefir_parser_token_cursor_at(struct kefir_parser_token_cursor *, kefir_size_t, kefir_bool_t);
 kefir_result_t kefir_parser_token_cursor_reset(struct kefir_parser_token_cursor *);
 kefir_result_t kefir_parser_token_cursor_next(struct kefir_parser_token_cursor *, kefir_bool_t);
 kefir_result_t kefir_parser_token_cursor_save(struct kefir_parser_token_cursor *, kefir_size_t *);
