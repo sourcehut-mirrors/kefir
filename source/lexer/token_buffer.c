@@ -220,6 +220,48 @@ kefir_result_t kefir_token_buffer_pop(struct kefir_mem *mem, struct kefir_token_
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_token_buffer_flush_front(struct kefir_mem *mem, struct kefir_token_buffer *buffer,
+                                              kefir_size_t length, kefir_size_t *flushed_length_ptr) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(buffer != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid token buffer"));
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(buffer != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid token buffer"));
+    REQUIRE(length > 0, KEFIR_OK);
+
+    length = MIN(length, buffer->length);
+
+    const kefir_size_t orig_length = length;
+    struct kefir_hashtree_node *iter_node = NULL;
+    REQUIRE_OK(kefir_hashtree_min(&buffer->chunks, &iter_node));
+    for (; length > 0 && iter_node != NULL;) {
+        kefir_hashtree_key_t iter_node_key = iter_node->key;
+        ASSIGN_DECL_CAST(struct kefir_token_buffer_chunk *, chunk, iter_node->value);
+
+        iter_node = kefir_hashtree_next_node(&buffer->chunks, iter_node);
+        if (length >= chunk->length) {
+            length -= chunk->length;
+            REQUIRE_OK(kefir_hashtree_delete(mem, &buffer->chunks, iter_node_key));
+        } else {
+            break;
+        }
+    }
+
+    ASSIGN_PTR(flushed_length_ptr, orig_length - length);
+
+    kefir_size_t iter_index = 0;
+    REQUIRE_OK(kefir_hashtree_min(&buffer->chunks, &iter_node));
+    for (; iter_node != NULL; iter_node = kefir_hashtree_next_node(&buffer->chunks, iter_node)) {
+        iter_node->key = iter_index;
+        iter_node->hash = buffer->chunks.ops->hash(iter_node->key, buffer->chunks.ops->data);
+
+        ASSIGN_DECL_CAST(struct kefir_token_buffer_chunk *, chunk, iter_node->value);
+        iter_index += chunk->length;
+    }
+    buffer->length = iter_index;
+
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_token_buffer_copy(struct kefir_mem *mem, struct kefir_token_buffer *dst,
                                        const struct kefir_token_buffer *src) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
@@ -259,13 +301,23 @@ static kefir_result_t token_cursor_get_token(kefir_size_t index, const struct ke
     return KEFIR_OK;
 }
 
+static kefir_result_t token_cursor_flush(struct kefir_mem *mem, const struct kefir_token_cursor_handle *handle,
+                                         kefir_size_t length) {
+    UNUSED(length);
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(handle != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid token cursor handle"));
+
+    // Intentionally left blank
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_token_buffer_cursor_handle(const struct kefir_token_buffer *buffer,
                                                 struct kefir_token_cursor_handle *handle_ptr) {
     REQUIRE(buffer != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid token buffer"));
     REQUIRE(handle_ptr != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to token cursor handle"));
 
-    *handle_ptr =
-        (struct kefir_token_cursor_handle) {.get_token = token_cursor_get_token, .payload = {(kefir_uptr_t) buffer}};
+    *handle_ptr = (struct kefir_token_cursor_handle) {
+        .get_token = token_cursor_get_token, .flush = token_cursor_flush, .payload = {(kefir_uptr_t) buffer}};
     return KEFIR_OK;
 }

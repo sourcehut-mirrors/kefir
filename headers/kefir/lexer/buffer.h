@@ -40,6 +40,8 @@ kefir_result_t kefir_token_buffer_reset(struct kefir_mem *, struct kefir_token_b
 kefir_result_t kefir_token_buffer_emplace(struct kefir_mem *, struct kefir_token_buffer *, const struct kefir_token *);
 kefir_result_t kefir_token_buffer_insert(struct kefir_mem *, struct kefir_token_buffer *, struct kefir_token_buffer *);
 kefir_result_t kefir_token_buffer_pop(struct kefir_mem *, struct kefir_token_buffer *);
+kefir_result_t kefir_token_buffer_flush_front(struct kefir_mem *, struct kefir_token_buffer *, kefir_size_t,
+                                              kefir_size_t *);
 kefir_result_t kefir_token_buffer_copy(struct kefir_mem *, struct kefir_token_buffer *,
                                        const struct kefir_token_buffer *);
 

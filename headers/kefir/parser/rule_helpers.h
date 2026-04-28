@@ -72,6 +72,7 @@
 
 #define PARSER_SHIFT_EXT(_parser, _skip_pragmas) (kefir_parser_token_cursor_next((_parser)->cursor, (_skip_pragmas)))
 #define PARSER_SHIFT(_parser) PARSER_SHIFT_EXT((_parser), true)
+#define PARSER_FLUSH(_mem, _parser) (kefir_parser_token_cursor_flush((_mem), (_parser)->cursor))
 
 #define REQUIRE_ALLOC(_ptr, _expr, _error)                                           \
     do {                                                                             \

@@ -242,6 +242,7 @@ static kefir_result_t builder_callback(struct kefir_mem *mem, struct kefir_parse
             } else {
                 REQUIRE_OK(res);
                 REQUIRE_OK(kefir_parser_ast_builder_translation_unit_append(mem, builder));
+                PARSER_FLUSH(mem, builder->parser);
             }
         }
     }

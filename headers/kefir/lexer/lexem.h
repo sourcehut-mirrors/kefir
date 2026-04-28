@@ -445,6 +445,7 @@ kefir_result_t kefir_token_free(struct kefir_mem *, struct kefir_token *);
 
 typedef struct kefir_token_cursor_handle {
     kefir_result_t (*get_token)(kefir_size_t, const struct kefir_token **, const struct kefir_token_cursor_handle *);
+    kefir_result_t (*flush)(struct kefir_mem *, const struct kefir_token_cursor_handle *, kefir_size_t);
     kefir_uptr_t payload[2];
 } kefir_token_cursor_handle_t;
 
