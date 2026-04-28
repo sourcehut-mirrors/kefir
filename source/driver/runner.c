@@ -472,11 +472,13 @@ static kefir_result_t build_predefined_macros(struct kefir_mem *mem,
         kefir_result_t res = KEFIR_OK;
 
         if (raw_value != NULL) {
-            res = kefir_compiler_preprocessor_tokenize(mem, compiler, &compiler->builtin_token_allocator,
+            res = kefir_compiler_preprocessor_tokenize(mem, compiler,
+                                                       &compiler->preprocessor_context.macro_token_allocator,
                                                        &macro->replacement, raw_value, strlen(raw_value), identifier);
         } else {
             struct kefir_token *allocated_token;
-            res = kefir_token_allocator_allocate_empty(mem, &compiler->builtin_token_allocator, &allocated_token);
+            res = kefir_token_allocator_allocate_empty(mem, &compiler->preprocessor_context.macro_token_allocator,
+                                                       &allocated_token);
             REQUIRE_CHAIN(&res, kefir_token_new_pp_number(mem, "1", 1, allocated_token));
             REQUIRE_CHAIN(&res, kefir_token_buffer_emplace(mem, &macro->replacement, allocated_token));
         }
@@ -497,7 +499,8 @@ static kefir_result_t include_predefined(struct kefir_mem *mem,
                                          struct kefir_token_buffer *tokens) {
     for (const struct kefir_list_entry *iter = kefir_list_head(&options->include_files); iter != NULL;
          kefir_list_next(&iter)) {
-        REQUIRE_OK(kefir_compiler_preprocess_include(mem, compiler, &compiler->builtin_token_allocator, tokens,
+        REQUIRE_OK(kefir_compiler_preprocess_include(mem, compiler,
+                                                     &compiler->preprocessor_context.macro_token_allocator, tokens,
                                                      source_id, (const char *) iter->value));
     }
     return KEFIR_OK;

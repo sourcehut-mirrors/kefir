@@ -82,9 +82,9 @@ kefir_result_t kefir_compiler_context_load_predefined_defs(struct kefir_mem *mem
     REQUIRE_OK(kefir_token_buffer_init(&buffer));
     REQUIRE_OK(kefir_token_buffer_cursor_handle(&buffer, &tokens_handle));
 
-    kefir_result_t res =
-        kefir_compiler_preprocess_lex(mem, context, KEFIR_PREPROCESSOR_MODE_NORMAL, &context->builtin_token_allocator,
-                                      &buffer, KefirPredefinedDefs, KefirPredefinedDefsLength, filename, filename);
+    kefir_result_t res = kefir_compiler_preprocess_lex(
+        mem, context, KEFIR_PREPROCESSOR_MODE_NORMAL, &context->preprocessor_context.macro_token_allocator, &buffer,
+        KefirPredefinedDefs, KefirPredefinedDefsLength, filename, filename);
     REQUIRE_CHAIN(&res, kefir_compiler_parse(mem, context, &tokens_handle, &defs_unit));
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_token_buffer_free(mem, &buffer);
@@ -122,7 +122,6 @@ kefir_result_t kefir_compiler_context_init(struct kefir_mem *mem, struct kefir_c
     REQUIRE_OK(kefir_ast_global_context_init(mem, &profile->type_traits, &context->translator_env.target_env,
                                              &context->ast_global_context,
                                              extensions != NULL ? extensions->analyzer : NULL));
-    REQUIRE_OK(kefir_token_allocator_init(&context->builtin_token_allocator));
     kefir_result_t res = kefir_preprocessor_ast_context_init(
         mem, &context->preprocessor_ast_context, &context->ast_global_context.symbols, &profile->type_traits,
         &context->translator_env.target_env, extensions != NULL ? extensions->analyzer : NULL);
@@ -181,7 +180,6 @@ kefir_result_t kefir_compiler_context_free(struct kefir_mem *mem, struct kefir_c
     REQUIRE_OK(kefir_optimizer_configuration_free(mem, &context->optimizer_configuration));
     REQUIRE_OK(kefir_preprocessor_context_free(mem, &context->preprocessor_context));
     REQUIRE_OK(kefir_preprocessor_ast_context_free(mem, &context->preprocessor_ast_context));
-    REQUIRE_OK(kefir_token_allocator_free(mem, &context->builtin_token_allocator));
     REQUIRE_OK(kefir_ast_global_context_free(mem, &context->ast_global_context));
     context->profile = NULL;
     context->source_locator = NULL;

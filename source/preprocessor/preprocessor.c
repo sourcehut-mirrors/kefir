@@ -60,6 +60,7 @@ kefir_result_t kefir_preprocessor_context_init(struct kefir_mem *mem, struct kef
     REQUIRE_OK(kefir_hashtree_init(&context->undefined_macros, &kefir_hashtree_str_ops));
     REQUIRE_OK(kefir_hashtreeset_init(&context->include_once, &kefir_hashtree_str_ops));
     REQUIRE_OK(kefir_hashtreeset_init(&context->builltin_prefixes, &kefir_hashtree_str_ops));
+    REQUIRE_OK(kefir_token_allocator_init(&context->macro_token_allocator));
     context->source_locator = locator;
     context->ast_context = ast_context;
     context->parser_scope = NULL;
@@ -145,6 +146,7 @@ kefir_result_t kefir_preprocessor_context_free(struct kefir_mem *mem, struct kef
     REQUIRE_OK(kefir_hashtreeset_free(mem, &context->environment.supported_builtins));
     REQUIRE_OK(kefir_hashtree_free(mem, &context->undefined_macros));
     REQUIRE_OK(kefir_preprocessor_user_macro_scope_free(mem, &context->user_macros));
+    REQUIRE_OK(kefir_token_allocator_free(mem, &context->macro_token_allocator));
     context->source_locator = NULL;
     return KEFIR_OK;
 }
@@ -768,8 +770,16 @@ static kefir_result_t process_define(struct kefir_mem *mem, struct kefir_preproc
         macro = kefir_preprocessor_user_macro_new_object(mem, preprocessor->lexer.symbols,
                                                          directive->define_directive.identifier);
         REQUIRE(macro != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate user macro"));
-        kefir_result_t res =
-            kefir_token_buffer_insert(mem, &macro->replacement, &directive->define_directive.replacement);
+        kefir_result_t res = KEFIR_OK;
+        for (kefir_size_t i = 0;
+             res == KEFIR_OK && i < kefir_token_buffer_length(&directive->define_directive.replacement); i++) {
+            struct kefir_token *token;
+            REQUIRE_CHAIN(
+                &res, kefir_token_allocator_allocate_empty(mem, &preprocessor->context->macro_token_allocator, &token));
+            REQUIRE_CHAIN(
+                &res, kefir_token_copy(mem, token, kefir_token_buffer_at(&directive->define_directive.replacement, i)));
+            REQUIRE_CHAIN(&res, kefir_token_buffer_emplace(mem, &macro->replacement, token));
+        }
         REQUIRE_CHAIN(&res,
                       kefir_preprocessor_user_macro_scope_insert(mem, &preprocessor->context->user_macros, macro));
         REQUIRE_ELSE(res == KEFIR_OK, {
@@ -780,8 +790,16 @@ static kefir_result_t process_define(struct kefir_mem *mem, struct kefir_preproc
         macro = kefir_preprocessor_user_macro_new_function(mem, preprocessor->lexer.symbols,
                                                            directive->define_directive.identifier);
         REQUIRE(macro != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate user macro"));
-        kefir_result_t res =
-            kefir_token_buffer_insert(mem, &macro->replacement, &directive->define_directive.replacement);
+        kefir_result_t res = KEFIR_OK;
+        for (kefir_size_t i = 0;
+             res == KEFIR_OK && i < kefir_token_buffer_length(&directive->define_directive.replacement); i++) {
+            struct kefir_token *token;
+            REQUIRE_CHAIN(
+                &res, kefir_token_allocator_allocate_empty(mem, &preprocessor->context->macro_token_allocator, &token));
+            REQUIRE_CHAIN(
+                &res, kefir_token_copy(mem, token, kefir_token_buffer_at(&directive->define_directive.replacement, i)));
+            REQUIRE_CHAIN(&res, kefir_token_buffer_emplace(mem, &macro->replacement, token));
+        }
         REQUIRE_CHAIN(&res, kefir_list_move_all(&macro->parameters, &directive->define_directive.parameters));
         if (res == KEFIR_OK) {
             macro->vararg = directive->define_directive.vararg;
