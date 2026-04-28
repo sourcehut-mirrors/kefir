@@ -65,7 +65,7 @@ kefir_result_t kefir_token_buffer_reset(struct kefir_mem *mem, struct kefir_toke
 }
 
 #define INIT_CHUNK_CAPACITY 32
-#define MAX_CHUNK_LENGTH 4096
+#define MAX_CHUNK_LENGTH 0x10000
 #define CHUNK_SIZEOF(_len) (sizeof(struct kefir_token_buffer_chunk) + (_len) * sizeof(const struct kefir_token *))
 
 static struct kefir_token_buffer_chunk *last_chunk(struct kefir_token_buffer *buffer) {

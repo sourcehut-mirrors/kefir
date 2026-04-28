@@ -22,6 +22,8 @@
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 
+#define INCREMENTAL_LOOKAHEAD 0x10000
+
 static kefir_result_t get_token(kefir_size_t index, const struct kefir_token **token_ptr,
                                 const struct kefir_token_cursor_handle *handle) {
     REQUIRE(token_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to token"));
@@ -37,9 +39,9 @@ static kefir_result_t get_token(kefir_size_t index, const struct kefir_token **t
     REQUIRE_OK(kefir_token_incremental_cursor_handle_flush_pp_tokens(inc_handle->mem, inc_handle));
     while (index >= kefir_token_buffer_length(&inc_handle->buffer)) {
         kefir_bool_t finished = false;
-        REQUIRE_OK(
-            kefir_preprocessor_state_run(inc_handle->mem, &inc_handle->preprocessor_state, &inc_handle->pp_buffer,
-                                         index - kefir_token_buffer_length(&inc_handle->buffer) + 1024, &finished));
+        REQUIRE_OK(kefir_preprocessor_state_run(
+            inc_handle->mem, &inc_handle->preprocessor_state, &inc_handle->pp_buffer,
+            index - kefir_token_buffer_length(&inc_handle->buffer) + INCREMENTAL_LOOKAHEAD, &finished));
         REQUIRE_OK(kefir_token_incremental_cursor_handle_flush_pp_tokens(inc_handle->mem, inc_handle));
         if (finished) {
             break;
