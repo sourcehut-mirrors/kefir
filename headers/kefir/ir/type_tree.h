@@ -40,7 +40,8 @@ typedef struct kefir_ir_type_tree_node {
 typedef struct kefir_ir_type_tree {
     const struct kefir_ir_type *type;
     struct kefir_list roots;
-    struct kefir_hashtree index;
+
+    struct kefir_ir_type_tree_node *nodes;
 } kefir_ir_type_tree_t;
 
 kefir_result_t kefir_ir_type_tree_init(struct kefir_mem *, const struct kefir_ir_type *, struct kefir_ir_type_tree *);
