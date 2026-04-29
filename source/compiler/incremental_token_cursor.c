@@ -61,6 +61,21 @@ static kefir_result_t token_cursor_flush(struct kefir_mem *mem, const struct kef
     kefir_size_t flushed = 0;
     REQUIRE_OK(kefir_token_buffer_flush_front(mem, &inc_handle->buffer, length - inc_handle->cursor_offset, &flushed));
     inc_handle->cursor_offset += flushed;
+
+    if (flushed > 0) {
+        struct kefir_token_allocator_gc gc;
+        REQUIRE_OK(kefir_token_allocator_gc_init(mem, inc_handle->preprocessor_state.token_allocator, &gc));
+
+        kefir_result_t res = KEFIR_OK;
+        REQUIRE_CHAIN(&res, kefir_token_allocator_gc_mark(mem, &gc, &inc_handle->buffer));
+        REQUIRE_CHAIN(&res, kefir_token_allocator_gc_mark(mem, &gc, &inc_handle->pp_buffer));
+        REQUIRE_CHAIN(&res, kefir_token_allocator_gc_sweep(mem, &gc));
+        REQUIRE_ELSE(res == KEFIR_OK, {
+            kefir_token_allocator_gc_free(mem, &gc);
+            return res;
+        });
+        REQUIRE_OK(kefir_token_allocator_gc_free(mem, &gc));
+    }
     return KEFIR_OK;
 }
 

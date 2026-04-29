@@ -22,6 +22,7 @@
 #define KEFIR_LEXER_ALLOCATOR_H_
 
 #include "kefir/lexer/lexem.h"
+#include "kefir/lexer/buffer.h"
 
 typedef struct kefir_token_allocator_chunk {
     struct kefir_token_allocator_chunk *prev_chunk;
@@ -41,5 +42,17 @@ kefir_result_t kefir_token_allocator_emplace(struct kefir_mem *, struct kefir_to
                                              const struct kefir_token **);
 kefir_result_t kefir_token_allocator_allocate_empty(struct kefir_mem *, struct kefir_token_allocator *,
                                                     struct kefir_token **);
+
+typedef struct kefir_token_allocator_gc {
+    struct kefir_token_allocator *allocator;
+    struct kefir_hashtree garbage_chunks;
+} kefir_token_allocator_gc_t;
+
+kefir_result_t kefir_token_allocator_gc_init(struct kefir_mem *, struct kefir_token_allocator *,
+                                             struct kefir_token_allocator_gc *);
+kefir_result_t kefir_token_allocator_gc_free(struct kefir_mem *, struct kefir_token_allocator_gc *);
+kefir_result_t kefir_token_allocator_gc_mark(struct kefir_mem *, struct kefir_token_allocator_gc *,
+                                             const struct kefir_token_buffer *);
+kefir_result_t kefir_token_allocator_gc_sweep(struct kefir_mem *, struct kefir_token_allocator_gc *);
 
 #endif

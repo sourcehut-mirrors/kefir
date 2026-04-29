@@ -96,3 +96,97 @@ kefir_result_t kefir_token_allocator_allocate_empty(struct kefir_mem *mem, struc
     *token_ptr = &allocator->last_chunk->tokens[allocator->last_token_index++];
     return KEFIR_OK;
 }
+
+kefir_result_t kefir_token_allocator_gc_init(struct kefir_mem *mem, struct kefir_token_allocator *allocator,
+                                             struct kefir_token_allocator_gc *allocator_gc) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(allocator != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid token allocator"));
+    REQUIRE(allocator_gc != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid token allocator garbage collector"));
+
+    allocator_gc->allocator = allocator;
+    REQUIRE_OK(kefir_hashtree_init(&allocator_gc->garbage_chunks, &kefir_hashtree_uint_ops));
+
+    for (struct kefir_token_allocator_chunk *chunk = allocator->last_chunk; chunk != NULL; chunk = chunk->prev_chunk) {
+        kefir_result_t res = kefir_hashtree_insert(mem, &allocator_gc->garbage_chunks,
+                                                   (kefir_hashtree_key_t) (kefir_uptr_t) &chunk->tokens[0],
+                                                   (kefir_hashtree_value_t) (kefir_uptr_t) chunk);
+        REQUIRE_ELSE(res == KEFIR_OK, {
+            kefir_hashtree_free(mem, &allocator_gc->garbage_chunks);
+            return res;
+        });
+    }
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_token_allocator_gc_free(struct kefir_mem *mem, struct kefir_token_allocator_gc *allocator_gc) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(allocator_gc != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid token allocator garbage collector"));
+
+    REQUIRE_OK(kefir_hashtree_free(mem, &allocator_gc->garbage_chunks));
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_token_allocator_gc_mark(struct kefir_mem *mem, struct kefir_token_allocator_gc *allocator_gc,
+                                             const struct kefir_token_buffer *buffer) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(allocator_gc != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid token allocator garbage collector"));
+    REQUIRE(buffer != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid token buffer"));
+
+    for (kefir_size_t i = 0; i < kefir_token_buffer_length(buffer); i++) {
+        const struct kefir_token *token = kefir_token_buffer_at(buffer, i);
+
+        struct kefir_hashtree_node *node;
+        kefir_result_t res = kefir_hashtree_lower_bound(&allocator_gc->garbage_chunks,
+                                                        (kefir_hashtree_key_t) (kefir_uptr_t) token, &node);
+        if (res != KEFIR_NOT_FOUND) {
+            REQUIRE_OK(res);
+            ASSIGN_DECL_CAST(struct kefir_token_allocator_chunk *, chunk, node->value);
+            kefir_size_t chunk_capacity = chunk == allocator_gc->allocator->last_chunk
+                                              ? allocator_gc->allocator->last_token_index
+                                              : allocator_gc->allocator->chunk_capacity;
+            if (token >= &chunk->tokens[0] && token < &chunk->tokens[chunk_capacity]) {
+                REQUIRE_OK(kefir_hashtree_delete(mem, &allocator_gc->garbage_chunks, node->key));
+            }
+        }
+    }
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_token_allocator_gc_sweep(struct kefir_mem *mem, struct kefir_token_allocator_gc *allocator_gc) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(allocator_gc != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid token allocator garbage collector"));
+
+    struct kefir_token_allocator_chunk *next_chunk = NULL;
+    for (struct kefir_token_allocator_chunk *chunk = allocator_gc->allocator->last_chunk; chunk != NULL;) {
+        if (kefir_hashtree_has(&allocator_gc->garbage_chunks,
+                               (kefir_hashtree_key_t) (kefir_uptr_t) &chunk->tokens[0])) {
+            const kefir_size_t chunk_length = chunk == allocator_gc->allocator->last_chunk
+                                                  ? allocator_gc->allocator->last_token_index
+                                                  : allocator_gc->allocator->chunk_capacity;
+
+            if (next_chunk != NULL) {
+                next_chunk->prev_chunk = chunk->prev_chunk;
+            } else {
+                allocator_gc->allocator->last_chunk = chunk->prev_chunk;
+                allocator_gc->allocator->last_token_index = allocator_gc->allocator->chunk_capacity;
+            }
+            struct kefir_token_allocator_chunk *current_chunk = chunk;
+            chunk = chunk->prev_chunk;
+
+            for (kefir_size_t i = 0; i < chunk_length; i++) {
+                REQUIRE_OK(kefir_token_free(mem, &current_chunk->tokens[i]));
+            }
+            KEFIR_FREE(mem, current_chunk);
+        } else {
+            next_chunk = chunk;
+            chunk = chunk->prev_chunk;
+        }
+    }
+
+    REQUIRE_OK(kefir_hashtree_clean(mem, &allocator_gc->garbage_chunks));
+    return KEFIR_OK;
+}
