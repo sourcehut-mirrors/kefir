@@ -69,23 +69,26 @@ typedef struct kefir_ast_constant_expression_pointer {
 
 typedef struct kefir_ast_constant_expression_value {
     kefir_ast_constant_expression_class_t klass;
-
     union {
-        kefir_ast_constant_expression_int_t integer;
-        kefir_ast_constant_expression_uint_t uinteger;
+        struct {
+            union {
+                kefir_ast_constant_expression_int_t integer;
+                kefir_ast_constant_expression_uint_t uinteger;
+            };
+            struct kefir_bigint *bitprecise;
+        };
+        kefir_ast_constant_expression_float_t floating_point;
+        kefir_ast_constant_expression_decimal_t decimal;
+        struct {
+            kefir_ast_constant_expression_float_t real;
+            kefir_ast_constant_expression_float_t imaginary;
+        } complex_floating_point;
+        struct kefir_ast_constant_expression_pointer pointer;
+        struct {
+            const struct kefir_ast_type *type;
+            const struct kefir_ast_initializer *initializer;
+        } compound;
     };
-    struct kefir_bigint *bitprecise;
-    kefir_ast_constant_expression_float_t floating_point;
-    kefir_ast_constant_expression_decimal_t decimal;
-    struct {
-        kefir_ast_constant_expression_float_t real;
-        kefir_ast_constant_expression_float_t imaginary;
-    } complex_floating_point;
-    struct kefir_ast_constant_expression_pointer pointer;
-    struct {
-        const struct kefir_ast_type *type;
-        const struct kefir_ast_initializer *initializer;
-    } compound;
 } kefir_ast_constant_expression_value_t;
 
 #define KEFIR_AST_CONSTANT_EXPRESSION_INT_VALUE(_value)                                                  \

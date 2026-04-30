@@ -43,71 +43,73 @@ typedef struct kefir_ast_node_class {
 typedef struct kefir_ast_node_properties {
     kefir_ast_node_category_t category;
     const struct kefir_ast_type *type;
-    struct {
-        kefir_bool_t lvalue;
-        kefir_bool_t constant_expression;
-        struct kefir_ast_constant_expression_value constant_expression_value;
-        kefir_bool_t addressable;
-        kefir_bool_t atomic;
-        struct kefir_ast_bitfield_properties bitfield_props;
-        const char *identifier;
+    union {
         struct {
-            kefir_ast_string_literal_type_t type;
-            void *content;
-            kefir_size_t length;
-        } string_literal;
-        const struct kefir_ast_scoped_identifier *scoped_id;
-        struct kefir_ast_temporary_identifier temporary_identifier;
-        struct kefir_ast_flow_control_structure *flow_control_statement;
-        struct kefir_ast_flow_control_point *flow_control_point;
-        kefir_size_t alignment;
-
-        struct {
-            kefir_bool_t enabled;
+            kefir_bool_t lvalue;
+            kefir_bool_t constant_expression;
+            struct kefir_ast_constant_expression_value constant_expression_value;
+            kefir_bool_t addressable;
+            kefir_bool_t atomic;
+            struct kefir_ast_bitfield_properties bitfield_props;
+            const char *identifier;
+            struct {
+                kefir_ast_string_literal_type_t type;
+                void *content;
+                kefir_size_t length;
+            } string_literal;
+            const struct kefir_ast_scoped_identifier *scoped_id;
             struct kefir_ast_temporary_identifier temporary_identifier;
-        } preserve_after_eval;
-    } expression_props;
+            struct kefir_ast_flow_control_structure *flow_control_statement;
+            struct kefir_ast_flow_control_point *flow_control_point;
+            kefir_size_t alignment;
 
-    struct {
-        kefir_ast_scoped_identifier_storage_t storage;
-        kefir_ast_function_specifier_t function;
-        const char *identifier;
-        kefir_size_t alignment;
-        kefir_bool_t static_assertion;
-        const struct kefir_ast_type *original_type;
-        const struct kefir_ast_scoped_identifier *scoped_id;
-        struct kefir_ast_temporary_identifier temporary_identifier;
-    } declaration_props;
-
-    struct {
-        struct kefir_ast_flow_control_point *origin_flow_control_point;
-        struct kefir_ast_flow_control_point *target_flow_control_point;
-        struct kefir_ast_flow_control_structure *flow_control_statement;
-        const struct kefir_ast_scoped_identifier *scoped_id;
-        const struct kefir_ast_type *return_type;
-    } statement_props;
-
-    struct {
-        kefir_ast_function_specifier_t function;
-        const char *identifier;
-        const struct kefir_ast_scoped_identifier *scoped_id;
+            struct {
+                kefir_bool_t enabled;
+                struct kefir_ast_temporary_identifier temporary_identifier;
+            } preserve_after_eval;
+        } expression_props;
 
         struct {
-            kefir_bool_t enable_fenv_access;
-            kefir_bool_t disallow_fp_contract;
-            kefir_ast_pragma_on_off_value_t cx_limited_range;
-        } pragma_stats;
-    } function_definition;
+            kefir_ast_scoped_identifier_storage_t storage;
+            kefir_ast_function_specifier_t function;
+            const char *identifier;
+            kefir_size_t alignment;
+            kefir_bool_t static_assertion;
+            const struct kefir_ast_type *original_type;
+            const struct kefir_ast_scoped_identifier *scoped_id;
+            struct kefir_ast_temporary_identifier temporary_identifier;
+        } declaration_props;
 
-    struct {
-        kefir_size_t alignment;
-        kefir_ast_scoped_identifier_storage_t storage;
-    } type_props;
+        struct {
+            struct kefir_ast_flow_control_point *origin_flow_control_point;
+            struct kefir_ast_flow_control_point *target_flow_control_point;
+            struct kefir_ast_flow_control_structure *flow_control_statement;
+            const struct kefir_ast_scoped_identifier *scoped_id;
+            const struct kefir_ast_type *return_type;
+        } statement_props;
 
-    struct {
-        struct kefir_ast_flow_control_point *origin_flow_control_point;
-        struct kefir_ast_flow_control_branching_point *branching_point;
-    } inline_assembly;
+        struct {
+            kefir_ast_function_specifier_t function;
+            const char *identifier;
+            const struct kefir_ast_scoped_identifier *scoped_id;
+
+            struct {
+                kefir_bool_t enable_fenv_access;
+                kefir_bool_t disallow_fp_contract;
+                kefir_ast_pragma_on_off_value_t cx_limited_range;
+            } pragma_stats;
+        } function_definition;
+
+        struct {
+            kefir_size_t alignment;
+            kefir_ast_scoped_identifier_storage_t storage;
+        } type_props;
+
+        struct {
+            struct kefir_ast_flow_control_point *origin_flow_control_point;
+            struct kefir_ast_flow_control_branching_point *branching_point;
+        } inline_assembly;
+    };
 } kefir_ast_node_properties_t;
 
 typedef struct kefir_ast_node_base {
