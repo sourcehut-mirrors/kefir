@@ -831,7 +831,8 @@ kefir_result_t kefir_opt_code_container_new_instruction(struct kefir_mem *mem, s
     REQUIRE_OK(kefir_hashtreeset_init(&instr->uses.instruction, &kefir_hashtree_uint_ops));
 
     if (block->content.tail != KEFIR_ID_NONE) {
-        struct kefir_opt_instruction *prev_instr = &code->code[block->content.tail];
+        struct kefir_opt_instruction *prev_instr = NULL;
+        REQUIRE_OK(code_container_instr_mutable(code, block->content.tail, &prev_instr));
         REQUIRE(prev_instr->siblings.next == KEFIR_ID_NONE,
                 KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected previous instruction in block to have no successors"));
         prev_instr->siblings.next = instr->id;
@@ -1301,8 +1302,9 @@ static kefir_result_t kefir_opt_code_container_drop_phi(struct kefir_mem *mem,
             KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Phi node has been previously dropped from block"));
 
     if (phi_node->output_ref != KEFIR_ID_NONE) {
-        struct kefir_opt_instruction *instr = &code->code[phi_node->output_ref];
-        REQUIRE(instr->block_id == KEFIR_ID_NONE,
+        struct kefir_opt_instruction *instr = NULL;
+        kefir_result_t res = code_container_instr_mutable(code, phi_node->output_ref, &instr);
+        REQUIRE(res == KEFIR_NOT_FOUND,
                 KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST,
                                 "Prior to dropping phi node its output reference shall be dropped from the block"));
     }
@@ -1383,8 +1385,9 @@ static kefir_result_t kefir_opt_code_container_drop_call(struct kefir_mem *mem,
             KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Call node has been previously dropped from block"));
 
     if (call_node->output_ref != KEFIR_ID_NONE) {
-        struct kefir_opt_instruction *instr = &code->code[call_node->output_ref];
-        REQUIRE(instr->block_id == KEFIR_ID_NONE,
+        struct kefir_opt_instruction *instr = NULL;
+        kefir_result_t res = code_container_instr_mutable(code, call_node->output_ref, &instr);
+        REQUIRE(res == KEFIR_NOT_FOUND,
                 KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST,
                                 "Prior to dropping call node its output reference shall be dropped from the block"));
     }
@@ -1473,8 +1476,9 @@ static kefir_result_t kefir_opt_code_container_drop_inline_asm(struct kefir_mem 
             KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Inline assembly node has been previously dropped from block"));
 
     if (inline_asm_node->output_ref != KEFIR_ID_NONE) {
-        struct kefir_opt_instruction *instr = &code->code[inline_asm_node->output_ref];
-        REQUIRE(instr->block_id == KEFIR_ID_NONE,
+        struct kefir_opt_instruction *instr = NULL;
+        kefir_result_t res = code_container_instr_mutable(code, inline_asm_node->output_ref, &instr);
+        REQUIRE(res == KEFIR_NOT_FOUND,
                 KEFIR_SET_ERROR(
                     KEFIR_INVALID_REQUEST,
                     "Prior to dropping inline assembly node its output reference shall be dropped from the block"));
@@ -2611,10 +2615,12 @@ kefir_result_t kefir_opt_code_container_drop_dead_code(struct kefir_mem *mem, st
     }
 
     for (kefir_opt_instruction_ref_t instr_ref = 0; instr_ref < code->length; instr_ref++) {
-        struct kefir_opt_instruction *instr = &code->code[instr_ref];
-        if (instr->block_id == KEFIR_ID_NONE) {
+        struct kefir_opt_instruction *instr = NULL;
+        kefir_result_t res = code_container_instr_mutable(code, instr_ref, &instr);
+        if (res == KEFIR_NOT_FOUND) {
             continue;
         }
+        REQUIRE_OK(res);
 
         kefir_bool_t is_alive;
         REQUIRE_OK(index->is_instruction_alive(instr_ref, &is_alive, index->payload));
@@ -3079,7 +3085,8 @@ kefir_result_t kefir_opt_code_container_replace_references_in(struct kefir_mem *
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code container"));
 
-    struct kefir_opt_instruction *instr = &code->code[user_ref];
+    struct kefir_opt_instruction *instr = NULL;
+    REQUIRE_OK(code_container_instr_mutable(code, user_ref, &instr));
     REQUIRE(instr->block_id != KEFIR_ID_NONE,
             KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected instruction block identifier"));
 
