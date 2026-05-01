@@ -8,10 +8,10 @@
                 "blocks": [
                     {
                         "id": 0,
-                        "control_flow": 8,
+                        "control_flow": 128,
                         "code": [
                             {
-                                "id": 8,
+                                "id": 128,
                                 "opcode": "return",
                                 "arg": null,
                                 "control_next": null,
@@ -24,7 +24,7 @@
                             "predecessors": [],
                             "immediate_dominator": null,
                             "alive_instructions": [
-                                8
+                                128
                             ]
                         }
                     }
@@ -54,24 +54,24 @@
                 "blocks": [
                     {
                         "id": 0,
-                        "control_flow": 4,
+                        "control_flow": 64,
                         "code": [
                             {
-                                "id": 2,
+                                "id": 32,
                                 "opcode": "get_argument",
                                 "index": 2,
                                 "control_next": null,
                                 "ir_instruction": 2
                             },
                             {
-                                "id": 5,
+                                "id": 80,
                                 "opcode": "get_argument",
                                 "index": 1,
                                 "control_next": null,
                                 "ir_instruction": 7
                             },
                             {
-                                "id": 8,
+                                "id": 128,
                                 "opcode": "get_argument",
                                 "index": 0,
                                 "control_next": null,
@@ -84,7 +84,7 @@
                                 "ir_instruction": 0
                             },
                             {
-                                "id": 3,
+                                "id": 48,
                                 "opcode": "alloc_local",
                                 "scope": 0,
                                 "type_id": 114,
@@ -93,19 +93,19 @@
                                 "ir_instruction": 4
                             },
                             {
-                                "id": 4,
+                                "id": 64,
                                 "opcode": "int64_store",
-                                "location": 3,
-                                "value": 2,
+                                "location": 48,
+                                "value": 32,
                                 "flags": {
                                     "volatile": false
                                 },
-                                "control_next": 7,
+                                "control_next": 112,
                                 "ir_instruction": 6,
                                 "memssa_node_ref": 1
                             },
                             {
-                                "id": 6,
+                                "id": 96,
                                 "opcode": "alloc_local",
                                 "scope": 0,
                                 "type_id": 117,
@@ -114,19 +114,19 @@
                                 "ir_instruction": 9
                             },
                             {
-                                "id": 7,
+                                "id": 112,
                                 "opcode": "int8_store",
-                                "location": 6,
-                                "value": 5,
+                                "location": 96,
+                                "value": 80,
                                 "flags": {
                                     "volatile": false
                                 },
-                                "control_next": 10,
+                                "control_next": 160,
                                 "ir_instruction": 11,
                                 "memssa_node_ref": 2
                             },
                             {
-                                "id": 9,
+                                "id": 144,
                                 "opcode": "alloc_local",
                                 "scope": 0,
                                 "type_id": 116,
@@ -135,55 +135,55 @@
                                 "ir_instruction": 14
                             },
                             {
-                                "id": 10,
+                                "id": 160,
                                 "opcode": "int32_store",
-                                "location": 9,
-                                "value": 8,
+                                "location": 144,
+                                "value": 128,
                                 "flags": {
                                     "volatile": false
                                 },
-                                "control_next": 11,
+                                "control_next": 176,
                                 "ir_instruction": 16,
                                 "memssa_node_ref": 3
                             },
                             {
-                                "id": 11,
+                                "id": 176,
                                 "opcode": "int32_load",
-                                "location": 9,
+                                "location": 144,
                                 "flags": {
                                     "load_extension": "noextend",
                                     "volatile": false
                                 },
-                                "control_next": 13,
+                                "control_next": 208,
                                 "ir_instruction": 19,
                                 "memssa_node_ref": 4
                             },
                             {
-                                "id": 13,
+                                "id": 208,
                                 "opcode": "int8_load",
-                                "location": 6,
+                                "location": 96,
                                 "flags": {
                                     "load_extension": "noextend",
                                     "volatile": false
                                 },
-                                "control_next": 15,
+                                "control_next": 240,
                                 "ir_instruction": 23,
                                 "memssa_node_ref": 5
                             },
                             {
-                                "id": 15,
+                                "id": 240,
                                 "opcode": "int64_load",
-                                "location": 3,
+                                "location": 48,
                                 "flags": {
                                     "load_extension": "noextend",
                                     "volatile": false
                                 },
-                                "control_next": 18,
+                                "control_next": 288,
                                 "ir_instruction": 27,
                                 "memssa_node_ref": 6
                             },
                             {
-                                "id": 17,
+                                "id": 272,
                                 "opcode": "get_thread_local",
                                 "global_ref": 79,
                                 "offset": 0,
@@ -191,79 +191,79 @@
                                 "ir_instruction": 29
                             },
                             {
-                                "id": 18,
+                                "id": 288,
                                 "opcode": "int16_load",
-                                "location": 17,
+                                "location": 272,
                                 "flags": {
                                     "load_extension": "noextend",
                                     "volatile": false
                                 },
-                                "control_next": 1,
+                                "control_next": 16,
                                 "ir_instruction": 30,
                                 "memssa_node_ref": 7
                             },
                             {
-                                "id": 1,
+                                "id": 16,
                                 "opcode": "local_lifetime_mark",
                                 "arg": 0,
-                                "control_next": 22,
+                                "control_next": 352,
                                 "ir_instruction": 1
                             },
                             {
-                                "id": 12,
+                                "id": 192,
                                 "opcode": "int64_sign_extend_32bits",
-                                "arg": 11,
+                                "arg": 176,
                                 "control_next": null,
                                 "ir_instruction": 20
                             },
                             {
-                                "id": 14,
+                                "id": 224,
                                 "opcode": "int64_sign_extend_8bits",
-                                "arg": 13,
+                                "arg": 208,
                                 "control_next": null,
                                 "ir_instruction": 24
                             },
                             {
-                                "id": 16,
+                                "id": 256,
                                 "opcode": "int64_mul",
                                 "args": [
-                                    14,
-                                    15
+                                    224,
+                                    240
                                 ],
                                 "control_next": null,
                                 "ir_instruction": 28
                             },
                             {
-                                "id": 19,
+                                "id": 304,
                                 "opcode": "int64_sign_extend_16bits",
-                                "arg": 18,
+                                "arg": 288,
                                 "control_next": null,
                                 "ir_instruction": 31
                             },
                             {
-                                "id": 20,
+                                "id": 320,
                                 "opcode": "int64_div",
                                 "args": [
-                                    16,
-                                    19
+                                    256,
+                                    304
                                 ],
                                 "control_next": null,
                                 "ir_instruction": 32
                             },
                             {
-                                "id": 21,
+                                "id": 336,
                                 "opcode": "int64_add",
                                 "args": [
-                                    12,
-                                    20
+                                    192,
+                                    320
                                 ],
                                 "control_next": null,
                                 "ir_instruction": 33
                             },
                             {
-                                "id": 22,
+                                "id": 352,
                                 "opcode": "return",
-                                "arg": 21,
+                                "arg": 336,
                                 "control_next": null,
                                 "ir_instruction": 36
                             }
@@ -274,29 +274,29 @@
                             "predecessors": [],
                             "immediate_dominator": null,
                             "alive_instructions": [
-                                19,
-                                17,
-                                16,
-                                3,
-                                15,
-                                10,
-                                5,
-                                1,
-                                22,
-                                8,
-                                4,
-                                13,
-                                14,
-                                21,
-                                18,
-                                11,
+                                256,
+                                320,
+                                240,
+                                176,
+                                80,
+                                192,
+                                32,
+                                64,
+                                160,
+                                352,
+                                336,
+                                128,
+                                224,
+                                96,
+                                112,
+                                208,
+                                144,
+                                272,
                                 0,
-                                6,
-                                7,
-                                2,
-                                20,
-                                9,
-                                12
+                                304,
+                                16,
+                                288,
+                                48
                             ]
                         }
                     }
@@ -306,19 +306,19 @@
                         {
                             "variable_id": 214748364812,
                             "allocations": [
-                                9
+                                144
                             ]
                         },
                         {
                             "variable_id": 214748364813,
                             "allocations": [
-                                6
+                                96
                             ]
                         },
                         {
                             "variable_id": 214748364814,
                             "allocations": [
-                                3
+                                48
                             ]
                         }
                     ],
@@ -380,10 +380,10 @@
                 "blocks": [
                     {
                         "id": 0,
-                        "control_flow": 2,
+                        "control_flow": 32,
                         "code": [
                             {
-                                "id": 1,
+                                "id": 16,
                                 "opcode": "get_global",
                                 "global_ref": 1,
                                 "offset": 0,
@@ -398,19 +398,19 @@
                                 "ir_instruction": 0
                             },
                             {
-                                "id": 2,
+                                "id": 32,
                                 "opcode": "int8_store",
-                                "location": 1,
+                                "location": 16,
                                 "value": 0,
                                 "flags": {
                                     "volatile": false
                                 },
-                                "control_next": 5,
+                                "control_next": 80,
                                 "ir_instruction": 5,
                                 "memssa_node_ref": 1
                             },
                             {
-                                "id": 4,
+                                "id": 64,
                                 "opcode": "get_global",
                                 "global_ref": 4,
                                 "offset": 0,
@@ -418,26 +418,26 @@
                                 "ir_instruction": 8
                             },
                             {
-                                "id": 3,
+                                "id": 48,
                                 "opcode": "int_const",
                                 "value": 1,
                                 "control_next": null,
                                 "ir_instruction": 7
                             },
                             {
-                                "id": 5,
+                                "id": 80,
                                 "opcode": "int16_store",
-                                "location": 4,
-                                "value": 3,
+                                "location": 64,
+                                "value": 48,
                                 "flags": {
                                     "volatile": false
                                 },
-                                "control_next": 8,
+                                "control_next": 128,
                                 "ir_instruction": 12,
                                 "memssa_node_ref": 2
                             },
                             {
-                                "id": 7,
+                                "id": 112,
                                 "opcode": "get_global",
                                 "global_ref": 6,
                                 "offset": 0,
@@ -445,26 +445,26 @@
                                 "ir_instruction": 15
                             },
                             {
-                                "id": 6,
+                                "id": 96,
                                 "opcode": "int_const",
                                 "value": 2,
                                 "control_next": null,
                                 "ir_instruction": 14
                             },
                             {
-                                "id": 8,
+                                "id": 128,
                                 "opcode": "int32_store",
-                                "location": 7,
-                                "value": 6,
+                                "location": 112,
+                                "value": 96,
                                 "flags": {
                                     "volatile": false
                                 },
-                                "control_next": 12,
+                                "control_next": 192,
                                 "ir_instruction": 19,
                                 "memssa_node_ref": 3
                             },
                             {
-                                "id": 11,
+                                "id": 176,
                                 "opcode": "get_global",
                                 "global_ref": 8,
                                 "offset": 0,
@@ -472,33 +472,33 @@
                                 "ir_instruction": 23
                             },
                             {
-                                "id": 9,
+                                "id": 144,
                                 "opcode": "int_const",
                                 "value": 3,
                                 "control_next": null,
                                 "ir_instruction": 21
                             },
                             {
-                                "id": 10,
+                                "id": 160,
                                 "opcode": "int64_sign_extend_32bits",
-                                "arg": 9,
+                                "arg": 144,
                                 "control_next": null,
                                 "ir_instruction": 22
                             },
                             {
-                                "id": 12,
+                                "id": 192,
                                 "opcode": "int64_store",
-                                "location": 11,
-                                "value": 10,
+                                "location": 176,
+                                "value": 160,
                                 "flags": {
                                     "volatile": false
                                 },
-                                "control_next": 15,
+                                "control_next": 240,
                                 "ir_instruction": 27,
                                 "memssa_node_ref": 4
                             },
                             {
-                                "id": 14,
+                                "id": 224,
                                 "opcode": "get_global",
                                 "global_ref": 10,
                                 "offset": 0,
@@ -506,26 +506,26 @@
                                 "ir_instruction": 30
                             },
                             {
-                                "id": 13,
+                                "id": 208,
                                 "opcode": "int_const",
                                 "value": 4,
                                 "control_next": null,
                                 "ir_instruction": 29
                             },
                             {
-                                "id": 15,
+                                "id": 240,
                                 "opcode": "int8_store",
-                                "location": 14,
-                                "value": 13,
+                                "location": 224,
+                                "value": 208,
                                 "flags": {
                                     "volatile": false
                                 },
-                                "control_next": 18,
+                                "control_next": 288,
                                 "ir_instruction": 34,
                                 "memssa_node_ref": 5
                             },
                             {
-                                "id": 17,
+                                "id": 272,
                                 "opcode": "get_global",
                                 "global_ref": 12,
                                 "offset": 0,
@@ -533,26 +533,26 @@
                                 "ir_instruction": 37
                             },
                             {
-                                "id": 16,
+                                "id": 256,
                                 "opcode": "int_const",
                                 "value": 5,
                                 "control_next": null,
                                 "ir_instruction": 36
                             },
                             {
-                                "id": 18,
+                                "id": 288,
                                 "opcode": "int16_store",
-                                "location": 17,
-                                "value": 16,
+                                "location": 272,
+                                "value": 256,
                                 "flags": {
                                     "volatile": false
                                 },
-                                "control_next": 21,
+                                "control_next": 336,
                                 "ir_instruction": 41,
                                 "memssa_node_ref": 6
                             },
                             {
-                                "id": 20,
+                                "id": 320,
                                 "opcode": "get_global",
                                 "global_ref": 14,
                                 "offset": 0,
@@ -560,26 +560,26 @@
                                 "ir_instruction": 44
                             },
                             {
-                                "id": 19,
+                                "id": 304,
                                 "opcode": "int_const",
                                 "value": 6,
                                 "control_next": null,
                                 "ir_instruction": 43
                             },
                             {
-                                "id": 21,
+                                "id": 336,
                                 "opcode": "int32_store",
-                                "location": 20,
-                                "value": 19,
+                                "location": 320,
+                                "value": 304,
                                 "flags": {
                                     "volatile": false
                                 },
-                                "control_next": 25,
+                                "control_next": 400,
                                 "ir_instruction": 48,
                                 "memssa_node_ref": 7
                             },
                             {
-                                "id": 24,
+                                "id": 384,
                                 "opcode": "get_global",
                                 "global_ref": 16,
                                 "offset": 0,
@@ -587,33 +587,33 @@
                                 "ir_instruction": 52
                             },
                             {
-                                "id": 22,
+                                "id": 352,
                                 "opcode": "int_const",
                                 "value": 7,
                                 "control_next": null,
                                 "ir_instruction": 50
                             },
                             {
-                                "id": 23,
+                                "id": 368,
                                 "opcode": "int64_sign_extend_32bits",
-                                "arg": 22,
+                                "arg": 352,
                                 "control_next": null,
                                 "ir_instruction": 51
                             },
                             {
-                                "id": 25,
+                                "id": 400,
                                 "opcode": "int64_store",
-                                "location": 24,
-                                "value": 23,
+                                "location": 384,
+                                "value": 368,
                                 "flags": {
                                     "volatile": false
                                 },
-                                "control_next": 26,
+                                "control_next": 416,
                                 "ir_instruction": 56,
                                 "memssa_node_ref": 8
                             },
                             {
-                                "id": 26,
+                                "id": 416,
                                 "opcode": "return",
                                 "arg": null,
                                 "control_next": null,
@@ -626,33 +626,33 @@
                             "predecessors": [],
                             "immediate_dominator": null,
                             "alive_instructions": [
-                                24,
-                                22,
-                                15,
-                                5,
-                                18,
-                                17,
-                                14,
-                                21,
-                                23,
-                                6,
-                                11,
+                                384,
+                                256,
+                                208,
+                                80,
+                                64,
+                                240,
+                                160,
+                                176,
+                                128,
+                                352,
+                                368,
+                                96,
+                                144,
+                                416,
+                                400,
+                                304,
                                 16,
-                                20,
-                                2,
-                                9,
-                                3,
-                                26,
-                                25,
-                                1,
-                                8,
-                                19,
-                                13,
+                                288,
+                                192,
+                                32,
+                                336,
+                                224,
+                                320,
+                                112,
+                                272,
                                 0,
-                                7,
-                                12,
-                                4,
-                                10
+                                48
                             ]
                         }
                     }
@@ -722,7 +722,7 @@
                 "blocks": [
                     {
                         "id": 0,
-                        "control_flow": 1,
+                        "control_flow": 16,
                         "code": [
                             {
                                 "id": 0,
@@ -733,19 +733,19 @@
                                 "ir_instruction": 0
                             },
                             {
-                                "id": 1,
+                                "id": 16,
                                 "opcode": "int64_load",
                                 "location": 0,
                                 "flags": {
                                     "load_extension": "noextend",
                                     "volatile": false
                                 },
-                                "control_next": 3,
+                                "control_next": 48,
                                 "ir_instruction": 1,
                                 "memssa_node_ref": 1
                             },
                             {
-                                "id": 2,
+                                "id": 32,
                                 "opcode": "get_global",
                                 "global_ref": 82,
                                 "offset": 0,
@@ -753,19 +753,19 @@
                                 "ir_instruction": 2
                             },
                             {
-                                "id": 3,
+                                "id": 48,
                                 "opcode": "int8_load",
-                                "location": 2,
+                                "location": 32,
                                 "flags": {
                                     "load_extension": "noextend",
                                     "volatile": true
                                 },
-                                "control_next": 6,
+                                "control_next": 96,
                                 "ir_instruction": 3,
                                 "memssa_node_ref": 2
                             },
                             {
-                                "id": 5,
+                                "id": 80,
                                 "opcode": "get_global",
                                 "global_ref": 83,
                                 "offset": 0,
@@ -773,19 +773,19 @@
                                 "ir_instruction": 5
                             },
                             {
-                                "id": 6,
+                                "id": 96,
                                 "opcode": "int32_load",
-                                "location": 5,
+                                "location": 80,
                                 "flags": {
                                     "load_extension": "noextend",
                                     "volatile": true
                                 },
-                                "control_next": 10,
+                                "control_next": 160,
                                 "ir_instruction": 6,
                                 "memssa_node_ref": 3
                             },
                             {
-                                "id": 9,
+                                "id": 144,
                                 "opcode": "get_global",
                                 "global_ref": 84,
                                 "offset": 0,
@@ -793,92 +793,92 @@
                                 "ir_instruction": 9
                             },
                             {
-                                "id": 10,
+                                "id": 160,
                                 "opcode": "int64_load",
-                                "location": 9,
+                                "location": 144,
                                 "flags": {
                                     "load_extension": "noextend",
                                     "volatile": true
                                 },
-                                "control_next": 15,
+                                "control_next": 240,
                                 "ir_instruction": 10,
                                 "memssa_node_ref": 4
                             },
                             {
-                                "id": 4,
+                                "id": 64,
                                 "opcode": "int64_sign_extend_8bits",
-                                "arg": 3,
+                                "arg": 48,
                                 "control_next": null,
                                 "ir_instruction": 4
                             },
                             {
-                                "id": 7,
+                                "id": 112,
                                 "opcode": "int32_add",
                                 "args": [
-                                    4,
-                                    6
+                                    64,
+                                    96
                                 ],
                                 "control_next": null,
                                 "ir_instruction": 7
                             },
                             {
-                                "id": 8,
+                                "id": 128,
                                 "opcode": "int64_sign_extend_32bits",
-                                "arg": 7,
+                                "arg": 112,
                                 "control_next": null,
                                 "ir_instruction": 8
                             },
                             {
-                                "id": 11,
+                                "id": 176,
                                 "opcode": "int64_sub",
                                 "args": [
-                                    8,
-                                    10
+                                    128,
+                                    160
                                 ],
                                 "control_next": null,
                                 "ir_instruction": 11
                             },
                             {
-                                "id": 12,
+                                "id": 192,
                                 "opcode": "uint_const",
                                 "value": 4,
                                 "control_next": null,
                                 "ir_instruction": 12
                             },
                             {
-                                "id": 13,
+                                "id": 208,
                                 "opcode": "int64_mul",
                                 "args": [
-                                    11,
-                                    12
+                                    176,
+                                    192
                                 ],
                                 "control_next": null,
                                 "ir_instruction": 13
                             },
                             {
-                                "id": 14,
+                                "id": 224,
                                 "opcode": "int64_add",
                                 "args": [
-                                    1,
-                                    13
+                                    16,
+                                    208
                                 ],
                                 "control_next": null,
                                 "ir_instruction": 14
                             },
                             {
-                                "id": 15,
+                                "id": 240,
                                 "opcode": "float32_load",
-                                "location": 14,
+                                "location": 224,
                                 "flags": {
                                     "load_extension": "noextend",
                                     "volatile": true
                                 },
-                                "control_next": 18,
+                                "control_next": 288,
                                 "ir_instruction": 15,
                                 "memssa_node_ref": 5
                             },
                             {
-                                "id": 17,
+                                "id": 272,
                                 "opcode": "get_global",
                                 "global_ref": 82,
                                 "offset": 0,
@@ -886,26 +886,26 @@
                                 "ir_instruction": 18
                             },
                             {
-                                "id": 16,
+                                "id": 256,
                                 "opcode": "int_const",
                                 "value": 1,
                                 "control_next": null,
                                 "ir_instruction": 17
                             },
                             {
-                                "id": 18,
+                                "id": 288,
                                 "opcode": "int8_store",
-                                "location": 17,
-                                "value": 16,
+                                "location": 272,
+                                "value": 256,
                                 "flags": {
                                     "volatile": true
                                 },
-                                "control_next": 21,
+                                "control_next": 336,
                                 "ir_instruction": 22,
                                 "memssa_node_ref": 6
                             },
                             {
-                                "id": 20,
+                                "id": 320,
                                 "opcode": "get_global",
                                 "global_ref": 83,
                                 "offset": 0,
@@ -913,26 +913,26 @@
                                 "ir_instruction": 25
                             },
                             {
-                                "id": 19,
+                                "id": 304,
                                 "opcode": "int_const",
                                 "value": 2,
                                 "control_next": null,
                                 "ir_instruction": 24
                             },
                             {
-                                "id": 21,
+                                "id": 336,
                                 "opcode": "int32_store",
-                                "location": 20,
-                                "value": 19,
+                                "location": 320,
+                                "value": 304,
                                 "flags": {
                                     "volatile": true
                                 },
-                                "control_next": 25,
+                                "control_next": 400,
                                 "ir_instruction": 29,
                                 "memssa_node_ref": 7
                             },
                             {
-                                "id": 24,
+                                "id": 384,
                                 "opcode": "get_global",
                                 "global_ref": 84,
                                 "offset": 0,
@@ -940,33 +940,33 @@
                                 "ir_instruction": 33
                             },
                             {
-                                "id": 22,
+                                "id": 352,
                                 "opcode": "int_const",
                                 "value": 3,
                                 "control_next": null,
                                 "ir_instruction": 31
                             },
                             {
-                                "id": 23,
+                                "id": 368,
                                 "opcode": "int64_sign_extend_32bits",
-                                "arg": 22,
+                                "arg": 352,
                                 "control_next": null,
                                 "ir_instruction": 32
                             },
                             {
-                                "id": 25,
+                                "id": 400,
                                 "opcode": "int64_store",
-                                "location": 24,
-                                "value": 23,
+                                "location": 384,
+                                "value": 368,
                                 "flags": {
                                     "volatile": true
                                 },
-                                "control_next": 29,
+                                "control_next": 464,
                                 "ir_instruction": 37,
                                 "memssa_node_ref": 8
                             },
                             {
-                                "id": 28,
+                                "id": 448,
                                 "opcode": "get_global",
                                 "global_ref": 81,
                                 "offset": 0,
@@ -974,45 +974,45 @@
                                 "ir_instruction": 41
                             },
                             {
-                                "id": 29,
+                                "id": 464,
                                 "opcode": "int64_load",
-                                "location": 28,
+                                "location": 448,
                                 "flags": {
                                     "load_extension": "noextend",
                                     "volatile": false
                                 },
-                                "control_next": 30,
+                                "control_next": 480,
                                 "ir_instruction": 42,
                                 "memssa_node_ref": 9
                             },
                             {
-                                "id": 26,
+                                "id": 416,
                                 "opcode": "float64_const",
                                 "value": 4.500000,
                                 "control_next": null,
                                 "ir_instruction": 39
                             },
                             {
-                                "id": 27,
+                                "id": 432,
                                 "opcode": "float64_to_float32",
-                                "arg": 26,
+                                "arg": 416,
                                 "control_next": null,
                                 "ir_instruction": 40
                             },
                             {
-                                "id": 30,
+                                "id": 480,
                                 "opcode": "float32_store",
-                                "location": 29,
-                                "value": 27,
+                                "location": 464,
+                                "value": 432,
                                 "flags": {
                                     "volatile": true
                                 },
-                                "control_next": 31,
+                                "control_next": 496,
                                 "ir_instruction": 46,
                                 "memssa_node_ref": 10
                             },
                             {
-                                "id": 31,
+                                "id": 496,
                                 "opcode": "return",
                                 "arg": null,
                                 "control_next": null,
@@ -1025,38 +1025,38 @@
                             "predecessors": [],
                             "immediate_dominator": null,
                             "alive_instructions": [
-                                24,
-                                0,
-                                15,
-                                4,
-                                28,
-                                5,
-                                18,
-                                14,
-                                21,
-                                23,
-                                6,
+                                384,
+                                256,
+                                208,
+                                80,
+                                160,
+                                240,
+                                352,
+                                176,
+                                128,
+                                416,
+                                480,
+                                64,
+                                496,
+                                48,
+                                400,
+                                304,
                                 16,
-                                20,
-                                2,
-                                31,
-                                9,
-                                3,
-                                8,
-                                26,
-                                29,
-                                25,
-                                1,
-                                17,
-                                27,
-                                13,
-                                19,
-                                22,
-                                30,
-                                7,
-                                12,
-                                11,
-                                10
+                                288,
+                                144,
+                                192,
+                                32,
+                                0,
+                                448,
+                                336,
+                                112,
+                                224,
+                                320,
+                                96,
+                                464,
+                                368,
+                                272,
+                                432
                             ]
                         }
                     }
@@ -1136,10 +1136,10 @@
                 "blocks": [
                     {
                         "id": 0,
-                        "control_flow": 8,
+                        "control_flow": 128,
                         "code": [
                             {
-                                "id": 8,
+                                "id": 128,
                                 "opcode": "return",
                                 "arg": null,
                                 "control_next": null,
@@ -1152,7 +1152,7 @@
                             "predecessors": [],
                             "immediate_dominator": null,
                             "alive_instructions": [
-                                8
+                                128
                             ]
                         }
                     }

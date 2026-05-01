@@ -33,9 +33,9 @@ test1:
     movq -48(%rbp), %rax
     movq -40(%rbp), %rcx
     add %rax, %r12
+    add %rcx, %r14
     sub %rax, %rbx
     sub %rcx, %r13
-    add %rcx, %r14
     cmp $0, %r13
     seta %al
     cmp $0, %rbx

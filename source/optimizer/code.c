@@ -24,6 +24,12 @@
 #include "kefir/core/util.h"
 #include <string.h>
 
+#define GENERATION_WIDTH 4
+#define MAX_GENERATION ((((kefir_uint32_t) 1) << (GENERATION_WIDTH)) - 1)
+#define GENERATION_OF(_ref) (((kefir_uint32_t) (_ref)) & MAX_GENERATION)
+#define INDEX_OF(_ref) (((kefir_uint32_t) (_ref)) >> GENERATION_WIDTH)
+#define REF_FROM(_generation, _index) ((((kefir_uint32_t) (_index)) << GENERATION_WIDTH) | GENERATION_OF((_generation)))
+
 kefir_result_t kefir_opt_comparison_operation_inverse(kefir_opt_comparison_operation_t original_comparison,
                                                       kefir_opt_comparison_operation_t *comparison_ptr) {
     kefir_opt_comparison_operation_t comparison;
@@ -508,6 +514,7 @@ kefir_result_t kefir_opt_code_container_init(struct kefir_opt_code_container *co
     code->code = NULL;
     code->capacity = 0;
     code->length = 0;
+    code->recycle_instr_idx = KEFIR_ID_NONE;
     code->blocks = NULL;
     code->blocks_length = 0;
     code->blocks_capacity = 0;
@@ -650,14 +657,17 @@ static kefir_result_t code_container_instr_mutable(const struct kefir_opt_code_c
                                                    kefir_opt_instruction_ref_t instr_id,
                                                    struct kefir_opt_instruction **instr_ptr) {
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code container"));
-    REQUIRE(instr_id != KEFIR_ID_NONE && instr_id < code->length,
+    REQUIRE(instr_id != KEFIR_ID_NONE && INDEX_OF(instr_id) < code->length,
             KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS,
                             "Requested optimizer instruction identifier is out of bounds of the code container"));
     REQUIRE(instr_ptr != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to optimizer instruction"));
 
-    struct kefir_opt_instruction *instr = &code->code[instr_id];
-    REQUIRE(instr->block_id != KEFIR_ID_NONE,
+    kefir_uint32_t generation = GENERATION_OF(instr_id);
+    kefir_size_t index = INDEX_OF(instr_id);
+
+    struct kefir_opt_instruction *instr = &code->code[index];
+    REQUIRE(instr->generation == generation && instr->block_id != KEFIR_ID_NONE,
             KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Requested optimizer instruction was previously dropped"));
     *instr_ptr = instr;
     return KEFIR_OK;
@@ -819,16 +829,28 @@ kefir_result_t kefir_opt_code_container_new_instruction(struct kefir_mem *mem, s
     struct kefir_opt_code_block *block = NULL;
     REQUIRE_OK(code_container_block_mutable(code, block_id, &block));
 
-    REQUIRE_OK(ensure_code_container_capacity(mem, code));
-    struct kefir_opt_instruction *instr = &code->code[code->length];
-    instr->id = code->length;
+    struct kefir_opt_instruction *instr;
+    kefir_bool_t allocated_new = false;
+    if (code->recycle_instr_idx != KEFIR_ID_NONE) {
+        instr = &code->code[code->recycle_instr_idx];
+        instr->generation++;
+        instr->id = REF_FROM(instr->generation, code->recycle_instr_idx);
+        code->recycle_instr_idx = code->code[code->recycle_instr_idx].siblings.next;
+        REQUIRE_OK(kefir_hashtreeset_clean(mem, &instr->uses.instruction));
+    } else {
+        REQUIRE_OK(ensure_code_container_capacity(mem, code));
+        instr = &code->code[code->length];
+        instr->generation = 0;
+        instr->id = REF_FROM(instr->generation, code->length);
+        allocated_new = true;
+        REQUIRE_OK(kefir_hashtreeset_init(&instr->uses.instruction, &kefir_hashtree_uint_ops));
+    }
     instr->operation = *operation;
     instr->block_id = block->id;
     instr->control_flow.prev = KEFIR_ID_NONE;
     instr->control_flow.next = KEFIR_ID_NONE;
     instr->siblings.prev = block->content.tail;
     instr->siblings.next = KEFIR_ID_NONE;
-    REQUIRE_OK(kefir_hashtreeset_init(&instr->uses.instruction, &kefir_hashtree_uint_ops));
 
     if (block->content.tail != KEFIR_ID_NONE) {
         struct kefir_opt_instruction *prev_instr = NULL;
@@ -841,7 +863,9 @@ kefir_result_t kefir_opt_code_container_new_instruction(struct kefir_mem *mem, s
     }
     block->content.tail = instr->id;
 
-    code->length++;
+    if (allocated_new) {
+        code->length++;
+    }
     *instr_id = instr->id;
 
     REQUIRE_OK(update_used_instructions(mem, code, instr->id));
@@ -944,6 +968,11 @@ kefir_result_t drop_instr_impl(struct kefir_mem *mem, const struct kefir_opt_cod
         REQUIRE_OK(kefir_opt_code_container_drop_call(mem, code, instr->operation.parameters.function_call.call_ref));
     } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_INLINE_ASSEMBLY) {
         REQUIRE_OK(kefir_opt_code_container_drop_inline_asm(mem, code, instr->operation.parameters.inline_asm_ref));
+    }
+
+    if (instr->generation < MAX_GENERATION) {
+        instr->siblings.next = code->recycle_instr_idx;
+        *((kefir_size_t *) &code->recycle_instr_idx) = INDEX_OF(instr_id);
     }
 
     return KEFIR_OK;
@@ -1733,7 +1762,7 @@ kefir_result_t kefir_opt_code_container_new_call(struct kefir_mem *mem, struct k
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code container"));
     REQUIRE(instr_ref_ptr != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to optimizer call instruction reference"));
-    REQUIRE(function_ref == KEFIR_ID_NONE || function_ref < code->length,
+    REQUIRE(function_ref == KEFIR_ID_NONE || INDEX_OF(function_ref) < code->length,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid function instruction reference"));
 
     REQUIRE_OK(new_call_impl(mem, code, block_id, func_decl_id, argc, function_ref,
@@ -1750,7 +1779,7 @@ kefir_result_t kefir_opt_code_container_new_tail_call(struct kefir_mem *mem, str
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code container"));
     REQUIRE(instr_ref_ptr != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to optimizer call instruction reference"));
-    REQUIRE(function_ref == KEFIR_ID_NONE || function_ref < code->length,
+    REQUIRE(function_ref == KEFIR_ID_NONE || INDEX_OF(function_ref) < code->length,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid function instruction reference"));
 
     REQUIRE_OK(new_call_impl(
@@ -2614,24 +2643,26 @@ kefir_result_t kefir_opt_code_container_drop_dead_code(struct kefir_mem *mem, st
         }
     }
 
-    for (kefir_opt_instruction_ref_t instr_ref = 0; instr_ref < code->length; instr_ref++) {
-        struct kefir_opt_instruction *instr = NULL;
-        kefir_result_t res = code_container_instr_mutable(code, instr_ref, &instr);
-        if (res == KEFIR_NOT_FOUND) {
+    for (kefir_opt_instruction_ref_t i = 0; i < code->length; i++) {
+        struct kefir_opt_instruction *instr = &code->code[i];
+        if (instr->block_id == KEFIR_ID_NONE) {
             continue;
         }
-        REQUIRE_OK(res);
 
         kefir_bool_t is_alive;
-        REQUIRE_OK(index->is_instruction_alive(instr_ref, &is_alive, index->payload));
+        REQUIRE_OK(index->is_instruction_alive(instr->id, &is_alive, index->payload));
         if (!is_alive) {
-            REQUIRE_OK(verify_dead_uses(code, index, instr_ref));
+            REQUIRE_OK(verify_dead_uses(code, index, instr->id));
             kefir_bool_t is_control_flow;
-            REQUIRE_OK(kefir_opt_code_instruction_is_control_flow(code, instr_ref, &is_control_flow));
+            REQUIRE_OK(kefir_opt_code_instruction_is_control_flow(code, instr->id, &is_control_flow));
             if (is_control_flow) {
-                REQUIRE_OK(kefir_opt_code_container_drop_control(code, instr_ref));
+                REQUIRE_OK(kefir_opt_code_container_drop_control(code, instr->id));
             }
-            REQUIRE_OK(drop_instr_impl(mem, code, instr_ref, false));
+            REQUIRE_OK(drop_instr_impl(mem, code, instr->id, false));
+            if (code->event_listener != NULL) {
+                REQUIRE_OK(
+                    code->event_listener->on_drop_instruction(mem, code, instr->id, code->event_listener->payload));
+            }
         }
     }
 

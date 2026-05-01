@@ -14,15 +14,15 @@ test32:
     stmxcsr -8(%rbp)
     movaps %xmm0, %xmm1
     shufps $1, %xmm1, %xmm1
-    movd %xmm0, -24(%rbp)
-    movd %xmm1, -20(%rbp)
-    lea -16(%rbp), %rax
-    lea -24(%rbp), %rcx
+    movd %xmm0, -16(%rbp)
+    movd %xmm1, -12(%rbp)
+    lea -24(%rbp), %rax
+    lea -16(%rbp), %rcx
 movq (%rcx), %xmm0
 shufps $1, %xmm0, %xmm0
 movq %xmm0, (%rax)
-    movd -16(%rbp), %xmm0
-    movd -12(%rbp), %xmm1
+    movd -24(%rbp), %xmm0
+    movd -20(%rbp), %xmm1
     insertps $16, %xmm1, %xmm0
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp

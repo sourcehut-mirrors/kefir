@@ -26,14 +26,15 @@ factorial2:
     jmp *%rdx
 .L__kefir_func_factorial2_label4:
 _kefir_local_public_label_factorial2_round:
+    lea -1(%rdi), %rsi
     imul %rdi, %rax
-    add $-1, %rdi
     xor %edx, %edx
-    cmp $1, %rdi
+    cmp $1, %rsi
     setg %dl
     movsx %edx, %rdx
     shl $3, %rdx
     add %rcx, %rdx
+    mov %rsi, %rdi
     jmp .L__kefir_func_factorial2_label2
 .L__kefir_func_factorial2_label3:
 _kefir_local_public_label_factorial2_terminate:

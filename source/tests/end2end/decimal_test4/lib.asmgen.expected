@@ -78,8 +78,8 @@ test_dec128_run:
     ret
 .L__kefir_func_test_dec128_run_label4:
     lea -80(%rbp), %rdi
-    movaps -112(%rbp), %xmm0
-    movaps -96(%rbp), %xmm1
+    movaps -96(%rbp), %xmm0
+    movaps -112(%rbp), %xmm1
     movaps -128(%rbp), %xmm2
     call test_dec128_step
     add $1, %r13d
@@ -91,10 +91,10 @@ test_dec128_run:
     .quad 1, 3475090062469758976
     .align 16
 .L__kefir_func_test_dec128_run_label7:
-    .quad 4, 3475653012423180288
+    .quad 6, 3475653012423180288
     .align 16
 .L__kefir_func_test_dec128_run_label8:
-    .quad 6, 3475653012423180288
+    .quad 4, 3475653012423180288
 .section .text
 
 test_dec32_free:
@@ -866,9 +866,9 @@ test_dec32_run:
     ret
 .L__kefir_func_test_dec32_run_label4:
     lea -56(%rbp), %rdi
-    movaps -80(%rbp), %xmm0
+    movaps -112(%rbp), %xmm0
     movaps -96(%rbp), %xmm1
-    movaps -112(%rbp), %xmm2
+    movaps -80(%rbp), %xmm2
     call test_dec32_step
     add $1, %r13d
     jmp .L__kefir_func_test_dec32_run_label2
@@ -876,13 +876,13 @@ test_dec32_run:
 .section .rodata
     .align 4
 .L__kefir_func_test_dec32_run_label6:
-    .long 822083585
+    .long 830472196
     .align 4
 .L__kefir_func_test_dec32_run_label7:
     .long 830472198
     .align 4
 .L__kefir_func_test_dec32_run_label8:
-    .long 830472196
+    .long 822083585
 .section .text
 
 test_dec64_run:
@@ -930,9 +930,9 @@ test_dec64_run:
     ret
 .L__kefir_func_test_dec64_run_label4:
     lea -56(%rbp), %rdi
-    movaps -80(%rbp), %xmm0
+    movaps -112(%rbp), %xmm0
     movaps -96(%rbp), %xmm1
-    movaps -112(%rbp), %xmm2
+    movaps -80(%rbp), %xmm2
     call test_dec64_step
     add $1, %r13d
     jmp .L__kefir_func_test_dec64_run_label2
@@ -940,13 +940,13 @@ test_dec64_run:
 .section .rodata
     .align 8
 .L__kefir_func_test_dec64_run_label6:
-    .quad 3557843705622691841
+    .quad 3566850904877432836
     .align 8
 .L__kefir_func_test_dec64_run_label7:
     .quad 3566850904877432838
     .align 8
 .L__kefir_func_test_dec64_run_label8:
-    .quad 3566850904877432836
+    .quad 3557843705622691841
 .section .text
 
 test_dec128_laplacian:

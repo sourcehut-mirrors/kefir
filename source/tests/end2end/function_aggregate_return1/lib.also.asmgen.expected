@@ -15,8 +15,8 @@ get1:
     push %r12
     sub $144, %rsp
     mov %rdi, %r12
-    movq %rsi, -152(%rbp)
-    movq -152(%rbp), %rax
+    movq %rsi, -88(%rbp)
+    movq -88(%rbp), %rax
     xor %ecx, %ecx
     xor %edx, %edx
     cmp %rcx, %rax
@@ -31,29 +31,29 @@ get1:
     movdqu %xmm0, -64(%rbp)
     movdqu %xmm0, -48(%rbp)
     movdqu %xmm0, -32(%rbp)
-    movq -152(%rbp), %rax
+    movq -88(%rbp), %rax
     movq %rax, -80(%rbp)
-    movq -152(%rbp), %rax
+    movq -88(%rbp), %rax
     not %rax
     movq %rax, -72(%rbp)
-    movq -152(%rbp), %rax
+    movq -88(%rbp), %rax
     add $1, %rax
     movq %rax, -64(%rbp)
-    movq -152(%rbp), %rax
+    movq -88(%rbp), %rax
     neg %rax
     movq %rax, -56(%rbp)
-    movq -152(%rbp), %rax
+    movq -88(%rbp), %rax
     sub $1, %rax
     movq %rax, -48(%rbp)
-    movq -152(%rbp), %rax
+    movq -88(%rbp), %rax
     shl $1, %rax
     movq %rax, -40(%rbp)
-    movq -152(%rbp), %rax
+    movq -88(%rbp), %rax
     mov $2, %ecx
     cqo
     idiv %rcx
     movq %rax, -32(%rbp)
-    movq -152(%rbp), %rax
+    movq -88(%rbp), %rax
     movabs $3405691582, %rcx
     movabs $4294967295, %rdx
     and %rdx, %rcx
@@ -76,7 +76,7 @@ get1:
     pop %rbp
     ret
 .L__kefir_func_get1_label4:
-    lea -144(%rbp), %rbx
+    lea -152(%rbp), %rbx
     mov %rbx, %rdi
     call empty1@PLT
     mov %rax, %rcx

@@ -24,13 +24,13 @@ factorial:
 .L__kefir_text_func_factorial_begin:
     mov $1, %eax
 .L__kefir_func_factorial_label2:
-    lea -1(%rdi), %rcx
-    mov %rax, %rdx
-    imul %rdi, %rdx
+    mov %rax, %rcx
+    imul %rdi, %rcx
+    lea -1(%rdi), %rdx
     cmp $1, %rdi
     jle .L__kefir_func_factorial_label4
-    mov %rdx, %rax
-    mov %rcx, %rdi
+    mov %rcx, %rax
+    mov %rdx, %rdi
     jmp .L__kefir_func_factorial_label2
 .L__kefir_func_factorial_label4:
     mov %rax, %rdi

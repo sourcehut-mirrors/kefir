@@ -8,7 +8,7 @@
                 "blocks": [
                     {
                         "id": 0,
-                        "control_flow": 4,
+                        "control_flow": 64,
                         "code": [
                             {
                                 "id": 0,
@@ -18,35 +18,35 @@
                                 "ir_instruction": 0
                             },
                             {
-                                "id": 1,
+                                "id": 16,
                                 "opcode": "int_const",
                                 "value": 3,
                                 "control_next": null,
                                 "ir_instruction": 1
                             },
                             {
-                                "id": 2,
+                                "id": 32,
                                 "opcode": "int32_and",
                                 "args": [
                                     0,
-                                    1
+                                    16
                                 ],
                                 "control_next": null,
                                 "ir_instruction": 2
                             },
                             {
-                                "id": 3,
+                                "id": 48,
                                 "opcode": "int32_bool_not",
-                                "arg": 2,
+                                "arg": 32,
                                 "control_next": null,
                                 "ir_instruction": 3
                             },
                             {
-                                "id": 4,
+                                "id": 64,
                                 "opcode": "branch",
                                 "target_block": 1,
                                 "alternative_block": 2,
-                                "condition": 3,
+                                "condition": 48,
                                 "condition_variant": "8bit",
                                 "control_next": null,
                                 "ir_instruction": 4
@@ -61,72 +61,72 @@
                             "predecessors": [],
                             "immediate_dominator": null,
                             "alive_instructions": [
+                                64,
                                 0,
-                                4,
-                                3,
-                                1,
-                                2
+                                16,
+                                48,
+                                32
                             ]
                         }
                     },
                     {
                         "id": 1,
-                        "control_flow": 16,
+                        "control_flow": 256,
                         "code": [
                             {
-                                "id": 10,
+                                "id": 160,
                                 "opcode": "int_const",
                                 "value": 6,
                                 "control_next": null,
                                 "ir_instruction": 10
                             },
                             {
-                                "id": 11,
+                                "id": 176,
                                 "opcode": "int_const",
                                 "value": 5,
                                 "control_next": null,
                                 "ir_instruction": 11
                             },
                             {
-                                "id": 12,
+                                "id": 192,
                                 "opcode": "int_const",
                                 "value": 1,
                                 "control_next": null,
                                 "ir_instruction": 12
                             },
                             {
-                                "id": 13,
+                                "id": 208,
                                 "opcode": "int32_lshift",
                                 "args": [
-                                    11,
-                                    12
+                                    176,
+                                    192
                                 ],
                                 "control_next": null,
                                 "ir_instruction": 13
                             },
                             {
-                                "id": 14,
+                                "id": 224,
                                 "opcode": "int32_xor",
                                 "args": [
-                                    10,
-                                    13
+                                    160,
+                                    208
                                 ],
                                 "control_next": null,
                                 "ir_instruction": 14
                             },
                             {
-                                "id": 15,
+                                "id": 240,
                                 "opcode": "int32_bool_not",
-                                "arg": 14,
+                                "arg": 224,
                                 "control_next": null,
                                 "ir_instruction": 15
                             },
                             {
-                                "id": 16,
+                                "id": 256,
                                 "opcode": "branch",
                                 "target_block": 4,
                                 "alternative_block": 5,
-                                "condition": 15,
+                                "condition": 240,
                                 "condition_variant": "8bit",
                                 "control_next": null,
                                 "ir_instruction": 16
@@ -143,65 +143,65 @@
                             ],
                             "immediate_dominator": 0,
                             "alive_instructions": [
-                                15,
-                                14,
-                                13,
-                                16,
-                                11,
-                                10,
-                                12
+                                256,
+                                208,
+                                192,
+                                160,
+                                240,
+                                176,
+                                224
                             ]
                         }
                     },
                     {
                         "id": 5,
-                        "control_flow": 22,
+                        "control_flow": 352,
                         "code": [
                             {
-                                "id": 17,
+                                "id": 272,
                                 "opcode": "int_const",
                                 "value": 7,
                                 "control_next": null,
                                 "ir_instruction": 17
                             },
                             {
-                                "id": 18,
+                                "id": 288,
                                 "opcode": "int_const",
                                 "value": 1,
                                 "control_next": null,
                                 "ir_instruction": 18
                             },
                             {
-                                "id": 19,
+                                "id": 304,
                                 "opcode": "int_const",
                                 "value": 4,
                                 "control_next": null,
                                 "ir_instruction": 19
                             },
                             {
-                                "id": 20,
+                                "id": 320,
                                 "opcode": "int32_mod",
                                 "args": [
-                                    18,
-                                    19
+                                    288,
+                                    304
                                 ],
                                 "control_next": null,
                                 "ir_instruction": 20
                             },
                             {
-                                "id": 21,
+                                "id": 336,
                                 "opcode": "int32_sub",
                                 "args": [
-                                    17,
-                                    20
+                                    272,
+                                    320
                                 ],
                                 "control_next": null,
                                 "ir_instruction": 21
                             },
                             {
-                                "id": 22,
+                                "id": 352,
                                 "opcode": "return",
-                                "arg": 21,
+                                "arg": 336,
                                 "control_next": null,
                                 "ir_instruction": 22
                             }
@@ -214,81 +214,81 @@
                             ],
                             "immediate_dominator": 1,
                             "alive_instructions": [
-                                17,
-                                19,
-                                18,
-                                21,
-                                22,
-                                20
+                                320,
+                                336,
+                                272,
+                                352,
+                                304,
+                                288
                             ]
                         }
                     },
                     {
                         "id": 4,
-                        "control_flow": 30,
+                        "control_flow": 480,
                         "code": [
                             {
-                                "id": 23,
+                                "id": 368,
                                 "opcode": "uint_const",
                                 "value": 10,
                                 "control_next": null,
                                 "ir_instruction": 23
                             },
                             {
-                                "id": 24,
+                                "id": 384,
                                 "opcode": "int_const",
                                 "value": 5,
                                 "control_next": null,
                                 "ir_instruction": 24
                             },
                             {
-                                "id": 25,
+                                "id": 400,
                                 "opcode": "uint32_mod",
                                 "args": [
-                                    23,
-                                    24
+                                    368,
+                                    384
                                 ],
                                 "control_next": null,
                                 "ir_instruction": 25
                             },
                             {
-                                "id": 26,
+                                "id": 416,
                                 "opcode": "uint_const",
                                 "value": 4294967295,
                                 "control_next": null,
                                 "ir_instruction": 26
                             },
                             {
-                                "id": 27,
+                                "id": 432,
                                 "opcode": "int64_and",
                                 "args": [
-                                    25,
-                                    26
+                                    400,
+                                    416
                                 ],
                                 "control_next": null,
                                 "ir_instruction": 27
                             },
                             {
-                                "id": 28,
+                                "id": 448,
                                 "opcode": "uint_const",
                                 "value": 100,
                                 "control_next": null,
                                 "ir_instruction": 28
                             },
                             {
-                                "id": 29,
+                                "id": 464,
                                 "opcode": "uint64_div",
                                 "args": [
-                                    27,
-                                    28
+                                    432,
+                                    448
                                 ],
                                 "control_next": null,
                                 "ir_instruction": 29
                             },
                             {
-                                "id": 30,
+                                "id": 480,
                                 "opcode": "return",
-                                "arg": 29,
+                                "arg": 464,
                                 "control_next": null,
                                 "ir_instruction": 30
                             }
@@ -301,49 +301,49 @@
                             ],
                             "immediate_dominator": 1,
                             "alive_instructions": [
-                                23,
-                                27,
-                                24,
-                                28,
-                                26,
-                                30,
-                                29,
-                                25
+                                480,
+                                400,
+                                464,
+                                448,
+                                368,
+                                432,
+                                384,
+                                416
                             ]
                         }
                     },
                     {
                         "id": 2,
-                        "control_flow": 8,
+                        "control_flow": 128,
                         "code": [
                             {
-                                "id": 5,
+                                "id": 80,
                                 "opcode": "int_const",
                                 "value": 2,
                                 "control_next": null,
                                 "ir_instruction": 5
                             },
                             {
-                                "id": 6,
+                                "id": 96,
                                 "opcode": "int_const",
                                 "value": 3,
                                 "control_next": null,
                                 "ir_instruction": 6
                             },
                             {
-                                "id": 7,
+                                "id": 112,
                                 "opcode": "int32_add",
                                 "args": [
-                                    5,
-                                    6
+                                    80,
+                                    96
                                 ],
                                 "control_next": null,
                                 "ir_instruction": 7
                             },
                             {
-                                "id": 8,
+                                "id": 128,
                                 "opcode": "return",
-                                "arg": 7,
+                                "arg": 112,
                                 "control_next": null,
                                 "ir_instruction": 8
                             }
@@ -356,10 +356,10 @@
                             ],
                             "immediate_dominator": 0,
                             "alive_instructions": [
-                                8,
-                                6,
-                                7,
-                                5
+                                96,
+                                128,
+                                80,
+                                112
                             ]
                         }
                     }
@@ -399,7 +399,7 @@
                 "blocks": [
                     {
                         "id": 0,
-                        "control_flow": 6,
+                        "control_flow": 96,
                         "code": [
                             {
                                 "id": 0,
@@ -409,52 +409,52 @@
                                 "ir_instruction": 0
                             },
                             {
-                                "id": 1,
+                                "id": 16,
                                 "opcode": "int_const",
                                 "value": 4,
                                 "control_next": null,
                                 "ir_instruction": 1
                             },
                             {
-                                "id": 2,
+                                "id": 32,
                                 "opcode": "int_const",
                                 "value": 5,
                                 "control_next": null,
                                 "ir_instruction": 2
                             },
                             {
-                                "id": 3,
+                                "id": 48,
                                 "opcode": "int32_sub",
                                 "args": [
-                                    1,
-                                    2
+                                    16,
+                                    32
                                 ],
                                 "control_next": null,
                                 "ir_instruction": 3
                             },
                             {
-                                "id": 4,
+                                "id": 64,
                                 "opcode": "int32_or",
                                 "args": [
                                     0,
-                                    3
+                                    48
                                 ],
                                 "control_next": null,
                                 "ir_instruction": 4
                             },
                             {
-                                "id": 5,
+                                "id": 80,
                                 "opcode": "int32_bool_not",
-                                "arg": 4,
+                                "arg": 64,
                                 "control_next": null,
                                 "ir_instruction": 5
                             },
                             {
-                                "id": 6,
+                                "id": 96,
                                 "opcode": "branch",
                                 "target_block": 1,
                                 "alternative_block": 2,
-                                "condition": 5,
+                                "condition": 80,
                                 "condition_variant": "8bit",
                                 "control_next": null,
                                 "ir_instruction": 6
@@ -469,22 +469,22 @@
                             "predecessors": [],
                             "immediate_dominator": null,
                             "alive_instructions": [
-                                4,
-                                3,
+                                96,
+                                80,
+                                48,
+                                32,
+                                64,
                                 0,
-                                6,
-                                5,
-                                1,
-                                2
+                                16
                             ]
                         }
                     },
                     {
                         "id": 1,
-                        "control_flow": 15,
+                        "control_flow": 240,
                         "code": [
                             {
-                                "id": 15,
+                                "id": 240,
                                 "opcode": "return",
                                 "arg": null,
                                 "control_next": null,
@@ -499,63 +499,63 @@
                             ],
                             "immediate_dominator": 0,
                             "alive_instructions": [
-                                15
+                                240
                             ]
                         }
                     },
                     {
                         "id": 2,
-                        "control_flow": 13,
+                        "control_flow": 208,
                         "code": [
                             {
-                                "id": 7,
+                                "id": 112,
                                 "opcode": "int_const",
                                 "value": 1,
                                 "control_next": null,
                                 "ir_instruction": 7
                             },
                             {
-                                "id": 8,
+                                "id": 128,
                                 "opcode": "int32_neg",
-                                "arg": 7,
+                                "arg": 112,
                                 "control_next": null,
                                 "ir_instruction": 8
                             },
                             {
-                                "id": 9,
+                                "id": 144,
                                 "opcode": "int_const",
                                 "value": 1,
                                 "control_next": null,
                                 "ir_instruction": 9
                             },
                             {
-                                "id": 10,
+                                "id": 160,
                                 "opcode": "int32_not",
-                                "arg": 9,
+                                "arg": 144,
                                 "control_next": null,
                                 "ir_instruction": 10
                             },
                             {
-                                "id": 11,
+                                "id": 176,
                                 "opcode": "int32_xor",
                                 "args": [
-                                    8,
-                                    10
+                                    128,
+                                    160
                                 ],
                                 "control_next": null,
                                 "ir_instruction": 11
                             },
                             {
-                                "id": 12,
+                                "id": 192,
                                 "opcode": "int64_sign_extend_32bits",
-                                "arg": 11,
+                                "arg": 176,
                                 "control_next": null,
                                 "ir_instruction": 12
                             },
                             {
-                                "id": 13,
+                                "id": 208,
                                 "opcode": "return",
-                                "arg": 12,
+                                "arg": 192,
                                 "control_next": null,
                                 "ir_instruction": 13
                             }
@@ -568,13 +568,13 @@
                             ],
                             "immediate_dominator": 0,
                             "alive_instructions": [
-                                8,
-                                9,
-                                7,
-                                13,
-                                12,
-                                11,
-                                10
+                                144,
+                                208,
+                                112,
+                                160,
+                                176,
+                                128,
+                                192
                             ]
                         }
                     }
@@ -609,10 +609,10 @@
                 "blocks": [
                     {
                         "id": 0,
-                        "control_flow": 5,
+                        "control_flow": 80,
                         "code": [
                             {
-                                "id": 5,
+                                "id": 80,
                                 "opcode": "return",
                                 "arg": null,
                                 "control_next": null,
@@ -625,7 +625,7 @@
                             "predecessors": [],
                             "immediate_dominator": null,
                             "alive_instructions": [
-                                5
+                                80
                             ]
                         }
                     }

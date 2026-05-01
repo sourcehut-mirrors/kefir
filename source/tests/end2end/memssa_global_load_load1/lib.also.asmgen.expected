@@ -153,16 +153,16 @@ test10:
     xor %ecx, %ecx
     mov %eax, %edx
 .L__kefir_func_test10_label2:
-    lea 1(%ecx), %esi
-    mov %rdx, %rdi
-    add %eax, %edi
+    mov %rdx, %rsi
+    add %eax, %esi
+    lea 1(%ecx), %edi
     cmp $10, %ecx
     jl .L__kefir_func_test10_label7
     mov %rdx, %rax
     ret
 .L__kefir_func_test10_label7:
-    mov %esi, %ecx
-    mov %edi, %edx
+    mov %edi, %ecx
+    mov %esi, %edx
     jmp .L__kefir_func_test10_label2
 .L__kefir_text_func_test10_end:
 
@@ -176,8 +176,8 @@ test11:
     ret
 .L__kefir_func_test11_label4:
     movl (%rdi), %edx
-    add $1, %ecx
     add %edx, %eax
+    add $1, %ecx
     jmp .L__kefir_func_test11_label2
 .L__kefir_text_func_test11_end:
 

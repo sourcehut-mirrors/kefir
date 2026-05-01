@@ -130,18 +130,18 @@ __kefir_softfloat_complex_float_mul:
     movaps %xmm7, %xmm0
     jmp .L__kefir_runtime_func___kefir_softfloat_complex_float_mul_label5
 .L__kefir_runtime_func___kefir_softfloat_complex_float_mul_label43:
-    movd .L__kefir_runtime_func___kefir_softfloat_complex_float_mul_label57(%rip), %xmm10
-    movaps %xmm4, %xmm0
-    mulss %xmm3, %xmm0
-    movaps %xmm1, %xmm5
+    movd .L__kefir_runtime_func___kefir_softfloat_complex_float_mul_label57(%rip), %xmm0
+    movaps %xmm4, %xmm5
     mulss %xmm2, %xmm5
-    addss %xmm5, %xmm0
-    mulss %xmm0, %xmm10
-    movd .L__kefir_runtime_func___kefir_softfloat_complex_float_mul_label58(%rip), %xmm0
-    mulss %xmm2, %xmm4
-    mulss %xmm3, %xmm1
-    subss %xmm1, %xmm4
-    mulss %xmm4, %xmm0
+    movaps %xmm1, %xmm6
+    mulss %xmm3, %xmm6
+    subss %xmm6, %xmm5
+    mulss %xmm5, %xmm0
+    movd .L__kefir_runtime_func___kefir_softfloat_complex_float_mul_label58(%rip), %xmm10
+    mulss %xmm3, %xmm4
+    mulss %xmm2, %xmm1
+    addss %xmm1, %xmm4
+    mulss %xmm4, %xmm10
     jmp .L__kefir_runtime_func___kefir_softfloat_complex_float_mul_label5
 .L__kefir_runtime_func___kefir_softfloat_complex_float_mul_label27:
     ucomiss %xmm4, %xmm4

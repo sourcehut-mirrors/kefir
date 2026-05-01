@@ -198,9 +198,9 @@ __kefir_bigint_is_zero:
     div %rcx
     movq %rax, -40(%rbp)
     xor %eax, %eax
-    movq %rax, -8(%rbp)
+    movq %rax, -24(%rbp)
 .L__kefir_runtime_func___kefir_bigint_is_zero_label3:
-    movq -8(%rbp), %rax
+    movq -24(%rbp), %rax
     movq -40(%rbp), %rcx
     cmp %rcx, %rax
     jb .L__kefir_runtime_func___kefir_bigint_is_zero_label5
@@ -210,10 +210,10 @@ __kefir_bigint_is_zero:
     ret
 .L__kefir_runtime_func___kefir_bigint_is_zero_label5:
     movq -56(%rbp), %rax
-    movq -8(%rbp), %rcx
+    movq -24(%rbp), %rcx
     movb (%rax, %rcx, 1), %dl
     movb %dl, -32(%rbp)
-    movq -8(%rbp), %rax
+    movq -24(%rbp), %rax
     movq -40(%rbp), %rcx
     add $1, %rax
     cmp %rcx, %rax
@@ -222,7 +222,7 @@ __kefir_bigint_is_zero:
     movb -32(%rbp), %al
     test %al, %al
     jnz .L__kefir_runtime_func___kefir_bigint_is_zero_label10
-    addq $1, -8(%rbp)
+    addq $1, -24(%rbp)
     jmp .L__kefir_runtime_func___kefir_bigint_is_zero_label3
 .L__kefir_runtime_func___kefir_bigint_is_zero_label10:
     xor %eax, %eax
@@ -235,9 +235,9 @@ __kefir_bigint_is_zero:
     mov $8, %ecx
     xor %edx, %edx
     div %rcx
-    movq %rax, -24(%rbp)
+    movq %rax, -8(%rbp)
     movq -48(%rbp), %rax
-    movq -24(%rbp), %rcx
+    movq -8(%rbp), %rcx
     sub $1, %rax
     shl $3, %rcx
     sub %rcx, %rax

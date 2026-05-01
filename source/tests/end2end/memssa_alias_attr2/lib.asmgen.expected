@@ -17,11 +17,11 @@ test:
     mov %rsp, %rbp
     push %rbx
     sub $8, %rsp
-    data16     lea y@tlsgd(%rip), %rdi
+    data16     lea x@tlsgd(%rip), %rdi
     .word 26214
     rex.W     call __tls_get_addr@PLT
     mov %rax, %rbx
-    data16     lea x@tlsgd(%rip), %rdi
+    data16     lea y@tlsgd(%rip), %rdi
     .word 26214
     rex.W     call __tls_get_addr@PLT
     xor %ecx, %ecx
@@ -33,9 +33,9 @@ test:
     pop %rbp
     ret
 .L__kefir_func_test_label4:
-    movl (%rbx), %edx
+    movl (%rax), %edx
     add $1, %edx
-    movl %edx, (%rax)
+    movl %edx, (%rbx)
     add $1, %ecx
     jmp .L__kefir_func_test_label2
 .L__kefir_text_func_test_end:

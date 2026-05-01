@@ -18,7 +18,7 @@ compute:
     fldt 48(%rbp)
 .L__kefir_func_compute_label20:
     fldt 32(%rbp)
-.L__kefir_func_compute_label26:
+.L__kefir_func_compute_label21:
     fldt 16(%rbp)
 .loc 0 24 22
 .L__kefir_func_compute_label27:
@@ -26,14 +26,14 @@ compute:
     fld %st(0)
     fmulp
 .loc 0 25 23
-.L__kefir_func_compute_label35:
+.L__kefir_func_compute_label39:
     fldt .L__kefir_func_compute_label38(%rip)
-.L__kefir_func_compute_label49:
+.L__kefir_func_compute_label40:
     fxch %st(1)
     fxch %st(2)
     fxch %st(1)
     fmulp
-.L__kefir_func_compute_label50:
+.L__kefir_func_compute_label59:
     fxch %st(1)
     fxch %st(2)
     fxch %st(1)

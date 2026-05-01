@@ -8,65 +8,65 @@
                 "blocks": [
                     {
                         "id": 0,
-                        "control_flow": 33,
+                        "control_flow": 114,
                         "code": [
                             {
-                                "id": 2,
+                                "id": 32,
                                 "opcode": "get_argument",
                                 "index": 0,
                                 "control_next": null,
                                 "ir_instruction": 2
                             },
                             {
-                                "id": 34,
+                                "id": 194,
                                 "opcode": "int_const",
                                 "value": 3,
                                 "control_next": null,
                                 "ir_instruction": 27
                             },
                             {
-                                "id": 35,
+                                "id": 18,
                                 "opcode": "int32_not",
-                                "arg": 2,
+                                "arg": 32,
                                 "control_next": null,
                                 "ir_instruction": 27
                             },
                             {
-                                "id": 36,
+                                "id": 179,
                                 "opcode": "select",
                                 "variant": "inverted_32bit",
                                 "args": [
-                                    2,
-                                    34,
-                                    35
+                                    32,
+                                    194,
+                                    18
                                 ],
                                 "control_next": null,
                                 "ir_instruction": 27
                             },
                             {
-                                "id": 37,
+                                "id": 225,
                                 "opcode": "int32_add",
                                 "args": [
-                                    2,
-                                    36
+                                    32,
+                                    179
                                 ],
                                 "control_next": null,
                                 "ir_instruction": 27
                             },
                             {
-                                "id": 38,
+                                "id": 1,
                                 "opcode": "int32_add",
                                 "args": [
-                                    2,
-                                    37
+                                    32,
+                                    225
                                 ],
                                 "control_next": null,
                                 "ir_instruction": 22
                             },
                             {
-                                "id": 33,
+                                "id": 114,
                                 "opcode": "return",
-                                "arg": 38,
+                                "arg": 1,
                                 "control_next": null,
                                 "ir_instruction": 25
                             }
@@ -77,13 +77,13 @@
                             "predecessors": [],
                             "immediate_dominator": null,
                             "alive_instructions": [
-                                35,
-                                37,
-                                33,
-                                36,
-                                34,
-                                2,
-                                38
+                                18,
+                                194,
+                                225,
+                                32,
+                                114,
+                                179,
+                                1
                             ]
                         }
                     }
@@ -93,53 +93,53 @@
                         {
                             "variable_id": 197568495620,
                             "allocations": [
-                                5
+                                80
                             ]
                         },
                         {
                             "variable_id": 197568495619,
                             "allocations": [
-                                3
+                                48
                             ]
                         },
                         {
                             "variable_id": 188978561024,
                             "allocations": [
-                                29
+                                178
                             ]
                         },
                         {
                             "variable_id": 188978561025,
                             "allocations": [
-                                30
+                                352
                             ]
                         }
                     ],
                     "allocation_placement": [
                         {
-                            "allocation_ref": 30,
+                            "allocation_ref": 352,
                             "placement": [
-                                35,
-                                36,
-                                34
+                                18,
+                                179,
+                                194
                             ]
                         },
                         {
-                            "allocation_ref": 29,
+                            "allocation_ref": 178,
                             "placement": [
-                                2
+                                32
                             ]
                         },
                         {
-                            "allocation_ref": 3,
+                            "allocation_ref": 80,
                             "placement": [
-                                2
+                                225
                             ]
                         },
                         {
-                            "allocation_ref": 5,
+                            "allocation_ref": 48,
                             "placement": [
-                                37
+                                32
                             ]
                         }
                     ]

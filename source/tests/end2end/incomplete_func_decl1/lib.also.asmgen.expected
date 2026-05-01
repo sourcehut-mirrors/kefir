@@ -15,15 +15,15 @@ get4:
     sub $32, %rsp
     movq %rdi, -32(%rbp)
     movq -32(%rbp), %rax
-    movq %rax, -16(%rbp)
-    movl -16(%rbp), %eax
-    movl -12(%rbp), %ecx
+    movq %rax, -8(%rbp)
+    movl -8(%rbp), %eax
+    movl -4(%rbp), %ecx
     mov %eax, %edx
     add %ecx, %edx
-    movl %edx, -8(%rbp)
+    movl %edx, -16(%rbp)
     sub %ecx, %eax
-    movl %eax, -4(%rbp)
-    movq -8(%rbp), %rax
+    movl %eax, -12(%rbp)
+    movq -16(%rbp), %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -35,14 +35,14 @@ test:
     mov %rsp, %rbp
     push %rbx
     sub $24, %rsp
-    movl %edi, -16(%rbp)
-    movl %esi, -12(%rbp)
-    lea -24(%rbp), %rbx
-    movq -16(%rbp), %rdi
+    movl %edi, -24(%rbp)
+    movl %esi, -20(%rbp)
+    lea -16(%rbp), %rbx
+    movq -24(%rbp), %rdi
     call get4
     movq %rax, (%rbx)
-    movl -24(%rbp), %eax
-    movl -20(%rbp), %ecx
+    movl -16(%rbp), %eax
+    movl -12(%rbp), %ecx
     xor %ecx, %eax
     lea -8(%rbp), %rsp
     pop %rbx

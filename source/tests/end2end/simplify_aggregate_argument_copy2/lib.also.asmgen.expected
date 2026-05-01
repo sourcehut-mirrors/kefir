@@ -16,13 +16,13 @@ test2:
     movq %rdi, -48(%rbp)
     movq %rsi, -40(%rbp)
     movdqu -48(%rbp), %xmm0
-    movdqu %xmm0, -32(%rbp)
+    movdqu %xmm0, -16(%rbp)
     xorps %xmm0, %xmm0
-    movdqu %xmm0, -16(%rbp)
-    movdqu -32(%rbp), %xmm0
-    movdqu %xmm0, -16(%rbp)
-    movq -16(%rbp), %rax
-    movq -8(%rbp), %rcx
+    movdqu %xmm0, -32(%rbp)
+    movdqu -16(%rbp), %xmm0
+    movdqu %xmm0, -32(%rbp)
+    movq -32(%rbp), %rax
+    movq -24(%rbp), %rcx
     add %rcx, %rax
     lea (%rbp), %rsp
     pop %rbp

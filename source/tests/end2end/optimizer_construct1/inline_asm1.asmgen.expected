@@ -17,12 +17,12 @@
                                 "parameters": [],
                                 "default_jump_target": null,
                                 "jump_targets": [],
-                                "control_next": 1,
+                                "control_next": 16,
                                 "ir_instruction": 0,
                                 "memssa_node_ref": 4
                             },
                             {
-                                "id": 1,
+                                "id": 16,
                                 "opcode": "inline_assembly",
                                 "inline_asm_id": 1,
                                 "parameters": [
@@ -33,12 +33,12 @@
                                 ],
                                 "default_jump_target": null,
                                 "jump_targets": [],
-                                "control_next": 3,
+                                "control_next": 48,
                                 "ir_instruction": 1,
                                 "memssa_node_ref": 5
                             },
                             {
-                                "id": 2,
+                                "id": 32,
                                 "opcode": "get_global",
                                 "global_ref": 1,
                                 "offset": 0,
@@ -46,30 +46,30 @@
                                 "ir_instruction": 2
                             },
                             {
-                                "id": 3,
+                                "id": 48,
                                 "opcode": "int32_load",
-                                "location": 2,
+                                "location": 32,
                                 "flags": {
                                     "load_extension": "noextend",
                                     "volatile": false
                                 },
-                                "control_next": 5,
+                                "control_next": 80,
                                 "ir_instruction": 3,
                                 "memssa_node_ref": 6
                             },
                             {
-                                "id": 4,
+                                "id": 64,
                                 "opcode": "int32_bool_not",
-                                "arg": 3,
+                                "arg": 48,
                                 "control_next": null,
                                 "ir_instruction": 4
                             },
                             {
-                                "id": 5,
+                                "id": 80,
                                 "opcode": "branch",
                                 "target_block": 1,
                                 "alternative_block": 2,
-                                "condition": 4,
+                                "condition": 64,
                                 "condition_variant": "8bit",
                                 "control_next": null,
                                 "ir_instruction": 5
@@ -86,21 +86,21 @@
                             ],
                             "immediate_dominator": null,
                             "alive_instructions": [
-                                4,
-                                3,
-                                5,
+                                80,
+                                48,
+                                32,
+                                64,
                                 0,
-                                1,
-                                2
+                                16
                             ]
                         }
                     },
                     {
                         "id": 1,
-                        "control_flow": 10,
+                        "control_flow": 160,
                         "code": [
                             {
-                                "id": 9,
+                                "id": 144,
                                 "opcode": "get_global",
                                 "global_ref": 3,
                                 "offset": 0,
@@ -108,30 +108,30 @@
                                 "ir_instruction": 8
                             },
                             {
-                                "id": 10,
+                                "id": 160,
                                 "opcode": "int32_load",
-                                "location": 9,
+                                "location": 144,
                                 "flags": {
                                     "load_extension": "noextend",
                                     "volatile": false
                                 },
-                                "control_next": 12,
+                                "control_next": 192,
                                 "ir_instruction": 9,
                                 "memssa_node_ref": 8
                             },
                             {
-                                "id": 11,
+                                "id": 176,
                                 "opcode": "int32_bool_not",
-                                "arg": 10,
+                                "arg": 160,
                                 "control_next": null,
                                 "ir_instruction": 10
                             },
                             {
-                                "id": 12,
+                                "id": 192,
                                 "opcode": "branch",
                                 "target_block": 3,
                                 "alternative_block": 4,
-                                "condition": 11,
+                                "condition": 176,
                                 "condition_variant": "8bit",
                                 "control_next": null,
                                 "ir_instruction": 11
@@ -149,19 +149,19 @@
                             ],
                             "immediate_dominator": 0,
                             "alive_instructions": [
-                                9,
-                                12,
-                                11,
-                                10
+                                160,
+                                176,
+                                192,
+                                144
                             ]
                         }
                     },
                     {
                         "id": 3,
-                        "control_flow": 20,
+                        "control_flow": 320,
                         "code": [
                             {
-                                "id": 20,
+                                "id": 320,
                                 "opcode": "inline_assembly",
                                 "inline_asm_id": 4,
                                 "parameters": [],
@@ -194,16 +194,16 @@
                             ],
                             "immediate_dominator": 1,
                             "alive_instructions": [
-                                20
+                                320
                             ]
                         }
                     },
                     {
                         "id": 7,
-                        "control_flow": 21,
+                        "control_flow": 336,
                         "code": [
                             {
-                                "id": 21,
+                                "id": 336,
                                 "opcode": "jump",
                                 "target_block": 8,
                                 "control_next": null,
@@ -220,16 +220,16 @@
                             ],
                             "immediate_dominator": 3,
                             "alive_instructions": [
-                                21
+                                336
                             ]
                         }
                     },
                     {
                         "id": 8,
-                        "control_flow": 24,
+                        "control_flow": 384,
                         "code": [
                             {
-                                "id": 24,
+                                "id": 384,
                                 "opcode": "return",
                                 "arg": null,
                                 "control_next": null,
@@ -245,16 +245,16 @@
                             ],
                             "immediate_dominator": 3,
                             "alive_instructions": [
-                                24
+                                384
                             ]
                         }
                     },
                     {
                         "id": 6,
-                        "control_flow": 23,
+                        "control_flow": 368,
                         "code": [
                             {
-                                "id": 23,
+                                "id": 368,
                                 "opcode": "jump",
                                 "target_block": 0,
                                 "control_next": null,
@@ -271,16 +271,16 @@
                             ],
                             "immediate_dominator": 3,
                             "alive_instructions": [
-                                23
+                                368
                             ]
                         }
                     },
                     {
                         "id": 5,
-                        "control_flow": 22,
+                        "control_flow": 352,
                         "code": [
                             {
-                                "id": 22,
+                                "id": 352,
                                 "opcode": "jump",
                                 "target_block": 8,
                                 "control_next": null,
@@ -297,16 +297,16 @@
                             ],
                             "immediate_dominator": 3,
                             "alive_instructions": [
-                                22
+                                352
                             ]
                         }
                     },
                     {
                         "id": 4,
-                        "control_flow": 16,
+                        "control_flow": 256,
                         "code": [
                             {
-                                "id": 15,
+                                "id": 240,
                                 "opcode": "get_global",
                                 "global_ref": 1,
                                 "offset": 0,
@@ -314,19 +314,19 @@
                                 "ir_instruction": 14
                             },
                             {
-                                "id": 16,
+                                "id": 256,
                                 "opcode": "int32_load",
-                                "location": 15,
+                                "location": 240,
                                 "flags": {
                                     "load_extension": "noextend",
                                     "volatile": false
                                 },
-                                "control_next": 18,
+                                "control_next": 288,
                                 "ir_instruction": 15,
                                 "memssa_node_ref": 9
                             },
                             {
-                                "id": 13,
+                                "id": 208,
                                 "opcode": "get_global",
                                 "global_ref": 1,
                                 "offset": 0,
@@ -334,14 +334,14 @@
                                 "ir_instruction": 12
                             },
                             {
-                                "id": 17,
+                                "id": 272,
                                 "opcode": "int_const",
                                 "value": 314,
                                 "control_next": null,
                                 "ir_instruction": 16
                             },
                             {
-                                "id": 14,
+                                "id": 224,
                                 "opcode": "get_global",
                                 "global_ref": 3,
                                 "offset": 0,
@@ -349,17 +349,17 @@
                                 "ir_instruction": 13
                             },
                             {
-                                "id": 18,
+                                "id": 288,
                                 "opcode": "inline_assembly",
                                 "inline_asm_id": 3,
                                 "parameters": [
                                     {
-                                        "load_store": 13,
+                                        "load_store": 208,
                                         "read": null
                                     },
                                     {
-                                        "load_store": 14,
-                                        "read": 17
+                                        "load_store": 224,
+                                        "read": 272
                                     },
                                     {
                                         "load_store": null,
@@ -367,17 +367,17 @@
                                     },
                                     {
                                         "load_store": null,
-                                        "read": 16
+                                        "read": 256
                                     }
                                 ],
                                 "default_jump_target": null,
                                 "jump_targets": [],
-                                "control_next": 19,
+                                "control_next": 304,
                                 "ir_instruction": 17,
                                 "memssa_node_ref": 10
                             },
                             {
-                                "id": 19,
+                                "id": 304,
                                 "opcode": "jump",
                                 "target_block": 3,
                                 "control_next": null,
@@ -394,22 +394,22 @@
                             ],
                             "immediate_dominator": 1,
                             "alive_instructions": [
-                                18,
-                                15,
-                                19,
-                                17,
-                                14,
-                                13,
-                                16
+                                256,
+                                208,
+                                272,
+                                240,
+                                304,
+                                288,
+                                224
                             ]
                         }
                     },
                     {
                         "id": 2,
-                        "control_flow": 7,
+                        "control_flow": 112,
                         "code": [
                             {
-                                "id": 6,
+                                "id": 96,
                                 "opcode": "get_global",
                                 "global_ref": 1,
                                 "offset": 0,
@@ -417,12 +417,12 @@
                                 "ir_instruction": 6
                             },
                             {
-                                "id": 7,
+                                "id": 112,
                                 "opcode": "inline_assembly",
                                 "inline_asm_id": 2,
                                 "parameters": [
                                     {
-                                        "load_store": 6,
+                                        "load_store": 96,
                                         "read": null
                                     },
                                     {
@@ -432,12 +432,12 @@
                                 ],
                                 "default_jump_target": null,
                                 "jump_targets": [],
-                                "control_next": 8,
+                                "control_next": 128,
                                 "ir_instruction": 7,
                                 "memssa_node_ref": 7
                             },
                             {
-                                "id": 8,
+                                "id": 128,
                                 "opcode": "jump",
                                 "target_block": 1,
                                 "control_next": null,
@@ -454,9 +454,9 @@
                             ],
                             "immediate_dominator": 0,
                             "alive_instructions": [
-                                8,
-                                6,
-                                7
+                                96,
+                                128,
+                                112
                             ]
                         }
                     }

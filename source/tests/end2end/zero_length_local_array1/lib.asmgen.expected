@@ -22,8 +22,8 @@ test2:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    lea -8(%rbp), %rdi
-    lea -4(%rbp), %rsi
+    lea -4(%rbp), %rdi
+    lea -8(%rbp), %rsi
     call fn@PLT
     lea (%rbp), %rsp
     pop %rbp

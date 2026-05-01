@@ -8,10 +8,10 @@
                 "blocks": [
                     {
                         "id": 0,
-                        "control_flow": 5,
+                        "control_flow": 80,
                         "code": [
                             {
-                                "id": 5,
+                                "id": 80,
                                 "opcode": "return",
                                 "arg": null,
                                 "control_next": null,
@@ -24,7 +24,7 @@
                             "predecessors": [],
                             "immediate_dominator": null,
                             "alive_instructions": [
-                                5
+                                80
                             ]
                         }
                     }

@@ -20,13 +20,13 @@ less_or_equalsld:
     fstcw -8(%rbp)
     fldt 32(%rbp)
     fldt 16(%rbp)
-    movq $0, -40(%rbp)
-    fxch %st(1)
-    fstpt -48(%rbp)
     movq $0, -24(%rbp)
+    fxch %st(1)
     fstpt -32(%rbp)
-    fldt -32(%rbp)
+    movq $0, -40(%rbp)
+    fstpt -48(%rbp)
     fldt -48(%rbp)
+    fldt -32(%rbp)
     fld %st(0)
     fstpt -80(%rbp)
     fld %st(1)
@@ -62,10 +62,10 @@ greater_or_equalsd:
     mov %rsp, %rbp
     sub $32, %rsp
     stmxcsr -8(%rbp)
-    movq %xmm1, -24(%rbp)
-    movq %xmm0, -16(%rbp)
-    movq -16(%rbp), %xmm0
-    movq -24(%rbp), %xmm1
+    movq %xmm1, -16(%rbp)
+    movq %xmm0, -24(%rbp)
+    movq -24(%rbp), %xmm0
+    movq -16(%rbp), %xmm1
     xor %eax, %eax
     comisd %xmm1, %xmm0
     setae %al
@@ -81,10 +81,10 @@ less_or_equalsd:
     mov %rsp, %rbp
     sub $32, %rsp
     stmxcsr -8(%rbp)
-    movq %xmm1, -24(%rbp)
-    movq %xmm0, -16(%rbp)
-    movq -16(%rbp), %xmm0
-    movq -24(%rbp), %xmm1
+    movq %xmm1, -16(%rbp)
+    movq %xmm0, -24(%rbp)
+    movq -24(%rbp), %xmm0
+    movq -16(%rbp), %xmm1
     xor %eax, %eax
     comisd %xmm0, %xmm1
     setae %al
@@ -102,13 +102,13 @@ greater_or_equalsld:
     fstcw -8(%rbp)
     fldt 32(%rbp)
     fldt 16(%rbp)
-    movq $0, -40(%rbp)
-    fxch %st(1)
-    fstpt -48(%rbp)
     movq $0, -24(%rbp)
+    fxch %st(1)
     fstpt -32(%rbp)
-    fldt -32(%rbp)
+    movq $0, -40(%rbp)
+    fstpt -48(%rbp)
     fldt -48(%rbp)
+    fldt -32(%rbp)
     fxch %st(1)
     fld %st(0)
     fstpt -80(%rbp)

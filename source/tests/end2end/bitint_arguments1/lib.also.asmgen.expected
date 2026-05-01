@@ -24,17 +24,17 @@ test1:
     mov 32(%rbp), %rbx
     mov 24(%rbp), %r12
     mov 16(%rbp), %r13
-    movq %rax, -56(%rbp)
-    movl %r10d, -36(%rbp)
-    movw %r11w, -28(%rbp)
-    movb %bl, -32(%rbp)
+    movq %rax, -40(%rbp)
+    movl %r10d, -68(%rbp)
+    movw %r11w, -56(%rbp)
+    movb %bl, -28(%rbp)
     movq %r12, -48(%rbp)
-    movl %r13d, -68(%rbp)
-    movw %r9w, -70(%rbp)
+    movl %r13d, -32(%rbp)
+    movw %r9w, -54(%rbp)
     movb %r8b, -72(%rbp)
     movq %rcx, -64(%rbp)
-    movl %edx, -40(%rbp)
-    movw %si, -30(%rbp)
+    movl %edx, -52(%rbp)
+    movw %si, -70(%rbp)
     movb %dil, -71(%rbp)
     movb -71(%rbp), %al
     movq a@GOTPCREL(%rip), %rcx
@@ -46,37 +46,37 @@ test1:
     shl $59, %rax
     sar $59, %rax
     movb %al, 1(%rcx)
-    movb -32(%rbp), %al
+    movb -28(%rbp), %al
     movq a@GOTPCREL(%rip), %rcx
     shl $59, %rax
     sar $59, %rax
     movb %al, 2(%rcx)
-    movw -30(%rbp), %ax
-    movq b@GOTPCREL(%rip), %rcx
-    shl $52, %rax
-    sar $52, %rax
-    movw %ax, (%rcx)
     movw -70(%rbp), %ax
     movq b@GOTPCREL(%rip), %rcx
     shl $52, %rax
     sar $52, %rax
+    movw %ax, (%rcx)
+    movw -54(%rbp), %ax
+    movq b@GOTPCREL(%rip), %rcx
+    shl $52, %rax
+    sar $52, %rax
     movw %ax, 2(%rcx)
-    movw -28(%rbp), %ax
+    movw -56(%rbp), %ax
     movq b@GOTPCREL(%rip), %rcx
     shl $52, %rax
     sar $52, %rax
     movw %ax, 4(%rcx)
-    movl -40(%rbp), %eax
+    movl -52(%rbp), %eax
     movq c@GOTPCREL(%rip), %rcx
     shl $37, %rax
     sar $37, %rax
     movl %eax, (%rcx)
-    movl -68(%rbp), %eax
+    movl -32(%rbp), %eax
     movq c@GOTPCREL(%rip), %rcx
     shl $37, %rax
     sar $37, %rax
     movl %eax, 4(%rcx)
-    movl -36(%rbp), %eax
+    movl -68(%rbp), %eax
     movq c@GOTPCREL(%rip), %rcx
     shl $37, %rax
     sar $37, %rax
@@ -91,7 +91,7 @@ test1:
     shl $3, %rax
     sar $3, %rax
     movq %rax, 8(%rcx)
-    movq -56(%rbp), %rax
+    movq -40(%rbp), %rax
     movq d@GOTPCREL(%rip), %rcx
     shl $3, %rax
     sar $3, %rax

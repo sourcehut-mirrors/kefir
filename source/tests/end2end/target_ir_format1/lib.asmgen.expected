@@ -128,7 +128,7 @@ factorial:
 #                            "type": {
 #                                "variant": "default",
 #                                "kind": "local_variable",
-#                                "identifier": 3,
+#                                "identifier": 48,
 #                                "offset": 0
 #                            },
 #                            "allocation": null,
@@ -949,7 +949,7 @@ factorial:
 #                            "type": {
 #                                "variant": "default",
 #                                "kind": "local_variable",
-#                                "identifier": 49,
+#                                "identifier": 784,
 #                                "offset": 0
 #                            },
 #                            "allocation": null,

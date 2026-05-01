@@ -17,11 +17,11 @@ make_s1:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    movl %edi, -8(%rbp)
-    movl -8(%rbp), %eax
-
-    mov %eax, -4(%rbp)
+    movl %edi, -4(%rbp)
     movl -4(%rbp), %eax
+
+    mov %eax, -8(%rbp)
+    movl -8(%rbp), %eax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -32,12 +32,12 @@ cast_int:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    movq %rdi, -16(%rbp)
-    movl $0, -8(%rbp)
-    movq -16(%rbp), %rax
+    movq %rdi, -8(%rbp)
+    movl $0, -16(%rbp)
+    movq -8(%rbp), %rax
 
-    movl %eax, -8(%rbp)
-    movl -8(%rbp), %eax
+    movl %eax, -16(%rbp)
+    movl -16(%rbp), %eax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -74,12 +74,12 @@ unwrap_s1:
     sub $16, %rsp
     movq %rdi, -16(%rbp)
     movl -16(%rbp), %eax
-    movl %eax, -8(%rbp)
-    movl $0, -4(%rbp)
-    mov -8(%rbp), %eax
-
     movl %eax, -4(%rbp)
-    movl -4(%rbp), %eax
+    movl $0, -8(%rbp)
+    mov -4(%rbp), %eax
+
+    movl %eax, -8(%rbp)
+    movl -8(%rbp), %eax
     lea (%rbp), %rsp
     pop %rbp
     ret

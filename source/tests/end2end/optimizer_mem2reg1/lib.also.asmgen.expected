@@ -29,9 +29,8 @@ factorial:
     mov %rcx, %rax
     ret
 .L__kefir_func_factorial_label6:
-    lea -1(%eax), %edx
     imul %eax, %ecx
-    mov %edx, %eax
+    add $-1, %eax
     jmp .L__kefir_func_factorial_label4
 .L__kefir_func_factorial_label7:
     ret
@@ -57,9 +56,8 @@ factorial64:
     mov %rcx, %rax
     ret
 .L__kefir_func_factorial64_label6:
-    lea -1(%rax), %rdx
     imul %rax, %rcx
-    mov %rdx, %rax
+    add $-1, %rax
     jmp .L__kefir_func_factorial64_label4
 .L__kefir_func_factorial64_label8:
     ret
@@ -77,20 +75,20 @@ quad_equation:
     sub $48, %rsp
     stmxcsr -24(%rbp)
     mov %rdi, %rbx
-    movaps %xmm0, -64(%rbp)
-    mov $-1, %r12d
-    movaps %xmm1, -48(%rbp)
-    movdqu -48(%rbp), %xmm0
-    xorpd .L__kefir_constant_float64_neg(%rip), %xmm0
-    movdqu %xmm0, -48(%rbp)
-    mulsd %xmm1, %xmm1
+    movaps %xmm0, -48(%rbp)
+    movaps %xmm1, %xmm3
+    mulsd %xmm1, %xmm3
     mov $4, %eax
-    cvtsi2sd %rax, %xmm0
-    mulsd -64(%rbp), %xmm0
-    mulsd %xmm2, %xmm0
-    movaps %xmm1, %xmm2
-    subsd %xmm0, %xmm2
-    movaps %xmm2, %xmm0
+    cvtsi2sd %rax, %xmm4
+    mulsd %xmm0, %xmm4
+    mulsd %xmm2, %xmm4
+    movaps %xmm3, %xmm0
+    subsd %xmm4, %xmm0
+    movaps %xmm1, -64(%rbp)
+    movdqu -64(%rbp), %xmm2
+    xorpd .L__kefir_constant_float64_neg(%rip), %xmm2
+    movdqu %xmm2, -64(%rbp)
+    mov $-1, %r12d
     test %ebx, %ebx
     jnz .L__kefir_func_quad_equation_label2
 .L__kefir_func_quad_equation_label2:
@@ -101,11 +99,11 @@ quad_equation:
     movsx %eax, %rax
     cvtsi2sd %rax, %xmm1
     mulsd %xmm0, %xmm1
-    movaps -48(%rbp), %xmm0
+    movaps -64(%rbp), %xmm0
     addsd %xmm1, %xmm0
     mov $2, %eax
     cvtsi2sd %rax, %xmm1
-    mulsd -64(%rbp), %xmm1
+    mulsd -48(%rbp), %xmm1
     divsd %xmm1, %xmm0
     ldmxcsr -24(%rbp)
     lea -16(%rbp), %rsp

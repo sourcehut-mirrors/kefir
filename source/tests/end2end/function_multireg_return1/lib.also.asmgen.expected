@@ -34,9 +34,9 @@ call1_proxy:
     mov %rsp, %rbp
     push %rbx
     sub $24, %rsp
-    movq %rdi, -24(%rbp)
-    movq -24(%rbp), %rdi
-    lea -16(%rbp), %rbx
+    movq %rdi, -16(%rbp)
+    movq -16(%rbp), %rdi
+    lea -24(%rbp), %rbx
     call call1@PLT
     movb %al, (%rbx)
     movb (%rbx), %al
@@ -52,9 +52,9 @@ call2_proxy:
     mov %rsp, %rbp
     push %rbx
     sub $24, %rsp
-    movq %rdi, -24(%rbp)
-    movq -24(%rbp), %rdi
-    lea -16(%rbp), %rbx
+    movq %rdi, -16(%rbp)
+    movq -16(%rbp), %rdi
+    lea -24(%rbp), %rbx
     call call2@PLT
     movw %ax, (%rbx)
     movw (%rbx), %ax
@@ -70,9 +70,9 @@ call3_proxy:
     mov %rsp, %rbp
     push %rbx
     sub $24, %rsp
-    movq %rdi, -24(%rbp)
-    movq -24(%rbp), %rdi
-    lea -16(%rbp), %rbx
+    movq %rdi, -16(%rbp)
+    movq -16(%rbp), %rdi
+    lea -24(%rbp), %rbx
     call call3@PLT
     movw %ax, (%rbx)
     shr $16, %eax
@@ -94,9 +94,9 @@ call4_proxy:
     mov %rsp, %rbp
     push %rbx
     sub $24, %rsp
-    movq %rdi, -24(%rbp)
-    movq -24(%rbp), %rdi
-    lea -16(%rbp), %rbx
+    movq %rdi, -16(%rbp)
+    movq -16(%rbp), %rdi
+    lea -24(%rbp), %rbx
     call call4@PLT
     movl %eax, (%rbx)
     movl (%rbx), %eax
@@ -112,9 +112,9 @@ call5_proxy:
     mov %rsp, %rbp
     push %rbx
     sub $24, %rsp
-    movq %rdi, -24(%rbp)
-    movq -24(%rbp), %rdi
-    lea -16(%rbp), %rbx
+    movq %rdi, -16(%rbp)
+    movq -16(%rbp), %rdi
+    lea -24(%rbp), %rbx
     call call5@PLT
     movl %eax, (%rbx)
     shr $32, %rax
@@ -135,9 +135,9 @@ call6_proxy:
     mov %rsp, %rbp
     push %rbx
     sub $24, %rsp
-    movq %rdi, -24(%rbp)
-    movq -24(%rbp), %rdi
-    lea -16(%rbp), %rbx
+    movq %rdi, -16(%rbp)
+    movq -16(%rbp), %rdi
+    lea -24(%rbp), %rbx
     call call6@PLT
     movl %eax, (%rbx)
     shr $32, %rax
@@ -158,9 +158,9 @@ call7_proxy:
     mov %rsp, %rbp
     push %rbx
     sub $24, %rsp
-    movq %rdi, -24(%rbp)
-    movq -24(%rbp), %rdi
-    lea -16(%rbp), %rbx
+    movq %rdi, -16(%rbp)
+    movq -16(%rbp), %rdi
+    lea -24(%rbp), %rbx
     call call7@PLT
     movl %eax, (%rbx)
     shr $32, %rax
@@ -187,9 +187,9 @@ call8_proxy:
     mov %rsp, %rbp
     push %rbx
     sub $24, %rsp
-    movq %rdi, -24(%rbp)
-    movq -24(%rbp), %rdi
-    lea -16(%rbp), %rbx
+    movq %rdi, -16(%rbp)
+    movq -16(%rbp), %rdi
+    lea -24(%rbp), %rbx
     call call8@PLT
     movq %rax, (%rbx)
     movq (%rbx), %rax

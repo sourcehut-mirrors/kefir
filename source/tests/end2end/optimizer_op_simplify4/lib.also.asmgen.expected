@@ -14,10 +14,10 @@ greater_or_equalsf:
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-    movd %xmm1, -16(%rbp)
-    movd %xmm0, -12(%rbp)
-    movd -12(%rbp), %xmm0
-    movd -16(%rbp), %xmm1
+    movd %xmm1, -12(%rbp)
+    movd %xmm0, -16(%rbp)
+    movd -16(%rbp), %xmm0
+    movd -12(%rbp), %xmm1
     xor %eax, %eax
     comiss %xmm1, %xmm0
     setae %al
@@ -33,10 +33,10 @@ less_or_equalsf:
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-    movd %xmm1, -16(%rbp)
-    movd %xmm0, -12(%rbp)
-    movd -12(%rbp), %xmm0
-    movd -16(%rbp), %xmm1
+    movd %xmm1, -12(%rbp)
+    movd %xmm0, -16(%rbp)
+    movd -16(%rbp), %xmm0
+    movd -12(%rbp), %xmm1
     xor %eax, %eax
     comiss %xmm0, %xmm1
     setae %al

@@ -8,7 +8,7 @@
                 "blocks": [
                     {
                         "id": 0,
-                        "control_flow": 7,
+                        "control_flow": 112,
                         "code": [
                             {
                                 "id": 0,
@@ -17,7 +17,7 @@
                                 "ir_instruction": 0
                             },
                             {
-                                "id": 5,
+                                "id": 80,
                                 "opcode": "alloc_local",
                                 "scope": 0,
                                 "type_id": 93,
@@ -26,15 +26,15 @@
                                 "ir_instruction": 8
                             },
                             {
-                                "id": 7,
+                                "id": 112,
                                 "opcode": "vararg_start",
-                                "arg": 5,
-                                "control_next": 8,
+                                "arg": 80,
+                                "control_next": 128,
                                 "ir_instruction": 15,
                                 "memssa_node_ref": 1
                             },
                             {
-                                "id": 6,
+                                "id": 96,
                                 "opcode": "alloc_local",
                                 "scope": 0,
                                 "type_id": 93,
@@ -43,46 +43,46 @@
                                 "ir_instruction": 11
                             },
                             {
-                                "id": 8,
+                                "id": 128,
                                 "opcode": "vararg_copy",
                                 "args": [
-                                    5,
-                                    6
+                                    80,
+                                    96
                                 ],
-                                "control_next": 9,
+                                "control_next": 144,
                                 "ir_instruction": 20,
                                 "memssa_node_ref": 2
                             },
                             {
-                                "id": 9,
+                                "id": 144,
                                 "opcode": "vararg_get",
-                                "target": 6,
+                                "target": 96,
                                 "source": null,
                                 "type": {
                                     "id": 96,
                                     "index": 0
                                 },
-                                "control_next": 10,
+                                "control_next": 160,
                                 "ir_instruction": 24,
                                 "memssa_node_ref": 3
                             },
                             {
-                                "id": 10,
+                                "id": 160,
                                 "opcode": "vararg_end",
-                                "arg": 5,
-                                "control_next": 1,
+                                "arg": 80,
+                                "control_next": 16,
                                 "ir_instruction": 28,
                                 "memssa_node_ref": 4
                             },
                             {
-                                "id": 1,
+                                "id": 16,
                                 "opcode": "local_lifetime_mark",
                                 "arg": 0,
-                                "control_next": 11,
+                                "control_next": 176,
                                 "ir_instruction": 1
                             },
                             {
-                                "id": 11,
+                                "id": 176,
                                 "opcode": "return",
                                 "arg": null,
                                 "control_next": null,
@@ -95,15 +95,15 @@
                             "predecessors": [],
                             "immediate_dominator": null,
                             "alive_instructions": [
-                                8,
-                                9,
-                                7,
-                                5,
+                                96,
+                                80,
+                                112,
+                                160,
                                 0,
-                                6,
-                                1,
-                                11,
-                                10
+                                128,
+                                176,
+                                16,
+                                144
                             ]
                         }
                     }
@@ -113,19 +113,19 @@
                         {
                             "variable_id": 188978561024,
                             "allocations": [
-                                3
+                                48
                             ]
                         },
                         {
                             "variable_id": 188978561025,
                             "allocations": [
-                                5
+                                80
                             ]
                         },
                         {
                             "variable_id": 188978561026,
                             "allocations": [
-                                6
+                                96
                             ]
                         }
                     ],
@@ -172,10 +172,10 @@
                 "blocks": [
                     {
                         "id": 0,
-                        "control_flow": 8,
+                        "control_flow": 128,
                         "code": [
                             {
-                                "id": 8,
+                                "id": 128,
                                 "opcode": "return",
                                 "arg": null,
                                 "control_next": null,
@@ -188,7 +188,7 @@
                             "predecessors": [],
                             "immediate_dominator": null,
                             "alive_instructions": [
-                                8
+                                128
                             ]
                         }
                     }
@@ -198,7 +198,7 @@
                         {
                             "variable_id": 197568495620,
                             "allocations": [
-                                2
+                                32
                             ]
                         }
                     ],

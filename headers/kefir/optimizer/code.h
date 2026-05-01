@@ -303,6 +303,8 @@ typedef struct kefir_opt_instruction {
     struct {
         struct kefir_hashtreeset instruction;
     } uses;
+
+    kefir_uint8_t generation;
 } kefir_opt_instruction_t;
 
 typedef struct kefir_opt_code_instruction_list {
@@ -400,6 +402,8 @@ typedef struct kefir_opt_code_container {
     struct kefir_opt_instruction *code;
     kefir_size_t length;
     kefir_size_t capacity;
+
+    kefir_size_t recycle_instr_idx;
 
     struct kefir_opt_code_block *blocks;
     kefir_size_t blocks_length;

@@ -21,8 +21,8 @@ test1:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    movq %rsi, -24(%rbp)
-    movq %xmm0, -16(%rbp)
+    movq %rsi, -16(%rbp)
+    movq %xmm0, -24(%rbp)
     movl %edi, -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

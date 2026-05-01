@@ -25,7 +25,7 @@ main:
 .L__kefir_func_main_label19:
     addl $-1, (%rax)
 .loc 0 42 5
-.L__kefir_func_main_label23:
+.L__kefir_func_main_label34:
     xor %eax, %eax
     ret
 .L__kefir_func_main_label35:
@@ -450,7 +450,7 @@ x:
 .L__kefir_debug_rnglist_section_entry_11:
     .byte 4
     .uleb128 .L__kefir_func_main_label19 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_main_label23 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_main_label34 - .L__kefir_text_section_begin
     .byte 0
 .L__kefir_debug_rnglists_section_end:
 

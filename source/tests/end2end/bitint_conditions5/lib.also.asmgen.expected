@@ -21,14 +21,14 @@ test1:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    movb %dil, -8(%rbp)
-    movl $0, -4(%rbp)
+    movb %dil, -4(%rbp)
+    movl $0, -8(%rbp)
 .L__kefir_func_test1_label2:
-    movl -4(%rbp), %eax
+    movl -8(%rbp), %eax
     test %eax, %eax
     jnz .L__kefir_func_test1_label6
-    movl $1, -4(%rbp)
-    movb -8(%rbp), %al
+    movl $1, -8(%rbp)
+    movb -4(%rbp), %al
     shl $58, %rax
     sar $58, %rax
     shl $58, %rax
@@ -51,14 +51,14 @@ test2:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    movw %di, -8(%rbp)
-    movl $0, -4(%rbp)
+    movw %di, -4(%rbp)
+    movl $0, -8(%rbp)
 .L__kefir_func_test2_label2:
-    movl -4(%rbp), %eax
+    movl -8(%rbp), %eax
     test %eax, %eax
     jnz .L__kefir_func_test2_label6
-    movl $1, -4(%rbp)
-    movw -8(%rbp), %ax
+    movl $1, -8(%rbp)
+    movw -4(%rbp), %ax
     shl $50, %rax
     sar $50, %rax
     shl $50, %rax
@@ -81,14 +81,14 @@ test3:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    movl %edi, -8(%rbp)
-    movl $0, -4(%rbp)
+    movl %edi, -4(%rbp)
+    movl $0, -8(%rbp)
 .L__kefir_func_test3_label2:
-    movl -4(%rbp), %eax
+    movl -8(%rbp), %eax
     test %eax, %eax
     jnz .L__kefir_func_test3_label6
-    movl $1, -4(%rbp)
-    movl -8(%rbp), %eax
+    movl $1, -8(%rbp)
+    movl -4(%rbp), %eax
     shl $35, %rax
     sar $35, %rax
     shl $35, %rax
@@ -111,14 +111,14 @@ test4:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    movq %rdi, -16(%rbp)
-    movl $0, -8(%rbp)
+    movq %rdi, -8(%rbp)
+    movl $0, -16(%rbp)
 .L__kefir_func_test4_label2:
-    movl -8(%rbp), %eax
+    movl -16(%rbp), %eax
     test %eax, %eax
     jnz .L__kefir_func_test4_label6
-    movl $1, -8(%rbp)
-    movq -16(%rbp), %rax
+    movl $1, -16(%rbp)
+    movq -8(%rbp), %rax
     shl $4, %rax
     sar $4, %rax
     shl $4, %rax
@@ -144,14 +144,14 @@ test5:
     movq %rdi, -64(%rbp)
     movq %rsi, -56(%rbp)
     movdqu -64(%rbp), %xmm0
-    movdqu %xmm0, -24(%rbp)
-    movl $0, -8(%rbp)
+    movdqu %xmm0, -16(%rbp)
+    movl $0, -24(%rbp)
 .L__kefir_func_test5_label2:
-    movl -8(%rbp), %eax
+    movl -24(%rbp), %eax
     test %eax, %eax
     jnz .L__kefir_func_test5_label6
-    movl $1, -8(%rbp)
-    movdqu -24(%rbp), %xmm0
+    movl $1, -24(%rbp)
+    movdqu -16(%rbp), %xmm0
     movdqu %xmm0, -48(%rbp)
     lea -48(%rbp), %rdi
     mov $120, %esi
@@ -176,22 +176,22 @@ test6:
     sub $112, %rsp
     lea 16(%rbp), %rax
     movdqu (%rax), %xmm0
-    movdqu %xmm0, -56(%rbp)
+    movdqu %xmm0, -48(%rbp)
     movdqu 16(%rax), %xmm0
-    movdqu %xmm0, -40(%rbp)
+    movdqu %xmm0, -32(%rbp)
     movdqu 32(%rax), %xmm0
-    movdqu %xmm0, -24(%rbp)
-    movl $0, -8(%rbp)
+    movdqu %xmm0, -16(%rbp)
+    movl $0, -56(%rbp)
 .L__kefir_func_test6_label2:
-    movl -8(%rbp), %eax
+    movl -56(%rbp), %eax
     test %eax, %eax
     jnz .L__kefir_func_test6_label6
-    movl $1, -8(%rbp)
-    movdqu -56(%rbp), %xmm0
+    movl $1, -56(%rbp)
+    movdqu -48(%rbp), %xmm0
     movdqu %xmm0, -112(%rbp)
-    movdqu -40(%rbp), %xmm0
+    movdqu -32(%rbp), %xmm0
     movdqu %xmm0, -96(%rbp)
-    movdqu -24(%rbp), %xmm0
+    movdqu -16(%rbp), %xmm0
     movdqu %xmm0, -80(%rbp)
     lea -112(%rbp), %rdi
     mov $360, %esi
@@ -234,9 +234,9 @@ __kefir_bigint_is_zero:
     div %rcx
     movq %rax, -40(%rbp)
     xor %eax, %eax
-    movq %rax, -8(%rbp)
+    movq %rax, -24(%rbp)
 .L__kefir_runtime_func___kefir_bigint_is_zero_label3:
-    movq -8(%rbp), %rax
+    movq -24(%rbp), %rax
     movq -40(%rbp), %rcx
     cmp %rcx, %rax
     jb .L__kefir_runtime_func___kefir_bigint_is_zero_label5
@@ -246,10 +246,10 @@ __kefir_bigint_is_zero:
     ret
 .L__kefir_runtime_func___kefir_bigint_is_zero_label5:
     movq -56(%rbp), %rax
-    movq -8(%rbp), %rcx
+    movq -24(%rbp), %rcx
     movb (%rax, %rcx, 1), %dl
     movb %dl, -32(%rbp)
-    movq -8(%rbp), %rax
+    movq -24(%rbp), %rax
     movq -40(%rbp), %rcx
     add $1, %rax
     cmp %rcx, %rax
@@ -258,7 +258,7 @@ __kefir_bigint_is_zero:
     movb -32(%rbp), %al
     test %al, %al
     jnz .L__kefir_runtime_func___kefir_bigint_is_zero_label10
-    addq $1, -8(%rbp)
+    addq $1, -24(%rbp)
     jmp .L__kefir_runtime_func___kefir_bigint_is_zero_label3
 .L__kefir_runtime_func___kefir_bigint_is_zero_label10:
     xor %eax, %eax
@@ -271,9 +271,9 @@ __kefir_bigint_is_zero:
     mov $8, %ecx
     xor %edx, %edx
     div %rcx
-    movq %rax, -24(%rbp)
+    movq %rax, -8(%rbp)
     movq -48(%rbp), %rax
-    movq -24(%rbp), %rcx
+    movq -8(%rbp), %rcx
     sub $1, %rax
     shl $3, %rcx
     sub %rcx, %rax

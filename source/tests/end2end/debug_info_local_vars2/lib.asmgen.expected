@@ -22,14 +22,14 @@ test1:
 .loc 0 26 12
 .L__kefir_func_test1_label10:
     movq x@GOTPCREL(%rip), %rax
-.L__kefir_func_test1_label11:
+.L__kefir_func_test1_label14:
     movsxl (%rax), %rbx
 .loc 0 26 16
-.L__kefir_func_test1_label176:
+.L__kefir_func_test1_label15:
     data16     lea y@tlsgd(%rip), %rdi
     .word 26214
     rex.W     call __tls_get_addr@PLT
-.L__kefir_func_test1_label177:
+.L__kefir_func_test1_label180:
     movq (%rax), %r12
 .loc 0 26 20
 .L__kefir_func_test1_label184:
@@ -37,27 +37,27 @@ test1:
 .L__kefir_func_test1_label181:
     movd %xmm0, -48(%rbp)
 .loc 0 26 24
-.L__kefir_func_test1_label185:
+.L__kefir_func_test1_label346:
     data16     lea __kefir_function_test1_static_w_2@tlsgd(%rip), %rdi
     .word 26214
     rex.W     call __tls_get_addr@PLT
-.L__kefir_func_test1_label347:
+.L__kefir_func_test1_label350:
     movq (%rax), %xmm0
 .loc 0 26 12
 .L__kefir_func_test1_label354:
     add %r12, %rbx
 .L__kefir_func_test1_label355:
     cvtsi2ss %rbx, %xmm1
-.L__kefir_func_test1_label362:
+.L__kefir_func_test1_label359:
     addss -48(%rbp), %xmm1
-.L__kefir_func_test1_label363:
+.L__kefir_func_test1_label366:
     cvtss2sd %xmm1, %xmm1
 .L__kefir_func_test1_label370:
     movaps %xmm1, %xmm2
     addsd %xmm0, %xmm2
     movaps %xmm2, %xmm0
 .loc 0 26 5
-.L__kefir_func_test1_label382:
+.L__kefir_func_test1_label371:
     ldmxcsr -24(%rbp)
     lea -16(%rbp), %rsp
     pop %r12

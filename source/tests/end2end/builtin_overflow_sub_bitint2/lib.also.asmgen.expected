@@ -335,23 +335,22 @@ __kefir_bigint_subtract:
     shr $3, %rdx
     xor %eax, %eax
     xor %ecx, %ecx
-    mov %rcx, %r8
 .L__kefir_runtime_func___kefir_bigint_subtract_label2:
-    cmp %rdx, %r8
+    cmp %rdx, %rax
     jb .L__kefir_runtime_func___kefir_bigint_subtract_label4
     xor %eax, %eax
     ret
 .L__kefir_runtime_func___kefir_bigint_subtract_label4:
-    movzxb (%rdi, %r8, 1), %rcx
-    movzxb (%rsi, %r8, 1), %r9
-    sub %r9d, %ecx
-    mov %ecx, %r9d
-    sub %eax, %r9d
-    mov %r9, %rax
-    movb %al, (%rdi, %r8, 1)
-    shr $8, %eax
-    and $1, %eax
-    add $1, %r8
+    movzxb (%rdi, %rax, 1), %r8
+    movzxb (%rsi, %rax, 1), %r9
+    sub %r9d, %r8d
+    mov %r8d, %r9d
+    sub %ecx, %r9d
+    mov %r9, %rcx
+    movb %cl, (%rdi, %rax, 1)
+    add $1, %rax
+    shr $8, %ecx
+    and $1, %ecx
     jmp .L__kefir_runtime_func___kefir_bigint_subtract_label2
 .L__kefir_runtime_text_func___kefir_bigint_subtract_end:
 

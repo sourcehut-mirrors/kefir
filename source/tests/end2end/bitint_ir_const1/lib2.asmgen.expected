@@ -8,7 +8,7 @@
                 "blocks": [
                     {
                         "id": 0,
-                        "control_flow": 2,
+                        "control_flow": 32,
                         "code": [
                             {
                                 "id": 0,
@@ -17,16 +17,16 @@
                                 "control_next": null
                             },
                             {
-                                "id": 1,
+                                "id": 16,
                                 "opcode": "bitint_get_signed",
                                 "arg": 0,
                                 "bitwidth": 246,
                                 "control_next": null
                             },
                             {
-                                "id": 2,
+                                "id": 32,
                                 "opcode": "return",
-                                "arg": 1,
+                                "arg": 16,
                                 "control_next": null
                             }
                         ],
@@ -37,8 +37,8 @@
                             "immediate_dominator": null,
                             "alive_instructions": [
                                 0,
-                                1,
-                                2
+                                16,
+                                32
                             ]
                         }
                     }

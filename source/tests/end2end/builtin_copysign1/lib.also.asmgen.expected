@@ -22,10 +22,10 @@ my_copysign:
     mov %rsp, %rbp
     sub $32, %rsp
     stmxcsr -8(%rbp)
-    movq %xmm1, -24(%rbp)
-    movq %xmm0, -16(%rbp)
-    movq -16(%rbp), %xmm0
-    movq -24(%rbp), %xmm1
+    movq %xmm1, -16(%rbp)
+    movq %xmm0, -24(%rbp)
+    movq -24(%rbp), %xmm0
+    movq -16(%rbp), %xmm1
     movdqu .L__kefir_constant_copysign(%rip), %xmm2
     movaps %xmm2, %xmm3
     andpd %xmm1, %xmm3
@@ -45,10 +45,10 @@ my_copysignf:
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-    movd %xmm1, -16(%rbp)
-    movd %xmm0, -12(%rbp)
-    movd -12(%rbp), %xmm0
-    movd -16(%rbp), %xmm1
+    movd %xmm1, -12(%rbp)
+    movd %xmm0, -16(%rbp)
+    movd -16(%rbp), %xmm0
+    movd -12(%rbp), %xmm1
     movdqu .L__kefir_constant_copysignf(%rip), %xmm2
     movaps %xmm2, %xmm3
     andps %xmm1, %xmm3
@@ -70,13 +70,13 @@ my_copysignl:
     fstcw -8(%rbp)
     fldt 32(%rbp)
     fldt 16(%rbp)
-    movq $0, -40(%rbp)
-    fxch %st(1)
-    fstpt -48(%rbp)
     movq $0, -24(%rbp)
+    fxch %st(1)
     fstpt -32(%rbp)
-    fldt -32(%rbp)
+    movq $0, -40(%rbp)
+    fstpt -48(%rbp)
     fldt -48(%rbp)
+    fldt -32(%rbp)
     fxam
     fnstsw %ax
     fxch %st(1)

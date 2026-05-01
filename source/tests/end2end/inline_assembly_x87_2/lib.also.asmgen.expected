@@ -28,15 +28,15 @@ sub:
     mov %rsp, %rbp
     sub $32, %rsp
     fstcw -8(%rbp)
-    movq %xmm1, -24(%rbp)
-    movq %xmm0, -16(%rbp)
-    movq -24(%rbp), %xmm0
+    movq %xmm1, -16(%rbp)
+    movq %xmm0, -24(%rbp)
+    movq -16(%rbp), %xmm0
     movq %xmm0, -32(%rbp)
     fldl -32(%rbp)
-    fldl -16(%rbp)
+    fldl -24(%rbp)
 fsubp
-    fstpl -16(%rbp)
-    movq -16(%rbp), %xmm0
+    fstpl -24(%rbp)
+    movq -24(%rbp), %xmm0
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -49,15 +49,15 @@ subf:
     mov %rsp, %rbp
     sub $32, %rsp
     fstcw -8(%rbp)
-    movd %xmm1, -16(%rbp)
-    movd %xmm0, -12(%rbp)
-    movd -16(%rbp), %xmm0
+    movd %xmm1, -12(%rbp)
+    movd %xmm0, -16(%rbp)
+    movd -12(%rbp), %xmm0
     movd %xmm0, -32(%rbp)
     flds -32(%rbp)
-    flds -12(%rbp)
+    flds -16(%rbp)
 fsubp
-    fstps -12(%rbp)
-    movd -12(%rbp), %xmm0
+    fstps -16(%rbp)
+    movd -16(%rbp), %xmm0
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -72,18 +72,18 @@ subl:
     fstcw -8(%rbp)
     fldt 32(%rbp)
     fldt 16(%rbp)
-    movq $0, -40(%rbp)
-    fxch %st(1)
-    fstpt -48(%rbp)
     movq $0, -24(%rbp)
+    fxch %st(1)
     fstpt -32(%rbp)
-    fldt -48(%rbp)
+    movq $0, -40(%rbp)
+    fstpt -48(%rbp)
+    fldt -32(%rbp)
     fstpt -64(%rbp)
     fldt -64(%rbp)
-    fldt -32(%rbp)
+    fldt -48(%rbp)
 fsubp
-    fstpt -32(%rbp)
-    fldt -32(%rbp)
+    fstpt -48(%rbp)
+    fldt -48(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -96,15 +96,15 @@ mydiv:
     mov %rsp, %rbp
     sub $32, %rsp
     fstcw -8(%rbp)
-    movq %xmm1, -24(%rbp)
-    movq %xmm0, -16(%rbp)
-    movq -24(%rbp), %xmm0
+    movq %xmm1, -16(%rbp)
+    movq %xmm0, -24(%rbp)
+    movq -16(%rbp), %xmm0
     movq %xmm0, -32(%rbp)
     fldl -32(%rbp)
-    fldl -16(%rbp)
+    fldl -24(%rbp)
 fdivp
-    fstpl -16(%rbp)
-    movq -16(%rbp), %xmm0
+    fstpl -24(%rbp)
+    movq -24(%rbp), %xmm0
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -117,15 +117,15 @@ mydivf:
     mov %rsp, %rbp
     sub $32, %rsp
     fstcw -8(%rbp)
-    movd %xmm1, -16(%rbp)
-    movd %xmm0, -12(%rbp)
-    movd -16(%rbp), %xmm0
+    movd %xmm1, -12(%rbp)
+    movd %xmm0, -16(%rbp)
+    movd -12(%rbp), %xmm0
     movd %xmm0, -32(%rbp)
     flds -32(%rbp)
-    flds -12(%rbp)
+    flds -16(%rbp)
 fdivp
-    fstps -12(%rbp)
-    movd -12(%rbp), %xmm0
+    fstps -16(%rbp)
+    movd -16(%rbp), %xmm0
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -140,18 +140,18 @@ mydivl:
     fstcw -8(%rbp)
     fldt 32(%rbp)
     fldt 16(%rbp)
-    movq $0, -40(%rbp)
-    fxch %st(1)
-    fstpt -48(%rbp)
     movq $0, -24(%rbp)
+    fxch %st(1)
     fstpt -32(%rbp)
-    fldt -48(%rbp)
+    movq $0, -40(%rbp)
+    fstpt -48(%rbp)
+    fldt -32(%rbp)
     fstpt -64(%rbp)
     fldt -64(%rbp)
-    fldt -32(%rbp)
+    fldt -48(%rbp)
 fdivp
-    fstpt -32(%rbp)
-    fldt -32(%rbp)
+    fstpt -48(%rbp)
+    fldt -48(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -164,15 +164,15 @@ mydivr:
     mov %rsp, %rbp
     sub $32, %rsp
     fstcw -8(%rbp)
-    movq %xmm1, -24(%rbp)
-    movq %xmm0, -16(%rbp)
-    movq -24(%rbp), %xmm0
+    movq %xmm1, -16(%rbp)
+    movq %xmm0, -24(%rbp)
+    movq -16(%rbp), %xmm0
     movq %xmm0, -32(%rbp)
     fldl -32(%rbp)
-    fldl -16(%rbp)
+    fldl -24(%rbp)
 fdivrp
-    fstpl -16(%rbp)
-    movq -16(%rbp), %xmm0
+    fstpl -24(%rbp)
+    movq -24(%rbp), %xmm0
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -185,15 +185,15 @@ mydivrf:
     mov %rsp, %rbp
     sub $32, %rsp
     fstcw -8(%rbp)
-    movd %xmm1, -16(%rbp)
-    movd %xmm0, -12(%rbp)
-    movd -16(%rbp), %xmm0
+    movd %xmm1, -12(%rbp)
+    movd %xmm0, -16(%rbp)
+    movd -12(%rbp), %xmm0
     movd %xmm0, -32(%rbp)
     flds -32(%rbp)
-    flds -12(%rbp)
+    flds -16(%rbp)
 fdivrp
-    fstps -12(%rbp)
-    movd -12(%rbp), %xmm0
+    fstps -16(%rbp)
+    movd -16(%rbp), %xmm0
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -208,18 +208,18 @@ mydivrl:
     fstcw -8(%rbp)
     fldt 32(%rbp)
     fldt 16(%rbp)
-    movq $0, -40(%rbp)
-    fxch %st(1)
-    fstpt -48(%rbp)
     movq $0, -24(%rbp)
+    fxch %st(1)
     fstpt -32(%rbp)
-    fldt -48(%rbp)
+    movq $0, -40(%rbp)
+    fstpt -48(%rbp)
+    fldt -32(%rbp)
     fstpt -64(%rbp)
     fldt -64(%rbp)
-    fldt -32(%rbp)
+    fldt -48(%rbp)
 fdivrp
-    fstpt -32(%rbp)
-    fldt -32(%rbp)
+    fstpt -48(%rbp)
+    fldt -48(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

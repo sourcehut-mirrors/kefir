@@ -169,27 +169,27 @@ __kefir_bigint_negate:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
-    movq %rsi, -48(%rbp)
-    movq %rdi, -40(%rbp)
-    movq -40(%rbp), %rax
-    movq -48(%rbp), %rcx
-    movq %rcx, -32(%rbp)
+    movq %rsi, -40(%rbp)
+    movq %rdi, -48(%rbp)
+    movq -48(%rbp), %rax
+    movq -40(%rbp), %rcx
+    movq %rcx, -24(%rbp)
     movq %rax, -16(%rbp)
-    movq -32(%rbp), %rax
+    movq -24(%rbp), %rax
     add $7, %rax
     mov $8, %ecx
     xor %edx, %edx
     div %rcx
-    movq %rax, -24(%rbp)
+    movq %rax, -32(%rbp)
     xor %eax, %eax
     movq %rax, -8(%rbp)
 .L__kefir_runtime_func___kefir_bigint_negate_label3:
     movq -8(%rbp), %rax
-    movq -24(%rbp), %rcx
+    movq -32(%rbp), %rcx
     cmp %rcx, %rax
     jb .L__kefir_runtime_func___kefir_bigint_negate_label5
-    movq -40(%rbp), %rdi
-    movq -48(%rbp), %rdx
+    movq -48(%rbp), %rdi
+    movq -40(%rbp), %rdx
     mov $1, %esi
     call __kefir_bigint_util_add_digit_zero_extended
     xor %eax, %eax
@@ -223,8 +223,8 @@ __kefir_bigint_util_add_digit_zero_extended:
     xor %edx, %edx
     div %rcx
     movq %rax, -32(%rbp)
-    movl $0, -56(%rbp)
     movl $0, -40(%rbp)
+    movl $0, -56(%rbp)
     xor %eax, %eax
     movq %rax, -16(%rbp)
 .L__kefir_runtime_func___kefir_bigint_util_add_digit_zero_extended_label2:
@@ -252,7 +252,7 @@ __kefir_bigint_util_add_digit_zero_extended:
     lea -8(%rbp), %rax
 .L__kefir_runtime_func___kefir_bigint_util_add_digit_zero_extended_label8:
     movl %ecx, (%rax)
-    movl -40(%rbp), %eax
+    movl -56(%rbp), %eax
     movl -4(%rbp), %ecx
     movl -8(%rbp), %edx
     add %ecx, %eax
@@ -265,11 +265,11 @@ __kefir_bigint_util_add_digit_zero_extended:
     movl -36(%rbp), %eax
     mov $8, %ecx
     shr %cl, %eax
-    movl %eax, -40(%rbp)
+    movl %eax, -56(%rbp)
     addq $1, -16(%rbp)
     jmp .L__kefir_runtime_func___kefir_bigint_util_add_digit_zero_extended_label2
 .L__kefir_runtime_func___kefir_bigint_util_add_digit_zero_extended_label9:
-    movl -56(%rbp), %ecx
+    movl -40(%rbp), %ecx
     lea -8(%rbp), %rax
     jmp .L__kefir_runtime_func___kefir_bigint_util_add_digit_zero_extended_label8
 .L__kefir_runtime_text_func___kefir_bigint_util_add_digit_zero_extended_end:
