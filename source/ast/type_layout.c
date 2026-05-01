@@ -125,6 +125,65 @@ kefir_result_t kefir_ast_type_layout_set_qualification(struct kefir_mem *mem, st
     layout->qualified_type = kefir_ast_type_qualified(mem, type_bundle, layout->type, qualification);
     REQUIRE(layout->qualified_type != NULL,
             KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate qualified AST type"));
+
+    if (!KEFIR_AST_TYPE_IS_ZERO_QUALIFICATION(&qualification)) {
+        switch (layout->type->tag) {
+            case KEFIR_AST_TYPE_STRUCTURE:
+            case KEFIR_AST_TYPE_UNION:
+                for (const struct kefir_list_entry *iter = kefir_list_head(&layout->structure_layout.member_list);
+                     iter != NULL; kefir_list_next(&iter)) {
+                    ASSIGN_DECL_CAST(struct kefir_ast_type_layout_structure_member *, member, iter->value);
+                    REQUIRE_OK(
+                        kefir_ast_type_layout_set_qualification(mem, type_bundle, member->layout, qualification));
+                }
+                break;
+
+            case KEFIR_AST_TYPE_ARRAY:
+                REQUIRE_OK(kefir_ast_type_layout_set_qualification(mem, type_bundle, layout->array_layout.element_type,
+                                                                   qualification));
+                break;
+
+            case KEFIR_AST_TYPE_VOID:
+            case KEFIR_AST_TYPE_SCALAR_BOOL:
+            case KEFIR_AST_TYPE_SCALAR_CHAR:
+            case KEFIR_AST_TYPE_SCALAR_UNSIGNED_CHAR:
+            case KEFIR_AST_TYPE_SCALAR_SIGNED_CHAR:
+            case KEFIR_AST_TYPE_SCALAR_UNSIGNED_SHORT:
+            case KEFIR_AST_TYPE_SCALAR_SIGNED_SHORT:
+            case KEFIR_AST_TYPE_SCALAR_UNSIGNED_INT:
+            case KEFIR_AST_TYPE_SCALAR_SIGNED_INT:
+            case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG:
+            case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG:
+            case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG_LONG:
+            case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG_LONG:
+            case KEFIR_AST_TYPE_SCALAR_UNSIGNED_INT128:
+            case KEFIR_AST_TYPE_SCALAR_SIGNED_INT128:
+            case KEFIR_AST_TYPE_SCALAR_SIGNED_BIT_PRECISE:
+            case KEFIR_AST_TYPE_SCALAR_UNSIGNED_BIT_PRECISE:
+            case KEFIR_AST_TYPE_SCALAR_FLOAT:
+            case KEFIR_AST_TYPE_SCALAR_DOUBLE:
+            case KEFIR_AST_TYPE_SCALAR_LONG_DOUBLE:
+            case KEFIR_AST_TYPE_SCALAR_INTERCHANGE_FLOAT32:
+            case KEFIR_AST_TYPE_SCALAR_INTERCHANGE_FLOAT64:
+            case KEFIR_AST_TYPE_SCALAR_INTERCHANGE_FLOAT80:
+            case KEFIR_AST_TYPE_SCALAR_EXTENDED_FLOAT32:
+            case KEFIR_AST_TYPE_SCALAR_EXTENDED_FLOAT64:
+            case KEFIR_AST_TYPE_SCALAR_POINTER:
+            case KEFIR_AST_TYPE_SCALAR_NULL_POINTER:
+            case KEFIR_AST_TYPE_SCALAR_DECIMAL32:
+            case KEFIR_AST_TYPE_SCALAR_DECIMAL64:
+            case KEFIR_AST_TYPE_SCALAR_DECIMAL128:
+            case KEFIR_AST_TYPE_SCALAR_EXTENDED_DECIMAL64:
+            case KEFIR_AST_TYPE_COMPLEX_FLOATING_POINT:
+            case KEFIR_AST_TYPE_IMAGINARY_FLOATING_POINT:
+            case KEFIR_AST_TYPE_ENUMERATION:
+            case KEFIR_AST_TYPE_FUNCTION:
+            case KEFIR_AST_TYPE_QUALIFIED:
+            case KEFIR_AST_TYPE_AUTO:
+                // Intentionally left blank
+                break;
+        }
+    }
     return KEFIR_OK;
 }
 
