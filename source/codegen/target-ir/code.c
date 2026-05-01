@@ -18,11 +18,16 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "kefir/codegen//target-ir/code.h"
+#include "kefir/codegen/target-ir/code.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 #include "kefir/core/hashset.h"
 #include <string.h>
+
+#define MAX_GENERATION ((((kefir_uint32_t) 1) << (KEFIR_TARGET_IR_INSTR_REF_GENERATION_WIDTH)) - 1)
+#define GENERATION_OF(_ref) (((kefir_uint32_t) (_ref)) & MAX_GENERATION)
+#define REF_FROM(_generation, _index) \
+    ((((kefir_uint32_t) (_index)) << KEFIR_TARGET_IR_INSTR_REF_GENERATION_WIDTH) | GENERATION_OF((_generation)))
 
 #define CHUNK_INDEX(_idx) ((_idx) >> KEFIR_CODEGEN_TARGET_IR_CODE_CHUNK_CAPACITY_LOG2)
 #define CHUNK_OFFSET(_idx) ((_idx) & ((1ull << KEFIR_CODEGEN_TARGET_IR_CODE_CHUNK_CAPACITY_LOG2) - 1))
@@ -57,6 +62,7 @@ kefir_result_t kefir_codegen_target_ir_code_init(struct kefir_codegen_target_ir_
     code->code_length = 0;
     code->allocated_chunks = 0;
     code->chunk_preallocation = 0;
+    code->recycle_instr_idx = KEFIR_ID_NONE;
     code->blocks = NULL;
     code->blocks_length = 0;
     code->blocks_capacity = 0;
@@ -264,23 +270,29 @@ kefir_bool_t kefir_codegen_target_ir_code_is_gate_block(const struct kefir_codeg
 static kefir_result_t instr_mut_at(const struct kefir_codegen_target_ir_code *code,
                                    kefir_codegen_target_ir_instruction_ref_t instr_ref,
                                    struct kefir_codegen_target_ir_instruction **instr_ptr) {
-    REQUIRE(instr_ref != KEFIR_ID_NONE && instr_ref < code->code_length,
+    REQUIRE(instr_ref != KEFIR_ID_NONE && KEFIR_TARGET_IR_INSTR_REF_INDEX_OF(instr_ref) < code->code_length,
             KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find requested instruction"));
 
-    struct kefir_codegen_target_ir_instruction *instr = INSTR_AT_UNSAFE(code, instr_ref);
-    REQUIRE(instr->block_ref != KEFIR_ID_NONE,
+    struct kefir_codegen_target_ir_instruction *instr =
+        INSTR_AT_UNSAFE(code, KEFIR_TARGET_IR_INSTR_REF_INDEX_OF(instr_ref));
+    REQUIRE(GENERATION_OF(instr_ref) == instr->generation && instr->block_ref != KEFIR_ID_NONE,
             KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Requested instruction has previously been dropped"));
 
     ASSIGN_PTR(instr_ptr, instr);
     return KEFIR_OK;
 }
+
 static kefir_result_t instr_mut_at_nocheck(const struct kefir_codegen_target_ir_code *code,
                                            kefir_codegen_target_ir_instruction_ref_t instr_ref,
                                            struct kefir_codegen_target_ir_instruction **instr_ptr) {
-    REQUIRE(instr_ref != KEFIR_ID_NONE && instr_ref < code->code_length,
+    REQUIRE(instr_ref != KEFIR_ID_NONE && KEFIR_TARGET_IR_INSTR_REF_INDEX_OF(instr_ref) < code->code_length,
             KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find requested instruction"));
 
-    struct kefir_codegen_target_ir_instruction *instr = INSTR_AT_UNSAFE(code, instr_ref);
+    struct kefir_codegen_target_ir_instruction *instr =
+        INSTR_AT_UNSAFE(code, KEFIR_TARGET_IR_INSTR_REF_INDEX_OF(instr_ref));
+    REQUIRE(GENERATION_OF(instr_ref) == instr->generation,
+            KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Requested instruction has previously been dropped"));
+
     ASSIGN_PTR(instr_ptr, instr);
     return KEFIR_OK;
 }
@@ -521,31 +533,45 @@ kefir_result_t kefir_codegen_target_ir_code_new_instruction_inplace(
 
     struct kefir_codegen_target_ir_instruction *instr = NULL;
 
-    if (CHUNK_OFFSET(code->code_length) == 0 && CHUNK_COUNT(code->code_length) + 1 > code->allocated_chunks) {
+    kefir_bool_t allocated_new = false;
+    if (code->recycle_instr_idx != KEFIR_ID_NONE) {
+        instr = INSTR_AT_UNSAFE(code, code->recycle_instr_idx);
+        instr->generation++;
+        instr->instr_ref = REF_FROM(instr->generation, code->recycle_instr_idx);
+        code->recycle_instr_idx = instr->control_flow.next;
+        REQUIRE_OK(kefir_hashtable_clear(mem, &instr->aspects.all));
+    } else {
+        if (CHUNK_OFFSET(code->code_length) == 0 && CHUNK_COUNT(code->code_length) + 1 > code->allocated_chunks) {
 
-        code->chunk_preallocation = MAX(1, code->chunk_preallocation * 2);
-        const kefir_size_t new_allocated_chunks = CHUNK_COUNT(code->code_length) + code->chunk_preallocation;
-        struct kefir_codegen_target_ir_code_chunk **new_code = KEFIR_REALLOC(
-            mem, code->code_chunks, sizeof(struct kefir_codegen_target_ir_code_chunk *) * new_allocated_chunks);
-        REQUIRE(new_code != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate target IR code chunk"));
-
-        memset(&new_code[code->allocated_chunks], 0,
-               sizeof(struct kefir_codegen_target_ir_code_chunk *) * (new_allocated_chunks - code->allocated_chunks));
-        code->code_chunks = new_code;
-
-        kefir_size_t prev_allocated_chunks = code->allocated_chunks;
-        code->allocated_chunks = new_allocated_chunks;
-        for (kefir_size_t i = prev_allocated_chunks; i < new_allocated_chunks; i++) {
-            code->code_chunks[i] = KEFIR_MALLOC(mem, sizeof(struct kefir_codegen_target_ir_code_chunk));
-            REQUIRE(new_code[i] != NULL,
+            code->chunk_preallocation = MAX(1, code->chunk_preallocation * 2);
+            const kefir_size_t new_allocated_chunks = CHUNK_COUNT(code->code_length) + code->chunk_preallocation;
+            struct kefir_codegen_target_ir_code_chunk **new_code = KEFIR_REALLOC(
+                mem, code->code_chunks, sizeof(struct kefir_codegen_target_ir_code_chunk *) * new_allocated_chunks);
+            REQUIRE(new_code != NULL,
                     KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate target IR code chunk"));
+
+            memset(
+                &new_code[code->allocated_chunks], 0,
+                sizeof(struct kefir_codegen_target_ir_code_chunk *) * (new_allocated_chunks - code->allocated_chunks));
+            code->code_chunks = new_code;
+
+            kefir_size_t prev_allocated_chunks = code->allocated_chunks;
+            code->allocated_chunks = new_allocated_chunks;
+            for (kefir_size_t i = prev_allocated_chunks; i < new_allocated_chunks; i++) {
+                code->code_chunks[i] = KEFIR_MALLOC(mem, sizeof(struct kefir_codegen_target_ir_code_chunk));
+                REQUIRE(new_code[i] != NULL,
+                        KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate target IR code chunk"));
+            }
         }
+
+        instr = INSTR_AT_UNSAFE(code, code->code_length);
+        instr->generation = 0;
+        instr->instr_ref = REF_FROM(instr->generation, code->code_length);
+        REQUIRE_OK(kefir_hashtable_init(&instr->aspects.all, &kefir_hashtable_uint_ops));
+        allocated_new = true;
     }
 
-    instr = INSTR_AT_UNSAFE(code, code->code_length);
-
     instr->block_ref = block_ref;
-    instr->instr_ref = code->code_length;
     if (metadata != NULL) {
         instr->metadata = *metadata;
     } else {
@@ -561,7 +587,6 @@ kefir_result_t kefir_codegen_target_ir_code_new_instruction_inplace(
                 KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Unable to insert source location into string pool"));
     }
 
-    REQUIRE_OK(kefir_hashtable_init(&instr->aspects.all, &kefir_hashtable_uint_ops));
     for (kefir_size_t i = 0; i < KEFIR_CODEGEN_TARGET_IR_OPERATION_DIRECT_OUTPUT_ASPECT_CACHE; i++) {
         instr->aspects.direct_output[i] = ~0ull;
     }
@@ -570,7 +595,9 @@ kefir_result_t kefir_codegen_target_ir_code_new_instruction_inplace(
     }
     instr->use_entry_top = (kefir_size_t) ~0ull;
 
-    code->code_length++;
+    if (allocated_new) {
+        code->code_length++;
+    }
     *operation = &instr->operation;
     ASSIGN_PTR(instr_ref_ptr, instr->instr_ref);
     return KEFIR_OK;
@@ -741,6 +768,11 @@ static kefir_result_t drop_instruction(struct kefir_mem *mem, struct kefir_codeg
 
     if (instr->operation.opcode == code->klass->phi_opcode) {
         REQUIRE_OK(kefir_hashset_delete(&block->phi_refs, (kefir_hashset_key_t) instr_ref));
+    }
+
+    if (instr->generation < MAX_GENERATION) {
+        instr->control_flow.next = code->recycle_instr_idx;
+        code->recycle_instr_idx = KEFIR_TARGET_IR_INSTR_REF_INDEX_OF(instr_ref);
     }
 
     return KEFIR_OK;

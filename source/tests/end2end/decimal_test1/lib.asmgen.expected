@@ -114,8 +114,8 @@ test_dec64_gradient_descent:
     movq .L__kefir_func_test_dec64_gradient_descent_label10(%rip), %xmm1
     xor %eax, %eax
     movaps %xmm0, -160(%rbp)
-    movaps %xmm1, -144(%rbp)
     mov %rax, -128(%rbp)
+    movaps %xmm1, -144(%rbp)
 .L__kefir_func_test_dec64_gradient_descent_label5:
     movq (%r14), %rdi
     cmpq %rdi, -128(%rbp)
@@ -462,8 +462,8 @@ test_dec128_gradient_descent:
     movdqu .L__kefir_func_test_dec128_gradient_descent_label10(%rip), %xmm1
     xor %eax, %eax
     movaps %xmm0, -160(%rbp)
-    movaps %xmm1, -144(%rbp)
     mov %rax, -128(%rbp)
+    movaps %xmm1, -144(%rbp)
 .L__kefir_func_test_dec128_gradient_descent_label5:
     movq (%r14), %rdi
     cmpq %rdi, -128(%rbp)
@@ -651,8 +651,8 @@ test_dec32_gradient_descent:
     movaps %xmm0, %xmm1
     movaps -144(%rbp), %xmm0
     call __bid_addsd3@PLT
-    movaps %xmm0, -144(%rbp)
     mov %rbx, %rax
+    movaps %xmm0, -144(%rbp)
     jmp .L__kefir_func_test_dec32_gradient_descent_label5
 .L__kefir_text_func_test_dec32_gradient_descent_end:
 .section .rodata

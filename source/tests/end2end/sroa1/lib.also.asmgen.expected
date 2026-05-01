@@ -37,8 +37,8 @@ test1:
     mov %rcx, %rax
     ret
 .L__kefir_func_test1_label7:
-    mov %edx, %eax
     mov %r8d, %ecx
+    mov %edx, %eax
     jmp .L__kefir_func_test1_label2
 .L__kefir_text_func_test1_end:
 
@@ -55,8 +55,8 @@ test2:
     mov %rcx, %rax
     ret
 .L__kefir_func_test2_label7:
-    mov %edx, %eax
     mov %r8d, %ecx
+    mov %edx, %eax
     jmp .L__kefir_func_test2_label2
 .L__kefir_text_func_test2_end:
 

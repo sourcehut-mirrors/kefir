@@ -15,8 +15,8 @@ factorial:
     lea -1(%rdi), %rdx
     cmp $1, %rdi
     jle .L__kefir_func_factorial_label4
-    mov %rcx, %rax
     mov %rdx, %rdi
+    mov %rcx, %rax
     jmp .L__kefir_func_factorial_label2
 .L__kefir_func_factorial_label4:
     ret

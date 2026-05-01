@@ -82,13 +82,15 @@ kefir_result_t kefir_codegen_target_ir_interference_reset(struct kefir_mem *mem,
 static kefir_result_t add_interference(struct kefir_mem *mem, struct kefir_codegen_target_ir_interference *interference,
                                        kefir_codegen_target_ir_value_ref_t value_ref,
                                        kefir_codegen_target_ir_value_ref_t interfere_value_ref) {
-    REQUIRE(value_ref.instr_ref != KEFIR_ID_NONE && value_ref.instr_ref < interference->length,
+    REQUIRE(value_ref.instr_ref != KEFIR_ID_NONE &&
+                KEFIR_TARGET_IR_INSTR_REF_INDEX_OF(value_ref.instr_ref) < interference->length,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Interfering value reference is out of bounds"));
 
     kefir_hashtable_value_t table_value;
     struct interference_entry *entry = NULL;
-    kefir_result_t res = kefir_hashtable_at(&interference->interference[value_ref.instr_ref].value_entries,
-                                            (kefir_hashtable_key_t) value_ref.aspect, &table_value);
+    kefir_result_t res = kefir_hashtable_at(
+        &interference->interference[KEFIR_TARGET_IR_INSTR_REF_INDEX_OF(value_ref.instr_ref)].value_entries,
+        (kefir_hashtable_key_t) value_ref.aspect, &table_value);
     if (res == KEFIR_NOT_FOUND) {
         entry = KEFIR_MALLOC(mem, sizeof(struct interference_entry));
         REQUIRE(entry != NULL,
@@ -96,8 +98,9 @@ static kefir_result_t add_interference(struct kefir_mem *mem, struct kefir_codeg
         entry->interference = NULL;
         entry->length = 0;
         entry->capacity = 0;
-        res = kefir_hashtable_insert(mem, &interference->interference[value_ref.instr_ref].value_entries,
-                                     (kefir_hashtable_key_t) value_ref.aspect, (kefir_hashtable_value_t) entry);
+        res = kefir_hashtable_insert(
+            mem, &interference->interference[KEFIR_TARGET_IR_INSTR_REF_INDEX_OF(value_ref.instr_ref)].value_entries,
+            (kefir_hashtable_key_t) value_ref.aspect, (kefir_hashtable_value_t) entry);
         REQUIRE_ELSE(res == KEFIR_OK, {
             KEFIR_FREE(mem, entry);
             return res;
@@ -238,7 +241,8 @@ kefir_result_t kefir_codegen_target_ir_interference_has(const struct kefir_codeg
                                                         kefir_codegen_target_ir_value_ref_t other_value_ref,
                                                         kefir_bool_t *has_interference) {
     REQUIRE(interference != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR interference"));
-    REQUIRE(value_ref.instr_ref != KEFIR_ID_NONE && value_ref.instr_ref < interference->length,
+    REQUIRE(value_ref.instr_ref != KEFIR_ID_NONE &&
+                KEFIR_TARGET_IR_INSTR_REF_INDEX_OF(value_ref.instr_ref) < interference->length,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Interfering value reference is out of bounds"));
     REQUIRE(has_interference != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to target IR interference flag"));
@@ -246,8 +250,9 @@ kefir_result_t kefir_codegen_target_ir_interference_has(const struct kefir_codeg
     *has_interference = false;
 
     kefir_hashtable_value_t table_value;
-    kefir_result_t res = kefir_hashtable_at(&interference->interference[value_ref.instr_ref].value_entries,
-                                            (kefir_hashtable_key_t) value_ref.aspect, &table_value);
+    kefir_result_t res = kefir_hashtable_at(
+        &interference->interference[KEFIR_TARGET_IR_INSTR_REF_INDEX_OF(value_ref.instr_ref)].value_entries,
+        (kefir_hashtable_key_t) value_ref.aspect, &table_value);
     if (res != KEFIR_NOT_FOUND) {
         REQUIRE_OK(res);
         ASSIGN_DECL_CAST(struct interference_entry *, entry, table_value);
@@ -266,14 +271,16 @@ kefir_result_t kefir_codegen_target_ir_interference_iter(
     struct kefir_codegen_target_ir_interference_iterator *iter, kefir_codegen_target_ir_value_ref_t value_ref,
     kefir_codegen_target_ir_value_ref_t *interfere_value_ref_ptr) {
     REQUIRE(interference != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR interference"));
-    REQUIRE(value_ref.instr_ref != KEFIR_ID_NONE && value_ref.instr_ref < interference->length,
+    REQUIRE(value_ref.instr_ref != KEFIR_ID_NONE &&
+                KEFIR_TARGET_IR_INSTR_REF_INDEX_OF(value_ref.instr_ref) < interference->length,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Interfering value reference is out of bounds"));
     REQUIRE(iter != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to target IR interference iterator"));
 
     kefir_hashtable_value_t table_value;
-    kefir_result_t res = kefir_hashtable_at(&interference->interference[value_ref.instr_ref].value_entries,
-                                            (kefir_hashtable_key_t) value_ref.aspect, &table_value);
+    kefir_result_t res = kefir_hashtable_at(
+        &interference->interference[KEFIR_TARGET_IR_INSTR_REF_INDEX_OF(value_ref.instr_ref)].value_entries,
+        (kefir_hashtable_key_t) value_ref.aspect, &table_value);
     if (res == KEFIR_NOT_FOUND) {
         res = KEFIR_SET_ERROR(KEFIR_ITERATOR_END, "End of target IR interference iterator");
     }

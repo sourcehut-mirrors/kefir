@@ -35,6 +35,10 @@
 #define KEFIR_CODEGEN_TARGET_IR_OPERATION_DIRECT_OUTPUT_ASPECT_CACHE 4
 #define KEFIR_CODEGEN_TARGET_IR_OPERATION_INDIRECT_OUTPUT_ASPECT_CACHE 2
 
+#define KEFIR_TARGET_IR_INSTR_REF_GENERATION_WIDTH 4
+#define KEFIR_TARGET_IR_INSTR_REF_INDEX_OF(_ref) \
+    (((kefir_uint32_t) (_ref)) >> KEFIR_TARGET_IR_INSTR_REF_GENERATION_WIDTH)
+
 typedef kefir_id_t kefir_codegen_target_ir_block_ref_t;
 typedef kefir_id_t kefir_codegen_target_ir_instruction_ref_t;
 typedef kefir_uint32_t kefir_codegen_target_ir_opcode_t;
@@ -323,6 +327,8 @@ typedef struct kefir_codegen_target_ir_instruction {
     kefir_size_t use_entry_top;
 
     struct kefir_codegen_target_ir_instruction_metadata metadata;
+
+    kefir_uint8_t generation;
 } kefir_codegen_target_ir_instruction_t;
 
 typedef struct kefir_codegen_target_ir_block {
@@ -418,6 +424,8 @@ typedef struct kefir_codegen_target_ir_code {
     kefir_size_t code_length;
     kefir_size_t allocated_chunks;
     kefir_size_t chunk_preallocation;
+
+    kefir_size_t recycle_instr_idx;
 
     struct kefir_codegen_target_ir_block *blocks;
     kefir_size_t blocks_length;

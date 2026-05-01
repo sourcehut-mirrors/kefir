@@ -21,29 +21,29 @@ test:
     fcomi %st(1)
     jnb .L__kefir_func_test_label3
     fstp %st(1)
-    fnstcww -64(%rbp)
-    movw -64(%rbp), %ax
+    fnstcww -48(%rbp)
+    movw -48(%rbp), %ax
     or $3072, %ax
-    movw %ax, -56(%rbp)
-    fldcww -56(%rbp)
-    fistpq -48(%rbp)
-    mov -48(%rbp), %rax
+    movw %ax, -64(%rbp)
     fldcww -64(%rbp)
+    fistpq -56(%rbp)
+    mov -56(%rbp), %rax
+    fldcww -48(%rbp)
 .L__kefir_func_test_label4:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
 .L__kefir_func_test_label3:
-    fnstcww -64(%rbp)
+    fnstcww -48(%rbp)
     fsubp
-    movw -64(%rbp), %ax
+    movw -48(%rbp), %ax
     or $3072, %ax
-    movw %ax, -56(%rbp)
-    fldcww -56(%rbp)
-    fistpq -48(%rbp)
-    mov -48(%rbp), %rax
+    movw %ax, -64(%rbp)
     fldcww -64(%rbp)
+    fistpq -56(%rbp)
+    mov -56(%rbp), %rax
+    fldcww -48(%rbp)
     btc $63, %rax
     jmp .L__kefir_func_test_label4
 .L__kefir_text_func_test_end:

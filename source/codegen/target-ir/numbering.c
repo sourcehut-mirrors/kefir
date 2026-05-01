@@ -89,7 +89,7 @@ kefir_result_t kefir_codegen_target_ir_numbering_build(struct kefir_mem *mem,
                  kefir_codegen_target_ir_code_block_control_head(code, block_ref);
              instr_ref != KEFIR_ID_NONE;
              instr_ref = kefir_codegen_target_ir_code_control_next(code, instr_ref), local_index++) {
-            numbering->instruction_seq_nums[instr_ref] = local_index;
+            numbering->instruction_seq_nums[KEFIR_TARGET_IR_INSTR_REF_INDEX_OF(instr_ref)] = local_index;
         }
 
         numbering->block_lengths[block_ref] = local_index;
@@ -113,10 +113,10 @@ kefir_result_t kefir_codegen_target_ir_numbering_instruction_seq_index(
     const struct kefir_codegen_target_ir_numbering *numbering, kefir_codegen_target_ir_instruction_ref_t instr_ref,
     kefir_size_t *index_ptr) {
     REQUIRE(numbering != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR numbering"));
-    REQUIRE(instr_ref != KEFIR_ID_NONE && instr_ref < numbering->length,
+    REQUIRE(instr_ref != KEFIR_ID_NONE && KEFIR_TARGET_IR_INSTR_REF_INDEX_OF(instr_ref) < numbering->length,
             KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Instruction reference is out of numbering bounds"));
     REQUIRE(index_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to index"));
 
-    *index_ptr = numbering->instruction_seq_nums[instr_ref];
+    *index_ptr = numbering->instruction_seq_nums[KEFIR_TARGET_IR_INSTR_REF_INDEX_OF(instr_ref)];
     return KEFIR_OK;
 }
