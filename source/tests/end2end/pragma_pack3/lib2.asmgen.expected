@@ -219,6 +219,34 @@
                         ]
                     },
                     {
+                        "class": "expression_statement",
+                        "expression": {
+                            "class": "cast_operator",
+                            "type_name": {
+                                "class": "type_name",
+                                "specifiers": {
+                                    "list": [
+                                        {
+                                            "class": "type_specifier",
+                                            "specifier": "void",
+                                            "attributes": []
+                                        }
+                                    ],
+                                    "attributes": []
+                                },
+                                "declarator": {
+                                    "class": "abstract",
+                                    "attributes": []
+                                }
+                            },
+                            "expression": {
+                                "class": "identifier",
+                                "identifier": "x"
+                            }
+                        },
+                        "attributes": []
+                    },
+                    {
                         "class": "compound_statement",
                         "items": [
                             {

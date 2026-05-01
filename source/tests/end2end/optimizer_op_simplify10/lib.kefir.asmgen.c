@@ -32,6 +32,7 @@ void test() {
     arr[9] = -1000;
 
     volatile int a = -314159;
+    (void) a;
 
     struct X x = {1, 2, 3.0f};
 }

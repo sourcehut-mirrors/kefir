@@ -73,16 +73,19 @@ long test5(int len, struct S1 arg0, ...) {
 
 void *test6(int level) {
     __attribute__((aligned(128))) volatile int x = 0;
+    (void) x;
     return __builtin_frame_address(level);
 }
 
 void *test7(int level) {
     __attribute__((aligned(128))) volatile int x = 0;
+    (void) x;
     return __builtin_return_address(level);
 }
 
 void *test8(int level) {
     __attribute__((aligned(128))) volatile int x = 0;
+    (void) x;
     static volatile int *ptr;
     ptr = &x;
     return test6(level);
@@ -90,6 +93,7 @@ void *test8(int level) {
 
 void *test9(int level) {
     __attribute__((aligned(128))) volatile int x = 0;
+    (void) x;
     static volatile int *ptr;
     ptr = &x;
     return test7(level);

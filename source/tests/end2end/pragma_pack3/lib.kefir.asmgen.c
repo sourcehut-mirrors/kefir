@@ -28,6 +28,7 @@ DEF_STRUCT(a);
 
 void fn() {
     volatile int x = 100;
+    (void) x;
     {
         fn();
 #pragma pack(1)

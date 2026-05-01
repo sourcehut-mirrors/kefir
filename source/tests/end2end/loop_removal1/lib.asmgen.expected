@@ -77,8 +77,7 @@ test3:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    xor %eax, %eax
-    xchgl -4(%rbp), %eax
+    movl $0, -4(%rbp)
     xor %eax, %eax
     mov %rax, %rcx
 .L__kefir_func_test3_label2:

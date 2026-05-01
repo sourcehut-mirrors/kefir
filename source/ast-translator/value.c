@@ -449,12 +449,10 @@ kefir_result_t kefir_ast_translator_resolve_lvalue(struct kefir_mem *mem, struct
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_ast_translator_store_layout_value(struct kefir_mem *mem,
-                                                       struct kefir_ast_translator_context *context,
-                                                       struct kefir_irbuilder_block *builder,
-                                                       const struct kefir_ir_type *ir_type,
-                                                       struct kefir_ast_type_layout *layout,
-                                                       const struct kefir_source_location *source_location) {
+kefir_result_t kefir_ast_translator_store_layout_value(
+    struct kefir_mem *mem, struct kefir_ast_translator_context *context, struct kefir_irbuilder_block *builder,
+    const struct kefir_ir_type *ir_type, struct kefir_ast_type_layout *layout, kefir_bool_t keep_qualifications,
+    const struct kefir_source_location *source_location) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST translator context"));
     REQUIRE(builder != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR block builder"));
@@ -464,7 +462,8 @@ kefir_result_t kefir_ast_translator_store_layout_value(struct kefir_mem *mem,
     if (layout->bitfield) {
         REQUIRE_OK(store_bitfield(builder, ir_type, layout, context->environment->configuration));
     } else {
-        REQUIRE_OK(kefir_ast_translator_store_value(mem, layout->qualified_type, context, builder, source_location));
+        const struct kefir_ast_type *type = keep_qualifications ? layout->qualified_type : layout->type;
+        REQUIRE_OK(kefir_ast_translator_store_value(mem, type, context, builder, source_location));
     }
     return KEFIR_OK;
 }
@@ -493,7 +492,7 @@ kefir_result_t kefir_ast_translator_store_lvalue(struct kefir_mem *mem, struct k
 
         REQUIRE_OK(resolve_bitfield_layout(mem, context, struct_member, &translator_type, &member_layout));
         REQUIRE_OK(kefir_ast_translator_store_layout_value(mem, context, builder, translator_type->object.ir_type,
-                                                           member_layout, &node->source_location));
+                                                           member_layout, true, &node->source_location));
     } else if (node->properties.expression_props.atomic) {
         REQUIRE_OK(atomic_store_value(mem, node->properties.type, context, builder, &node->source_location));
     } else {

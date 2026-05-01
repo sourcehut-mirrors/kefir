@@ -107,8 +107,7 @@ test3:
     push %r12
     sub $16, %rsp
     mov %rdi, %rbx
-    xor %eax, %eax
-    xchgq -24(%rbp), %rax
+    movq $0, -24(%rbp)
     xor %eax, %eax
     mov %rax, %r12
 .L__kefir_func_test3_label2:
