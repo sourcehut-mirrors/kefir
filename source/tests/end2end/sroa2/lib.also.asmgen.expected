@@ -1,0 +1,24 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global get
+.type get, @function
+
+.section .text
+.L__kefir_text_section_begin:
+get:
+.L__kefir_text_func_get_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    xorps %xmm0, %xmm0
+    movdqu %xmm0, -16(%rbp)
+    movl %edi, -8(%rbp)
+    movl -8(%rbp), %eax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.L__kefir_text_func_get_end:
+
+.L__kefir_text_section_end:
+

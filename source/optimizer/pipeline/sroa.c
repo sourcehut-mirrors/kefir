@@ -291,8 +291,8 @@ static kefir_result_t sroa_impl(struct kefir_mem *mem, struct sroa_state *state)
                 kefir_result_t res = sroa_scan(mem, state, instr_ref, instr_ref);
                 if (res != KEFIR_NO_MATCH) {
                     REQUIRE_OK(res);
+                    REQUIRE_OK(sroa_prepare_locations(mem, state));
                 }
-                REQUIRE_OK(sroa_prepare_locations(mem, state));
             }
         }
     }
