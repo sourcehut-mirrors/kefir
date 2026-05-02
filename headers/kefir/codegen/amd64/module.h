@@ -55,7 +55,7 @@ kefir_result_t kefir_codegen_amd64_module_init(struct kefir_codegen_amd64_module
 kefir_result_t kefir_codegen_amd64_module_free(struct kefir_mem *, struct kefir_codegen_amd64_module *);
 
 kefir_result_t kefir_codegen_amd64_module_insert_function(struct kefir_mem *, struct kefir_codegen_amd64_module *,
-                                                          const struct kefir_opt_function *,
+                                                          struct kefir_opt_function *,
                                                           struct kefir_codegen_amd64_function **);
 
 kefir_result_t kefir_codegen_amd64_module_function(const struct kefir_codegen_amd64_module *, const char *,

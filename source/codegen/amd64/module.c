@@ -67,7 +67,7 @@ kefir_result_t kefir_codegen_amd64_module_free(struct kefir_mem *mem, struct kef
 
 kefir_result_t kefir_codegen_amd64_module_insert_function(struct kefir_mem *mem,
                                                           struct kefir_codegen_amd64_module *module,
-                                                          const struct kefir_opt_function *opt_function,
+                                                          struct kefir_opt_function *opt_function,
                                                           struct kefir_codegen_amd64_function **function_ptr) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 codegen module"));

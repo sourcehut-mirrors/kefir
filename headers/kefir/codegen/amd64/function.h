@@ -43,7 +43,7 @@ typedef struct kefir_codegen_amd64_function {
     struct kefir_codegen_amd64 *codegen;
     struct kefir_codegen_amd64_module *codegen_module;
     const struct kefir_opt_module *module;
-    const struct kefir_opt_function *function;
+    struct kefir_opt_function *function;
     struct kefir_opt_code_control_flow control_flow;
     struct kefir_opt_code_liveness liveness;
     struct kefir_opt_code_variable_scopes variable_scopes;
@@ -90,7 +90,7 @@ typedef struct kefir_codegen_amd64_function {
 
 kefir_result_t kefir_codegen_amd64_function_init(struct kefir_mem *, struct kefir_codegen_amd64_function *,
                                                  struct kefir_codegen_amd64_module *, const struct kefir_opt_module *,
-                                                 const struct kefir_opt_function *);
+                                                 struct kefir_opt_function *);
 kefir_result_t kefir_codegen_amd64_function_free(struct kefir_mem *, struct kefir_codegen_amd64_function *);
 kefir_result_t kefir_codegen_amd64_function_translate(struct kefir_mem *, struct kefir_codegen_amd64_function *);
 

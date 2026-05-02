@@ -554,6 +554,42 @@ kefir_result_t kefir_opt_code_container_free(struct kefir_mem *mem, struct kefir
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_opt_code_container_clear(struct kefir_mem *mem, struct kefir_opt_code_container *code) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code container"));
+
+    for (kefir_size_t i = 0; i < code->phi_nodes_length; i++) {
+        REQUIRE_OK(kefir_hashtree_free(mem, &code->phi_nodes[i].links));
+    }
+    for (kefir_size_t i = 0; i < code->length; i++) {
+        REQUIRE_OK(kefir_hashtreeset_free(mem, &code->code[i].uses.instruction));
+    }
+    for (kefir_size_t i = 0; i < code->blocks_length; i++) {
+        REQUIRE_OK(kefir_hashtreeset_free(mem, &code->blocks[i].public_labels));
+    }
+    KEFIR_FREE(mem, code->blocks);
+    REQUIRE_OK(kefir_hashtree_clean(mem, &code->call_nodes));
+    REQUIRE_OK(kefir_hashtree_clean(mem, &code->inline_assembly));
+    KEFIR_FREE(mem, code->phi_nodes);
+    KEFIR_FREE(mem, code->code);
+
+    code->code = NULL;
+    code->capacity = 0;
+    code->length = 0;
+    code->recycle_instr_idx = KEFIR_ID_NONE;
+    code->blocks = NULL;
+    code->blocks_length = 0;
+    code->blocks_capacity = 0;
+    code->phi_nodes = NULL;
+    code->phi_nodes_length = 0;
+    code->phi_nodes_capacity = 0;
+    code->next_call_node_id = 0;
+    code->next_inline_assembly_id = 0;
+    code->entry_point = KEFIR_ID_NONE;
+    code->gate_block = KEFIR_ID_NONE;
+    return KEFIR_OK;
+}
+
 kefir_bool_t kefir_opt_code_container_is_empty(const struct kefir_opt_code_container *code) {
     REQUIRE(code != NULL, true);
     return code->blocks_length == 0 && code->length == 0 && code->entry_point == KEFIR_ID_NONE;

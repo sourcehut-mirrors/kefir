@@ -1417,6 +1417,9 @@ static kefir_result_t kefir_codegen_amd64_function_translate_impl(struct kefir_m
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(&func->codegen->xasmgen, KEFIR_AMD64_FUNCTION_END, codegen->symbol_prefix,
                                          ir_identifier->symbol));
     REQUIRE_OK(generate_constants(mem, func));
+    if (codegen->config->consume_optimizer_code) {
+        REQUIRE_OK(kefir_opt_code_container_clear(mem, &func->function->code));
+    }
 
     REQUIRE_OK(kefir_asmcmp_context_instr_drop_code(mem, &func->code.context));
     REQUIRE_OK(kefir_opt_code_schedule_clear(mem, &func->schedule));
@@ -1446,7 +1449,7 @@ static kefir_result_t free_type_layout(struct kefir_mem *mem, struct kefir_hasht
 kefir_result_t kefir_codegen_amd64_function_init(struct kefir_mem *mem, struct kefir_codegen_amd64_function *func,
                                                  struct kefir_codegen_amd64_module *codegen_module,
                                                  const struct kefir_opt_module *module,
-                                                 const struct kefir_opt_function *function) {
+                                                 struct kefir_opt_function *function) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(func != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to AMD64 codegen function"));
     REQUIRE(codegen_module != NULL,

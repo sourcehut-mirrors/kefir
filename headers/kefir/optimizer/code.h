@@ -435,6 +435,7 @@ typedef struct kefir_opt_code_block_public_label_iterator {
 
 kefir_result_t kefir_opt_code_container_init(struct kefir_opt_code_container *);
 kefir_result_t kefir_opt_code_container_free(struct kefir_mem *, struct kefir_opt_code_container *);
+kefir_result_t kefir_opt_code_container_clear(struct kefir_mem *, struct kefir_opt_code_container *);
 
 kefir_bool_t kefir_opt_code_container_is_empty(const struct kefir_opt_code_container *);
 kefir_size_t kefir_opt_code_container_length(const struct kefir_opt_code_container *);
