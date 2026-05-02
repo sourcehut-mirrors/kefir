@@ -911,7 +911,7 @@ static kefir_result_t kefir_opt_code_container_drop_inline_asm(struct kefir_mem 
                                                                const struct kefir_opt_code_container *,
                                                                kefir_opt_inline_assembly_id_t);
 
-kefir_result_t drop_instr_impl(struct kefir_mem *mem, const struct kefir_opt_code_container *code,
+kefir_result_t drop_instr_impl(struct kefir_mem *mem, struct kefir_opt_code_container *code,
                                kefir_opt_instruction_ref_t instr_id, kefir_bool_t verify_uses) {
     struct kefir_opt_instruction *instr = NULL;
     REQUIRE_OK(code_container_instr_mutable(code, instr_id, &instr));
@@ -972,13 +972,13 @@ kefir_result_t drop_instr_impl(struct kefir_mem *mem, const struct kefir_opt_cod
 
     if (instr->generation < MAX_GENERATION) {
         instr->siblings.next = code->recycle_instr_idx;
-        *((kefir_size_t *) &code->recycle_instr_idx) = INDEX_OF(instr_id);
+        code->recycle_instr_idx = INDEX_OF(instr_id);
     }
 
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_opt_code_container_drop_instr(struct kefir_mem *mem, const struct kefir_opt_code_container *code,
+kefir_result_t kefir_opt_code_container_drop_instr(struct kefir_mem *mem, struct kefir_opt_code_container *code,
                                                    kefir_opt_instruction_ref_t instr_id) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code container"));
