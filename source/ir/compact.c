@@ -182,18 +182,16 @@ static kefir_result_t compact_function(struct kefir_mem *mem, struct kefir_ir_mo
             case KEFIR_IR_OPCODE_SUB_OVERFLOW:
             case KEFIR_IR_OPCODE_MUL_OVERFLOW: {
                 kefir_id_t type_id = (kefir_id_t) instr->arg.u32[0];
-                struct kefir_hashtree_node *node = NULL;
-                REQUIRE_OK(kefir_hashtree_at(&module->named_types, type_id, &node));
-                ASSIGN_DECL_CAST(struct kefir_ir_type *, type, node->value);
+                struct kefir_ir_type *type = kefir_ir_module_get_named_type(module, type_id);
+                REQUIRE(type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to retrieve named IR type"));
                 REQUIRE_OK(compact_type(mem, params, (const struct kefir_ir_type **) &type, &type_id));
                 instr->arg.u32[0] = (kefir_uint32_t) type_id;
             } break;
 
             case KEFIR_IR_OPCODE_GET_LOCAL: {
                 kefir_id_t type_id = (kefir_id_t) instr->arg.u32[2];
-                struct kefir_hashtree_node *node = NULL;
-                REQUIRE_OK(kefir_hashtree_at(&module->named_types, type_id, &node));
-                ASSIGN_DECL_CAST(struct kefir_ir_type *, type, node->value);
+                struct kefir_ir_type *type = kefir_ir_module_get_named_type(module, type_id);
+                REQUIRE(type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to retrieve named IR type"));
                 REQUIRE_OK(compact_type(mem, params, (const struct kefir_ir_type **) &type, &type_id));
                 instr->arg.u32[2] = (kefir_uint32_t) type_id;
             } break;
@@ -202,9 +200,8 @@ static kefir_result_t compact_function(struct kefir_mem *mem, struct kefir_ir_mo
             case KEFIR_IR_OPCODE_ATOMIC_COPY_MEMORY_TO:
             case KEFIR_IR_OPCODE_ATOMIC_CMPXCHG_MEMORY: {
                 kefir_id_t type_id = (kefir_id_t) instr->arg.u32[1];
-                struct kefir_hashtree_node *node = NULL;
-                REQUIRE_OK(kefir_hashtree_at(&module->named_types, type_id, &node));
-                ASSIGN_DECL_CAST(struct kefir_ir_type *, type, node->value);
+                struct kefir_ir_type *type = kefir_ir_module_get_named_type(module, type_id);
+                REQUIRE(type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to retrieve named IR type"));
                 REQUIRE_OK(compact_type(mem, params, (const struct kefir_ir_type **) &type, &type_id));
                 instr->arg.u32[1] = (kefir_uint32_t) type_id;
             } break;
@@ -212,9 +209,8 @@ static kefir_result_t compact_function(struct kefir_mem *mem, struct kefir_ir_mo
             case KEFIR_IR_OPCODE_INVOKE:
             case KEFIR_IR_OPCODE_INVOKE_VIRTUAL: {
                 kefir_id_t id = (kefir_id_t) instr->arg.u64;
-                struct kefir_hashtree_node *node = NULL;
-                REQUIRE_OK(kefir_hashtree_at(&module->function_declarations, id, &node));
-                ASSIGN_DECL_CAST(struct kefir_ir_function_decl *, decl, node->value);
+                struct kefir_ir_function_decl *decl = kefir_ir_module_get_declaration(module, id);
+                REQUIRE(decl != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to find IR function declaration"));
                 REQUIRE_OK(compact_function_decl(mem, params, decl));
                 if (decl->name != NULL) {
                     REQUIRE_OK(kefir_queue_push(mem, &params->symbol_scan_queue, (kefir_queue_entry_t) decl->name));
@@ -230,9 +226,10 @@ static kefir_result_t compact_function(struct kefir_mem *mem, struct kefir_ir_mo
 
             case KEFIR_IR_OPCODE_INLINE_ASSEMBLY: {
                 kefir_id_t id = (kefir_id_t) instr->arg.u64;
-                struct kefir_hashtree_node *node = NULL;
-                REQUIRE_OK(kefir_hashtree_at(&module->inline_assembly, (kefir_hashtree_key_t) id, &node));
-                REQUIRE_OK(compact_inline_asm(mem, params, (struct kefir_ir_inline_assembly *) node->value));
+                struct kefir_ir_inline_assembly *inline_asm = kefir_ir_module_get_inline_assembly(module, id);
+                REQUIRE(inline_asm != NULL,
+                        KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to retrieve IR inline assembly"));
+                REQUIRE_OK(compact_inline_asm(mem, params, inline_asm));
             } break;
 
             default:
@@ -282,49 +279,50 @@ static kefir_result_t compact_data(struct kefir_mem *mem, struct kefir_ir_data *
     return KEFIR_OK;
 }
 
+static kefir_result_t is_named_type_garbage(kefir_id_t type_id, const struct kefir_ir_type *type,
+                                            kefir_bool_t *is_garbage, void *payload) {
+    REQUIRE(type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR type"));
+    REQUIRE(is_garbage != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to boolean flag"));
+    ASSIGN_DECL_CAST(struct compact_params *, params, payload);
+    REQUIRE(params != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR compation parameters"));
+
+    struct kefir_hashtree_node *index_node = NULL;
+    kefir_result_t res = kefir_hashtree_at(&params->type_index, (kefir_hashtree_key_t) type, &index_node);
+    if (res == KEFIR_NOT_FOUND || type_id != index_node->value) {
+        REQUIRE(res == KEFIR_NOT_FOUND || res == KEFIR_OK, res);
+        *is_garbage = true;
+    } else {
+        REQUIRE_OK(res);
+        *is_garbage = false;
+    }
+    return KEFIR_OK;
+}
+
 static kefir_result_t drop_unused_named_types(struct kefir_mem *mem, struct kefir_ir_module *module,
                                               struct compact_params *params) {
-    struct kefir_hashtree_node_iterator iter;
-    for (const struct kefir_hashtree_node *node = kefir_hashtree_iter(&module->named_types, &iter); node != NULL;) {
-
-        ASSIGN_DECL_CAST(struct kefir_ir_type *, type, node->value);
-
-        struct kefir_hashtree_node *index_node = NULL;
-        kefir_result_t res = kefir_hashtree_at(&params->type_index, (kefir_hashtree_key_t) type, &index_node);
-        if (res == KEFIR_NOT_FOUND || node->key != index_node->value) {
-            REQUIRE(res == KEFIR_NOT_FOUND || res == KEFIR_OK, res);
-            const struct kefir_hashtree_node *next_node = kefir_hashtree_next(&iter);
-            REQUIRE_OK(kefir_hashtree_delete(mem, &module->named_types, node->key));
-            node = next_node;
-        } else {
-            REQUIRE_OK(res);
-            node = kefir_hashtree_next(&iter);
-        }
-    }
+    REQUIRE_OK(kefir_ir_module_drop_named_types(mem, module, is_named_type_garbage, params));
     return KEFIR_OK;
 }
 
 static kefir_result_t compact_impl(struct kefir_mem *mem, struct kefir_ir_module *module,
                                    struct compact_params *params) {
-    struct kefir_hashtree_node_iterator iter;
-    for (const struct kefir_hashtree_node *node = kefir_hashtree_iter(&module->identifiers, &iter); node != NULL;
-         node = kefir_hashtree_next(&iter)) {
-
-        ASSIGN_DECL_CAST(const char *, symbol, node->key);
+    struct kefir_ir_module_identifier_iterator identifier_iter;
+    for (const char *symbol = kefir_ir_module_identifiers_iter(module, &identifier_iter, NULL); symbol != NULL;
+         symbol = kefir_ir_module_identifiers_next(&identifier_iter, NULL)) {
         REQUIRE_OK(kefir_queue_push(mem, &params->symbol_scan_queue, (kefir_queue_entry_t) symbol));
     }
 
-    for (const struct kefir_hashtree_node *node = kefir_hashtree_iter(&module->functions, &iter); node != NULL;
-         node = kefir_hashtree_next(&iter)) {
-
-        ASSIGN_DECL_CAST(const char *, symbol, node->key);
+    struct kefir_ir_module_function_iterator function_iter;
+    const char *symbol;
+    for (const struct kefir_ir_function *func = kefir_ir_module_function_iter(module, &function_iter, &symbol);
+         func != NULL; func = kefir_ir_module_function_next(&function_iter, &symbol)) {
         REQUIRE_OK(kefir_queue_push(mem, &params->symbol_scan_queue, (kefir_queue_entry_t) symbol));
     }
 
-    for (const struct kefir_hashtree_node *node = kefir_hashtree_iter(&module->global_inline_asm, &iter); node != NULL;
-         node = kefir_hashtree_next(&iter)) {
-
-        ASSIGN_DECL_CAST(struct kefir_ir_inline_assembly *, inline_asm, node->value);
+    struct kefir_ir_module_inline_assembly_iterator inline_asm_iter;
+    for (struct kefir_ir_inline_assembly *inline_asm =
+             kefir_ir_module_global_inline_assembly_iter(module, &inline_asm_iter, NULL);
+         inline_asm != NULL; inline_asm = kefir_ir_module_global_inline_assembly_next(&inline_asm_iter, NULL)) {
         REQUIRE_OK(compact_inline_asm(mem, params, inline_asm));
     }
 
@@ -339,28 +337,27 @@ static kefir_result_t compact_impl(struct kefir_mem *mem, struct kefir_ir_module
         REQUIRE_OK(kefir_hashtree_insert(mem, &params->symbol_index, (kefir_hashtree_key_t) symbol,
                                          (kefir_hashtree_value_t) 0));
 
-        struct kefir_hashtree_node *node = NULL;
-        kefir_result_t res = kefir_hashtree_at(&module->functions, (kefir_hashtree_key_t) symbol, &node);
-        if (res != KEFIR_NOT_FOUND) {
-            REQUIRE_OK(res);
-            ASSIGN_DECL_CAST(struct kefir_ir_function *, func, node->value);
-            REQUIRE_OK(compact_function(mem, module, params, func));
+        if (symbol != NULL) {
+            struct kefir_ir_function *func = kefir_ir_module_get_function(module, symbol);
+            if (func != NULL) {
+                REQUIRE_OK(compact_function(mem, module, params, func));
+            }
         }
 
-        res = kefir_hashtree_at(&module->named_data, (kefir_hashtree_key_t) symbol, &node);
-        if (res != KEFIR_NOT_FOUND) {
-            REQUIRE_OK(res);
-            ASSIGN_DECL_CAST(struct kefir_ir_data *, data, node->value);
+        struct kefir_ir_data *data = kefir_ir_module_get_named_data(module, symbol);
+        if (data != NULL) {
             REQUIRE_OK(compact_data(mem, data, params));
         }
 
-        res = kefir_hashtree_at(&module->identifiers, (kefir_hashtree_key_t) symbol, &node);
-        if (res != KEFIR_NOT_FOUND) {
-            REQUIRE_OK(res);
-            ASSIGN_DECL_CAST(struct kefir_ir_identifier *, ir_identifier, node->value);
-            if (ir_identifier->alias != NULL) {
-                REQUIRE_OK(
-                    kefir_queue_push(mem, &params->symbol_scan_queue, (kefir_queue_entry_t) ir_identifier->alias));
+        if (symbol != NULL) {
+            const struct kefir_ir_identifier *ir_identifier;
+            kefir_result_t res = kefir_ir_module_get_identifier(module, symbol, &ir_identifier);
+            if (res != KEFIR_NOT_FOUND) {
+                REQUIRE_OK(res);
+                if (ir_identifier->alias != NULL) {
+                    REQUIRE_OK(
+                        kefir_queue_push(mem, &params->symbol_scan_queue, (kefir_queue_entry_t) ir_identifier->alias));
+                }
             }
         }
     }

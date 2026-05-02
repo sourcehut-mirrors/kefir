@@ -903,7 +903,7 @@ kefir_result_t kefir_ir_format_type(FILE *fp, const struct kefir_ir_type *type) 
 }
 
 static kefir_result_t kefir_ir_format_function_declaration(struct kefir_json_output *json,
-                                                           struct kefir_ir_function_decl *decl,
+                                                           const struct kefir_ir_function_decl *decl,
                                                            const struct kefir_ir_format_callbacks *callback) {
     kefir_bool_t skip;
     REQUIRE_OK(callback->skip_symbol(decl->name, callback->payload, &skip));
@@ -1073,7 +1073,7 @@ static kefir_result_t kefir_ir_format_function(struct kefir_json_output *json, c
 static kefir_result_t format_identifiers(struct kefir_json_output *json, const struct kefir_ir_module *module,
                                          kefir_bool_t debug_info, const struct kefir_ir_format_callbacks *callback) {
     REQUIRE_OK(kefir_json_output_array_begin(json));
-    struct kefir_hashtree_node_iterator iter;
+    struct kefir_ir_module_identifier_iterator iter;
     const struct kefir_ir_identifier *identifier;
     for (const char *symbol = kefir_ir_module_identifiers_iter(module, &iter, &identifier); symbol != NULL;
          symbol = kefir_ir_module_identifiers_next(&iter, &identifier)) {
@@ -1179,13 +1179,13 @@ static kefir_result_t format_identifiers(struct kefir_json_output *json, const s
 
 static kefir_result_t format_types(struct kefir_json_output *json, const struct kefir_ir_module *module) {
     REQUIRE_OK(kefir_json_output_array_begin(json));
-    struct kefir_hashtree_node_iterator iter;
-    for (const struct kefir_hashtree_node *node = kefir_hashtree_iter(&module->named_types, &iter); node != NULL;
-         node = kefir_hashtree_next(&iter)) {
-        ASSIGN_DECL_CAST(struct kefir_ir_type *, type, node->value);
+    struct kefir_ir_module_named_type_iterator iter;
+    kefir_id_t type_id;
+    for (const struct kefir_ir_type *type = kefir_ir_module_named_type_iter(module, &iter, &type_id); type != NULL;
+         type = kefir_ir_module_named_type_next(&iter, &type_id)) {
         REQUIRE_OK(kefir_json_output_object_begin(json));
         REQUIRE_OK(kefir_json_output_object_key(json, "identifier"));
-        REQUIRE_OK(kefir_json_output_uinteger(json, node->key));
+        REQUIRE_OK(kefir_json_output_uinteger(json, type_id));
         REQUIRE_OK(kefir_json_output_object_key(json, "type"));
         REQUIRE_OK(kefir_ir_format_type_json(json, type));
         REQUIRE_OK(kefir_json_output_object_end(json));
@@ -1365,7 +1365,7 @@ static kefir_result_t format_datum(struct kefir_json_output *json, const struct 
 
 static kefir_result_t format_data(struct kefir_json_output *json, const struct kefir_ir_module *module) {
     REQUIRE_OK(kefir_json_output_array_begin(json));
-    struct kefir_hashtree_node_iterator iter;
+    struct kefir_ir_module_named_data_iterator iter;
     const char *identifier;
     for (const struct kefir_ir_data *data = kefir_ir_module_named_data_iter(module, &iter, &identifier); data != NULL;
          data = kefir_ir_module_named_data_next(&iter, &identifier)) {
@@ -1399,7 +1399,7 @@ static kefir_result_t format_data(struct kefir_json_output *json, const struct k
 
 static kefir_result_t format_string_literal(struct kefir_json_output *json, const struct kefir_ir_module *module) {
     REQUIRE_OK(kefir_json_output_array_begin(json));
-    struct kefir_hashtree_node_iterator iter;
+    struct kefir_ir_module_string_literal_iterator iter;
     kefir_id_t id;
     kefir_ir_string_literal_type_t literal_type;
     kefir_bool_t public;
@@ -1456,10 +1456,10 @@ static kefir_result_t format_string_literal(struct kefir_json_output *json, cons
 static kefir_result_t format_function_declarations(struct kefir_json_output *json, const struct kefir_ir_module *module,
                                                    const struct kefir_ir_format_callbacks *callback) {
     REQUIRE_OK(kefir_json_output_array_begin(json));
-    struct kefir_hashtree_node_iterator iter;
-    for (const struct kefir_hashtree_node *node = kefir_hashtree_iter(&module->function_declarations, &iter);
-         node != NULL; node = kefir_hashtree_next(&iter)) {
-        REQUIRE_OK(kefir_ir_format_function_declaration(json, (struct kefir_ir_function_decl *) node->value, callback));
+    struct kefir_ir_module_function_declaration_iterator iter;
+    for (const struct kefir_ir_function_decl *decl = kefir_ir_module_function_declaration_iter(module, &iter);
+         decl != NULL; decl = kefir_ir_module_function_declaration_next(&iter)) {
+        REQUIRE_OK(kefir_ir_format_function_declaration(json, decl, callback));
     }
     REQUIRE_OK(kefir_json_output_array_end(json));
     return KEFIR_OK;
@@ -1468,9 +1468,9 @@ static kefir_result_t format_function_declarations(struct kefir_json_output *jso
 static kefir_result_t format_functions(struct kefir_json_output *json, const struct kefir_ir_module *module,
                                        kefir_bool_t debug_info, const struct kefir_ir_format_callbacks *callback) {
     REQUIRE_OK(kefir_json_output_array_begin(json));
-    struct kefir_hashtree_node_iterator iter;
-    for (const struct kefir_ir_function *func = kefir_ir_module_function_iter(module, &iter); func != NULL;
-         func = kefir_ir_module_function_next(&iter)) {
+    struct kefir_ir_module_function_iterator iter;
+    for (const struct kefir_ir_function *func = kefir_ir_module_function_iter(module, &iter, NULL); func != NULL;
+         func = kefir_ir_module_function_next(&iter, NULL)) {
         REQUIRE_OK(kefir_ir_format_function(json, func, debug_info, callback));
     }
     REQUIRE_OK(kefir_json_output_array_end(json));
@@ -1484,8 +1484,7 @@ static kefir_result_t format_inline_assembly_fragment(struct kefir_json_output *
     REQUIRE_OK(kefir_json_output_object_key(json, "identifier"));
     REQUIRE_OK(kefir_json_output_uinteger(json, inline_asm->id));
     REQUIRE_OK(kefir_json_output_object_key(json, "global"));
-    REQUIRE_OK(kefir_json_output_boolean(
-        json, kefir_hashtree_has(&module->global_inline_asm, (kefir_hashtree_key_t) inline_asm->id)));
+    REQUIRE_OK(kefir_json_output_boolean(json, kefir_ir_module_inline_assembly_has_global(module, inline_asm->id)));
     REQUIRE_OK(kefir_json_output_object_key(json, "template"));
     REQUIRE_OK(kefir_json_output_string(json, inline_asm->template));
     REQUIRE_OK(kefir_json_output_object_key(json, "parameters"));
@@ -1644,7 +1643,7 @@ static kefir_result_t format_inline_assembly_fragment(struct kefir_json_output *
 static kefir_result_t format_inline_assembly(struct kefir_json_output *json, const struct kefir_ir_module *module) {
     REQUIRE_OK(kefir_json_output_array_begin(json));
     kefir_id_t id;
-    struct kefir_hashtree_node_iterator iter;
+    struct kefir_ir_module_inline_assembly_iterator iter;
     for (const struct kefir_ir_inline_assembly *inline_asm = kefir_ir_module_inline_assembly_iter(module, &iter, &id);
          inline_asm != NULL; inline_asm = kefir_ir_module_inline_assembly_next(&iter, &id)) {
         REQUIRE_OK(format_inline_assembly_fragment(json, module, inline_asm));

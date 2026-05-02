@@ -195,32 +195,31 @@ static kefir_result_t trace_data(struct kefir_mem *mem, struct kefir_opt_module_
 
 static kefir_result_t initialize_symbol_queue(struct kefir_mem *mem, struct kefir_opt_module_liveness *liveness,
                                               const struct kefir_opt_module *module, struct kefir_queue *symbol_queue) {
-    struct kefir_hashtree_node_iterator iter;
-    for (const struct kefir_hashtree_node *node = kefir_hashtree_iter(&module->ir_module->identifiers, &iter);
-         node != NULL; node = kefir_hashtree_next(&iter)) {
+    struct kefir_ir_module_identifier_iterator iter;
+    const struct kefir_ir_identifier *ir_identifier;
+    for (const char *symbol = kefir_ir_module_identifiers_iter(module->ir_module, &iter, &ir_identifier);
+         symbol != NULL; symbol = kefir_ir_module_identifiers_next(&iter, &ir_identifier)) {
 
-        ASSIGN_DECL_CAST(const char *, symbol, node->key);
-        ASSIGN_DECL_CAST(const struct kefir_ir_identifier *, ir_identifier, node->value);
         if (ir_identifier->scope == KEFIR_IR_IDENTIFIER_SCOPE_EXPORT ||
             ir_identifier->scope == KEFIR_IR_IDENTIFIER_SCOPE_EXPORT_WEAK) {
             REQUIRE_OK(kefir_queue_push(mem, symbol_queue, (kefir_queue_entry_t) symbol));
         }
     }
 
-    for (const struct kefir_hashtree_node *node = kefir_hashtree_iter(&module->ir_module->functions, &iter);
-         node != NULL; node = kefir_hashtree_next(&iter)) {
-
-        ASSIGN_DECL_CAST(const char *, symbol, node->key);
-        ASSIGN_DECL_CAST(const struct kefir_ir_function *, function, node->value);
+    struct kefir_ir_module_function_iterator func_iter;
+    const char *symbol;
+    for (const struct kefir_ir_function *function =
+             kefir_ir_module_function_iter(module->ir_module, &func_iter, &symbol);
+         function != NULL; function = kefir_ir_module_function_next(&func_iter, &symbol)) {
         if (function->flags.constructor || function->flags.destructor || function->flags.used) {
             REQUIRE_OK(kefir_queue_push(mem, symbol_queue, (kefir_queue_entry_t) symbol));
         }
     }
 
-    for (const struct kefir_hashtree_node *node = kefir_hashtree_iter(&module->ir_module->global_inline_asm, &iter);
-         node != NULL; node = kefir_hashtree_next(&iter)) {
-
-        ASSIGN_DECL_CAST(struct kefir_ir_inline_assembly *, inline_asm, node->value);
+    struct kefir_ir_module_inline_assembly_iterator inline_asm_iter;
+    for (const struct kefir_ir_inline_assembly *inline_asm =
+             kefir_ir_module_global_inline_assembly_iter(module->ir_module, &inline_asm_iter, NULL);
+         inline_asm != NULL; inline_asm = kefir_ir_module_global_inline_assembly_next(&inline_asm_iter, NULL)) {
         REQUIRE_OK(trace_inline_asm(mem, liveness, symbol_queue, inline_asm));
     }
 
@@ -239,32 +238,29 @@ static kefir_result_t liveness_trace(struct kefir_mem *mem, struct kefir_opt_mod
             continue;
         }
 
-        struct kefir_hashtree_node *node = NULL;
-        kefir_result_t res = kefir_hashtree_at(&module->ir_module->functions, (kefir_hashtree_key_t) symbol, &node);
-        if (res != KEFIR_NOT_FOUND) {
-            REQUIRE_OK(res);
-            ASSIGN_DECL_CAST(const struct kefir_ir_function *, func, node->value);
+        const struct kefir_ir_function *func = kefir_ir_module_get_function(module->ir_module, symbol);
+        if (func != NULL) {
             struct kefir_opt_function *opt_func;
             REQUIRE_OK(kefir_opt_module_get_function(module, func->declaration->id, &opt_func));
             REQUIRE_OK(kefir_hashtreeset_add(mem, &liveness->symbols, (kefir_hashtreeset_entry_t) symbol));
             REQUIRE_OK(trace_function(mem, liveness, module, opt_func, symbol_queue));
         }
 
-        res = kefir_hashtree_at(&module->ir_module->named_data, (kefir_hashtree_key_t) symbol, &node);
-        if (res != KEFIR_NOT_FOUND) {
-            REQUIRE_OK(res);
-            ASSIGN_DECL_CAST(struct kefir_ir_data *, data, node->value);
+        const struct kefir_ir_data *data = kefir_ir_module_get_named_data(module->ir_module, symbol);
+        if (data != NULL) {
             REQUIRE_OK(kefir_hashtreeset_add(mem, &liveness->symbols, (kefir_hashtreeset_entry_t) symbol));
             REQUIRE_OK(trace_data(mem, liveness, data, symbol_queue));
         }
 
-        res = kefir_hashtree_at(&module->ir_module->identifiers, (kefir_hashtree_key_t) symbol, &node);
-        if (res != KEFIR_NOT_FOUND) {
-            REQUIRE_OK(res);
-            ASSIGN_DECL_CAST(struct kefir_ir_identifier *, ir_identifier, node->value);
-            REQUIRE_OK(kefir_hashtreeset_add(mem, &liveness->symbols, (kefir_hashtreeset_entry_t) symbol));
-            if (ir_identifier->alias != NULL) {
-                REQUIRE_OK(kefir_queue_push(mem, symbol_queue, (kefir_queue_entry_t) ir_identifier->alias));
+        if (symbol != NULL) {
+            const struct kefir_ir_identifier *ir_identifier;
+            kefir_result_t res = kefir_ir_module_get_identifier(module->ir_module, symbol, &ir_identifier);
+            if (res != KEFIR_NOT_FOUND) {
+                REQUIRE_OK(res);
+                REQUIRE_OK(kefir_hashtreeset_add(mem, &liveness->symbols, (kefir_hashtreeset_entry_t) symbol));
+                if (ir_identifier->alias != NULL) {
+                    REQUIRE_OK(kefir_queue_push(mem, symbol_queue, (kefir_queue_entry_t) ir_identifier->alias));
+                }
             }
         }
     }

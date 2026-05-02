@@ -208,12 +208,13 @@ kefir_result_t kefir_codegen_amd64_dwarf_generate_functions(struct kefir_mem *me
     REQUIRE(codegen_module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 codegen module"));
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 codegen DWARF context"));
 
-    struct kefir_hashtree_node_iterator iter;
+    const char *key;
+    struct kefir_ir_module_function_iterator iter;
     for (const struct kefir_ir_function *function =
-             kefir_ir_module_function_iter(codegen_module->module->ir_module, &iter);
-         function != NULL; function = kefir_ir_module_function_next(&iter)) {
+             kefir_ir_module_function_iter(codegen_module->module->ir_module, &iter, &key);
+         function != NULL; function = kefir_ir_module_function_next(&iter, &key)) {
 
-        if (!kefir_opt_module_is_symbol_alive(codegen_module->liveness, (const char *) iter.node->key)) {
+        if (!kefir_opt_module_is_symbol_alive(codegen_module->liveness, key)) {
             continue;
         }
 

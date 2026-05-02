@@ -35,7 +35,7 @@
 static kefir_result_t translate_module_identifiers(const struct kefir_ir_module *module,
                                                    struct kefir_codegen_amd64 *codegen,
                                                    struct kefir_opt_module_liveness *liveness) {
-    struct kefir_hashtree_node_iterator identifiers_iter;
+    struct kefir_ir_module_identifier_iterator identifiers_iter;
     const struct kefir_ir_identifier *identifier;
     static const char BUILTIN_PREFIX[] = "__kefir_builtin";
     for (const char *symbol = kefir_ir_module_identifiers_iter(module, &identifiers_iter, &identifier); symbol != NULL;
@@ -135,7 +135,7 @@ static kefir_result_t translate_data_storage(struct kefir_mem *mem, struct kefir
                                              kefir_ir_data_storage_t storage, kefir_bool_t defined, const char *section,
                                              kefir_uint64_t section_attr) {
     bool first = true;
-    struct kefir_hashtree_node_iterator iter;
+    struct kefir_ir_module_named_data_iterator iter;
     const char *identifier = NULL;
     for (const struct kefir_ir_data *data = kefir_ir_module_named_data_iter(module->ir_module, &iter, &identifier);
          data != NULL; data = kefir_ir_module_named_data_next(&iter, &identifier)) {
@@ -170,7 +170,7 @@ static kefir_result_t translate_data_storage(struct kefir_mem *mem, struct kefir
 static kefir_result_t translate_emulated_tls(struct kefir_mem *mem, struct kefir_codegen_amd64 *codegen,
                                              struct kefir_opt_module *module) {
     bool first = true;
-    struct kefir_hashtree_node_iterator iter;
+    struct kefir_ir_module_named_data_iterator iter;
     const char *identifier = NULL;
     char emutls_identifier[1024] = {0};
     for (const struct kefir_ir_data *data = kefir_ir_module_named_data_iter(module->ir_module, &iter, &identifier);
@@ -243,7 +243,7 @@ static kefir_result_t translate_emulated_tls(struct kefir_mem *mem, struct kefir
 
 static kefir_result_t translate_strings(struct kefir_codegen_amd64 *codegen, struct kefir_opt_module *module,
                                         struct kefir_opt_module_liveness *liveness, kefir_bool_t *has_rodata) {
-    struct kefir_hashtree_node_iterator iter;
+    struct kefir_ir_module_string_literal_iterator iter;
     kefir_id_t id;
     kefir_ir_string_literal_type_t literal_type;
     kefir_bool_t public;
@@ -682,11 +682,10 @@ static kefir_result_t translate_data(struct kefir_mem *mem, struct kefir_codegen
 
 static kefir_result_t translate_global_inline_assembly(struct kefir_codegen_amd64 *codegen,
                                                        struct kefir_opt_module *module) {
-    struct kefir_hashtree_node_iterator iter;
-    for (const struct kefir_hashtree_node *node = kefir_hashtree_iter(&module->ir_module->global_inline_asm, &iter);
-         node != NULL; node = kefir_hashtree_next(&iter)) {
-
-        ASSIGN_DECL_CAST(const struct kefir_ir_inline_assembly *, inline_asm, node->value);
+    struct kefir_ir_module_inline_assembly_iterator iter;
+    for (const struct kefir_ir_inline_assembly *inline_asm =
+             kefir_ir_module_global_inline_assembly_iter(module->ir_module, &iter, NULL);
+         inline_asm != NULL; inline_asm = kefir_ir_module_global_inline_assembly_next(&iter, NULL)) {
         REQUIRE(kefir_hashtree_empty(&inline_asm->parameters),
                 KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Global IR inline assembly cannot have any parameters"));
         REQUIRE(kefir_hashtree_empty(&inline_asm->clobbers),
@@ -704,10 +703,10 @@ static kefir_result_t generate_init_array(struct kefir_codegen_amd64_module *cod
                                            KEFIR_AMD64_XASMGEN_SECTION_NOATTR));
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_ALIGN(&codegen_module->codegen->xasmgen, 8));
 
-    struct kefir_hashtree_node_iterator iter;
+    struct kefir_ir_module_function_iterator iter;
     for (const struct kefir_ir_function *ir_func =
-             kefir_ir_module_function_iter(codegen_module->module->ir_module, &iter);
-         ir_func != NULL; ir_func = kefir_ir_module_function_next(&iter)) {
+             kefir_ir_module_function_iter(codegen_module->module->ir_module, &iter, NULL);
+         ir_func != NULL; ir_func = kefir_ir_module_function_next(&iter, NULL)) {
         if (!ir_func->flags.constructor) {
             continue;
         }
@@ -728,10 +727,10 @@ static kefir_result_t generate_fini_array(struct kefir_codegen_amd64_module *cod
                                            KEFIR_AMD64_XASMGEN_SECTION_NOATTR));
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_ALIGN(&codegen_module->codegen->xasmgen, 8));
 
-    struct kefir_hashtree_node_iterator iter;
+    struct kefir_ir_module_function_iterator iter;
     for (const struct kefir_ir_function *ir_func =
-             kefir_ir_module_function_iter(codegen_module->module->ir_module, &iter);
-         ir_func != NULL; ir_func = kefir_ir_module_function_next(&iter)) {
+             kefir_ir_module_function_iter(codegen_module->module->ir_module, &iter, NULL);
+         ir_func != NULL; ir_func = kefir_ir_module_function_next(&iter, NULL)) {
         if (!ir_func->flags.destructor) {
             continue;
         }
@@ -763,11 +762,12 @@ static kefir_result_t translate_impl(struct kefir_mem *mem, struct kefir_codegen
 
     kefir_bool_t has_constructors = false;
     kefir_bool_t has_destructors = false;
-    struct kefir_hashtree_node_iterator iter;
+    const char *key;
+    struct kefir_ir_module_function_iterator iter;
     for (const struct kefir_ir_function *ir_func =
-             kefir_ir_module_function_iter(codegen_module->module->ir_module, &iter);
-         ir_func != NULL; ir_func = kefir_ir_module_function_next(&iter)) {
-        if (!kefir_opt_module_is_symbol_alive(codegen_module->liveness, (const char *) iter.node->key)) {
+             kefir_ir_module_function_iter(codegen_module->module->ir_module, &iter, &key);
+         ir_func != NULL; ir_func = kefir_ir_module_function_next(&iter, &key)) {
+        if (!kefir_opt_module_is_symbol_alive(codegen_module->liveness, key)) {
             continue;
         }
         struct kefir_opt_function *func = NULL;

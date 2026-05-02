@@ -474,7 +474,7 @@ kefir_result_t kefir_codegen_amd64_dwarf_generate_global_identifiers(
     REQUIRE(liveness != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer module liveness"));
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 codegen DWARF context"));
 
-    struct kefir_hashtree_node_iterator iter;
+    struct kefir_ir_module_identifier_iterator iter;
     const struct kefir_ir_identifier *identifier;
     for (const char *identifier_name = kefir_ir_module_identifiers_iter(ir_module, &iter, &identifier);
          identifier_name != NULL; identifier_name = kefir_ir_module_identifiers_next(&iter, &identifier)) {

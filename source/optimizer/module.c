@@ -122,7 +122,7 @@ kefir_result_t kefir_opt_module_construct(struct kefir_mem *mem, const struct ke
     REQUIRE(target_platform != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR target platform"));
     REQUIRE(module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to optimizer module"));
 
-    struct kefir_hashtree_node_iterator iter;
+    struct kefir_ir_module_named_type_iterator iter;
 
     kefir_id_t ir_type_id;
     for (const struct kefir_ir_type *ir_type = kefir_ir_module_named_type_iter(module->ir_module, &iter, &ir_type_id);
@@ -131,8 +131,9 @@ kefir_result_t kefir_opt_module_construct(struct kefir_mem *mem, const struct ke
         REQUIRE_OK(add_type_descr(mem, module, target_platform, ir_type_id, ir_type));
     }
 
-    for (const struct kefir_ir_function *ir_func = kefir_ir_module_function_iter(module->ir_module, &iter);
-         ir_func != NULL; ir_func = kefir_ir_module_function_next(&iter)) {
+    struct kefir_ir_module_function_iterator iter2;
+    for (const struct kefir_ir_function *ir_func = kefir_ir_module_function_iter(module->ir_module, &iter2, NULL);
+         ir_func != NULL; ir_func = kefir_ir_module_function_next(&iter2, NULL)) {
 
         REQUIRE_OK(add_func(mem, module, ir_func));
     }

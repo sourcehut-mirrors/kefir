@@ -93,9 +93,9 @@ kefir_result_t kefir_optimizer_pipeline_apply(struct kefir_mem *mem, struct kefi
     REQUIRE(module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer module"));
     REQUIRE(config != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer configuration"));
 
-    struct kefir_hashtree_node_iterator iter;
-    for (const struct kefir_ir_function *ir_func = kefir_ir_module_function_iter(module->ir_module, &iter);
-         ir_func != NULL; ir_func = kefir_ir_module_function_next(&iter)) {
+    struct kefir_ir_module_function_iterator iter;
+    for (const struct kefir_ir_function *ir_func = kefir_ir_module_function_iter(module->ir_module, &iter, NULL);
+         ir_func != NULL; ir_func = kefir_ir_module_function_next(&iter, NULL)) {
 
         REQUIRE_OK(kefir_optimizer_pipeline_apply_function(mem, module, ir_func->declaration->id, config));
     }
