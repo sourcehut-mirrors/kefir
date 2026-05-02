@@ -10,16 +10,16 @@
     ],
     "types": [
         {
-            "identifier": 0,
-            "type": []
-        },
-        {
             "identifier": 1,
             "type": [
                 {
                     "type": "int32"
                 }
             ]
+        },
+        {
+            "identifier": 0,
+            "type": []
         }
     ],
     "data": [],

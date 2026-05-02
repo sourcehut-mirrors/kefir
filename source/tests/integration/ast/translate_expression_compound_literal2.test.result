@@ -2,16 +2,36 @@
     "identifiers": [],
     "types": [
         {
-            "identifier": 0,
+            "identifier": 3,
             "type": [
                 {
                     "type": "array",
-                    "length": 14,
+                    "length": 8,
                     "element_type": {
                         "type": "int8"
                     }
                 }
             ]
+        },
+        {
+            "identifier": 15,
+            "type": [
+                {
+                    "type": "array",
+                    "length": 8,
+                    "element_type": {
+                        "type": "int8"
+                    }
+                }
+            ]
+        },
+        {
+            "identifier": 10,
+            "type": []
+        },
+        {
+            "identifier": 5,
+            "type": []
         },
         {
             "identifier": 1,
@@ -26,36 +46,32 @@
             ]
         },
         {
-            "identifier": 2,
-            "type": [
-                {
-                    "type": "array",
-                    "length": 1,
-                    "element_type": {
-                        "type": "int8"
-                    }
-                }
-            ]
-        },
-        {
-            "identifier": 3,
-            "type": [
-                {
-                    "type": "array",
-                    "length": 8,
-                    "element_type": {
-                        "type": "int8"
-                    }
-                }
-            ]
+            "identifier": 8,
+            "type": []
         },
         {
             "identifier": 4,
             "type": []
         },
         {
-            "identifier": 5,
+            "identifier": 14,
             "type": []
+        },
+        {
+            "identifier": 13,
+            "type": []
+        },
+        {
+            "identifier": 0,
+            "type": [
+                {
+                    "type": "array",
+                    "length": 14,
+                    "element_type": {
+                        "type": "int8"
+                    }
+                }
+            ]
         },
         {
             "identifier": 6,
@@ -74,7 +90,19 @@
             "type": []
         },
         {
-            "identifier": 8,
+            "identifier": 2,
+            "type": [
+                {
+                    "type": "array",
+                    "length": 1,
+                    "element_type": {
+                        "type": "int8"
+                    }
+                }
+            ]
+        },
+        {
+            "identifier": 11,
             "type": []
         },
         {
@@ -90,39 +118,11 @@
             ]
         },
         {
-            "identifier": 10,
-            "type": []
-        },
-        {
-            "identifier": 11,
-            "type": []
-        },
-        {
             "identifier": 12,
             "type": [
                 {
                     "type": "array",
                     "length": 0,
-                    "element_type": {
-                        "type": "int8"
-                    }
-                }
-            ]
-        },
-        {
-            "identifier": 13,
-            "type": []
-        },
-        {
-            "identifier": 14,
-            "type": []
-        },
-        {
-            "identifier": 15,
-            "type": [
-                {
-                    "type": "array",
-                    "length": 8,
                     "element_type": {
                         "type": "int8"
                     }
@@ -158,6 +158,15 @@
             "no_return": false
         },
         {
+            "identifier": 3,
+            "name": "compound_literal4",
+            "parameters": 13,
+            "vararg": false,
+            "returns": 14,
+            "returns_twice": false,
+            "no_return": false
+        },
+        {
             "identifier": 1,
             "name": "compound_literal2",
             "parameters": 7,
@@ -172,15 +181,6 @@
             "parameters": 10,
             "vararg": false,
             "returns": 11,
-            "returns_twice": false,
-            "no_return": false
-        },
-        {
-            "identifier": 3,
-            "name": "compound_literal4",
-            "parameters": 13,
-            "vararg": false,
-            "returns": 14,
             "returns_twice": false,
             "no_return": false
         }

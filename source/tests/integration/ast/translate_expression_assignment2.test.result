@@ -17,79 +17,16 @@
     ],
     "types": [
         {
-            "identifier": 0,
-            "type": [
-                {
-                    "type": "union",
-                    "fields": [
-                        {
-                            "type": "int64"
-                        },
-                        {
-                            "type": "int8"
-                        },
-                        {
-                            "type": "array",
-                            "length": 4,
-                            "element_type": {
-                                "type": "int32"
-                            }
-                        }
-                    ]
-                }
-            ]
+            "identifier": 8,
+            "type": []
         },
         {
-            "identifier": 1,
-            "type": [
-                {
-                    "type": "struct",
-                    "fields": [
-                        {
-                            "type": "int8"
-                        },
-                        {
-                            "type": "double"
-                        },
-                        {
-                            "type": "array",
-                            "length": 5,
-                            "element_type": {
-                                "type": "int8"
-                            }
-                        },
-                        {
-                            "type": "int64"
-                        }
-                    ]
-                }
-            ]
+            "identifier": 4,
+            "type": []
         },
         {
-            "identifier": 2,
-            "type": [
-                {
-                    "type": "struct",
-                    "fields": [
-                        {
-                            "type": "int8"
-                        },
-                        {
-                            "type": "double"
-                        },
-                        {
-                            "type": "array",
-                            "length": 5,
-                            "element_type": {
-                                "type": "int8"
-                            }
-                        },
-                        {
-                            "type": "int64"
-                        }
-                    ]
-                }
-            ]
+            "identifier": 9,
+            "type": []
         },
         {
             "identifier": 3,
@@ -115,12 +52,31 @@
             ]
         },
         {
-            "identifier": 4,
+            "identifier": 5,
             "type": []
         },
         {
-            "identifier": 5,
-            "type": []
+            "identifier": 0,
+            "type": [
+                {
+                    "type": "union",
+                    "fields": [
+                        {
+                            "type": "int64"
+                        },
+                        {
+                            "type": "int8"
+                        },
+                        {
+                            "type": "array",
+                            "length": 4,
+                            "element_type": {
+                                "type": "int32"
+                            }
+                        }
+                    ]
+                }
+            ]
         },
         {
             "identifier": 6,
@@ -175,31 +131,26 @@
             ]
         },
         {
-            "identifier": 8,
-            "type": []
-        },
-        {
-            "identifier": 9,
-            "type": []
-        },
-        {
-            "identifier": 10,
+            "identifier": 1,
             "type": [
                 {
-                    "type": "union",
+                    "type": "struct",
                     "fields": [
-                        {
-                            "type": "int64"
-                        },
                         {
                             "type": "int8"
                         },
                         {
+                            "type": "double"
+                        },
+                        {
                             "type": "array",
-                            "length": 4,
+                            "length": 5,
                             "element_type": {
-                                "type": "int32"
+                                "type": "int8"
                             }
+                        },
+                        {
+                            "type": "int64"
                         }
                     ]
                 }
@@ -227,26 +178,75 @@
                     ]
                 }
             ]
+        },
+        {
+            "identifier": 2,
+            "type": [
+                {
+                    "type": "struct",
+                    "fields": [
+                        {
+                            "type": "int8"
+                        },
+                        {
+                            "type": "double"
+                        },
+                        {
+                            "type": "array",
+                            "length": 5,
+                            "element_type": {
+                                "type": "int8"
+                            }
+                        },
+                        {
+                            "type": "int64"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "identifier": 10,
+            "type": [
+                {
+                    "type": "union",
+                    "fields": [
+                        {
+                            "type": "int64"
+                        },
+                        {
+                            "type": "int8"
+                        },
+                        {
+                            "type": "array",
+                            "length": 4,
+                            "element_type": {
+                                "type": "int32"
+                            }
+                        }
+                    ]
+                }
+            ]
         }
     ],
     "data": [],
     "string_literals": [],
     "function_declarations": [
         {
-            "identifier": 0,
-            "name": "assign_struct",
-            "parameters": 4,
-            "vararg": false,
-            "returns": 5,
-            "returns_twice": false,
-            "no_return": false
-        },
-        {
             "identifier": 1,
             "name": "assign_union",
             "parameters": 8,
             "vararg": false,
             "returns": 9,
+            "returns_twice": false,
+            "no_return": false
+        },
+        {
+            "identifier": 0,
+            "name": "assign_struct",
+            "parameters": 4,
+            "vararg": false,
+            "returns": 5,
             "returns_twice": false,
             "no_return": false
         }

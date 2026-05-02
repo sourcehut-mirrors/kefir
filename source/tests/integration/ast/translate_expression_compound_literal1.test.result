@@ -2,12 +2,62 @@
     "identifiers": [],
     "types": [
         {
+            "identifier": 8,
+            "type": [
+                {
+                    "type": "struct",
+                    "fields": [
+                        {
+                            "type": "int8"
+                        },
+                        {
+                            "type": "int64"
+                        },
+                        {
+                            "type": "float"
+                        },
+                        {
+                            "type": "int32"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "identifier": 4,
+            "type": []
+        },
+        {
+            "identifier": 9,
+            "type": []
+        },
+        {
+            "identifier": 3,
+            "type": []
+        },
+        {
+            "identifier": 5,
+            "type": [
+                {
+                    "type": "int64"
+                }
+            ]
+        },
+        {
             "identifier": 0,
             "type": [
                 {
                     "type": "int64"
                 }
             ]
+        },
+        {
+            "identifier": 6,
+            "type": []
+        },
+        {
+            "identifier": 7,
+            "type": []
         },
         {
             "identifier": 1,
@@ -23,6 +73,36 @@
                         },
                         {
                             "type": "float"
+                        },
+                        {
+                            "type": "int32"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "identifier": 11,
+            "type": [
+                {
+                    "type": "struct",
+                    "fields": [
+                        {
+                            "type": "struct",
+                            "fields": [
+                                {
+                                    "type": "int8"
+                                },
+                                {
+                                    "type": "int64"
+                                },
+                                {
+                                    "type": "float"
+                                },
+                                {
+                                    "type": "int32"
+                                }
+                            ]
                         },
                         {
                             "type": "int32"
@@ -62,108 +142,28 @@
             ]
         },
         {
-            "identifier": 3,
-            "type": []
-        },
-        {
-            "identifier": 4,
-            "type": []
-        },
-        {
-            "identifier": 5,
-            "type": [
-                {
-                    "type": "int64"
-                }
-            ]
-        },
-        {
-            "identifier": 6,
-            "type": []
-        },
-        {
-            "identifier": 7,
-            "type": []
-        },
-        {
-            "identifier": 8,
-            "type": [
-                {
-                    "type": "struct",
-                    "fields": [
-                        {
-                            "type": "int8"
-                        },
-                        {
-                            "type": "int64"
-                        },
-                        {
-                            "type": "float"
-                        },
-                        {
-                            "type": "int32"
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "identifier": 9,
-            "type": []
-        },
-        {
             "identifier": 10,
             "type": []
-        },
-        {
-            "identifier": 11,
-            "type": [
-                {
-                    "type": "struct",
-                    "fields": [
-                        {
-                            "type": "struct",
-                            "fields": [
-                                {
-                                    "type": "int8"
-                                },
-                                {
-                                    "type": "int64"
-                                },
-                                {
-                                    "type": "float"
-                                },
-                                {
-                                    "type": "int32"
-                                }
-                            ]
-                        },
-                        {
-                            "type": "int32"
-                        }
-                    ]
-                }
-            ]
         }
     ],
     "data": [],
     "string_literals": [],
     "function_declarations": [
         {
-            "identifier": 0,
-            "name": "compound_literal1",
-            "parameters": 3,
-            "vararg": false,
-            "returns": 4,
-            "returns_twice": false,
-            "no_return": false
-        },
-        {
             "identifier": 1,
             "name": "compound_literal2",
             "parameters": 6,
             "vararg": false,
             "returns": 7,
+            "returns_twice": false,
+            "no_return": false
+        },
+        {
+            "identifier": 0,
+            "name": "compound_literal1",
+            "parameters": 3,
+            "vararg": false,
+            "returns": 4,
             "returns_twice": false,
             "no_return": false
         },

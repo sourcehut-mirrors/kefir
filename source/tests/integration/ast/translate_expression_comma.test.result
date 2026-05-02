@@ -2,19 +2,7 @@
     "identifiers": [],
     "types": [
         {
-            "identifier": 0,
-            "type": []
-        },
-        {
-            "identifier": 1,
-            "type": []
-        },
-        {
-            "identifier": 2,
-            "type": []
-        },
-        {
-            "identifier": 3,
+            "identifier": 8,
             "type": []
         },
         {
@@ -22,7 +10,19 @@
             "type": []
         },
         {
+            "identifier": 9,
+            "type": []
+        },
+        {
+            "identifier": 3,
+            "type": []
+        },
+        {
             "identifier": 5,
+            "type": []
+        },
+        {
+            "identifier": 0,
             "type": []
         },
         {
@@ -34,19 +34,19 @@
             "type": []
         },
         {
-            "identifier": 8,
-            "type": []
-        },
-        {
-            "identifier": 9,
-            "type": []
-        },
-        {
-            "identifier": 10,
+            "identifier": 1,
             "type": []
         },
         {
             "identifier": 11,
+            "type": []
+        },
+        {
+            "identifier": 2,
+            "type": []
+        },
+        {
+            "identifier": 10,
             "type": []
         }
     ],
@@ -59,6 +59,24 @@
             "parameters": 0,
             "vararg": false,
             "returns": 1,
+            "returns_twice": false,
+            "no_return": false
+        },
+        {
+            "identifier": 4,
+            "name": "comma5",
+            "parameters": 8,
+            "vararg": false,
+            "returns": 9,
+            "returns_twice": false,
+            "no_return": false
+        },
+        {
+            "identifier": 3,
+            "name": "comma4",
+            "parameters": 6,
+            "vararg": false,
+            "returns": 7,
             "returns_twice": false,
             "no_return": false
         },
@@ -77,24 +95,6 @@
             "parameters": 4,
             "vararg": false,
             "returns": 5,
-            "returns_twice": false,
-            "no_return": false
-        },
-        {
-            "identifier": 3,
-            "name": "comma4",
-            "parameters": 6,
-            "vararg": false,
-            "returns": 7,
-            "returns_twice": false,
-            "no_return": false
-        },
-        {
-            "identifier": 4,
-            "name": "comma5",
-            "parameters": 8,
-            "vararg": false,
-            "returns": 9,
             "returns_twice": false,
             "no_return": false
         },

@@ -24,26 +24,7 @@
     ],
     "types": [
         {
-            "identifier": 0,
-            "type": [
-                {
-                    "type": "int32"
-                }
-            ]
-        },
-        {
-            "identifier": 1,
-            "type": [
-                {
-                    "type": "int32"
-                },
-                {
-                    "type": "int32"
-                }
-            ]
-        },
-        {
-            "identifier": 2,
+            "identifier": 4,
             "type": [
                 {
                     "type": "int32"
@@ -62,7 +43,7 @@
             ]
         },
         {
-            "identifier": 4,
+            "identifier": 5,
             "type": [
                 {
                     "type": "int32"
@@ -70,7 +51,7 @@
             ]
         },
         {
-            "identifier": 5,
+            "identifier": 0,
             "type": [
                 {
                     "type": "int32"
@@ -94,6 +75,25 @@
                     "element_type": {
                         "type": "int8"
                     }
+                }
+            ]
+        },
+        {
+            "identifier": 1,
+            "type": [
+                {
+                    "type": "int32"
+                },
+                {
+                    "type": "int32"
+                }
+            ]
+        },
+        {
+            "identifier": 2,
+            "type": [
+                {
+                    "type": "int32"
                 }
             ]
         }
@@ -127,20 +127,20 @@
     ],
     "function_declarations": [
         {
-            "identifier": 0,
-            "name": "sum",
-            "parameters": 1,
-            "vararg": false,
-            "returns": 2,
-            "returns_twice": false,
-            "no_return": false
-        },
-        {
             "identifier": 1,
             "name": "sum",
             "parameters": 3,
             "vararg": false,
             "returns": 4,
+            "returns_twice": false,
+            "no_return": false
+        },
+        {
+            "identifier": 0,
+            "name": "sum",
+            "parameters": 1,
+            "vararg": false,
+            "returns": 2,
             "returns_twice": false,
             "no_return": false
         }

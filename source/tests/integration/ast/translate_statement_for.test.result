@@ -10,19 +10,19 @@
     ],
     "types": [
         {
-            "identifier": 0,
+            "identifier": 23,
+            "type": []
+        },
+        {
+            "identifier": 19,
             "type": [
                 {
-                    "type": "int32"
+                    "type": "int8"
                 }
             ]
         },
         {
-            "identifier": 1,
-            "type": []
-        },
-        {
-            "identifier": 2,
+            "identifier": 16,
             "type": []
         },
         {
@@ -30,27 +30,7 @@
             "type": []
         },
         {
-            "identifier": 4,
-            "type": []
-        },
-        {
-            "identifier": 5,
-            "type": []
-        },
-        {
-            "identifier": 6,
-            "type": []
-        },
-        {
-            "identifier": 7,
-            "type": []
-        },
-        {
-            "identifier": 8,
-            "type": []
-        },
-        {
-            "identifier": 9,
+            "identifier": 15,
             "type": [
                 {
                     "type": "int32"
@@ -66,31 +46,27 @@
             ]
         },
         {
-            "identifier": 11,
+            "identifier": 20,
             "type": []
         },
         {
-            "identifier": 12,
+            "identifier": 5,
             "type": []
         },
         {
-            "identifier": 13,
+            "identifier": 1,
             "type": []
         },
         {
-            "identifier": 14,
+            "identifier": 22,
             "type": []
         },
         {
-            "identifier": 15,
-            "type": [
-                {
-                    "type": "int32"
-                }
-            ]
+            "identifier": 8,
+            "type": []
         },
         {
-            "identifier": 16,
+            "identifier": 4,
             "type": []
         },
         {
@@ -102,19 +78,7 @@
             ]
         },
         {
-            "identifier": 18,
-            "type": []
-        },
-        {
-            "identifier": 19,
-            "type": [
-                {
-                    "type": "int8"
-                }
-            ]
-        },
-        {
-            "identifier": 20,
+            "identifier": 14,
             "type": []
         },
         {
@@ -122,11 +86,47 @@
             "type": []
         },
         {
-            "identifier": 22,
+            "identifier": 18,
             "type": []
         },
         {
-            "identifier": 23,
+            "identifier": 13,
+            "type": []
+        },
+        {
+            "identifier": 0,
+            "type": [
+                {
+                    "type": "int32"
+                }
+            ]
+        },
+        {
+            "identifier": 6,
+            "type": []
+        },
+        {
+            "identifier": 7,
+            "type": []
+        },
+        {
+            "identifier": 2,
+            "type": []
+        },
+        {
+            "identifier": 11,
+            "type": []
+        },
+        {
+            "identifier": 9,
+            "type": [
+                {
+                    "type": "int32"
+                }
+            ]
+        },
+        {
+            "identifier": 12,
             "type": []
         }
     ],
@@ -134,38 +134,11 @@
     "string_literals": [],
     "function_declarations": [
         {
-            "identifier": 0,
-            "name": "for1",
-            "parameters": 1,
+            "identifier": 8,
+            "name": "for4",
+            "parameters": 20,
             "vararg": false,
-            "returns": 2,
-            "returns_twice": false,
-            "no_return": false
-        },
-        {
-            "identifier": 1,
-            "name": "body",
-            "parameters": 3,
-            "vararg": false,
-            "returns": 4,
-            "returns_twice": false,
-            "no_return": false
-        },
-        {
-            "identifier": 2,
-            "name": "body",
-            "parameters": 5,
-            "vararg": false,
-            "returns": 6,
-            "returns_twice": false,
-            "no_return": false
-        },
-        {
-            "identifier": 3,
-            "name": "for2",
-            "parameters": 7,
-            "vararg": false,
-            "returns": 8,
+            "returns": 21,
             "returns_twice": false,
             "no_return": false
         },
@@ -179,11 +152,38 @@
             "no_return": false
         },
         {
+            "identifier": 9,
+            "name": "body",
+            "parameters": 22,
+            "vararg": false,
+            "returns": 23,
+            "returns_twice": false,
+            "no_return": false
+        },
+        {
+            "identifier": 3,
+            "name": "for2",
+            "parameters": 7,
+            "vararg": false,
+            "returns": 8,
+            "returns_twice": false,
+            "no_return": false
+        },
+        {
             "identifier": 5,
             "name": "for3",
             "parameters": 13,
             "vararg": false,
             "returns": 14,
+            "returns_twice": false,
+            "no_return": false
+        },
+        {
+            "identifier": 0,
+            "name": "for1",
+            "parameters": 1,
+            "vararg": false,
+            "returns": 2,
             "returns_twice": false,
             "no_return": false
         },
@@ -206,20 +206,20 @@
             "no_return": false
         },
         {
-            "identifier": 8,
-            "name": "for4",
-            "parameters": 20,
+            "identifier": 1,
+            "name": "body",
+            "parameters": 3,
             "vararg": false,
-            "returns": 21,
+            "returns": 4,
             "returns_twice": false,
             "no_return": false
         },
         {
-            "identifier": 9,
+            "identifier": 2,
             "name": "body",
-            "parameters": 22,
+            "parameters": 5,
             "vararg": false,
-            "returns": 23,
+            "returns": 6,
             "returns_twice": false,
             "no_return": false
         }

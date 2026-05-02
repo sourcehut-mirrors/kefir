@@ -2,23 +2,7 @@
     "identifiers": [],
     "types": [
         {
-            "identifier": 0,
-            "type": [
-                {
-                    "type": "int32"
-                }
-            ]
-        },
-        {
-            "identifier": 1,
-            "type": []
-        },
-        {
-            "identifier": 2,
-            "type": []
-        },
-        {
-            "identifier": 3,
+            "identifier": 8,
             "type": []
         },
         {
@@ -26,8 +10,20 @@
             "type": []
         },
         {
+            "identifier": 3,
+            "type": []
+        },
+        {
             "identifier": 5,
             "type": []
+        },
+        {
+            "identifier": 0,
+            "type": [
+                {
+                    "type": "int32"
+                }
+            ]
         },
         {
             "identifier": 6,
@@ -38,7 +34,11 @@
             "type": []
         },
         {
-            "identifier": 8,
+            "identifier": 1,
+            "type": []
+        },
+        {
+            "identifier": 2,
             "type": []
         }
     ],
@@ -51,6 +51,15 @@
             "parameters": 1,
             "vararg": false,
             "returns": 2,
+            "returns_twice": false,
+            "no_return": false
+        },
+        {
+            "identifier": 3,
+            "name": "conditional4",
+            "parameters": 7,
+            "vararg": false,
+            "returns": 8,
             "returns_twice": false,
             "no_return": false
         },
@@ -69,15 +78,6 @@
             "parameters": 5,
             "vararg": false,
             "returns": 6,
-            "returns_twice": false,
-            "no_return": false
-        },
-        {
-            "identifier": 3,
-            "name": "conditional4",
-            "parameters": 7,
-            "vararg": false,
-            "returns": 8,
             "returns_twice": false,
             "no_return": false
         }

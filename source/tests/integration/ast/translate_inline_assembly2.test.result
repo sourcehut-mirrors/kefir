@@ -18,20 +18,20 @@
             ]
         },
         {
-            "identifier": 1,
-            "type": []
-        },
-        {
-            "identifier": 2,
-            "type": []
-        },
-        {
             "identifier": 3,
             "type": [
                 {
                     "type": "long_double"
                 }
             ]
+        },
+        {
+            "identifier": 1,
+            "type": []
+        },
+        {
+            "identifier": 2,
+            "type": []
         }
     ],
     "data": [],

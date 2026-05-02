@@ -57,15 +57,7 @@
             ]
         },
         {
-            "identifier": 1,
-            "type": [
-                {
-                    "type": "int64"
-                }
-            ]
-        },
-        {
-            "identifier": 2,
+            "identifier": 4,
             "type": [
                 {
                     "type": "int32"
@@ -89,7 +81,15 @@
             ]
         },
         {
-            "identifier": 4,
+            "identifier": 1,
+            "type": [
+                {
+                    "type": "int64"
+                }
+            ]
+        },
+        {
+            "identifier": 2,
             "type": [
                 {
                     "type": "int32"

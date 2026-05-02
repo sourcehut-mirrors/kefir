@@ -31,10 +31,10 @@
     ],
     "types": [
         {
-            "identifier": 1,
+            "identifier": 100,
             "type": [
                 {
-                    "type": "int32"
+                    "type": "int64"
                 }
             ]
         },
@@ -51,10 +51,10 @@
             ]
         },
         {
-            "identifier": 100,
+            "identifier": 1,
             "type": [
                 {
-                    "type": "int64"
+                    "type": "int32"
                 }
             ]
         }
@@ -105,6 +105,24 @@
     ],
     "function_declarations": [
         {
+            "identifier": 2,
+            "name": "test4",
+            "parameters": 6,
+            "vararg": false,
+            "returns": 7,
+            "returns_twice": false,
+            "no_return": false
+        },
+        {
+            "identifier": 48,
+            "name": "test2",
+            "parameters": 100,
+            "vararg": false,
+            "returns": 1,
+            "returns_twice": false,
+            "no_return": false
+        },
+        {
             "identifier": 0,
             "name": "test1",
             "parameters": 2,
@@ -123,15 +141,6 @@
             "no_return": false
         },
         {
-            "identifier": 2,
-            "name": "test4",
-            "parameters": 6,
-            "vararg": false,
-            "returns": 7,
-            "returns_twice": false,
-            "no_return": false
-        },
-        {
             "identifier": 46,
             "name": "test4",
             "parameters": 1,
@@ -144,15 +153,6 @@
             "identifier": 47,
             "name": "test1",
             "parameters": 1,
-            "vararg": false,
-            "returns": 1,
-            "returns_twice": false,
-            "no_return": false
-        },
-        {
-            "identifier": 48,
-            "name": "test2",
-            "parameters": 100,
             "vararg": false,
             "returns": 1,
             "returns_twice": false,
@@ -290,17 +290,17 @@
     ],
     "inline_assembly": [
         {
-            "identifier": 0,
-            "global": true,
-            "template": "...",
+            "identifier": 1,
+            "global": false,
+            "template": "LOCAL",
             "parameters": [],
             "clobbers": [],
             "jump_targets": []
         },
         {
-            "identifier": 1,
-            "global": false,
-            "template": "LOCAL",
+            "identifier": 0,
+            "global": true,
+            "template": "...",
             "parameters": [],
             "clobbers": [],
             "jump_targets": []

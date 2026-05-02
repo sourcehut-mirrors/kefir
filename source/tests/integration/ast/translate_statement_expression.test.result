@@ -10,57 +10,8 @@
     ],
     "types": [
         {
-            "identifier": 0,
-            "type": [
-                {
-                    "type": "int32"
-                }
-            ]
-        },
-        {
-            "identifier": 1,
-            "type": []
-        },
-        {
-            "identifier": 2,
-            "type": []
-        },
-        {
             "identifier": 3,
             "type": []
-        },
-        {
-            "identifier": 4,
-            "type": []
-        },
-        {
-            "identifier": 5,
-            "type": []
-        },
-        {
-            "identifier": 6,
-            "type": []
-        },
-        {
-            "identifier": 7,
-            "type": []
-        },
-        {
-            "identifier": 8,
-            "type": []
-        },
-        {
-            "identifier": 9,
-            "type": [
-                {
-                    "type": "struct",
-                    "fields": [
-                        {
-                            "type": "int8"
-                        }
-                    ]
-                }
-            ]
         },
         {
             "identifier": 10,
@@ -76,8 +27,57 @@
             ]
         },
         {
+            "identifier": 5,
+            "type": []
+        },
+        {
+            "identifier": 1,
+            "type": []
+        },
+        {
+            "identifier": 8,
+            "type": []
+        },
+        {
+            "identifier": 4,
+            "type": []
+        },
+        {
+            "identifier": 0,
+            "type": [
+                {
+                    "type": "int32"
+                }
+            ]
+        },
+        {
+            "identifier": 6,
+            "type": []
+        },
+        {
+            "identifier": 7,
+            "type": []
+        },
+        {
+            "identifier": 2,
+            "type": []
+        },
+        {
             "identifier": 11,
             "type": []
+        },
+        {
+            "identifier": 9,
+            "type": [
+                {
+                    "type": "struct",
+                    "fields": [
+                        {
+                            "type": "int8"
+                        }
+                    ]
+                }
+            ]
         },
         {
             "identifier": 12,
@@ -97,6 +97,24 @@
             "no_return": false
         },
         {
+            "identifier": 4,
+            "name": "expr5",
+            "parameters": 11,
+            "vararg": false,
+            "returns": 12,
+            "returns_twice": false,
+            "no_return": false
+        },
+        {
+            "identifier": 3,
+            "name": "expr4",
+            "parameters": 7,
+            "vararg": false,
+            "returns": 8,
+            "returns_twice": false,
+            "no_return": false
+        },
+        {
             "identifier": 1,
             "name": "expr2",
             "parameters": 3,
@@ -111,24 +129,6 @@
             "parameters": 5,
             "vararg": false,
             "returns": 6,
-            "returns_twice": false,
-            "no_return": false
-        },
-        {
-            "identifier": 3,
-            "name": "expr4",
-            "parameters": 7,
-            "vararg": false,
-            "returns": 8,
-            "returns_twice": false,
-            "no_return": false
-        },
-        {
-            "identifier": 4,
-            "name": "expr5",
-            "parameters": 11,
-            "vararg": false,
-            "returns": 12,
             "returns_twice": false,
             "no_return": false
         }

@@ -10,23 +10,7 @@
     ],
     "types": [
         {
-            "identifier": 0,
-            "type": [
-                {
-                    "type": "int32"
-                }
-            ]
-        },
-        {
-            "identifier": 1,
-            "type": []
-        },
-        {
-            "identifier": 2,
-            "type": []
-        },
-        {
-            "identifier": 3,
+            "identifier": 4,
             "type": [
                 {
                     "type": "int16"
@@ -34,7 +18,7 @@
             ]
         },
         {
-            "identifier": 4,
+            "identifier": 3,
             "type": [
                 {
                     "type": "int16"
@@ -46,7 +30,23 @@
             "type": []
         },
         {
+            "identifier": 0,
+            "type": [
+                {
+                    "type": "int32"
+                }
+            ]
+        },
+        {
             "identifier": 6,
+            "type": []
+        },
+        {
+            "identifier": 1,
+            "type": []
+        },
+        {
+            "identifier": 2,
             "type": []
         }
     ],
@@ -54,20 +54,20 @@
     "string_literals": [],
     "function_declarations": [
         {
-            "identifier": 0,
-            "name": "goto1",
-            "parameters": 1,
-            "vararg": false,
-            "returns": 2,
-            "returns_twice": false,
-            "no_return": false
-        },
-        {
             "identifier": 1,
             "name": "goto2",
             "parameters": 5,
             "vararg": false,
             "returns": 6,
+            "returns_twice": false,
+            "no_return": false
+        },
+        {
+            "identifier": 0,
+            "name": "goto1",
+            "parameters": 1,
+            "vararg": false,
+            "returns": 2,
             "returns_twice": false,
             "no_return": false
         }

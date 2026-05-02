@@ -24,23 +24,7 @@
     ],
     "types": [
         {
-            "identifier": 0,
-            "type": [
-                {
-                    "type": "int32"
-                }
-            ]
-        },
-        {
-            "identifier": 1,
-            "type": [
-                {
-                    "type": "int64"
-                }
-            ]
-        },
-        {
-            "identifier": 2,
+            "identifier": 4,
             "type": []
         },
         {
@@ -52,14 +36,18 @@
             ]
         },
         {
-            "identifier": 4,
-            "type": []
-        },
-        {
             "identifier": 5,
             "type": [
                 {
                     "type": "int64"
+                }
+            ]
+        },
+        {
+            "identifier": 0,
+            "type": [
+                {
+                    "type": "int32"
                 }
             ]
         },
@@ -93,6 +81,18 @@
                     ]
                 }
             ]
+        },
+        {
+            "identifier": 1,
+            "type": [
+                {
+                    "type": "int64"
+                }
+            ]
+        },
+        {
+            "identifier": 2,
+            "type": []
         }
     ],
     "data": [
@@ -124,20 +124,20 @@
     ],
     "function_declarations": [
         {
-            "identifier": 0,
-            "name": "sum",
-            "parameters": 1,
-            "vararg": false,
-            "returns": 2,
-            "returns_twice": false,
-            "no_return": false
-        },
-        {
             "identifier": 1,
             "name": "sum",
             "parameters": 3,
             "vararg": false,
             "returns": 4,
+            "returns_twice": false,
+            "no_return": false
+        },
+        {
+            "identifier": 0,
+            "name": "sum",
+            "parameters": 1,
+            "vararg": false,
+            "returns": 2,
             "returns_twice": false,
             "no_return": false
         }

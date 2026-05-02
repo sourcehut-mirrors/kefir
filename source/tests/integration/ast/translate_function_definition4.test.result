@@ -17,19 +17,7 @@
     ],
     "types": [
         {
-            "identifier": 0,
-            "type": []
-        },
-        {
-            "identifier": 1,
-            "type": [
-                {
-                    "type": "int32"
-                }
-            ]
-        },
-        {
-            "identifier": 2,
+            "identifier": 4,
             "type": [
                 {
                     "type": "int32"
@@ -45,7 +33,7 @@
             ]
         },
         {
-            "identifier": 4,
+            "identifier": 5,
             "type": [
                 {
                     "type": "int32"
@@ -53,12 +41,8 @@
             ]
         },
         {
-            "identifier": 5,
-            "type": [
-                {
-                    "type": "int32"
-                }
-            ]
+            "identifier": 0,
+            "type": []
         },
         {
             "identifier": 6,
@@ -74,6 +58,22 @@
         },
         {
             "identifier": 7,
+            "type": [
+                {
+                    "type": "int32"
+                }
+            ]
+        },
+        {
+            "identifier": 1,
+            "type": [
+                {
+                    "type": "int32"
+                }
+            ]
+        },
+        {
+            "identifier": 2,
             "type": [
                 {
                     "type": "int32"
@@ -110,20 +110,20 @@
     ],
     "function_declarations": [
         {
-            "identifier": 0,
-            "name": "factorial",
-            "parameters": 0,
-            "vararg": false,
-            "returns": 1,
-            "returns_twice": false,
-            "no_return": false
-        },
-        {
             "identifier": 1,
             "name": "factorial",
             "parameters": 2,
             "vararg": false,
             "returns": 3,
+            "returns_twice": false,
+            "no_return": false
+        },
+        {
+            "identifier": 0,
+            "name": "factorial",
+            "parameters": 0,
+            "vararg": false,
+            "returns": 1,
             "returns_twice": false,
             "no_return": false
         }

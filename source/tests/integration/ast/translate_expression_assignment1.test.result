@@ -115,44 +115,32 @@
     ],
     "types": [
         {
-            "identifier": 0,
+            "identifier": 23,
+            "type": []
+        },
+        {
+            "identifier": 18,
+            "type": []
+        },
+        {
+            "identifier": 24,
+            "type": []
+        },
+        {
+            "identifier": 15,
             "type": [
                 {
-                    "type": "int64"
+                    "type": "int16"
                 }
             ]
         },
         {
-            "identifier": 1,
-            "type": [
-                {
-                    "type": "int8"
-                }
-            ]
+            "identifier": 27,
+            "type": []
         },
         {
-            "identifier": 2,
-            "type": [
-                {
-                    "type": "int8"
-                }
-            ]
-        },
-        {
-            "identifier": 3,
-            "type": [
-                {
-                    "type": "int32"
-                }
-            ]
-        },
-        {
-            "identifier": 4,
-            "type": [
-                {
-                    "type": "int32"
-                }
-            ]
+            "identifier": 28,
+            "type": []
         },
         {
             "identifier": 5,
@@ -163,42 +151,30 @@
             ]
         },
         {
+            "identifier": 20,
+            "type": []
+        },
+        {
+            "identifier": 17,
+            "type": []
+        },
+        {
+            "identifier": 14,
+            "type": [
+                {
+                    "type": "int64"
+                }
+            ]
+        },
+        {
+            "identifier": 21,
+            "type": []
+        },
+        {
             "identifier": 6,
             "type": [
                 {
                     "type": "float"
-                }
-            ]
-        },
-        {
-            "identifier": 7,
-            "type": [
-                {
-                    "type": "int8"
-                }
-            ]
-        },
-        {
-            "identifier": 8,
-            "type": [
-                {
-                    "type": "int64"
-                }
-            ]
-        },
-        {
-            "identifier": 9,
-            "type": [
-                {
-                    "type": "int8"
-                }
-            ]
-        },
-        {
-            "identifier": 10,
-            "type": [
-                {
-                    "type": "int64"
                 }
             ]
         },
@@ -211,12 +187,84 @@
             ]
         },
         {
-            "identifier": 12,
+            "identifier": 16,
+            "type": []
+        },
+        {
+            "identifier": 2,
+            "type": [
+                {
+                    "type": "int8"
+                }
+            ]
+        },
+        {
+            "identifier": 31,
+            "type": []
+        },
+        {
+            "identifier": 9,
+            "type": [
+                {
+                    "type": "int8"
+                }
+            ]
+        },
+        {
+            "identifier": 3,
+            "type": [
+                {
+                    "type": "int32"
+                }
+            ]
+        },
+        {
+            "identifier": 32,
+            "type": []
+        },
+        {
+            "identifier": 0,
             "type": [
                 {
                     "type": "int64"
                 }
             ]
+        },
+        {
+            "identifier": 29,
+            "type": []
+        },
+        {
+            "identifier": 1,
+            "type": [
+                {
+                    "type": "int8"
+                }
+            ]
+        },
+        {
+            "identifier": 33,
+            "type": []
+        },
+        {
+            "identifier": 26,
+            "type": []
+        },
+        {
+            "identifier": 8,
+            "type": [
+                {
+                    "type": "int64"
+                }
+            ]
+        },
+        {
+            "identifier": 19,
+            "type": []
+        },
+        {
+            "identifier": 25,
+            "type": []
         },
         {
             "identifier": 13,
@@ -227,75 +275,7 @@
             ]
         },
         {
-            "identifier": 14,
-            "type": [
-                {
-                    "type": "int64"
-                }
-            ]
-        },
-        {
-            "identifier": 15,
-            "type": [
-                {
-                    "type": "int16"
-                }
-            ]
-        },
-        {
-            "identifier": 16,
-            "type": []
-        },
-        {
-            "identifier": 17,
-            "type": []
-        },
-        {
-            "identifier": 18,
-            "type": []
-        },
-        {
-            "identifier": 19,
-            "type": []
-        },
-        {
-            "identifier": 20,
-            "type": []
-        },
-        {
-            "identifier": 21,
-            "type": []
-        },
-        {
             "identifier": 22,
-            "type": []
-        },
-        {
-            "identifier": 23,
-            "type": []
-        },
-        {
-            "identifier": 24,
-            "type": []
-        },
-        {
-            "identifier": 25,
-            "type": []
-        },
-        {
-            "identifier": 26,
-            "type": []
-        },
-        {
-            "identifier": 27,
-            "type": []
-        },
-        {
-            "identifier": 28,
-            "type": []
-        },
-        {
-            "identifier": 29,
             "type": []
         },
         {
@@ -303,54 +283,47 @@
             "type": []
         },
         {
-            "identifier": 31,
-            "type": []
+            "identifier": 7,
+            "type": [
+                {
+                    "type": "int8"
+                }
+            ]
         },
         {
-            "identifier": 32,
-            "type": []
+            "identifier": 12,
+            "type": [
+                {
+                    "type": "int64"
+                }
+            ]
         },
         {
-            "identifier": 33,
-            "type": []
+            "identifier": 4,
+            "type": [
+                {
+                    "type": "int32"
+                }
+            ]
+        },
+        {
+            "identifier": 10,
+            "type": [
+                {
+                    "type": "int64"
+                }
+            ]
         }
     ],
     "data": [],
     "string_literals": [],
     "function_declarations": [
         {
-            "identifier": 0,
-            "name": "assign_bool",
-            "parameters": 16,
+            "identifier": 8,
+            "name": "pointer",
+            "parameters": 32,
             "vararg": false,
-            "returns": 17,
-            "returns_twice": false,
-            "no_return": false
-        },
-        {
-            "identifier": 1,
-            "name": "assign_char",
-            "parameters": 18,
-            "vararg": false,
-            "returns": 19,
-            "returns_twice": false,
-            "no_return": false
-        },
-        {
-            "identifier": 2,
-            "name": "assign_short",
-            "parameters": 20,
-            "vararg": false,
-            "returns": 21,
-            "returns_twice": false,
-            "no_return": false
-        },
-        {
-            "identifier": 3,
-            "name": "assign_int",
-            "parameters": 22,
-            "vararg": false,
-            "returns": 23,
+            "returns": 33,
             "returns_twice": false,
             "no_return": false
         },
@@ -364,11 +337,29 @@
             "no_return": false
         },
         {
+            "identifier": 3,
+            "name": "assign_int",
+            "parameters": 22,
+            "vararg": false,
+            "returns": 23,
+            "returns_twice": false,
+            "no_return": false
+        },
+        {
             "identifier": 5,
             "name": "assign_long_long",
             "parameters": 26,
             "vararg": false,
             "returns": 27,
+            "returns_twice": false,
+            "no_return": false
+        },
+        {
+            "identifier": 0,
+            "name": "assign_bool",
+            "parameters": 16,
+            "vararg": false,
+            "returns": 17,
             "returns_twice": false,
             "no_return": false
         },
@@ -391,11 +382,20 @@
             "no_return": false
         },
         {
-            "identifier": 8,
-            "name": "pointer",
-            "parameters": 32,
+            "identifier": 1,
+            "name": "assign_char",
+            "parameters": 18,
             "vararg": false,
-            "returns": 33,
+            "returns": 19,
+            "returns_twice": false,
+            "no_return": false
+        },
+        {
+            "identifier": 2,
+            "name": "assign_short",
+            "parameters": 20,
+            "vararg": false,
+            "returns": 21,
             "returns_twice": false,
             "no_return": false
         }

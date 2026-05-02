@@ -319,7 +319,7 @@ static kefir_result_t compact_impl(struct kefir_mem *mem, struct kefir_ir_module
         REQUIRE_OK(kefir_queue_push(mem, &params->symbol_scan_queue, (kefir_queue_entry_t) symbol));
     }
 
-    struct kefir_ir_module_inline_assembly_iterator inline_asm_iter;
+    struct kefir_ir_module_global_inline_assembly_iterator inline_asm_iter;
     for (struct kefir_ir_inline_assembly *inline_asm =
              kefir_ir_module_global_inline_assembly_iter(module, &inline_asm_iter, NULL);
          inline_asm != NULL; inline_asm = kefir_ir_module_global_inline_assembly_next(&inline_asm_iter, NULL)) {

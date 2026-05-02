@@ -77,15 +77,15 @@ typedef struct kefir_ir_module_string_literal {
 typedef struct kefir_ir_module {
     struct kefir_string_pool symbols;
     struct kefir_list types;
-    struct kefir_hashtree function_declarations;
+    struct kefir_hashtable function_declarations;
     struct kefir_hashtree identifiers;
     struct kefir_hashtree functions;
-    struct kefir_hashtree named_types;
+    struct kefir_hashtable named_types;
     struct kefir_hashtree named_data;
     struct kefir_hashtree string_literals;
-    struct kefir_hashtree inline_assembly;
+    struct kefir_hashtable inline_assembly;
     struct kefir_hashtree global_inline_asm;
-    struct kefir_hashtree bigints;
+    struct kefir_hashtable bigints;
 
     kefir_id_t next_type_id;
     kefir_id_t next_string_literal_id;
@@ -137,7 +137,7 @@ kefir_result_t kefir_ir_module_drop_named_types(struct kefir_mem *, struct kefir
                                                 void *);
 
 typedef struct kefir_ir_module_function_declaration_iterator {
-    struct kefir_hashtree_node_iterator iter;
+    struct kefir_hashtable_iterator iter;
 } kefir_ir_module_function_declaration_iterator_t;
 
 const struct kefir_ir_function_decl *kefir_ir_module_function_declaration_iter(
@@ -195,7 +195,7 @@ const struct kefir_ir_data *kefir_ir_module_named_data_next(struct kefir_ir_modu
                                                             const char **);
 
 typedef struct kefir_ir_module_named_type_iterator {
-    struct kefir_hashtree_node_iterator iter;
+    struct kefir_hashtable_iterator iter;
 } kefir_ir_module_named_type_iterator_t;
 
 const struct kefir_ir_type *kefir_ir_module_named_type_iter(const struct kefir_ir_module *,
@@ -207,7 +207,7 @@ struct kefir_ir_inline_assembly *kefir_ir_module_new_inline_assembly(struct kefi
 struct kefir_ir_inline_assembly *kefir_ir_module_get_inline_assembly(const struct kefir_ir_module *, kefir_id_t);
 
 typedef struct kefir_ir_module_inline_assembly_iterator {
-    struct kefir_hashtree_node_iterator iter;
+    struct kefir_hashtable_iterator iter;
 } kefir_ir_module_inline_assembly_iterator_t;
 
 const struct kefir_ir_inline_assembly *kefir_ir_module_inline_assembly_iter(
@@ -218,10 +218,14 @@ const struct kefir_ir_inline_assembly *kefir_ir_module_inline_assembly_next(
 kefir_result_t kefir_ir_module_inline_assembly_global(struct kefir_mem *, struct kefir_ir_module *, kefir_id_t);
 kefir_bool_t kefir_ir_module_inline_assembly_has_global(const struct kefir_ir_module *, kefir_id_t);
 
+typedef struct kefir_ir_module_global_inline_assembly_iterator {
+    struct kefir_hashtree_node_iterator iter;
+} kefir_ir_module_global_inline_assembly_iterator_t;
+
 struct kefir_ir_inline_assembly *kefir_ir_module_global_inline_assembly_iter(
-    const struct kefir_ir_module *, struct kefir_ir_module_inline_assembly_iterator *, kefir_id_t *);
+    const struct kefir_ir_module *, struct kefir_ir_module_global_inline_assembly_iterator *, kefir_id_t *);
 struct kefir_ir_inline_assembly *kefir_ir_module_global_inline_assembly_next(
-    struct kefir_ir_module_inline_assembly_iterator *, kefir_id_t *);
+    struct kefir_ir_module_global_inline_assembly_iterator *, kefir_id_t *);
 
 kefir_result_t kefir_ir_module_new_bigint(struct kefir_mem *, struct kefir_ir_module *, const struct kefir_bigint *,
                                           kefir_id_t *);

@@ -10,12 +10,28 @@
     ],
     "types": [
         {
-            "identifier": 0,
-            "type": [
-                {
-                    "type": "int64"
-                }
-            ]
+            "identifier": 19,
+            "type": []
+        },
+        {
+            "identifier": 16,
+            "type": []
+        },
+        {
+            "identifier": 3,
+            "type": []
+        },
+        {
+            "identifier": 15,
+            "type": []
+        },
+        {
+            "identifier": 10,
+            "type": []
+        },
+        {
+            "identifier": 5,
+            "type": []
         },
         {
             "identifier": 1,
@@ -26,11 +42,7 @@
             ]
         },
         {
-            "identifier": 2,
-            "type": []
-        },
-        {
-            "identifier": 3,
+            "identifier": 8,
             "type": []
         },
         {
@@ -38,8 +50,28 @@
             "type": []
         },
         {
-            "identifier": 5,
+            "identifier": 17,
             "type": []
+        },
+        {
+            "identifier": 14,
+            "type": []
+        },
+        {
+            "identifier": 18,
+            "type": []
+        },
+        {
+            "identifier": 13,
+            "type": []
+        },
+        {
+            "identifier": 0,
+            "type": [
+                {
+                    "type": "int64"
+                }
+            ]
         },
         {
             "identifier": 6,
@@ -50,15 +82,7 @@
             "type": []
         },
         {
-            "identifier": 8,
-            "type": []
-        },
-        {
-            "identifier": 9,
-            "type": []
-        },
-        {
-            "identifier": 10,
+            "identifier": 2,
             "type": []
         },
         {
@@ -66,35 +90,11 @@
             "type": []
         },
         {
+            "identifier": 9,
+            "type": []
+        },
+        {
             "identifier": 12,
-            "type": []
-        },
-        {
-            "identifier": 13,
-            "type": []
-        },
-        {
-            "identifier": 14,
-            "type": []
-        },
-        {
-            "identifier": 15,
-            "type": []
-        },
-        {
-            "identifier": 16,
-            "type": []
-        },
-        {
-            "identifier": 17,
-            "type": []
-        },
-        {
-            "identifier": 18,
-            "type": []
-        },
-        {
-            "identifier": 19,
             "type": []
         }
     ],
@@ -113,38 +113,11 @@
     "string_literals": [],
     "function_declarations": [
         {
-            "identifier": 0,
-            "name": "equality_arithemtical",
-            "parameters": 2,
+            "identifier": 8,
+            "name": "ptr_relational",
+            "parameters": 18,
             "vararg": false,
-            "returns": 3,
-            "returns_twice": false,
-            "no_return": false
-        },
-        {
-            "identifier": 1,
-            "name": "equality_pointer",
-            "parameters": 4,
-            "vararg": false,
-            "returns": 5,
-            "returns_twice": false,
-            "no_return": false
-        },
-        {
-            "identifier": 2,
-            "name": "non_equality_arithemtical",
-            "parameters": 6,
-            "vararg": false,
-            "returns": 7,
-            "returns_twice": false,
-            "no_return": false
-        },
-        {
-            "identifier": 3,
-            "name": "non_equality_pointer",
-            "parameters": 8,
-            "vararg": false,
-            "returns": 9,
+            "returns": 19,
             "returns_twice": false,
             "no_return": false
         },
@@ -158,11 +131,29 @@
             "no_return": false
         },
         {
+            "identifier": 3,
+            "name": "non_equality_pointer",
+            "parameters": 8,
+            "vararg": false,
+            "returns": 9,
+            "returns_twice": false,
+            "no_return": false
+        },
+        {
             "identifier": 5,
             "name": "less_equals",
             "parameters": 12,
             "vararg": false,
             "returns": 13,
+            "returns_twice": false,
+            "no_return": false
+        },
+        {
+            "identifier": 0,
+            "name": "equality_arithemtical",
+            "parameters": 2,
+            "vararg": false,
+            "returns": 3,
             "returns_twice": false,
             "no_return": false
         },
@@ -185,11 +176,20 @@
             "no_return": false
         },
         {
-            "identifier": 8,
-            "name": "ptr_relational",
-            "parameters": 18,
+            "identifier": 1,
+            "name": "equality_pointer",
+            "parameters": 4,
             "vararg": false,
-            "returns": 19,
+            "returns": 5,
+            "returns_twice": false,
+            "no_return": false
+        },
+        {
+            "identifier": 2,
+            "name": "non_equality_arithemtical",
+            "parameters": 6,
+            "vararg": false,
+            "returns": 7,
             "returns_twice": false,
             "no_return": false
         }

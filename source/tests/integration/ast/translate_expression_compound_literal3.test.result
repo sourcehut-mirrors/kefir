@@ -63,12 +63,16 @@
             ]
         },
         {
-            "identifier": 1,
-            "type": []
-        },
-        {
-            "identifier": 2,
-            "type": []
+            "identifier": 4,
+            "type": [
+                {
+                    "type": "array",
+                    "length": 5,
+                    "element_type": {
+                        "type": "int8"
+                    }
+                }
+            ]
         },
         {
             "identifier": 3,
@@ -132,16 +136,12 @@
             ]
         },
         {
-            "identifier": 4,
-            "type": [
-                {
-                    "type": "array",
-                    "length": 5,
-                    "element_type": {
-                        "type": "int8"
-                    }
-                }
-            ]
+            "identifier": 1,
+            "type": []
+        },
+        {
+            "identifier": 2,
+            "type": []
         },
         {
             "identifier": 5,

@@ -45,22 +45,6 @@
             ]
         },
         {
-            "identifier": 1,
-            "type": [
-                {
-                    "type": "int64"
-                }
-            ]
-        },
-        {
-            "identifier": 2,
-            "type": []
-        },
-        {
-            "identifier": 3,
-            "type": []
-        },
-        {
             "identifier": 4,
             "type": [
                 {
@@ -87,6 +71,22 @@
                     ]
                 }
             ]
+        },
+        {
+            "identifier": 3,
+            "type": []
+        },
+        {
+            "identifier": 1,
+            "type": [
+                {
+                    "type": "int64"
+                }
+            ]
+        },
+        {
+            "identifier": 2,
+            "type": []
         }
     ],
     "data": [],

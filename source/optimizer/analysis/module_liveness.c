@@ -216,7 +216,7 @@ static kefir_result_t initialize_symbol_queue(struct kefir_mem *mem, struct kefi
         }
     }
 
-    struct kefir_ir_module_inline_assembly_iterator inline_asm_iter;
+    struct kefir_ir_module_global_inline_assembly_iterator inline_asm_iter;
     for (const struct kefir_ir_inline_assembly *inline_asm =
              kefir_ir_module_global_inline_assembly_iter(module->ir_module, &inline_asm_iter, NULL);
          inline_asm != NULL; inline_asm = kefir_ir_module_global_inline_assembly_next(&inline_asm_iter, NULL)) {

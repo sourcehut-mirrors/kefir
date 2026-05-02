@@ -682,7 +682,7 @@ static kefir_result_t translate_data(struct kefir_mem *mem, struct kefir_codegen
 
 static kefir_result_t translate_global_inline_assembly(struct kefir_codegen_amd64 *codegen,
                                                        struct kefir_opt_module *module) {
-    struct kefir_ir_module_inline_assembly_iterator iter;
+    struct kefir_ir_module_global_inline_assembly_iterator iter;
     for (const struct kefir_ir_inline_assembly *inline_asm =
              kefir_ir_module_global_inline_assembly_iter(module->ir_module, &iter, NULL);
          inline_asm != NULL; inline_asm = kefir_ir_module_global_inline_assembly_next(&iter, NULL)) {

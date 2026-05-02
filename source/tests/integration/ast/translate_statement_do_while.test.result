@@ -10,10 +10,18 @@
     ],
     "types": [
         {
-            "identifier": 0,
+            "identifier": 3,
+            "type": []
+        },
+        {
+            "identifier": 10,
+            "type": []
+        },
+        {
+            "identifier": 5,
             "type": [
                 {
-                    "type": "int32"
+                    "type": "int8"
                 }
             ]
         },
@@ -22,12 +30,12 @@
             "type": []
         },
         {
-            "identifier": 2,
-            "type": []
-        },
-        {
-            "identifier": 3,
-            "type": []
+            "identifier": 8,
+            "type": [
+                {
+                    "type": "int8"
+                }
+            ]
         },
         {
             "identifier": 4,
@@ -38,10 +46,10 @@
             ]
         },
         {
-            "identifier": 5,
+            "identifier": 0,
             "type": [
                 {
-                    "type": "int8"
+                    "type": "int32"
                 }
             ]
         },
@@ -58,23 +66,15 @@
             "type": []
         },
         {
-            "identifier": 8,
-            "type": [
-                {
-                    "type": "int8"
-                }
-            ]
-        },
-        {
-            "identifier": 9,
-            "type": []
-        },
-        {
-            "identifier": 10,
+            "identifier": 2,
             "type": []
         },
         {
             "identifier": 11,
+            "type": []
+        },
+        {
+            "identifier": 9,
             "type": []
         },
         {
@@ -95,6 +95,24 @@
             "no_return": false
         },
         {
+            "identifier": 4,
+            "name": "do_while3",
+            "parameters": 11,
+            "vararg": false,
+            "returns": 12,
+            "returns_twice": false,
+            "no_return": false
+        },
+        {
+            "identifier": 3,
+            "name": "do_while2",
+            "parameters": 9,
+            "vararg": false,
+            "returns": 10,
+            "returns_twice": false,
+            "no_return": false
+        },
+        {
             "identifier": 1,
             "name": "eval",
             "parameters": 3,
@@ -109,24 +127,6 @@
             "parameters": 7,
             "vararg": false,
             "returns": 8,
-            "returns_twice": false,
-            "no_return": false
-        },
-        {
-            "identifier": 3,
-            "name": "do_while2",
-            "parameters": 9,
-            "vararg": false,
-            "returns": 10,
-            "returns_twice": false,
-            "no_return": false
-        },
-        {
-            "identifier": 4,
-            "name": "do_while3",
-            "parameters": 11,
-            "vararg": false,
-            "returns": 12,
             "returns_twice": false,
             "no_return": false
         }

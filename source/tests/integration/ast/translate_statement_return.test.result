@@ -10,61 +10,8 @@
     ],
     "types": [
         {
-            "identifier": 0,
-            "type": [
-                {
-                    "type": "int32"
-                }
-            ]
-        },
-        {
-            "identifier": 1,
-            "type": []
-        },
-        {
-            "identifier": 2,
-            "type": []
-        },
-        {
             "identifier": 3,
             "type": []
-        },
-        {
-            "identifier": 4,
-            "type": []
-        },
-        {
-            "identifier": 5,
-            "type": []
-        },
-        {
-            "identifier": 6,
-            "type": []
-        },
-        {
-            "identifier": 7,
-            "type": []
-        },
-        {
-            "identifier": 8,
-            "type": []
-        },
-        {
-            "identifier": 9,
-            "type": [
-                {
-                    "type": "struct",
-                    "fields": [
-                        {
-                            "type": "array",
-                            "length": 24,
-                            "element_type": {
-                                "type": "int8"
-                            }
-                        }
-                    ]
-                }
-            ]
         },
         {
             "identifier": 10,
@@ -84,6 +31,46 @@
             ]
         },
         {
+            "identifier": 5,
+            "type": []
+        },
+        {
+            "identifier": 1,
+            "type": []
+        },
+        {
+            "identifier": 8,
+            "type": []
+        },
+        {
+            "identifier": 4,
+            "type": []
+        },
+        {
+            "identifier": 13,
+            "type": []
+        },
+        {
+            "identifier": 0,
+            "type": [
+                {
+                    "type": "int32"
+                }
+            ]
+        },
+        {
+            "identifier": 6,
+            "type": []
+        },
+        {
+            "identifier": 7,
+            "type": []
+        },
+        {
+            "identifier": 2,
+            "type": []
+        },
+        {
             "identifier": 11,
             "type": [
                 {
@@ -96,11 +83,24 @@
             ]
         },
         {
-            "identifier": 12,
-            "type": []
+            "identifier": 9,
+            "type": [
+                {
+                    "type": "struct",
+                    "fields": [
+                        {
+                            "type": "array",
+                            "length": 24,
+                            "element_type": {
+                                "type": "int8"
+                            }
+                        }
+                    ]
+                }
+            ]
         },
         {
-            "identifier": 13,
+            "identifier": 12,
             "type": []
         }
     ],
@@ -125,6 +125,24 @@
             "no_return": false
         },
         {
+            "identifier": 4,
+            "name": "return4",
+            "parameters": 12,
+            "vararg": false,
+            "returns": 13,
+            "returns_twice": false,
+            "no_return": false
+        },
+        {
+            "identifier": 3,
+            "name": "return3",
+            "parameters": 7,
+            "vararg": false,
+            "returns": 8,
+            "returns_twice": false,
+            "no_return": false
+        },
+        {
             "identifier": 1,
             "name": "return1",
             "parameters": 3,
@@ -139,24 +157,6 @@
             "parameters": 5,
             "vararg": false,
             "returns": 6,
-            "returns_twice": false,
-            "no_return": false
-        },
-        {
-            "identifier": 3,
-            "name": "return3",
-            "parameters": 7,
-            "vararg": false,
-            "returns": 8,
-            "returns_twice": false,
-            "no_return": false
-        },
-        {
-            "identifier": 4,
-            "name": "return4",
-            "parameters": 12,
-            "vararg": false,
-            "returns": 13,
             "returns_twice": false,
             "no_return": false
         }

@@ -66,34 +66,10 @@
     ],
     "types": [
         {
-            "identifier": 0,
+            "identifier": 8,
             "type": [
                 {
-                    "type": "int64"
-                }
-            ]
-        },
-        {
-            "identifier": 1,
-            "type": [
-                {
-                    "type": "int64"
-                }
-            ]
-        },
-        {
-            "identifier": 2,
-            "type": [
-                {
-                    "type": "int32"
-                }
-            ]
-        },
-        {
-            "identifier": 3,
-            "type": [
-                {
-                    "type": "int64"
+                    "type": "float"
                 }
             ]
         },
@@ -106,10 +82,26 @@
             ]
         },
         {
+            "identifier": 3,
+            "type": [
+                {
+                    "type": "int64"
+                }
+            ]
+        },
+        {
             "identifier": 5,
             "type": [
                 {
                     "type": "int32"
+                }
+            ]
+        },
+        {
+            "identifier": 0,
+            "type": [
+                {
+                    "type": "int64"
                 }
             ]
         },
@@ -130,10 +122,18 @@
             ]
         },
         {
-            "identifier": 8,
+            "identifier": 1,
             "type": [
                 {
-                    "type": "float"
+                    "type": "int64"
+                }
+            ]
+        },
+        {
+            "identifier": 2,
+            "type": [
+                {
+                    "type": "int32"
                 }
             ]
         }

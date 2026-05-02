@@ -31,160 +31,11 @@
     ],
     "types": [
         {
-            "identifier": 0,
-            "type": [
-                {
-                    "type": "int32"
-                },
-                {
-                    "type": "int32"
-                }
-            ]
-        },
-        {
-            "identifier": 1,
-            "type": [
-                {
-                    "type": "int32"
-                }
-            ]
-        },
-        {
-            "identifier": 2,
-            "type": []
-        },
-        {
-            "identifier": 3,
-            "type": [
-                {
-                    "type": "int32"
-                }
-            ]
-        },
-        {
-            "identifier": 4,
-            "type": []
-        },
-        {
-            "identifier": 5,
-            "type": [
-                {
-                    "type": "int32"
-                }
-            ]
-        },
-        {
-            "identifier": 6,
-            "type": [
-                {
-                    "type": "int64"
-                }
-            ]
-        },
-        {
-            "identifier": 7,
-            "type": [
-                {
-                    "type": "int32"
-                }
-            ]
-        },
-        {
-            "identifier": 8,
-            "type": [
-                {
-                    "type": "array",
-                    "length": 12,
-                    "element_type": {
-                        "type": "int8"
-                    }
-                }
-            ]
-        },
-        {
-            "identifier": 9,
-            "type": []
-        },
-        {
-            "identifier": 10,
-            "type": []
-        },
-        {
-            "identifier": 11,
-            "type": [
-                {
-                    "type": "int32"
-                },
-                {
-                    "type": "int32"
-                }
-            ]
-        },
-        {
-            "identifier": 12,
-            "type": [
-                {
-                    "type": "int32"
-                }
-            ]
-        },
-        {
-            "identifier": 13,
-            "type": []
-        },
-        {
-            "identifier": 14,
-            "type": []
-        },
-        {
-            "identifier": 15,
-            "type": [
-                {
-                    "type": "int32"
-                },
-                {
-                    "type": "int32"
-                }
-            ]
-        },
-        {
-            "identifier": 16,
-            "type": [
-                {
-                    "type": "int32"
-                }
-            ]
-        },
-        {
-            "identifier": 17,
+            "identifier": 23,
             "type": []
         },
         {
             "identifier": 18,
-            "type": []
-        },
-        {
-            "identifier": 19,
-            "type": []
-        },
-        {
-            "identifier": 20,
-            "type": [
-                {
-                    "type": "int32"
-                }
-            ]
-        },
-        {
-            "identifier": 21,
-            "type": []
-        },
-        {
-            "identifier": 22,
-            "type": []
-        },
-        {
-            "identifier": 23,
             "type": []
         },
         {
@@ -196,12 +47,15 @@
             ]
         },
         {
-            "identifier": 25,
-            "type": []
-        },
-        {
-            "identifier": 26,
-            "type": []
+            "identifier": 15,
+            "type": [
+                {
+                    "type": "int32"
+                },
+                {
+                    "type": "int32"
+                }
+            ]
         },
         {
             "identifier": 27,
@@ -220,11 +74,62 @@
             ]
         },
         {
-            "identifier": 29,
+            "identifier": 5,
+            "type": [
+                {
+                    "type": "int32"
+                }
+            ]
+        },
+        {
+            "identifier": 20,
+            "type": [
+                {
+                    "type": "int32"
+                }
+            ]
+        },
+        {
+            "identifier": 17,
             "type": []
         },
         {
-            "identifier": 30,
+            "identifier": 14,
+            "type": []
+        },
+        {
+            "identifier": 21,
+            "type": []
+        },
+        {
+            "identifier": 6,
+            "type": [
+                {
+                    "type": "int64"
+                }
+            ]
+        },
+        {
+            "identifier": 11,
+            "type": [
+                {
+                    "type": "int32"
+                },
+                {
+                    "type": "int32"
+                }
+            ]
+        },
+        {
+            "identifier": 16,
+            "type": [
+                {
+                    "type": "int32"
+                }
+            ]
+        },
+        {
+            "identifier": 2,
             "type": []
         },
         {
@@ -236,7 +141,42 @@
             ]
         },
         {
+            "identifier": 9,
+            "type": []
+        },
+        {
+            "identifier": 3,
+            "type": [
+                {
+                    "type": "int32"
+                }
+            ]
+        },
+        {
             "identifier": 32,
+            "type": [
+                {
+                    "type": "int32"
+                }
+            ]
+        },
+        {
+            "identifier": 0,
+            "type": [
+                {
+                    "type": "int32"
+                },
+                {
+                    "type": "int32"
+                }
+            ]
+        },
+        {
+            "identifier": 29,
+            "type": []
+        },
+        {
+            "identifier": 1,
             "type": [
                 {
                     "type": "int32"
@@ -254,17 +194,104 @@
                     }
                 }
             ]
+        },
+        {
+            "identifier": 26,
+            "type": []
+        },
+        {
+            "identifier": 8,
+            "type": [
+                {
+                    "type": "array",
+                    "length": 12,
+                    "element_type": {
+                        "type": "int8"
+                    }
+                }
+            ]
+        },
+        {
+            "identifier": 19,
+            "type": []
+        },
+        {
+            "identifier": 25,
+            "type": []
+        },
+        {
+            "identifier": 13,
+            "type": []
+        },
+        {
+            "identifier": 22,
+            "type": []
+        },
+        {
+            "identifier": 30,
+            "type": []
+        },
+        {
+            "identifier": 7,
+            "type": [
+                {
+                    "type": "int32"
+                }
+            ]
+        },
+        {
+            "identifier": 12,
+            "type": [
+                {
+                    "type": "int32"
+                }
+            ]
+        },
+        {
+            "identifier": 4,
+            "type": []
+        },
+        {
+            "identifier": 10,
+            "type": []
         }
     ],
     "data": [],
     "string_literals": [],
     "function_declarations": [
         {
-            "identifier": 0,
-            "name": "sum",
-            "parameters": 0,
+            "identifier": 3,
+            "name": "test3",
+            "parameters": 6,
             "vararg": false,
-            "returns": 1,
+            "returns": 7,
+            "returns_twice": false,
+            "no_return": false
+        },
+        {
+            "identifier": 15,
+            "name": "test3",
+            "parameters": 31,
+            "vararg": false,
+            "returns": 32,
+            "returns_twice": false,
+            "no_return": false
+        },
+        {
+            "identifier": 10,
+            "name": "call4",
+            "parameters": 21,
+            "vararg": false,
+            "returns": 22,
+            "returns_twice": false,
+            "no_return": false
+        },
+        {
+            "identifier": 5,
+            "name": "sum",
+            "parameters": 11,
+            "vararg": false,
+            "returns": 12,
             "returns_twice": false,
             "no_return": false
         },
@@ -278,20 +305,11 @@
             "no_return": false
         },
         {
-            "identifier": 2,
-            "name": "test2",
-            "parameters": 4,
+            "identifier": 8,
+            "name": "call3",
+            "parameters": 17,
             "vararg": false,
-            "returns": 5,
-            "returns_twice": false,
-            "no_return": false
-        },
-        {
-            "identifier": 3,
-            "name": "test3",
-            "parameters": 6,
-            "vararg": false,
-            "returns": 7,
+            "returns": 18,
             "returns_twice": false,
             "no_return": false
         },
@@ -305,11 +323,29 @@
             "no_return": false
         },
         {
-            "identifier": 5,
-            "name": "sum",
-            "parameters": 11,
+            "identifier": 14,
+            "name": "call6",
+            "parameters": 29,
             "vararg": false,
-            "returns": 12,
+            "returns": 30,
+            "returns_twice": false,
+            "no_return": false
+        },
+        {
+            "identifier": 13,
+            "name": "test3",
+            "parameters": 27,
+            "vararg": false,
+            "returns": 28,
+            "returns_twice": false,
+            "no_return": false
+        },
+        {
+            "identifier": 0,
+            "name": "sum",
+            "parameters": 0,
+            "vararg": false,
+            "returns": 1,
             "returns_twice": false,
             "no_return": false
         },
@@ -332,29 +368,11 @@
             "no_return": false
         },
         {
-            "identifier": 8,
-            "name": "call3",
-            "parameters": 17,
+            "identifier": 2,
+            "name": "test2",
+            "parameters": 4,
             "vararg": false,
-            "returns": 18,
-            "returns_twice": false,
-            "no_return": false
-        },
-        {
-            "identifier": 9,
-            "name": "test",
-            "parameters": 19,
-            "vararg": false,
-            "returns": 20,
-            "returns_twice": false,
-            "no_return": false
-        },
-        {
-            "identifier": 10,
-            "name": "call4",
-            "parameters": 21,
-            "vararg": false,
-            "returns": 22,
+            "returns": 5,
             "returns_twice": false,
             "no_return": false
         },
@@ -368,38 +386,20 @@
             "no_return": false
         },
         {
+            "identifier": 9,
+            "name": "test",
+            "parameters": 19,
+            "vararg": false,
+            "returns": 20,
+            "returns_twice": false,
+            "no_return": false
+        },
+        {
             "identifier": 12,
             "name": "call5",
             "parameters": 25,
             "vararg": false,
             "returns": 26,
-            "returns_twice": false,
-            "no_return": false
-        },
-        {
-            "identifier": 13,
-            "name": "test3",
-            "parameters": 27,
-            "vararg": false,
-            "returns": 28,
-            "returns_twice": false,
-            "no_return": false
-        },
-        {
-            "identifier": 14,
-            "name": "call6",
-            "parameters": 29,
-            "vararg": false,
-            "returns": 30,
-            "returns_twice": false,
-            "no_return": false
-        },
-        {
-            "identifier": 15,
-            "name": "test3",
-            "parameters": 31,
-            "vararg": false,
-            "returns": 32,
             "returns_twice": false,
             "no_return": false
         }

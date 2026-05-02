@@ -43,6 +43,14 @@
             ]
         },
         {
+            "identifier": 3,
+            "type": [
+                {
+                    "type": "int32"
+                }
+            ]
+        },
+        {
             "identifier": 1,
             "type": [
                 {
@@ -63,14 +71,6 @@
                     "element_type": {
                         "type": "int8"
                     }
-                }
-            ]
-        },
-        {
-            "identifier": 3,
-            "type": [
-                {
-                    "type": "int32"
                 }
             ]
         }

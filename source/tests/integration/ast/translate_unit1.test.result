@@ -87,6 +87,106 @@
     ],
     "types": [
         {
+            "identifier": 23,
+            "type": []
+        },
+        {
+            "identifier": 18,
+            "type": [
+                {
+                    "type": "int64"
+                }
+            ]
+        },
+        {
+            "identifier": 24,
+            "type": [
+                {
+                    "type": "int64"
+                }
+            ]
+        },
+        {
+            "identifier": 15,
+            "type": [
+                {
+                    "type": "array",
+                    "length": 10,
+                    "element_type": {
+                        "type": "int8"
+                    }
+                }
+            ]
+        },
+        {
+            "identifier": 27,
+            "type": [
+                {
+                    "type": "int64"
+                }
+            ]
+        },
+        {
+            "identifier": 5,
+            "type": []
+        },
+        {
+            "identifier": 20,
+            "type": []
+        },
+        {
+            "identifier": 17,
+            "type": []
+        },
+        {
+            "identifier": 14,
+            "type": []
+        },
+        {
+            "identifier": 21,
+            "type": []
+        },
+        {
+            "identifier": 6,
+            "type": [
+                {
+                    "type": "int64"
+                }
+            ]
+        },
+        {
+            "identifier": 11,
+            "type": []
+        },
+        {
+            "identifier": 16,
+            "type": [
+                {
+                    "type": "int64"
+                }
+            ]
+        },
+        {
+            "identifier": 2,
+            "type": [
+                {
+                    "type": "int64"
+                }
+            ]
+        },
+        {
+            "identifier": 9,
+            "type": [
+                {
+                    "type": "int64"
+                }
+            ]
+        },
+        {
+            "identifier": 3,
+            "type": []
+        },
+        {
             "identifier": 0,
             "type": [
                 {
@@ -103,35 +203,7 @@
             ]
         },
         {
-            "identifier": 2,
-            "type": [
-                {
-                    "type": "int64"
-                }
-            ]
-        },
-        {
-            "identifier": 3,
-            "type": []
-        },
-        {
-            "identifier": 4,
-            "type": []
-        },
-        {
-            "identifier": 5,
-            "type": []
-        },
-        {
-            "identifier": 6,
-            "type": [
-                {
-                    "type": "int64"
-                }
-            ]
-        },
-        {
-            "identifier": 7,
+            "identifier": 26,
             "type": [
                 {
                     "type": "int64"
@@ -143,78 +215,6 @@
             "type": []
         },
         {
-            "identifier": 9,
-            "type": [
-                {
-                    "type": "int64"
-                }
-            ]
-        },
-        {
-            "identifier": 10,
-            "type": [
-                {
-                    "type": "int64"
-                }
-            ]
-        },
-        {
-            "identifier": 11,
-            "type": []
-        },
-        {
-            "identifier": 12,
-            "type": [
-                {
-                    "type": "int64"
-                }
-            ]
-        },
-        {
-            "identifier": 13,
-            "type": [
-                {
-                    "type": "int64"
-                }
-            ]
-        },
-        {
-            "identifier": 14,
-            "type": []
-        },
-        {
-            "identifier": 15,
-            "type": [
-                {
-                    "type": "array",
-                    "length": 10,
-                    "element_type": {
-                        "type": "int8"
-                    }
-                }
-            ]
-        },
-        {
-            "identifier": 16,
-            "type": [
-                {
-                    "type": "int64"
-                }
-            ]
-        },
-        {
-            "identifier": 17,
-            "type": []
-        },
-        {
-            "identifier": 18,
-            "type": [
-                {
-                    "type": "int64"
-                }
-            ]
-        },
-        {
             "identifier": 19,
             "type": [
                 {
@@ -223,38 +223,6 @@
                     "element_type": {
                         "type": "int8"
                     }
-                }
-            ]
-        },
-        {
-            "identifier": 20,
-            "type": []
-        },
-        {
-            "identifier": 21,
-            "type": []
-        },
-        {
-            "identifier": 22,
-            "type": [
-                {
-                    "type": "array",
-                    "length": 10,
-                    "element_type": {
-                        "type": "int8"
-                    }
-                }
-            ]
-        },
-        {
-            "identifier": 23,
-            "type": []
-        },
-        {
-            "identifier": 24,
-            "type": [
-                {
-                    "type": "int64"
                 }
             ]
         },
@@ -271,7 +239,7 @@
             ]
         },
         {
-            "identifier": 26,
+            "identifier": 13,
             "type": [
                 {
                     "type": "int64"
@@ -279,7 +247,39 @@
             ]
         },
         {
-            "identifier": 27,
+            "identifier": 22,
+            "type": [
+                {
+                    "type": "array",
+                    "length": 10,
+                    "element_type": {
+                        "type": "int8"
+                    }
+                }
+            ]
+        },
+        {
+            "identifier": 7,
+            "type": [
+                {
+                    "type": "int64"
+                }
+            ]
+        },
+        {
+            "identifier": 12,
+            "type": [
+                {
+                    "type": "int64"
+                }
+            ]
+        },
+        {
+            "identifier": 4,
+            "type": []
+        },
+        {
+            "identifier": 10,
             "type": [
                 {
                     "type": "int64"
@@ -396,38 +396,11 @@
     ],
     "function_declarations": [
         {
-            "identifier": 0,
-            "name": "add_value",
-            "parameters": 3,
+            "identifier": 8,
+            "name": "invoke_callback",
+            "parameters": 23,
             "vararg": false,
-            "returns": 4,
-            "returns_twice": false,
-            "no_return": false
-        },
-        {
-            "identifier": 1,
-            "name": "get_value",
-            "parameters": 5,
-            "vararg": false,
-            "returns": 6,
-            "returns_twice": false,
-            "no_return": false
-        },
-        {
-            "identifier": 2,
-            "name": "set_value",
-            "parameters": 7,
-            "vararg": false,
-            "returns": 8,
-            "returns_twice": false,
-            "no_return": false
-        },
-        {
-            "identifier": 3,
-            "name": "value_callback",
-            "parameters": 9,
-            "vararg": false,
-            "returns": 10,
+            "returns": 24,
             "returns_twice": false,
             "no_return": false
         },
@@ -441,11 +414,38 @@
             "no_return": false
         },
         {
+            "identifier": 9,
+            "name": "value_callback",
+            "parameters": 26,
+            "vararg": false,
+            "returns": 27,
+            "returns_twice": false,
+            "no_return": false
+        },
+        {
+            "identifier": 3,
+            "name": "value_callback",
+            "parameters": 9,
+            "vararg": false,
+            "returns": 10,
+            "returns_twice": false,
+            "no_return": false
+        },
+        {
             "identifier": 5,
             "name": "set_value",
             "parameters": 13,
             "vararg": false,
             "returns": 14,
+            "returns_twice": false,
+            "no_return": false
+        },
+        {
+            "identifier": 0,
+            "name": "add_value",
+            "parameters": 3,
+            "vararg": false,
+            "returns": 4,
             "returns_twice": false,
             "no_return": false
         },
@@ -468,20 +468,20 @@
             "no_return": false
         },
         {
-            "identifier": 8,
-            "name": "invoke_callback",
-            "parameters": 23,
+            "identifier": 1,
+            "name": "get_value",
+            "parameters": 5,
             "vararg": false,
-            "returns": 24,
+            "returns": 6,
             "returns_twice": false,
             "no_return": false
         },
         {
-            "identifier": 9,
-            "name": "value_callback",
-            "parameters": 26,
+            "identifier": 2,
+            "name": "set_value",
+            "parameters": 7,
             "vararg": false,
-            "returns": 27,
+            "returns": 8,
             "returns_twice": false,
             "no_return": false
         }

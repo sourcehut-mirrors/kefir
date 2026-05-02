@@ -2,15 +2,15 @@
     "identifiers": [],
     "types": [
         {
-            "identifier": 0,
-            "type": []
+            "identifier": 19,
+            "type": [
+                {
+                    "type": "int16"
+                }
+            ]
         },
         {
-            "identifier": 1,
-            "type": []
-        },
-        {
-            "identifier": 2,
+            "identifier": 16,
             "type": []
         },
         {
@@ -18,11 +18,67 @@
             "type": []
         },
         {
+            "identifier": 15,
+            "type": []
+        },
+        {
+            "identifier": 10,
+            "type": []
+        },
+        {
+            "identifier": 20,
+            "type": [
+                {
+                    "type": "float"
+                }
+            ]
+        },
+        {
+            "identifier": 5,
+            "type": []
+        },
+        {
+            "identifier": 1,
+            "type": []
+        },
+        {
+            "identifier": 8,
+            "type": [
+                {
+                    "type": "array",
+                    "length": 4,
+                    "element_type": {
+                        "type": "int8"
+                    }
+                }
+            ]
+        },
+        {
             "identifier": 4,
             "type": []
         },
         {
-            "identifier": 5,
+            "identifier": 17,
+            "type": []
+        },
+        {
+            "identifier": 14,
+            "type": []
+        },
+        {
+            "identifier": 18,
+            "type": [
+                {
+                    "type": "int8"
+                }
+            ]
+        },
+        {
+            "identifier": 13,
+            "type": []
+        },
+        {
+            "identifier": 0,
             "type": []
         },
         {
@@ -42,16 +98,12 @@
             ]
         },
         {
-            "identifier": 8,
-            "type": [
-                {
-                    "type": "array",
-                    "length": 4,
-                    "element_type": {
-                        "type": "int8"
-                    }
-                }
-            ]
+            "identifier": 2,
+            "type": []
+        },
+        {
+            "identifier": 11,
+            "type": []
         },
         {
             "identifier": 9,
@@ -62,71 +114,55 @@
             ]
         },
         {
-            "identifier": 10,
-            "type": []
-        },
-        {
-            "identifier": 11,
-            "type": []
-        },
-        {
             "identifier": 12,
             "type": []
-        },
-        {
-            "identifier": 13,
-            "type": []
-        },
-        {
-            "identifier": 14,
-            "type": []
-        },
-        {
-            "identifier": 15,
-            "type": []
-        },
-        {
-            "identifier": 16,
-            "type": []
-        },
-        {
-            "identifier": 17,
-            "type": []
-        },
-        {
-            "identifier": 18,
-            "type": [
-                {
-                    "type": "int8"
-                }
-            ]
-        },
-        {
-            "identifier": 19,
-            "type": [
-                {
-                    "type": "int16"
-                }
-            ]
-        },
-        {
-            "identifier": 20,
-            "type": [
-                {
-                    "type": "float"
-                }
-            ]
         }
     ],
     "data": [],
     "string_literals": [],
     "function_declarations": [
         {
+            "identifier": 4,
+            "name": "sub_floating_point",
+            "parameters": 12,
+            "vararg": false,
+            "returns": 13,
+            "returns_twice": false,
+            "no_return": false
+        },
+        {
+            "identifier": 3,
+            "name": "sub_integral",
+            "parameters": 10,
+            "vararg": false,
+            "returns": 11,
+            "returns_twice": false,
+            "no_return": false
+        },
+        {
+            "identifier": 5,
+            "name": "sub_pointers",
+            "parameters": 14,
+            "vararg": false,
+            "returns": 15,
+            "returns_twice": false,
+            "no_return": false
+        },
+        {
             "identifier": 0,
             "name": "add_integral",
             "parameters": 0,
             "vararg": false,
             "returns": 1,
+            "returns_twice": false,
+            "no_return": false
+        },
+        {
+            "identifier": 6,
+            "name": "sub_pointer_integer",
+            "parameters": 16,
+            "vararg": false,
+            "returns": 17,
             "returns_twice": false,
             "no_return": false
         },
@@ -145,42 +181,6 @@
             "parameters": 4,
             "vararg": false,
             "returns": 5,
-            "returns_twice": false,
-            "no_return": false
-        },
-        {
-            "identifier": 3,
-            "name": "sub_integral",
-            "parameters": 10,
-            "vararg": false,
-            "returns": 11,
-            "returns_twice": false,
-            "no_return": false
-        },
-        {
-            "identifier": 4,
-            "name": "sub_floating_point",
-            "parameters": 12,
-            "vararg": false,
-            "returns": 13,
-            "returns_twice": false,
-            "no_return": false
-        },
-        {
-            "identifier": 5,
-            "name": "sub_pointers",
-            "parameters": 14,
-            "vararg": false,
-            "returns": 15,
-            "returns_twice": false,
-            "no_return": false
-        },
-        {
-            "identifier": 6,
-            "name": "sub_pointer_integer",
-            "parameters": 16,
-            "vararg": false,
-            "returns": 17,
             "returns_twice": false,
             "no_return": false
         }

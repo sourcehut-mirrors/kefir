@@ -24,31 +24,15 @@
     ],
     "types": [
         {
-            "identifier": 0,
-            "type": []
-        },
-        {
-            "identifier": 1,
+            "identifier": 4,
             "type": [
                 {
                     "type": "int32"
                 }
             ]
-        },
-        {
-            "identifier": 2,
-            "type": []
         },
         {
             "identifier": 3,
-            "type": [
-                {
-                    "type": "int32"
-                }
-            ]
-        },
-        {
-            "identifier": 4,
             "type": [
                 {
                     "type": "int32"
@@ -68,6 +52,10 @@
             ]
         },
         {
+            "identifier": 0,
+            "type": []
+        },
+        {
             "identifier": 6,
             "type": [
                 {
@@ -82,6 +70,18 @@
                     "type": "int32"
                 }
             ]
+        },
+        {
+            "identifier": 1,
+            "type": [
+                {
+                    "type": "int32"
+                }
+            ]
+        },
+        {
+            "identifier": 2,
+            "type": []
         }
     ],
     "data": [
@@ -124,20 +124,20 @@
     ],
     "function_declarations": [
         {
-            "identifier": 0,
-            "name": "fn",
-            "parameters": 0,
-            "vararg": false,
-            "returns": 1,
-            "returns_twice": false,
-            "no_return": false
-        },
-        {
             "identifier": 1,
             "name": "fn",
             "parameters": 2,
             "vararg": false,
             "returns": 3,
+            "returns_twice": false,
+            "no_return": false
+        },
+        {
+            "identifier": 0,
+            "name": "fn",
+            "parameters": 0,
+            "vararg": false,
+            "returns": 1,
             "returns_twice": false,
             "no_return": false
         }

@@ -25,6 +25,18 @@
             ]
         },
         {
+            "identifier": 4,
+            "type": []
+        },
+        {
+            "identifier": 3,
+            "type": [
+                {
+                    "type": "float"
+                }
+            ]
+        },
+        {
             "identifier": 1,
             "type": [
                 {
@@ -39,18 +51,6 @@
                     "type": "int8"
                 }
             ]
-        },
-        {
-            "identifier": 3,
-            "type": [
-                {
-                    "type": "float"
-                }
-            ]
-        },
-        {
-            "identifier": 4,
-            "type": []
         },
         {
             "identifier": 5,

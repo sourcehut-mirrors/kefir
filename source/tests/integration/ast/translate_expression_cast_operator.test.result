@@ -25,6 +25,10 @@
             ]
         },
         {
+            "identifier": 3,
+            "type": []
+        },
+        {
             "identifier": 1,
             "type": [
                 {
@@ -39,10 +43,6 @@
         },
         {
             "identifier": 2,
-            "type": []
-        },
-        {
-            "identifier": 3,
             "type": []
         }
     ],
