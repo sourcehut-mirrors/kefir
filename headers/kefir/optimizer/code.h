@@ -29,6 +29,9 @@
 
 typedef struct kefir_opt_code_container kefir_opt_code_container_t;  // Forward declaration
 
+#define KEFIR_OPT_INSTR_REF_GENERATION_WIDTH 4
+#define KEFIR_OPT_INSTR_REF_INDEX_OF(_ref) (((kefir_uint32_t) (_ref)) >> KEFIR_OPT_INSTR_REF_GENERATION_WIDTH)
+
 typedef enum kefir_opt_opcode {
 #define KEFIR_OPT_OPCODE(_id, _name, _class) KEFIR_OPT_OPCODE_##_id
     KEFIR_OPTIMIZER_OPCODE_DEFS(KEFIR_OPT_OPCODE, COMMA)

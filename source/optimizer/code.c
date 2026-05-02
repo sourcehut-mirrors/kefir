@@ -24,11 +24,10 @@
 #include "kefir/core/util.h"
 #include <string.h>
 
-#define GENERATION_WIDTH 4
-#define MAX_GENERATION ((((kefir_uint32_t) 1) << (GENERATION_WIDTH)) - 1)
+#define MAX_GENERATION ((((kefir_uint32_t) 1) << (KEFIR_OPT_INSTR_REF_GENERATION_WIDTH)) - 1)
 #define GENERATION_OF(_ref) (((kefir_uint32_t) (_ref)) & MAX_GENERATION)
-#define INDEX_OF(_ref) (((kefir_uint32_t) (_ref)) >> GENERATION_WIDTH)
-#define REF_FROM(_generation, _index) ((((kefir_uint32_t) (_index)) << GENERATION_WIDTH) | GENERATION_OF((_generation)))
+#define REF_FROM(_generation, _index) \
+    ((((kefir_uint32_t) (_index)) << KEFIR_OPT_INSTR_REF_GENERATION_WIDTH) | GENERATION_OF((_generation)))
 
 kefir_result_t kefir_opt_comparison_operation_inverse(kefir_opt_comparison_operation_t original_comparison,
                                                       kefir_opt_comparison_operation_t *comparison_ptr) {
@@ -657,14 +656,14 @@ static kefir_result_t code_container_instr_mutable(const struct kefir_opt_code_c
                                                    kefir_opt_instruction_ref_t instr_id,
                                                    struct kefir_opt_instruction **instr_ptr) {
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code container"));
-    REQUIRE(instr_id != KEFIR_ID_NONE && INDEX_OF(instr_id) < code->length,
+    REQUIRE(instr_id != KEFIR_ID_NONE && KEFIR_OPT_INSTR_REF_INDEX_OF(instr_id) < code->length,
             KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS,
                             "Requested optimizer instruction identifier is out of bounds of the code container"));
     REQUIRE(instr_ptr != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to optimizer instruction"));
 
     kefir_uint32_t generation = GENERATION_OF(instr_id);
-    kefir_size_t index = INDEX_OF(instr_id);
+    kefir_size_t index = KEFIR_OPT_INSTR_REF_INDEX_OF(instr_id);
 
     struct kefir_opt_instruction *instr = &code->code[index];
     REQUIRE(instr->generation == generation && instr->block_id != KEFIR_ID_NONE,
@@ -972,7 +971,7 @@ kefir_result_t drop_instr_impl(struct kefir_mem *mem, struct kefir_opt_code_cont
 
     if (instr->generation < MAX_GENERATION) {
         instr->siblings.next = code->recycle_instr_idx;
-        code->recycle_instr_idx = INDEX_OF(instr_id);
+        code->recycle_instr_idx = KEFIR_OPT_INSTR_REF_INDEX_OF(instr_id);
     }
 
     return KEFIR_OK;
@@ -1762,7 +1761,7 @@ kefir_result_t kefir_opt_code_container_new_call(struct kefir_mem *mem, struct k
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code container"));
     REQUIRE(instr_ref_ptr != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to optimizer call instruction reference"));
-    REQUIRE(function_ref == KEFIR_ID_NONE || INDEX_OF(function_ref) < code->length,
+    REQUIRE(function_ref == KEFIR_ID_NONE || KEFIR_OPT_INSTR_REF_INDEX_OF(function_ref) < code->length,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid function instruction reference"));
 
     REQUIRE_OK(new_call_impl(mem, code, block_id, func_decl_id, argc, function_ref,
@@ -1779,7 +1778,7 @@ kefir_result_t kefir_opt_code_container_new_tail_call(struct kefir_mem *mem, str
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code container"));
     REQUIRE(instr_ref_ptr != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to optimizer call instruction reference"));
-    REQUIRE(function_ref == KEFIR_ID_NONE || INDEX_OF(function_ref) < code->length,
+    REQUIRE(function_ref == KEFIR_ID_NONE || KEFIR_OPT_INSTR_REF_INDEX_OF(function_ref) < code->length,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid function instruction reference"));
 
     REQUIRE_OK(new_call_impl(
