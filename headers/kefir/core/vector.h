@@ -41,5 +41,6 @@ kefir_result_t kefir_vector_extend(struct kefir_vector *, kefir_size_t);
 kefir_result_t kefir_vector_alloc(struct kefir_mem *, kefir_size_t, kefir_size_t, struct kefir_vector *);
 kefir_result_t kefir_vector_realloc(struct kefir_mem *, kefir_size_t, struct kefir_vector *);
 kefir_result_t kefir_vector_free(struct kefir_mem *, struct kefir_vector *);
+kefir_result_t kefir_vector_clear(struct kefir_mem *, struct kefir_vector *);
 
 #endif

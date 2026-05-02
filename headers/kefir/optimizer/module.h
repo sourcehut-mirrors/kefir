@@ -35,7 +35,7 @@ typedef struct kefir_opt_module {
 
 kefir_result_t kefir_opt_module_init(struct kefir_mem *, struct kefir_ir_module *, struct kefir_opt_module *);
 kefir_result_t kefir_opt_module_construct(struct kefir_mem *, const struct kefir_ir_target_platform *,
-                                          struct kefir_opt_module *);
+                                          struct kefir_opt_module *, kefir_bool_t);
 kefir_result_t kefir_opt_module_free(struct kefir_mem *, struct kefir_opt_module *);
 
 kefir_result_t kefir_opt_module_get_type(const struct kefir_opt_module *, kefir_id_t,

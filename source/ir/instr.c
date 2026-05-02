@@ -198,6 +198,15 @@ kefir_result_t kefir_irblock_free(struct kefir_mem *mem, struct kefir_irblock *b
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_irblock_reset(struct kefir_mem *mem, struct kefir_irblock *block) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(block != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR block"));
+
+    REQUIRE_OK(kefir_vector_clear(mem, &block->content));
+    REQUIRE_OK(kefir_hashtree_clean(mem, &block->public_labels));
+    return KEFIR_OK;
+}
+
 union double_halves {
     kefir_float64_t float64;
     uint64_t halves[2];

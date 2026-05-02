@@ -410,26 +410,27 @@ const struct kefir_ir_function_decl *kefir_ir_module_function_declaration_next(
     }
 }
 
-const struct kefir_ir_function *kefir_ir_module_function_iter(const struct kefir_ir_module *module,
-                                                              struct kefir_ir_module_function_iterator *iter,
-                                                              const char **key_ptr) {
+struct kefir_ir_function *kefir_ir_module_function_iter(const struct kefir_ir_module *module,
+                                                        struct kefir_ir_module_function_iterator *iter,
+                                                        const char **key_ptr) {
     REQUIRE(module != NULL, NULL);
     REQUIRE(iter != NULL, NULL);
     const struct kefir_hashtree_node *node = kefir_hashtree_iter(&module->functions, &iter->iter);
     if (node != NULL) {
         ASSIGN_PTR(key_ptr, (const char *) node->key);
-        return (const struct kefir_ir_function *) node->value;
+        return (struct kefir_ir_function *) node->value;
     } else {
         return NULL;
     }
 }
-const struct kefir_ir_function *kefir_ir_module_function_next(struct kefir_ir_module_function_iterator *iter,
-                                                              const char **key_ptr) {
+
+struct kefir_ir_function *kefir_ir_module_function_next(struct kefir_ir_module_function_iterator *iter,
+                                                        const char **key_ptr) {
     REQUIRE(iter != NULL, NULL);
     const struct kefir_hashtree_node *node = kefir_hashtree_next(&iter->iter);
     if (node != NULL) {
         ASSIGN_PTR(key_ptr, (const char *) node->key);
-        return (const struct kefir_ir_function *) node->value;
+        return (struct kefir_ir_function *) node->value;
     } else {
         return NULL;
     }

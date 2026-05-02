@@ -107,7 +107,7 @@ static kefir_result_t generate_runtime_functions_impl(struct kefir_mem *mem, FIL
         return res;
     });
 
-    res = kefir_compiler_optimize(mem, context, &ir_module, &opt_module);
+    res = kefir_compiler_optimize(mem, context, &ir_module, &opt_module, true);
     REQUIRE_CHAIN(&res, kefir_compiler_codegen_optimized(mem, context, &opt_module, output));
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_opt_module_free(mem, &opt_module);

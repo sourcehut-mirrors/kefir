@@ -752,7 +752,7 @@ static kefir_result_t dump_opt_impl(struct kefir_mem *mem, const struct kefir_co
     REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, KEFIR_AST_NODE_BASE(unit)));
 
     REQUIRE_OK(kefir_opt_module_init(mem, &module, &opt_module));
-    REQUIRE_OK(kefir_compiler_optimize(mem, compiler, &module, &opt_module));
+    REQUIRE_OK(kefir_compiler_optimize(mem, compiler, &module, &opt_module, true));
 
     if (output != NULL) {
         struct kefir_json_output json;
@@ -815,7 +815,7 @@ static kefir_result_t dump_asm_impl(struct kefir_mem *mem, const struct kefir_co
 
     REQUIRE_OK(kefir_opt_module_init(mem, &module, &opt_module));
     if (compiler->profile->optimizer_enabled) {
-        REQUIRE_OK(kefir_compiler_optimize(mem, compiler, &module, &opt_module));
+        REQUIRE_OK(kefir_compiler_optimize(mem, compiler, &module, &opt_module, true));
         if (output != NULL) {
             REQUIRE_OK(kefir_compiler_codegen_optimized(mem, compiler, &opt_module, output));
         }

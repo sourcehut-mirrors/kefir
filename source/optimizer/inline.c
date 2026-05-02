@@ -1146,7 +1146,7 @@ static kefir_result_t inline_debug_entries(struct do_inline_param *param) {
     REQUIRE_OK(kefir_ir_debug_entry_add_attribute(
         param->mem, entries, &param->module->ir_module->symbols, inlined_function_lexical_block_id,
         &KEFIR_IR_DEBUG_ENTRY_ATTR_CODE_END(ir_mapping_base +
-                                            kefir_irblock_length(&param->src_function->ir_func->body))));
+                                            param->src_function->debug_info_mapping.original_ir_code_length)));
 
     for (res = kefir_ir_debug_entry_child_iter(entries, param->src_function->ir_func->debug_info.subprogram_id,
                                                &entry_iter, &child_entry_id);
@@ -1260,7 +1260,8 @@ static kefir_result_t do_inline_impl(struct do_inline_param *param) {
     REQUIRE_OK(inline_debug_source_map(param));
     REQUIRE_OK(inline_debug_entries(param));
     REQUIRE_OK(inline_debug_allocation_info(param));
-    param->dst_function->debug_info_mapping.ir_code_length += kefir_irblock_length(&param->src_function->ir_func->body);
+    param->dst_function->debug_info_mapping.ir_code_length +=
+        param->src_function->debug_info_mapping.original_ir_code_length;
 
     return KEFIR_OK;
 }

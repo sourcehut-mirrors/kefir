@@ -135,3 +135,15 @@ kefir_result_t kefir_vector_free(struct kefir_mem *mem, struct kefir_vector *vec
     }
     return KEFIR_OK;
 }
+
+kefir_result_t kefir_vector_clear(struct kefir_mem *mem, struct kefir_vector *vector) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(vector != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid vector"));
+    if (vector->content != NULL) {
+        KEFIR_FREE(mem, vector->content);
+        vector->content = NULL;
+        vector->length = 0;
+        vector->capacity = 0;
+    }
+    return KEFIR_OK;
+}

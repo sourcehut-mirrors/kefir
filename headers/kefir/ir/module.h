@@ -149,11 +149,9 @@ typedef struct kefir_ir_module_function_iterator {
     struct kefir_hashtree_node_iterator iter;
 } kefir_ir_module_function_iterator_t;
 
-const struct kefir_ir_function *kefir_ir_module_function_iter(const struct kefir_ir_module *,
-                                                              struct kefir_ir_module_function_iterator *,
-                                                              const char **);
-const struct kefir_ir_function *kefir_ir_module_function_next(struct kefir_ir_module_function_iterator *,
-                                                              const char **);
+struct kefir_ir_function *kefir_ir_module_function_iter(const struct kefir_ir_module *,
+                                                        struct kefir_ir_module_function_iterator *, const char **);
+struct kefir_ir_function *kefir_ir_module_function_next(struct kefir_ir_module_function_iterator *, const char **);
 
 typedef struct kefir_ir_module_identifier_iterator {
     struct kefir_hashtree_node_iterator iter;

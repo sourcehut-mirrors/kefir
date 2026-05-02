@@ -117,7 +117,7 @@ kefir_result_t kefir_opt_module_init(struct kefir_mem *mem, struct kefir_ir_modu
 }
 
 kefir_result_t kefir_opt_module_construct(struct kefir_mem *mem, const struct kefir_ir_target_platform *target_platform,
-                                          struct kefir_opt_module *module) {
+                                          struct kefir_opt_module *module, kefir_bool_t consume) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(target_platform != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR target platform"));
     REQUIRE(module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to optimizer module"));
@@ -132,10 +132,13 @@ kefir_result_t kefir_opt_module_construct(struct kefir_mem *mem, const struct ke
     }
 
     struct kefir_ir_module_function_iterator iter2;
-    for (const struct kefir_ir_function *ir_func = kefir_ir_module_function_iter(module->ir_module, &iter2, NULL);
+    for (struct kefir_ir_function *ir_func = kefir_ir_module_function_iter(module->ir_module, &iter2, NULL);
          ir_func != NULL; ir_func = kefir_ir_module_function_next(&iter2, NULL)) {
 
         REQUIRE_OK(add_func(mem, module, ir_func));
+        if (consume) {
+            REQUIRE_OK(kefir_irblock_reset(mem, &ir_func->body));
+        }
     }
     return KEFIR_OK;
 }

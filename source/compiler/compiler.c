@@ -521,13 +521,14 @@ kefir_result_t kefir_compiler_translate(struct kefir_mem *mem, struct kefir_comp
 }
 
 kefir_result_t kefir_compiler_optimize(struct kefir_mem *mem, struct kefir_compiler_context *context,
-                                       struct kefir_ir_module *ir_module, struct kefir_opt_module *opt_module) {
+                                       struct kefir_ir_module *ir_module, struct kefir_opt_module *opt_module,
+                                       kefir_bool_t consume) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid compiler context"));
     REQUIRE(ir_module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR module"));
     REQUIRE(opt_module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer module"));
 
-    REQUIRE_OK(kefir_opt_module_construct(mem, context->translator_env.target_platform, opt_module));
+    REQUIRE_OK(kefir_opt_module_construct(mem, context->translator_env.target_platform, opt_module, consume));
     struct kefir_ir_module_function_iterator iter;
     for (const struct kefir_ir_function *ir_func = kefir_ir_module_function_iter(ir_module, &iter, NULL);
          ir_func != NULL; ir_func = kefir_ir_module_function_next(&iter, NULL)) {

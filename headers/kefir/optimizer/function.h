@@ -34,6 +34,7 @@ typedef struct kefir_opt_function {
     struct kefir_opt_code_debug_info debug_info;
     struct {
         kefir_size_t ir_code_length;
+        kefir_size_t original_ir_code_length;
     } debug_info_mapping;
     struct kefir_hashtree inlines;
     kefir_size_t num_of_inlines;
