@@ -204,6 +204,36 @@ static kefir_result_t macro_kefircc_version_fmt(const struct kefir_preprocessor 
     return KEFIR_OK;
 }
 
+#define VERSION_MACRO(_id, _part)                                                                               \
+    MACRO(_id) {                                                                                                \
+        const char part[] = STRINGIFY(_part);                                                                   \
+                                                                                                                \
+        struct kefir_token *allocated_token;                                                                    \
+        REQUIRE_OK(kefir_token_allocator_allocate_empty(mem, token_allocator, &allocated_token));               \
+        REQUIRE_OK(kefir_token_new_pp_number(mem, part, sizeof(part), allocated_token));                        \
+        allocated_token->source_location = *source_location;                                                    \
+        REQUIRE_OK(kefir_token_buffer_emplace(mem, buffer, allocated_token));                                   \
+    }                                                                                                           \
+    MACRO_END                                                                                                   \
+                                                                                                                \
+    static kefir_result_t macro_##_id##_fmt(const struct kefir_preprocessor *preprocessor,                      \
+                                            const struct kefir_preprocessor_macro *macro, FILE *output) {       \
+        REQUIRE(preprocessor != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid preprocessor")); \
+        REQUIRE(macro != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid preprocessor macro"));  \
+        REQUIRE(output != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid file output"));        \
+        ASSIGN_DECL_CAST(struct predefined_macro_payload *, macro_payload, macro->payload);                     \
+        UNUSED(macro_payload);                                                                                  \
+                                                                                                                \
+        fprintf(output, "#define %s %" KEFIR_INT_FMT "\n", macro->identifier, _part);                           \
+        return KEFIR_OK;                                                                                        \
+    }
+
+VERSION_MACRO(kefircc_version_major, KEFIR_VERSION_MAJOR)
+VERSION_MACRO(kefircc_version_minor, KEFIR_VERSION_MINOR)
+VERSION_MACRO(kefircc_version_patch, KEFIR_VERSION_PATCH)
+
+#undef VERSION_MACRO
+
 MACRO(kefircc_full_version) {
     char version_buf[256];
     int len = snprintf(version_buf, sizeof(version_buf) - 1, "%s", KEFIR_VERSION_FULL);
@@ -972,6 +1002,18 @@ kefir_result_t kefir_preprocessor_predefined_macro_scope_init(struct kefir_mem *
     REQUIRE_CHAIN(
         &res, define_predefined_macro(mem, preprocessor, scope, &scope->macros.kefircc_version, "__KEFIRCC_VERSION__",
                                       macro_kefircc_version_apply, macro_kefircc_version_fmt));
+
+    REQUIRE_CHAIN(&res, define_predefined_macro(mem, preprocessor, scope, &scope->macros.kefircc_version_major,
+                                                "__KEFIRCC_VERSION_MAJOR__", macro_kefircc_version_major_apply,
+                                                macro_kefircc_version_major_fmt));
+
+    REQUIRE_CHAIN(&res, define_predefined_macro(mem, preprocessor, scope, &scope->macros.kefircc_version_minor,
+                                                "__KEFIRCC_VERSION_MINOR__", macro_kefircc_version_minor_apply,
+                                                macro_kefircc_version_minor_fmt));
+
+    REQUIRE_CHAIN(&res, define_predefined_macro(mem, preprocessor, scope, &scope->macros.kefircc_version_patch,
+                                                "__KEFIRCC_VERSION_PATCH__", macro_kefircc_version_patch_apply,
+                                                macro_kefircc_version_patch_fmt));
 
     REQUIRE_CHAIN(&res, define_predefined_macro(mem, preprocessor, scope, &scope->macros.kefircc_full_version,
                                                 "__KEFIRCC_FULL_VERSION__", macro_kefircc_full_version_apply,

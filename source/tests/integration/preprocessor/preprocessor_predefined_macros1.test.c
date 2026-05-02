@@ -58,6 +58,9 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
                            "no_vla = __STDC_NO_VLA__\n"
                            "kefircc = __KEFIRCC__\n"
                            "kefircc_version = __KEFIRCC_VERSION__\n"
+                           "kefircc_version_major = __KEFIRCC_VERSION_MAJOR__\n"
+                           "kefircc_version_minor = __KEFIRCC_VERSION_MINOR__\n"
+                           "kefircc_version_patch = __KEFIRCC_VERSION_PATCH__\n"
                            "__ILP32__ __LLP64__ __LP64__ __ILP64__ __SILP64__";
 
     struct kefir_string_pool symbols;
