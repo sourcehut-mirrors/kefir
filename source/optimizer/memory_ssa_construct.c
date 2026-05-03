@@ -507,6 +507,7 @@ static kefir_result_t simplify(struct kefir_mem *mem, struct construct_state *st
 }
 
 static kefir_result_t construct_impl(struct kefir_mem *mem, struct construct_state *state) {
+    REQUIRE_OK(kefir_opt_code_memssa_provision(mem, state->memssa, kefir_opt_code_container_length(state->code)));
     memset(state->processed_instr, 0, sizeof(kefir_bool_t) * state->code->length);
     memset(state->visited_blocks, 0, sizeof(kefir_bool_t) * kefir_opt_code_container_block_count(state->code));
     REQUIRE_OK(collect_def_blocks(mem, state));

@@ -32,7 +32,8 @@ kefir_result_t kefir_opt_code_memssa_init(struct kefir_opt_code_memssa *memssa) 
     memssa->block_length = 0;
     memssa->block_capacity = 0;
     memssa->root_ref = KEFIR_ID_NONE;
-    REQUIRE_OK(kefir_hashtable_init(&memssa->instruction_bindings, &kefir_hashtable_uint_ops));
+    memssa->instruction_bindings = NULL;
+    memssa->instruction_bindings_length = 0;
     return KEFIR_OK;
 }
 
@@ -40,7 +41,7 @@ kefir_result_t kefir_opt_code_memssa_free(struct kefir_mem *mem, struct kefir_op
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(memssa != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer memory ssa"));
 
-    REQUIRE_OK(kefir_hashtable_free(mem, &memssa->instruction_bindings));
+    KEFIR_FREE(mem, memssa->instruction_bindings);
     for (kefir_size_t i = 0; i < memssa->node_length; i++) {
         switch (memssa->nodes[i].type) {
             case KEFIR_OPT_CODE_MEMSSA_ROOT_NODE:
@@ -66,7 +67,7 @@ kefir_result_t kefir_opt_code_memssa_reset(struct kefir_mem *mem, struct kefir_o
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(memssa != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer memory ssa"));
 
-    REQUIRE_OK(kefir_hashtable_clear(mem, &memssa->instruction_bindings));
+    KEFIR_FREE(mem, memssa->instruction_bindings);
     for (kefir_size_t i = 0; i < memssa->node_length; i++) {
         switch (memssa->nodes[i].type) {
             case KEFIR_OPT_CODE_MEMSSA_ROOT_NODE:
@@ -93,6 +94,26 @@ kefir_result_t kefir_opt_code_memssa_reset(struct kefir_mem *mem, struct kefir_o
     memssa->block_length = 0;
     memssa->block_capacity = 0;
     memssa->root_ref = KEFIR_ID_NONE;
+    memssa->instruction_bindings = NULL;
+    memssa->instruction_bindings_length = 0;
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_opt_code_memssa_provision(struct kefir_mem *mem, struct kefir_opt_code_memssa *memssa,
+                                               kefir_size_t length) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(memssa != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer memory ssa"));
+    REQUIRE(length > memssa->instruction_bindings_length, KEFIR_OK);
+
+    kefir_opt_code_memssa_node_ref_t *new_refs =
+        KEFIR_REALLOC(mem, memssa->instruction_bindings, sizeof(kefir_opt_code_memssa_node_ref_t) * length);
+    REQUIRE(new_refs != NULL,
+            KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate memory SSA instruction bindings"));
+    memset(&new_refs[memssa->instruction_bindings_length], -1,
+           sizeof(kefir_opt_code_memssa_node_ref_t) * (length - memssa->instruction_bindings_length));
+
+    memssa->instruction_bindings = new_refs;
+    memssa->instruction_bindings_length = length;
     return KEFIR_OK;
 }
 
@@ -188,8 +209,10 @@ kefir_result_t kefir_opt_code_memssa_new_consume_node(struct kefir_mem *mem, str
     REQUIRE(memssa != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer memory ssa"));
     REQUIRE(predecessor_ref == KEFIR_ID_NONE || predecessor_ref < memssa->node_length,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer memory ssa node reference"));
+    REQUIRE(instr_ref == KEFIR_ID_NONE || KEFIR_OPT_INSTR_REF_INDEX_OF(instr_ref) < memssa->instruction_bindings_length,
+            KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Optimizer instruction out of memory SSA bounds"));
     REQUIRE(instr_ref == KEFIR_ID_NONE ||
-                !kefir_hashtable_has(&memssa->instruction_bindings, (kefir_hashtable_key_t) instr_ref),
+                memssa->instruction_bindings[KEFIR_OPT_INSTR_REF_INDEX_OF(instr_ref)] == KEFIR_ID_NONE,
             KEFIR_SET_ERROR(KEFIR_ALREADY_EXISTS, "Optimizer instruction binding already exists in memory ssa"));
 
     kefir_opt_code_memssa_node_ref_t node_ref = KEFIR_ID_NONE;
@@ -202,12 +225,9 @@ kefir_result_t kefir_opt_code_memssa_new_consume_node(struct kefir_mem *mem, str
     if (predecessor_ref != KEFIR_ID_NONE) {
         REQUIRE_OK(kefir_hashset_add(mem, &memssa->nodes[predecessor_ref].uses, (kefir_hashset_key_t) node_ref));
     }
-    kefir_result_t res = kefir_hashtable_insert(mem, &memssa->instruction_bindings, (kefir_hashtable_key_t) instr_ref,
-                                                (kefir_hashtable_value_t) node_ref);
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        kefir_hashset_delete(&memssa->nodes[predecessor_ref].uses, (kefir_hashset_key_t) node_ref);
-        return res;
-    });
+    if (instr_ref != KEFIR_ID_NONE) {
+        memssa->instruction_bindings[KEFIR_OPT_INSTR_REF_INDEX_OF(instr_ref)] = node_ref;
+    }
     memssa->node_length++;
     ASSIGN_PTR(node_ref_ptr, node_ref);
     return KEFIR_OK;
@@ -243,8 +263,10 @@ kefir_result_t kefir_opt_code_memssa_new_produce_node(struct kefir_mem *mem, str
     REQUIRE(memssa != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer memory ssa"));
     REQUIRE(predecessor_ref == KEFIR_ID_NONE || predecessor_ref < memssa->node_length,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer memory ssa node reference"));
+    REQUIRE(instr_ref == KEFIR_ID_NONE || KEFIR_OPT_INSTR_REF_INDEX_OF(instr_ref) < memssa->instruction_bindings_length,
+            KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Optimizer instruction out of memory SSA bounds"));
     REQUIRE(instr_ref == KEFIR_ID_NONE ||
-                !kefir_hashtable_has(&memssa->instruction_bindings, (kefir_hashtable_key_t) instr_ref),
+                memssa->instruction_bindings[KEFIR_OPT_INSTR_REF_INDEX_OF(instr_ref)] == KEFIR_ID_NONE,
             KEFIR_SET_ERROR(KEFIR_ALREADY_EXISTS, "Optimizer instruction binding already exists in memory ssa"));
 
     kefir_opt_code_memssa_node_ref_t node_ref = KEFIR_ID_NONE;
@@ -257,12 +279,9 @@ kefir_result_t kefir_opt_code_memssa_new_produce_node(struct kefir_mem *mem, str
     if (predecessor_ref != KEFIR_ID_NONE) {
         REQUIRE_OK(kefir_hashset_add(mem, &memssa->nodes[predecessor_ref].uses, (kefir_hashset_key_t) node_ref));
     }
-    kefir_result_t res = kefir_hashtable_insert(mem, &memssa->instruction_bindings, (kefir_hashtable_key_t) instr_ref,
-                                                (kefir_hashtable_value_t) node_ref);
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        kefir_hashset_delete(&memssa->nodes[predecessor_ref].uses, (kefir_hashset_key_t) node_ref);
-        return res;
-    });
+    if (instr_ref != KEFIR_ID_NONE) {
+        memssa->instruction_bindings[KEFIR_OPT_INSTR_REF_INDEX_OF(instr_ref)] = node_ref;
+    }
     memssa->node_length++;
     ASSIGN_PTR(node_ref_ptr, node_ref);
     return KEFIR_OK;
@@ -277,8 +296,10 @@ kefir_result_t kefir_opt_code_memssa_new_produce_consume_node(struct kefir_mem *
     REQUIRE(memssa != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer memory ssa"));
     REQUIRE(predecessor_ref == KEFIR_ID_NONE || predecessor_ref < memssa->node_length,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer memory ssa node reference"));
+    REQUIRE(instr_ref == KEFIR_ID_NONE || KEFIR_OPT_INSTR_REF_INDEX_OF(instr_ref) < memssa->instruction_bindings_length,
+            KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Optimizer instruction out of memory SSA bounds"));
     REQUIRE(instr_ref == KEFIR_ID_NONE ||
-                !kefir_hashtable_has(&memssa->instruction_bindings, (kefir_hashtable_key_t) instr_ref),
+                memssa->instruction_bindings[KEFIR_OPT_INSTR_REF_INDEX_OF(instr_ref)] == KEFIR_ID_NONE,
             KEFIR_SET_ERROR(KEFIR_ALREADY_EXISTS, "Optimizer instruction binding already exists in memory ssa"));
 
     kefir_opt_code_memssa_node_ref_t node_ref = KEFIR_ID_NONE;
@@ -291,12 +312,9 @@ kefir_result_t kefir_opt_code_memssa_new_produce_consume_node(struct kefir_mem *
     if (predecessor_ref != KEFIR_ID_NONE) {
         REQUIRE_OK(kefir_hashset_add(mem, &memssa->nodes[predecessor_ref].uses, (kefir_hashset_key_t) node_ref));
     }
-    kefir_result_t res = kefir_hashtable_insert(mem, &memssa->instruction_bindings, (kefir_hashtable_key_t) instr_ref,
-                                                (kefir_hashtable_value_t) node_ref);
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        kefir_hashset_delete(&memssa->nodes[predecessor_ref].uses, (kefir_hashset_key_t) node_ref);
-        return res;
-    });
+    if (instr_ref != KEFIR_ID_NONE) {
+        memssa->instruction_bindings[KEFIR_OPT_INSTR_REF_INDEX_OF(instr_ref)] = node_ref;
+    }
     memssa->node_length++;
     ASSIGN_PTR(node_ref_ptr, node_ref);
     return KEFIR_OK;
@@ -361,16 +379,12 @@ kefir_result_t kefir_opt_code_memssa_instruction_binding(const struct kefir_opt_
                                                          kefir_opt_instruction_ref_t instr_ref,
                                                          kefir_opt_code_memssa_node_ref_t *node_ref) {
     REQUIRE(memssa != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer memory ssa"));
+    REQUIRE(KEFIR_OPT_INSTR_REF_INDEX_OF(instr_ref) < memssa->instruction_bindings_length,
+            KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find memssa instruction binding"));
 
-    kefir_hashtable_value_t table_value;
-    kefir_result_t res =
-        kefir_hashtable_at(&memssa->instruction_bindings, (kefir_hashtable_key_t) instr_ref, &table_value);
-    if (res == KEFIR_NOT_FOUND) {
-        res = KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find memssa instruction binding");
-    }
-    REQUIRE_OK(res);
-
-    ASSIGN_PTR(node_ref, table_value);
+    kefir_opt_code_memssa_node_ref_t ref = memssa->instruction_bindings[KEFIR_OPT_INSTR_REF_INDEX_OF(instr_ref)];
+    REQUIRE(ref != KEFIR_ID_NONE, KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find memssa instruction binding"));
+    ASSIGN_PTR(node_ref, ref);
     return KEFIR_OK;
 }
 
@@ -470,8 +484,9 @@ kefir_result_t kefir_opt_code_memssa_unbind(struct kefir_mem *mem, struct kefir_
                 REQUIRE_OK(
                     kefir_hashset_delete(&memssa->nodes[node->predecessor_ref].uses, (kefir_hashset_key_t) node_ref));
                 node->predecessor_ref = KEFIR_ID_NONE;
-                REQUIRE_OK(kefir_hashtable_delete(mem, &memssa->instruction_bindings,
-                                                  (kefir_hashtable_key_t) node->instr_ref));
+                if (node->instr_ref != KEFIR_ID_NONE) {
+                    memssa->instruction_bindings[KEFIR_OPT_INSTR_REF_INDEX_OF(node->instr_ref)] = KEFIR_ID_NONE;
+                }
                 node->instr_ref = KEFIR_ID_NONE;
                 break;
 
