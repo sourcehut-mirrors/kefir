@@ -46,6 +46,7 @@ typedef struct kefir_opt_code_control_flow {
 kefir_result_t kefir_opt_code_control_flow_init(struct kefir_opt_code_control_flow *);
 kefir_result_t kefir_opt_code_control_flow_free(struct kefir_mem *, struct kefir_opt_code_control_flow *);
 
+kefir_result_t kefir_opt_code_control_flow_reset(struct kefir_mem *, struct kefir_opt_code_control_flow *);
 kefir_result_t kefir_opt_code_control_flow_build(struct kefir_mem *, struct kefir_opt_code_control_flow *,
                                                  const struct kefir_opt_code_container *);
 

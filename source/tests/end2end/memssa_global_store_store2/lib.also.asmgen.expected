@@ -45,7 +45,6 @@ test3:
 .L__kefir_text_func_test3_begin:
     movq y@GOTPCREL(%rip), %rax
     movl $0, (%rax)
-    movq y@GOTPCREL(%rip), %rax
     xor %ecx, %ecx
 .L__kefir_func_test3_label2:
     cmp %edi, %ecx
@@ -64,7 +63,6 @@ test4:
 .L__kefir_text_func_test4_begin:
     movq y@GOTPCREL(%rip), %rax
     movl $0, (%rax)
-    movq y@GOTPCREL(%rip), %rax
     xor %ecx, %ecx
 .L__kefir_func_test4_label2:
     cmp %edi, %ecx
@@ -84,7 +82,6 @@ test5:
     movq z@GOTPCREL(%rip), %rcx
     xor %eax, %eax
     xchgl (%rcx), %eax
-    movq z@GOTPCREL(%rip), %rcx
     xor %eax, %eax
     mov %rax, %rdx
 .L__kefir_func_test5_label2:
@@ -108,7 +105,6 @@ test6:
     movq z@GOTPCREL(%rip), %rcx
     xor %eax, %eax
     xchgl (%rcx), %eax
-    movq z@GOTPCREL(%rip), %rcx
     xor %eax, %eax
     mov %rax, %rsi
 .L__kefir_func_test6_label2:
@@ -137,9 +133,8 @@ test7:
     push %r13
     sub $8, %rsp
     mov %rdi, %rbx
-    movq x@GOTPCREL(%rip), %rax
-    movl $0, (%rax)
     movq x@GOTPCREL(%rip), %r12
+    movl $0, (%r12)
     xor %eax, %eax
     mov %rax, %r13
 .L__kefir_func_test7_label2:

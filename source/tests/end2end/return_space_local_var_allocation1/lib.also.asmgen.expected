@@ -110,12 +110,12 @@ get2:
 .L__kefir_func_get2_label129:
     setg %al
 .loc 0 43 5
-.L__kefir_func_get2_label138:
+.L__kefir_func_get2_label135:
     cmp $1, %esi
 .loc 0 43 5
 .L__kefir_func_get2_label139:
     setne %cl
-.L__kefir_func_get2_label145:
+.L__kefir_func_get2_label148:
     and %cl, %al
 .L__kefir_func_get2_label149:
     jnz .L__kefir_func_get2_label10

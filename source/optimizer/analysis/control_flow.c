@@ -78,6 +78,29 @@ kefir_result_t kefir_opt_code_control_flow_free(struct kefir_mem *mem,
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_opt_code_control_flow_reset(struct kefir_mem *mem,
+                                                 struct kefir_opt_code_control_flow *control_flow) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(control_flow != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code control flow"));
+
+    if (control_flow->code != NULL) {
+        REQUIRE_OK(kefir_hashtable_clear(mem, &control_flow->dominator_tree));
+        REQUIRE_OK(kefir_hashset_clear(mem, &control_flow->indirect_jump_source_blocks));
+        REQUIRE_OK(kefir_hashset_clear(mem, &control_flow->indirect_jump_target_blocks));
+
+        for (kefir_size_t i = 0; i < control_flow->num_of_blocks; i++) {
+            REQUIRE_OK(kefir_hashset_free(mem, &control_flow->blocks[i].predecessors));
+            REQUIRE_OK(kefir_hashset_free(mem, &control_flow->blocks[i].successors));
+            REQUIRE_OK(kefir_hashset_free(mem, &control_flow->blocks[i].dominance_frontier));
+        }
+        KEFIR_FREE(mem, control_flow->blocks);
+        control_flow->blocks = NULL;
+        control_flow->num_of_blocks = 0;
+    }
+    return KEFIR_OK;
+}
+
 static kefir_result_t update_dominator_tree(struct kefir_mem *mem, struct kefir_opt_code_control_flow *control_flow,
                                             kefir_opt_block_id_t immediate_dominator_ref,
                                             kefir_opt_block_id_t block_ref) {
