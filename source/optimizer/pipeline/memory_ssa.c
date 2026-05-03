@@ -172,6 +172,7 @@ static kefir_result_t find_upstream_clobber_impl(struct kefir_mem *mem, const st
 
     *clobber_ref_ptr = KEFIR_ID_NONE;
     REQUIRE_OK(kefir_list_insert_after(mem, queue, NULL, (void *) (kefir_uptr_t) node_ref));
+    REQUIRE_OK(kefir_hashset_clear(mem, visited));
     for (struct kefir_list_entry *iter = kefir_list_head(queue); iter != NULL; iter = kefir_list_head(queue)) {
         ASSIGN_DECL_CAST(kefir_opt_code_memssa_node_ref_t, iter_node_ref, (kefir_uptr_t) iter->value);
         REQUIRE_OK(kefir_list_pop(mem, queue, iter));
@@ -240,19 +241,12 @@ static kefir_result_t find_upstream_clobber(struct kefir_mem *mem, const struct 
                                             const struct kefir_opt_code_memssa *memssa,
                                             const struct kefir_ir_module *ir_module,
                                             kefir_opt_code_memssa_node_ref_t node_ref,
-                                            kefir_opt_code_memssa_node_ref_t *clobber_ref_ptr) {
+                                            kefir_opt_code_memssa_node_ref_t *clobber_ref_ptr,
+                                            struct kefir_hashset *visited) {
     struct kefir_list queue;
-    struct kefir_hashset visited;
     REQUIRE_OK(kefir_list_init(&queue));
-    REQUIRE_OK(kefir_hashset_init(&visited, &kefir_hashtable_uint_ops));
     kefir_result_t res =
-        find_upstream_clobber_impl(mem, code, escapes, memssa, ir_module, node_ref, clobber_ref_ptr, &queue, &visited);
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        kefir_hashset_free(mem, &visited);
-        kefir_list_free(mem, &queue);
-        return res;
-    });
-    res = kefir_hashset_free(mem, &visited);
+        find_upstream_clobber_impl(mem, code, escapes, memssa, ir_module, node_ref, clobber_ref_ptr, &queue, visited);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_list_free(mem, &queue);
         return res;
@@ -265,7 +259,7 @@ static kefir_result_t do_optimize_nonvolatile_load(
     struct kefir_mem *mem, struct kefir_opt_function *func, const struct kefir_opt_code_control_flow *control_flow,
     struct kefir_opt_code_sequencing *sequencing, struct kefir_opt_code_memssa *memssa,
     const struct kefir_opt_code_escape_analysis *escapes, const struct kefir_ir_module *ir_module,
-    const struct kefir_opt_instruction *instr, kefir_bool_t *did_replace) {
+    const struct kefir_opt_instruction *instr, kefir_bool_t *did_replace, struct kefir_hashset *visited) {
     UNUSED(control_flow);
     *did_replace = false;
     kefir_opt_instruction_ref_t instr_ref = instr->id;
@@ -279,7 +273,7 @@ static kefir_result_t do_optimize_nonvolatile_load(
     REQUIRE_OK(kefir_opt_code_memssa_node(memssa, node_ref, &node));
     REQUIRE(node->type == KEFIR_OPT_CODE_MEMSSA_CONSUME_NODE, KEFIR_OK);
 
-    res = find_upstream_clobber(mem, &func->code, escapes, memssa, ir_module, node_ref, &clobber_ref);
+    res = find_upstream_clobber(mem, &func->code, escapes, memssa, ir_module, node_ref, &clobber_ref, visited);
     REQUIRE(res != KEFIR_NOT_FOUND, KEFIR_OK);
     REQUIRE_OK(res);
 
@@ -777,7 +771,7 @@ static kefir_result_t do_optimize_nonvolatile_store(
     struct kefir_mem *mem, struct kefir_opt_module *module, struct kefir_opt_function *func,
     const struct kefir_opt_code_control_flow *control_flow, struct kefir_opt_code_sequencing *sequencing,
     struct kefir_opt_code_memssa *memssa, const struct kefir_opt_code_escape_analysis *escapes,
-    const struct kefir_ir_module *ir_module, const struct kefir_opt_instruction *instr) {
+    const struct kefir_ir_module *ir_module, const struct kefir_opt_instruction *instr, struct kefir_hashset *visited) {
     UNUSED(control_flow);
     UNUSED(module);
     UNUSED(has_downstream_clobbers);
@@ -838,7 +832,7 @@ static kefir_result_t do_optimize_nonvolatile_store(
         REQUIRE_OK(kefir_hashset_free(mem, &consumers));
     }
 
-    res = find_upstream_clobber(mem, &func->code, escapes, memssa, ir_module, node_ref, &clobber_ref);
+    res = find_upstream_clobber(mem, &func->code, escapes, memssa, ir_module, node_ref, &clobber_ref, visited);
     REQUIRE(res != KEFIR_NOT_FOUND, KEFIR_OK);
     REQUIRE_OK(res);
 
@@ -1172,7 +1166,7 @@ static kefir_result_t do_optimize(struct kefir_mem *mem, struct kefir_opt_module
                                   const struct kefir_optimizer_configuration *configuration,
                                   const struct kefir_opt_code_control_flow *control_flow,
                                   struct kefir_opt_code_sequencing *sequencing, struct kefir_opt_code_memssa *memssa,
-                                  const struct kefir_opt_code_escape_analysis *escapes) {
+                                  const struct kefir_opt_code_escape_analysis *escapes, struct kefir_hashset *visited) {
     for (kefir_opt_block_id_t block_id = 0; block_id < kefir_opt_code_container_block_count(&func->code); block_id++) {
         kefir_bool_t is_reachable;
         REQUIRE_OK(kefir_opt_code_control_flow_is_reachable_from_entry(control_flow, block_id, &is_reachable));
@@ -1208,7 +1202,7 @@ static kefir_result_t do_optimize(struct kefir_mem *mem, struct kefir_opt_module
                     if (!instr->operation.parameters.memory_access.flags.volatile_access) {
                         kefir_bool_t did_replace = false;
                         REQUIRE_OK(do_optimize_nonvolatile_load(mem, func, control_flow, sequencing, memssa, escapes,
-                                                                module->ir_module, instr, &did_replace));
+                                                                module->ir_module, instr, &did_replace, visited));
                         if (!did_replace) {
                             REQUIRE_OK(do_deduplicate_nonvolatile_load(mem, module, func, control_flow, sequencing,
                                                                        memssa, escapes, module->ir_module, instr));
@@ -1234,7 +1228,7 @@ static kefir_result_t do_optimize(struct kefir_mem *mem, struct kefir_opt_module
                 case KEFIR_OPT_OPCODE_DECIMAL128_STORE:
                     if (!instr->operation.parameters.memory_access.flags.volatile_access) {
                         REQUIRE_OK(do_optimize_nonvolatile_store(mem, module, func, control_flow, sequencing, memssa,
-                                                                 escapes, module->ir_module, instr));
+                                                                 escapes, module->ir_module, instr, visited));
                     }
                     break;
 
@@ -1269,17 +1263,30 @@ static kefir_result_t memory_ssa_apply(struct kefir_mem *mem, struct kefir_opt_m
     struct kefir_opt_code_liveness liveness;
     struct kefir_opt_code_memssa memssa;
     struct kefir_opt_code_escape_analysis escapes;
+    struct kefir_hashset visited;
     REQUIRE_OK(kefir_opt_code_control_flow_init(&control_flow));
     REQUIRE_OK(kefir_opt_code_sequencing_init(&sequencing));
     REQUIRE_OK(kefir_opt_code_liveness_init(&liveness));
     REQUIRE_OK(kefir_opt_code_memssa_init(&memssa));
     REQUIRE_OK(kefir_opt_code_escape_analysis_init(&escapes));
+    REQUIRE_OK(kefir_hashset_init(&visited, &kefir_hashtable_uint_ops));
 
     kefir_result_t res = kefir_opt_code_control_flow_build(mem, &control_flow, &func->code);
     REQUIRE_CHAIN(&res, kefir_opt_code_liveness_build(mem, &liveness, &control_flow));
     REQUIRE_CHAIN(&res, kefir_opt_code_memssa_construct(mem, &memssa, &func->code, &control_flow, &liveness));
     REQUIRE_CHAIN(&res, kefir_opt_code_escape_analysis_build(mem, &escapes, &func->code));
-    REQUIRE_CHAIN(&res, do_optimize(mem, module, func, config, &control_flow, &sequencing, &memssa, &escapes));
+    REQUIRE_CHAIN(&res,
+                  do_optimize(mem, module, func, config, &control_flow, &sequencing, &memssa, &escapes, &visited));
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_hashset_free(mem, &visited);
+        kefir_opt_code_escape_analysis_free(mem, &escapes);
+        kefir_opt_code_memssa_free(mem, &memssa);
+        kefir_opt_code_liveness_free(mem, &liveness);
+        kefir_opt_code_sequencing_free(mem, &sequencing);
+        kefir_opt_code_control_flow_free(mem, &control_flow);
+        return res;
+    });
+    res = kefir_hashset_free(mem, &visited);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_opt_code_escape_analysis_free(mem, &escapes);
         kefir_opt_code_memssa_free(mem, &memssa);
