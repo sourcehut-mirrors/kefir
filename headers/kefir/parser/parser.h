@@ -128,6 +128,7 @@ static inline kefir_result_t kefir_parser_apply_impl(struct kefir_mem *mem, stru
     REQUIRE_OK(kefir_parser_consume_pack_pragmas(mem, parser));
     kefir_result_t res = rule(mem, parser, result, payload);
     if (parser->cursor->failure_res != KEFIR_OK) {
+        kefir_clear_warnings();
         for (const struct kefir_error *err = kefir_current_error(); err != NULL && err->code == KEFIR_SYNTAX_ERROR;
              err = kefir_current_error()) {
             kefir_pop_error(KEFIR_SYNTAX_ERROR);
