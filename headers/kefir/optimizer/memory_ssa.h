@@ -133,6 +133,11 @@ kefir_result_t kefir_opt_code_memssa_use_iter(const struct kefir_opt_code_memssa
 kefir_result_t kefir_opt_code_memssa_use_next(struct kefir_opt_code_memssa_use_iterator *,
                                               kefir_opt_code_memssa_node_ref_t *);
 
+#define KEFIR_OPT_MEMSSA_MEMORY_OP_NONE 0
+#define KEFIR_OPT_MEMSSA_MEMORY_OP_PRODUCE 1
+#define KEFIR_OPT_MEMSSA_MEMORY_OP_CONSUME 2
+
+kefir_result_t kefir_opt_memssa_util_is_instr_memory(const struct kefir_opt_instruction *, kefir_uint32_t *);
 kefir_result_t kefir_opt_code_memssa_construct(struct kefir_mem *, struct kefir_opt_code_memssa *,
                                                const struct kefir_opt_code_container *,
                                                const struct kefir_opt_code_control_flow *,

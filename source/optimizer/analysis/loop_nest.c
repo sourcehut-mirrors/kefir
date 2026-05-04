@@ -173,8 +173,10 @@ static kefir_result_t update_loop_nest(struct kefir_mem *mem, struct kefir_opt_c
 
         if (loop_contained_within(loop, (const struct kefir_opt_code_loop *) nest->nest.value)) {
             REQUIRE_OK(insert_into_nest(mem, loop, &nest->nest));
+            return KEFIR_OK;
         } else if (loop_contained_within((const struct kefir_opt_code_loop *) nest->nest.value, loop)) {
             REQUIRE_OK(kefir_tree_insert_parent(mem, &nest->nest, (void *) loop, NULL));
+            return KEFIR_OK;
         }
     }
 

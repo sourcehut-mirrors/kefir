@@ -41,11 +41,10 @@ struct construct_state {
     kefir_bool_t all_inputs_ready;
 };
 
-#define MEMORY_OP_NONE 0
-#define MEMORY_OP_PRODUCE 1
-#define MEMORY_OP_CONSUME 2
+kefir_result_t kefir_opt_memssa_util_is_instr_memory(const struct kefir_opt_instruction *instr,
+                                                     kefir_uint32_t *op_type) {
+    REQUIRE(instr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer instruction"));
 
-static kefir_result_t is_instr_memory(const struct kefir_opt_instruction *instr, kefir_uint32_t *op_type) {
     switch (instr->operation.opcode) {
         case KEFIR_OPT_OPCODE_INLINE_ASSEMBLY:
         case KEFIR_OPT_OPCODE_INVOKE:
@@ -88,7 +87,7 @@ static kefir_result_t is_instr_memory(const struct kefir_opt_instruction *instr,
         case KEFIR_OPT_OPCODE_ATOMIC_STORE_COMPLEX_LONG_DOUBLE:
         case KEFIR_OPT_OPCODE_VARARG_COPY:
         case KEFIR_OPT_OPCODE_VARARG_GET:
-            *op_type = MEMORY_OP_PRODUCE | MEMORY_OP_CONSUME;
+            *op_type = KEFIR_OPT_MEMSSA_MEMORY_OP_PRODUCE | KEFIR_OPT_MEMSSA_MEMORY_OP_CONSUME;
             break;
 
         case KEFIR_OPT_OPCODE_INT8_LOAD:
@@ -107,7 +106,7 @@ static kefir_result_t is_instr_memory(const struct kefir_opt_instruction *instr,
         case KEFIR_OPT_OPCODE_BITINT_LOAD:
         case KEFIR_OPT_OPCODE_BITINT_LOAD_PRECISE:
         case KEFIR_OPT_OPCODE_FENV_UPDATE:
-            *op_type = MEMORY_OP_CONSUME;
+            *op_type = KEFIR_OPT_MEMSSA_MEMORY_OP_CONSUME;
             break;
 
         case KEFIR_OPT_OPCODE_INT8_STORE:
@@ -130,11 +129,11 @@ static kefir_result_t is_instr_memory(const struct kefir_opt_instruction *instr,
         case KEFIR_OPT_OPCODE_VARARG_END:
         case KEFIR_OPT_OPCODE_FENV_SAVE:
         case KEFIR_OPT_OPCODE_FENV_CLEAR:
-            *op_type = MEMORY_OP_PRODUCE;
+            *op_type = KEFIR_OPT_MEMSSA_MEMORY_OP_PRODUCE;
             break;
 
         default:
-            *op_type = MEMORY_OP_NONE;
+            *op_type = KEFIR_OPT_MEMSSA_MEMORY_OP_NONE;
             break;
     }
 
@@ -160,9 +159,9 @@ static kefir_result_t collect_def_blocks(struct kefir_mem *mem, struct construct
             const struct kefir_opt_instruction *instr;
             REQUIRE_OK(kefir_opt_code_container_instr(state->code, instr_ref, &instr));
 
-            kefir_uint32_t op_type = MEMORY_OP_NONE;
-            REQUIRE_OK(is_instr_memory(instr, &op_type));
-            if (op_type != MEMORY_OP_NONE) {
+            kefir_uint32_t op_type = KEFIR_OPT_MEMSSA_MEMORY_OP_NONE;
+            REQUIRE_OK(kefir_opt_memssa_util_is_instr_memory(instr, &op_type));
+            if (op_type != KEFIR_OPT_MEMSSA_MEMORY_OP_NONE) {
                 REQUIRE_OK(kefir_list_insert_after(mem, &state->block_queue, NULL, (void *) (kefir_uptr_t) block_ref));
                 break;
             }
@@ -376,19 +375,19 @@ static kefir_result_t do_assign(struct kefir_mem *mem, struct construct_state *s
             }
         }
 
-        kefir_uint32_t op_type = MEMORY_OP_NONE;
-        REQUIRE_OK(is_instr_memory(instr, &op_type));
+        kefir_uint32_t op_type = KEFIR_OPT_MEMSSA_MEMORY_OP_NONE;
+        REQUIRE_OK(kefir_opt_memssa_util_is_instr_memory(instr, &op_type));
 
         kefir_opt_code_memssa_node_ref_t input_node_ref, output_node_ref;
         REQUIRE_OK(find_link_for(frame, &input_node_ref));
         output_node_ref = input_node_ref;
-        if ((op_type & MEMORY_OP_PRODUCE) && (op_type & MEMORY_OP_CONSUME)) {
+        if ((op_type & KEFIR_OPT_MEMSSA_MEMORY_OP_PRODUCE) && (op_type & KEFIR_OPT_MEMSSA_MEMORY_OP_CONSUME)) {
             REQUIRE_OK(kefir_opt_code_memssa_new_produce_consume_node(mem, state->memssa, input_node_ref, instr_ref,
                                                                       &output_node_ref));
-        } else if (op_type & MEMORY_OP_PRODUCE) {
+        } else if (op_type & KEFIR_OPT_MEMSSA_MEMORY_OP_PRODUCE) {
             REQUIRE_OK(kefir_opt_code_memssa_new_produce_node(mem, state->memssa, input_node_ref, instr_ref,
                                                               &output_node_ref));
-        } else if (op_type & MEMORY_OP_CONSUME) {
+        } else if (op_type & KEFIR_OPT_MEMSSA_MEMORY_OP_CONSUME) {
             REQUIRE_OK(kefir_opt_code_memssa_new_consume_node(mem, state->memssa, input_node_ref, instr_ref, NULL));
         }
         state->processed_instr[KEFIR_OPT_INSTR_REF_INDEX_OF(instr_ref)] = 1;

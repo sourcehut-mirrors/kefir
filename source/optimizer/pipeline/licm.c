@@ -39,15 +39,13 @@ struct licm_state {
     struct kefir_opt_code_control_flow control_flow;
     struct kefir_opt_code_liveness liveness;
     struct kefir_opt_code_escape_analysis escapes;
-    struct kefir_opt_code_memssa memssa;
     struct kefir_opt_code_loop_collection loops;
 
     struct kefir_hashtable loop_preheaders;
 
-    kefir_bool_t memssa_tainted;
     const struct kefir_opt_code_loop *loop;
     struct kefir_hashset candidate_blocks;
-    struct kefir_hashset loop_memssa;
+    struct kefir_hashset loop_memory_ops;
 
     kefir_bool_t all_inputs_nonlocal;
     kefir_bool_t extract_candidate_inputs;
@@ -390,15 +388,7 @@ static kefir_result_t distribute_condition_dependencies_over_phis(struct licm_st
 }
 
 static kefir_result_t build_loop_memssa(struct licm_state *state) {
-    REQUIRE_OK(kefir_hashset_clear(state->mem, &state->loop_memssa));
-    if (state->memssa_tainted) {
-        REQUIRE_OK(kefir_opt_code_liveness_reset(state->mem, &state->liveness));
-        REQUIRE_OK(kefir_opt_code_liveness_build(state->mem, &state->liveness, &state->control_flow));
-        REQUIRE_OK(kefir_opt_code_memssa_reset(state->mem, &state->memssa));
-        REQUIRE_OK(kefir_opt_code_memssa_construct(state->mem, &state->memssa, &state->func->code, &state->control_flow,
-                                                   &state->liveness));
-        state->memssa_tainted = false;
-    }
+    REQUIRE_OK(kefir_hashset_clear(state->mem, &state->loop_memory_ops));
 
     for (kefir_opt_block_id_t block_ref = 0; block_ref < kefir_opt_code_container_block_count(&state->func->code);
          block_ref++) {
@@ -407,11 +397,14 @@ static kefir_result_t build_loop_memssa(struct licm_state *state) {
         for (res = kefir_opt_code_block_instr_head(&state->func->code, block_ref, &instr_ref);
              res == KEFIR_OK && instr_ref != KEFIR_ID_NONE;
              res = kefir_opt_instruction_next_sibling(&state->func->code, instr_ref, &instr_ref)) {
-            kefir_opt_code_memssa_node_ref_t node_ref;
-            res = kefir_opt_code_memssa_instruction_binding(&state->memssa, instr_ref, &node_ref);
-            if (res != KEFIR_NOT_FOUND) {
-                REQUIRE_OK(res);
-                REQUIRE_OK(kefir_hashset_add(state->mem, &state->loop_memssa, (kefir_hashset_key_t) instr_ref));
+            const struct kefir_opt_instruction *instr;
+            REQUIRE_OK(kefir_opt_code_container_instr(&state->func->code, instr_ref, &instr));
+
+            kefir_uint32_t op_props;
+            REQUIRE_OK(kefir_opt_memssa_util_is_instr_memory(instr, &op_props));
+
+            if (op_props != KEFIR_OPT_MEMSSA_MEMORY_OP_NONE) {
+                REQUIRE_OK(kefir_hashset_add(state->mem, &state->loop_memory_ops, (kefir_hashset_key_t) instr_ref));
             }
         }
         if (res != KEFIR_ITERATOR_END) {
@@ -441,7 +434,7 @@ static kefir_result_t hoist_memory_operation(struct licm_state *state, kefir_opt
 
     struct kefir_hashset_iterator iter;
     kefir_hashset_key_t key;
-    for (res = kefir_hashset_iter(&state->loop_memssa, &iter, &key); res == KEFIR_OK;
+    for (res = kefir_hashset_iter(&state->loop_memory_ops, &iter, &key); res == KEFIR_OK;
          res = kefir_hashset_next(&iter, &key)) {
         ASSIGN_DECL_CAST(kefir_opt_instruction_ref_t, other_instr_ref, key);
         if (instr_ref == other_instr_ref) {
@@ -486,9 +479,8 @@ static kefir_result_t hoist_memory_operation(struct licm_state *state, kefir_opt
     }
     REQUIRE_OK(
         kefir_opt_code_container_insert_control(&state->func->code, hoist_target, insert_control_ref, moved_instr_ref));
-    REQUIRE_OK(kefir_hashset_delete(&state->loop_memssa, (kefir_hashset_key_t) instr_ref));
+    REQUIRE_OK(kefir_hashset_delete(&state->loop_memory_ops, (kefir_hashset_key_t) instr_ref));
     REQUIRE_OK(kefir_opt_code_escape_analysis_replace(state->mem, &state->escapes, moved_instr_ref, instr_ref));
-    state->memssa_tainted = true;
     return KEFIR_OK;
 }
 
@@ -763,7 +755,6 @@ static kefir_result_t licm_impl(struct licm_state *state) {
     REQUIRE_OK(kefir_opt_code_liveness_build(state->mem, &state->liveness, &state->control_flow));
     REQUIRE_OK(kefir_opt_code_loop_collection_build(state->mem, &state->loops, &state->control_flow));
     REQUIRE_OK(kefir_opt_code_escape_analysis_build(state->mem, &state->escapes, &state->func->code));
-    state->memssa_tainted = true;
 
     kefir_result_t res;
     const struct kefir_opt_loop_nest *nest;
@@ -805,11 +796,10 @@ static kefir_result_t loop_invariant_code_motion_apply(struct kefir_mem *mem, st
     REQUIRE_OK(kefir_list_init(&state.candidate_queue));
     REQUIRE_OK(kefir_hashset_init(&state.skip_phi_uses, &kefir_hashtable_uint_ops));
     REQUIRE_OK(kefir_hashset_init(&state.candidate_blocks, &kefir_hashtable_uint_ops));
-    REQUIRE_OK(kefir_hashset_init(&state.loop_memssa, &kefir_hashtable_uint_ops));
+    REQUIRE_OK(kefir_hashset_init(&state.loop_memory_ops, &kefir_hashtable_uint_ops));
     REQUIRE_OK(kefir_hashtable_init(&state.loop_preheaders, &kefir_hashtable_uint_ops));
     REQUIRE_OK(kefir_opt_code_control_flow_init(&state.control_flow));
     REQUIRE_OK(kefir_opt_code_liveness_init(&state.liveness));
-    REQUIRE_OK(kefir_opt_code_memssa_init(&state.memssa));
     REQUIRE_OK(kefir_opt_code_loop_collection_init(&state.loops));
     REQUIRE_OK(kefir_opt_code_escape_analysis_init(&state.escapes));
 
@@ -817,11 +807,10 @@ static kefir_result_t loop_invariant_code_motion_apply(struct kefir_mem *mem, st
 
     kefir_opt_code_escape_analysis_free(mem, &state.escapes);
     kefir_opt_code_loop_collection_free(mem, &state.loops);
-    kefir_opt_code_memssa_free(mem, &state.memssa);
     kefir_opt_code_liveness_free(mem, &state.liveness);
     kefir_opt_code_control_flow_free(mem, &state.control_flow);
     kefir_hashtable_free(mem, &state.loop_preheaders);
-    kefir_hashset_free(mem, &state.loop_memssa);
+    kefir_hashset_free(mem, &state.loop_memory_ops);
     kefir_hashset_free(mem, &state.candidate_blocks);
     kefir_hashset_free(mem, &state.skip_phi_uses);
     kefir_list_free(mem, &state.candidate_queue);
