@@ -588,7 +588,11 @@ static kefir_result_t next_error(struct kefir_mem *mem, struct kefir_preprocesso
 
         kefir_result_t res = kefir_lexer_source_cursor_next(directive_scanner->lexer->cursor, 1);
         if (chr != directive_scanner->lexer->context->newline) {
-            REQUIRE_CHAIN(&res, kefir_string_buffer_append(mem, &str, chr));
+            if (kefir_isspace32(chr)) {
+                REQUIRE_CHAIN(&res, kefir_string_buffer_append(mem, &str, U' '));
+            } else {
+                REQUIRE_CHAIN(&res, kefir_string_buffer_append(mem, &str, chr));
+            }
         }
         REQUIRE_ELSE(res == KEFIR_OK, {
             kefir_string_buffer_free(mem, &str);
