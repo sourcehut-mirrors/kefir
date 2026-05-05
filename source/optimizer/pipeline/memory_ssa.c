@@ -34,6 +34,8 @@
 #include "kefir/core/bitset.h"
 #include <string.h>
 
+#define MEMSSA_WALK_LIMIT 128
+
 kefir_result_t kefir_opt_code_util_classify_memory_access(const struct kefir_opt_instruction *instr,
                                                           kefir_opt_instruction_ref_t *location_ptr,
                                                           kefir_size_t *size_ptr, kefir_int64_t *offset_ptr) {
@@ -123,27 +125,20 @@ kefir_result_t kefir_opt_code_util_classify_memory_access(const struct kefir_opt
 
 static kefir_result_t check_clobber(struct kefir_mem *mem, const struct kefir_opt_code_container *code,
                                     const struct kefir_opt_code_escape_analysis *escapes,
-                                    const struct kefir_ir_module *ir_module, kefir_opt_instruction_ref_t instr_ref1,
-                                    kefir_opt_instruction_ref_t instr_ref2, kefir_bool_t *do_alias) {
+                                    const struct kefir_ir_module *ir_module, kefir_opt_instruction_ref_t location1_ref,
+                                    kefir_size_t size1, kefir_int64_t offset1, kefir_opt_instruction_ref_t instr_ref2,
+                                    kefir_bool_t *do_alias) {
     UNUSED(mem);
     *do_alias = true;
 
-    const struct kefir_opt_instruction *instr1, *instr2;
-    REQUIRE_OK(kefir_opt_code_container_instr(code, instr_ref1, &instr1));
+    const struct kefir_opt_instruction *instr2;
     REQUIRE_OK(kefir_opt_code_container_instr(code, instr_ref2, &instr2));
 
-    kefir_opt_instruction_ref_t location1_ref = KEFIR_ID_NONE, location2_ref = KEFIR_ID_NONE;
-    kefir_size_t size1 = 0, size2 = 0;
-    kefir_int64_t offset1 = 0, offset2 = 0;
+    kefir_opt_instruction_ref_t location2_ref = KEFIR_ID_NONE;
+    kefir_size_t size2 = 0;
+    kefir_int64_t offset2 = 0;
 
-    kefir_result_t res = kefir_opt_code_util_classify_memory_access(instr1, &location1_ref, &size1, &offset1);
-    if (res == KEFIR_NO_MATCH) {
-        location1_ref = instr_ref1;
-        size1 = 0;
-        offset1 = 0;
-        res = KEFIR_OK;
-    }
-    REQUIRE_CHAIN(&res, kefir_opt_code_util_classify_memory_access(instr2, &location2_ref, &size2, &offset2));
+    kefir_result_t res = kefir_opt_code_util_classify_memory_access(instr2, &location2_ref, &size2, &offset2);
     if (res == KEFIR_NO_MATCH) {
         location2_ref = instr_ref2;
         size2 = 0;
@@ -192,11 +187,33 @@ static kefir_result_t find_upstream_clobber(struct kefir_mem *mem, const struct 
                 node->type == KEFIR_OPT_CODE_MEMSSA_PRODUCE_CONSUME_NODE,
             KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find clobber memory ssa node"));
 
+    const struct kefir_opt_instruction *node_instr;
+    REQUIRE_OK(kefir_opt_code_container_instr(code, node->instr_ref, &node_instr));
+
+    kefir_opt_instruction_ref_t node_location_ref = KEFIR_ID_NONE;
+    kefir_size_t node_size = 0;
+    kefir_int64_t node_offset = 0;
+
+    kefir_result_t res =
+        kefir_opt_code_util_classify_memory_access(node_instr, &node_location_ref, &node_size, &node_offset);
+    if (res == KEFIR_NO_MATCH) {
+        node_location_ref = node->instr_ref;
+        node_size = 0;
+        node_offset = 0;
+        res = KEFIR_OK;
+    }
+    REQUIRE_OK(res);
+
+    kefir_size_t scanned_nodes = 0;
+
     *clobber_ref_ptr = KEFIR_ID_NONE;
     queue->top = 0;
     REQUIRE_OK(queue_push(mem, queue, node_ref));
     REQUIRE_OK(kefir_hashset_clear(mem, visited));
-    for (; queue->top > 0;) {
+    for (; queue->top > 0; scanned_nodes++) {
+        REQUIRE(scanned_nodes < MEMSSA_WALK_LIMIT,
+                KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find clobber memory ssa node"));
+
         kefir_opt_code_memssa_node_ref_t iter_node_ref = queue->queue[--queue->top];
         if (kefir_hashset_has(visited, (kefir_hashset_key_t) iter_node_ref)) {
             continue;
@@ -229,8 +246,8 @@ static kefir_result_t find_upstream_clobber(struct kefir_mem *mem, const struct 
                 kefir_bool_t trace = true;
                 if (iter_node_ref != node_ref && iter_node->instr_ref != KEFIR_ID_NONE) {
                     kefir_bool_t node_alias = true;
-                    REQUIRE_OK(check_clobber(mem, code, escapes, ir_module, node->instr_ref, iter_node->instr_ref,
-                                             &node_alias));
+                    REQUIRE_OK(check_clobber(mem, code, escapes, ir_module, node_location_ref, node_size, node_offset,
+                                             iter_node->instr_ref, &node_alias));
                     if (node_alias) {
                         if (*clobber_ref_ptr == KEFIR_ID_NONE || *clobber_ref_ptr == iter_node_ref) {
                             *clobber_ref_ptr = iter_node_ref;
@@ -524,12 +541,18 @@ static kefir_result_t has_downstream_clobbers(struct kefir_mem *mem, const struc
     }
     REQUIRE_OK(res);
 
+    kefir_size_t scanned_nodes = 0;
+
     *has_clobbers = true;
     kefir_bool_t first_iter = true;
     queue->top = 0;
     REQUIRE_OK(kefir_hashset_clear(mem, visited));
     REQUIRE_OK(queue_push(mem, queue, node_ref));
-    for (; queue->top > 0; first_iter = false) {
+    for (; queue->top > 0; first_iter = false, scanned_nodes++) {
+        if (scanned_nodes >= MEMSSA_WALK_LIMIT) {
+            *has_clobbers = false;
+            return KEFIR_OK;
+        }
         kefir_opt_code_memssa_node_ref_t iter_ref = queue->queue[--queue->top];
         if (kefir_hashset_has(visited, (kefir_hashset_key_t) iter_ref)) {
             continue;
@@ -752,7 +775,6 @@ static kefir_result_t do_optimize_nonvolatile_store(
     struct kefir_hashset *visited) {
     UNUSED(control_flow);
     UNUSED(module);
-    UNUSED(has_downstream_clobbers);
     kefir_opt_instruction_ref_t instr_ref = instr->id;
 
     kefir_opt_code_memssa_node_ref_t node_ref, clobber_ref = KEFIR_ID_NONE;
@@ -936,10 +958,12 @@ static kefir_result_t do_optimize_zero_memory_impl(
     });
     REQUIRE_OK(target_platform->free_type(mem, platform_type));
 
+    kefir_size_t scanned_nodes = 0;
     kefir_bool_t first_iter = true;
     for (struct kefir_list_entry *iter = kefir_list_head(queue); iter != NULL;
-         iter = kefir_list_head(queue), first_iter = false) {
+         iter = kefir_list_head(queue), first_iter = false, scanned_nodes++) {
         ASSIGN_DECL_CAST(struct memory_state_iterator_entry *, entry, iter->value);
+        REQUIRE(scanned_nodes < MEMSSA_WALK_LIMIT, KEFIR_OK);
 
         kefir_bool_t stop_search = false;
         if (!first_iter) {
