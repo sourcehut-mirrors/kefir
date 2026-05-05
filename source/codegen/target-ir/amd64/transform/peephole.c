@@ -96,6 +96,26 @@ static kefir_result_t peephole_indirect(struct kefir_mem *mem, struct kefir_code
     kefir_bool_t replace = false;
     struct kefir_codegen_target_ir_operation operation;
     for (kefir_size_t i = 0; i < KEFIR_CODEGEN_TARGET_IR_OPERATION_NUM_OF_PARAMETERS; i++) {
+        if (instr->operation.parameters[i].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INDIRECT &&
+            instr->operation.parameters[i].indirect.index_type == KEFIR_CODEGEN_TARGET_IR_INDIRECT_INDEX_VALUE_REF &&
+            instr->operation.parameters[i].indirect.index.value_ref.aspect ==
+                KEFIR_CODEGEN_TARGET_IR_VALUE_DIRECT_OUTPUT(0)) {
+            kefir_int64_t index_value;
+            kefir_result_t res = kefir_codegen_target_ir_amd64_match_immediate(
+                code, instr->operation.parameters[i].indirect.index.value_ref, true, &index_value);
+            if (res != KEFIR_NO_MATCH) {
+                REQUIRE_OK(res);
+                if (!replace) {
+                    operation = instr->operation;
+                }
+                operation.parameters[i].indirect.index_type = KEFIR_CODEGEN_TARGET_IR_INDIRECT_INDEX_NONE;
+                operation.parameters[i].indirect.offset +=
+                    index_value * instr->operation.parameters[i].indirect.index.scale;
+                replace = true;
+                continue;
+            }
+        }
+
         if (instr->operation.parameters[i].type != KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INDIRECT ||
             instr->operation.parameters[i].indirect.type != KEFIR_CODEGEN_TARGET_IR_INDIRECT_VALUE_REF_BASIS ||
             instr->operation.parameters[i].indirect.base.value_ref.aspect !=
