@@ -474,6 +474,10 @@ kefir_codegen_target_ir_instruction_ref_t kefir_codegen_target_ir_code_block_con
 kefir_bool_t kefir_codegen_target_ir_code_is_gate_block(const struct kefir_codegen_target_ir_code *,
                                                         kefir_codegen_target_ir_block_ref_t);
 
+kefir_size_t kefir_codegen_target_ir_code_length(const struct kefir_codegen_target_ir_code *);
+kefir_result_t kefir_codegen_target_ir_code_at_index(const struct kefir_codegen_target_ir_code *, kefir_size_t,
+                                                     const struct kefir_codegen_target_ir_instruction **);
+
 kefir_result_t kefir_codegen_target_ir_code_instruction(const struct kefir_codegen_target_ir_code *,
                                                         kefir_codegen_target_ir_instruction_ref_t,
                                                         const struct kefir_codegen_target_ir_instruction **);

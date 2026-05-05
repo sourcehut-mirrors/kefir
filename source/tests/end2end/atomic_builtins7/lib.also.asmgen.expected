@@ -16,7 +16,7 @@
 .L__kefir_text_section_begin:
 clear:
 .L__kefir_text_func_clear_begin:
-    xor %eax, %eax
+    xor %al, %al
     lock     xchgb %al, (%rdi)
     ret
 .L__kefir_text_func_clear_end:

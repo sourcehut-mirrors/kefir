@@ -326,7 +326,7 @@ factorial:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 450,
+#                    "instr_ref": 530,
 #                    "opcode": "jl",
 #                    "parameters": [
 #                        {
@@ -782,7 +782,7 @@ factorial:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 1074,
+#                    "instr_ref": 1249,
 #                    "opcode": "or",
 #                    "parameters": [
 #                        {
@@ -914,7 +914,7 @@ factorial:
 #                        },
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 1074,
+#                            "instr_ref": 1249,
 #                            "aspect": {
 #                                "type": "resource",
 #                                "resource": "flag_zf"
@@ -1164,7 +1164,7 @@ factorial:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 529,
+#                    "instr_ref": 721,
 #                    "opcode": "jg",
 #                    "parameters": [
 #                        {
@@ -1452,7 +1452,7 @@ factorial:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 753,
+#                    "instr_ref": 995,
 #                    "opcode": "imul",
 #                    "parameters": [
 #                        {
@@ -1587,7 +1587,7 @@ factorial:
 #                        },
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 753,
+#                            "instr_ref": 995,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -1617,7 +1617,7 @@ factorial:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 466,
+#                    "instr_ref": 817,
 #                    "opcode": "add",
 #                    "parameters": [
 #                        {

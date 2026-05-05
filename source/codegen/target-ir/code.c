@@ -301,6 +301,23 @@ static kefir_result_t instr_mut_at_nocheck(const struct kefir_codegen_target_ir_
     return KEFIR_OK;
 }
 
+kefir_size_t kefir_codegen_target_ir_code_length(const struct kefir_codegen_target_ir_code *code) {
+    REQUIRE(code != NULL, 0);
+    return code->code_length;
+}
+
+kefir_result_t kefir_codegen_target_ir_code_at_index(const struct kefir_codegen_target_ir_code *code,
+                                                     kefir_size_t index,
+                                                     const struct kefir_codegen_target_ir_instruction **instr_ptr) {
+    REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR code"));
+    REQUIRE(
+        index < code->code_length,
+        KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Requested target IR instruction index is out of code container bounds"));
+
+    ASSIGN_PTR(instr_ptr, INSTR_AT_UNSAFE(code, index));
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_codegen_target_ir_code_instruction(const struct kefir_codegen_target_ir_code *code,
                                                         kefir_codegen_target_ir_instruction_ref_t instr_ref,
                                                         const struct kefir_codegen_target_ir_instruction **instr_ptr) {
