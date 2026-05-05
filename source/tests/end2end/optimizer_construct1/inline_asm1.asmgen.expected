@@ -495,6 +495,11 @@
                         "predecessor_ref": 4
                     },
                     {
+                        "node_ref": 7,
+                        "type": "produce",
+                        "predecessor_ref": 5
+                    },
+                    {
                         "node_ref": 2,
                         "type": "phi",
                         "links": [
@@ -507,11 +512,6 @@
                                 "node_ref": 7
                             }
                         ]
-                    },
-                    {
-                        "node_ref": 9,
-                        "type": "consume",
-                        "predecessor_ref": 2
                     },
                     {
                         "node_ref": 10,
@@ -543,6 +543,11 @@
                         "predecessor_ref": 11
                     },
                     {
+                        "node_ref": 9,
+                        "type": "consume",
+                        "predecessor_ref": 2
+                    },
+                    {
                         "node_ref": 8,
                         "type": "consume",
                         "predecessor_ref": 2
@@ -550,11 +555,6 @@
                     {
                         "node_ref": 6,
                         "type": "consume",
-                        "predecessor_ref": 5
-                    },
-                    {
-                        "node_ref": 7,
-                        "type": "produce",
                         "predecessor_ref": 5
                     }
                 ]

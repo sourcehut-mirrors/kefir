@@ -591,22 +591,22 @@
                         "predecessor_ref": 6
                     },
                     {
-                        "node_ref": 11,
-                        "type": "consume",
-                        "predecessor_ref": 7
-                    },
-                    {
                         "node_ref": 12,
                         "type": "terminate",
                         "predecessor_ref": 7
                     },
                     {
-                        "node_ref": 9,
+                        "node_ref": 11,
                         "type": "consume",
                         "predecessor_ref": 7
                     },
                     {
                         "node_ref": 10,
+                        "type": "consume",
+                        "predecessor_ref": 7
+                    },
+                    {
+                        "node_ref": 9,
                         "type": "consume",
                         "predecessor_ref": 7
                     },
@@ -1165,16 +1165,6 @@
                         "predecessor_ref": 3
                     },
                     {
-                        "node_ref": 9,
-                        "type": "consume",
-                        "predecessor_ref": 4
-                    },
-                    {
-                        "node_ref": 5,
-                        "type": "consume",
-                        "predecessor_ref": 4
-                    },
-                    {
                         "node_ref": 7,
                         "type": "terminate",
                         "predecessor_ref": 4
@@ -1185,7 +1175,17 @@
                         "predecessor_ref": 4
                     },
                     {
+                        "node_ref": 9,
+                        "type": "consume",
+                        "predecessor_ref": 4
+                    },
+                    {
                         "node_ref": 8,
+                        "type": "consume",
+                        "predecessor_ref": 4
+                    },
+                    {
+                        "node_ref": 5,
                         "type": "consume",
                         "predecessor_ref": 4
                     }

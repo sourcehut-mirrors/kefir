@@ -374,12 +374,12 @@
                         "type": "root"
                     },
                     {
-                        "node_ref": 2,
+                        "node_ref": 3,
                         "type": "terminate",
                         "predecessor_ref": 0
                     },
                     {
-                        "node_ref": 3,
+                        "node_ref": 2,
                         "type": "terminate",
                         "predecessor_ref": 0
                     },

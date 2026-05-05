@@ -517,7 +517,7 @@
                         "predecessor_ref": 4
                     },
                     {
-                        "node_ref": 5,
+                        "node_ref": 8,
                         "type": "consume",
                         "predecessor_ref": 4
                     },
@@ -532,7 +532,7 @@
                         "predecessor_ref": 4
                     },
                     {
-                        "node_ref": 8,
+                        "node_ref": 5,
                         "type": "consume",
                         "predecessor_ref": 4
                     }
@@ -879,7 +879,7 @@
                         "predecessor_ref": 4
                     },
                     {
-                        "node_ref": 5,
+                        "node_ref": 8,
                         "type": "consume",
                         "predecessor_ref": 4
                     },
@@ -894,7 +894,7 @@
                         "predecessor_ref": 4
                     },
                     {
-                        "node_ref": 8,
+                        "node_ref": 5,
                         "type": "consume",
                         "predecessor_ref": 4
                     }

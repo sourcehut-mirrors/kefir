@@ -26,6 +26,7 @@ kefir_result_t kefir_opt_code_memssa_init(struct kefir_opt_code_memssa *memssa) 
     REQUIRE(memssa != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to optimizer memory ssa"));
 
     memssa->nodes = NULL;
+    memssa->node_uses = NULL;
     memssa->node_length = 0;
     memssa->node_capacity = 0;
     memssa->blocks = NULL;
@@ -56,9 +57,10 @@ kefir_result_t kefir_opt_code_memssa_free(struct kefir_mem *mem, struct kefir_op
                 KEFIR_FREE(mem, memssa->nodes[i].phi.links);
                 break;
         }
-        REQUIRE_OK(kefir_hashset_free(mem, &memssa->nodes[i].uses));
+        KEFIR_FREE(mem, memssa->node_uses[i].uses);
     }
     KEFIR_FREE(mem, memssa->nodes);
+    KEFIR_FREE(mem, memssa->node_uses);
     KEFIR_FREE(mem, memssa->blocks);
     return KEFIR_OK;
 }
@@ -82,12 +84,14 @@ kefir_result_t kefir_opt_code_memssa_reset(struct kefir_mem *mem, struct kefir_o
                 KEFIR_FREE(mem, memssa->nodes[i].phi.links);
                 break;
         }
-        REQUIRE_OK(kefir_hashset_free(mem, &memssa->nodes[i].uses));
+        KEFIR_FREE(mem, memssa->node_uses[i].uses);
     }
+    KEFIR_FREE(mem, memssa->node_uses);
     KEFIR_FREE(mem, memssa->nodes);
     KEFIR_FREE(mem, memssa->blocks);
 
     memssa->nodes = NULL;
+    memssa->node_uses = NULL;
     memssa->node_length = 0;
     memssa->node_capacity = 0;
     memssa->blocks = NULL;
@@ -173,8 +177,13 @@ static kefir_result_t new_node(struct kefir_mem *mem, struct kefir_opt_code_mems
         struct kefir_opt_code_memssa_node *new_nodes =
             KEFIR_REALLOC(mem, memssa->nodes, sizeof(struct kefir_opt_code_memssa_node) * new_capacity);
         REQUIRE(new_nodes != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate memory ssa nodes"));
-
         memssa->nodes = new_nodes;
+
+        struct kefir_opt_code_memssa_node_uses *new_uses =
+            KEFIR_REALLOC(mem, memssa->node_uses, sizeof(struct kefir_opt_code_memssa_node_uses) * new_capacity);
+        REQUIRE(new_uses != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate memory ssa node uses"));
+        memssa->node_uses = new_uses;
+
         memssa->node_capacity = new_capacity;
     }
     *node_ref_ptr = memssa->node_length;
@@ -194,10 +203,24 @@ kefir_result_t kefir_opt_code_memssa_new_root_node(struct kefir_mem *mem, struct
     REQUIRE_OK(new_node(mem, memssa, &node_ref));
 
     memssa->nodes[node_ref].type = KEFIR_OPT_CODE_MEMSSA_ROOT_NODE;
-    REQUIRE_OK(kefir_hashset_init(&memssa->nodes[node_ref].uses, &kefir_hashtable_uint_ops));
+    memssa->node_uses[node_ref].uses = NULL;
+    memssa->node_uses[node_ref].uses_length = 0;
     memssa->node_length++;
     memssa->root_ref = node_ref;
     ASSIGN_PTR(node_ref_ptr, node_ref);
+    return KEFIR_OK;
+}
+
+static kefir_result_t add_use(struct kefir_mem *mem, struct kefir_opt_code_memssa_node_uses *uses,
+                              kefir_opt_code_memssa_node_ref_t node_ref) {
+    kefir_size_t new_length = uses->uses_length + 1;
+    kefir_opt_code_memssa_node_ref_t *new_uses =
+        KEFIR_REALLOC(mem, uses->uses, sizeof(kefir_opt_code_memssa_node_ref_t) * new_length);
+    REQUIRE(new_uses != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate memssa node uses"));
+
+    uses->uses = new_uses;
+    uses->uses_length = new_length;
+    uses->uses[new_length - 1] = node_ref;
     return KEFIR_OK;
 }
 
@@ -221,9 +244,10 @@ kefir_result_t kefir_opt_code_memssa_new_consume_node(struct kefir_mem *mem, str
     memssa->nodes[node_ref].type = KEFIR_OPT_CODE_MEMSSA_CONSUME_NODE;
     memssa->nodes[node_ref].predecessor_ref = predecessor_ref;
     memssa->nodes[node_ref].instr_ref = instr_ref;
-    REQUIRE_OK(kefir_hashset_init(&memssa->nodes[node_ref].uses, &kefir_hashtable_uint_ops));
+    memssa->node_uses[node_ref].uses = NULL;
+    memssa->node_uses[node_ref].uses_length = 0;
     if (predecessor_ref != KEFIR_ID_NONE) {
-        REQUIRE_OK(kefir_hashset_add(mem, &memssa->nodes[predecessor_ref].uses, (kefir_hashset_key_t) node_ref));
+        REQUIRE_OK(add_use(mem, &memssa->node_uses[predecessor_ref], node_ref));
     }
     if (instr_ref != KEFIR_ID_NONE) {
         memssa->instruction_bindings[KEFIR_OPT_INSTR_REF_INDEX_OF(instr_ref)] = node_ref;
@@ -246,9 +270,10 @@ kefir_result_t kefir_opt_code_memssa_new_terminate_node(struct kefir_mem *mem, s
 
     memssa->nodes[node_ref].type = KEFIR_OPT_CODE_MEMSSA_TERMINATE_NODE;
     memssa->nodes[node_ref].predecessor_ref = predecessor_ref;
-    REQUIRE_OK(kefir_hashset_init(&memssa->nodes[node_ref].uses, &kefir_hashtable_uint_ops));
+    memssa->node_uses[node_ref].uses = NULL;
+    memssa->node_uses[node_ref].uses_length = 0;
     if (predecessor_ref != KEFIR_ID_NONE) {
-        REQUIRE_OK(kefir_hashset_add(mem, &memssa->nodes[predecessor_ref].uses, (kefir_hashset_key_t) node_ref));
+        REQUIRE_OK(add_use(mem, &memssa->node_uses[predecessor_ref], node_ref));
     }
     memssa->node_length++;
     ASSIGN_PTR(node_ref_ptr, node_ref);
@@ -275,9 +300,10 @@ kefir_result_t kefir_opt_code_memssa_new_produce_node(struct kefir_mem *mem, str
     memssa->nodes[node_ref].type = KEFIR_OPT_CODE_MEMSSA_PRODUCE_NODE;
     memssa->nodes[node_ref].predecessor_ref = predecessor_ref;
     memssa->nodes[node_ref].instr_ref = instr_ref;
-    REQUIRE_OK(kefir_hashset_init(&memssa->nodes[node_ref].uses, &kefir_hashtable_uint_ops));
+    memssa->node_uses[node_ref].uses = NULL;
+    memssa->node_uses[node_ref].uses_length = 0;
     if (predecessor_ref != KEFIR_ID_NONE) {
-        REQUIRE_OK(kefir_hashset_add(mem, &memssa->nodes[predecessor_ref].uses, (kefir_hashset_key_t) node_ref));
+        REQUIRE_OK(add_use(mem, &memssa->node_uses[predecessor_ref], node_ref));
     }
     if (instr_ref != KEFIR_ID_NONE) {
         memssa->instruction_bindings[KEFIR_OPT_INSTR_REF_INDEX_OF(instr_ref)] = node_ref;
@@ -308,9 +334,10 @@ kefir_result_t kefir_opt_code_memssa_new_produce_consume_node(struct kefir_mem *
     memssa->nodes[node_ref].type = KEFIR_OPT_CODE_MEMSSA_PRODUCE_CONSUME_NODE;
     memssa->nodes[node_ref].predecessor_ref = predecessor_ref;
     memssa->nodes[node_ref].instr_ref = instr_ref;
-    REQUIRE_OK(kefir_hashset_init(&memssa->nodes[node_ref].uses, &kefir_hashtable_uint_ops));
+    memssa->node_uses[node_ref].uses = NULL;
+    memssa->node_uses[node_ref].uses_length = 0;
     if (predecessor_ref != KEFIR_ID_NONE) {
-        REQUIRE_OK(kefir_hashset_add(mem, &memssa->nodes[predecessor_ref].uses, (kefir_hashset_key_t) node_ref));
+        REQUIRE_OK(add_use(mem, &memssa->node_uses[predecessor_ref], node_ref));
     }
     if (instr_ref != KEFIR_ID_NONE) {
         memssa->instruction_bindings[KEFIR_OPT_INSTR_REF_INDEX_OF(instr_ref)] = node_ref;
@@ -331,7 +358,8 @@ kefir_result_t kefir_opt_code_memssa_new_phi_node(struct kefir_mem *mem, struct 
     memssa->nodes[node_ref].type = KEFIR_OPT_CODE_MEMSSA_PHI_NODE;
     memssa->nodes[node_ref].phi.links = NULL;
     memssa->nodes[node_ref].phi.link_count = 0;
-    REQUIRE_OK(kefir_hashset_init(&memssa->nodes[node_ref].uses, &kefir_hashtable_uint_ops));
+    memssa->node_uses[node_ref].uses = NULL;
+    memssa->node_uses[node_ref].uses_length = 0;
     memssa->node_length++;
     ASSIGN_PTR(node_ref_ptr, node_ref);
     return KEFIR_OK;
@@ -370,7 +398,7 @@ kefir_result_t kefir_opt_code_memssa_phi_attach(struct kefir_mem *mem, struct ke
     memssa->nodes[phi_node_ref].phi.link_count = new_length;
 
     if (node_ref != KEFIR_ID_NONE) {
-        REQUIRE_OK(kefir_hashset_add(mem, &memssa->nodes[node_ref].uses, (kefir_hashset_key_t) phi_node_ref));
+        REQUIRE_OK(add_use(mem, &memssa->node_uses[node_ref], phi_node_ref));
     }
     return KEFIR_OK;
 }
@@ -407,8 +435,7 @@ static kefir_result_t update_node_ref(struct kefir_mem *mem, struct kefir_opt_co
     if (*at_node_ref == from_node_ref) {
         *at_node_ref = to_node_ref;
 
-        struct kefir_opt_code_memssa_node *to_node = &memssa->nodes[to_node_ref];
-        REQUIRE_OK(kefir_hashset_add(mem, &to_node->uses, (kefir_hashset_key_t) user_ref));
+        REQUIRE_OK(add_use(mem, &memssa->node_uses[to_node_ref], user_ref));
     }
     return KEFIR_OK;
 }
@@ -424,14 +451,10 @@ kefir_result_t kefir_opt_code_memssa_replace(struct kefir_mem *mem, struct kefir
             KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Expected valid memory ssa node reference"));
     REQUIRE(from_node_ref != to_node_ref, KEFIR_OK);
 
-    struct kefir_opt_code_memssa_node *from_node = &memssa->nodes[from_node_ref];
+    struct kefir_opt_code_memssa_node_uses *from_node = &memssa->node_uses[from_node_ref];
 
-    kefir_result_t res;
-    struct kefir_hashset_iterator iter;
-    kefir_hashset_key_t key;
-    for (res = kefir_hashset_iter(&from_node->uses, &iter, &key); res == KEFIR_OK;
-         res = kefir_hashset_next(&iter, &key)) {
-        ASSIGN_DECL_CAST(kefir_opt_code_memssa_node_ref_t, use_ref, key);
+    for (kefir_size_t i = 0; i < from_node->uses_length; i++) {
+        kefir_opt_code_memssa_node_ref_t use_ref = from_node->uses[i];
 
         struct kefir_opt_code_memssa_node *use_node = &memssa->nodes[use_ref];
         switch (use_node->type) {
@@ -455,10 +478,24 @@ kefir_result_t kefir_opt_code_memssa_replace(struct kefir_mem *mem, struct kefir
                 break;
         }
     }
-    if (res != KEFIR_ITERATOR_END) {
-        REQUIRE_OK(res);
+    KEFIR_FREE(mem, from_node->uses);
+    from_node->uses = NULL;
+    from_node->uses_length = 0;
+    return KEFIR_OK;
+}
+
+static kefir_result_t delete_use(struct kefir_opt_code_memssa_node_uses *uses,
+                                 kefir_opt_code_memssa_node_ref_t node_ref) {
+    for (kefir_size_t i = 0; i < uses->uses_length; i++) {
+        if (uses->uses[i] == node_ref) {
+            if (i + 1 < uses->uses_length) {
+                memmove(&uses->uses[i], &uses->uses[i + 1],
+                        sizeof(kefir_opt_code_memssa_node_ref_t) * (uses->uses_length - i - 1));
+            }
+            uses->uses_length--;
+            break;
+        }
     }
-    REQUIRE_OK(kefir_hashset_clear(mem, &from_node->uses));
     return KEFIR_OK;
 }
 
@@ -470,7 +507,8 @@ kefir_result_t kefir_opt_code_memssa_unbind(struct kefir_mem *mem, struct kefir_
             KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Expected valid memory ssa node reference"));
 
     struct kefir_opt_code_memssa_node *node = &memssa->nodes[node_ref];
-    REQUIRE(kefir_hashset_size(&node->uses) == 0,
+    struct kefir_opt_code_memssa_node_uses *node_uses = &memssa->node_uses[node_ref];
+    REQUIRE(node_uses->uses_length == 0,
             KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Expected memssa node to have zero uses before unbinding"));
     if (node->instr_ref != KEFIR_ID_NONE) {
         switch (node->type) {
@@ -481,8 +519,7 @@ kefir_result_t kefir_opt_code_memssa_unbind(struct kefir_mem *mem, struct kefir_
             case KEFIR_OPT_CODE_MEMSSA_PRODUCE_NODE:
             case KEFIR_OPT_CODE_MEMSSA_PRODUCE_CONSUME_NODE:
             case KEFIR_OPT_CODE_MEMSSA_CONSUME_NODE:
-                REQUIRE_OK(
-                    kefir_hashset_delete(&memssa->nodes[node->predecessor_ref].uses, (kefir_hashset_key_t) node_ref));
+                REQUIRE_OK(delete_use(&memssa->node_uses[node->predecessor_ref], node_ref));
                 node->predecessor_ref = KEFIR_ID_NONE;
                 if (node->instr_ref != KEFIR_ID_NONE) {
                     memssa->instruction_bindings[KEFIR_OPT_INSTR_REF_INDEX_OF(node->instr_ref)] = KEFIR_ID_NONE;
@@ -491,15 +528,13 @@ kefir_result_t kefir_opt_code_memssa_unbind(struct kefir_mem *mem, struct kefir_
                 break;
 
             case KEFIR_OPT_CODE_MEMSSA_TERMINATE_NODE:
-                REQUIRE_OK(
-                    kefir_hashset_delete(&memssa->nodes[node->predecessor_ref].uses, (kefir_hashset_key_t) node_ref));
+                REQUIRE_OK(delete_use(&memssa->node_uses[node->predecessor_ref], node_ref));
                 node->predecessor_ref = KEFIR_ID_NONE;
                 break;
 
             case KEFIR_OPT_CODE_MEMSSA_PHI_NODE:
                 for (kefir_size_t i = 0; i < node->phi.link_count; i++) {
-                    REQUIRE_OK(kefir_hashset_delete(&memssa->nodes[node->phi.links[i].node_ref].uses,
-                                                    (kefir_hashset_key_t) node_ref));
+                    REQUIRE_OK(delete_use(&memssa->node_uses[node->phi.links[i].node_ref], node_ref));
                 }
                 KEFIR_FREE(mem, node->phi.links);
                 node->phi.links = NULL;
@@ -524,14 +559,13 @@ kefir_result_t kefir_opt_code_memssa_use_iter(const struct kefir_opt_code_memssa
     const struct kefir_opt_code_memssa_node *node;
     REQUIRE_OK(kefir_opt_code_memssa_node(memssa, node_ref, &node));
 
-    kefir_hashset_key_t key;
-    kefir_result_t res = kefir_hashset_iter(&node->uses, &iter->iter, &key);
-    if (res == KEFIR_ITERATOR_END) {
-        res = KEFIR_SET_ERROR(KEFIR_ITERATOR_END, "End of memory ssa node use iterator");
-    }
-    REQUIRE_OK(res);
+    iter->uses = &memssa->node_uses[node_ref];
+    iter->index = 0;
 
-    ASSIGN_PTR(node_ref_ptr, (kefir_opt_code_memssa_node_ref_t) key);
+    REQUIRE(iter->index < iter->uses->uses_length,
+            KEFIR_SET_ERROR(KEFIR_ITERATOR_END, "End of memory ssa node use iterator"));
+    kefir_opt_code_memssa_node_ref_t use_ref = iter->uses->uses[iter->index++];
+    ASSIGN_PTR(node_ref_ptr, use_ref);
     return KEFIR_OK;
 }
 
@@ -539,13 +573,9 @@ kefir_result_t kefir_opt_code_memssa_use_next(struct kefir_opt_code_memssa_use_i
                                               kefir_opt_code_memssa_node_ref_t *node_ref_ptr) {
     REQUIRE(iter != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer memory ssa iterator"));
 
-    kefir_hashset_key_t key;
-    kefir_result_t res = kefir_hashset_next(&iter->iter, &key);
-    if (res == KEFIR_ITERATOR_END) {
-        res = KEFIR_SET_ERROR(KEFIR_ITERATOR_END, "End of memory ssa node use iterator");
-    }
-    REQUIRE_OK(res);
-
-    ASSIGN_PTR(node_ref_ptr, (kefir_opt_code_memssa_node_ref_t) key);
+    REQUIRE(iter->index < iter->uses->uses_length,
+            KEFIR_SET_ERROR(KEFIR_ITERATOR_END, "End of memory ssa node use iterator"));
+    kefir_opt_code_memssa_node_ref_t use_ref = iter->uses->uses[iter->index++];
+    ASSIGN_PTR(node_ref_ptr, use_ref);
     return KEFIR_OK;
 }

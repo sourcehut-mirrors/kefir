@@ -126,13 +126,13 @@
                         "predecessor_ref": 0
                     },
                     {
-                        "node_ref": 2,
-                        "type": "consume",
+                        "node_ref": 3,
+                        "type": "terminate",
                         "predecessor_ref": 1
                     },
                     {
-                        "node_ref": 3,
-                        "type": "terminate",
+                        "node_ref": 2,
+                        "type": "consume",
                         "predecessor_ref": 1
                     }
                 ]
@@ -829,11 +829,6 @@
                         ]
                     },
                     {
-                        "node_ref": 9,
-                        "type": "produce",
-                        "predecessor_ref": 2
-                    },
-                    {
                         "node_ref": 1,
                         "type": "phi",
                         "links": [
@@ -848,24 +843,9 @@
                         ]
                     },
                     {
-                        "node_ref": 10,
-                        "type": "consume",
-                        "predecessor_ref": 1
-                    },
-                    {
-                        "node_ref": 11,
-                        "type": "consume",
-                        "predecessor_ref": 1
-                    },
-                    {
                         "node_ref": 12,
                         "type": "produce",
                         "predecessor_ref": 1
-                    },
-                    {
-                        "node_ref": 13,
-                        "type": "consume",
-                        "predecessor_ref": 12
                     },
                     {
                         "node_ref": 0,
@@ -892,12 +872,32 @@
                         "predecessor_ref": 0
                     },
                     {
-                        "node_ref": 7,
+                        "node_ref": 13,
                         "type": "consume",
+                        "predecessor_ref": 12
+                    },
+                    {
+                        "node_ref": 11,
+                        "type": "consume",
+                        "predecessor_ref": 1
+                    },
+                    {
+                        "node_ref": 10,
+                        "type": "consume",
+                        "predecessor_ref": 1
+                    },
+                    {
+                        "node_ref": 9,
+                        "type": "produce",
                         "predecessor_ref": 2
                     },
                     {
                         "node_ref": 8,
+                        "type": "consume",
+                        "predecessor_ref": 2
+                    },
+                    {
+                        "node_ref": 7,
                         "type": "consume",
                         "predecessor_ref": 2
                     },

@@ -186,13 +186,13 @@
                         "predecessor_ref": 2
                     },
                     {
-                        "node_ref": 4,
-                        "type": "consume",
+                        "node_ref": 5,
+                        "type": "terminate",
                         "predecessor_ref": 3
                     },
                     {
-                        "node_ref": 5,
-                        "type": "terminate",
+                        "node_ref": 4,
+                        "type": "consume",
                         "predecessor_ref": 3
                     }
                 ]
@@ -332,13 +332,13 @@
                         "predecessor_ref": 0
                     },
                     {
-                        "node_ref": 2,
-                        "type": "consume",
+                        "node_ref": 3,
+                        "type": "terminate",
                         "predecessor_ref": 1
                     },
                     {
-                        "node_ref": 3,
-                        "type": "terminate",
+                        "node_ref": 2,
+                        "type": "consume",
                         "predecessor_ref": 1
                     }
                 ]
