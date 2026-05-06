@@ -144,6 +144,9 @@ static kefir_result_t build_hotness(struct hotness_payload *payload) {
                  kefir_codegen_target_ir_code_block_control_head(payload->control_flow->code, block_ref);
              instr_ref != KEFIR_ID_NONE;
              instr_ref = kefir_codegen_target_ir_code_control_next(payload->control_flow->code, instr_ref)) {
+            REQUIRE_OK(kefir_codegen_target_ir_code_instruction_prefetch(
+                payload->control_flow->code,
+                kefir_codegen_target_ir_code_control_next(payload->control_flow->code, instr_ref)));
             REQUIRE_OK(update_lifetimes(payload, block_ref, instr_ref));
         }
 

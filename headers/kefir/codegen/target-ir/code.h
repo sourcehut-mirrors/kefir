@@ -481,6 +481,12 @@ kefir_result_t kefir_codegen_target_ir_code_at_index(const struct kefir_codegen_
 kefir_result_t kefir_codegen_target_ir_code_instruction(const struct kefir_codegen_target_ir_code *,
                                                         kefir_codegen_target_ir_instruction_ref_t,
                                                         const struct kefir_codegen_target_ir_instruction **);
+#ifdef __GNUC__
+kefir_result_t kefir_codegen_target_ir_code_instruction_prefetch(const struct kefir_codegen_target_ir_code *,
+                                                                 kefir_codegen_target_ir_instruction_ref_t);
+#else
+#define kefir_codegen_target_ir_code_instruction_prefetch(...) (KEFIR_OK)
+#endif
 kefir_result_t kefir_codegen_target_ir_code_new_instruction(struct kefir_mem *, struct kefir_codegen_target_ir_code *,
                                                             kefir_codegen_target_ir_block_ref_t,
                                                             kefir_codegen_target_ir_instruction_ref_t,

@@ -329,6 +329,19 @@ kefir_result_t kefir_codegen_target_ir_code_instruction(const struct kefir_codeg
     return KEFIR_OK;
 }
 
+#ifdef __GNUC__
+kefir_result_t kefir_codegen_target_ir_code_instruction_prefetch(const struct kefir_codegen_target_ir_code *code,
+                                                                 kefir_codegen_target_ir_instruction_ref_t instr_ref) {
+    REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR code"));
+    REQUIRE(instr_ref != KEFIR_ID_NONE, KEFIR_OK);
+
+    struct kefir_codegen_target_ir_instruction *instr = NULL;
+    REQUIRE_OK(instr_mut_at_nocheck(code, instr_ref, &instr));
+    __builtin_prefetch(instr);
+    return KEFIR_OK;
+}
+#endif
+
 static kefir_result_t free_inline_asm_node(struct kefir_mem *mem, struct kefir_list *list,
                                            struct kefir_list_entry *entry, void *payload) {
     UNUSED(list);

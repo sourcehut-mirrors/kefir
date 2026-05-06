@@ -483,6 +483,8 @@ static kefir_result_t build_per_block_liveness(
              kefir_codegen_target_ir_code_block_control_head(control_flow->code, block_ref);
          instr_ref != KEFIR_ID_NONE;
          instr_ref = kefir_codegen_target_ir_code_control_next(control_flow->code, instr_ref)) {
+        REQUIRE_OK(kefir_codegen_target_ir_code_instruction_prefetch(
+            control_flow->code, kefir_codegen_target_ir_code_control_next(control_flow->code, instr_ref)));
         struct kefir_codegen_target_ir_value_iterator value_iter;
         struct kefir_codegen_target_ir_value_ref value_ref;
         kefir_result_t res;
