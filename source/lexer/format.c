@@ -1073,14 +1073,29 @@ kefir_result_t kefir_token_format(struct kefir_json_output *json, const struct k
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_token_buffer_format(struct kefir_json_output *json, const struct kefir_token_buffer *buffer,
+kefir_result_t kefir_token_buffer_format(struct kefir_mem *mem, struct kefir_json_output *json,
+                                         const struct kefir_token_cursor_handle *cursor,
                                          kefir_bool_t display_source_location) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(json != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid json output"));
-    REQUIRE(buffer != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid token buffer"));
+    REQUIRE(cursor != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid token cursor"));
 
     REQUIRE_OK(kefir_json_output_array_begin(json));
-    for (kefir_size_t i = 0; i < kefir_token_buffer_length(buffer); i++) {
-        REQUIRE_OK(kefir_token_format(json, kefir_token_buffer_at(buffer, i), display_source_location));
+#define FLUSH_LIMIT 65536
+    for (kefir_size_t i = 0;; i++) {
+        const struct kefir_token *token;
+        REQUIRE_OK(cursor->get_token(i, &token, cursor));
+        if (token == NULL) {
+            break;
+        }
+        REQUIRE_OK(kefir_token_format(json, token, display_source_location));
+        if (token->klass == KEFIR_TOKEN_SENTINEL) {
+            break;
+        }
+
+        if (i == FLUSH_LIMIT) {
+            REQUIRE_OK(cursor->flush(mem, cursor, i));
+        }
     }
     REQUIRE_OK(kefir_json_output_array_end(json));
     return KEFIR_OK;

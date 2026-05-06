@@ -507,21 +507,6 @@ static kefir_result_t include_predefined(struct kefir_mem *mem,
     return KEFIR_OK;
 }
 
-static kefir_result_t lex_file(struct kefir_mem *mem, const struct kefir_compiler_runner_configuration *options,
-                               struct kefir_compiler_context *compiler, struct kefir_token_allocator *token_allocator,
-                               const char *source_id, const char *source, kefir_size_t length,
-                               struct kefir_token_buffer *tokens) {
-    REQUIRE_OK(build_predefined_macros(mem, options, compiler));
-    if (!options->default_pp_timestamp) {
-        compiler->preprocessor_context.environment.timestamp = options->pp_timestamp;
-    }
-    REQUIRE_OK(include_predefined(mem, options, compiler, source_id, tokens));
-    REQUIRE_OK(kefir_compiler_preprocess_lex(
-        mem, compiler, options->skip_preprocessor ? KEFIR_PREPROCESSOR_MODE_MINIMAL : KEFIR_PREPROCESSOR_MODE_NORMAL,
-        token_allocator, tokens, source, length, source_id, options->input_filepath));
-    return KEFIR_OK;
-}
-
 static kefir_result_t lex_file2(struct kefir_mem *mem, const struct kefir_compiler_runner_configuration *options,
                                 struct kefir_compiler_context *compiler) {
     REQUIRE_OK(build_predefined_macros(mem, options, compiler));
@@ -592,33 +577,6 @@ static kefir_result_t action_dump_preprocessed(struct kefir_mem *mem,
     return KEFIR_OK;
 }
 
-static kefir_result_t dump_tokens_impl(struct kefir_mem *mem, const struct kefir_compiler_runner_configuration *options,
-                                       struct kefir_compiler_context *compiler, const char *source_id,
-                                       const char *source, kefir_size_t length, FILE *output) {
-    UNUSED(options);
-    struct kefir_token_buffer tokens;
-    struct kefir_token_allocator token_allocator;
-    REQUIRE_OK(kefir_token_buffer_init(&tokens));
-    REQUIRE_OK(kefir_token_allocator_init(&token_allocator));
-    REQUIRE_OK(lex_file(mem, options, compiler, &token_allocator, source_id, source, length, &tokens));
-
-    if (output != NULL) {
-        struct kefir_json_output json;
-        REQUIRE_OK(kefir_json_output_init(&json, output, 4));
-        REQUIRE_OK(kefir_token_buffer_format(&json, &tokens, options->debug_info));
-        REQUIRE_OK(kefir_json_output_finalize(&json));
-    }
-    REQUIRE_OK(kefir_token_buffer_free(mem, &tokens));
-    REQUIRE_OK(kefir_token_allocator_free(mem, &token_allocator));
-    return KEFIR_OK;
-}
-
-static kefir_result_t action_dump_tokens(struct kefir_mem *mem,
-                                         const struct kefir_compiler_runner_configuration *options) {
-    REQUIRE_OK(dump_action_impl(mem, options, dump_tokens_impl));
-    return KEFIR_OK;
-}
-
 #define PREPROCESSOR_INIT(_mem, _preprocessor, _options, _compiler, _file_info, _source_cursor, _source, _length, \
                           _source_id)                                                                             \
     do {                                                                                                          \
@@ -633,6 +591,40 @@ static kefir_result_t action_dump_tokens(struct kefir_mem *mem,
         (_preprocessor)->mode =                                                                                   \
             (_options)->skip_preprocessor ? KEFIR_PREPROCESSOR_MODE_MINIMAL : KEFIR_PREPROCESSOR_MODE_NORMAL;     \
     } while (0)
+
+static kefir_result_t dump_tokens_impl(struct kefir_mem *mem, const struct kefir_compiler_runner_configuration *options,
+                                       struct kefir_compiler_context *compiler, const char *source_id,
+                                       const char *source, kefir_size_t length, FILE *output) {
+    UNUSED(options);
+    struct kefir_token_incremental_cursor_handle tokens_handle;
+    struct kefir_token_allocator token_allocator;
+    REQUIRE_OK(kefir_token_allocator_init(&token_allocator));
+
+    REQUIRE_OK(lex_file2(mem, options, compiler));
+
+    struct kefir_lexer_source_cursor source_cursor;
+    struct kefir_preprocessor preprocessor;
+    struct kefir_preprocessor_source_file_info file_info = {0};
+    PREPROCESSOR_INIT(mem, &preprocessor, options, compiler, &file_info, &source_cursor, source, length, source_id);
+
+    if (output != NULL) {
+        struct kefir_json_output json;
+        REQUIRE_OK(kefir_json_output_init(&json, output, 4));
+        REQUIRE_OK(kefir_token_incremental_cursor_handle_init(mem, &preprocessor, &token_allocator, &tokens_handle));
+        REQUIRE_OK(kefir_token_buffer_format(mem, &json, &tokens_handle.handle, options->debug_info));
+        REQUIRE_OK(kefir_token_incremental_cursor_handle_free(&tokens_handle));
+        REQUIRE_OK(kefir_json_output_finalize(&json));
+    }
+    REQUIRE_OK(kefir_preprocessor_free(mem, &preprocessor));
+    REQUIRE_OK(kefir_token_allocator_free(mem, &token_allocator));
+    return KEFIR_OK;
+}
+
+static kefir_result_t action_dump_tokens(struct kefir_mem *mem,
+                                         const struct kefir_compiler_runner_configuration *options) {
+    REQUIRE_OK(dump_action_impl(mem, options, dump_tokens_impl));
+    return KEFIR_OK;
+}
 
 static kefir_result_t dump_ast_impl(struct kefir_mem *mem, const struct kefir_compiler_runner_configuration *options,
                                     struct kefir_compiler_context *compiler, const char *source_id, const char *source,

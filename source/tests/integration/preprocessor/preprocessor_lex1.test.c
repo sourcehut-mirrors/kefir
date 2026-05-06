@@ -46,6 +46,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     struct kefir_token_allocator token_allocator;
     struct kefir_preprocessor_ast_context ast_context;
     struct kefir_ast_translator_environment env;
+    struct kefir_token_cursor_handle token_cursor;
     REQUIRE_OK(kefir_ast_translator_environment_init(&env, kft_util_get_ir_target_platform()));
     REQUIRE_OK(kefir_preprocessor_ast_context_init(mem, &ast_context, &symbols, kefir_util_default_type_traits(),
                                                    &env.target_env, NULL));
@@ -58,10 +59,11 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     REQUIRE_OK(kefir_preprocessor_free(mem, &preprocessor));
     REQUIRE_OK(kefir_preprocessor_context_free(mem, &context));
     REQUIRE_OK(kefir_preprocessor_virtual_source_locator_free(mem, &virtual_source));
+    REQUIRE_OK(kefir_token_buffer_cursor_handle(&tokens, &token_cursor));
 
     struct kefir_json_output json;
     REQUIRE_OK(kefir_json_output_init(&json, stdout, 4));
-    REQUIRE_OK(kefir_token_buffer_format(&json, &tokens, false));
+    REQUIRE_OK(kefir_token_buffer_format(mem, &json, &token_cursor, false));
     REQUIRE_OK(kefir_json_output_finalize(&json));
 
     REQUIRE_OK(kefir_token_buffer_free(mem, &tokens));
