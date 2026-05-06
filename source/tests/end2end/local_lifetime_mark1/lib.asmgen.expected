@@ -431,7 +431,7 @@
                                 "control_next": null
                             },
                             {
-                                "id": 3123,
+                                "id": 3377,
                                 "opcode": "int64_add",
                                 "args": [
                                     624,
@@ -471,11 +471,11 @@
                             ],
                             "immediate_dominator": 5,
                             "alive_instructions": [
-                                2129,
                                 624,
                                 2161,
                                 80,
-                                3123,
+                                2129,
+                                3377,
                                 1248,
                                 0,
                                 1265,
@@ -538,7 +538,7 @@
                             {
                                 "id": 1632,
                                 "opcode": "int16_load",
-                                "location": 3123,
+                                "location": 3377,
                                 "flags": {
                                     "load_extension": "noextend",
                                     "volatile": true
@@ -568,12 +568,12 @@
                             ],
                             "immediate_dominator": 3,
                             "alive_instructions": [
-                                3123,
                                 1488,
                                 1632,
                                 1280,
                                 80,
                                 1648,
+                                3377,
                                 0,
                                 2145,
                                 1456,
@@ -596,10 +596,10 @@
                                 "id": 1681,
                                 "opcode": "local_lifetime_mark",
                                 "arg": 0,
-                                "control_next": 3138
+                                "control_next": 194
                             },
                             {
-                                "id": 3138,
+                                "id": 194,
                                 "opcode": "jump",
                                 "target_block": 8,
                                 "control_next": null
@@ -617,9 +617,9 @@
                             "alive_instructions": [
                                 80,
                                 0,
-                                3138,
                                 1681,
-                                1664
+                                1664,
+                                194
                             ]
                         }
                     },
@@ -660,10 +660,10 @@
                                 "id": 3697,
                                 "opcode": "local_lifetime_mark",
                                 "arg": 0,
-                                "control_next": 3377
+                                "control_next": 3442
                             },
                             {
-                                "id": 3377,
+                                "id": 3442,
                                 "opcode": "jump",
                                 "target_block": 8,
                                 "control_next": null
@@ -681,11 +681,11 @@
                             "immediate_dominator": 7,
                             "alive_instructions": [
                                 1920,
+                                3442,
                                 1936,
                                 3697,
                                 1904,
                                 0,
-                                3377,
                                 80
                             ]
                         }
