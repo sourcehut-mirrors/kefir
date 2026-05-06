@@ -1574,7 +1574,7 @@ test2:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 609,
+#                    "instr_ref": 834,
 #                    "opcode": "add",
 #                    "parameters": [
 #                        {
@@ -1741,7 +1741,7 @@ test2:
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 609,
+#                            "instr_ref": 834,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -2013,7 +2013,7 @@ test2:
 #                    "parameters": [
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 609,
+#                            "instr_ref": 834,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
