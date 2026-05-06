@@ -619,6 +619,21 @@ static kefir_result_t action_dump_tokens(struct kefir_mem *mem,
     return KEFIR_OK;
 }
 
+#define PREPROCESSOR_INIT(_mem, _preprocessor, _options, _compiler, _file_info, _source_cursor, _source, _length, \
+                          _source_id)                                                                             \
+    do {                                                                                                          \
+        (_file_info)->filepath = (_options)->input_filepath;                                                      \
+        (_file_info)->system = false;                                                                             \
+        (_file_info)->base_include_dir = NULL;                                                                    \
+        REQUIRE_OK(kefir_lexer_source_cursor_init((_source_cursor), (_source), (_length), (_source_id)));         \
+        REQUIRE_OK(kefir_preprocessor_init(                                                                       \
+            (_mem), (_preprocessor), &(_compiler)->ast_global_context.symbols, (_source_cursor),                  \
+            &(_compiler)->profile->lexer_context, &(_compiler)->preprocessor_context, (_file_info),               \
+            (_compiler)->extensions != NULL ? (_compiler)->extensions->preprocessor : NULL));                     \
+        (_preprocessor)->mode =                                                                                   \
+            (_options)->skip_preprocessor ? KEFIR_PREPROCESSOR_MODE_MINIMAL : KEFIR_PREPROCESSOR_MODE_NORMAL;     \
+    } while (0)
+
 static kefir_result_t dump_ast_impl(struct kefir_mem *mem, const struct kefir_compiler_runner_configuration *options,
                                     struct kefir_compiler_context *compiler, const char *source_id, const char *source,
                                     kefir_size_t length, FILE *output) {
@@ -631,13 +646,8 @@ static kefir_result_t dump_ast_impl(struct kefir_mem *mem, const struct kefir_co
 
     struct kefir_lexer_source_cursor source_cursor;
     struct kefir_preprocessor preprocessor;
-    const struct kefir_preprocessor_source_file_info file_info = {
-        .filepath = options->input_filepath, .system = false, .base_include_dir = NULL};
-    REQUIRE_OK(kefir_lexer_source_cursor_init(&source_cursor, source, length, source_id));
-    REQUIRE_OK(kefir_preprocessor_init(mem, &preprocessor, &compiler->ast_global_context.symbols, &source_cursor,
-                                       &compiler->profile->lexer_context, &compiler->preprocessor_context, &file_info,
-                                       compiler->extensions != NULL ? compiler->extensions->preprocessor : NULL));
-    preprocessor.mode = options->skip_preprocessor ? KEFIR_PREPROCESSOR_MODE_MINIMAL : KEFIR_PREPROCESSOR_MODE_NORMAL;
+    struct kefir_preprocessor_source_file_info file_info = {0};
+    PREPROCESSOR_INIT(mem, &preprocessor, options, compiler, &file_info, &source_cursor, source, length, source_id);
 
     REQUIRE_OK(kefir_token_allocator_init(&token_allocator));
     REQUIRE_OK(kefir_token_incremental_cursor_handle_init(mem, &preprocessor, &token_allocator, &tokens_handle));
@@ -679,13 +689,8 @@ static kefir_result_t dump_ir_impl(struct kefir_mem *mem, const struct kefir_com
 
     struct kefir_lexer_source_cursor source_cursor;
     struct kefir_preprocessor preprocessor;
-    const struct kefir_preprocessor_source_file_info file_info = {
-        .filepath = options->input_filepath, .system = false, .base_include_dir = NULL};
-    REQUIRE_OK(kefir_lexer_source_cursor_init(&source_cursor, source, length, source_id));
-    REQUIRE_OK(kefir_preprocessor_init(mem, &preprocessor, &compiler->ast_global_context.symbols, &source_cursor,
-                                       &compiler->profile->lexer_context, &compiler->preprocessor_context, &file_info,
-                                       compiler->extensions != NULL ? compiler->extensions->preprocessor : NULL));
-    preprocessor.mode = options->skip_preprocessor ? KEFIR_PREPROCESSOR_MODE_MINIMAL : KEFIR_PREPROCESSOR_MODE_NORMAL;
+    struct kefir_preprocessor_source_file_info file_info = {0};
+    PREPROCESSOR_INIT(mem, &preprocessor, options, compiler, &file_info, &source_cursor, source, length, source_id);
 
     REQUIRE_OK(kefir_token_allocator_init(&token_allocator));
     REQUIRE_OK(kefir_token_incremental_cursor_handle_init(mem, &preprocessor, &token_allocator, &tokens_handle));
@@ -729,13 +734,8 @@ static kefir_result_t dump_opt_impl(struct kefir_mem *mem, const struct kefir_co
 
     struct kefir_lexer_source_cursor source_cursor;
     struct kefir_preprocessor preprocessor;
-    const struct kefir_preprocessor_source_file_info file_info = {
-        .filepath = options->input_filepath, .system = false, .base_include_dir = NULL};
-    REQUIRE_OK(kefir_lexer_source_cursor_init(&source_cursor, source, length, source_id));
-    REQUIRE_OK(kefir_preprocessor_init(mem, &preprocessor, &compiler->ast_global_context.symbols, &source_cursor,
-                                       &compiler->profile->lexer_context, &compiler->preprocessor_context, &file_info,
-                                       compiler->extensions != NULL ? compiler->extensions->preprocessor : NULL));
-    preprocessor.mode = options->skip_preprocessor ? KEFIR_PREPROCESSOR_MODE_MINIMAL : KEFIR_PREPROCESSOR_MODE_NORMAL;
+    struct kefir_preprocessor_source_file_info file_info = {0};
+    PREPROCESSOR_INIT(mem, &preprocessor, options, compiler, &file_info, &source_cursor, source, length, source_id);
 
     REQUIRE_OK(kefir_token_allocator_init(&token_allocator));
     REQUIRE_OK(kefir_token_incremental_cursor_handle_init(mem, &preprocessor, &token_allocator, &tokens_handle));
@@ -791,13 +791,8 @@ static kefir_result_t dump_asm_impl(struct kefir_mem *mem, const struct kefir_co
 
     struct kefir_lexer_source_cursor source_cursor;
     struct kefir_preprocessor preprocessor;
-    const struct kefir_preprocessor_source_file_info file_info = {
-        .filepath = options->input_filepath, .system = false, .base_include_dir = NULL};
-    REQUIRE_OK(kefir_lexer_source_cursor_init(&source_cursor, source, length, source_id));
-    REQUIRE_OK(kefir_preprocessor_init(mem, &preprocessor, &compiler->ast_global_context.symbols, &source_cursor,
-                                       &compiler->profile->lexer_context, &compiler->preprocessor_context, &file_info,
-                                       compiler->extensions != NULL ? compiler->extensions->preprocessor : NULL));
-    preprocessor.mode = options->skip_preprocessor ? KEFIR_PREPROCESSOR_MODE_MINIMAL : KEFIR_PREPROCESSOR_MODE_NORMAL;
+    struct kefir_preprocessor_source_file_info file_info = {0};
+    PREPROCESSOR_INIT(mem, &preprocessor, options, compiler, &file_info, &source_cursor, source, length, source_id);
 
     REQUIRE_OK(kefir_token_allocator_init(&token_allocator));
     REQUIRE_OK(kefir_token_incremental_cursor_handle_init(mem, &preprocessor, &token_allocator, &tokens_handle));
@@ -828,6 +823,8 @@ static kefir_result_t dump_asm_impl(struct kefir_mem *mem, const struct kefir_co
     REQUIRE_OK(kefir_ir_module_free(mem, &module));
     return KEFIR_OK;
 }
+
+#undef PREPROCESSOR_INIT
 
 static kefir_result_t action_dump_asm(struct kefir_mem *mem,
                                       const struct kefir_compiler_runner_configuration *options) {
