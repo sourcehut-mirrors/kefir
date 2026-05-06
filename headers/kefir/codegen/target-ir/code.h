@@ -143,10 +143,7 @@ typedef enum kefir_codegen_target_ir_allocation_constraint_type {
 
 typedef struct kefir_codegen_target_ir_allocation_constraint {
     kefir_codegen_target_ir_allocation_constraint_type_t type;
-    union {
-        kefir_codegen_target_ir_physical_register_t physical_register;
-        struct kefir_codegen_target_ir_value_ref value_ref;
-    };
+    kefir_codegen_target_ir_physical_register_t physical_register;
 } kefir_codegen_target_ir_allocation_constraint_t;
 
 typedef struct kefir_codegen_target_ir_value_type_metadata {

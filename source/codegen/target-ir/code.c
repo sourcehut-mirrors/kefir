@@ -806,6 +806,10 @@ static kefir_result_t drop_instruction(struct kefir_mem *mem, struct kefir_codeg
         REQUIRE_OK(kefir_list_free(mem, &instr->operation.inline_asm_node.fragments));
     }
     REQUIRE_OK(kefir_hashtable_clear(mem, &instr->aspects.all));
+    kefir_result_t res = kefir_hashtable_delete(mem, &code->attributes, (kefir_hashtable_key_t) instr_ref);
+    if (res != KEFIR_NOT_FOUND) {
+        REQUIRE_OK(res);
+    }
 
     if (instr->generation < MAX_GENERATION) {
         instr->control_flow.next = code->recycle_instr_idx;
