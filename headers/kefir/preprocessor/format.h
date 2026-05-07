@@ -32,6 +32,8 @@ typedef enum kefir_preprocessor_whitespace_format {
     KEFIR_PREPROCESSOR_WHITESPACE_FORMAT_SINGLE_SPACE_COLLAPSE
 } kefir_preprocessor_whitespace_format_t;
 
+kefir_result_t kefir_preprocessor_format_cursor(FILE *, const struct kefir_token_cursor_handle *, kefir_bool_t,
+                                                kefir_preprocessor_whitespace_format_t);
 kefir_result_t kefir_preprocessor_format(FILE *, const struct kefir_token_buffer *, kefir_bool_t,
                                          kefir_preprocessor_whitespace_format_t);
 kefir_result_t kefir_preprocessor_format_string(struct kefir_mem *, char **, kefir_size_t *,

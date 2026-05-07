@@ -1508,12 +1508,14 @@ kefir_result_t kefir_preprocessor_state_run(struct kefir_mem *mem, struct kefir_
     REQUIRE(state != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to preprocessor state"));
     REQUIRE(buffer != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid token buffer"));
 
+    kefir_size_t init_length = kefir_token_buffer_length(buffer);
+
     kefir_bool_t finished = false;
     REQUIRE_OK(kefir_preprocessor_run_substitutions_on(mem, state->preprocessor, state->token_allocator, buffer,
                                                        &state->seq, KEFIR_PREPROCESSOR_SUBSTITUTION_NORMAL, limit,
                                                        &finished));
 
-    if (finished) {
+    if (finished && kefir_token_buffer_length(buffer) > init_length) {
         struct kefir_preprocessor_directive directive;
         REQUIRE_OK(kefir_preprocessor_directive_scanner_next(mem, &state->preprocessor->directive_scanner,
                                                              state->token_allocator, &directive));

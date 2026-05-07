@@ -37,10 +37,8 @@ static kefir_result_t direct_cursor_get_token(kefir_size_t index, const struct k
     return KEFIR_OK;
 }
 
-static kefir_result_t direct_cursor_flush(struct kefir_mem *mem, const struct kefir_token_cursor_handle *handle,
-                                          kefir_size_t length) {
+static kefir_result_t direct_cursor_flush(const struct kefir_token_cursor_handle *handle, kefir_size_t length) {
     UNUSED(length);
-    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(handle != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid token cursor handle"));
 
     // Intentionally left blank
@@ -151,7 +149,7 @@ kefir_result_t kefir_parser_token_cursor_flush(struct kefir_mem *mem, struct kef
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(cursor != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid token cursor"));
 
-    REQUIRE_OK(cursor->handle->flush(mem, cursor->handle, cursor->index));
+    REQUIRE_OK(cursor->handle->flush(cursor->handle, cursor->index));
     return KEFIR_OK;
 }
 

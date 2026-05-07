@@ -1089,12 +1089,9 @@ kefir_result_t kefir_token_buffer_format(struct kefir_mem *mem, struct kefir_jso
             break;
         }
         REQUIRE_OK(kefir_token_format(json, token, display_source_location));
-        if (token->klass == KEFIR_TOKEN_SENTINEL) {
-            break;
-        }
 
         if (i == FLUSH_LIMIT) {
-            REQUIRE_OK(cursor->flush(mem, cursor, i));
+            REQUIRE_OK(cursor->flush(cursor, i));
         }
     }
     REQUIRE_OK(kefir_json_output_array_end(json));

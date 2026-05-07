@@ -560,20 +560,23 @@ static kefir_result_t print_linemarker(FILE *out, const struct kefir_source_loca
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_preprocessor_format(FILE *out, const struct kefir_token_buffer *buffer,
-                                         kefir_bool_t include_linemarkers,
-                                         kefir_preprocessor_whitespace_format_t ws_format) {
+kefir_result_t kefir_preprocessor_format_cursor(FILE *out, const struct kefir_token_cursor_handle *handle,
+                                                kefir_bool_t include_linemarkers,
+                                                kefir_preprocessor_whitespace_format_t ws_format) {
     REQUIRE(out != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid FILE"));
-    REQUIRE(buffer != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid token buffer"));
+    REQUIRE(handle != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid token cursor handle"));
 
-    const kefir_size_t buffer_length = kefir_token_buffer_length(buffer);
     kefir_bool_t empty_line = true;
     kefir_bool_t prev_token_non_newline_ws = false;
     kefir_bool_t printed_newline = false;
     kefir_bool_t prev_formatted_whitespace = false;
     struct kefir_source_location prev_location = {0};
-    for (kefir_size_t i = 0; i < buffer_length; i++) {
-        const struct kefir_token *token = kefir_token_buffer_at(buffer, i);
+    for (kefir_size_t i = 0;; i++) {
+        const struct kefir_token *token;
+        REQUIRE_OK(handle->get_token(i, &token, handle));
+        if (token == NULL) {
+            break;
+        }
         if (include_linemarkers && token->source_location.source != NULL && i == 0) {
             REQUIRE_OK(print_linemarker(out, &token->source_location));
         }
@@ -585,8 +588,12 @@ kefir_result_t kefir_preprocessor_format(FILE *out, const struct kefir_token_buf
                 kefir_size_t j = i;
                 kefir_bool_t skip_line = false;
                 // Skip non-newline whitespaces to see if coming line is also empty -- skip the whole line then
-                for (; j + 1 < buffer_length; j++) {
-                    const struct kefir_token *token2 = kefir_token_buffer_at(buffer, j + 1);
+                for (;; j++) {
+                    const struct kefir_token *token2;
+                    REQUIRE_OK(handle->get_token(j + 1, &token2, handle));
+                    if (token2 == NULL) {
+                        break;
+                    }
                     if (token2->klass != KEFIR_TOKEN_PP_WHITESPACE) {
                         break;
                     } else if (token2->pp_whitespace.newline) {
@@ -617,7 +624,25 @@ kefir_result_t kefir_preprocessor_format(FILE *out, const struct kefir_token_buf
             printed_newline = token->klass == KEFIR_TOKEN_PP_WHITESPACE && token->pp_whitespace.newline;
         }
         prev_token_non_newline_ws = token_non_newline_ws;
+
+#define FLUSH_LIMIT 65536
+        if (i == FLUSH_LIMIT) {
+            REQUIRE_OK(handle->flush(handle, i));
+        }
+#undef FLUSH_LIMIT
     }
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_preprocessor_format(FILE *out, const struct kefir_token_buffer *buffer,
+                                         kefir_bool_t include_linemarkers,
+                                         kefir_preprocessor_whitespace_format_t ws_format) {
+    REQUIRE(out != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid FILE"));
+    REQUIRE(buffer != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid token buffer"));
+
+    struct kefir_token_cursor_handle handle;
+    REQUIRE_OK(kefir_token_buffer_cursor_handle(buffer, &handle));
+    REQUIRE_OK(kefir_preprocessor_format_cursor(out, &handle, include_linemarkers, ws_format));
     return KEFIR_OK;
 }
 

@@ -544,39 +544,6 @@ static kefir_result_t format_macro_definitions(struct kefir_preprocessor *prepro
     return KEFIR_OK;
 }
 
-static kefir_result_t dump_preprocessed_impl(struct kefir_mem *mem,
-                                             const struct kefir_compiler_runner_configuration *options,
-                                             struct kefir_compiler_context *compiler, const char *source_id,
-                                             const char *source, kefir_size_t length, FILE *output) {
-    UNUSED(options);
-    struct kefir_token_buffer tokens;
-    struct kefir_token_allocator token_allocator;
-    REQUIRE_OK(kefir_token_buffer_init(&tokens));
-    REQUIRE_OK(kefir_token_allocator_init(&token_allocator));
-    REQUIRE_OK(build_predefined_macros(mem, options, compiler));
-    if (!options->default_pp_timestamp) {
-        compiler->preprocessor_context.environment.timestamp = options->pp_timestamp;
-    }
-    REQUIRE_OK(include_predefined(mem, options, compiler, source_id, &tokens));
-    REQUIRE_OK(kefir_compiler_preprocess(
-        mem, compiler, options->skip_preprocessor ? KEFIR_PREPROCESSOR_MODE_MINIMAL : KEFIR_PREPROCESSOR_MODE_NORMAL,
-        &token_allocator, &tokens, source, length, source_id, options->input_filepath,
-        options->output_defined_macros ? format_macro_definitions : NULL, output));
-    if (output != NULL && !options->output_defined_macros) {
-        REQUIRE_OK(kefir_preprocessor_format(output, &tokens, options->features.preprocessor_linemarkers,
-                                             KEFIR_PREPROCESSOR_WHITESPACE_FORMAT_ORIGINAL));
-    }
-    REQUIRE_OK(kefir_token_buffer_free(mem, &tokens));
-    REQUIRE_OK(kefir_token_allocator_free(mem, &token_allocator));
-    return KEFIR_OK;
-}
-
-static kefir_result_t action_dump_preprocessed(struct kefir_mem *mem,
-                                               const struct kefir_compiler_runner_configuration *options) {
-    REQUIRE_OK(dump_action_impl(mem, options, dump_preprocessed_impl));
-    return KEFIR_OK;
-}
-
 #define PREPROCESSOR_INIT(_mem, _preprocessor, _options, _compiler, _file_info, _source_cursor, _source, _length, \
                           _source_id)                                                                             \
     do {                                                                                                          \
@@ -591,6 +558,48 @@ static kefir_result_t action_dump_preprocessed(struct kefir_mem *mem,
         (_preprocessor)->mode =                                                                                   \
             (_options)->skip_preprocessor ? KEFIR_PREPROCESSOR_MODE_MINIMAL : KEFIR_PREPROCESSOR_MODE_NORMAL;     \
     } while (0)
+
+static kefir_result_t dump_preprocessed_impl(struct kefir_mem *mem,
+                                             const struct kefir_compiler_runner_configuration *options,
+                                             struct kefir_compiler_context *compiler, const char *source_id,
+                                             const char *source, kefir_size_t length, FILE *output) {
+    UNUSED(options);
+    struct kefir_token_incremental_cursor_handle tokens_handle;
+    struct kefir_token_allocator token_allocator;
+    REQUIRE_OK(kefir_token_allocator_init(&token_allocator));
+    REQUIRE_OK(build_predefined_macros(mem, options, compiler));
+    if (!options->default_pp_timestamp) {
+        compiler->preprocessor_context.environment.timestamp = options->pp_timestamp;
+    }
+
+    struct kefir_lexer_source_cursor source_cursor;
+    struct kefir_preprocessor preprocessor;
+    struct kefir_preprocessor_source_file_info file_info = {0};
+    PREPROCESSOR_INIT(mem, &preprocessor, options, compiler, &file_info, &source_cursor, source, length, source_id);
+    REQUIRE_OK(kefir_token_incremental_cursor_handle_init(mem, &preprocessor, &token_allocator, &tokens_handle));
+
+    REQUIRE_OK(lex_file2(mem, options, compiler));
+    REQUIRE_OK(include_predefined(mem, options, compiler, source_id, &tokens_handle.buffer));
+
+    if (output != NULL && !options->output_defined_macros) {
+        tokens_handle.preprocessor_mode = true;
+        REQUIRE_OK(kefir_preprocessor_format_cursor(output, &tokens_handle.handle,
+                                                    options->features.preprocessor_linemarkers,
+                                                    KEFIR_PREPROCESSOR_WHITESPACE_FORMAT_ORIGINAL));
+    }
+    if (options->output_defined_macros) {
+        REQUIRE_OK(format_macro_definitions(&preprocessor, output));
+    }
+    REQUIRE_OK(kefir_token_incremental_cursor_handle_free(&tokens_handle));
+    REQUIRE_OK(kefir_token_allocator_free(mem, &token_allocator));
+    return KEFIR_OK;
+}
+
+static kefir_result_t action_dump_preprocessed(struct kefir_mem *mem,
+                                               const struct kefir_compiler_runner_configuration *options) {
+    REQUIRE_OK(dump_action_impl(mem, options, dump_preprocessed_impl));
+    return KEFIR_OK;
+}
 
 static kefir_result_t dump_tokens_impl(struct kefir_mem *mem, const struct kefir_compiler_runner_configuration *options,
                                        struct kefir_compiler_context *compiler, const char *source_id,

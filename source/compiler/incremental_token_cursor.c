@@ -36,14 +36,20 @@ static kefir_result_t get_token(kefir_size_t index, const struct kefir_token **t
     }
     index -= inc_handle->cursor_offset;
 
-    REQUIRE_OK(kefir_token_incremental_cursor_handle_flush_pp_tokens(inc_handle->mem, inc_handle));
+    if (!inc_handle->preprocessor_mode) {
+        REQUIRE_OK(kefir_token_incremental_cursor_handle_flush_pp_tokens(inc_handle->mem, inc_handle));
+    }
     while (index >= kefir_token_buffer_length(&inc_handle->buffer)) {
         kefir_bool_t finished = false;
+        kefir_size_t init_length = kefir_token_buffer_length(&inc_handle->buffer);
         REQUIRE_OK(kefir_preprocessor_state_run(
-            inc_handle->mem, &inc_handle->preprocessor_state, &inc_handle->pp_buffer,
+            inc_handle->mem, &inc_handle->preprocessor_state,
+            inc_handle->preprocessor_mode ? &inc_handle->buffer : &inc_handle->pp_buffer,
             index - kefir_token_buffer_length(&inc_handle->buffer) + INCREMENTAL_LOOKAHEAD, &finished));
-        REQUIRE_OK(kefir_token_incremental_cursor_handle_flush_pp_tokens(inc_handle->mem, inc_handle));
-        if (finished) {
+        if (!inc_handle->preprocessor_mode) {
+            REQUIRE_OK(kefir_token_incremental_cursor_handle_flush_pp_tokens(inc_handle->mem, inc_handle));
+        }
+        if (finished || kefir_token_buffer_length(&inc_handle->buffer) == init_length) {
             break;
         }
     }
@@ -51,30 +57,29 @@ static kefir_result_t get_token(kefir_size_t index, const struct kefir_token **t
     return KEFIR_OK;
 }
 
-static kefir_result_t token_cursor_flush(struct kefir_mem *mem, const struct kefir_token_cursor_handle *handle,
-                                         kefir_size_t length) {
-    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+static kefir_result_t token_cursor_flush(const struct kefir_token_cursor_handle *handle, kefir_size_t length) {
     REQUIRE(handle != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid token cursor handle"));
     ASSIGN_DECL_CAST(struct kefir_token_incremental_cursor_handle *, inc_handle, handle->payload[0]);
     REQUIRE(length > inc_handle->cursor_offset, KEFIR_OK);
 
     kefir_size_t flushed = 0;
-    REQUIRE_OK(kefir_token_buffer_flush_front(mem, &inc_handle->buffer, length - inc_handle->cursor_offset, &flushed));
+    REQUIRE_OK(kefir_token_buffer_flush_front(inc_handle->mem, &inc_handle->buffer, length - inc_handle->cursor_offset,
+                                              &flushed));
     inc_handle->cursor_offset += flushed;
 
     if (flushed > 0) {
         struct kefir_token_allocator_gc gc;
-        REQUIRE_OK(kefir_token_allocator_gc_init(mem, inc_handle->preprocessor_state.token_allocator, &gc));
+        REQUIRE_OK(kefir_token_allocator_gc_init(inc_handle->mem, inc_handle->preprocessor_state.token_allocator, &gc));
 
         kefir_result_t res = KEFIR_OK;
-        REQUIRE_CHAIN(&res, kefir_token_allocator_gc_mark(mem, &gc, &inc_handle->buffer));
-        REQUIRE_CHAIN(&res, kefir_token_allocator_gc_mark(mem, &gc, &inc_handle->pp_buffer));
-        REQUIRE_CHAIN(&res, kefir_token_allocator_gc_sweep(mem, &gc));
+        REQUIRE_CHAIN(&res, kefir_token_allocator_gc_mark(inc_handle->mem, &gc, &inc_handle->buffer));
+        REQUIRE_CHAIN(&res, kefir_token_allocator_gc_mark(inc_handle->mem, &gc, &inc_handle->pp_buffer));
+        REQUIRE_CHAIN(&res, kefir_token_allocator_gc_sweep(inc_handle->mem, &gc));
         REQUIRE_ELSE(res == KEFIR_OK, {
-            kefir_token_allocator_gc_free(mem, &gc);
+            kefir_token_allocator_gc_free(inc_handle->mem, &gc);
             return res;
         });
-        REQUIRE_OK(kefir_token_allocator_gc_free(mem, &gc));
+        REQUIRE_OK(kefir_token_allocator_gc_free(inc_handle->mem, &gc));
     }
     return KEFIR_OK;
 }
@@ -96,6 +101,7 @@ kefir_result_t kefir_token_incremental_cursor_handle_init(struct kefir_mem *mem,
     handle->handle.get_token = get_token;
     handle->handle.flush = token_cursor_flush;
     handle->cursor_offset = 0;
+    handle->preprocessor_mode = false;
     handle->handle.payload[0] = (kefir_uptr_t) handle;
     return KEFIR_OK;
 }

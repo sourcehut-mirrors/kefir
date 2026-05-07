@@ -27,6 +27,7 @@
 
 typedef struct kefir_token_incremental_cursor_handle {
     struct kefir_token_cursor_handle handle;
+    kefir_bool_t preprocessor_mode;
 
     struct kefir_token_buffer buffer;
     struct kefir_token_buffer pp_buffer;
