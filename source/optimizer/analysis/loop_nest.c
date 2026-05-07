@@ -124,22 +124,27 @@ static kefir_result_t build_loop_impl(struct kefir_mem *mem, const struct kefir_
 static kefir_result_t build_loop(struct kefir_mem *mem, struct kefir_opt_code_loop_collection *loops,
                                  const struct kefir_opt_code_control_flow *control_flow,
                                  kefir_opt_block_id_t loop_entry_block_id, kefir_opt_block_id_t loop_exit_block_id) {
-    struct kefir_opt_code_loop *loop = KEFIR_MALLOC(mem, sizeof(struct kefir_opt_code_loop));
-    REQUIRE(loop != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Unable to allocate optimzier code loop"));
+    struct kefir_opt_code_loop *loop = NULL;
 
-    loop->loop_entry_block_id = loop_entry_block_id;
-    kefir_result_t res = kefir_hashset_init(&loop->loop_blocks, &kefir_hashtable_uint_ops);
-    REQUIRE_CHAIN(&res, kefir_hashset_init(&loop->loop_exits_or_backedges, &kefir_hashtable_uint_ops));
-    REQUIRE_CHAIN(
-        &res, kefir_hashtree_insert(
-                  mem, &loops->loops,
-                  (kefir_hashtree_key_t) ((kefir_opt_code_loop_id_t) ((((kefir_uint64_t) loop_entry_block_id) << 32) |
-                                                                      (kefir_uint32_t) loop_exit_block_id)),
-                  (kefir_hashtree_value_t) loop));
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, loops);
-        return res;
-    });
+    struct kefir_hashtree_node *node;
+    kefir_result_t res = kefir_hashtree_at(&loops->loops, (kefir_hashtree_key_t) loop_entry_block_id, &node);
+    if (res != KEFIR_NOT_FOUND) {
+        REQUIRE_OK(res);
+        loop = (struct kefir_opt_code_loop *) node->value;
+    } else {
+        loop = KEFIR_MALLOC(mem, sizeof(struct kefir_opt_code_loop));
+        REQUIRE(loop != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Unable to allocate optimzier code loop"));
+
+        loop->loop_entry_block_id = loop_entry_block_id;
+        res = kefir_hashset_init(&loop->loop_blocks, &kefir_hashtable_uint_ops);
+        REQUIRE_CHAIN(&res, kefir_hashset_init(&loop->loop_exits_or_backedges, &kefir_hashtable_uint_ops));
+        REQUIRE_CHAIN(&res, kefir_hashtree_insert(mem, &loops->loops, (kefir_hashtree_key_t) loop_entry_block_id,
+                                                  (kefir_hashtree_value_t) loop));
+        REQUIRE_ELSE(res == KEFIR_OK, {
+            KEFIR_FREE(mem, loop);
+            return res;
+        });
+    }
 
     struct kefir_list traversal_queue;
     REQUIRE_OK(kefir_list_init(&traversal_queue));
