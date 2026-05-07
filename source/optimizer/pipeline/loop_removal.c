@@ -65,16 +65,17 @@ static kefir_result_t process_loop(struct licm_state *state) {
     kefir_bool_t may_execute;
     REQUIRE_OK(kefir_opt_loop_may_execute(&state->func->code, &iteration_space, &may_execute));
 
-    struct kefir_hashtreeset_iterator iter;
-    for (res = kefir_hashtreeset_iter(&state->loop->loop_blocks, &iter); res == KEFIR_OK;
-         res = kefir_hashtreeset_next(&iter)) {
-        ASSIGN_DECL_CAST(kefir_opt_block_id_t, block_id, iter.entry);
+    struct kefir_hashset_iterator iter;
+    kefir_hashset_key_t key;
+    for (res = kefir_hashset_iter(&state->loop->loop_blocks, &iter, &key); res == KEFIR_OK;
+         res = kefir_hashset_next(&iter, &key)) {
+        ASSIGN_DECL_CAST(kefir_opt_block_id_t, block_id, key);
 
         struct kefir_hashset_iterator block_iter;
         kefir_hashset_key_t key;
         for (res = kefir_hashset_iter(&state->control_flow.blocks[block_id].successors, &block_iter, &key);
              res == KEFIR_OK; res = kefir_hashset_next(&block_iter, &key)) {
-            kefir_bool_t in_loop = kefir_hashtreeset_has(&state->loop->loop_blocks, (kefir_hashtreeset_entry_t) key);
+            kefir_bool_t in_loop = kefir_hashset_has(&state->loop->loop_blocks, (kefir_hashset_key_t) key);
             if (block_id == state->loop->loop_entry_block_id && exit_block_ref == KEFIR_ID_NONE && !in_loop) {
                 exit_block_ref = key;
             } else {
@@ -88,7 +89,7 @@ static kefir_result_t process_loop(struct licm_state *state) {
         if (block_id != state->loop->loop_entry_block_id) {
             for (res = kefir_hashset_iter(&state->control_flow.blocks[block_id].predecessors, &block_iter, &key);
                  res == KEFIR_OK; res = kefir_hashset_next(&block_iter, &key)) {
-                REQUIRE(kefir_hashtreeset_has(&state->loop->loop_blocks, (kefir_hashtreeset_entry_t) key), KEFIR_OK);
+                REQUIRE(kefir_hashset_has(&state->loop->loop_blocks, (kefir_hashset_key_t) key), KEFIR_OK);
             }
             if (res != KEFIR_ITERATOR_END) {
                 REQUIRE_OK(res);
@@ -109,8 +110,7 @@ static kefir_result_t process_loop(struct licm_state *state) {
                      res == KEFIR_OK; res = kefir_opt_code_container_instruction_use_next(&use_iter)) {
                     const struct kefir_opt_instruction *use_instr;
                     REQUIRE_OK(kefir_opt_code_container_instr(&state->func->code, use_iter.use_instr_ref, &use_instr));
-                    REQUIRE(kefir_hashtreeset_has(&state->loop->loop_blocks,
-                                                  (kefir_hashtreeset_entry_t) use_instr->block_id),
+                    REQUIRE(kefir_hashset_has(&state->loop->loop_blocks, (kefir_hashset_key_t) use_instr->block_id),
                             KEFIR_OK);
                 }
                 if (res != KEFIR_ITERATOR_END) {

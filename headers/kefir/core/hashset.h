@@ -54,6 +54,7 @@ kefir_result_t kefir_hashset_merge(struct kefir_mem *, struct kefir_hashset *, c
 kefir_result_t kefir_hashset_subtract(struct kefir_hashset *, const struct kefir_hashset *);
 kefir_bool_t kefir_hashset_has(const struct kefir_hashset *, kefir_hashset_key_t);
 kefir_bool_t kefir_hashset_has_difference(const struct kefir_hashset *, const struct kefir_hashset *);
+kefir_bool_t kefir_hashset_subset(const struct kefir_hashset *, const struct kefir_hashset *);
 
 typedef struct kefir_hashset_iterator {
     const struct kefir_hashset *hashset;

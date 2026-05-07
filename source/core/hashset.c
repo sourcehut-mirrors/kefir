@@ -288,6 +288,23 @@ kefir_bool_t kefir_hashset_has_difference(const struct kefir_hashset *hashset, c
     return false;
 }
 
+kefir_bool_t kefir_hashset_subset(const struct kefir_hashset *hashset, const struct kefir_hashset *hashset2) {
+    REQUIRE(hashset != NULL, hashset2 != NULL);
+    REQUIRE(hashset2 != NULL, hashset != NULL);
+
+    if (hashset2->occupied > 0) {
+        for (kefir_size_t i = 0; i < hashset2->capacity; i++) {
+            if (hashset2->entry_states[i] == KEFIR_HASHTABLE_ENTRY_OCCUPIED) {
+                if (!kefir_hashset_has(hashset, hashset2->entries[i].key)) {
+                    return false;
+                }
+            }
+        }
+    }
+
+    return true;
+}
+
 kefir_result_t kefir_hashset_iter(const struct kefir_hashset *hashset, struct kefir_hashset_iterator *iter,
                                   kefir_hashset_key_t *key_ptr) {
     REQUIRE(hashset != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid hashset"));

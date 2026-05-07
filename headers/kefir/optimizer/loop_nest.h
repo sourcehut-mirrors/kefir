@@ -28,8 +28,7 @@ typedef kefir_uint64_t kefir_opt_code_loop_id_t;
 
 typedef struct kefir_opt_code_loop {
     kefir_opt_block_id_t loop_entry_block_id;
-    kefir_opt_block_id_t loop_exit_block_id;
-    struct kefir_hashtreeset loop_blocks;
+    struct kefir_hashset loop_blocks;
     struct kefir_hashset loop_exits_or_backedges;
 } kefir_opt_code_loop_t;
 
@@ -41,10 +40,6 @@ typedef struct kefir_opt_code_loop_collection {
     struct kefir_hashtree loops;
     struct kefir_list nests;
 } kefir_opt_code_loop_collection_t;
-
-#define KEFIR_OPT_CODE_LOOP_ID(_loop)                                                      \
-    ((kefir_opt_code_loop_id_t) ((((kefir_uint64_t) (_loop)->loop_entry_block_id) << 32) | \
-                                 (kefir_uint32_t) (_loop)->loop_exit_block_id))
 
 kefir_result_t kefir_opt_code_loop_collection_init(struct kefir_opt_code_loop_collection *);
 kefir_result_t kefir_opt_code_loop_collection_free(struct kefir_mem *, struct kefir_opt_code_loop_collection *);

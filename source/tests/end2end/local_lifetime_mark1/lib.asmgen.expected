@@ -310,12 +310,6 @@
                             },
                             {
                                 "id": 1571,
-                                "opcode": "float64_const",
-                                "value": 1.000000,
-                                "control_next": null
-                            },
-                            {
-                                "id": 1410,
                                 "opcode": "alloc_local",
                                 "scope": 0,
                                 "type_id": 102,
@@ -323,10 +317,16 @@
                                 "control_next": null
                             },
                             {
-                                "id": 1363,
+                                "id": 1410,
                                 "opcode": "ref_local",
-                                "ref": 1410,
+                                "ref": 1571,
                                 "offset": 0,
+                                "control_next": null
+                            },
+                            {
+                                "id": 1363,
+                                "opcode": "float64_const",
+                                "value": 1.000000,
                                 "control_next": null
                             },
                             {
@@ -372,7 +372,7 @@
                             {
                                 "id": 1072,
                                 "opcode": "int8_load",
-                                "location": 1363,
+                                "location": 1410,
                                 "flags": {
                                     "load_extension": "noextend",
                                     "volatile": true
@@ -404,7 +404,7 @@
                             "alive_instructions": [
                                 976,
                                 624,
-                                1571,
+                                1410,
                                 80,
                                 1363,
                                 0,
@@ -710,7 +710,7 @@
                                 "opcode": "float64_add",
                                 "args": [
                                     1168,
-                                    1571
+                                    1363
                                 ],
                                 "control_next": null
                             },
@@ -751,7 +751,7 @@
                                 1184,
                                 1216,
                                 1168,
-                                1571,
+                                1410,
                                 80,
                                 1136,
                                 624,

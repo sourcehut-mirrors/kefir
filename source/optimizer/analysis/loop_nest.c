@@ -12,7 +12,7 @@ static kefir_result_t free_loop(struct kefir_mem *mem, struct kefir_hashtree *tr
     ASSIGN_DECL_CAST(struct kefir_opt_code_loop *, loop, value);
     REQUIRE(loop != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code loop"));
 
-    REQUIRE_OK(kefir_hashtreeset_free(mem, &loop->loop_blocks));
+    REQUIRE_OK(kefir_hashset_free(mem, &loop->loop_blocks));
     REQUIRE_OK(kefir_hashset_free(mem, &loop->loop_exits_or_backedges));
     memset(loop, 0, sizeof(struct kefir_opt_code_loop));
     KEFIR_FREE(mem, loop);
@@ -59,20 +59,21 @@ kefir_result_t kefir_opt_code_loop_collection_free(struct kefir_mem *mem,
      (_control_flow)->blocks[(_block_id)].immediate_dominator != KEFIR_ID_NONE)
 
 static kefir_result_t build_loop_impl(struct kefir_mem *mem, const struct kefir_opt_code_control_flow *control_flow,
-                                      struct kefir_opt_code_loop *loop, struct kefir_list *traversal_queue) {
-    REQUIRE_OK(kefir_hashtreeset_clean(mem, &loop->loop_blocks));
+                                      struct kefir_opt_code_loop *loop, kefir_opt_block_id_t loop_exit_block_id,
+                                      struct kefir_list *traversal_queue) {
+    REQUIRE_OK(kefir_hashset_clear(mem, &loop->loop_blocks));
     REQUIRE_OK(kefir_list_clear(mem, traversal_queue));
 
-    REQUIRE_OK(kefir_list_insert_after(mem, traversal_queue, NULL, (void *) (kefir_uptr_t) loop->loop_exit_block_id));
+    REQUIRE_OK(kefir_list_insert_after(mem, traversal_queue, NULL, (void *) (kefir_uptr_t) loop_exit_block_id));
     for (struct kefir_list_entry *iter = kefir_list_head(traversal_queue); iter != NULL;
          iter = kefir_list_head(traversal_queue)) {
         ASSIGN_DECL_CAST(kefir_opt_block_id_t, block_id, (kefir_uptr_t) iter->value);
         REQUIRE_OK(kefir_list_pop(mem, traversal_queue, iter));
 
-        if (kefir_hashtreeset_has(&loop->loop_blocks, (kefir_hashtreeset_entry_t) block_id)) {
+        if (kefir_hashset_has(&loop->loop_blocks, (kefir_hashtreeset_entry_t) block_id)) {
             continue;
         }
-        REQUIRE_OK(kefir_hashtreeset_add(mem, &loop->loop_blocks, (kefir_hashtreeset_entry_t) block_id));
+        REQUIRE_OK(kefir_hashset_add(mem, &loop->loop_blocks, (kefir_hashtreeset_entry_t) block_id));
 
         if (block_id != loop->loop_entry_block_id) {
             kefir_result_t res;
@@ -90,10 +91,11 @@ static kefir_result_t build_loop_impl(struct kefir_mem *mem, const struct kefir_
     }
 
     kefir_result_t res;
-    struct kefir_hashtreeset_iterator iter;
-    for (res = kefir_hashtreeset_iter(&loop->loop_blocks, &iter); res == KEFIR_OK;
-         res = kefir_hashtreeset_next(&iter)) {
-        ASSIGN_DECL_CAST(kefir_opt_block_id_t, block_id, iter.entry);
+    struct kefir_hashset_iterator iter;
+    kefir_hashset_key_t key;
+    for (res = kefir_hashset_iter(&loop->loop_blocks, &iter, &key); res == KEFIR_OK;
+         res = kefir_hashset_next(&iter, &key)) {
+        ASSIGN_DECL_CAST(kefir_opt_block_id_t, block_id, key);
 
         struct kefir_hashset_iterator succ_iter;
         kefir_hashset_key_t entry;
@@ -103,7 +105,7 @@ static kefir_result_t build_loop_impl(struct kefir_mem *mem, const struct kefir_
             continue;
         }
         for (; res == KEFIR_OK; res = kefir_hashset_next(&succ_iter, &entry)) {
-            if (!kefir_hashtreeset_has(&loop->loop_blocks, (kefir_hashtreeset_entry_t) entry) ||
+            if (!kefir_hashset_has(&loop->loop_blocks, (kefir_hashtreeset_entry_t) entry) ||
                 entry == loop->loop_entry_block_id) {
                 REQUIRE_OK(kefir_hashset_add(mem, &loop->loop_exits_or_backedges, (kefir_hashset_key_t) block_id));
                 break;
@@ -126,11 +128,14 @@ static kefir_result_t build_loop(struct kefir_mem *mem, struct kefir_opt_code_lo
     REQUIRE(loop != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Unable to allocate optimzier code loop"));
 
     loop->loop_entry_block_id = loop_entry_block_id;
-    loop->loop_exit_block_id = loop_exit_block_id;
-    kefir_result_t res = kefir_hashtreeset_init(&loop->loop_blocks, &kefir_hashtree_uint_ops);
+    kefir_result_t res = kefir_hashset_init(&loop->loop_blocks, &kefir_hashtable_uint_ops);
     REQUIRE_CHAIN(&res, kefir_hashset_init(&loop->loop_exits_or_backedges, &kefir_hashtable_uint_ops));
-    REQUIRE_CHAIN(&res, kefir_hashtree_insert(mem, &loops->loops, (kefir_hashtree_key_t) KEFIR_OPT_CODE_LOOP_ID(loop),
-                                              (kefir_hashtree_value_t) loop));
+    REQUIRE_CHAIN(
+        &res, kefir_hashtree_insert(
+                  mem, &loops->loops,
+                  (kefir_hashtree_key_t) ((kefir_opt_code_loop_id_t) ((((kefir_uint64_t) loop_entry_block_id) << 32) |
+                                                                      (kefir_uint32_t) loop_exit_block_id)),
+                  (kefir_hashtree_value_t) loop));
     REQUIRE_ELSE(res == KEFIR_OK, {
         KEFIR_FREE(mem, loops);
         return res;
@@ -138,7 +143,7 @@ static kefir_result_t build_loop(struct kefir_mem *mem, struct kefir_opt_code_lo
 
     struct kefir_list traversal_queue;
     REQUIRE_OK(kefir_list_init(&traversal_queue));
-    res = build_loop_impl(mem, control_flow, loop, &traversal_queue);
+    res = build_loop_impl(mem, control_flow, loop, loop_exit_block_id, &traversal_queue);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_list_free(mem, &traversal_queue);
         return res;
@@ -149,8 +154,7 @@ static kefir_result_t build_loop(struct kefir_mem *mem, struct kefir_opt_code_lo
 
 static kefir_bool_t loop_contained_within(const struct kefir_opt_code_loop *loop,
                                           const struct kefir_opt_code_loop *contained_loop) {
-    return kefir_hashtreeset_has(&contained_loop->loop_blocks, (kefir_hashtreeset_entry_t) loop->loop_entry_block_id) &&
-           kefir_hashtreeset_has(&contained_loop->loop_blocks, (kefir_hashtreeset_entry_t) loop->loop_exit_block_id);
+    return kefir_hashset_subset(&contained_loop->loop_blocks, &loop->loop_blocks);
 }
 
 static kefir_result_t insert_into_nest(struct kefir_mem *mem, const struct kefir_opt_code_loop *loop,
