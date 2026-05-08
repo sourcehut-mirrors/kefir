@@ -158,6 +158,9 @@ static kefir_result_t walk_dominance_tree_impl(struct kefir_mem *mem, struct kef
             control_flow->blocks[block_ref].dominated_block_max_linear = linear_index;
         } else {
             REQUIRE_OK(kefir_list_insert_after(mem, queue, NULL, (void *) (kefir_uptr_t) (block_ref | (1ull << 63))));
+            if (block_ref == control_flow->code->entry_point) {
+                control_flow->blocks[block_ref].dominance_tree_level = 0;
+            }
 
             control_flow->blocks[block_ref].dominance_linear_index = linear_index++;
             struct kefir_opt_control_flow_dominator_tree_iterator dom_iter;
@@ -165,6 +168,8 @@ static kefir_result_t walk_dominance_tree_impl(struct kefir_mem *mem, struct kef
             for (res = kefir_opt_control_flow_dominator_tree_iter(control_flow, &dom_iter, block_ref,
                                                                   &dominated_block_ref);
                  res == KEFIR_OK; res = kefir_opt_control_flow_dominator_tree_next(&dom_iter, &dominated_block_ref)) {
+                control_flow->blocks[dominated_block_ref].dominance_tree_level =
+                    control_flow->blocks[block_ref].dominance_tree_level + 1;
                 REQUIRE_OK(kefir_list_insert_after(mem, queue, NULL, (void *) (kefir_uptr_t) dominated_block_ref));
             }
             if (res != KEFIR_ITERATOR_END) {

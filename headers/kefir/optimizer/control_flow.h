@@ -29,6 +29,7 @@ typedef struct kefir_opt_code_control_flow_block {
     struct kefir_hashset predecessors;
     struct kefir_hashset successors;
     kefir_opt_block_id_t immediate_dominator;
+    kefir_uint32_t dominance_tree_level;
     kefir_size_t dominance_linear_index;
     kefir_size_t dominated_block_max_linear;
     struct kefir_hashset dominance_frontier;
