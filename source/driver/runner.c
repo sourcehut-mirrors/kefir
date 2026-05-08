@@ -567,10 +567,8 @@ static kefir_result_t dump_preprocessed_impl(struct kefir_mem *mem,
     struct kefir_token_incremental_cursor_handle tokens_handle;
     struct kefir_token_allocator token_allocator;
     REQUIRE_OK(kefir_token_allocator_init(&token_allocator));
-    REQUIRE_OK(build_predefined_macros(mem, options, compiler));
-    if (!options->default_pp_timestamp) {
-        compiler->preprocessor_context.environment.timestamp = options->pp_timestamp;
-    }
+
+    REQUIRE_OK(lex_file2(mem, options, compiler));
 
     struct kefir_lexer_source_cursor source_cursor;
     struct kefir_preprocessor preprocessor;
@@ -578,7 +576,6 @@ static kefir_result_t dump_preprocessed_impl(struct kefir_mem *mem,
     PREPROCESSOR_INIT(mem, &preprocessor, options, compiler, &file_info, &source_cursor, source, length, source_id);
     REQUIRE_OK(kefir_token_incremental_cursor_handle_init(mem, &preprocessor, &token_allocator, &tokens_handle));
 
-    REQUIRE_OK(lex_file2(mem, options, compiler));
     REQUIRE_OK(include_predefined(mem, options, compiler, source_id, &tokens_handle.buffer));
 
     if (output != NULL && !options->output_defined_macros) {
