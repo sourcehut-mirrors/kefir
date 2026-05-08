@@ -36,10 +36,10 @@ static kefir_result_t match_branch_compare(const struct kefir_opt_code_container
     switch (entry_tail->operation.parameters.branch.comparison.operation) {
 #define CASE(_cmp, _width, _reversed, _signed, _inclusive)                                                          \
     case KEFIR_OPT_COMPARISON_INT##_width##_##_cmp:                                                                 \
-        REQUIRE(kefir_hashset_has(&loop->loop_blocks, entry_tail->operation.parameters.branch.target_block) ==      \
-                    !(_reversed),                                                                                   \
-                NO_MATCH);                                                                                          \
-        REQUIRE(kefir_hashset_has(&loop->loop_blocks, entry_tail->operation.parameters.branch.alternative_block) == \
+        REQUIRE(                                                                                                    \
+            kefir_hashset_has(&loop->blocks, entry_tail->operation.parameters.branch.target_block) == !(_reversed), \
+            NO_MATCH);                                                                                              \
+        REQUIRE(kefir_hashset_has(&loop->blocks, entry_tail->operation.parameters.branch.alternative_block) ==      \
                     (_reversed),                                                                                    \
                 NO_MATCH);                                                                                          \
         reversed = (_reversed);                                                                                     \
@@ -79,7 +79,7 @@ static kefir_result_t match_branch_compare(const struct kefir_opt_code_container
         REQUIRE_OK(kefir_opt_code_container_instr(code, entry_tail->operation.parameters.refs[1], &index));
         REQUIRE_OK(kefir_opt_code_container_instr(code, entry_tail->operation.parameters.refs[0], &upper_bound));
     }
-    REQUIRE(index->block_id == loop->loop_entry_block_id, NO_MATCH);
+    REQUIRE(index->block_id == loop->header_ref, NO_MATCH);
     REQUIRE(index->operation.opcode == KEFIR_OPT_OPCODE_PHI, NO_MATCH);
 
     const struct kefir_opt_phi_node *index_phi;
@@ -94,7 +94,7 @@ static kefir_result_t match_branch_compare(const struct kefir_opt_code_container
     kefir_opt_instruction_ref_t link_instr_ref;
     for (res = kefir_opt_phi_node_link_iter(code, index_phi->output_ref, &link_iter, &link_block_id, &link_instr_ref);
          res == KEFIR_OK; res = kefir_opt_phi_node_link_next(&link_iter, &link_block_id, &link_instr_ref)) {
-        if (kefir_hashset_has(&loop->loop_blocks, (kefir_hashset_key_t) link_block_id)) {
+        if (kefir_hashset_has(&loop->blocks, (kefir_hashset_key_t) link_block_id)) {
             REQUIRE_OK(kefir_opt_code_container_instr(code, link_instr_ref, &stride_op));
         } else {
             REQUIRE_OK(kefir_opt_code_container_instr(code, link_instr_ref, &lower_bound));
@@ -105,7 +105,7 @@ static kefir_result_t match_branch_compare(const struct kefir_opt_code_container
     }
     REQUIRE(lower_bound != NULL, NO_MATCH);
     REQUIRE(stride_op != NULL, NO_MATCH);
-    REQUIRE(kefir_hashset_has(&loop->loop_blocks, stride_op->block_id), NO_MATCH);
+    REQUIRE(kefir_hashset_has(&loop->blocks, stride_op->block_id), NO_MATCH);
 
     kefir_bool_t asceding = true;
     if (((stride_op->operation.opcode == KEFIR_OPT_OPCODE_INT8_ADD && width == 8) ||
@@ -141,9 +141,9 @@ static kefir_result_t match_branch(const struct kefir_opt_code_container *code, 
                                    const struct kefir_opt_instruction *entry_tail,
                                    struct kefir_opt_loop_iteration_space *iteration_space) {
     kefir_bool_t has_target_block =
-        kefir_hashset_has(&loop->loop_blocks, entry_tail->operation.parameters.branch.target_block);
+        kefir_hashset_has(&loop->blocks, entry_tail->operation.parameters.branch.target_block);
     kefir_bool_t has_alternative_block =
-        kefir_hashset_has(&loop->loop_blocks, entry_tail->operation.parameters.branch.alternative_block);
+        kefir_hashset_has(&loop->blocks, entry_tail->operation.parameters.branch.alternative_block);
     kefir_bool_t invert = false;
     switch (entry_tail->operation.parameters.branch.condition_variant) {
         case KEFIR_OPT_BRANCH_CONDITION_8BIT:
@@ -176,7 +176,7 @@ static kefir_result_t match_branch(const struct kefir_opt_code_container *code, 
     const struct kefir_opt_instruction *cond_instr;
     REQUIRE_OK(
         kefir_opt_code_container_instr(code, entry_tail->operation.parameters.branch.condition_ref, &cond_instr));
-    REQUIRE(cond_instr->block_id == loop->loop_entry_block_id, NO_MATCH);
+    REQUIRE(cond_instr->block_id == loop->header_ref, NO_MATCH);
     REQUIRE(cond_instr->operation.opcode == KEFIR_OPT_OPCODE_PHI, NO_MATCH);
 
     const struct kefir_opt_phi_node *cond_phi;
@@ -191,7 +191,7 @@ static kefir_result_t match_branch(const struct kefir_opt_code_container *code, 
     kefir_opt_instruction_ref_t link_instr_ref;
     for (res = kefir_opt_phi_node_link_iter(code, cond_phi->output_ref, &link_iter, &link_block_id, &link_instr_ref);
          res == KEFIR_OK; res = kefir_opt_phi_node_link_next(&link_iter, &link_block_id, &link_instr_ref)) {
-        if (kefir_hashset_has(&loop->loop_blocks, (kefir_hashtreeset_entry_t) link_block_id)) {
+        if (kefir_hashset_has(&loop->blocks, (kefir_hashtreeset_entry_t) link_block_id)) {
             REQUIRE_OK(kefir_opt_code_container_instr(code, link_instr_ref, &next_instr));
         } else {
             REQUIRE_OK(kefir_opt_code_container_instr(code, link_instr_ref, &init_instr));
@@ -202,7 +202,7 @@ static kefir_result_t match_branch(const struct kefir_opt_code_container *code, 
     }
     REQUIRE(init_instr != NULL, NO_MATCH);
     REQUIRE(next_instr != NULL, NO_MATCH);
-    REQUIRE(!kefir_hashset_has(&loop->loop_blocks, init_instr->block_id), NO_MATCH);
+    REQUIRE(!kefir_hashset_has(&loop->blocks, init_instr->block_id), NO_MATCH);
 
     iteration_space->type = KEFIR_OPT_LOOP_ITERATION_SPACE_GENERAL;
     iteration_space->general.init_ref = init_instr->id;
@@ -222,7 +222,7 @@ kefir_result_t kefir_opt_loop_match_iteration_space(const struct kefir_opt_code_
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to optimizer iteration space"));
 
     kefir_opt_instruction_ref_t entry_tail_ref;
-    REQUIRE_OK(kefir_opt_code_block_instr_control_tail(code, loop->loop_entry_block_id, &entry_tail_ref));
+    REQUIRE_OK(kefir_opt_code_block_instr_control_tail(code, loop->header_ref, &entry_tail_ref));
     REQUIRE(entry_tail_ref != KEFIR_ID_NONE, NO_MATCH);
 
     const struct kefir_opt_instruction *entry_tail;

@@ -27,9 +27,13 @@
 typedef kefir_uint64_t kefir_opt_code_loop_id_t;
 
 typedef struct kefir_opt_code_loop {
-    kefir_opt_block_id_t loop_entry_block_id;
-    struct kefir_hashset loop_blocks;
-    struct kefir_hashset loop_exits_or_backedges;
+    kefir_opt_block_id_t header_ref;
+    struct kefir_hashset blocks;
+    struct kefir_hashset latches;
+    struct kefir_hashset exits;
+
+    kefir_uint32_t level;
+    struct kefir_tree_node *nest_node;
 } kefir_opt_code_loop_t;
 
 typedef struct kefir_opt_loop_nest {
@@ -37,9 +41,15 @@ typedef struct kefir_opt_loop_nest {
 } kefir_opt_loop_nest_t;
 
 typedef struct kefir_opt_code_loop_collection {
-    struct kefir_hashtree loops;
+    struct kefir_hashtable loops;
     struct kefir_list nests;
+    struct kefir_hashtable block_index;
 } kefir_opt_code_loop_collection_t;
+
+struct kefir_opt_code_loop *kefir_opt_loop_nest_top(const struct kefir_opt_loop_nest *);
+struct kefir_opt_code_loop *kefir_opt_code_loop_parent(const struct kefir_opt_code_loop *);
+struct kefir_opt_code_loop *kefir_opt_code_loop_first_child(const struct kefir_opt_code_loop *);
+struct kefir_opt_code_loop *kefir_opt_code_loop_next_sibling(const struct kefir_opt_code_loop *);
 
 kefir_result_t kefir_opt_code_loop_collection_init(struct kefir_opt_code_loop_collection *);
 kefir_result_t kefir_opt_code_loop_collection_free(struct kefir_mem *, struct kefir_opt_code_loop_collection *);
@@ -47,14 +57,17 @@ kefir_result_t kefir_opt_code_loop_collection_free(struct kefir_mem *, struct ke
 kefir_result_t kefir_opt_code_loop_collection_build(struct kefir_mem *, struct kefir_opt_code_loop_collection *,
                                                     const struct kefir_opt_code_control_flow *);
 
+kefir_result_t kefir_opt_code_loop_collection_find_loop(const struct kefir_opt_code_loop_collection *,
+                                                        kefir_opt_block_id_t, struct kefir_opt_code_loop **);
+
 typedef struct kefir_opt_code_loop_collection_iterator {
-    struct kefir_hashtree_node_iterator iter;
+    struct kefir_hashtable_iterator iter;
 } kefir_opt_code_loop_collection_iterator_t;
 
 kefir_result_t kefir_opt_code_loop_collection_iter(const struct kefir_opt_code_loop_collection *,
-                                                   const struct kefir_opt_code_loop **,
+                                                   struct kefir_opt_code_loop **,
                                                    struct kefir_opt_code_loop_collection_iterator *);
-kefir_result_t kefir_opt_code_loop_collection_next(const struct kefir_opt_code_loop **,
+kefir_result_t kefir_opt_code_loop_collection_next(struct kefir_opt_code_loop **,
                                                    struct kefir_opt_code_loop_collection_iterator *);
 
 typedef struct kefir_opt_code_loop_nest_collection_iterator {
