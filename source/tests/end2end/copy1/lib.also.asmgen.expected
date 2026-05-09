@@ -662,8 +662,7 @@ generate_buf_12:
     movb %al, -1(%rbp)
     movb $0, -13(%rbp)
     xor %eax, %eax
-    xor %ecx, %ecx
-    mov %rcx, %rdx
+    xor %edx, %edx
     mov %rax, %rcx
 .L__kefir_func_generate_buf_12_label2:
     cmp $13, %edx
@@ -699,8 +698,7 @@ generate_buf_13:
     movw %ax, -2(%rbp)
     movb $0, -14(%rbp)
     xor %eax, %eax
-    xor %ecx, %ecx
-    mov %rcx, %rdx
+    xor %edx, %edx
     mov %rax, %rcx
 .L__kefir_func_generate_buf_13_label2:
     cmp $14, %edx

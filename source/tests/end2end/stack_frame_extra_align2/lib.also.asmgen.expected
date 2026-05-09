@@ -287,7 +287,6 @@ test5:
     movq %rax, -224(%rbp)
     xor %eax, %eax
 .L__kefir_func_test5_label6:
-    lea -1(%edi), %ecx
     test %edi, %edi
     jnz .L__kefir_func_test5_label8
     lea -8(%rbp), %rsp
@@ -297,34 +296,34 @@ test5:
     pop %rsp
     ret
 .L__kefir_func_test5_label8:
-    movq -232(%rbp), %rdx
-    lea 64(%rdx), %rsi
-    movq %rsi, -232(%rbp)
-    movdqu (%rdx), %xmm0
+    movq -232(%rbp), %rcx
+    lea 64(%rcx), %rdx
+    movq %rdx, -232(%rbp)
+    movdqu (%rcx), %xmm0
     movdqu %xmm0, -216(%rbp)
-    movdqu 16(%rdx), %xmm0
+    movdqu 16(%rcx), %xmm0
     movdqu %xmm0, -200(%rbp)
-    movdqu 32(%rdx), %xmm0
+    movdqu 32(%rcx), %xmm0
     movdqu %xmm0, -184(%rbp)
-    movdqu 48(%rdx), %xmm0
+    movdqu 48(%rcx), %xmm0
     movdqu %xmm0, -168(%rbp)
-    movq -216(%rbp), %rdx
-    movq -208(%rbp), %rsi
-    movq -200(%rbp), %rdi
+    movq -216(%rbp), %rcx
+    movq -208(%rbp), %rdx
+    movq -200(%rbp), %rsi
     movq -192(%rbp), %r8
     movq -184(%rbp), %r9
     movq -176(%rbp), %r10
     movq -168(%rbp), %r11
     movq -160(%rbp), %rbx
-    add %rsi, %rdx
-    add %rdi, %rdx
-    add %r8, %rdx
-    add %r9, %rdx
-    add %r10, %rdx
-    add %r11, %rdx
-    add %rbx, %rdx
-    add %rdx, %rax
-    mov %ecx, %edi
+    add $-1, %edi
+    add %rdx, %rcx
+    add %rsi, %rcx
+    add %r8, %rcx
+    add %r9, %rcx
+    add %r10, %rcx
+    add %r11, %rcx
+    add %rbx, %rcx
+    add %rcx, %rax
     jmp .L__kefir_func_test5_label6
 .L__kefir_text_func_test5_end:
 

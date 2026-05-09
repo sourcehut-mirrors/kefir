@@ -15,39 +15,39 @@ run_op:
     div %rdi
     lea __kefir_function_run_op_static_branches_6(%rip), %rax
     movq (%rax, %rdx, 8), %rax
+    mov %r8, %rdi
+    sub %rcx, %rdi
+    mov %r8, %r9
+    imul %rcx, %r9
+    mov %r8, %r10
+    add %rcx, %r10
     xor %edx, %edx
-    mov %rdx, %rdi
+    mov %rdx, %r11
     jmp *%rax
 .L__kefir_func_run_op_label5:
 _kefir_local_public_label_run_op_div:
     mov %r8, %rax
     cqo
     idiv %rcx
-    add %rax, %rdi
+    add %rax, %r11
     jmp .L__kefir_func_run_op_label6
 .L__kefir_func_run_op_label3:
 _kefir_local_public_label_run_op_mul:
-    mov %r8, %rax
-    imul %rcx, %rax
-    add %rax, %rdi
+    add %r9, %r11
     jmp .L__kefir_func_run_op_label6
 .L__kefir_func_run_op_label7:
 _kefir_local_public_label_run_op_sub:
-    mov %r8, %rax
-    sub %rcx, %rax
-    add %rax, %rdi
+    add %rdi, %r11
     jmp .L__kefir_func_run_op_label6
 .L__kefir_func_run_op_label4:
 _kefir_local_public_label_run_op_add:
-    mov %r8, %rax
-    add %rcx, %rax
-    add %rax, %rdi
+    add %r10, %r11
 .L__kefir_func_run_op_label6:
 _kefir_local_public_label_run_op_ret:
-    mov %rdi, %rax
+    mov %r11, %rax
     neg %rax
     test %rsi, %rsi
-    cmovz %rdi, %rax
+    cmovz %r11, %rax
     ret
 .L__kefir_text_func_run_op_end:
 

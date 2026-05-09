@@ -25,18 +25,18 @@ add_i128:
     push %r13
     push %r14
     push %r15
-    sub $72, %rsp
+    sub $88, %rsp
     mov %rsi, %rbx
     mov %rdx, %r12
     mov %rdi, %r13
 .L__kefir_func_add_i128_label2:
-    lea -96(%rbp), %rdx
+    lea -112(%rbp), %rdx
     mov %r13, %rsi
     mov $16, %rdi
     mov $5, %rcx
     call __atomic_load@PLT
-    mov -96(%rbp), %rax
-    mov -88(%rbp), %rcx
+    mov -112(%rbp), %rax
+    mov -104(%rbp), %rcx
     mov %rax, -80(%rbp)
     mov %rcx, -72(%rbp)
     mov %rax, %r14
@@ -77,18 +77,18 @@ add_u128:
     push %r13
     push %r14
     push %r15
-    sub $72, %rsp
+    sub $88, %rsp
     mov %rsi, %rbx
     mov %rdx, %r12
     mov %rdi, %r13
 .L__kefir_func_add_u128_label2:
-    lea -96(%rbp), %rdx
+    lea -112(%rbp), %rdx
     mov %r13, %rsi
     mov $16, %rdi
     mov $5, %rcx
     call __atomic_load@PLT
-    mov -96(%rbp), %rax
-    mov -88(%rbp), %rcx
+    mov -112(%rbp), %rax
+    mov -104(%rbp), %rcx
     mov %rax, -80(%rbp)
     mov %rcx, -72(%rbp)
     mov %rax, %r14

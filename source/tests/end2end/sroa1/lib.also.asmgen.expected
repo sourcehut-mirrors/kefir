@@ -156,7 +156,8 @@ test7:
 .L__kefir_text_func_test7_begin:
     neg %esi
     xor %edi, %esi
-    xor %ecx, %ecx
+    xor %eax, %eax
+    mov %rax, %rcx
     mov %esi, %eax
 .L__kefir_func_test7_label2:
     lea 1(%ecx), %edx
@@ -166,8 +167,8 @@ test7:
     jl .L__kefir_func_test7_label7
     ret
 .L__kefir_func_test7_label7:
-    mov %esi, %eax
     mov %edx, %ecx
+    mov %esi, %eax
     jmp .L__kefir_func_test7_label2
 .L__kefir_text_func_test7_end:
 

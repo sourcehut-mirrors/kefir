@@ -21,21 +21,18 @@ test1:
 test2:
 .L__kefir_text_func_test2_begin:
     mov %rdi, %rax
-    xor %ecx, %ecx
+    mov $-1, %rcx
     cmp $0, %rax
     mov %rax, %rdx
     cmovle %rcx, %rdx
     mov %rdx, %rcx
-    mov $-1, %rdx
-    cmp $0, %rax
-    mov %rax, %rsi
-    cmovle %rdx, %rsi
-    mov %rsi, %rdx
-    cmp $-1, %rdx
+    cmp $-1, %rcx
     jne .L__kefir_func_test2_label3
     ret
 .L__kefir_func_test2_label3:
-    mov %rcx, %rax
+    xor %ecx, %ecx
+    cmp $0, %rax
+    cmovle %rcx, %rax
     ret
 .L__kefir_text_func_test2_end:
 

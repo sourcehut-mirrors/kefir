@@ -55,8 +55,8 @@ postdec_i8:
     mov %rsi, %rdx
     mov %rdi, %rax
     lock     cmpxchgb %cl, (%rdx)
-    movsx %dil, %rax
     jnz .L__kefir_func_postdec_i8_label2
+    movsx %dil, %rax
     ret
 .L__kefir_text_func_postdec_i8_end:
 
@@ -136,8 +136,8 @@ postinc_i8:
     mov %rsi, %rdx
     mov %rdi, %rax
     lock     cmpxchgb %cl, (%rdx)
-    movsx %dil, %rax
     jnz .L__kefir_func_postinc_i8_label2
+    movsx %dil, %rax
     ret
 .L__kefir_text_func_postinc_i8_end:
 
@@ -309,8 +309,8 @@ postdec_i16:
     mov %rsi, %rdx
     mov %rdi, %rax
     lock     cmpxchgw %cx, (%rdx)
-    movsx %di, %rax
     jnz .L__kefir_func_postdec_i16_label2
+    movsx %di, %rax
     ret
 .L__kefir_text_func_postdec_i16_end:
 
@@ -324,8 +324,8 @@ postdec_i32:
     mov %rsi, %rdx
     mov %rdi, %rax
     lock     cmpxchgl %ecx, (%rdx)
-    movsx %edi, %rax
     jnz .L__kefir_func_postdec_i32_label2
+    movsx %edi, %rax
     ret
 .L__kefir_text_func_postdec_i32_end:
 
@@ -462,8 +462,8 @@ postinc_i16:
     mov %rsi, %rdx
     mov %rdi, %rax
     lock     cmpxchgw %cx, (%rdx)
-    movsx %di, %rax
     jnz .L__kefir_func_postinc_i16_label2
+    movsx %di, %rax
     ret
 .L__kefir_text_func_postinc_i16_end:
 
@@ -477,8 +477,8 @@ postinc_i32:
     mov %rsi, %rdx
     mov %rdi, %rax
     lock     cmpxchgl %ecx, (%rdx)
-    movsx %edi, %rax
     jnz .L__kefir_func_postinc_i32_label2
+    movsx %edi, %rax
     ret
 .L__kefir_text_func_postinc_i32_end:
 

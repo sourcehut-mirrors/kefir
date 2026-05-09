@@ -123,13 +123,13 @@ __kefir_bigint_leading_zeros:
     cmp $0, %r9
     mov %rsi, %r11
     cmovbe %r8, %r11
-    xor %ebx, %ebx
+    add $1, %r9
+    xor %esi, %esi
+    mov %rsi, %rbx
     mov %rcx, %rsi
 .L__kefir_runtime_func___kefir_bigint_leading_zeros_label6:
-    lea 1(%r9), %rcx
     cmp %r11, %rbx
     jb .L__kefir_runtime_func___kefir_bigint_leading_zeros_label8
-    mov %rcx, %r9
     mov %rsi, %rcx
     jmp .L__kefir_runtime_func___kefir_bigint_leading_zeros_label3
 .L__kefir_runtime_func___kefir_bigint_leading_zeros_label8:
@@ -144,8 +144,8 @@ __kefir_bigint_leading_zeros:
     and $1, %ecx
     cmp $1, %ecx
     je .L__kefir_runtime_func___kefir_bigint_leading_zeros_label10
-    mov %r12, %rsi
     mov %r13, %rbx
+    mov %r12, %rsi
     jmp .L__kefir_runtime_func___kefir_bigint_leading_zeros_label6
 .L__kefir_runtime_func___kefir_bigint_leading_zeros_label10:
     mov %rsi, %rax

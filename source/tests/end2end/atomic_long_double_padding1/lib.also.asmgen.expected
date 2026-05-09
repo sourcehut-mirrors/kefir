@@ -61,7 +61,7 @@ add_cld1:
     mov %rsp, %rbp
     push %rbx
     push %r12
-    sub $112, %rsp
+    sub $144, %rsp
     fstcw -24(%rbp)
     lea 16(%rbp), %rbx
     movq cld1@GOTPCREL(%rip), %r12
@@ -77,16 +77,20 @@ add_cld1:
     fstpt -112(%rbp)
     movq $0, -120(%rbp)
     fstpt -128(%rbp)
+    fldt 16(%rbx)
+    fldt (%rbx)
+    fstpt -160(%rbp)
+    fstpt -144(%rbp)
 .L__kefir_func_add_cld1_label2:
     fldt -112(%rbp)
     fldt -128(%rbp)
-    fldt 16(%rbx)
+    fldt -144(%rbp)
     fxch %st(1)
     fxch %st(2)
     faddp
     movq $0, -40(%rbp)
     fstpt -48(%rbp)
-    fldt (%rbx)
+    fldt -160(%rbp)
     fxch %st(1)
     faddp
     movq $0, -56(%rbp)
