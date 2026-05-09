@@ -265,7 +265,7 @@ static kefir_result_t finalize_loop(struct kefir_mem *mem, struct kefir_opt_code
     if (parent != NULL) {
         loop->level = parent->level + 1;
     } else {
-        loop->level = 0;
+        loop->level = 1;
     }
 
     for (struct kefir_opt_code_loop *nested = kefir_opt_code_loop_first_child(loop); nested != NULL;
