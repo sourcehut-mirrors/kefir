@@ -588,6 +588,7 @@ static kefir_result_t dump_preprocessed_impl(struct kefir_mem *mem,
         REQUIRE_OK(format_macro_definitions(&preprocessor, output));
     }
     REQUIRE_OK(kefir_token_incremental_cursor_handle_free(&tokens_handle));
+    REQUIRE_OK(kefir_preprocessor_free(mem, &preprocessor));
     REQUIRE_OK(kefir_token_allocator_free(mem, &token_allocator));
     return KEFIR_OK;
 }
