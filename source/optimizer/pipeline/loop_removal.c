@@ -123,9 +123,9 @@ static kefir_result_t process_loop(struct licm_state *state) {
                     instr->operation.opcode == KEFIR_OPT_OPCODE_BRANCH_COMPARE) {
                     // Intentionally left blank
                 } else {
-                    kefir_bool_t side_effect_free;
-                    REQUIRE_OK(kefir_opt_instruction_is_side_effect_free(instr, &side_effect_free));
-                    REQUIRE(side_effect_free, KEFIR_OK);
+                    kefir_bool_t moveable;
+                    REQUIRE_OK(kefir_opt_instruction_is_moveable(&state->func->code, instr_ref, &moveable));
+                    REQUIRE(moveable, KEFIR_OK);
                 }
             }
             if (res != KEFIR_ITERATOR_END) {

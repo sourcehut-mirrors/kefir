@@ -301,21 +301,21 @@ test5:
     lea 64(%rdx), %rsi
     movq %rsi, -232(%rbp)
     movdqu (%rdx), %xmm0
-    movdqu %xmm0, -152(%rbp)
+    movdqu %xmm0, -216(%rbp)
     movdqu 16(%rdx), %xmm0
-    movdqu %xmm0, -136(%rbp)
+    movdqu %xmm0, -200(%rbp)
     movdqu 32(%rdx), %xmm0
-    movdqu %xmm0, -120(%rbp)
+    movdqu %xmm0, -184(%rbp)
     movdqu 48(%rdx), %xmm0
-    movdqu %xmm0, -104(%rbp)
-    movq -152(%rbp), %rdx
-    movq -144(%rbp), %rsi
-    movq -136(%rbp), %rdi
-    movq -128(%rbp), %r8
-    movq -120(%rbp), %r9
-    movq -112(%rbp), %r10
-    movq -104(%rbp), %r11
-    movq -96(%rbp), %rbx
+    movdqu %xmm0, -168(%rbp)
+    movq -216(%rbp), %rdx
+    movq -208(%rbp), %rsi
+    movq -200(%rbp), %rdi
+    movq -192(%rbp), %r8
+    movq -184(%rbp), %r9
+    movq -176(%rbp), %r10
+    movq -168(%rbp), %r11
+    movq -160(%rbp), %rbx
     add %rsi, %rdx
     add %rdi, %rdx
     add %r8, %rdx

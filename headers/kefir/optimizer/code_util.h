@@ -55,7 +55,8 @@ kefir_result_t kefir_opt_code_split_block_after(struct kefir_mem *, struct kefir
                                                 struct kefir_opt_code_sequencing *, kefir_opt_instruction_ref_t,
                                                 kefir_opt_block_id_t *);
 
-kefir_result_t kefir_opt_instruction_is_side_effect_free(const struct kefir_opt_instruction *, kefir_bool_t *);
+kefir_result_t kefir_opt_instruction_is_moveable(const struct kefir_opt_code_container *, kefir_opt_instruction_ref_t,
+                                                 kefir_bool_t *);
 
 kefir_result_t kefir_opt_instruction_get_sole_use(const struct kefir_opt_code_container *, kefir_opt_instruction_ref_t,
                                                   kefir_opt_instruction_ref_t *);

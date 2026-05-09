@@ -699,11 +699,10 @@ static kefir_result_t uses_terminate_at(const struct kefir_opt_code_container *c
     const struct kefir_opt_instruction *instr;
     REQUIRE_OK(kefir_opt_code_container_instr(code, source_ref, &instr));
 
-    kefir_bool_t is_control_flow, is_side_effect_free;
-    REQUIRE_OK(kefir_opt_code_instruction_is_control_flow(code, source_ref, &is_control_flow));
-    REQUIRE_OK(kefir_opt_instruction_is_side_effect_free(instr, &is_side_effect_free));
+    kefir_bool_t moveable;
+    REQUIRE_OK(kefir_opt_instruction_is_moveable(code, source_ref, &moveable));
 
-    if (!permit_control_flow && (is_control_flow || !is_side_effect_free)) {
+    if (!permit_control_flow && !moveable) {
         *terminates_at = false;
         return KEFIR_OK;
     }

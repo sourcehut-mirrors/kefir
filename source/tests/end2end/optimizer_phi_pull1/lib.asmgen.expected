@@ -17,27 +17,29 @@ somefn:
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-    movq .L__kefir_func_somefn_label6(%rip), %xmm0
-    movq .L__kefir_func_somefn_label7(%rip), %xmm1
+    movq .L__kefir_func_somefn_label8(%rip), %xmm0
+    movq .L__kefir_func_somefn_label9(%rip), %xmm1
 .L__kefir_func_somefn_label2:
+    movaps %xmm0, %xmm2
+    addsd %xmm1, %xmm2
     lea -1(%edi), %eax
     test %edi, %edi
-    jnz .L__kefir_func_somefn_label4
+    jnz .L__kefir_func_somefn_label7
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_func_somefn_label4:
-    addsd %xmm1, %xmm0
+.L__kefir_func_somefn_label7:
     mov %eax, %edi
+    movaps %xmm2, %xmm0
     jmp .L__kefir_func_somefn_label2
 .L__kefir_text_func_somefn_end:
 .section .rodata
     .align 8
-.L__kefir_func_somefn_label6:
+.L__kefir_func_somefn_label8:
     .quad 0
     .align 8
-.L__kefir_func_somefn_label7:
+.L__kefir_func_somefn_label9:
     .quad 4607182418800017408
 .section .text
 

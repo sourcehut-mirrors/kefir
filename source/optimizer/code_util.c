@@ -710,146 +710,23 @@ kefir_result_t kefir_opt_code_split_block_after(struct kefir_mem *mem, struct ke
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_opt_instruction_is_side_effect_free(const struct kefir_opt_instruction *instr,
-                                                         kefir_bool_t *result_ptr) {
-    REQUIRE(instr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer instruction"));
+kefir_result_t kefir_opt_instruction_is_moveable(const struct kefir_opt_code_container *code,
+                                                 kefir_opt_instruction_ref_t instr_ref, kefir_bool_t *result_ptr) {
+    REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code"));
     REQUIRE(result_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to boolean flag"));
 
-    switch (instr->operation.opcode) {
-        case KEFIR_OPT_OPCODE_SELECT:
-        case KEFIR_OPT_OPCODE_SELECT_COMPARE:
-        case KEFIR_OPT_OPCODE_INT_CONST:
-        case KEFIR_OPT_OPCODE_UINT_CONST:
-        case KEFIR_OPT_OPCODE_FLOAT32_CONST:
-        case KEFIR_OPT_OPCODE_FLOAT64_CONST:
-        case KEFIR_OPT_OPCODE_LONG_DOUBLE_CONST:
-        case KEFIR_OPT_OPCODE_STRING_REF:
-        case KEFIR_OPT_OPCODE_BLOCK_LABEL:
-        case KEFIR_OPT_OPCODE_INT_PLACEHOLDER:
-        case KEFIR_OPT_OPCODE_FLOAT32_PLACEHOLDER:
-        case KEFIR_OPT_OPCODE_FLOAT64_PLACEHOLDER:
-        case KEFIR_OPT_OPCODE_INT8_TO_BOOL:
-        case KEFIR_OPT_OPCODE_INT16_TO_BOOL:
-        case KEFIR_OPT_OPCODE_INT32_TO_BOOL:
-        case KEFIR_OPT_OPCODE_INT64_TO_BOOL:
-        case KEFIR_OPT_OPCODE_INT64_SIGN_EXTEND_8BITS:
-        case KEFIR_OPT_OPCODE_INT64_SIGN_EXTEND_16BITS:
-        case KEFIR_OPT_OPCODE_INT64_SIGN_EXTEND_32BITS:
-        case KEFIR_OPT_OPCODE_INT64_ZERO_EXTEND_8BITS:
-        case KEFIR_OPT_OPCODE_INT64_ZERO_EXTEND_16BITS:
-        case KEFIR_OPT_OPCODE_INT64_ZERO_EXTEND_32BITS:
-        case KEFIR_OPT_OPCODE_SCALAR_COMPARE:
-        case KEFIR_OPT_OPCODE_INT8_BOOL_NOT:
-        case KEFIR_OPT_OPCODE_INT16_BOOL_NOT:
-        case KEFIR_OPT_OPCODE_INT32_BOOL_NOT:
-        case KEFIR_OPT_OPCODE_INT64_BOOL_NOT:
-        case KEFIR_OPT_OPCODE_INT8_BOOL_OR:
-        case KEFIR_OPT_OPCODE_INT16_BOOL_OR:
-        case KEFIR_OPT_OPCODE_INT32_BOOL_OR:
-        case KEFIR_OPT_OPCODE_INT64_BOOL_OR:
-        case KEFIR_OPT_OPCODE_INT8_BOOL_AND:
-        case KEFIR_OPT_OPCODE_INT16_BOOL_AND:
-        case KEFIR_OPT_OPCODE_INT32_BOOL_AND:
-        case KEFIR_OPT_OPCODE_INT64_BOOL_AND:
-        case KEFIR_OPT_OPCODE_INT8_ADD:
-        case KEFIR_OPT_OPCODE_INT16_ADD:
-        case KEFIR_OPT_OPCODE_INT32_ADD:
-        case KEFIR_OPT_OPCODE_INT64_ADD:
-        case KEFIR_OPT_OPCODE_INT8_SUB:
-        case KEFIR_OPT_OPCODE_INT16_SUB:
-        case KEFIR_OPT_OPCODE_INT32_SUB:
-        case KEFIR_OPT_OPCODE_INT64_SUB:
-        case KEFIR_OPT_OPCODE_INT8_MUL:
-        case KEFIR_OPT_OPCODE_INT16_MUL:
-        case KEFIR_OPT_OPCODE_INT32_MUL:
-        case KEFIR_OPT_OPCODE_INT64_MUL:
-        case KEFIR_OPT_OPCODE_UINT8_MUL:
-        case KEFIR_OPT_OPCODE_UINT16_MUL:
-        case KEFIR_OPT_OPCODE_UINT32_MUL:
-        case KEFIR_OPT_OPCODE_UINT64_MUL:
-        case KEFIR_OPT_OPCODE_INT8_AND:
-        case KEFIR_OPT_OPCODE_INT16_AND:
-        case KEFIR_OPT_OPCODE_INT32_AND:
-        case KEFIR_OPT_OPCODE_INT64_AND:
-        case KEFIR_OPT_OPCODE_INT8_OR:
-        case KEFIR_OPT_OPCODE_INT16_OR:
-        case KEFIR_OPT_OPCODE_INT32_OR:
-        case KEFIR_OPT_OPCODE_INT64_OR:
-        case KEFIR_OPT_OPCODE_INT8_XOR:
-        case KEFIR_OPT_OPCODE_INT16_XOR:
-        case KEFIR_OPT_OPCODE_INT32_XOR:
-        case KEFIR_OPT_OPCODE_INT64_XOR:
-        case KEFIR_OPT_OPCODE_INT8_LSHIFT:
-        case KEFIR_OPT_OPCODE_INT16_LSHIFT:
-        case KEFIR_OPT_OPCODE_INT32_LSHIFT:
-        case KEFIR_OPT_OPCODE_INT64_LSHIFT:
-        case KEFIR_OPT_OPCODE_INT8_RSHIFT:
-        case KEFIR_OPT_OPCODE_INT16_RSHIFT:
-        case KEFIR_OPT_OPCODE_INT32_RSHIFT:
-        case KEFIR_OPT_OPCODE_INT64_RSHIFT:
-        case KEFIR_OPT_OPCODE_INT8_ARSHIFT:
-        case KEFIR_OPT_OPCODE_INT16_ARSHIFT:
-        case KEFIR_OPT_OPCODE_INT32_ARSHIFT:
-        case KEFIR_OPT_OPCODE_INT64_ARSHIFT:
-        case KEFIR_OPT_OPCODE_INT8_NOT:
-        case KEFIR_OPT_OPCODE_INT16_NOT:
-        case KEFIR_OPT_OPCODE_INT32_NOT:
-        case KEFIR_OPT_OPCODE_INT64_NOT:
-        case KEFIR_OPT_OPCODE_INT8_NEG:
-        case KEFIR_OPT_OPCODE_INT16_NEG:
-        case KEFIR_OPT_OPCODE_INT32_NEG:
-        case KEFIR_OPT_OPCODE_INT64_NEG:
-        case KEFIR_OPT_OPCODE_BITS_EXTRACT_UNSIGNED:
-        case KEFIR_OPT_OPCODE_BITS_EXTRACT_SIGNED:
-        case KEFIR_OPT_OPCODE_BITS_INSERT:
-        case KEFIR_OPT_OPCODE_BITINT_UNSIGNED_CONST:
-        case KEFIR_OPT_OPCODE_BITINT_SIGNED_CONST:
-        case KEFIR_OPT_OPCODE_BITINT_GET_UNSIGNED:
-        case KEFIR_OPT_OPCODE_BITINT_GET_SIGNED:
-        case KEFIR_OPT_OPCODE_BITINT_FROM_UNSIGNED:
-        case KEFIR_OPT_OPCODE_BITINT_FROM_SIGNED:
-        case KEFIR_OPT_OPCODE_BITINT_CAST_UNSIGNED:
-        case KEFIR_OPT_OPCODE_BITINT_CAST_SIGNED:
-        case KEFIR_OPT_OPCODE_BITINT_TO_BOOL:
-        case KEFIR_OPT_OPCODE_BITINT_NEGATE:
-        case KEFIR_OPT_OPCODE_BITINT_INVERT:
-        case KEFIR_OPT_OPCODE_BITINT_BOOL_NOT:
-        case KEFIR_OPT_OPCODE_BITINT_ADD:
-        case KEFIR_OPT_OPCODE_BITINT_SUB:
-        case KEFIR_OPT_OPCODE_BITINT_IMUL:
-        case KEFIR_OPT_OPCODE_BITINT_UMUL:
-        case KEFIR_OPT_OPCODE_BITINT_LSHIFT:
-        case KEFIR_OPT_OPCODE_BITINT_RSHIFT:
-        case KEFIR_OPT_OPCODE_BITINT_ARSHIFT:
-        case KEFIR_OPT_OPCODE_BITINT_AND:
-        case KEFIR_OPT_OPCODE_BITINT_OR:
-        case KEFIR_OPT_OPCODE_BITINT_XOR:
-        case KEFIR_OPT_OPCODE_BITINT_EQUAL:
-        case KEFIR_OPT_OPCODE_BITINT_GREATER:
-        case KEFIR_OPT_OPCODE_BITINT_LESS:
-        case KEFIR_OPT_OPCODE_BITINT_ABOVE:
-        case KEFIR_OPT_OPCODE_BITINT_BELOW:
-        case KEFIR_OPT_OPCODE_BITINT_EXTRACT_UNSIGNED:
-        case KEFIR_OPT_OPCODE_BITINT_EXTRACT_SIGNED:
-        case KEFIR_OPT_OPCODE_BITINT_INSERT:
-        case KEFIR_OPT_OPCODE_BITINT_BUILTIN_FFS:
-        case KEFIR_OPT_OPCODE_BITINT_BUILTIN_CLZ:
-        case KEFIR_OPT_OPCODE_BITINT_BUILTIN_CTZ:
-        case KEFIR_OPT_OPCODE_BITINT_BUILTIN_CLRSB:
-        case KEFIR_OPT_OPCODE_BITINT_BUILTIN_POPCOUNT:
-        case KEFIR_OPT_OPCODE_BITINT_BUILTIN_PARITY:
-        case KEFIR_OPT_OPCODE_GET_GLOBAL:
-        case KEFIR_OPT_OPCODE_GET_THREAD_LOCAL:
-        case KEFIR_OPT_OPCODE_ALLOC_LOCAL:
-        case KEFIR_OPT_OPCODE_REF_LOCAL:
-            *result_ptr = true;
-            break;
-
-        default:
-            *result_ptr = false;
-            break;
+    kefir_bool_t is_control_flow = false;
+    REQUIRE_OK(kefir_opt_code_instruction_is_control_flow(code, instr_ref, &is_control_flow));
+    if (is_control_flow) {
+        *result_ptr = false;
+        return KEFIR_OK;
     }
 
+    const struct kefir_opt_instruction *instr;
+    REQUIRE_OK(kefir_opt_code_container_instr(code, instr_ref, &instr));
+
+    *result_ptr =
+        instr->operation.opcode != KEFIR_OPT_OPCODE_PHI && instr->operation.opcode != KEFIR_OPT_OPCODE_GET_ARGUMENT;
     return KEFIR_OK;
 }
 
@@ -1002,9 +879,9 @@ kefir_result_t kefr_opt_can_hoist_isolated_instruction(const struct kefir_opt_co
     REQUIRE_OK(kefir_opt_code_instruction_is_control_flow(control_flow->code, instr_ref, &is_control_flow));
     REQUIRE(!is_control_flow, KEFIR_OK);
 
-    kefir_bool_t is_side_effect_free;
-    REQUIRE_OK(kefir_opt_instruction_is_side_effect_free(instr, &is_side_effect_free));
-    REQUIRE(is_side_effect_free, KEFIR_OK);
+    kefir_bool_t is_moveable;
+    REQUIRE_OK(kefir_opt_instruction_is_moveable(control_flow->code, instr_ref, &is_moveable));
+    REQUIRE(is_moveable, KEFIR_OK);
 
     if (instr->block_id == target_block_id) {
         *can_hoist_ptr = true;

@@ -92,11 +92,11 @@ __kefir_bigint_trailing_zeros:
     push %r13
     sub $8, %rsp
     mov %rdx, %rax
-    cmp $0, %rsi
-    je .L__kefir_runtime_func___kefir_bigint_trailing_zeros_label15
     lea 7(%rsi), %rcx
     mov %rcx, %rdx
     shr $3, %rdx
+    cmp $0, %rsi
+    je .L__kefir_runtime_func___kefir_bigint_trailing_zeros_label15
     xor %ecx, %ecx
     xor %r8d, %r8d
     mov %r8, %r9

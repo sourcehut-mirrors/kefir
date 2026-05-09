@@ -53,11 +53,11 @@ test:
     lea 32(%rcx), %rdx
     movq %rdx, -104(%rbp)
     movdqu (%rcx), %xmm0
-    movdqu %xmm0, -80(%rbp)
+    movdqu %xmm0, -48(%rbp)
     movdqu 16(%rcx), %xmm0
-    movdqu %xmm0, -64(%rbp)
-    fldt -80(%rbp)
-    fldt -64(%rbp)
+    movdqu %xmm0, -32(%rbp)
+    fldt -48(%rbp)
+    fldt -32(%rbp)
     fxch %st(1)
     fsubp
     fldt -128(%rbp)

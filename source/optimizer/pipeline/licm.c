@@ -347,11 +347,9 @@ static kefir_result_t distribute_condition_dependencies_over_phis(struct licm_st
                     continue;
                 }
 
-                kefir_bool_t side_effect_free, control_flow;
-                REQUIRE_OK(kefir_opt_instruction_is_side_effect_free(use_instr, &side_effect_free));
-                REQUIRE_OK(kefir_opt_code_instruction_is_control_flow(&state->func->code, use_iter.use_instr_ref,
-                                                                      &control_flow));
-                if (!side_effect_free || control_flow) {
+                kefir_bool_t moveable;
+                REQUIRE_OK(kefir_opt_instruction_is_moveable(&state->func->code, use_iter.use_instr_ref, &moveable));
+                if (!moveable) {
                     continue;
                 }
 
@@ -709,12 +707,9 @@ static kefir_result_t process_loop(struct licm_state *state) {
                 break;
 
             default: {
-                kefir_bool_t is_side_effect_free, is_control_flow;
-                REQUIRE_OK(kefir_opt_instruction_is_side_effect_free(instr, &is_side_effect_free));
-                REQUIRE_OK(
-                    kefir_opt_code_instruction_is_control_flow(state->control_flow.code, instr_ref, &is_control_flow));
-                if (is_side_effect_free && !is_control_flow &&
-                    kefir_hashset_has(&state->candidate_blocks, (kefir_hashset_key_t) instr->block_id)) {
+                kefir_bool_t moveable;
+                REQUIRE_OK(kefir_opt_instruction_is_moveable(state->control_flow.code, instr_ref, &moveable));
+                if (moveable && kefir_hashset_has(&state->candidate_blocks, (kefir_hashset_key_t) instr->block_id)) {
                     REQUIRE_OK(do_hoist(state, instr_ref, hoist_target));
                 }
             } break;

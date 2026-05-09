@@ -594,8 +594,6 @@ __kefir_bigint_signed_multiply:
     sete %sil
     cmp %rax, %rcx
     jb .L__kefir_runtime_func___kefir_bigint_signed_multiply_label26
-    or %dl, %sil
-    jnz .L__kefir_runtime_func___kefir_bigint_signed_multiply_label25
     lea 7(%rbx), %rax
     mov %rax, -88(%rbp)
     shrq $3, -88(%rbp)
@@ -606,6 +604,8 @@ __kefir_bigint_signed_multiply:
     shl $3, %rcx
     mov %rax, -80(%rbp)
     subq %rcx, -80(%rbp)
+    or %dl, %sil
+    jnz .L__kefir_runtime_func___kefir_bigint_signed_multiply_label25
     xor %eax, %eax
 .L__kefir_runtime_func___kefir_bigint_signed_multiply_label5:
     movq -88(%rbp), %rdx

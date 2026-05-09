@@ -177,9 +177,9 @@ static kefir_result_t do_merge(struct kefir_mem *mem, struct kefir_opt_function 
             }
             const struct kefir_opt_instruction *instr;
             REQUIRE_OK(kefir_opt_code_container_instr(&func->code, instr_ref, &instr));
-            kefir_bool_t side_effect_free;
-            REQUIRE_OK(kefir_opt_instruction_is_side_effect_free(instr, &side_effect_free));
-            REQUIRE(side_effect_free, KEFIR_OK);
+            kefir_bool_t moveable;
+            REQUIRE_OK(kefir_opt_instruction_is_moveable(&func->code, instr_ref, &moveable));
+            REQUIRE(moveable, KEFIR_OK);
         }
         REQUIRE_OK(res);
 
