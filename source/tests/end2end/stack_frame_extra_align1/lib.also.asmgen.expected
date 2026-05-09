@@ -247,7 +247,7 @@ test5:
     push %rbp
     mov %rsp, %rbp
     push %rbx
-    sub $424, %rsp
+    sub $504, %rsp
     test %al, %al
     je .L__kefir_func_test5_label2
     movdqu %xmm0, -384(%rbp)

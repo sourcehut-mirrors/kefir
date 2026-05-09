@@ -159,11 +159,11 @@ static kefir_result_t calculate_offsets(struct kefir_codegen_amd64_stack_frame *
     frame->offsets.local_area = PAD_NEGATIVE(frame->offsets.local_area, frame->sizes.local_area_alignment);
     frame->offsets.spill_area = frame->offsets.local_area - (kefir_int64_t) frame->sizes.spill_area;
     frame->offsets.spill_area = PAD_NEGATIVE(frame->offsets.spill_area, 2 * KEFIR_AMD64_ABI_QWORD);
-    frame->offsets.top_of_frame = PAD_NEGATIVE(frame->offsets.spill_area, 2 * KEFIR_AMD64_ABI_QWORD);
-    frame->sizes.allocated_size = -(frame->offsets.top_of_frame - frame->offsets.preserved_regs);
-    frame->sizes.total_size = -frame->offsets.top_of_frame;
     frame->sizes.total_alignment = kefir_target_abi_pad_aligned(
         MAX(frame->sizes.local_area_alignment, frame->requirements.extra_alignment), 2 * KEFIR_AMD64_ABI_QWORD);
+    frame->offsets.top_of_frame = PAD_NEGATIVE(frame->offsets.spill_area, frame->sizes.total_alignment);
+    frame->sizes.allocated_size = -(frame->offsets.top_of_frame - frame->offsets.preserved_regs);
+    frame->sizes.total_size = -frame->offsets.top_of_frame;
     return KEFIR_OK;
 }
 
