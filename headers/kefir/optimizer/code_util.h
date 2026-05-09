@@ -61,9 +61,6 @@ kefir_result_t kefir_opt_instruction_is_moveable(const struct kefir_opt_code_con
 kefir_result_t kefir_opt_instruction_get_sole_use(const struct kefir_opt_code_container *, kefir_opt_instruction_ref_t,
                                                   kefir_opt_instruction_ref_t *);
 
-kefir_result_t kefir_opt_move_instruction(struct kefir_mem *, struct kefir_opt_code_container *,
-                                          struct kefir_opt_code_debug_info *, kefir_opt_instruction_ref_t,
-                                          kefir_opt_block_id_t, kefir_opt_instruction_ref_t *);
 kefir_result_t kefir_opt_hoist_instruction_with_local_dependencies(struct kefir_mem *,
                                                                    struct kefir_opt_code_container *,
                                                                    struct kefir_opt_code_debug_info *,

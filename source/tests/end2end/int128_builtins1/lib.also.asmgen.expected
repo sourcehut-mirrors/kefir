@@ -764,20 +764,20 @@ __kefir_bigint_arithmetic_right_shift:
     shl $3, %rdx
     mov %rcx, %r13
     sub %rdx, %r13
-    cmp %rax, %rsi
-    mov %rsi, %rbx
-    cmova %rax, %rbx
     mov %r13, %rcx
     sar %cl, %edi
     mov %edi, %r14d
     and $1, %r14d
-    lea 7(%rax), %rcx
-    mov %rcx, %r15
-    shr $3, %r15
     mov $1, %edx
     mov %r13, %rcx
     shl %cl, %rdx
     sub $1, %dl
+    cmp %rax, %rsi
+    mov %rsi, %rbx
+    cmova %rax, %rbx
+    lea 7(%rax), %rcx
+    mov %rcx, %r15
+    shr $3, %r15
     test %r14, %r14
     jnz .L__kefir_runtime_func___kefir_bigint_arithmetic_right_shift_label6
     andb %dl, -1(%r12, %r15, 1)

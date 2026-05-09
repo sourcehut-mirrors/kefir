@@ -851,6 +851,25 @@ static kefir_result_t update_used_instructions(struct kefir_mem *mem, const stru
     return KEFIR_OK;
 }
 
+static kefir_result_t add_instr_to_block(struct kefir_opt_code_container *code, struct kefir_opt_code_block *block,
+                                         struct kefir_opt_instruction *instr) {
+    instr->block_id = block->id;
+    instr->siblings.prev = block->content.tail;
+    instr->siblings.next = KEFIR_ID_NONE;
+
+    if (block->content.tail != KEFIR_ID_NONE) {
+        struct kefir_opt_instruction *prev_instr = NULL;
+        REQUIRE_OK(code_container_instr_mutable(code, block->content.tail, &prev_instr));
+        REQUIRE(prev_instr->siblings.next == KEFIR_ID_NONE,
+                KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected previous instruction in block to have no successors"));
+        prev_instr->siblings.next = instr->id;
+    } else {
+        block->content.head = instr->id;
+    }
+    block->content.tail = instr->id;
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_opt_code_container_new_instruction(struct kefir_mem *mem, struct kefir_opt_code_container *code,
                                                         kefir_opt_block_id_t block_id,
                                                         const struct kefir_opt_operation *operation,
@@ -881,22 +900,9 @@ kefir_result_t kefir_opt_code_container_new_instruction(struct kefir_mem *mem, s
         REQUIRE_OK(kefir_hashtreeset_init(&instr->uses.instruction, &kefir_hashtree_uint_ops));
     }
     instr->operation = *operation;
-    instr->block_id = block->id;
     instr->control_flow.prev = KEFIR_ID_NONE;
     instr->control_flow.next = KEFIR_ID_NONE;
-    instr->siblings.prev = block->content.tail;
-    instr->siblings.next = KEFIR_ID_NONE;
-
-    if (block->content.tail != KEFIR_ID_NONE) {
-        struct kefir_opt_instruction *prev_instr = NULL;
-        REQUIRE_OK(code_container_instr_mutable(code, block->content.tail, &prev_instr));
-        REQUIRE(prev_instr->siblings.next == KEFIR_ID_NONE,
-                KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected previous instruction in block to have no successors"));
-        prev_instr->siblings.next = instr->id;
-    } else {
-        block->content.head = instr->id;
-    }
-    block->content.tail = instr->id;
+    REQUIRE_OK(add_instr_to_block(code, block, instr));
 
     if (allocated_new) {
         code->length++;
@@ -908,6 +914,58 @@ kefir_result_t kefir_opt_code_container_new_instruction(struct kefir_mem *mem, s
     if (code->event_listener != NULL && code->event_listener->on_new_instruction != NULL) {
         REQUIRE_OK(code->event_listener->on_new_instruction(mem, code, instr->id, code->event_listener->payload));
     }
+    return KEFIR_OK;
+}
+
+static kefir_result_t drop_instr_from_block(struct kefir_opt_code_container *code, struct kefir_opt_code_block *block,
+                                            struct kefir_opt_instruction *instr) {
+    if (block->content.head == instr->id) {
+        block->content.head = instr->siblings.next;
+    }
+
+    if (block->content.tail == instr->id) {
+        block->content.tail = instr->siblings.prev;
+    }
+
+    if (instr->siblings.prev != KEFIR_ID_NONE) {
+        struct kefir_opt_instruction *prev_instr = NULL;
+        REQUIRE_OK(code_container_instr_mutable(code, instr->siblings.prev, &prev_instr));
+
+        prev_instr->siblings.next = instr->siblings.next;
+    }
+
+    if (instr->siblings.next != KEFIR_ID_NONE) {
+        struct kefir_opt_instruction *next_instr = NULL;
+        REQUIRE_OK(code_container_instr_mutable(code, instr->siblings.next, &next_instr));
+
+        next_instr->siblings.prev = instr->siblings.prev;
+    }
+
+    instr->siblings.prev = KEFIR_ID_NONE;
+    instr->siblings.next = KEFIR_ID_NONE;
+    instr->block_id = KEFIR_ID_NONE;
+
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_opt_move_instruction(struct kefir_opt_code_container *code, kefir_opt_instruction_ref_t instr_ref,
+                                          kefir_opt_block_id_t target_block_id) {
+    REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code"));
+
+    struct kefir_opt_instruction *instr = NULL;
+    REQUIRE_OK(code_container_instr_mutable(code, instr_ref, &instr));
+
+    struct kefir_opt_code_block *src_block = NULL, *dst_block = NULL;
+    REQUIRE_OK(code_container_block_mutable(code, instr->block_id, &src_block));
+    REQUIRE_OK(code_container_block_mutable(code, target_block_id, &dst_block));
+
+    REQUIRE(!(src_block->control_flow.head == instr_ref || instr->control_flow.prev != KEFIR_ID_NONE ||
+              instr->control_flow.next != KEFIR_ID_NONE),
+            KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Unable to move control flow instruction"));
+
+    REQUIRE_OK(drop_instr_from_block(code, src_block, instr));
+    REQUIRE_OK(add_instr_to_block(code, dst_block, instr));
+
     return KEFIR_OK;
 }
 
@@ -967,32 +1025,7 @@ kefir_result_t drop_instr_impl(struct kefir_mem *mem, struct kefir_opt_code_cont
                 block->control_flow.head != instr->id,
             KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Instruction shall be removed from control flow prior to dropping"));
     REQUIRE_OK(drop_used_instructions(mem, code, instr->id));
-
-    if (block->content.head == instr->id) {
-        block->content.head = instr->siblings.next;
-    }
-
-    if (block->content.tail == instr->id) {
-        block->content.tail = instr->siblings.prev;
-    }
-
-    if (instr->siblings.prev != KEFIR_ID_NONE) {
-        struct kefir_opt_instruction *prev_instr = NULL;
-        REQUIRE_OK(code_container_instr_mutable(code, instr->siblings.prev, &prev_instr));
-
-        prev_instr->siblings.next = instr->siblings.next;
-    }
-
-    if (instr->siblings.next != KEFIR_ID_NONE) {
-        struct kefir_opt_instruction *next_instr = NULL;
-        REQUIRE_OK(code_container_instr_mutable(code, instr->siblings.next, &next_instr));
-
-        next_instr->siblings.prev = instr->siblings.prev;
-    }
-
-    instr->siblings.prev = KEFIR_ID_NONE;
-    instr->siblings.next = KEFIR_ID_NONE;
-    instr->block_id = KEFIR_ID_NONE;
+    REQUIRE_OK(drop_instr_from_block(code, block, instr));
 
     if (instr->operation.opcode == KEFIR_OPT_OPCODE_PHI) {
         REQUIRE_OK(kefir_opt_code_container_drop_phi(mem, code, instr->operation.parameters.phi_ref));

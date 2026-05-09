@@ -461,6 +461,8 @@ kefir_result_t kefir_opt_code_container_instr(const struct kefir_opt_code_contai
 kefir_result_t kefir_opt_code_container_new_instruction(struct kefir_mem *, struct kefir_opt_code_container *,
                                                         kefir_opt_block_id_t, const struct kefir_opt_operation *,
                                                         kefir_opt_instruction_ref_t *);
+kefir_result_t kefir_opt_move_instruction(struct kefir_opt_code_container *, kefir_opt_instruction_ref_t,
+                                          kefir_opt_block_id_t);
 kefir_result_t kefir_opt_code_container_drop_instr(struct kefir_mem *, struct kefir_opt_code_container *,
                                                    kefir_opt_instruction_ref_t);
 kefir_result_t kefir_opt_code_container_copy_instruction(struct kefir_mem *, struct kefir_opt_code_container *,

@@ -219,10 +219,7 @@ static kefir_result_t do_hoist(struct licm_state *state, kefir_opt_instruction_r
     kefir_bool_t can_hoist;
     REQUIRE_OK(kefir_opt_can_hoist_instruction(&state->control_flow, instr_ref, hoist_target, &can_hoist));
     if (can_hoist) {
-        kefir_opt_instruction_ref_t moved_instr_ref;
-        REQUIRE_OK(kefir_opt_move_instruction(state->mem, &state->func->code, &state->func->debug_info, instr_ref,
-                                              hoist_target, &moved_instr_ref));
-        REQUIRE_OK(kefir_opt_code_escape_analysis_replace(state->mem, &state->escapes, moved_instr_ref, instr_ref));
+        REQUIRE_OK(kefir_opt_move_instruction(&state->func->code, instr_ref, hoist_target));
     }
     return KEFIR_OK;
 }
@@ -462,9 +459,7 @@ static kefir_result_t hoist_memory_operation(struct licm_state *state, kefir_opt
     REQUIRE(is_control_flow, KEFIR_OK);
 
     REQUIRE_OK(kefir_opt_code_container_drop_control(&state->func->code, instr_ref));
-    kefir_opt_instruction_ref_t moved_instr_ref;
-    REQUIRE_OK(kefir_opt_move_instruction(state->mem, &state->func->code, &state->func->debug_info, instr_ref,
-                                          hoist_target, &moved_instr_ref));
+    REQUIRE_OK(kefir_opt_move_instruction(&state->func->code, instr_ref, hoist_target));
 
     kefir_opt_instruction_ref_t insert_control_ref;
     REQUIRE_OK(kefir_opt_code_block_instr_control_tail(&state->func->code, hoist_target, &insert_control_ref));
@@ -472,9 +467,7 @@ static kefir_result_t hoist_memory_operation(struct licm_state *state, kefir_opt
         REQUIRE_OK(kefir_opt_instruction_prev_control(&state->func->code, insert_control_ref, &insert_control_ref));
     }
     REQUIRE_OK(
-        kefir_opt_code_container_insert_control(&state->func->code, hoist_target, insert_control_ref, moved_instr_ref));
-    REQUIRE_OK(kefir_hashset_delete(&state->loop_memory_ops, (kefir_hashset_key_t) instr_ref));
-    REQUIRE_OK(kefir_opt_code_escape_analysis_replace(state->mem, &state->escapes, moved_instr_ref, instr_ref));
+        kefir_opt_code_container_insert_control(&state->func->code, hoist_target, insert_control_ref, instr_ref));
     return KEFIR_OK;
 }
 

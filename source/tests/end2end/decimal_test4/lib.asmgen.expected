@@ -156,9 +156,9 @@ test_dec32_init:
     mov %rbx, %rcx
     shr $1, %rcx
     lea -1(%rcx), %rdx
-    add $1, %rcx
     movd .L__kefir_func_test_dec32_init_label23(%rip), %xmm2
     movd .L__kefir_func_test_dec32_init_label24(%rip), %xmm3
+    add $1, %rcx
     mov %rax, %rsi
     imul %rbx, %rsi
     cmp %rbx, %rax
@@ -187,9 +187,9 @@ test_dec32_init:
     movq 16(%r12), %r8
     mov %rsi, %r9
     add %rdi, %r9
-    movd %xmm2, (%r8, %r9, 4)
-    movq 8(%r12), %r8
     movd %xmm3, (%r8, %r9, 4)
+    movq 8(%r12), %r8
+    movd %xmm2, (%r8, %r9, 4)
     add $1, %rdi
     jmp .L__kefir_func_test_dec32_init_label10
 .L__kefir_func_test_dec32_init_label5:
@@ -229,10 +229,10 @@ test_dec32_init:
     .long 847249409
     .align 4
 .L__kefir_func_test_dec32_init_label23:
-    .long 830472217
+    .long 838860805
     .align 4
 .L__kefir_func_test_dec32_init_label24:
-    .long 838860805
+    .long 830472217
 .section .text
 
 test_dec32_norm:
@@ -557,9 +557,9 @@ test_dec64_init:
     movq 16(%r12), %r8
     mov %rsi, %r9
     add %rdi, %r9
-    movq %xmm2, (%r8, %r9, 8)
-    movq 8(%r12), %r8
     movq %xmm3, (%r8, %r9, 8)
+    movq 8(%r12), %r8
+    movq %xmm2, (%r8, %r9, 8)
     add $1, %rdi
     jmp .L__kefir_func_test_dec64_init_label10
 .L__kefir_func_test_dec64_init_label5:
@@ -599,10 +599,10 @@ test_dec64_init:
     .quad 3584865303386914816
     .align 8
 .L__kefir_func_test_dec64_init_label23:
-    .quad 3566850904877432857
+    .quad 3575858104132173829
     .align 8
 .L__kefir_func_test_dec64_init_label24:
-    .quad 3575858104132173829
+    .quad 3566850904877432857
 .section .text
 
 test_dec64_norm:
@@ -1426,9 +1426,9 @@ test_dec128_init:
     mov %rsi, %r9
     add %rdi, %r9
     shl $4, %r9
-    movdqu %xmm2, (%r8, %r9, 1)
-    movq 16(%r12), %r8
     movdqu %xmm3, (%r8, %r9, 1)
+    movq 16(%r12), %r8
+    movdqu %xmm2, (%r8, %r9, 1)
     add $1, %rdi
     jmp .L__kefir_func_test_dec128_init_label10
 .L__kefir_func_test_dec128_init_label5:
@@ -1469,10 +1469,10 @@ test_dec128_init:
     .quad 0, 3476778912330022912
     .align 16
 .L__kefir_func_test_dec128_init_label23:
-    .quad 25, 3475653012423180288
+    .quad 5, 3476215962376601600
     .align 16
 .L__kefir_func_test_dec128_init_label24:
-    .quad 5, 3476215962376601600
+    .quad 25, 3475653012423180288
 .section .text
 
 test_dec128_norm:

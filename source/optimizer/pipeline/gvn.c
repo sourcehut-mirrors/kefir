@@ -954,9 +954,8 @@ static kefir_result_t gvn_impl(struct gvn_state *state) {
                                                                closest_common_dominator_block_id, &can_hoist));
 
                     if (can_hoist) {
-                        REQUIRE_OK(kefir_opt_move_instruction(state->mem, &state->func->code, &state->func->debug_info,
-                                                              instr_ref, closest_common_dominator_block_id,
-                                                              &instr_ref));
+                        REQUIRE_OK(kefir_opt_move_instruction(&state->func->code, instr_ref,
+                                                              closest_common_dominator_block_id));
                         REQUIRE_OK(kefir_opt_code_container_replace_references(state->mem, &state->func->code,
                                                                                instr_ref, candidate_instr_ref));
                         candidate_iter->value = (void *) (kefir_uptr_t) instr_ref;

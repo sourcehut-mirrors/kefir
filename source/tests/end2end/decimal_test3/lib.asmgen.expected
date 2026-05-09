@@ -2133,7 +2133,7 @@ test_dec128_initialize_gaussian:
     call __bid_floatunsditd@PLT
     movaps -80(%rbp), %xmm1
     call __bid_multd3@PLT
-    movaps -96(%rbp), %xmm1
+    movaps -144(%rbp), %xmm1
     call __bid_subtd3@PLT
     movaps %xmm0, %xmm1
     movaps %xmm1, %xmm0
@@ -2144,7 +2144,7 @@ test_dec128_initialize_gaussian:
     call __bid_floatunsditd@PLT
     movaps -80(%rbp), %xmm1
     call __bid_multd3@PLT
-    movaps -144(%rbp), %xmm1
+    movaps -96(%rbp), %xmm1
     call __bid_subtd3@PLT
     movaps %xmm0, %xmm1
     movaps %xmm1, %xmm0
@@ -2770,7 +2770,7 @@ test_dec64_initialize_gaussian:
     call __bid_floatunsdidd@PLT
     movaps -80(%rbp), %xmm1
     call __bid_muldd3@PLT
-    movaps -96(%rbp), %xmm1
+    movaps -144(%rbp), %xmm1
     call __bid_subdd3@PLT
     movaps %xmm0, %xmm1
     movaps %xmm1, %xmm0
@@ -2781,7 +2781,7 @@ test_dec64_initialize_gaussian:
     call __bid_floatunsdidd@PLT
     movaps -80(%rbp), %xmm1
     call __bid_muldd3@PLT
-    movaps -144(%rbp), %xmm1
+    movaps -96(%rbp), %xmm1
     call __bid_subdd3@PLT
     movaps %xmm0, %xmm1
     movaps %xmm1, %xmm0
@@ -2883,7 +2883,7 @@ test_dec32_initialize_gaussian:
     call __bid_floatunsdisd@PLT
     movaps -80(%rbp), %xmm1
     call __bid_mulsd3@PLT
-    movaps -96(%rbp), %xmm1
+    movaps -112(%rbp), %xmm1
     call __bid_subsd3@PLT
     movaps %xmm0, %xmm1
     movaps %xmm1, %xmm0
@@ -2894,7 +2894,7 @@ test_dec32_initialize_gaussian:
     call __bid_floatunsdisd@PLT
     movaps -80(%rbp), %xmm1
     call __bid_mulsd3@PLT
-    movaps -160(%rbp), %xmm1
+    movaps -96(%rbp), %xmm1
     call __bid_subsd3@PLT
     movaps %xmm0, %xmm1
     movaps %xmm1, %xmm0
@@ -2916,7 +2916,7 @@ test_dec32_initialize_gaussian:
     movq 24(%rbx), %rcx
     imul %r12, %rcx
     add %r13, %rcx
-    movd -112(%rbp), %xmm0
+    movd -160(%rbp), %xmm0
     movd %xmm0, (%rax, %rcx, 4)
     mov %r14, %r13
     jmp .L__kefir_func_test_dec32_initialize_gaussian_label6
@@ -2924,7 +2924,7 @@ test_dec32_initialize_gaussian:
 .section .rodata
     .align 4
 .L__kefir_func_test_dec32_initialize_gaussian_label11:
-    .long 838860805
+    .long 847249408
     .align 4
 .L__kefir_func_test_dec32_initialize_gaussian_label12:
     .long 847249409
@@ -2933,7 +2933,7 @@ test_dec32_initialize_gaussian:
     .long 781420544
     .align 4
 .L__kefir_func_test_dec32_initialize_gaussian_label14:
-    .long 847249408
+    .long 838860805
     .align 4
 .L__kefir_func_test_dec32_initialize_gaussian_label15:
     .long 838860805
