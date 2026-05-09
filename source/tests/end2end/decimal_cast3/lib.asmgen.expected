@@ -1639,13 +1639,13 @@ __kefir_bigint_get_bits:
     mov %r9, %rax
     ret
 .L__kefir_runtime_func___kefir_bigint_get_bits_label4:
-    lea 8(%r10), %rcx
     mov %r10, %rax
     xor %edx, %edx
-    mov $8, %r11
-    div %r11
+    mov $8, %rcx
+    div %rcx
+    lea 8(%r10), %rax
     cmp $0, %rdx
-    je .L__kefir_runtime_func___kefir_bigint_get_bits_label6
+    je .L__kefir_runtime_func___kefir_bigint_get_bits_label8
     lea 7(%r10), %rax
     shr $3, %rax
     shl $3, %rax
@@ -1672,9 +1672,6 @@ __kefir_bigint_get_bits:
     or %rdx, %r9
     mov %rax, %r10
     jmp .L__kefir_runtime_func___kefir_bigint_get_bits_label2
-.L__kefir_runtime_func___kefir_bigint_get_bits_label6:
-    mov %rcx, %rax
-    jmp .L__kefir_runtime_func___kefir_bigint_get_bits_label8
 .L__kefir_runtime_text_func___kefir_bigint_get_bits_end:
 
 __kefir_bigint_get_sign:

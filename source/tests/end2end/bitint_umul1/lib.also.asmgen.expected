@@ -369,11 +369,11 @@ __kefir_bigint_unsigned_multiply:
     movl %edx, -36(%rbp)
     movl -36(%rbp), %eax
     movl -76(%rbp), %ecx
-    movq -56(%rbp), %rsi
-    movq -16(%rbp), %rdi
     xor %edx, %edx
     div %ecx
-    movb %dl, (%rsi, %rdi, 1)
+    movq -56(%rbp), %rax
+    movq -16(%rbp), %rcx
+    movb %dl, (%rax, %rcx, 1)
     movl -36(%rbp), %eax
     movl -76(%rbp), %ecx
     xor %edx, %edx

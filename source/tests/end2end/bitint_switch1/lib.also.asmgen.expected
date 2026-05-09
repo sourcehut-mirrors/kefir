@@ -342,13 +342,13 @@ __kefir_bigint_unsigned_compare:
     pop %rbp
     ret
 .L__kefir_runtime_func___kefir_bigint_unsigned_compare_label11:
+    movq -48(%rbp), %rcx
     movq -48(%rbp), %rax
-    movq -48(%rbp), %rdx
-    lea -1(%eax), %ecx
-    lea -1(%rdx), %rax
+    sub $1, %rax
     mov $8, %esi
     xor %edx, %edx
     div %rsi
+    sub $1, %ecx
     shl $3, %rax
     sub %eax, %ecx
     add $1, %ecx

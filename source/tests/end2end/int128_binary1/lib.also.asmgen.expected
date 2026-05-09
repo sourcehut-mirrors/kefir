@@ -163,10 +163,9 @@ i128_div:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    call __divti3@PLT
     lea (%rbp), %rsp
     pop %rbp
-    ret
+    jmp __divti3@PLT
 .L__kefir_text_func_i128_div_end:
 
 i128_mod:
@@ -174,10 +173,9 @@ i128_mod:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    call __modti3@PLT
     lea (%rbp), %rsp
     pop %rbp
-    ret
+    jmp __modti3@PLT
 .L__kefir_text_func_i128_mod_end:
 
 i128_mul:
@@ -309,10 +307,9 @@ u128_div:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    call __udivti3@PLT
     lea (%rbp), %rsp
     pop %rbp
-    ret
+    jmp __udivti3@PLT
 .L__kefir_text_func_u128_div_end:
 
 u128_mod:
@@ -320,10 +317,9 @@ u128_mod:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    call __umodti3@PLT
     lea (%rbp), %rsp
     pop %rbp
-    ret
+    jmp __umodti3@PLT
 .L__kefir_text_func_u128_mod_end:
 
 u128_mul:

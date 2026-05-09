@@ -10,11 +10,11 @@ run_op:
 .L__kefir_text_func_run_op_begin:
     mov %rdx, %r8
     mov %rdi, %rax
-    lea __kefir_function_run_op_static_branches_6(%rip), %rdi
     xor %edx, %edx
-    mov $5, %r9
-    div %r9
-    movq (%rdi, %rdx, 8), %rax
+    mov $5, %rdi
+    div %rdi
+    lea __kefir_function_run_op_static_branches_6(%rip), %rax
+    movq (%rax, %rdx, 8), %rax
     xor %edx, %edx
     mov %rdx, %rdi
     jmp *%rax

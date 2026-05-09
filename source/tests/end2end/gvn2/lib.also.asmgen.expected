@@ -207,15 +207,16 @@ divint:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    xorps %xmm0, %xmm0
-    movdqu %xmm0, -16(%rbp)
     mov %rdi, %rax
     cdq
     idiv %esi
-    movl %eax, -16(%rbp)
+    mov %rax, %rcx
     mov %rsi, %rax
     cdq
     idiv %edi
+    xorps %xmm0, %xmm0
+    movdqu %xmm0, -16(%rbp)
+    movl %ecx, -16(%rbp)
     movl %eax, -12(%rbp)
     movq -16(%rbp), %rax
     movq -8(%rbp), %rdx
@@ -229,15 +230,16 @@ modint:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    xorps %xmm0, %xmm0
-    movdqu %xmm0, -16(%rbp)
     mov %rdi, %rax
     cdq
     idiv %esi
-    movl %edx, -16(%rbp)
+    mov %rdx, %rcx
     mov %rsi, %rax
     cdq
     idiv %edi
+    xorps %xmm0, %xmm0
+    movdqu %xmm0, -16(%rbp)
+    movl %ecx, -16(%rbp)
     movl %edx, -12(%rbp)
     movq -16(%rbp), %rax
     movq -8(%rbp), %rdx
@@ -500,17 +502,18 @@ divchar:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    xorps %xmm0, %xmm0
-    movdqu %xmm0, -16(%rbp)
     movsx %dil, %rcx
     movsx %sil, %rsi
     mov %rcx, %rax
     cdq
     idiv %esi
-    movb %al, -16(%rbp)
+    mov %rax, %rdi
     mov %rsi, %rax
     cdq
     idiv %ecx
+    xorps %xmm0, %xmm0
+    movdqu %xmm0, -16(%rbp)
+    movb %dil, -16(%rbp)
     movb %al, -15(%rbp)
     movq -16(%rbp), %rax
     movq -8(%rbp), %rdx
@@ -527,10 +530,11 @@ divlong:
     mov %rdi, %rax
     cqo
     idiv %rsi
-    movq %rax, -16(%rbp)
+    mov %rax, %rcx
     mov %rsi, %rax
     cqo
     idiv %rdi
+    movq %rcx, -16(%rbp)
     movq %rax, -8(%rbp)
     movq -16(%rbp), %rax
     movq -8(%rbp), %rdx
@@ -544,17 +548,18 @@ modchar:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    xorps %xmm0, %xmm0
-    movdqu %xmm0, -16(%rbp)
     movsx %dil, %rcx
     movsx %sil, %rsi
     mov %rcx, %rax
     cdq
     idiv %esi
-    movb %dl, -16(%rbp)
+    mov %rdx, %rdi
     mov %rsi, %rax
     cdq
     idiv %ecx
+    xorps %xmm0, %xmm0
+    movdqu %xmm0, -16(%rbp)
+    movb %dil, -16(%rbp)
     movb %dl, -15(%rbp)
     movq -16(%rbp), %rax
     movq -8(%rbp), %rdx
@@ -571,10 +576,11 @@ modlong:
     mov %rdi, %rax
     cqo
     idiv %rsi
-    movq %rdx, -16(%rbp)
+    mov %rdx, %rcx
     mov %rsi, %rax
     cqo
     idiv %rdi
+    movq %rcx, -16(%rbp)
     movq %rdx, -8(%rbp)
     movq -16(%rbp), %rax
     movq -8(%rbp), %rdx
@@ -909,17 +915,18 @@ divshort:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    xorps %xmm0, %xmm0
-    movdqu %xmm0, -16(%rbp)
     movsx %di, %rcx
     movsx %si, %rsi
     mov %rcx, %rax
     cdq
     idiv %esi
-    movw %ax, -16(%rbp)
+    mov %rax, %rdi
     mov %rsi, %rax
     cdq
     idiv %ecx
+    xorps %xmm0, %xmm0
+    movdqu %xmm0, -16(%rbp)
+    movw %di, -16(%rbp)
     movw %ax, -14(%rbp)
     movq -16(%rbp), %rax
     movq -8(%rbp), %rdx
@@ -933,17 +940,18 @@ modshort:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    xorps %xmm0, %xmm0
-    movdqu %xmm0, -16(%rbp)
     movsx %di, %rcx
     movsx %si, %rsi
     mov %rcx, %rax
     cdq
     idiv %esi
-    movw %dx, -16(%rbp)
+    mov %rdx, %rdi
     mov %rsi, %rax
     cdq
     idiv %ecx
+    xorps %xmm0, %xmm0
+    movdqu %xmm0, -16(%rbp)
+    movw %di, -16(%rbp)
     movw %dx, -14(%rbp)
     movq -16(%rbp), %rax
     movq -8(%rbp), %rdx
@@ -1086,15 +1094,16 @@ udivuint:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    xorps %xmm0, %xmm0
-    movdqu %xmm0, -16(%rbp)
     mov %rdi, %rax
     xor %edx, %edx
     div %esi
-    movl %eax, -16(%rbp)
+    mov %rax, %rcx
     mov %rsi, %rax
     xor %edx, %edx
     div %edi
+    xorps %xmm0, %xmm0
+    movdqu %xmm0, -16(%rbp)
+    movl %ecx, -16(%rbp)
     movl %eax, -12(%rbp)
     movq -16(%rbp), %rax
     movq -8(%rbp), %rdx
@@ -1108,15 +1117,16 @@ umoduint:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    xorps %xmm0, %xmm0
-    movdqu %xmm0, -16(%rbp)
     mov %rdi, %rax
     xor %edx, %edx
     div %esi
-    movl %edx, -16(%rbp)
+    mov %rdx, %rcx
     mov %rsi, %rax
     xor %edx, %edx
     div %edi
+    xorps %xmm0, %xmm0
+    movdqu %xmm0, -16(%rbp)
+    movl %ecx, -16(%rbp)
     movl %edx, -12(%rbp)
     movq -16(%rbp), %rax
     movq -8(%rbp), %rdx
@@ -1210,17 +1220,18 @@ udivuchar:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    xorps %xmm0, %xmm0
-    movdqu %xmm0, -16(%rbp)
     movzx %dil, %rcx
     movzx %sil, %rsi
     mov %rcx, %rax
     cdq
     idiv %esi
-    movb %al, -16(%rbp)
+    mov %rax, %rdi
     mov %rsi, %rax
     cdq
     idiv %ecx
+    xorps %xmm0, %xmm0
+    movdqu %xmm0, -16(%rbp)
+    movb %dil, -16(%rbp)
     movb %al, -15(%rbp)
     movq -16(%rbp), %rax
     movq -8(%rbp), %rdx
@@ -1237,10 +1248,11 @@ udivulong:
     mov %rdi, %rax
     xor %edx, %edx
     div %rsi
-    movq %rax, -16(%rbp)
+    mov %rax, %rcx
     mov %rsi, %rax
     xor %edx, %edx
     div %rdi
+    movq %rcx, -16(%rbp)
     movq %rax, -8(%rbp)
     movq -16(%rbp), %rax
     movq -8(%rbp), %rdx
@@ -1254,17 +1266,18 @@ umoduchar:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    xorps %xmm0, %xmm0
-    movdqu %xmm0, -16(%rbp)
     movzx %dil, %rcx
     movzx %sil, %rsi
     mov %rcx, %rax
     cdq
     idiv %esi
-    movb %dl, -16(%rbp)
+    mov %rdx, %rdi
     mov %rsi, %rax
     cdq
     idiv %ecx
+    xorps %xmm0, %xmm0
+    movdqu %xmm0, -16(%rbp)
+    movb %dil, -16(%rbp)
     movb %dl, -15(%rbp)
     movq -16(%rbp), %rax
     movq -8(%rbp), %rdx
@@ -1281,10 +1294,11 @@ umodulong:
     mov %rdi, %rax
     xor %edx, %edx
     div %rsi
-    movq %rdx, -16(%rbp)
+    mov %rdx, %rcx
     mov %rsi, %rax
     xor %edx, %edx
     div %rdi
+    movq %rcx, -16(%rbp)
     movq %rdx, -8(%rbp)
     movq -16(%rbp), %rax
     movq -8(%rbp), %rdx
@@ -1332,17 +1346,18 @@ udivushort:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    xorps %xmm0, %xmm0
-    movdqu %xmm0, -16(%rbp)
     movzx %di, %rcx
     movzx %si, %rsi
     mov %rcx, %rax
     cdq
     idiv %esi
-    movw %ax, -16(%rbp)
+    mov %rax, %rdi
     mov %rsi, %rax
     cdq
     idiv %ecx
+    xorps %xmm0, %xmm0
+    movdqu %xmm0, -16(%rbp)
+    movw %di, -16(%rbp)
     movw %ax, -14(%rbp)
     movq -16(%rbp), %rax
     movq -8(%rbp), %rdx
@@ -1356,17 +1371,18 @@ umodushort:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    xorps %xmm0, %xmm0
-    movdqu %xmm0, -16(%rbp)
     movzx %di, %rcx
     movzx %si, %rsi
     mov %rcx, %rax
     cdq
     idiv %esi
-    movw %dx, -16(%rbp)
+    mov %rdx, %rdi
     mov %rsi, %rax
     cdq
     idiv %ecx
+    xorps %xmm0, %xmm0
+    movdqu %xmm0, -16(%rbp)
+    movw %di, -16(%rbp)
     movw %dx, -14(%rbp)
     movq -16(%rbp), %rax
     movq -8(%rbp), %rdx

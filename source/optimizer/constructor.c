@@ -998,6 +998,15 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
         REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));                                       \
         break;
 
+#define BINARY_OP_CONTROL(_id, _opcode)                                                                            \
+    case _opcode:                                                                                                  \
+        REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref3));                                      \
+        REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref2));                                      \
+        REQUIRE_OK(kefir_opt_code_builder_##_id(mem, code, current_block_id, instr_ref2, instr_ref3, &instr_ref)); \
+        REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));                                       \
+        REQUIRE_OK(kefir_opt_code_builder_add_control(code, current_block_id, instr_ref));                         \
+        break;
+
             BINARY_OP(int8_add, KEFIR_IR_OPCODE_INT8_ADD)
             BINARY_OP(int16_add, KEFIR_IR_OPCODE_INT16_ADD)
             BINARY_OP(int32_add, KEFIR_IR_OPCODE_INT32_ADD)
@@ -1014,22 +1023,22 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             BINARY_OP(uint16_mul, KEFIR_IR_OPCODE_UINT16_MUL)
             BINARY_OP(uint32_mul, KEFIR_IR_OPCODE_UINT32_MUL)
             BINARY_OP(uint64_mul, KEFIR_IR_OPCODE_UINT64_MUL)
-            BINARY_OP(int8_div, KEFIR_IR_OPCODE_INT8_DIV)
-            BINARY_OP(int16_div, KEFIR_IR_OPCODE_INT16_DIV)
-            BINARY_OP(int32_div, KEFIR_IR_OPCODE_INT32_DIV)
-            BINARY_OP(int64_div, KEFIR_IR_OPCODE_INT64_DIV)
-            BINARY_OP(int8_mod, KEFIR_IR_OPCODE_INT8_MOD)
-            BINARY_OP(int16_mod, KEFIR_IR_OPCODE_INT16_MOD)
-            BINARY_OP(int32_mod, KEFIR_IR_OPCODE_INT32_MOD)
-            BINARY_OP(int64_mod, KEFIR_IR_OPCODE_INT64_MOD)
-            BINARY_OP(uint8_div, KEFIR_IR_OPCODE_UINT8_DIV)
-            BINARY_OP(uint16_div, KEFIR_IR_OPCODE_UINT16_DIV)
-            BINARY_OP(uint32_div, KEFIR_IR_OPCODE_UINT32_DIV)
-            BINARY_OP(uint64_div, KEFIR_IR_OPCODE_UINT64_DIV)
-            BINARY_OP(uint8_mod, KEFIR_IR_OPCODE_UINT8_MOD)
-            BINARY_OP(uint16_mod, KEFIR_IR_OPCODE_UINT16_MOD)
-            BINARY_OP(uint32_mod, KEFIR_IR_OPCODE_UINT32_MOD)
-            BINARY_OP(uint64_mod, KEFIR_IR_OPCODE_UINT64_MOD)
+            BINARY_OP_CONTROL(int8_div, KEFIR_IR_OPCODE_INT8_DIV)
+            BINARY_OP_CONTROL(int16_div, KEFIR_IR_OPCODE_INT16_DIV)
+            BINARY_OP_CONTROL(int32_div, KEFIR_IR_OPCODE_INT32_DIV)
+            BINARY_OP_CONTROL(int64_div, KEFIR_IR_OPCODE_INT64_DIV)
+            BINARY_OP_CONTROL(int8_mod, KEFIR_IR_OPCODE_INT8_MOD)
+            BINARY_OP_CONTROL(int16_mod, KEFIR_IR_OPCODE_INT16_MOD)
+            BINARY_OP_CONTROL(int32_mod, KEFIR_IR_OPCODE_INT32_MOD)
+            BINARY_OP_CONTROL(int64_mod, KEFIR_IR_OPCODE_INT64_MOD)
+            BINARY_OP_CONTROL(uint8_div, KEFIR_IR_OPCODE_UINT8_DIV)
+            BINARY_OP_CONTROL(uint16_div, KEFIR_IR_OPCODE_UINT16_DIV)
+            BINARY_OP_CONTROL(uint32_div, KEFIR_IR_OPCODE_UINT32_DIV)
+            BINARY_OP_CONTROL(uint64_div, KEFIR_IR_OPCODE_UINT64_DIV)
+            BINARY_OP_CONTROL(uint8_mod, KEFIR_IR_OPCODE_UINT8_MOD)
+            BINARY_OP_CONTROL(uint16_mod, KEFIR_IR_OPCODE_UINT16_MOD)
+            BINARY_OP_CONTROL(uint32_mod, KEFIR_IR_OPCODE_UINT32_MOD)
+            BINARY_OP_CONTROL(uint64_mod, KEFIR_IR_OPCODE_UINT64_MOD)
             BINARY_OP(int8_and, KEFIR_IR_OPCODE_INT8_AND)
             BINARY_OP(int16_and, KEFIR_IR_OPCODE_INT16_AND)
             BINARY_OP(int32_and, KEFIR_IR_OPCODE_INT32_AND)
@@ -1067,10 +1076,10 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             BINARY_OP(int128_sub, KEFIR_IR_OPCODE_INT128_SUB)
             BINARY_OP(int128_imul, KEFIR_IR_OPCODE_INT128_IMUL)
             BINARY_OP(int128_umul, KEFIR_IR_OPCODE_INT128_UMUL)
-            BINARY_OP(int128_idiv, KEFIR_IR_OPCODE_INT128_IDIV)
-            BINARY_OP(int128_udiv, KEFIR_IR_OPCODE_INT128_UDIV)
-            BINARY_OP(int128_imod, KEFIR_IR_OPCODE_INT128_IMOD)
-            BINARY_OP(int128_umod, KEFIR_IR_OPCODE_INT128_UMOD)
+            BINARY_OP_CONTROL(int128_idiv, KEFIR_IR_OPCODE_INT128_IDIV)
+            BINARY_OP_CONTROL(int128_udiv, KEFIR_IR_OPCODE_INT128_UDIV)
+            BINARY_OP_CONTROL(int128_imod, KEFIR_IR_OPCODE_INT128_IMOD)
+            BINARY_OP_CONTROL(int128_umod, KEFIR_IR_OPCODE_INT128_UMOD)
             BINARY_OP(int128_lshift, KEFIR_IR_OPCODE_INT128_LSHIFT)
             BINARY_OP(int128_rshift, KEFIR_IR_OPCODE_INT128_RSHIFT)
             BINARY_OP(int128_arshift, KEFIR_IR_OPCODE_INT128_ARSHIFT)
@@ -1147,6 +1156,7 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             BINARY_OP(complex_long_double_div, KEFIR_IR_OPCODE_COMPLEX_LONG_DOUBLE_DIV)
 
 #undef BINARY_OP
+#undef BINARY_OP_CONTROL
 
 #define BITINT_BINARY_OP(_id, _opcode)                                                                               \
     case _opcode:                                                                                                    \
@@ -1157,14 +1167,24 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
         REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));                                         \
         break;
 
+#define BITINT_BINARY_OP_CONTROL(_id, _opcode)                                                                       \
+    case _opcode:                                                                                                    \
+        REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref3));                                        \
+        REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref2));                                        \
+        REQUIRE_OK(kefir_opt_code_builder_##_id(mem, code, current_block_id, instr->arg.u64, instr_ref2, instr_ref3, \
+                                                &instr_ref));                                                        \
+        REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));                                         \
+        REQUIRE_OK(kefir_opt_code_builder_add_control(code, current_block_id, instr_ref));                           \
+        break;
+
             BITINT_BINARY_OP(bitint_add, KEFIR_IR_OPCODE_BITINT_ADD)
             BITINT_BINARY_OP(bitint_sub, KEFIR_IR_OPCODE_BITINT_SUB)
             BITINT_BINARY_OP(bitint_imul, KEFIR_IR_OPCODE_BITINT_IMUL)
             BITINT_BINARY_OP(bitint_umul, KEFIR_IR_OPCODE_BITINT_UMUL)
-            BITINT_BINARY_OP(bitint_idiv, KEFIR_IR_OPCODE_BITINT_IDIV)
-            BITINT_BINARY_OP(bitint_udiv, KEFIR_IR_OPCODE_BITINT_UDIV)
-            BITINT_BINARY_OP(bitint_imod, KEFIR_IR_OPCODE_BITINT_IMOD)
-            BITINT_BINARY_OP(bitint_umod, KEFIR_IR_OPCODE_BITINT_UMOD)
+            BITINT_BINARY_OP_CONTROL(bitint_idiv, KEFIR_IR_OPCODE_BITINT_IDIV)
+            BITINT_BINARY_OP_CONTROL(bitint_udiv, KEFIR_IR_OPCODE_BITINT_UDIV)
+            BITINT_BINARY_OP_CONTROL(bitint_imod, KEFIR_IR_OPCODE_BITINT_IMOD)
+            BITINT_BINARY_OP_CONTROL(bitint_umod, KEFIR_IR_OPCODE_BITINT_UMOD)
             BITINT_BINARY_OP(bitint_lshift, KEFIR_IR_OPCODE_BITINT_LSHIFT)
             BITINT_BINARY_OP(bitint_rshift, KEFIR_IR_OPCODE_BITINT_RSHIFT)
             BITINT_BINARY_OP(bitint_arshift, KEFIR_IR_OPCODE_BITINT_ARSHIFT)
@@ -1178,6 +1198,7 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             BITINT_BINARY_OP(bitint_below, KEFIR_IR_OPCODE_BITINT_BELOW)
 
 #undef BITINT_BINARY_OP
+#undef BITINT_BINARY_OP_CONTROL
 
 #define MATCH_IR_MEMORY_ORDER(_ir_memorder, _model)                                          \
     do {                                                                                     \

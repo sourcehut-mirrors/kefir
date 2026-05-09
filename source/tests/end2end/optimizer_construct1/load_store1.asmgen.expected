@@ -198,23 +198,9 @@
                                     "load_extension": "noextend",
                                     "volatile": false
                                 },
-                                "control_next": 16,
+                                "control_next": 320,
                                 "ir_instruction": 30,
                                 "memssa_node_ref": 7
-                            },
-                            {
-                                "id": 16,
-                                "opcode": "local_lifetime_mark",
-                                "arg": 0,
-                                "control_next": 352,
-                                "ir_instruction": 1
-                            },
-                            {
-                                "id": 192,
-                                "opcode": "int64_sign_extend_32bits",
-                                "arg": 176,
-                                "control_next": null,
-                                "ir_instruction": 20
                             },
                             {
                                 "id": 224,
@@ -247,8 +233,22 @@
                                     256,
                                     304
                                 ],
-                                "control_next": null,
+                                "control_next": 16,
                                 "ir_instruction": 32
+                            },
+                            {
+                                "id": 16,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 0,
+                                "control_next": 352,
+                                "ir_instruction": 1
+                            },
+                            {
+                                "id": 192,
+                                "opcode": "int64_sign_extend_32bits",
+                                "arg": 176,
+                                "control_next": null,
+                                "ir_instruction": 20
                             },
                             {
                                 "id": 336,
@@ -275,28 +275,28 @@
                             "immediate_dominator": null,
                             "alive_instructions": [
                                 256,
-                                320,
-                                240,
                                 176,
+                                208,
                                 80,
-                                192,
+                                240,
                                 32,
                                 64,
                                 160,
                                 352,
-                                336,
                                 128,
-                                224,
-                                96,
                                 112,
-                                208,
-                                144,
+                                224,
                                 272,
+                                320,
+                                96,
+                                336,
+                                144,
                                 0,
+                                48,
                                 304,
                                 16,
                                 288,
-                                48
+                                192
                             ]
                         }
                     }

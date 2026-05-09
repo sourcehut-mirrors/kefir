@@ -155,15 +155,8 @@
                     },
                     {
                         "id": 5,
-                        "control_flow": 352,
+                        "control_flow": 320,
                         "code": [
-                            {
-                                "id": 272,
-                                "opcode": "int_const",
-                                "value": 7,
-                                "control_next": null,
-                                "ir_instruction": 17
-                            },
                             {
                                 "id": 288,
                                 "opcode": "int_const",
@@ -185,8 +178,15 @@
                                     288,
                                     304
                                 ],
-                                "control_next": null,
+                                "control_next": 352,
                                 "ir_instruction": 20
+                            },
+                            {
+                                "id": 272,
+                                "opcode": "int_const",
+                                "value": 7,
+                                "control_next": null,
+                                "ir_instruction": 17
                             },
                             {
                                 "id": 336,
@@ -225,7 +225,7 @@
                     },
                     {
                         "id": 4,
-                        "control_flow": 480,
+                        "control_flow": 400,
                         "code": [
                             {
                                 "id": 368,
@@ -248,7 +248,7 @@
                                     368,
                                     384
                                 ],
-                                "control_next": null,
+                                "control_next": 464,
                                 "ir_instruction": 25
                             },
                             {
@@ -282,7 +282,7 @@
                                     432,
                                     448
                                 ],
-                                "control_next": null,
+                                "control_next": 480,
                                 "ir_instruction": 29
                             },
                             {
@@ -304,11 +304,11 @@
                                 480,
                                 400,
                                 464,
-                                448,
-                                368,
-                                432,
                                 384,
-                                416
+                                368,
+                                416,
+                                432,
+                                448
                             ]
                         }
                     },

@@ -2593,9 +2593,13 @@ static kefir_result_t simplify_int_div(struct kefir_mem *mem, struct kefir_opt_f
     REQUIRE_OK(kefir_opt_code_container_instr(&func->code, instr->operation.parameters.refs[0], &arg1));
     REQUIRE_OK(kefir_opt_code_container_instr(&func->code, instr->operation.parameters.refs[1], &arg2));
 
-    if ((arg2->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST && arg2->operation.parameters.imm.integer == 1) ||
-        (arg2->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST && arg2->operation.parameters.imm.uinteger == 1)) {
-        *replacement_ref = arg1->id;
+    if (arg2->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST || arg2->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST) {
+        if (arg2->operation.parameters.imm.integer != 0) {
+            REQUIRE_OK(kefir_opt_code_container_drop_control(&func->code, instr->id));
+        }
+        if (arg2->operation.parameters.imm.integer == 1) {
+            *replacement_ref = arg1->id;
+        }
     }
 
     return KEFIR_OK;
