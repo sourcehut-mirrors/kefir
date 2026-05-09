@@ -212,24 +212,7 @@
                             {
                                 "id": 416,
                                 "opcode": "scope_push",
-                                "control_next": 16
-                            },
-                            {
-                                "id": 16,
-                                "opcode": "local_lifetime_mark",
-                                "arg": 0,
-                                "control_next": 736
-                            },
-                            {
-                                "id": 736,
-                                "opcode": "int32_load",
-                                "location": 80,
-                                "flags": {
-                                    "load_extension": "noextend",
-                                    "volatile": true
-                                },
-                                "control_next": 577,
-                                "memssa_node_ref": 6
+                                "control_next": 624
                             },
                             {
                                 "id": 608,
@@ -258,7 +241,24 @@
                                 "size_ref": 481,
                                 "alignment_ref": 608,
                                 "within_scope": true,
-                                "control_next": null
+                                "control_next": 16
+                            },
+                            {
+                                "id": 16,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 0,
+                                "control_next": 736
+                            },
+                            {
+                                "id": 736,
+                                "opcode": "int32_load",
+                                "location": 80,
+                                "flags": {
+                                    "load_extension": "noextend",
+                                    "volatile": true
+                                },
+                                "control_next": 577,
+                                "memssa_node_ref": 6
                             },
                             {
                                 "id": 577,
@@ -285,7 +285,6 @@
                                 32,
                                 160,
                                 128,
-                                416,
                                 736,
                                 96,
                                 624,
@@ -293,6 +292,7 @@
                                 608,
                                 112,
                                 0,
+                                416,
                                 16,
                                 144
                             ]

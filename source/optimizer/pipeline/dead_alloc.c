@@ -175,6 +175,15 @@ static kefir_result_t dead_alloc_apply_impl(struct kefir_mem *mem, struct kefir_
                     kefir_opt_code_container_instr(&func->code, instr->operation.parameters.refs[0], &arg_instr));
                 REQUIRE(arg_instr->operation.opcode == KEFIR_OPT_OPCODE_LOCAL_SCOPE,
                         KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected local lifetime mark to reference local scope"));
+            } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_STACK_ALLOC) {
+                struct kefir_opt_instruction_use_iterator iter;
+                res = kefir_opt_code_container_instruction_use_instr_iter(&func->code, instr_id, &iter);
+                if (res == KEFIR_ITERATOR_END) {
+                    res = kefir_opt_instruction_next_sibling(&func->code, instr_id, &next_instr_id);
+                    REQUIRE_OK(kefir_opt_code_container_drop_control(&func->code, instr_id));
+                    REQUIRE_OK(kefir_opt_code_container_drop_instr(mem, &func->code, instr_id));
+                    continue;
+                }
             }
             res = kefir_opt_instruction_next_sibling(&func->code, instr_id, &next_instr_id);
         }
