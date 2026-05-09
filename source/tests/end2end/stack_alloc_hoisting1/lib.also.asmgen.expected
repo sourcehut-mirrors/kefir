@@ -1,0 +1,48 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global test
+.type test, @function
+
+.section .text
+.L__kefir_text_section_begin:
+test:
+.L__kefir_text_func_test_begin:
+    push %rbp
+    mov %rsp, %rbp
+    xor %eax, %eax
+    xor %ecx, %ecx
+.L__kefir_func_test_label2:
+    cmp $2, %eax
+    jl .L__kefir_func_test_label4
+    xor %eax, %eax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.L__kefir_func_test_label4:
+    xor %edx, %edx
+    sub $1024, %rsp
+    mov $16, %rsi
+    cmp $0, %rsi
+    mov $0, %rdi
+    cmovl %rdi, %rsi
+    neg %rsi
+    and %rsi, %rsp
+    mov %rsp, %rsi
+    lea 1(%eax), %edi
+    cmp $0, %eax
+    je .L__kefir_func_test_label9
+    xor %eax, %eax
+    cmp %rsi, %rcx
+    sete %al
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.L__kefir_func_test_label9:
+    mov %edi, %eax
+    mov %rsi, %rcx
+    jmp .L__kefir_func_test_label2
+.L__kefir_text_func_test_end:
+
+.L__kefir_text_section_end:
+
