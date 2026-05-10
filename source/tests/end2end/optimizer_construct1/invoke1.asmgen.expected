@@ -294,7 +294,6 @@
                                 "id": 480,
                                 "opcode": "get_global",
                                 "global_ref": 1,
-                                "offset": 0,
                                 "control_next": null,
                                 "ir_instruction": 33
                             },
@@ -322,7 +321,6 @@
                                 "id": 528,
                                 "opcode": "get_global",
                                 "global_ref": 4,
-                                "offset": 0,
                                 "control_next": null,
                                 "ir_instruction": 36
                             },

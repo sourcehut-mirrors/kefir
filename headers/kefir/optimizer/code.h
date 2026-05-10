@@ -221,7 +221,6 @@ typedef struct kefir_opt_operation_parameters {
         kefir_opt_branch_condition_variant_t condition_variant;
         struct {
             kefir_id_t global_ref;
-            kefir_int64_t offset;
         } variable;
         struct {
             kefir_size_t size;

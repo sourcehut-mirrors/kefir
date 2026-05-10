@@ -866,8 +866,6 @@ static kefir_result_t format_operation_variable(struct kefir_json_output *json, 
         default:
             return KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Unexpected optimizer instruction opcode");
     }
-    REQUIRE_OK(kefir_json_output_object_key(json, "offset"));
-    REQUIRE_OK(kefir_json_output_integer(json, oper->parameters.variable.offset));
     return KEFIR_OK;
 }
 

@@ -57,7 +57,6 @@ static kefir_uint64_t hash_instruction_impl(const struct kefir_opt_instruction *
         case KEFIR_OPT_OPCODE_GET_THREAD_LOCAL:
             hash += kefir_splitmix64(instr->operation.opcode);
             hash ^= kefir_splitmix64(instr->operation.parameters.variable.global_ref + KEFIR_SPLITMIX64_MAGIC1);
-            hash ^= kefir_splitmix64(instr->operation.parameters.variable.offset + KEFIR_SPLITMIX64_MAGIC2);
             break;
 
         case KEFIR_OPT_OPCODE_INT8_ADD:
@@ -326,9 +325,7 @@ static kefir_bool_t compare_instructions_impl(const struct kefir_opt_instruction
 
         case KEFIR_OPT_OPCODE_GET_GLOBAL:
         case KEFIR_OPT_OPCODE_GET_THREAD_LOCAL:
-            return instr1->operation.parameters.variable.global_ref ==
-                       instr2->operation.parameters.variable.global_ref &&
-                   instr1->operation.parameters.variable.offset == instr2->operation.parameters.variable.offset;
+            return instr1->operation.parameters.variable.global_ref == instr2->operation.parameters.variable.global_ref;
 
         case KEFIR_OPT_OPCODE_INT8_ADD:
         case KEFIR_OPT_OPCODE_INT16_ADD:

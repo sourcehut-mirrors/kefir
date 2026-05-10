@@ -186,7 +186,6 @@
                                 "id": 272,
                                 "opcode": "get_thread_local",
                                 "global_ref": 79,
-                                "offset": 0,
                                 "control_next": null,
                                 "ir_instruction": 29
                             },
@@ -386,7 +385,6 @@
                                 "id": 16,
                                 "opcode": "get_global",
                                 "global_ref": 1,
-                                "offset": 0,
                                 "control_next": null,
                                 "ir_instruction": 1
                             },
@@ -413,7 +411,6 @@
                                 "id": 64,
                                 "opcode": "get_global",
                                 "global_ref": 4,
-                                "offset": 0,
                                 "control_next": null,
                                 "ir_instruction": 8
                             },
@@ -440,7 +437,6 @@
                                 "id": 112,
                                 "opcode": "get_global",
                                 "global_ref": 6,
-                                "offset": 0,
                                 "control_next": null,
                                 "ir_instruction": 15
                             },
@@ -467,7 +463,6 @@
                                 "id": 176,
                                 "opcode": "get_global",
                                 "global_ref": 8,
-                                "offset": 0,
                                 "control_next": null,
                                 "ir_instruction": 23
                             },
@@ -501,7 +496,6 @@
                                 "id": 224,
                                 "opcode": "get_global",
                                 "global_ref": 10,
-                                "offset": 0,
                                 "control_next": null,
                                 "ir_instruction": 30
                             },
@@ -528,7 +522,6 @@
                                 "id": 272,
                                 "opcode": "get_global",
                                 "global_ref": 12,
-                                "offset": 0,
                                 "control_next": null,
                                 "ir_instruction": 37
                             },
@@ -555,7 +548,6 @@
                                 "id": 320,
                                 "opcode": "get_global",
                                 "global_ref": 14,
-                                "offset": 0,
                                 "control_next": null,
                                 "ir_instruction": 44
                             },
@@ -582,7 +574,6 @@
                                 "id": 384,
                                 "opcode": "get_global",
                                 "global_ref": 16,
-                                "offset": 0,
                                 "control_next": null,
                                 "ir_instruction": 52
                             },
@@ -728,7 +719,6 @@
                                 "id": 0,
                                 "opcode": "get_global",
                                 "global_ref": 81,
-                                "offset": 0,
                                 "control_next": null,
                                 "ir_instruction": 0
                             },
@@ -748,7 +738,6 @@
                                 "id": 32,
                                 "opcode": "get_global",
                                 "global_ref": 82,
-                                "offset": 0,
                                 "control_next": null,
                                 "ir_instruction": 2
                             },
@@ -768,7 +757,6 @@
                                 "id": 80,
                                 "opcode": "get_global",
                                 "global_ref": 83,
-                                "offset": 0,
                                 "control_next": null,
                                 "ir_instruction": 5
                             },
@@ -788,7 +776,6 @@
                                 "id": 144,
                                 "opcode": "get_global",
                                 "global_ref": 84,
-                                "offset": 0,
                                 "control_next": null,
                                 "ir_instruction": 9
                             },
@@ -881,7 +868,6 @@
                                 "id": 272,
                                 "opcode": "get_global",
                                 "global_ref": 82,
-                                "offset": 0,
                                 "control_next": null,
                                 "ir_instruction": 18
                             },
@@ -908,7 +894,6 @@
                                 "id": 320,
                                 "opcode": "get_global",
                                 "global_ref": 83,
-                                "offset": 0,
                                 "control_next": null,
                                 "ir_instruction": 25
                             },
@@ -935,7 +920,6 @@
                                 "id": 384,
                                 "opcode": "get_global",
                                 "global_ref": 84,
-                                "offset": 0,
                                 "control_next": null,
                                 "ir_instruction": 33
                             },
@@ -969,7 +953,6 @@
                                 "id": 448,
                                 "opcode": "get_global",
                                 "global_ref": 81,
-                                "offset": 0,
                                 "control_next": null,
                                 "ir_instruction": 41
                             },

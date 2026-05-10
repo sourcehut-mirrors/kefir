@@ -74,9 +74,7 @@ static kefir_result_t may_alias_impl(const struct kefir_opt_code_container *code
         if (!same_refs) {
             *may_alias = false;
         } else {
-            *may_alias =
-                pessimistic_aliasing || offset_alias(location1->operation.parameters.variable.offset + offset1, size1,
-                                                     location2->operation.parameters.variable.offset + offset2, size2);
+            *may_alias = pessimistic_aliasing || offset_alias(offset1, size1, offset2, size2);
         }
     } else if (location1->operation.opcode == KEFIR_OPT_OPCODE_ALLOC_LOCAL &&
                location2->operation.opcode == KEFIR_OPT_OPCODE_ALLOC_LOCAL) {
@@ -226,8 +224,7 @@ kefir_result_t kefir_opt_code_must_alias(const struct kefir_opt_code_container *
         kefir_bool_t same_refs = true;
         REQUIRE_OK(same_global_refs(ir_module, location1->operation.parameters.variable.global_ref,
                                     location2->operation.parameters.variable.global_ref, &same_refs));
-        *must_alias = same_refs && (location1->operation.parameters.variable.offset + offset1) ==
-                                       (location2->operation.parameters.variable.offset + offset2);
+        *must_alias = same_refs && offset1 == offset2;
     } else if (location1->operation.opcode == KEFIR_OPT_OPCODE_GET_THREAD_LOCAL &&
                location2->operation.opcode == KEFIR_OPT_OPCODE_GET_THREAD_LOCAL &&
                location1->operation.parameters.variable.global_ref ==
@@ -235,8 +232,7 @@ kefir_result_t kefir_opt_code_must_alias(const struct kefir_opt_code_container *
         kefir_bool_t same_refs = true;
         REQUIRE_OK(same_global_refs(ir_module, location1->operation.parameters.variable.global_ref,
                                     location2->operation.parameters.variable.global_ref, &same_refs));
-        *must_alias = same_refs && (location1->operation.parameters.variable.offset + offset1) ==
-                                       (location2->operation.parameters.variable.offset + offset2);
+        *must_alias = same_refs && offset1 == offset2;
     } else if (location1->operation.opcode == KEFIR_OPT_OPCODE_ALLOC_LOCAL &&
                location2->operation.opcode == KEFIR_OPT_OPCODE_ALLOC_LOCAL && location1->id == location2->id) {
         *must_alias = offset1 == offset2;

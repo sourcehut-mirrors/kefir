@@ -26,7 +26,6 @@
                                 "id": 144,
                                 "opcode": "get_global",
                                 "global_ref": 1,
-                                "offset": 0,
                                 "control_next": null
                             },
                             {

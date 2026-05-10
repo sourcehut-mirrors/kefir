@@ -143,11 +143,11 @@ test6:
     push %r13
     push %r14
     mov %rdi, %rbx
-    data16     lea k@tlsgd(%rip), %rdi
+    data16     lea w@tlsgd(%rip), %rdi
     .word 26214
     rex.W     call __tls_get_addr@PLT
     mov %rax, %r12
-    data16     lea w@tlsgd(%rip), %rdi
+    data16     lea k@tlsgd(%rip), %rdi
     .word 26214
     rex.W     call __tls_get_addr@PLT
     mov %rax, %r13
@@ -163,8 +163,8 @@ test6:
     pop %rbp
     ret
 .L__kefir_func_test6_label4:
-    movl 20(%r12), %eax
-    addl %eax, (%r13)
+    movl 20(%r13), %eax
+    addl %eax, (%r12)
     call fn@PLT
     add $1, %r14d
     jmp .L__kefir_func_test6_label2
