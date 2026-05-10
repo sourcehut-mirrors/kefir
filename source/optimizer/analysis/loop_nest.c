@@ -382,6 +382,22 @@ kefir_result_t kefir_opt_code_loop_collection_find_loop(const struct kefir_opt_c
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_opt_code_loop_level(const struct kefir_opt_code_loop_collection *loops,
+                                         kefir_opt_block_id_t block_id, kefir_uint32_t *level) {
+    REQUIRE(loops != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer loop collection"));
+    REQUIRE(level != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to loop nest level"));
+
+    struct kefir_opt_code_loop *loop;
+    kefir_result_t res = kefir_opt_code_loop_collection_find_loop(loops, block_id, &loop);
+    if (res != KEFIR_NOT_FOUND) {
+        REQUIRE_OK(res);
+        *level = loop->level;
+    } else {
+        *level = 0;
+    }
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_opt_code_loop_collection_iter(const struct kefir_opt_code_loop_collection *loops,
                                                    struct kefir_opt_code_loop **loop_ptr,
                                                    struct kefir_opt_code_loop_collection_iterator *iter) {

@@ -133,28 +133,19 @@ static kefir_result_t do_schedule_instr(struct gcm_state *state, kefir_opt_instr
     const struct kefir_opt_instruction *instr;
     REQUIRE_OK(kefir_opt_code_container_instr(state->code, instr_ref, &instr));
 
+    kefir_uint32_t iter_loop_level, best_loop_level;
     kefir_opt_block_id_t best_block_ref = late_block_ref;
+    REQUIRE_OK(kefir_opt_code_loop_level(&state->loops, best_block_ref, &best_loop_level));
     for (kefir_opt_block_id_t iter_ref = late_block_ref;;
          iter_ref = state->control_flow.blocks[iter_ref].immediate_dominator) {
         if (iter_ref == state->code->gate_block) {
             return KEFIR_OK;
         }
-        kefir_uint32_t iter_loop_level = 0, best_loop_level = 0;
-        struct kefir_opt_code_loop *loop;
-        kefir_result_t res = kefir_opt_code_loop_collection_find_loop(&state->loops, iter_ref, &loop);
-        if (res != KEFIR_NOT_FOUND) {
-            REQUIRE_OK(res);
-            iter_loop_level = loop->level;
-        }
-
-        res = kefir_opt_code_loop_collection_find_loop(&state->loops, best_block_ref, &loop);
-        if (res != KEFIR_NOT_FOUND) {
-            REQUIRE_OK(res);
-            best_loop_level = loop->level;
-        }
+        REQUIRE_OK(kefir_opt_code_loop_level(&state->loops, iter_ref, &iter_loop_level));
 
         if (iter_loop_level < best_loop_level) {
             best_block_ref = iter_ref;
+            best_loop_level = iter_loop_level;
         }
         if (iter_ref == instr->block_id) {
             break;

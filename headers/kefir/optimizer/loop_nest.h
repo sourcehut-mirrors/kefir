@@ -59,6 +59,8 @@ kefir_result_t kefir_opt_code_loop_collection_build(struct kefir_mem *, struct k
 
 kefir_result_t kefir_opt_code_loop_collection_find_loop(const struct kefir_opt_code_loop_collection *,
                                                         kefir_opt_block_id_t, struct kefir_opt_code_loop **);
+kefir_result_t kefir_opt_code_loop_level(const struct kefir_opt_code_loop_collection *, kefir_opt_block_id_t,
+                                         kefir_uint32_t *);
 
 typedef struct kefir_opt_code_loop_collection_iterator {
     struct kefir_hashtable_iterator iter;
