@@ -91,11 +91,10 @@ test4:
     xchgl -40(%rbp), %eax
     mov %rdi, %rax
     xchgl -200(%rbp), %eax
-    lea -40(%rbp), %rcx
     xor %eax, %eax
-    mov %rax, %rdi
+    mov %rax, %rcx
 .L__kefir_func_test4_label2:
-    cmp %esi, %edi
+    cmp %esi, %ecx
     jl .L__kefir_func_test4_label4
     movl -40(%rbp), %eax
     movsx %eax, %rax
@@ -104,9 +103,9 @@ test4:
     ret
 .L__kefir_func_test4_label4:
     movl -200(%rbp), %eax
-    mov %rcx, %rdx
+    lea -40(%rbp), %rdx
     lock     xaddl %eax, (%rdx)
-    add $1, %edi
+    add $1, %ecx
     jmp .L__kefir_func_test4_label2
 .L__kefir_text_func_test4_end:
 
@@ -147,8 +146,8 @@ test6:
     xor %edi, %eax
     ret
 .L__kefir_func_test6_label7:
-    mov %ecx, %eax
     mov %edx, %esi
+    mov %ecx, %eax
     jmp .L__kefir_func_test6_label2
 .L__kefir_text_func_test6_end:
 
@@ -156,8 +155,7 @@ test7:
 .L__kefir_text_func_test7_begin:
     neg %esi
     xor %edi, %esi
-    xor %eax, %eax
-    mov %rax, %rcx
+    xor %ecx, %ecx
     mov %esi, %eax
 .L__kefir_func_test7_label2:
     lea 1(%ecx), %edx
@@ -167,8 +165,8 @@ test7:
     jl .L__kefir_func_test7_label7
     ret
 .L__kefir_func_test7_label7:
-    mov %edx, %ecx
     mov %esi, %eax
+    mov %edx, %ecx
     jmp .L__kefir_func_test7_label2
 .L__kefir_text_func_test7_end:
 

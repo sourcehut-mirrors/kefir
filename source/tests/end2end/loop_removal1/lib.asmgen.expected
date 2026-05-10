@@ -289,21 +289,21 @@ test17:
     push %rbp
     mov %rsp, %rbp
     push %rbx
-    push %r12
-    movabs $2147483648, %rbx
+    sub $8, %rsp
     mov $2147483647, %eax
-    mov %rax, %r12
+    mov %rax, %rbx
 .L__kefir_func_test17_label2:
-    cmp %ebx, %r12d
+    movabs $2147483648, %rax
+    cmp %eax, %ebx
     jb .L__kefir_func_test17_label4
     xor %eax, %eax
-    pop %r12
+    lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
     ret
 .L__kefir_func_test17_label4:
     call fn@PLT
-    add $1, %r12d
+    add $1, %ebx
     jmp .L__kefir_func_test17_label2
 .L__kefir_text_func_test17_end:
 
@@ -312,21 +312,21 @@ test18:
     push %rbp
     mov %rsp, %rbp
     push %rbx
-    push %r12
-    movabs $2147483648, %rbx
+    sub $8, %rsp
     xor %eax, %eax
-    mov %rax, %r12
+    mov %rax, %rbx
 .L__kefir_func_test18_label2:
-    cmp %ebx, %r12d
+    movabs $2147483648, %rax
+    cmp %eax, %ebx
     jb .L__kefir_func_test18_label4
     xor %eax, %eax
-    pop %r12
+    lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
     ret
 .L__kefir_func_test18_label4:
     call fn@PLT
-    add $1, %r12d
+    add $1, %ebx
     jmp .L__kefir_func_test18_label2
 .L__kefir_text_func_test18_end:
 

@@ -240,15 +240,15 @@ test10:
     push %rbp
     mov %rsp, %rbp
     push %rbx
-    push %r12
+    sub $8, %rsp
     movabs $-9223372036854775808, %rax
-    movabs $9223372036854775807, %r12
     mov %rax, %rbx
 .L__kefir_func_test10_label2:
-    cmp %r12, %rbx
+    movabs $9223372036854775807, %rax
+    cmp %rax, %rbx
     jl .L__kefir_func_test10_label4
     xor %eax, %eax
-    pop %r12
+    lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
     ret
@@ -301,23 +301,23 @@ test14:
     push %rbp
     mov %rsp, %rbp
     push %rbx
-    push %r12
-    movabs $9223372036854775807, %rbx
+    sub $8, %rsp
     xor %eax, %eax
-    mov %rax, %r12
+    mov %rax, %rbx
 .L__kefir_func_test14_label2:
-    cmp %rbx, %r12
+    movabs $9223372036854775807, %rax
+    cmp %rax, %rbx
     jl .L__kefir_func_test14_label4
     xor %eax, %eax
-    pop %r12
+    lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
     ret
 .L__kefir_func_test14_label4:
     call fn@PLT
-    mov %r12, %rdi
+    mov %rbx, %rdi
     call fn2@PLT
-    add %rax, %r12
+    add %rax, %rbx
     jmp .L__kefir_func_test14_label2
 .L__kefir_text_func_test14_end:
 
@@ -338,15 +338,15 @@ test17:
     push %rbp
     mov %rsp, %rbp
     push %rbx
-    push %r12
+    sub $8, %rsp
     movabs $9223372036854775807, %rax
-    movabs $-9223372036854775808, %r12
     mov %rax, %rbx
 .L__kefir_func_test17_label2:
-    cmp %r12, %rbx
+    movabs $-9223372036854775808, %rax
+    cmp %rax, %rbx
     jb .L__kefir_func_test17_label4
     xor %eax, %eax
-    pop %r12
+    lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
     ret
@@ -363,23 +363,23 @@ test18:
     push %rbp
     mov %rsp, %rbp
     push %rbx
-    push %r12
-    movabs $-9223372036854775808, %rbx
+    sub $8, %rsp
     xor %eax, %eax
-    mov %rax, %r12
+    mov %rax, %rbx
 .L__kefir_func_test18_label2:
-    cmp %rbx, %r12
+    movabs $-9223372036854775808, %rax
+    cmp %rax, %rbx
     jb .L__kefir_func_test18_label4
     xor %eax, %eax
-    pop %r12
+    lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
     ret
 .L__kefir_func_test18_label4:
     call fn@PLT
-    mov %r12, %rdi
+    mov %rbx, %rdi
     call fn2@PLT
-    add %rax, %r12
+    add %rax, %rbx
     jmp .L__kefir_func_test18_label2
 .L__kefir_text_func_test18_end:
 

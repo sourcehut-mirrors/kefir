@@ -175,7 +175,7 @@ test_dec64_gradient_descent:
     call __bid_subdd3@PLT
     movaps %xmm0, %xmm1
     movaps %xmm1, -96(%rbp)
-    movaps -160(%rbp), %xmm0
+    movaps -176(%rbp), %xmm0
     call __bid_muldd3@PLT
     movaps -64(%rbp), %xmm1
     call __bid_muldd3@PLT
@@ -183,7 +183,7 @@ test_dec64_gradient_descent:
     movaps -112(%rbp), %xmm0
     call __bid_adddd3@PLT
     movaps %xmm0, -112(%rbp)
-    movaps -176(%rbp), %xmm0
+    movaps -160(%rbp), %xmm0
     movaps -96(%rbp), %xmm1
     call __bid_muldd3@PLT
     movaps %xmm0, %xmm1
@@ -529,7 +529,7 @@ test_dec128_gradient_descent:
     call __bid_subtd3@PLT
     movaps %xmm0, %xmm1
     movaps %xmm1, -96(%rbp)
-    movaps -160(%rbp), %xmm0
+    movaps -176(%rbp), %xmm0
     call __bid_multd3@PLT
     movaps -64(%rbp), %xmm1
     call __bid_multd3@PLT
@@ -537,7 +537,7 @@ test_dec128_gradient_descent:
     movaps -112(%rbp), %xmm0
     call __bid_addtd3@PLT
     movaps %xmm0, -112(%rbp)
-    movaps -176(%rbp), %xmm0
+    movaps -160(%rbp), %xmm0
     movaps -96(%rbp), %xmm1
     call __bid_multd3@PLT
     movaps %xmm0, %xmm1

@@ -10,7 +10,6 @@ test:
 .L__kefir_text_func_test_begin:
     mov %rsi, %rax
     imul %edx, %eax
-    lea __kefir_function_test_static_arr_4(%rip), %rcx
     add %edx, %esi
     jmp .L__kefir_func_test_label6
 .L__kefir_func_test_label4:
@@ -18,10 +17,11 @@ _kefir_local_public_label_test_label2:
     ret
 .L__kefir_func_test_label6:
 _kefir_local_public_label_test_label3:
+    lea __kefir_function_test_static_arr_4(%rip), %rcx
     movsx %edi, %rdx
-    movq (%rcx, %rdx, 8), %rdx
+    movq (%rcx, %rdx, 8), %rcx
     xor %edi, %edi
-    jmp *%rdx
+    jmp *%rcx
 .L__kefir_func_test_label3:
 _kefir_local_public_label_test_label1:
     mov %esi, %eax

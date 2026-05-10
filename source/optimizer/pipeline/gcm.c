@@ -133,10 +133,30 @@ static kefir_result_t do_schedule_instr(struct gcm_state *state, kefir_opt_instr
     const struct kefir_opt_instruction *instr;
     REQUIRE_OK(kefir_opt_code_container_instr(state->code, instr_ref, &instr));
 
-    kefir_uint32_t iter_loop_level, best_loop_level;
     kefir_opt_block_id_t best_block_ref = late_block_ref;
+
+    kefir_bool_t latest_schedule = false;
+    switch (instr->operation.opcode) {
+        case KEFIR_OPT_OPCODE_INT_CONST:
+        case KEFIR_OPT_OPCODE_UINT_CONST:
+        case KEFIR_OPT_OPCODE_FLOAT32_CONST:
+        case KEFIR_OPT_OPCODE_FLOAT64_CONST:
+        case KEFIR_OPT_OPCODE_LONG_DOUBLE_CONST:
+        case KEFIR_OPT_OPCODE_GET_GLOBAL:
+        case KEFIR_OPT_OPCODE_GET_THREAD_LOCAL:
+        case KEFIR_OPT_OPCODE_ALLOC_LOCAL:
+        case KEFIR_OPT_OPCODE_REF_LOCAL:
+            REQUIRE(late_block_ref != state->code->gate_block, KEFIR_OK);
+            latest_schedule = true;
+            break;
+
+        default:
+            // Intentionally left blank
+            break;
+    }
+    kefir_uint32_t iter_loop_level, best_loop_level;
     REQUIRE_OK(kefir_opt_code_loop_level(&state->loops, best_block_ref, &best_loop_level));
-    for (kefir_opt_block_id_t iter_ref = late_block_ref;;
+    for (kefir_opt_block_id_t iter_ref = late_block_ref; !latest_schedule;
          iter_ref = state->control_flow.blocks[iter_ref].immediate_dominator) {
         if (iter_ref == state->code->gate_block) {
             return KEFIR_OK;

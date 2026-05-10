@@ -2793,8 +2793,6 @@ __kefir_softfloat_scalbnf:
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-    movd .L__kefir_runtime_func___kefir_softfloat_scalbnf_label12(%rip), %xmm1
-    movd .L__kefir_runtime_func___kefir_softfloat_scalbnf_label13(%rip), %xmm2
     xor %eax, %eax
 .L__kefir_runtime_func___kefir_softfloat_scalbnf_label2:
     mov $127, %ecx
@@ -2802,8 +2800,10 @@ __kefir_softfloat_scalbnf:
     mov %rdi, %rdx
     cmovg %rcx, %rdx
     mov %rdx, %rcx
-    movaps %xmm0, %xmm3
-    mulss %xmm2, %xmm3
+    movd .L__kefir_runtime_func___kefir_softfloat_scalbnf_label12(%rip), %xmm1
+    movaps %xmm0, %xmm2
+    mulss %xmm1, %xmm2
+    movaps %xmm2, %xmm1
     lea 1(%eax), %edx
     lea -127(%edi), %esi
     cmp $2, %eax
@@ -2820,8 +2820,10 @@ __kefir_softfloat_scalbnf:
     jnz .L__kefir_runtime_func___kefir_softfloat_scalbnf_label11
     xor %eax, %eax
 .L__kefir_runtime_func___kefir_softfloat_scalbnf_label5:
+    movd .L__kefir_runtime_func___kefir_softfloat_scalbnf_label13(%rip), %xmm1
     movaps %xmm0, %xmm2
     mulss %xmm1, %xmm2
+    movaps %xmm2, %xmm1
     lea 1(%eax), %edx
     lea 102(%ecx), %esi
     cmp $2, %eax
@@ -2842,30 +2844,30 @@ __kefir_softfloat_scalbnf:
     add $127, %ecx
     movsx %ecx, %rax
     shl $23, %rax
-    movd %eax, %xmm4
-    mulss %xmm4, %xmm0
+    movd %eax, %xmm2
+    mulss %xmm2, %xmm0
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
 .L__kefir_runtime_func___kefir_softfloat_scalbnf_label10:
-    mov %esi, %ecx
-    movaps %xmm2, %xmm0
+    movaps %xmm1, %xmm0
     mov %edx, %eax
+    mov %esi, %ecx
     jmp .L__kefir_runtime_func___kefir_softfloat_scalbnf_label5
 .L__kefir_runtime_func___kefir_softfloat_scalbnf_label11:
     mov %esi, %edi
+    movaps %xmm1, %xmm0
     mov %edx, %eax
-    movaps %xmm3, %xmm0
     jmp .L__kefir_runtime_func___kefir_softfloat_scalbnf_label2
 .L__kefir_runtime_text_func___kefir_softfloat_scalbnf_end:
 .section .rodata
     .align 4
 .L__kefir_runtime_func___kefir_softfloat_scalbnf_label12:
-    .long 209715200
+    .long 2130706432
     .align 4
 .L__kefir_runtime_func___kefir_softfloat_scalbnf_label13:
-    .long 2130706432
+    .long 209715200
 .section .text
 
 __kefir_softfloat_ilogbf:

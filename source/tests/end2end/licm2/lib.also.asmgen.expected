@@ -23,10 +23,10 @@ test1:
     mov %r8, %r9
     shl %cl, %r9d
     mov %r9, %rcx
-    lea 1(%r8d), %r9d
-    movsx %r8d, %r10
-    imul $40, %r10, %r10
-    add %rdi, %r10
+    movsx %r8d, %r9
+    imul $40, %r9, %r9
+    add %rdi, %r9
+    lea 1(%r8d), %r10d
     cmp %esi, %r8d
     jl .L__kefir_func_test1_label4
     lea -8(%rbp), %rsp
@@ -38,14 +38,14 @@ test1:
 .L__kefir_func_test1_label6:
     cmp %edx, %r8d
     jl .L__kefir_func_test1_label8
-    mov %r9d, %r8d
+    mov %r10d, %r8d
     jmp .L__kefir_func_test1_label2
 .L__kefir_func_test1_label8:
     movsx %r8d, %r11
     mov %eax, %ebx
     sub %r8d, %ebx
     add %ecx, %ebx
-    movl %ebx, (%r10, %r11, 4)
+    movl %ebx, (%r9, %r11, 4)
     add $1, %r8d
     jmp .L__kefir_func_test1_label6
 .L__kefir_text_func_test1_end:
