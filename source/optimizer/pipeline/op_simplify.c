@@ -2542,6 +2542,7 @@ static kefir_result_t simplify_int_mul(struct kefir_mem *mem, struct kefir_opt_f
 }
 static kefir_result_t simplify_int_div(struct kefir_mem *mem, struct kefir_opt_function *func,
                                        const struct kefir_opt_instruction *instr,
+                                       struct kefir_opt_code_sequencing *sequencing,
                                        kefir_opt_instruction_ref_t *replacement_ref) {
     UNUSED(mem);
     const struct kefir_opt_instruction *arg1;
@@ -2552,6 +2553,7 @@ static kefir_result_t simplify_int_div(struct kefir_mem *mem, struct kefir_opt_f
     if (arg2->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST || arg2->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST) {
         if (arg2->operation.parameters.imm.integer != 0) {
             REQUIRE_OK(kefir_opt_code_container_drop_control(&func->code, instr->id));
+            REQUIRE_OK(kefir_opt_code_sequencing_drop_cache(mem, sequencing));
         }
         if (arg2->operation.parameters.imm.integer == 1) {
             *replacement_ref = arg1->id;
@@ -4230,7 +4232,7 @@ static kefir_result_t op_simplify_apply_impl(struct kefir_mem *mem, const struct
                     case KEFIR_OPT_OPCODE_UINT16_DIV:
                     case KEFIR_OPT_OPCODE_UINT32_DIV:
                     case KEFIR_OPT_OPCODE_UINT64_DIV:
-                        REQUIRE_OK(simplify_int_div(mem, func, instr, &replacement_ref));
+                        REQUIRE_OK(simplify_int_div(mem, func, instr, sequencing, &replacement_ref));
                         break;
 
                     case KEFIR_OPT_OPCODE_INT8_LSHIFT:
