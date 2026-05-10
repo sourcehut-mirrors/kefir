@@ -106,11 +106,22 @@ test1:
 #                "labels": []
 #            },
 #            {
-#                "opcode": "virtual_register_link",
+#                "opcode": "produce_virtual_register",
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
 #                        "index": 5,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "virtual_register_link",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 6,
 #                        "variant": "default"
 #                    },
 #                    {
@@ -126,20 +137,9 @@ test1:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 6,
+#                        "index": 7,
 #                        "variant": "default"
 #                    },
-#                    {
-#                        "type": "virtual_register",
-#                        "index": 4,
-#                        "variant": "default"
-#                    }
-#                ],
-#                "labels": []
-#            },
-#            {
-#                "opcode": "touch_virtual_register",
-#                "args": [
 #                    {
 #                        "type": "virtual_register",
 #                        "index": 5,
@@ -160,17 +160,6 @@ test1:
 #                "labels": []
 #            },
 #            {
-#                "opcode": "produce_virtual_register",
-#                "args": [
-#                    {
-#                        "type": "virtual_register",
-#                        "index": 7,
-#                        "variant": "default"
-#                    }
-#                ],
-#                "labels": []
-#            },
-#            {
 #                "opcode": "touch_virtual_register",
 #                "args": [
 #                    {
@@ -704,6 +693,28 @@ test1:
 #                    {
 #                        "type": "virtual_register",
 #                        "index": 31,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "produce_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 32,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 32,
 #                        "variant": "default"
 #                    }
 #                ],
@@ -726,17 +737,6 @@ test1:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 7,
-#                        "variant": "default"
-#                    }
-#                ],
-#                "labels": []
-#            },
-#            {
-#                "opcode": "touch_virtual_register",
-#                "args": [
-#                    {
-#                        "type": "virtual_register",
 #                        "index": 8,
 #                        "variant": "default"
 #                    }
@@ -997,7 +997,7 @@ test1:
 #                "labels": []
 #            },
 #            {
-#                "opcode": "produce_virtual_register",
+#                "opcode": "touch_virtual_register",
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
@@ -1018,7 +1018,7 @@ test1:
 #                    {
 #                        "type": "indirect",
 #                        "basis": "virtual_register",
-#                        "index": 4,
+#                        "index": 5,
 #                        "offset": 0,
 #                        "variant": "default"
 #                    }
@@ -1031,7 +1031,7 @@ test1:
 #                    {
 #                        "type": "indirect",
 #                        "basis": "virtual_register",
-#                        "index": 32,
+#                        "index": 4,
 #                        "offset": 0,
 #                        "variant": "default"
 #                    },
@@ -1054,7 +1054,7 @@ test1:
 #                    {
 #                        "type": "indirect",
 #                        "basis": "virtual_register",
-#                        "index": 4,
+#                        "index": 5,
 #                        "offset": 16,
 #                        "variant": "default"
 #                    }
@@ -1067,7 +1067,7 @@ test1:
 #                    {
 #                        "type": "indirect",
 #                        "basis": "virtual_register",
-#                        "index": 32,
+#                        "index": 4,
 #                        "offset": 16,
 #                        "variant": "default"
 #                    },
@@ -1084,7 +1084,7 @@ test1:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 4,
+#                        "index": 5,
 #                        "variant": "default"
 #                    }
 #                ],
@@ -1095,7 +1095,7 @@ test1:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 32,
+#                        "index": 4,
 #                        "variant": "default"
 #                    }
 #                ],
@@ -1122,7 +1122,7 @@ test1:
 #                    },
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 32,
+#                        "index": 4,
 #                        "variant": "default"
 #                    }
 #                ],
@@ -1171,7 +1171,7 @@ test1:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 32,
+#                        "index": 4,
 #                        "variant": "default"
 #                    }
 #                ],
@@ -2041,7 +2041,7 @@ test1:
 #                    {
 #                        "type": "indirect",
 #                        "basis": "virtual_register",
-#                        "index": 32,
+#                        "index": 4,
 #                        "offset": 0,
 #                        "variant": "default"
 #                    }
@@ -2077,7 +2077,7 @@ test1:
 #                    {
 #                        "type": "indirect",
 #                        "basis": "virtual_register",
-#                        "index": 32,
+#                        "index": 4,
 #                        "offset": 16,
 #                        "variant": "default"
 #                    }
@@ -2107,7 +2107,7 @@ test1:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 32,
+#                        "index": 4,
 #                        "variant": "default"
 #                    }
 #                ],

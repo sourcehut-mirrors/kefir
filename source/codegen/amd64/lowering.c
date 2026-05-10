@@ -1344,6 +1344,7 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_opt_
                 kefir_opt_instruction_ref_t call_ref, value_ref, bitwidth_ref;
                 REQUIRE_OK(kefir_opt_code_builder_temporary_object(
                     mem, &func->code, block_id, qwords * KEFIR_AMD64_ABI_QWORD, KEFIR_AMD64_ABI_QWORD, &value_ref));
+                REQUIRE_OK(kefir_opt_code_container_insert_control(&func->code, block_id, KEFIR_ID_NONE, value_ref));
                 REQUIRE_OK(kefir_opt_code_builder_uint_constant(mem, &func->code, block_id, bitwidth, &bitwidth_ref));
                 REQUIRE_OK(kefir_opt_code_container_new_call(mem, &func->code, block_id, func_decl_id, 3, KEFIR_ID_NONE,
                                                              &call_ref));
@@ -1371,6 +1372,7 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_opt_
                 kefir_opt_instruction_ref_t call_ref, value_ref, bitwidth_ref;
                 REQUIRE_OK(kefir_opt_code_builder_temporary_object(
                     mem, &func->code, block_id, qwords * KEFIR_AMD64_ABI_QWORD, KEFIR_AMD64_ABI_QWORD, &value_ref));
+                REQUIRE_OK(kefir_opt_code_container_insert_control(&func->code, block_id, KEFIR_ID_NONE, value_ref));
                 REQUIRE_OK(kefir_opt_code_builder_uint_constant(mem, &func->code, block_id, bitwidth, &bitwidth_ref));
                 REQUIRE_OK(kefir_opt_code_container_new_call(mem, &func->code, block_id, func_decl_id, 3, KEFIR_ID_NONE,
                                                              &call_ref));
@@ -1428,6 +1430,7 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_opt_
                 const kefir_size_t qwords = (bitwidth + QWORD_BITS - 1) / QWORD_BITS;
                 REQUIRE_OK(kefir_opt_code_builder_temporary_object(
                     mem, &func->code, block_id, qwords * KEFIR_AMD64_ABI_QWORD, KEFIR_AMD64_ABI_QWORD, &value_ref));
+                REQUIRE_OK(kefir_opt_code_container_insert_control(&func->code, block_id, KEFIR_ID_NONE, value_ref));
                 REQUIRE_OK(kefir_opt_code_builder_uint_constant(mem, &func->code, block_id, bitwidth, &bitwidth_ref));
                 REQUIRE_OK(kefir_opt_code_container_new_call(mem, &func->code, block_id, func_decl_id, 3, KEFIR_ID_NONE,
                                                              &call_ref));
@@ -1452,6 +1455,7 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_opt_
                 const kefir_size_t qwords = (bitwidth + QWORD_BITS - 1) / QWORD_BITS;
                 REQUIRE_OK(kefir_opt_code_builder_temporary_object(
                     mem, &func->code, block_id, qwords * KEFIR_AMD64_ABI_QWORD, KEFIR_AMD64_ABI_QWORD, &value_ref));
+                REQUIRE_OK(kefir_opt_code_container_insert_control(&func->code, block_id, KEFIR_ID_NONE, value_ref));
                 REQUIRE_OK(kefir_opt_code_builder_uint_constant(mem, &func->code, block_id, bitwidth, &bitwidth_ref));
                 REQUIRE_OK(
                     kefir_opt_code_builder_uint_constant(mem, &func->code, block_id, src_bitwidth, &src_bitwidth_ref));
@@ -1540,6 +1544,9 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_opt_
                                                                    KEFIR_AMD64_ABI_QWORD, &value_copy_ref));
                 REQUIRE_OK(kefir_opt_code_builder_temporary_object(
                     mem, &func->code, block_id, qwords * KEFIR_AMD64_ABI_QWORD, KEFIR_AMD64_ABI_QWORD, &tmp_ref));
+                REQUIRE_OK(
+                    kefir_opt_code_container_insert_control(&func->code, block_id, KEFIR_ID_NONE, value_copy_ref));
+                REQUIRE_OK(kefir_opt_code_container_insert_control(&func->code, block_id, KEFIR_ID_NONE, tmp_ref));
                 REQUIRE_OK(kefir_opt_code_builder_uint_constant(mem, &func->code, block_id, bitwidth, &bitwidth_ref));
                 REQUIRE_OK(kefir_opt_code_builder_copy_memory(mem, &func->code, block_id, value_copy_ref, arg_ref,
                                                               bitint_type_id, 0, &init_value_copy_ref));
@@ -1638,6 +1645,7 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_opt_
 
                 REQUIRE_OK(kefir_opt_code_builder_temporary_object(
                     mem, &func->code, block_id, qwords * KEFIR_AMD64_ABI_QWORD, KEFIR_AMD64_ABI_QWORD, &value_ref));
+                REQUIRE_OK(kefir_opt_code_container_insert_control(&func->code, block_id, KEFIR_ID_NONE, value_ref));
                 REQUIRE_OK(kefir_opt_code_builder_uint_constant(mem, &func->code, block_id, bitwidth, &bitwidth_ref));
 
                 kefir_id_t func_decl_id = KEFIR_ID_NONE;
@@ -1771,6 +1779,7 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_opt_
                 kefir_opt_instruction_ref_t value_ref, copy_ref;
                 REQUIRE_OK(kefir_opt_code_builder_temporary_object(
                     mem, &func->code, block_id, qwords * KEFIR_AMD64_ABI_QWORD, KEFIR_AMD64_ABI_QWORD, &value_ref));
+                REQUIRE_OK(kefir_opt_code_container_insert_control(&func->code, block_id, KEFIR_ID_NONE, value_ref));
                 REQUIRE_OK(kefir_opt_code_builder_copy_memory(mem, &func->code, block_id, value_ref, arg_ref,
                                                               bitint_type_id, 0, &copy_ref));
                 REQUIRE_OK(
@@ -1962,6 +1971,7 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_opt_
                 kefir_opt_instruction_ref_t value_ref, copy_ref;
                 REQUIRE_OK(kefir_opt_code_builder_temporary_object(
                     mem, &func->code, block_id, qwords * KEFIR_AMD64_ABI_QWORD, KEFIR_AMD64_ABI_QWORD, &value_ref));
+                REQUIRE_OK(kefir_opt_code_container_insert_control(&func->code, block_id, KEFIR_ID_NONE, value_ref));
                 REQUIRE_OK(kefir_opt_code_builder_copy_memory(mem, &func->code, block_id, value_ref, arg_ref,
                                                               bitint_type_id, 0, &copy_ref));
                 REQUIRE_OK(
@@ -2185,6 +2195,7 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_opt_
                 kefir_opt_instruction_ref_t value_ref, copy_ref;
                 REQUIRE_OK(kefir_opt_code_builder_temporary_object(
                     mem, &func->code, block_id, qwords * KEFIR_AMD64_ABI_QWORD, KEFIR_AMD64_ABI_QWORD, &value_ref));
+                REQUIRE_OK(kefir_opt_code_container_insert_control(&func->code, block_id, KEFIR_ID_NONE, value_ref));
                 REQUIRE_OK(kefir_opt_code_builder_atomic_copy_memory_from(
                     mem, &func->code, block_id, value_ref, arg_ref, memorder, bitint_type_id, 0, &copy_ref));
                 REQUIRE_OK(
@@ -2281,6 +2292,7 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_opt_
                 kefir_opt_instruction_ref_t value_ref, init_value_ref, init_value_pair_ref, bitwidth_ref, call_ref;
                 REQUIRE_OK(kefir_opt_code_builder_temporary_object(
                     mem, &func->code, block_id, qwords * KEFIR_AMD64_ABI_QWORD, KEFIR_AMD64_ABI_QWORD, &value_ref));
+                REQUIRE_OK(kefir_opt_code_container_insert_control(&func->code, block_id, KEFIR_ID_NONE, value_ref));
                 REQUIRE_OK(kefir_opt_code_builder_copy_memory(mem, &func->code, block_id, value_ref, arg_ref,
                                                               bitint_type_id, 0, &init_value_ref));
                 REQUIRE_OK(kefir_opt_code_builder_pair(mem, &func->code, block_id, value_ref, init_value_ref,
@@ -2324,6 +2336,7 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_opt_
                 kefir_opt_instruction_ref_t value_ref, init_value_ref, init_value_pair_ref, bitwidth_ref, call_ref;
                 REQUIRE_OK(kefir_opt_code_builder_temporary_object(
                     mem, &func->code, block_id, qwords * KEFIR_AMD64_ABI_QWORD, KEFIR_AMD64_ABI_QWORD, &value_ref));
+                REQUIRE_OK(kefir_opt_code_container_insert_control(&func->code, block_id, KEFIR_ID_NONE, value_ref));
                 REQUIRE_OK(kefir_opt_code_builder_copy_memory(mem, &func->code, block_id, value_ref, arg_ref,
                                                               bitint_type_id, 0, &init_value_ref));
                 REQUIRE_OK(kefir_opt_code_builder_pair(mem, &func->code, block_id, value_ref, init_value_ref,
@@ -2412,6 +2425,7 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_opt_
             kefir_opt_instruction_ref_t bitwidth_ref, value_ref, init_value_ref, init_value_pair_ref, call_ref;        \
             REQUIRE_OK(kefir_opt_code_builder_temporary_object(                                                        \
                 mem, &func->code, block_id, qwords * KEFIR_AMD64_ABI_QWORD, KEFIR_AMD64_ABI_QWORD, &value_ref));       \
+            REQUIRE_OK(kefir_opt_code_container_insert_control(&func->code, block_id, KEFIR_ID_NONE, value_ref));      \
             REQUIRE_OK(kefir_opt_code_builder_copy_memory(mem, &func->code, block_id, value_ref, arg1_ref,             \
                                                           bitint_type_id, 0, &init_value_ref));                        \
             REQUIRE_OK(kefir_opt_code_builder_pair(mem, &func->code, block_id, value_ref, init_value_ref,              \
@@ -2490,6 +2504,8 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_opt_
                 REQUIRE_OK(kefir_opt_code_builder_temporary_object(mem, &func->code, block_id,
                                                                    qwords * KEFIR_AMD64_ABI_QWORD,
                                                                    KEFIR_AMD64_ABI_QWORD, &result_value_ref));
+                REQUIRE_OK(
+                    kefir_opt_code_container_insert_control(&func->code, block_id, KEFIR_ID_NONE, result_value_ref));
 
                 REQUIRE_OK(kefir_opt_code_container_new_call(mem, &func->code, block_id, func_decl_id, 5, KEFIR_ID_NONE,
                                                              &call_ref));
@@ -2548,6 +2564,12 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_opt_
                     mem, &func->code, block_id, qwords * KEFIR_AMD64_ABI_QWORD, KEFIR_AMD64_ABI_QWORD, &tmp_value_ref));
                 REQUIRE_OK(kefir_opt_code_builder_temporary_object(
                     mem, &func->code, block_id, qwords * KEFIR_AMD64_ABI_QWORD, KEFIR_AMD64_ABI_QWORD, &lhs_value_ref));
+                REQUIRE_OK(
+                    kefir_opt_code_container_insert_control(&func->code, block_id, KEFIR_ID_NONE, result_value_ref));
+                REQUIRE_OK(
+                    kefir_opt_code_container_insert_control(&func->code, block_id, KEFIR_ID_NONE, tmp_value_ref));
+                REQUIRE_OK(
+                    kefir_opt_code_container_insert_control(&func->code, block_id, KEFIR_ID_NONE, lhs_value_ref));
                 REQUIRE_OK(kefir_opt_code_builder_copy_memory(mem, &func->code, block_id, lhs_value_ref, arg1_ref,
                                                               bitint_type_id, 0, &lhs_init_value_ref));
                 REQUIRE_OK(kefir_opt_code_builder_pair(mem, &func->code, block_id, lhs_value_ref, lhs_init_value_ref,
@@ -2618,6 +2640,10 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_opt_
                 REQUIRE_OK(kefir_opt_code_builder_temporary_object(mem, &func->code, block_id,
                                                                    lhs_qwords * KEFIR_AMD64_ABI_QWORD,
                                                                    KEFIR_AMD64_ABI_QWORD, &remainder_value_ref));
+                REQUIRE_OK(
+                    kefir_opt_code_container_insert_control(&func->code, block_id, KEFIR_ID_NONE, result_value_ref));
+                REQUIRE_OK(
+                    kefir_opt_code_container_insert_control(&func->code, block_id, KEFIR_ID_NONE, remainder_value_ref));
 
                 REQUIRE_OK(kefir_opt_code_builder_copy_memory(mem, &func->code, block_id, result_value_ref, arg1_ref,
                                                               bitint_type_id, 0, &init_result_value_ref));
@@ -2705,6 +2731,12 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_opt_
                 REQUIRE_OK(kefir_opt_code_builder_temporary_object(mem, &func->code, block_id,
                                                                    rhs_qwords * KEFIR_AMD64_ABI_QWORD,
                                                                    KEFIR_AMD64_ABI_QWORD, &rhs_value_ref));
+                REQUIRE_OK(
+                    kefir_opt_code_container_insert_control(&func->code, block_id, KEFIR_ID_NONE, result_value_ref));
+                REQUIRE_OK(
+                    kefir_opt_code_container_insert_control(&func->code, block_id, KEFIR_ID_NONE, remainder_value_ref));
+                REQUIRE_OK(
+                    kefir_opt_code_container_insert_control(&func->code, block_id, KEFIR_ID_NONE, rhs_value_ref));
 
                 REQUIRE_OK(kefir_opt_code_builder_copy_memory(mem, &func->code, block_id, result_value_ref, arg1_ref,
                                                               bitint_type_id, 0, &init_result_value_ref));
@@ -2793,6 +2825,10 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_opt_
                 REQUIRE_OK(kefir_opt_code_builder_temporary_object(mem, &func->code, block_id,
                                                                    lhs_qwords * KEFIR_AMD64_ABI_QWORD,
                                                                    KEFIR_AMD64_ABI_QWORD, &remainder_value_ref));
+                REQUIRE_OK(
+                    kefir_opt_code_container_insert_control(&func->code, block_id, KEFIR_ID_NONE, lhs_value_ref));
+                REQUIRE_OK(
+                    kefir_opt_code_container_insert_control(&func->code, block_id, KEFIR_ID_NONE, remainder_value_ref));
 
                 REQUIRE_OK(kefir_opt_code_builder_copy_memory(mem, &func->code, block_id, lhs_value_ref, arg1_ref,
                                                               bitint_type_id, 0, &init_lhs_value_ref));
@@ -2880,6 +2916,12 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_opt_
                 REQUIRE_OK(kefir_opt_code_builder_temporary_object(mem, &func->code, block_id,
                                                                    rhs_qwords * KEFIR_AMD64_ABI_QWORD,
                                                                    KEFIR_AMD64_ABI_QWORD, &rhs_value_ref));
+                REQUIRE_OK(
+                    kefir_opt_code_container_insert_control(&func->code, block_id, KEFIR_ID_NONE, lhs_value_ref));
+                REQUIRE_OK(
+                    kefir_opt_code_container_insert_control(&func->code, block_id, KEFIR_ID_NONE, remainder_value_ref));
+                REQUIRE_OK(
+                    kefir_opt_code_container_insert_control(&func->code, block_id, KEFIR_ID_NONE, rhs_value_ref));
 
                 REQUIRE_OK(kefir_opt_code_builder_copy_memory(mem, &func->code, block_id, lhs_value_ref, arg1_ref,
                                                               bitint_type_id, 0, &init_lhs_value_ref));
@@ -2973,6 +3015,8 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_opt_
             REQUIRE_OK(kefir_opt_code_builder_temporary_object(mem, &func->code, block_id,                             \
                                                                qwords * KEFIR_AMD64_ABI_QWORD, KEFIR_AMD64_ABI_QWORD,  \
                                                                &result_value_ref));                                    \
+            REQUIRE_OK(                                                                                                \
+                kefir_opt_code_container_insert_control(&func->code, block_id, KEFIR_ID_NONE, result_value_ref));      \
                                                                                                                        \
             REQUIRE_OK(kefir_opt_code_builder_copy_memory(mem, &func->code, block_id, result_value_ref, arg1_ref,      \
                                                           bitint_type_id, 0, &init_result_value_ref));                 \
@@ -3116,6 +3160,8 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_opt_
                 REQUIRE_OK(kefir_opt_code_builder_temporary_object(mem, &func->code, block_id,
                                                                    qwords * KEFIR_AMD64_ABI_QWORD,
                                                                    KEFIR_AMD64_ABI_QWORD, &copy_value_ref));
+                REQUIRE_OK(
+                    kefir_opt_code_container_insert_control(&func->code, block_id, KEFIR_ID_NONE, copy_value_ref));
                 REQUIRE_OK(kefir_opt_code_builder_copy_memory(mem, &func->code, block_id, copy_value_ref, arg1_ref,
                                                               bitint_type_id, 0, &init_copy_value_ref));
                 REQUIRE_OK(kefir_opt_code_builder_pair(mem, &func->code, block_id, copy_value_ref, init_copy_value_ref,
@@ -3188,6 +3234,8 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_opt_
                 REQUIRE_OK(kefir_opt_code_builder_temporary_object(mem, &func->code, block_id,
                                                                    qwords * KEFIR_AMD64_ABI_QWORD,
                                                                    KEFIR_AMD64_ABI_QWORD, &copy_value_ref));
+                REQUIRE_OK(
+                    kefir_opt_code_container_insert_control(&func->code, block_id, KEFIR_ID_NONE, copy_value_ref));
                 REQUIRE_OK(kefir_opt_code_builder_copy_memory(mem, &func->code, block_id, copy_value_ref, arg2_ref,
                                                               bitint_type_id, 0, &init_copy_value_ref));
                 REQUIRE_OK(kefir_opt_code_builder_pair(mem, &func->code, block_id, copy_value_ref, init_copy_value_ref,
@@ -3196,6 +3244,8 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_opt_
                 REQUIRE_OK(kefir_opt_code_builder_temporary_object(mem, &func->code, block_id,
                                                                    qwords * KEFIR_AMD64_ABI_QWORD,
                                                                    KEFIR_AMD64_ABI_QWORD, &copy_target_ref));
+                REQUIRE_OK(
+                    kefir_opt_code_container_insert_control(&func->code, block_id, KEFIR_ID_NONE, copy_target_ref));
                 REQUIRE_OK(kefir_opt_code_builder_copy_memory(mem, &func->code, block_id, copy_target_ref, arg1_ref,
                                                               bitint_type_id, 0, &init_copy_target_ref));
                 REQUIRE_OK(kefir_opt_code_builder_pair(mem, &func->code, block_id, copy_target_ref,
@@ -4412,6 +4462,7 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_opt_
         kefir_opt_instruction_ref_t value_ref, value_store_ref, value_pair_ref, bitwidth_ref;                          \
         REQUIRE_OK(kefir_opt_code_builder_temporary_object(mem, &func->code, block_id, qwords * KEFIR_AMD64_ABI_QWORD, \
                                                            KEFIR_AMD64_ABI_QWORD, &value_ref));                        \
+        REQUIRE_OK(kefir_opt_code_container_insert_control(&func->code, block_id, KEFIR_ID_NONE, value_ref));          \
         REQUIRE_OK(kefir_opt_code_builder_bitint_store(mem, &func->code, block_id, bitwidth, value_ref, arg_ref,       \
                                                        &(struct kefir_opt_memory_access_flags) {0},                    \
                                                        &value_store_ref));                                             \
@@ -4522,6 +4573,7 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_opt_
         kefir_opt_instruction_ref_t value_ref, pair_ref, call_ref, bitwidth_ref;                                       \
         REQUIRE_OK(kefir_opt_code_builder_temporary_object(mem, &func->code, block_id, qwords * KEFIR_AMD64_ABI_QWORD, \
                                                            KEFIR_AMD64_ABI_QWORD, &value_ref));                        \
+        REQUIRE_OK(kefir_opt_code_container_insert_control(&func->code, block_id, KEFIR_ID_NONE, value_ref));          \
         REQUIRE_OK(                                                                                                    \
             kefir_opt_code_builder_int_constant(mem, &func->code, block_id, bitwidth * (_sign), &bitwidth_ref));       \
                                                                                                                        \
@@ -4648,6 +4700,7 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_opt_
             kefir_opt_instruction_ref_t value_ref, copy_ref, pair_ref;
             REQUIRE_OK(kefir_opt_code_builder_temporary_object(mem, &func->code, block_id, 2 * KEFIR_AMD64_ABI_QWORD,
                                                                2 * KEFIR_AMD64_ABI_QWORD, &value_ref));
+            REQUIRE_OK(kefir_opt_code_container_insert_control(&func->code, block_id, KEFIR_ID_NONE, value_ref));
             REQUIRE_OK(kefir_opt_code_builder_atomic_copy_memory_from(
                 mem, &func->code, block_id, value_ref, location_arg_ref, memorder, type_id, 0, &copy_ref));
             REQUIRE_OK(kefir_opt_code_builder_pair(mem, &func->code, block_id, value_ref, copy_ref, &pair_ref));
@@ -4683,6 +4736,7 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_opt_
             kefir_opt_instruction_ref_t value_ref, copy_ref, pair_ref;
             REQUIRE_OK(kefir_opt_code_builder_temporary_object(mem, &func->code, block_id, 2 * KEFIR_AMD64_ABI_QWORD,
                                                                2 * KEFIR_AMD64_ABI_QWORD, &value_ref));
+            REQUIRE_OK(kefir_opt_code_container_insert_control(&func->code, block_id, KEFIR_ID_NONE, value_ref));
             REQUIRE_OK(kefir_opt_code_builder_decimal128_store(mem, &func->code, block_id, value_ref, value_arg_ref,
                                                                &(struct kefir_opt_memory_access_flags) {0}, &copy_ref));
             REQUIRE_OK(kefir_opt_code_builder_pair(mem, &func->code, block_id, value_ref, copy_ref, &pair_ref));
@@ -4716,6 +4770,8 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_opt_
             kefir_opt_instruction_ref_t compare_value_ref, compare_value_copy_ref, compare_value_pair_ref;
             REQUIRE_OK(kefir_opt_code_builder_temporary_object(mem, &func->code, block_id, 2 * KEFIR_AMD64_ABI_QWORD,
                                                                2 * KEFIR_AMD64_ABI_QWORD, &compare_value_ref));
+            REQUIRE_OK(
+                kefir_opt_code_container_insert_control(&func->code, block_id, KEFIR_ID_NONE, compare_value_ref));
             REQUIRE_OK(kefir_opt_code_builder_decimal128_store(
                 mem, &func->code, block_id, compare_value_ref, compare_value_arg_ref,
                 &(struct kefir_opt_memory_access_flags) {0}, &compare_value_copy_ref));
@@ -4725,6 +4781,7 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_opt_
             kefir_opt_instruction_ref_t new_value_ref, new_value_copy_ref, new_value_pair_ref;
             REQUIRE_OK(kefir_opt_code_builder_temporary_object(mem, &func->code, block_id, 2 * KEFIR_AMD64_ABI_QWORD,
                                                                2 * KEFIR_AMD64_ABI_QWORD, &new_value_ref));
+            REQUIRE_OK(kefir_opt_code_container_insert_control(&func->code, block_id, KEFIR_ID_NONE, new_value_ref));
             REQUIRE_OK(kefir_opt_code_builder_decimal128_store(
                 mem, &func->code, block_id, new_value_ref, new_value_arg_ref,
                 &(struct kefir_opt_memory_access_flags) {0}, &new_value_copy_ref));
@@ -4874,6 +4931,7 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_opt_
             kefir_opt_instruction_ref_t value_ref, copy_ref, pair_ref;
             REQUIRE_OK(kefir_opt_code_builder_temporary_object(mem, &func->code, block_id, 2 * KEFIR_AMD64_ABI_QWORD,
                                                                2 * KEFIR_AMD64_ABI_QWORD, &value_ref));
+            REQUIRE_OK(kefir_opt_code_container_insert_control(&func->code, block_id, KEFIR_ID_NONE, value_ref));
             REQUIRE_OK(kefir_opt_code_builder_atomic_copy_memory_from(
                 mem, &func->code, block_id, value_ref, location_arg_ref, memorder, type_id, 0, &copy_ref));
             REQUIRE_OK(kefir_opt_code_builder_pair(mem, &func->code, block_id, value_ref, copy_ref, &pair_ref));
@@ -4897,6 +4955,7 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_opt_
             kefir_opt_instruction_ref_t value_ref, copy_ref, pair_ref;
             REQUIRE_OK(kefir_opt_code_builder_temporary_object(mem, &func->code, block_id, 2 * KEFIR_AMD64_ABI_QWORD,
                                                                2 * KEFIR_AMD64_ABI_QWORD, &value_ref));
+            REQUIRE_OK(kefir_opt_code_container_insert_control(&func->code, block_id, KEFIR_ID_NONE, value_ref));
             REQUIRE_OK(kefir_opt_code_builder_int128_store(mem, &func->code, block_id, value_ref, value_arg_ref,
                                                            &(struct kefir_opt_memory_access_flags) {0}, &copy_ref));
             REQUIRE_OK(kefir_opt_code_builder_pair(mem, &func->code, block_id, value_ref, copy_ref, &pair_ref));
@@ -4918,6 +4977,8 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_opt_
             kefir_opt_instruction_ref_t compare_value_ref, compare_value_copy_ref, compare_value_pair_ref;
             REQUIRE_OK(kefir_opt_code_builder_temporary_object(mem, &func->code, block_id, 2 * KEFIR_AMD64_ABI_QWORD,
                                                                2 * KEFIR_AMD64_ABI_QWORD, &compare_value_ref));
+            REQUIRE_OK(
+                kefir_opt_code_container_insert_control(&func->code, block_id, KEFIR_ID_NONE, compare_value_ref));
             REQUIRE_OK(kefir_opt_code_builder_int128_store(
                 mem, &func->code, block_id, compare_value_ref, compare_value_arg_ref,
                 &(struct kefir_opt_memory_access_flags) {0}, &compare_value_copy_ref));
@@ -4927,6 +4988,7 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_opt_
             kefir_opt_instruction_ref_t new_value_ref, new_value_copy_ref, new_value_pair_ref;
             REQUIRE_OK(kefir_opt_code_builder_temporary_object(mem, &func->code, block_id, 2 * KEFIR_AMD64_ABI_QWORD,
                                                                2 * KEFIR_AMD64_ABI_QWORD, &new_value_ref));
+            REQUIRE_OK(kefir_opt_code_container_insert_control(&func->code, block_id, KEFIR_ID_NONE, new_value_ref));
             REQUIRE_OK(kefir_opt_code_builder_int128_store(mem, &func->code, block_id, new_value_ref, new_value_arg_ref,
                                                            &(struct kefir_opt_memory_access_flags) {0},
                                                            &new_value_copy_ref));
@@ -4949,6 +5011,7 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_opt_
                 kefir_opt_instruction_ref_t value_ref, value_store_ref, value_store_pair_ref;
                 REQUIRE_OK(kefir_opt_code_builder_temporary_object(
                     mem, &func->code, block_id, 2 * KEFIR_AMD64_ABI_QWORD, 2 * KEFIR_AMD64_ABI_QWORD, &value_ref));
+                REQUIRE_OK(kefir_opt_code_container_insert_control(&func->code, block_id, KEFIR_ID_NONE, value_ref));
                 REQUIRE_OK(kefir_opt_code_builder_int128_store(mem, &func->code, block_id, value_ref, arg_ref,
                                                                &(struct kefir_opt_memory_access_flags) {0},
                                                                &value_store_ref));
@@ -4971,6 +5034,7 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_opt_
                 kefir_opt_instruction_ref_t value_ref, value_store_ref, value_store_pair_ref;
                 REQUIRE_OK(kefir_opt_code_builder_temporary_object(
                     mem, &func->code, block_id, 2 * KEFIR_AMD64_ABI_QWORD, 2 * KEFIR_AMD64_ABI_QWORD, &value_ref));
+                REQUIRE_OK(kefir_opt_code_container_insert_control(&func->code, block_id, KEFIR_ID_NONE, value_ref));
                 REQUIRE_OK(kefir_opt_code_builder_int128_store(mem, &func->code, block_id, value_ref, arg_ref,
                                                                &(struct kefir_opt_memory_access_flags) {0},
                                                                &value_store_ref));
