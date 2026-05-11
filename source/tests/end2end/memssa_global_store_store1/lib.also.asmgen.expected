@@ -47,11 +47,12 @@ test3:
     xchgl (%rdx), %eax
     mov $1, %eax
     lock     xaddl %eax, (%rdx)
+    movq y@GOTPCREL(%rip), %rsi
 .L__kefir_func_test3_label2:
-    movq y@GOTPCREL(%rip), %rdx
-    movl (%rdx), %eax
+    movl (%rsi), %eax
     mov %rax, %rcx
     shl $1, %ecx
+    mov %rsi, %rdx
     lock     cmpxchgl %ecx, (%rdx)
     jnz .L__kefir_func_test3_label2
     movq y@GOTPCREL(%rip), %rax

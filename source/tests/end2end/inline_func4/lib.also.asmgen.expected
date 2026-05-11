@@ -12,22 +12,22 @@ addx:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    movq x@GOTPCREL(%rip), %rax
-    movq (%rax), %rax
+    movq x@GOTPCREL(%rip), %rsi
+    movq (%rsi), %rax
     movq %rax, -8(%rbp)
 .L__kefir_func_addx_label2:
     movq -8(%rbp), %rax
-    movq x@GOTPCREL(%rip), %rdx
-    mov %rax, %rsi
-    add %rdi, %rsi
-    mov %rsi, %rcx
+    mov %rax, %r8
+    add %rdi, %r8
+    mov %rsi, %rdx
+    mov %r8, %rcx
     movq -8(%rbp), %rax
     lock     cmpxchgq %rcx, (%rdx)
     je .L__kefir_func_addx_label4
     movq %rax, -8(%rbp)
 .L__kefir_func_addx_label4:
     jnz .L__kefir_func_addx_label2
-    mov %rsi, %rax
+    mov %r8, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret

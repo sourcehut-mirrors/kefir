@@ -309,6 +309,12 @@
                                 "control_next": 945
                             },
                             {
+                                "id": 1969,
+                                "opcode": "float64_const",
+                                "value": 1.000000,
+                                "control_next": null
+                            },
+                            {
                                 "id": 1617,
                                 "opcode": "alloc_local",
                                 "scope": 0,
@@ -340,6 +346,7 @@
                                 945,
                                 0,
                                 128,
+                                1969,
                                 928
                             ]
                         }
@@ -396,6 +403,7 @@
                             "alive_instructions": [
                                 976,
                                 1810,
+                                1969,
                                 80,
                                 624,
                                 0,
@@ -696,12 +704,6 @@
                                 },
                                 "control_next": 1200,
                                 "memssa_node_ref": 8
-                            },
-                            {
-                                "id": 1969,
-                                "opcode": "float64_const",
-                                "value": 1.000000,
-                                "control_next": null
                             },
                             {
                                 "id": 1184,

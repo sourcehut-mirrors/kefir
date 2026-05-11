@@ -32,16 +32,16 @@ test2:
 .L__kefir_text_func_test2_begin:
     movq c@GOTPCREL(%rip), %rax
     movl 4(%rax), %eax
-    xor %ecx, %ecx
+    movq b@GOTPCREL(%rip), %rcx
+    xor %edx, %edx
 .L__kefir_func_test2_label2:
-    cmp $10, %ecx
+    cmp $10, %edx
     jl .L__kefir_func_test2_label4
     ret
 .L__kefir_func_test2_label4:
-    movq b@GOTPCREL(%rip), %rdx
-    movsx %ecx, %rsi
-    movl %eax, (%rdx, %rsi, 4)
-    add $1, %ecx
+    movsx %edx, %rsi
+    movl %eax, (%rcx, %rsi, 4)
+    add $1, %edx
     jmp .L__kefir_func_test2_label2
 .L__kefir_text_func_test2_end:
 

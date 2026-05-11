@@ -2801,6 +2801,8 @@ __kefir_softfloat_scalbn:
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
+    movq .L__kefir_runtime_func___kefir_softfloat_scalbn_label12(%rip), %xmm1
+    movq .L__kefir_runtime_func___kefir_softfloat_scalbn_label13(%rip), %xmm2
     xor %eax, %eax
 .L__kefir_runtime_func___kefir_softfloat_scalbn_label2:
     mov $1023, %ecx
@@ -2808,10 +2810,8 @@ __kefir_softfloat_scalbn:
     mov %rdi, %rdx
     cmovg %rcx, %rdx
     mov %rdx, %rcx
-    movq .L__kefir_runtime_func___kefir_softfloat_scalbn_label12(%rip), %xmm1
-    movaps %xmm0, %xmm2
-    mulsd %xmm1, %xmm2
-    movaps %xmm2, %xmm1
+    movaps %xmm0, %xmm3
+    mulsd %xmm2, %xmm3
     lea 1(%eax), %edx
     lea -1023(%edi), %esi
     cmp $2, %eax
@@ -2828,10 +2828,8 @@ __kefir_softfloat_scalbn:
     jnz .L__kefir_runtime_func___kefir_softfloat_scalbn_label11
     xor %eax, %eax
 .L__kefir_runtime_func___kefir_softfloat_scalbn_label5:
-    movq .L__kefir_runtime_func___kefir_softfloat_scalbn_label13(%rip), %xmm1
     movaps %xmm0, %xmm2
     mulsd %xmm1, %xmm2
-    movaps %xmm2, %xmm1
     lea 1(%eax), %edx
     lea 969(%ecx), %esi
     cmp $2, %eax
@@ -2852,8 +2850,8 @@ __kefir_softfloat_scalbn:
     add $1023, %ecx
     movsx %ecx, %rax
     shl $52, %rax
-    movq %rax, %xmm2
-    mulsd %xmm2, %xmm0
+    movq %rax, %xmm4
+    mulsd %xmm4, %xmm0
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -2861,21 +2859,21 @@ __kefir_softfloat_scalbn:
 .L__kefir_runtime_func___kefir_softfloat_scalbn_label10:
     mov %esi, %ecx
     mov %edx, %eax
-    movaps %xmm1, %xmm0
+    movaps %xmm2, %xmm0
     jmp .L__kefir_runtime_func___kefir_softfloat_scalbn_label5
 .L__kefir_runtime_func___kefir_softfloat_scalbn_label11:
     mov %edx, %eax
+    movaps %xmm3, %xmm0
     mov %esi, %edi
-    movaps %xmm1, %xmm0
     jmp .L__kefir_runtime_func___kefir_softfloat_scalbn_label2
 .L__kefir_runtime_text_func___kefir_softfloat_scalbn_end:
 .section .rodata
     .align 8
 .L__kefir_runtime_func___kefir_softfloat_scalbn_label12:
-    .quad 9214364837600034816
+    .quad 243194379878006784
     .align 8
 .L__kefir_runtime_func___kefir_softfloat_scalbn_label13:
-    .quad 243194379878006784
+    .quad 9214364837600034816
 .section .text
 
 __kefir_softfloat_fabs:

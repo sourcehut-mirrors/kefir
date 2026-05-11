@@ -40,18 +40,33 @@ struct remat_params {
 };
 
 static kefir_result_t resolve_remat_at(struct remat_params *params, kefir_opt_block_id_t block_ref,
-                                       kefir_opt_instruction_ref_t instr_ref,
+                                       kefir_uint32_t nest_hoist, kefir_opt_instruction_ref_t instr_ref,
                                        kefir_opt_instruction_ref_t *remat_instr_ref) {
+    kefir_opt_block_id_t best_block_ref = block_ref;
+    kefir_uint32_t best_block_nest, block_nest;
+    REQUIRE_OK(kefir_opt_code_loop_level(&params->loops, block_ref, &block_nest));
+    REQUIRE_OK(kefir_opt_code_loop_level(&params->loops, best_block_ref, &best_block_nest));
+
+    for (; best_block_ref != params->code->entry_point && best_block_nest > 0 &&
+           block_nest - best_block_nest < nest_hoist;) {
+        best_block_ref = params->control_flow.blocks[best_block_ref].immediate_dominator;
+        REQUIRE_OK(kefir_opt_code_loop_level(&params->loops, best_block_ref, &best_block_nest));
+    }
+    if (best_block_ref == params->code->gate_block) {
+        best_block_ref = block_ref;
+    }
+
     kefir_hashtable_value_t table_value;
     kefir_result_t res =
-        kefir_hashtable_at(&params->rematerializations, (kefir_hashtable_key_t) block_ref, &table_value);
+        kefir_hashtable_at(&params->rematerializations, (kefir_hashtable_key_t) best_block_ref, &table_value);
     if (res != KEFIR_NOT_FOUND) {
         REQUIRE_OK(res);
         *remat_instr_ref = (kefir_opt_instruction_ref_t) table_value;
     } else {
-        REQUIRE_OK(kefir_opt_code_container_copy_instruction(params->mem, params->code, block_ref, instr_ref,
+        REQUIRE_OK(kefir_opt_code_container_copy_instruction(params->mem, params->code, best_block_ref, instr_ref,
                                                              remat_instr_ref));
-        REQUIRE_OK(kefir_hashtable_insert(params->mem, &params->rematerializations, (kefir_hashtable_key_t) block_ref,
+        REQUIRE_OK(kefir_hashtable_insert(params->mem, &params->rematerializations,
+                                          (kefir_hashtable_key_t) best_block_ref,
                                           (kefir_hashtable_value_t) *remat_instr_ref));
     }
     return KEFIR_OK;
@@ -60,6 +75,31 @@ static kefir_result_t resolve_remat_at(struct remat_params *params, kefir_opt_bl
 static kefir_result_t remat_instr(struct remat_params *params, kefir_opt_instruction_ref_t instr_ref) {
     const struct kefir_opt_instruction *instr;
     REQUIRE_OK(kefir_opt_code_container_instr(params->code, instr_ref, &instr));
+
+    kefir_uint32_t nest_hoist = 0;
+    switch (instr->operation.opcode) {
+        case KEFIR_OPT_OPCODE_INT_CONST:
+        case KEFIR_OPT_OPCODE_UINT_CONST:
+        case KEFIR_OPT_OPCODE_BLOCK_LABEL:
+        case KEFIR_OPT_OPCODE_STRING_REF:
+        case KEFIR_OPT_OPCODE_LONG_DOUBLE_CONST:
+        case KEFIR_OPT_OPCODE_REF_LOCAL:
+        case KEFIR_OPT_OPCODE_INT_PLACEHOLDER:
+        case KEFIR_OPT_OPCODE_FLOAT32_PLACEHOLDER:
+        case KEFIR_OPT_OPCODE_FLOAT64_PLACEHOLDER:
+            nest_hoist = 0;
+            break;
+
+        case KEFIR_OPT_OPCODE_FLOAT32_CONST:
+        case KEFIR_OPT_OPCODE_FLOAT64_CONST:
+        case KEFIR_OPT_OPCODE_GET_GLOBAL:
+        case KEFIR_OPT_OPCODE_GET_THREAD_LOCAL:
+            nest_hoist = 1;
+            break;
+
+        default:
+            return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected optimizer instruction opcode");
+    }
 
     kefir_result_t res;
     struct kefir_opt_instruction_use_iterator use_iter;
@@ -91,7 +131,7 @@ static kefir_result_t remat_instr(struct remat_params *params, kefir_opt_instruc
                  res == KEFIR_OK; res = kefir_opt_phi_node_link_next(&link_iter, &link_block_id, &link_instr_ref)) {
                 if (link_instr_ref == instr_ref) {
                     kefir_opt_instruction_ref_t remat_instr_ref = KEFIR_ID_NONE;
-                    REQUIRE_OK(resolve_remat_at(params, link_block_id, instr_ref, &remat_instr_ref));
+                    REQUIRE_OK(resolve_remat_at(params, link_block_id, nest_hoist, instr_ref, &remat_instr_ref));
                     REQUIRE_OK(kefir_opt_code_container_phi_replace(params->mem, params->code, use_instr_ref,
                                                                     link_block_id, remat_instr_ref));
                 }
@@ -101,7 +141,7 @@ static kefir_result_t remat_instr(struct remat_params *params, kefir_opt_instruc
             }
         } else {
             kefir_opt_instruction_ref_t remat_instr_ref = KEFIR_ID_NONE;
-            REQUIRE_OK(resolve_remat_at(params, use_block_ref, instr_ref, &remat_instr_ref));
+            REQUIRE_OK(resolve_remat_at(params, use_block_ref, nest_hoist, instr_ref, &remat_instr_ref));
             REQUIRE_OK(kefir_opt_code_container_replace_references_in(params->mem, params->code, use_instr_ref,
                                                                       remat_instr_ref, instr_ref));
         }
@@ -133,6 +173,9 @@ static kefir_result_t remat_impl(struct remat_params *params) {
                 case KEFIR_OPT_OPCODE_REF_LOCAL:
                 case KEFIR_OPT_OPCODE_GET_GLOBAL:
                 case KEFIR_OPT_OPCODE_GET_THREAD_LOCAL:
+                case KEFIR_OPT_OPCODE_INT_PLACEHOLDER:
+                case KEFIR_OPT_OPCODE_FLOAT32_PLACEHOLDER:
+                case KEFIR_OPT_OPCODE_FLOAT64_PLACEHOLDER:
                     REQUIRE_OK(
                         kefir_list_insert_after(params->mem, &params->queue, NULL, (void *) (kefir_uptr_t) instr_ref));
                     break;
