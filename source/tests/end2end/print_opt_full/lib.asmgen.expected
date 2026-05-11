@@ -187,7 +187,7 @@
                                 "memssa_node_ref": 1
                             },
                             {
-                                "id": 112,
+                                "id": 241,
                                 "opcode": "string_ref",
                                 "value": 0,
                                 "control_next": null
@@ -197,7 +197,7 @@
                                 "opcode": "invoke",
                                 "function_declaration_id": 48,
                                 "arguments": [
-                                    112
+                                    241
                                 ],
                                 "return_space": null,
                                 "indirect_ref": null,
@@ -249,12 +249,12 @@
                             "alive_instructions": [
                                 208,
                                 80,
-                                112,
-                                32,
+                                192,
+                                241,
                                 160,
+                                32,
                                 176,
-                                128,
-                                192
+                                128
                             ]
                         }
                     }

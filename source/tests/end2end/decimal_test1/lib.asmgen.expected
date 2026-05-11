@@ -119,10 +119,10 @@ test_dec64_gradient_descent:
     ret
 .L__kefir_func_test_dec64_gradient_descent_label4:
     xor %eax, %eax
-    movdqu -208(%rbp), %xmm0
-    movdqu %xmm0, -112(%rbp)
     movdqu -192(%rbp), %xmm0
     movdqu %xmm0, -128(%rbp)
+    movdqu -208(%rbp), %xmm0
+    movdqu %xmm0, -112(%rbp)
     mov %rax, -144(%rbp)
 .L__kefir_func_test_dec64_gradient_descent_label6:
     movq (%r14), %rdi
@@ -473,10 +473,10 @@ test_dec128_gradient_descent:
     ret
 .L__kefir_func_test_dec128_gradient_descent_label4:
     xor %eax, %eax
-    movdqu -208(%rbp), %xmm0
-    movdqu %xmm0, -112(%rbp)
     movdqu -192(%rbp), %xmm0
     movdqu %xmm0, -128(%rbp)
+    movdqu -208(%rbp), %xmm0
+    movdqu %xmm0, -112(%rbp)
     mov %rax, -144(%rbp)
 .L__kefir_func_test_dec128_gradient_descent_label6:
     movq (%r14), %rdi
@@ -601,10 +601,10 @@ test_dec32_gradient_descent:
     ret
 .L__kefir_func_test_dec32_gradient_descent_label4:
     xor %eax, %eax
-    movdqu -160(%rbp), %xmm0
-    movdqu %xmm0, -112(%rbp)
     movdqu -208(%rbp), %xmm0
     movdqu %xmm0, -128(%rbp)
+    movdqu -160(%rbp), %xmm0
+    movdqu %xmm0, -112(%rbp)
 .L__kefir_func_test_dec32_gradient_descent_label6:
     movq (%r14), %rdi
     cmp %rdi, %rax

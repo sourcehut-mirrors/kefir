@@ -153,8 +153,8 @@ __kefir_bigint_nonzero_count:
     mov %rsi, %rcx
     jmp .L__kefir_runtime_func___kefir_bigint_nonzero_count_label3
 .L__kefir_runtime_func___kefir_bigint_nonzero_count_label13:
-    mov %rbx, %r11
     mov %rcx, %r8
+    mov %rbx, %r11
     jmp .L__kefir_runtime_func___kefir_bigint_nonzero_count_label6
 .L__kefir_runtime_func___kefir_bigint_nonzero_count_label10:
     xor %eax, %eax

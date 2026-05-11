@@ -24,6 +24,7 @@
 #include "kefir/target/abi/amd64/platform.h"
 #include "kefir/codegen/amd64/codegen.h"
 #include "kefir/codegen/amd64/lowering.h"
+#include "kefir/codegen/amd64/rematerialize.h"
 #include <float.h>
 
 static kefir_result_t amd64_sysv_free_codegen(struct kefir_mem *mem, struct kefir_codegen *codegen) {
@@ -69,7 +70,21 @@ static kefir_result_t amd64_lowering(struct kefir_mem *mem, struct kefir_opt_mod
     return KEFIR_OK;
 }
 
-static const struct kefir_optimizer_target_lowering AMD64_LOWERING = {.lower = amd64_lowering, .payload = NULL};
+static kefir_result_t amd64_rematerialize(struct kefir_mem *mem, struct kefir_opt_module *module,
+                                          struct kefir_opt_function *func,
+                                          const struct kefir_optimizer_configuration *configuration, void *payload) {
+    UNUSED(payload);
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer module"));
+    REQUIRE(func != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer function"));
+    REQUIRE(configuration != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer configuration"));
+
+    REQUIRE_OK(kefir_codegen_amd64_rematerialize_function(mem, module, func, configuration));
+    return KEFIR_OK;
+}
+
+static const struct kefir_optimizer_target_lowering AMD64_LOWERING = {
+    .lower = amd64_lowering, .rematerialize = amd64_rematerialize, .payload = NULL};
 
 static kefir_result_t init_amd64_sysv_profile(struct kefir_compiler_profile *profile,
                                               const struct kefir_compiler_profile_configuration *config) {

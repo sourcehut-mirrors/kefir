@@ -1682,6 +1682,54 @@ kefir_result_t kefir_opt_code_container_phi_attach(struct kefir_mem *mem, struct
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_opt_code_container_phi_replace(struct kefir_mem *mem, struct kefir_opt_code_container *code,
+                                                    kefir_opt_instruction_ref_t phi_instr_ref,
+                                                    kefir_opt_block_id_t block_id,
+                                                    kefir_opt_instruction_ref_t instr_ref) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code container"));
+
+    struct kefir_opt_instruction *phi_instr = NULL;
+    REQUIRE_OK(code_container_instr_mutable(code, phi_instr_ref, &phi_instr));
+    REQUIRE(phi_instr->operation.opcode == KEFIR_OPT_OPCODE_PHI,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected optimizer phi instruction reference"));
+
+    struct kefir_opt_phi_node *phi_node = NULL;
+    REQUIRE_OK(code_container_phi_mutable(code, phi_instr->operation.parameters.phi_ref, &phi_node));
+
+    REQUIRE(phi_node->block_id != KEFIR_ID_NONE,
+            KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Phi node has been previously dropped from block"));
+
+    struct kefir_hashtree_node *node;
+    kefir_result_t res = kefir_hashtree_at(&phi_node->links, (kefir_hashtable_key_t) block_id, &node);
+    if (res == KEFIR_NOT_FOUND) {
+        res = KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Optimizer phi node already links provided block");
+    }
+    REQUIRE_OK(res);
+
+    kefir_opt_instruction_ref_t prev_ref = node->value;
+    node->value = instr_ref;
+
+    kefir_bool_t drop_use = true;
+    struct kefir_hashtree_node_iterator iter;
+    for (struct kefir_hashtree_node *node = kefir_hashtree_iter(&phi_node->links, &iter); node != NULL && drop_use;
+         node = kefir_hashtree_next(&iter)) {
+        if ((kefir_opt_instruction_ref_t) node->value == prev_ref) {
+            drop_use = false;
+        }
+    }
+
+    if (drop_use) {
+        struct kefir_opt_instruction *used_instr = NULL;
+        REQUIRE_OK(code_container_instr_mutable(code, prev_ref, &used_instr));
+        REQUIRE_OK(
+            kefir_hashtreeset_delete(mem, &used_instr->uses.instruction, (kefir_hashtreeset_entry_t) phi_instr_ref));
+    }
+
+    REQUIRE_OK(add_used_instructions(mem, code, phi_node->output_ref, instr_ref));
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_opt_code_container_phi_link_for(const struct kefir_opt_code_container *code,
                                                      kefir_opt_instruction_ref_t phi_instr_ref,
                                                      kefir_opt_block_id_t block_id,

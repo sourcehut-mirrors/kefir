@@ -168,7 +168,7 @@
                                 "control_next": null
                             },
                             {
-                                "id": 96,
+                                "id": 770,
                                 "opcode": "int_const",
                                 "value": 0,
                                 "control_next": null
@@ -177,7 +177,7 @@
                                 "id": 112,
                                 "opcode": "int32_store",
                                 "location": 80,
-                                "value": 96,
+                                "value": 770,
                                 "flags": {
                                     "volatile": false
                                 },
@@ -193,7 +193,7 @@
                                 "control_next": null
                             },
                             {
-                                "id": 144,
+                                "id": 1153,
                                 "opcode": "float64_const",
                                 "value": 1.000000,
                                 "control_next": null
@@ -202,7 +202,7 @@
                                 "id": 160,
                                 "opcode": "float64_store",
                                 "location": 128,
-                                "value": 144,
+                                "value": 1153,
                                 "flags": {
                                     "volatile": false
                                 },
@@ -215,7 +215,7 @@
                                 "control_next": 624
                             },
                             {
-                                "id": 608,
+                                "id": 1729,
                                 "opcode": "uint_const",
                                 "value": 2,
                                 "control_next": null
@@ -231,7 +231,7 @@
                                 "opcode": "int64_mul",
                                 "args": [
                                     528,
-                                    608
+                                    1729
                                 ],
                                 "control_next": null
                             },
@@ -239,7 +239,7 @@
                                 "id": 624,
                                 "opcode": "stack_alloc",
                                 "size_ref": 481,
-                                "alignment_ref": 608,
+                                "alignment_ref": 1729,
                                 "within_scope": true,
                                 "control_next": 16
                             },
@@ -280,21 +280,21 @@
                             "immediate_dominator": null,
                             "alive_instructions": [
                                 577,
-                                528,
+                                16,
                                 80,
                                 32,
                                 160,
+                                1729,
                                 128,
+                                770,
                                 736,
-                                96,
                                 624,
                                 481,
-                                608,
+                                528,
                                 112,
                                 0,
                                 416,
-                                16,
-                                144
+                                1153
                             ]
                         }
                     },
@@ -354,7 +354,7 @@
                                 "control_next": null
                             },
                             {
-                                "id": 1570,
+                                "id": 1953,
                                 "opcode": "ref_local",
                                 "ref": 1617,
                                 "offset": 0,
@@ -363,7 +363,7 @@
                             {
                                 "id": 1072,
                                 "opcode": "int8_load",
-                                "location": 1570,
+                                "location": 1953,
                                 "flags": {
                                     "load_extension": "noextend",
                                     "volatile": true
@@ -394,9 +394,9 @@
                             "immediate_dominator": 1,
                             "alive_instructions": [
                                 976,
-                                624,
-                                1570,
+                                1953,
                                 80,
+                                624,
                                 0,
                                 128,
                                 1617,
@@ -416,7 +416,7 @@
                                 "control_next": 1265
                             },
                             {
-                                "id": 2129,
+                                "id": 1810,
                                 "opcode": "uint_const",
                                 "value": 20,
                                 "control_next": null
@@ -426,12 +426,12 @@
                                 "opcode": "int64_add",
                                 "args": [
                                     624,
-                                    2129
+                                    1810
                                 ],
                                 "control_next": null
                             },
                             {
-                                "id": 2161,
+                                "id": 1969,
                                 "opcode": "uint_const",
                                 "value": 18,
                                 "control_next": null
@@ -441,7 +441,7 @@
                                 "opcode": "int64_add",
                                 "args": [
                                     624,
-                                    2161
+                                    1969
                                 ],
                                 "control_next": null
                             },
@@ -463,13 +463,13 @@
                             "immediate_dominator": 5,
                             "alive_instructions": [
                                 624,
-                                2161,
                                 80,
-                                2129,
                                 3377,
                                 1248,
                                 0,
                                 1265,
+                                1969,
+                                1810,
                                 2145
                             ]
                         }
@@ -697,7 +697,7 @@
                                 "memssa_node_ref": 8
                             },
                             {
-                                "id": 1409,
+                                "id": 1986,
                                 "opcode": "float64_const",
                                 "value": 1.000000,
                                 "control_next": null
@@ -707,7 +707,7 @@
                                 "opcode": "float64_add",
                                 "args": [
                                     1168,
-                                    1409
+                                    1986
                                 ],
                                 "control_next": null
                             },
@@ -750,10 +750,10 @@
                                 1168,
                                 80,
                                 1136,
-                                1409,
-                                0,
-                                128,
                                 624,
+                                0,
+                                1986,
+                                128,
                                 1200
                             ]
                         }

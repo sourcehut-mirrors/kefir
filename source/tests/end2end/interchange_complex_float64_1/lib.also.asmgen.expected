@@ -173,7 +173,7 @@ conv4:
 .loc 0 100 5
 .L__kefir_func_conv4_label17:
     movq .L__kefir_func_conv4_label16(%rip), %xmm1
-.L__kefir_func_conv4_label18:
+.L__kefir_func_conv4_label33:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -202,7 +202,7 @@ conv5:
     movq -8(%rsp), %xmm0
 .L__kefir_func_conv5_label21:
     movq .L__kefir_func_conv5_label24(%rip), %xmm1
-.L__kefir_func_conv5_label41:
+.L__kefir_func_conv5_label26:
     ldmxcsr -16(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
@@ -397,13 +397,12 @@ get64_2:
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-.loc 0 64 12
+.loc 0 64 5
 .L__kefir_func_get64_2_label11:
     movq .L__kefir_func_get64_2_label10(%rip), %xmm0
-.L__kefir_func_get64_2_label16:
+.L__kefir_func_get64_2_label12:
     movq .L__kefir_func_get64_2_label15(%rip), %xmm1
-.loc 0 64 5
-.L__kefir_func_get64_2_label17:
+.L__kefir_func_get64_2_label32:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -1677,7 +1676,7 @@ f64_const:
 .L__kefir_debug_loclist_section_entry_15:
     .byte 4
     .uleb128 .L__kefir_func_conv4_label7 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_conv4_label18 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_conv4_label33 - .L__kefir_text_section_begin
     .byte 2
     .byte 144
     .byte 17
@@ -1685,7 +1684,7 @@ f64_const:
 .L__kefir_debug_loclist_section_entry_16:
     .byte 4
     .uleb128 .L__kefir_func_conv4_label7 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_conv4_label18 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_conv4_label33 - .L__kefir_text_section_begin
     .byte 2
     .byte 144
     .byte 17
@@ -2860,14 +2859,14 @@ __kefir_softfloat_scalbn:
     pop %rbp
     ret
 .L__kefir_runtime_func___kefir_softfloat_scalbn_label10:
-    movaps %xmm1, %xmm0
-    mov %edx, %eax
     mov %esi, %ecx
+    mov %edx, %eax
+    movaps %xmm1, %xmm0
     jmp .L__kefir_runtime_func___kefir_softfloat_scalbn_label5
 .L__kefir_runtime_func___kefir_softfloat_scalbn_label11:
+    mov %edx, %eax
     mov %esi, %edi
     movaps %xmm1, %xmm0
-    mov %edx, %eax
     jmp .L__kefir_runtime_func___kefir_softfloat_scalbn_label2
 .L__kefir_runtime_text_func___kefir_softfloat_scalbn_end:
 .section .rodata

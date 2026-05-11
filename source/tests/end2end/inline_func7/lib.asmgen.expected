@@ -60,7 +60,7 @@
                                 "control_next": null
                             },
                             {
-                                "id": 144,
+                                "id": 306,
                                 "opcode": "int_const",
                                 "value": 1,
                                 "control_next": null
@@ -70,7 +70,7 @@
                                 "opcode": "int32_add",
                                 "args": [
                                     32,
-                                    144
+                                    306
                                 ],
                                 "control_next": null
                             },
@@ -104,6 +104,7 @@
                             "predecessors": [],
                             "immediate_dominator": null,
                             "alive_instructions": [
+                                306,
                                 164,
                                 49,
                                 32,
@@ -111,7 +112,6 @@
                                 132,
                                 180,
                                 194,
-                                144,
                                 209,
                                 385,
                                 114,

@@ -489,6 +489,9 @@ kefir_result_t kefir_opt_code_container_phi(const struct kefir_opt_code_containe
 kefir_result_t kefir_opt_code_container_phi_attach(struct kefir_mem *, struct kefir_opt_code_container *,
                                                    kefir_opt_instruction_ref_t, kefir_opt_block_id_t,
                                                    kefir_opt_instruction_ref_t);
+kefir_result_t kefir_opt_code_container_phi_replace(struct kefir_mem *, struct kefir_opt_code_container *,
+                                                    kefir_opt_instruction_ref_t, kefir_opt_block_id_t,
+                                                    kefir_opt_instruction_ref_t);
 kefir_result_t kefir_opt_code_container_phi_link_for(const struct kefir_opt_code_container *,
                                                      kefir_opt_instruction_ref_t, kefir_opt_block_id_t,
                                                      kefir_opt_instruction_ref_t *);

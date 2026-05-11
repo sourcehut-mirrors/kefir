@@ -39,8 +39,8 @@ test:
     pop %rbp
     ret
 .L__kefir_func_test_label9:
-    mov %edi, %eax
     mov %rsi, %rcx
+    mov %edi, %eax
     jmp .L__kefir_func_test_label2
 .L__kefir_text_func_test_end:
 

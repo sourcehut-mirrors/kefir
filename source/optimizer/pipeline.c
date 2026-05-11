@@ -51,6 +51,7 @@ kefir_result_t kefir_optimizer_pass_resolve(const char *name, const struct kefir
     PASS(InlineFunc);
     PASS(TailCalls);
     PASS(Lowering);
+    PASS(Rematerialize);
     PASS(GlobalValueNumbering);
     PASS(LoopInvariantCodeMotion);
     PASS(GlobalCodeMotion);

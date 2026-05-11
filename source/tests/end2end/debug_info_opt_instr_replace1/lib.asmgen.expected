@@ -18,11 +18,11 @@
                                 "ir_instruction": 2
                             },
                             {
-                                "id": 194,
+                                "id": 354,
                                 "opcode": "int_const",
                                 "value": 3,
                                 "control_next": null,
-                                "ir_instruction": 66
+                                "ir_instruction": 22
                             },
                             {
                                 "id": 18,
@@ -37,7 +37,7 @@
                                 "variant": "inverted_32bit",
                                 "args": [
                                     32,
-                                    194,
+                                    354,
                                     18
                                 ],
                                 "control_next": null,
@@ -78,8 +78,8 @@
                             "immediate_dominator": null,
                             "alive_instructions": [
                                 18,
-                                194,
                                 225,
+                                354,
                                 32,
                                 114,
                                 179,
@@ -120,8 +120,7 @@
                             "allocation_ref": 352,
                             "placement": [
                                 18,
-                                179,
-                                194
+                                179
                             ]
                         },
                         {

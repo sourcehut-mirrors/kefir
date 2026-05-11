@@ -25,25 +25,27 @@ pnanl:
 .L__kefir_text_func_pnanl_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $32, %rsp
+    sub $48, %rsp
     fstcw -8(%rbp)
     fldt .L__kefir_func_pnanl_label7(%rip)
-    fstpt -32(%rbp)
+    fstpt -48(%rbp)
     sub $16, %rsp
-    fldt -32(%rbp)
+    fldt -48(%rbp)
     fstpt (%rsp)
     call mysignbit@PLT
     add $16, %rsp
     test %eax, %eax
     jz .L__kefir_func_pnanl_label5
+    fldt .L__kefir_func_pnanl_label8(%rip)
+    fstpt -32(%rbp)
     sub $16, %rsp
     fldt -32(%rbp)
     fstpt (%rsp)
     call minus
     add $16, %rsp
-    fstpt -32(%rbp)
+    fstpt -48(%rbp)
 .L__kefir_func_pnanl_label5:
-    fldt -32(%rbp)
+    fldt -48(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -52,6 +54,10 @@ pnanl:
 .section .rodata
     .align 8
 .L__kefir_func_pnanl_label7:
+    .quad 13835058055282163712
+    .quad 65535
+    .align 8
+.L__kefir_func_pnanl_label8:
     .quad 13835058055282163712
     .quad 65535
 .section .text

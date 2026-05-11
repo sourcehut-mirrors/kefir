@@ -250,10 +250,9 @@ sub32:
 get32_1:
 .loc 0 55 1
 .L__kefir_text_func_get32_1_begin:
-.loc 0 56 12
+.loc 0 56 5
 .L__kefir_func_get32_1_label11:
     movd .L__kefir_func_get32_1_label10(%rip), %xmm0
-.loc 0 56 5
 .L__kefir_func_get32_1_label23:
     ret
 .L__kefir_func_get32_1_label24:
@@ -267,10 +266,9 @@ get32_1:
 get32_2:
 .loc 0 59 1
 .L__kefir_text_func_get32_2_begin:
-.loc 0 60 12
+.loc 0 60 5
 .L__kefir_func_get32_2_label11:
     movd .L__kefir_func_get32_2_label10(%rip), %xmm0
-.loc 0 60 5
 .L__kefir_func_get32_2_label23:
     ret
 .L__kefir_func_get32_2_label24:

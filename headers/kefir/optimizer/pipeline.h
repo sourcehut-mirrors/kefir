@@ -29,6 +29,8 @@ typedef struct kefir_optimizer_configuration kefir_optimizer_configuration_t;  /
 typedef struct kefir_optimizer_target_lowering {
     kefir_result_t (*lower)(struct kefir_mem *, struct kefir_opt_module *, struct kefir_opt_function *,
                             const struct kefir_optimizer_configuration *, void *);
+    kefir_result_t (*rematerialize)(struct kefir_mem *, struct kefir_opt_module *, struct kefir_opt_function *,
+                                    const struct kefir_optimizer_configuration *, void *);
     void *payload;
 } kefir_optimizer_target_lowering_t;
 
@@ -70,6 +72,7 @@ DECLARE_PASS(InlineFunc);
 DECLARE_PASS(TailCalls);
 DECLARE_PASS(DeadAlloc);
 DECLARE_PASS(Lowering);
+DECLARE_PASS(Rematerialize);
 DECLARE_PASS(GlobalValueNumbering);
 DECLARE_PASS(LoopInvariantCodeMotion);
 DECLARE_PASS(GlobalCodeMotion);

@@ -24,9 +24,10 @@ factorial:
     pop %rbp
     ret
 .L__kefir_func_factorial_label4:
+    movq .L__kefir_func_factorial_label11(%rip), %xmm1
     movaps %xmm1, %xmm2
     mulsd %xmm0, %xmm2
-    movq .L__kefir_func_factorial_label11(%rip), %xmm1
+    movq .L__kefir_func_factorial_label12(%rip), %xmm1
     movaps %xmm0, %xmm3
     subsd %xmm1, %xmm3
     movaps %xmm3, %xmm1
@@ -43,6 +44,9 @@ factorial:
     .quad 4607182418800017408
     .align 8
 .L__kefir_func_factorial_label11:
+    .quad 4607182418800017408
+    .align 8
+.L__kefir_func_factorial_label12:
     .quad 4607182418800017408
 .section .text
 

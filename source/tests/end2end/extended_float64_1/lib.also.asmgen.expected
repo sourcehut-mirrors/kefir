@@ -278,10 +278,9 @@ get64x_1:
 get64x_2:
 .loc 0 59 1
 .L__kefir_text_func_get64x_2_begin:
-.loc 0 60 12
+.loc 0 60 5
 .L__kefir_func_get64x_2_label13:
     fldt .L__kefir_func_get64x_2_label12(%rip)
-.loc 0 60 5
 .L__kefir_func_get64x_2_label19:
     ret
 .L__kefir_func_get64x_2_label20:

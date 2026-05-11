@@ -103,8 +103,9 @@ test3:
     ret
 .L__kefir_func_test3_label4:
     movl 4(%rax), %edx
-    movsx %ecx, %rsi
-    addl %edx, (%rax, %rsi, 4)
+    movq a@GOTPCREL(%rip), %rsi
+    movsx %ecx, %rdi
+    addl %edx, (%rsi, %rdi, 4)
     add $1, %ecx
     jmp .L__kefir_func_test3_label2
 .L__kefir_text_func_test3_end:

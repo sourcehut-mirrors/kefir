@@ -24,11 +24,11 @@ test1:
     movq x@GOTPCREL(%rip), %rax
 .L__kefir_func_test1_label14:
     movsxl (%rax), %rbx
-.loc 0 26 16
 .L__kefir_func_test1_label15:
     data16     lea y@tlsgd(%rip), %rdi
     .word 26214
     rex.W     call __tls_get_addr@PLT
+.loc 0 26 16
 .L__kefir_func_test1_label180:
     movq (%rax), %r12
 .loc 0 26 20
@@ -36,11 +36,12 @@ test1:
     movd __kefir_function_test1_static_z_3(%rip), %xmm0
 .L__kefir_func_test1_label181:
     movd %xmm0, -48(%rbp)
-.loc 0 26 24
+.loc 0 26 12
 .L__kefir_func_test1_label346:
     data16     lea __kefir_function_test1_static_w_2@tlsgd(%rip), %rdi
     .word 26214
     rex.W     call __tls_get_addr@PLT
+.loc 0 26 24
 .L__kefir_func_test1_label350:
     movq (%rax), %xmm0
 .loc 0 26 12

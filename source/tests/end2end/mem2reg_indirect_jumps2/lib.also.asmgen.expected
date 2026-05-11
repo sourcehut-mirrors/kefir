@@ -12,30 +12,30 @@
 .L__kefir_text_section_begin:
 factorial2:
 .L__kefir_text_func_factorial2_begin:
-    lea __kefir_function_factorial2_static_branches_7(%rip), %rcx
-    xor %eax, %eax
+    lea __kefir_function_factorial2_static_branches_7(%rip), %rax
+    xor %ecx, %ecx
     cmp $1, %rdi
-    setg %al
-    movsx %eax, %rax
-    shl $3, %rax
-    mov %rcx, %rdx
-    add %rax, %rdx
+    setg %cl
+    movsx %ecx, %rcx
+    shl $3, %rcx
+    add %rax, %rcx
     mov %rsi, %rax
 .L__kefir_func_factorial2_label2:
-    movq (%rdx), %rsi
-    mov %rax, %r8
-    imul %rdi, %r8
-    add $-1, %rdi
-    xor %edx, %edx
-    cmp $1, %rdi
-    setg %dl
-    movsx %edx, %rdx
-    shl $3, %rdx
-    add %rcx, %rdx
-    jmp *%rsi
+    movq (%rcx), %rdx
+    lea -1(%rdi), %rsi
+    imul %rax, %rdi
+    lea __kefir_function_factorial2_static_branches_7(%rip), %rcx
+    xor %r8d, %r8d
+    cmp $1, %rsi
+    setg %r8b
+    movsx %r8d, %r8
+    shl $3, %r8
+    add %r8, %rcx
+    jmp *%rdx
 .L__kefir_func_factorial2_label4:
 _kefir_local_public_label_factorial2_round:
-    mov %r8, %rax
+    mov %rdi, %rax
+    mov %rsi, %rdi
     jmp .L__kefir_func_factorial2_label2
 .L__kefir_func_factorial2_label3:
 _kefir_local_public_label_factorial2_terminate:

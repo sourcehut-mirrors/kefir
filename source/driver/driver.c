@@ -65,6 +65,7 @@
     "merge-blocks," \
     "dead-code-elimination," \
     "gcm," \
+    "rematerialize," \
     "tail-calls"
 #define KEFIR_OPTIMIZER_PIPELINE_MINI_SPEC "inline-asm-untie,inline-func,local-alloc-sink,dead-code-elimination,dead-alloc,lowering"
 // clang-format on

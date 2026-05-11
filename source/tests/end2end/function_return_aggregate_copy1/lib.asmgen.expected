@@ -23,7 +23,7 @@
                                 "control_next": null
                             },
                             {
-                                "id": 144,
+                                "id": 353,
                                 "opcode": "get_global",
                                 "global_ref": 1,
                                 "control_next": null
@@ -44,7 +44,7 @@
                             {
                                 "id": 160,
                                 "opcode": "int64_store",
-                                "location": 144,
+                                "location": 353,
                                 "value": 128,
                                 "flags": {
                                     "volatile": false
@@ -91,7 +91,7 @@
                                 "control_next": null
                             },
                             {
-                                "id": 272,
+                                "id": 369,
                                 "opcode": "uint_const",
                                 "value": 4,
                                 "control_next": null
@@ -101,7 +101,7 @@
                                 "opcode": "int64_mul",
                                 "args": [
                                     256,
-                                    272
+                                    369
                                 ],
                                 "control_next": null
                             },
@@ -154,12 +154,12 @@
                                 224,
                                 320,
                                 336,
-                                144,
-                                272,
                                 0,
+                                369,
                                 304,
                                 16,
-                                288
+                                288,
+                                353
                             ]
                         }
                     }
@@ -251,7 +251,7 @@
                                 "control_next": null
                             },
                             {
-                                "id": 240,
+                                "id": 145,
                                 "opcode": "uint_const",
                                 "value": 4,
                                 "control_next": null
@@ -261,7 +261,7 @@
                                 "opcode": "int64_mul",
                                 "args": [
                                     224,
-                                    240
+                                    145
                                 ],
                                 "control_next": null
                             },
@@ -307,10 +307,10 @@
                                 256,
                                 80,
                                 32,
-                                240,
                                 176,
                                 128,
                                 224,
+                                145,
                                 272,
                                 0,
                                 304,
