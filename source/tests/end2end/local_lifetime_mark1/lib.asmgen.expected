@@ -309,6 +309,14 @@
                                 "control_next": 945
                             },
                             {
+                                "id": 1617,
+                                "opcode": "alloc_local",
+                                "scope": 0,
+                                "type_id": 102,
+                                "type_index": 0,
+                                "control_next": null
+                            },
+                            {
                                 "id": 945,
                                 "opcode": "jump",
                                 "target_block": 5,
@@ -326,11 +334,12 @@
                             ],
                             "immediate_dominator": 0,
                             "alive_instructions": [
+                                80,
+                                624,
+                                1617,
                                 945,
                                 0,
-                                624,
                                 128,
-                                80,
                                 928
                             ]
                         }
@@ -346,15 +355,7 @@
                                 "control_next": 1072
                             },
                             {
-                                "id": 1617,
-                                "opcode": "alloc_local",
-                                "scope": 0,
-                                "type_id": 102,
-                                "type_index": 0,
-                                "control_next": null
-                            },
-                            {
-                                "id": 1953,
+                                "id": 1810,
                                 "opcode": "ref_local",
                                 "ref": 1617,
                                 "offset": 0,
@@ -363,7 +364,7 @@
                             {
                                 "id": 1072,
                                 "opcode": "int8_load",
-                                "location": 1953,
+                                "location": 1810,
                                 "flags": {
                                     "load_extension": "noextend",
                                     "volatile": true
@@ -394,7 +395,7 @@
                             "immediate_dominator": 1,
                             "alive_instructions": [
                                 976,
-                                1953,
+                                1810,
                                 80,
                                 624,
                                 0,
@@ -416,7 +417,7 @@
                                 "control_next": 1265
                             },
                             {
-                                "id": 1810,
+                                "id": 1986,
                                 "opcode": "uint_const",
                                 "value": 20,
                                 "control_next": null
@@ -426,12 +427,12 @@
                                 "opcode": "int64_add",
                                 "args": [
                                     624,
-                                    1810
+                                    1986
                                 ],
                                 "control_next": null
                             },
                             {
-                                "id": 1969,
+                                "id": 1953,
                                 "opcode": "uint_const",
                                 "value": 18,
                                 "control_next": null
@@ -441,7 +442,7 @@
                                 "opcode": "int64_add",
                                 "args": [
                                     624,
-                                    1969
+                                    1953
                                 ],
                                 "control_next": null
                             },
@@ -462,14 +463,14 @@
                             ],
                             "immediate_dominator": 5,
                             "alive_instructions": [
-                                624,
                                 80,
+                                624,
+                                1953,
                                 3377,
                                 1248,
                                 0,
                                 1265,
-                                1969,
-                                1810,
+                                1986,
                                 2145
                             ]
                         }
@@ -697,7 +698,7 @@
                                 "memssa_node_ref": 8
                             },
                             {
-                                "id": 1986,
+                                "id": 1969,
                                 "opcode": "float64_const",
                                 "value": 1.000000,
                                 "control_next": null
@@ -707,7 +708,7 @@
                                 "opcode": "float64_add",
                                 "args": [
                                     1168,
-                                    1986
+                                    1969
                                 ],
                                 "control_next": null
                             },
@@ -748,12 +749,13 @@
                                 1184,
                                 1216,
                                 1168,
-                                80,
+                                1969,
                                 1136,
                                 624,
                                 0,
-                                1986,
+                                80,
                                 128,
+                                1617,
                                 1200
                             ]
                         }

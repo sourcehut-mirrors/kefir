@@ -258,11 +258,11 @@ test13:
     pop %rbp
     ret
 .L__kefir_func_test13_label4:
-    movsx %eax, %rcx
-    lea -48(%rbp), %rdx
-    movl (%rdx, %rcx, 4), %edx
+    movsx %eax, %rdx
+    lea -48(%rbp), %rcx
+    movl (%rcx, %rdx, 4), %ecx
     movq a@GOTPCREL(%rip), %rsi
-    addl %edx, (%rsi, %rcx, 4)
+    addl %ecx, (%rsi, %rdx, 4)
     add $1, %eax
     jmp .L__kefir_func_test13_label2
 .L__kefir_text_func_test13_end:
