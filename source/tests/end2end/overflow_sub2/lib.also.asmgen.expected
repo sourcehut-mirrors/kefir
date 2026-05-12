@@ -20,15 +20,16 @@ overflow_ssub:
 .L__kefir_text_func_overflow_ssub_begin:
     movsx %edi, %rax
     movsx %esi, %rcx
-    sub %rcx, %rax
-    seto %cl
-    movsx %eax, %rsi
-    cmp %rsi, %rax
+    mov %rax, %rsi
+    sub %rcx, %rsi
+    mov %rsi, %rcx
+    seto %al
+    movsx %ecx, %rsi
+    cmp %rsi, %rcx
     setne %sil
-    or %sil, %cl
-    and $1, %ecx
-    movl %eax, (%rdx)
-    mov %ecx, %eax
+    or %sil, %al
+    and $1, %eax
+    movl %ecx, (%rdx)
     ret
 .L__kefir_text_func_overflow_ssub_end:
 
@@ -36,15 +37,16 @@ overflow_usub:
 .L__kefir_text_func_overflow_usub_begin:
     mov %edi, %eax
     mov %esi, %ecx
-    sub %rcx, %rax
-    seto %cl
     mov %eax, %esi
-    cmp %rsi, %rax
+    sub %rcx, %rsi
+    mov %rsi, %rcx
+    seto %al
+    mov %ecx, %esi
+    cmp %rsi, %rcx
     setne %sil
-    or %sil, %cl
-    and $1, %ecx
-    movl %eax, (%rdx)
-    mov %ecx, %eax
+    or %sil, %al
+    and $1, %eax
+    movl %ecx, (%rdx)
     ret
 .L__kefir_text_func_overflow_usub_end:
 

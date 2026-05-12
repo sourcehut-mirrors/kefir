@@ -58,16 +58,15 @@ get1:
     mov %rsp, %rbp
     sub $16, %rsp
     movq %rdi, -8(%rbp)
-    movq -8(%rbp), %rax
-    movb (%rax), %cl
-    shl $59, %rcx
-    shr $59, %rcx
-    shl $59, %rcx
-    shr $59, %rcx
-    shl $59, %rcx
-    shr $59, %rcx
-    shl $58, %rcx
-    mov %rcx, %rax
+    movq -8(%rbp), %rcx
+    movb (%rcx), %al
+    shl $59, %rax
+    shr $59, %rax
+    shl $59, %rax
+    shr $59, %rax
+    shl $59, %rax
+    shr $59, %rax
+    shl $58, %rax
     shr $58, %rax
     lea (%rbp), %rsp
     pop %rbp
@@ -108,16 +107,15 @@ get3:
     mov %rsp, %rbp
     sub $16, %rsp
     movq %rdi, -8(%rbp)
-    movq -8(%rbp), %rax
-    movw 6(%rax), %cx
-    shl $52, %rcx
-    shr $52, %rcx
-    shl $52, %rcx
-    shr $52, %rcx
-    shl $52, %rcx
-    shr $54, %rcx
-    shl $50, %rcx
-    mov %rcx, %rax
+    movq -8(%rbp), %rcx
+    movw 6(%rcx), %ax
+    shl $52, %rax
+    shr $52, %rax
+    shl $52, %rax
+    shr $52, %rax
+    shl $52, %rax
+    shr $54, %rax
+    shl $50, %rax
     shr $50, %rax
     lea (%rbp), %rsp
     pop %rbp
@@ -172,16 +170,15 @@ get6:
     mov %rsp, %rbp
     sub $16, %rsp
     movq %rdi, -8(%rbp)
-    movq -8(%rbp), %rax
-    movb 16(%rax), %cl
-    shl $56, %rcx
-    shr $56, %rcx
-    shl $56, %rcx
-    shr $56, %rcx
-    shl $56, %rcx
-    shr $56, %rcx
-    shl $49, %rcx
-    mov %rcx, %rax
+    movq -8(%rbp), %rcx
+    movb 16(%rcx), %al
+    shl $56, %rax
+    shr $56, %rax
+    shl $56, %rax
+    shr $56, %rax
+    shl $56, %rax
+    shr $56, %rax
+    shl $49, %rax
     shr $49, %rax
     lea (%rbp), %rsp
     pop %rbp
@@ -225,20 +222,20 @@ get8:
     mov %rsp, %rbp
     sub $16, %rsp
     movq %rdi, -8(%rbp)
-    movq -8(%rbp), %rax
-    movb 21(%rax), %cl
-    movw 19(%rax), %dx
-    movzx %dx, %edx
-    shl $16, %rcx
-    or %rcx, %rdx
-    shl $42, %rdx
-    shr $42, %rdx
-    shl $42, %rdx
-    shr $42, %rdx
-    shl $42, %rdx
-    shr $49, %rdx
-    shl $31, %rdx
-    mov %rdx, %rax
+    movq -8(%rbp), %rcx
+    mov %rax, %rdx
+    movb 21(%rcx), %dl
+    movw 19(%rcx), %ax
+    movzx %ax, %eax
+    shl $16, %rdx
+    or %rdx, %rax
+    shl $42, %rax
+    shr $42, %rax
+    shl $42, %rax
+    shr $42, %rax
+    shl $42, %rax
+    shr $49, %rax
+    shl $31, %rax
     shr $31, %rax
     lea (%rbp), %rsp
     pop %rbp
@@ -251,16 +248,15 @@ get9:
     mov %rsp, %rbp
     sub $16, %rsp
     movq %rdi, -8(%rbp)
-    movq -8(%rbp), %rax
-    movb 22(%rax), %cl
-    shl $60, %rcx
-    shr $60, %rcx
-    shl $60, %rcx
-    shr $60, %rcx
-    shl $60, %rcx
-    shr $60, %rcx
-    shl $58, %rcx
-    mov %rcx, %rax
+    movq -8(%rbp), %rcx
+    movb 22(%rcx), %al
+    shl $60, %rax
+    shr $60, %rax
+    shl $60, %rax
+    shr $60, %rax
+    shl $60, %rax
+    shr $60, %rax
+    shl $58, %rax
     shr $58, %rax
     lea (%rbp), %rsp
     pop %rbp

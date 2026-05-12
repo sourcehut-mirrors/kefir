@@ -24,15 +24,14 @@ my_copysign:
     stmxcsr -8(%rbp)
     movq %xmm1, -16(%rbp)
     movq %xmm0, -24(%rbp)
-    movq -24(%rbp), %xmm0
-    movq -16(%rbp), %xmm1
-    movdqu .L__kefir_constant_copysign(%rip), %xmm2
-    movaps %xmm2, %xmm3
-    andpd %xmm1, %xmm3
-    movaps %xmm3, %xmm1
-    andnpd %xmm0, %xmm2
-    movaps %xmm2, %xmm0
-    orpd %xmm1, %xmm0
+    movq -24(%rbp), %xmm1
+    movq -16(%rbp), %xmm2
+    movdqu .L__kefir_constant_copysign(%rip), %xmm0
+    movaps %xmm0, %xmm3
+    andpd %xmm2, %xmm3
+    movaps %xmm3, %xmm2
+    andnpd %xmm1, %xmm0
+    orpd %xmm2, %xmm0
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -47,15 +46,14 @@ my_copysignf:
     stmxcsr -8(%rbp)
     movd %xmm1, -12(%rbp)
     movd %xmm0, -16(%rbp)
-    movd -16(%rbp), %xmm0
-    movd -12(%rbp), %xmm1
-    movdqu .L__kefir_constant_copysignf(%rip), %xmm2
-    movaps %xmm2, %xmm3
-    andps %xmm1, %xmm3
-    movaps %xmm3, %xmm1
-    andnps %xmm0, %xmm2
-    movaps %xmm2, %xmm0
-    orps %xmm1, %xmm0
+    movd -16(%rbp), %xmm1
+    movd -12(%rbp), %xmm2
+    movdqu .L__kefir_constant_copysignf(%rip), %xmm0
+    movaps %xmm0, %xmm3
+    andps %xmm2, %xmm3
+    movaps %xmm3, %xmm2
+    andnps %xmm1, %xmm0
+    orps %xmm2, %xmm0
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

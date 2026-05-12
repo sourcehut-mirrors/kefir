@@ -166,11 +166,10 @@ get7:
     movq %rcx, -16(%rbp)
     movq 16(%rax), %rax
     movq %rax, -8(%rbp)
-    movl -8(%rbp), %eax
-    shl $32, %rax
-    shr $32, %rax
-    shl $32, %rax
-    mov %rax, %rdx
+    movl -8(%rbp), %edx
+    shl $32, %rdx
+    shr $32, %rdx
+    shl $32, %rdx
     shr $32, %rdx
     lea -80(%rbp), %rdi
     mov $150, %esi

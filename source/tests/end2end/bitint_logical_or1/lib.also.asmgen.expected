@@ -168,10 +168,10 @@ or5:
     call __kefir_bigint_is_zero
     xor %ecx, %ecx
     test %al, %al
-    sete %cl
-    test %cl, %cl
-    jz .L__kefir_func_or5_label4
     mov %rcx, %rax
+    sete %al
+    test %al, %al
+    jz .L__kefir_func_or5_label4
 .L__kefir_func_or5_label3:
     lea (%rbp), %rsp
     pop %rbp
@@ -231,10 +231,10 @@ or6:
     call __kefir_bigint_is_zero
     xor %ecx, %ecx
     test %al, %al
-    sete %cl
-    test %cl, %cl
-    jz .L__kefir_func_or6_label4
     mov %rcx, %rax
+    sete %al
+    test %al, %al
+    jz .L__kefir_func_or6_label4
 .L__kefir_func_or6_label3:
     lea (%rbp), %rsp
     pop %rbp
@@ -329,8 +329,8 @@ __kefir_bigint_is_zero:
     shl $3, %rcx
     sub %rcx, %rax
     movq %rax, -16(%rbp)
-    movq -16(%rbp), %rax
-    lea 1(%rax), %rcx
+    movq -16(%rbp), %rcx
+    add $1, %rcx
     mov $1, %eax
     shl %cl, %rax
     sub $1, %eax

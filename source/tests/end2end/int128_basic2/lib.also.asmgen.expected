@@ -13,10 +13,9 @@
 .L__kefir_text_section_begin:
 get:
 .L__kefir_text_func_get_begin:
-    movq value@GOTPCREL(%rip), %rax
-    mov (%rax), %rcx
-    mov 8(%rax), %rdx
-    mov %rcx, %rax
+    movq value@GOTPCREL(%rip), %rcx
+    mov (%rcx), %rax
+    mov 8(%rcx), %rdx
     ret
 .L__kefir_text_func_get_end:
 

@@ -115,20 +115,20 @@ dec32_isfinite:
     movd .L__kefir_func_dec32_isfinite_label3(%rip), %xmm1
     call __bid_eqsd2@PLT
     test %eax, %eax
-    mov %rax, %rbx
-    sete %bl
+    mov %rax, %r12
+    sete %r12b
     movaps -32(%rbp), %xmm0
     movaps -32(%rbp), %xmm1
     call __bid_unordsd2@PLT
-    mov %rax, %r12
+    mov %rax, %rbx
     movd .L__kefir_func_dec32_isfinite_label4(%rip), %xmm1
     movaps -32(%rbp), %xmm0
     call __bid_eqsd2@PLT
     test %eax, %eax
     sete %al
-    or %al, %r12b
-    setne %al
     or %al, %bl
+    setne %al
+    or %al, %r12b
     mov $0, %rax
     sete %al
     lea -16(%rbp), %rsp
@@ -157,20 +157,20 @@ dec64_isfinite:
     movq .L__kefir_func_dec64_isfinite_label3(%rip), %xmm1
     call __bid_eqdd2@PLT
     test %eax, %eax
-    mov %rax, %rbx
-    sete %bl
+    mov %rax, %r12
+    sete %r12b
     movaps -32(%rbp), %xmm0
     movaps -32(%rbp), %xmm1
     call __bid_unorddd2@PLT
-    mov %rax, %r12
+    mov %rax, %rbx
     movq .L__kefir_func_dec64_isfinite_label4(%rip), %xmm1
     movaps -32(%rbp), %xmm0
     call __bid_eqdd2@PLT
     test %eax, %eax
     sete %al
-    or %al, %r12b
-    setne %al
     or %al, %bl
+    setne %al
+    or %al, %r12b
     mov $0, %rax
     sete %al
     lea -16(%rbp), %rsp
@@ -197,9 +197,8 @@ dec64_isinf_sign:
     movaps %xmm0, -32(%rbp)
     movq .L__kefir_func_dec64_isinf_sign_label3(%rip), %xmm1
     call __bid_eqdd2@PLT
-    xor %ecx, %ecx
+    xor %ebx, %ebx
     test %eax, %eax
-    mov %rcx, %rbx
     sete %bl
     movq .L__kefir_func_dec64_isinf_sign_label4(%rip), %xmm1
     movaps -32(%rbp), %xmm0
@@ -271,9 +270,8 @@ dec128_isinf_sign:
     movaps %xmm0, -32(%rbp)
     movdqu .L__kefir_func_dec128_isinf_sign_label3(%rip), %xmm1
     call __bid_eqtd2@PLT
-    xor %ecx, %ecx
+    xor %ebx, %ebx
     test %eax, %eax
-    mov %rcx, %rbx
     sete %bl
     movdqu .L__kefir_func_dec128_isinf_sign_label4(%rip), %xmm1
     movaps -32(%rbp), %xmm0
@@ -309,20 +307,20 @@ dec128_isfinite:
     movdqu .L__kefir_func_dec128_isfinite_label3(%rip), %xmm1
     call __bid_eqtd2@PLT
     test %eax, %eax
-    mov %rax, %rbx
-    sete %bl
+    mov %rax, %r12
+    sete %r12b
     movaps -32(%rbp), %xmm0
     movaps -32(%rbp), %xmm1
     call __bid_unordtd2@PLT
-    mov %rax, %r12
+    mov %rax, %rbx
     movdqu .L__kefir_func_dec128_isfinite_label4(%rip), %xmm1
     movaps -32(%rbp), %xmm0
     call __bid_eqtd2@PLT
     test %eax, %eax
     sete %al
-    or %al, %r12b
-    setne %al
     or %al, %bl
+    setne %al
+    or %al, %r12b
     mov $0, %rax
     sete %al
     lea -16(%rbp), %rsp
@@ -349,9 +347,8 @@ dec32_isinf_sign:
     movaps %xmm0, -32(%rbp)
     movd .L__kefir_func_dec32_isinf_sign_label3(%rip), %xmm1
     call __bid_eqsd2@PLT
-    xor %ecx, %ecx
+    xor %ebx, %ebx
     test %eax, %eax
-    mov %rcx, %rbx
     sete %bl
     movd .L__kefir_func_dec32_isinf_sign_label4(%rip), %xmm1
     movaps -32(%rbp), %xmm0

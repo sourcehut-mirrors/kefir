@@ -25,15 +25,14 @@ is_inf_f32:
     movd %xmm0, -12(%rbp)
     movd -12(%rbp), %xmm0
     movq %xmm0, %rax
-    mov %rax, %rcx
-    and $2147483647, %ecx
+    mov %rax, %rdx
+    and $2147483647, %edx
     sar $31, %eax
-    or $1, %eax
-    xor %edx, %edx
-    cmp $2139095040, %ecx
-    mov %edx, %ecx
-    cmove %eax, %ecx
-    mov %rcx, %rax
+    mov %eax, %ecx
+    or $1, %ecx
+    xor %eax, %eax
+    cmp $2139095040, %edx
+    cmove %ecx, %eax
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -50,15 +49,15 @@ is_inf_f64:
     movq -16(%rbp), %xmm0
     movq %xmm0, %rax
     movabs $9223372036854775807, %rcx
-    and %rax, %rcx
+    mov %rcx, %rdx
+    and %rax, %rdx
     sar $63, %rax
-    or $1, %eax
-    xor %edx, %edx
+    mov %rax, %rcx
+    or $1, %ecx
+    xor %eax, %eax
     movabs $9218868437227405312, %rsi
-    cmp %rsi, %rcx
-    mov %edx, %ecx
-    cmove %eax, %ecx
-    mov %rcx, %rax
+    cmp %rsi, %rdx
+    cmove %ecx, %eax
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -80,15 +79,16 @@ is_inf_f80:
     mov %rax, %rcx
     not %ecx
     movabs $-9223372036854775808, %rdx
-    xorq -48(%rbp), %rdx
-    and $32767, %ecx
+    mov %rdx, %rsi
+    xorq -48(%rbp), %rsi
+    mov %ecx, %edx
+    and $32767, %edx
     shr $15, %rax
-    or $1, %eax
-    xor %esi, %esi
-    or %rdx, %rcx
-    mov %esi, %ecx
-    cmove %eax, %ecx
-    mov %rcx, %rax
+    mov %rax, %rcx
+    or $1, %ecx
+    xor %eax, %eax
+    or %rsi, %rdx
+    cmove %ecx, %eax
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

@@ -29,21 +29,21 @@ add1:
     sub $16, %rsp
     movb %dil, -1(%rbp)
     movb -1(%rbp), %al
-    movq a@GOTPCREL(%rip), %rdi
+    movq a@GOTPCREL(%rip), %r8
     shl $58, %rax
-    mov %rax, %rsi
-    sar $58, %rsi
+    mov %rax, %rdi
+    sar $58, %rdi
 .L__kefir_func_add1_label2:
-    movb (%rdi), %al
+    movb (%r8), %al
     shl $58, %rax
     sar $58, %rax
-    mov %rax, %r8
-    add %sil, %r8b
-    mov %rdi, %rdx
-    mov %r8, %rcx
+    mov %rax, %rsi
+    add %dil, %sil
+    mov %r8, %rdx
+    mov %rsi, %rcx
     lock     cmpxchgb %cl, (%rdx)
     jnz .L__kefir_func_add1_label2
-    mov %r8, %rax
+    mov %rsi, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -56,21 +56,21 @@ add2:
     sub $16, %rsp
     movw %di, -2(%rbp)
     movw -2(%rbp), %ax
-    movq b@GOTPCREL(%rip), %rdi
+    movq b@GOTPCREL(%rip), %r8
     shl $51, %rax
-    mov %rax, %rsi
-    sar $51, %rsi
+    mov %rax, %rdi
+    sar $51, %rdi
 .L__kefir_func_add2_label2:
-    movw (%rdi), %ax
+    movw (%r8), %ax
     shl $51, %rax
     sar $51, %rax
-    mov %rax, %r8
-    add %si, %r8w
-    mov %rdi, %rdx
-    mov %r8, %rcx
+    mov %rax, %rsi
+    add %di, %si
+    mov %r8, %rdx
+    mov %rsi, %rcx
     lock     cmpxchgw %cx, (%rdx)
     jnz .L__kefir_func_add2_label2
-    mov %r8, %rax
+    mov %rsi, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -83,21 +83,21 @@ add3:
     sub $16, %rsp
     movl %edi, -4(%rbp)
     movl -4(%rbp), %eax
-    movq c@GOTPCREL(%rip), %rdi
+    movq c@GOTPCREL(%rip), %r8
     shl $37, %rax
-    mov %rax, %rsi
-    sar $37, %rsi
+    mov %rax, %rdi
+    sar $37, %rdi
 .L__kefir_func_add3_label2:
-    movl (%rdi), %eax
+    movl (%r8), %eax
     shl $37, %rax
     sar $37, %rax
-    mov %rax, %r8
-    add %esi, %r8d
-    mov %rdi, %rdx
-    mov %r8d, %ecx
+    mov %rax, %rsi
+    add %edi, %esi
+    mov %r8, %rdx
+    mov %esi, %ecx
     lock     cmpxchgl %ecx, (%rdx)
     jnz .L__kefir_func_add3_label2
-    mov %r8d, %eax
+    mov %esi, %eax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -110,21 +110,21 @@ add4:
     sub $16, %rsp
     movq %rdi, -8(%rbp)
     movq -8(%rbp), %rax
-    movq d@GOTPCREL(%rip), %rdi
+    movq d@GOTPCREL(%rip), %r8
     shl $14, %rax
-    mov %rax, %rsi
-    sar $14, %rsi
+    mov %rax, %rdi
+    sar $14, %rdi
 .L__kefir_func_add4_label2:
-    movq (%rdi), %rax
+    movq (%r8), %rax
     shl $14, %rax
     sar $14, %rax
-    mov %rax, %r8
-    add %rsi, %r8
-    mov %rdi, %rdx
-    mov %r8, %rcx
+    mov %rax, %rsi
+    add %rdi, %rsi
+    mov %r8, %rdx
+    mov %rsi, %rcx
     lock     cmpxchgq %rcx, (%rdx)
     jnz .L__kefir_func_add4_label2
-    mov %r8, %rax
+    mov %rsi, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret

@@ -91,10 +91,9 @@ test4:
     shr $4, %rcx
     add %rax, %rcx
     movabs $1085102592571150095, %rax
-    and %rcx, %rax
-    movabs $72340172838076673, %rcx
-    imul %rax, %rcx
-    mov %rcx, %rax
+    and %rax, %rcx
+    movabs $72340172838076673, %rax
+    imul %rcx, %rax
     shr $56, %rax
     ret
 .L__kefir_text_func_test4_end:

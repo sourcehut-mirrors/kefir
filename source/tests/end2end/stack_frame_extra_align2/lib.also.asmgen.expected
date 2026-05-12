@@ -368,29 +368,24 @@ test7:
     mov %rsp, %rbp
     sub $128, %rsp
     movl $0, -128(%rbp)
-    mov %rbp, %rax
-    mov 8(%rax), %rcx
+    mov %rbp, %rcx
+    mov 8(%rcx), %rax
 .L__kefir_func_test7_label2:
     cmp $0, %rdi
-    je .L__kefir_func_test7_label8
-    xor %ecx, %ecx
-    mov (%rax), %rax
-    test %rax, %rax
-    jz .L__kefir_func_test7_label7
-    mov 8(%rax), %rcx
+    je .L__kefir_func_test7_label5
+    xor %eax, %eax
+    mov (%rcx), %rcx
+    test %rcx, %rcx
+    jz .L__kefir_func_test7_label5
+    mov 8(%rcx), %rax
     dec %rdi
     jmp .L__kefir_func_test7_label2
-.L__kefir_func_test7_label7:
-    mov %ecx, %eax
 .L__kefir_func_test7_label5:
     lea (%rbp), %rsp
     pop %rbp
     add $8, %rsp
     pop %rsp
     ret
-.L__kefir_func_test7_label8:
-    mov %rcx, %rax
-    jmp .L__kefir_func_test7_label5
 .L__kefir_text_func_test7_end:
 
 test8:

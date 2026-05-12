@@ -70,7 +70,7 @@ mul:
     cld
     mov $1024, %rcx
     rep movsq
-    lea -24592(%rbp), %rdi
+    lea -16400(%rbp), %rdi
     lea -32784(%rbp), %rsi
     cld
     mov $1024, %rcx
@@ -79,15 +79,15 @@ mul:
     lea -32784(%rbp), %rdi
     mov $65535, %esi
     call __kefir_bigint_set_signed_integer
-    lea -16400(%rbp), %rdi
+    lea -24592(%rbp), %rdi
     lea -8208(%rbp), %rsi
-    lea -24592(%rbp), %rdx
+    lea -16400(%rbp), %rdx
     lea -32784(%rbp), %rcx
     mov $65535, %r8d
     mov $65535, %r9d
     call __kefir_bigint_signed_multiply
     mov %rbx, %rdi
-    lea -16400(%rbp), %rsi
+    lea -24592(%rbp), %rsi
     cld
     mov $1024, %rcx
     rep movsq
@@ -2234,9 +2234,8 @@ __kefir_bigint_signed_multiply:
     cmp %rcx, %rax
     jb .L__kefir_runtime_func___kefir_bigint_signed_multiply_label38
     movq -64(%rbp), %rdi
-    movq -96(%rbp), %rax
+    movq -96(%rbp), %rsi
     movq -120(%rbp), %rdx
-    mov %rax, %rsi
     shl $1, %rsi
     call __kefir_bigint_cast_signed
     xor %eax, %eax

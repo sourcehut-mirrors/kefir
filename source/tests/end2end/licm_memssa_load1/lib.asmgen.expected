@@ -204,12 +204,11 @@ test11:
     push %r13
     push %r14
     mov %rdi, %rbx
-    movq d@GOTPCREL(%rip), %r12
-    movq a@GOTPCREL(%rip), %r13
-    xor %eax, %eax
-    mov %rax, %r14
+    movq d@GOTPCREL(%rip), %r13
+    movq a@GOTPCREL(%rip), %r14
+    xor %r12d, %r12d
 .L__kefir_func_test11_label2:
-    cmp $10, %r14d
+    cmp $10, %r12d
     jl .L__kefir_func_test11_label4
     pop %r14
     pop %r13
@@ -219,13 +218,13 @@ test11:
     ret
 .L__kefir_func_test11_label4:
     call fn@PLT
-    movl (%r12), %eax
-    movsx %r14d, %rcx
-    addl %eax, (%r13, %rcx, 4)
-    mov %r14, %rax
+    movl (%r13), %eax
+    movsx %r12d, %rcx
+    addl %eax, (%r14, %rcx, 4)
+    mov %r12, %rax
     cdq
     idiv %ebx
-    lea 1(%edx), %r14d
+    lea 1(%edx), %r12d
     jmp .L__kefir_func_test11_label2
 .L__kefir_text_func_test11_end:
 

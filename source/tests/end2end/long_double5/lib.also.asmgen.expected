@@ -161,10 +161,11 @@ neq:
     fucomip %st(1)
     fstp %st(0)
     setnp %al
-    cmovne %rcx, %rax
-    xor %ecx, %ecx
-    test %al, %al
-    mov %rcx, %rax
+    mov %rax, %rdx
+    cmovne %rcx, %rdx
+    mov %rdx, %rcx
+    xor %eax, %eax
+    test %cl, %cl
     sete %al
     fldcw -8(%rbp)
     lea (%rbp), %rsp

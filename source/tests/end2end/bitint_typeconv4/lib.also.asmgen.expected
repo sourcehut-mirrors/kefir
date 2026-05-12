@@ -134,12 +134,11 @@ get7:
     push %rbx
     sub $40, %rsp
     mov %rdi, %rbx
-    movabs $152627362517262, %rax
-    neg %rax
-    shl $1, %rax
-    sar $1, %rax
-    shl $1, %rax
-    mov %rax, %rdx
+    movabs $152627362517262, %rdx
+    neg %rdx
+    shl $1, %rdx
+    sar $1, %rdx
+    shl $1, %rdx
     sar $1, %rdx
     lea -48(%rbp), %rdi
     mov $200, %esi
@@ -162,9 +161,8 @@ get8:
     push %rbx
     sub $40, %rsp
     mov %rdi, %rbx
-    movabs $152627362517262, %rax
-    shl $15, %rax
-    mov %rax, %rdx
+    movabs $152627362517262, %rdx
+    shl $15, %rdx
     sar $15, %rdx
     lea -48(%rbp), %rdi
     mov $200, %esi
@@ -187,9 +185,8 @@ get9:
     push %rbx
     sub $40, %rsp
     mov %rdi, %rbx
-    movabs $212205289333297, %rax
-    shl $16, %rax
-    mov %rax, %rdx
+    movabs $212205289333297, %rdx
+    shl $16, %rdx
     shr $16, %rdx
     lea -48(%rbp), %rdi
     mov $200, %esi
@@ -212,8 +209,7 @@ get10:
     push %rbx
     sub $72, %rsp
     mov %rdi, %rbx
-    movabs $8372472467146471642, %rax
-    mov %rax, %rdx
+    movabs $8372472467146471642, %rdx
     neg %rdx
     lea -80(%rbp), %rdi
     mov $128, %esi

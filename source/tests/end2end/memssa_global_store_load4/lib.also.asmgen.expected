@@ -116,13 +116,14 @@ test5:
     lea -12(%rbp), %rdi
     call dummy@PLT
     movl -4(%rbp), %eax
-    neg %eax
-    movl %eax, -4(%rbp)
-    movl -12(%rbp), %ecx
-    add $1, %ecx
-    movl %ecx, -12(%rbp)
+    mov %eax, %ecx
+    neg %ecx
+    movl %ecx, -4(%rbp)
+    movl -12(%rbp), %eax
+    add $1, %eax
+    movl %eax, -12(%rbp)
     movl -8(%rbp), %edx
-    add %edx, %ecx
+    add %edx, %eax
     add %ecx, %eax
     lea (%rbp), %rsp
     pop %rbp

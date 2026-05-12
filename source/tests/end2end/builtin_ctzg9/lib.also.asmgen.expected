@@ -21,11 +21,11 @@ test1:
     shl $47, %rdi
     shr $47, %rdi
     cmp $0, %edi
-    sete %al
-    xor %ecx, %ecx
-    rep bsf %edi, %ecx
-    test %al, %al
-    mov %ecx, %eax
+    mov %rax, %rcx
+    sete %cl
+    xor %eax, %eax
+    rep bsf %edi, %eax
+    test %cl, %cl
     cmovnz %rsi, %rax
     ret
 .L__kefir_text_func_test1_end:
@@ -36,11 +36,11 @@ test2:
     shl $32, %rax
     shr $32, %rax
     cmp $0, %eax
-    sete %al
-    xor %ecx, %ecx
-    rep bsf %edi, %ecx
-    test %al, %al
-    mov %ecx, %eax
+    mov %rax, %rcx
+    sete %cl
+    xor %eax, %eax
+    rep bsf %edi, %eax
+    test %cl, %cl
     cmovnz %rsi, %rax
     ret
 .L__kefir_text_func_test2_end:
@@ -50,11 +50,11 @@ test3:
     shl $5, %rdi
     shr $5, %rdi
     cmp $0, %rdi
-    sete %al
-    xor %ecx, %ecx
-    rep bsf %rdi, %rcx
-    test %al, %al
-    mov %rcx, %rax
+    mov %rax, %rcx
+    sete %cl
+    xor %eax, %eax
+    rep bsf %rdi, %rax
+    test %cl, %cl
     cmovnz %rsi, %rax
     ret
 .L__kefir_text_func_test3_end:
@@ -65,11 +65,11 @@ test4:
     shl $0, %rax
     shr $0, %rax
     cmp $0, %rax
-    sete %al
-    xor %ecx, %ecx
-    rep bsf %rdi, %rcx
-    test %al, %al
-    mov %rcx, %rax
+    mov %rax, %rcx
+    sete %cl
+    xor %eax, %eax
+    rep bsf %rdi, %rax
+    test %cl, %cl
     cmovnz %rsi, %rax
     ret
 .L__kefir_text_func_test4_end:
@@ -208,19 +208,19 @@ __kefir_bigint_trailing_zeros:
     sub $8, %rsp
     mov %rdx, %rax
     lea 7(%rsi), %rcx
-    mov %rcx, %rdx
-    shr $3, %rdx
-    lea -1(%rdx), %rcx
+    mov %rcx, %r8
+    shr $3, %r8
+    lea -1(%r8), %rcx
     shl $3, %rcx
-    mov %rsi, %r8
-    sub %rcx, %r8
+    mov %rsi, %r9
+    sub %rcx, %r9
     cmp $0, %rsi
     je .L__kefir_runtime_func___kefir_bigint_trailing_zeros_label15
+    xor %edx, %edx
     xor %ecx, %ecx
-    xor %esi, %esi
-    mov %rsi, %r9
+    mov %rcx, %rsi
 .L__kefir_runtime_func___kefir_bigint_trailing_zeros_label3:
-    cmp %rdx, %r9
+    cmp %r8, %rsi
     jb .L__kefir_runtime_func___kefir_bigint_trailing_zeros_label5
     lea -24(%rbp), %rsp
     pop %r13
@@ -229,26 +229,21 @@ __kefir_bigint_trailing_zeros:
     pop %rbp
     ret
 .L__kefir_runtime_func___kefir_bigint_trailing_zeros_label5:
-    mov %rsi, %r10
-    movb (%rdi, %r9, 1), %r10b
-    lea 8(%rcx), %rsi
-    add $1, %r9
+    mov %rcx, %r10
+    movb (%rdi, %rsi, 1), %r10b
+    lea 8(%rdx), %rcx
+    add $1, %rsi
     movzx %r10b, %r10
     mov $8, %r11d
-    cmp %rdx, %r9
-    cmovae %r8, %r11
+    cmp %r8, %rsi
+    cmovae %r9, %r11
     cmp $0, %r10d
     je .L__kefir_runtime_func___kefir_bigint_trailing_zeros_label7
-    xor %ebx, %ebx
-    mov %rcx, %rsi
-    mov %rbx, %rcx
+    xor %ecx, %ecx
 .L__kefir_runtime_func___kefir_bigint_trailing_zeros_label9:
     cmp %r11, %rcx
-    jb .L__kefir_runtime_func___kefir_bigint_trailing_zeros_label11
-    mov %rsi, %rcx
-    jmp .L__kefir_runtime_func___kefir_bigint_trailing_zeros_label3
-.L__kefir_runtime_func___kefir_bigint_trailing_zeros_label11:
-    lea 1(%rsi), %rbx
+    jae .L__kefir_runtime_func___kefir_bigint_trailing_zeros_label3
+    lea 1(%rdx), %rbx
     lea 1(%rcx), %r12
     mov %r10, %r13
     sar %cl, %r13d
@@ -256,11 +251,11 @@ __kefir_bigint_trailing_zeros:
     and $1, %ecx
     cmp $1, %ecx
     je .L__kefir_runtime_func___kefir_bigint_trailing_zeros_label13
-    mov %rbx, %rsi
+    mov %rbx, %rdx
     mov %r12, %rcx
     jmp .L__kefir_runtime_func___kefir_bigint_trailing_zeros_label9
 .L__kefir_runtime_func___kefir_bigint_trailing_zeros_label13:
-    mov %rsi, %rax
+    mov %rdx, %rax
     lea -24(%rbp), %rsp
     pop %r13
     pop %r12
@@ -268,7 +263,7 @@ __kefir_bigint_trailing_zeros:
     pop %rbp
     ret
 .L__kefir_runtime_func___kefir_bigint_trailing_zeros_label7:
-    mov %rsi, %rcx
+    mov %rcx, %rdx
     jmp .L__kefir_runtime_func___kefir_bigint_trailing_zeros_label3
 .L__kefir_runtime_func___kefir_bigint_trailing_zeros_label15:
     lea -24(%rbp), %rsp

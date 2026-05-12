@@ -15,9 +15,9 @@ test32:
     stmxcsr -16(%rbp)
     movaps %xmm0, %xmm1
     shufps $1, %xmm1, %xmm1
-    movd %xmm0, %ecx
-    movd %xmm1, %edx
-    shl $32, %rdx
+    movd %xmm0, %edx
+    movd %xmm1, %ecx
+    shl $32, %rcx
     or %rdx, %rcx
 mov %rcx, %rbx
 mov %rcx, %rax

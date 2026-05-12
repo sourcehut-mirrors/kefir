@@ -66,33 +66,31 @@ sub64:
 
 sub8r:
 .L__kefir_text_func_sub8r_begin:
-    movsx %sil, %rsi
+    movsx %sil, %r8
 .L__kefir_func_sub8r_label2:
     movb (%rdi), %al
-    movsx %al, %rcx
-    mov %rcx, %r8
-    sub %esi, %r8d
+    movsx %al, %rsi
+    sub %r8d, %esi
     mov %rdi, %rdx
-    mov %r8d, %ecx
+    mov %esi, %ecx
     lock     cmpxchgb %cl, (%rdx)
     jnz .L__kefir_func_sub8r_label2
-    mov %r8d, %eax
+    mov %esi, %eax
     ret
 .L__kefir_text_func_sub8r_end:
 
 sub16r:
 .L__kefir_text_func_sub16r_begin:
-    movsx %si, %rsi
+    movsx %si, %r8
 .L__kefir_func_sub16r_label2:
     movw (%rdi), %ax
-    movsx %ax, %rcx
-    mov %rcx, %r8
-    sub %esi, %r8d
+    movsx %ax, %rsi
+    sub %r8d, %esi
     mov %rdi, %rdx
-    mov %r8d, %ecx
+    mov %esi, %ecx
     lock     cmpxchgw %cx, (%rdx)
     jnz .L__kefir_func_sub16r_label2
-    mov %r8d, %eax
+    mov %esi, %eax
     ret
 .L__kefir_text_func_sub16r_end:
 

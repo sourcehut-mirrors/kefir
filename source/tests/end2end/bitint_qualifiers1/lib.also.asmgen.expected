@@ -17,15 +17,15 @@ add:
     sub $16, %rsp
     movq %rsi, -8(%rbp)
     movq %rdi, -16(%rbp)
-    movq -8(%rbp), %rax
-    movq -16(%rbp), %rcx
-    movq (%rcx), %rdx
-    shl $21, %rdx
-    sar $21, %rdx
+    movq -8(%rbp), %rcx
+    movq -16(%rbp), %rdx
+    movq (%rdx), %rax
     shl $21, %rax
     sar $21, %rax
-    add %rdx, %rax
-    movq %rax, (%rcx)
+    shl $21, %rcx
+    sar $21, %rcx
+    add %rcx, %rax
+    movq %rax, (%rdx)
     lea (%rbp), %rsp
     pop %rbp
     ret

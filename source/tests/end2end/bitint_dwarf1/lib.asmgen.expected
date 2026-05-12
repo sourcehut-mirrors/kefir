@@ -46,14 +46,13 @@ get:
     movw %ax, -2(%rbp)
 .loc 0 30 12
 .L__kefir_func_get_label17:
-    movw -2(%rbp), %ax
+    movw -2(%rbp), %dx
 .L__kefir_func_get_label28:
-    shl $55, %rax
-    sar $55, %rax
+    shl $55, %rdx
+    sar $55, %rdx
 .loc 0 30 5
 .L__kefir_func_get_label29:
-    shl $55, %rax
-    mov %rax, %rdx
+    shl $55, %rdx
     sar $55, %rdx
 .L__kefir_func_get_label204:
     lea -32(%rbp), %rdi
@@ -81,14 +80,13 @@ get2:
     movw %ax, -2(%rbp)
 .loc 0 42 12
 .L__kefir_func_get2_label17:
-    movw -2(%rbp), %ax
+    movw -2(%rbp), %dx
 .L__kefir_func_get2_label28:
-    shl $55, %rax
-    shr $55, %rax
+    shl $55, %rdx
+    shr $55, %rdx
 .loc 0 42 5
 .L__kefir_func_get2_label29:
-    shl $55, %rax
-    mov %rax, %rdx
+    shl $55, %rdx
     shr $55, %rdx
 .L__kefir_func_get2_label204:
     lea -32(%rbp), %rdi

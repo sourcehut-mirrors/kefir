@@ -14,8 +14,6 @@ sumall:
     sub $24, %rsp
     movq %rdi, -16(%rbp)
     movq %xmm0, -24(%rbp)
-    movq -16(%rbp), %rax
-    movq -16(%rbp), %rcx
     movq -16(%rbp), %rdx
     movq -16(%rbp), %rsi
     movq -16(%rbp), %rdi
@@ -24,19 +22,19 @@ sumall:
     movq -16(%rbp), %r10
     movq -16(%rbp), %r11
     movq -16(%rbp), %rbx
+    movq -16(%rbp), %rax
+    movq -16(%rbp), %rcx
     movq .L__kefir_func_sumall_label3(%rip), %xmm0
-    add $64, %r11
-    add $72, %rbx
-    movq (%rax), %xmm1
-    movq 8(%rcx), %xmm2
-    movq 16(%rdx), %xmm6
-    movq 24(%rsi), %xmm7
-    movq 32(%rdi), %xmm8
-    movq 40(%r8), %xmm10
-    movq 48(%r9), %xmm12
-    movq 56(%r10), %xmm13
-    mov %r11, %rax
-    mov %rbx, %rcx
+    add $64, %rax
+    add $72, %rcx
+    movq (%rdx), %xmm1
+    movq 8(%rsi), %xmm2
+    movq 16(%rdi), %xmm6
+    movq 24(%r8), %xmm7
+    movq 32(%r9), %xmm8
+    movq 40(%r10), %xmm10
+    movq 48(%r11), %xmm12
+    movq 56(%rbx), %xmm13
 addsd %xmm1, %xmm0
 addsd %xmm2, %xmm0
 addsd %xmm6, %xmm0

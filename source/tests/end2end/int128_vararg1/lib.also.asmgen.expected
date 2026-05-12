@@ -37,8 +37,7 @@ sum:
     lea -208(%rbp), %rax
     movq %rax, -16(%rbp)
     xor %eax, %eax
-    xor %ecx, %ecx
-    mov %rcx, %rdx
+    xor %edx, %edx
 .L__kefir_func_sum_label4:
     test %edi, %edi
     jnz .L__kefir_func_sum_label6
@@ -100,8 +99,7 @@ sum2:
     lea -208(%rbp), %rax
     movq %rax, -16(%rbp)
     xor %eax, %eax
-    xor %ecx, %ecx
-    mov %rcx, %rdx
+    xor %edx, %edx
 .L__kefir_func_sum2_label4:
     test %edi, %edi
     jnz .L__kefir_func_sum2_label6

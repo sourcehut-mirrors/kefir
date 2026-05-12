@@ -1377,7 +1377,7 @@ test2:
 #                            },
 #                            "allocation": {
 #                                "type": "register",
-#                                "register": "rsi"
+#                                "register": "rdi"
 #                            },
 #                            "metadata": {
 #                                "value_ref": 6
@@ -1417,7 +1417,7 @@ test2:
 #                            },
 #                            "allocation": {
 #                                "type": "register",
-#                                "register": "rdi"
+#                                "register": "r8"
 #                            },
 #                            "metadata": {
 #                                "value_ref": 7
@@ -1610,7 +1610,7 @@ test2:
 #                            },
 #                            "allocation": {
 #                                "type": "register",
-#                                "register": "r8"
+#                                "register": "rsi"
 #                            },
 #                            "metadata": {
 #                                "value_ref": 13
@@ -2124,18 +2124,18 @@ test2:
     sub $16, %rsp
     movl %esi, -8(%rbp)
     movq %rdi, -16(%rbp)
-    movl -8(%rbp), %esi
-    movq -16(%rbp), %rdi
+    movl -8(%rbp), %edi
+    movq -16(%rbp), %r8
 .L__kefir_func_test2_label2:
-    movl (%rdi), %eax
+    movl (%r8), %eax
     movsx %eax, %rax
-    mov %rax, %r8
-    add %esi, %r8d
-    mov %rdi, %rdx
-    mov %r8d, %ecx
+    mov %rax, %rsi
+    add %edi, %esi
+    mov %r8, %rdx
+    mov %esi, %ecx
     lock     cmpxchgl %ecx, (%rdx)
     jnz .L__kefir_func_test2_label2
-    mov %r8d, %eax
+    mov %esi, %eax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -2936,7 +2936,7 @@ test3:
 #                            },
 #                            "allocation": {
 #                                "type": "register",
-#                                "register": "rcx"
+#                                "register": "rdx"
 #                            },
 #                            "metadata": {
 #                                "value_ref": 15
@@ -2976,7 +2976,7 @@ test3:
 #                            },
 #                            "allocation": {
 #                                "type": "register",
-#                                "register": "rdx"
+#                                "register": "rcx"
 #                            },
 #                            "metadata": {
 #                                "value_ref": 17
@@ -3502,11 +3502,10 @@ test3:
     mov %rdi, -32(%rbp)
     mov %rsi, -24(%rbp)
     mov -32(%rbp), %rax
-    mov -24(%rbp), %rcx
-    mov -16(%rbp), %rdx
+    mov -24(%rbp), %rdx
+    mov -16(%rbp), %rcx
     mov -8(%rbp), %rsi
-    add %rdx, %rax
-    mov %rcx, %rdx
+    add %rcx, %rax
     adc %rsi, %rdx
     lea (%rbp), %rsp
     pop %rbp

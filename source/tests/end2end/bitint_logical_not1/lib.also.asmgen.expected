@@ -26,10 +26,10 @@ bnot1:
     shl $58, %rax
     sar $58, %rax
     shl $58, %rax
-    shr $58, %rax
-    xor %ecx, %ecx
-    test %al, %al
-    mov %rcx, %rax
+    mov %rax, %rcx
+    shr $58, %rcx
+    xor %eax, %eax
+    test %cl, %cl
     sete %al
     lea (%rbp), %rsp
     pop %rbp
@@ -46,10 +46,10 @@ bnot2:
     shl $50, %rax
     sar $50, %rax
     shl $50, %rax
-    shr $50, %rax
-    xor %ecx, %ecx
-    test %ax, %ax
-    mov %rcx, %rax
+    mov %rax, %rcx
+    shr $50, %rcx
+    xor %eax, %eax
+    test %cx, %cx
     sete %al
     lea (%rbp), %rsp
     pop %rbp
@@ -66,10 +66,10 @@ bnot3:
     shl $35, %rax
     sar $35, %rax
     shl $35, %rax
-    shr $35, %rax
-    xor %ecx, %ecx
-    test %eax, %eax
-    mov %rcx, %rax
+    mov %rax, %rcx
+    shr $35, %rcx
+    xor %eax, %eax
+    test %ecx, %ecx
     sete %al
     lea (%rbp), %rsp
     pop %rbp
@@ -86,10 +86,10 @@ bnot4:
     shl $6, %rax
     sar $6, %rax
     shl $6, %rax
-    shr $6, %rax
-    xor %ecx, %ecx
-    test %rax, %rax
-    mov %rcx, %rax
+    mov %rax, %rcx
+    shr $6, %rcx
+    xor %eax, %eax
+    test %rcx, %rcx
     sete %al
     lea (%rbp), %rsp
     pop %rbp
@@ -224,8 +224,8 @@ __kefir_bigint_is_zero:
     shl $3, %rcx
     sub %rcx, %rax
     movq %rax, -16(%rbp)
-    movq -16(%rbp), %rax
-    lea 1(%rax), %rcx
+    movq -16(%rbp), %rcx
+    add $1, %rcx
     mov $1, %eax
     shl %cl, %rax
     sub $1, %eax

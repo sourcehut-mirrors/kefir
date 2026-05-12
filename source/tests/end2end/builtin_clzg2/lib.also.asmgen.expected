@@ -14,19 +14,19 @@
 .L__kefir_text_section_begin:
 test1:
 .L__kefir_text_func_test1_begin:
-    movzx %dil, %rax
-    bsr %eax, %ecx
-    xor $31, %ecx
-    lea -24(%ecx), %eax
+    movzx %dil, %rcx
+    bsr %ecx, %eax
+    xor $31, %eax
+    sub $24, %eax
     ret
 .L__kefir_text_func_test1_end:
 
 test2:
 .L__kefir_text_func_test2_begin:
-    movzx %di, %rax
-    bsr %eax, %ecx
-    xor $31, %ecx
-    lea -16(%ecx), %eax
+    movzx %di, %rcx
+    bsr %ecx, %eax
+    xor $31, %eax
+    sub $16, %eax
     ret
 .L__kefir_text_func_test2_end:
 

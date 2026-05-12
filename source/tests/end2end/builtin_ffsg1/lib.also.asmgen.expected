@@ -14,21 +14,21 @@
 .L__kefir_text_section_begin:
 test1:
 .L__kefir_text_func_test1_begin:
-    movsx %dil, %rax
-    bsf %eax, %ecx
-    mov $-1, %eax
-    cmove %eax, %ecx
-    lea 1(%ecx), %eax
+    movsx %dil, %rcx
+    bsf %ecx, %eax
+    mov $-1, %ecx
+    cmove %ecx, %eax
+    add $1, %eax
     ret
 .L__kefir_text_func_test1_end:
 
 test2:
 .L__kefir_text_func_test2_begin:
-    movsx %di, %rax
-    bsf %eax, %ecx
-    mov $-1, %eax
-    cmove %eax, %ecx
-    lea 1(%ecx), %eax
+    movsx %di, %rcx
+    bsf %ecx, %eax
+    mov $-1, %ecx
+    cmove %ecx, %eax
+    add $1, %eax
     ret
 .L__kefir_text_func_test2_end:
 

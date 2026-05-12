@@ -22,14 +22,13 @@ predec1:
     mov %rsp, %rbp
     sub $16, %rsp
     movq %rdi, -8(%rbp)
-    movq -8(%rbp), %rax
-    movb (%rax), %cl
-    shl $58, %rcx
-    sar $58, %rcx
+    movq -8(%rbp), %rcx
+    movb (%rcx), %al
+    shl $58, %rax
+    sar $58, %rax
     mov $-1, %rdx
-    add %dl, %cl
-    movb %cl, (%rax)
-    mov %rcx, %rax
+    add %dl, %al
+    movb %al, (%rcx)
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -41,14 +40,13 @@ predec2:
     mov %rsp, %rbp
     sub $16, %rsp
     movq %rdi, -8(%rbp)
-    movq -8(%rbp), %rax
-    movw (%rax), %cx
-    shl $50, %rcx
-    sar $50, %rcx
+    movq -8(%rbp), %rcx
+    movw (%rcx), %ax
+    shl $50, %rax
+    sar $50, %rax
     mov $-1, %rdx
-    add %dx, %cx
-    movw %cx, (%rax)
-    mov %rcx, %rax
+    add %dx, %ax
+    movw %ax, (%rcx)
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -60,13 +58,12 @@ predec3:
     mov %rsp, %rbp
     sub $16, %rsp
     movq %rdi, -8(%rbp)
-    movq -8(%rbp), %rax
-    movl (%rax), %ecx
-    shl $35, %rcx
-    sar $35, %rcx
-    add $-1, %ecx
-    movl %ecx, (%rax)
-    mov %ecx, %eax
+    movq -8(%rbp), %rcx
+    movl (%rcx), %eax
+    shl $35, %rax
+    sar $35, %rax
+    add $-1, %eax
+    movl %eax, (%rcx)
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -78,13 +75,12 @@ predec4:
     mov %rsp, %rbp
     sub $16, %rsp
     movq %rdi, -8(%rbp)
-    movq -8(%rbp), %rax
-    movq (%rax), %rcx
-    shl $6, %rcx
-    sar $6, %rcx
-    add $-1, %rcx
-    movq %rcx, (%rax)
-    mov %rcx, %rax
+    movq -8(%rbp), %rcx
+    movq (%rcx), %rax
+    shl $6, %rax
+    sar $6, %rax
+    add $-1, %rax
+    movq %rax, (%rcx)
     lea (%rbp), %rsp
     pop %rbp
     ret

@@ -26,21 +26,21 @@ get_a:
     movq value(%rip), %rdx
     movzxw 8(%rax), %rax
     mov $48, %ecx
-    shld $48, %rdx, %rax
+    mov %rax, %rsi
+    shld $48, %rdx, %rsi
     shl $48, %rdx
-    xor %esi, %esi
-    test $64, %cl
-    cmovne %rdx, %rax
-    cmove %rdx, %rsi
-    mov $48, %ecx
-    shrd $48, %rax, %rsi
-    mov %rax, %rdx
-    sar $48, %rdx
-    sar $63, %rax
+    xor %eax, %eax
     test $64, %cl
     cmovne %rdx, %rsi
-    cmovne %rax, %rdx
-    mov %rsi, %rax
+    cmove %rdx, %rax
+    mov $48, %ecx
+    shrd $48, %rsi, %rax
+    mov %rsi, %rdx
+    sar $48, %rdx
+    sar $63, %rsi
+    test $64, %cl
+    cmovne %rdx, %rax
+    cmovne %rsi, %rdx
     ret
 .L__kefir_text_func_get_a_end:
 
@@ -50,23 +50,22 @@ get_b:
     movq 16(%rax), %rax
     xor %edx, %edx
     mov $68, %ecx
-    shld $68, %rax, %rdx
-    shl $68, %rax
-    xor %esi, %esi
+    mov %edx, %esi
+    shld $68, %rax, %rsi
+    mov %rax, %rdx
+    shl $68, %rdx
+    xor %eax, %eax
     test $64, %cl
-    cmovne %rax, %rdx
-    cmove %rax, %rsi
+    cmovne %rdx, %rsi
+    cmove %rdx, %rax
     mov $68, %ecx
-    shrd $68, %rdx, %rsi
-    mov %rdx, %rdi
-    sar $68, %rdi
-    sar $63, %rdx
+    shrd $68, %rsi, %rax
+    mov %rsi, %rdx
+    sar $68, %rdx
+    sar $63, %rsi
     test $64, %cl
-    mov %rsi, %rax
-    cmovne %rdi, %rax
-    mov %rdi, %rcx
-    cmovne %rdx, %rcx
-    mov %rcx, %rdx
+    cmovne %rdx, %rax
+    cmovne %rsi, %rdx
     ret
 .L__kefir_text_func_get_b_end:
 
@@ -76,21 +75,21 @@ get_c:
     movq 32(%rax), %rdx
     movzxw 40(%rax), %rax
     mov $52, %ecx
-    shld $52, %rdx, %rax
+    mov %rax, %rsi
+    shld $52, %rdx, %rsi
     shl $52, %rdx
-    xor %esi, %esi
-    test $64, %cl
-    cmovne %rdx, %rax
-    cmove %rdx, %rsi
-    mov $52, %ecx
-    shrd $52, %rax, %rsi
-    mov %rax, %rdx
-    sar $52, %rdx
-    sar $63, %rax
+    xor %eax, %eax
     test $64, %cl
     cmovne %rdx, %rsi
-    cmovne %rax, %rdx
-    mov %rsi, %rax
+    cmove %rdx, %rax
+    mov $52, %ecx
+    shrd $52, %rsi, %rax
+    mov %rsi, %rdx
+    sar $52, %rdx
+    sar $63, %rsi
+    test $64, %cl
+    cmovne %rdx, %rax
+    cmovne %rsi, %rdx
     ret
 .L__kefir_text_func_get_c_end:
 
@@ -103,23 +102,22 @@ get_d:
     or %rcx, %rax
     xor %edx, %edx
     mov $89, %ecx
-    shld $89, %rax, %rdx
-    shl $89, %rax
-    xor %esi, %esi
+    mov %edx, %esi
+    shld $89, %rax, %rsi
+    mov %rax, %rdx
+    shl $89, %rdx
+    xor %eax, %eax
     test $64, %cl
-    cmovne %rax, %rdx
-    cmove %rax, %rsi
+    cmovne %rdx, %rsi
+    cmove %rdx, %rax
     mov $93, %ecx
-    shrd $93, %rdx, %rsi
-    mov %rdx, %rdi
-    sar $93, %rdi
-    sar $63, %rdx
+    shrd $93, %rsi, %rax
+    mov %rsi, %rdx
+    sar $93, %rdx
+    sar $63, %rsi
     test $64, %cl
-    mov %rsi, %rax
-    cmovne %rdi, %rax
-    mov %rdi, %rcx
-    cmovne %rdx, %rcx
-    mov %rcx, %rdx
+    cmovne %rdx, %rax
+    cmovne %rsi, %rdx
     ret
 .L__kefir_text_func_get_d_end:
 

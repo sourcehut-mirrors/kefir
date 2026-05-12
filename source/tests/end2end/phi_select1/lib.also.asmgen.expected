@@ -136,11 +136,11 @@ select9:
     push %rbp
     mov %rsp, %rbp
     mov %rdi, %rdx
-    lea 144(%rbp), %rax
-    lea 16(%rbp), %rcx
+    lea 144(%rbp), %rcx
+    lea 16(%rbp), %rax
     test %esi, %esi
-    mov %rcx, %rsi
-    cmovz %rax, %rsi
+    mov %rax, %rsi
+    cmovz %rcx, %rsi
     mov %rdx, %rax
     mov %rax, %rdi
     cld

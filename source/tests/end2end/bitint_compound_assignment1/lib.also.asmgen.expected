@@ -944,8 +944,8 @@ __kefir_bigint_is_zero:
     shl $3, %rcx
     sub %rcx, %rax
     movq %rax, -16(%rbp)
-    movq -16(%rbp), %rax
-    lea 1(%rax), %rcx
+    movq -16(%rbp), %rcx
+    add $1, %rcx
     mov $1, %eax
     shl %cl, %rax
     sub $1, %eax
@@ -2338,13 +2338,12 @@ __kefir_bigint_get_sign:
     shl $3, %rcx
     sub %rcx, %rax
     movq %rax, -16(%rbp)
-    movq -32(%rbp), %rax
-    movq -8(%rbp), %rcx
-    movb (%rax, %rcx, 1), %dl
+    movq -32(%rbp), %rcx
+    movq -8(%rbp), %rdx
+    movb (%rcx, %rdx, 1), %al
     movq -16(%rbp), %rcx
-    movzx %dl, %edx
-    sar %cl, %edx
-    mov %edx, %eax
+    movzx %al, %eax
+    sar %cl, %eax
     and $1, %eax
     lea (%rbp), %rsp
     pop %rbp
@@ -3087,9 +3086,8 @@ __kefir_bigint_signed_multiply:
     cmp %rcx, %rax
     jb .L__kefir_runtime_func___kefir_bigint_signed_multiply_label38
     movq -64(%rbp), %rdi
-    movq -96(%rbp), %rax
+    movq -96(%rbp), %rsi
     movq -120(%rbp), %rdx
-    mov %rax, %rsi
     shl $1, %rsi
     call __kefir_bigint_cast_signed
     xor %eax, %eax

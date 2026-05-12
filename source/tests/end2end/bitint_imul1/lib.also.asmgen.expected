@@ -1230,9 +1230,8 @@ __kefir_bigint_signed_multiply:
     cmp %rcx, %rax
     jb .L__kefir_runtime_func___kefir_bigint_signed_multiply_label38
     movq -64(%rbp), %rdi
-    movq -96(%rbp), %rax
+    movq -96(%rbp), %rsi
     movq -120(%rbp), %rdx
-    mov %rax, %rsi
     shl $1, %rsi
     call __kefir_bigint_cast_signed
     xor %eax, %eax

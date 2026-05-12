@@ -24,8 +24,7 @@ factorial:
     pop %rbp
     ret
 .L__kefir_func_factorial_label4:
-    movq .L__kefir_func_factorial_label11(%rip), %xmm1
-    movaps %xmm1, %xmm2
+    movq .L__kefir_func_factorial_label11(%rip), %xmm2
     mulsd %xmm0, %xmm2
     movq .L__kefir_func_factorial_label12(%rip), %xmm1
     movaps %xmm0, %xmm3

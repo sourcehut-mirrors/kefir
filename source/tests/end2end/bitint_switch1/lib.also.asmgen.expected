@@ -223,9 +223,8 @@ test5:
     call __kefir_bigint_unsigned_compare
     cmp $0, %al
     jz .L__kefir_func_test5_label9
-    movabs $2459547112355201023, %rax
-    shl $1, %rax
-    mov %rax, %rdx
+    movabs $2459547112355201023, %rdx
+    shl $1, %rdx
     sar $1, %rdx
     lea -32(%rbp), %rdi
     mov $120, %esi
@@ -353,8 +352,8 @@ __kefir_bigint_unsigned_compare:
     sub %eax, %ecx
     add $1, %ecx
     movl %ecx, -4(%rbp)
-    movl -4(%rbp), %eax
-    movabs $4294967295, %rcx
+    movl -4(%rbp), %ecx
+    movabs $4294967295, %rax
     and %rax, %rcx
     mov $1, %eax
     shl %cl, %rax

@@ -278,25 +278,25 @@ add_f32:
     stmxcsr -16(%rbp)
     mov %rdi, %rbx
     movq f32_1@GOTPCREL(%rip), %rsi
-    lea -64(%rbp), %rdx
+    lea -48(%rbp), %rdx
     mov $8, %rdi
     mov $5, %rcx
     call __atomic_load@PLT
-    movd -64(%rbp), %xmm0
-    movd %xmm0, -48(%rbp)
-    movd -60(%rbp), %xmm0
+    movd -48(%rbp), %xmm0
     movd %xmm0, -64(%rbp)
+    movd -44(%rbp), %xmm0
+    movd %xmm0, -32(%rbp)
     mov %rbx, %rsi
-    lea -32(%rbp), %rdx
+    lea -48(%rbp), %rdx
     mov $8, %rdi
     mov $5, %rcx
     call __atomic_load@PLT
-    movd -32(%rbp), %xmm0
-    movd -28(%rbp), %xmm1
-    movaps -48(%rbp), %xmm2
+    movd -48(%rbp), %xmm0
+    movd -44(%rbp), %xmm1
+    movaps -64(%rbp), %xmm2
     addss %xmm0, %xmm2
     movaps %xmm2, %xmm0
-    movaps -64(%rbp), %xmm2
+    movaps -32(%rbp), %xmm2
     addss %xmm1, %xmm2
     movaps %xmm2, %xmm1
     insertps $16, %xmm1, %xmm0
@@ -312,17 +312,17 @@ add_f64:
     push %rbp
     mov %rsp, %rbp
     push %rbx
-    sub $56, %rsp
+    sub $72, %rsp
     stmxcsr -16(%rbp)
     mov %rdi, %rbx
     movq f64_1@GOTPCREL(%rip), %rsi
-    lea -64(%rbp), %rdx
+    lea -48(%rbp), %rdx
     mov $16, %rdi
     mov $5, %rcx
     call __atomic_load@PLT
-    movq -64(%rbp), %xmm0
-    movq %xmm0, -48(%rbp)
-    movq -56(%rbp), %xmm0
+    movq -48(%rbp), %xmm0
+    movq %xmm0, -80(%rbp)
+    movq -40(%rbp), %xmm0
     movq %xmm0, -64(%rbp)
     mov %rbx, %rsi
     lea -32(%rbp), %rdx
@@ -331,7 +331,7 @@ add_f64:
     call __atomic_load@PLT
     movq -32(%rbp), %xmm0
     movq -24(%rbp), %xmm1
-    movaps -48(%rbp), %xmm2
+    movaps -80(%rbp), %xmm2
     addsd %xmm0, %xmm2
     movaps %xmm2, %xmm0
     movaps -64(%rbp), %xmm2
@@ -476,23 +476,23 @@ mul_f32:
     stmxcsr -16(%rbp)
     mov %rdi, %rbx
     movq f32_1@GOTPCREL(%rip), %rsi
-    lea -64(%rbp), %rdx
+    lea -48(%rbp), %rdx
     mov $8, %rdi
     mov $5, %rcx
     call __atomic_load@PLT
-    movd -64(%rbp), %xmm0
-    movd %xmm0, -48(%rbp)
-    movd -60(%rbp), %xmm0
+    movd -48(%rbp), %xmm0
     movd %xmm0, -64(%rbp)
+    movd -44(%rbp), %xmm0
+    movd %xmm0, -32(%rbp)
     mov %rbx, %rsi
-    lea -32(%rbp), %rdx
+    lea -48(%rbp), %rdx
     mov $8, %rdi
     mov $5, %rcx
     call __atomic_load@PLT
-    movd -32(%rbp), %xmm1
-    movd -28(%rbp), %xmm2
-    movaps -48(%rbp), %xmm0
-    insertps $16, -64(%rbp), %xmm0
+    movd -48(%rbp), %xmm1
+    movd -44(%rbp), %xmm2
+    movaps -64(%rbp), %xmm0
+    insertps $16, -32(%rbp), %xmm0
     insertps $16, %xmm2, %xmm1
     movaps %xmm1, %xmm2
     shufps $160, %xmm1, %xmm2
@@ -546,11 +546,9 @@ mul_f64:
     mulpd %xmm0, %xmm1
     mulpd %xmm3, %xmm2
     addpd %xmm1, %xmm2
+    movaps %xmm2, %xmm1
     movaps %xmm2, %xmm0
-    movaps %xmm2, %xmm3
-    movaps %xmm0, %xmm1
     unpckhpd %xmm2, %xmm1
-    movaps %xmm3, %xmm0
     ldmxcsr -16(%rbp)
     lea -8(%rbp), %rsp
     pop %rbx
@@ -612,25 +610,25 @@ sub_f32:
     stmxcsr -16(%rbp)
     mov %rdi, %rbx
     movq f32_1@GOTPCREL(%rip), %rsi
-    lea -64(%rbp), %rdx
+    lea -48(%rbp), %rdx
     mov $8, %rdi
     mov $5, %rcx
     call __atomic_load@PLT
-    movd -64(%rbp), %xmm0
-    movd %xmm0, -48(%rbp)
-    movd -60(%rbp), %xmm0
+    movd -48(%rbp), %xmm0
     movd %xmm0, -64(%rbp)
+    movd -44(%rbp), %xmm0
+    movd %xmm0, -32(%rbp)
     mov %rbx, %rsi
-    lea -32(%rbp), %rdx
+    lea -48(%rbp), %rdx
     mov $8, %rdi
     mov $5, %rcx
     call __atomic_load@PLT
-    movd -32(%rbp), %xmm0
-    movd -28(%rbp), %xmm1
-    movaps -48(%rbp), %xmm2
+    movd -48(%rbp), %xmm0
+    movd -44(%rbp), %xmm1
+    movaps -64(%rbp), %xmm2
     subss %xmm0, %xmm2
     movaps %xmm2, %xmm0
-    movaps -64(%rbp), %xmm2
+    movaps -32(%rbp), %xmm2
     subss %xmm1, %xmm2
     movaps %xmm2, %xmm1
     insertps $16, %xmm1, %xmm0
@@ -646,17 +644,17 @@ sub_f64:
     push %rbp
     mov %rsp, %rbp
     push %rbx
-    sub $56, %rsp
+    sub $72, %rsp
     stmxcsr -16(%rbp)
     mov %rdi, %rbx
     movq f64_1@GOTPCREL(%rip), %rsi
-    lea -64(%rbp), %rdx
+    lea -48(%rbp), %rdx
     mov $16, %rdi
     mov $5, %rcx
     call __atomic_load@PLT
-    movq -64(%rbp), %xmm0
-    movq %xmm0, -48(%rbp)
-    movq -56(%rbp), %xmm0
+    movq -48(%rbp), %xmm0
+    movq %xmm0, -80(%rbp)
+    movq -40(%rbp), %xmm0
     movq %xmm0, -64(%rbp)
     mov %rbx, %rsi
     lea -32(%rbp), %rdx
@@ -665,7 +663,7 @@ sub_f64:
     call __atomic_load@PLT
     movq -32(%rbp), %xmm0
     movq -24(%rbp), %xmm1
-    movaps -48(%rbp), %xmm2
+    movaps -80(%rbp), %xmm2
     subsd %xmm0, %xmm2
     movaps %xmm2, %xmm0
     movaps -64(%rbp), %xmm2

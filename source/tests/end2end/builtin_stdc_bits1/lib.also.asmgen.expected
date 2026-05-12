@@ -51,18 +51,18 @@ bit_floor:
 
 rotate_left:
 .L__kefir_text_func_rotate_left_begin:
-    movzx %sil, %rcx
-    mov %rcx, %rax
-    cdq
-    mov $64, %esi
-    idiv %esi
-    mov %rdx, %rsi
-    mov %rcx, %rax
-    neg %eax
+    movzx %sil, %rsi
+    mov %rsi, %rax
     cdq
     mov $64, %ecx
     idiv %ecx
-    movsx %esi, %rcx
+    mov %rdx, %rcx
+    mov %rsi, %rax
+    neg %eax
+    cdq
+    mov $64, %esi
+    idiv %esi
+    movsx %ecx, %rcx
     mov %rdi, %rax
     shl %cl, %rax
     movsx %edx, %rcx
@@ -73,18 +73,18 @@ rotate_left:
 
 rotate_right:
 .L__kefir_text_func_rotate_right_begin:
-    movzx %sil, %rcx
-    mov %rcx, %rax
-    cdq
-    mov $64, %esi
-    idiv %esi
-    mov %rdx, %rsi
-    mov %rcx, %rax
-    neg %eax
+    movzx %sil, %rsi
+    mov %rsi, %rax
     cdq
     mov $64, %ecx
     idiv %ecx
-    movsx %esi, %rcx
+    mov %rdx, %rcx
+    mov %rsi, %rax
+    neg %eax
+    cdq
+    mov $64, %esi
+    idiv %esi
+    movsx %ecx, %rcx
     mov %rdi, %rax
     shr %cl, %rax
     movsx %edx, %rcx

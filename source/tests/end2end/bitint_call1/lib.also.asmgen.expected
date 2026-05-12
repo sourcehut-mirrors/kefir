@@ -36,8 +36,7 @@ test2:
 .L__kefir_text_func_test2_begin:
     push %rbp
     mov %rsp, %rbp
-    mov $4096, %eax
-    mov %rax, %rdi
+    mov $4096, %edi
     neg %di
     call fn2@PLT
     pop %rbp
@@ -58,9 +57,8 @@ test4:
 .L__kefir_text_func_test4_begin:
     push %rbp
     mov %rsp, %rbp
-    movabs $50147889150, %rax
-    shl $27, %rax
-    mov %rax, %rdi
+    movabs $50147889150, %rdi
+    shl $27, %rdi
     sar $27, %rdi
     call fn4@PLT
     pop %rbp

@@ -101,7 +101,6 @@ op_print:
     mov %rdi, %rbx
     movq 5136(%rbx), %r12
     movzxw 5132(%rbx), %rax
-    mov %rcx, %rdi
     movb 8(%rbx, %rax, 1), %dil
     call *%r12
     movq (%rbx), %rax

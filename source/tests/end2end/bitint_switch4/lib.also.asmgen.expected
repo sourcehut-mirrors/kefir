@@ -50,10 +50,9 @@ test1:
     or %al, %bl
     mov %rax, %rbx
     setne %bl
-    mov $1, %eax
-    neg %al
-    shl $62, %rax
-    mov %rax, %rdx
+    mov $1, %edx
+    neg %dl
+    shl $62, %rdx
     sar $62, %rdx
     lea -64(%rbp), %rdi
     mov $120, %esi
@@ -354,8 +353,8 @@ __kefir_bigint_unsigned_compare:
     sub %eax, %ecx
     add $1, %ecx
     movl %ecx, -4(%rbp)
-    movl -4(%rbp), %eax
-    movabs $4294967295, %rcx
+    movl -4(%rbp), %ecx
+    movabs $4294967295, %rax
     and %rax, %rcx
     mov $1, %eax
     shl %cl, %rax

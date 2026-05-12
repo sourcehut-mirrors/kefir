@@ -71,11 +71,10 @@ below_or_equals2:
     sub $16, %rsp
     movl %esi, -4(%rbp)
     movl %edi, -8(%rbp)
-    movl -8(%rbp), %eax
-    movl -4(%rbp), %ecx
-    xor %edx, %edx
-    cmp %ecx, %eax
-    mov %rdx, %rax
+    movl -8(%rbp), %ecx
+    movl -4(%rbp), %edx
+    xor %eax, %eax
+    cmp %edx, %ecx
     setbe %al
     lea (%rbp), %rsp
     pop %rbp
@@ -89,11 +88,10 @@ above_or_equals2:
     sub $16, %rsp
     movl %esi, -4(%rbp)
     movl %edi, -8(%rbp)
-    movl -8(%rbp), %eax
-    movl -4(%rbp), %ecx
-    xor %edx, %edx
-    cmp %ecx, %eax
-    mov %rdx, %rax
+    movl -8(%rbp), %ecx
+    movl -4(%rbp), %edx
+    xor %eax, %eax
+    cmp %edx, %ecx
     setae %al
     lea (%rbp), %rsp
     pop %rbp
@@ -107,11 +105,10 @@ greater_or_equals2:
     sub $16, %rsp
     movl %esi, -4(%rbp)
     movl %edi, -8(%rbp)
-    movl -8(%rbp), %eax
-    movl -4(%rbp), %ecx
-    xor %edx, %edx
-    cmp %ecx, %eax
-    mov %rdx, %rax
+    movl -8(%rbp), %ecx
+    movl -4(%rbp), %edx
+    xor %eax, %eax
+    cmp %edx, %ecx
     setge %al
     lea (%rbp), %rsp
     pop %rbp
@@ -169,11 +166,10 @@ less_or_equals2:
     sub $16, %rsp
     movl %esi, -4(%rbp)
     movl %edi, -8(%rbp)
-    movl -8(%rbp), %eax
-    movl -4(%rbp), %ecx
-    xor %edx, %edx
-    cmp %ecx, %eax
-    mov %rdx, %rax
+    movl -8(%rbp), %ecx
+    movl -4(%rbp), %edx
+    xor %eax, %eax
+    cmp %edx, %ecx
     setle %al
     lea (%rbp), %rsp
     pop %rbp

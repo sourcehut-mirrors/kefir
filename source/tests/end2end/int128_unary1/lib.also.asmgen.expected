@@ -37,10 +37,9 @@ i128_neg:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    xor %ecx, %ecx
+    xor %edx, %edx
     mov %rdi, %rax
     neg %rax
-    mov %ecx, %edx
     sbb %rsi, %rdx
     lea (%rbp), %rsp
     pop %rbp
@@ -66,10 +65,9 @@ u128_neg:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    xor %ecx, %ecx
+    xor %edx, %edx
     mov %rdi, %rax
     neg %rax
-    mov %ecx, %edx
     sbb %rsi, %rdx
     lea (%rbp), %rsp
     pop %rbp
@@ -119,9 +117,8 @@ u128_bnot:
 i128_predec:
 .L__kefir_text_func_i128_predec_begin:
     mov (%rdi), %rax
-    mov 8(%rdi), %rcx
+    mov 8(%rdi), %rdx
     add $-1, %rax
-    mov %rcx, %rdx
     adc $-1, %rdx
     mov %rax, (%rdi)
     mov %rdx, 8(%rdi)
@@ -131,9 +128,8 @@ i128_predec:
 i128_preinc:
 .L__kefir_text_func_i128_preinc_begin:
     mov (%rdi), %rax
-    mov 8(%rdi), %rcx
+    mov 8(%rdi), %rdx
     add $1, %rax
-    mov %rcx, %rdx
     adc $0, %rdx
     mov %rax, (%rdi)
     mov %rdx, 8(%rdi)
@@ -143,9 +139,8 @@ i128_preinc:
 u128_predec:
 .L__kefir_text_func_u128_predec_begin:
     mov (%rdi), %rax
-    mov 8(%rdi), %rcx
+    mov 8(%rdi), %rdx
     add $-1, %rax
-    mov %rcx, %rdx
     adc $-1, %rdx
     mov %rax, (%rdi)
     mov %rdx, 8(%rdi)
@@ -155,9 +150,8 @@ u128_predec:
 u128_preinc:
 .L__kefir_text_func_u128_preinc_begin:
     mov (%rdi), %rax
-    mov 8(%rdi), %rcx
+    mov 8(%rdi), %rdx
     add $1, %rax
-    mov %rcx, %rdx
     adc $0, %rdx
     mov %rax, (%rdi)
     mov %rdx, 8(%rdi)

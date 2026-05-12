@@ -35,7 +35,6 @@ call1_proxy:
     sub $16, %rsp
     movq %rdi, -8(%rbp)
     movq -8(%rbp), %rax
-    mov %rcx, %rdi
     movb (%rax), %dil
     call call1@PLT
     lea (%rbp), %rsp
@@ -50,7 +49,6 @@ call2_proxy:
     sub $16, %rsp
     movq %rdi, -8(%rbp)
     movq -8(%rbp), %rax
-    mov %rcx, %rdi
     movw (%rax), %di
     call call2@PLT
     lea (%rbp), %rsp
@@ -65,12 +63,11 @@ call3_proxy:
     sub $16, %rsp
     movq %rdi, -8(%rbp)
     movq -8(%rbp), %rax
-    xor %ecx, %ecx
-    movw (%rax), %cx
-    movb 2(%rax), %dl
-    shl $16, %edx
-    mov %rcx, %rdi
-    or %rdx, %rdi
+    xor %edi, %edi
+    movw (%rax), %di
+    movb 2(%rax), %cl
+    shl $16, %ecx
+    or %rcx, %rdi
     call call3@PLT
     lea (%rbp), %rsp
     pop %rbp
@@ -98,11 +95,10 @@ call5_proxy:
     sub $16, %rsp
     movq %rdi, -8(%rbp)
     movq -8(%rbp), %rax
-    movl (%rax), %ecx
-    movb 4(%rax), %dl
-    shl $32, %rdx
-    mov %ecx, %edi
-    or %rdx, %rdi
+    movl (%rax), %edi
+    movb 4(%rax), %cl
+    shl $32, %rcx
+    or %rcx, %rdi
     call call5@PLT
     lea (%rbp), %rsp
     pop %rbp
@@ -116,11 +112,10 @@ call6_proxy:
     sub $16, %rsp
     movq %rdi, -8(%rbp)
     movq -8(%rbp), %rax
-    movl (%rax), %ecx
-    movw 4(%rax), %dx
-    shl $32, %rdx
-    mov %ecx, %edi
-    or %rdx, %rdi
+    movl (%rax), %edi
+    movw 4(%rax), %cx
+    shl $32, %rcx
+    or %rcx, %rdi
     call call6@PLT
     lea (%rbp), %rsp
     pop %rbp
@@ -134,15 +129,14 @@ call7_proxy:
     sub $16, %rsp
     movq %rdi, -8(%rbp)
     movq -8(%rbp), %rax
-    movl (%rax), %ecx
-    xor %edx, %edx
-    movw 4(%rax), %dx
-    shl $32, %rdx
-    or %rdx, %rcx
-    movb 6(%rax), %dl
-    shl $48, %rdx
-    mov %rcx, %rdi
-    or %rdx, %rdi
+    movl (%rax), %edi
+    xor %ecx, %ecx
+    movw 4(%rax), %cx
+    shl $32, %rcx
+    or %rcx, %rdi
+    movb 6(%rax), %cl
+    shl $48, %rcx
+    or %rcx, %rdi
     call call7@PLT
     lea (%rbp), %rsp
     pop %rbp

@@ -160,15 +160,14 @@ i128_mul:
     mov %rsp, %rbp
     sub $16, %rsp
     mov (%rdi), %rax
-    mov 8(%rdi), %rcx
-    mov %rcx, %r8
+    mov 8(%rdi), %r8
     imul %rsi, %r8
     mov %rdx, %rcx
     imul %rax, %rcx
     mov %rsi, %rdx
     mul %rdx
-    add %rcx, %r8
-    add %r8, %rdx
+    add %r8, %rcx
+    add %rcx, %rdx
     mov %rax, (%rdi)
     mov %rdx, 8(%rdi)
     lea (%rbp), %rsp
@@ -185,13 +184,12 @@ i128_shl:
     mov (%rdi), %rax
     mov 8(%rdi), %rdx
     shld %cl, %rax, %rdx
-    shl %cl, %rax
-    xor %esi, %esi
+    mov %rax, %rsi
+    shl %cl, %rsi
+    xor %eax, %eax
     test $64, %cl
-    cmovne %rax, %rdx
-    mov %esi, %ecx
-    cmove %rax, %rcx
-    mov %rcx, %rax
+    cmovne %rsi, %rdx
+    cmove %rsi, %rax
     mov %rax, (%rdi)
     mov %rdx, 8(%rdi)
     lea (%rbp), %rsp
@@ -206,16 +204,14 @@ i128_shr:
     sub $16, %rsp
     mov %rsi, %rcx
     mov (%rdi), %rax
-    mov 8(%rdi), %rdx
-    shrd %cl, %rdx, %rax
-    mov %rdx, %rsi
-    sar %cl, %rsi
-    sar $63, %rdx
+    mov 8(%rdi), %rsi
+    shrd %cl, %rsi, %rax
+    mov %rsi, %rdx
+    sar %cl, %rdx
+    sar $63, %rsi
     test $64, %cl
-    cmovne %rsi, %rax
-    mov %rsi, %rcx
-    cmovne %rdx, %rcx
-    mov %rcx, %rdx
+    cmovne %rdx, %rax
+    cmovne %rsi, %rdx
     mov %rax, (%rdi)
     mov %rdx, 8(%rdi)
     lea (%rbp), %rsp
@@ -337,15 +333,14 @@ u128_mul:
     mov %rsp, %rbp
     sub $16, %rsp
     mov (%rdi), %rax
-    mov 8(%rdi), %rcx
-    mov %rcx, %r8
+    mov 8(%rdi), %r8
     imul %rsi, %r8
     mov %rdx, %rcx
     imul %rax, %rcx
     mov %rsi, %rdx
     mul %rdx
-    add %rcx, %r8
-    add %r8, %rdx
+    add %r8, %rcx
+    add %rcx, %rdx
     mov %rax, (%rdi)
     mov %rdx, 8(%rdi)
     lea (%rbp), %rsp
@@ -362,13 +357,12 @@ u128_shl:
     mov (%rdi), %rax
     mov 8(%rdi), %rdx
     shld %cl, %rax, %rdx
-    shl %cl, %rax
-    xor %esi, %esi
+    mov %rax, %rsi
+    shl %cl, %rsi
+    xor %eax, %eax
     test $64, %cl
-    cmovne %rax, %rdx
-    mov %esi, %ecx
-    cmove %rax, %rcx
-    mov %rcx, %rax
+    cmovne %rsi, %rdx
+    cmove %rsi, %rax
     mov %rax, (%rdi)
     mov %rdx, 8(%rdi)
     lea (%rbp), %rsp
@@ -385,13 +379,12 @@ u128_shr:
     mov (%rdi), %rax
     mov 8(%rdi), %rdx
     shrd %cl, %rdx, %rax
-    shr %cl, %rdx
-    xor %esi, %esi
+    mov %rdx, %rsi
+    shr %cl, %rsi
+    xor %edx, %edx
     test $64, %cl
-    cmovne %rdx, %rax
-    mov %esi, %ecx
-    cmove %rdx, %rcx
-    mov %rcx, %rdx
+    cmovne %rsi, %rax
+    cmove %rsi, %rdx
     mov %rax, (%rdi)
     mov %rdx, 8(%rdi)
     lea (%rbp), %rsp

@@ -26,37 +26,35 @@
 .L__kefir_text_section_begin:
 test1:
 .L__kefir_text_func_test1_begin:
-    xor %eax, %eax
     xor %ecx, %ecx
+    xor %eax, %eax
 .L__kefir_func_test1_label2:
-    lea 1(%eax), %edx
-    mov %rcx, %r8
+    lea 1(%ecx), %edx
+    mov %rax, %r8
     add %edi, %r8d
-    cmp %esi, %eax
+    cmp %esi, %ecx
     jl .L__kefir_func_test1_label7
-    mov %rcx, %rax
     ret
 .L__kefir_func_test1_label7:
-    mov %r8d, %ecx
-    mov %edx, %eax
+    mov %r8d, %eax
+    mov %edx, %ecx
     jmp .L__kefir_func_test1_label2
 .L__kefir_text_func_test1_end:
 
 test2:
 .L__kefir_text_func_test2_begin:
-    xor %eax, %eax
     xor %ecx, %ecx
+    xor %eax, %eax
 .L__kefir_func_test2_label2:
-    lea 1(%eax), %edx
-    mov %rcx, %r8
+    lea 1(%ecx), %edx
+    mov %rax, %r8
     add %edi, %r8d
-    cmp %esi, %eax
+    cmp %esi, %ecx
     jl .L__kefir_func_test2_label7
-    mov %rcx, %rax
     ret
 .L__kefir_func_test2_label7:
-    mov %r8d, %ecx
-    mov %edx, %eax
+    mov %r8d, %eax
+    mov %edx, %ecx
     jmp .L__kefir_func_test2_label2
 .L__kefir_text_func_test2_end:
 
@@ -172,21 +170,20 @@ test7:
 
 test8:
 .L__kefir_text_func_test8_begin:
-    xor %eax, %eax
     xor %ecx, %ecx
+    xor %eax, %eax
 .L__kefir_func_test8_label2:
-    lea 1(%eax), %edx
-    mov %rcx, %rsi
+    lea 1(%ecx), %edx
+    mov %rax, %rsi
     xor $0, %esi
-    cmp $10, %eax
+    cmp $10, %ecx
     jl .L__kefir_func_test8_label7
-    neg %ecx
-    mov %ecx, %eax
+    neg %eax
     xor $0, %eax
     ret
 .L__kefir_func_test8_label7:
-    mov %esi, %ecx
-    mov %edx, %eax
+    mov %esi, %eax
+    mov %edx, %ecx
     jmp .L__kefir_func_test8_label2
 .L__kefir_text_func_test8_end:
 
@@ -198,17 +195,17 @@ test9:
 
 test10:
 .L__kefir_text_func_test10_begin:
-    xor %eax, %eax
     xor %ecx, %ecx
+    xor %eax, %eax
 .L__kefir_func_test10_label2:
-    lea 1(%eax), %edx
-    cmp $10, %eax
+    lea 1(%ecx), %edx
+    cmp $10, %ecx
     jl .L__kefir_func_test10_label7
-    movq %rcx, %xmm0
+    movq %rax, %xmm0
     ret
 .L__kefir_func_test10_label7:
-    mov %edx, %eax
-    mov %rdi, %rcx
+    mov %edx, %ecx
+    mov %rdi, %rax
     jmp .L__kefir_func_test10_label2
 .L__kefir_text_func_test10_end:
 

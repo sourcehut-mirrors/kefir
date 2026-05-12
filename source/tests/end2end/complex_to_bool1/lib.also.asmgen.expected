@@ -95,10 +95,10 @@ c80_to_bool:
     fldz
     fucomi %st(1)
     fstp %st(0)
-    setp %al
-    setne %dl
-    or %al, %dl
-    mov %rdx, %rax
+    mov %rax, %rdx
+    setp %dl
+    setne %al
+    or %dl, %al
     or %cl, %al
     fstp %st(0)
     fstp %st(0)
@@ -183,10 +183,10 @@ c80_to_bool2:
     fldz
     fucomi %st(1)
     fstp %st(0)
-    setp %al
-    setne %dl
-    or %al, %dl
-    mov %rdx, %rax
+    mov %rax, %rdx
+    setp %dl
+    setne %al
+    or %dl, %al
     or %cl, %al
     fstp %st(0)
     fstp %st(0)
@@ -215,10 +215,10 @@ c80_to_bool3:
     fldz
     fucomi %st(1)
     fstp %st(0)
-    setp %al
-    setne %dl
-    or %al, %dl
-    mov %rdx, %rax
+    mov %rax, %rdx
+    setp %dl
+    setne %al
+    or %dl, %al
     or %cl, %al
     fstp %st(0)
     fstp %st(0)

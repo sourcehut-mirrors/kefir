@@ -26,10 +26,9 @@ get1:
 .L__kefir_text_func_get1_begin:
     push %rbp
     mov %rsp, %rbp
-    movq a@GOTPCREL(%rip), %rax
-    movb (%rax), %cl
-    shl $58, %rcx
-    mov %rcx, %rax
+    movq a@GOTPCREL(%rip), %rcx
+    movb (%rcx), %al
+    shl $58, %rax
     shr $58, %rax
     pop %rbp
     ret
@@ -39,10 +38,9 @@ get2:
 .L__kefir_text_func_get2_begin:
     push %rbp
     mov %rsp, %rbp
-    movq b@GOTPCREL(%rip), %rax
-    movw (%rax), %cx
-    shl $51, %rcx
-    mov %rcx, %rax
+    movq b@GOTPCREL(%rip), %rcx
+    movw (%rcx), %ax
+    shl $51, %rax
     shr $51, %rax
     pop %rbp
     ret

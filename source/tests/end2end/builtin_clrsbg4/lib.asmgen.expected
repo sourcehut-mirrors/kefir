@@ -14,14 +14,13 @@ get:
     mov %rsp, %rbp
     sub $16, %rsp
     movl %edi, -4(%rbp)
-    movl -4(%rbp), %eax
-    mov %eax, %ecx
-    add %eax, %ecx
-    sar $31, %eax
-    xor %eax, %ecx
-    or $1, %ecx
-    bsr %ecx, %ecx
+    movl -4(%rbp), %ecx
     mov %ecx, %eax
+    add %ecx, %eax
+    sar $31, %ecx
+    xor %ecx, %eax
+    or $1, %eax
+    bsr %eax, %eax
     xor $31, %eax
     lea (%rbp), %rsp
     pop %rbp

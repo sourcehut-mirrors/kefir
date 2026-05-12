@@ -20,15 +20,14 @@ overflow_sadd:
 .L__kefir_text_func_overflow_sadd_begin:
     movsx %edi, %rax
     movsx %esi, %rcx
-    add %rcx, %rax
-    seto %cl
-    movsx %eax, %rsi
-    cmp %rsi, %rax
+    add %rax, %rcx
+    seto %al
+    movsx %ecx, %rsi
+    cmp %rsi, %rcx
     setne %sil
-    or %sil, %cl
-    and $1, %ecx
-    movl %eax, (%rdx)
-    mov %ecx, %eax
+    or %sil, %al
+    and $1, %eax
+    movl %ecx, (%rdx)
     ret
 .L__kefir_text_func_overflow_sadd_end:
 
@@ -36,15 +35,14 @@ overflow_uadd:
 .L__kefir_text_func_overflow_uadd_begin:
     mov %edi, %eax
     mov %esi, %ecx
-    add %rcx, %rax
-    seto %cl
-    mov %eax, %esi
-    cmp %rsi, %rax
+    add %rax, %rcx
+    seto %al
+    mov %ecx, %esi
+    cmp %rsi, %rcx
     setne %sil
-    or %sil, %cl
-    and $1, %ecx
-    movl %eax, (%rdx)
-    mov %ecx, %eax
+    or %sil, %al
+    and $1, %eax
+    movl %ecx, (%rdx)
     ret
 .L__kefir_text_func_overflow_uadd_end:
 

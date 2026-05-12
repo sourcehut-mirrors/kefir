@@ -134,8 +134,7 @@ get9:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    movabs $1028332837181762172, %rax
-    mov %rax, %rdx
+    movabs $1028332837181762172, %rdx
     neg %rdx
     lea -16(%rbp), %rdi
     mov $111, %esi
@@ -170,8 +169,7 @@ get11:
     push %rbx
     sub $56, %rsp
     mov %rdi, %rbx
-    movabs $1028332837181762172, %rax
-    mov %rax, %rdx
+    movabs $1028332837181762172, %rdx
     neg %rdx
     lea -64(%rbp), %rdi
     mov $350, %esi

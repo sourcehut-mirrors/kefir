@@ -16,65 +16,65 @@ test1:
     mov %rsi, %rcx
     adc $0, %rcx
     xor %rdi, %rax
-    xor %rsi, %rcx
-    mov %rdi, %rdx
-    add $2, %rdx
+    mov %rsi, %rdx
+    xor %rcx, %rdx
+    mov %rdi, %rcx
+    add $2, %rcx
     mov %rsi, %r8
     adc $0, %r8
-    xor %rdx, %rax
-    xor %r8, %rcx
-    mov %rdi, %rdx
-    add $3, %rdx
+    xor %rcx, %rax
+    xor %r8, %rdx
+    mov %rdi, %rcx
+    add $3, %rcx
     mov %rsi, %r8
     adc $0, %r8
-    xor %rdx, %rax
-    xor %r8, %rcx
-    mov %rdi, %rdx
-    add $4, %rdx
+    xor %rcx, %rax
+    xor %r8, %rdx
+    mov %rdi, %rcx
+    add $4, %rcx
     mov %rsi, %r8
     adc $0, %r8
-    xor %rdx, %rax
-    xor %r8, %rcx
-    mov %rdi, %rdx
-    add $5, %rdx
+    xor %rcx, %rax
+    xor %r8, %rdx
+    mov %rdi, %rcx
+    add $5, %rcx
     mov %rsi, %r8
     adc $0, %r8
-    xor %rdx, %rax
-    xor %r8, %rcx
-    mov %rdi, %rdx
-    add $6, %rdx
+    xor %rcx, %rax
+    xor %r8, %rdx
+    mov %rdi, %rcx
+    add $6, %rcx
     mov %rsi, %r8
     adc $0, %r8
-    xor %rdx, %rax
-    xor %r8, %rcx
-    mov %rdi, %rdx
-    add $7, %rdx
+    xor %rcx, %rax
+    xor %r8, %rdx
+    mov %rdi, %rcx
+    add $7, %rcx
     mov %rsi, %r8
     adc $0, %r8
-    xor %rdx, %rax
-    xor %r8, %rcx
-    mov %rdi, %rdx
-    add $8, %rdx
+    xor %rcx, %rax
+    xor %r8, %rdx
+    mov %rdi, %rcx
+    add $8, %rcx
     mov %rsi, %r8
     adc $0, %r8
-    xor %rdx, %rax
-    xor %r8, %rcx
-    mov %rdi, %rdx
-    add $9, %rdx
+    xor %rcx, %rax
+    xor %r8, %rdx
+    mov %rdi, %rcx
+    add $9, %rcx
     mov %rsi, %r8
     adc $0, %r8
-    xor %rdx, %rax
-    xor %r8, %rcx
-    mov %rdi, %rdx
-    add $10, %rdx
+    xor %rcx, %rax
+    xor %r8, %rdx
+    mov %rdi, %rcx
+    add $10, %rcx
     mov %rsi, %r8
     adc $0, %r8
-    xor %rdx, %rax
-    xor %r8, %rcx
+    xor %rcx, %rax
+    xor %r8, %rdx
     add $11, %rdi
     adc $0, %rsi
     xor %rdi, %rax
-    mov %rcx, %rdx
     xor %rsi, %rdx
     lea (%rbp), %rsp
     pop %rbp
