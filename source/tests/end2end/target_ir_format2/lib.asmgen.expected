@@ -3941,8 +3941,8 @@ test4:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 369,
-#                    "opcode": "mov",
+#                    "instr_ref": 354,
+#                    "opcode": "jmp",
 #                    "parameters": [
 #                        {
 #                            "type": "indirect",
@@ -3961,45 +3961,6 @@ test4:
 #                            "index_scale": 8,
 #                            "offset": 0,
 #                            "variant": "64bit"
-#                        }
-#                    ],
-#                    "values": [
-#                        {
-#                            "aspect": {
-#                                "type": "direct_output",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "variant": "64bit",
-#                                "kind": "general_purpose"
-#                            },
-#                            "allocation": {
-#                                "type": "register",
-#                                "register": "rax"
-#                            },
-#                            "metadata": {
-#                                "value_ref": 11
-#                            }
-#                        }
-#                    ],
-#                    "metadata": {
-#                        "source_location": null,
-#                        "code_ref": null
-#                    }
-#                },
-#                {
-#                    "instr_ref": 384,
-#                    "opcode": "jmp",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 369,
-#                            "aspect": {
-#                                "type": "direct_output",
-#                                "index": 0
-#                            },
-#                            "variant": "default",
-#                            "tied": false
 #                        }
 #                    ],
 #                    "values": [],
@@ -4039,8 +4000,7 @@ _kefir_local_public_label_test4_label1:
     movl -4(%rbp), %eax
     lea __kefir_function_test4_static_arr_10(%rip), %rcx
     movsx %eax, %rax
-    movq (%rcx, %rax, 8), %rax
-    jmp *%rax
+    jmpq *(%rcx, %rax, 8)
 .L__kefir_text_func_test4_end:
 
 init_array:

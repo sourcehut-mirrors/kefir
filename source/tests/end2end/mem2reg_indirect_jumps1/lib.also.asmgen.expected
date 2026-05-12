@@ -19,9 +19,8 @@ _kefir_local_public_label_test_label2:
 _kefir_local_public_label_test_label3:
     lea __kefir_function_test_static_arr_4(%rip), %rax
     movsx %edi, %rcx
-    movq (%rax, %rcx, 8), %rax
     xor %edi, %edi
-    jmp *%rax
+    jmpq *(%rax, %rcx, 8)
 .L__kefir_func_test_label3:
 _kefir_local_public_label_test_label1:
     mov %rsi, %rax

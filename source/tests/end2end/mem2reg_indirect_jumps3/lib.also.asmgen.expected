@@ -14,12 +14,10 @@ run_op:
     mov $5, %rdi
     div %rdi
     lea __kefir_function_run_op_static_branches_6(%rip), %rax
-    movq (%rax, %rdx, 8), %rax
     mov %r8, %rdi
     sub %rcx, %rdi
-    xor %edx, %edx
-    mov %rdx, %r9
-    jmp *%rax
+    xor %r9d, %r9d
+    jmpq *(%rax, %rdx, 8)
 .L__kefir_func_run_op_label5:
 _kefir_local_public_label_run_op_div:
     mov %r8, %rax

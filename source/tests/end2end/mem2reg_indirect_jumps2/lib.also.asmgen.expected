@@ -21,8 +21,7 @@ factorial2:
     add %rax, %rcx
     mov %rsi, %rax
 .L__kefir_func_factorial2_label2:
-    movq (%rcx), %rcx
-    jmp *%rcx
+    jmpq *(%rcx)
 .L__kefir_func_factorial2_label4:
 _kefir_local_public_label_factorial2_round:
     lea -1(%rdi), %rdx
@@ -51,17 +50,16 @@ run_factorial:
     cmp $1, %rcx
     setg %sil
     movsx %esi, %rsi
-    movq (%rdx, %rsi, 8), %rdx
-    movq factorial_result@GOTPCREL(%rip), %rsi
-    jmp *%rdx
+    movq factorial_result@GOTPCREL(%rip), %rdi
+    jmpq *(%rdx, %rsi, 8)
 .L__kefir_func_run_factorial_label2:
 _kefir_local_public_label_run_factorial_terminate:
     ret
 .L__kefir_func_run_factorial_label3:
 _kefir_local_public_label_run_factorial_round:
-    movq (%rsi), %rdx
+    movq (%rdi), %rdx
     imul %rcx, %rdx
-    movq %rdx, (%rsi)
+    movq %rdx, (%rdi)
     add $-1, %rcx
     movq %rcx, (%rax)
     jmp .L__kefir_func_run_factorial_label1
