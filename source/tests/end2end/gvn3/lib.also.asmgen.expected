@@ -688,9 +688,9 @@ uconv32long:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %edi, %eax
-    movq %rax, -16(%rbp)
-    movq %rax, -8(%rbp)
+    mov %edi, %edi
+    movq %rdi, -16(%rbp)
+    movq %rdi, -8(%rbp)
     movq -16(%rbp), %rax
     movq -8(%rbp), %rdx
     lea (%rbp), %rsp

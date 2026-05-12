@@ -18,11 +18,11 @@ init_s:
     add $8, %rsp
     movq $0, 8(%rdi)
     fstpt (%rdi)
-    mov %edx, %eax
-    push %rax
+    mov %edx, %edx
+    push %rdx
     fildq (%rsp)
     add $8, %rsp
-    test %rax, %rax
+    test %rdx, %rdx
     jns .L__kefir_func_init_s_label3
     fadds .L__kefir_constant_uint_to_long_double(%rip)
 .L__kefir_func_init_s_label3:

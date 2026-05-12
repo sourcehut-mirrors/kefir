@@ -247,10 +247,9 @@ ld_load_index:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    mov %esi, %eax
-    shl $5, %rax
-    mov %rdi, %rsi
-    add %rax, %rsi
+    mov %esi, %esi
+    shl $5, %rsi
+    add %rdi, %rsi
     lea -32(%rbp), %rdx
     mov $32, %rdi
     mov $5, %rcx
@@ -267,10 +266,9 @@ f32_load_index:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %esi, %eax
-    shl $3, %rax
-    mov %rdi, %rsi
-    add %rax, %rsi
+    mov %esi, %esi
+    shl $3, %rsi
+    add %rdi, %rsi
     lea -16(%rbp), %rdx
     mov $8, %rdi
     mov $5, %rcx
@@ -288,10 +286,9 @@ ld_store_index:
     push %rbp
     mov %rsp, %rbp
     lea 16(%rbp), %rdx
-    mov %esi, %eax
-    shl $5, %rax
-    mov %rdi, %rsi
-    add %rax, %rsi
+    mov %esi, %esi
+    shl $5, %rsi
+    add %rdi, %rsi
     mov $32, %rdi
     mov $5, %rcx
     call __atomic_store@PLT
@@ -306,10 +303,9 @@ f32_store_index:
     sub $16, %rsp
     movaps %xmm0, %xmm1
     shufps $1, %xmm1, %xmm1
-    mov %esi, %eax
-    shl $3, %rax
-    mov %rdi, %rsi
-    add %rax, %rsi
+    mov %esi, %esi
+    shl $3, %rsi
+    add %rdi, %rsi
     movd %xmm0, -8(%rbp)
     movd %xmm1, -4(%rbp)
     lea -8(%rbp), %rdx
@@ -326,10 +322,9 @@ f64_load_index:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %esi, %eax
-    shl $4, %rax
-    mov %rdi, %rsi
-    add %rax, %rsi
+    mov %esi, %esi
+    shl $4, %rsi
+    add %rdi, %rsi
     lea -16(%rbp), %rdx
     mov $16, %rdi
     mov $5, %rcx
@@ -346,10 +341,9 @@ f64_store_index:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    mov %esi, %eax
-    shl $4, %rax
-    mov %rdi, %rsi
-    add %rax, %rsi
+    mov %esi, %esi
+    shl $4, %rsi
+    add %rdi, %rsi
     movq %xmm0, -16(%rbp)
     movq %xmm1, -8(%rbp)
     lea -16(%rbp), %rdx

@@ -25,6 +25,21 @@ static kefir_result_t extract_coalesce(struct kefir_mem *mem, const struct kefir
     struct kefir_codegen_target_ir_tie_classification classification;
     REQUIRE_OK(kefir_codegen_target_ir_tie_operands(code, instruction->instr_ref, &classification));
 
+    if (instruction->operation.opcode == KEFIR_TARGET_IR_AMD64_OPCODE(mov) ||
+        instruction->operation.opcode == KEFIR_TARGET_IR_AMD64_OPCODE(movaps) ||
+        instruction->operation.opcode == KEFIR_TARGET_IR_AMD64_OPCODE(movdqu)) {
+        if (classification.classification.operands[0].class == KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_WRITE &&
+            classification.classification.operands[1].class == KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_READ &&
+            classification.operands[1].read_index != KEFIR_CODEGEN_TARGET_IR_TIED_READ_INDEX_NONE &&
+            instruction->operation.parameters[classification.operands[1].read_index].type ==
+                KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF) {
+            REQUIRE_OK(callback->coalesce(
+                mem, instruction->operation.parameters[classification.operands[1].read_index].direct.value_ref,
+                classification.operands[0].output, callback->payload));
+            return KEFIR_OK;
+        }
+    }
+
     for (kefir_size_t i = 0; i < KEFIR_ASMCMP_INSTRUCTION_NUM_OF_OPERANDS; i++) {
         if (classification.classification.operands[i].class == KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_READ_WRITE &&
             classification.operands[i].read_index != KEFIR_CODEGEN_TARGET_IR_TIED_READ_INDEX_NONE &&

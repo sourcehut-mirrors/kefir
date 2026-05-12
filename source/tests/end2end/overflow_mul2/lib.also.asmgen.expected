@@ -33,16 +33,16 @@ overflow_smul:
 
 overflow_umul:
 .L__kefir_text_func_overflow_umul_begin:
-    mov %edi, %eax
-    mov %esi, %ecx
-    imul %rax, %rcx
+    mov %edi, %edi
+    mov %esi, %esi
+    imul %rsi, %rdi
     seto %al
-    mov %ecx, %esi
-    cmp %rsi, %rcx
-    setne %sil
-    or %sil, %al
+    mov %edi, %ecx
+    cmp %rcx, %rdi
+    setne %cl
+    or %cl, %al
     and $1, %eax
-    movl %ecx, (%rdx)
+    movl %edi, (%rdx)
     ret
 .L__kefir_text_func_overflow_umul_end:
 

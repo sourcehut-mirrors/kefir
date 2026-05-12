@@ -237,16 +237,16 @@ overflow_add_long_long_long:
 
 overflow_add_uint_short_ushort:
 .L__kefir_text_func_overflow_add_uint_short_ushort_begin:
-    mov %edi, %eax
-    movsx %si, %rcx
-    add %rax, %rcx
+    mov %edi, %edi
+    movsx %si, %rax
+    add %rax, %rdi
     seto %al
-    movzx %cx, %rsi
-    cmp %rsi, %rcx
-    setne %sil
-    or %sil, %al
+    movzx %di, %rcx
+    cmp %rcx, %rdi
+    setne %cl
+    or %cl, %al
     and $1, %eax
-    movw %cx, (%rdx)
+    movw %di, (%rdx)
     ret
 .L__kefir_text_func_overflow_add_uint_short_ushort_end:
 

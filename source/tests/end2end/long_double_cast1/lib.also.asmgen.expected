@@ -206,11 +206,11 @@ uintcld:
     mov %rsp, %rbp
     sub $16, %rsp
     fstcw -8(%rbp)
-    mov %edi, %eax
-    push %rax
+    mov %edi, %edi
+    push %rdi
     fildq (%rsp)
     add $8, %rsp
-    test %rax, %rax
+    test %rdi, %rdi
     jns .L__kefir_func_uintcld_label3
     fadds .L__kefir_constant_uint_to_long_double(%rip)
 .L__kefir_func_uintcld_label3:

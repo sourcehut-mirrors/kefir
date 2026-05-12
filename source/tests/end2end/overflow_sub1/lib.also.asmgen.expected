@@ -208,18 +208,16 @@ overflow_sub_long_long_long:
 
 overflow_sub_uint_short_ushort:
 .L__kefir_text_func_overflow_sub_uint_short_ushort_begin:
-    mov %edi, %eax
-    movsx %si, %rcx
-    mov %eax, %esi
-    sub %rcx, %rsi
-    mov %rsi, %rcx
+    mov %edi, %edi
+    movsx %si, %rax
+    sub %rax, %rdi
     seto %al
-    movzx %cx, %rsi
-    cmp %rsi, %rcx
-    setne %sil
-    or %sil, %al
+    movzx %di, %rcx
+    cmp %rcx, %rdi
+    setne %cl
+    or %cl, %al
     and $1, %eax
-    movw %cx, (%rdx)
+    movw %di, (%rdx)
     ret
 .L__kefir_text_func_overflow_sub_uint_short_ushort_end:
 
