@@ -2065,7 +2065,7 @@ __kefir_softfloat_ilogbf:
     movq -24(%rbp), %rax
     mov %rax, %rcx
     shr $23, %rcx
-    movzx %cl, %ecx
+    movzx %cl, %rcx
     shl $9, %rax
     cmp $255, %ecx
     je .L__kefir_runtime_func___kefir_softfloat_ilogbf_label14
