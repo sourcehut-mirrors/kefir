@@ -282,6 +282,8 @@ static kefir_result_t dump_action_impl(struct kefir_mem *mem, const struct kefir
 
     compiler.optimizer_configuration.imprecise_decimal_bitint_conv = options->codegen.imprecise_decimal_bitint_conv;
     compiler.optimizer_configuration.debug_info = options->debug_info;
+    compiler.optimizer_configuration.position_independent_code =
+        compiler.codegen_configuration.position_independent_code;
     compiler.optimizer_configuration.max_inline_depth = options->optimizer.max_inline_depth;
     compiler.optimizer_configuration.max_inlines_per_function = options->optimizer.max_inlines_per_function;
     switch (options->codegen.decimal_encoding) {

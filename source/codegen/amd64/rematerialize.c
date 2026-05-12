@@ -29,10 +29,12 @@
 
 struct remat_params {
     struct kefir_mem *mem;
+    struct kefir_opt_module *module;
     struct kefir_opt_code_container *code;
     struct kefir_opt_code_debug_info *debug_info;
     struct kefir_opt_code_control_flow control_flow;
     struct kefir_opt_code_loop_collection loops;
+    const struct kefir_optimizer_configuration *config;
 
     struct kefir_list queue;
     struct kefir_hashtable rematerializations;
@@ -92,10 +94,23 @@ static kefir_result_t remat_instr(struct remat_params *params, kefir_opt_instruc
 
         case KEFIR_OPT_OPCODE_FLOAT32_CONST:
         case KEFIR_OPT_OPCODE_FLOAT64_CONST:
-        case KEFIR_OPT_OPCODE_GET_GLOBAL:
         case KEFIR_OPT_OPCODE_GET_THREAD_LOCAL:
             nest_hoist = 1;
             break;
+
+        case KEFIR_OPT_OPCODE_GET_GLOBAL: {
+            const char *symbol = kefir_ir_module_get_named_symbol(params->module->ir_module,
+                                                                  instr->operation.parameters.variable.global_ref);
+            REQUIRE(symbol != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to find named IR symbol"));
+
+            const struct kefir_ir_identifier *ir_identifier;
+            REQUIRE_OK(kefir_ir_module_get_identifier(params->module->ir_module, symbol, &ir_identifier));
+            if (!params->config->position_independent_code || ir_identifier->scope == KEFIR_IR_IDENTIFIER_SCOPE_LOCAL) {
+                nest_hoist = 0;
+            } else {
+                nest_hoist = 1;
+            }
+        } break;
 
         default:
             return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected optimizer instruction opcode");
@@ -211,10 +226,7 @@ kefir_result_t kefir_codegen_amd64_rematerialize_function(struct kefir_mem *mem,
     REQUIRE(configuration != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expectd valid optimizer configuration"));
 
     struct remat_params params = {
-        .mem = mem,
-        .code = &func->code,
-        .debug_info = &func->debug_info,
-    };
+        .mem = mem, .code = &func->code, .module = module, .debug_info = &func->debug_info, .config = configuration};
     REQUIRE_OK(kefir_opt_code_control_flow_init(&params.control_flow));
     REQUIRE_OK(kefir_opt_code_loop_collection_init(&params.loops));
     REQUIRE_OK(kefir_list_init(&params.queue));

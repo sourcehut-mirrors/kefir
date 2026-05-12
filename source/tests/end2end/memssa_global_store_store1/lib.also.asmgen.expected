@@ -43,11 +43,11 @@ test2:
 test3:
 .L__kefir_text_func_test3_begin:
     mov %rdi, %rax
-    movq y@GOTPCREL(%rip), %rdx
-    xchgl (%rdx), %eax
+    movq y@GOTPCREL(%rip), %rsi
+    xchgl (%rsi), %eax
+    mov %rsi, %rdx
     mov $1, %eax
     lock     xaddl %eax, (%rdx)
-    movq y@GOTPCREL(%rip), %rsi
 .L__kefir_func_test3_label2:
     movl (%rsi), %eax
     mov %rax, %rcx

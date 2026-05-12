@@ -12,6 +12,7 @@ kefir_result_t kefir_optimizer_configuration_init(struct kefir_optimizer_configu
     conf->max_inline_depth = KEFIR_SIZE_MAX;
     conf->max_inlines_per_function = KEFIR_SIZE_MAX;
     conf->debug_info = true;
+    conf->position_independent_code = false;
     conf->imprecise_decimal_bitint_conv = false;
     conf->decimal_encoding = KEFIR_DECIMAL_ENCODING_BID;
     conf->target_lowering = NULL;

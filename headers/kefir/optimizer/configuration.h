@@ -29,6 +29,7 @@ typedef struct kefir_optimizer_configuration {
     struct kefir_optimizer_pipeline pipeline;
 
     kefir_bool_t debug_info;
+    kefir_bool_t position_independent_code;
     kefir_size_t max_inline_depth;
     kefir_size_t max_inlines_per_function;
     kefir_size_t imprecise_decimal_bitint_conv;

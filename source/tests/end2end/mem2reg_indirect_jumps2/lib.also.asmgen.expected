@@ -12,29 +12,29 @@
 .L__kefir_text_section_begin:
 factorial2:
 .L__kefir_text_func_factorial2_begin:
-    lea __kefir_function_factorial2_static_branches_7(%rip), %rcx
-    xor %eax, %eax
+    lea __kefir_function_factorial2_static_branches_7(%rip), %rax
+    xor %ecx, %ecx
     cmp $1, %rdi
-    setg %al
-    movsx %eax, %rax
-    shl $3, %rax
-    add %rcx, %rax
-    mov %rax, %rdx
+    setg %cl
+    movsx %ecx, %rcx
+    shl $3, %rcx
+    add %rax, %rcx
     mov %rsi, %rax
 .L__kefir_func_factorial2_label2:
-    movq (%rdx), %rdx
-    jmp *%rdx
+    movq (%rcx), %rcx
+    jmp *%rcx
 .L__kefir_func_factorial2_label4:
 _kefir_local_public_label_factorial2_round:
-    lea -1(%rdi), %rsi
+    lea -1(%rdi), %rdx
     imul %rdi, %rax
-    xor %edx, %edx
-    cmp $1, %rsi
-    setg %dl
-    movsx %edx, %rdx
-    shl $3, %rdx
-    add %rcx, %rdx
-    mov %rsi, %rdi
+    lea __kefir_function_factorial2_static_branches_7(%rip), %rcx
+    xor %esi, %esi
+    cmp $1, %rdx
+    setg %sil
+    movsx %esi, %rsi
+    shl $3, %rsi
+    add %rsi, %rcx
+    mov %rdx, %rdi
     jmp .L__kefir_func_factorial2_label2
 .L__kefir_func_factorial2_label3:
 _kefir_local_public_label_factorial2_terminate:
@@ -45,26 +45,25 @@ run_factorial:
 .L__kefir_text_func_run_factorial_begin:
 .L__kefir_func_run_factorial_label1:
     movq factorial_param@GOTPCREL(%rip), %rax
-    movq (%rax), %rax
-    lea __kefir_function_run_factorial_static_branches_3(%rip), %rcx
-    xor %edx, %edx
-    cmp $1, %rax
-    setg %dl
-    movsx %edx, %rdx
-    movq (%rcx, %rdx, 8), %rcx
-    movq factorial_param@GOTPCREL(%rip), %rdx
+    movq (%rax), %rcx
+    lea __kefir_function_run_factorial_static_branches_3(%rip), %rdx
+    xor %esi, %esi
+    cmp $1, %rcx
+    setg %sil
+    movsx %esi, %rsi
+    movq (%rdx, %rsi, 8), %rdx
     movq factorial_result@GOTPCREL(%rip), %rsi
-    jmp *%rcx
+    jmp *%rdx
 .L__kefir_func_run_factorial_label2:
 _kefir_local_public_label_run_factorial_terminate:
     ret
 .L__kefir_func_run_factorial_label3:
 _kefir_local_public_label_run_factorial_round:
-    movq (%rsi), %rcx
-    imul %rax, %rcx
-    movq %rcx, (%rsi)
-    add $-1, %rax
-    movq %rax, (%rdx)
+    movq (%rsi), %rdx
+    imul %rcx, %rdx
+    movq %rdx, (%rsi)
+    add $-1, %rcx
+    movq %rcx, (%rax)
     jmp .L__kefir_func_run_factorial_label1
 .L__kefir_text_func_run_factorial_end:
 

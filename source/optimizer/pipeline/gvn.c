@@ -707,6 +707,8 @@ static kefir_result_t instr_replacement_policy(struct gvn_state *state, const st
         case KEFIR_OPT_OPCODE_BITINT_LESS:
         case KEFIR_OPT_OPCODE_BITINT_ABOVE:
         case KEFIR_OPT_OPCODE_BITINT_BELOW:
+        case KEFIR_OPT_OPCODE_GET_GLOBAL:
+        case KEFIR_OPT_OPCODE_GET_THREAD_LOCAL:
             *policy = GVN_REPLACEMENT_GLOBAL;
             break;
 
@@ -747,8 +749,6 @@ static kefir_result_t instr_replacement_policy(struct gvn_state *state, const st
         case KEFIR_OPT_OPCODE_INT64_SIGN_EXTEND_8BITS:
         case KEFIR_OPT_OPCODE_INT64_SIGN_EXTEND_16BITS:
         case KEFIR_OPT_OPCODE_INT64_SIGN_EXTEND_32BITS:
-        case KEFIR_OPT_OPCODE_GET_GLOBAL:
-        case KEFIR_OPT_OPCODE_GET_THREAD_LOCAL:
             *policy = GVN_REPLACEMENT_LOCAL;
             break;
 
