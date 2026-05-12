@@ -64,8 +64,8 @@ test4:
     mov %rbx, %rdi
     call fn@PLT
     mov %rax, %r12
-    neg %ebx
-    mov %ebx, %edi
+    mov %rbx, %rdi
+    neg %edi
     call fn@PLT
     imul %r12d, %eax
     add %r12d, %eax

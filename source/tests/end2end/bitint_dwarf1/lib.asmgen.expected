@@ -53,11 +53,11 @@ get:
 .loc 0 30 5
 .L__kefir_func_get_label29:
     shl $55, %rax
-    sar $55, %rax
+    mov %rax, %rdx
+    sar $55, %rdx
 .L__kefir_func_get_label204:
     lea -32(%rbp), %rdi
     mov $90, %esi
-    mov %rax, %rdx
     call __kefir_bigint_set_signed_integer
 .L__kefir_func_get_label205:
     movq -32(%rbp), %rax
@@ -88,11 +88,11 @@ get2:
 .loc 0 42 5
 .L__kefir_func_get2_label29:
     shl $55, %rax
-    shr $55, %rax
+    mov %rax, %rdx
+    shr $55, %rdx
 .L__kefir_func_get2_label204:
     lea -32(%rbp), %rdi
     mov $90, %esi
-    mov %rax, %rdx
     call __kefir_bigint_set_unsigned_integer
 .L__kefir_func_get2_label205:
     movq -32(%rbp), %rax

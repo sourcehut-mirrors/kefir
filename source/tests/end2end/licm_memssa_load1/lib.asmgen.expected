@@ -158,8 +158,7 @@ test6:
     addl %ecx, (%rsi, %rdx, 4)
     cdq
     idiv %edi
-    mov %rdx, %rax
-    add $1, %eax
+    lea 1(%edx), %eax
     jmp .L__kefir_func_test6_label2
 .L__kefir_text_func_test6_end:
 

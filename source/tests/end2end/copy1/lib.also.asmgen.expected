@@ -535,8 +535,8 @@ generate_buf_8:
     cmp $9, %edx
     jl .L__kefir_func_generate_buf_8_label4
     movq -9(%rbp), %rax
-    movb -1(%rbp), %cl
     mov %rcx, %rdx
+    movb -1(%rbp), %dl
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -567,8 +567,8 @@ generate_buf_9:
     cmp $10, %edx
     jl .L__kefir_func_generate_buf_9_label4
     movq -10(%rbp), %rax
-    movw -2(%rbp), %cx
     mov %rcx, %rdx
+    movw -2(%rbp), %dx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -604,8 +604,7 @@ generate_buf_10:
     movw -3(%rbp), %cx
     movb -1(%rbp), %dl
     shl $16, %edx
-    or %rdx, %rcx
-    mov %rcx, %rdx
+    or %rcx, %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -672,8 +671,7 @@ generate_buf_12:
     movl -5(%rbp), %ecx
     movb -1(%rbp), %dl
     shl $32, %rdx
-    or %rdx, %rcx
-    mov %rcx, %rdx
+    or %rcx, %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -709,8 +707,7 @@ generate_buf_13:
     movl -6(%rbp), %ecx
     movw -2(%rbp), %dx
     shl $32, %rdx
-    or %rdx, %rcx
-    mov %rcx, %rdx
+    or %rcx, %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -750,8 +747,7 @@ generate_buf_14:
     or %rdx, %rcx
     movb -1(%rbp), %dl
     shl $48, %rdx
-    or %rdx, %rcx
-    mov %rcx, %rdx
+    or %rcx, %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret

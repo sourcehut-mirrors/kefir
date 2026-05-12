@@ -170,10 +170,10 @@ get7:
     shl $32, %rax
     shr $32, %rax
     shl $32, %rax
-    shr $32, %rax
+    mov %rax, %rdx
+    shr $32, %rdx
     lea -80(%rbp), %rdi
     mov $150, %esi
-    mov %rax, %rdx
     call __kefir_bigint_set_unsigned_integer
     movl -80(%rbp), %eax
     movl %eax, -56(%rbp)

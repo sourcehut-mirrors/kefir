@@ -1232,8 +1232,8 @@ __kefir_bigint_signed_multiply:
     movq -64(%rbp), %rdi
     movq -96(%rbp), %rax
     movq -120(%rbp), %rdx
-    shl $1, %rax
     mov %rax, %rsi
+    shl $1, %rsi
     call __kefir_bigint_cast_signed
     xor %eax, %eax
     lea (%rbp), %rsp

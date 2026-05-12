@@ -3194,7 +3194,7 @@ test3:
 #                            },
 #                            "allocation": {
 #                                "type": "register",
-#                                "register": "rcx"
+#                                "register": "rdx"
 #                            },
 #                            "metadata": {
 #                                "value_ref": 21
@@ -3506,8 +3506,8 @@ test3:
     mov -16(%rbp), %rdx
     mov -8(%rbp), %rsi
     add %rdx, %rax
-    adc %rsi, %rcx
     mov %rcx, %rdx
+    adc %rsi, %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret

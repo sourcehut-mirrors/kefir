@@ -330,12 +330,11 @@ __kefir_bigint_is_zero:
     sub %rcx, %rax
     movq %rax, -16(%rbp)
     movq -16(%rbp), %rax
-    add $1, %rax
-    mov $1, %edx
-    mov %rax, %rcx
-    shl %cl, %rdx
-    sub $1, %edx
-    movl %edx, -28(%rbp)
+    lea 1(%rax), %rcx
+    mov $1, %eax
+    shl %cl, %rax
+    sub $1, %eax
+    movl %eax, -28(%rbp)
     movl -28(%rbp), %eax
     movb -32(%rbp), %cl
     and $-1, %cl

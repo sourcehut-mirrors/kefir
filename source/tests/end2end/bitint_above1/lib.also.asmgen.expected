@@ -292,12 +292,11 @@ __kefir_bigint_unsigned_compare:
     movl %ecx, -4(%rbp)
     movl -4(%rbp), %eax
     movabs $4294967295, %rcx
-    and %rcx, %rax
-    mov $1, %edx
-    mov %rax, %rcx
-    shl %cl, %rdx
-    sub $1, %edx
-    movl %edx, -8(%rbp)
+    and %rax, %rcx
+    mov $1, %eax
+    shl %cl, %rax
+    sub $1, %eax
+    movl %eax, -8(%rbp)
     movl -8(%rbp), %eax
     andl %eax, -12(%rbp)
     movl -8(%rbp), %eax

@@ -56,10 +56,9 @@ i128_or:
     mov (%rdi), %rax
     mov 8(%rdi), %rcx
     or %rsi, %rax
-    or %rdx, %rcx
+    or %rcx, %rdx
     mov %rax, (%rdi)
-    mov %rcx, 8(%rdi)
-    mov %rcx, %rdx
+    mov %rdx, 8(%rdi)
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -73,10 +72,9 @@ u128_or:
     mov (%rdi), %rax
     mov 8(%rdi), %rcx
     or %rsi, %rax
-    or %rdx, %rcx
+    or %rcx, %rdx
     mov %rax, (%rdi)
-    mov %rcx, 8(%rdi)
-    mov %rcx, %rdx
+    mov %rdx, 8(%rdi)
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -90,10 +88,9 @@ i128_add:
     mov (%rdi), %rax
     mov 8(%rdi), %rcx
     add %rsi, %rax
-    adc %rdx, %rcx
+    adc %rcx, %rdx
     mov %rax, (%rdi)
-    mov %rcx, 8(%rdi)
-    mov %rcx, %rdx
+    mov %rdx, 8(%rdi)
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -107,10 +104,9 @@ i128_and:
     mov (%rdi), %rax
     mov 8(%rdi), %rcx
     and %rsi, %rax
-    and %rdx, %rcx
+    and %rcx, %rdx
     mov %rax, (%rdi)
-    mov %rcx, 8(%rdi)
-    mov %rcx, %rdx
+    mov %rdx, 8(%rdi)
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -235,10 +231,11 @@ i128_sub:
     mov (%rdi), %rax
     mov 8(%rdi), %rcx
     sub %rsi, %rax
-    sbb %rdx, %rcx
+    mov %rcx, %rsi
+    sbb %rdx, %rsi
+    mov %rsi, %rdx
     mov %rax, (%rdi)
-    mov %rcx, 8(%rdi)
-    mov %rcx, %rdx
+    mov %rdx, 8(%rdi)
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -252,10 +249,9 @@ i128_xor:
     mov (%rdi), %rax
     mov 8(%rdi), %rcx
     xor %rsi, %rax
-    xor %rdx, %rcx
+    xor %rcx, %rdx
     mov %rax, (%rdi)
-    mov %rcx, 8(%rdi)
-    mov %rcx, %rdx
+    mov %rdx, 8(%rdi)
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -269,10 +265,9 @@ u128_add:
     mov (%rdi), %rax
     mov 8(%rdi), %rcx
     add %rsi, %rax
-    adc %rdx, %rcx
+    adc %rcx, %rdx
     mov %rax, (%rdi)
-    mov %rcx, 8(%rdi)
-    mov %rcx, %rdx
+    mov %rdx, 8(%rdi)
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -286,10 +281,9 @@ u128_and:
     mov (%rdi), %rax
     mov 8(%rdi), %rcx
     and %rsi, %rax
-    and %rdx, %rcx
+    and %rcx, %rdx
     mov %rax, (%rdi)
-    mov %rcx, 8(%rdi)
-    mov %rcx, %rdx
+    mov %rdx, 8(%rdi)
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -413,10 +407,11 @@ u128_sub:
     mov (%rdi), %rax
     mov 8(%rdi), %rcx
     sub %rsi, %rax
-    sbb %rdx, %rcx
+    mov %rcx, %rsi
+    sbb %rdx, %rsi
+    mov %rsi, %rdx
     mov %rax, (%rdi)
-    mov %rcx, 8(%rdi)
-    mov %rcx, %rdx
+    mov %rdx, 8(%rdi)
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -430,10 +425,9 @@ u128_xor:
     mov (%rdi), %rax
     mov 8(%rdi), %rcx
     xor %rsi, %rax
-    xor %rdx, %rcx
+    xor %rcx, %rdx
     mov %rax, (%rdi)
-    mov %rcx, 8(%rdi)
-    mov %rcx, %rdx
+    mov %rdx, 8(%rdi)
     lea (%rbp), %rsp
     pop %rbp
     ret

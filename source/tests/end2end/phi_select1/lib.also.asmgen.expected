@@ -139,10 +139,10 @@ select9:
     lea 144(%rbp), %rax
     lea 16(%rbp), %rcx
     test %esi, %esi
-    cmovz %rax, %rcx
+    mov %rcx, %rsi
+    cmovz %rax, %rsi
     mov %rdx, %rax
     mov %rax, %rdi
-    mov %rcx, %rsi
     cld
     mov $16, %rcx
     rep movsq

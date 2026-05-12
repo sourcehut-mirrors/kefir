@@ -74,8 +74,8 @@ test1:
     add $11, %rdi
     adc $0, %rsi
     xor %rdi, %rax
-    xor %rsi, %rcx
     mov %rcx, %rdx
+    xor %rsi, %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret

@@ -68,8 +68,7 @@ test3:
     lea -4(%rbp), %rdi
     call somefn@PLT
     movl -4(%rbp), %eax
-    add $1, %eax
-    mov %eax, %edi
+    lea 1(%eax), %edi
     call test3
     lea (%rbp), %rsp
     pop %rbp
@@ -92,8 +91,7 @@ test4:
     sar $2, %rax
     lock     xaddl %eax, (%rdx)
     movl -4(%rbp), %eax
-    add $1, %eax
-    mov %eax, %edi
+    lea 1(%eax), %edi
     call test4
     lea (%rbp), %rsp
     pop %rbp
@@ -109,8 +107,7 @@ test5:
     lea -4(%rbp), %rax
 
     movl -4(%rbp), %eax
-    add $1, %eax
-    mov %eax, %edi
+    lea 1(%eax), %edi
     call test5
     lea (%rbp), %rsp
     pop %rbp
@@ -137,12 +134,11 @@ test7:
     lea -4(%rbp), %rax
     xor %ecx, %ecx
     cmp $0, %edi
-    cmovle %rcx, %rax
     mov %rax, %rdi
+    cmovle %rcx, %rdi
     call somefn@PLT
     movl -4(%rbp), %eax
-    add $1, %eax
-    mov %eax, %edi
+    lea 1(%eax), %edi
     call test7
     lea (%rbp), %rsp
     pop %rbp
@@ -163,8 +159,7 @@ test8:
     mov %rcx, %rax
     movsx %eax, %rdi
     call somefn@PLT
-    add $1, %ebx
-    mov %ebx, %edi
+    lea 1(%ebx), %edi
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
@@ -195,8 +190,7 @@ test10:
     sub $8, %rsp
     mov %rdi, %rbx
     call somejmp2@PLT
-    add $1, %ebx
-    mov %ebx, %edi
+    lea 1(%ebx), %edi
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp

@@ -135,10 +135,10 @@ get9:
     mov %rsp, %rbp
     sub $16, %rsp
     movabs $1028332837181762172, %rax
-    neg %rax
+    mov %rax, %rdx
+    neg %rdx
     lea -16(%rbp), %rdi
     mov $111, %esi
-    mov %rax, %rdx
     call __kefir_bigint_set_signed_integer
     movq -16(%rbp), %rax
     movq -8(%rbp), %rdx
@@ -171,10 +171,10 @@ get11:
     sub $56, %rsp
     mov %rdi, %rbx
     movabs $1028332837181762172, %rax
-    neg %rax
+    mov %rax, %rdx
+    neg %rdx
     lea -64(%rbp), %rdi
     mov $350, %esi
-    mov %rax, %rdx
     call __kefir_bigint_set_signed_integer
     mov %rbx, %rax
     movdqu -64(%rbp), %xmm0

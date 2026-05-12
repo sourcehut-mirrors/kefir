@@ -62,9 +62,9 @@ test_fetch_and_short:
     movsx %si, %rsi
 .L__kefir_func_test_fetch_and_short_label2:
     movsxw -2(%rbp), %rax
-    and %esi, %eax
+    mov %rax, %rcx
+    and %esi, %ecx
     mov %rdi, %rdx
-    mov %eax, %ecx
     movw -2(%rbp), %ax
     lock     cmpxchgw %cx, (%rdx)
     je .L__kefir_func_test_fetch_and_short_label4
@@ -96,9 +96,9 @@ test_fetch_xor_short:
     movsx %si, %rsi
 .L__kefir_func_test_fetch_xor_short_label2:
     movsxw -2(%rbp), %rax
-    xor %esi, %eax
+    mov %rax, %rcx
+    xor %esi, %ecx
     mov %rdi, %rdx
-    mov %eax, %ecx
     movw -2(%rbp), %ax
     lock     cmpxchgw %cx, (%rdx)
     je .L__kefir_func_test_fetch_xor_short_label4
@@ -120,9 +120,9 @@ test_fetch_or_int:
     movl %eax, -4(%rbp)
 .L__kefir_func_test_fetch_or_int_label2:
     movl -4(%rbp), %eax
-    or %esi, %eax
-    mov %rdi, %rdx
     mov %eax, %ecx
+    or %esi, %ecx
+    mov %rdi, %rdx
     movl -4(%rbp), %eax
     lock     cmpxchgl %ecx, (%rdx)
     je .L__kefir_func_test_fetch_or_int_label4
@@ -161,9 +161,9 @@ test_fetch_and_char:
     movsx %sil, %rsi
 .L__kefir_func_test_fetch_and_char_label2:
     movsxb -1(%rbp), %rax
-    and %esi, %eax
+    mov %rax, %rcx
+    and %esi, %ecx
     mov %rdi, %rdx
-    mov %eax, %ecx
     movb -1(%rbp), %al
     lock     cmpxchgb %cl, (%rdx)
     je .L__kefir_func_test_fetch_and_char_label4
@@ -185,9 +185,9 @@ test_fetch_and_long:
     movq %rax, -8(%rbp)
 .L__kefir_func_test_fetch_and_long_label2:
     movq -8(%rbp), %rax
-    and %rsi, %rax
-    mov %rdi, %rdx
     mov %rax, %rcx
+    and %rsi, %rcx
+    mov %rdi, %rdx
     movq -8(%rbp), %rax
     lock     cmpxchgq %rcx, (%rdx)
     je .L__kefir_func_test_fetch_and_long_label4
@@ -210,9 +210,9 @@ test_fetch_or_short:
     movsx %si, %rsi
 .L__kefir_func_test_fetch_or_short_label2:
     movsxw -2(%rbp), %rax
-    or %esi, %eax
+    mov %rax, %rcx
+    or %esi, %ecx
     mov %rdi, %rdx
-    mov %eax, %ecx
     movw -2(%rbp), %ax
     lock     cmpxchgw %cx, (%rdx)
     je .L__kefir_func_test_fetch_or_short_label4
@@ -253,9 +253,9 @@ test_fetch_xor_char:
     movsx %sil, %rsi
 .L__kefir_func_test_fetch_xor_char_label2:
     movsxb -1(%rbp), %rax
-    xor %esi, %eax
+    mov %rax, %rcx
+    xor %esi, %ecx
     mov %rdi, %rdx
-    mov %eax, %ecx
     movb -1(%rbp), %al
     lock     cmpxchgb %cl, (%rdx)
     je .L__kefir_func_test_fetch_xor_char_label4
@@ -277,9 +277,9 @@ test_fetch_xor_long:
     movq %rax, -8(%rbp)
 .L__kefir_func_test_fetch_xor_long_label2:
     movq -8(%rbp), %rax
-    xor %rsi, %rax
-    mov %rdi, %rdx
     mov %rax, %rcx
+    xor %rsi, %rcx
+    mov %rdi, %rdx
     movq -8(%rbp), %rax
     lock     cmpxchgq %rcx, (%rdx)
     je .L__kefir_func_test_fetch_xor_long_label4
@@ -309,9 +309,9 @@ test_fetch_and_int:
     movl %eax, -4(%rbp)
 .L__kefir_func_test_fetch_and_int_label2:
     movl -4(%rbp), %eax
-    and %esi, %eax
-    mov %rdi, %rdx
     mov %eax, %ecx
+    and %esi, %ecx
+    mov %rdi, %rdx
     movl -4(%rbp), %eax
     lock     cmpxchgl %ecx, (%rdx)
     je .L__kefir_func_test_fetch_and_int_label4
@@ -334,9 +334,9 @@ test_fetch_or_char:
     movsx %sil, %rsi
 .L__kefir_func_test_fetch_or_char_label2:
     movsxb -1(%rbp), %rax
-    or %esi, %eax
+    mov %rax, %rcx
+    or %esi, %ecx
     mov %rdi, %rdx
-    mov %eax, %ecx
     movb -1(%rbp), %al
     lock     cmpxchgb %cl, (%rdx)
     je .L__kefir_func_test_fetch_or_char_label4
@@ -358,9 +358,9 @@ test_fetch_or_long:
     movq %rax, -8(%rbp)
 .L__kefir_func_test_fetch_or_long_label2:
     movq -8(%rbp), %rax
-    or %rsi, %rax
-    mov %rdi, %rdx
     mov %rax, %rcx
+    or %rsi, %rcx
+    mov %rdi, %rdx
     movq -8(%rbp), %rax
     lock     cmpxchgq %rcx, (%rdx)
     je .L__kefir_func_test_fetch_or_long_label4
@@ -391,9 +391,9 @@ test_fetch_xor_int:
     movl %eax, -4(%rbp)
 .L__kefir_func_test_fetch_xor_int_label2:
     movl -4(%rbp), %eax
-    xor %esi, %eax
-    mov %rdi, %rdx
     mov %eax, %ecx
+    xor %esi, %ecx
+    mov %rdi, %rdx
     movl -4(%rbp), %eax
     lock     cmpxchgl %ecx, (%rdx)
     je .L__kefir_func_test_fetch_xor_int_label4

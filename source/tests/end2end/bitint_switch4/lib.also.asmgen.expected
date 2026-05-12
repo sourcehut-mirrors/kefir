@@ -53,10 +53,10 @@ test1:
     mov $1, %eax
     neg %al
     shl $62, %rax
-    sar $62, %rax
+    mov %rax, %rdx
+    sar $62, %rdx
     lea -64(%rbp), %rdi
     mov $120, %esi
-    mov %rax, %rdx
     call __kefir_bigint_set_signed_integer
     lea -80(%rbp), %rdi
     lea -64(%rbp), %rsi
@@ -356,12 +356,11 @@ __kefir_bigint_unsigned_compare:
     movl %ecx, -4(%rbp)
     movl -4(%rbp), %eax
     movabs $4294967295, %rcx
-    and %rcx, %rax
-    mov $1, %edx
-    mov %rax, %rcx
-    shl %cl, %rdx
-    sub $1, %edx
-    movl %edx, -8(%rbp)
+    and %rax, %rcx
+    mov $1, %eax
+    shl %cl, %rax
+    sub $1, %eax
+    movl %eax, -8(%rbp)
     movl -8(%rbp), %eax
     andl %eax, -12(%rbp)
     movl -8(%rbp), %eax

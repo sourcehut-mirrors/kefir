@@ -139,10 +139,10 @@ get7:
     shl $1, %rax
     sar $1, %rax
     shl $1, %rax
-    sar $1, %rax
+    mov %rax, %rdx
+    sar $1, %rdx
     lea -48(%rbp), %rdi
     mov $200, %esi
-    mov %rax, %rdx
     call __kefir_bigint_set_signed_integer
     mov %rbx, %rax
     movdqu -48(%rbp), %xmm0
@@ -164,10 +164,10 @@ get8:
     mov %rdi, %rbx
     movabs $152627362517262, %rax
     shl $15, %rax
-    sar $15, %rax
+    mov %rax, %rdx
+    sar $15, %rdx
     lea -48(%rbp), %rdi
     mov $200, %esi
-    mov %rax, %rdx
     call __kefir_bigint_set_signed_integer
     mov %rbx, %rax
     movdqu -48(%rbp), %xmm0
@@ -189,10 +189,10 @@ get9:
     mov %rdi, %rbx
     movabs $212205289333297, %rax
     shl $16, %rax
-    shr $16, %rax
+    mov %rax, %rdx
+    shr $16, %rdx
     lea -48(%rbp), %rdi
     mov $200, %esi
-    mov %rax, %rdx
     call __kefir_bigint_set_unsigned_integer
     mov %rbx, %rax
     movdqu -48(%rbp), %xmm0
@@ -213,10 +213,10 @@ get10:
     sub $72, %rsp
     mov %rdi, %rbx
     movabs $8372472467146471642, %rax
-    neg %rax
+    mov %rax, %rdx
+    neg %rdx
     lea -80(%rbp), %rdi
     mov $128, %esi
-    mov %rax, %rdx
     call __kefir_bigint_set_signed_integer
     movdqu -80(%rbp), %xmm0
     movdqu %xmm0, -64(%rbp)
