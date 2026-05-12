@@ -14,19 +14,8 @@ cld_eq:
     mov %rsp, %rbp
     sub $16, %rsp
     fstcw -8(%rbp)
-    lea 48(%rbp), %rax
-    lea 16(%rbp), %rcx
-    fldt (%rcx)
-    fldt (%rax)
-    fxch %st(1)
-    xor %edx, %edx
-    xor %esi, %esi
-    fucomip %st(1)
-    fstp %st(0)
-    setnp %dl
-    cmovne %rsi, %rdx
-    fldt 16(%rcx)
-    fldt 16(%rax)
+    fldt 16(%rbp)
+    fldt 48(%rbp)
     fxch %st(1)
     xor %eax, %eax
     xor %ecx, %ecx
@@ -34,7 +23,16 @@ cld_eq:
     fstp %st(0)
     setnp %al
     cmovne %rcx, %rax
-    and %eax, %edx
+    fldt 32(%rbp)
+    fldt 64(%rbp)
+    fxch %st(1)
+    xor %ecx, %ecx
+    xor %edx, %edx
+    fucomip %st(1)
+    fstp %st(0)
+    setnp %cl
+    cmovne %rdx, %rcx
+    and %ecx, %eax
     setne %al
     movzx %al, %rax
     fldcw -8(%rbp)
@@ -49,9 +47,8 @@ cld_trunc:
     mov %rsp, %rbp
     sub $16, %rsp
     fstcw -8(%rbp)
-    lea 16(%rbp), %rax
-    fldt (%rax)
-    fldt 16(%rax)
+    fldt 16(%rbp)
+    fldt 32(%rbp)
     fldz
     fucomi %st(1)
     fstp %st(0)

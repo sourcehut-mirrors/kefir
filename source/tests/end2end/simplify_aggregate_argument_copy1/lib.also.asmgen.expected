@@ -27,22 +27,21 @@ test8:
 .L__kefir_text_func_test8_begin:
     push %rbp
     mov %rsp, %rbp
-    lea 16(%rbp), %rcx
-    movq (%rcx), %rax
-    movq 8(%rcx), %rdx
-    movq 16(%rcx), %rsi
-    movq 24(%rcx), %rdi
-    movq 32(%rcx), %r8
-    movq 40(%rcx), %r9
-    movq 48(%rcx), %r10
-    movq 56(%rcx), %rcx
+    movq 16(%rbp), %rax
+    movq 24(%rbp), %rcx
+    movq 32(%rbp), %rdx
+    movq 40(%rbp), %rsi
+    movq 48(%rbp), %rdi
+    movq 56(%rbp), %r8
+    movq 64(%rbp), %r9
+    movq 72(%rbp), %r10
+    add %rcx, %rax
     add %rdx, %rax
     add %rsi, %rax
     add %rdi, %rax
     add %r8, %rax
     add %r9, %rax
     add %r10, %rax
-    add %rcx, %rax
     pop %rbp
     ret
 .L__kefir_text_func_test8_end:

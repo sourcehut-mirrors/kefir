@@ -336,8 +336,7 @@ cf80_to_fi32:
     sub $16, %rsp
     fstcw -8(%rbp)
     stmxcsr -16(%rbp)
-    lea 16(%rbp), %rax
-    fldt 16(%rax)
+    fldt 32(%rbp)
     fstps -4(%rsp)
     movd -4(%rsp), %xmm0
     ldmxcsr -16(%rbp)

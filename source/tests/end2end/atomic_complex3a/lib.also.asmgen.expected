@@ -35,13 +35,12 @@ add_ld:
     push %rbx
     sub $168, %rsp
     fstcw -16(%rbp)
-    lea 16(%rbp), %rax
     mov %rdi, %rbx
     fnstenv -176(%rbp)
     stmxcsr -148(%rbp)
     fnclex
-    fldt (%rax)
-    fldt 16(%rax)
+    fldt 16(%rbp)
+    fldt 32(%rbp)
     fstpt -144(%rbp)
     fstpt -128(%rbp)
 .L__kefir_func_add_ld_label2:
@@ -238,13 +237,12 @@ divide_ld:
     push %rbx
     sub $168, %rsp
     fstcw -16(%rbp)
-    lea 16(%rbp), %rax
     mov %rdi, %rbx
     fnstenv -176(%rbp)
     stmxcsr -148(%rbp)
     fnclex
-    fldt 16(%rax)
-    fldt (%rax)
+    fldt 32(%rbp)
+    fldt 16(%rbp)
     fstpt -144(%rbp)
     fstpt -128(%rbp)
 .L__kefir_func_divide_ld_label2:
@@ -454,13 +452,12 @@ multiply_ld:
     push %rbx
     sub $168, %rsp
     fstcw -16(%rbp)
-    lea 16(%rbp), %rax
     mov %rdi, %rbx
     fnstenv -176(%rbp)
     stmxcsr -148(%rbp)
     fnclex
-    fldt 16(%rax)
-    fldt (%rax)
+    fldt 32(%rbp)
+    fldt 16(%rbp)
     fstpt -144(%rbp)
     fstpt -128(%rbp)
 .L__kefir_func_multiply_ld_label2:
@@ -528,13 +525,12 @@ subtract_ld:
     push %rbx
     sub $168, %rsp
     fstcw -16(%rbp)
-    lea 16(%rbp), %rax
     mov %rdi, %rbx
     fnstenv -176(%rbp)
     stmxcsr -148(%rbp)
     fnclex
-    fldt (%rax)
-    fldt 16(%rax)
+    fldt 16(%rbp)
+    fldt 32(%rbp)
     fstpt -144(%rbp)
     fstpt -128(%rbp)
 .L__kefir_func_subtract_ld_label2:

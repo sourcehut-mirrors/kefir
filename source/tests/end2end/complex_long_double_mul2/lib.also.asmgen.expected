@@ -12,15 +12,13 @@ mul:
     mov %rsp, %rbp
     sub $48, %rsp
     fstcw -8(%rbp)
-    lea 48(%rbp), %rax
-    lea 16(%rbp), %rcx
-    fldt (%rcx)
-    fldt (%rax)
+    fldt 16(%rbp)
+    fldt 48(%rbp)
     fld %st(0)
     fld %st(2)
     fmulp
-    fldt 16(%rcx)
-    fldt 16(%rax)
+    fldt 32(%rbp)
+    fldt 64(%rbp)
     fld %st(0)
     fld %st(2)
     fmulp

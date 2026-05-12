@@ -106,16 +106,15 @@ neg6:
     push %rbx
     sub $120, %rsp
     mov %rdi, %rbx
-    lea 16(%rbp), %rax
-    movq (%rax), %rcx
-    movq %rcx, -48(%rbp)
-    movq 8(%rax), %rcx
-    movq %rcx, -40(%rbp)
-    movq 16(%rax), %rcx
-    movq %rcx, -32(%rbp)
-    movq 24(%rax), %rcx
-    movq %rcx, -24(%rbp)
-    movq 32(%rax), %rax
+    movq 16(%rbp), %rax
+    movq %rax, -48(%rbp)
+    movq 24(%rbp), %rax
+    movq %rax, -40(%rbp)
+    movq 32(%rbp), %rax
+    movq %rax, -32(%rbp)
+    movq 40(%rbp), %rax
+    movq %rax, -24(%rbp)
+    movq 48(%rbp), %rax
     movq %rax, -16(%rbp)
     movq -48(%rbp), %rax
     movq %rax, -128(%rbp)

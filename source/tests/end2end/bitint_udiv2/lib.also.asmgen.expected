@@ -72,23 +72,21 @@ umod:
     push %rbx
     sub $520, %rsp
     mov %rdi, %rbx
-    lea 80(%rbp), %rax
-    lea 16(%rbp), %rcx
-    movdqu (%rax), %xmm0
+    movdqu 80(%rbp), %xmm0
     movdqu %xmm0, -72(%rbp)
-    movdqu 16(%rax), %xmm0
+    movdqu 96(%rbp), %xmm0
     movdqu %xmm0, -56(%rbp)
-    movdqu 32(%rax), %xmm0
+    movdqu 112(%rbp), %xmm0
     movdqu %xmm0, -40(%rbp)
-    movdqu 48(%rax), %xmm0
+    movdqu 128(%rbp), %xmm0
     movdqu %xmm0, -24(%rbp)
-    movdqu (%rcx), %xmm0
+    movdqu 16(%rbp), %xmm0
     movdqu %xmm0, -136(%rbp)
-    movdqu 16(%rcx), %xmm0
+    movdqu 32(%rbp), %xmm0
     movdqu %xmm0, -120(%rbp)
-    movdqu 32(%rcx), %xmm0
+    movdqu 48(%rbp), %xmm0
     movdqu %xmm0, -104(%rbp)
-    movdqu 48(%rcx), %xmm0
+    movdqu 64(%rbp), %xmm0
     movdqu %xmm0, -88(%rbp)
     movdqu -136(%rbp), %xmm0
     movdqu %xmm0, -528(%rbp)

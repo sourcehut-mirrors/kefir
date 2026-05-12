@@ -55,9 +55,9 @@ test:
     movq -48(%rbp), %rcx
     movl -60(%rbp), %edx
     movq (%rcx, %rdx, 1), %rsi
-    movq %rsi, (%rax)
+    movq %rsi, -40(%rbp)
     movq 16(%rcx, %rdx, 1), %rcx
-    movq %rcx, 8(%rax)
+    movq %rcx, -32(%rbp)
     addl $32, -60(%rbp)
 .L__kefir_func_test_label10:
     movdqu (%rax), %xmm1

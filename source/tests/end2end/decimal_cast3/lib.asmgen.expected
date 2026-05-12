@@ -165,12 +165,11 @@ ubitint180_to_d128:
     mov %rsp, %rbp
     sub $64, %rsp
     fstcw -8(%rbp)
-    lea 16(%rbp), %rax
-    movq (%rax), %rcx
-    movq %rcx, -64(%rbp)
-    movq 8(%rax), %rcx
-    movq %rcx, -56(%rbp)
-    movq 16(%rax), %rax
+    movq 16(%rbp), %rax
+    movq %rax, -64(%rbp)
+    movq 24(%rbp), %rax
+    movq %rax, -56(%rbp)
+    movq 32(%rbp), %rax
     movq %rax, -48(%rbp)
     lea -64(%rbp), %rdi
     lea -40(%rbp), %rsi
@@ -264,12 +263,11 @@ ubitint180_to_d32:
     mov %rsp, %rbp
     sub $64, %rsp
     fstcw -8(%rbp)
-    lea 16(%rbp), %rax
-    movq (%rax), %rcx
-    movq %rcx, -64(%rbp)
-    movq 8(%rax), %rcx
-    movq %rcx, -56(%rbp)
-    movq 16(%rax), %rax
+    movq 16(%rbp), %rax
+    movq %rax, -64(%rbp)
+    movq 24(%rbp), %rax
+    movq %rax, -56(%rbp)
+    movq 32(%rbp), %rax
     movq %rax, -48(%rbp)
     lea -64(%rbp), %rdi
     lea -40(%rbp), %rsi
@@ -293,12 +291,11 @@ ubitint180_to_d64:
     mov %rsp, %rbp
     sub $64, %rsp
     fstcw -8(%rbp)
-    lea 16(%rbp), %rax
-    movq (%rax), %rcx
-    movq %rcx, -64(%rbp)
-    movq 8(%rax), %rcx
-    movq %rcx, -56(%rbp)
-    movq 16(%rax), %rax
+    movq 16(%rbp), %rax
+    movq %rax, -64(%rbp)
+    movq 24(%rbp), %rax
+    movq %rax, -56(%rbp)
+    movq 32(%rbp), %rax
     movq %rax, -48(%rbp)
     lea -64(%rbp), %rdi
     lea -40(%rbp), %rsi
@@ -536,12 +533,11 @@ bitint180_to_d128:
     mov %rsp, %rbp
     sub $64, %rsp
     fstcw -8(%rbp)
-    lea 16(%rbp), %rax
-    movq (%rax), %rcx
-    movq %rcx, -64(%rbp)
-    movq 8(%rax), %rcx
-    movq %rcx, -56(%rbp)
-    movq 16(%rax), %rax
+    movq 16(%rbp), %rax
+    movq %rax, -64(%rbp)
+    movq 24(%rbp), %rax
+    movq %rax, -56(%rbp)
+    movq 32(%rbp), %rax
     movq %rax, -48(%rbp)
     lea -64(%rbp), %rdi
     lea -40(%rbp), %rsi
@@ -642,12 +638,11 @@ bitint180_to_d32:
     mov %rsp, %rbp
     sub $64, %rsp
     fstcw -8(%rbp)
-    lea 16(%rbp), %rax
-    movq (%rax), %rcx
-    movq %rcx, -64(%rbp)
-    movq 8(%rax), %rcx
-    movq %rcx, -56(%rbp)
-    movq 16(%rax), %rax
+    movq 16(%rbp), %rax
+    movq %rax, -64(%rbp)
+    movq 24(%rbp), %rax
+    movq %rax, -56(%rbp)
+    movq 32(%rbp), %rax
     movq %rax, -48(%rbp)
     lea -64(%rbp), %rdi
     lea -40(%rbp), %rsi
@@ -671,12 +666,11 @@ bitint180_to_d64:
     mov %rsp, %rbp
     sub $64, %rsp
     fstcw -8(%rbp)
-    lea 16(%rbp), %rax
-    movq (%rax), %rcx
-    movq %rcx, -64(%rbp)
-    movq 8(%rax), %rcx
-    movq %rcx, -56(%rbp)
-    movq 16(%rax), %rax
+    movq 16(%rbp), %rax
+    movq %rax, -64(%rbp)
+    movq 24(%rbp), %rax
+    movq %rax, -56(%rbp)
+    movq 32(%rbp), %rax
     movq %rax, -48(%rbp)
     lea -64(%rbp), %rdi
     lea -40(%rbp), %rsi

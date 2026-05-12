@@ -329,8 +329,7 @@ cf80_to_fi80:
     mov %rsp, %rbp
     sub $16, %rsp
     fstcw -8(%rbp)
-    lea 16(%rbp), %rax
-    fldt 16(%rax)
+    fldt 32(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

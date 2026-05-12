@@ -139,12 +139,11 @@ test6:
     push %rbp
     mov %rsp, %rbp
     sub $96, %rsp
-    lea 16(%rbp), %rax
-    movdqu (%rax), %xmm0
+    movdqu 16(%rbp), %xmm0
     movdqu %xmm0, -48(%rbp)
-    movdqu 16(%rax), %xmm0
+    movdqu 32(%rbp), %xmm0
     movdqu %xmm0, -32(%rbp)
-    movdqu 32(%rax), %xmm0
+    movdqu 48(%rbp), %xmm0
     movdqu %xmm0, -16(%rbp)
     movdqu -48(%rbp), %xmm0
     movdqu %xmm0, -96(%rbp)

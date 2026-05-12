@@ -34,14 +34,13 @@ test8:
     push %rbp
     mov %rsp, %rbp
     sub $128, %rsp
-    lea 16(%rbp), %rax
-    movdqu (%rax), %xmm0
+    movdqu 16(%rbp), %xmm0
     movdqu %xmm0, -64(%rbp)
-    movdqu 16(%rax), %xmm0
+    movdqu 32(%rbp), %xmm0
     movdqu %xmm0, -48(%rbp)
-    movdqu 32(%rax), %xmm0
+    movdqu 48(%rbp), %xmm0
     movdqu %xmm0, -32(%rbp)
-    movdqu 48(%rax), %xmm0
+    movdqu 64(%rbp), %xmm0
     movdqu %xmm0, -16(%rbp)
     xorps %xmm0, %xmm0
     movdqu %xmm0, -128(%rbp)

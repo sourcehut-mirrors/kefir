@@ -42,12 +42,11 @@ or:
     push %r12
     sub $96, %rsp
     mov %rdi, %rbx
-    lea 16(%rbp), %rax
-    movq (%rax), %rcx
-    movq %rcx, -40(%rbp)
-    movq 8(%rax), %rcx
-    movq %rcx, -32(%rbp)
-    movq 16(%rax), %rax
+    movq 16(%rbp), %rax
+    movq %rax, -40(%rbp)
+    movq 24(%rbp), %rax
+    movq %rax, -32(%rbp)
+    movq 32(%rbp), %rax
     movq %rax, -24(%rbp)
     movq -40(%rbp), %rax
     movq %rax, -112(%rbp)
@@ -100,12 +99,11 @@ add:
     push %r12
     sub $96, %rsp
     mov %rdi, %rbx
-    lea 16(%rbp), %rax
-    movq (%rax), %rcx
-    movq %rcx, -40(%rbp)
-    movq 8(%rax), %rcx
-    movq %rcx, -32(%rbp)
-    movq 16(%rax), %rax
+    movq 16(%rbp), %rax
+    movq %rax, -40(%rbp)
+    movq 24(%rbp), %rax
+    movq %rax, -32(%rbp)
+    movq 32(%rbp), %rax
     movq %rax, -24(%rbp)
     movq -40(%rbp), %rax
     movq %rax, -112(%rbp)
@@ -158,12 +156,11 @@ and:
     push %r12
     sub $96, %rsp
     mov %rdi, %rbx
-    lea 16(%rbp), %rax
-    movq (%rax), %rcx
-    movq %rcx, -40(%rbp)
-    movq 8(%rax), %rcx
-    movq %rcx, -32(%rbp)
-    movq 16(%rax), %rax
+    movq 16(%rbp), %rax
+    movq %rax, -40(%rbp)
+    movq 24(%rbp), %rax
+    movq %rax, -32(%rbp)
+    movq 32(%rbp), %rax
     movq %rax, -24(%rbp)
     movq -40(%rbp), %rax
     movq %rax, -112(%rbp)
@@ -216,12 +213,11 @@ sub:
     push %r12
     sub $96, %rsp
     mov %rdi, %rbx
-    lea 16(%rbp), %rax
-    movq (%rax), %rcx
-    movq %rcx, -40(%rbp)
-    movq 8(%rax), %rcx
-    movq %rcx, -32(%rbp)
-    movq 16(%rax), %rax
+    movq 16(%rbp), %rax
+    movq %rax, -40(%rbp)
+    movq 24(%rbp), %rax
+    movq %rax, -32(%rbp)
+    movq 32(%rbp), %rax
     movq %rax, -24(%rbp)
     movq -40(%rbp), %rax
     movq %rax, -112(%rbp)
@@ -274,12 +270,11 @@ xor:
     push %r12
     sub $96, %rsp
     mov %rdi, %rbx
-    lea 16(%rbp), %rax
-    movq (%rax), %rcx
-    movq %rcx, -40(%rbp)
-    movq 8(%rax), %rcx
-    movq %rcx, -32(%rbp)
-    movq 16(%rax), %rax
+    movq 16(%rbp), %rax
+    movq %rax, -40(%rbp)
+    movq 24(%rbp), %rax
+    movq %rax, -32(%rbp)
+    movq 32(%rbp), %rax
     movq %rax, -24(%rbp)
     movq -40(%rbp), %rax
     movq %rax, -112(%rbp)
@@ -332,12 +327,11 @@ idiv:
     push %r12
     sub $160, %rsp
     mov %rdi, %rbx
-    lea 16(%rbp), %rax
-    movq (%rax), %rcx
-    movq %rcx, -40(%rbp)
-    movq 8(%rax), %rcx
-    movq %rcx, -32(%rbp)
-    movq 16(%rax), %rax
+    movq 16(%rbp), %rax
+    movq %rax, -40(%rbp)
+    movq 24(%rbp), %rax
+    movq %rax, -32(%rbp)
+    movq 32(%rbp), %rax
     movq %rax, -24(%rbp)
     movq -40(%rbp), %rax
     movq %rax, -176(%rbp)
@@ -402,12 +396,11 @@ imod:
     push %r12
     sub $160, %rsp
     mov %rdi, %rbx
-    lea 16(%rbp), %rax
-    movq (%rax), %rcx
-    movq %rcx, -40(%rbp)
-    movq 8(%rax), %rcx
-    movq %rcx, -32(%rbp)
-    movq 16(%rax), %rax
+    movq 16(%rbp), %rax
+    movq %rax, -40(%rbp)
+    movq 24(%rbp), %rax
+    movq %rax, -32(%rbp)
+    movq 32(%rbp), %rax
     movq %rax, -24(%rbp)
     movq -40(%rbp), %rax
     movq %rax, -176(%rbp)
@@ -466,12 +459,11 @@ imul:
     push %r12
     sub $128, %rsp
     mov %rdi, %rbx
-    lea 16(%rbp), %rax
-    movq (%rax), %rcx
-    movq %rcx, -40(%rbp)
-    movq 8(%rax), %rcx
-    movq %rcx, -32(%rbp)
-    movq 16(%rax), %rax
+    movq 16(%rbp), %rax
+    movq %rax, -40(%rbp)
+    movq 24(%rbp), %rax
+    movq %rax, -32(%rbp)
+    movq 32(%rbp), %rax
     movq %rax, -24(%rbp)
     movq -40(%rbp), %rax
     movq %rax, -144(%rbp)
@@ -527,12 +519,11 @@ udiv:
     push %r12
     sub $160, %rsp
     mov %rdi, %rbx
-    lea 16(%rbp), %rax
-    movq (%rax), %rcx
-    movq %rcx, -40(%rbp)
-    movq 8(%rax), %rcx
-    movq %rcx, -32(%rbp)
-    movq 16(%rax), %rax
+    movq 16(%rbp), %rax
+    movq %rax, -40(%rbp)
+    movq 24(%rbp), %rax
+    movq %rax, -32(%rbp)
+    movq 32(%rbp), %rax
     movq %rax, -24(%rbp)
     movq -40(%rbp), %rax
     movq %rax, -176(%rbp)
@@ -591,12 +582,11 @@ umod:
     push %r12
     sub $160, %rsp
     mov %rdi, %rbx
-    lea 16(%rbp), %rax
-    movq (%rax), %rcx
-    movq %rcx, -40(%rbp)
-    movq 8(%rax), %rcx
-    movq %rcx, -32(%rbp)
-    movq 16(%rax), %rax
+    movq 16(%rbp), %rax
+    movq %rax, -40(%rbp)
+    movq 24(%rbp), %rax
+    movq %rax, -32(%rbp)
+    movq 32(%rbp), %rax
     movq %rax, -24(%rbp)
     movq -40(%rbp), %rax
     movq %rax, -176(%rbp)
@@ -655,12 +645,11 @@ umul:
     push %r12
     sub $96, %rsp
     mov %rdi, %rbx
-    lea 16(%rbp), %rax
-    movq (%rax), %rcx
-    movq %rcx, -40(%rbp)
-    movq 8(%rax), %rcx
-    movq %rcx, -32(%rbp)
-    movq 16(%rax), %rax
+    movq 16(%rbp), %rax
+    movq %rax, -40(%rbp)
+    movq 24(%rbp), %rax
+    movq %rax, -32(%rbp)
+    movq 32(%rbp), %rax
     movq %rax, -24(%rbp)
     movq -40(%rbp), %rax
     movq %rax, -112(%rbp)
@@ -709,12 +698,11 @@ lshift:
     push %r12
     sub $96, %rsp
     mov %rdi, %rbx
-    lea 16(%rbp), %rax
-    movq (%rax), %rcx
-    movq %rcx, -40(%rbp)
-    movq 8(%rax), %rcx
-    movq %rcx, -32(%rbp)
-    movq 16(%rax), %rax
+    movq 16(%rbp), %rax
+    movq %rax, -40(%rbp)
+    movq 24(%rbp), %rax
+    movq %rax, -32(%rbp)
+    movq 32(%rbp), %rax
     movq %rax, -24(%rbp)
     movq -40(%rbp), %rax
     movq %rax, -112(%rbp)
@@ -767,12 +755,11 @@ rshift:
     push %r12
     sub $96, %rsp
     mov %rdi, %rbx
-    lea 16(%rbp), %rax
-    movq (%rax), %rcx
-    movq %rcx, -40(%rbp)
-    movq 8(%rax), %rcx
-    movq %rcx, -32(%rbp)
-    movq 16(%rax), %rax
+    movq 16(%rbp), %rax
+    movq %rax, -40(%rbp)
+    movq 24(%rbp), %rax
+    movq %rax, -32(%rbp)
+    movq 32(%rbp), %rax
     movq %rax, -24(%rbp)
     movq -40(%rbp), %rax
     movq %rax, -112(%rbp)
@@ -825,12 +812,11 @@ arshift:
     push %r12
     sub $96, %rsp
     mov %rdi, %rbx
-    lea 16(%rbp), %rax
-    movq (%rax), %rcx
-    movq %rcx, -40(%rbp)
-    movq 8(%rax), %rcx
-    movq %rcx, -32(%rbp)
-    movq 16(%rax), %rax
+    movq 16(%rbp), %rax
+    movq %rax, -40(%rbp)
+    movq 24(%rbp), %rax
+    movq %rax, -32(%rbp)
+    movq 32(%rbp), %rax
     movq %rax, -24(%rbp)
     movq -40(%rbp), %rax
     movq %rax, -112(%rbp)

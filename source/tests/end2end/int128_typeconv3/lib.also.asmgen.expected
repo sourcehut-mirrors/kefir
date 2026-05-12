@@ -43,8 +43,7 @@ u128_from_i256:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    lea 16(%rbp), %rax
-    movdqu (%rax), %xmm0
+    movdqu 16(%rbp), %xmm0
     movdqu %xmm0, -32(%rbp)
     lea -32(%rbp), %rdi
     mov $128, %esi
@@ -62,8 +61,7 @@ u128_from_u256:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    lea 16(%rbp), %rax
-    movdqu (%rax), %xmm0
+    movdqu 16(%rbp), %xmm0
     movdqu %xmm0, -32(%rbp)
     lea -32(%rbp), %rdi
     mov $128, %esi
@@ -118,8 +116,7 @@ i128_from_i256:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    lea 16(%rbp), %rax
-    movdqu (%rax), %xmm0
+    movdqu 16(%rbp), %xmm0
     movdqu %xmm0, -32(%rbp)
     lea -32(%rbp), %rdi
     mov $128, %esi
@@ -137,8 +134,7 @@ i128_from_u256:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    lea 16(%rbp), %rax
-    movdqu (%rax), %xmm0
+    movdqu 16(%rbp), %xmm0
     movdqu %xmm0, -32(%rbp)
     lea -32(%rbp), %rdi
     mov $128, %esi

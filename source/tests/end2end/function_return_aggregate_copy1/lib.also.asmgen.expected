@@ -21,9 +21,8 @@ get2:
     lea -272(%rbp), %rbx
     mov %rbx, %rdi
     call get@PLT
-    movsx %r12d, %rcx
-    lea -272(%rbp), %rax
-    movl (%rax, %rcx, 4), %eax
+    movsx %r12d, %rax
+    movl -272(%rbp, %rax, 4), %eax
     lea -16(%rbp), %rsp
     pop %r12
     pop %rbx
@@ -50,9 +49,8 @@ get3:
     cld
     mov $32, %rcx
     rep movsq
-    movsx %r12d, %rcx
-    lea -528(%rbp), %rax
-    movl (%rax, %rcx, 4), %eax
+    movsx %r12d, %rax
+    movl -528(%rbp, %rax, 4), %eax
     lea -16(%rbp), %rsp
     pop %r12
     pop %rbx

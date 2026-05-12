@@ -307,30 +307,29 @@ test_cldouble:
     push %r13
     sub $72, %rsp
     fstcw -32(%rbp)
-    lea 16(%rbp), %rax
     movq cld1@GOTPCREL(%rip), %rbx
-    fldt 16(%rax)
+    fldt 32(%rbp)
     movq $0, 24(%rbx)
     fstpt 16(%rbx)
-    fldt (%rax)
+    fldt 16(%rbp)
     movq $0, 8(%rbx)
     fstpt (%rbx)
     movq cld2@GOTPCREL(%rip), %r12
-    fldt 16(%rax)
+    fldt 32(%rbp)
     fldt .L__kefir_func_test_cldouble_label3(%rip)
     fxch %st(1)
     faddp
     movq $0, 24(%r12)
     fstpt 16(%r12)
-    fldt (%rax)
+    fldt 16(%rbp)
     fldt .L__kefir_func_test_cldouble_label4(%rip)
     fxch %st(1)
     faddp
     movq $0, 8(%r12)
     fstpt (%r12)
     movq cld3@GOTPCREL(%rip), %r13
-    fldt (%rax)
-    fldt 16(%rax)
+    fldt 16(%rbp)
+    fldt 32(%rbp)
     fldt .L__kefir_func_test_cldouble_label5(%rip)
     fldt .L__kefir_func_test_cldouble_label6(%rip)
     fstpt -96(%rbp)

@@ -157,27 +157,25 @@ equals6:
     push %rbp
     mov %rsp, %rbp
     sub $160, %rsp
-    lea 56(%rbp), %rax
-    lea 16(%rbp), %rcx
-    movq (%rax), %rdx
-    movq %rdx, -40(%rbp)
-    movq 8(%rax), %rdx
-    movq %rdx, -32(%rbp)
-    movq 16(%rax), %rdx
-    movq %rdx, -24(%rbp)
-    movq 24(%rax), %rdx
-    movq %rdx, -16(%rbp)
-    movq 32(%rax), %rax
+    movq 56(%rbp), %rax
+    movq %rax, -40(%rbp)
+    movq 64(%rbp), %rax
+    movq %rax, -32(%rbp)
+    movq 72(%rbp), %rax
+    movq %rax, -24(%rbp)
+    movq 80(%rbp), %rax
+    movq %rax, -16(%rbp)
+    movq 88(%rbp), %rax
     movq %rax, -8(%rbp)
-    movq (%rcx), %rax
+    movq 16(%rbp), %rax
     movq %rax, -80(%rbp)
-    movq 8(%rcx), %rax
+    movq 24(%rbp), %rax
     movq %rax, -72(%rbp)
-    movq 16(%rcx), %rax
+    movq 32(%rbp), %rax
     movq %rax, -64(%rbp)
-    movq 24(%rcx), %rax
+    movq 40(%rbp), %rax
     movq %rax, -56(%rbp)
-    movq 32(%rcx), %rax
+    movq 48(%rbp), %rax
     movq %rax, -48(%rbp)
     movq -80(%rbp), %rax
     movq %rax, -160(%rbp)

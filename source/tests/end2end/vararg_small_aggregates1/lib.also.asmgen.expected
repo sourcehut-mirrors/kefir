@@ -53,7 +53,7 @@ sum:
     movq -16(%rbp), %rdx
     movl -32(%rbp), %esi
     movw (%rdx, %rsi, 1), %si
-    movw %si, (%rcx)
+    movw %si, -6(%rbp)
     addl $8, -32(%rbp)
 .L__kefir_func_sum_label10:
     movw (%rcx), %dx

@@ -48,9 +48,10 @@ get3:
     movq %rsi, -24(%rbp)
     movdqu -32(%rbp), %xmm0
     movdqu %xmm0, -16(%rbp)
-    lea -16(%rbp), %rax
-    movb 6(%rax), %cl
-    movw 4(%rax), %dx
+    mov %rax, %rcx
+    movb -10(%rbp), %cl
+    mov %rax, %rdx
+    movw -12(%rbp), %dx
     movl -16(%rbp), %eax
     movabs $4294967295, %rsi
     and %rsi, %rax
@@ -98,15 +99,13 @@ get5:
     push %rbp
     mov %rsp, %rbp
     sub $64, %rsp
-    lea 16(%rbp), %rax
-    movq (%rax), %rcx
-    movq %rcx, -24(%rbp)
-    movq 8(%rax), %rcx
-    movq %rcx, -16(%rbp)
-    movq 16(%rax), %rax
+    movq 16(%rbp), %rax
+    movq %rax, -24(%rbp)
+    movq 24(%rbp), %rax
+    movq %rax, -16(%rbp)
+    movq 32(%rbp), %rax
     movq %rax, -8(%rbp)
-    lea -24(%rbp), %rax
-    movdqu 1(%rax), %xmm0
+    movdqu -23(%rbp), %xmm0
     movdqu %xmm0, -64(%rbp)
     movdqu -64(%rbp), %xmm0
     movdqu %xmm0, -48(%rbp)
@@ -139,8 +138,7 @@ get6:
     movq %rsi, -24(%rbp)
     movdqu -32(%rbp), %xmm0
     movdqu %xmm0, -16(%rbp)
-    lea -16(%rbp), %rax
-    movl 8(%rax), %eax
+    movl -8(%rbp), %eax
     shl $39, %rax
     shr $39, %rax
     shl $39, %rax
@@ -159,12 +157,11 @@ get7:
     push %rbp
     mov %rsp, %rbp
     sub $80, %rsp
-    lea 16(%rbp), %rax
-    movq (%rax), %rcx
-    movq %rcx, -24(%rbp)
-    movq 8(%rax), %rcx
-    movq %rcx, -16(%rbp)
-    movq 16(%rax), %rax
+    movq 16(%rbp), %rax
+    movq %rax, -24(%rbp)
+    movq 24(%rbp), %rax
+    movq %rax, -16(%rbp)
+    movq 32(%rbp), %rax
     movq %rax, -8(%rbp)
     movl -8(%rbp), %edx
     shl $32, %rdx

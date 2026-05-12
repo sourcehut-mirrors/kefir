@@ -82,9 +82,8 @@ c80_to_bool:
     mov %rsp, %rbp
     sub $16, %rsp
     fstcw -8(%rbp)
-    lea 16(%rbp), %rax
-    fldt (%rax)
-    fldt 16(%rax)
+    fldt 16(%rbp)
+    fldt 32(%rbp)
     fldz
     fucomi %st(1)
     fstp %st(0)
@@ -170,9 +169,8 @@ c80_to_bool2:
     mov %rsp, %rbp
     sub $16, %rsp
     fstcw -8(%rbp)
-    lea 16(%rbp), %rax
-    fldt (%rax)
-    fldt 16(%rax)
+    fldt 16(%rbp)
+    fldt 32(%rbp)
     fldz
     fucomi %st(1)
     fstp %st(0)
@@ -202,9 +200,8 @@ c80_to_bool3:
     mov %rsp, %rbp
     sub $16, %rsp
     fstcw -8(%rbp)
-    lea 16(%rbp), %rax
-    fldt (%rax)
-    fldt 16(%rax)
+    fldt 16(%rbp)
+    fldt 32(%rbp)
     fldz
     fucomi %st(1)
     fstp %st(0)

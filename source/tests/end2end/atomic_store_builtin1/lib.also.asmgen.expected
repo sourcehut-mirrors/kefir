@@ -407,12 +407,11 @@ test_atomic_store256_acq_rel:
     mov %rsp, %rbp
     sub $48, %rsp
     fstcw -8(%rbp)
-    lea 16(%rbp), %rax
     mov %rdi, %rsi
-    fldt 16(%rax)
+    fldt 32(%rbp)
     movq $0, -24(%rbp)
     fstpt -32(%rbp)
-    fldt (%rax)
+    fldt 16(%rbp)
     movq $0, -40(%rbp)
     fstpt -48(%rbp)
     mov $32, %edi
@@ -431,12 +430,11 @@ test_atomic_store256_acquire:
     mov %rsp, %rbp
     sub $48, %rsp
     fstcw -8(%rbp)
-    lea 16(%rbp), %rax
     mov %rdi, %rsi
-    fldt 16(%rax)
+    fldt 32(%rbp)
     movq $0, -24(%rbp)
     fstpt -32(%rbp)
-    fldt (%rax)
+    fldt 16(%rbp)
     movq $0, -40(%rbp)
     fstpt -48(%rbp)
     mov $32, %edi
@@ -455,12 +453,11 @@ test_atomic_store256_consume:
     mov %rsp, %rbp
     sub $48, %rsp
     fstcw -8(%rbp)
-    lea 16(%rbp), %rax
     mov %rdi, %rsi
-    fldt 16(%rax)
+    fldt 32(%rbp)
     movq $0, -24(%rbp)
     fstpt -32(%rbp)
-    fldt (%rax)
+    fldt 16(%rbp)
     movq $0, -40(%rbp)
     fstpt -48(%rbp)
     mov $32, %edi
@@ -479,12 +476,11 @@ test_atomic_store256_relaxed:
     mov %rsp, %rbp
     sub $48, %rsp
     fstcw -8(%rbp)
-    lea 16(%rbp), %rax
     mov %rdi, %rsi
-    fldt 16(%rax)
+    fldt 32(%rbp)
     movq $0, -24(%rbp)
     fstpt -32(%rbp)
-    fldt (%rax)
+    fldt 16(%rbp)
     movq $0, -40(%rbp)
     fstpt -48(%rbp)
     mov $32, %edi
@@ -503,12 +499,11 @@ test_atomic_store256_release:
     mov %rsp, %rbp
     sub $48, %rsp
     fstcw -8(%rbp)
-    lea 16(%rbp), %rax
     mov %rdi, %rsi
-    fldt 16(%rax)
+    fldt 32(%rbp)
     movq $0, -24(%rbp)
     fstpt -32(%rbp)
-    fldt (%rax)
+    fldt 16(%rbp)
     movq $0, -40(%rbp)
     fstpt -48(%rbp)
     mov $32, %edi
@@ -527,12 +522,11 @@ test_atomic_store256_seq_cst:
     mov %rsp, %rbp
     sub $48, %rsp
     fstcw -8(%rbp)
-    lea 16(%rbp), %rax
     mov %rdi, %rsi
-    fldt 16(%rax)
+    fldt 32(%rbp)
     movq $0, -24(%rbp)
     fstpt -32(%rbp)
-    fldt (%rax)
+    fldt 16(%rbp)
     movq $0, -40(%rbp)
     fstpt -48(%rbp)
     mov $32, %edi
@@ -659,12 +653,11 @@ test2_atomic_store256_acq_rel:
     mov %rsp, %rbp
     sub $48, %rsp
     fstcw -8(%rbp)
-    lea 16(%rbp), %rax
     mov %rdi, %rsi
-    fldt 16(%rax)
+    fldt 32(%rbp)
     movq $0, -24(%rbp)
     fstpt -32(%rbp)
-    fldt (%rax)
+    fldt 16(%rbp)
     movq $0, -40(%rbp)
     fstpt -48(%rbp)
     mov $32, %edi
@@ -683,12 +676,11 @@ test2_atomic_store256_acquire:
     mov %rsp, %rbp
     sub $48, %rsp
     fstcw -8(%rbp)
-    lea 16(%rbp), %rax
     mov %rdi, %rsi
-    fldt 16(%rax)
+    fldt 32(%rbp)
     movq $0, -24(%rbp)
     fstpt -32(%rbp)
-    fldt (%rax)
+    fldt 16(%rbp)
     movq $0, -40(%rbp)
     fstpt -48(%rbp)
     mov $32, %edi
@@ -707,12 +699,11 @@ test2_atomic_store256_consume:
     mov %rsp, %rbp
     sub $48, %rsp
     fstcw -8(%rbp)
-    lea 16(%rbp), %rax
     mov %rdi, %rsi
-    fldt 16(%rax)
+    fldt 32(%rbp)
     movq $0, -24(%rbp)
     fstpt -32(%rbp)
-    fldt (%rax)
+    fldt 16(%rbp)
     movq $0, -40(%rbp)
     fstpt -48(%rbp)
     mov $32, %edi
@@ -731,12 +722,11 @@ test2_atomic_store256_relaxed:
     mov %rsp, %rbp
     sub $48, %rsp
     fstcw -8(%rbp)
-    lea 16(%rbp), %rax
     mov %rdi, %rsi
-    fldt 16(%rax)
+    fldt 32(%rbp)
     movq $0, -24(%rbp)
     fstpt -32(%rbp)
-    fldt (%rax)
+    fldt 16(%rbp)
     movq $0, -40(%rbp)
     fstpt -48(%rbp)
     mov $32, %edi
@@ -755,12 +745,11 @@ test2_atomic_store256_release:
     mov %rsp, %rbp
     sub $48, %rsp
     fstcw -8(%rbp)
-    lea 16(%rbp), %rax
     mov %rdi, %rsi
-    fldt 16(%rax)
+    fldt 32(%rbp)
     movq $0, -24(%rbp)
     fstpt -32(%rbp)
-    fldt (%rax)
+    fldt 16(%rbp)
     movq $0, -40(%rbp)
     fstpt -48(%rbp)
     mov $32, %edi
@@ -779,12 +768,11 @@ test2_atomic_store256_seq_cst:
     mov %rsp, %rbp
     sub $48, %rsp
     fstcw -8(%rbp)
-    lea 16(%rbp), %rax
     mov %rdi, %rsi
-    fldt 16(%rax)
+    fldt 32(%rbp)
     movq $0, -24(%rbp)
     fstpt -32(%rbp)
-    fldt (%rax)
+    fldt 16(%rbp)
     movq $0, -40(%rbp)
     fstpt -48(%rbp)
     mov $32, %edi

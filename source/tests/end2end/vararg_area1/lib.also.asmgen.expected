@@ -52,8 +52,7 @@ process:
     sub $16, %rsp
     movq %rax, (%rsp)
     mov %rsp, %rbx
-    lea -40(%rbp), %rcx
-    movq %rax, (%rcx)
+    movq %rax, -40(%rbp)
     movl -72(%rbp), %eax
     movsx %eax, %rax
     shl $2, %rax
@@ -74,8 +73,7 @@ process:
     cmp %ecx, %eax
     jl .L__kefir_func_process_label8
     movq -80(%rbp), %r12
-    lea -32(%rbp), %rax
-    movq (%rax), %rdi
+    movq -32(%rbp), %rdi
     movl -72(%rbp), %esi
     call *%r12
     lea -16(%rbp), %rsp
@@ -90,13 +88,12 @@ process:
     lea 8(%rax), %rax
     movl %eax, -64(%rbp)
     add -48(%rbp), %rax
-    mov -8(%rax), %rcx
+    mov -8(%rax), %rax
 .L__kefir_func_process_label11:
-    lea -32(%rbp), %rax
-    movq (%rax), %rax
+    movq -32(%rbp), %rcx
     movl -68(%rbp), %edx
     movsx %edx, %rdx
-    movl %ecx, (%rax, %rdx, 4)
+    movl %eax, (%rcx, %rdx, 4)
     addl $1, -68(%rbp)
     jmp .L__kefir_func_process_label6
 .L__kefir_func_process_label10:
@@ -104,7 +101,6 @@ process:
     lea 8(%rax), %rcx
     mov %rcx, -56(%rbp)
     mov (%rax), %rax
-    mov %rax, %rcx
     jmp .L__kefir_func_process_label11
 .L__kefir_text_func_process_end:
 
