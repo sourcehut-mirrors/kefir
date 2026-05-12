@@ -57,10 +57,8 @@ static kefir_result_t gcm_schedule_early_inputs_phase2(kefir_opt_instruction_ref
     const struct kefir_opt_instruction *instr;
     REQUIRE_OK(kefir_opt_code_container_instr(state->code, instr_ref, &instr));
 
-    if (instr->block_id == state->code->gate_block) {
-        return KEFIR_YIELD;
-    } else if (state->control_flow.blocks[state->deepest_input_block_ref].dominance_tree_level <
-               state->control_flow.blocks[instr->block_id].dominance_tree_level) {
+    if (state->control_flow.blocks[state->deepest_input_block_ref].dominance_tree_level <
+        state->control_flow.blocks[instr->block_id].dominance_tree_level) {
         state->deepest_input_block_ref = instr->block_id;
     }
     return KEFIR_OK;
@@ -114,9 +112,9 @@ static kefir_result_t gcm_schedule_early(struct gcm_state *state) {
         REQUIRE_OK(kefir_opt_instruction_is_moveable(state->code, instr_ref, &moveable));
         if (moveable) {
             state->deepest_input_block_ref = state->code->entry_point;
-            kefir_result_t res =
-                kefir_opt_instruction_extract_inputs(state->code, instr, true, gcm_schedule_early_inputs_phase2, state);
-            if (res != KEFIR_YIELD) {
+            REQUIRE_OK(kefir_opt_instruction_extract_inputs(state->code, instr, true, gcm_schedule_early_inputs_phase2,
+                                                            state));
+            if (state->deepest_input_block_ref != state->code->gate_block) {
                 REQUIRE_OK(res);
                 REQUIRE_OK(kefir_opt_move_instruction(state->code, instr_ref, state->deepest_input_block_ref));
             }
@@ -139,12 +137,9 @@ static kefir_result_t do_schedule_instr(struct gcm_state *state, kefir_opt_instr
     REQUIRE_OK(kefir_opt_code_loop_level(&state->loops, best_block_ref, &best_loop_level));
     for (kefir_opt_block_id_t iter_ref = late_block_ref;;
          iter_ref = state->control_flow.blocks[iter_ref].immediate_dominator) {
-        if (iter_ref == state->code->gate_block) {
-            return KEFIR_OK;
-        }
         REQUIRE_OK(kefir_opt_code_loop_level(&state->loops, iter_ref, &iter_loop_level));
 
-        if (iter_loop_level < best_loop_level) {
+        if (iter_loop_level < best_loop_level && iter_ref != state->code->gate_block) {
             best_block_ref = iter_ref;
             best_loop_level = iter_loop_level;
         }
@@ -153,7 +148,7 @@ static kefir_result_t do_schedule_instr(struct gcm_state *state, kefir_opt_instr
         }
     }
 
-    if (best_block_ref != instr->block_id) {
+    if (best_block_ref != instr->block_id && best_block_ref != state->code->gate_block) {
         REQUIRE_OK(kefir_opt_move_instruction(state->code, instr_ref, best_block_ref));
     }
 
