@@ -25,6 +25,7 @@
 #include "kefir/optimizer/control_flow.h"
 #include "kefir/optimizer/sequencing.h"
 #include "kefir/optimizer/debug.h"
+#include "kefir/optimizer/loop_nest.h"
 
 kefir_result_t kefir_opt_instruction_extract_inputs(const struct kefir_opt_code_container *,
                                                     const struct kefir_opt_instruction *, kefir_bool_t,
@@ -84,5 +85,11 @@ kefir_result_t kefir_opt_check_all_control_flow_uses_after(struct kefir_mem *,
 
 kefir_result_t kefir_opt_find_closest_common_dominator(const struct kefir_opt_code_control_flow *, kefir_opt_block_id_t,
                                                        kefir_opt_block_id_t, kefir_opt_block_id_t *);
+
+kefir_result_t kefir_opt_code_utils_insert_loop_preheader(struct kefir_mem *, struct kefir_opt_code_control_flow *,
+                                                          struct kefir_opt_code_container *,
+                                                          struct kefir_opt_code_loop_collection *,
+                                                          const struct kefir_opt_code_loop *,
+                                                          kefir_opt_block_id_t *preheader_ref_ptr);
 
 #endif
