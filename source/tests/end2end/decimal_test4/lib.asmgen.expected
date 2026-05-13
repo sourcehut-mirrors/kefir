@@ -38,37 +38,31 @@ test_dec128_run:
     push %rbx
     push %r12
     push %r13
-    sub $104, %rsp
-    mov %rsi, %r13
+    sub $88, %rsp
+    mov %rsi, %rbx
     mov %rdi, %r12
     lea -80(%rbp), %rdi
     mov %r12, %rsi
     call test_dec128_init
-    movdqu .L__kefir_func_test_dec128_run_label6(%rip), %xmm0
-    movdqu %xmm0, -128(%rbp)
-    movdqu .L__kefir_func_test_dec128_run_label7(%rip), %xmm0
-    movdqu %xmm0, -96(%rbp)
-    movdqu .L__kefir_func_test_dec128_run_label8(%rip), %xmm0
-    movdqu %xmm0, -112(%rbp)
     xor %eax, %eax
-    mov %rax, %rbx
+    mov %rax, %r13
 .L__kefir_func_test_dec128_run_label2:
-    cmp %r13d, %ebx
+    cmp %ebx, %r13d
     jb .L__kefir_func_test_dec128_run_label4
     movq -64(%rbp), %rdi
     mov %r12, %rsi
     call test_dec128_norm
-    movaps %xmm0, -128(%rbp)
+    movaps %xmm0, -112(%rbp)
     movq -56(%rbp), %rdi
     mov %r12, %rsi
     call test_dec128_norm
-    movaps %xmm0, -112(%rbp)
+    movaps %xmm0, -96(%rbp)
     movq -64(%rbp), %rdi
     call free@PLT
     movq -56(%rbp), %rdi
     call free@PLT
-    movaps -128(%rbp), %xmm0
-    movaps -112(%rbp), %xmm1
+    movaps -112(%rbp), %xmm0
+    movaps -96(%rbp), %xmm1
     call __bid_addtd3@PLT
     lea -24(%rbp), %rsp
     pop %r13
@@ -77,24 +71,24 @@ test_dec128_run:
     pop %rbp
     ret
 .L__kefir_func_test_dec128_run_label4:
+    movdqu .L__kefir_func_test_dec128_run_label6(%rip), %xmm0
+    movdqu .L__kefir_func_test_dec128_run_label7(%rip), %xmm1
+    movdqu .L__kefir_func_test_dec128_run_label8(%rip), %xmm2
     lea -80(%rbp), %rdi
-    movaps -112(%rbp), %xmm0
-    movaps -96(%rbp), %xmm1
-    movaps -128(%rbp), %xmm2
     call test_dec128_step
-    add $1, %ebx
+    add $1, %r13d
     jmp .L__kefir_func_test_dec128_run_label2
 .L__kefir_text_func_test_dec128_run_end:
 .section .rodata
     .align 16
 .L__kefir_func_test_dec128_run_label6:
-    .quad 1, 3475090062469758976
+    .quad 4, 3475653012423180288
     .align 16
 .L__kefir_func_test_dec128_run_label7:
     .quad 6, 3475653012423180288
     .align 16
 .L__kefir_func_test_dec128_run_label8:
-    .quad 4, 3475653012423180288
+    .quad 1, 3475090062469758976
 .section .text
 
 test_dec32_free:
@@ -142,14 +136,10 @@ test_dec32_init:
     call malloc@PLT
     movq %rax, 16(%r12)
     movq 8(%r12), %rcx
-    movd .L__kefir_func_test_dec32_init_label21(%rip), %xmm0
     mov %rbx, %rdx
     shr $1, %rdx
     lea 1(%rdx), %rsi
     sub $1, %rdx
-    movd .L__kefir_func_test_dec32_init_label22(%rip), %xmm1
-    movd .L__kefir_func_test_dec32_init_label23(%rip), %xmm2
-    movd .L__kefir_func_test_dec32_init_label24(%rip), %xmm3
     cmp $0, %rcx
     sete %cl
     cmp $0, %rax
@@ -187,9 +177,11 @@ test_dec32_init:
     movq 16(%r12), %r8
     mov %rdi, %r9
     add %rax, %r9
-    movd %xmm1, (%r8, %r9, 4)
+    movd .L__kefir_func_test_dec32_init_label21(%rip), %xmm0
+    movd %xmm0, (%r8, %r9, 4)
     movq 8(%r12), %r8
-    movd %xmm2, (%r8, %r9, 4)
+    movd .L__kefir_func_test_dec32_init_label22(%rip), %xmm0
+    movd %xmm0, (%r8, %r9, 4)
     add $1, %rax
     jmp .L__kefir_func_test_dec32_init_label10
 .L__kefir_func_test_dec32_init_label5:
@@ -203,8 +195,10 @@ test_dec32_init:
     movq 8(%r12), %r8
     mov %rdi, %r9
     add %rax, %r9
-    movd %xmm3, (%r8, %r9, 4)
+    movd .L__kefir_func_test_dec32_init_label23(%rip), %xmm0
+    movd %xmm0, (%r8, %r9, 4)
     movq 16(%r12), %r8
+    movd .L__kefir_func_test_dec32_init_label24(%rip), %xmm0
     movd %xmm0, (%r8, %r9, 4)
     add $1, %rax
     jmp .L__kefir_func_test_dec32_init_label13
@@ -222,16 +216,16 @@ test_dec32_init:
     .long 847249409
     .align 4
 .L__kefir_func_test_dec32_init_label21:
-    .long 847249408
-    .align 4
-.L__kefir_func_test_dec32_init_label22:
     .long 830472217
     .align 4
-.L__kefir_func_test_dec32_init_label23:
+.L__kefir_func_test_dec32_init_label22:
     .long 838860805
     .align 4
-.L__kefir_func_test_dec32_init_label24:
+.L__kefir_func_test_dec32_init_label23:
     .long 847249409
+    .align 4
+.L__kefir_func_test_dec32_init_label24:
+    .long 847249408
 .section .text
 
 test_dec32_norm:
@@ -285,10 +279,10 @@ test_dec32_step:
     push %r13
     push %r14
     push %r15
-    sub $248, %rsp
-    movaps %xmm2, -288(%rbp)
-    movaps %xmm1, -272(%rbp)
-    movaps %xmm0, -256(%rbp)
+    sub $168, %rsp
+    movaps %xmm2, -208(%rbp)
+    movaps %xmm1, -192(%rbp)
+    movaps %xmm0, -176(%rbp)
     mov %rdi, %r14
     movq 24(%r14), %r13
     imul %r13, %r13
@@ -315,20 +309,10 @@ test_dec32_step:
     movd (%r14), %xmm0
     mov -56(%rbp), %rsi
     call test_dec32_laplacian
-    movaps -256(%rbp), %xmm0
-    movaps -272(%rbp), %xmm1
+    movaps -176(%rbp), %xmm0
+    movaps -192(%rbp), %xmm1
     call __bid_addsd3@PLT
-    movaps %xmm0, -272(%rbp)
-    movd .L__kefir_func_test_dec32_step_label20(%rip), %xmm0
-    movd %xmm0, -144(%rbp)
-    movd .L__kefir_func_test_dec32_step_label21(%rip), %xmm0
-    movd %xmm0, -128(%rbp)
-    movd .L__kefir_func_test_dec32_step_label22(%rip), %xmm0
-    movd %xmm0, -112(%rbp)
-    movd .L__kefir_func_test_dec32_step_label23(%rip), %xmm0
-    movd %xmm0, -96(%rbp)
-    movd .L__kefir_func_test_dec32_step_label24(%rip), %xmm0
-    movd %xmm0, -80(%rbp)
+    movaps %xmm0, -192(%rbp)
     xor %eax, %eax
     mov %rax, %r13
 .L__kefir_func_test_dec32_step_label3:
@@ -362,71 +346,71 @@ test_dec32_step:
     mov %rax, %r12
     addq -64(%rbp), %r12
     movd (%rbx, %r12, 4), %xmm0
-    movd %xmm0, -208(%rbp)
+    movd %xmm0, -128(%rbp)
     movq 16(%r14), %rax
     movd (%rax, %r12, 4), %xmm1
-    movaps %xmm1, -160(%rbp)
+    movaps %xmm1, -80(%rbp)
     movq -48(%rbp), %rax
     movd (%rax, %r12, 4), %xmm0
-    movd %xmm0, -240(%rbp)
+    movd %xmm0, -160(%rbp)
     movd (%rbx, %r12, 4), %xmm0
-    movd %xmm0, -192(%rbp)
-    movaps -208(%rbp), %xmm0
+    movd %xmm0, -112(%rbp)
+    movaps -128(%rbp), %xmm0
     call __bid_mulsd3@PLT
-    movaps -160(%rbp), %xmm1
+    movaps -80(%rbp), %xmm1
     call __bid_mulsd3@PLT
     movaps %xmm0, %xmm1
-    movaps %xmm1, -176(%rbp)
-    movaps -240(%rbp), %xmm0
+    movaps %xmm1, -96(%rbp)
+    movaps -160(%rbp), %xmm0
     call __bid_subsd3@PLT
-    movaps %xmm0, -224(%rbp)
-    movaps -112(%rbp), %xmm0
-    movaps -208(%rbp), %xmm1
+    movaps %xmm0, -144(%rbp)
+    movd .L__kefir_func_test_dec32_step_label20(%rip), %xmm0
+    movaps -128(%rbp), %xmm1
     call __bid_subsd3@PLT
     movaps %xmm0, %xmm1
-    movaps -256(%rbp), %xmm0
+    movaps -176(%rbp), %xmm0
     call __bid_mulsd3@PLT
     movaps %xmm0, %xmm1
-    movaps -224(%rbp), %xmm0
+    movaps -144(%rbp), %xmm0
     call __bid_addsd3@PLT
     movaps %xmm0, %xmm1
-    movaps -288(%rbp), %xmm0
+    movaps -208(%rbp), %xmm0
     call __bid_mulsd3@PLT
     movaps %xmm0, %xmm1
-    movaps -192(%rbp), %xmm0
+    movaps -112(%rbp), %xmm0
     call __bid_addsd3@PLT
     movd %xmm0, (%rbx, %r12, 4)
     movq -56(%rbp), %rax
     movd (%rax, %r12, 4), %xmm0
     movq 16(%r14), %rbx
     movd (%rbx, %r12, 4), %xmm1
-    movd %xmm1, -224(%rbp)
-    movaps -176(%rbp), %xmm1
+    movd %xmm1, -144(%rbp)
+    movaps -96(%rbp), %xmm1
     call __bid_addsd3@PLT
-    movaps %xmm0, -240(%rbp)
-    movaps -272(%rbp), %xmm0
-    movaps -160(%rbp), %xmm1
+    movaps %xmm0, -160(%rbp)
+    movaps -192(%rbp), %xmm0
+    movaps -80(%rbp), %xmm1
     call __bid_mulsd3@PLT
     movaps %xmm0, %xmm1
-    movaps -240(%rbp), %xmm0
+    movaps -160(%rbp), %xmm0
     call __bid_subsd3@PLT
     movaps %xmm0, %xmm1
-    movaps -288(%rbp), %xmm0
+    movaps -208(%rbp), %xmm0
     call __bid_mulsd3@PLT
     movaps %xmm0, %xmm1
-    movaps -224(%rbp), %xmm0
+    movaps -144(%rbp), %xmm0
     call __bid_addsd3@PLT
     movd %xmm0, (%rbx, %r12, 4)
     movq 8(%r14), %rbx
     movd (%rbx, %r12, 4), %xmm0
-    movaps -96(%rbp), %xmm1
+    movd .L__kefir_func_test_dec32_step_label21(%rip), %xmm1
     call __bid_ltsd2@PLT
     cmp $0, %eax
     jl .L__kefir_func_test_dec32_step_label10
 .L__kefir_func_test_dec32_step_label11:
     movq 16(%r14), %rbx
     movd (%rbx, %r12, 4), %xmm0
-    movaps -144(%rbp), %xmm1
+    movd .L__kefir_func_test_dec32_step_label22(%rip), %xmm1
     call __bid_ltsd2@PLT
     cmp $0, %eax
     jl .L__kefir_func_test_dec32_step_label13
@@ -434,11 +418,11 @@ test_dec32_step:
     addq $1, -64(%rbp)
     jmp .L__kefir_func_test_dec32_step_label6
 .L__kefir_func_test_dec32_step_label13:
-    movd -128(%rbp), %xmm0
+    movd .L__kefir_func_test_dec32_step_label23(%rip), %xmm0
     movd %xmm0, (%rbx, %r12, 4)
     jmp .L__kefir_func_test_dec32_step_label12
 .L__kefir_func_test_dec32_step_label10:
-    movd -80(%rbp), %xmm0
+    movd .L__kefir_func_test_dec32_step_label24(%rip), %xmm0
     movd %xmm0, (%rbx, %r12, 4)
     jmp .L__kefir_func_test_dec32_step_label11
 .L__kefir_func_test_dec32_step_label15:
@@ -454,13 +438,13 @@ test_dec32_step:
 .section .rodata
     .align 4
 .L__kefir_func_test_dec32_step_label20:
-    .long 847249408
+    .long 847249409
     .align 4
 .L__kefir_func_test_dec32_step_label21:
     .long 847249408
     .align 4
 .L__kefir_func_test_dec32_step_label22:
-    .long 847249409
+    .long 847249408
     .align 4
 .L__kefir_func_test_dec32_step_label23:
     .long 847249408
@@ -514,14 +498,10 @@ test_dec64_init:
     call malloc@PLT
     movq %rax, 16(%r12)
     movq 8(%r12), %rcx
-    movq .L__kefir_func_test_dec64_init_label21(%rip), %xmm0
-    movq .L__kefir_func_test_dec64_init_label22(%rip), %xmm1
-    movq .L__kefir_func_test_dec64_init_label23(%rip), %xmm2
     mov %rbx, %rdx
     shr $1, %rdx
-    lea -1(%rdx), %rsi
-    add $1, %rdx
-    movq .L__kefir_func_test_dec64_init_label24(%rip), %xmm3
+    lea 1(%rdx), %rsi
+    sub $1, %rdx
     cmp $0, %rcx
     sete %cl
     cmp $0, %rax
@@ -530,17 +510,17 @@ test_dec64_init:
     jnz .L__kefir_func_test_dec64_init_label16
     xor %eax, %eax
 .L__kefir_func_test_dec64_init_label3:
-    lea 1(%rax), %rcx
-    mov %rax, %rdi
-    imul %rbx, %rdi
+    mov %rax, %rcx
+    imul %rbx, %rcx
+    lea 1(%rax), %rdi
     cmp %rbx, %rax
     jb .L__kefir_func_test_dec64_init_label5
-    mov %rsi, %rax
+    mov %rdx, %rax
 .L__kefir_func_test_dec64_init_label6:
     mov %rax, %rcx
     imul %rbx, %rcx
     lea 1(%rax), %rdi
-    cmp %rdx, %rax
+    cmp %rsi, %rax
     jbe .L__kefir_func_test_dec64_init_label8
     lea -24(%rbp), %rsp
     pop %r13
@@ -549,9 +529,9 @@ test_dec64_init:
     pop %rbp
     ret
 .L__kefir_func_test_dec64_init_label8:
-    mov %rsi, %rax
+    mov %rdx, %rax
 .L__kefir_func_test_dec64_init_label10:
-    cmp %rdx, %rax
+    cmp %rsi, %rax
     jbe .L__kefir_func_test_dec64_init_label12
     mov %rdi, %rax
     jmp .L__kefir_func_test_dec64_init_label6
@@ -559,9 +539,11 @@ test_dec64_init:
     movq 16(%r12), %r8
     mov %rcx, %r9
     add %rax, %r9
-    movq %xmm1, (%r8, %r9, 8)
+    movq .L__kefir_func_test_dec64_init_label21(%rip), %xmm0
+    movq %xmm0, (%r8, %r9, 8)
     movq 8(%r12), %r8
-    movq %xmm3, (%r8, %r9, 8)
+    movq .L__kefir_func_test_dec64_init_label22(%rip), %xmm0
+    movq %xmm0, (%r8, %r9, 8)
     add $1, %rax
     jmp .L__kefir_func_test_dec64_init_label10
 .L__kefir_func_test_dec64_init_label5:
@@ -569,15 +551,17 @@ test_dec64_init:
 .L__kefir_func_test_dec64_init_label13:
     cmp %rbx, %rax
     jb .L__kefir_func_test_dec64_init_label15
-    mov %rcx, %rax
+    mov %rdi, %rax
     jmp .L__kefir_func_test_dec64_init_label3
 .L__kefir_func_test_dec64_init_label15:
     movq 8(%r12), %r8
-    mov %rdi, %r9
+    mov %rcx, %r9
     add %rax, %r9
+    movq .L__kefir_func_test_dec64_init_label23(%rip), %xmm0
     movq %xmm0, (%r8, %r9, 8)
     movq 16(%r12), %r8
-    movq %xmm2, (%r8, %r9, 8)
+    movq .L__kefir_func_test_dec64_init_label24(%rip), %xmm0
+    movq %xmm0, (%r8, %r9, 8)
     add $1, %rax
     jmp .L__kefir_func_test_dec64_init_label13
 .L__kefir_func_test_dec64_init_label16:
@@ -594,16 +578,16 @@ test_dec64_init:
     .quad 3584865303386914817
     .align 8
 .L__kefir_func_test_dec64_init_label21:
-    .quad 3584865303386914817
-    .align 8
-.L__kefir_func_test_dec64_init_label22:
     .quad 3566850904877432857
     .align 8
+.L__kefir_func_test_dec64_init_label22:
+    .quad 3575858104132173829
+    .align 8
 .L__kefir_func_test_dec64_init_label23:
-    .quad 3584865303386914816
+    .quad 3584865303386914817
     .align 8
 .L__kefir_func_test_dec64_init_label24:
-    .quad 3575858104132173829
+    .quad 3584865303386914816
 .section .text
 
 test_dec64_norm:
@@ -657,10 +641,10 @@ test_dec64_step:
     push %r13
     push %r14
     push %r15
-    sub $248, %rsp
-    movaps %xmm2, -288(%rbp)
-    movaps %xmm1, -272(%rbp)
-    movaps %xmm0, -256(%rbp)
+    sub $168, %rsp
+    movaps %xmm2, -208(%rbp)
+    movaps %xmm1, -192(%rbp)
+    movaps %xmm0, -176(%rbp)
     mov %rdi, %r14
     movq 24(%r14), %r13
     imul %r13, %r13
@@ -687,20 +671,10 @@ test_dec64_step:
     movq (%r14), %xmm0
     mov -56(%rbp), %rsi
     call test_dec64_laplacian
-    movq .L__kefir_func_test_dec64_step_label20(%rip), %xmm0
-    movq %xmm0, -144(%rbp)
-    movq .L__kefir_func_test_dec64_step_label21(%rip), %xmm0
-    movq %xmm0, -128(%rbp)
-    movaps -256(%rbp), %xmm0
-    movaps -272(%rbp), %xmm1
+    movaps -176(%rbp), %xmm0
+    movaps -192(%rbp), %xmm1
     call __bid_adddd3@PLT
-    movaps %xmm0, -272(%rbp)
-    movq .L__kefir_func_test_dec64_step_label22(%rip), %xmm0
-    movq %xmm0, -112(%rbp)
-    movq .L__kefir_func_test_dec64_step_label23(%rip), %xmm0
-    movq %xmm0, -96(%rbp)
-    movq .L__kefir_func_test_dec64_step_label24(%rip), %xmm0
-    movq %xmm0, -80(%rbp)
+    movaps %xmm0, -192(%rbp)
     xor %eax, %eax
     mov %rax, %r13
 .L__kefir_func_test_dec64_step_label3:
@@ -734,71 +708,71 @@ test_dec64_step:
     mov %rax, %r12
     addq -64(%rbp), %r12
     movq (%rbx, %r12, 8), %xmm0
-    movq %xmm0, -208(%rbp)
+    movq %xmm0, -128(%rbp)
     movq 16(%r14), %rax
     movq (%rax, %r12, 8), %xmm1
-    movaps %xmm1, -160(%rbp)
+    movaps %xmm1, -80(%rbp)
     movq -48(%rbp), %rax
     movq (%rax, %r12, 8), %xmm0
-    movq %xmm0, -240(%rbp)
+    movq %xmm0, -160(%rbp)
     movq (%rbx, %r12, 8), %xmm0
-    movq %xmm0, -192(%rbp)
-    movaps -208(%rbp), %xmm0
-    call __bid_muldd3@PLT
-    movaps -160(%rbp), %xmm1
-    call __bid_muldd3@PLT
-    movaps %xmm0, %xmm1
-    movaps %xmm1, -176(%rbp)
-    movaps -240(%rbp), %xmm0
-    call __bid_subdd3@PLT
-    movaps %xmm0, -224(%rbp)
+    movq %xmm0, -112(%rbp)
     movaps -128(%rbp), %xmm0
-    movaps -208(%rbp), %xmm1
-    call __bid_subdd3@PLT
-    movaps %xmm0, %xmm1
-    movaps -256(%rbp), %xmm0
+    call __bid_muldd3@PLT
+    movaps -80(%rbp), %xmm1
     call __bid_muldd3@PLT
     movaps %xmm0, %xmm1
-    movaps -224(%rbp), %xmm0
+    movaps %xmm1, -96(%rbp)
+    movaps -160(%rbp), %xmm0
+    call __bid_subdd3@PLT
+    movaps %xmm0, -144(%rbp)
+    movq .L__kefir_func_test_dec64_step_label20(%rip), %xmm0
+    movaps -128(%rbp), %xmm1
+    call __bid_subdd3@PLT
+    movaps %xmm0, %xmm1
+    movaps -176(%rbp), %xmm0
+    call __bid_muldd3@PLT
+    movaps %xmm0, %xmm1
+    movaps -144(%rbp), %xmm0
     call __bid_adddd3@PLT
     movaps %xmm0, %xmm1
-    movaps -288(%rbp), %xmm0
+    movaps -208(%rbp), %xmm0
     call __bid_muldd3@PLT
     movaps %xmm0, %xmm1
-    movaps -192(%rbp), %xmm0
+    movaps -112(%rbp), %xmm0
     call __bid_adddd3@PLT
     movq %xmm0, (%rbx, %r12, 8)
     movq -56(%rbp), %rax
     movq (%rax, %r12, 8), %xmm0
     movq 16(%r14), %rbx
     movq (%rbx, %r12, 8), %xmm1
-    movq %xmm1, -224(%rbp)
-    movaps -176(%rbp), %xmm1
+    movq %xmm1, -144(%rbp)
+    movaps -96(%rbp), %xmm1
     call __bid_adddd3@PLT
-    movaps %xmm0, -240(%rbp)
-    movaps -272(%rbp), %xmm0
-    movaps -160(%rbp), %xmm1
+    movaps %xmm0, -160(%rbp)
+    movaps -192(%rbp), %xmm0
+    movaps -80(%rbp), %xmm1
     call __bid_muldd3@PLT
     movaps %xmm0, %xmm1
-    movaps -240(%rbp), %xmm0
+    movaps -160(%rbp), %xmm0
     call __bid_subdd3@PLT
     movaps %xmm0, %xmm1
-    movaps -288(%rbp), %xmm0
+    movaps -208(%rbp), %xmm0
     call __bid_muldd3@PLT
     movaps %xmm0, %xmm1
-    movaps -224(%rbp), %xmm0
+    movaps -144(%rbp), %xmm0
     call __bid_adddd3@PLT
     movq %xmm0, (%rbx, %r12, 8)
     movq 8(%r14), %rbx
     movq (%rbx, %r12, 8), %xmm0
-    movaps -112(%rbp), %xmm1
+    movq .L__kefir_func_test_dec64_step_label21(%rip), %xmm1
     call __bid_ltdd2@PLT
     cmp $0, %eax
     jl .L__kefir_func_test_dec64_step_label10
 .L__kefir_func_test_dec64_step_label11:
     movq 16(%r14), %rbx
     movq (%rbx, %r12, 8), %xmm0
-    movaps -96(%rbp), %xmm1
+    movq .L__kefir_func_test_dec64_step_label22(%rip), %xmm1
     call __bid_ltdd2@PLT
     cmp $0, %eax
     jl .L__kefir_func_test_dec64_step_label13
@@ -806,11 +780,11 @@ test_dec64_step:
     addq $1, -64(%rbp)
     jmp .L__kefir_func_test_dec64_step_label6
 .L__kefir_func_test_dec64_step_label13:
-    movq -144(%rbp), %xmm0
+    movq .L__kefir_func_test_dec64_step_label23(%rip), %xmm0
     movq %xmm0, (%rbx, %r12, 8)
     jmp .L__kefir_func_test_dec64_step_label12
 .L__kefir_func_test_dec64_step_label10:
-    movq -80(%rbp), %xmm0
+    movq .L__kefir_func_test_dec64_step_label24(%rip), %xmm0
     movq %xmm0, (%rbx, %r12, 8)
     jmp .L__kefir_func_test_dec64_step_label11
 .L__kefir_func_test_dec64_step_label15:
@@ -826,10 +800,10 @@ test_dec64_step:
 .section .rodata
     .align 8
 .L__kefir_func_test_dec64_step_label20:
-    .quad 3584865303386914816
+    .quad 3584865303386914817
     .align 8
 .L__kefir_func_test_dec64_step_label21:
-    .quad 3584865303386914817
+    .quad 3584865303386914816
     .align 8
 .L__kefir_func_test_dec64_step_label22:
     .quad 3584865303386914816
@@ -848,35 +822,29 @@ test_dec32_run:
     push %rbx
     push %r12
     push %r13
-    sub $88, %rsp
-    mov %rsi, %r13
+    sub $72, %rsp
+    mov %rsi, %rbx
     mov %rdi, %r12
     lea -56(%rbp), %rdi
     mov %r12, %rsi
     call test_dec32_init
-    movd .L__kefir_func_test_dec32_run_label6(%rip), %xmm0
-    movd %xmm0, -112(%rbp)
-    movd .L__kefir_func_test_dec32_run_label7(%rip), %xmm0
-    movd %xmm0, -80(%rbp)
-    movd .L__kefir_func_test_dec32_run_label8(%rip), %xmm0
-    movd %xmm0, -96(%rbp)
     xor %eax, %eax
-    mov %rax, %rbx
+    mov %rax, %r13
 .L__kefir_func_test_dec32_run_label2:
-    cmp %r13d, %ebx
+    cmp %ebx, %r13d
     jb .L__kefir_func_test_dec32_run_label4
     movq -48(%rbp), %rdi
     mov %r12, %rsi
     call test_dec32_norm
-    movaps %xmm0, -112(%rbp)
+    movaps %xmm0, -96(%rbp)
     movq -40(%rbp), %rdi
     mov %r12, %rsi
     call test_dec32_norm
-    movaps %xmm0, -96(%rbp)
+    movaps %xmm0, -80(%rbp)
     lea -56(%rbp), %rdi
     call test_dec32_free
-    movaps -112(%rbp), %xmm0
-    movaps -96(%rbp), %xmm1
+    movaps -96(%rbp), %xmm0
+    movaps -80(%rbp), %xmm1
     call __bid_addsd3@PLT
     lea -24(%rbp), %rsp
     pop %r13
@@ -885,12 +853,12 @@ test_dec32_run:
     pop %rbp
     ret
 .L__kefir_func_test_dec32_run_label4:
+    movd .L__kefir_func_test_dec32_run_label6(%rip), %xmm0
+    movd .L__kefir_func_test_dec32_run_label7(%rip), %xmm1
+    movd .L__kefir_func_test_dec32_run_label8(%rip), %xmm2
     lea -56(%rbp), %rdi
-    movaps -112(%rbp), %xmm0
-    movaps -80(%rbp), %xmm1
-    movaps -96(%rbp), %xmm2
     call test_dec32_step
-    add $1, %ebx
+    add $1, %r13d
     jmp .L__kefir_func_test_dec32_run_label2
 .L__kefir_text_func_test_dec32_run_end:
 .section .rodata
@@ -912,35 +880,29 @@ test_dec64_run:
     push %rbx
     push %r12
     push %r13
-    sub $88, %rsp
-    mov %rsi, %r13
+    sub $72, %rsp
+    mov %rsi, %rbx
     mov %rdi, %r12
     lea -56(%rbp), %rdi
     mov %r12, %rsi
     call test_dec64_init
-    movq .L__kefir_func_test_dec64_run_label6(%rip), %xmm0
-    movq %xmm0, -112(%rbp)
-    movq .L__kefir_func_test_dec64_run_label7(%rip), %xmm0
-    movq %xmm0, -80(%rbp)
-    movq .L__kefir_func_test_dec64_run_label8(%rip), %xmm0
-    movq %xmm0, -96(%rbp)
     xor %eax, %eax
-    mov %rax, %rbx
+    mov %rax, %r13
 .L__kefir_func_test_dec64_run_label2:
-    cmp %r13d, %ebx
+    cmp %ebx, %r13d
     jb .L__kefir_func_test_dec64_run_label4
     movq -48(%rbp), %rdi
     mov %r12, %rsi
     call test_dec64_norm
-    movaps %xmm0, -112(%rbp)
+    movaps %xmm0, -96(%rbp)
     movq -40(%rbp), %rdi
     mov %r12, %rsi
     call test_dec64_norm
-    movaps %xmm0, -96(%rbp)
+    movaps %xmm0, -80(%rbp)
     lea -56(%rbp), %rdi
     call test_dec64_free
-    movaps -112(%rbp), %xmm0
-    movaps -96(%rbp), %xmm1
+    movaps -96(%rbp), %xmm0
+    movaps -80(%rbp), %xmm1
     call __bid_adddd3@PLT
     lea -24(%rbp), %rsp
     pop %r13
@@ -949,12 +911,12 @@ test_dec64_run:
     pop %rbp
     ret
 .L__kefir_func_test_dec64_run_label4:
+    movq .L__kefir_func_test_dec64_run_label6(%rip), %xmm0
+    movq .L__kefir_func_test_dec64_run_label7(%rip), %xmm1
+    movq .L__kefir_func_test_dec64_run_label8(%rip), %xmm2
     lea -56(%rbp), %rdi
-    movaps -112(%rbp), %xmm0
-    movaps -80(%rbp), %xmm1
-    movaps -96(%rbp), %xmm2
     call test_dec64_step
-    add $1, %ebx
+    add $1, %r13d
     jmp .L__kefir_func_test_dec64_run_label2
 .L__kefir_text_func_test_dec64_run_end:
 .section .rodata
@@ -978,34 +940,24 @@ test_dec128_laplacian:
     push %r13
     push %r14
     push %r15
-    sub $184, %rsp
+    sub $104, %rsp
     movaps %xmm0, %xmm1
     mov %rdx, %r13
     mov %rsi, -72(%rbp)
     mov %rdi, %r12
-    movdqu .L__kefir_func_test_dec128_laplacian_label27(%rip), %xmm0
-    movdqu %xmm0, -160(%rbp)
-    movdqu .L__kefir_func_test_dec128_laplacian_label28(%rip), %xmm0
-    movdqu %xmm0, -144(%rbp)
-    movdqu .L__kefir_func_test_dec128_laplacian_label29(%rip), %xmm0
-    movdqu %xmm0, -128(%rbp)
-    movdqu .L__kefir_func_test_dec128_laplacian_label30(%rip), %xmm0
-    movdqu %xmm0, -112(%rbp)
-    movdqu .L__kefir_func_test_dec128_laplacian_label31(%rip), %xmm0
-    movdqu %xmm0, -96(%rbp)
     movaps %xmm1, %xmm0
     call __bid_multd3@PLT
-    movaps %xmm0, -224(%rbp)
+    movaps %xmm0, -144(%rbp)
     xor %eax, %eax
-    mov %rax, %rbx
+    mov %rax, %r14
 .L__kefir_func_test_dec128_laplacian_label2:
-    lea -1(%rbx), %rax
+    lea -1(%r14), %rax
     mov %rax, -64(%rbp)
     movq -64(%rbp), %rcx
     imul %r13, %rcx
     movq %rcx, -64(%rbp)
-    lea 1(%rbx), %r15
-    cmp %r13, %rbx
+    lea 1(%r14), %rbx
+    cmp %r13, %r14
     jb .L__kefir_func_test_dec128_laplacian_label4
     lea -40(%rbp), %rsp
     pop %r15
@@ -1020,84 +972,76 @@ test_dec128_laplacian:
 .L__kefir_func_test_dec128_laplacian_label6:
     cmp %r13, %rax
     jb .L__kefir_func_test_dec128_laplacian_label8
-    mov %r15, %rbx
+    mov %rbx, %r14
     jmp .L__kefir_func_test_dec128_laplacian_label2
 .L__kefir_func_test_dec128_laplacian_label8:
-    mov %rbx, %rcx
+    mov %r14, %rcx
     imul %r13, %rcx
     add %rax, %rcx
     shl $4, %rcx
     mov %rcx, -80(%rbp)
     movdqu (%r12, %rcx, 1), %xmm0
-    movdqu %xmm0, -176(%rbp)
-    cmp $0, %rbx
-    jbe .L__kefir_func_test_dec128_laplacian_label10
+    movdqu %xmm0, -96(%rbp)
+    movdqu .L__kefir_func_test_dec128_laplacian_label27(%rip), %xmm0
+    cmp $0, %r14
+    jbe .L__kefir_func_test_dec128_laplacian_label12
     mov -64(%rbp), %rcx
     add %rax, %rcx
     shl $4, %rcx
     movdqu (%r12, %rcx, 1), %xmm0
 .L__kefir_func_test_dec128_laplacian_label12:
-    cmp %r13, %r15
-    jae .L__kefir_func_test_dec128_laplacian_label14
-    mov %r15, %rcx
+    movdqu .L__kefir_func_test_dec128_laplacian_label28(%rip), %xmm1
+    cmp %r13, %rbx
+    jae .L__kefir_func_test_dec128_laplacian_label16
+    mov %rbx, %rcx
     imul %r13, %rcx
     add %rax, %rcx
     shl $4, %rcx
     movdqu (%r12, %rcx, 1), %xmm1
 .L__kefir_func_test_dec128_laplacian_label16:
+    movdqu .L__kefir_func_test_dec128_laplacian_label29(%rip), %xmm2
+    movdqu %xmm2, -128(%rbp)
     cmp $0, %rax
-    jbe .L__kefir_func_test_dec128_laplacian_label18
+    jbe .L__kefir_func_test_dec128_laplacian_label20
     lea -1(%rax), %rcx
-    mov %rbx, %rdx
+    mov %r14, %rdx
     imul %r13, %rdx
     add %rcx, %rdx
     shl $4, %rdx
     movdqu (%r12, %rdx, 1), %xmm2
-    movdqu %xmm2, -208(%rbp)
+    movdqu %xmm2, -128(%rbp)
 .L__kefir_func_test_dec128_laplacian_label20:
-    lea 1(%rax), %r14
-    cmp %r13, %r14
-    jae .L__kefir_func_test_dec128_laplacian_label22
-    mov %rbx, %rax
+    lea 1(%rax), %r15
+    movdqu .L__kefir_func_test_dec128_laplacian_label30(%rip), %xmm2
+    movdqu %xmm2, -112(%rbp)
+    cmp %r13, %r15
+    jae .L__kefir_func_test_dec128_laplacian_label24
+    mov %r14, %rax
     imul %r13, %rax
-    add %r14, %rax
+    add %r15, %rax
     shl $4, %rax
     movdqu (%r12, %rax, 1), %xmm2
-    movdqu %xmm2, -192(%rbp)
+    movdqu %xmm2, -112(%rbp)
 .L__kefir_func_test_dec128_laplacian_label24:
     call __bid_addtd3@PLT
-    movaps -208(%rbp), %xmm1
+    movaps -128(%rbp), %xmm1
     call __bid_addtd3@PLT
-    movaps -192(%rbp), %xmm1
+    movaps -112(%rbp), %xmm1
     call __bid_addtd3@PLT
-    movaps %xmm0, -208(%rbp)
-    movaps -144(%rbp), %xmm0
-    movaps -176(%rbp), %xmm1
+    movaps %xmm0, -128(%rbp)
+    movdqu .L__kefir_func_test_dec128_laplacian_label31(%rip), %xmm0
+    movaps -96(%rbp), %xmm1
     call __bid_multd3@PLT
     movaps %xmm0, %xmm1
-    movaps -208(%rbp), %xmm0
+    movaps -128(%rbp), %xmm0
     call __bid_subtd3@PLT
-    movaps -224(%rbp), %xmm1
+    movaps -144(%rbp), %xmm1
     call __bid_divtd3@PLT
     movq -72(%rbp), %rax
     movq -80(%rbp), %rcx
     movdqu %xmm0, (%rax, %rcx, 1)
-    mov %r14, %rax
+    mov %r15, %rax
     jmp .L__kefir_func_test_dec128_laplacian_label6
-.L__kefir_func_test_dec128_laplacian_label22:
-    movdqu -160(%rbp), %xmm2
-    movdqu %xmm2, -192(%rbp)
-    jmp .L__kefir_func_test_dec128_laplacian_label24
-.L__kefir_func_test_dec128_laplacian_label18:
-    movdqu -128(%rbp), %xmm2
-    movdqu %xmm2, -208(%rbp)
-    jmp .L__kefir_func_test_dec128_laplacian_label20
-.L__kefir_func_test_dec128_laplacian_label14:
-    movaps -112(%rbp), %xmm1
-    jmp .L__kefir_func_test_dec128_laplacian_label16
-.L__kefir_func_test_dec128_laplacian_label10:
-    movaps -96(%rbp), %xmm0
-    jmp .L__kefir_func_test_dec128_laplacian_label12
 .L__kefir_text_func_test_dec128_laplacian_end:
 .section .rodata
     .align 16
@@ -1105,7 +1049,7 @@ test_dec128_laplacian:
     .quad 0, 3476778912330022912
     .align 16
 .L__kefir_func_test_dec128_laplacian_label28:
-    .quad 4, 3476778912330022912
+    .quad 0, 3476778912330022912
     .align 16
 .L__kefir_func_test_dec128_laplacian_label29:
     .quad 0, 3476778912330022912
@@ -1114,7 +1058,7 @@ test_dec128_laplacian:
     .quad 0, 3476778912330022912
     .align 16
 .L__kefir_func_test_dec128_laplacian_label31:
-    .quad 0, 3476778912330022912
+    .quad 4, 3476778912330022912
 .section .text
 
 test_dec32_laplacian:
@@ -1126,34 +1070,24 @@ test_dec32_laplacian:
     push %r13
     push %r14
     push %r15
-    sub $184, %rsp
+    sub $104, %rsp
     movaps %xmm0, %xmm1
     mov %rdx, %r13
     mov %rsi, -72(%rbp)
     mov %rdi, %r12
-    movd .L__kefir_func_test_dec32_laplacian_label27(%rip), %xmm0
-    movd %xmm0, -160(%rbp)
-    movd .L__kefir_func_test_dec32_laplacian_label28(%rip), %xmm0
-    movd %xmm0, -144(%rbp)
     movaps %xmm1, %xmm0
     call __bid_mulsd3@PLT
-    movaps %xmm0, -224(%rbp)
-    movd .L__kefir_func_test_dec32_laplacian_label29(%rip), %xmm0
-    movd %xmm0, -128(%rbp)
-    movd .L__kefir_func_test_dec32_laplacian_label30(%rip), %xmm0
-    movd %xmm0, -112(%rbp)
-    movd .L__kefir_func_test_dec32_laplacian_label31(%rip), %xmm0
-    movd %xmm0, -96(%rbp)
+    movaps %xmm0, -144(%rbp)
     xor %eax, %eax
-    mov %rax, %rbx
+    mov %rax, %r14
 .L__kefir_func_test_dec32_laplacian_label2:
-    lea -1(%rbx), %rax
+    lea -1(%r14), %rax
     mov %rax, -64(%rbp)
     movq -64(%rbp), %rcx
     imul %r13, %rcx
     movq %rcx, -64(%rbp)
-    lea 1(%rbx), %r15
-    cmp %r13, %rbx
+    lea 1(%r14), %rbx
+    cmp %r13, %r14
     jb .L__kefir_func_test_dec32_laplacian_label4
     lea -40(%rbp), %rsp
     pop %r15
@@ -1168,79 +1102,71 @@ test_dec32_laplacian:
 .L__kefir_func_test_dec32_laplacian_label6:
     cmp %r13, %rax
     jb .L__kefir_func_test_dec32_laplacian_label8
-    mov %r15, %rbx
+    mov %rbx, %r14
     jmp .L__kefir_func_test_dec32_laplacian_label2
 .L__kefir_func_test_dec32_laplacian_label8:
-    mov %rbx, %rcx
+    mov %r14, %rcx
     imul %r13, %rcx
     add %rax, %rcx
     mov %rcx, -80(%rbp)
     movd (%r12, %rcx, 4), %xmm0
-    movd %xmm0, -176(%rbp)
-    cmp $0, %rbx
-    jbe .L__kefir_func_test_dec32_laplacian_label10
+    movd %xmm0, -96(%rbp)
+    movd .L__kefir_func_test_dec32_laplacian_label27(%rip), %xmm0
+    cmp $0, %r14
+    jbe .L__kefir_func_test_dec32_laplacian_label12
     mov -64(%rbp), %rcx
     add %rax, %rcx
     movd (%r12, %rcx, 4), %xmm0
 .L__kefir_func_test_dec32_laplacian_label12:
-    cmp %r13, %r15
-    jae .L__kefir_func_test_dec32_laplacian_label14
-    mov %r15, %rcx
+    movd .L__kefir_func_test_dec32_laplacian_label28(%rip), %xmm1
+    cmp %r13, %rbx
+    jae .L__kefir_func_test_dec32_laplacian_label16
+    mov %rbx, %rcx
     imul %r13, %rcx
     add %rax, %rcx
     movd (%r12, %rcx, 4), %xmm1
 .L__kefir_func_test_dec32_laplacian_label16:
+    movd .L__kefir_func_test_dec32_laplacian_label29(%rip), %xmm2
+    movd %xmm2, -128(%rbp)
     cmp $0, %rax
-    jbe .L__kefir_func_test_dec32_laplacian_label18
+    jbe .L__kefir_func_test_dec32_laplacian_label20
     lea -1(%rax), %rcx
-    mov %rbx, %rdx
+    mov %r14, %rdx
     imul %r13, %rdx
     add %rcx, %rdx
     movd (%r12, %rdx, 4), %xmm2
-    movd %xmm2, -208(%rbp)
+    movd %xmm2, -128(%rbp)
 .L__kefir_func_test_dec32_laplacian_label20:
-    lea 1(%rax), %r14
-    cmp %r13, %r14
-    jae .L__kefir_func_test_dec32_laplacian_label22
-    mov %rbx, %rax
+    lea 1(%rax), %r15
+    movd .L__kefir_func_test_dec32_laplacian_label30(%rip), %xmm2
+    movd %xmm2, -112(%rbp)
+    cmp %r13, %r15
+    jae .L__kefir_func_test_dec32_laplacian_label24
+    mov %r14, %rax
     imul %r13, %rax
-    add %r14, %rax
+    add %r15, %rax
     movd (%r12, %rax, 4), %xmm2
-    movd %xmm2, -192(%rbp)
+    movd %xmm2, -112(%rbp)
 .L__kefir_func_test_dec32_laplacian_label24:
     call __bid_addsd3@PLT
-    movaps -208(%rbp), %xmm1
+    movaps -128(%rbp), %xmm1
     call __bid_addsd3@PLT
-    movaps -192(%rbp), %xmm1
+    movaps -112(%rbp), %xmm1
     call __bid_addsd3@PLT
-    movaps %xmm0, -208(%rbp)
-    movaps -144(%rbp), %xmm0
-    movaps -176(%rbp), %xmm1
+    movaps %xmm0, -128(%rbp)
+    movd .L__kefir_func_test_dec32_laplacian_label31(%rip), %xmm0
+    movaps -96(%rbp), %xmm1
     call __bid_mulsd3@PLT
     movaps %xmm0, %xmm1
-    movaps -208(%rbp), %xmm0
+    movaps -128(%rbp), %xmm0
     call __bid_subsd3@PLT
-    movaps -224(%rbp), %xmm1
+    movaps -144(%rbp), %xmm1
     call __bid_divsd3@PLT
     movq -72(%rbp), %rax
     movq -80(%rbp), %rcx
     movd %xmm0, (%rax, %rcx, 4)
-    mov %r14, %rax
+    mov %r15, %rax
     jmp .L__kefir_func_test_dec32_laplacian_label6
-.L__kefir_func_test_dec32_laplacian_label22:
-    movdqu -160(%rbp), %xmm2
-    movdqu %xmm2, -192(%rbp)
-    jmp .L__kefir_func_test_dec32_laplacian_label24
-.L__kefir_func_test_dec32_laplacian_label18:
-    movdqu -112(%rbp), %xmm2
-    movdqu %xmm2, -208(%rbp)
-    jmp .L__kefir_func_test_dec32_laplacian_label20
-.L__kefir_func_test_dec32_laplacian_label14:
-    movaps -128(%rbp), %xmm1
-    jmp .L__kefir_func_test_dec32_laplacian_label16
-.L__kefir_func_test_dec32_laplacian_label10:
-    movaps -96(%rbp), %xmm0
-    jmp .L__kefir_func_test_dec32_laplacian_label12
 .L__kefir_text_func_test_dec32_laplacian_end:
 .section .rodata
     .align 4
@@ -1248,7 +1174,7 @@ test_dec32_laplacian:
     .long 847249408
     .align 4
 .L__kefir_func_test_dec32_laplacian_label28:
-    .long 847249412
+    .long 847249408
     .align 4
 .L__kefir_func_test_dec32_laplacian_label29:
     .long 847249408
@@ -1257,7 +1183,7 @@ test_dec32_laplacian:
     .long 847249408
     .align 4
 .L__kefir_func_test_dec32_laplacian_label31:
-    .long 847249408
+    .long 847249412
 .section .text
 
 test_dec64_laplacian:
@@ -1269,34 +1195,24 @@ test_dec64_laplacian:
     push %r13
     push %r14
     push %r15
-    sub $184, %rsp
+    sub $104, %rsp
     movaps %xmm0, %xmm1
     mov %rdx, %r13
     mov %rsi, -72(%rbp)
     mov %rdi, %r12
-    movq .L__kefir_func_test_dec64_laplacian_label27(%rip), %xmm0
-    movq %xmm0, -160(%rbp)
-    movq .L__kefir_func_test_dec64_laplacian_label28(%rip), %xmm0
-    movq %xmm0, -144(%rbp)
-    movq .L__kefir_func_test_dec64_laplacian_label29(%rip), %xmm0
-    movq %xmm0, -128(%rbp)
-    movq .L__kefir_func_test_dec64_laplacian_label30(%rip), %xmm0
-    movq %xmm0, -112(%rbp)
-    movq .L__kefir_func_test_dec64_laplacian_label31(%rip), %xmm0
-    movq %xmm0, -96(%rbp)
     movaps %xmm1, %xmm0
     call __bid_muldd3@PLT
-    movaps %xmm0, -224(%rbp)
+    movaps %xmm0, -144(%rbp)
     xor %eax, %eax
-    mov %rax, %rbx
+    mov %rax, %r14
 .L__kefir_func_test_dec64_laplacian_label2:
-    lea -1(%rbx), %rax
+    lea -1(%r14), %rax
     mov %rax, -64(%rbp)
     movq -64(%rbp), %rcx
     imul %r13, %rcx
     movq %rcx, -64(%rbp)
-    lea 1(%rbx), %r15
-    cmp %r13, %rbx
+    lea 1(%r14), %rbx
+    cmp %r13, %r14
     jb .L__kefir_func_test_dec64_laplacian_label4
     lea -40(%rbp), %rsp
     pop %r15
@@ -1311,79 +1227,71 @@ test_dec64_laplacian:
 .L__kefir_func_test_dec64_laplacian_label6:
     cmp %r13, %rax
     jb .L__kefir_func_test_dec64_laplacian_label8
-    mov %r15, %rbx
+    mov %rbx, %r14
     jmp .L__kefir_func_test_dec64_laplacian_label2
 .L__kefir_func_test_dec64_laplacian_label8:
-    mov %rbx, %rcx
+    mov %r14, %rcx
     imul %r13, %rcx
     add %rax, %rcx
     mov %rcx, -80(%rbp)
     movq (%r12, %rcx, 8), %xmm0
-    movq %xmm0, -176(%rbp)
-    cmp $0, %rbx
-    jbe .L__kefir_func_test_dec64_laplacian_label10
+    movq %xmm0, -96(%rbp)
+    movq .L__kefir_func_test_dec64_laplacian_label27(%rip), %xmm0
+    cmp $0, %r14
+    jbe .L__kefir_func_test_dec64_laplacian_label12
     mov -64(%rbp), %rcx
     add %rax, %rcx
     movq (%r12, %rcx, 8), %xmm0
 .L__kefir_func_test_dec64_laplacian_label12:
-    cmp %r13, %r15
-    jae .L__kefir_func_test_dec64_laplacian_label14
-    mov %r15, %rcx
+    movq .L__kefir_func_test_dec64_laplacian_label28(%rip), %xmm1
+    cmp %r13, %rbx
+    jae .L__kefir_func_test_dec64_laplacian_label16
+    mov %rbx, %rcx
     imul %r13, %rcx
     add %rax, %rcx
     movq (%r12, %rcx, 8), %xmm1
 .L__kefir_func_test_dec64_laplacian_label16:
+    movq .L__kefir_func_test_dec64_laplacian_label29(%rip), %xmm2
+    movq %xmm2, -128(%rbp)
     cmp $0, %rax
-    jbe .L__kefir_func_test_dec64_laplacian_label18
+    jbe .L__kefir_func_test_dec64_laplacian_label20
     lea -1(%rax), %rcx
-    mov %rbx, %rdx
+    mov %r14, %rdx
     imul %r13, %rdx
     add %rcx, %rdx
     movq (%r12, %rdx, 8), %xmm2
-    movq %xmm2, -208(%rbp)
+    movq %xmm2, -128(%rbp)
 .L__kefir_func_test_dec64_laplacian_label20:
-    lea 1(%rax), %r14
-    cmp %r13, %r14
-    jae .L__kefir_func_test_dec64_laplacian_label22
-    mov %rbx, %rax
+    lea 1(%rax), %r15
+    movq .L__kefir_func_test_dec64_laplacian_label30(%rip), %xmm2
+    movq %xmm2, -112(%rbp)
+    cmp %r13, %r15
+    jae .L__kefir_func_test_dec64_laplacian_label24
+    mov %r14, %rax
     imul %r13, %rax
-    add %r14, %rax
+    add %r15, %rax
     movq (%r12, %rax, 8), %xmm2
-    movq %xmm2, -192(%rbp)
+    movq %xmm2, -112(%rbp)
 .L__kefir_func_test_dec64_laplacian_label24:
     call __bid_adddd3@PLT
-    movaps -208(%rbp), %xmm1
+    movaps -128(%rbp), %xmm1
     call __bid_adddd3@PLT
-    movaps -192(%rbp), %xmm1
+    movaps -112(%rbp), %xmm1
     call __bid_adddd3@PLT
-    movaps %xmm0, -208(%rbp)
-    movaps -144(%rbp), %xmm0
-    movaps -176(%rbp), %xmm1
+    movaps %xmm0, -128(%rbp)
+    movq .L__kefir_func_test_dec64_laplacian_label31(%rip), %xmm0
+    movaps -96(%rbp), %xmm1
     call __bid_muldd3@PLT
     movaps %xmm0, %xmm1
-    movaps -208(%rbp), %xmm0
+    movaps -128(%rbp), %xmm0
     call __bid_subdd3@PLT
-    movaps -224(%rbp), %xmm1
+    movaps -144(%rbp), %xmm1
     call __bid_divdd3@PLT
     movq -72(%rbp), %rax
     movq -80(%rbp), %rcx
     movq %xmm0, (%rax, %rcx, 8)
-    mov %r14, %rax
+    mov %r15, %rax
     jmp .L__kefir_func_test_dec64_laplacian_label6
-.L__kefir_func_test_dec64_laplacian_label22:
-    movdqu -160(%rbp), %xmm2
-    movdqu %xmm2, -192(%rbp)
-    jmp .L__kefir_func_test_dec64_laplacian_label24
-.L__kefir_func_test_dec64_laplacian_label18:
-    movdqu -128(%rbp), %xmm2
-    movdqu %xmm2, -208(%rbp)
-    jmp .L__kefir_func_test_dec64_laplacian_label20
-.L__kefir_func_test_dec64_laplacian_label14:
-    movaps -112(%rbp), %xmm1
-    jmp .L__kefir_func_test_dec64_laplacian_label16
-.L__kefir_func_test_dec64_laplacian_label10:
-    movaps -96(%rbp), %xmm0
-    jmp .L__kefir_func_test_dec64_laplacian_label12
 .L__kefir_text_func_test_dec64_laplacian_end:
 .section .rodata
     .align 8
@@ -1391,7 +1299,7 @@ test_dec64_laplacian:
     .quad 3584865303386914816
     .align 8
 .L__kefir_func_test_dec64_laplacian_label28:
-    .quad 3584865303386914820
+    .quad 3584865303386914816
     .align 8
 .L__kefir_func_test_dec64_laplacian_label29:
     .quad 3584865303386914816
@@ -1400,7 +1308,7 @@ test_dec64_laplacian:
     .quad 3584865303386914816
     .align 8
 .L__kefir_func_test_dec64_laplacian_label31:
-    .quad 3584865303386914816
+    .quad 3584865303386914820
 .section .text
 
 test_dec128_init:
@@ -1432,14 +1340,10 @@ test_dec128_init:
     call malloc@PLT
     movq %rax, 24(%r12)
     movq 16(%r12), %rcx
-    movdqu .L__kefir_func_test_dec128_init_label21(%rip), %xmm0
-    movdqu .L__kefir_func_test_dec128_init_label22(%rip), %xmm1
-    movdqu .L__kefir_func_test_dec128_init_label23(%rip), %xmm2
     mov %rbx, %rdx
     shr $1, %rdx
-    lea -1(%rdx), %rsi
-    add $1, %rdx
-    movdqu .L__kefir_func_test_dec128_init_label24(%rip), %xmm3
+    lea 1(%rdx), %rsi
+    sub $1, %rdx
     cmp $0, %rcx
     sete %cl
     cmp $0, %rax
@@ -1448,17 +1352,17 @@ test_dec128_init:
     jnz .L__kefir_func_test_dec128_init_label16
     xor %eax, %eax
 .L__kefir_func_test_dec128_init_label3:
-    lea 1(%rax), %rcx
-    mov %rax, %rdi
-    imul %rbx, %rdi
+    mov %rax, %rcx
+    imul %rbx, %rcx
+    lea 1(%rax), %rdi
     cmp %rbx, %rax
     jb .L__kefir_func_test_dec128_init_label5
-    mov %rsi, %rax
+    mov %rdx, %rax
 .L__kefir_func_test_dec128_init_label6:
     mov %rax, %rcx
     imul %rbx, %rcx
     lea 1(%rax), %rdi
-    cmp %rdx, %rax
+    cmp %rsi, %rax
     jbe .L__kefir_func_test_dec128_init_label8
     lea -24(%rbp), %rsp
     pop %r13
@@ -1467,9 +1371,9 @@ test_dec128_init:
     pop %rbp
     ret
 .L__kefir_func_test_dec128_init_label8:
-    mov %rsi, %rax
+    mov %rdx, %rax
 .L__kefir_func_test_dec128_init_label10:
-    cmp %rdx, %rax
+    cmp %rsi, %rax
     jbe .L__kefir_func_test_dec128_init_label12
     mov %rdi, %rax
     jmp .L__kefir_func_test_dec128_init_label6
@@ -1478,9 +1382,11 @@ test_dec128_init:
     mov %rcx, %r9
     add %rax, %r9
     shl $4, %r9
-    movdqu %xmm1, (%r8, %r9, 1)
+    movdqu .L__kefir_func_test_dec128_init_label21(%rip), %xmm0
+    movdqu %xmm0, (%r8, %r9, 1)
     movq 16(%r12), %r8
-    movdqu %xmm3, (%r8, %r9, 1)
+    movdqu .L__kefir_func_test_dec128_init_label22(%rip), %xmm0
+    movdqu %xmm0, (%r8, %r9, 1)
     add $1, %rax
     jmp .L__kefir_func_test_dec128_init_label10
 .L__kefir_func_test_dec128_init_label5:
@@ -1488,16 +1394,18 @@ test_dec128_init:
 .L__kefir_func_test_dec128_init_label13:
     cmp %rbx, %rax
     jb .L__kefir_func_test_dec128_init_label15
-    mov %rcx, %rax
+    mov %rdi, %rax
     jmp .L__kefir_func_test_dec128_init_label3
 .L__kefir_func_test_dec128_init_label15:
     movq 16(%r12), %r8
-    mov %rdi, %r9
+    mov %rcx, %r9
     add %rax, %r9
     shl $4, %r9
+    movdqu .L__kefir_func_test_dec128_init_label23(%rip), %xmm0
     movdqu %xmm0, (%r8, %r9, 1)
     movq 24(%r12), %r8
-    movdqu %xmm2, (%r8, %r9, 1)
+    movdqu .L__kefir_func_test_dec128_init_label24(%rip), %xmm0
+    movdqu %xmm0, (%r8, %r9, 1)
     add $1, %rax
     jmp .L__kefir_func_test_dec128_init_label13
 .L__kefir_func_test_dec128_init_label16:
@@ -1514,16 +1422,16 @@ test_dec128_init:
     .quad 1, 3476778912330022912
     .align 16
 .L__kefir_func_test_dec128_init_label21:
-    .quad 1, 3476778912330022912
-    .align 16
-.L__kefir_func_test_dec128_init_label22:
     .quad 25, 3475653012423180288
     .align 16
+.L__kefir_func_test_dec128_init_label22:
+    .quad 5, 3476215962376601600
+    .align 16
 .L__kefir_func_test_dec128_init_label23:
-    .quad 0, 3476778912330022912
+    .quad 1, 3476778912330022912
     .align 16
 .L__kefir_func_test_dec128_init_label24:
-    .quad 5, 3476215962376601600
+    .quad 0, 3476778912330022912
 .section .text
 
 test_dec128_norm:
@@ -1579,10 +1487,10 @@ test_dec128_step:
     push %r13
     push %r14
     push %r15
-    sub $248, %rsp
-    movaps %xmm2, -288(%rbp)
-    movaps %xmm1, -272(%rbp)
-    movaps %xmm0, -256(%rbp)
+    sub $168, %rsp
+    movaps %xmm2, -208(%rbp)
+    movaps %xmm1, -192(%rbp)
+    movaps %xmm0, -176(%rbp)
     mov %rdi, %r14
     movq 32(%r14), %r13
     imul %r13, %r13
@@ -1609,20 +1517,10 @@ test_dec128_step:
     movdqu (%r14), %xmm0
     mov -56(%rbp), %rsi
     call test_dec128_laplacian
-    movdqu .L__kefir_func_test_dec128_step_label20(%rip), %xmm0
-    movdqu %xmm0, -144(%rbp)
-    movdqu .L__kefir_func_test_dec128_step_label21(%rip), %xmm0
-    movdqu %xmm0, -128(%rbp)
-    movaps -256(%rbp), %xmm0
-    movaps -272(%rbp), %xmm1
+    movaps -176(%rbp), %xmm0
+    movaps -192(%rbp), %xmm1
     call __bid_addtd3@PLT
-    movaps %xmm0, -272(%rbp)
-    movdqu .L__kefir_func_test_dec128_step_label22(%rip), %xmm0
-    movdqu %xmm0, -112(%rbp)
-    movdqu .L__kefir_func_test_dec128_step_label23(%rip), %xmm0
-    movdqu %xmm0, -96(%rbp)
-    movdqu .L__kefir_func_test_dec128_step_label24(%rip), %xmm0
-    movdqu %xmm0, -80(%rbp)
+    movaps %xmm0, -192(%rbp)
     xor %eax, %eax
     mov %rax, %r13
 .L__kefir_func_test_dec128_step_label3:
@@ -1657,71 +1555,71 @@ test_dec128_step:
     mov %rax, %r12
     shl $4, %r12
     movdqu (%rbx, %r12, 1), %xmm0
-    movdqu %xmm0, -208(%rbp)
+    movdqu %xmm0, -128(%rbp)
     movq 24(%r14), %rax
     movdqu (%rax, %r12, 1), %xmm1
-    movaps %xmm1, -160(%rbp)
+    movaps %xmm1, -80(%rbp)
     movq -48(%rbp), %rax
     movdqu (%rax, %r12, 1), %xmm0
-    movdqu %xmm0, -240(%rbp)
+    movdqu %xmm0, -160(%rbp)
     movdqu (%rbx, %r12, 1), %xmm0
-    movdqu %xmm0, -192(%rbp)
-    movaps -208(%rbp), %xmm0
-    call __bid_multd3@PLT
-    movaps -160(%rbp), %xmm1
-    call __bid_multd3@PLT
-    movaps %xmm0, %xmm1
-    movaps %xmm1, -176(%rbp)
-    movaps -240(%rbp), %xmm0
-    call __bid_subtd3@PLT
-    movaps %xmm0, -224(%rbp)
+    movdqu %xmm0, -112(%rbp)
     movaps -128(%rbp), %xmm0
-    movaps -208(%rbp), %xmm1
-    call __bid_subtd3@PLT
-    movaps %xmm0, %xmm1
-    movaps -256(%rbp), %xmm0
+    call __bid_multd3@PLT
+    movaps -80(%rbp), %xmm1
     call __bid_multd3@PLT
     movaps %xmm0, %xmm1
-    movaps -224(%rbp), %xmm0
+    movaps %xmm1, -96(%rbp)
+    movaps -160(%rbp), %xmm0
+    call __bid_subtd3@PLT
+    movaps %xmm0, -144(%rbp)
+    movdqu .L__kefir_func_test_dec128_step_label20(%rip), %xmm0
+    movaps -128(%rbp), %xmm1
+    call __bid_subtd3@PLT
+    movaps %xmm0, %xmm1
+    movaps -176(%rbp), %xmm0
+    call __bid_multd3@PLT
+    movaps %xmm0, %xmm1
+    movaps -144(%rbp), %xmm0
     call __bid_addtd3@PLT
     movaps %xmm0, %xmm1
-    movaps -288(%rbp), %xmm0
+    movaps -208(%rbp), %xmm0
     call __bid_multd3@PLT
     movaps %xmm0, %xmm1
-    movaps -192(%rbp), %xmm0
+    movaps -112(%rbp), %xmm0
     call __bid_addtd3@PLT
     movdqu %xmm0, (%rbx, %r12, 1)
     movq -56(%rbp), %rax
     movdqu (%rax, %r12, 1), %xmm0
     movq 24(%r14), %rbx
     movdqu (%rbx, %r12, 1), %xmm1
-    movdqu %xmm1, -224(%rbp)
-    movaps -176(%rbp), %xmm1
+    movdqu %xmm1, -144(%rbp)
+    movaps -96(%rbp), %xmm1
     call __bid_addtd3@PLT
-    movaps %xmm0, -240(%rbp)
-    movaps -272(%rbp), %xmm0
-    movaps -160(%rbp), %xmm1
+    movaps %xmm0, -160(%rbp)
+    movaps -192(%rbp), %xmm0
+    movaps -80(%rbp), %xmm1
     call __bid_multd3@PLT
     movaps %xmm0, %xmm1
-    movaps -240(%rbp), %xmm0
+    movaps -160(%rbp), %xmm0
     call __bid_subtd3@PLT
     movaps %xmm0, %xmm1
-    movaps -288(%rbp), %xmm0
+    movaps -208(%rbp), %xmm0
     call __bid_multd3@PLT
     movaps %xmm0, %xmm1
-    movaps -224(%rbp), %xmm0
+    movaps -144(%rbp), %xmm0
     call __bid_addtd3@PLT
     movdqu %xmm0, (%rbx, %r12, 1)
     movq 16(%r14), %rbx
     movdqu (%rbx, %r12, 1), %xmm0
-    movaps -112(%rbp), %xmm1
+    movdqu .L__kefir_func_test_dec128_step_label21(%rip), %xmm1
     call __bid_lttd2@PLT
     cmp $0, %eax
     jl .L__kefir_func_test_dec128_step_label10
 .L__kefir_func_test_dec128_step_label11:
     movq 24(%r14), %rbx
     movdqu (%rbx, %r12, 1), %xmm0
-    movaps -96(%rbp), %xmm1
+    movdqu .L__kefir_func_test_dec128_step_label22(%rip), %xmm1
     call __bid_lttd2@PLT
     cmp $0, %eax
     jl .L__kefir_func_test_dec128_step_label13
@@ -1729,11 +1627,11 @@ test_dec128_step:
     addq $1, -64(%rbp)
     jmp .L__kefir_func_test_dec128_step_label6
 .L__kefir_func_test_dec128_step_label13:
-    movdqu -144(%rbp), %xmm0
+    movdqu .L__kefir_func_test_dec128_step_label23(%rip), %xmm0
     movdqu %xmm0, (%rbx, %r12, 1)
     jmp .L__kefir_func_test_dec128_step_label12
 .L__kefir_func_test_dec128_step_label10:
-    movdqu -80(%rbp), %xmm0
+    movdqu .L__kefir_func_test_dec128_step_label24(%rip), %xmm0
     movdqu %xmm0, (%rbx, %r12, 1)
     jmp .L__kefir_func_test_dec128_step_label11
 .L__kefir_func_test_dec128_step_label15:
@@ -1749,10 +1647,10 @@ test_dec128_step:
 .section .rodata
     .align 16
 .L__kefir_func_test_dec128_step_label20:
-    .quad 0, 3476778912330022912
+    .quad 1, 3476778912330022912
     .align 16
 .L__kefir_func_test_dec128_step_label21:
-    .quad 1, 3476778912330022912
+    .quad 0, 3476778912330022912
     .align 16
 .L__kefir_func_test_dec128_step_label22:
     .quad 0, 3476778912330022912

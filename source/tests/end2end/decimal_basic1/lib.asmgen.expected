@@ -76,10 +76,9 @@ arg64:
 get32:
 .loc 0 23 1
 .L__kefir_text_func_get32_begin:
-.loc 0 24 12
+.loc 0 24 5
 .L__kefir_func_get32_label11:
     movd .L__kefir_func_get32_label10(%rip), %xmm0
-.loc 0 24 5
 .L__kefir_func_get32_label23:
     ret
 .L__kefir_func_get32_label24:
@@ -93,10 +92,9 @@ get32:
 get64:
 .loc 0 27 1
 .L__kefir_text_func_get64_begin:
-.loc 0 28 12
+.loc 0 28 5
 .L__kefir_func_get64_label11:
     movq .L__kefir_func_get64_label10(%rip), %xmm0
-.loc 0 28 5
 .L__kefir_func_get64_label23:
     ret
 .L__kefir_func_get64_label24:
@@ -833,10 +831,9 @@ arg64y:
 get128:
 .loc 0 31 1
 .L__kefir_text_func_get128_begin:
-.loc 0 32 12
+.loc 0 32 5
 .L__kefir_func_get128_label11:
     movdqu .L__kefir_func_get128_label10(%rip), %xmm0
-.loc 0 32 5
 .L__kefir_func_get128_label23:
     ret
 .L__kefir_func_get128_label24:

@@ -89,6 +89,11 @@ static kefir_result_t remat_instr(struct remat_params *params, kefir_opt_instruc
         case KEFIR_OPT_OPCODE_INT_PLACEHOLDER:
         case KEFIR_OPT_OPCODE_FLOAT32_PLACEHOLDER:
         case KEFIR_OPT_OPCODE_FLOAT64_PLACEHOLDER:
+        case KEFIR_OPT_OPCODE_DECIMAL32_CONST:   // Decimal operations are implemented as runtime calls that clobber XMM
+                                                 // registers.
+        case KEFIR_OPT_OPCODE_DECIMAL64_CONST:   // Therefore, there is no point in keeping decimals farther from uses,
+                                                 // compared to normal
+        case KEFIR_OPT_OPCODE_DECIMAL128_CONST:  // floating-point
             nest_hoist = 0;
             break;
 
@@ -96,6 +101,11 @@ static kefir_result_t remat_instr(struct remat_params *params, kefir_opt_instruc
         case KEFIR_OPT_OPCODE_FLOAT64_CONST:
         case KEFIR_OPT_OPCODE_GET_THREAD_LOCAL:
             nest_hoist = 1;
+            break;
+
+        case KEFIR_IR_OPCODE_BITINT_SIGNED_CONST:
+        case KEFIR_IR_OPCODE_BITINT_UNSIGNED_CONST:
+            nest_hoist = instr->operation.parameters.bitwidth > 64;
             break;
 
         case KEFIR_OPT_OPCODE_GET_GLOBAL: {
@@ -183,6 +193,11 @@ static kefir_result_t remat_impl(struct remat_params *params) {
                 case KEFIR_OPT_OPCODE_FLOAT32_CONST:
                 case KEFIR_OPT_OPCODE_FLOAT64_CONST:
                 case KEFIR_OPT_OPCODE_LONG_DOUBLE_CONST:
+                case KEFIR_OPT_OPCODE_DECIMAL32_CONST:
+                case KEFIR_OPT_OPCODE_DECIMAL64_CONST:
+                case KEFIR_OPT_OPCODE_DECIMAL128_CONST:
+                case KEFIR_OPT_OPCODE_BITINT_SIGNED_CONST:
+                case KEFIR_OPT_OPCODE_BITINT_UNSIGNED_CONST:
                 case KEFIR_OPT_OPCODE_BLOCK_LABEL:
                 case KEFIR_OPT_OPCODE_STRING_REF:
                 case KEFIR_OPT_OPCODE_REF_LOCAL:
