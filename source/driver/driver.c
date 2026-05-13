@@ -49,6 +49,7 @@
     "sroa," \
     "memory-ssa," \
     "gvn," \
+    "phi-removal," \
     "licm," \
     "gvn," \
     "memory-ssa," \
