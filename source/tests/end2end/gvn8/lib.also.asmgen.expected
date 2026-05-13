@@ -676,10 +676,10 @@ __kefir_bigint_trailing_zeros:
     movb (%rdi, %rsi, 1), %r10b
     lea 8(%rdx), %rcx
     add $1, %rsi
-    movzx %r10b, %r10
     mov $8, %r11d
     cmp %r8, %rsi
     cmovae %r9, %r11
+    movzx %r10b, %r10
     cmp $0, %r10d
     je .L__kefir_runtime_func___kefir_bigint_trailing_zeros_label7
     xor %ecx, %ecx

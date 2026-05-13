@@ -42,7 +42,6 @@ struct licm_state {
     struct kefir_hashtable loop_preheaders;
 
     const struct kefir_opt_code_loop *loop;
-    struct kefir_hashset candidate_blocks;
     struct kefir_hashset loop_memory_ops;
 
     kefir_bool_t all_inputs_nonlocal;
@@ -500,68 +499,12 @@ static kefir_result_t process_loop(struct licm_state *state) {
                                    (kefir_hashset_key_t) state->loop->header_ref),
             KEFIR_OK);
 
-    REQUIRE_OK(kefir_hashset_clear(state->mem, &state->candidate_blocks));
     REQUIRE_OK(kefir_list_clear(state->mem, &state->candidate_queue));
     REQUIRE_OK(kefir_hashset_clear(state->mem, &state->candidate_queue_index));
     REQUIRE_OK(kefir_hashset_clear(state->mem, &state->rejected_candidates));
     REQUIRE_OK(build_loop_memssa(state));
 
     kefir_result_t res;
-    struct kefir_hashset_iterator terminal_block_iter;
-    kefir_hashset_key_t terminal_block_key;
-    kefir_opt_block_id_t terminal_blocks_dominator = KEFIR_ID_NONE;
-    for (res = kefir_hashset_iter(&state->loop->latches, &terminal_block_iter, &terminal_block_key); res == KEFIR_OK;
-         res = kefir_hashset_next(&terminal_block_iter, &terminal_block_key)) {
-#define TERMINAL_ITER_BODY(_key)                                                                                 \
-    do {                                                                                                         \
-        ASSIGN_DECL_CAST(kefir_opt_block_id_t, block_id, (_key));                                                \
-        if (block_id == state->loop->header_ref) {                                                               \
-            continue;                                                                                            \
-        }                                                                                                        \
-        kefir_bool_t is_reachable;                                                                               \
-        REQUIRE_OK(                                                                                              \
-            kefir_opt_code_control_flow_is_reachable_from_entry(&state->control_flow, block_id, &is_reachable)); \
-        if (!is_reachable) {                                                                                     \
-            continue;                                                                                            \
-        }                                                                                                        \
-                                                                                                                 \
-        if (terminal_blocks_dominator == KEFIR_ID_NONE) {                                                        \
-            terminal_blocks_dominator = block_id;                                                                \
-        } else {                                                                                                 \
-            REQUIRE_OK(kefir_opt_find_closest_common_dominator(                                                  \
-                &state->control_flow, block_id, terminal_blocks_dominator, &terminal_blocks_dominator));         \
-        }                                                                                                        \
-    } while (0)
-
-        TERMINAL_ITER_BODY(terminal_block_key);
-    }
-    if (res != KEFIR_ITERATOR_END) {
-        REQUIRE_OK(res);
-    }
-    for (res = kefir_hashset_iter(&state->loop->exits, &terminal_block_iter, &terminal_block_key); res == KEFIR_OK;
-         res = kefir_hashset_next(&terminal_block_iter, &terminal_block_key)) {
-        TERMINAL_ITER_BODY(terminal_block_key);
-#undef TERMINAL_ITER_BODY
-    }
-    if (res != KEFIR_ITERATOR_END) {
-        REQUIRE_OK(res);
-    }
-    if (terminal_blocks_dominator == KEFIR_ID_NONE) {
-        terminal_blocks_dominator = state->loop->header_ref;
-    }
-    kefir_bool_t terminal_blocks_dominator_valid;
-    REQUIRE_OK(kefir_opt_code_control_flow_is_dominator(&state->control_flow, terminal_blocks_dominator,
-                                                        state->loop->header_ref, &terminal_blocks_dominator_valid));
-    REQUIRE(terminal_blocks_dominator_valid, KEFIR_OK);
-
-    REQUIRE_OK(
-        kefir_hashset_add(state->mem, &state->candidate_blocks, (kefir_hashset_key_t) terminal_blocks_dominator));
-    for (; terminal_blocks_dominator != state->loop->header_ref;) {
-        terminal_blocks_dominator = state->control_flow.blocks[terminal_blocks_dominator].immediate_dominator;
-        REQUIRE_OK(
-            kefir_hashset_add(state->mem, &state->candidate_blocks, (kefir_hashset_key_t) terminal_blocks_dominator));
-    }
-
     kefir_bool_t must_execute = false;
     struct kefir_opt_loop_iteration_space iteration_space;
     res = kefir_opt_loop_match_iteration_space(&state->func->code, state->loop, &iteration_space);
@@ -702,7 +645,7 @@ static kefir_result_t process_loop(struct licm_state *state) {
             default: {
                 kefir_bool_t moveable;
                 REQUIRE_OK(kefir_opt_instruction_is_moveable(state->control_flow.code, instr_ref, &moveable));
-                if (moveable && kefir_hashset_has(&state->candidate_blocks, (kefir_hashset_key_t) instr->block_id)) {
+                if (moveable) {
                     REQUIRE_OK(do_hoist(state, instr_ref, hoist_target));
                 }
             } break;
@@ -791,7 +734,6 @@ static kefir_result_t loop_invariant_code_motion_apply(struct kefir_mem *mem, st
     REQUIRE_OK(kefir_hashset_init(&state.rejected_candidates, &kefir_hashtable_uint_ops));
     REQUIRE_OK(kefir_list_init(&state.candidate_queue));
     REQUIRE_OK(kefir_hashset_init(&state.skip_phi_uses, &kefir_hashtable_uint_ops));
-    REQUIRE_OK(kefir_hashset_init(&state.candidate_blocks, &kefir_hashtable_uint_ops));
     REQUIRE_OK(kefir_hashset_init(&state.loop_memory_ops, &kefir_hashtable_uint_ops));
     REQUIRE_OK(kefir_hashtable_init(&state.loop_preheaders, &kefir_hashtable_uint_ops));
     REQUIRE_OK(kefir_opt_code_control_flow_init(&state.control_flow));
@@ -807,7 +749,6 @@ static kefir_result_t loop_invariant_code_motion_apply(struct kefir_mem *mem, st
     kefir_opt_code_control_flow_free(mem, &state.control_flow);
     kefir_hashtable_free(mem, &state.loop_preheaders);
     kefir_hashset_free(mem, &state.loop_memory_ops);
-    kefir_hashset_free(mem, &state.candidate_blocks);
     kefir_hashset_free(mem, &state.skip_phi_uses);
     kefir_list_free(mem, &state.candidate_queue);
     kefir_hashset_free(mem, &state.candidate_queue_index);

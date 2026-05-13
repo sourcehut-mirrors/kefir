@@ -172,8 +172,9 @@ test6:
 
 test7:
 .L__kefir_text_func_test7_begin:
-    movq x@GOTPCREL(%rip), %rax
-    movq y@GOTPCREL(%rip), %rcx
+    movq y@GOTPCREL(%rip), %rax
+    movl (%rax), %eax
+    movq x@GOTPCREL(%rip), %rcx
     xor %edx, %edx
 .L__kefir_func_test7_label2:
     cmp %edi, %edx
@@ -186,8 +187,7 @@ test7:
     add $1, %edx
     jmp .L__kefir_func_test7_label2
 .L__kefir_func_test7_label6:
-    movl (%rcx), %esi
-    addl %esi, (%rax)
+    addl %eax, (%rcx)
     jmp .L__kefir_func_test7_label5
 .L__kefir_text_func_test7_end:
 
