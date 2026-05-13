@@ -32,6 +32,7 @@ struct regalloc_state {
     struct kefir_codegen_target_ir_hotness hotness;
     struct kefir_list block_queue;
     struct kefir_list value_queue;
+    struct kefir_hashset visited;
     struct kefir_hashtable coalescing_priorities;
     struct kefir_codegen_target_ir_regalloc_state regalloc_state;
     const struct kefir_codegen_target_ir_stack_frame *stack_frame;
@@ -231,6 +232,8 @@ static kefir_result_t try_evict_neighbor(struct kefir_mem *mem, struct regalloc_
         if (res != KEFIR_NOT_FOUND) {
             REQUIRE_OK(res);
         }
+        REQUIRE_OK(kefir_hashset_delete(&state->visited,
+                                        (kefir_hashset_key_t) KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&evict_value)));
         REQUIRE_OK(
             kefir_list_insert_after(mem, &state->value_queue, kefir_list_tail(&state->value_queue),
                                     (void *) (kefir_uptr_t) KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&evict_value)));
@@ -278,6 +281,12 @@ static kefir_result_t do_regalloc(struct kefir_mem *mem, struct regalloc_state *
         kefir_codegen_target_ir_value_ref_t value_ref =
             KEFIR_CODEGEN_TARGET_IR_VALUE_REF_FROM((kefir_uptr_t) head->value);
         REQUIRE_OK(kefir_list_pop(mem, &state->value_queue, head));
+        if (kefir_hashset_has(&state->visited,
+                              (kefir_hashset_key_t) KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&value_ref))) {
+            continue;
+        }
+        REQUIRE_OK(kefir_hashset_add(mem, &state->visited,
+                                     (kefir_hashset_key_t) KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&value_ref)));
 
         if (kefir_hashtable_has(&state->regalloc->allocation,
                                 (kefir_hashtable_key_t) KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(&value_ref))) {
@@ -462,6 +471,7 @@ kefir_result_t kefir_codegen_target_ir_regalloc_run(struct kefir_mem *mem,
                                    .stack_frame = stack_frame};
     REQUIRE_OK(kefir_list_init(&state.block_queue));
     REQUIRE_OK(kefir_list_init(&state.value_queue));
+    REQUIRE_OK(kefir_hashset_init(&state.visited, &kefir_hashtable_uint_ops));
     REQUIRE_OK(kefir_hashtable_init(&state.coalescing_priorities, &kefir_hashtable_uint_ops));
     REQUIRE_OK(kefir_codegen_target_ir_hotness_init(&state.hotness));
     REQUIRE_OK(regalloc->klass->new_state(mem, &state.regalloc_state, regalloc->klass->payload));
@@ -471,6 +481,7 @@ kefir_result_t kefir_codegen_target_ir_regalloc_run(struct kefir_mem *mem,
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_codegen_target_ir_hotness_free(mem, &state.hotness);
         kefir_hashtable_free(mem, &state.coalescing_priorities);
+        kefir_hashset_free(mem, &state.visited);
         kefir_list_free(mem, &state.block_queue);
         kefir_list_free(mem, &state.value_queue);
         state.regalloc_state.free_state(mem, state.regalloc_state.payload);
@@ -479,12 +490,21 @@ kefir_result_t kefir_codegen_target_ir_regalloc_run(struct kefir_mem *mem,
     res = kefir_codegen_target_ir_hotness_free(mem, &state.hotness);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_hashtable_free(mem, &state.coalescing_priorities);
+        kefir_hashset_free(mem, &state.visited);
         kefir_list_free(mem, &state.block_queue);
         kefir_list_free(mem, &state.value_queue);
         state.regalloc_state.free_state(mem, state.regalloc_state.payload);
         return res;
     });
     res = kefir_hashtable_free(mem, &state.coalescing_priorities);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_hashset_free(mem, &state.visited);
+        kefir_list_free(mem, &state.block_queue);
+        kefir_list_free(mem, &state.value_queue);
+        state.regalloc_state.free_state(mem, state.regalloc_state.payload);
+        return res;
+    });
+    res = kefir_hashset_free(mem, &state.visited);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_list_free(mem, &state.block_queue);
         kefir_list_free(mem, &state.value_queue);
