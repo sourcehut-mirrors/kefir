@@ -49,12 +49,18 @@ kefir_result_t kefir_opt_code_util_classify_memory_access(const struct kefir_opt
     switch (instr->operation.opcode) {
         case KEFIR_OPT_OPCODE_INT8_LOAD:
         case KEFIR_OPT_OPCODE_INT8_STORE:
+        case KEFIR_OPT_OPCODE_ATOMIC_LOAD8:
+        case KEFIR_OPT_OPCODE_ATOMIC_STORE8:
+        case KEFIR_OPT_OPCODE_ATOMIC_CMPXCHG8:
             *location_ptr = instr->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_LOCATION_REF];
             *size_ptr = 1;
             break;
 
         case KEFIR_OPT_OPCODE_INT16_LOAD:
         case KEFIR_OPT_OPCODE_INT16_STORE:
+        case KEFIR_OPT_OPCODE_ATOMIC_LOAD16:
+        case KEFIR_OPT_OPCODE_ATOMIC_STORE16:
+        case KEFIR_OPT_OPCODE_ATOMIC_CMPXCHG16:
             *location_ptr = instr->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_LOCATION_REF];
             *size_ptr = 2;
             break;
@@ -65,6 +71,10 @@ kefir_result_t kefir_opt_code_util_classify_memory_access(const struct kefir_opt
         case KEFIR_OPT_OPCODE_FLOAT32_STORE:
         case KEFIR_OPT_OPCODE_DECIMAL32_LOAD:
         case KEFIR_OPT_OPCODE_DECIMAL32_STORE:
+        case KEFIR_OPT_OPCODE_DECIMAL32_ATOMIC_CMPXCHG:
+        case KEFIR_OPT_OPCODE_ATOMIC_LOAD32:
+        case KEFIR_OPT_OPCODE_ATOMIC_STORE32:
+        case KEFIR_OPT_OPCODE_ATOMIC_CMPXCHG32:
             *location_ptr = instr->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_LOCATION_REF];
             *size_ptr = 4;
             break;
@@ -77,6 +87,13 @@ kefir_result_t kefir_opt_code_util_classify_memory_access(const struct kefir_opt
         case KEFIR_OPT_OPCODE_COMPLEX_FLOAT32_STORE:
         case KEFIR_OPT_OPCODE_DECIMAL64_LOAD:
         case KEFIR_OPT_OPCODE_DECIMAL64_STORE:
+        case KEFIR_OPT_OPCODE_DECIMAL64_ATOMIC_CMPXCHG:
+        case KEFIR_OPT_OPCODE_ATOMIC_LOAD64:
+        case KEFIR_OPT_OPCODE_ATOMIC_STORE64:
+        case KEFIR_OPT_OPCODE_ATOMIC_CMPXCHG64:
+        case KEFIR_OPT_OPCODE_ATOMIC_LOAD_COMPLEX_FLOAT32:
+        case KEFIR_OPT_OPCODE_ATOMIC_STORE_COMPLEX_FLOAT32:
+        case KEFIR_OPT_OPCODE_ATOMIC_CMPXCHG_COMPLEX_FLOAT32:
             *location_ptr = instr->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_LOCATION_REF];
             *size_ptr = 8;
             break;
@@ -89,12 +106,23 @@ kefir_result_t kefir_opt_code_util_classify_memory_access(const struct kefir_opt
         case KEFIR_OPT_OPCODE_COMPLEX_FLOAT64_STORE:
         case KEFIR_OPT_OPCODE_DECIMAL128_LOAD:
         case KEFIR_OPT_OPCODE_DECIMAL128_STORE:
+        case KEFIR_OPT_OPCODE_DECIMAL128_ATOMIC_CMPXCHG:
+        case KEFIR_OPT_OPCODE_INT128_ATOMIC_CMPXCHG:
+        case KEFIR_OPT_OPCODE_ATOMIC_LOAD_LONG_DOUBLE:
+        case KEFIR_OPT_OPCODE_ATOMIC_STORE_LONG_DOUBLE:
+        case KEFIR_OPT_OPCODE_ATOMIC_CMPXCHG_LONG_DOUBLE:
+        case KEFIR_OPT_OPCODE_ATOMIC_LOAD_COMPLEX_FLOAT64:
+        case KEFIR_OPT_OPCODE_ATOMIC_STORE_COMPLEX_FLOAT64:
+        case KEFIR_OPT_OPCODE_ATOMIC_CMPXCHG_COMPLEX_FLOAT64:
             *location_ptr = instr->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_LOCATION_REF];
             *size_ptr = 16;
             break;
 
         case KEFIR_OPT_OPCODE_COMPLEX_LONG_DOUBLE_LOAD:
         case KEFIR_OPT_OPCODE_COMPLEX_LONG_DOUBLE_STORE:
+        case KEFIR_OPT_OPCODE_ATOMIC_LOAD_COMPLEX_LONG_DOUBLE:
+        case KEFIR_OPT_OPCODE_ATOMIC_STORE_COMPLEX_LONG_DOUBLE:
+        case KEFIR_OPT_OPCODE_ATOMIC_CMPXCHG_COMPLEX_LONG_DOUBLE:
             *location_ptr = instr->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_LOCATION_REF];
             *size_ptr = 32;
             break;
@@ -103,6 +131,8 @@ kefir_result_t kefir_opt_code_util_classify_memory_access(const struct kefir_opt
         case KEFIR_OPT_OPCODE_BITINT_LOAD_PRECISE:
         case KEFIR_OPT_OPCODE_BITINT_STORE:
         case KEFIR_OPT_OPCODE_BITINT_STORE_PRECISE:
+        case KEFIR_OPT_OPCODE_BITINT_ATOMIC_LOAD:
+        case KEFIR_OPT_OPCODE_BITINT_ATOMIC_STORE:
             *location_ptr = instr->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_LOCATION_REF];
             if (instr->operation.parameters.bitwidth <= 8) {
                 *size_ptr = 1;
@@ -756,7 +786,7 @@ static kefir_result_t all_uses_terminate_at(const struct kefir_opt_code_containe
                 break;
 
             default:
-                all_terminate_at = false;
+                *all_terminate_at = false;
                 break;
         }
     }

@@ -1,6 +1,7 @@
 .att_syntax
 .section .note.GNU-stack,"",%progbits
 
+.extern temp
 .global test
 .type test, @function
 .global test2
@@ -30,6 +31,10 @@
 .type test13, @function
 .global test14
 .type test14, @function
+.global test4a
+.type test4a, @function
+.global test4b
+.type test4b, @function
 .extern somejmp
 .extern someptr
 .extern somejmp2
@@ -90,7 +95,6 @@ test4:
     cmovns %rcx, %rax
     sar $2, %rax
     lock     xaddl %eax, (%rdx)
-    movl -4(%rbp), %edi
     add $1, %edi
     call test4
     lea (%rbp), %rsp
@@ -236,5 +240,64 @@ test14:
     ret
 .L__kefir_text_func_test14_end:
 
+test4a:
+.L__kefir_text_func_test4a_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    movl %edi, -4(%rbp)
+    movq someothervar@GOTPCREL(%rip), %rdx
+    lea -4(%rbp), %rax
+    mov %rax, %rcx
+    sub %rdx, %rcx
+    test %rcx, %rcx
+    lea 3(%rcx), %rax
+    cmovns %rcx, %rax
+    sar $2, %rax
+    lock     xaddl %eax, (%rdx)
+    lea -4(%rbp), %rax
+    movq %rax, __kefir_function_test4a_static_ptr_11(%rip)
+    call temp@PLT
+    movl -4(%rbp), %edi
+    add $1, %edi
+    call test4a
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.L__kefir_text_func_test4a_end:
+
+test4b:
+.L__kefir_text_func_test4b_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    movl %edi, -4(%rbp)
+    movq someothervar@GOTPCREL(%rip), %rdx
+    lea -4(%rbp), %rax
+    mov %rax, %rcx
+    sub %rdx, %rcx
+    test %rcx, %rcx
+    lea 3(%rcx), %rax
+    cmovns %rcx, %rax
+    sar $2, %rax
+    lock     xaddl %eax, (%rdx)
+    lea -4(%rbp), %rax
+    movq %rax, __kefir_function_test4b_static_ptr_14(%rip)
+    add $1, %edi
+    call test4b
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.L__kefir_text_func_test4b_end:
+
 .L__kefir_text_section_end:
+
+.section .bss
+    .align 8
+__kefir_function_test4a_static_ptr_11:
+    .skip 8
+
+    .align 8
+__kefir_function_test4b_static_ptr_14:
+    .skip 8
 

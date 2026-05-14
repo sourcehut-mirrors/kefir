@@ -100,10 +100,14 @@ static kefir_result_t may_alias_impl(const struct kefir_opt_code_container *code
                                   location2->operation.parameters.refs[0], size2,
                                   offset2 + location2->operation.parameters.offset, pessimistic_aliasing, may_alias));
     } else if (escapes != NULL && location1->operation.opcode == KEFIR_OPT_OPCODE_ALLOC_LOCAL &&
-               !kefir_opt_code_escape_analysis_has_escapes(escapes, location_ref1)) {
+               !kefir_opt_code_escape_analysis_has_escapes(escapes, location_ref1) &&
+               (location2->operation.opcode == KEFIR_OPT_OPCODE_INVOKE ||
+                location2->operation.opcode == KEFIR_OPT_OPCODE_INVOKE_VIRTUAL)) {
         *may_alias = false;
     } else if (escapes != NULL && location2->operation.opcode == KEFIR_OPT_OPCODE_ALLOC_LOCAL &&
-               !kefir_opt_code_escape_analysis_has_escapes(escapes, location_ref2)) {
+               !kefir_opt_code_escape_analysis_has_escapes(escapes, location_ref2) &&
+               (location1->operation.opcode == KEFIR_OPT_OPCODE_INVOKE ||
+                location1->operation.opcode == KEFIR_OPT_OPCODE_INVOKE_VIRTUAL)) {
         *may_alias = false;
     } else if (location1->operation.opcode == KEFIR_OPT_OPCODE_INT64_ADD) {
         const struct kefir_opt_instruction *arg1_instr, *arg2_instr;

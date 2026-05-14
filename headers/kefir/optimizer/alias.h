@@ -23,6 +23,7 @@
 
 #include "kefir/optimizer/code.h"
 #include "kefir/optimizer/escape.h"
+#include "kefir/ir/platform.h"
 #include "kefir/ir/module.h"
 
 kefir_result_t kefir_opt_code_may_alias(const struct kefir_opt_code_container *,

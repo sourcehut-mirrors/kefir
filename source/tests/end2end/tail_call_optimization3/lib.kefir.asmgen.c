@@ -42,6 +42,22 @@ int test4(int x) {
     return test4(x + 1);
 }
 
+int test4a(int x) {
+    someothervar += &x - &someothervar;
+    static volatile int *ptr;
+    ptr = &x;
+    extern void temp();
+    temp();
+    return test4a(x + 1);
+}
+
+int test4b(int x) {
+    someothervar += &x - &someothervar;
+    static volatile int *ptr;
+    ptr = &x;
+    return test4b(x + 1);
+}
+
 int test5(int x) {
     asm("" : : "r"(&x));
     return test5(x + 1);
