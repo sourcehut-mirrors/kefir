@@ -92,4 +92,9 @@ kefir_result_t kefir_opt_code_utils_insert_loop_preheader(struct kefir_mem *, st
                                                           const struct kefir_opt_code_loop *,
                                                           kefir_opt_block_id_t *preheader_ref_ptr);
 
+kefir_result_t kefir_opt_code_util_insert_loop_preheaders(struct kefir_mem *, struct kefir_opt_code_container *,
+                                                          struct kefir_opt_code_control_flow *,
+                                                          struct kefir_opt_code_loop_collection *,
+                                                          struct kefir_hashtable *);
+
 #endif

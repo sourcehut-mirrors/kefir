@@ -1273,3 +1273,53 @@ kefir_result_t kefir_opt_code_utils_insert_loop_preheader(struct kefir_mem *mem,
     REQUIRE_OK(kefir_list_free(mem, &phi_queue));
     return KEFIR_OK;
 }
+
+static kefir_result_t kefir_opt_code_util_insert_loop_preheaders_impl(struct kefir_mem *mem,
+                                                                      struct kefir_opt_code_container *code,
+                                                                      struct kefir_opt_code_control_flow *control_flow,
+                                                                      struct kefir_opt_code_loop_collection *loops,
+                                                                      const struct kefir_opt_code_loop *loop,
+                                                                      struct kefir_hashtable *loop_preheaders) {
+    for (struct kefir_opt_code_loop *nested = kefir_opt_code_loop_first_child(loop); nested != NULL;
+         nested = kefir_opt_code_loop_next_sibling(nested)) {
+        REQUIRE_OK(
+            kefir_opt_code_util_insert_loop_preheaders_impl(mem, code, control_flow, loops, nested, loop_preheaders));
+    }
+
+    REQUIRE(loop->header_ref != code->entry_point && loop->header_ref != code->gate_block &&
+                !kefir_hashset_has(&control_flow->indirect_jump_target_blocks, (kefir_hashset_key_t) loop->header_ref),
+            KEFIR_OK);
+
+    if (!kefir_hashtable_has(loop_preheaders, (kefir_hashtable_key_t) loop->header_ref)) {
+        kefir_opt_block_id_t preheader_ref;
+        REQUIRE_OK(kefir_opt_code_utils_insert_loop_preheader(mem, control_flow, code, loops, loop, &preheader_ref));
+        REQUIRE_OK(kefir_hashtable_insert(mem, loop_preheaders, (kefir_hashtable_key_t) loop->header_ref,
+                                          (kefir_hashtable_value_t) preheader_ref));
+    }
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_opt_code_util_insert_loop_preheaders(struct kefir_mem *mem, struct kefir_opt_code_container *code,
+                                                          struct kefir_opt_code_control_flow *control_flow,
+                                                          struct kefir_opt_code_loop_collection *loops,
+                                                          struct kefir_hashtable *loop_preheaders) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code"));
+    REQUIRE(control_flow != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer control flow"));
+    REQUIRE(loops != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer loop collection"));
+    REQUIRE(loop_preheaders != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer loop preheader table"));
+
+    kefir_result_t res;
+    const struct kefir_opt_loop_nest *nest;
+    struct kefir_opt_code_loop_nest_collection_iterator iter;
+    for (res = kefir_opt_code_loop_nest_collection_iter(loops, &nest, &iter); res == KEFIR_OK && nest != NULL;
+         res = kefir_opt_code_loop_nest_collection_next(&nest, &iter)) {
+        REQUIRE_OK(kefir_opt_code_util_insert_loop_preheaders_impl(mem, code, control_flow, loops,
+                                                                   kefir_opt_loop_nest_top(nest), loop_preheaders));
+    }
+    if (res != KEFIR_ITERATOR_END) {
+        REQUIRE_OK(res);
+    }
+    return KEFIR_OK;
+}
