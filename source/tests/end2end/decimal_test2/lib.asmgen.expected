@@ -1828,22 +1828,22 @@ test_dec128_gravity_acceleration:
     movaps %xmm0, -448(%rbp)
     lea 96(%rbp), %rsi
     lea 16(%rbp), %rax
-    lea -352(%rbp), %rdi
+    lea -320(%rbp), %rdi
     cld
     mov $10, %rcx
     rep movsq
-    lea -240(%rbp), %rdi
+    lea -208(%rbp), %rdi
     mov %rax, %rsi
     cld
     mov $10, %rcx
     rep movsq
-    movdqu -240(%rbp), %xmm0
+    movdqu -208(%rbp), %xmm0
     movdqu %xmm0, -64(%rbp)
-    movdqu -224(%rbp), %xmm0
+    movdqu -192(%rbp), %xmm0
     movdqu %xmm0, -48(%rbp)
-    movdqu -352(%rbp), %xmm0
+    movdqu -320(%rbp), %xmm0
     movdqu %xmm0, -96(%rbp)
-    movdqu -336(%rbp), %xmm0
+    movdqu -304(%rbp), %xmm0
     movdqu %xmm0, -80(%rbp)
     movdqu -96(%rbp), %xmm0
     movdqu -64(%rbp), %xmm1
@@ -1854,15 +1854,15 @@ test_dec128_gravity_acceleration:
     call __bid_subtd3@PLT
     movdqu %xmm0, -112(%rbp)
     movdqu -128(%rbp), %xmm0
-    movdqu %xmm0, -160(%rbp)
+    movdqu %xmm0, -352(%rbp)
     movdqu -112(%rbp), %xmm0
-    movdqu %xmm0, -144(%rbp)
-    movdqu -160(%rbp), %xmm0
-    movdqu %xmm0, -272(%rbp)
-    movdqu -144(%rbp), %xmm0
-    movdqu %xmm0, -256(%rbp)
-    movdqu -272(%rbp), %xmm1
-    movdqu -256(%rbp), %xmm0
+    movdqu %xmm0, -336(%rbp)
+    movdqu -352(%rbp), %xmm0
+    movdqu %xmm0, -240(%rbp)
+    movdqu -336(%rbp), %xmm0
+    movdqu %xmm0, -224(%rbp)
+    movdqu -240(%rbp), %xmm1
+    movdqu -224(%rbp), %xmm0
     movdqu %xmm0, -416(%rbp)
     movaps %xmm1, %xmm0
     call __bid_multd3@PLT
@@ -1915,10 +1915,10 @@ test_dec128_gravity_acceleration:
     cmp $32, %r12d
     jl .L__kefir_func_test_dec128_gravity_acceleration_label10
 .L__kefir_func_test_dec128_gravity_acceleration_label7:
-    movdqu -288(%rbp), %xmm1
-    movdqu -272(%rbp), %xmm0
+    movdqu -256(%rbp), %xmm1
+    movdqu -240(%rbp), %xmm0
     movdqu %xmm0, -128(%rbp)
-    movdqu -256(%rbp), %xmm0
+    movdqu -224(%rbp), %xmm0
     movdqu %xmm0, -112(%rbp)
     movdqu -128(%rbp), %xmm2
     movdqu %xmm2, -400(%rbp)

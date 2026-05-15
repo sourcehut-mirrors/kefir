@@ -39,8 +39,6 @@ struct licm_state {
     struct kefir_opt_code_escape_analysis escapes;
     struct kefir_opt_code_loop_collection loops;
 
-    struct kefir_hashtable loop_preheaders;
-
     const struct kefir_opt_code_loop *loop;
     struct kefir_hashset loop_memory_ops;
 
@@ -411,10 +409,7 @@ static kefir_result_t process_loop(struct licm_state *state) {
         REQUIRE_OK(res);
     }
 
-    kefir_hashtable_value_t table_value;
-    REQUIRE_OK(
-        kefir_hashtable_at(&state->loop_preheaders, (kefir_hashtable_key_t) state->loop->header_ref, &table_value));
-    ASSIGN_DECL_CAST(kefir_opt_block_id_t, hoist_target, table_value);
+    kefir_opt_block_id_t hoist_target = state->loop->preheader_ref;
 
     for (struct kefir_list_entry *iter = kefir_list_head(&state->candidate_queue); iter != NULL;
          iter = kefir_list_head(&state->candidate_queue)) {
@@ -538,7 +533,7 @@ static kefir_result_t licm_impl(struct licm_state *state) {
     REQUIRE_OK(kefir_opt_code_escape_analysis_build(state->mem, &state->escapes, &state->func->code));
 
     REQUIRE_OK(kefir_opt_code_util_insert_loop_preheaders(state->mem, &state->func->code, &state->control_flow,
-                                                          &state->loops, &state->loop_preheaders));
+                                                          &state->loops));
 
     REQUIRE_OK(kefir_opt_code_control_flow_reset(state->mem, &state->control_flow));
     REQUIRE_OK(kefir_opt_code_control_flow_build(state->mem, &state->control_flow, &state->func->code));
@@ -572,7 +567,6 @@ static kefir_result_t loop_invariant_code_motion_apply(struct kefir_mem *mem, st
     REQUIRE_OK(kefir_list_init(&state.candidate_queue));
     REQUIRE_OK(kefir_hashset_init(&state.skip_phi_uses, &kefir_hashtable_uint_ops));
     REQUIRE_OK(kefir_hashset_init(&state.loop_memory_ops, &kefir_hashtable_uint_ops));
-    REQUIRE_OK(kefir_hashtable_init(&state.loop_preheaders, &kefir_hashtable_uint_ops));
     REQUIRE_OK(kefir_opt_code_control_flow_init(&state.control_flow));
     REQUIRE_OK(kefir_opt_code_liveness_init(&state.liveness));
     REQUIRE_OK(kefir_opt_code_loop_collection_init(&state.loops));
@@ -584,7 +578,6 @@ static kefir_result_t loop_invariant_code_motion_apply(struct kefir_mem *mem, st
     kefir_opt_code_loop_collection_free(mem, &state.loops);
     kefir_opt_code_liveness_free(mem, &state.liveness);
     kefir_opt_code_control_flow_free(mem, &state.control_flow);
-    kefir_hashtable_free(mem, &state.loop_preheaders);
     kefir_hashset_free(mem, &state.loop_memory_ops);
     kefir_hashset_free(mem, &state.skip_phi_uses);
     kefir_list_free(mem, &state.candidate_queue);

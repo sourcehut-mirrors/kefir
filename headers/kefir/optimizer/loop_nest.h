@@ -27,6 +27,7 @@
 typedef kefir_uint64_t kefir_opt_code_loop_id_t;
 
 typedef struct kefir_opt_code_loop {
+    kefir_opt_block_id_t preheader_ref;
     kefir_opt_block_id_t header_ref;
     struct kefir_hashset blocks;
     struct kefir_hashset latches;

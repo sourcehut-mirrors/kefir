@@ -300,21 +300,21 @@ test5:
     lea 64(%rcx), %rdx
     movq %rdx, -232(%rbp)
     movdqu (%rcx), %xmm0
-    movdqu %xmm0, -216(%rbp)
+    movdqu %xmm0, -152(%rbp)
     movdqu 16(%rcx), %xmm0
-    movdqu %xmm0, -200(%rbp)
+    movdqu %xmm0, -136(%rbp)
     movdqu 32(%rcx), %xmm0
-    movdqu %xmm0, -184(%rbp)
+    movdqu %xmm0, -120(%rbp)
     movdqu 48(%rcx), %xmm0
-    movdqu %xmm0, -168(%rbp)
-    movq -216(%rbp), %rcx
-    movq -208(%rbp), %rdx
-    movq -200(%rbp), %rsi
-    movq -192(%rbp), %r8
-    movq -184(%rbp), %r9
-    movq -176(%rbp), %r10
-    movq -168(%rbp), %r11
-    movq -160(%rbp), %rbx
+    movdqu %xmm0, -104(%rbp)
+    movq -152(%rbp), %rcx
+    movq -144(%rbp), %rdx
+    movq -136(%rbp), %rsi
+    movq -128(%rbp), %r8
+    movq -120(%rbp), %r9
+    movq -112(%rbp), %r10
+    movq -104(%rbp), %r11
+    movq -96(%rbp), %rbx
     add $-1, %edi
     add %rdx, %rcx
     add %rsi, %rcx

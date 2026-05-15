@@ -38,7 +38,7 @@ sum:
     movq %rax, -24(%rbp)
     lea -208(%rbp), %rax
     movq %rax, -16(%rbp)
-.L__kefir_func_sum_label140:
+.L__kefir_func_sum_label137:
     xor %eax, %eax
 .loc 0 28 21
 .L__kefir_func_sum_label8:
@@ -556,7 +556,7 @@ N:
     .byte 96
     .byte 4
     .uleb128 .L__kefir_func_sum_label136 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_sum_label140 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_sum_label137 - .L__kefir_text_section_begin
     .byte 2
     .byte 145
     .byte 96

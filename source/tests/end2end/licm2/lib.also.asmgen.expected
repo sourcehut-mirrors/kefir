@@ -64,11 +64,11 @@ test2:
     xor %ecx, %ecx
     mov %rcx, %r9
 .L__kefir_func_test2_label2:
-    mov %rdx, %rcx
-    mov %r9, %r10
-    shl %cl, %r10d
-    mov %r10, %rcx
     lea 1(%r9d), %r10d
+    mov %rdx, %rcx
+    mov %r9, %r11
+    shl %cl, %r11d
+    mov %r11, %rcx
     movsx %r9d, %r11
     imul $40, %r11, %r11
     add %rdi, %r11

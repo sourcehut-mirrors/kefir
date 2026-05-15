@@ -185,6 +185,7 @@ static kefir_result_t build_loop(struct kefir_mem *mem, struct kefir_opt_code_lo
         loop = KEFIR_MALLOC(mem, sizeof(struct kefir_opt_code_loop));
         REQUIRE(loop != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Unable to allocate optimzier code loop"));
 
+        loop->preheader_ref = KEFIR_ID_NONE;
         loop->header_ref = loop_entry_block_id;
         loop->nest_node = NULL;
         loop->level = 0;
@@ -197,6 +198,21 @@ static kefir_result_t build_loop(struct kefir_mem *mem, struct kefir_opt_code_lo
             KEFIR_FREE(mem, loop);
             return res;
         });
+
+        kefir_hashset_key_t entry;
+        struct kefir_hashset_iterator iter;
+        for (res = kefir_hashset_iter(&control_flow->blocks[loop_entry_block_id].predecessors, &iter, &entry);
+             res == KEFIR_OK && loop->preheader_ref == KEFIR_ID_NONE; res = kefir_hashset_next(&iter, &entry)) {
+            kefir_bool_t is_dominator;
+            REQUIRE_OK(
+                kefir_opt_code_control_flow_is_dominator(control_flow, loop_entry_block_id, entry, &is_dominator));
+            if (is_dominator) {
+                loop->preheader_ref = entry;
+            }
+        }
+        if (res != KEFIR_ITERATOR_END) {
+            REQUIRE_OK(res);
+        }
     }
 
     struct kefir_list traversal_queue;
