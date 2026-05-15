@@ -155,8 +155,7 @@ op_loop_begin:
     movl 5128(%rdi), %edx
     lea 1(%edx), %esi
     movl %esi, 5128(%rdi)
-    movb (%rcx, %rdx, 1), %sil
-    movsx %sil, %rdx
+    movsxb (%rcx, %rdx, 1), %rdx
     lea -1(%eax), %ecx
     cmp $93, %edx
     mov %rax, %rsi

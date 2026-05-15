@@ -42,45 +42,10 @@ struct licm_state {
     const struct kefir_opt_code_loop *loop;
     struct kefir_hashset loop_memory_ops;
 
-    kefir_bool_t all_inputs_nonlocal;
-    kefir_bool_t extract_candidate_inputs;
-
-    struct kefir_list candidate_queue;
-    struct kefir_hashset candidate_queue_index;
-    struct kefir_hashset rejected_candidates;
+    struct kefir_list queue;
+    struct kefir_hashset processed;
+    kefir_opt_instruction_ref_t deepest_input_block_ref;
 };
-
-static kefir_result_t all_inputs_processed(kefir_opt_instruction_ref_t instr_ref, void *payload) {
-    ASSIGN_DECL_CAST(struct licm_state *, state, payload);
-    REQUIRE(state != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid LICM state"));
-
-    const struct kefir_opt_instruction *instr;
-    REQUIRE_OK(kefir_opt_code_container_instr(&state->func->code, instr_ref, &instr));
-
-    const kefir_bool_t loop_local = kefir_hashset_has(&state->loop->blocks, (kefir_hashset_key_t) instr->block_id);
-    if (state->extract_candidate_inputs && loop_local &&
-        !kefir_hashset_has(&state->rejected_candidates, (kefir_hashset_key_t) instr_ref)) {
-        if (!kefir_hashset_has(&state->candidate_queue_index, (kefir_hashset_key_t) instr_ref)) {
-            kefir_uint64_t key = (kefir_uint32_t) instr_ref;
-            REQUIRE_OK(kefir_list_insert_after(state->mem, &state->candidate_queue, NULL, (void *) (kefir_uptr_t) key));
-            REQUIRE_OK(
-                kefir_hashset_add(state->mem, &state->candidate_queue_index, (kefir_hashtreeset_entry_t) instr_ref));
-        }
-    }
-
-    state->all_inputs_nonlocal = state->all_inputs_nonlocal && !loop_local;
-    return KEFIR_OK;
-}
-
-static kefir_result_t do_hoist(struct licm_state *state, kefir_opt_instruction_ref_t instr_ref,
-                               kefir_opt_block_id_t hoist_target) {
-    kefir_bool_t can_hoist;
-    REQUIRE_OK(kefir_opt_can_hoist_instruction(&state->control_flow, instr_ref, hoist_target, &can_hoist));
-    if (can_hoist) {
-        REQUIRE_OK(kefir_opt_move_instruction(&state->func->code, instr_ref, hoist_target));
-    }
-    return KEFIR_OK;
-}
 
 static kefir_result_t collect_loop_memory_accesses(struct licm_state *state) {
     REQUIRE_OK(kefir_hashset_clear(state->mem, &state->loop_memory_ops));
@@ -113,6 +78,7 @@ static kefir_result_t hoist_memory_operation(struct licm_state *state, kefir_opt
                                              kefir_opt_block_id_t hoist_target) {
     const struct kefir_opt_instruction *instr;
     REQUIRE_OK(kefir_opt_code_container_instr(&state->func->code, instr_ref, &instr));
+    REQUIRE(instr->block_id != hoist_target, KEFIR_OK);
 
     kefir_opt_instruction_ref_t location1_ref = KEFIR_ID_NONE, location2_ref = KEFIR_ID_NONE;
     kefir_size_t size1 = 0, size2 = 0;
@@ -197,7 +163,32 @@ static kefir_result_t is_safe_load(struct licm_state *state, kefir_opt_instructi
     return KEFIR_OK;
 }
 
-static kefir_result_t process_loop_initialize_candidate_queue(struct licm_state *state) {
+static kefir_result_t licm_scan_inputs_phase1(kefir_opt_instruction_ref_t instr_ref, void *payload) {
+    ASSIGN_DECL_CAST(struct licm_state *, state, payload);
+    REQUIRE(state != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid GCM state"));
+
+    if (!kefir_hashset_has(&state->processed, (kefir_hashset_key_t) instr_ref)) {
+        kefir_uint64_t key = (kefir_uint32_t) instr_ref;
+        REQUIRE_OK(kefir_list_insert_after(state->mem, &state->queue, NULL, (void *) (kefir_uptr_t) key));
+    }
+    return KEFIR_OK;
+}
+
+static kefir_result_t licm_scan_inputs_phase2(kefir_opt_instruction_ref_t instr_ref, void *payload) {
+    ASSIGN_DECL_CAST(struct licm_state *, state, payload);
+    REQUIRE(state != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid GCM state"));
+
+    const struct kefir_opt_instruction *instr;
+    REQUIRE_OK(kefir_opt_code_container_instr(&state->func->code, instr_ref, &instr));
+
+    if (state->control_flow.blocks[state->deepest_input_block_ref].dominance_tree_level <
+        state->control_flow.blocks[instr->block_id].dominance_tree_level) {
+        state->deepest_input_block_ref = instr->block_id;
+    }
+    return KEFIR_OK;
+}
+
+static kefir_result_t process_loop_initialize_queue(struct licm_state *state) {
     kefir_result_t res;
     struct kefir_hashset_iterator iter;
     kefir_hashset_key_t key;
@@ -218,10 +209,8 @@ static kefir_result_t process_loop_initialize_candidate_queue(struct licm_state 
              res == KEFIR_OK && instr_ref != KEFIR_ID_NONE;
              res = kefir_opt_instruction_next_control(&state->func->code, instr_ref, &instr_ref)) {
             kefir_uint64_t key = (kefir_uint32_t) instr_ref;
-            REQUIRE_OK(kefir_list_insert_after(state->mem, &state->candidate_queue,
-                                               kefir_list_tail(&state->candidate_queue), (void *) (kefir_uptr_t) key));
-            REQUIRE_OK(
-                kefir_hashset_add(state->mem, &state->candidate_queue_index, (kefir_hashtreeset_entry_t) instr_ref));
+            REQUIRE_OK(kefir_list_insert_after(state->mem, &state->queue, kefir_list_tail(&state->queue),
+                                               (void *) (kefir_uptr_t) key));
         }
     }
     if (res != KEFIR_ITERATOR_END) {
@@ -241,14 +230,14 @@ static kefir_result_t process_loop_impl(struct licm_state *state) {
         REQUIRE_OK(kefir_opt_loop_must_execute(&state->func->code, &iteration_space, &must_execute));
     }
 
-    for (struct kefir_list_entry *iter = kefir_list_head(&state->candidate_queue); iter != NULL;
-         iter = kefir_list_head(&state->candidate_queue)) {
-        ASSIGN_DECL_CAST(kefir_uint64_t, candidate_key, (kefir_uptr_t) iter->value);
-        kefir_bool_t candidate_inputs_pending = !(candidate_key >> 32);
-        kefir_opt_instruction_ref_t instr_ref = (kefir_uint32_t) candidate_key;
-        REQUIRE_OK(kefir_list_pop(state->mem, &state->candidate_queue, iter));
-        REQUIRE_OK(kefir_hashset_delete(&state->candidate_queue_index, (kefir_hashset_key_t) instr_ref));
-        if (kefir_hashset_has(&state->rejected_candidates, (kefir_hashset_key_t) instr_ref)) {
+    for (struct kefir_list_entry *iter = kefir_list_head(&state->queue); iter != NULL;
+         iter = kefir_list_head(&state->queue)) {
+        ASSIGN_DECL_CAST(kefir_uint64_t, key, (kefir_uptr_t) iter->value);
+        kefir_opt_instruction_ref_t instr_ref = (kefir_uint32_t) key;
+        kefir_bool_t inputs_resolved = (key >> 32) != 0;
+
+        REQUIRE_OK(kefir_list_pop(state->mem, &state->queue, iter));
+        if (kefir_hashset_has(&state->processed, (kefir_hashset_key_t) instr_ref)) {
             continue;
         }
 
@@ -258,29 +247,24 @@ static kefir_result_t process_loop_impl(struct licm_state *state) {
             continue;
         }
         REQUIRE_OK(res);
-        if (instr->operation.opcode == KEFIR_OPT_OPCODE_PHI) {
+        if (instr->operation.opcode == KEFIR_OPT_OPCODE_PHI ||
+            instr->operation.opcode == KEFIR_OPT_OPCODE_GET_ARGUMENT ||
+            !kefir_hashset_has(&state->loop->blocks, (kefir_hashset_key_t) instr->block_id)) {
             continue;
         }
 
-        const struct kefir_list_entry *queue_head = kefir_list_head(&state->candidate_queue);
-        state->all_inputs_nonlocal = true;
-        state->extract_candidate_inputs = candidate_inputs_pending;
-        REQUIRE_OK(kefir_opt_instruction_extract_inputs(&state->func->code, instr, false, all_inputs_processed, state));
+        if (!inputs_resolved) {
+            kefir_uint64_t key = (1ull << 32) | (kefir_uint32_t) instr_ref;
+            REQUIRE_OK(kefir_list_insert_after(state->mem, &state->queue, NULL, (void *) (kefir_uptr_t) key));
 
-        if (!state->all_inputs_nonlocal) {
-            if (candidate_inputs_pending) {
-                struct kefir_list_entry *insert_pos =
-                    queue_head != NULL ? queue_head->prev : kefir_list_tail(&state->candidate_queue);
-                kefir_uint64_t key = (1ull << 63) | (kefir_uint32_t) instr_ref;
-                REQUIRE_OK(kefir_list_insert_after(state->mem, &state->candidate_queue, insert_pos,
-                                                   (void *) (kefir_uptr_t) key));
-                REQUIRE_OK(kefir_hashset_add(state->mem, &state->candidate_queue_index,
-                                             (kefir_hashtreeset_entry_t) instr_ref));
-            } else {
-                REQUIRE_OK(kefir_hashset_add(state->mem, &state->rejected_candidates, (kefir_hashset_key_t) instr_ref));
-            }
+            REQUIRE_OK(
+                kefir_opt_instruction_extract_inputs(&state->func->code, instr, true, licm_scan_inputs_phase1, state));
             continue;
         }
+
+        state->deepest_input_block_ref = state->func->code.entry_point;
+        REQUIRE_OK(
+            kefir_opt_instruction_extract_inputs(&state->func->code, instr, true, licm_scan_inputs_phase2, state));
 
         switch (instr->operation.opcode) {
             case KEFIR_OPT_OPCODE_INT8_LOAD:
@@ -300,11 +284,14 @@ static kefir_result_t process_loop_impl(struct licm_state *state) {
             case KEFIR_OPT_OPCODE_DECIMAL64_LOAD:
             case KEFIR_OPT_OPCODE_DECIMAL128_LOAD:
                 if (!instr->operation.parameters.memory_access.flags.volatile_access) {
-                    kefir_bool_t safe_load;
+                    kefir_bool_t safe_load, is_dominator;
                     REQUIRE_OK(is_safe_load(state,
                                             instr->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_LOCATION_REF],
                                             false, &safe_load));
-                    if (must_execute || safe_load) {
+                    REQUIRE_OK(kefir_opt_code_control_flow_is_dominator(&state->control_flow,
+                                                                        state->loop->preheader_ref,
+                                                                        state->deepest_input_block_ref, &is_dominator));
+                    if (is_dominator && (must_execute || safe_load)) {
                         REQUIRE_OK(hoist_memory_operation(state, instr_ref, state->loop->preheader_ref));
                     }
                 }
@@ -327,18 +314,28 @@ static kefir_result_t process_loop_impl(struct licm_state *state) {
             case KEFIR_OPT_OPCODE_DECIMAL64_STORE:
             case KEFIR_OPT_OPCODE_DECIMAL128_STORE:
                 if (must_execute && !instr->operation.parameters.memory_access.flags.volatile_access) {
-                    REQUIRE_OK(hoist_memory_operation(state, instr_ref, state->loop->preheader_ref));
+                    kefir_bool_t is_dominator;
+                    REQUIRE_OK(kefir_opt_code_control_flow_is_dominator(&state->control_flow,
+                                                                        state->loop->preheader_ref,
+                                                                        state->deepest_input_block_ref, &is_dominator));
+                    if (is_dominator) {
+                        REQUIRE_OK(hoist_memory_operation(state, instr_ref, state->loop->preheader_ref));
+                    }
                 }
                 break;
 
             default: {
                 kefir_bool_t moveable;
-                REQUIRE_OK(kefir_opt_instruction_is_moveable(state->control_flow.code, instr_ref, &moveable));
-                if (moveable) {
-                    REQUIRE_OK(do_hoist(state, instr_ref, state->loop->preheader_ref));
+                REQUIRE_OK(kefir_opt_instruction_is_moveable(&state->func->code, instr_ref, &moveable));
+                if (moveable && state->deepest_input_block_ref != state->func->code.gate_block) {
+                    REQUIRE_OK(res);
+                    REQUIRE_OK(
+                        kefir_opt_move_instruction(&state->func->code, instr_ref, state->deepest_input_block_ref));
                 }
             } break;
         }
+
+        REQUIRE_OK(kefir_hashset_add(state->mem, &state->processed, (kefir_hashtable_key_t) instr_ref));
     }
     return KEFIR_OK;
 }
@@ -350,11 +347,10 @@ static kefir_result_t process_loop(struct licm_state *state) {
                                    (kefir_hashset_key_t) state->loop->header_ref),
             KEFIR_OK);
 
-    REQUIRE_OK(kefir_list_clear(state->mem, &state->candidate_queue));
-    REQUIRE_OK(kefir_hashset_clear(state->mem, &state->candidate_queue_index));
-    REQUIRE_OK(kefir_hashset_clear(state->mem, &state->rejected_candidates));
+    REQUIRE_OK(kefir_list_clear(state->mem, &state->queue));
+    REQUIRE_OK(kefir_hashset_clear(state->mem, &state->processed));
     REQUIRE_OK(collect_loop_memory_accesses(state));
-    REQUIRE_OK(process_loop_initialize_candidate_queue(state));
+    REQUIRE_OK(process_loop_initialize_queue(state));
     REQUIRE_OK(process_loop_impl(state));
 
     REQUIRE_OK(kefir_opt_code_util_distribute_loop_condition_dependencies_over_phis(state->mem, &state->func->code,
@@ -409,9 +405,8 @@ static kefir_result_t loop_invariant_code_motion_apply(struct kefir_mem *mem, st
     REQUIRE(func != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer function"));
 
     struct licm_state state = {.mem = mem, .func = func, .module = module};
-    REQUIRE_OK(kefir_hashset_init(&state.candidate_queue_index, &kefir_hashtable_uint_ops));
-    REQUIRE_OK(kefir_hashset_init(&state.rejected_candidates, &kefir_hashtable_uint_ops));
-    REQUIRE_OK(kefir_list_init(&state.candidate_queue));
+    REQUIRE_OK(kefir_list_init(&state.queue));
+    REQUIRE_OK(kefir_hashset_init(&state.processed, &kefir_hashtable_uint_ops));
     REQUIRE_OK(kefir_hashset_init(&state.loop_memory_ops, &kefir_hashtable_uint_ops));
     REQUIRE_OK(kefir_opt_code_control_flow_init(&state.control_flow));
     REQUIRE_OK(kefir_opt_code_liveness_init(&state.liveness));
@@ -425,9 +420,8 @@ static kefir_result_t loop_invariant_code_motion_apply(struct kefir_mem *mem, st
     kefir_opt_code_liveness_free(mem, &state.liveness);
     kefir_opt_code_control_flow_free(mem, &state.control_flow);
     kefir_hashset_free(mem, &state.loop_memory_ops);
-    kefir_list_free(mem, &state.candidate_queue);
-    kefir_hashset_free(mem, &state.candidate_queue_index);
-    kefir_hashset_free(mem, &state.rejected_candidates);
+    kefir_hashset_free(mem, &state.processed);
+    kefir_list_free(mem, &state.queue);
     return res;
 }
 

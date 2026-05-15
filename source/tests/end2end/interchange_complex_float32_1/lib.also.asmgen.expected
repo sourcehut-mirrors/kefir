@@ -2783,7 +2783,7 @@ __kefir_softfloat_scalbnf:
     cmovg %rcx, %rdx
     mov %rdx, %rcx
     movaps %xmm0, %xmm3
-    mulss %xmm2, %xmm3
+    mulss %xmm1, %xmm3
     lea 1(%eax), %edx
     lea -127(%edi), %esi
     cmp $2, %eax
@@ -2800,8 +2800,8 @@ __kefir_softfloat_scalbnf:
     jnz .L__kefir_runtime_func___kefir_softfloat_scalbnf_label11
     xor %eax, %eax
 .L__kefir_runtime_func___kefir_softfloat_scalbnf_label5:
-    movaps %xmm0, %xmm2
-    mulss %xmm1, %xmm2
+    movaps %xmm0, %xmm1
+    mulss %xmm2, %xmm1
     lea 1(%eax), %edx
     lea 102(%ecx), %esi
     cmp $2, %eax
@@ -2831,7 +2831,7 @@ __kefir_softfloat_scalbnf:
 .L__kefir_runtime_func___kefir_softfloat_scalbnf_label10:
     mov %esi, %ecx
     mov %edx, %eax
-    movaps %xmm2, %xmm0
+    movaps %xmm1, %xmm0
     jmp .L__kefir_runtime_func___kefir_softfloat_scalbnf_label5
 .L__kefir_runtime_func___kefir_softfloat_scalbnf_label11:
     mov %edx, %eax
@@ -2842,10 +2842,10 @@ __kefir_softfloat_scalbnf:
 .section .rodata
     .align 4
 .L__kefir_runtime_func___kefir_softfloat_scalbnf_label12:
-    .long 209715200
+    .long 2130706432
     .align 4
 .L__kefir_runtime_func___kefir_softfloat_scalbnf_label13:
-    .long 2130706432
+    .long 209715200
 .section .text
 
 __kefir_softfloat_ilogbf:

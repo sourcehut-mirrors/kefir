@@ -216,11 +216,10 @@ __kefir_bigint_trailing_zeros:
     sub %rcx, %r9
     cmp $0, %rsi
     je .L__kefir_runtime_func___kefir_bigint_trailing_zeros_label15
-    xor %edx, %edx
+    xor %esi, %esi
     xor %ecx, %ecx
-    mov %rcx, %rsi
 .L__kefir_runtime_func___kefir_bigint_trailing_zeros_label3:
-    cmp %r8, %rsi
+    cmp %r8, %rcx
     jb .L__kefir_runtime_func___kefir_bigint_trailing_zeros_label5
     lea -24(%rbp), %rsp
     pop %r13
@@ -229,30 +228,35 @@ __kefir_bigint_trailing_zeros:
     pop %rbp
     ret
 .L__kefir_runtime_func___kefir_bigint_trailing_zeros_label5:
-    mov %rcx, %r10
-    movb (%rdi, %rsi, 1), %r10b
-    lea 8(%rdx), %rcx
-    add $1, %rsi
-    mov $8, %r11d
-    cmp %r8, %rsi
-    cmovae %r9, %r11
-    movzx %r10b, %r10
-    cmp $0, %r10d
-    je .L__kefir_runtime_func___kefir_bigint_trailing_zeros_label7
+    movzxb (%rdi, %rcx, 1), %r11
+    lea 8(%rsi), %rdx
+    lea 1(%rcx), %r10
+    mov $8, %ecx
+    cmp %r8, %r10
+    mov %rcx, %rbx
+    cmovae %r9, %rbx
+    cmp $0, %r11d
+    je .L__kefir_runtime_func___kefir_bigint_trailing_zeros_label8
     xor %ecx, %ecx
+    mov %rsi, %rdx
 .L__kefir_runtime_func___kefir_bigint_trailing_zeros_label9:
-    cmp %r11, %rcx
-    jae .L__kefir_runtime_func___kefir_bigint_trailing_zeros_label3
-    lea 1(%rdx), %rbx
+    cmp %rbx, %rcx
+    jb .L__kefir_runtime_func___kefir_bigint_trailing_zeros_label11
+.L__kefir_runtime_func___kefir_bigint_trailing_zeros_label8:
+    mov %r10, %rcx
+    mov %rdx, %rsi
+    jmp .L__kefir_runtime_func___kefir_bigint_trailing_zeros_label3
+.L__kefir_runtime_func___kefir_bigint_trailing_zeros_label11:
+    lea 1(%rdx), %rsi
     lea 1(%rcx), %r12
-    mov %r10, %r13
+    mov %r11, %r13
     sar %cl, %r13d
     mov %r13, %rcx
     and $1, %ecx
     cmp $1, %ecx
     je .L__kefir_runtime_func___kefir_bigint_trailing_zeros_label13
-    mov %rbx, %rdx
     mov %r12, %rcx
+    mov %rsi, %rdx
     jmp .L__kefir_runtime_func___kefir_bigint_trailing_zeros_label9
 .L__kefir_runtime_func___kefir_bigint_trailing_zeros_label13:
     mov %rdx, %rax
@@ -262,9 +266,6 @@ __kefir_bigint_trailing_zeros:
     pop %rbx
     pop %rbp
     ret
-.L__kefir_runtime_func___kefir_bigint_trailing_zeros_label7:
-    mov %rcx, %rdx
-    jmp .L__kefir_runtime_func___kefir_bigint_trailing_zeros_label3
 .L__kefir_runtime_func___kefir_bigint_trailing_zeros_label15:
     lea -24(%rbp), %rsp
     pop %r13
