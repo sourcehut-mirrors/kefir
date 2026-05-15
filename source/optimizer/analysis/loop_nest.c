@@ -130,8 +130,13 @@ static kefir_result_t build_loop_impl(struct kefir_mem *mem, const struct kefir_
             kefir_hashset_key_t entry;
             for (res = kefir_hashset_iter(&control_flow->blocks[block_id].predecessors, &pred_iter, &entry);
                  res == KEFIR_OK; res = kefir_hashset_next(&pred_iter, &entry)) {
-                REQUIRE_OK(kefir_list_insert_after(mem, traversal_queue, kefir_list_tail(traversal_queue),
-                                                   (void *) (kefir_uptr_t) entry));
+                kefir_bool_t is_dominator;
+                REQUIRE_OK(
+                    kefir_opt_code_control_flow_is_dominator(control_flow, entry, loop->header_ref, &is_dominator));
+                if (is_dominator) {
+                    REQUIRE_OK(kefir_list_insert_after(mem, traversal_queue, kefir_list_tail(traversal_queue),
+                                                       (void *) (kefir_uptr_t) entry));
+                }
             }
             if (res != KEFIR_ITERATOR_END) {
                 REQUIRE_OK(res);
