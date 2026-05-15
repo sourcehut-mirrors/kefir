@@ -208,6 +208,9 @@ static kefir_result_t build_loop(struct kefir_mem *mem, struct kefir_opt_code_lo
         struct kefir_hashset_iterator iter;
         for (res = kefir_hashset_iter(&control_flow->blocks[loop_entry_block_id].predecessors, &iter, &entry);
              res == KEFIR_OK && loop->preheader_ref == KEFIR_ID_NONE; res = kefir_hashset_next(&iter, &entry)) {
+            if (entry == loop_entry_block_id) {
+                continue;
+            }
             kefir_bool_t is_dominator;
             REQUIRE_OK(
                 kefir_opt_code_control_flow_is_dominator(control_flow, loop_entry_block_id, entry, &is_dominator));
