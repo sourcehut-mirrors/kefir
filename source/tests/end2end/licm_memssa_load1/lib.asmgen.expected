@@ -232,19 +232,17 @@ test12:
 .L__kefir_text_func_test12_begin:
     movq a@GOTPCREL(%rip), %rax
     xor %ecx, %ecx
-    mov $1, %edx
 .L__kefir_func_test12_label2:
     cmp $10, %ecx
     jl .L__kefir_func_test12_label4
     ret
 .L__kefir_func_test12_label4:
+    lea 1(%ecx), %edx
     movsx %edx, %rsi
     movl (%rax, %rsi, 4), %esi
     movsx %ecx, %rcx
     addl %esi, (%rax, %rcx, 4)
-    lea 1(%edx), %esi
-    mov %rdx, %rcx
-    mov %esi, %edx
+    mov %edx, %ecx
     jmp .L__kefir_func_test12_label2
 .L__kefir_text_func_test12_end:
 
@@ -297,19 +295,17 @@ test15:
     shl $2, %rcx
     add %rcx, %rax
     xor %ecx, %ecx
-    mov $1, %edx
 .L__kefir_func_test15_label2:
     cmp $10, %ecx
     jl .L__kefir_func_test15_label4
     ret
 .L__kefir_func_test15_label4:
+    lea 1(%ecx), %edx
     movsx %edx, %rsi
     movl (%rax, %rsi, 4), %esi
     movsx %ecx, %rcx
     addl %esi, (%rax, %rcx, 4)
-    lea 1(%edx), %esi
-    mov %rdx, %rcx
-    mov %esi, %edx
+    mov %edx, %ecx
     jmp .L__kefir_func_test15_label2
 .L__kefir_text_func_test15_end:
 

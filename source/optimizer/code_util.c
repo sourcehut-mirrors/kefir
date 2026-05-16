@@ -1399,6 +1399,9 @@ static kefir_result_t has_transitive_use(struct phi_distribute_state *state, kef
 
         const struct kefir_opt_instruction *use_instr;
         REQUIRE_OK(kefir_opt_code_container_instr(state->code, use_iter.use_instr_ref, &use_instr));
+        if (use_instr->operation.opcode == KEFIR_OPT_OPCODE_PHI) {
+            continue;
+        }
 
         if (use_iter.use_instr_ref == search_ref) {
             *has_use = true;
