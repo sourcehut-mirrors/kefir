@@ -369,23 +369,23 @@ __kefir_softfloat_complex_double_div:
     mulsd -128(%rbp), %xmm0
     jmp .L__kefir_runtime_func___kefir_softfloat_complex_double_div_label7
 .L__kefir_runtime_func___kefir_softfloat_complex_double_div_label36:
+    xor %eax, %eax
     movq -128(%rbp), %xmm2
     ucomisd -128(%rbp), %xmm2
     setp %al
-    xor %ecx, %ecx
     test %al, %al
-    sete %cl
     jnz .L__kefir_runtime_func___kefir_softfloat_complex_double_div_label38
+    mov %rax, %rcx
 .L__kefir_runtime_func___kefir_softfloat_complex_double_div_label39:
+    xor %eax, %eax
     test %ecx, %ecx
-    setne %al
-    movzx %al, %rax
+    sete %al
     jmp .L__kefir_runtime_func___kefir_softfloat_complex_double_div_label10
 .L__kefir_runtime_func___kefir_softfloat_complex_double_div_label38:
+    xor %ecx, %ecx
     movq -144(%rbp), %xmm2
     ucomisd -144(%rbp), %xmm2
-    mov $0, %rcx
-    setnp %cl
+    setp %cl
     jmp .L__kefir_runtime_func___kefir_softfloat_complex_double_div_label39
 .L__kefir_runtime_func___kefir_softfloat_complex_double_div_label40:
     ucomisd %xmm1, %xmm1
@@ -693,23 +693,23 @@ __kefir_softfloat_ilogb:
     pop %rbp
     ret
 .L__kefir_runtime_func___kefir_softfloat_ilogb_label6:
-    mov %rax, %rdx
-    shr $63, %rdx
     cmp $0, %rax
     je .L__kefir_runtime_func___kefir_softfloat_ilogb_label12
     mov $-1023, %rcx
+    mov %rax, %rdx
 .L__kefir_runtime_func___kefir_softfloat_ilogb_label8:
     lea -1(%ecx), %esi
-    shl $1, %rax
-    mov %rax, %rdi
-    shr $63, %rdi
-    cmp $0, %rdx
+    mov %rdx, %rdi
+    shl $1, %rdi
+    shr $63, %rax
+    cmp $0, %rax
     je .L__kefir_runtime_func___kefir_softfloat_ilogb_label15
     mov %rcx, %rax
     jmp .L__kefir_runtime_func___kefir_softfloat_ilogb_label5
 .L__kefir_runtime_func___kefir_softfloat_ilogb_label15:
-    mov %esi, %ecx
     mov %rdi, %rdx
+    mov %rdi, %rax
+    mov %esi, %ecx
     jmp .L__kefir_runtime_func___kefir_softfloat_ilogb_label8
 .L__kefir_runtime_func___kefir_softfloat_ilogb_label12:
     movq .L__kefir_runtime_func___kefir_softfloat_ilogb_label16(%rip), %xmm0
