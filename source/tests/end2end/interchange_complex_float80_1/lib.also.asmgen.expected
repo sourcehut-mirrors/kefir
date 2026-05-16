@@ -284,8 +284,10 @@ conv6:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
+.loc 0 108 5
+.L__kefir_func_conv6_label57:
     ret
-.L__kefir_func_conv6_label61:
+.L__kefir_func_conv6_label63:
 .L__kefir_text_func_conv6_end:
 
 conv7:
@@ -313,8 +315,10 @@ conv7:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
+.loc 0 112 5
+.L__kefir_func_conv7_label57:
     ret
-.L__kefir_func_conv7_label61:
+.L__kefir_func_conv7_label63:
 .L__kefir_text_func_conv7_end:
 
 conv8:

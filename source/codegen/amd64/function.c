@@ -745,16 +745,23 @@ static kefir_result_t translate_code(struct kefir_mem *mem, struct kefir_codegen
         }
     }
 
-    struct kefir_hashtreeset_iterator iter;
-    for (res = kefir_hashtreeset_iter(&func->preserve_vregs, &iter); res == KEFIR_OK;
-         res = kefir_hashtreeset_next(&iter)) {
-        ASSIGN_DECL_CAST(kefir_asmcmp_virtual_register_index_t, vreg, iter.entry);
-        REQUIRE_OK(kefir_asmcmp_amd64_touch_virtual_register(
-            mem, &func->code, kefir_asmcmp_context_instr_tail(&func->code.context), vreg, NULL));
+    REQUIRE_OK(kefir_list_insert_after(mem, &func->preserve_vreg_points, NULL,
+                                       (void *) (kefir_uptr_t) kefir_asmcmp_context_instr_tail(&func->code.context)));
+    for (const struct kefir_list_entry *iter = kefir_list_head(&func->preserve_vreg_points); iter != NULL;
+         kefir_list_next(&iter)) {
+        ASSIGN_DECL_CAST(kefir_asmcmp_instruction_index_t, idx, (kefir_uptr_t) iter->value);
+
+        struct kefir_hashtreeset_iterator iter;
+        for (res = kefir_hashtreeset_iter(&func->preserve_vregs, &iter); res == KEFIR_OK;
+             res = kefir_hashtreeset_next(&iter)) {
+            ASSIGN_DECL_CAST(kefir_asmcmp_virtual_register_index_t, vreg, iter.entry);
+            REQUIRE_OK(kefir_asmcmp_amd64_touch_virtual_register(mem, &func->code, idx, vreg, &idx));
+        }
+        if (res != KEFIR_ITERATOR_END) {
+            REQUIRE_OK(res);
+        }
     }
-    if (res != KEFIR_ITERATOR_END) {
-        REQUIRE_OK(res);
-    }
+
     if (func->vararg_area != KEFIR_ASMCMP_INDEX_NONE) {
         REQUIRE_OK(kefir_asmcmp_amd64_produce_virtual_register(mem, &func->code, after_prologue, func->vararg_area,
                                                                &after_prologue));
@@ -1480,6 +1487,7 @@ kefir_result_t kefir_codegen_amd64_function_init(struct kefir_mem *mem, struct k
     REQUIRE_OK(kefir_hashtree_on_removal(&func->type_layouts, free_type_layout, NULL));
     REQUIRE_OK(kefir_hashtreeset_init(&func->translated_instructions, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtreeset_init(&func->preserve_vregs, &kefir_hashtree_uint_ops));
+    REQUIRE_OK(kefir_list_init(&func->preserve_vreg_points));
     REQUIRE_OK(kefir_hashtree_init(&func->debug.instruction_labels, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtree_init(&func->debug.function_parameters, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtree_init(&func->debug.occupied_x87_stack_slots, &kefir_hashtree_uint_ops));
@@ -1529,6 +1537,7 @@ kefir_result_t kefir_codegen_amd64_function_free(struct kefir_mem *mem, struct k
     REQUIRE_OK(kefir_hashtree_free(mem, &func->debug.function_parameters));
     REQUIRE_OK(kefir_hashtree_free(mem, &func->debug.instruction_labels));
     REQUIRE_OK(kefir_hashtree_free(mem, &func->debug.occupied_x87_stack_slots));
+    REQUIRE_OK(kefir_list_free(mem, &func->preserve_vreg_points));
     REQUIRE_OK(kefir_hashtreeset_free(mem, &func->preserve_vregs));
     REQUIRE_OK(kefir_hashtreeset_free(mem, &func->translated_instructions));
     REQUIRE_OK(kefir_hashtree_free(mem, &func->entry_registers));

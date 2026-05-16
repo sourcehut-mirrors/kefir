@@ -71,6 +71,7 @@ typedef struct kefir_codegen_amd64_function {
     struct kefir_hashtree constants;
     struct kefir_hashtree type_layouts;
     struct kefir_hashtreeset preserve_vregs;
+    struct kefir_list preserve_vreg_points;
     struct kefir_hashtree entry_registers;
 
     struct kefir_list x87_stack;

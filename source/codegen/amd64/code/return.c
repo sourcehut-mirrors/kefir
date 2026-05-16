@@ -490,17 +490,9 @@ static kefir_result_t kefir_codegen_amd64_return_from_function_impl(struct kefir
             mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), vreg, NULL));
     }
 
-    kefir_result_t res;
-    struct kefir_hashtreeset_iterator iter;
-    for (res = kefir_hashtreeset_iter(&function->preserve_vregs, &iter); res == KEFIR_OK;
-         res = kefir_hashtreeset_next(&iter)) {
-        ASSIGN_DECL_CAST(kefir_asmcmp_virtual_register_index_t, vreg, iter.entry);
-        REQUIRE_OK(kefir_asmcmp_amd64_touch_virtual_register(
-            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), vreg, NULL));
-    }
-    if (res != KEFIR_ITERATOR_END) {
-        REQUIRE_OK(res);
-    }
+    REQUIRE_OK(
+        kefir_list_insert_after(mem, &function->preserve_vreg_points, NULL,
+                                (void *) (kefir_uptr_t) kefir_asmcmp_context_instr_tail(&function->code.context)));
     REQUIRE_OK(
         kefir_asmcmp_amd64_ret(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), NULL));
 

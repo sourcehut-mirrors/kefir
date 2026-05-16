@@ -1148,17 +1148,9 @@ static kefir_result_t tail_invoke_impl(struct kefir_mem *mem, struct kefir_codeg
                                                              indirect_call_idx, func_vreg, NULL));
     }
 
-    kefir_result_t res;
-    struct kefir_hashtreeset_iterator iter;
-    for (res = kefir_hashtreeset_iter(&function->preserve_vregs, &iter); res == KEFIR_OK;
-         res = kefir_hashtreeset_next(&iter)) {
-        ASSIGN_DECL_CAST(kefir_asmcmp_virtual_register_index_t, vreg, iter.entry);
-        REQUIRE_OK(kefir_asmcmp_amd64_touch_virtual_register(
-            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), vreg, NULL));
-    }
-    if (res != KEFIR_ITERATOR_END) {
-        REQUIRE_OK(res);
-    }
+    REQUIRE_OK(
+        kefir_list_insert_after(mem, &function->preserve_vreg_points, NULL,
+                                (void *) (kefir_uptr_t) kefir_asmcmp_context_instr_tail(&function->code.context)));
 
     if (instruction->operation.opcode == KEFIR_OPT_OPCODE_TAIL_INVOKE) {
         const struct kefir_ir_identifier *ir_identifier;
