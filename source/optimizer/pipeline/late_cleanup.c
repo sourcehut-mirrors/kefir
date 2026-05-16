@@ -210,6 +210,21 @@ static kefir_result_t phi_factor_apply(struct kefir_mem *mem, struct kefir_opt_c
     kefir_opt_instruction_ref_t replacement_ref;
     REQUIRE_OK(kefir_opt_code_container_new_instruction(mem, code, block_ref, &oper, &replacement_ref));
     REQUIRE_OK(kefir_opt_code_container_replace_references(mem, code, replacement_ref, phi_instr_ref));
+
+    for (res = kefir_opt_phi_node_link_iter(code, phi_instr_ref, &link_iter, &link_block_id, &link_instr_ref);
+         res == KEFIR_OK;
+         res = kefir_opt_phi_node_link_iter(code, phi_instr_ref, &link_iter, &link_block_id, &link_instr_ref)) {
+        REQUIRE_OK(kefir_opt_code_container_phi_drop_link(mem, code, phi_instr_ref, link_block_id));
+
+        struct kefir_opt_instruction_use_iterator use_iter;
+        if (kefir_opt_code_container_instruction_use_instr_iter(code, link_instr_ref, &use_iter) ==
+            KEFIR_ITERATOR_END) {
+            REQUIRE_OK(kefir_opt_code_container_drop_instr(mem, code, link_instr_ref));
+        }
+    }
+    if (res != KEFIR_ITERATOR_END) {
+        REQUIRE_OK(res);
+    }
     REQUIRE_OK(kefir_opt_code_container_drop_instr(mem, code, phi_instr_ref));
     *fixpoint_reached = false;
     return KEFIR_OK;

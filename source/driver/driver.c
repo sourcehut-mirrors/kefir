@@ -61,11 +61,11 @@
     "constant-fold," \
     "op-simplify," \
     "gvn," \
-    "late-cleanup," \
     "phi-removal," \
     "loop-removal," \
     "merge-blocks," \
     "dead-code-elimination," \
+    "late-cleanup," \
     "gcm," \
     "rematerialize," \
     "tail-calls"
