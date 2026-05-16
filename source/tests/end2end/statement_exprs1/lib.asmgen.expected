@@ -26,21 +26,17 @@ eval2:
     movq %rax, (%rsp)
     mov %rsp, %rax
     cmp $0, %rax
-    jz .L__kefir_func_eval2_label5
+    jz .L__kefir_func_eval2_label3
     mov %rax, %rsp
-    movq (%rsp), %rcx
     add $16, %rsp
 .L__kefir_func_eval2_label3:
     movsx %edi, %rax
-    mov %rax, %rdx
-    shl $3, %rdx
-    add %rdx, %rax
+    mov %rax, %rcx
+    shl $3, %rcx
+    add %rcx, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_func_eval2_label5:
-    mov %rax, %rcx
-    jmp .L__kefir_func_eval2_label3
 .L__kefir_text_func_eval2_end:
 
 eval3:

@@ -20,27 +20,26 @@ test:
     pop %rbp
     ret
 .L__kefir_func_test_label4:
-    xor %edx, %edx
     sub $1024, %rsp
-    mov $16, %rsi
-    cmp $0, %rsi
-    mov $0, %rdi
-    cmovl %rdi, %rsi
-    neg %rsi
-    and %rsi, %rsp
-    mov %rsp, %rsi
-    lea 1(%eax), %edi
+    mov $16, %rdx
+    cmp $0, %rdx
+    mov $0, %rsi
+    cmovl %rsi, %rdx
+    neg %rdx
+    and %rdx, %rsp
+    mov %rsp, %rdx
+    lea 1(%eax), %esi
     cmp $0, %eax
     je .L__kefir_func_test_label9
     xor %eax, %eax
-    cmp %rsi, %rcx
+    cmp %rdx, %rcx
     sete %al
     lea (%rbp), %rsp
     pop %rbp
     ret
 .L__kefir_func_test_label9:
-    mov %rsi, %rcx
-    mov %edi, %eax
+    mov %esi, %eax
+    mov %rdx, %rcx
     jmp .L__kefir_func_test_label2
 .L__kefir_text_func_test_end:
 
