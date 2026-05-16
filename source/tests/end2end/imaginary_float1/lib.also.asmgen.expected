@@ -2076,15 +2076,13 @@ __kefir_softfloat_ilogbf:
     cmp $0, %rcx
     je .L__kefir_runtime_func___kefir_softfloat_ilogbf_label8
     mov $-127, %rax
-    mov %rcx, %rdx
 .L__kefir_runtime_func___kefir_softfloat_ilogbf_label11:
-    shr $31, %rcx
-    cmp $0, %rcx
+    mov %rcx, %rdx
+    shr $31, %rdx
+    cmp $0, %rdx
     jne .L__kefir_runtime_func___kefir_softfloat_ilogbf_label5
     add $-1, %eax
-    mov %rdx, %rcx
     shl $1, %rcx
-    mov %rcx, %rdx
     jmp .L__kefir_runtime_func___kefir_softfloat_ilogbf_label11
 .L__kefir_runtime_func___kefir_softfloat_ilogbf_label8:
     movq .L__kefir_runtime_func___kefir_softfloat_ilogbf_label17(%rip), %xmm0

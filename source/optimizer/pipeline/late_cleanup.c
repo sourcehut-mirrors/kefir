@@ -23,6 +23,7 @@
 #include "kefir/optimizer/code_util.h"
 #include "kefir/optimizer/control_flow.h"
 #include "kefir/core/error.h"
+#include "kefir/core/hash.h"
 #include "kefir/core/util.h"
 
 static kefir_int_t is_factored_computation(const struct kefir_opt_instruction *instr) {
@@ -230,6 +231,150 @@ static kefir_result_t phi_factor_apply(struct kefir_mem *mem, struct kefir_opt_c
     return KEFIR_OK;
 }
 
+struct phi_index_entry {
+    struct kefir_list phis;
+};
+
+static kefir_result_t phi_hash(const struct kefir_opt_code_container *code, kefir_opt_instruction_ref_t phi_instr_ref,
+                               kefir_uint64_t *hash_ptr) {
+    *hash_ptr = 0;
+
+    kefir_result_t res;
+    struct kefir_opt_phi_node_link_iterator link_iter;
+    kefir_opt_block_id_t link_block_id;
+    kefir_opt_instruction_ref_t link_instr_ref;
+    for (res = kefir_opt_phi_node_link_iter(code, phi_instr_ref, &link_iter, &link_block_id, &link_instr_ref);
+         res == KEFIR_OK; res = kefir_opt_phi_node_link_next(&link_iter, &link_block_id, &link_instr_ref)) {
+        *hash_ptr *= KEFIR_SPLITMIX64_MAGIC1;
+        *hash_ptr += kefir_splitmix64(link_block_id + KEFIR_SPLITMIX64_MAGIC2);
+        *hash_ptr += kefir_splitmix64(link_instr_ref + KEFIR_SPLITMIX64_MAGIC3);
+    }
+    if (res != KEFIR_ITERATOR_END) {
+        REQUIRE_OK(res);
+    }
+    return KEFIR_OK;
+}
+
+static kefir_result_t phi_equal(const struct kefir_opt_code_container *code, kefir_opt_instruction_ref_t phi_instr_ref,
+                                kefir_opt_instruction_ref_t replacement_phi_instr_ref, kefir_bool_t *replace) {
+    *replace = false;
+
+    kefir_result_t res;
+    struct kefir_opt_phi_node_link_iterator link_iter;
+    kefir_opt_block_id_t link_block_id;
+    kefir_opt_instruction_ref_t link_instr_ref;
+    for (res = kefir_opt_phi_node_link_iter(code, phi_instr_ref, &link_iter, &link_block_id, &link_instr_ref);
+         res == KEFIR_OK; res = kefir_opt_phi_node_link_next(&link_iter, &link_block_id, &link_instr_ref)) {
+        kefir_opt_instruction_ref_t replacement_link_ref;
+        res = kefir_opt_code_container_phi_link_for(code, replacement_phi_instr_ref, link_block_id,
+                                                    &replacement_link_ref);
+        REQUIRE(res != KEFIR_NOT_FOUND, KEFIR_OK);
+        REQUIRE_OK(res);
+        REQUIRE(link_instr_ref == replacement_link_ref, KEFIR_OK);
+    }
+    if (res != KEFIR_ITERATOR_END) {
+        REQUIRE_OK(res);
+    }
+
+    *replace = true;
+    return KEFIR_OK;
+}
+
+static kefir_result_t phi_dedup_impl(struct kefir_mem *mem, struct kefir_opt_code_container *code,
+                                     kefir_opt_block_id_t block_ref, struct kefir_hashtable *phi_index) {
+    kefir_result_t res;
+    kefir_opt_instruction_ref_t phi_instr_ref;
+    for (res = kefir_opt_code_block_phi_head(code, block_ref, &phi_instr_ref);
+         res == KEFIR_OK && phi_instr_ref != KEFIR_ID_NONE;) {
+        kefir_opt_instruction_ref_t next_instr_ref;
+        res = kefir_opt_phi_next_sibling(code, phi_instr_ref, &next_instr_ref);
+
+        kefir_uint64_t hash = 0;
+        REQUIRE_OK(phi_hash(code, phi_instr_ref, &hash));
+
+        struct phi_index_entry *entry = NULL;
+        kefir_hashtree_value_t table_value;
+        kefir_result_t res2 = kefir_hashtable_at(phi_index, (kefir_hashtable_key_t) hash, &table_value);
+        if (res2 != KEFIR_NOT_FOUND) {
+            REQUIRE_OK(res);
+            entry = (struct phi_index_entry *) table_value;
+        } else {
+            entry = KEFIR_MALLOC(mem, sizeof(struct phi_index_entry));
+            REQUIRE(entry != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate phi index entry"));
+            res2 = kefir_list_init(&entry->phis);
+            REQUIRE_CHAIN(&res2, kefir_hashtable_insert(mem, phi_index, (kefir_hashtable_key_t) hash,
+                                                        (kefir_hashtable_value_t) entry));
+            REQUIRE_ELSE(res == KEFIR_OK, {
+                KEFIR_FREE(mem, entry);
+                return res;
+            });
+        }
+
+        kefir_bool_t found = false;
+        for (const struct kefir_list_entry *iter = kefir_list_head(&entry->phis); !found && iter != NULL;
+             kefir_list_next(&iter)) {
+            ASSIGN_DECL_CAST(kefir_opt_instruction_ref_t, other_phi_ref, (kefir_uptr_t) iter->value);
+            kefir_bool_t replace = false;
+            REQUIRE_OK(phi_equal(code, phi_instr_ref, other_phi_ref, &replace));
+            if (replace) {
+                REQUIRE_OK(kefir_opt_code_container_replace_references(mem, code, other_phi_ref, phi_instr_ref));
+
+                struct kefir_opt_phi_node_link_iterator link_iter;
+                kefir_opt_block_id_t link_block_id;
+                for (res2 = kefir_opt_phi_node_link_iter(code, phi_instr_ref, &link_iter, &link_block_id, NULL);
+                     res2 == KEFIR_OK;
+                     res2 = kefir_opt_phi_node_link_iter(code, phi_instr_ref, &link_iter, &link_block_id, NULL)) {
+                    REQUIRE_OK(kefir_opt_code_container_phi_drop_link(mem, code, phi_instr_ref, link_block_id));
+                }
+                if (res != KEFIR_ITERATOR_END) {
+                    REQUIRE_OK(res);
+                }
+                REQUIRE_OK(kefir_opt_code_container_drop_instr(mem, code, phi_instr_ref));
+                found = true;
+            }
+        }
+
+        if (!found) {
+            REQUIRE_OK(kefir_list_insert_after(mem, &entry->phis, NULL, (void *) (kefir_uptr_t) phi_instr_ref));
+        }
+
+        phi_instr_ref = next_instr_ref;
+    }
+    if (res != KEFIR_ITERATOR_END) {
+        REQUIRE_OK(res);
+    }
+    return KEFIR_OK;
+}
+
+kefir_result_t free_phi_index_entry(struct kefir_mem *mem, struct kefir_hashtable *table, kefir_hashtable_key_t key,
+                                    kefir_hashtable_value_t value, void *payload) {
+    UNUSED(table);
+    UNUSED(key);
+    UNUSED(payload);
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    ASSIGN_DECL_CAST(struct phi_index_entry *, entry, value);
+    REQUIRE(entry != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid phi index entry"));
+
+    REQUIRE_OK(kefir_list_free(mem, &entry->phis));
+    KEFIR_FREE(mem, entry);
+    return KEFIR_OK;
+}
+
+static kefir_result_t phi_dedup_apply(struct kefir_mem *mem, struct kefir_opt_code_container *code,
+                                      kefir_opt_block_id_t block_ref) {
+    struct kefir_hashtable phi_index;
+    REQUIRE_OK(kefir_hashtable_init(&phi_index, &kefir_hashtable_uint_ops));
+    REQUIRE_OK(kefir_hashtable_on_removal(&phi_index, free_phi_index_entry, NULL));
+
+    kefir_result_t res = phi_dedup_impl(mem, code, block_ref, &phi_index);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_hashtable_free(mem, &phi_index);
+        return res;
+    });
+    REQUIRE_OK(kefir_hashtable_free(mem, &phi_index));
+    return KEFIR_OK;
+}
+
 static kefir_result_t late_cleanup_impl(struct kefir_mem *mem, struct kefir_opt_code_container *code) {
     kefir_bool_t fixpoint_reached = false;
 
@@ -237,6 +382,7 @@ static kefir_result_t late_cleanup_impl(struct kefir_mem *mem, struct kefir_opt_
         fixpoint_reached = true;
 
         for (kefir_opt_block_id_t block_ref = 0; block_ref < kefir_opt_code_container_block_count(code); block_ref++) {
+            REQUIRE_OK(phi_dedup_apply(mem, code, block_ref));
             if (block_ref == code->gate_block) {
                 continue;
             }
