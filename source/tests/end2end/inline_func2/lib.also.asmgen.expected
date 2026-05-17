@@ -27,7 +27,7 @@ factorial:
     call factorial_helper
     imul %rax, %rbx
     mov %rbx, %rax
-    jmp .L__kefir_func_factorial_label4
+    jmp .L__kefir_text_func_factorial_epilogue
 .L__kefir_text_func_factorial_end:
 
 factorial_helper2:
@@ -73,7 +73,7 @@ factorial_helper:
     call factorial_helper2
     imul %rax, %rbx
     mov %rbx, %rax
-    jmp .L__kefir_func_factorial_helper_label4
+    jmp .L__kefir_text_func_factorial_helper_epilogue
 .L__kefir_text_func_factorial_helper_end:
 
 .L__kefir_text_section_end:

@@ -114,7 +114,7 @@ conv2:
     addss %xmm0, %xmm0
 .loc 0 88 5
 .L__kefir_func_conv2_label63:
-    jmp .L__kefir_func_conv2_label8
+    jmp .L__kefir_text_func_conv2_epilogue
 .L__kefir_func_conv2_label69:
 .L__kefir_text_func_conv2_end:
 

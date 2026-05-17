@@ -1294,7 +1294,7 @@ __kefir_softfloat_complex_double_mul:
     cmovnz %rsi, %rcx
     movq %rax, %xmm0
     movq %rcx, %xmm1
-    jmp .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label5
+    jmp .L__kefir_runtime_text_func___kefir_softfloat_complex_double_mul_epilogue
 .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label27:
     ucomisd %xmm4, %xmm4
     jp .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label29

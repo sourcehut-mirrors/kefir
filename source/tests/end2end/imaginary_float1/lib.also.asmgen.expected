@@ -2125,7 +2125,7 @@ __kefir_softfloat_ilogbf:
     cvtsd2ss %xmm0, %xmm0
     movd %xmm0, -16(%rbp)
     mov $-2147483648, %rax
-    jmp .L__kefir_runtime_func___kefir_softfloat_ilogbf_label5
+    jmp .L__kefir_runtime_text_func___kefir_softfloat_ilogbf_epilogue
 .L__kefir_runtime_func___kefir_softfloat_ilogbf_label14:
     movq .L__kefir_runtime_func___kefir_softfloat_ilogbf_label19(%rip), %xmm0
     movq .L__kefir_runtime_func___kefir_softfloat_ilogbf_label20(%rip), %xmm1
@@ -2136,7 +2136,7 @@ __kefir_softfloat_ilogbf:
     mov $2147483647, %edx
     test %rcx, %rcx
     cmovz %rdx, %rax
-    jmp .L__kefir_runtime_func___kefir_softfloat_ilogbf_label5
+    jmp .L__kefir_runtime_text_func___kefir_softfloat_ilogbf_epilogue
 .L__kefir_runtime_text_func___kefir_softfloat_ilogbf_end:
 .section .rodata
     .align 8
@@ -2183,7 +2183,7 @@ __kefir_softfloat_fmaximum_numf:
     ret
 .L__kefir_runtime_func___kefir_softfloat_fmaximum_numf_label14:
     movaps %xmm1, %xmm0
-    jmp .L__kefir_runtime_func___kefir_softfloat_fmaximum_numf_label15
+    jmp .L__kefir_runtime_text_func___kefir_softfloat_fmaximum_numf_epilogue
 .L__kefir_runtime_func___kefir_softfloat_fmaximum_numf_label6:
     movd .L__kefir_runtime_func___kefir_softfloat_fmaximum_numf_label27(%rip), %xmm2
     movdqu .L__kefir_runtime_constant_copysignf(%rip), %xmm3
@@ -2204,7 +2204,7 @@ __kefir_softfloat_fmaximum_numf:
     jmp .L__kefir_runtime_text_func___kefir_softfloat_fmaximum_numf_epilogue
 .L__kefir_runtime_func___kefir_softfloat_fmaximum_numf_label9:
     movaps %xmm1, %xmm0
-    jmp .L__kefir_runtime_func___kefir_softfloat_fmaximum_numf_label11
+    jmp .L__kefir_runtime_text_func___kefir_softfloat_fmaximum_numf_epilogue
 .L__kefir_runtime_func___kefir_softfloat_fmaximum_numf_label19:
     jmp .L__kefir_runtime_text_func___kefir_softfloat_fmaximum_numf_epilogue
 .L__kefir_runtime_func___kefir_softfloat_fmaximum_numf_label20:

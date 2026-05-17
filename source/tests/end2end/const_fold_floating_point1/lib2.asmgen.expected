@@ -558,7 +558,7 @@ to_uint_32:
     subss .L__kefir_constant_float32_to_uint(%rip), %xmm0
     cvttss2si %xmm0, %rax
     btc $63, %rax
-    jmp .L__kefir_func_to_uint_32_label4
+    jmp .L__kefir_text_func_to_uint_32_epilogue
 .L__kefir_text_func_to_uint_32_end:
 .section .rodata
     .align 4
@@ -768,7 +768,7 @@ uint_to_float32:
     mov $157079, %eax
     cvtsi2ss %rax, %xmm0
     addss %xmm0, %xmm0
-    jmp .L__kefir_func_uint_to_float32_label4
+    jmp .L__kefir_text_func_uint_to_float32_epilogue
 .L__kefir_text_func_uint_to_float32_end:
 
 uint_to_float64:
@@ -793,7 +793,7 @@ uint_to_float64:
     mov $15707963, %eax
     cvtsi2sd %rax, %xmm0
     addsd %xmm0, %xmm0
-    jmp .L__kefir_func_uint_to_float64_label4
+    jmp .L__kefir_text_func_uint_to_float64_epilogue
 .L__kefir_text_func_uint_to_float64_end:
 
 uint_to_float80:

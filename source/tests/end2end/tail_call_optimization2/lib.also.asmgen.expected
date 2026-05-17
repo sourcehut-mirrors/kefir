@@ -33,7 +33,7 @@ factorial:
     movaps %xmm3, %xmm1
     movaps %xmm2, %xmm0
     call factorial_helper
-    jmp .L__kefir_func_factorial_label5
+    jmp .L__kefir_text_func_factorial_epilogue
 .L__kefir_text_func_factorial_end:
 .section .rodata
     .align 8

@@ -176,6 +176,29 @@ kefir_result_t kefir_codegen_amd64_stack_frame_calculate(kefir_abi_amd64_variant
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_codegen_amd64_stack_frame_fused_epilogue(kefir_abi_amd64_variant_t abi_variant,
+                                                              const struct kefir_codegen_amd64_stack_frame *frame,
+                                                              kefir_bool_t *fused) {
+    REQUIRE(frame != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid amd64 stack frame"));
+
+    kefir_size_t used_callee_preserved = 0;
+    const kefir_size_t num_of_callee_preserved_gp =
+        kefir_abi_amd64_num_of_callee_preserved_general_purpose_registers(abi_variant);
+    for (kefir_size_t i = 0; i < num_of_callee_preserved_gp; i++) {
+        kefir_asm_amd64_xasmgen_register_t reg;
+        REQUIRE_OK(kefir_abi_amd64_get_callee_preserved_general_purpose_register(
+            abi_variant, num_of_callee_preserved_gp - i - 1, &reg));
+
+        if (kefir_hashtreeset_has(&frame->requirements.used_registers, (kefir_hashtreeset_entry_t) reg)) {
+            used_callee_preserved++;
+        }
+    }
+
+    ASSIGN_PTR(fused, frame->requirements.mxcsr_save || frame->requirements.x87_control_word_save ||
+                          used_callee_preserved > 0 || frame->sizes.total_alignment > 2 * KEFIR_AMD64_ABI_QWORD);
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_codegen_amd64_stack_frame_prologue(struct kefir_amd64_xasmgen *xasmgen,
                                                         kefir_abi_amd64_variant_t abi_variant,
                                                         const struct kefir_codegen_amd64_stack_frame *frame,
@@ -256,23 +279,11 @@ kefir_result_t kefir_codegen_amd64_stack_frame_epilogue(
     REQUIRE(xasmgen != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid amd64 assembly generator"));
     REQUIRE(frame != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid amd64 stack frame"));
 
-    kefir_size_t used_callee_preserved = 0;
-    const kefir_size_t num_of_callee_preserved_gp =
-        kefir_abi_amd64_num_of_callee_preserved_general_purpose_registers(abi_variant);
-    for (kefir_size_t i = 0; i < num_of_callee_preserved_gp; i++) {
-        kefir_asm_amd64_xasmgen_register_t reg;
-        REQUIRE_OK(kefir_abi_amd64_get_callee_preserved_general_purpose_register(
-            abi_variant, num_of_callee_preserved_gp - i - 1, &reg));
-
-        if (kefir_hashtreeset_has(&frame->requirements.used_registers, (kefir_hashtreeset_entry_t) reg)) {
-            used_callee_preserved++;
-        }
-    }
+    kefir_bool_t fuse_epilogue = false;
+    REQUIRE_OK(kefir_codegen_amd64_stack_frame_fused_epilogue(abi_variant, frame, &fuse_epilogue));
 
     struct kefir_asm_amd64_xasmgen_operand operands[3];
-    if (fused_epilogue != NULL &&
-        (frame->requirements.mxcsr_save || frame->requirements.x87_control_word_save || used_callee_preserved > 0 ||
-         frame->sizes.total_alignment > 2 * KEFIR_AMD64_ABI_QWORD)) {
+    if (fused_epilogue != NULL && fuse_epilogue) {
         if (!fused_epilogue->generated) {
             REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(xasmgen, "%s", fused_epilogue->label));
             fused_epilogue->generated = true;
@@ -306,6 +317,8 @@ kefir_result_t kefir_codegen_amd64_stack_frame_epilogue(
                 (struct kefir_asm_amd64_xasmgen_indirection_index) {0}, frame->offsets.preserved_regs)));
     }
 
+    const kefir_size_t num_of_callee_preserved_gp =
+        kefir_abi_amd64_num_of_callee_preserved_general_purpose_registers(abi_variant);
     for (kefir_size_t i = 0; i < num_of_callee_preserved_gp; i++) {
         kefir_asm_amd64_xasmgen_register_t reg;
         REQUIRE_OK(kefir_abi_amd64_get_callee_preserved_general_purpose_register(

@@ -98,6 +98,10 @@ typedef struct kefir_codegen_amd64_stack_frame_fused_epilogue {
 
 #define KEFIR_CODEGEN_AMD64_STACK_FRAME_FUSED_EPILOGUE_INIT(_label) {.label = (_label)}
 
+kefir_result_t kefir_codegen_amd64_stack_frame_fused_epilogue(kefir_abi_amd64_variant_t,
+                                                              const struct kefir_codegen_amd64_stack_frame *,
+                                                              kefir_bool_t *);
+
 kefir_result_t kefir_codegen_amd64_stack_frame_prologue(struct kefir_amd64_xasmgen *, kefir_abi_amd64_variant_t,
                                                         const struct kefir_codegen_amd64_stack_frame *, const char *);
 kefir_result_t kefir_codegen_amd64_stack_frame_epilogue(struct kefir_amd64_xasmgen *, kefir_abi_amd64_variant_t,

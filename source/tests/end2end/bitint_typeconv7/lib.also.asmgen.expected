@@ -77,7 +77,7 @@ get3:
     subss .L__kefir_constant_float32_to_uint(%rip), %xmm0
     cvttss2si %xmm0, %rax
     btc $63, %rax
-    jmp .L__kefir_func_get3_label4
+    jmp .L__kefir_text_func_get3_epilogue
 .L__kefir_text_func_get3_end:
 .section .rodata
     .align 4

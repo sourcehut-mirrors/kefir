@@ -59,7 +59,7 @@ get1:
     or %rax, %rcx
     cvtsi2ss %rcx, %xmm0
     addss %xmm0, %xmm0
-    jmp .L__kefir_func_get1_label4
+    jmp .L__kefir_text_func_get1_epilogue
 .L__kefir_text_func_get1_end:
 
 get2:
@@ -105,7 +105,7 @@ get3:
     or %rax, %rcx
     cvtsi2sd %rcx, %xmm0
     addsd %xmm0, %xmm0
-    jmp .L__kefir_func_get3_label4
+    jmp .L__kefir_text_func_get3_epilogue
 .L__kefir_text_func_get3_end:
 
 get4:

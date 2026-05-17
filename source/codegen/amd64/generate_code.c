@@ -479,6 +479,7 @@ static kefir_result_t generate_instr(struct kefir_mem *mem, struct kefir_amd64_x
     }
 
     struct instruction_argument_state arg_state[3] = {0};
+
     switch (instr->opcode) {
 #define DEF_OPCODE0_(_opcode)                        \
     case KEFIR_ASMCMP_AMD64_OPCODE(_opcode):         \
@@ -490,11 +491,32 @@ static kefir_result_t generate_instr(struct kefir_mem *mem, struct kefir_amd64_x
         break;
 #define DEF_OPCODE0_PREFIX(_opcode) DEF_OPCODE0_(_opcode)
 #define DEF_OPCODE0(_opcode, _mnemonic, _variant, _flag) DEF_OPCODE0_##_variant(_opcode)
-#define DEF_OPCODE1(_opcode, _mnemonic, _variant, _flag, _op1)                                       \
-    case KEFIR_ASMCMP_AMD64_OPCODE(_opcode):                                                         \
-        REQUIRE_OK(build_operand(target, stack_frame, &instr->args[0], &arg_state[0], symbol_prefix, \
-                                 KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT));                             \
-        REQUIRE_OK(xasmgen->instr._opcode(xasmgen, arg_state[0].operand));                           \
+#define DEF_OPCODE1(_opcode, _mnemonic, _variant, _flag, _op1)                                                   \
+    case KEFIR_ASMCMP_AMD64_OPCODE(_opcode):                                                                     \
+        REQUIRE_OK(build_operand(target, stack_frame, &instr->args[0], &arg_state[0], symbol_prefix,             \
+                                 KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT));                                         \
+        if (instr->opcode == KEFIR_ASMCMP_AMD64_OPCODE(jmp) &&                                                   \
+            instr->args[0].type == KEFIR_ASMCMP_VALUE_TYPE_INTERNAL_LABEL) {                                     \
+            const struct kefir_asmcmp_label *label;                                                              \
+            REQUIRE_OK(kefir_asmcmp_context_get_label(&target->context, instr->args[0].internal_label, &label)); \
+            if (label->attached) {                                                                               \
+                struct kefir_asmcmp_instruction *next_instr;                                                     \
+                REQUIRE_OK(kefir_asmcmp_context_instr_at(&target->context, label->position, &next_instr));       \
+                if (next_instr->opcode == KEFIR_ASMCMP_AMD64_OPCODE(function_epilogue) &&                        \
+                    next_instr->args[0].type == KEFIR_ASMCMP_VALUE_TYPE_INTEGER &&                               \
+                    next_instr->args[0].int_immediate) {                                                         \
+                    kefir_bool_t fuse_epilogue = false;                                                          \
+                    REQUIRE_OK(kefir_codegen_amd64_stack_frame_fused_epilogue(target->abi_variant, stack_frame,  \
+                                                                              &fuse_epilogue));                  \
+                    if (fuse_epilogue) {                                                                         \
+                        arg_state[0].operand = kefir_asm_amd64_xasmgen_operand_label(                            \
+                            &arg_state[0].base_operands[0], KEFIR_AMD64_XASMGEN_SYMBOL_ABSOLUTE,                 \
+                            epilogue_state->label);                                                              \
+                    }                                                                                            \
+                }                                                                                                \
+            }                                                                                                    \
+        }                                                                                                        \
+        REQUIRE_OK(xasmgen->instr._opcode(xasmgen, arg_state[0].operand));                                       \
         break;
 #define DEF_OPCODE2_(_opcode, _mnemonic, _variant, _flag, _op1, _op2)                                \
     case KEFIR_ASMCMP_AMD64_OPCODE(_opcode):                                                         \
