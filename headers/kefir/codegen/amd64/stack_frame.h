@@ -91,9 +91,17 @@ kefir_result_t kefir_codegen_amd64_stack_frame_local_variable_offset(const struc
 kefir_result_t kefir_codegen_amd64_stack_frame_calculate(kefir_abi_amd64_variant_t,
                                                          struct kefir_codegen_amd64_stack_frame *);
 
+typedef struct kefir_codegen_amd64_stack_frame_fused_epilogue {
+    kefir_bool_t generated;
+    const char *label;
+} kefir_codegen_amd64_stack_frame_epilogue_state_t;
+
+#define KEFIR_CODEGEN_AMD64_STACK_FRAME_FUSED_EPILOGUE_INIT(_label) {.label = (_label)}
+
 kefir_result_t kefir_codegen_amd64_stack_frame_prologue(struct kefir_amd64_xasmgen *, kefir_abi_amd64_variant_t,
                                                         const struct kefir_codegen_amd64_stack_frame *, const char *);
 kefir_result_t kefir_codegen_amd64_stack_frame_epilogue(struct kefir_amd64_xasmgen *, kefir_abi_amd64_variant_t,
+                                                        struct kefir_codegen_amd64_stack_frame_fused_epilogue *,
                                                         const struct kefir_codegen_amd64_stack_frame *);
 
 #endif

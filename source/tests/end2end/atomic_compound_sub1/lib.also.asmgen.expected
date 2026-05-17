@@ -141,6 +141,7 @@ subf32:
     stmxcsr -16(%rbp)
     orl %eax, -16(%rbp)
     ldmxcsr -16(%rbp)
+.L__kefir_text_func_subf32_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -177,6 +178,7 @@ subf64:
     stmxcsr -16(%rbp)
     orl %eax, -16(%rbp)
     ldmxcsr -16(%rbp)
+.L__kefir_text_func_subf64_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -214,6 +216,7 @@ subf32r:
     orl %eax, -16(%rbp)
     ldmxcsr -16(%rbp)
     movaps %xmm1, %xmm0
+.L__kefir_text_func_subf32r_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -251,6 +254,7 @@ subf64r:
     orl %eax, -16(%rbp)
     ldmxcsr -16(%rbp)
     movaps %xmm1, %xmm0
+.L__kefir_text_func_subf64r_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

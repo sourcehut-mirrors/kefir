@@ -146,6 +146,7 @@ getb:
     movl -16(%rbp), %eax
     movl %eax, 236(%rbx)
     mov %rbx, %rax
+.L__kefir_text_func_getb_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp

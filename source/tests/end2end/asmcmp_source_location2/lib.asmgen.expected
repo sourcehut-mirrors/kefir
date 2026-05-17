@@ -408,20 +408,16 @@ factorial:
 #            },
 #            {
 #                "opcode": "function_epilogue",
-#                "args": [],
+#                "args": [
+#                    {
+#                        "type": "integer",
+#                        "value": 1,
+#                        "variant": "default"
+#                    }
+#                ],
 #                "labels": [
 #                    97
 #                ],
-#                "source_location": {
-#                    "source_id": "source\/tests\/end2end\/asmcmp_source_location2\/lib.kefir.asmgen.c",
-#                    "line": 31,
-#                    "column": 5
-#                }
-#            },
-#            {
-#                "opcode": "ret",
-#                "args": [],
-#                "labels": [],
 #                "source_location": {
 #                    "source_id": "source\/tests\/end2end\/asmcmp_source_location2\/lib.kefir.asmgen.c",
 #                    "line": 31,
@@ -589,20 +585,16 @@ factorial:
 #            },
 #            {
 #                "opcode": "function_epilogue",
-#                "args": [],
+#                "args": [
+#                    {
+#                        "type": "integer",
+#                        "value": 1,
+#                        "variant": "default"
+#                    }
+#                ],
 #                "labels": [
 #                    137
 #                ],
-#                "source_location": {
-#                    "source_id": "source\/tests\/end2end\/asmcmp_source_location2\/lib.kefir.asmgen.c",
-#                    "line": 25,
-#                    "column": 9
-#                }
-#            },
-#            {
-#                "opcode": "ret",
-#                "args": [],
-#                "labels": [],
 #                "source_location": {
 #                    "source_id": "source\/tests\/end2end\/asmcmp_source_location2\/lib.kefir.asmgen.c",
 #                    "line": 25,
@@ -632,17 +624,13 @@ factorial:
 #            },
 #            {
 #                "opcode": "function_epilogue",
-#                "args": [],
-#                "labels": [],
-#                "source_location": {
-#                    "source_id": "source\/tests\/end2end\/asmcmp_source_location2\/lib.kefir.asmgen.c",
-#                    "line": 23,
-#                    "column": 9
-#                }
-#            },
-#            {
-#                "opcode": "ret",
-#                "args": [],
+#                "args": [
+#                    {
+#                        "type": "integer",
+#                        "value": 1,
+#                        "variant": "default"
+#                    }
+#                ],
 #                "labels": [],
 #                "source_location": {
 #                    "source_id": "source\/tests\/end2end\/asmcmp_source_location2\/lib.kefir.asmgen.c",

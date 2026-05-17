@@ -23,6 +23,7 @@ get2:
     call get@PLT
     movsx %r12d, %rax
     movl -272(%rbp, %rax, 4), %eax
+.L__kefir_text_func_get2_epilogue:
     lea -16(%rbp), %rsp
     pop %r12
     pop %rbx
@@ -51,6 +52,7 @@ get3:
     rep movsq
     movsx %r12d, %rax
     movl -528(%rbp, %rax, 4), %eax
+.L__kefir_text_func_get3_epilogue:
     lea -16(%rbp), %rsp
     pop %r12
     pop %rbx

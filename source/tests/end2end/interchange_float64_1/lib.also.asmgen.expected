@@ -52,6 +52,7 @@ add64:
     addsd %xmm1, %xmm0
 .loc 0 68 5
 .L__kefir_func_add64_label23:
+.L__kefir_text_func_add64_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -71,6 +72,7 @@ conv1:
 .L__kefir_func_conv1_label16:
     cvtsi2sd %rdi, %xmm0
 .L__kefir_func_conv1_label17:
+.L__kefir_text_func_conv1_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -96,6 +98,7 @@ conv2:
     cvtsi2sd %rdi, %xmm0
 .loc 0 88 5
 .L__kefir_func_conv2_label8:
+.L__kefir_text_func_conv2_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -127,6 +130,7 @@ conv3:
 .L__kefir_func_conv3_label16:
     cvtss2sd %xmm0, %xmm0
 .L__kefir_func_conv3_label17:
+.L__kefir_text_func_conv3_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -159,6 +163,7 @@ conv5:
     fstpl -8(%rsp)
     movq -8(%rsp), %xmm0
 .L__kefir_func_conv5_label21:
+.L__kefir_text_func_conv5_epilogue:
     ldmxcsr -16(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
@@ -180,6 +185,7 @@ div64:
     divsd %xmm1, %xmm0
 .loc 0 80 5
 .L__kefir_func_div64_label23:
+.L__kefir_text_func_div64_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -200,6 +206,7 @@ mul64:
     mulsd %xmm1, %xmm0
 .loc 0 76 5
 .L__kefir_func_mul64_label23:
+.L__kefir_text_func_mul64_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -220,6 +227,7 @@ neg64:
     xorpd .L__kefir_constant_float64_neg(%rip), %xmm0
 .loc 0 64 5
 .L__kefir_func_neg64_label17:
+.L__kefir_text_func_neg64_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -240,6 +248,7 @@ sub64:
     subsd %xmm1, %xmm0
 .loc 0 72 5
 .L__kefir_func_sub64_label23:
+.L__kefir_text_func_sub64_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

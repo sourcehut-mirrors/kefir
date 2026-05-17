@@ -43,6 +43,7 @@ add32:
     movd .L__kefir_func_add32_label3(%rip), %xmm0
     movd .L__kefir_func_add32_label4(%rip), %xmm1
     insertps $16, %xmm1, %xmm0
+.L__kefir_text_func_add32_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -65,6 +66,7 @@ add64:
     stmxcsr -8(%rbp)
     movq .L__kefir_func_add64_label3(%rip), %xmm0
     movq .L__kefir_func_add64_label4(%rip), %xmm1
+.L__kefir_text_func_add64_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -91,6 +93,7 @@ add80:
     fstpt -48(%rbp)
     fldt -32(%rbp)
     fldt -48(%rbp)
+.L__kefir_text_func_add80_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -116,6 +119,7 @@ div32:
     movd .L__kefir_func_div32_label3(%rip), %xmm0
     movd .L__kefir_func_div32_label4(%rip), %xmm1
     insertps $16, %xmm1, %xmm0
+.L__kefir_text_func_div32_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -138,6 +142,7 @@ div64:
     stmxcsr -8(%rbp)
     movq .L__kefir_func_div64_label3(%rip), %xmm0
     movq .L__kefir_func_div64_label4(%rip), %xmm1
+.L__kefir_text_func_div64_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -164,6 +169,7 @@ div80:
     fstpt -48(%rbp)
     fldt -32(%rbp)
     fldt -48(%rbp)
+.L__kefir_text_func_div80_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -189,6 +195,7 @@ mul32:
     movd .L__kefir_func_mul32_label3(%rip), %xmm0
     movd .L__kefir_func_mul32_label4(%rip), %xmm1
     insertps $16, %xmm1, %xmm0
+.L__kefir_text_func_mul32_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -211,6 +218,7 @@ mul64:
     stmxcsr -8(%rbp)
     movq .L__kefir_func_mul64_label3(%rip), %xmm0
     movq .L__kefir_func_mul64_label4(%rip), %xmm1
+.L__kefir_text_func_mul64_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -237,6 +245,7 @@ mul80:
     fstpt -48(%rbp)
     fldt -32(%rbp)
     fldt -48(%rbp)
+.L__kefir_text_func_mul80_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -262,6 +271,7 @@ neg32:
     movd .L__kefir_func_neg32_label3(%rip), %xmm0
     movd .L__kefir_func_neg32_label4(%rip), %xmm1
     insertps $16, %xmm1, %xmm0
+.L__kefir_text_func_neg32_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -284,6 +294,7 @@ neg64:
     stmxcsr -8(%rbp)
     movq .L__kefir_func_neg64_label3(%rip), %xmm0
     movq .L__kefir_func_neg64_label4(%rip), %xmm1
+.L__kefir_text_func_neg64_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -310,6 +321,7 @@ neg80:
     fstpt -48(%rbp)
     fldt -32(%rbp)
     fldt -48(%rbp)
+.L__kefir_text_func_neg80_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -335,6 +347,7 @@ sub32:
     movd .L__kefir_func_sub32_label3(%rip), %xmm0
     movd .L__kefir_func_sub32_label4(%rip), %xmm1
     insertps $16, %xmm1, %xmm0
+.L__kefir_text_func_sub32_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -357,6 +370,7 @@ sub64:
     stmxcsr -8(%rbp)
     movq .L__kefir_func_sub64_label3(%rip), %xmm0
     movq .L__kefir_func_sub64_label4(%rip), %xmm1
+.L__kefir_text_func_sub64_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -383,6 +397,7 @@ sub80:
     fstpt -48(%rbp)
     fldt -32(%rbp)
     fldt -48(%rbp)
+.L__kefir_text_func_sub80_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

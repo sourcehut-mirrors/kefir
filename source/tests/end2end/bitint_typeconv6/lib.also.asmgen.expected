@@ -471,6 +471,7 @@ __kefir_bigint_signed_to_double:
     or %rsi, %rax
     movq %rax, -104(%rbp)
     movq -104(%rbp), %xmm0
+.L__kefir_runtime_text_func___kefir_bigint_signed_to_double_epilogue:
     lea -24(%rbp), %rsp
     pop %r13
     pop %r12
@@ -742,12 +743,7 @@ __kefir_bigint_signed_to_double:
     jmp .L__kefir_runtime_func___kefir_bigint_signed_to_double_label10
 .L__kefir_runtime_func___kefir_bigint_signed_to_double_label44:
     movq .L__kefir_runtime_func___kefir_bigint_signed_to_double_label53(%rip), %xmm0
-    lea -24(%rbp), %rsp
-    pop %r13
-    pop %r12
-    pop %rbx
-    pop %rbp
-    ret
+    jmp .L__kefir_runtime_text_func___kefir_bigint_signed_to_double_epilogue
 .L__kefir_runtime_text_func___kefir_bigint_signed_to_double_end:
 .section .rodata
     .align 8
@@ -1151,6 +1147,7 @@ __kefir_bigint_unsigned_to_double:
     or %rsi, %rax
     movq %rax, -104(%rbp)
     movq -104(%rbp), %xmm0
+.L__kefir_runtime_text_func___kefir_bigint_unsigned_to_double_epilogue:
     lea -24(%rbp), %rsp
     pop %r13
     pop %r12
@@ -1422,12 +1419,7 @@ __kefir_bigint_unsigned_to_double:
     jmp .L__kefir_runtime_func___kefir_bigint_unsigned_to_double_label10
 .L__kefir_runtime_func___kefir_bigint_unsigned_to_double_label44:
     movq .L__kefir_runtime_func___kefir_bigint_unsigned_to_double_label53(%rip), %xmm0
-    lea -24(%rbp), %rsp
-    pop %r13
-    pop %r12
-    pop %rbx
-    pop %rbp
-    ret
+    jmp .L__kefir_runtime_text_func___kefir_bigint_unsigned_to_double_epilogue
 .L__kefir_runtime_text_func___kefir_bigint_unsigned_to_double_end:
 .section .rodata
     .align 8
@@ -1507,6 +1499,7 @@ __kefir_bigint_unsigned_to_long_double:
     or %rcx, %rax
     movq %rax, -104(%rbp)
     fldt -112(%rbp)
+.L__kefir_runtime_text_func___kefir_bigint_unsigned_to_long_double_epilogue:
     lea -24(%rbp), %rsp
     pop %r13
     pop %r12
@@ -1780,12 +1773,7 @@ __kefir_bigint_unsigned_to_long_double:
     jmp .L__kefir_runtime_func___kefir_bigint_unsigned_to_long_double_label10
 .L__kefir_runtime_func___kefir_bigint_unsigned_to_long_double_label44:
     fldt .L__kefir_runtime_func___kefir_bigint_unsigned_to_long_double_label53(%rip)
-    lea -24(%rbp), %rsp
-    pop %r13
-    pop %r12
-    pop %rbx
-    pop %rbp
-    ret
+    jmp .L__kefir_runtime_text_func___kefir_bigint_unsigned_to_long_double_epilogue
 .L__kefir_runtime_text_func___kefir_bigint_unsigned_to_long_double_end:
 .section .rodata
     .align 8
@@ -2249,6 +2237,7 @@ __kefir_bigint_unsigned_to_float:
     or %rsi, %rax
     movq %rax, -104(%rbp)
     movd -104(%rbp), %xmm0
+.L__kefir_runtime_text_func___kefir_bigint_unsigned_to_float_epilogue:
     lea -24(%rbp), %rsp
     pop %r13
     pop %r12
@@ -2520,12 +2509,7 @@ __kefir_bigint_unsigned_to_float:
     jmp .L__kefir_runtime_func___kefir_bigint_unsigned_to_float_label10
 .L__kefir_runtime_func___kefir_bigint_unsigned_to_float_label44:
     movd .L__kefir_runtime_func___kefir_bigint_unsigned_to_float_label53(%rip), %xmm0
-    lea -24(%rbp), %rsp
-    pop %r13
-    pop %r12
-    pop %rbx
-    pop %rbp
-    ret
+    jmp .L__kefir_runtime_text_func___kefir_bigint_unsigned_to_float_epilogue
 .L__kefir_runtime_text_func___kefir_bigint_unsigned_to_float_end:
 .section .rodata
     .align 4
@@ -2739,6 +2723,7 @@ __kefir_bigint_signed_to_long_double:
     or %rcx, %rax
     movq %rax, -104(%rbp)
     fldt -112(%rbp)
+.L__kefir_runtime_text_func___kefir_bigint_signed_to_long_double_epilogue:
     lea -24(%rbp), %rsp
     pop %r13
     pop %r12
@@ -3012,12 +2997,7 @@ __kefir_bigint_signed_to_long_double:
     jmp .L__kefir_runtime_func___kefir_bigint_signed_to_long_double_label10
 .L__kefir_runtime_func___kefir_bigint_signed_to_long_double_label44:
     fldt .L__kefir_runtime_func___kefir_bigint_signed_to_long_double_label53(%rip)
-    lea -24(%rbp), %rsp
-    pop %r13
-    pop %r12
-    pop %rbx
-    pop %rbp
-    ret
+    jmp .L__kefir_runtime_text_func___kefir_bigint_signed_to_long_double_epilogue
 .L__kefir_runtime_text_func___kefir_bigint_signed_to_long_double_end:
 .section .rodata
     .align 8
@@ -3295,6 +3275,7 @@ __kefir_bigint_signed_to_float:
     or %rsi, %rax
     movq %rax, -104(%rbp)
     movd -104(%rbp), %xmm0
+.L__kefir_runtime_text_func___kefir_bigint_signed_to_float_epilogue:
     lea -24(%rbp), %rsp
     pop %r13
     pop %r12
@@ -3566,12 +3547,7 @@ __kefir_bigint_signed_to_float:
     jmp .L__kefir_runtime_func___kefir_bigint_signed_to_float_label10
 .L__kefir_runtime_func___kefir_bigint_signed_to_float_label44:
     movd .L__kefir_runtime_func___kefir_bigint_signed_to_float_label53(%rip), %xmm0
-    lea -24(%rbp), %rsp
-    pop %r13
-    pop %r12
-    pop %rbx
-    pop %rbp
-    ret
+    jmp .L__kefir_runtime_text_func___kefir_bigint_signed_to_float_epilogue
 .L__kefir_runtime_text_func___kefir_bigint_signed_to_float_end:
 .section .rodata
     .align 4

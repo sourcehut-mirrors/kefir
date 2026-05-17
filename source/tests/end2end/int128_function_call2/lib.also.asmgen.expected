@@ -93,6 +93,7 @@ test1:
     movq %rax, 136(%rsp)
     call somefn
     add $144, %rsp
+.L__kefir_text_func_test1_epilogue:
     lea -40(%rbp), %rsp
     pop %r15
     pop %r14
@@ -165,6 +166,7 @@ somefn:
     xorq -128(%rbp), %rax
     mov %rsi, %rdx
     xorq -120(%rbp), %rdx
+.L__kefir_text_func_somefn_epilogue:
     lea -40(%rbp), %rsp
     pop %r15
     pop %r14

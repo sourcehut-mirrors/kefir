@@ -35,6 +35,7 @@ mul:
     add $64, %rsp
     fldt -64(%rbp)
     fldt -80(%rbp)
+.L__kefir_text_func_mul_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -112,6 +113,7 @@ __kefir_softfloat_complex_long_double_mul:
     fstpt -224(%rbp)
     fldt -208(%rbp)
     fldt -224(%rbp)
+.L__kefir_runtime_text_func___kefir_softfloat_complex_long_double_mul_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

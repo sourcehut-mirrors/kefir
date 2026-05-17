@@ -46,6 +46,7 @@ test3:
     jp .L__kefir_func_test3_label4
     jbe .L__kefir_func_test3_label4
 .L__kefir_func_test3_label4:
+.L__kefir_text_func_test3_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -67,6 +68,7 @@ test4:
     jp .L__kefir_func_test4_label4
     jbe .L__kefir_func_test4_label4
 .L__kefir_func_test4_label4:
+.L__kefir_text_func_test4_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

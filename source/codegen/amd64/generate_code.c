@@ -458,6 +458,7 @@ static kefir_bool_t same_operands(const struct kefir_asmcmp_value *arg1, const s
 static kefir_result_t generate_instr(struct kefir_mem *mem, struct kefir_amd64_xasmgen *xasmgen,
                                      const struct kefir_asmcmp_amd64 *target,
                                      const struct kefir_codegen_amd64_stack_frame *stack_frame,
+                                     struct kefir_codegen_amd64_stack_frame_fused_epilogue *epilogue_state,
                                      const char *symbol_prefix, kefir_asmcmp_instruction_index_t index) {
     struct kefir_asmcmp_instruction *instr;
     REQUIRE_OK(kefir_asmcmp_context_instr_at(&target->context, index, &instr));
@@ -563,11 +564,15 @@ static kefir_result_t generate_instr(struct kefir_mem *mem, struct kefir_amd64_x
             break;
 
         case KEFIR_ASMCMP_AMD64_OPCODE(function_epilogue):
-            REQUIRE_OK(kefir_codegen_amd64_stack_frame_epilogue(xasmgen, target->abi_variant, stack_frame));
+            REQUIRE_OK(kefir_codegen_amd64_stack_frame_epilogue(
+                xasmgen, target->abi_variant,
+                instr->args[0].type == KEFIR_ASMCMP_VALUE_TYPE_INTEGER && instr->args[0].int_immediate ? epilogue_state
+                                                                                                       : NULL,
+                stack_frame));
             break;
 
         case KEFIR_ASMCMP_AMD64_OPCODE(tail_call):
-            REQUIRE_OK(kefir_codegen_amd64_stack_frame_epilogue(xasmgen, target->abi_variant, stack_frame));
+            REQUIRE_OK(kefir_codegen_amd64_stack_frame_epilogue(xasmgen, target->abi_variant, NULL, stack_frame));
             REQUIRE_OK(build_operand(target, stack_frame, &instr->args[0], &arg_state[0], symbol_prefix,
                                      KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT));
             REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_JMP(xasmgen, arg_state[0].operand));
@@ -618,6 +623,11 @@ kefir_result_t kefir_asmcmp_amd64_generate_code(struct kefir_mem *mem, struct ke
         REQUIRE_OK(res);
     }
 
+    char epilogue_buf[KEFIR_AMD64_XASMGEN_HELPERS_BUFFER_LENGTH];
+    snprintf(epilogue_buf, sizeof(epilogue_buf), KEFIR_AMD64_FUNCTION_EPILOGUE, symbol_prefix, target->function_name);
+    struct kefir_codegen_amd64_stack_frame_fused_epilogue epilogue_state =
+        KEFIR_CODEGEN_AMD64_STACK_FRAME_FUSED_EPILOGUE_INIT(epilogue_buf);
+
     const struct kefir_source_location *last_source_location = NULL;
     for (kefir_asmcmp_instruction_index_t idx = kefir_asmcmp_context_instr_head(&target->context);
          idx != KEFIR_ASMCMP_INDEX_NONE; idx = kefir_asmcmp_context_instr_next(&target->context, idx)) {
@@ -637,7 +647,7 @@ kefir_result_t kefir_asmcmp_amd64_generate_code(struct kefir_mem *mem, struct ke
             }
         }
 
-        REQUIRE_OK(generate_instr(mem, xasmgen, target, stack_frame, symbol_prefix, idx));
+        REQUIRE_OK(generate_instr(mem, xasmgen, target, stack_frame, &epilogue_state, symbol_prefix, idx));
     }
 
     return KEFIR_OK;

@@ -477,7 +477,7 @@ static kefir_result_t kefir_codegen_amd64_return_from_function_impl(struct kefir
         REQUIRE_OK(kefir_codegen_amd64_function_x87_clear(mem, function, 0));
     }
 
-    REQUIRE_OK(kefir_asmcmp_amd64_function_epilogue(mem, &function->code,
+    REQUIRE_OK(kefir_asmcmp_amd64_function_epilogue(mem, &function->code, false,
                                                     kefir_asmcmp_context_instr_tail(&function->code.context), NULL));
 
     if (vreg != KEFIR_ASMCMP_INDEX_NONE) {

@@ -33,6 +33,7 @@
 
 #define KEFIR_AMD64_FUNCTION_BEGIN "%s_text_func_%s_begin"
 #define KEFIR_AMD64_FUNCTION_END "%s_text_func_%s_end"
+#define KEFIR_AMD64_FUNCTION_EPILOGUE "%s_text_func_%s_epilogue"
 
 #define KEFIR_AMD64_STRING_LITERAL "%s_string_literal%" KEFIR_ID_FMT
 #define KEFIR_AMD64_LABEL "%s_func_%s_label%" KEFIR_SIZE_FMT

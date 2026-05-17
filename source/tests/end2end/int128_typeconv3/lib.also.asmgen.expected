@@ -105,6 +105,7 @@ u128_from_f80:
     fstpt (%rsp)
     call __fixunsxfti@PLT
     add $16, %rsp
+.L__kefir_text_func_u128_from_f80_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -216,6 +217,7 @@ i128_from_f80:
     fstpt (%rsp)
     call __fixxfti@PLT
     add $16, %rsp
+.L__kefir_text_func_i128_from_f80_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

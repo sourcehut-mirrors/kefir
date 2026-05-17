@@ -197,6 +197,7 @@ f80_to_d32:
     fstpt (%rsp)
     call __bid_truncxfsd@PLT
     add $16, %rsp
+.L__kefir_text_func_f80_to_d32_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -216,6 +217,7 @@ f80_to_d64:
     fstpt (%rsp)
     call __bid_truncxfdd@PLT
     add $16, %rsp
+.L__kefir_text_func_f80_to_d64_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -316,6 +318,7 @@ f80_to_d128:
     fstpt (%rsp)
     call __bid_extendxftd@PLT
     add $16, %rsp
+.L__kefir_text_func_f80_to_d128_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

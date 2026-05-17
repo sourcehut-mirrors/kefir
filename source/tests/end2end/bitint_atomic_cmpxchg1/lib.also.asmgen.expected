@@ -168,6 +168,7 @@ add5:
     jz .L__kefir_func_add5_label2
     movq -48(%rbp), %rax
     movq -40(%rbp), %rdx
+.L__kefir_text_func_add5_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
@@ -233,6 +234,7 @@ add6:
     movdqu %xmm0, 16(%rax)
     movdqu -128(%rbp), %xmm0
     movdqu %xmm0, 32(%rax)
+.L__kefir_text_func_add6_epilogue:
     lea -16(%rbp), %rsp
     pop %r12
     pop %rbx

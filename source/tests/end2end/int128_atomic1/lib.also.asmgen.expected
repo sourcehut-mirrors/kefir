@@ -56,6 +56,7 @@ add_i128:
     jz .L__kefir_func_add_i128_label2
     mov %r14, %rax
     mov %r15, %rdx
+.L__kefir_text_func_add_i128_epilogue:
     lea -40(%rbp), %rsp
     pop %r15
     pop %r14
@@ -106,6 +107,7 @@ add_u128:
     jz .L__kefir_func_add_u128_label2
     mov %r14, %rax
     mov %r15, %rdx
+.L__kefir_text_func_add_u128_epilogue:
     lea -40(%rbp), %rsp
     pop %r15
     pop %r14

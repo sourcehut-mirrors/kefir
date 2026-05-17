@@ -93,6 +93,7 @@ test4:
 .L__kefir_func_test4_label2:
     cmp %ebx, %r14d
     jl .L__kefir_func_test4_label4
+.L__kefir_text_func_test4_epilogue:
     pop %r14
     pop %r13
     pop %r12
@@ -124,6 +125,7 @@ test5:
 .L__kefir_func_test5_label2:
     cmp %ebx, %ecx
     jl .L__kefir_func_test5_label4
+.L__kefir_text_func_test5_epilogue:
     pop %r12
     pop %rbx
     ret
@@ -156,6 +158,7 @@ test6:
 .L__kefir_func_test6_label2:
     cmp %ebx, %r14d
     jl .L__kefir_func_test6_label4
+.L__kefir_text_func_test6_epilogue:
     pop %r14
     pop %r13
     pop %r12

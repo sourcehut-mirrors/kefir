@@ -31,16 +31,14 @@ lessf:
     jb .L__kefir_func_lessf_label4
 .L__kefir_func_lessf_label3:
     xor %eax, %eax
+.L__kefir_text_func_lessf_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
 .L__kefir_func_lessf_label4:
     mov $1, %eax
-    ldmxcsr -8(%rbp)
-    lea (%rbp), %rsp
-    pop %rbp
-    ret
+    jmp .L__kefir_text_func_lessf_epilogue
 .L__kefir_text_func_lessf_end:
 
 equalsf:
@@ -58,16 +56,14 @@ equalsf:
     je .L__kefir_func_equalsf_label4
 .L__kefir_func_equalsf_label3:
     xor %eax, %eax
+.L__kefir_text_func_equalsf_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
 .L__kefir_func_equalsf_label4:
     mov $1, %eax
-    ldmxcsr -8(%rbp)
-    lea (%rbp), %rsp
-    pop %rbp
-    ret
+    jmp .L__kefir_text_func_equalsf_epilogue
 .L__kefir_text_func_equalsf_end:
 
 greaterf:
@@ -85,16 +81,14 @@ greaterf:
     ja .L__kefir_func_greaterf_label4
 .L__kefir_func_greaterf_label3:
     xor %eax, %eax
+.L__kefir_text_func_greaterf_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
 .L__kefir_func_greaterf_label4:
     mov $1, %eax
-    ldmxcsr -8(%rbp)
-    lea (%rbp), %rsp
-    pop %rbp
-    ret
+    jmp .L__kefir_text_func_greaterf_epilogue
 .L__kefir_text_func_greaterf_end:
 
 not_equalsf:
@@ -111,16 +105,14 @@ not_equalsf:
     jp .L__kefir_func_not_equalsf_label4
     jne .L__kefir_func_not_equalsf_label4
     xor %eax, %eax
+.L__kefir_text_func_not_equalsf_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
 .L__kefir_func_not_equalsf_label4:
     mov $1, %eax
-    ldmxcsr -8(%rbp)
-    lea (%rbp), %rsp
-    pop %rbp
-    ret
+    jmp .L__kefir_text_func_not_equalsf_epilogue
 .L__kefir_text_func_not_equalsf_end:
 
 greater_or_equalsf:
@@ -138,16 +130,14 @@ greater_or_equalsf:
     jae .L__kefir_func_greater_or_equalsf_label4
 .L__kefir_func_greater_or_equalsf_label3:
     xor %eax, %eax
+.L__kefir_text_func_greater_or_equalsf_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
 .L__kefir_func_greater_or_equalsf_label4:
     mov $1, %eax
-    ldmxcsr -8(%rbp)
-    lea (%rbp), %rsp
-    pop %rbp
-    ret
+    jmp .L__kefir_text_func_greater_or_equalsf_epilogue
 .L__kefir_text_func_greater_or_equalsf_end:
 
 less_or_equalsf:
@@ -165,16 +155,14 @@ less_or_equalsf:
     jbe .L__kefir_func_less_or_equalsf_label4
 .L__kefir_func_less_or_equalsf_label3:
     xor %eax, %eax
+.L__kefir_text_func_less_or_equalsf_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
 .L__kefir_func_less_or_equalsf_label4:
     mov $1, %eax
-    ldmxcsr -8(%rbp)
-    lea (%rbp), %rsp
-    pop %rbp
-    ret
+    jmp .L__kefir_text_func_less_or_equalsf_epilogue
 .L__kefir_text_func_less_or_equalsf_end:
 
 .L__kefir_text_section_end:

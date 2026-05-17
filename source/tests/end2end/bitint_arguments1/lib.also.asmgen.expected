@@ -96,6 +96,7 @@ test1:
     shl $3, %rax
     sar $3, %rax
     movq %rax, 16(%rcx)
+.L__kefir_text_func_test1_epilogue:
     lea -24(%rbp), %rsp
     pop %r13
     pop %r12

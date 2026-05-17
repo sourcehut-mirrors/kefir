@@ -29,6 +29,7 @@ is_finite_f32:
     ucomiss %xmm0, %xmm1
     setnb %al
     movzx %al, %rax
+.L__kefir_text_func_is_finite_f32_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -48,6 +49,7 @@ is_finite_f64:
     ucomisd %xmm0, %xmm1
     setnb %al
     movzx %al, %rax
+.L__kefir_text_func_is_finite_f64_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -70,6 +72,7 @@ is_finite_f80:
     fstp %st(0)
     setnb %al
     movzx %al, %rax
+.L__kefir_text_func_is_finite_f80_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

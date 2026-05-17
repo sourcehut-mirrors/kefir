@@ -24,6 +24,7 @@ get1:
     stmxcsr -8(%rbp)
     movd .L__kefir_func_get1_label3(%rip), %xmm0
     cvttss2si %xmm0, %rax
+.L__kefir_text_func_get1_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -44,6 +45,7 @@ get2:
     movd .L__kefir_func_get2_label3(%rip), %xmm0
     xorps .L__kefir_constant_float32_neg(%rip), %xmm0
     cvttss2si %xmm0, %rax
+.L__kefir_text_func_get2_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -66,6 +68,7 @@ get3:
     jnb .L__kefir_func_get3_label3
     cvttss2si %xmm0, %rax
 .L__kefir_func_get3_label4:
+.L__kefir_text_func_get3_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -106,6 +109,7 @@ get5:
     movq .L__kefir_func_get5_label3(%rip), %xmm0
     xorpd .L__kefir_constant_float64_neg(%rip), %xmm0
     cvttsd2si %xmm0, %rax
+.L__kefir_text_func_get5_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

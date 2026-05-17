@@ -37,6 +37,7 @@ get:
     jg .L__kefir_func_get_label6
 .L__kefir_func_get_label5:
     fldt -64(%rbp)
+.L__kefir_text_func_get_epilogue:
     ldmxcsr -16(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp

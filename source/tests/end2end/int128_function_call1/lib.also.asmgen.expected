@@ -94,6 +94,7 @@ test1:
     movq %rax, 136(%rsp)
     call somefn@PLT
     add $144, %rsp
+.L__kefir_text_func_test1_epilogue:
     lea -40(%rbp), %rsp
     pop %r15
     pop %r14

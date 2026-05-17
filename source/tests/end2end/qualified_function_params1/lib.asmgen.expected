@@ -79,6 +79,7 @@ test5:
     movq X@GOTPCREL(%rip), %rax
     addsd %xmm1, %xmm0
     movq %xmm0, (%rax)
+.L__kefir_text_func_test5_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

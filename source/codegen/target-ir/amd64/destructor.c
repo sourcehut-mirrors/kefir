@@ -25,6 +25,7 @@
 #include "kefir/codegen/target-ir/tie.h"
 #include "kefir/codegen/target-ir/amd64/regalloc.h"
 #include "kefir/codegen/target-ir/amd64/late_transform.h"
+#include "kefir/codegen/target-ir/amd64/code.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 #include <string.h>
@@ -2396,6 +2397,17 @@ static kefir_result_t translate_instruction(struct destructor_state *state,
             REQUIRE_OK(load_into_allocation(state, dst_type, &dst_alloc_entry, &instr->operation.parameters[1]));
         }
         return KEFIR_OK;
+    } else if (instr->operation.opcode == KEFIR_TARGET_IR_AMD64_OPCODE(ret)) {
+        kefir_asmcmp_instruction_index_t prev_idx = kefir_asmcmp_context_instr_tail(&state->asmcmp_ctx->context);
+        if (prev_idx != KEFIR_ASMCMP_INDEX_NONE) {
+            struct kefir_asmcmp_instruction *prev_instr;
+            REQUIRE_OK(kefir_asmcmp_context_instr_at(&state->asmcmp_ctx->context, prev_idx, &prev_instr));
+            if (prev_instr->opcode == KEFIR_ASMCMP_AMD64_OPCODE(function_epilogue)) {
+                prev_instr->args[0].type = KEFIR_ASMCMP_VALUE_TYPE_INTEGER;
+                prev_instr->args[0].int_immediate = 1;
+                return KEFIR_OK;
+            }
+        }
     }
 
     for (kefir_size_t i = 0; i < KEFIR_ASMCMP_INSTRUCTION_NUM_OF_OPERANDS; i++) {

@@ -73,6 +73,7 @@ get_e:
     movd .L__kefir_func_get_e_label3(%rip), %xmm0
     movd .L__kefir_func_get_e_label4(%rip), %xmm1
     insertps $16, %xmm1, %xmm0
+.L__kefir_text_func_get_e_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -95,6 +96,7 @@ get_f:
     stmxcsr -8(%rbp)
     movq .L__kefir_func_get_f_label3(%rip), %xmm0
     movq .L__kefir_func_get_f_label4(%rip), %xmm1
+.L__kefir_text_func_get_f_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -121,6 +123,7 @@ get_g:
     fstpt -48(%rbp)
     fldt -32(%rbp)
     fldt -48(%rbp)
+.L__kefir_text_func_get_g_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

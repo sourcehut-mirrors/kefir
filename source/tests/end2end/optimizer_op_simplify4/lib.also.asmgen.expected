@@ -21,6 +21,7 @@ greater_or_equalsf:
     xor %eax, %eax
     comiss %xmm1, %xmm0
     setae %al
+.L__kefir_text_func_greater_or_equalsf_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -40,6 +41,7 @@ less_or_equalsf:
     xor %eax, %eax
     comiss %xmm0, %xmm1
     setae %al
+.L__kefir_text_func_less_or_equalsf_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

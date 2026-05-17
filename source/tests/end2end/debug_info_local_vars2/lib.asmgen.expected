@@ -57,6 +57,7 @@ test1:
     addsd %xmm1, %xmm0
 .loc 0 26 5
 .L__kefir_func_test1_label371:
+.L__kefir_text_func_test1_epilogue:
     ldmxcsr -24(%rbp)
     lea -16(%rbp), %rsp
     pop %r12

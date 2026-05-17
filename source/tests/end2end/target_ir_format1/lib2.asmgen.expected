@@ -288,12 +288,13 @@ factorial:
 #            },
 #            {
 #                "opcode": "function_epilogue",
-#                "args": [],
-#                "labels": []
-#            },
-#            {
-#                "opcode": "ret",
-#                "args": [],
+#                "args": [
+#                    {
+#                        "type": "integer",
+#                        "value": 1,
+#                        "variant": "default"
+#                    }
+#                ],
 #                "labels": []
 #            },
 #            {
@@ -412,12 +413,13 @@ factorial:
 #            },
 #            {
 #                "opcode": "function_epilogue",
-#                "args": [],
-#                "labels": []
-#            },
-#            {
-#                "opcode": "ret",
-#                "args": [],
+#                "args": [
+#                    {
+#                        "type": "integer",
+#                        "value": 1,
+#                        "variant": "default"
+#                    }
+#                ],
 #                "labels": []
 #            },
 #            {
@@ -438,12 +440,13 @@ factorial:
 #            },
 #            {
 #                "opcode": "function_epilogue",
-#                "args": [],
-#                "labels": []
-#            },
-#            {
-#                "opcode": "ret",
-#                "args": [],
+#                "args": [
+#                    {
+#                        "type": "integer",
+#                        "value": 1,
+#                        "variant": "default"
+#                    }
+#                ],
 #                "labels": []
 #            },
 #            {

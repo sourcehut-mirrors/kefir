@@ -111,6 +111,7 @@ fi80_add:
     fldt 32(%rbp)
     fldt 16(%rbp)
     faddp
+.L__kefir_text_func_fi80_add_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -129,6 +130,7 @@ fi80_div:
     fdivp
     fstpl -8(%rsp)
     movq -8(%rsp), %xmm0
+.L__kefir_text_func_fi80_div_epilogue:
     ldmxcsr -16(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
@@ -149,6 +151,7 @@ fi80_mul:
     fchs
     fstpl -8(%rsp)
     movq -8(%rsp), %xmm0
+.L__kefir_text_func_fi80_mul_epilogue:
     ldmxcsr -16(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
@@ -164,6 +167,7 @@ fi80_neg:
     fstcw -8(%rbp)
     fldt 16(%rbp)
     fchs
+.L__kefir_text_func_fi80_neg_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -179,6 +183,7 @@ fi80_sub:
     fldt 32(%rbp)
     fldt 16(%rbp)
     fsubp
+.L__kefir_text_func_fi80_sub_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -300,6 +305,7 @@ cf32_to_fi80:
     shufps $1, %xmm0, %xmm0
     movq %xmm0, -24(%rbp)
     flds -24(%rbp)
+.L__kefir_text_func_cf32_to_fi80_epilogue:
     ldmxcsr -16(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
@@ -316,6 +322,7 @@ cf64_to_fi80:
     stmxcsr -16(%rbp)
     movq %xmm1, -32(%rbp)
     fldl -32(%rbp)
+.L__kefir_text_func_cf64_to_fi80_epilogue:
     ldmxcsr -16(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
@@ -330,6 +337,7 @@ cf80_to_fi80:
     sub $16, %rsp
     fstcw -8(%rbp)
     fldt 32(%rbp)
+.L__kefir_text_func_cf80_to_fi80_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -356,6 +364,7 @@ f80_fi80_add:
     fstpt -48(%rbp)
     fldt -32(%rbp)
     fldt -48(%rbp)
+.L__kefir_text_func_f80_fi80_add_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -383,6 +392,7 @@ f80_fi80_div:
     fldl -16(%rbp)
     fdivp
     fchs
+.L__kefir_text_func_f80_fi80_div_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -399,6 +409,7 @@ f80_fi80_mul:
     movq %xmm0, -16(%rbp)
     fldl -16(%rbp)
     fmulp
+.L__kefir_text_func_f80_fi80_mul_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -425,6 +436,7 @@ f80_fi80_sub:
     fstpt -48(%rbp)
     fldt -32(%rbp)
     fldt -48(%rbp)
+.L__kefir_text_func_f80_fi80_sub_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -462,6 +474,7 @@ fi80_f80_add:
     fstpt -48(%rbp)
     fldt -32(%rbp)
     fldt -48(%rbp)
+.L__kefir_text_func_fi80_f80_add_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -487,6 +500,7 @@ fi80_f80_div:
     fldt 32(%rbp)
     fldt 16(%rbp)
     fdivp
+.L__kefir_text_func_fi80_f80_div_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -502,6 +516,7 @@ fi80_f80_mul:
     fldt 32(%rbp)
     fldt 16(%rbp)
     fmulp
+.L__kefir_text_func_fi80_f80_mul_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -529,6 +544,7 @@ fi80_f80_sub:
     fstpt -48(%rbp)
     fldt -32(%rbp)
     fldt -48(%rbp)
+.L__kefir_text_func_fi80_f80_sub_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -565,6 +581,7 @@ fi80_to_bool:
     xor %eax, %eax
     test %cl, %cl
     sete %al
+.L__kefir_text_func_fi80_to_bool_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -589,6 +606,7 @@ fi80_to_cf32:
     fstps -4(%rsp)
     movd -4(%rsp), %xmm1
     insertps $16, %xmm1, %xmm0
+.L__kefir_text_func_fi80_to_cf32_epilogue:
     ldmxcsr -16(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
@@ -612,6 +630,7 @@ fi80_to_cf64:
     movq .L__kefir_func_fi80_to_cf64_label3(%rip), %xmm0
     fstpl -8(%rsp)
     movq -8(%rsp), %xmm1
+.L__kefir_text_func_fi80_to_cf64_epilogue:
     ldmxcsr -16(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
@@ -637,6 +656,7 @@ fi80_to_cf80:
     fstpt -48(%rbp)
     fldt -32(%rbp)
     fldt -48(%rbp)
+.L__kefir_text_func_fi80_to_cf80_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -659,6 +679,7 @@ fi80_to_fi32:
     fldt 16(%rbp)
     fstps -4(%rsp)
     movd -4(%rsp), %xmm0
+.L__kefir_text_func_fi80_to_fi32_epilogue:
     ldmxcsr -16(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
@@ -676,6 +697,7 @@ fi80_to_fi64:
     fldt 16(%rbp)
     fstpl -8(%rsp)
     movq -8(%rsp), %xmm0
+.L__kefir_text_func_fi80_to_fi64_epilogue:
     ldmxcsr -16(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
@@ -715,6 +737,7 @@ cf80_fi80_add:
     fstpt -48(%rbp)
     fldt -32(%rbp)
     fldt -48(%rbp)
+.L__kefir_text_func_cf80_fi80_add_epilogue:
     ldmxcsr -16(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
@@ -760,6 +783,7 @@ cf80_fi80_div:
     add $64, %rsp
     fldt -64(%rbp)
     fldt -80(%rbp)
+.L__kefir_text_func_cf80_fi80_div_epilogue:
     ldmxcsr -16(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
@@ -805,6 +829,7 @@ cf80_fi80_mul:
     add $64, %rsp
     fldt -64(%rbp)
     fldt -80(%rbp)
+.L__kefir_text_func_cf80_fi80_mul_epilogue:
     ldmxcsr -16(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
@@ -841,6 +866,7 @@ cf80_fi80_sub:
     fstpt -48(%rbp)
     fldt -32(%rbp)
     fldt -48(%rbp)
+.L__kefir_text_func_cf80_fi80_sub_epilogue:
     ldmxcsr -16(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
@@ -876,6 +902,7 @@ fi80_cf80_add:
     fstpt -48(%rbp)
     fldt -32(%rbp)
     fldt -48(%rbp)
+.L__kefir_text_func_fi80_cf80_add_epilogue:
     ldmxcsr -16(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
@@ -921,6 +948,7 @@ fi80_cf80_div:
     add $64, %rsp
     fldt -64(%rbp)
     fldt -80(%rbp)
+.L__kefir_text_func_fi80_cf80_div_epilogue:
     ldmxcsr -16(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
@@ -966,6 +994,7 @@ fi80_cf80_mul:
     add $64, %rsp
     fldt -64(%rbp)
     fldt -80(%rbp)
+.L__kefir_text_func_fi80_cf80_mul_epilogue:
     ldmxcsr -16(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
@@ -1001,6 +1030,7 @@ fi80_cf80_sub:
     fstpt -48(%rbp)
     fldt -32(%rbp)
     fldt -48(%rbp)
+.L__kefir_text_func_fi80_cf80_sub_epilogue:
     ldmxcsr -16(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
@@ -1297,6 +1327,7 @@ __kefir_softfloat_complex_long_double_div:
     fstpt -176(%rbp)
     fldt -160(%rbp)
     fldt -176(%rbp)
+.L__kefir_runtime_text_func___kefir_softfloat_complex_long_double_div_epilogue:
     fldcw -24(%rbp)
     lea -16(%rbp), %rsp
     pop %r12
@@ -1840,6 +1871,7 @@ __kefir_softfloat_complex_long_double_mul:
     fstpt -224(%rbp)
     fldt -208(%rbp)
     fldt -224(%rbp)
+.L__kefir_runtime_text_func___kefir_softfloat_complex_long_double_mul_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -2429,6 +2461,7 @@ __kefir_softfloat_scalbnl:
     fldt -32(%rbp)
     fldt -48(%rbp)
     fmulp
+.L__kefir_runtime_text_func___kefir_softfloat_scalbnl_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -2497,6 +2530,7 @@ __kefir_softfloat_ilogbl:
     je .L__kefir_runtime_func___kefir_softfloat_ilogbl_label13
     sub $16383, %eax
 .L__kefir_runtime_func___kefir_softfloat_ilogbl_label8:
+.L__kefir_runtime_text_func___kefir_softfloat_ilogbl_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -2609,6 +2643,7 @@ __kefir_softfloat_fmaximum_numl:
     jnp .L__kefir_runtime_func___kefir_softfloat_fmaximum_numl_label14
 .L__kefir_runtime_func___kefir_softfloat_fmaximum_numl_label11:
     fldt -80(%rbp)
+.L__kefir_runtime_text_func___kefir_softfloat_fmaximum_numl_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -2670,22 +2705,13 @@ __kefir_softfloat_fmaximum_numl:
     movdqu %xmm0, -64(%rbp)
 .L__kefir_runtime_func___kefir_softfloat_fmaximum_numl_label7:
     fldt -64(%rbp)
-    fldcw -8(%rbp)
-    lea (%rbp), %rsp
-    pop %rbp
-    ret
+    jmp .L__kefir_runtime_text_func___kefir_softfloat_fmaximum_numl_epilogue
 .L__kefir_runtime_func___kefir_softfloat_fmaximum_numl_label15:
     fldt -64(%rbp)
-    fldcw -8(%rbp)
-    lea (%rbp), %rsp
-    pop %rbp
-    ret
+    jmp .L__kefir_runtime_text_func___kefir_softfloat_fmaximum_numl_epilogue
 .L__kefir_runtime_func___kefir_softfloat_fmaximum_numl_label16:
     fldt -80(%rbp)
-    fldcw -8(%rbp)
-    lea (%rbp), %rsp
-    pop %rbp
-    ret
+    jmp .L__kefir_runtime_text_func___kefir_softfloat_fmaximum_numl_epilogue
 .L__kefir_runtime_text_func___kefir_softfloat_fmaximum_numl_end:
 .section .rodata
     .align 8
@@ -2748,24 +2774,19 @@ __kefir_softfloat_logbl:
     push %rax
     fildq (%rsp)
     add $8, %rsp
+.L__kefir_runtime_text_func___kefir_softfloat_logbl_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
 .L__kefir_runtime_func___kefir_softfloat_logbl_label4:
     fldt .L__kefir_runtime_func___kefir_softfloat_logbl_label8(%rip)
-    fldcw -8(%rbp)
-    lea (%rbp), %rsp
-    pop %rbp
-    ret
+    jmp .L__kefir_runtime_text_func___kefir_softfloat_logbl_epilogue
 .L__kefir_runtime_func___kefir_softfloat_logbl_label5:
     fldt -32(%rbp)
     fld %st(0)
     fmulp
-    fldcw -8(%rbp)
-    lea (%rbp), %rsp
-    pop %rbp
-    ret
+    jmp .L__kefir_runtime_text_func___kefir_softfloat_logbl_epilogue
 .L__kefir_runtime_text_func___kefir_softfloat_logbl_end:
 .section .rodata
     .align 8

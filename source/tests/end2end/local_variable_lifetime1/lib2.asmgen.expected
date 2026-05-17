@@ -43,6 +43,7 @@ test2:
     lea -44(%rbp), %rcx
     xor %eax, %eax
     call test@PLT
+.L__kefir_text_func_test2_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp

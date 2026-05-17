@@ -40,6 +40,7 @@ fxch %st(1)
 fsubp
     fstpl -24(%rbp)
     movq -24(%rbp), %xmm0
+.L__kefir_text_func_discriminant_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -76,6 +77,7 @@ fxch %st(1)
 fsubp
     fstps -16(%rbp)
     movd -16(%rbp), %xmm0
+.L__kefir_text_func_discriminantf_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -120,6 +122,7 @@ fxch %st(1)
 fsubp
     fstpt -48(%rbp)
     fldt -48(%rbp)
+.L__kefir_text_func_discriminantl_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

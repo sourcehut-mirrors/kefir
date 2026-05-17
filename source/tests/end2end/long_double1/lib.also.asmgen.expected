@@ -21,6 +21,7 @@ hypot_sq:
     fmulp
     fxch %st(1)
     faddp
+.L__kefir_text_func_hypot_sq_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

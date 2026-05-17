@@ -148,6 +148,7 @@ get7:
     movdqu %xmm0, (%rax)
     movdqu -32(%rbp), %xmm0
     movdqu %xmm0, 16(%rax)
+.L__kefir_text_func_get7_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
@@ -172,6 +173,7 @@ get8:
     movdqu %xmm0, (%rax)
     movdqu -32(%rbp), %xmm0
     movdqu %xmm0, 16(%rax)
+.L__kefir_text_func_get8_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
@@ -196,6 +198,7 @@ get9:
     movdqu %xmm0, (%rax)
     movdqu -32(%rbp), %xmm0
     movdqu %xmm0, 16(%rax)
+.L__kefir_text_func_get9_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
@@ -235,6 +238,7 @@ get10:
     movq %rcx, 40(%rax)
     movq -16(%rbp), %rcx
     movq %rcx, 48(%rax)
+.L__kefir_text_func_get10_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
@@ -279,6 +283,7 @@ get11:
     movq %rcx, 40(%rax)
     movq -24(%rbp), %rcx
     movq %rcx, 48(%rax)
+.L__kefir_text_func_get11_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
@@ -323,6 +328,7 @@ get12:
     movq %rcx, 40(%rax)
     movq -16(%rbp), %rcx
     movq %rcx, 48(%rax)
+.L__kefir_text_func_get12_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp

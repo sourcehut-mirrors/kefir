@@ -107,6 +107,7 @@ postdec_ld:
     orl %eax, -48(%rbp)
     ldmxcsr -48(%rbp)
     fldt -64(%rbp)
+.L__kefir_text_func_postdec_ld_epilogue:
     fldcw -16(%rbp)
     lea -8(%rbp), %rsp
     pop %rbx
@@ -186,6 +187,7 @@ postinc_ld:
     orl %eax, -48(%rbp)
     ldmxcsr -48(%rbp)
     fldt -64(%rbp)
+.L__kefir_text_func_postinc_ld_epilogue:
     fldcw -16(%rbp)
     lea -8(%rbp), %rsp
     pop %rbx
@@ -234,6 +236,7 @@ postdec_f32:
     orl %eax, -16(%rbp)
     ldmxcsr -16(%rbp)
     movq %rsi, %xmm0
+.L__kefir_text_func_postdec_f32_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -280,6 +283,7 @@ postdec_f64:
     orl %eax, -16(%rbp)
     ldmxcsr -16(%rbp)
     movq %rsi, %xmm0
+.L__kefir_text_func_postdec_f64_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -387,6 +391,7 @@ postinc_f32:
     orl %eax, -16(%rbp)
     ldmxcsr -16(%rbp)
     movq %rsi, %xmm0
+.L__kefir_text_func_postinc_f32_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -433,6 +438,7 @@ postinc_f64:
     orl %eax, -16(%rbp)
     ldmxcsr -16(%rbp)
     movq %rsi, %xmm0
+.L__kefir_text_func_postinc_f64_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

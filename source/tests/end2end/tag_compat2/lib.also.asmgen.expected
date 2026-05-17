@@ -55,6 +55,7 @@ get:
     cvtsi2sd %rax, %xmm0
     movq %xmm0, 104(%rdx)
     mov %rdx, %rax
+.L__kefir_text_func_get_epilogue:
     ldmxcsr -16(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp

@@ -15,6 +15,7 @@ minus:
     fstcw -8(%rbp)
     fldt 16(%rbp)
     fchs
+.L__kefir_text_func_minus_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -46,6 +47,7 @@ pnanl:
     fstpt -48(%rbp)
 .L__kefir_func_pnanl_label5:
     fldt -48(%rbp)
+.L__kefir_text_func_pnanl_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

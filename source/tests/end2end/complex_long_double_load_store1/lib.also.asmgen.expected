@@ -44,6 +44,7 @@ test1:
     faddp
     movq $0, 8(%rax)
     fstpt (%rax)
+.L__kefir_text_func_test1_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

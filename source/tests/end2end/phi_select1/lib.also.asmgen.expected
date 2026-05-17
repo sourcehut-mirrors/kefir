@@ -74,6 +74,7 @@ select5:
     movdqu %xmm0, -48(%rbp)
 .L__kefir_func_select5_label3:
     fldt -48(%rbp)
+.L__kefir_text_func_select5_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

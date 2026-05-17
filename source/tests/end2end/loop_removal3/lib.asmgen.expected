@@ -61,6 +61,7 @@ test1:
     cmp %rbx, %r12
     jl .L__kefir_func_test1_label4
     xor %eax, %eax
+.L__kefir_text_func_test1_epilogue:
     pop %r12
     pop %rbx
     pop %rbp
@@ -87,6 +88,7 @@ test2:
     cmp %rbx, %r12
     jl .L__kefir_func_test2_label4
     movq -24(%rbp), %rax
+.L__kefir_text_func_test2_epilogue:
     lea -16(%rbp), %rsp
     pop %r12
     pop %rbx
@@ -114,6 +116,7 @@ test3:
     cmp %rbx, %r12
     jl .L__kefir_func_test3_label4
     movq -24(%rbp), %rax
+.L__kefir_text_func_test3_epilogue:
     lea -16(%rbp), %rsp
     pop %r12
     pop %rbx
@@ -139,6 +142,7 @@ test4:
     cmp $10, %rbx
     jl .L__kefir_func_test4_label4
     xor %eax, %eax
+.L__kefir_text_func_test4_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
@@ -169,6 +173,7 @@ test6:
     cmp $0, %rbx
     jle .L__kefir_func_test6_label4
     xor %eax, %eax
+.L__kefir_text_func_test6_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
@@ -193,6 +198,7 @@ test7:
     cmp $10, %rbx
     jb .L__kefir_func_test7_label4
     xor %eax, %eax
+.L__kefir_text_func_test7_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
@@ -223,6 +229,7 @@ test9:
     cmp $0, %rbx
     jbe .L__kefir_func_test9_label4
     xor %eax, %eax
+.L__kefir_text_func_test9_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
@@ -248,6 +255,7 @@ test10:
     cmp %rax, %rbx
     jl .L__kefir_func_test10_label4
     xor %eax, %eax
+.L__kefir_text_func_test10_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
@@ -278,6 +286,7 @@ test12:
     cmp $0, %rbx
     jl .L__kefir_func_test12_label4
     xor %eax, %eax
+.L__kefir_text_func_test12_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
@@ -309,6 +318,7 @@ test14:
     cmp %rax, %rbx
     jl .L__kefir_func_test14_label4
     xor %eax, %eax
+.L__kefir_text_func_test14_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
@@ -346,6 +356,7 @@ test17:
     cmp %rax, %rbx
     jb .L__kefir_func_test17_label4
     xor %eax, %eax
+.L__kefir_text_func_test17_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
@@ -371,6 +382,7 @@ test18:
     cmp %rax, %rbx
     jb .L__kefir_func_test18_label4
     xor %eax, %eax
+.L__kefir_text_func_test18_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
@@ -395,6 +407,7 @@ test19:
     cmp $-1, %rbx
     jb .L__kefir_func_test19_label4
     xor %eax, %eax
+.L__kefir_text_func_test19_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
@@ -425,6 +438,7 @@ test21:
     cmp $0, %rbx
     jl .L__kefir_func_test21_label4
     xor %eax, %eax
+.L__kefir_text_func_test21_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp

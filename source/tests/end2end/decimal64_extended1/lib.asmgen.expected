@@ -96,6 +96,7 @@ conv5:
     fstpt (%rsp)
     call __bid_extendxftd@PLT
     add $16, %rsp
+.L__kefir_text_func_conv5_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

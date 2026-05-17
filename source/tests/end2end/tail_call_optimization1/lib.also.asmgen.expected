@@ -32,6 +32,7 @@ run_bf:
     movq (%rcx, %rax, 8), %rbx
     lea -5152(%rbp), %rdi
     call *%rbx
+.L__kefir_text_func_run_bf_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp

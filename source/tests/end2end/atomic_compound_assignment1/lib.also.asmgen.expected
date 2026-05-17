@@ -176,6 +176,7 @@ add_ld:
     orl %eax, -112(%rbp)
     ldmxcsr -112(%rbp)
     fldt -48(%rbp)
+.L__kefir_text_func_add_ld_epilogue:
     fldcw -16(%rbp)
     lea -8(%rbp), %rsp
     pop %rbx
@@ -259,6 +260,7 @@ add_f32:
     orl %eax, -16(%rbp)
     ldmxcsr -16(%rbp)
     movaps %xmm1, %xmm0
+.L__kefir_text_func_add_f32_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -296,6 +298,7 @@ add_f64:
     orl %eax, -16(%rbp)
     ldmxcsr -16(%rbp)
     movaps %xmm1, %xmm0
+.L__kefir_text_func_add_f64_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -665,6 +668,7 @@ divide_ld:
     orl %eax, -112(%rbp)
     ldmxcsr -112(%rbp)
     fldt -48(%rbp)
+.L__kefir_text_func_divide_ld_epilogue:
     fldcw -16(%rbp)
     lea -8(%rbp), %rsp
     pop %rbx
@@ -722,6 +726,7 @@ divide_f32:
     orl %eax, -16(%rbp)
     ldmxcsr -16(%rbp)
     movaps %xmm1, %xmm0
+.L__kefir_text_func_divide_f32_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -759,6 +764,7 @@ divide_f64:
     orl %eax, -16(%rbp)
     ldmxcsr -16(%rbp)
     movaps %xmm1, %xmm0
+.L__kefir_text_func_divide_f64_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -942,6 +948,7 @@ multiply_ld:
     orl %eax, -112(%rbp)
     ldmxcsr -112(%rbp)
     fldt -48(%rbp)
+.L__kefir_text_func_multiply_ld_epilogue:
     fldcw -16(%rbp)
     lea -8(%rbp), %rsp
     pop %rbx
@@ -1016,6 +1023,7 @@ subtract_ld:
     orl %eax, -112(%rbp)
     ldmxcsr -112(%rbp)
     fldt -48(%rbp)
+.L__kefir_text_func_subtract_ld_epilogue:
     fldcw -16(%rbp)
     lea -8(%rbp), %rsp
     pop %rbx
@@ -1054,6 +1062,7 @@ multiply_f32:
     orl %eax, -16(%rbp)
     ldmxcsr -16(%rbp)
     movaps %xmm1, %xmm0
+.L__kefir_text_func_multiply_f32_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -1091,6 +1100,7 @@ multiply_f64:
     orl %eax, -16(%rbp)
     ldmxcsr -16(%rbp)
     movaps %xmm1, %xmm0
+.L__kefir_text_func_multiply_f64_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -1171,6 +1181,7 @@ subtract_f32:
     orl %eax, -16(%rbp)
     ldmxcsr -16(%rbp)
     movaps %xmm1, %xmm0
+.L__kefir_text_func_subtract_f32_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -1208,6 +1219,7 @@ subtract_f64:
     orl %eax, -16(%rbp)
     ldmxcsr -16(%rbp)
     movaps %xmm1, %xmm0
+.L__kefir_text_func_subtract_f64_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

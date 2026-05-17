@@ -110,6 +110,7 @@ predec5:
     movdqu %xmm0, (%rbx)
     movq -32(%rbp), %rax
     movq -24(%rbp), %rdx
+.L__kefir_text_func_predec5_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
@@ -175,6 +176,7 @@ predec6:
     movq %rcx, 24(%rax)
     movq -40(%rbp), %rcx
     movq %rcx, 32(%rax)
+.L__kefir_text_func_predec6_epilogue:
     lea -16(%rbp), %rsp
     pop %r12
     pop %rbx

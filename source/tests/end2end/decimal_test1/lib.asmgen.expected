@@ -46,6 +46,7 @@ test_dec128_mean_squared_error:
     movaps %xmm0, %xmm1
     movaps -48(%rbp), %xmm0
     call __bid_divtd3@PLT
+.L__kefir_text_func_test_dec128_mean_squared_error_epilogue:
     lea -16(%rbp), %rsp
     pop %r12
     pop %rbx
@@ -105,6 +106,7 @@ test_dec64_gradient_descent:
     movq %xmm0, -112(%rbp)
     cmp %ebx, %r15d
     jb .L__kefir_func_test_dec64_gradient_descent_label4
+.L__kefir_text_func_test_dec64_gradient_descent_epilogue:
     lea -40(%rbp), %rsp
     pop %r15
     pop %r14
@@ -223,6 +225,7 @@ test_dec64_mean_squared_error:
     movaps %xmm0, %xmm1
     movaps -48(%rbp), %xmm0
     call __bid_divdd3@PLT
+.L__kefir_text_func_test_dec64_mean_squared_error_epilogue:
     lea -16(%rbp), %rsp
     pop %r12
     pop %rbx
@@ -357,6 +360,7 @@ test_dec32_mean_squared_error:
     movaps %xmm0, %xmm1
     movaps -48(%rbp), %xmm0
     call __bid_divsd3@PLT
+.L__kefir_text_func_test_dec32_mean_squared_error_epilogue:
     lea -16(%rbp), %rsp
     pop %r12
     pop %rbx
@@ -453,6 +457,7 @@ test_dec128_gradient_descent:
     movdqu %xmm0, -112(%rbp)
     cmp %ebx, %r15d
     jb .L__kefir_func_test_dec128_gradient_descent_label4
+.L__kefir_text_func_test_dec128_gradient_descent_epilogue:
     lea -40(%rbp), %rsp
     pop %r15
     pop %r14
@@ -575,6 +580,7 @@ test_dec32_gradient_descent:
     movl -48(%rbp), %eax
     cmp %eax, %r15d
     jb .L__kefir_func_test_dec32_gradient_descent_label4
+.L__kefir_text_func_test_dec32_gradient_descent_epilogue:
     lea -40(%rbp), %rsp
     pop %r15
     pop %r14

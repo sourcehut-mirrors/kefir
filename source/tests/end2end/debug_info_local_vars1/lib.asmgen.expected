@@ -38,6 +38,7 @@ fn1:
     jnz .L__kefir_func_fn1_label6
 .L__kefir_func_fn1_label86:
     pxor %xmm0, %xmm0
+.L__kefir_text_func_fn1_epilogue:
     ldmxcsr -16(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
@@ -101,11 +102,7 @@ fn1:
     addsd %xmm1, %xmm0
 .loc 0 32 13
 .L__kefir_func_fn1_label196:
-    ldmxcsr -16(%rbp)
-    fldcw -8(%rbp)
-    lea (%rbp), %rsp
-    pop %rbp
-    ret
+    jmp .L__kefir_text_func_fn1_epilogue
 .loc 0 32 54
 .L__kefir_func_fn1_label12:
     movq -1560(%rbp), %rdx
@@ -196,6 +193,7 @@ fn2:
     addq -80(%rbp), %rax
 .loc 0 39 5
 .L__kefir_func_fn2_label183:
+.L__kefir_text_func_fn2_epilogue:
     lea -40(%rbp), %rsp
     pop %r15
     pop %r14
@@ -275,6 +273,7 @@ fn3:
     addsd -48(%rbp), %xmm0
 .loc 0 44 5
 .L__kefir_func_fn3_label183:
+.L__kefir_text_func_fn3_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

@@ -45,6 +45,7 @@ get:
     movdqu %xmm0, -64(%rbp)
 .L__kefir_func_get_label5:
     fldt -64(%rbp)
+.L__kefir_text_func_get_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -76,6 +77,7 @@ get2:
     movdqu %xmm0, -64(%rbp)
 .L__kefir_func_get2_label5:
     fldt -64(%rbp)
+.L__kefir_text_func_get2_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -107,6 +109,7 @@ get3:
     movdqu %xmm0, -64(%rbp)
 .L__kefir_func_get3_label5:
     fldt -64(%rbp)
+.L__kefir_text_func_get3_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -138,6 +141,7 @@ get4:
     movdqu %xmm0, -64(%rbp)
 .L__kefir_func_get4_label5:
     fldt -64(%rbp)
+.L__kefir_text_func_get4_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -169,6 +173,7 @@ get5:
     movdqu %xmm0, -64(%rbp)
 .L__kefir_func_get5_label5:
     fldt -64(%rbp)
+.L__kefir_text_func_get5_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -200,6 +205,7 @@ get6:
     movdqu %xmm0, -64(%rbp)
 .L__kefir_func_get6_label5:
     fldt -64(%rbp)
+.L__kefir_text_func_get6_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -231,6 +237,7 @@ get7:
     movdqu %xmm0, -64(%rbp)
 .L__kefir_func_get7_label5:
     fldt -64(%rbp)
+.L__kefir_text_func_get7_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -262,6 +269,7 @@ get8:
     movdqu %xmm0, -64(%rbp)
 .L__kefir_func_get8_label5:
     fldt -64(%rbp)
+.L__kefir_text_func_get8_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -293,6 +301,7 @@ get9:
     movdqu %xmm0, -64(%rbp)
 .L__kefir_func_get9_label5:
     fldt -64(%rbp)
+.L__kefir_text_func_get9_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -324,6 +333,7 @@ get10:
     movdqu %xmm0, -64(%rbp)
 .L__kefir_func_get10_label5:
     fldt -64(%rbp)
+.L__kefir_text_func_get10_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

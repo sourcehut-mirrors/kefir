@@ -70,6 +70,7 @@ get1:
     movdqu %xmm0, 32(%rax)
     movdqu 48(%rcx), %xmm0
     movdqu %xmm0, 48(%rax)
+.L__kefir_text_func_get1_epilogue:
     lea -16(%rbp), %rsp
     pop %r12
     pop %rbx

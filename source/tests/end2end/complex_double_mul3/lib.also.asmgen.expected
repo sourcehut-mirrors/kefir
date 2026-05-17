@@ -24,6 +24,7 @@ mul:
     movaps %xmm3, %xmm1
     movaps %xmm3, %xmm0
     unpckhpd %xmm3, %xmm1
+.L__kefir_text_func_mul_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

@@ -181,6 +181,7 @@ get11:
     movdqu %xmm0, 16(%rax)
     movdqu -32(%rbp), %xmm0
     movdqu %xmm0, 32(%rax)
+.L__kefir_text_func_get11_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
@@ -205,6 +206,7 @@ get12:
     movdqu %xmm0, 16(%rax)
     movdqu -32(%rbp), %xmm0
     movdqu %xmm0, 32(%rax)
+.L__kefir_text_func_get12_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
@@ -283,6 +285,7 @@ get11a:
     movdqu %xmm0, 16(%rax)
     movdqu -32(%rbp), %xmm0
     movdqu %xmm0, 32(%rax)
+.L__kefir_text_func_get11a_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp

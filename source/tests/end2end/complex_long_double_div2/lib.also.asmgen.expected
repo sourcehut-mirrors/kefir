@@ -65,6 +65,7 @@ divide:
     fstp %st(0)
     fldt -32(%rbp)
     fldt -48(%rbp)
+.L__kefir_text_func_divide_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

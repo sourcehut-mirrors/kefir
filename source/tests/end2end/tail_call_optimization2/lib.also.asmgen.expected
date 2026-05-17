@@ -19,6 +19,7 @@ factorial:
 .L__kefir_func_factorial_label3:
     movaps %xmm1, %xmm0
 .L__kefir_func_factorial_label5:
+.L__kefir_text_func_factorial_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -59,6 +60,7 @@ factorial_helper:
     jp .L__kefir_func_factorial_helper_label3
     ja .L__kefir_func_factorial_helper_label4
 .L__kefir_func_factorial_helper_label3:
+.L__kefir_text_func_factorial_helper_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

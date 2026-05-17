@@ -234,6 +234,7 @@ mod6:
     movq %rcx, 24(%rax)
     movq -144(%rbp), %rcx
     movq %rcx, 32(%rax)
+.L__kefir_text_func_mod6_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp

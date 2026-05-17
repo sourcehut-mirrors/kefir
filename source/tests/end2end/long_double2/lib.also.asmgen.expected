@@ -25,6 +25,7 @@ increment:
     fldt .L__kefir_func_increment_label3(%rip)
     fldt -32(%rbp)
     faddp
+.L__kefir_text_func_increment_epilogue:
     fldcw -16(%rbp)
     lea -8(%rbp), %rsp
     pop %rbx

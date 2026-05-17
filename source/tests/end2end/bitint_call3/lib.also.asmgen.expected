@@ -29,6 +29,7 @@ test2:
     mov %rbx, %rdi
     call test1@PLT
     add $128, %rsp
+.L__kefir_text_func_test2_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp

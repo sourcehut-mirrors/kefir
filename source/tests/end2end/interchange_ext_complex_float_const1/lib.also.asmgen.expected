@@ -33,6 +33,7 @@ mygeta:
     movd .L__kefir_func_mygeta_label3(%rip), %xmm0
     movd .L__kefir_func_mygeta_label4(%rip), %xmm1
     insertps $16, %xmm1, %xmm0
+.L__kefir_text_func_mygeta_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -55,6 +56,7 @@ mygetb:
     stmxcsr -8(%rbp)
     movq .L__kefir_func_mygetb_label3(%rip), %xmm0
     movq .L__kefir_func_mygetb_label4(%rip), %xmm1
+.L__kefir_text_func_mygetb_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -77,6 +79,7 @@ mygetc:
     stmxcsr -8(%rbp)
     movq .L__kefir_func_mygetc_label3(%rip), %xmm0
     movq .L__kefir_func_mygetc_label4(%rip), %xmm1
+.L__kefir_text_func_mygetc_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -103,6 +106,7 @@ mygetd:
     fstpt -48(%rbp)
     fldt -32(%rbp)
     fldt -48(%rbp)
+.L__kefir_text_func_mygetd_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -131,6 +135,7 @@ mygete:
     fstpt -48(%rbp)
     fldt -32(%rbp)
     fldt -48(%rbp)
+.L__kefir_text_func_mygete_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

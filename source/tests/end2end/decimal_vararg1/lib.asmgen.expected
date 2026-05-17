@@ -50,6 +50,7 @@ sum32:
 .L__kefir_func_sum32_label4:
     test %ebx, %ebx
     jnz .L__kefir_func_sum32_label6
+.L__kefir_text_func_sum32_epilogue:
     ldmxcsr -16(%rbp)
     lea -8(%rbp), %rsp
     pop %rbx
@@ -115,6 +116,7 @@ sum64:
 .L__kefir_func_sum64_label4:
     test %ebx, %ebx
     jnz .L__kefir_func_sum64_label6
+.L__kefir_text_func_sum64_epilogue:
     ldmxcsr -16(%rbp)
     lea -8(%rbp), %rsp
     pop %rbx
@@ -180,6 +182,7 @@ sum128:
 .L__kefir_func_sum128_label4:
     test %ebx, %ebx
     jnz .L__kefir_func_sum128_label6
+.L__kefir_text_func_sum128_epilogue:
     ldmxcsr -16(%rbp)
     lea -8(%rbp), %rsp
     pop %rbx
@@ -247,6 +250,7 @@ sum128_2:
 .L__kefir_func_sum128_2_label4:
     test %ebx, %ebx
     jnz .L__kefir_func_sum128_2_label6
+.L__kefir_text_func_sum128_2_epilogue:
     ldmxcsr -16(%rbp)
     lea -8(%rbp), %rsp
     pop %rbx

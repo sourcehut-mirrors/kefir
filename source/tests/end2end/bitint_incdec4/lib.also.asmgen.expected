@@ -110,6 +110,7 @@ postdec5:
     movdqu %xmm0, (%rbx)
     movq -64(%rbp), %rax
     movq -56(%rbp), %rdx
+.L__kefir_text_func_postdec5_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
@@ -175,6 +176,7 @@ postdec6:
     movq %rcx, 24(%rax)
     movq -112(%rbp), %rcx
     movq %rcx, 32(%rax)
+.L__kefir_text_func_postdec6_epilogue:
     lea -16(%rbp), %rsp
     pop %r12
     pop %rbx

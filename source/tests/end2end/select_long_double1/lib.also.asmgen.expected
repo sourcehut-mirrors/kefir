@@ -27,6 +27,7 @@ get:
     movdqu %xmm0, -64(%rbp)
 .L__kefir_func_get_label5:
     fldt -64(%rbp)
+.L__kefir_text_func_get_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

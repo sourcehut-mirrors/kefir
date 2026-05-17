@@ -35,6 +35,7 @@ divide:
     add $64, %rsp
     fldt -64(%rbp)
     fldt -80(%rbp)
+.L__kefir_text_func_divide_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -164,6 +165,7 @@ __kefir_softfloat_complex_long_double_div:
     fstpt -176(%rbp)
     fldt -160(%rbp)
     fldt -176(%rbp)
+.L__kefir_runtime_text_func___kefir_softfloat_complex_long_double_div_epilogue:
     fldcw -24(%rbp)
     lea -16(%rbp), %rsp
     pop %r12
@@ -694,6 +696,7 @@ __kefir_softfloat_scalbnl:
     fldt -32(%rbp)
     fldt -48(%rbp)
     fmulp
+.L__kefir_runtime_text_func___kefir_softfloat_scalbnl_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -762,6 +765,7 @@ __kefir_softfloat_ilogbl:
     je .L__kefir_runtime_func___kefir_softfloat_ilogbl_label13
     sub $16383, %eax
 .L__kefir_runtime_func___kefir_softfloat_ilogbl_label8:
+.L__kefir_runtime_text_func___kefir_softfloat_ilogbl_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -874,6 +878,7 @@ __kefir_softfloat_fmaximum_numl:
     jnp .L__kefir_runtime_func___kefir_softfloat_fmaximum_numl_label14
 .L__kefir_runtime_func___kefir_softfloat_fmaximum_numl_label11:
     fldt -80(%rbp)
+.L__kefir_runtime_text_func___kefir_softfloat_fmaximum_numl_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -935,22 +940,13 @@ __kefir_softfloat_fmaximum_numl:
     movdqu %xmm0, -64(%rbp)
 .L__kefir_runtime_func___kefir_softfloat_fmaximum_numl_label7:
     fldt -64(%rbp)
-    fldcw -8(%rbp)
-    lea (%rbp), %rsp
-    pop %rbp
-    ret
+    jmp .L__kefir_runtime_text_func___kefir_softfloat_fmaximum_numl_epilogue
 .L__kefir_runtime_func___kefir_softfloat_fmaximum_numl_label15:
     fldt -64(%rbp)
-    fldcw -8(%rbp)
-    lea (%rbp), %rsp
-    pop %rbp
-    ret
+    jmp .L__kefir_runtime_text_func___kefir_softfloat_fmaximum_numl_epilogue
 .L__kefir_runtime_func___kefir_softfloat_fmaximum_numl_label16:
     fldt -80(%rbp)
-    fldcw -8(%rbp)
-    lea (%rbp), %rsp
-    pop %rbp
-    ret
+    jmp .L__kefir_runtime_text_func___kefir_softfloat_fmaximum_numl_epilogue
 .L__kefir_runtime_text_func___kefir_softfloat_fmaximum_numl_end:
 .section .rodata
     .align 8
@@ -1013,24 +1009,19 @@ __kefir_softfloat_logbl:
     push %rax
     fildq (%rsp)
     add $8, %rsp
+.L__kefir_runtime_text_func___kefir_softfloat_logbl_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
 .L__kefir_runtime_func___kefir_softfloat_logbl_label4:
     fldt .L__kefir_runtime_func___kefir_softfloat_logbl_label8(%rip)
-    fldcw -8(%rbp)
-    lea (%rbp), %rsp
-    pop %rbp
-    ret
+    jmp .L__kefir_runtime_text_func___kefir_softfloat_logbl_epilogue
 .L__kefir_runtime_func___kefir_softfloat_logbl_label5:
     fldt -32(%rbp)
     fld %st(0)
     fmulp
-    fldcw -8(%rbp)
-    lea (%rbp), %rsp
-    pop %rbp
-    ret
+    jmp .L__kefir_runtime_text_func___kefir_softfloat_logbl_epilogue
 .L__kefir_runtime_text_func___kefir_softfloat_logbl_end:
 .section .rodata
     .align 8

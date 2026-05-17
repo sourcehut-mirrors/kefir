@@ -50,6 +50,7 @@ add:
     cld
     mov $1024, %rcx
     rep movsq
+.L__kefir_text_func_add_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
@@ -91,6 +92,7 @@ mul:
     cld
     mov $1024, %rcx
     rep movsq
+.L__kefir_text_func_mul_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
@@ -113,6 +115,7 @@ init:
     cld
     mov $1024, %rcx
     rep movsq
+.L__kefir_text_func_init_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp

@@ -64,6 +64,7 @@ test_dec128_run:
     movaps -112(%rbp), %xmm0
     movaps -96(%rbp), %xmm1
     call __bid_addtd3@PLT
+.L__kefir_text_func_test_dec128_run_epilogue:
     lea -24(%rbp), %rsp
     pop %r13
     pop %r12
@@ -160,6 +161,7 @@ test_dec32_init:
     lea 1(%rax), %rdi
     cmp %rsi, %rax
     jbe .L__kefir_func_test_dec32_init_label8
+.L__kefir_text_func_test_dec32_init_epilogue:
     lea -24(%rbp), %rsp
     pop %r13
     pop %r12
@@ -247,6 +249,7 @@ test_dec32_norm:
     cmp %rbx, %r13
     jb .L__kefir_func_test_dec32_norm_label4
     movaps -48(%rbp), %xmm0
+.L__kefir_text_func_test_dec32_norm_epilogue:
     lea -24(%rbp), %rsp
     pop %r13
     pop %r12
@@ -522,6 +525,7 @@ test_dec64_init:
     imul %rbx, %rdi
     cmp %rdx, %rax
     jbe .L__kefir_func_test_dec64_init_label8
+.L__kefir_text_func_test_dec64_init_epilogue:
     lea -24(%rbp), %rsp
     pop %r13
     pop %r12
@@ -609,6 +613,7 @@ test_dec64_norm:
     cmp %rbx, %r13
     jb .L__kefir_func_test_dec64_norm_label4
     movaps -48(%rbp), %xmm0
+.L__kefir_text_func_test_dec64_norm_epilogue:
     lea -24(%rbp), %rsp
     pop %r13
     pop %r12
@@ -846,6 +851,7 @@ test_dec32_run:
     movaps -96(%rbp), %xmm0
     movaps -80(%rbp), %xmm1
     call __bid_addsd3@PLT
+.L__kefir_text_func_test_dec32_run_epilogue:
     lea -24(%rbp), %rsp
     pop %r13
     pop %r12
@@ -904,6 +910,7 @@ test_dec64_run:
     movaps -96(%rbp), %xmm0
     movaps -80(%rbp), %xmm1
     call __bid_adddd3@PLT
+.L__kefir_text_func_test_dec64_run_epilogue:
     lea -24(%rbp), %rsp
     pop %r13
     pop %r12
@@ -959,6 +966,7 @@ test_dec128_laplacian:
     lea 1(%r14), %rbx
     cmp %r13, %r14
     jb .L__kefir_func_test_dec128_laplacian_label4
+.L__kefir_text_func_test_dec128_laplacian_epilogue:
     lea -40(%rbp), %rsp
     pop %r15
     pop %r14
@@ -1089,6 +1097,7 @@ test_dec32_laplacian:
     lea 1(%r14), %rbx
     cmp %r13, %r14
     jb .L__kefir_func_test_dec32_laplacian_label4
+.L__kefir_text_func_test_dec32_laplacian_epilogue:
     lea -40(%rbp), %rsp
     pop %r15
     pop %r14
@@ -1214,6 +1223,7 @@ test_dec64_laplacian:
     lea 1(%r14), %rbx
     cmp %r13, %r14
     jb .L__kefir_func_test_dec64_laplacian_label4
+.L__kefir_text_func_test_dec64_laplacian_epilogue:
     lea -40(%rbp), %rsp
     pop %r15
     pop %r14
@@ -1364,6 +1374,7 @@ test_dec128_init:
     imul %rbx, %rdi
     cmp %rdx, %rax
     jbe .L__kefir_func_test_dec128_init_label8
+.L__kefir_text_func_test_dec128_init_epilogue:
     lea -24(%rbp), %rsp
     pop %r13
     pop %r12
@@ -1453,6 +1464,7 @@ test_dec128_norm:
     cmp %rbx, %r13
     jb .L__kefir_func_test_dec128_norm_label4
     movaps -48(%rbp), %xmm0
+.L__kefir_text_func_test_dec128_norm_epilogue:
     lea -24(%rbp), %rsp
     pop %r13
     pop %r12

@@ -47,6 +47,7 @@ divide:
     fstpl -40(%rbp)
     movq -48(%rbp), %xmm0
     movq -40(%rbp), %xmm1
+.L__kefir_text_func_divide_epilogue:
     ldmxcsr -16(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp

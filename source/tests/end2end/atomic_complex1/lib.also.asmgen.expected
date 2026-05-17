@@ -67,6 +67,7 @@ add_ld:
     fstpt -80(%rbp)
     fldt -64(%rbp)
     fldt -80(%rbp)
+.L__kefir_text_func_add_ld_epilogue:
     fldcw -16(%rbp)
     lea -8(%rbp), %rsp
     pop %rbx
@@ -145,6 +146,7 @@ div_ld:
     fstp %st(0)
     fldt -64(%rbp)
     fldt -80(%rbp)
+.L__kefir_text_func_div_ld_epilogue:
     fldcw -16(%rbp)
     lea -8(%rbp), %rsp
     pop %rbx
@@ -200,6 +202,7 @@ mul_ld:
     fstp %st(0)
     fldt -64(%rbp)
     fldt -80(%rbp)
+.L__kefir_text_func_mul_ld_epilogue:
     fldcw -16(%rbp)
     lea -8(%rbp), %rsp
     pop %rbx
@@ -226,6 +229,7 @@ neg_ld:
     fstpt -48(%rbp)
     fldt -32(%rbp)
     fldt -48(%rbp)
+.L__kefir_text_func_neg_ld_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -262,6 +266,7 @@ sub_ld:
     fstpt -80(%rbp)
     fldt -64(%rbp)
     fldt -80(%rbp)
+.L__kefir_text_func_sub_ld_epilogue:
     fldcw -16(%rbp)
     lea -8(%rbp), %rsp
     pop %rbx
@@ -300,6 +305,7 @@ add_f32:
     addss %xmm1, %xmm2
     movaps %xmm2, %xmm1
     insertps $16, %xmm1, %xmm0
+.L__kefir_text_func_add_f32_epilogue:
     ldmxcsr -16(%rbp)
     lea -8(%rbp), %rsp
     pop %rbx
@@ -337,6 +343,7 @@ add_f64:
     movaps -64(%rbp), %xmm2
     addsd %xmm1, %xmm2
     movaps %xmm2, %xmm1
+.L__kefir_text_func_add_f64_epilogue:
     ldmxcsr -16(%rbp)
     lea -8(%rbp), %rsp
     pop %rbx
@@ -391,6 +398,7 @@ div_f32:
     movaps %xmm0, %xmm1
     shufps $1, %xmm1, %xmm1
     insertps $16, %xmm1, %xmm0
+.L__kefir_text_func_div_f32_epilogue:
     ldmxcsr -16(%rbp)
     lea -8(%rbp), %rsp
     pop %rbx
@@ -459,6 +467,7 @@ div_f64:
     fstpl -88(%rbp)
     movq -96(%rbp), %xmm0
     movq -88(%rbp), %xmm1
+.L__kefir_text_func_div_f64_epilogue:
     ldmxcsr -24(%rbp)
     fldcw -16(%rbp)
     lea -8(%rbp), %rsp
@@ -505,6 +514,7 @@ mul_f32:
     movaps %xmm0, %xmm1
     shufps $1, %xmm1, %xmm1
     insertps $16, %xmm1, %xmm0
+.L__kefir_text_func_mul_f32_epilogue:
     ldmxcsr -16(%rbp)
     lea -8(%rbp), %rsp
     pop %rbx
@@ -549,6 +559,7 @@ mul_f64:
     movaps %xmm2, %xmm1
     movaps %xmm2, %xmm0
     unpckhpd %xmm2, %xmm1
+.L__kefir_text_func_mul_f64_epilogue:
     ldmxcsr -16(%rbp)
     lea -8(%rbp), %rsp
     pop %rbx
@@ -574,6 +585,7 @@ neg_f32:
     movaps %xmm0, %xmm1
     shufps $1, %xmm1, %xmm1
     insertps $16, %xmm1, %xmm0
+.L__kefir_text_func_neg_f32_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -595,6 +607,7 @@ neg_f64:
     movq -24(%rbp), %xmm1
     xorps .L__kefir_constant_complex_float64_neg(%rip), %xmm0
     xorps .L__kefir_constant_complex_float64_neg(%rip), %xmm1
+.L__kefir_text_func_neg_f64_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -632,6 +645,7 @@ sub_f32:
     subss %xmm1, %xmm2
     movaps %xmm2, %xmm1
     insertps $16, %xmm1, %xmm0
+.L__kefir_text_func_sub_f32_epilogue:
     ldmxcsr -16(%rbp)
     lea -8(%rbp), %rsp
     pop %rbx
@@ -669,6 +683,7 @@ sub_f64:
     movaps -64(%rbp), %xmm2
     subsd %xmm1, %xmm2
     movaps %xmm2, %xmm1
+.L__kefir_text_func_sub_f64_epilogue:
     ldmxcsr -16(%rbp)
     lea -8(%rbp), %rsp
     pop %rbx

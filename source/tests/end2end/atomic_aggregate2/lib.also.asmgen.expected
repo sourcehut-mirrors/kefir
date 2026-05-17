@@ -28,6 +28,7 @@ load_buffer:
     movdqu %xmm0, 32(%rax)
     movdqu -24(%rbp), %xmm0
     movdqu %xmm0, 48(%rax)
+.L__kefir_text_func_load_buffer_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp

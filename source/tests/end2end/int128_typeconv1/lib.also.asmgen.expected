@@ -168,6 +168,7 @@ i128_to_i256:
     movdqu %xmm0, (%rax)
     movdqu -32(%rbp), %xmm0
     movdqu %xmm0, 16(%rax)
+.L__kefir_text_func_i128_to_i256_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
@@ -194,6 +195,7 @@ i128_to_u256:
     movdqu %xmm0, (%rax)
     movdqu -32(%rbp), %xmm0
     movdqu %xmm0, 16(%rax)
+.L__kefir_text_func_i128_to_u256_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
@@ -220,6 +222,7 @@ u128_to_i256:
     movdqu %xmm0, (%rax)
     movdqu -32(%rbp), %xmm0
     movdqu %xmm0, 16(%rax)
+.L__kefir_text_func_u128_to_i256_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
@@ -246,6 +249,7 @@ u128_to_u256:
     movdqu %xmm0, (%rax)
     movdqu -32(%rbp), %xmm0
     movdqu %xmm0, 16(%rax)
+.L__kefir_text_func_u128_to_u256_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp

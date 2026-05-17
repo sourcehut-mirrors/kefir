@@ -107,6 +107,7 @@ get:
     cvtsi2ss %rax, %xmm0
     movd %xmm0, 560(%rdx)
     mov %rdx, %rax
+.L__kefir_text_func_get_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

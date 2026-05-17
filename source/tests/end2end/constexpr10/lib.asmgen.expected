@@ -30,6 +30,7 @@ get1:
     movd .L__kefir_func_get1_label6(%rip), %xmm0
     movd %xmm0, 72(%rdi)
     mov %rdi, %rax
+.L__kefir_text_func_get1_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

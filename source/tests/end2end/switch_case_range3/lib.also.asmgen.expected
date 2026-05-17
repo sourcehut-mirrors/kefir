@@ -173,6 +173,7 @@ test5:
     and %al, %bl
     jnz .L__kefir_func_test5_label3
     mov $2, %eax
+.L__kefir_text_func_test5_epilogue:
     lea -16(%rbp), %rsp
     pop %r12
     pop %rbx
@@ -180,11 +181,7 @@ test5:
     ret
 .L__kefir_func_test5_label3:
     mov $1, %eax
-    lea -16(%rbp), %rsp
-    pop %r12
-    pop %rbx
-    pop %rbp
-    ret
+    jmp .L__kefir_text_func_test5_epilogue
 .L__kefir_text_func_test5_end:
 
 .L__kefir_text_section_end:

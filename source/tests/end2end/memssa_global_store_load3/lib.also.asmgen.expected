@@ -49,6 +49,7 @@ test2:
     add %ecx, %ebx
     mov %ebx, %eax
     add %edx, %eax
+.L__kefir_text_func_test2_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp

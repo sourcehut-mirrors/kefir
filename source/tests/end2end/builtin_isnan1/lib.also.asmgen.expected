@@ -27,6 +27,7 @@ is_nan_f32:
     ucomiss %xmm0, %xmm0
     setp %al
     movzx %al, %rax
+.L__kefir_text_func_is_nan_f32_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -44,6 +45,7 @@ is_nan_f64:
     ucomisd %xmm0, %xmm0
     setp %al
     movzx %al, %rax
+.L__kefir_text_func_is_nan_f64_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -64,6 +66,7 @@ is_nan_f80:
     setp %al
     movzx %al, %rax
     fstp %st(0)
+.L__kefir_text_func_is_nan_f80_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

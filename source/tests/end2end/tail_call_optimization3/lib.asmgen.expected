@@ -180,6 +180,7 @@ test9:
     call somejmp@PLT
     lea 1(%ebx), %edi
     call test9
+.L__kefir_text_func_test9_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
