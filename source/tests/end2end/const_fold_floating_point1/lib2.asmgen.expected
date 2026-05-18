@@ -115,7 +115,6 @@ add32:
     movd .L__kefir_func_add32_label4(%rip), %xmm0
     movd .L__kefir_func_add32_label5(%rip), %xmm1
     addss %xmm1, %xmm0
-.L__kefir_text_func_add32_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -139,7 +138,6 @@ add64:
     movq .L__kefir_func_add64_label4(%rip), %xmm0
     movq .L__kefir_func_add64_label5(%rip), %xmm1
     addsd %xmm1, %xmm0
-.L__kefir_text_func_add64_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -164,7 +162,6 @@ add80:
     fldt .L__kefir_func_add80_label5(%rip)
     fxch %st(1)
     faddp
-.L__kefir_text_func_add80_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -190,7 +187,6 @@ div32:
     movd .L__kefir_func_div32_label4(%rip), %xmm0
     movd .L__kefir_func_div32_label5(%rip), %xmm1
     divss %xmm1, %xmm0
-.L__kefir_text_func_div32_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -214,7 +210,6 @@ div64:
     movq .L__kefir_func_div64_label4(%rip), %xmm0
     movq .L__kefir_func_div64_label5(%rip), %xmm1
     divsd %xmm1, %xmm0
-.L__kefir_text_func_div64_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -239,7 +234,6 @@ div80:
     fldt .L__kefir_func_div80_label5(%rip)
     fxch %st(1)
     fdivp
-.L__kefir_text_func_div80_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -266,7 +260,6 @@ mul32:
     movq .L__kefir_func_mul32_label5(%rip), %xmm1
     mulsd %xmm1, %xmm0
     cvtsd2ss %xmm0, %xmm0
-.L__kefir_text_func_mul32_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -294,7 +287,6 @@ mul64:
     fmulp
     fstpl -8(%rsp)
     movq -8(%rsp), %xmm0
-.L__kefir_text_func_mul64_epilogue:
     ldmxcsr -16(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
@@ -322,7 +314,6 @@ mul80:
     fldt .L__kefir_func_mul80_label5(%rip)
     fxch %st(1)
     fmulp
-.L__kefir_text_func_mul80_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -347,7 +338,6 @@ neg32:
     stmxcsr -8(%rbp)
     movd .L__kefir_func_neg32_label4(%rip), %xmm0
     xorps .L__kefir_constant_float32_neg(%rip), %xmm0
-.L__kefir_text_func_neg32_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -367,7 +357,6 @@ neg64:
     stmxcsr -8(%rbp)
     movq .L__kefir_func_neg64_label4(%rip), %xmm0
     xorpd .L__kefir_constant_float64_neg(%rip), %xmm0
-.L__kefir_text_func_neg64_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -387,7 +376,6 @@ neg80:
     fstcw -8(%rbp)
     fldt .L__kefir_func_neg80_label4(%rip)
     fchs
-.L__kefir_text_func_neg80_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -409,7 +397,6 @@ sub32:
     movd .L__kefir_func_sub32_label4(%rip), %xmm0
     movd .L__kefir_func_sub32_label5(%rip), %xmm1
     subss %xmm1, %xmm0
-.L__kefir_text_func_sub32_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -433,7 +420,6 @@ sub64:
     movq .L__kefir_func_sub64_label4(%rip), %xmm0
     movq .L__kefir_func_sub64_label5(%rip), %xmm1
     subsd %xmm1, %xmm0
-.L__kefir_text_func_sub64_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -458,7 +444,6 @@ sub80:
     fldt .L__kefir_func_sub80_label5(%rip)
     fxch %st(1)
     fsubp
-.L__kefir_text_func_sub80_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -484,7 +469,6 @@ to_int_32:
     movd .L__kefir_func_to_int_32_label4(%rip), %xmm0
     xorps .L__kefir_constant_float32_neg(%rip), %xmm0
     cvttss2si %xmm0, %rax
-.L__kefir_text_func_to_int_32_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -505,7 +489,6 @@ to_int_64:
     movq .L__kefir_func_to_int_64_label4(%rip), %xmm0
     xorpd .L__kefir_constant_float64_neg(%rip), %xmm0
     cvttsd2si %xmm0, %rax
-.L__kefir_text_func_to_int_64_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -526,7 +509,6 @@ to_int_80:
     movq .L__kefir_func_to_int_80_label4(%rip), %xmm0
     xorpd .L__kefir_constant_float64_neg(%rip), %xmm0
     cvttsd2si %xmm0, %rax
-.L__kefir_text_func_to_int_80_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -549,7 +531,6 @@ to_uint_32:
     jnb .L__kefir_func_to_uint_32_label3
     cvttss2si %xmm0, %rax
 .L__kefir_func_to_uint_32_label4:
-.L__kefir_text_func_to_uint_32_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -558,7 +539,7 @@ to_uint_32:
     subss .L__kefir_constant_float32_to_uint(%rip), %xmm0
     cvttss2si %xmm0, %rax
     btc $63, %rax
-    jmp .L__kefir_text_func_to_uint_32_epilogue
+    jmp .L__kefir_func_to_uint_32_label4
 .L__kefir_text_func_to_uint_32_end:
 .section .rodata
     .align 4
@@ -621,7 +602,6 @@ float80_eq2_float80:
     fstp %st(0)
     setnp %al
     cmovne %rcx, %rax
-.L__kefir_text_func_float80_eq2_float80_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -652,7 +632,6 @@ float80_gt2_float80:
     fcomip %st(1)
     fstp %st(0)
     seta %al
-.L__kefir_text_func_float80_gt2_float80_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -682,7 +661,6 @@ float80_lt2_float80:
     fcomip %st(1)
     fstp %st(0)
     seta %al
-.L__kefir_text_func_float80_lt2_float80_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -707,7 +685,6 @@ int_to_float32:
     stmxcsr -8(%rbp)
     mov $-314159, %rax
     cvtsi2ss %rax, %xmm0
-.L__kefir_text_func_int_to_float32_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -722,7 +699,6 @@ int_to_float64:
     stmxcsr -8(%rbp)
     mov $-31415926, %rax
     cvtsi2sd %rax, %xmm0
-.L__kefir_text_func_int_to_float64_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -739,7 +715,6 @@ int_to_float80:
     push %rax
     fildq (%rsp)
     add $8, %rsp
-.L__kefir_text_func_int_to_float80_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -759,7 +734,6 @@ uint_to_float32:
     mov $314159, %rax
     cvtsi2ss %rax, %xmm0
 .L__kefir_func_uint_to_float32_label4:
-.L__kefir_text_func_uint_to_float32_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -768,7 +742,7 @@ uint_to_float32:
     mov $157079, %eax
     cvtsi2ss %rax, %xmm0
     addss %xmm0, %xmm0
-    jmp .L__kefir_text_func_uint_to_float32_epilogue
+    jmp .L__kefir_func_uint_to_float32_label4
 .L__kefir_text_func_uint_to_float32_end:
 
 uint_to_float64:
@@ -784,7 +758,6 @@ uint_to_float64:
     mov $31415926, %rax
     cvtsi2sd %rax, %xmm0
 .L__kefir_func_uint_to_float64_label4:
-.L__kefir_text_func_uint_to_float64_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -793,7 +766,7 @@ uint_to_float64:
     mov $15707963, %eax
     cvtsi2sd %rax, %xmm0
     addsd %xmm0, %xmm0
-    jmp .L__kefir_text_func_uint_to_float64_epilogue
+    jmp .L__kefir_func_uint_to_float64_label4
 .L__kefir_text_func_uint_to_float64_end:
 
 uint_to_float80:
@@ -811,7 +784,6 @@ uint_to_float80:
     jns .L__kefir_func_uint_to_float80_label3
     fadds .L__kefir_constant_uint_to_long_double(%rip)
 .L__kefir_func_uint_to_float80_label3:
-.L__kefir_text_func_uint_to_float80_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -830,7 +802,6 @@ float32_eq2_float32:
     ucomiss .L__kefir_func_float32_eq2_float32_label5(%rip), %xmm0
     setnp %al
     cmovne %rcx, %rax
-.L__kefir_text_func_float32_eq2_float32_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -856,7 +827,6 @@ float32_gt2_float32:
     xor %eax, %eax
     comiss .L__kefir_func_float32_gt2_float32_label5(%rip), %xmm0
     seta %al
-.L__kefir_text_func_float32_gt2_float32_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -882,7 +852,6 @@ float32_lt2_float32:
     xor %eax, %eax
     comiss .L__kefir_func_float32_lt2_float32_label5(%rip), %xmm0
     seta %al
-.L__kefir_text_func_float32_lt2_float32_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -909,7 +878,6 @@ float32_eq_float32:
     ucomiss .L__kefir_func_float32_eq_float32_label5(%rip), %xmm0
     setnp %al
     cmovne %rcx, %rax
-.L__kefir_text_func_float32_eq_float32_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -934,7 +902,6 @@ float32_gt_float32:
     xor %eax, %eax
     comiss .L__kefir_func_float32_gt_float32_label5(%rip), %xmm0
     seta %al
-.L__kefir_text_func_float32_gt_float32_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -959,7 +926,6 @@ float32_lt_float32:
     xor %eax, %eax
     comiss .L__kefir_func_float32_lt_float32_label5(%rip), %xmm0
     seta %al
-.L__kefir_text_func_float32_lt_float32_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -982,7 +948,6 @@ float32_to_float64:
     stmxcsr -8(%rbp)
     movd .L__kefir_func_float32_to_float64_label4(%rip), %xmm0
     cvtss2sd %xmm0, %xmm0
-.L__kefir_text_func_float32_to_float64_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -1003,7 +968,6 @@ float32_to_float80:
     movd .L__kefir_func_float32_to_float80_label4(%rip), %xmm0
     movq %xmm0, -16(%rbp)
     flds -16(%rbp)
-.L__kefir_text_func_float32_to_float80_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -1027,7 +991,6 @@ float64_eq2_float64:
     ucomisd .L__kefir_func_float64_eq2_float64_label5(%rip), %xmm0
     setnp %al
     cmovne %rcx, %rax
-.L__kefir_text_func_float64_eq2_float64_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -1053,7 +1016,6 @@ float64_gt2_float64:
     xor %eax, %eax
     comisd .L__kefir_func_float64_gt2_float64_label5(%rip), %xmm0
     seta %al
-.L__kefir_text_func_float64_gt2_float64_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -1079,7 +1041,6 @@ float64_lt2_float64:
     xor %eax, %eax
     comisd .L__kefir_func_float64_lt2_float64_label5(%rip), %xmm0
     seta %al
-.L__kefir_text_func_float64_lt2_float64_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -1106,7 +1067,6 @@ float64_eq_float64:
     ucomisd .L__kefir_func_float64_eq_float64_label5(%rip), %xmm0
     setnp %al
     cmovne %rcx, %rax
-.L__kefir_text_func_float64_eq_float64_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -1131,7 +1091,6 @@ float64_gt_float64:
     xor %eax, %eax
     comisd .L__kefir_func_float64_gt_float64_label5(%rip), %xmm0
     seta %al
-.L__kefir_text_func_float64_gt_float64_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -1156,7 +1115,6 @@ float64_lt_float64:
     xor %eax, %eax
     comisd .L__kefir_func_float64_lt_float64_label5(%rip), %xmm0
     seta %al
-.L__kefir_text_func_float64_lt_float64_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -1179,7 +1137,6 @@ float64_to_float32:
     stmxcsr -8(%rbp)
     movq .L__kefir_func_float64_to_float32_label4(%rip), %xmm0
     cvtsd2ss %xmm0, %xmm0
-.L__kefir_text_func_float64_to_float32_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -1200,7 +1157,6 @@ float64_to_float80:
     movq .L__kefir_func_float64_to_float80_label4(%rip), %xmm0
     movq %xmm0, -16(%rbp)
     fldl -16(%rbp)
-.L__kefir_text_func_float64_to_float80_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -1227,7 +1183,6 @@ float80_eq_float80:
     fstp %st(0)
     setnp %al
     cmovne %rcx, %rax
-.L__kefir_text_func_float80_eq_float80_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -1257,7 +1212,6 @@ float80_gt_float80:
     fcomip %st(1)
     fstp %st(0)
     seta %al
-.L__kefir_text_func_float80_gt_float80_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -1286,7 +1240,6 @@ float80_lt_float80:
     fcomip %st(1)
     fstp %st(0)
     seta %al
-.L__kefir_text_func_float80_lt_float80_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -1313,7 +1266,6 @@ float80_to_float32:
     fldt .L__kefir_func_float80_to_float32_label4(%rip)
     fstps -4(%rsp)
     movd -4(%rsp), %xmm0
-.L__kefir_text_func_float80_to_float32_epilogue:
     ldmxcsr -16(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
@@ -1337,7 +1289,6 @@ float80_to_float64:
     fldt .L__kefir_func_float80_to_float64_label4(%rip)
     fstpl -8(%rsp)
     movq -8(%rsp), %xmm0
-.L__kefir_text_func_float80_to_float64_epilogue:
     ldmxcsr -16(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp

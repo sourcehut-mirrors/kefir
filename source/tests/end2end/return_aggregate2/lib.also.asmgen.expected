@@ -26,7 +26,6 @@ test:
     mov %rbx, %rdi
     call get@PLT
     mov %r12, %rax
-.L__kefir_text_func_test_epilogue:
     lea -16(%rbp), %rsp
     pop %r12
     pop %rbx

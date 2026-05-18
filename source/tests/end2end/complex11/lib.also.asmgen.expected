@@ -29,7 +29,6 @@ shufps $1, %xmm0, %xmm0
     movd -16(%rbp), %xmm0
     movd -12(%rbp), %xmm1
     insertps $16, %xmm1, %xmm0
-.L__kefir_text_func_test32_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -51,7 +50,6 @@ shufpd $1, %xmm0, %xmm0
     movdqu %xmm0, -24(%rbp)
     movq -24(%rbp), %xmm0
     movq -16(%rbp), %xmm1
-.L__kefir_text_func_test64_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

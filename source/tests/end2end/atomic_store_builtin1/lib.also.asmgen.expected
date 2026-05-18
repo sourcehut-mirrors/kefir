@@ -418,7 +418,6 @@ test_atomic_store256_acq_rel:
     lea -48(%rbp), %rdx
     mov $4, %ecx
     call __atomic_store@PLT
-.L__kefir_text_func_test_atomic_store256_acq_rel_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -442,7 +441,6 @@ test_atomic_store256_acquire:
     lea -48(%rbp), %rdx
     mov $2, %ecx
     call __atomic_store@PLT
-.L__kefir_text_func_test_atomic_store256_acquire_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -466,7 +464,6 @@ test_atomic_store256_consume:
     lea -48(%rbp), %rdx
     mov $1, %ecx
     call __atomic_store@PLT
-.L__kefir_text_func_test_atomic_store256_consume_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -490,7 +487,6 @@ test_atomic_store256_relaxed:
     lea -48(%rbp), %rdx
     xor %ecx, %ecx
     call __atomic_store@PLT
-.L__kefir_text_func_test_atomic_store256_relaxed_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -514,7 +510,6 @@ test_atomic_store256_release:
     lea -48(%rbp), %rdx
     mov $3, %ecx
     call __atomic_store@PLT
-.L__kefir_text_func_test_atomic_store256_release_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -538,7 +533,6 @@ test_atomic_store256_seq_cst:
     lea -48(%rbp), %rdx
     mov $5, %ecx
     call __atomic_store@PLT
-.L__kefir_text_func_test_atomic_store256_seq_cst_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -670,7 +664,6 @@ test2_atomic_store256_acq_rel:
     lea -48(%rbp), %rdx
     mov $4, %ecx
     call __atomic_store@PLT
-.L__kefir_text_func_test2_atomic_store256_acq_rel_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -694,7 +687,6 @@ test2_atomic_store256_acquire:
     lea -48(%rbp), %rdx
     mov $2, %ecx
     call __atomic_store@PLT
-.L__kefir_text_func_test2_atomic_store256_acquire_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -718,7 +710,6 @@ test2_atomic_store256_consume:
     lea -48(%rbp), %rdx
     mov $1, %ecx
     call __atomic_store@PLT
-.L__kefir_text_func_test2_atomic_store256_consume_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -742,7 +733,6 @@ test2_atomic_store256_relaxed:
     lea -48(%rbp), %rdx
     xor %ecx, %ecx
     call __atomic_store@PLT
-.L__kefir_text_func_test2_atomic_store256_relaxed_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -766,7 +756,6 @@ test2_atomic_store256_release:
     lea -48(%rbp), %rdx
     mov $3, %ecx
     call __atomic_store@PLT
-.L__kefir_text_func_test2_atomic_store256_release_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -790,7 +779,6 @@ test2_atomic_store256_seq_cst:
     lea -48(%rbp), %rdx
     mov $5, %ecx
     call __atomic_store@PLT
-.L__kefir_text_func_test2_atomic_store256_seq_cst_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

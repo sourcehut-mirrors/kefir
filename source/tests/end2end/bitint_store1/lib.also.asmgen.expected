@@ -87,7 +87,6 @@ set5:
     call __kefir_bigint_cast_signed
     movdqu -32(%rbp), %xmm0
     movdqu %xmm0, (%rbx)
-.L__kefir_text_func_set5_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
@@ -123,7 +122,6 @@ set6:
     movdqu %xmm0, 16(%rbx)
     movdqu -32(%rbp), %xmm0
     movdqu %xmm0, 32(%rbx)
-.L__kefir_text_func_set6_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp

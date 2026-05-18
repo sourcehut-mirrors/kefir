@@ -40,7 +40,6 @@ call1_proxy:
     call call1@PLT
     movb %al, (%rbx)
     movb (%rbx), %al
-.L__kefir_text_func_call1_proxy_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
@@ -59,7 +58,6 @@ call2_proxy:
     call call2@PLT
     movw %ax, (%rbx)
     movw (%rbx), %ax
-.L__kefir_text_func_call2_proxy_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
@@ -84,7 +82,6 @@ call3_proxy:
     movb 2(%rbx), %cl
     shl $16, %ecx
     or %rcx, %rax
-.L__kefir_text_func_call3_proxy_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
@@ -103,7 +100,6 @@ call4_proxy:
     call call4@PLT
     movl %eax, (%rbx)
     movl (%rbx), %eax
-.L__kefir_text_func_call4_proxy_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
@@ -127,7 +123,6 @@ call5_proxy:
     movb 4(%rbx), %cl
     shl $32, %rcx
     or %rcx, %rax
-.L__kefir_text_func_call5_proxy_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
@@ -151,7 +146,6 @@ call6_proxy:
     movw 4(%rbx), %cx
     shl $32, %rcx
     or %rcx, %rax
-.L__kefir_text_func_call6_proxy_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
@@ -181,7 +175,6 @@ call7_proxy:
     movb 6(%rbx), %cl
     shl $48, %rcx
     or %rcx, %rax
-.L__kefir_text_func_call7_proxy_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
@@ -200,7 +193,6 @@ call8_proxy:
     call call8@PLT
     movq %rax, (%rbx)
     movq (%rbx), %rax
-.L__kefir_text_func_call8_proxy_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp

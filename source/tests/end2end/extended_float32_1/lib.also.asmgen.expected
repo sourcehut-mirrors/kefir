@@ -52,7 +52,6 @@ conv1:
     cvtsi2sd %rdi, %xmm0
 .loc 0 84 5
 .L__kefir_func_conv1_label19:
-.L__kefir_text_func_conv1_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -78,7 +77,6 @@ conv2:
     cvtsi2sd %rdi, %xmm0
 .loc 0 88 5
 .L__kefir_func_conv2_label8:
-.L__kefir_text_func_conv2_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -94,7 +92,7 @@ conv2:
     addsd %xmm0, %xmm0
 .loc 0 88 5
 .L__kefir_func_conv2_label67:
-    jmp .L__kefir_text_func_conv2_epilogue
+    jmp .L__kefir_func_conv2_label8
 .L__kefir_func_conv2_label73:
 .L__kefir_text_func_conv2_end:
 
@@ -111,7 +109,6 @@ conv3:
     cvtss2sd %xmm0, %xmm0
 .loc 0 92 5
 .L__kefir_func_conv3_label19:
-.L__kefir_text_func_conv3_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -145,7 +142,6 @@ conv5:
     movq -8(%rsp), %xmm0
 .loc 0 100 5
 .L__kefir_func_conv5_label23:
-.L__kefir_text_func_conv5_epilogue:
     ldmxcsr -16(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
@@ -167,7 +163,6 @@ add32x:
     addsd %xmm1, %xmm0
 .loc 0 68 5
 .L__kefir_func_add32x_label25:
-.L__kefir_text_func_add32x_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -188,7 +183,6 @@ div32x:
     divsd %xmm1, %xmm0
 .loc 0 80 5
 .L__kefir_func_div32x_label25:
-.L__kefir_text_func_div32x_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -209,7 +203,6 @@ mul32x:
     mulsd %xmm1, %xmm0
 .loc 0 76 5
 .L__kefir_func_mul32x_label25:
-.L__kefir_text_func_mul32x_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -230,7 +223,6 @@ neg32x:
     xorpd .L__kefir_constant_float64_neg(%rip), %xmm0
 .loc 0 64 5
 .L__kefir_func_neg32x_label19:
-.L__kefir_text_func_neg32x_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -251,7 +243,6 @@ sub32x:
     subsd %xmm1, %xmm0
 .loc 0 72 5
 .L__kefir_func_sub32x_label25:
-.L__kefir_text_func_sub32x_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

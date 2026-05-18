@@ -43,7 +43,6 @@ my_hypot:
     fstpt -64(%rbp)
     add $32, %rsp
     fldt -64(%rbp)
-.L__kefir_text_func_my_hypot_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

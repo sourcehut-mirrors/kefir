@@ -102,7 +102,6 @@ getx:
     fstpt -48(%rbp)
     fldt -32(%rbp)
     fldt -48(%rbp)
-.L__kefir_text_func_getx_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

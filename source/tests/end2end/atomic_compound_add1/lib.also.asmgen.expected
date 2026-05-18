@@ -135,7 +135,6 @@ addf32:
     stmxcsr -16(%rbp)
     orl %eax, -16(%rbp)
     ldmxcsr -16(%rbp)
-.L__kefir_text_func_addf32_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -172,7 +171,6 @@ addf64:
     stmxcsr -16(%rbp)
     orl %eax, -16(%rbp)
     ldmxcsr -16(%rbp)
-.L__kefir_text_func_addf64_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -210,7 +208,6 @@ addf32r:
     orl %eax, -16(%rbp)
     ldmxcsr -16(%rbp)
     movaps %xmm1, %xmm0
-.L__kefir_text_func_addf32r_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -248,7 +245,6 @@ addf64r:
     orl %eax, -16(%rbp)
     ldmxcsr -16(%rbp)
     movaps %xmm1, %xmm0
-.L__kefir_text_func_addf64r_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

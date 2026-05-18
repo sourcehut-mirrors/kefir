@@ -48,7 +48,6 @@ addsd (%rcx), %xmm0
 
     movq %xmm0, -24(%rbp)
     movq -24(%rbp), %xmm0
-.L__kefir_text_func_sumall_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp

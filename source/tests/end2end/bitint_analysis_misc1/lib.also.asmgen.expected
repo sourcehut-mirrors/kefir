@@ -37,7 +37,6 @@ get3:
     movd .L__kefir_func_get3_label4(%rip), %xmm0
     xorps .L__kefir_constant_float32_neg(%rip), %xmm0
     cvttss2si %xmm0, %rax
-.L__kefir_text_func_get3_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

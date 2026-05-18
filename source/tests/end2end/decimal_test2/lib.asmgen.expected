@@ -509,7 +509,6 @@ test_dec32_rk4_step:
     movq %xmm0, (%rbx)
     movq (%rbx), %rax
     movq %rax, (%r13)
-.L__kefir_text_func_test_dec32_rk4_step_epilogue:
     lea -32(%rbp), %rsp
     pop %r14
     pop %r13
@@ -621,7 +620,6 @@ test_dec32_simulate:
     call __bid_addsd3@PLT
     movd .L__kefir_func_test_dec32_simulate_label17(%rip), %xmm1
     call __bid_divsd3@PLT
-.L__kefir_text_func_test_dec32_simulate_epilogue:
     lea -16(%rbp), %rsp
     pop %r12
     pop %rbx
@@ -1247,7 +1245,6 @@ test_dec64_rk4_step:
     movq %xmm1, 8(%rbx)
     movdqu (%rbx), %xmm0
     movdqu %xmm0, (%r13)
-.L__kefir_text_func_test_dec64_rk4_step_epilogue:
     lea -32(%rbp), %rsp
     pop %r14
     pop %r13
@@ -1359,7 +1356,6 @@ test_dec64_simulate:
     call __bid_adddd3@PLT
     movq .L__kefir_func_test_dec64_simulate_label17(%rip), %xmm1
     call __bid_divdd3@PLT
-.L__kefir_text_func_test_dec64_simulate_epilogue:
     lea -16(%rbp), %rsp
     pop %r12
     pop %rbx
@@ -1540,7 +1536,6 @@ test_dec64_gravity_acceleration:
     movdqu %xmm0, -80(%rbp)
     movq -80(%rbp), %xmm0
     movq -72(%rbp), %xmm1
-.L__kefir_text_func_test_dec64_gravity_acceleration_epilogue:
     lea -16(%rbp), %rsp
     pop %r12
     pop %rbx
@@ -1700,7 +1695,6 @@ test_dec32_gravity_acceleration:
     movq -40(%rbp), %rax
     movq %rax, -76(%rbp)
     movq -76(%rbp), %xmm0
-.L__kefir_text_func_test_dec32_gravity_acceleration_epilogue:
     lea -16(%rbp), %rsp
     pop %r12
     pop %rbx
@@ -1788,7 +1782,6 @@ test_dec128_add_vectors:
     call __bid_addtd3@PLT
     movdqu %xmm0, 16(%rbx)
     mov %rbx, %rax
-.L__kefir_text_func_test_dec128_add_vectors_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
@@ -1957,7 +1950,6 @@ test_dec128_gravity_acceleration:
     movdqu -80(%rbp), %xmm0
     movdqu %xmm0, 16(%rbx)
     mov %rbx, %rax
-.L__kefir_text_func_test_dec128_gravity_acceleration_epilogue:
     lea -24(%rbp), %rsp
     pop %r13
     pop %r12
@@ -2661,7 +2653,6 @@ test_dec128_rk4_step:
     movdqu %xmm0, (%r13)
     movdqu 16(%rax), %xmm0
     movdqu %xmm0, 16(%r13)
-.L__kefir_text_func_test_dec128_rk4_step_epilogue:
     lea -32(%rbp), %rsp
     pop %r14
     pop %r13
@@ -2773,7 +2764,6 @@ test_dec128_simulate:
     call __bid_addtd3@PLT
     movdqu .L__kefir_func_test_dec128_simulate_label17(%rip), %xmm1
     call __bid_divtd3@PLT
-.L__kefir_text_func_test_dec128_simulate_epilogue:
     lea -16(%rbp), %rsp
     pop %r12
     pop %rbx
@@ -2870,7 +2860,6 @@ test_dec128_scale_vector:
     call __bid_multd3@PLT
     movdqu %xmm0, 16(%rbx)
     mov %rbx, %rax
-.L__kefir_text_func_test_dec128_scale_vector_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp

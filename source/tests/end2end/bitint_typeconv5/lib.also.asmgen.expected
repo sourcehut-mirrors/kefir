@@ -26,7 +26,6 @@ get0:
     shl $31, %rax
     sar $31, %rax
     cvtsi2ss %rax, %xmm0
-.L__kefir_text_func_get0_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -47,7 +46,6 @@ get1:
     js .L__kefir_func_get1_label3
     cvtsi2ss %rax, %xmm0
 .L__kefir_func_get1_label4:
-.L__kefir_text_func_get1_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -59,7 +57,7 @@ get1:
     or %rax, %rcx
     cvtsi2ss %rcx, %xmm0
     addss %xmm0, %xmm0
-    jmp .L__kefir_text_func_get1_epilogue
+    jmp .L__kefir_func_get1_label4
 .L__kefir_text_func_get1_end:
 
 get2:
@@ -72,7 +70,6 @@ get2:
     shl $23, %rax
     sar $23, %rax
     cvtsi2sd %rax, %xmm0
-.L__kefir_text_func_get2_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -93,7 +90,6 @@ get3:
     js .L__kefir_func_get3_label3
     cvtsi2sd %rax, %xmm0
 .L__kefir_func_get3_label4:
-.L__kefir_text_func_get3_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -105,7 +101,7 @@ get3:
     or %rax, %rcx
     cvtsi2sd %rcx, %xmm0
     addsd %xmm0, %xmm0
-    jmp .L__kefir_text_func_get3_epilogue
+    jmp .L__kefir_func_get3_label4
 .L__kefir_text_func_get3_end:
 
 get4:
@@ -120,7 +116,6 @@ get4:
     push %rax
     fildq (%rsp)
     add $8, %rsp
-.L__kefir_text_func_get4_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -143,7 +138,6 @@ get5:
     jns .L__kefir_func_get5_label3
     fadds .L__kefir_constant_uint_to_long_double(%rip)
 .L__kefir_func_get5_label3:
-.L__kefir_text_func_get5_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

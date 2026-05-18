@@ -25,7 +25,6 @@ call1_proxy:
     call call1@PLT
     movd %xmm0, (%rbx)
     movd (%rbx), %xmm0
-.L__kefir_text_func_call1_proxy_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
@@ -44,7 +43,6 @@ call2_proxy:
     call call2@PLT
     movq %xmm0, (%rbx)
     movq (%rbx), %xmm0
-.L__kefir_text_func_call2_proxy_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
@@ -65,7 +63,6 @@ call3_proxy:
     movd %xmm1, 8(%rbx)
     movq (%rbx), %xmm0
     movd 8(%rbx), %xmm1
-.L__kefir_text_func_call3_proxy_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp

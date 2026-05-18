@@ -33,7 +33,6 @@ is_inf_f32:
     xor %eax, %eax
     cmp $2139095040, %edx
     cmove %ecx, %eax
-.L__kefir_text_func_is_inf_f32_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -59,7 +58,6 @@ is_inf_f64:
     movabs $9218868437227405312, %rsi
     cmp %rsi, %rdx
     cmove %ecx, %eax
-.L__kefir_text_func_is_inf_f64_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -91,7 +89,6 @@ is_inf_f80:
     xor %eax, %eax
     or %rsi, %rdx
     cmove %ecx, %eax
-.L__kefir_text_func_is_inf_f80_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

@@ -52,7 +52,6 @@ c32_to_bool:
     orps %xmm1, %xmm0
     movd %xmm0, %eax
     and $1, %rax
-.L__kefir_text_func_c32_to_bool_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -71,7 +70,6 @@ c64_to_bool:
     orpd %xmm1, %xmm0
     movd %xmm0, %eax
     and $1, %rax
-.L__kefir_text_func_c64_to_bool_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -103,7 +101,6 @@ c80_to_bool:
     or %cl, %al
     fstp %st(0)
     fstp %st(0)
-.L__kefir_text_func_c80_to_bool_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -124,7 +121,6 @@ c32_to_bool2:
     orps %xmm1, %xmm0
     movd %xmm0, %eax
     and $1, %rax
-.L__kefir_text_func_c32_to_bool2_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -143,7 +139,6 @@ c64_to_bool2:
     orpd %xmm1, %xmm0
     movd %xmm0, %eax
     and $1, %rax
-.L__kefir_text_func_c64_to_bool2_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -162,7 +157,6 @@ c64_to_bool3:
     orpd %xmm1, %xmm0
     movd %xmm0, %eax
     and $1, %rax
-.L__kefir_text_func_c64_to_bool3_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -194,7 +188,6 @@ c80_to_bool2:
     or %cl, %al
     fstp %st(0)
     fstp %st(0)
-.L__kefir_text_func_c80_to_bool2_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -226,7 +219,6 @@ c80_to_bool3:
     or %cl, %al
     fstp %st(0)
     fstp %st(0)
-.L__kefir_text_func_c80_to_bool3_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

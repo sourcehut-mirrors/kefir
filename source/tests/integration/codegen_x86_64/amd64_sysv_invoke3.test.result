@@ -25,7 +25,6 @@ proxyadd:
     movq [%rbx + 8], %xmm0
     xor %eax, %eax
     pxor %xmm0, %xmm0
-.L__kefir_text_func_proxyadd_epilogue:
     lea %rsp, [%rbp - 16]
     pop %r12
     pop %rbx

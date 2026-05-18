@@ -69,7 +69,6 @@ sum32:
     addss -128(%rbp), %xmm12
     addss -144(%rbp), %xmm12
     insertps $16, %xmm12, %xmm0
-.L__kefir_text_func_sum32_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

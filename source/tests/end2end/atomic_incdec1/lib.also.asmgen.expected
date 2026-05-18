@@ -100,7 +100,6 @@ predec_ld:
     orl %eax, -64(%rbp)
     ldmxcsr -64(%rbp)
     fldt -48(%rbp)
-.L__kefir_text_func_predec_ld_epilogue:
     fldcw -16(%rbp)
     lea -8(%rbp), %rsp
     pop %rbx
@@ -173,7 +172,6 @@ preinc_ld:
     orl %eax, -64(%rbp)
     ldmxcsr -64(%rbp)
     fldt -48(%rbp)
-.L__kefir_text_func_preinc_ld_epilogue:
     fldcw -16(%rbp)
     lea -8(%rbp), %rsp
     pop %rbx
@@ -219,7 +217,6 @@ predec_f32:
     stmxcsr -16(%rbp)
     orl %eax, -16(%rbp)
     ldmxcsr -16(%rbp)
-.L__kefir_text_func_predec_f32_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -263,7 +260,6 @@ predec_f64:
     stmxcsr -16(%rbp)
     orl %eax, -16(%rbp)
     ldmxcsr -16(%rbp)
-.L__kefir_text_func_predec_f64_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -343,7 +339,6 @@ preinc_f32:
     stmxcsr -16(%rbp)
     orl %eax, -16(%rbp)
     ldmxcsr -16(%rbp)
-.L__kefir_text_func_preinc_f32_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -387,7 +382,6 @@ preinc_f64:
     stmxcsr -16(%rbp)
     orl %eax, -16(%rbp)
     ldmxcsr -16(%rbp)
-.L__kefir_text_func_preinc_f64_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

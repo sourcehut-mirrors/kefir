@@ -84,7 +84,6 @@ or:
     movq %rcx, 8(%rax)
     movq -48(%rbp), %rcx
     movq %rcx, 16(%rax)
-.L__kefir_text_func_or_epilogue:
     lea -16(%rbp), %rsp
     pop %r12
     pop %rbx
@@ -142,7 +141,6 @@ add:
     movq %rcx, 8(%rax)
     movq -48(%rbp), %rcx
     movq %rcx, 16(%rax)
-.L__kefir_text_func_add_epilogue:
     lea -16(%rbp), %rsp
     pop %r12
     pop %rbx
@@ -200,7 +198,6 @@ and:
     movq %rcx, 8(%rax)
     movq -48(%rbp), %rcx
     movq %rcx, 16(%rax)
-.L__kefir_text_func_and_epilogue:
     lea -16(%rbp), %rsp
     pop %r12
     pop %rbx
@@ -258,7 +255,6 @@ sub:
     movq %rcx, 8(%rax)
     movq -48(%rbp), %rcx
     movq %rcx, 16(%rax)
-.L__kefir_text_func_sub_epilogue:
     lea -16(%rbp), %rsp
     pop %r12
     pop %rbx
@@ -316,7 +312,6 @@ xor:
     movq %rcx, 8(%rax)
     movq -48(%rbp), %rcx
     movq %rcx, 16(%rax)
-.L__kefir_text_func_xor_epilogue:
     lea -16(%rbp), %rsp
     pop %r12
     pop %rbx
@@ -386,7 +381,6 @@ idiv:
     movq %rcx, 8(%rax)
     movq -112(%rbp), %rcx
     movq %rcx, 16(%rax)
-.L__kefir_text_func_idiv_epilogue:
     lea -16(%rbp), %rsp
     pop %r12
     pop %rbx
@@ -450,7 +444,6 @@ imod:
     movq %rcx, 8(%rax)
     movq -72(%rbp), %rcx
     movq %rcx, 16(%rax)
-.L__kefir_text_func_imod_epilogue:
     lea -16(%rbp), %rsp
     pop %r12
     pop %rbx
@@ -511,7 +504,6 @@ imul:
     movq %rcx, 8(%rax)
     movq -104(%rbp), %rcx
     movq %rcx, 16(%rax)
-.L__kefir_text_func_imul_epilogue:
     lea -16(%rbp), %rsp
     pop %r12
     pop %rbx
@@ -575,7 +567,6 @@ udiv:
     movq %rcx, 8(%rax)
     movq -112(%rbp), %rcx
     movq %rcx, 16(%rax)
-.L__kefir_text_func_udiv_epilogue:
     lea -16(%rbp), %rsp
     pop %r12
     pop %rbx
@@ -639,7 +630,6 @@ umod:
     movq %rcx, 8(%rax)
     movq -72(%rbp), %rcx
     movq %rcx, 16(%rax)
-.L__kefir_text_func_umod_epilogue:
     lea -16(%rbp), %rsp
     pop %r12
     pop %rbx
@@ -693,7 +683,6 @@ umul:
     movq %rcx, 8(%rax)
     movq -48(%rbp), %rcx
     movq %rcx, 16(%rax)
-.L__kefir_text_func_umul_epilogue:
     lea -16(%rbp), %rsp
     pop %r12
     pop %rbx
@@ -751,7 +740,6 @@ lshift:
     movq %rcx, 8(%rax)
     movq -48(%rbp), %rcx
     movq %rcx, 16(%rax)
-.L__kefir_text_func_lshift_epilogue:
     lea -16(%rbp), %rsp
     pop %r12
     pop %rbx
@@ -809,7 +797,6 @@ rshift:
     movq %rcx, 8(%rax)
     movq -48(%rbp), %rcx
     movq %rcx, 16(%rax)
-.L__kefir_text_func_rshift_epilogue:
     lea -16(%rbp), %rsp
     pop %r12
     pop %rbx
@@ -867,7 +854,6 @@ arshift:
     movq %rcx, 8(%rax)
     movq -48(%rbp), %rcx
     movq %rcx, 16(%rax)
-.L__kefir_text_func_arshift_epilogue:
     lea -16(%rbp), %rsp
     pop %r12
     pop %rbx

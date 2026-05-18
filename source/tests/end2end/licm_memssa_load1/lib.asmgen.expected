@@ -210,7 +210,6 @@ test11:
 .L__kefir_func_test11_label2:
     cmp $10, %r12d
     jl .L__kefir_func_test11_label4
-.L__kefir_text_func_test11_epilogue:
     pop %r14
     pop %r13
     pop %r12

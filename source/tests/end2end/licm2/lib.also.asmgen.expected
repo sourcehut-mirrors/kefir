@@ -30,7 +30,6 @@ test1:
     lea 1(%r8d), %r10d
     cmp %esi, %r8d
     jl .L__kefir_func_test1_label4
-.L__kefir_text_func_test1_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
@@ -90,7 +89,6 @@ test2:
     add %rcx, %r11
     cmp %esi, %r8d
     jl .L__kefir_func_test2_label7
-.L__kefir_text_func_test2_epilogue:
     lea -24(%rbp), %rsp
     pop %r13
     pop %r12

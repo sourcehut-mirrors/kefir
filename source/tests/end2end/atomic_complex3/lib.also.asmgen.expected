@@ -80,7 +80,6 @@ add_f32:
     ldmxcsr -144(%rbp)
     movaps -128(%rbp), %xmm0
     insertps $16, -48(%rbp), %xmm0
-.L__kefir_text_func_add_f32_epilogue:
     ldmxcsr -16(%rbp)
     lea -8(%rbp), %rsp
     pop %rbx
@@ -147,7 +146,6 @@ add_f64:
     ldmxcsr -160(%rbp)
     movaps -128(%rbp), %xmm0
     movaps -112(%rbp), %xmm1
-.L__kefir_text_func_add_f64_epilogue:
     ldmxcsr -16(%rbp)
     lea -8(%rbp), %rsp
     pop %rbx
@@ -237,7 +235,6 @@ divide_f32:
     ldmxcsr -144(%rbp)
     movaps -128(%rbp), %xmm0
     insertps $16, -48(%rbp), %xmm0
-.L__kefir_text_func_divide_f32_epilogue:
     ldmxcsr -16(%rbp)
     lea -8(%rbp), %rsp
     pop %rbx
@@ -335,7 +332,6 @@ divide_f64:
     ldmxcsr -176(%rbp)
     movaps -144(%rbp), %xmm0
     movaps -128(%rbp), %xmm1
-.L__kefir_text_func_divide_f64_epilogue:
     ldmxcsr -24(%rbp)
     fldcw -16(%rbp)
     lea -8(%rbp), %rsp
@@ -417,7 +413,6 @@ multiply_f32:
     ldmxcsr -144(%rbp)
     movaps -128(%rbp), %xmm0
     insertps $16, -48(%rbp), %xmm0
-.L__kefir_text_func_multiply_f32_epilogue:
     ldmxcsr -16(%rbp)
     lea -8(%rbp), %rsp
     pop %rbx
@@ -494,7 +489,6 @@ multiply_f64:
     ldmxcsr -160(%rbp)
     movaps -128(%rbp), %xmm0
     movaps -112(%rbp), %xmm1
-.L__kefir_text_func_multiply_f64_epilogue:
     ldmxcsr -16(%rbp)
     lea -8(%rbp), %rsp
     pop %rbx
@@ -565,7 +559,6 @@ subtract_f32:
     ldmxcsr -144(%rbp)
     movaps -128(%rbp), %xmm0
     insertps $16, -48(%rbp), %xmm0
-.L__kefir_text_func_subtract_f32_epilogue:
     ldmxcsr -16(%rbp)
     lea -8(%rbp), %rsp
     pop %rbx
@@ -632,7 +625,6 @@ subtract_f64:
     ldmxcsr -160(%rbp)
     movaps -128(%rbp), %xmm0
     movaps -112(%rbp), %xmm1
-.L__kefir_text_func_subtract_f64_epilogue:
     ldmxcsr -16(%rbp)
     lea -8(%rbp), %rsp
     pop %rbx

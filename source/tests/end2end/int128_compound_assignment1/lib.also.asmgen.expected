@@ -127,7 +127,6 @@ i128_div:
     call __divti3@PLT
     mov %rax, (%rbx)
     mov %rdx, 8(%rbx)
-.L__kefir_text_func_i128_div_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
@@ -149,7 +148,6 @@ i128_mod:
     call __modti3@PLT
     mov %rax, (%rbx)
     mov %rdx, 8(%rbx)
-.L__kefir_text_func_i128_mod_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
@@ -302,7 +300,6 @@ u128_div:
     call __udivti3@PLT
     mov %rax, (%rbx)
     mov %rdx, 8(%rbx)
-.L__kefir_text_func_u128_div_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
@@ -324,7 +321,6 @@ u128_mod:
     call __umodti3@PLT
     mov %rax, (%rbx)
     mov %rdx, 8(%rbx)
-.L__kefir_text_func_u128_mod_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp

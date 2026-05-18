@@ -30,7 +30,6 @@ test1:
     add %eax, %eax
     imul $-2, %ebx, %ecx
     add %ecx, %eax
-.L__kefir_text_func_test1_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
@@ -74,7 +73,6 @@ test3:
     add %eax, %eax
     imul $-2, %ebx, %ecx
     add %ecx, %eax
-.L__kefir_text_func_test3_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
@@ -148,7 +146,6 @@ test6:
     movl %eax, -20(%rbp)
     add %eax, %eax
     add %ecx, %eax
-.L__kefir_text_func_test6_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp

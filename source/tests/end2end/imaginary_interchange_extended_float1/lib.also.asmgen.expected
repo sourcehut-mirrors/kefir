@@ -66,7 +66,6 @@ f32_op:
     movaps %xmm2, %xmm0
     insertps $16, %xmm1, %xmm0
 .L__kefir_func_f32_op_label13:
-.L__kefir_text_func_f32_op_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -75,13 +74,13 @@ f32_op:
     divss %xmm1, %xmm0
     movd .L__kefir_func_f32_op_label15(%rip), %xmm1
     insertps $16, %xmm1, %xmm0
-    jmp .L__kefir_text_func_f32_op_epilogue
+    jmp .L__kefir_func_f32_op_label13
 .L__kefir_func_f32_op_label10:
     mulss %xmm1, %xmm0
     xorps .L__kefir_constant_float32_neg(%rip), %xmm0
     movd .L__kefir_func_f32_op_label16(%rip), %xmm1
     insertps $16, %xmm1, %xmm0
-    jmp .L__kefir_text_func_f32_op_epilogue
+    jmp .L__kefir_func_f32_op_label13
 .L__kefir_func_f32_op_label4:
     movd .L__kefir_func_f32_op_label17(%rip), %xmm2
     movaps %xmm0, %xmm3
@@ -89,7 +88,7 @@ f32_op:
     movaps %xmm3, %xmm1
     movaps %xmm2, %xmm0
     insertps $16, %xmm1, %xmm0
-    jmp .L__kefir_text_func_f32_op_epilogue
+    jmp .L__kefir_func_f32_op_label13
 .L__kefir_func_f32_op_label11:
     movd .L__kefir_func_f32_op_label18(%rip), %xmm2
     movaps %xmm0, %xmm3
@@ -97,7 +96,7 @@ f32_op:
     movaps %xmm3, %xmm1
     movaps %xmm2, %xmm0
     insertps $16, %xmm1, %xmm0
-    jmp .L__kefir_text_func_f32_op_epilogue
+    jmp .L__kefir_func_f32_op_label13
 .L__kefir_text_func_f32_op_end:
 .section .rodata
     .align 4
@@ -136,7 +135,6 @@ f64_op:
     xorpd .L__kefir_constant_float64_neg(%rip), %xmm1
     movaps %xmm2, %xmm0
 .L__kefir_func_f64_op_label13:
-.L__kefir_text_func_f64_op_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -144,26 +142,26 @@ f64_op:
 .L__kefir_func_f64_op_label8:
     divsd %xmm1, %xmm0
     movq .L__kefir_func_f64_op_label15(%rip), %xmm1
-    jmp .L__kefir_text_func_f64_op_epilogue
+    jmp .L__kefir_func_f64_op_label13
 .L__kefir_func_f64_op_label10:
     mulsd %xmm1, %xmm0
     xorpd .L__kefir_constant_float64_neg(%rip), %xmm0
     movq .L__kefir_func_f64_op_label16(%rip), %xmm1
-    jmp .L__kefir_text_func_f64_op_epilogue
+    jmp .L__kefir_func_f64_op_label13
 .L__kefir_func_f64_op_label4:
     movq .L__kefir_func_f64_op_label17(%rip), %xmm2
     movaps %xmm0, %xmm3
     subsd %xmm1, %xmm3
     movaps %xmm3, %xmm1
     movaps %xmm2, %xmm0
-    jmp .L__kefir_text_func_f64_op_epilogue
+    jmp .L__kefir_func_f64_op_label13
 .L__kefir_func_f64_op_label11:
     movq .L__kefir_func_f64_op_label18(%rip), %xmm2
     movaps %xmm0, %xmm3
     addsd %xmm1, %xmm3
     movaps %xmm3, %xmm1
     movaps %xmm2, %xmm0
-    jmp .L__kefir_text_func_f64_op_epilogue
+    jmp .L__kefir_func_f64_op_label13
 .L__kefir_text_func_f64_op_end:
 .section .rodata
     .align 8
@@ -211,7 +209,6 @@ f80_op:
     fldt -64(%rbp)
     fldt -80(%rbp)
 .L__kefir_func_f80_op_label13:
-.L__kefir_text_func_f80_op_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -225,7 +222,7 @@ f80_op:
     fstpt -80(%rbp)
     fldt -64(%rbp)
     fldt -80(%rbp)
-    jmp .L__kefir_text_func_f80_op_epilogue
+    jmp .L__kefir_func_f80_op_label13
 .L__kefir_func_f80_op_label10:
     fldt -64(%rbp)
     fldt -80(%rbp)
@@ -236,7 +233,7 @@ f80_op:
     fstpt -80(%rbp)
     fldt -64(%rbp)
     fldt -80(%rbp)
-    jmp .L__kefir_text_func_f80_op_epilogue
+    jmp .L__kefir_func_f80_op_label13
 .L__kefir_func_f80_op_label4:
     fldt .L__kefir_func_f80_op_label17(%rip)
     fldt -64(%rbp)
@@ -246,7 +243,7 @@ f80_op:
     fstpt -80(%rbp)
     fldt -64(%rbp)
     fldt -80(%rbp)
-    jmp .L__kefir_text_func_f80_op_epilogue
+    jmp .L__kefir_func_f80_op_label13
 .L__kefir_func_f80_op_label11:
     fldt .L__kefir_func_f80_op_label18(%rip)
     fldt -64(%rbp)
@@ -256,7 +253,7 @@ f80_op:
     fstpt -48(%rbp)
     fldt -32(%rbp)
     fldt -48(%rbp)
-    jmp .L__kefir_text_func_f80_op_epilogue
+    jmp .L__kefir_func_f80_op_label13
 .L__kefir_text_func_f80_op_end:
 .section .rodata
     .align 8
@@ -300,7 +297,6 @@ f32x_op:
     xorpd .L__kefir_constant_float64_neg(%rip), %xmm1
     movaps %xmm2, %xmm0
 .L__kefir_func_f32x_op_label13:
-.L__kefir_text_func_f32x_op_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -308,26 +304,26 @@ f32x_op:
 .L__kefir_func_f32x_op_label8:
     divsd %xmm1, %xmm0
     movq .L__kefir_func_f32x_op_label15(%rip), %xmm1
-    jmp .L__kefir_text_func_f32x_op_epilogue
+    jmp .L__kefir_func_f32x_op_label13
 .L__kefir_func_f32x_op_label10:
     mulsd %xmm1, %xmm0
     xorpd .L__kefir_constant_float64_neg(%rip), %xmm0
     movq .L__kefir_func_f32x_op_label16(%rip), %xmm1
-    jmp .L__kefir_text_func_f32x_op_epilogue
+    jmp .L__kefir_func_f32x_op_label13
 .L__kefir_func_f32x_op_label4:
     movq .L__kefir_func_f32x_op_label17(%rip), %xmm2
     movaps %xmm0, %xmm3
     subsd %xmm1, %xmm3
     movaps %xmm3, %xmm1
     movaps %xmm2, %xmm0
-    jmp .L__kefir_text_func_f32x_op_epilogue
+    jmp .L__kefir_func_f32x_op_label13
 .L__kefir_func_f32x_op_label11:
     movq .L__kefir_func_f32x_op_label18(%rip), %xmm2
     movaps %xmm0, %xmm3
     addsd %xmm1, %xmm3
     movaps %xmm3, %xmm1
     movaps %xmm2, %xmm0
-    jmp .L__kefir_text_func_f32x_op_epilogue
+    jmp .L__kefir_func_f32x_op_label13
 .L__kefir_text_func_f32x_op_end:
 .section .rodata
     .align 8
@@ -375,7 +371,6 @@ f64x_op:
     fldt -64(%rbp)
     fldt -80(%rbp)
 .L__kefir_func_f64x_op_label13:
-.L__kefir_text_func_f64x_op_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -389,7 +384,7 @@ f64x_op:
     fstpt -80(%rbp)
     fldt -64(%rbp)
     fldt -80(%rbp)
-    jmp .L__kefir_text_func_f64x_op_epilogue
+    jmp .L__kefir_func_f64x_op_label13
 .L__kefir_func_f64x_op_label10:
     fldt -64(%rbp)
     fldt -80(%rbp)
@@ -400,7 +395,7 @@ f64x_op:
     fstpt -80(%rbp)
     fldt -64(%rbp)
     fldt -80(%rbp)
-    jmp .L__kefir_text_func_f64x_op_epilogue
+    jmp .L__kefir_func_f64x_op_label13
 .L__kefir_func_f64x_op_label4:
     fldt .L__kefir_func_f64x_op_label17(%rip)
     fldt -64(%rbp)
@@ -410,7 +405,7 @@ f64x_op:
     fstpt -80(%rbp)
     fldt -64(%rbp)
     fldt -80(%rbp)
-    jmp .L__kefir_text_func_f64x_op_epilogue
+    jmp .L__kefir_func_f64x_op_label13
 .L__kefir_func_f64x_op_label11:
     fldt .L__kefir_func_f64x_op_label18(%rip)
     fldt -64(%rbp)
@@ -420,7 +415,7 @@ f64x_op:
     fstpt -48(%rbp)
     fldt -32(%rbp)
     fldt -48(%rbp)
-    jmp .L__kefir_text_func_f64x_op_epilogue
+    jmp .L__kefir_func_f64x_op_label13
 .L__kefir_text_func_f64x_op_end:
 .section .rodata
     .align 8

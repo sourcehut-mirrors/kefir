@@ -202,7 +202,6 @@ mul6:
     movq %rcx, 24(%rax)
     movq -96(%rbp), %rcx
     movq %rcx, 32(%rax)
-.L__kefir_text_func_mul6_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp

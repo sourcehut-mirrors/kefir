@@ -69,7 +69,6 @@ test2_atomic_load256:
     fstpt -80(%rbp)
     fldt -64(%rbp)
     fldt -80(%rbp)
-.L__kefir_text_func_test2_atomic_load256_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -134,7 +133,6 @@ test_atomic_load256:
     fstpt -80(%rbp)
     fldt -64(%rbp)
     fldt -80(%rbp)
-.L__kefir_text_func_test_atomic_load256_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

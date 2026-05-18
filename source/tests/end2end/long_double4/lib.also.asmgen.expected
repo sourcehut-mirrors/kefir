@@ -49,7 +49,6 @@ init_s:
     movq $0, 104(%rdi)
     fstpt 96(%rdi)
     mov %rdi, %rax
-.L__kefir_text_func_init_s_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

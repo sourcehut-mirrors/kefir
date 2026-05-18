@@ -83,7 +83,6 @@ test6:
 .L__kefir_func_test6_label2:
     cmp $10, %r13d
     jl .L__kefir_func_test6_label4
-.L__kefir_text_func_test6_epilogue:
     lea -24(%rbp), %rsp
     pop %r13
     pop %r12

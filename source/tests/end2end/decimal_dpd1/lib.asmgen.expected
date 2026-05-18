@@ -388,7 +388,6 @@ xadd32:
     movd (%rbx), %xmm0
     call __dpd_addsd3@PLT
     movd %xmm0, (%rbx)
-.L__kefir_text_func_xadd32_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
@@ -406,7 +405,6 @@ xadd64:
     movq (%rbx), %xmm0
     call __dpd_adddd3@PLT
     movq %xmm0, (%rbx)
-.L__kefir_text_func_xadd64_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
@@ -424,7 +422,6 @@ xdiv32:
     movd (%rbx), %xmm0
     call __dpd_divsd3@PLT
     movd %xmm0, (%rbx)
-.L__kefir_text_func_xdiv32_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
@@ -442,7 +439,6 @@ xdiv64:
     movq (%rbx), %xmm0
     call __dpd_divdd3@PLT
     movq %xmm0, (%rbx)
-.L__kefir_text_func_xdiv64_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
@@ -460,7 +456,6 @@ xmul32:
     movd (%rbx), %xmm0
     call __dpd_mulsd3@PLT
     movd %xmm0, (%rbx)
-.L__kefir_text_func_xmul32_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
@@ -478,7 +473,6 @@ xmul64:
     movq (%rbx), %xmm0
     call __dpd_muldd3@PLT
     movq %xmm0, (%rbx)
-.L__kefir_text_func_xmul64_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
@@ -496,7 +490,6 @@ xsub32:
     movd (%rbx), %xmm0
     call __dpd_subsd3@PLT
     movd %xmm0, (%rbx)
-.L__kefir_text_func_xsub32_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
@@ -514,7 +507,6 @@ xsub64:
     movq (%rbx), %xmm0
     call __dpd_subdd3@PLT
     movq %xmm0, (%rbx)
-.L__kefir_text_func_xsub64_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
@@ -532,7 +524,6 @@ xadd128:
     movdqu (%rbx), %xmm0
     call __dpd_addtd3@PLT
     movdqu %xmm0, (%rbx)
-.L__kefir_text_func_xadd128_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
@@ -550,7 +541,6 @@ xdiv128:
     movdqu (%rbx), %xmm0
     call __dpd_divtd3@PLT
     movdqu %xmm0, (%rbx)
-.L__kefir_text_func_xdiv128_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
@@ -568,7 +558,6 @@ xmul128:
     movdqu (%rbx), %xmm0
     call __dpd_multd3@PLT
     movdqu %xmm0, (%rbx)
-.L__kefir_text_func_xmul128_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
@@ -586,7 +575,6 @@ xsub128:
     movdqu (%rbx), %xmm0
     call __dpd_subtd3@PLT
     movdqu %xmm0, (%rbx)
-.L__kefir_text_func_xsub128_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
@@ -604,7 +592,6 @@ predec32:
     movd .L__kefir_func_predec32_label4(%rip), %xmm1
     call __dpd_addsd3@PLT
     movd %xmm0, (%rbx)
-.L__kefir_text_func_predec32_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
@@ -627,7 +614,6 @@ predec64:
     movq .L__kefir_func_predec64_label4(%rip), %xmm1
     call __dpd_adddd3@PLT
     movq %xmm0, (%rbx)
-.L__kefir_text_func_predec64_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
@@ -650,7 +636,6 @@ preinc32:
     movd .L__kefir_func_preinc32_label4(%rip), %xmm1
     call __dpd_addsd3@PLT
     movd %xmm0, (%rbx)
-.L__kefir_text_func_preinc32_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
@@ -673,7 +658,6 @@ preinc64:
     movq .L__kefir_func_preinc64_label4(%rip), %xmm1
     call __dpd_adddd3@PLT
     movq %xmm0, (%rbx)
-.L__kefir_text_func_preinc64_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
@@ -698,7 +682,6 @@ postdec32:
     call __dpd_addsd3@PLT
     movd %xmm0, (%rbx)
     movaps -32(%rbp), %xmm0
-.L__kefir_text_func_postdec32_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
@@ -723,7 +706,6 @@ postdec64:
     call __dpd_adddd3@PLT
     movq %xmm0, (%rbx)
     movaps -32(%rbp), %xmm0
-.L__kefir_text_func_postdec64_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
@@ -748,7 +730,6 @@ postinc32:
     call __dpd_addsd3@PLT
     movd %xmm0, (%rbx)
     movaps -32(%rbp), %xmm0
-.L__kefir_text_func_postinc32_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
@@ -773,7 +754,6 @@ postinc64:
     call __dpd_adddd3@PLT
     movq %xmm0, (%rbx)
     movaps -32(%rbp), %xmm0
-.L__kefir_text_func_postinc64_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
@@ -796,7 +776,6 @@ predec128:
     movdqu .L__kefir_func_predec128_label4(%rip), %xmm1
     call __dpd_addtd3@PLT
     movdqu %xmm0, (%rbx)
-.L__kefir_text_func_predec128_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
@@ -819,7 +798,6 @@ preinc128:
     movdqu .L__kefir_func_preinc128_label4(%rip), %xmm1
     call __dpd_addtd3@PLT
     movdqu %xmm0, (%rbx)
-.L__kefir_text_func_preinc128_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
@@ -844,7 +822,6 @@ postdec128:
     call __dpd_addtd3@PLT
     movdqu %xmm0, (%rbx)
     movaps -32(%rbp), %xmm0
-.L__kefir_text_func_postdec128_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
@@ -869,7 +846,6 @@ postinc128:
     call __dpd_addtd3@PLT
     movdqu %xmm0, (%rbx)
     movaps -32(%rbp), %xmm0
-.L__kefir_text_func_postinc128_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp

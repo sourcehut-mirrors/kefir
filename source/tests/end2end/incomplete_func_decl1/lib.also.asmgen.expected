@@ -44,7 +44,6 @@ test:
     movl -16(%rbp), %eax
     movl -12(%rbp), %ecx
     xor %ecx, %eax
-.L__kefir_text_func_test_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp

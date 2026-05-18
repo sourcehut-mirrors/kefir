@@ -932,13 +932,7 @@ factorial:
 #            },
 #            {
 #                "opcode": "function_epilogue",
-#                "args": [
-#                    {
-#                        "type": "integer",
-#                        "value": 0,
-#                        "variant": "default"
-#                    }
-#                ],
+#                "args": [],
 #                "labels": [],
 #                "source_location": {
 #                    "source_id": "source\/tests\/end2end\/asmcmp_source_location1\/lib.kefir.asmgen.c",
@@ -1270,13 +1264,7 @@ factorial:
 #            },
 #            {
 #                "opcode": "function_epilogue",
-#                "args": [
-#                    {
-#                        "type": "integer",
-#                        "value": 0,
-#                        "variant": "default"
-#                    }
-#                ],
+#                "args": [],
 #                "labels": [],
 #                "source_location": {
 #                    "source_id": "source\/tests\/end2end\/asmcmp_source_location1\/lib.kefir.asmgen.c",
@@ -1368,13 +1356,7 @@ factorial:
 #            },
 #            {
 #                "opcode": "function_epilogue",
-#                "args": [
-#                    {
-#                        "type": "integer",
-#                        "value": 0,
-#                        "variant": "default"
-#                    }
-#                ],
+#                "args": [],
 #                "labels": [],
 #                "source_location": {
 #                    "source_id": "source\/tests\/end2end\/asmcmp_source_location1\/lib.kefir.asmgen.c",

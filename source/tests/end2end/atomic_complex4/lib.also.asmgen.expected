@@ -77,7 +77,6 @@ f32_predec:
     ldmxcsr -48(%rbp)
     movaps -112(%rbp), %xmm0
     insertps $16, -64(%rbp), %xmm0
-.L__kefir_text_func_f32_predec_epilogue:
     ldmxcsr -16(%rbp)
     lea -8(%rbp), %rsp
     pop %rbx
@@ -153,7 +152,6 @@ f32_preinc:
     ldmxcsr -48(%rbp)
     movaps -112(%rbp), %xmm0
     insertps $16, -64(%rbp), %xmm0
-.L__kefir_text_func_f32_preinc_epilogue:
     ldmxcsr -16(%rbp)
     lea -8(%rbp), %rsp
     pop %rbx
@@ -229,7 +227,6 @@ f64_predec:
     ldmxcsr -64(%rbp)
     movaps -128(%rbp), %xmm0
     movaps -112(%rbp), %xmm1
-.L__kefir_text_func_f64_predec_epilogue:
     ldmxcsr -16(%rbp)
     lea -8(%rbp), %rsp
     pop %rbx
@@ -305,7 +302,6 @@ f64_preinc:
     ldmxcsr -64(%rbp)
     movaps -128(%rbp), %xmm0
     movaps -112(%rbp), %xmm1
-.L__kefir_text_func_f64_preinc_epilogue:
     ldmxcsr -16(%rbp)
     lea -8(%rbp), %rsp
     pop %rbx
@@ -379,7 +375,6 @@ f32_postdec:
     ldmxcsr -64(%rbp)
     movaps -112(%rbp), %xmm0
     insertps $16, -48(%rbp), %xmm0
-.L__kefir_text_func_f32_postdec_epilogue:
     ldmxcsr -16(%rbp)
     lea -8(%rbp), %rsp
     pop %rbx
@@ -453,7 +448,6 @@ f32_postinc:
     ldmxcsr -64(%rbp)
     movaps -112(%rbp), %xmm0
     insertps $16, -48(%rbp), %xmm0
-.L__kefir_text_func_f32_postinc_epilogue:
     ldmxcsr -16(%rbp)
     lea -8(%rbp), %rsp
     pop %rbx
@@ -527,7 +521,6 @@ f64_postdec:
     ldmxcsr -64(%rbp)
     movaps -128(%rbp), %xmm0
     movaps -112(%rbp), %xmm1
-.L__kefir_text_func_f64_postdec_epilogue:
     ldmxcsr -16(%rbp)
     lea -8(%rbp), %rsp
     pop %rbx
@@ -601,7 +594,6 @@ f64_postinc:
     ldmxcsr -64(%rbp)
     movaps -128(%rbp), %xmm0
     movaps -112(%rbp), %xmm1
-.L__kefir_text_func_f64_postinc_epilogue:
     ldmxcsr -16(%rbp)
     lea -8(%rbp), %rsp
     pop %rbx

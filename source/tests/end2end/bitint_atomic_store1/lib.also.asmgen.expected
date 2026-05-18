@@ -90,7 +90,6 @@ set5:
     mov $16, %rdi
     mov $5, %rcx
     call __atomic_store@PLT
-.L__kefir_text_func_set5_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
@@ -125,7 +124,6 @@ set6:
     mov $48, %rdi
     mov $5, %rcx
     call __atomic_store@PLT
-.L__kefir_text_func_set6_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp

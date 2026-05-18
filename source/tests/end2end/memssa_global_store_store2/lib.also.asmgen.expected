@@ -143,7 +143,6 @@ test7:
     movq x@GOTPCREL(%rip), %rax
     movl %ebx, (%rax)
     mov %rbx, %rax
-.L__kefir_text_func_test7_epilogue:
     lea -24(%rbp), %rsp
     pop %r13
     pop %r12

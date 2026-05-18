@@ -24,7 +24,6 @@ movq %xmm0, (%rax)
     movd -24(%rbp), %xmm0
     movd -20(%rbp), %xmm1
     insertps $16, %xmm1, %xmm0
-.L__kefir_text_func_test32_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

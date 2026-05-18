@@ -108,7 +108,6 @@ test_int:
     add %r12d, %ebx
     mov %ebx, %eax
     add %ecx, %eax
-.L__kefir_text_func_test_int_epilogue:
     pop %r12
     pop %rbx
     ret
@@ -141,7 +140,6 @@ test_char:
     add %ecx, %eax
     movsx %dl, %rcx
     add %ecx, %eax
-.L__kefir_text_func_test_char_epilogue:
     pop %r12
     pop %rbx
     ret
@@ -171,7 +169,6 @@ test_long:
     add %r12, %rbx
     mov %rbx, %rax
     add %rcx, %rax
-.L__kefir_text_func_test_long_epilogue:
     pop %r12
     pop %rbx
     ret
@@ -210,7 +207,6 @@ test_float:
     movd %xmm1, (%rax)
     addss -32(%rbp), %xmm0
     addss %xmm1, %xmm0
-.L__kefir_text_func_test_float_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -252,7 +248,6 @@ test_short:
     add %ecx, %eax
     movsx %dx, %rcx
     add %ecx, %eax
-.L__kefir_text_func_test_short_epilogue:
     pop %r12
     pop %rbx
     ret
@@ -316,7 +311,6 @@ test_cfloat:
     addss -32(%rbp), %xmm1
     addss %xmm2, %xmm1
     insertps $16, %xmm1, %xmm0
-.L__kefir_text_func_test_cfloat_epilogue:
     ldmxcsr -16(%rbp)
     lea -8(%rbp), %rsp
     pop %rbx
@@ -371,7 +365,6 @@ test_double:
     movq %xmm1, (%rax)
     addsd -32(%rbp), %xmm0
     addsd %xmm1, %xmm0
-.L__kefir_text_func_test_double_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -481,7 +474,6 @@ test_cldouble:
     fstpt -96(%rbp)
     fldt -80(%rbp)
     fldt -96(%rbp)
-.L__kefir_text_func_test_cldouble_epilogue:
     fldcw -32(%rbp)
     lea -24(%rbp), %rsp
     pop %r13
@@ -560,7 +552,6 @@ test_cdouble:
     movaps -80(%rbp), %xmm1
     addsd -32(%rbp), %xmm1
     addsd %xmm3, %xmm1
-.L__kefir_text_func_test_cdouble_epilogue:
     ldmxcsr -16(%rbp)
     lea -8(%rbp), %rsp
     pop %rbx
@@ -623,7 +614,6 @@ test_ldouble:
     fldt -32(%rbp)
     fxch %st(1)
     faddp
-.L__kefir_text_func_test_ldouble_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -798,7 +788,6 @@ __kefir_softfloat_complex_float_mul:
     movaps %xmm5, %xmm0
 .L__kefir_runtime_func___kefir_softfloat_complex_float_mul_label5:
     insertps $16, %xmm1, %xmm0
-.L__kefir_runtime_text_func___kefir_softfloat_complex_float_mul_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -1210,7 +1199,6 @@ __kefir_softfloat_complex_double_mul:
     movaps %xmm6, %xmm1
     movaps %xmm5, %xmm0
 .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label5:
-.L__kefir_runtime_text_func___kefir_softfloat_complex_double_mul_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -1294,7 +1282,7 @@ __kefir_softfloat_complex_double_mul:
     cmovnz %rsi, %rcx
     movq %rax, %xmm0
     movq %rcx, %xmm1
-    jmp .L__kefir_runtime_text_func___kefir_softfloat_complex_double_mul_epilogue
+    jmp .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label5
 .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label27:
     ucomisd %xmm4, %xmm4
     jp .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label29
@@ -1661,7 +1649,6 @@ __kefir_softfloat_complex_long_double_mul:
     fstpt -224(%rbp)
     fldt -208(%rbp)
     fldt -224(%rbp)
-.L__kefir_runtime_text_func___kefir_softfloat_complex_long_double_mul_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

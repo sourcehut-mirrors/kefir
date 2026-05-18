@@ -4457,7 +4457,6 @@ lea __kefir_function_init_array_static_x_12, %rax
 mov %rax, (__kefir_function_init_array_static_array_13 + 12)
 mov $4, %rax
 mov %rax, (__kefir_function_init_array_static_array_13 + 16)
-.L__kefir_text_func_init_array_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp

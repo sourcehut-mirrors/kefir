@@ -21,7 +21,6 @@ mul:
     movaps %xmm0, %xmm1
     shufps $1, %xmm1, %xmm1
     insertps $16, %xmm1, %xmm0
-.L__kefir_text_func_mul_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -65,7 +64,6 @@ __kefir_softfloat_complex_float_mul:
     movaps %xmm5, %xmm0
 .L__kefir_runtime_func___kefir_softfloat_complex_float_mul_label5:
     insertps $16, %xmm1, %xmm0
-.L__kefir_runtime_text_func___kefir_softfloat_complex_float_mul_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

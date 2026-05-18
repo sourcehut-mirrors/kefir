@@ -69,7 +69,6 @@ test4:
     call fn@PLT
     imul %r12d, %eax
     add %r12d, %eax
-.L__kefir_text_func_test4_epilogue:
     pop %r12
     pop %rbx
     pop %rbp
@@ -88,7 +87,6 @@ test5:
     movl (%r12), %ecx
     imul %ebx, %eax
     add %ecx, %eax
-.L__kefir_text_func_test5_epilogue:
     pop %r12
     pop %rbx
     pop %rbp
@@ -129,7 +127,6 @@ test8:
     movl (%rbx), %eax
     add %ecx, %eax
     add %ecx, %eax
-.L__kefir_text_func_test8_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp

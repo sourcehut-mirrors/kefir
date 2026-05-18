@@ -159,7 +159,6 @@ test_fetch_add128:
     jz .L__kefir_func_test_fetch_add128_label2
     mov -80(%rbp), %rax
     mov -72(%rbp), %rdx
-.L__kefir_text_func_test_fetch_add128_epilogue:
     lea -24(%rbp), %rsp
     pop %r13
     pop %r12
@@ -206,7 +205,6 @@ test_fetch_and128:
     jz .L__kefir_func_test_fetch_and128_label2
     mov -80(%rbp), %rax
     mov -72(%rbp), %rdx
-.L__kefir_text_func_test_fetch_and128_epilogue:
     lea -24(%rbp), %rsp
     pop %r13
     pop %r12
@@ -281,7 +279,6 @@ test_fetch_sub128:
     jz .L__kefir_func_test_fetch_sub128_label2
     mov -80(%rbp), %rax
     mov -72(%rbp), %rdx
-.L__kefir_text_func_test_fetch_sub128_epilogue:
     lea -24(%rbp), %rsp
     pop %r13
     pop %r12
@@ -328,7 +325,6 @@ test_fetch_xor128:
     jz .L__kefir_func_test_fetch_xor128_label2
     mov -80(%rbp), %rax
     mov -72(%rbp), %rdx
-.L__kefir_text_func_test_fetch_xor128_epilogue:
     lea -24(%rbp), %rsp
     pop %r13
     pop %r12
@@ -527,7 +523,6 @@ test_fetch_or128:
     jz .L__kefir_func_test_fetch_or128_label2
     mov -80(%rbp), %rax
     mov -72(%rbp), %rdx
-.L__kefir_text_func_test_fetch_or128_epilogue:
     lea -24(%rbp), %rsp
     pop %r13
     pop %r12

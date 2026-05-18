@@ -76,7 +76,6 @@ test3:
     xor %eax, %eax
     cmp $7, %rcx
     seta %al
-.L__kefir_text_func_test3_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
@@ -138,7 +137,6 @@ test4:
     xor %eax, %eax
     cmp $7, %rcx
     seta %al
-.L__kefir_text_func_test4_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
@@ -376,7 +374,6 @@ __kefir_bigint_right_shift:
     ja .L__kefir_runtime_func___kefir_bigint_right_shift_label5
 .L__kefir_runtime_func___kefir_bigint_right_shift_label6:
     xor %eax, %eax
-.L__kefir_runtime_text_func___kefir_bigint_right_shift_epilogue:
     lea -40(%rbp), %rsp
     pop %r15
     pop %r14
@@ -473,7 +470,6 @@ __kefir_bigint_arithmetic_right_shift:
 .L__kefir_runtime_func___kefir_bigint_arithmetic_right_shift_label13:
     xor %eax, %eax
 .L__kefir_runtime_func___kefir_bigint_arithmetic_right_shift_label25:
-.L__kefir_runtime_text_func___kefir_bigint_arithmetic_right_shift_epilogue:
     lea -40(%rbp), %rsp
     pop %r15
     pop %r14
@@ -542,7 +538,7 @@ __kefir_bigint_arithmetic_right_shift:
     jmp .L__kefir_runtime_func___kefir_bigint_arithmetic_right_shift_label7
 .L__kefir_runtime_func___kefir_bigint_arithmetic_right_shift_label3:
     xor %eax, %eax
-    jmp .L__kefir_runtime_text_func___kefir_bigint_arithmetic_right_shift_epilogue
+    jmp .L__kefir_runtime_func___kefir_bigint_arithmetic_right_shift_label25
 .L__kefir_runtime_text_func___kefir_bigint_arithmetic_right_shift_end:
 
 __kefir_bigint_left_shift:
@@ -572,7 +568,6 @@ __kefir_bigint_left_shift:
     ja .L__kefir_runtime_func___kefir_bigint_left_shift_label7
 .L__kefir_runtime_func___kefir_bigint_left_shift_label6:
     xor %eax, %eax
-.L__kefir_runtime_text_func___kefir_bigint_left_shift_epilogue:
     pop %r14
     pop %r13
     pop %r12
@@ -717,7 +712,6 @@ __kefir_bigint_leading_zeros:
     cmp %r8, %rcx
     jb .L__kefir_runtime_func___kefir_bigint_leading_zeros_label5
 .L__kefir_runtime_func___kefir_bigint_leading_zeros_label16:
-.L__kefir_runtime_text_func___kefir_bigint_leading_zeros_epilogue:
     lea -24(%rbp), %rsp
     pop %r13
     pop %r12
@@ -757,9 +751,9 @@ __kefir_bigint_leading_zeros:
     jmp .L__kefir_runtime_func___kefir_bigint_leading_zeros_label6
 .L__kefir_runtime_func___kefir_bigint_leading_zeros_label10:
     mov %rdx, %rax
-    jmp .L__kefir_runtime_text_func___kefir_bigint_leading_zeros_epilogue
+    jmp .L__kefir_runtime_func___kefir_bigint_leading_zeros_label16
 .L__kefir_runtime_func___kefir_bigint_leading_zeros_label12:
-    jmp .L__kefir_runtime_text_func___kefir_bigint_leading_zeros_epilogue
+    jmp .L__kefir_runtime_func___kefir_bigint_leading_zeros_label16
 .L__kefir_runtime_text_func___kefir_bigint_leading_zeros_end:
 
 __kefir_bigint_redundant_sign_bits:
@@ -790,7 +784,6 @@ __kefir_bigint_redundant_sign_bits:
     jb .L__kefir_runtime_func___kefir_bigint_redundant_sign_bits_label5
     sub $1, %rax
 .L__kefir_runtime_func___kefir_bigint_redundant_sign_bits_label17:
-.L__kefir_runtime_text_func___kefir_bigint_redundant_sign_bits_epilogue:
     lea -24(%rbp), %rsp
     pop %r13
     pop %r12
@@ -825,14 +818,14 @@ __kefir_bigint_redundant_sign_bits:
     cmp %r8d, %ecx
     je .L__kefir_runtime_func___kefir_bigint_redundant_sign_bits_label16
     sub $1, %rax
-    jmp .L__kefir_runtime_text_func___kefir_bigint_redundant_sign_bits_epilogue
+    jmp .L__kefir_runtime_func___kefir_bigint_redundant_sign_bits_label17
 .L__kefir_runtime_func___kefir_bigint_redundant_sign_bits_label16:
     mov %r12, %rcx
     mov %rbx, %rax
     jmp .L__kefir_runtime_func___kefir_bigint_redundant_sign_bits_label6
 .L__kefir_runtime_func___kefir_bigint_redundant_sign_bits_label13:
     xor %eax, %eax
-    jmp .L__kefir_runtime_text_func___kefir_bigint_redundant_sign_bits_epilogue
+    jmp .L__kefir_runtime_func___kefir_bigint_redundant_sign_bits_label17
 .L__kefir_runtime_text_func___kefir_bigint_redundant_sign_bits_end:
 
 __kefir_bigint_left_shift_whole_digits:
@@ -933,7 +926,6 @@ __kefir_bigint_signed_multiply:
     call __kefir_bigint_cast_signed
     xor %eax, %eax
 .L__kefir_runtime_func___kefir_bigint_signed_multiply_label28:
-.L__kefir_runtime_text_func___kefir_bigint_signed_multiply_epilogue:
     lea -40(%rbp), %rsp
     pop %r15
     pop %r14
@@ -1020,7 +1012,7 @@ __kefir_bigint_signed_multiply:
     jmp .L__kefir_runtime_func___kefir_bigint_signed_multiply_label5
 .L__kefir_runtime_func___kefir_bigint_signed_multiply_label25:
     xor %eax, %eax
-    jmp .L__kefir_runtime_text_func___kefir_bigint_signed_multiply_epilogue
+    jmp .L__kefir_runtime_func___kefir_bigint_signed_multiply_label28
 .L__kefir_runtime_func___kefir_bigint_signed_multiply_label26:
     movb $0, (%r13, %rcx, 1)
     add $1, %rcx

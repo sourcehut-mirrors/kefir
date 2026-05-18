@@ -491,7 +491,7 @@ static kefir_result_t kefir_codegen_amd64_return_from_function_impl(struct kefir
         kefir_list_insert_after(mem, &function->preserve_vreg_points, NULL,
                                 (void *) (kefir_uptr_t) kefir_asmcmp_context_instr_tail(&function->code.context)));
 
-    REQUIRE_OK(kefir_asmcmp_amd64_function_epilogue(mem, &function->code, false,
+    REQUIRE_OK(kefir_asmcmp_amd64_function_epilogue(mem, &function->code,
                                                     kefir_asmcmp_context_instr_tail(&function->code.context), NULL));
     REQUIRE_OK(
         kefir_asmcmp_amd64_ret(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), NULL));

@@ -64,7 +64,6 @@ test_atomic_store256:
     lea -48(%rbp), %rdx
     mov $5, %ecx
     call __atomic_store@PLT
-.L__kefir_text_func_test_atomic_store256_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -106,7 +105,6 @@ test2_atomic_store256:
     lea -48(%rbp), %rdx
     mov $5, %ecx
     call __atomic_store@PLT
-.L__kefir_text_func_test2_atomic_store256_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

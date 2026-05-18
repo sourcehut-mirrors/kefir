@@ -43,7 +43,6 @@ get_a1:
     movdqu %xmm0, 32(%rax)
     movdqu -24(%rbp), %xmm0
     movdqu %xmm0, 48(%rax)
-.L__kefir_text_func_get_a1_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
@@ -122,7 +121,6 @@ get_arr2_el:
     movdqu %xmm0, 32(%rax)
     movdqu -24(%rbp), %xmm0
     movdqu %xmm0, 48(%rax)
-.L__kefir_text_func_get_arr2_el_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp

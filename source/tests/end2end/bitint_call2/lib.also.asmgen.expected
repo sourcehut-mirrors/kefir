@@ -89,7 +89,6 @@ test6:
     movdqu %xmm0, 16(%rax)
     movdqu -32(%rbp), %xmm0
     movdqu %xmm0, 32(%rax)
-.L__kefir_text_func_test6_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp

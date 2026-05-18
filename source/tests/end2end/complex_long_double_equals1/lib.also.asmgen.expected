@@ -35,7 +35,6 @@ cld_eq:
     and %ecx, %eax
     setne %al
     movzx %al, %rax
-.L__kefir_text_func_cld_eq_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -67,7 +66,6 @@ cld_trunc:
     or %cl, %al
     fstp %st(0)
     fstp %st(0)
-.L__kefir_text_func_cld_trunc_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

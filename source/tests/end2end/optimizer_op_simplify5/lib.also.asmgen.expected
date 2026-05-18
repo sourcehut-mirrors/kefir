@@ -50,7 +50,6 @@ less_or_equalsld:
     or %rcx, %rax
     setne %al
     movzx %al, %rax
-.L__kefir_text_func_less_or_equalsld_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -70,7 +69,6 @@ greater_or_equalsd:
     xor %eax, %eax
     comisd %xmm1, %xmm0
     setae %al
-.L__kefir_text_func_greater_or_equalsd_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -90,7 +88,6 @@ less_or_equalsd:
     xor %eax, %eax
     comisd %xmm0, %xmm1
     setae %al
-.L__kefir_text_func_less_or_equalsd_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -136,7 +133,6 @@ greater_or_equalsld:
     or %rcx, %rax
     setne %al
     movzx %al, %rax
-.L__kefir_text_func_greater_or_equalsld_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

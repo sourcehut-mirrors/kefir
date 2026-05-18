@@ -468,7 +468,6 @@ set7:
     shr $16, %rcx
     movb %cl, 19(%rbx)
     movw %ax, 17(%rbx)
-.L__kefir_text_func_set7_epilogue:
     lea -16(%rbp), %rsp
     pop %r12
     pop %rbx
@@ -663,7 +662,6 @@ set10:
     movq %rax, (%r12)
     movw -104(%rbp), %ax
     movw %ax, 8(%r12)
-.L__kefir_text_func_set10_epilogue:
     lea -16(%rbp), %rsp
     pop %r12
     pop %rbx
@@ -722,7 +720,6 @@ set11:
     movw %ax, 22(%r12)
     movb -98(%rbp), %al
     movb %al, 24(%r12)
-.L__kefir_text_func_set11_epilogue:
     lea -16(%rbp), %rsp
     pop %r12
     pop %rbx
@@ -779,7 +776,6 @@ set12:
     movl %eax, 33(%r12)
     movb -100(%rbp), %al
     movb %al, 37(%r12)
-.L__kefir_text_func_set12_epilogue:
     lea -16(%rbp), %rsp
     pop %r12
     pop %rbx

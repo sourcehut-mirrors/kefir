@@ -106,7 +106,6 @@ get6:
     movdqu %xmm0, (%rax)
     movdqu -24(%rbp), %xmm0
     movdqu %xmm0, 16(%rax)
-.L__kefir_text_func_get6_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
@@ -150,7 +149,6 @@ get7:
     cld
     mov $16, %rcx
     rep movsq
-.L__kefir_text_func_get7_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp

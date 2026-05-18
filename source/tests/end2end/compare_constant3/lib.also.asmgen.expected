@@ -47,7 +47,6 @@ compare1:
     comiss %xmm0, %xmm1
     setae %cl
     add %ecx, %eax
-.L__kefir_text_func_compare1_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -112,7 +111,6 @@ compare2:
     comisd .L__kefir_func_compare2_label9(%rip), %xmm0
     setae %cl
     add %ecx, %eax
-.L__kefir_text_func_compare2_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -174,7 +172,6 @@ compare3:
     comisd %xmm0, %xmm1
     setae %cl
     add %ecx, %eax
-.L__kefir_text_func_compare3_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -238,7 +235,6 @@ compare4:
     comisd .L__kefir_func_compare4_label9(%rip), %xmm0
     setae %cl
     add %ecx, %eax
-.L__kefir_text_func_compare4_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

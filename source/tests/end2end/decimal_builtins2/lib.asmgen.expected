@@ -52,7 +52,6 @@ dec32_isinf:
     xor %eax, %eax
     cmp $0, %ebx
     setne %al
-.L__kefir_text_func_dec32_isinf_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
@@ -91,7 +90,6 @@ dec64_isinf:
     xor %eax, %eax
     cmp $0, %ebx
     setne %al
-.L__kefir_text_func_dec64_isinf_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
@@ -133,7 +131,6 @@ dec32_isfinite:
     or %al, %r12b
     mov $0, %rax
     sete %al
-.L__kefir_text_func_dec32_isfinite_epilogue:
     lea -16(%rbp), %rsp
     pop %r12
     pop %rbx
@@ -176,7 +173,6 @@ dec64_isfinite:
     or %al, %r12b
     mov $0, %rax
     sete %al
-.L__kefir_text_func_dec64_isfinite_epilogue:
     lea -16(%rbp), %rsp
     pop %r12
     pop %rbx
@@ -213,7 +209,6 @@ dec64_isinf_sign:
     neg %ecx
     mov %rbx, %rax
     or %ecx, %eax
-.L__kefir_text_func_dec64_isinf_sign_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
@@ -252,7 +247,6 @@ dec128_isinf:
     xor %eax, %eax
     cmp $0, %ebx
     setne %al
-.L__kefir_text_func_dec128_isinf_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
@@ -288,7 +282,6 @@ dec128_isinf_sign:
     neg %ecx
     mov %rbx, %rax
     or %ecx, %eax
-.L__kefir_text_func_dec128_isinf_sign_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
@@ -330,7 +323,6 @@ dec128_isfinite:
     or %al, %r12b
     mov $0, %rax
     sete %al
-.L__kefir_text_func_dec128_isfinite_epilogue:
     lea -16(%rbp), %rsp
     pop %r12
     pop %rbx
@@ -367,7 +359,6 @@ dec32_isinf_sign:
     neg %ecx
     mov %rbx, %rax
     or %ecx, %eax
-.L__kefir_text_func_dec32_isinf_sign_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp

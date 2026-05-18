@@ -558,7 +558,6 @@ set9:
     movl %eax, 48(%r12)
     movb -36(%rbp), %al
     movb %al, 52(%r12)
-.L__kefir_text_func_set9_epilogue:
     lea -16(%rbp), %rsp
     pop %r12
     pop %rbx

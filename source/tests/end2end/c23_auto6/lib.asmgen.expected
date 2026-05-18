@@ -36,7 +36,6 @@ fn3:
 .L__kefir_func_fn3_label2:
     cmp $0, %ebx
     jg .L__kefir_func_fn3_label4
-.L__kefir_text_func_fn3_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp

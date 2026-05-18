@@ -879,7 +879,6 @@ test_dec32_laplacian_apply:
     lea 1(%r14), %r15
     cmp %rax, %r14
     jb .L__kefir_func_test_dec32_laplacian_apply_label4
-.L__kefir_text_func_test_dec32_laplacian_apply_epilogue:
     lea -40(%rbp), %rsp
     pop %r15
     pop %r14
@@ -1131,7 +1130,6 @@ test_dec64_laplacian_apply:
     lea 1(%r14), %r15
     cmp %rax, %r14
     jb .L__kefir_func_test_dec64_laplacian_apply_label4
-.L__kefir_text_func_test_dec64_laplacian_apply_epilogue:
     lea -40(%rbp), %rsp
     pop %r15
     pop %r14
@@ -1269,7 +1267,6 @@ test_dec128_grid_init:
     sete %al
     or %al, %cl
     jnz .L__kefir_func_test_dec128_grid_init_label3
-.L__kefir_text_func_test_dec128_grid_init_epilogue:
     lea -16(%rbp), %rsp
     pop %r12
     pop %rbx
@@ -1308,7 +1305,6 @@ test_dec128_laplacian_apply:
     lea 1(%r14), %r15
     cmp %rax, %r14
     jb .L__kefir_func_test_dec128_laplacian_apply_label4
-.L__kefir_text_func_test_dec128_laplacian_apply_epilogue:
     lea -40(%rbp), %rsp
     pop %r15
     pop %r14
@@ -1806,7 +1802,6 @@ test_dec32_grid_init:
     sete %al
     or %al, %cl
     jnz .L__kefir_func_test_dec32_grid_init_label3
-.L__kefir_text_func_test_dec32_grid_init_epilogue:
     lea -16(%rbp), %rsp
     pop %r12
     pop %rbx
@@ -1859,7 +1854,6 @@ test_dec64_grid_init:
     sete %al
     or %al, %cl
     jnz .L__kefir_func_test_dec64_grid_init_label3
-.L__kefir_text_func_test_dec64_grid_init_epilogue:
     lea -16(%rbp), %rsp
     pop %r12
     pop %rbx
@@ -1979,7 +1973,6 @@ test_dec32_run_simulation:
     movq $0, -64(%rbp)
     movq $0, -56(%rbp)
     movaps -160(%rbp), %xmm0
-.L__kefir_text_func_test_dec32_run_simulation_epilogue:
     lea -40(%rbp), %rsp
     pop %r15
     pop %r14
@@ -2079,7 +2072,6 @@ test_dec128_initialize_gaussian:
     movaps %xmm0, -128(%rbp)
     cmp %r13, %r12
     jb .L__kefir_func_test_dec128_initialize_gaussian_label4
-.L__kefir_text_func_test_dec128_initialize_gaussian_epilogue:
     lea -40(%rbp), %rsp
     pop %r15
     pop %r14
@@ -2353,7 +2345,6 @@ test_dec64_run_simulation:
     movq $0, -64(%rbp)
     movq $0, -56(%rbp)
     movaps -160(%rbp), %xmm0
-.L__kefir_text_func_test_dec64_run_simulation_epilogue:
     lea -40(%rbp), %rsp
     pop %r15
     pop %r14
@@ -2532,7 +2523,6 @@ test_dec128_run_simulation:
     movq $0, -80(%rbp)
     movq $0, -72(%rbp)
     movaps -176(%rbp), %xmm0
-.L__kefir_text_func_test_dec128_run_simulation_epilogue:
     lea -40(%rbp), %rsp
     pop %r15
     pop %r14
@@ -2717,7 +2707,6 @@ test_dec64_initialize_gaussian:
     movaps %xmm0, -128(%rbp)
     cmp %r13, %r12
     jb .L__kefir_func_test_dec64_initialize_gaussian_label4
-.L__kefir_text_func_test_dec64_initialize_gaussian_epilogue:
     lea -40(%rbp), %rsp
     pop %r15
     pop %r14
@@ -2827,7 +2816,6 @@ test_dec32_initialize_gaussian:
     movaps %xmm0, -128(%rbp)
     cmp %r13, %r12
     jb .L__kefir_func_test_dec32_initialize_gaussian_label4
-.L__kefir_text_func_test_dec32_initialize_gaussian_epilogue:
     lea -40(%rbp), %rsp
     pop %r15
     pop %r14

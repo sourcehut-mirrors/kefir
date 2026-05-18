@@ -312,7 +312,6 @@ sum_progression:
     fstpt 144(%rsp)
     call sum10@PLT
     add $160, %rsp
-.L__kefir_text_func_sum_progression_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

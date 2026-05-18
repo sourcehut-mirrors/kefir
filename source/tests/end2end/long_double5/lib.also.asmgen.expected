@@ -30,7 +30,6 @@ eq:
     fstp %st(0)
     setnp %al
     cmovne %rcx, %rax
-.L__kefir_text_func_eq_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -68,7 +67,6 @@ ge:
     or %rcx, %rax
     setne %al
     movzx %al, %rax
-.L__kefir_text_func_ge_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -87,7 +85,6 @@ gr:
     fcomip %st(1)
     fstp %st(0)
     seta %al
-.L__kefir_text_func_gr_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -126,7 +123,6 @@ le:
     or %rcx, %rax
     setne %al
     movzx %al, %rax
-.L__kefir_text_func_le_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -146,7 +142,6 @@ lt:
     fcomip %st(1)
     fstp %st(0)
     seta %al
-.L__kefir_text_func_lt_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -172,7 +167,6 @@ neq:
     xor %eax, %eax
     test %cl, %cl
     sete %al
-.L__kefir_text_func_neq_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

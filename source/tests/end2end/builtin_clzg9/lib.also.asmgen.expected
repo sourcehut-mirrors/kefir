@@ -103,7 +103,6 @@ test5:
     call __kefir_bigint_leading_zeros
     test %r12b, %r12b
     cmovnz %rbx, %rax
-.L__kefir_text_func_test5_epilogue:
     lea -16(%rbp), %rsp
     pop %r12
     pop %rbx
@@ -144,7 +143,6 @@ test6:
     call __kefir_bigint_leading_zeros
     test %r13b, %r13b
     cmovnz %rbx, %rax
-.L__kefir_text_func_test6_epilogue:
     lea -24(%rbp), %rsp
     pop %r13
     pop %r12
@@ -226,7 +224,6 @@ __kefir_bigint_leading_zeros:
     cmp %r8, %rcx
     jb .L__kefir_runtime_func___kefir_bigint_leading_zeros_label5
 .L__kefir_runtime_func___kefir_bigint_leading_zeros_label16:
-.L__kefir_runtime_text_func___kefir_bigint_leading_zeros_epilogue:
     lea -24(%rbp), %rsp
     pop %r13
     pop %r12
@@ -266,9 +263,9 @@ __kefir_bigint_leading_zeros:
     jmp .L__kefir_runtime_func___kefir_bigint_leading_zeros_label6
 .L__kefir_runtime_func___kefir_bigint_leading_zeros_label10:
     mov %rdx, %rax
-    jmp .L__kefir_runtime_text_func___kefir_bigint_leading_zeros_epilogue
+    jmp .L__kefir_runtime_func___kefir_bigint_leading_zeros_label16
 .L__kefir_runtime_func___kefir_bigint_leading_zeros_label12:
-    jmp .L__kefir_runtime_text_func___kefir_bigint_leading_zeros_epilogue
+    jmp .L__kefir_runtime_func___kefir_bigint_leading_zeros_label16
 .L__kefir_runtime_text_func___kefir_bigint_leading_zeros_end:
 
 

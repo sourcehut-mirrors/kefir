@@ -48,7 +48,6 @@ test1:
     cld
     mov $16, %rcx
     rep movsq
-.L__kefir_text_func_test1_epilogue:
     ldmxcsr -16(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp

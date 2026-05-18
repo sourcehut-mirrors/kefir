@@ -30,7 +30,6 @@ is_greaterequal_f32:
     ucomiss %xmm1, %xmm0
     setnb %al
     movzx %al, %eax
-.L__kefir_text_func_is_greaterequal_f32_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -51,7 +50,6 @@ is_greaterequal_f64:
     ucomisd %xmm1, %xmm0
     setnb %al
     movzx %al, %eax
-.L__kefir_text_func_is_greaterequal_f64_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -80,7 +78,6 @@ is_greaterequal_f80:
     movzx %al, %eax
     fstp %st(0)
     fstp %st(0)
-.L__kefir_text_func_is_greaterequal_f80_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

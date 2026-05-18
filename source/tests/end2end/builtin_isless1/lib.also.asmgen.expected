@@ -30,7 +30,6 @@ is_less_f32:
     ucomiss %xmm0, %xmm1
     seta %al
     movzx %al, %eax
-.L__kefir_text_func_is_less_f32_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -51,7 +50,6 @@ is_less_f64:
     ucomisd %xmm0, %xmm1
     seta %al
     movzx %al, %eax
-.L__kefir_text_func_is_less_f64_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -79,7 +77,6 @@ is_less_f80:
     movzx %al, %eax
     fstp %st(0)
     fstp %st(0)
-.L__kefir_text_func_is_less_f80_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

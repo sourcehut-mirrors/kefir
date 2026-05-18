@@ -38,7 +38,6 @@ set_ld1:
     mov $16, %rdi
     mov $5, %rcx
     call __atomic_store@PLT
-.L__kefir_text_func_set_ld1_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

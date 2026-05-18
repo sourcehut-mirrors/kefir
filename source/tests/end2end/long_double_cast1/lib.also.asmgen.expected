@@ -36,7 +36,6 @@ inc:
     fldt .L__kefir_func_inc_label4(%rip)
     fxch %st(1)
     faddp
-.L__kefir_text_func_inc_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -57,7 +56,6 @@ neg:
     fstcw -8(%rbp)
     fldt 16(%rbp)
     fchs
-.L__kefir_text_func_neg_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -72,7 +70,6 @@ f32cld:
     fstcw -8(%rbp)
     movq %xmm0, -16(%rbp)
     flds -16(%rbp)
-.L__kefir_text_func_f32cld_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -87,7 +84,6 @@ f64cld:
     fstcw -8(%rbp)
     movq %xmm0, -16(%rbp)
     fldl -16(%rbp)
-.L__kefir_text_func_f64cld_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -104,7 +100,6 @@ intcld:
     push %rax
     fildq (%rsp)
     add $8, %rsp
-.L__kefir_text_func_intcld_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -121,7 +116,6 @@ ldcf32:
     fldt 16(%rbp)
     fstps -4(%rsp)
     movd -4(%rsp), %xmm0
-.L__kefir_text_func_ldcf32_epilogue:
     ldmxcsr -16(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
@@ -139,7 +133,6 @@ ldcf64:
     fldt 16(%rbp)
     fstpl -8(%rsp)
     movq -8(%rsp), %xmm0
-.L__kefir_text_func_ldcf64_epilogue:
     ldmxcsr -16(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
@@ -162,7 +155,6 @@ ldcint:
     fistpq -16(%rbp)
     mov -16(%rbp), %rax
     fldcww -32(%rbp)
-.L__kefir_text_func_ldcint_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -190,7 +182,6 @@ ldcuint:
     mov -16(%rbp), %rax
     fldcww -24(%rbp)
 .L__kefir_func_ldcuint_label4:
-.L__kefir_text_func_ldcuint_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -206,7 +197,7 @@ ldcuint:
     mov -16(%rbp), %rax
     fldcww -24(%rbp)
     btc $63, %rax
-    jmp .L__kefir_text_func_ldcuint_epilogue
+    jmp .L__kefir_func_ldcuint_label4
 .L__kefir_text_func_ldcuint_end:
 
 uintcld:
@@ -223,7 +214,6 @@ uintcld:
     jns .L__kefir_func_uintcld_label3
     fadds .L__kefir_constant_uint_to_long_double(%rip)
 .L__kefir_func_uintcld_label3:
-.L__kefir_text_func_uintcld_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -240,7 +230,6 @@ imp_cast:
     push %rax
     fildq (%rsp)
     add $8, %rsp
-.L__kefir_text_func_imp_cast_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

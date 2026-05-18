@@ -37,7 +37,6 @@ sub:
 fsubp
     fstpl -24(%rbp)
     movq -24(%rbp), %xmm0
-.L__kefir_text_func_sub_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -59,7 +58,6 @@ subf:
 fsubp
     fstps -16(%rbp)
     movd -16(%rbp), %xmm0
-.L__kefir_text_func_subf_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -86,7 +84,6 @@ subl:
 fsubp
     fstpt -48(%rbp)
     fldt -48(%rbp)
-.L__kefir_text_func_subl_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -108,7 +105,6 @@ mydiv:
 fdivp
     fstpl -24(%rbp)
     movq -24(%rbp), %xmm0
-.L__kefir_text_func_mydiv_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -130,7 +126,6 @@ mydivf:
 fdivp
     fstps -16(%rbp)
     movd -16(%rbp), %xmm0
-.L__kefir_text_func_mydivf_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -157,7 +152,6 @@ mydivl:
 fdivp
     fstpt -48(%rbp)
     fldt -48(%rbp)
-.L__kefir_text_func_mydivl_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -179,7 +173,6 @@ mydivr:
 fdivrp
     fstpl -24(%rbp)
     movq -24(%rbp), %xmm0
-.L__kefir_text_func_mydivr_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -201,7 +194,6 @@ mydivrf:
 fdivrp
     fstps -16(%rbp)
     movd -16(%rbp), %xmm0
-.L__kefir_text_func_mydivrf_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -228,7 +220,6 @@ mydivrl:
 fdivrp
     fstpt -48(%rbp)
     fldt -48(%rbp)
-.L__kefir_text_func_mydivrl_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

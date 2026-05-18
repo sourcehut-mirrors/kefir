@@ -105,7 +105,6 @@ quad_equation:
     cvtsi2sd %rax, %xmm1
     mulsd -48(%rbp), %xmm1
     divsd %xmm1, %xmm0
-.L__kefir_text_func_quad_equation_epilogue:
     ldmxcsr -24(%rbp)
     lea -16(%rbp), %rsp
     pop %r12
@@ -140,7 +139,6 @@ factorialf32:
 .L__kefir_func_factorialf32_label10:
     movaps %xmm1, %xmm0
 .L__kefir_func_factorialf32_label20:
-.L__kefir_text_func_factorialf32_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -154,10 +152,10 @@ factorialf32:
     movaps %xmm2, %xmm0
     jmp .L__kefir_func_factorialf32_label6
 .L__kefir_func_factorialf32_label11:
-    jmp .L__kefir_text_func_factorialf32_epilogue
+    jmp .L__kefir_func_factorialf32_label20
 .L__kefir_func_factorialf32_label12:
     movd .L__kefir_func_factorialf32_label24(%rip), %xmm0
-    jmp .L__kefir_text_func_factorialf32_epilogue
+    jmp .L__kefir_func_factorialf32_label20
 .L__kefir_text_func_factorialf32_end:
 .section .rodata
     .align 4
@@ -201,7 +199,6 @@ factorialf64:
 .L__kefir_func_factorialf64_label10:
     movaps %xmm1, %xmm0
 .L__kefir_func_factorialf64_label20:
-.L__kefir_text_func_factorialf64_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -215,10 +212,10 @@ factorialf64:
     movaps %xmm2, %xmm0
     jmp .L__kefir_func_factorialf64_label6
 .L__kefir_func_factorialf64_label11:
-    jmp .L__kefir_text_func_factorialf64_epilogue
+    jmp .L__kefir_func_factorialf64_label20
 .L__kefir_func_factorialf64_label12:
     movq .L__kefir_func_factorialf64_label24(%rip), %xmm0
-    jmp .L__kefir_text_func_factorialf64_epilogue
+    jmp .L__kefir_func_factorialf64_label20
 .L__kefir_text_func_factorialf64_end:
 .section .rodata
     .align 4

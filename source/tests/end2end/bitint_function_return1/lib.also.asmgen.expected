@@ -2159,13 +2159,7 @@ test1:
 #            },
 #            {
 #                "opcode": "function_epilogue",
-#                "args": [
-#                    {
-#                        "type": "integer",
-#                        "value": 0,
-#                        "variant": "default"
-#                    }
-#                ],
+#                "args": [],
 #                "labels": []
 #            },
 #            {
@@ -2214,7 +2208,6 @@ test1:
     movdqu %xmm0, (%rax)
     movdqu -32(%rbp), %xmm0
     movdqu %xmm0, 16(%rax)
-.L__kefir_text_func_test1_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
@@ -2604,13 +2597,7 @@ __kefir_bigint_invert:
 #            },
 #            {
 #                "opcode": "function_epilogue",
-#                "args": [
-#                    {
-#                        "type": "integer",
-#                        "value": 0,
-#                        "variant": "default"
-#                    }
-#                ],
+#                "args": [],
 #                "labels": []
 #            },
 #            {

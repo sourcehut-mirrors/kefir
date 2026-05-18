@@ -43,7 +43,6 @@ process:
     jg .L__kefir_func_process_label5
     xor %eax, %eax
 .L__kefir_func_process_label14:
-.L__kefir_text_func_process_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
@@ -75,7 +74,7 @@ process:
     movq -32(%rbp), %rdi
     movl -72(%rbp), %esi
     call *%rbx
-    jmp .L__kefir_text_func_process_epilogue
+    jmp .L__kefir_func_process_label14
 .L__kefir_func_process_label8:
     movl -64(%rbp), %eax
     cmp $48, %eax

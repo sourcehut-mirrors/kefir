@@ -25,7 +25,6 @@ somefn:
     lea -1(%edi), %eax
     test %edi, %edi
     jnz .L__kefir_func_somefn_label7
-.L__kefir_text_func_somefn_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

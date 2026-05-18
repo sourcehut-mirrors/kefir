@@ -188,7 +188,7 @@ kefir_result_t kefir_asmcmp_amd64_preserve_active_virtual_registers(struct kefir
 kefir_result_t kefir_asmcmp_amd64_function_prologue(struct kefir_mem *, struct kefir_asmcmp_amd64 *,
                                                     kefir_asmcmp_instruction_index_t,
                                                     kefir_asmcmp_instruction_index_t *);
-kefir_result_t kefir_asmcmp_amd64_function_epilogue(struct kefir_mem *, struct kefir_asmcmp_amd64 *, kefir_bool_t,
+kefir_result_t kefir_asmcmp_amd64_function_epilogue(struct kefir_mem *, struct kefir_asmcmp_amd64 *,
                                                     kefir_asmcmp_instruction_index_t,
                                                     kefir_asmcmp_instruction_index_t *);
 
