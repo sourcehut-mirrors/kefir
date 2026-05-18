@@ -2125,17 +2125,6 @@ test1:
 #                "labels": []
 #            },
 #            {
-#                "opcode": "function_epilogue",
-#                "args": [
-#                    {
-#                        "type": "integer",
-#                        "value": 0,
-#                        "variant": "default"
-#                    }
-#                ],
-#                "labels": []
-#            },
-#            {
 #                "opcode": "touch_virtual_register",
 #                "args": [
 #                    {
@@ -2163,6 +2152,17 @@ test1:
 #                    {
 #                        "type": "virtual_register",
 #                        "index": 0,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "function_epilogue",
+#                "args": [
+#                    {
+#                        "type": "integer",
+#                        "value": 0,
 #                        "variant": "default"
 #                    }
 #                ],
@@ -2581,33 +2581,33 @@ __kefir_bigint_invert:
 #                "labels": []
 #            },
 #            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 13,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 13,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
 #                "opcode": "function_epilogue",
 #                "args": [
 #                    {
 #                        "type": "integer",
 #                        "value": 0,
-#                        "variant": "default"
-#                    }
-#                ],
-#                "labels": []
-#            },
-#            {
-#                "opcode": "touch_virtual_register",
-#                "args": [
-#                    {
-#                        "type": "virtual_register",
-#                        "index": 13,
-#                        "variant": "default"
-#                    }
-#                ],
-#                "labels": []
-#            },
-#            {
-#                "opcode": "touch_virtual_register",
-#                "args": [
-#                    {
-#                        "type": "virtual_register",
-#                        "index": 13,
 #                        "variant": "default"
 #                    }
 #                ],

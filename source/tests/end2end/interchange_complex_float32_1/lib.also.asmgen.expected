@@ -64,14 +64,16 @@ add32:
 .L__kefir_func_add32_label43:
     addss %xmm2, %xmm3
 .loc 0 72 5
-.L__kefir_func_add32_label58:
+.L__kefir_func_add32_label56:
     insertps $16, %xmm3, %xmm0
+.loc 0 72 5
+.L__kefir_func_add32_label57:
 .L__kefir_text_func_add32_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_func_add32_label59:
+.L__kefir_func_add32_label67:
 .L__kefir_text_func_add32_end:
 
 conv1:
@@ -244,12 +246,14 @@ conv6:
     movaps %xmm0, %xmm1
     shufps $1, %xmm1, %xmm1
 .loc 0 108 5
-.L__kefir_func_conv6_label34:
+.L__kefir_func_conv6_label32:
     insertps $16, %xmm1, %xmm0
+.loc 0 108 5
+.L__kefir_func_conv6_label33:
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_func_conv6_label35:
+.L__kefir_func_conv6_label41:
 .L__kefir_text_func_conv6_end:
 
 conv7:
@@ -264,14 +268,16 @@ conv7:
     cvtsd2ss %xmm0, %xmm0
 .L__kefir_func_conv7_label27:
     cvtsd2ss %xmm1, %xmm1
-.L__kefir_func_conv7_label42:
+.L__kefir_func_conv7_label40:
     insertps $16, %xmm1, %xmm0
+.loc 0 112 5
+.L__kefir_func_conv7_label41:
 .L__kefir_text_func_conv7_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_func_conv7_label43:
+.L__kefir_func_conv7_label49:
 .L__kefir_text_func_conv7_end:
 
 conv8:
@@ -326,12 +332,14 @@ div32:
 .loc 0 84 5
 .L__kefir_func_div32_label219:
     insertps $16, %xmm1, %xmm0
+.loc 0 84 5
+.L__kefir_func_div32_label229:
 .L__kefir_text_func_div32_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_func_div32_label231:
+.L__kefir_func_div32_label239:
 .L__kefir_text_func_div32_end:
 
 mul32:
@@ -356,12 +364,14 @@ mul32:
 .loc 0 80 5
 .L__kefir_func_mul32_label219:
     insertps $16, %xmm1, %xmm0
+.loc 0 80 5
+.L__kefir_func_mul32_label229:
 .L__kefir_text_func_mul32_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_func_mul32_label231:
+.L__kefir_func_mul32_label239:
 .L__kefir_text_func_mul32_end:
 
 neg32:
@@ -383,12 +393,14 @@ neg32:
 .loc 0 68 5
 .L__kefir_func_neg32_label33:
     insertps $16, %xmm1, %xmm0
+.loc 0 68 5
+.L__kefir_func_neg32_label43:
 .L__kefir_text_func_neg32_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_func_neg32_label45:
+.L__kefir_func_neg32_label51:
 .L__kefir_text_func_neg32_end:
 
 sub32:
@@ -410,14 +422,16 @@ sub32:
 .L__kefir_func_sub32_label43:
     subss %xmm2, %xmm3
 .loc 0 76 5
-.L__kefir_func_sub32_label58:
+.L__kefir_func_sub32_label56:
     insertps $16, %xmm3, %xmm0
+.loc 0 76 5
+.L__kefir_func_sub32_label57:
 .L__kefir_text_func_sub32_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_func_sub32_label59:
+.L__kefir_func_sub32_label67:
 .L__kefir_text_func_sub32_end:
 
 get32_1:

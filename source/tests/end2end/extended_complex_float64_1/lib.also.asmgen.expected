@@ -249,13 +249,15 @@ conv6:
 .L__kefir_func_conv6_label49:
     fldt -32(%rbp)
     fldt -48(%rbp)
+.loc 0 108 5
+.L__kefir_func_conv6_label55:
 .L__kefir_text_func_conv6_epilogue:
     ldmxcsr -16(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_func_conv6_label57:
+.L__kefir_func_conv6_label63:
 .L__kefir_text_func_conv6_end:
 
 conv7:
@@ -279,13 +281,15 @@ conv7:
 .L__kefir_func_conv7_label49:
     fldt -32(%rbp)
     fldt -48(%rbp)
+.loc 0 112 5
+.L__kefir_func_conv7_label55:
 .L__kefir_text_func_conv7_epilogue:
     ldmxcsr -16(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_func_conv7_label57:
+.L__kefir_func_conv7_label63:
 .L__kefir_text_func_conv7_end:
 
 conv8:

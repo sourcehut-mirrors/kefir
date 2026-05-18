@@ -1304,8 +1304,19 @@ factorial:
 #                },
 #                {
 #                    "instr_ref": 864,
-#                    "opcode": "function_epilogue",
-#                    "parameters": [],
+#                    "opcode": "touch",
+#                    "parameters": [
+#                        {
+#                            "type": "value_ref",
+#                            "instr_ref": 848,
+#                            "aspect": {
+#                                "type": "direct_output",
+#                                "index": 0
+#                            },
+#                            "variant": "default",
+#                            "tied": true
+#                        }
+#                    ],
 #                    "values": [],
 #                    "metadata": {
 #                        "source_location": null,
@@ -1335,19 +1346,8 @@ factorial:
 #                },
 #                {
 #                    "instr_ref": 896,
-#                    "opcode": "touch",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 848,
-#                            "aspect": {
-#                                "type": "direct_output",
-#                                "index": 0
-#                            },
-#                            "variant": "default",
-#                            "tied": true
-#                        }
-#                    ],
+#                    "opcode": "function_epilogue",
+#                    "parameters": [],
 #                    "values": [],
 #                    "metadata": {
 #                        "source_location": null,
@@ -1764,8 +1764,19 @@ factorial:
 #                },
 #                {
 #                    "instr_ref": 1184,
-#                    "opcode": "function_epilogue",
-#                    "parameters": [],
+#                    "opcode": "touch",
+#                    "parameters": [
+#                        {
+#                            "type": "value_ref",
+#                            "instr_ref": 1168,
+#                            "aspect": {
+#                                "type": "direct_output",
+#                                "index": 0
+#                            },
+#                            "variant": "default",
+#                            "tied": true
+#                        }
+#                    ],
 #                    "values": [],
 #                    "metadata": {
 #                        "source_location": null,
@@ -1795,19 +1806,8 @@ factorial:
 #                },
 #                {
 #                    "instr_ref": 1216,
-#                    "opcode": "touch",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 1168,
-#                            "aspect": {
-#                                "type": "direct_output",
-#                                "index": 0
-#                            },
-#                            "variant": "default",
-#                            "tied": true
-#                        }
-#                    ],
+#                    "opcode": "function_epilogue",
+#                    "parameters": [],
 #                    "values": [],
 #                    "metadata": {
 #                        "source_location": null,
@@ -1871,8 +1871,19 @@ factorial:
 #                },
 #                {
 #                    "instr_ref": 1280,
-#                    "opcode": "function_epilogue",
-#                    "parameters": [],
+#                    "opcode": "touch",
+#                    "parameters": [
+#                        {
+#                            "type": "value_ref",
+#                            "instr_ref": 1264,
+#                            "aspect": {
+#                                "type": "direct_output",
+#                                "index": 0
+#                            },
+#                            "variant": "default",
+#                            "tied": true
+#                        }
+#                    ],
 #                    "values": [],
 #                    "metadata": {
 #                        "source_location": null,
@@ -1902,19 +1913,8 @@ factorial:
 #                },
 #                {
 #                    "instr_ref": 1312,
-#                    "opcode": "touch",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 1264,
-#                            "aspect": {
-#                                "type": "direct_output",
-#                                "index": 0
-#                            },
-#                            "variant": "default",
-#                            "tied": true
-#                        }
-#                    ],
+#                    "opcode": "function_epilogue",
+#                    "parameters": [],
 #                    "values": [],
 #                    "metadata": {
 #                        "source_location": null,

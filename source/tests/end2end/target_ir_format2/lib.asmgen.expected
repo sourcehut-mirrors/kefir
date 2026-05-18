@@ -919,8 +919,19 @@ test1:
 #                },
 #                {
 #                    "instr_ref": 688,
-#                    "opcode": "function_epilogue",
-#                    "parameters": [],
+#                    "opcode": "touch",
+#                    "parameters": [
+#                        {
+#                            "type": "value_ref",
+#                            "instr_ref": 672,
+#                            "aspect": {
+#                                "type": "direct_output",
+#                                "index": 0
+#                            },
+#                            "variant": "default",
+#                            "tied": true
+#                        }
+#                    ],
 #                    "values": [],
 #                    "metadata": {
 #                        "source_location": null,
@@ -950,19 +961,8 @@ test1:
 #                },
 #                {
 #                    "instr_ref": 720,
-#                    "opcode": "touch",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 672,
-#                            "aspect": {
-#                                "type": "direct_output",
-#                                "index": 0
-#                            },
-#                            "variant": "default",
-#                            "tied": true
-#                        }
-#                    ],
+#                    "opcode": "function_epilogue",
+#                    "parameters": [],
 #                    "values": [],
 #                    "metadata": {
 #                        "source_location": null,
@@ -2052,8 +2052,19 @@ test2:
 #                },
 #                {
 #                    "instr_ref": 752,
-#                    "opcode": "function_epilogue",
-#                    "parameters": [],
+#                    "opcode": "touch",
+#                    "parameters": [
+#                        {
+#                            "type": "value_ref",
+#                            "instr_ref": 720,
+#                            "aspect": {
+#                                "type": "direct_output",
+#                                "index": 0
+#                            },
+#                            "variant": "default",
+#                            "tied": true
+#                        }
+#                    ],
 #                    "values": [],
 #                    "metadata": {
 #                        "source_location": null,
@@ -2083,19 +2094,8 @@ test2:
 #                },
 #                {
 #                    "instr_ref": 784,
-#                    "opcode": "touch",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 720,
-#                            "aspect": {
-#                                "type": "direct_output",
-#                                "index": 0
-#                            },
-#                            "variant": "default",
-#                            "tied": true
-#                        }
-#                    ],
+#                    "opcode": "function_epilogue",
+#                    "parameters": [],
 #                    "values": [],
 #                    "metadata": {
 #                        "source_location": null,
@@ -2553,7 +2553,7 @@ test3:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 721,
+#                    "instr_ref": 705,
 #                    "opcode": "assign",
 #                    "parameters": [
 #                        {
@@ -2631,7 +2631,7 @@ test3:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 337,
+#                    "instr_ref": 673,
 #                    "opcode": "placeholder",
 #                    "parameters": [],
 #                    "values": [
@@ -2664,7 +2664,7 @@ test3:
 #                        {
 #                            "type": "indirect",
 #                            "basis": "value_ref",
-#                            "instr_ref": 337,
+#                            "instr_ref": 673,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -2704,13 +2704,13 @@ test3:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 689,
+#                    "instr_ref": 337,
 #                    "opcode": "mov",
 #                    "parameters": [
 #                        {
 #                            "type": "indirect",
 #                            "basis": "value_ref",
-#                            "instr_ref": 337,
+#                            "instr_ref": 673,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -2793,7 +2793,7 @@ test3:
 #                        },
 #                        {
 #                            "type": "value_ref",
-#                            "instr_ref": 721,
+#                            "instr_ref": 705,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -2955,7 +2955,7 @@ test3:
 #                        {
 #                            "type": "indirect",
 #                            "basis": "value_ref",
-#                            "instr_ref": 337,
+#                            "instr_ref": 673,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -2995,7 +2995,7 @@ test3:
 #                        {
 #                            "type": "indirect",
 #                            "basis": "value_ref",
-#                            "instr_ref": 337,
+#                            "instr_ref": 673,
 #                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
@@ -3364,16 +3364,6 @@ test3:
 #                },
 #                {
 #                    "instr_ref": 960,
-#                    "opcode": "function_epilogue",
-#                    "parameters": [],
-#                    "values": [],
-#                    "metadata": {
-#                        "source_location": null,
-#                        "code_ref": null
-#                    }
-#                },
-#                {
-#                    "instr_ref": 976,
 #                    "opcode": "touch",
 #                    "parameters": [
 #                        {
@@ -3394,7 +3384,7 @@ test3:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 992,
+#                    "instr_ref": 976,
 #                    "opcode": "touch",
 #                    "parameters": [
 #                        {
@@ -3415,7 +3405,7 @@ test3:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 1008,
+#                    "instr_ref": 992,
 #                    "opcode": "touch",
 #                    "parameters": [
 #                        {
@@ -3436,7 +3426,7 @@ test3:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 1024,
+#                    "instr_ref": 1008,
 #                    "opcode": "touch",
 #                    "parameters": [
 #                        {
@@ -3457,7 +3447,7 @@ test3:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 1040,
+#                    "instr_ref": 1024,
 #                    "opcode": "touch",
 #                    "parameters": [
 #                        {
@@ -3471,6 +3461,16 @@ test3:
 #                            "tied": true
 #                        }
 #                    ],
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
+#                },
+#                {
+#                    "instr_ref": 1040,
+#                    "opcode": "function_epilogue",
+#                    "parameters": [],
 #                    "values": [],
 #                    "metadata": {
 #                        "source_location": null,
@@ -3757,8 +3757,19 @@ test4:
 #                },
 #                {
 #                    "instr_ref": 176,
-#                    "opcode": "function_epilogue",
-#                    "parameters": [],
+#                    "opcode": "touch",
+#                    "parameters": [
+#                        {
+#                            "type": "value_ref",
+#                            "instr_ref": 160,
+#                            "aspect": {
+#                                "type": "direct_output",
+#                                "index": 0
+#                            },
+#                            "variant": "default",
+#                            "tied": true
+#                        }
+#                    ],
 #                    "values": [],
 #                    "metadata": {
 #                        "source_location": null,
@@ -3788,19 +3799,8 @@ test4:
 #                },
 #                {
 #                    "instr_ref": 208,
-#                    "opcode": "touch",
-#                    "parameters": [
-#                        {
-#                            "type": "value_ref",
-#                            "instr_ref": 160,
-#                            "aspect": {
-#                                "type": "direct_output",
-#                                "index": 0
-#                            },
-#                            "variant": "default",
-#                            "tied": true
-#                        }
-#                    ],
+#                    "opcode": "function_epilogue",
+#                    "parameters": [],
 #                    "values": [],
 #                    "metadata": {
 #                        "source_location": null,

@@ -477,9 +477,6 @@ static kefir_result_t kefir_codegen_amd64_return_from_function_impl(struct kefir
         REQUIRE_OK(kefir_codegen_amd64_function_x87_clear(mem, function, 0));
     }
 
-    REQUIRE_OK(kefir_asmcmp_amd64_function_epilogue(mem, &function->code, false,
-                                                    kefir_asmcmp_context_instr_tail(&function->code.context), NULL));
-
     if (vreg != KEFIR_ASMCMP_INDEX_NONE) {
         REQUIRE_OK(kefir_asmcmp_amd64_touch_virtual_register(
             mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), vreg, NULL));
@@ -493,6 +490,9 @@ static kefir_result_t kefir_codegen_amd64_return_from_function_impl(struct kefir
     REQUIRE_OK(
         kefir_list_insert_after(mem, &function->preserve_vreg_points, NULL,
                                 (void *) (kefir_uptr_t) kefir_asmcmp_context_instr_tail(&function->code.context)));
+
+    REQUIRE_OK(kefir_asmcmp_amd64_function_epilogue(mem, &function->code, false,
+                                                    kefir_asmcmp_context_instr_tail(&function->code.context), NULL));
     REQUIRE_OK(
         kefir_asmcmp_amd64_ret(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), NULL));
 
