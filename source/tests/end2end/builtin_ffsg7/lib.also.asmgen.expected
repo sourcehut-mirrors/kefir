@@ -107,6 +107,7 @@ __kefir_bigint_least_significant_nonzero:
     cmp %rdx, %rax
     jb .L__kefir_runtime_func___kefir_bigint_least_significant_nonzero_label6
     xor %eax, %eax
+.L__kefir_runtime_func___kefir_bigint_least_significant_nonzero_label18:
 .L__kefir_runtime_text_func___kefir_bigint_least_significant_nonzero_epilogue:
     pop %r12
     pop %rbx

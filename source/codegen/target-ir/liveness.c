@@ -42,6 +42,7 @@ kefir_result_t kefir_codegen_target_ir_liveness_init(struct kefir_codegen_target
 
     liveness->code = NULL;
     liveness->blocks = NULL;
+    liveness->block_count = 0;
     REQUIRE_OK(kefir_hashtable_init(&liveness->values, &kefir_hashtable_uint_ops));
     REQUIRE_OK(kefir_hashtable_on_removal(&liveness->values, free_value_liveness, NULL));
     REQUIRE_OK(kefir_codegen_target_ir_numbering_init(&liveness->numbering));
@@ -49,7 +50,7 @@ kefir_result_t kefir_codegen_target_ir_liveness_init(struct kefir_codegen_target
 }
 
 static kefir_result_t free_blocks(struct kefir_mem *mem, struct kefir_codegen_target_ir_liveness *liveness) {
-    for (kefir_size_t i = 0; i < kefir_codegen_target_ir_code_block_count(liveness->code); i++) {
+    for (kefir_size_t i = 0; i < liveness->block_count; i++) {
         kefir_codegen_target_ir_block_ref_t block_ref = kefir_codegen_target_ir_code_block_by_index(liveness->code, i);
         KEFIR_FREE(mem, liveness->blocks[block_ref].live_in.content);
         KEFIR_FREE(mem, liveness->blocks[block_ref].live_out.content);
@@ -95,6 +96,36 @@ kefir_result_t kefir_codegen_target_ir_liveness_reset(struct kefir_mem *mem,
         free_blocks(mem, liveness);
     }
     REQUIRE_OK(kefir_codegen_target_ir_numbering_reset(mem, &liveness->numbering));
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_codegen_target_ir_liveness_resize(struct kefir_mem *mem,
+                                                       struct kefir_codegen_target_ir_liveness *liveness) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(liveness != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR liveness"));
+
+    kefir_size_t new_block_count = kefir_codegen_target_ir_code_block_count(liveness->code);
+    struct kefir_codegen_target_ir_block_liveness *new_blocks =
+        KEFIR_REALLOC(mem, liveness->blocks, sizeof(struct kefir_codegen_target_ir_block_liveness) * new_block_count);
+    REQUIRE(new_blocks != NULL,
+            KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate target IR liveness information"));
+
+    liveness->blocks = new_blocks;
+    for (kefir_size_t i = liveness->block_count; i < new_block_count; i++) {
+        kefir_codegen_target_ir_block_ref_t block_ref = kefir_codegen_target_ir_code_block_by_index(liveness->code, i);
+
+        liveness->blocks[block_ref].live_in.content = NULL;
+        liveness->blocks[block_ref].live_in.length = 0;
+        liveness->blocks[block_ref].live_in.capacity = 0;
+        liveness->blocks[block_ref].live_out.content = NULL;
+        liveness->blocks[block_ref].live_out.length = 0;
+        liveness->blocks[block_ref].live_out.capacity = 0;
+        liveness->blocks[block_ref].value_liveness_ranges_ready = false;
+        liveness->blocks[block_ref].value_liveness_ranges.indices = NULL;
+        liveness->blocks[block_ref].value_liveness_ranges.length = 0;
+    }
+    liveness->block_count = new_block_count;
+
     return KEFIR_OK;
 }
 
@@ -256,7 +287,7 @@ static kefir_result_t propagate_instr_liveness(struct kefir_mem *mem,
                                                kefir_codegen_target_ir_value_ref_t value_ref, struct kefir_list *queue,
                                                kefir_uint8_t *visited_map) {
     REQUIRE_OK(kefir_list_clear(mem, queue));
-    memset(visited_map, 0, sizeof(kefir_uint8_t) * kefir_codegen_target_ir_code_block_count(control_flow->code));
+    memset(visited_map, 0, sizeof(kefir_uint8_t) * liveness->block_count);
     const struct kefir_codegen_target_ir_instruction *instr;
     REQUIRE_OK(kefir_codegen_target_ir_code_instruction(control_flow->code, value_ref.instr_ref, &instr));
     if (instr->operation.opcode == control_flow->code->klass->placeholder_opcode) {
@@ -509,11 +540,11 @@ kefir_result_t kefir_codegen_target_ir_liveness_build(struct kefir_mem *mem,
     REQUIRE_OK(kefir_codegen_target_ir_liveness_reset(mem, liveness));
     REQUIRE_OK(kefir_codegen_target_ir_numbering_build(mem, &liveness->numbering, control_flow->code));
 
-    liveness->blocks = KEFIR_MALLOC(mem, sizeof(struct kefir_codegen_target_ir_block_liveness) *
-                                             kefir_codegen_target_ir_code_block_count(control_flow->code));
+    liveness->block_count = kefir_codegen_target_ir_code_block_count(control_flow->code);
+    liveness->blocks = KEFIR_MALLOC(mem, sizeof(struct kefir_codegen_target_ir_block_liveness) * liveness->block_count);
     REQUIRE(liveness->blocks != NULL,
             KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate target IR liveness information"));
-    for (kefir_size_t i = 0; i < kefir_codegen_target_ir_code_block_count(control_flow->code); i++) {
+    for (kefir_size_t i = 0; i < liveness->block_count; i++) {
         kefir_codegen_target_ir_block_ref_t block_ref =
             kefir_codegen_target_ir_code_block_by_index(control_flow->code, i);
 
@@ -531,9 +562,8 @@ kefir_result_t kefir_codegen_target_ir_liveness_build(struct kefir_mem *mem,
 
     struct kefir_list queue;
     REQUIRE_OK(kefir_list_init(&queue));
-    kefir_uint8_t *visited_map =
-        KEFIR_MALLOC(mem, sizeof(kefir_uint8_t) * kefir_codegen_target_ir_code_block_count(liveness->code));
-    for (kefir_size_t i = 0; i < kefir_codegen_target_ir_code_block_count(liveness->code); i++) {
+    kefir_uint8_t *visited_map = KEFIR_MALLOC(mem, sizeof(kefir_uint8_t) * liveness->block_count);
+    for (kefir_size_t i = 0; i < liveness->block_count; i++) {
         kefir_codegen_target_ir_block_ref_t block_ref = kefir_codegen_target_ir_code_block_by_index(liveness->code, i);
         if (!kefir_codegen_target_ir_control_flow_is_reachable(control_flow, block_ref)) {
             continue;

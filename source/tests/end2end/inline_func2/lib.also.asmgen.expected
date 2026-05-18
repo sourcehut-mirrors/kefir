@@ -40,6 +40,7 @@ factorial_helper2:
     cmp $1, %rbx
     jg .L__kefir_func_factorial_helper2_label3
     mov $1, %eax
+.L__kefir_func_factorial_helper2_label5:
 .L__kefir_text_func_factorial_helper2_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx

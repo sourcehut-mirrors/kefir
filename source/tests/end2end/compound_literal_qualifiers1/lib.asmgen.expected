@@ -12,7 +12,7 @@ test:
     mov %rsp, %rbp
     sub $64, %rsp
     fstcw -8(%rbp)
-    fldt .L__kefir_func_test_label6(%rip)
+    fldt .L__kefir_func_test_label7(%rip)
     movq $0, -24(%rbp)
     fstpt -32(%rbp)
     fldt -32(%rbp)
@@ -50,7 +50,7 @@ test:
 .L__kefir_text_func_test_end:
 .section .rodata
     .align 8
-.L__kefir_func_test_label6:
+.L__kefir_func_test_label7:
     .quad 18446744073709541615
     .quad 16446
 .section .text

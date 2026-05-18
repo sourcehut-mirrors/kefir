@@ -1260,6 +1260,13 @@ static kefir_result_t construct_target_ir(struct kefir_mem *mem, struct kefir_co
                                                        &func->target_ir.liveness, &func->target_ir.interference,
                                                        &func->target_ir.coalesce, &stack_frame));
 
+        kefir_bool_t is_fused_epilogue;
+        REQUIRE_CHAIN(&res, kefir_codegen_amd64_stack_frame_fused_epilogue(codegen->abi_variant, &func->stack_frame,
+                                                                           &is_fused_epilogue));
+        if (res == KEFIR_OK && is_fused_epilogue) {
+            REQUIRE_CHAIN(&res, kefir_codegen_target_ir_amd64_transform_late_split_epilogue(mem, code));
+            REQUIRE_CHAIN(&res, kefir_codegen_target_ir_liveness_resize(mem, &func->target_ir.liveness));
+        }
         REQUIRE_CHAIN(
             &res, kefir_codegen_target_ir_amd64_transform_late_jump_propagation(mem, code, &func->target_ir.regalloc));
         REQUIRE_CHAIN(&res, kefir_codegen_target_ir_control_flow_reset(mem, &func->target_ir.control_flow));

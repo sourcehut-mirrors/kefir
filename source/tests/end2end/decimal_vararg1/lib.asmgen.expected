@@ -45,7 +45,7 @@ sum32:
     movq %rax, -40(%rbp)
     lea -224(%rbp), %rax
     movq %rax, -32(%rbp)
-    movd .L__kefir_func_sum32_label12(%rip), %xmm0
+    movd .L__kefir_func_sum32_label13(%rip), %xmm0
     mov %rdi, %rbx
 .L__kefir_func_sum32_label4:
     test %ebx, %ebx
@@ -77,7 +77,7 @@ sum32:
 .L__kefir_text_func_sum32_end:
 .section .rodata
     .align 4
-.L__kefir_func_sum32_label12:
+.L__kefir_func_sum32_label13:
     .long 847249408
 .section .text
 
@@ -111,7 +111,7 @@ sum64:
     movq %rax, -40(%rbp)
     lea -224(%rbp), %rax
     movq %rax, -32(%rbp)
-    movq .L__kefir_func_sum64_label12(%rip), %xmm0
+    movq .L__kefir_func_sum64_label13(%rip), %xmm0
     mov %rdi, %rbx
 .L__kefir_func_sum64_label4:
     test %ebx, %ebx
@@ -143,7 +143,7 @@ sum64:
 .L__kefir_text_func_sum64_end:
 .section .rodata
     .align 8
-.L__kefir_func_sum64_label12:
+.L__kefir_func_sum64_label13:
     .quad 3584865303386914816
 .section .text
 
@@ -177,7 +177,7 @@ sum128:
     movq %rax, -40(%rbp)
     lea -224(%rbp), %rax
     movq %rax, -32(%rbp)
-    movdqu .L__kefir_func_sum128_label12(%rip), %xmm0
+    movdqu .L__kefir_func_sum128_label13(%rip), %xmm0
     mov %rdi, %rbx
 .L__kefir_func_sum128_label4:
     test %ebx, %ebx
@@ -211,7 +211,7 @@ sum128:
 .L__kefir_text_func_sum128_end:
 .section .rodata
     .align 16
-.L__kefir_func_sum128_label12:
+.L__kefir_func_sum128_label13:
     .quad 0, 3476778912330022912
 .section .text
 
@@ -245,7 +245,7 @@ sum128_2:
     movq %rax, -40(%rbp)
     lea -224(%rbp), %rax
     movq %rax, -32(%rbp)
-    movdqu .L__kefir_func_sum128_2_label15(%rip), %xmm0
+    movdqu .L__kefir_func_sum128_2_label16(%rip), %xmm0
     mov %rdi, %rbx
 .L__kefir_func_sum128_2_label4:
     test %ebx, %ebx
@@ -292,7 +292,7 @@ sum128_2:
 .L__kefir_text_func_sum128_2_end:
 .section .rodata
     .align 16
-.L__kefir_func_sum128_2_label15:
+.L__kefir_func_sum128_2_label16:
     .quad 0, 3476778912330022912
 .section .text
 

@@ -34,7 +34,7 @@ test1:
     lea 1(%rax), %r10
     movq %r10, -56(%rbp)
     movq -48(%rbp), %xmm6
-    movq .L__kefir_func_test1_label3(%rip), %xmm1
+    movq .L__kefir_func_test1_label4(%rip), %xmm1
     movaps %xmm6, %xmm8
     addsd %xmm1, %xmm8
     movaps %xmm8, %xmm1
@@ -78,7 +78,7 @@ test1:
 .L__kefir_text_func_test1_end:
 .section .rodata
     .align 8
-.L__kefir_func_test1_label3:
+.L__kefir_func_test1_label4:
     .quad 4607182418800017408
 .section .text
 

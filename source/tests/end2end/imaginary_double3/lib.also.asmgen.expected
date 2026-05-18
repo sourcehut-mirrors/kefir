@@ -35,7 +35,7 @@ test:
     movq %rax, -56(%rbp)
     lea -240(%rbp), %rax
     movq %rax, -48(%rbp)
-    movq .L__kefir_func_test_label15(%rip), %xmm0
+    movq .L__kefir_func_test_label16(%rip), %xmm0
 .L__kefir_func_test_label4:
     test %edi, %edi
     jnz .L__kefir_func_test_label6
@@ -77,7 +77,7 @@ test:
 .L__kefir_text_func_test_end:
 .section .rodata
     .align 8
-.L__kefir_func_test_label15:
+.L__kefir_func_test_label16:
     .quad 0
 .section .text
 

@@ -77,7 +77,7 @@ postdec_ld:
     mov $16, %rdi
     mov $5, %rcx
     call __atomic_load@PLT
-    fldt .L__kefir_func_postdec_ld_label6(%rip)
+    fldt .L__kefir_func_postdec_ld_label7(%rip)
     fldt -64(%rbp)
     faddp
     fstpt -48(%rbp)
@@ -119,7 +119,7 @@ postdec_ld:
 .L__kefir_text_func_postdec_ld_end:
 .section .rodata
     .align 8
-.L__kefir_func_postdec_ld_label6:
+.L__kefir_func_postdec_ld_label7:
     .quad 9223372036854775808
     .quad 49151
 .section .text
@@ -157,7 +157,7 @@ postinc_ld:
     mov $16, %rdi
     mov $5, %rcx
     call __atomic_load@PLT
-    fldt .L__kefir_func_postinc_ld_label6(%rip)
+    fldt .L__kefir_func_postinc_ld_label7(%rip)
     fldt -64(%rbp)
     faddp
     fstpt -48(%rbp)
@@ -199,7 +199,7 @@ postinc_ld:
 .L__kefir_text_func_postinc_ld_end:
 .section .rodata
     .align 8
-.L__kefir_func_postinc_ld_label6:
+.L__kefir_func_postinc_ld_label7:
     .quad 9223372036854775808
     .quad 16383
 .section .text
@@ -213,7 +213,7 @@ postdec_f32:
     fnstenv -48(%rbp)
     stmxcsr -20(%rbp)
     fnclex
-    movd .L__kefir_func_postdec_f32_label6(%rip), %xmm1
+    movd .L__kefir_func_postdec_f32_label7(%rip), %xmm1
     movq f32@GOTPCREL(%rip), %rdi
 .L__kefir_func_postdec_f32_label2:
     movl (%rdi), %eax
@@ -247,7 +247,7 @@ postdec_f32:
 .L__kefir_text_func_postdec_f32_end:
 .section .rodata
     .align 4
-.L__kefir_func_postdec_f32_label6:
+.L__kefir_func_postdec_f32_label7:
     .long 3212836864
 .section .text
 
@@ -260,7 +260,7 @@ postdec_f64:
     fnstenv -48(%rbp)
     stmxcsr -20(%rbp)
     fnclex
-    movq .L__kefir_func_postdec_f64_label6(%rip), %xmm1
+    movq .L__kefir_func_postdec_f64_label7(%rip), %xmm1
     movq f64@GOTPCREL(%rip), %rdi
 .L__kefir_func_postdec_f64_label2:
     movq (%rdi), %rax
@@ -294,7 +294,7 @@ postdec_f64:
 .L__kefir_text_func_postdec_f64_end:
 .section .rodata
     .align 8
-.L__kefir_func_postdec_f64_label6:
+.L__kefir_func_postdec_f64_label7:
     .quad 13830554455654793216
 .section .text
 
@@ -368,7 +368,7 @@ postinc_f32:
     fnstenv -48(%rbp)
     stmxcsr -20(%rbp)
     fnclex
-    movd .L__kefir_func_postinc_f32_label6(%rip), %xmm1
+    movd .L__kefir_func_postinc_f32_label7(%rip), %xmm1
     movq f32@GOTPCREL(%rip), %rdi
 .L__kefir_func_postinc_f32_label2:
     movl (%rdi), %eax
@@ -402,7 +402,7 @@ postinc_f32:
 .L__kefir_text_func_postinc_f32_end:
 .section .rodata
     .align 4
-.L__kefir_func_postinc_f32_label6:
+.L__kefir_func_postinc_f32_label7:
     .long 1065353216
 .section .text
 
@@ -415,7 +415,7 @@ postinc_f64:
     fnstenv -48(%rbp)
     stmxcsr -20(%rbp)
     fnclex
-    movq .L__kefir_func_postinc_f64_label6(%rip), %xmm1
+    movq .L__kefir_func_postinc_f64_label7(%rip), %xmm1
     movq f64@GOTPCREL(%rip), %rdi
 .L__kefir_func_postinc_f64_label2:
     movq (%rdi), %rax
@@ -449,7 +449,7 @@ postinc_f64:
 .L__kefir_text_func_postinc_f64_end:
 .section .rodata
     .align 8
-.L__kefir_func_postinc_f64_label6:
+.L__kefir_func_postinc_f64_label7:
     .quad 4607182418800017408
 .section .text
 

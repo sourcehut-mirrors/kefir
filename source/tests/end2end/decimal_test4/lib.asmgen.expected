@@ -72,9 +72,9 @@ test_dec128_run:
     pop %rbp
     ret
 .L__kefir_func_test_dec128_run_label4:
-    movdqu .L__kefir_func_test_dec128_run_label6(%rip), %xmm0
-    movdqu .L__kefir_func_test_dec128_run_label7(%rip), %xmm1
-    movdqu .L__kefir_func_test_dec128_run_label8(%rip), %xmm2
+    movdqu .L__kefir_func_test_dec128_run_label7(%rip), %xmm0
+    movdqu .L__kefir_func_test_dec128_run_label8(%rip), %xmm1
+    movdqu .L__kefir_func_test_dec128_run_label9(%rip), %xmm2
     lea -80(%rbp), %rdi
     call test_dec128_step
     add $1, %r13d
@@ -82,13 +82,13 @@ test_dec128_run:
 .L__kefir_text_func_test_dec128_run_end:
 .section .rodata
     .align 16
-.L__kefir_func_test_dec128_run_label6:
+.L__kefir_func_test_dec128_run_label7:
     .quad 4, 3475653012423180288
     .align 16
-.L__kefir_func_test_dec128_run_label7:
+.L__kefir_func_test_dec128_run_label8:
     .quad 6, 3475653012423180288
     .align 16
-.L__kefir_func_test_dec128_run_label8:
+.L__kefir_func_test_dec128_run_label9:
     .quad 1, 3475090062469758976
 .section .text
 
@@ -239,7 +239,7 @@ test_dec32_norm:
     push %r13
     sub $24, %rsp
     mov %rdi, %r12
-    movd .L__kefir_func_test_dec32_norm_label6(%rip), %xmm0
+    movd .L__kefir_func_test_dec32_norm_label7(%rip), %xmm0
     movd %xmm0, -48(%rbp)
     mov %rsi, %rbx
     imul %rsi, %rbx
@@ -269,7 +269,7 @@ test_dec32_norm:
 .L__kefir_text_func_test_dec32_norm_end:
 .section .rodata
     .align 4
-.L__kefir_func_test_dec32_norm_label6:
+.L__kefir_func_test_dec32_norm_label7:
     .long 847249408
 .section .text
 
@@ -603,7 +603,7 @@ test_dec64_norm:
     push %r13
     sub $24, %rsp
     mov %rdi, %r12
-    movq .L__kefir_func_test_dec64_norm_label6(%rip), %xmm0
+    movq .L__kefir_func_test_dec64_norm_label7(%rip), %xmm0
     movq %xmm0, -48(%rbp)
     mov %rsi, %rbx
     imul %rsi, %rbx
@@ -633,7 +633,7 @@ test_dec64_norm:
 .L__kefir_text_func_test_dec64_norm_end:
 .section .rodata
     .align 8
-.L__kefir_func_test_dec64_norm_label6:
+.L__kefir_func_test_dec64_norm_label7:
     .quad 3584865303386914816
 .section .text
 
@@ -859,9 +859,9 @@ test_dec32_run:
     pop %rbp
     ret
 .L__kefir_func_test_dec32_run_label4:
-    movd .L__kefir_func_test_dec32_run_label6(%rip), %xmm0
-    movd .L__kefir_func_test_dec32_run_label7(%rip), %xmm1
-    movd .L__kefir_func_test_dec32_run_label8(%rip), %xmm2
+    movd .L__kefir_func_test_dec32_run_label7(%rip), %xmm0
+    movd .L__kefir_func_test_dec32_run_label8(%rip), %xmm1
+    movd .L__kefir_func_test_dec32_run_label9(%rip), %xmm2
     lea -56(%rbp), %rdi
     call test_dec32_step
     add $1, %r13d
@@ -869,13 +869,13 @@ test_dec32_run:
 .L__kefir_text_func_test_dec32_run_end:
 .section .rodata
     .align 4
-.L__kefir_func_test_dec32_run_label6:
+.L__kefir_func_test_dec32_run_label7:
     .long 830472196
     .align 4
-.L__kefir_func_test_dec32_run_label7:
+.L__kefir_func_test_dec32_run_label8:
     .long 830472198
     .align 4
-.L__kefir_func_test_dec32_run_label8:
+.L__kefir_func_test_dec32_run_label9:
     .long 822083585
 .section .text
 
@@ -918,9 +918,9 @@ test_dec64_run:
     pop %rbp
     ret
 .L__kefir_func_test_dec64_run_label4:
-    movq .L__kefir_func_test_dec64_run_label6(%rip), %xmm0
-    movq .L__kefir_func_test_dec64_run_label7(%rip), %xmm1
-    movq .L__kefir_func_test_dec64_run_label8(%rip), %xmm2
+    movq .L__kefir_func_test_dec64_run_label7(%rip), %xmm0
+    movq .L__kefir_func_test_dec64_run_label8(%rip), %xmm1
+    movq .L__kefir_func_test_dec64_run_label9(%rip), %xmm2
     lea -56(%rbp), %rdi
     call test_dec64_step
     add $1, %r13d
@@ -928,13 +928,13 @@ test_dec64_run:
 .L__kefir_text_func_test_dec64_run_end:
 .section .rodata
     .align 8
-.L__kefir_func_test_dec64_run_label6:
+.L__kefir_func_test_dec64_run_label7:
     .quad 3566850904877432836
     .align 8
-.L__kefir_func_test_dec64_run_label7:
+.L__kefir_func_test_dec64_run_label8:
     .quad 3566850904877432838
     .align 8
-.L__kefir_func_test_dec64_run_label8:
+.L__kefir_func_test_dec64_run_label9:
     .quad 3557843705622691841
 .section .text
 
@@ -1454,7 +1454,7 @@ test_dec128_norm:
     push %r13
     sub $24, %rsp
     mov %rdi, %r12
-    movdqu .L__kefir_func_test_dec128_norm_label6(%rip), %xmm0
+    movdqu .L__kefir_func_test_dec128_norm_label7(%rip), %xmm0
     movdqu %xmm0, -48(%rbp)
     mov %rsi, %rbx
     imul %rsi, %rbx
@@ -1486,7 +1486,7 @@ test_dec128_norm:
 .L__kefir_text_func_test_dec128_norm_end:
 .section .rodata
     .align 16
-.L__kefir_func_test_dec128_norm_label6:
+.L__kefir_func_test_dec128_norm_label7:
     .quad 0, 3476778912330022912
 .section .text
 

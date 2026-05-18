@@ -33,7 +33,7 @@ inc:
     sub $16, %rsp
     fstcw -8(%rbp)
     fldt 16(%rbp)
-    fldt .L__kefir_func_inc_label3(%rip)
+    fldt .L__kefir_func_inc_label4(%rip)
     fxch %st(1)
     faddp
 .L__kefir_text_func_inc_epilogue:
@@ -44,7 +44,7 @@ inc:
 .L__kefir_text_func_inc_end:
 .section .rodata
     .align 8
-.L__kefir_func_inc_label3:
+.L__kefir_func_inc_label4:
     .quad 9223372036854775808
     .quad 16383
 .section .text

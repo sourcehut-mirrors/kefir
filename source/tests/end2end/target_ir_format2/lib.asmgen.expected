@@ -4395,7 +4395,29 @@ init_array:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 272,
+#                    "instr_ref": 289,
+#                    "opcode": "jmp",
+#                    "parameters": [
+#                        {
+#                            "type": "block_ref",
+#                            "block_ref": 3
+#                        }
+#                    ],
+#                    "values": [],
+#                    "metadata": {
+#                        "source_location": null,
+#                        "code_ref": null
+#                    }
+#                }
+#            ],
+#            "externally_visible": false,
+#            "public_labels": []
+#        },
+#        {
+#            "block_ref": 3,
+#            "code": [
+#                {
+#                    "instr_ref": 33,
 #                    "opcode": "function_epilogue",
 #                    "parameters": [],
 #                    "values": [],
@@ -4405,7 +4427,7 @@ init_array:
 #                    }
 #                },
 #                {
-#                    "instr_ref": 288,
+#                    "instr_ref": 49,
 #                    "opcode": "ret",
 #                    "parameters": [],
 #                    "values": [],

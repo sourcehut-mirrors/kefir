@@ -802,6 +802,7 @@ __kefir_bigint_arithmetic_right_shift:
     ja .L__kefir_runtime_func___kefir_bigint_arithmetic_right_shift_label12
 .L__kefir_runtime_func___kefir_bigint_arithmetic_right_shift_label13:
     xor %eax, %eax
+.L__kefir_runtime_func___kefir_bigint_arithmetic_right_shift_label25:
 .L__kefir_runtime_text_func___kefir_bigint_arithmetic_right_shift_epilogue:
     lea -40(%rbp), %rsp
     pop %r15
@@ -1071,6 +1072,7 @@ __kefir_bigint_leading_zeros:
 .L__kefir_runtime_func___kefir_bigint_leading_zeros_label3:
     cmp %r8, %rcx
     jb .L__kefir_runtime_func___kefir_bigint_leading_zeros_label5
+.L__kefir_runtime_func___kefir_bigint_leading_zeros_label16:
 .L__kefir_runtime_text_func___kefir_bigint_leading_zeros_epilogue:
     lea -24(%rbp), %rsp
     pop %r13
@@ -1143,6 +1145,7 @@ __kefir_bigint_redundant_sign_bits:
     cmp %rdx, %rcx
     jb .L__kefir_runtime_func___kefir_bigint_redundant_sign_bits_label5
     sub $1, %rax
+.L__kefir_runtime_func___kefir_bigint_redundant_sign_bits_label17:
 .L__kefir_runtime_text_func___kefir_bigint_redundant_sign_bits_epilogue:
     lea -24(%rbp), %rsp
     pop %r13
@@ -1285,6 +1288,7 @@ __kefir_bigint_signed_multiply:
     mov -48(%rbp), %rdx
     call __kefir_bigint_cast_signed
     xor %eax, %eax
+.L__kefir_runtime_func___kefir_bigint_signed_multiply_label28:
 .L__kefir_runtime_text_func___kefir_bigint_signed_multiply_epilogue:
     lea -40(%rbp), %rsp
     pop %r15

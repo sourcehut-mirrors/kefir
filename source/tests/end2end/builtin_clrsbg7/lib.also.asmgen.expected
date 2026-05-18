@@ -130,6 +130,7 @@ __kefir_bigint_redundant_sign_bits:
     cmp %rdx, %rcx
     jb .L__kefir_runtime_func___kefir_bigint_redundant_sign_bits_label5
     sub $1, %rax
+.L__kefir_runtime_func___kefir_bigint_redundant_sign_bits_label17:
 .L__kefir_runtime_text_func___kefir_bigint_redundant_sign_bits_epilogue:
     lea -24(%rbp), %rsp
     pop %r13

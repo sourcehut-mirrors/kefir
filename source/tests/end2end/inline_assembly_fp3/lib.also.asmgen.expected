@@ -24,7 +24,7 @@ sumall:
     movq -16(%rbp), %rbx
     movq -16(%rbp), %rax
     movq -16(%rbp), %rcx
-    movq .L__kefir_func_sumall_label3(%rip), %xmm0
+    movq .L__kefir_func_sumall_label4(%rip), %xmm0
     add $64, %rax
     add $72, %rcx
     movq (%rdx), %xmm1
@@ -56,7 +56,7 @@ addsd (%rcx), %xmm0
 .L__kefir_text_func_sumall_end:
 .section .rodata
     .align 8
-.L__kefir_func_sumall_label3:
+.L__kefir_func_sumall_label4:
     .quad 0
 .section .text
 

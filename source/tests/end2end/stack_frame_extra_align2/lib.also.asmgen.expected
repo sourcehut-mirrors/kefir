@@ -263,6 +263,7 @@ test5:
     cmp $0, %rdx
     je .L__kefir_func_test5_label5
     xor %eax, %eax
+.L__kefir_func_test5_label11:
 .L__kefir_text_func_test5_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx

@@ -123,6 +123,7 @@ __kefir_bigint_nonzero_count:
 .L__kefir_runtime_func___kefir_bigint_nonzero_count_label3:
     cmp %rdx, %rcx
     jb .L__kefir_runtime_func___kefir_bigint_nonzero_count_label5
+.L__kefir_runtime_func___kefir_bigint_nonzero_count_label14:
 .L__kefir_runtime_text_func___kefir_bigint_nonzero_count_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx

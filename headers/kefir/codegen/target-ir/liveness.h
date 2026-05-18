@@ -54,6 +54,7 @@ typedef struct kefir_codegen_target_ir_value_liveness {
 typedef struct kefir_codegen_target_ir_liveness {
     const struct kefir_codegen_target_ir_code *code;
     struct kefir_codegen_target_ir_numbering numbering;
+    kefir_size_t block_count;
     struct kefir_codegen_target_ir_block_liveness *blocks;
     struct kefir_hashtable values;
 } kefir_codegen_target_ir_liveness_t;
@@ -61,6 +62,7 @@ typedef struct kefir_codegen_target_ir_liveness {
 kefir_result_t kefir_codegen_target_ir_liveness_init(struct kefir_codegen_target_ir_liveness *);
 kefir_result_t kefir_codegen_target_ir_liveness_free(struct kefir_mem *, struct kefir_codegen_target_ir_liveness *);
 kefir_result_t kefir_codegen_target_ir_liveness_reset(struct kefir_mem *, struct kefir_codegen_target_ir_liveness *);
+kefir_result_t kefir_codegen_target_ir_liveness_resize(struct kefir_mem *, struct kefir_codegen_target_ir_liveness *);
 
 typedef enum kefir_codegen_target_ir_liveness_class {
     KEFIR_CODEGEN_TARGET_IR_LIVENESS_NORMAL = 0,

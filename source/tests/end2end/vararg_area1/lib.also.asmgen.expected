@@ -42,6 +42,7 @@ process:
     cmp $0, %ecx
     jg .L__kefir_func_process_label5
     xor %eax, %eax
+.L__kefir_func_process_label14:
 .L__kefir_text_func_process_epilogue:
     lea -8(%rbp), %rsp
     pop %rbx

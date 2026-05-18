@@ -40,10 +40,11 @@ dnotd:
     stmxcsr -8(%rbp)
     movq %xmm0, -16(%rbp)
     movq -16(%rbp), %xmm0
-    ucomisd .L__kefir_func_dnotd_label8(%rip), %xmm0
+    ucomisd .L__kefir_func_dnotd_label9(%rip), %xmm0
     jp .L__kefir_func_dnotd_label4
     jne .L__kefir_func_dnotd_label4
     xor %eax, %eax
+.L__kefir_func_dnotd_label8:
 .L__kefir_text_func_dnotd_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
@@ -55,7 +56,7 @@ dnotd:
 .L__kefir_text_func_dnotd_end:
 .section .rodata
     .align 8
-.L__kefir_func_dnotd_label8:
+.L__kefir_func_dnotd_label9:
     .quad 0
 .section .text
 
@@ -67,10 +68,11 @@ dnotf:
     stmxcsr -8(%rbp)
     movd %xmm0, -12(%rbp)
     movd -12(%rbp), %xmm0
-    ucomiss .L__kefir_func_dnotf_label8(%rip), %xmm0
+    ucomiss .L__kefir_func_dnotf_label9(%rip), %xmm0
     jp .L__kefir_func_dnotf_label4
     jne .L__kefir_func_dnotf_label4
     xor %eax, %eax
+.L__kefir_func_dnotf_label8:
 .L__kefir_text_func_dnotf_epilogue:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
@@ -82,7 +84,7 @@ dnotf:
 .L__kefir_text_func_dnotf_end:
 .section .rodata
     .align 4
-.L__kefir_func_dnotf_label8:
+.L__kefir_func_dnotf_label9:
     .long 0
 .section .text
 
@@ -96,7 +98,7 @@ dnotld:
     movq $0, -24(%rbp)
     fstpt -32(%rbp)
     fldt -32(%rbp)
-    fldt .L__kefir_func_dnotld_label5(%rip)
+    fldt .L__kefir_func_dnotld_label6(%rip)
     fxch %st(1)
     xor %eax, %eax
     xor %ecx, %ecx
@@ -107,6 +109,7 @@ dnotld:
     test %al, %al
     jz .L__kefir_func_dnotld_label3
     xor %eax, %eax
+.L__kefir_func_dnotld_label5:
 .L__kefir_text_func_dnotld_epilogue:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
@@ -118,7 +121,7 @@ dnotld:
 .L__kefir_text_func_dnotld_end:
 .section .rodata
     .align 8
-.L__kefir_func_dnotld_label5:
+.L__kefir_func_dnotld_label6:
     .quad 0
     .quad 0
 .section .text
