@@ -1,0 +1,34 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.extern test1
+.global test2
+.type test2, @function
+
+.section .text
+.L__kefir_text_section_begin:
+test2:
+.L__kefir_text_func_test2_begin:
+    push %rbp
+    mov %rsp, %rbp
+    push %rbx
+    push %r12
+    mov %rdi, %r12
+    mov %rsi, %rbx
+.L__kefir_func_test2_label2:
+    mov %r12, %rdi
+    mov %rbx, %rsi
+    call test1@PLT
+    test %eax, %eax
+    jnz .L__kefir_func_test2_label4
+    pop %r12
+    pop %rbx
+    pop %rbp
+    ret
+.L__kefir_func_test2_label4:
+    xchg %rbx, %r12
+    jmp .L__kefir_func_test2_label2
+.L__kefir_text_func_test2_end:
+
+.L__kefir_text_section_end:
+

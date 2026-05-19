@@ -2861,6 +2861,85 @@ devirtualize_label:
     return KEFIR_OK;
 }
 
+static kefir_result_t match_upsilon_exchange(
+    struct destructor_state *state, const struct kefir_codegen_target_ir_liveness_value_block_ranges *liveness_ranges,
+    kefir_codegen_target_ir_instruction_ref_t *instr_ref) {
+    const struct kefir_codegen_target_ir_instruction *instr;
+    REQUIRE_OK(kefir_codegen_target_ir_code_instruction(state->code, *instr_ref, &instr));
+    REQUIRE(instr->operation.opcode == state->code->klass->assign_opcode,
+            KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to match upsilon exchange"));
+
+    kefir_codegen_target_ir_instruction_ref_t instr2_ref =
+        kefir_codegen_target_ir_code_control_next(state->code, *instr_ref);
+    kefir_codegen_target_ir_instruction_ref_t instr3_ref =
+        kefir_codegen_target_ir_code_control_next(state->code, instr2_ref);
+    REQUIRE(instr2_ref != KEFIR_ID_NONE && instr3_ref != KEFIR_ID_NONE,
+            KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to match upsilon exchange"));
+
+    const struct kefir_codegen_target_ir_instruction *instr2, *instr3;
+    REQUIRE_OK(kefir_codegen_target_ir_code_instruction(state->code, instr2_ref, &instr2));
+    REQUIRE_OK(kefir_codegen_target_ir_code_instruction(state->code, instr3_ref, &instr3));
+    REQUIRE(
+        instr2->operation.opcode == state->code->klass->upsilon_opcode &&
+            instr3->operation.opcode == state->code->klass->upsilon_opcode &&
+            instr2->operation.parameters[0].upsilon_ref.instr_ref ==
+                instr->operation.parameters[0].direct.value_ref.instr_ref &&
+            instr2->operation.parameters[0].upsilon_ref.aspect ==
+                instr->operation.parameters[0].direct.value_ref.aspect &&
+            instr2->operation.parameters[1].direct.value_ref.instr_ref ==
+                instr3->operation.parameters[0].upsilon_ref.instr_ref &&
+            instr2->operation.parameters[1].direct.value_ref.aspect ==
+                instr3->operation.parameters[0].upsilon_ref.aspect &&
+            instr3->operation.parameters[1].direct.value_ref.instr_ref == *instr_ref &&
+            instr3->operation.parameters[1].direct.value_ref.aspect == KEFIR_CODEGEN_TARGET_IR_VALUE_DIRECT_OUTPUT(0),
+        KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to match upsilon exchange"));
+
+    struct kefir_codegen_target_ir_use_iterator iter;
+    kefir_codegen_target_ir_instruction_ref_t use_instr_ref;
+    REQUIRE_OK(kefir_codegen_target_ir_code_use_iter(state->code, &iter, *instr_ref, &use_instr_ref, NULL));
+    REQUIRE(
+        use_instr_ref == instr3_ref && kefir_codegen_target_ir_code_use_next(&iter, NULL, NULL) == KEFIR_ITERATOR_END,
+        KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to match upsilon exchange"));
+
+    kefir_codegen_target_ir_regalloc_allocation_t allocation1, allocation2;
+    REQUIRE_OK(kefir_codegen_target_ir_regalloc_get(state->regalloc, instr2->operation.parameters[0].upsilon_ref,
+                                                    &allocation1));
+    REQUIRE_OK(kefir_codegen_target_ir_regalloc_get(state->regalloc, instr3->operation.parameters[0].upsilon_ref,
+                                                    &allocation2));
+
+    union kefir_codegen_target_ir_amd64_regalloc_entry entry1 = {.allocation = allocation1};
+    union kefir_codegen_target_ir_amd64_regalloc_entry entry2 = {.allocation = allocation2};
+
+    if (entry1.type == KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_GP &&
+        entry2.type == KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_GP) {
+        REQUIRE_OK(kefir_asmcmp_amd64_xchg(
+            state->mem, state->asmcmp_ctx, kefir_asmcmp_context_instr_tail(&state->asmcmp_ctx->context),
+            &KEFIR_ASMCMP_MAKE_PHREG(entry1.reg.value), &KEFIR_ASMCMP_MAKE_PHREG(entry2.reg.value), NULL));
+    } else if (entry1.type == KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_GP &&
+               entry2.type == KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_SPILL && entry2.spill_area.length == 1) {
+        REQUIRE_OK(kefir_asmcmp_amd64_xchg(
+            state->mem, state->asmcmp_ctx, kefir_asmcmp_context_instr_tail(&state->asmcmp_ctx->context),
+            &KEFIR_ASMCMP_MAKE_PHREG(entry1.reg.value),
+            &KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(entry2.spill_area.index, 0, KEFIR_ASMCMP_OPERAND_VARIANT_64BIT), NULL));
+    } else if (entry1.type == KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_SPILL && entry1.spill_area.length == 1 &&
+               entry2.type == KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_GP) {
+        REQUIRE_OK(kefir_asmcmp_amd64_xchg(
+            state->mem, state->asmcmp_ctx, kefir_asmcmp_context_instr_tail(&state->asmcmp_ctx->context),
+            &KEFIR_ASMCMP_MAKE_PHREG(entry2.reg.value),
+            &KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(entry1.spill_area.index, 0, KEFIR_ASMCMP_OPERAND_VARIANT_64BIT), NULL));
+    } else {
+        return KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to match upsilon exchange");
+    }
+
+    REQUIRE_OK(kefir_codegen_target_ir_liveness_build_update_alive_set(state->mem, state->liveness, instr2_ref,
+                                                                       liveness_ranges, &state->alive_values));
+    REQUIRE_OK(kefir_codegen_target_ir_liveness_build_update_alive_set(state->mem, state->liveness, instr3_ref,
+                                                                       liveness_ranges, &state->alive_values));
+    *instr_ref = kefir_codegen_target_ir_code_control_next(state->code, *instr_ref);
+    *instr_ref = kefir_codegen_target_ir_code_control_next(state->code, *instr_ref);
+    return KEFIR_OK;
+}
+
 static kefir_result_t translate_block(struct destructor_state *state, kefir_codegen_target_ir_block_ref_t block_ref) {
     kefir_hashtable_value_t table_value;
     REQUIRE_OK(kefir_hashtable_at(&state->blocks, (kefir_hashtable_key_t) block_ref, &table_value));
@@ -2965,7 +3044,12 @@ static kefir_result_t translate_block(struct destructor_state *state, kefir_code
                 kefir_asmcmp_context_bind_label_after_tail(state->mem, &state->asmcmp_ctx->context, begin_label));
         }
 
-        REQUIRE_OK(translate_instruction(state, instr_ref));
+        kefir_result_t res = match_upsilon_exchange(state, liveness_ranges, &instr_ref);
+        if (res != KEFIR_NO_MATCH) {
+            REQUIRE_OK(res);
+        } else {
+            REQUIRE_OK(translate_instruction(state, instr_ref));
+        }
 
         if (state->constructor_metadata != NULL) {
             REQUIRE_OK(kefir_asmcmp_context_bind_label_after_tail(state->mem, &state->asmcmp_ctx->context, end_label));
