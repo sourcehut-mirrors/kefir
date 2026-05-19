@@ -122,7 +122,8 @@ static kefir_result_t do_jump_propagation(struct kefir_mem *mem, struct kefir_co
                 if (dst_alloc != src_alloc) {
                     skip = true;
                 }
-            } else if (iter_instr->operation.opcode != code->klass->phi_opcode) {
+            } else if (iter_instr->operation.opcode != code->klass->phi_opcode &&
+                       iter_instr->operation.opcode != code->klass->touch_opcode) {
                 skip = true;
                 break;
             }

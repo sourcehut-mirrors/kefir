@@ -45,7 +45,7 @@ get1:
     test %rax, %rax
     js .L__kefir_func_get1_label3
     cvtsi2ss %rax, %xmm0
-.L__kefir_func_get1_label4:
+.L__kefir_func_get1_label6:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -57,7 +57,7 @@ get1:
     or %rax, %rcx
     cvtsi2ss %rcx, %xmm0
     addss %xmm0, %xmm0
-    jmp .L__kefir_func_get1_label4
+    jmp .L__kefir_func_get1_label6
 .L__kefir_text_func_get1_end:
 
 get2:
@@ -89,7 +89,7 @@ get3:
     test %rax, %rax
     js .L__kefir_func_get3_label3
     cvtsi2sd %rax, %xmm0
-.L__kefir_func_get3_label4:
+.L__kefir_func_get3_label6:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -101,7 +101,7 @@ get3:
     or %rax, %rcx
     cvtsi2sd %rcx, %xmm0
     addsd %xmm0, %xmm0
-    jmp .L__kefir_func_get3_label4
+    jmp .L__kefir_func_get3_label6
 .L__kefir_text_func_get3_end:
 
 get4:

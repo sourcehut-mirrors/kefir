@@ -29,7 +29,7 @@ test:
     fistpq -56(%rbp)
     mov -56(%rbp), %rax
     fldcww -48(%rbp)
-.L__kefir_func_test_label4:
+.L__kefir_func_test_label6:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -45,7 +45,7 @@ test:
     mov -56(%rbp), %rax
     fldcww -48(%rbp)
     btc $63, %rax
-    jmp .L__kefir_func_test_label4
+    jmp .L__kefir_func_test_label6
 .L__kefir_text_func_test_end:
 .section .rodata
     .align 8

@@ -18,7 +18,7 @@ factorial:
     ja .L__kefir_func_factorial_label4
 .L__kefir_func_factorial_label3:
     movaps %xmm1, %xmm0
-.L__kefir_func_factorial_label5:
+.L__kefir_func_factorial_label9:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -32,7 +32,7 @@ factorial:
     movaps %xmm3, %xmm1
     movaps %xmm2, %xmm0
     call factorial_helper
-    jmp .L__kefir_func_factorial_label5
+    jmp .L__kefir_func_factorial_label9
 .L__kefir_text_func_factorial_end:
 .section .rodata
     .align 8
@@ -56,9 +56,9 @@ factorial_helper:
     sub $16, %rsp
     stmxcsr -8(%rbp)
     ucomisd .L__kefir_func_factorial_helper_label9(%rip), %xmm1
-    jp .L__kefir_func_factorial_helper_label3
+    jp .L__kefir_func_factorial_helper_label8
     ja .L__kefir_func_factorial_helper_label4
-.L__kefir_func_factorial_helper_label3:
+.L__kefir_func_factorial_helper_label8:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

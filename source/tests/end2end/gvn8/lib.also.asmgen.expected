@@ -650,7 +650,7 @@ __kefir_bigint_trailing_zeros:
     mov %rsi, %r9
     sub %rcx, %r9
     cmp $0, %rsi
-    je .L__kefir_runtime_func___kefir_bigint_trailing_zeros_label15
+    je .L__kefir_runtime_func___kefir_bigint_trailing_zeros_label19
     xor %esi, %esi
     xor %ecx, %ecx
 .L__kefir_runtime_func___kefir_bigint_trailing_zeros_label3:
@@ -696,8 +696,6 @@ __kefir_bigint_trailing_zeros:
     jmp .L__kefir_runtime_func___kefir_bigint_trailing_zeros_label9
 .L__kefir_runtime_func___kefir_bigint_trailing_zeros_label13:
     mov %rdx, %rax
-    jmp .L__kefir_runtime_func___kefir_bigint_trailing_zeros_label19
-.L__kefir_runtime_func___kefir_bigint_trailing_zeros_label15:
     jmp .L__kefir_runtime_func___kefir_bigint_trailing_zeros_label19
 .L__kefir_runtime_text_func___kefir_bigint_trailing_zeros_end:
 
@@ -783,7 +781,7 @@ __kefir_bigint_leading_zeros:
     mov %rsi, %r9
     sub %rcx, %r9
     cmp $0, %rsi
-    je .L__kefir_runtime_func___kefir_bigint_leading_zeros_label12
+    je .L__kefir_runtime_func___kefir_bigint_leading_zeros_label16
     xor %edx, %edx
     xor %ecx, %ecx
 .L__kefir_runtime_func___kefir_bigint_leading_zeros_label3:
@@ -829,8 +827,6 @@ __kefir_bigint_leading_zeros:
     jmp .L__kefir_runtime_func___kefir_bigint_leading_zeros_label6
 .L__kefir_runtime_func___kefir_bigint_leading_zeros_label10:
     mov %rdx, %rax
-    jmp .L__kefir_runtime_func___kefir_bigint_leading_zeros_label16
-.L__kefir_runtime_func___kefir_bigint_leading_zeros_label12:
     jmp .L__kefir_runtime_func___kefir_bigint_leading_zeros_label16
 .L__kefir_runtime_text_func___kefir_bigint_leading_zeros_end:
 

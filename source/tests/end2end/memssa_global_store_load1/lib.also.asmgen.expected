@@ -1089,7 +1089,7 @@ __kefir_softfloat_complex_double_mul:
     jnz .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label6
     movaps %xmm6, %xmm1
     movaps %xmm5, %xmm0
-.L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label5:
+.L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label54:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -1173,7 +1173,7 @@ __kefir_softfloat_complex_double_mul:
     cmovnz %rsi, %rcx
     movq %rax, %xmm0
     movq %rcx, %xmm1
-    jmp .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label5
+    jmp .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label54
 .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label27:
     ucomisd %xmm4, %xmm4
     jp .L__kefir_runtime_func___kefir_softfloat_complex_double_mul_label29

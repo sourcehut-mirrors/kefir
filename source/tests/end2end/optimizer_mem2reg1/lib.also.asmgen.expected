@@ -129,7 +129,7 @@ factorialf32:
     cvtsi2ss %rax, %xmm1
     ucomiss %xmm1, %xmm0
     jp .L__kefir_func_factorialf32_label5
-    jbe .L__kefir_func_factorialf32_label11
+    jbe .L__kefir_func_factorialf32_label20
 .L__kefir_func_factorialf32_label5:
     movd .L__kefir_func_factorialf32_label21(%rip), %xmm1
 .L__kefir_func_factorialf32_label6:
@@ -151,8 +151,6 @@ factorialf32:
     mulss %xmm0, %xmm1
     movaps %xmm2, %xmm0
     jmp .L__kefir_func_factorialf32_label6
-.L__kefir_func_factorialf32_label11:
-    jmp .L__kefir_func_factorialf32_label20
 .L__kefir_func_factorialf32_label12:
     movd .L__kefir_func_factorialf32_label24(%rip), %xmm0
     jmp .L__kefir_func_factorialf32_label20
@@ -188,7 +186,7 @@ factorialf64:
     cvtsi2sd %rax, %xmm1
     ucomisd %xmm1, %xmm0
     jp .L__kefir_func_factorialf64_label5
-    jbe .L__kefir_func_factorialf64_label11
+    jbe .L__kefir_func_factorialf64_label20
 .L__kefir_func_factorialf64_label5:
     movd .L__kefir_func_factorialf64_label21(%rip), %xmm1
     cvtss2sd %xmm1, %xmm1
@@ -211,8 +209,6 @@ factorialf64:
     mulsd %xmm0, %xmm1
     movaps %xmm2, %xmm0
     jmp .L__kefir_func_factorialf64_label6
-.L__kefir_func_factorialf64_label11:
-    jmp .L__kefir_func_factorialf64_label20
 .L__kefir_func_factorialf64_label12:
     movq .L__kefir_func_factorialf64_label24(%rip), %xmm0
     jmp .L__kefir_func_factorialf64_label20

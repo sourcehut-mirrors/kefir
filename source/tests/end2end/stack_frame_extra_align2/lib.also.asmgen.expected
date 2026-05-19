@@ -289,9 +289,7 @@ test5:
     xor %eax, %eax
 .L__kefir_func_test5_label6:
     test %edi, %edi
-    jnz .L__kefir_func_test5_label8
-    jmp .L__kefir_func_test5_label11
-.L__kefir_func_test5_label8:
+    jz .L__kefir_func_test5_label11
     movq -232(%rbp), %rcx
     lea 64(%rcx), %rdx
     movq %rdx, -232(%rbp)

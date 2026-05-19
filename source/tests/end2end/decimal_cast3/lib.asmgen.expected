@@ -109,7 +109,7 @@ d64_to_ubitint24:
     fistpq -24(%rbp)
     mov -24(%rbp), %rax
     fldcww -16(%rbp)
-.L__kefir_func_d64_to_ubitint24_label4:
+.L__kefir_func_d64_to_ubitint24_label6:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -125,7 +125,7 @@ d64_to_ubitint24:
     mov -24(%rbp), %rax
     fldcww -16(%rbp)
     btc $63, %rax
-    jmp .L__kefir_func_d64_to_ubitint24_label4
+    jmp .L__kefir_func_d64_to_ubitint24_label6
 .L__kefir_text_func_d64_to_ubitint24_end:
 
 d64_to_ubitint180:
@@ -238,7 +238,7 @@ d128_to_ubitint24:
     fistpq -24(%rbp)
     mov -24(%rbp), %rax
     fldcww -16(%rbp)
-.L__kefir_func_d128_to_ubitint24_label4:
+.L__kefir_func_d128_to_ubitint24_label6:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -254,7 +254,7 @@ d128_to_ubitint24:
     mov -24(%rbp), %rax
     fldcww -16(%rbp)
     btc $63, %rax
-    jmp .L__kefir_func_d128_to_ubitint24_label4
+    jmp .L__kefir_func_d128_to_ubitint24_label6
 .L__kefir_text_func_d128_to_ubitint24_end:
 
 ubitint180_to_d32:
@@ -391,7 +391,7 @@ d32_to_ubitint24:
     fistpq -24(%rbp)
     mov -24(%rbp), %rax
     fldcww -16(%rbp)
-.L__kefir_func_d32_to_ubitint24_label4:
+.L__kefir_func_d32_to_ubitint24_label6:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -407,7 +407,7 @@ d32_to_ubitint24:
     mov -24(%rbp), %rax
     fldcww -16(%rbp)
     btc $63, %rax
-    jmp .L__kefir_func_d32_to_ubitint24_label4
+    jmp .L__kefir_func_d32_to_ubitint24_label6
 .L__kefir_text_func_d32_to_ubitint24_end:
 
 d32_to_bitint24:

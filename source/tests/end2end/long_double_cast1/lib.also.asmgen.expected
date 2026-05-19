@@ -181,7 +181,7 @@ ldcuint:
     fistpq -16(%rbp)
     mov -16(%rbp), %rax
     fldcww -24(%rbp)
-.L__kefir_func_ldcuint_label4:
+.L__kefir_func_ldcuint_label6:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -197,7 +197,7 @@ ldcuint:
     mov -16(%rbp), %rax
     fldcww -24(%rbp)
     btc $63, %rax
-    jmp .L__kefir_func_ldcuint_label4
+    jmp .L__kefir_func_ldcuint_label6
 .L__kefir_text_func_ldcuint_end:
 
 uintcld:
