@@ -144,10 +144,8 @@ factorialf32:
     pop %rbp
     ret
 .L__kefir_func_factorialf32_label9:
-    movd .L__kefir_func_factorialf32_label23(%rip), %xmm2
-    movaps %xmm0, %xmm3
-    addss %xmm2, %xmm3
-    movaps %xmm3, %xmm2
+    movaps %xmm0, %xmm2
+    addss .L__kefir_func_factorialf32_label23(%rip), %xmm2
     mulss %xmm0, %xmm1
     movaps %xmm2, %xmm0
     jmp .L__kefir_func_factorialf32_label6
@@ -202,10 +200,8 @@ factorialf64:
     pop %rbp
     ret
 .L__kefir_func_factorialf64_label9:
-    movq .L__kefir_func_factorialf64_label23(%rip), %xmm2
-    movaps %xmm0, %xmm3
-    addsd %xmm2, %xmm3
-    movaps %xmm3, %xmm2
+    movaps %xmm0, %xmm2
+    addsd .L__kefir_func_factorialf64_label23(%rip), %xmm2
     mulsd %xmm0, %xmm1
     movaps %xmm2, %xmm0
     jmp .L__kefir_func_factorialf64_label6

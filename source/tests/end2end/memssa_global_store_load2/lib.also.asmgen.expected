@@ -190,20 +190,16 @@ test_float:
     data16     lea f2@tlsgd(%rip), %rdi
     .word 26214
     rex.W     call __tls_get_addr@PLT
-    movd .L__kefir_func_test_float_label4(%rip), %xmm0
-    movaps -48(%rbp), %xmm1
-    addss %xmm0, %xmm1
-    movaps %xmm1, %xmm0
+    movaps -48(%rbp), %xmm0
+    addss .L__kefir_func_test_float_label4(%rip), %xmm0
     movaps %xmm0, -32(%rbp)
     movd %xmm0, (%rax)
     data16     lea f3@tlsgd(%rip), %rdi
     .word 26214
     rex.W     call __tls_get_addr@PLT
-    movd .L__kefir_func_test_float_label5(%rip), %xmm1
     movaps -48(%rbp), %xmm0
-    movaps %xmm0, %xmm2
-    mulss %xmm1, %xmm2
-    movaps %xmm2, %xmm1
+    movaps %xmm0, %xmm1
+    mulss .L__kefir_func_test_float_label5(%rip), %xmm1
     movd %xmm1, (%rax)
     addss -32(%rbp), %xmm0
     addss %xmm1, %xmm0
@@ -277,15 +273,11 @@ test_cfloat:
     data16     lea cf2@tlsgd(%rip), %rdi
     .word 26214
     rex.W     call __tls_get_addr@PLT
-    movd .L__kefir_func_test_cfloat_label4(%rip), %xmm0
-    movaps -96(%rbp), %xmm1
-    addss %xmm0, %xmm1
-    movaps %xmm1, %xmm0
+    movaps -96(%rbp), %xmm0
+    addss .L__kefir_func_test_cfloat_label4(%rip), %xmm0
     movaps %xmm0, -48(%rbp)
-    movd .L__kefir_func_test_cfloat_label5(%rip), %xmm1
-    movaps -64(%rbp), %xmm2
-    addss %xmm1, %xmm2
-    movaps %xmm2, %xmm1
+    movaps -64(%rbp), %xmm1
+    addss .L__kefir_func_test_cfloat_label5(%rip), %xmm1
     movaps %xmm1, -32(%rbp)
     movd %xmm0, (%rax)
     movd %xmm1, 4(%rax)
@@ -348,20 +340,16 @@ test_double:
     data16     lea d2@tlsgd(%rip), %rdi
     .word 26214
     rex.W     call __tls_get_addr@PLT
-    movq .L__kefir_func_test_double_label4(%rip), %xmm0
-    movaps -48(%rbp), %xmm1
-    addsd %xmm0, %xmm1
-    movaps %xmm1, %xmm0
+    movaps -48(%rbp), %xmm0
+    addsd .L__kefir_func_test_double_label4(%rip), %xmm0
     movaps %xmm0, -32(%rbp)
     movq %xmm0, (%rax)
     data16     lea d3@tlsgd(%rip), %rdi
     .word 26214
     rex.W     call __tls_get_addr@PLT
-    movq .L__kefir_func_test_double_label5(%rip), %xmm1
     movaps -48(%rbp), %xmm0
-    movaps %xmm0, %xmm2
-    mulsd %xmm1, %xmm2
-    movaps %xmm2, %xmm1
+    movaps %xmm0, %xmm1
+    mulsd .L__kefir_func_test_double_label5(%rip), %xmm1
     movq %xmm1, (%rax)
     addsd -32(%rbp), %xmm0
     addsd %xmm1, %xmm0
@@ -521,15 +509,11 @@ test_cdouble:
     data16     lea cd2@tlsgd(%rip), %rdi
     .word 26214
     rex.W     call __tls_get_addr@PLT
-    movq .L__kefir_func_test_cdouble_label4(%rip), %xmm0
-    movaps -96(%rbp), %xmm1
-    addsd %xmm0, %xmm1
-    movaps %xmm1, %xmm0
+    movaps -96(%rbp), %xmm0
+    addsd .L__kefir_func_test_cdouble_label4(%rip), %xmm0
     movaps %xmm0, -48(%rbp)
-    movq .L__kefir_func_test_cdouble_label5(%rip), %xmm1
-    movaps -80(%rbp), %xmm2
-    addsd %xmm1, %xmm2
-    movaps %xmm2, %xmm1
+    movaps -80(%rbp), %xmm1
+    addsd .L__kefir_func_test_cdouble_label5(%rip), %xmm1
     movaps %xmm1, -32(%rbp)
     movq %xmm0, (%rax)
     movq %xmm1, 8(%rax)

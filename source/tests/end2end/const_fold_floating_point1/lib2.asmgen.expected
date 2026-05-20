@@ -113,8 +113,7 @@ add32:
     sub $16, %rsp
     stmxcsr -8(%rbp)
     movd .L__kefir_func_add32_label4(%rip), %xmm0
-    movd .L__kefir_func_add32_label5(%rip), %xmm1
-    addss %xmm1, %xmm0
+    addss .L__kefir_func_add32_label5(%rip), %xmm0
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -136,8 +135,7 @@ add64:
     sub $16, %rsp
     stmxcsr -8(%rbp)
     movq .L__kefir_func_add64_label4(%rip), %xmm0
-    movq .L__kefir_func_add64_label5(%rip), %xmm1
-    addsd %xmm1, %xmm0
+    addsd .L__kefir_func_add64_label5(%rip), %xmm0
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -185,8 +183,7 @@ div32:
     sub $16, %rsp
     stmxcsr -8(%rbp)
     movd .L__kefir_func_div32_label4(%rip), %xmm0
-    movd .L__kefir_func_div32_label5(%rip), %xmm1
-    divss %xmm1, %xmm0
+    divss .L__kefir_func_div32_label5(%rip), %xmm0
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -208,8 +205,7 @@ div64:
     sub $16, %rsp
     stmxcsr -8(%rbp)
     movq .L__kefir_func_div64_label4(%rip), %xmm0
-    movq .L__kefir_func_div64_label5(%rip), %xmm1
-    divsd %xmm1, %xmm0
+    divsd .L__kefir_func_div64_label5(%rip), %xmm0
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -257,8 +253,7 @@ mul32:
     sub $16, %rsp
     stmxcsr -8(%rbp)
     movq .L__kefir_func_mul32_label4(%rip), %xmm0
-    movq .L__kefir_func_mul32_label5(%rip), %xmm1
-    mulsd %xmm1, %xmm0
+    mulsd .L__kefir_func_mul32_label5(%rip), %xmm0
     cvtsd2ss %xmm0, %xmm0
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
@@ -395,8 +390,7 @@ sub32:
     sub $16, %rsp
     stmxcsr -8(%rbp)
     movd .L__kefir_func_sub32_label4(%rip), %xmm0
-    movd .L__kefir_func_sub32_label5(%rip), %xmm1
-    subss %xmm1, %xmm0
+    subss .L__kefir_func_sub32_label5(%rip), %xmm0
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -418,8 +412,7 @@ sub64:
     sub $16, %rsp
     stmxcsr -8(%rbp)
     movq .L__kefir_func_sub64_label4(%rip), %xmm0
-    movq .L__kefir_func_sub64_label5(%rip), %xmm1
-    subsd %xmm1, %xmm0
+    subsd .L__kefir_func_sub64_label5(%rip), %xmm0
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

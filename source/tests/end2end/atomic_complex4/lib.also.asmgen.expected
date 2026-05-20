@@ -40,15 +40,13 @@ f32_predec:
     call __atomic_load@PLT
     movd -112(%rbp), %xmm0
     movd -108(%rbp), %xmm1
-    movd .L__kefir_func_f32_predec_label9(%rip), %xmm2
-    movd .L__kefir_func_f32_predec_label10(%rip), %xmm3
     movaps %xmm0, -112(%rbp)
-    movd -112(%rbp), %xmm4
-    addss %xmm2, %xmm4
-    movd %xmm4, -112(%rbp)
+    movd -112(%rbp), %xmm2
+    addss .L__kefir_func_f32_predec_label9(%rip), %xmm2
+    movd %xmm2, -112(%rbp)
     movaps %xmm1, -64(%rbp)
     movd -64(%rbp), %xmm2
-    addss %xmm3, %xmm2
+    addss .L__kefir_func_f32_predec_label10(%rip), %xmm2
     movd %xmm2, -64(%rbp)
     movd %xmm0, -48(%rbp)
     movd %xmm1, -44(%rbp)
@@ -115,15 +113,13 @@ f32_preinc:
     call __atomic_load@PLT
     movd -112(%rbp), %xmm0
     movd -108(%rbp), %xmm1
-    movd .L__kefir_func_f32_preinc_label9(%rip), %xmm2
-    movd .L__kefir_func_f32_preinc_label10(%rip), %xmm3
     movaps %xmm0, -112(%rbp)
-    movd -112(%rbp), %xmm4
-    addss %xmm2, %xmm4
-    movd %xmm4, -112(%rbp)
+    movd -112(%rbp), %xmm2
+    addss .L__kefir_func_f32_preinc_label9(%rip), %xmm2
+    movd %xmm2, -112(%rbp)
     movaps %xmm1, -64(%rbp)
     movd -64(%rbp), %xmm2
-    addss %xmm3, %xmm2
+    addss .L__kefir_func_f32_preinc_label10(%rip), %xmm2
     movd %xmm2, -64(%rbp)
     movd %xmm0, -48(%rbp)
     movd %xmm1, -44(%rbp)
@@ -190,15 +186,13 @@ f64_predec:
     call __atomic_load@PLT
     movq -128(%rbp), %xmm0
     movq -120(%rbp), %xmm1
-    movq .L__kefir_func_f64_predec_label9(%rip), %xmm2
-    movq .L__kefir_func_f64_predec_label10(%rip), %xmm3
     movaps %xmm0, -128(%rbp)
-    movq -128(%rbp), %xmm4
-    addsd %xmm2, %xmm4
-    movq %xmm4, -128(%rbp)
+    movq -128(%rbp), %xmm2
+    addsd .L__kefir_func_f64_predec_label9(%rip), %xmm2
+    movq %xmm2, -128(%rbp)
     movaps %xmm1, -112(%rbp)
     movq -112(%rbp), %xmm2
-    addsd %xmm3, %xmm2
+    addsd .L__kefir_func_f64_predec_label10(%rip), %xmm2
     movq %xmm2, -112(%rbp)
     movq %xmm0, -64(%rbp)
     movq %xmm1, -56(%rbp)
@@ -265,15 +259,13 @@ f64_preinc:
     call __atomic_load@PLT
     movq -128(%rbp), %xmm0
     movq -120(%rbp), %xmm1
-    movq .L__kefir_func_f64_preinc_label9(%rip), %xmm2
-    movq .L__kefir_func_f64_preinc_label10(%rip), %xmm3
     movaps %xmm0, -128(%rbp)
-    movq -128(%rbp), %xmm4
-    addsd %xmm2, %xmm4
-    movq %xmm4, -128(%rbp)
+    movq -128(%rbp), %xmm2
+    addsd .L__kefir_func_f64_preinc_label9(%rip), %xmm2
+    movq %xmm2, -128(%rbp)
     movaps %xmm1, -112(%rbp)
     movq -112(%rbp), %xmm2
-    addsd %xmm3, %xmm2
+    addsd .L__kefir_func_f64_preinc_label10(%rip), %xmm2
     movq %xmm2, -112(%rbp)
     movq %xmm0, -64(%rbp)
     movq %xmm1, -56(%rbp)
@@ -342,14 +334,10 @@ f32_postdec:
     movaps %xmm0, -112(%rbp)
     movd -60(%rbp), %xmm1
     movaps %xmm1, -48(%rbp)
-    movd .L__kefir_func_f32_postdec_label9(%rip), %xmm2
-    movd .L__kefir_func_f32_postdec_label10(%rip), %xmm3
-    movaps %xmm0, %xmm4
-    addss %xmm2, %xmm4
-    movaps %xmm4, %xmm2
-    movaps %xmm1, %xmm4
-    addss %xmm3, %xmm4
-    movaps %xmm4, %xmm3
+    movaps %xmm0, %xmm2
+    addss .L__kefir_func_f32_postdec_label9(%rip), %xmm2
+    movaps %xmm1, %xmm3
+    addss .L__kefir_func_f32_postdec_label10(%rip), %xmm3
     movd %xmm0, -64(%rbp)
     movd %xmm1, -60(%rbp)
     movd %xmm2, -56(%rbp)
@@ -415,14 +403,10 @@ f32_postinc:
     movaps %xmm0, -112(%rbp)
     movd -60(%rbp), %xmm1
     movaps %xmm1, -48(%rbp)
-    movd .L__kefir_func_f32_postinc_label9(%rip), %xmm2
-    movd .L__kefir_func_f32_postinc_label10(%rip), %xmm3
-    movaps %xmm0, %xmm4
-    addss %xmm2, %xmm4
-    movaps %xmm4, %xmm2
-    movaps %xmm1, %xmm4
-    addss %xmm3, %xmm4
-    movaps %xmm4, %xmm3
+    movaps %xmm0, %xmm2
+    addss .L__kefir_func_f32_postinc_label9(%rip), %xmm2
+    movaps %xmm1, %xmm3
+    addss .L__kefir_func_f32_postinc_label10(%rip), %xmm3
     movd %xmm0, -64(%rbp)
     movd %xmm1, -60(%rbp)
     movd %xmm2, -56(%rbp)
@@ -488,14 +472,10 @@ f64_postdec:
     movaps %xmm0, -128(%rbp)
     movq -104(%rbp), %xmm1
     movaps %xmm1, -112(%rbp)
-    movq .L__kefir_func_f64_postdec_label9(%rip), %xmm2
-    movq .L__kefir_func_f64_postdec_label10(%rip), %xmm3
-    movaps %xmm0, %xmm4
-    addsd %xmm2, %xmm4
-    movaps %xmm4, %xmm2
-    movaps %xmm1, %xmm4
-    addsd %xmm3, %xmm4
-    movaps %xmm4, %xmm3
+    movaps %xmm0, %xmm2
+    addsd .L__kefir_func_f64_postdec_label9(%rip), %xmm2
+    movaps %xmm1, %xmm3
+    addsd .L__kefir_func_f64_postdec_label10(%rip), %xmm3
     movq %xmm0, -64(%rbp)
     movq %xmm1, -56(%rbp)
     movq %xmm2, -48(%rbp)
@@ -561,14 +541,10 @@ f64_postinc:
     movaps %xmm0, -128(%rbp)
     movq -104(%rbp), %xmm1
     movaps %xmm1, -112(%rbp)
-    movq .L__kefir_func_f64_postinc_label9(%rip), %xmm2
-    movq .L__kefir_func_f64_postinc_label10(%rip), %xmm3
-    movaps %xmm0, %xmm4
-    addsd %xmm2, %xmm4
-    movaps %xmm4, %xmm2
-    movaps %xmm1, %xmm4
-    addsd %xmm3, %xmm4
-    movaps %xmm4, %xmm3
+    movaps %xmm0, %xmm2
+    addsd .L__kefir_func_f64_postinc_label9(%rip), %xmm2
+    movaps %xmm1, %xmm3
+    addsd .L__kefir_func_f64_postinc_label10(%rip), %xmm3
     movq %xmm0, -64(%rbp)
     movq %xmm1, -56(%rbp)
     movq %xmm2, -48(%rbp)

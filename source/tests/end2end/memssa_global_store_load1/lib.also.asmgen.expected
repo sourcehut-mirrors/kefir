@@ -147,16 +147,12 @@ test_float:
     movq f1@GOTPCREL(%rip), %rax
     movd %xmm0, (%rax)
     movq f2@GOTPCREL(%rip), %rax
-    movd .L__kefir_func_test_float_label4(%rip), %xmm1
-    movaps %xmm0, %xmm2
-    addss %xmm1, %xmm2
-    movaps %xmm2, %xmm1
+    movaps %xmm0, %xmm1
+    addss .L__kefir_func_test_float_label4(%rip), %xmm1
     movd %xmm1, (%rax)
     movq f3@GOTPCREL(%rip), %rax
-    movd .L__kefir_func_test_float_label5(%rip), %xmm2
-    movaps %xmm0, %xmm3
-    mulss %xmm2, %xmm3
-    movaps %xmm3, %xmm2
+    movaps %xmm0, %xmm2
+    mulss .L__kefir_func_test_float_label5(%rip), %xmm2
     movd %xmm2, (%rax)
     addss %xmm1, %xmm0
     addss %xmm2, %xmm0
@@ -209,15 +205,9 @@ test_cfloat:
     movd %xmm0, (%rax)
     movd %xmm1, 4(%rax)
     movq cf2@GOTPCREL(%rip), %rax
-    movd .L__kefir_func_test_cfloat_label4(%rip), %xmm0
-    movaps -96(%rbp), %xmm1
-    addss %xmm0, %xmm1
-    movaps %xmm1, %xmm0
+    addss .L__kefir_func_test_cfloat_label4(%rip), %xmm0
     movaps %xmm0, -48(%rbp)
-    movd .L__kefir_func_test_cfloat_label5(%rip), %xmm1
-    movaps -64(%rbp), %xmm2
-    addss %xmm1, %xmm2
-    movaps %xmm2, %xmm1
+    addss .L__kefir_func_test_cfloat_label5(%rip), %xmm1
     movaps %xmm1, -32(%rbp)
     movd %xmm0, (%rax)
     movd %xmm1, 4(%rax)
@@ -271,16 +261,12 @@ test_double:
     movq d1@GOTPCREL(%rip), %rax
     movq %xmm0, (%rax)
     movq d2@GOTPCREL(%rip), %rax
-    movq .L__kefir_func_test_double_label4(%rip), %xmm1
-    movaps %xmm0, %xmm2
-    addsd %xmm1, %xmm2
-    movaps %xmm2, %xmm1
+    movaps %xmm0, %xmm1
+    addsd .L__kefir_func_test_double_label4(%rip), %xmm1
     movq %xmm1, (%rax)
     movq d3@GOTPCREL(%rip), %rax
-    movq .L__kefir_func_test_double_label5(%rip), %xmm2
-    movaps %xmm0, %xmm3
-    mulsd %xmm2, %xmm3
-    movaps %xmm3, %xmm2
+    movaps %xmm0, %xmm2
+    mulsd .L__kefir_func_test_double_label5(%rip), %xmm2
     movq %xmm2, (%rax)
     addsd %xmm1, %xmm0
     addsd %xmm2, %xmm0
@@ -423,15 +409,9 @@ test_cdouble:
     movq %xmm0, (%rax)
     movq %xmm1, 8(%rax)
     movq cd2@GOTPCREL(%rip), %rax
-    movq .L__kefir_func_test_cdouble_label4(%rip), %xmm0
-    movaps -96(%rbp), %xmm1
-    addsd %xmm0, %xmm1
-    movaps %xmm1, %xmm0
+    addsd .L__kefir_func_test_cdouble_label4(%rip), %xmm0
     movaps %xmm0, -48(%rbp)
-    movq .L__kefir_func_test_cdouble_label5(%rip), %xmm1
-    movaps -80(%rbp), %xmm2
-    addsd %xmm1, %xmm2
-    movaps %xmm2, %xmm1
+    addsd .L__kefir_func_test_cdouble_label5(%rip), %xmm1
     movaps %xmm1, -32(%rbp)
     movq %xmm0, (%rax)
     movq %xmm1, 8(%rax)

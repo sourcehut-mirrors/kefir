@@ -658,6 +658,22 @@ static kefir_result_t do_peephole(struct kefir_mem *mem, struct kefir_codegen_ta
                     REQUIRE_OK(kefir_codegen_target_ir_amd64_peephole_jcc(mem, code, instr, &instr_replaced));
                     break;
 
+                case KEFIR_TARGET_IR_AMD64_OPCODE(addss):
+                case KEFIR_TARGET_IR_AMD64_OPCODE(subss):
+                case KEFIR_TARGET_IR_AMD64_OPCODE(mulss):
+                case KEFIR_TARGET_IR_AMD64_OPCODE(divss):
+                    REQUIRE_OK(
+                        kefir_codegen_target_ir_amd64_peephole_fp_single_arith(mem, code, instr, &instr_replaced));
+                    break;
+
+                case KEFIR_TARGET_IR_AMD64_OPCODE(addsd):
+                case KEFIR_TARGET_IR_AMD64_OPCODE(subsd):
+                case KEFIR_TARGET_IR_AMD64_OPCODE(mulsd):
+                case KEFIR_TARGET_IR_AMD64_OPCODE(divsd):
+                    REQUIRE_OK(
+                        kefir_codegen_target_ir_amd64_peephole_fp_double_arith(mem, code, instr, &instr_replaced));
+                    break;
+
                 default:
                     // Intentionally left blank
                     break;

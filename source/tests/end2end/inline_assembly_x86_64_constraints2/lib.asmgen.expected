@@ -34,10 +34,8 @@ test1:
     lea 1(%rax), %r10
     movq %r10, -56(%rbp)
     movq -48(%rbp), %xmm6
-    movq .L__kefir_func_test1_label4(%rip), %xmm1
-    movaps %xmm6, %xmm8
-    addsd %xmm1, %xmm8
-    movaps %xmm8, %xmm1
+    movaps %xmm6, %xmm1
+    addsd .L__kefir_func_test1_label4(%rip), %xmm1
     movq %xmm1, -48(%rbp)
     add $1, %r8
     mov $1, %r10d

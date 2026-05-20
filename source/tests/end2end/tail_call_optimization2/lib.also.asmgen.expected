@@ -26,10 +26,8 @@ factorial:
 .L__kefir_func_factorial_label4:
     movq .L__kefir_func_factorial_label12(%rip), %xmm2
     mulsd %xmm0, %xmm2
-    movq .L__kefir_func_factorial_label13(%rip), %xmm1
-    movaps %xmm0, %xmm3
-    subsd %xmm1, %xmm3
-    movaps %xmm3, %xmm1
+    movaps %xmm0, %xmm1
+    subsd .L__kefir_func_factorial_label13(%rip), %xmm1
     movaps %xmm2, %xmm0
     call factorial_helper
     jmp .L__kefir_func_factorial_label9
@@ -65,8 +63,7 @@ factorial_helper:
     ret
 .L__kefir_func_factorial_helper_label4:
     mulsd %xmm1, %xmm0
-    movq .L__kefir_func_factorial_helper_label10(%rip), %xmm2
-    subsd %xmm2, %xmm1
+    subsd .L__kefir_func_factorial_helper_label10(%rip), %xmm1
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
