@@ -391,25 +391,21 @@ test_dec32_step:
     movd .L__kefir_func_test_dec32_step_label21(%rip), %xmm1
     call __bid_ltsd2@PLT
     cmp $0, %eax
-    jl .L__kefir_func_test_dec32_step_label10
+    jge .L__kefir_func_test_dec32_step_label11
+    movd .L__kefir_func_test_dec32_step_label22(%rip), %xmm0
+    movd %xmm0, (%rbx, %r12, 4)
 .L__kefir_func_test_dec32_step_label11:
     movq 16(%r14), %rbx
     movd (%rbx, %r12, 4), %xmm0
-    movd .L__kefir_func_test_dec32_step_label22(%rip), %xmm1
+    movd .L__kefir_func_test_dec32_step_label23(%rip), %xmm1
     call __bid_ltsd2@PLT
     cmp $0, %eax
-    jl .L__kefir_func_test_dec32_step_label13
+    jge .L__kefir_func_test_dec32_step_label12
+    movd .L__kefir_func_test_dec32_step_label24(%rip), %xmm0
+    movd %xmm0, (%rbx, %r12, 4)
 .L__kefir_func_test_dec32_step_label12:
     addq $1, -64(%rbp)
     jmp .L__kefir_func_test_dec32_step_label6
-.L__kefir_func_test_dec32_step_label13:
-    movd .L__kefir_func_test_dec32_step_label23(%rip), %xmm0
-    movd %xmm0, (%rbx, %r12, 4)
-    jmp .L__kefir_func_test_dec32_step_label12
-.L__kefir_func_test_dec32_step_label10:
-    movd .L__kefir_func_test_dec32_step_label24(%rip), %xmm0
-    movd %xmm0, (%rbx, %r12, 4)
-    jmp .L__kefir_func_test_dec32_step_label11
 .L__kefir_func_test_dec32_step_label17:
     mov %r15, %r13
     jmp .L__kefir_func_test_dec32_step_label3
@@ -753,25 +749,21 @@ test_dec64_step:
     movq .L__kefir_func_test_dec64_step_label21(%rip), %xmm1
     call __bid_ltdd2@PLT
     cmp $0, %eax
-    jl .L__kefir_func_test_dec64_step_label10
+    jge .L__kefir_func_test_dec64_step_label11
+    movq .L__kefir_func_test_dec64_step_label22(%rip), %xmm0
+    movq %xmm0, (%rbx, %r12, 8)
 .L__kefir_func_test_dec64_step_label11:
     movq 16(%r14), %rbx
     movq (%rbx, %r12, 8), %xmm0
-    movq .L__kefir_func_test_dec64_step_label22(%rip), %xmm1
+    movq .L__kefir_func_test_dec64_step_label23(%rip), %xmm1
     call __bid_ltdd2@PLT
     cmp $0, %eax
-    jl .L__kefir_func_test_dec64_step_label13
+    jge .L__kefir_func_test_dec64_step_label12
+    movq .L__kefir_func_test_dec64_step_label24(%rip), %xmm0
+    movq %xmm0, (%rbx, %r12, 8)
 .L__kefir_func_test_dec64_step_label12:
     addq $1, -64(%rbp)
     jmp .L__kefir_func_test_dec64_step_label6
-.L__kefir_func_test_dec64_step_label13:
-    movq .L__kefir_func_test_dec64_step_label23(%rip), %xmm0
-    movq %xmm0, (%rbx, %r12, 8)
-    jmp .L__kefir_func_test_dec64_step_label12
-.L__kefir_func_test_dec64_step_label10:
-    movq .L__kefir_func_test_dec64_step_label24(%rip), %xmm0
-    movq %xmm0, (%rbx, %r12, 8)
-    jmp .L__kefir_func_test_dec64_step_label11
 .L__kefir_func_test_dec64_step_label17:
     mov %r15, %r13
     jmp .L__kefir_func_test_dec64_step_label3
@@ -1600,25 +1592,21 @@ test_dec128_step:
     movdqu .L__kefir_func_test_dec128_step_label21(%rip), %xmm1
     call __bid_lttd2@PLT
     cmp $0, %eax
-    jl .L__kefir_func_test_dec128_step_label10
+    jge .L__kefir_func_test_dec128_step_label11
+    movdqu .L__kefir_func_test_dec128_step_label22(%rip), %xmm0
+    movdqu %xmm0, (%rbx, %r12, 1)
 .L__kefir_func_test_dec128_step_label11:
     movq 24(%r14), %rbx
     movdqu (%rbx, %r12, 1), %xmm0
-    movdqu .L__kefir_func_test_dec128_step_label22(%rip), %xmm1
+    movdqu .L__kefir_func_test_dec128_step_label23(%rip), %xmm1
     call __bid_lttd2@PLT
     cmp $0, %eax
-    jl .L__kefir_func_test_dec128_step_label13
+    jge .L__kefir_func_test_dec128_step_label12
+    movdqu .L__kefir_func_test_dec128_step_label24(%rip), %xmm0
+    movdqu %xmm0, (%rbx, %r12, 1)
 .L__kefir_func_test_dec128_step_label12:
     addq $1, -64(%rbp)
     jmp .L__kefir_func_test_dec128_step_label6
-.L__kefir_func_test_dec128_step_label13:
-    movdqu .L__kefir_func_test_dec128_step_label23(%rip), %xmm0
-    movdqu %xmm0, (%rbx, %r12, 1)
-    jmp .L__kefir_func_test_dec128_step_label12
-.L__kefir_func_test_dec128_step_label10:
-    movdqu .L__kefir_func_test_dec128_step_label24(%rip), %xmm0
-    movdqu %xmm0, (%rbx, %r12, 1)
-    jmp .L__kefir_func_test_dec128_step_label11
 .L__kefir_func_test_dec128_step_label17:
     mov %r15, %r13
     jmp .L__kefir_func_test_dec128_step_label3

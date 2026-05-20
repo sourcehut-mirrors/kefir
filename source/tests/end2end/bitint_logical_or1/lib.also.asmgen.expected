@@ -32,12 +32,7 @@ or1:
     setne %al
     movzx %al, %rax
     test %al, %al
-    jz .L__kefir_func_or1_label4
-.L__kefir_func_or1_label3:
-    lea (%rbp), %rsp
-    pop %rbp
-    ret
-.L__kefir_func_or1_label4:
+    jnz .L__kefir_func_or1_label3
     movb -1(%rbp), %al
     shl $58, %rax
     sar $58, %rax
@@ -46,7 +41,10 @@ or1:
     test %al, %al
     setne %al
     movzx %al, %rax
-    jmp .L__kefir_func_or1_label3
+.L__kefir_func_or1_label3:
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
 .L__kefir_text_func_or1_end:
 
 or2:
@@ -65,12 +63,7 @@ or2:
     setne %al
     movzx %al, %rax
     test %al, %al
-    jz .L__kefir_func_or2_label4
-.L__kefir_func_or2_label3:
-    lea (%rbp), %rsp
-    pop %rbp
-    ret
-.L__kefir_func_or2_label4:
+    jnz .L__kefir_func_or2_label3
     movw -2(%rbp), %ax
     shl $50, %rax
     sar $50, %rax
@@ -79,7 +72,10 @@ or2:
     test %ax, %ax
     setne %al
     movzx %al, %rax
-    jmp .L__kefir_func_or2_label3
+.L__kefir_func_or2_label3:
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
 .L__kefir_text_func_or2_end:
 
 or3:
@@ -98,12 +94,7 @@ or3:
     setne %al
     movzx %al, %rax
     test %al, %al
-    jz .L__kefir_func_or3_label4
-.L__kefir_func_or3_label3:
-    lea (%rbp), %rsp
-    pop %rbp
-    ret
-.L__kefir_func_or3_label4:
+    jnz .L__kefir_func_or3_label3
     movl -4(%rbp), %eax
     shl $35, %rax
     sar $35, %rax
@@ -112,7 +103,10 @@ or3:
     test %eax, %eax
     setne %al
     movzx %al, %rax
-    jmp .L__kefir_func_or3_label3
+.L__kefir_func_or3_label3:
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
 .L__kefir_text_func_or3_end:
 
 or4:
@@ -131,12 +125,7 @@ or4:
     setne %al
     movzx %al, %rax
     test %al, %al
-    jz .L__kefir_func_or4_label4
-.L__kefir_func_or4_label3:
-    lea (%rbp), %rsp
-    pop %rbp
-    ret
-.L__kefir_func_or4_label4:
+    jnz .L__kefir_func_or4_label3
     movq -8(%rbp), %rax
     shl $6, %rax
     sar $6, %rax
@@ -145,7 +134,10 @@ or4:
     test %rax, %rax
     setne %al
     movzx %al, %rax
-    jmp .L__kefir_func_or4_label3
+.L__kefir_func_or4_label3:
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
 .L__kefir_text_func_or4_end:
 
 or5:
@@ -171,12 +163,7 @@ or5:
     mov %rcx, %rax
     sete %al
     test %al, %al
-    jz .L__kefir_func_or5_label4
-.L__kefir_func_or5_label3:
-    lea (%rbp), %rsp
-    pop %rbp
-    ret
-.L__kefir_func_or5_label4:
+    jnz .L__kefir_func_or5_label3
     movdqu -16(%rbp), %xmm0
     movdqu %xmm0, -48(%rbp)
     lea -48(%rbp), %rdi
@@ -186,7 +173,10 @@ or5:
     xor %eax, %eax
     test %cl, %cl
     sete %al
-    jmp .L__kefir_func_or5_label3
+.L__kefir_func_or5_label3:
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
 .L__kefir_text_func_or5_end:
 
 or6:
@@ -232,12 +222,7 @@ or6:
     mov %rcx, %rax
     sete %al
     test %al, %al
-    jz .L__kefir_func_or6_label4
-.L__kefir_func_or6_label3:
-    lea (%rbp), %rsp
-    pop %rbp
-    ret
-.L__kefir_func_or6_label4:
+    jnz .L__kefir_func_or6_label3
     movq -40(%rbp), %rax
     movq %rax, -120(%rbp)
     movq -32(%rbp), %rax
@@ -255,7 +240,10 @@ or6:
     xor %eax, %eax
     test %cl, %cl
     sete %al
-    jmp .L__kefir_func_or6_label3
+.L__kefir_func_or6_label3:
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
 .L__kefir_text_func_or6_end:
 
 .L__kefir_text_section_end:
@@ -297,14 +285,7 @@ __kefir_bigint_is_zero:
     movq -40(%rbp), %rcx
     add $1, %rax
     cmp %rcx, %rax
-    jz .L__kefir_runtime_func___kefir_bigint_is_zero_label7
-.L__kefir_runtime_func___kefir_bigint_is_zero_label8:
-    movb -32(%rbp), %al
-    test %al, %al
-    jnz .L__kefir_runtime_func___kefir_bigint_is_zero_label10
-    addq $1, -24(%rbp)
-    jmp .L__kefir_runtime_func___kefir_bigint_is_zero_label3
-.L__kefir_runtime_func___kefir_bigint_is_zero_label7:
+    jnz .L__kefir_runtime_func___kefir_bigint_is_zero_label8
     movq -48(%rbp), %rax
     sub $1, %rax
     mov $8, %ecx
@@ -328,7 +309,12 @@ __kefir_bigint_is_zero:
     and $-1, %cl
     and %al, %cl
     movb %cl, -32(%rbp)
-    jmp .L__kefir_runtime_func___kefir_bigint_is_zero_label8
+.L__kefir_runtime_func___kefir_bigint_is_zero_label8:
+    movb -32(%rbp), %al
+    test %al, %al
+    jnz .L__kefir_runtime_func___kefir_bigint_is_zero_label10
+    addq $1, -24(%rbp)
+    jmp .L__kefir_runtime_func___kefir_bigint_is_zero_label3
 .L__kefir_runtime_func___kefir_bigint_is_zero_label10:
     xor %eax, %eax
     lea (%rbp), %rsp

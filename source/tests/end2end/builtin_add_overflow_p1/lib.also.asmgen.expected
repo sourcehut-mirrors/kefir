@@ -320,15 +320,13 @@ __kefir_bigint_set_signed_integer:
     jmp .L__kefir_runtime_func___kefir_bigint_set_signed_integer_label3
 .L__kefir_runtime_func___kefir_bigint_set_signed_integer_label6:
     cmp %rax, %rsi
-    jb .L__kefir_runtime_func___kefir_bigint_set_signed_integer_label8
+    jae .L__kefir_runtime_func___kefir_bigint_set_signed_integer_label9
+    mov %rax, %rdx
+    call __kefir_bigint_cast_signed
 .L__kefir_runtime_func___kefir_bigint_set_signed_integer_label9:
     xor %eax, %eax
     pop %rbp
     ret
-.L__kefir_runtime_func___kefir_bigint_set_signed_integer_label8:
-    mov %rax, %rdx
-    call __kefir_bigint_cast_signed
-    jmp .L__kefir_runtime_func___kefir_bigint_set_signed_integer_label9
 .L__kefir_runtime_func___kefir_bigint_set_signed_integer_label10:
     xor %eax, %eax
     pop %rbp

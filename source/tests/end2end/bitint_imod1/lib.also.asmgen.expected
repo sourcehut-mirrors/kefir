@@ -279,14 +279,7 @@ __kefir_bigint_is_zero:
     movq -40(%rbp), %rcx
     add $1, %rax
     cmp %rcx, %rax
-    jz .L__kefir_runtime_func___kefir_bigint_is_zero_label7
-.L__kefir_runtime_func___kefir_bigint_is_zero_label8:
-    movb -32(%rbp), %al
-    test %al, %al
-    jnz .L__kefir_runtime_func___kefir_bigint_is_zero_label10
-    addq $1, -24(%rbp)
-    jmp .L__kefir_runtime_func___kefir_bigint_is_zero_label3
-.L__kefir_runtime_func___kefir_bigint_is_zero_label7:
+    jnz .L__kefir_runtime_func___kefir_bigint_is_zero_label8
     movq -48(%rbp), %rax
     sub $1, %rax
     mov $8, %ecx
@@ -310,7 +303,12 @@ __kefir_bigint_is_zero:
     and $-1, %cl
     and %al, %cl
     movb %cl, -32(%rbp)
-    jmp .L__kefir_runtime_func___kefir_bigint_is_zero_label8
+.L__kefir_runtime_func___kefir_bigint_is_zero_label8:
+    movb -32(%rbp), %al
+    test %al, %al
+    jnz .L__kefir_runtime_func___kefir_bigint_is_zero_label10
+    addq $1, -24(%rbp)
+    jmp .L__kefir_runtime_func___kefir_bigint_is_zero_label3
 .L__kefir_runtime_func___kefir_bigint_is_zero_label10:
     xor %eax, %eax
     lea (%rbp), %rsp
@@ -984,7 +982,9 @@ __kefir_bigint_left_shift:
     movq -48(%rbp), %rax
     movq -24(%rbp), %rcx
     cmp %rcx, %rax
-    ja .L__kefir_runtime_func___kefir_bigint_left_shift_label10
+    jbe .L__kefir_runtime_func___kefir_bigint_left_shift_label2
+    movq -24(%rbp), %rax
+    movq %rax, -48(%rbp)
 .L__kefir_runtime_func___kefir_bigint_left_shift_label2:
     movq -24(%rbp), %rax
     add $7, %rax
@@ -1000,7 +1000,16 @@ __kefir_bigint_left_shift:
     movq -32(%rbp), %rax
     xor %ecx, %ecx
     cmp %rcx, %rax
-    ja .L__kefir_runtime_func___kefir_bigint_left_shift_label9
+    jbe .L__kefir_runtime_func___kefir_bigint_left_shift_label3
+    movq -16(%rbp), %rdi
+    movq -32(%rbp), %rsi
+    movq -24(%rbp), %rdx
+    call __kefir_bigint_left_shift_whole_digits
+    movq -32(%rbp), %rax
+    movq -48(%rbp), %rcx
+    shl $3, %rax
+    sub %rax, %rcx
+    movq %rcx, -48(%rbp)
 .L__kefir_runtime_func___kefir_bigint_left_shift_label3:
     movq -48(%rbp), %rax
     xor %ecx, %ecx
@@ -1047,21 +1056,6 @@ __kefir_bigint_left_shift:
     shl %cl, %dl
     movb %dl, (%rax)
     jmp .L__kefir_runtime_func___kefir_bigint_left_shift_label4
-.L__kefir_runtime_func___kefir_bigint_left_shift_label9:
-    movq -16(%rbp), %rdi
-    movq -32(%rbp), %rsi
-    movq -24(%rbp), %rdx
-    call __kefir_bigint_left_shift_whole_digits
-    movq -32(%rbp), %rax
-    movq -48(%rbp), %rcx
-    shl $3, %rax
-    sub %rax, %rcx
-    movq %rcx, -48(%rbp)
-    jmp .L__kefir_runtime_func___kefir_bigint_left_shift_label3
-.L__kefir_runtime_func___kefir_bigint_left_shift_label10:
-    movq -24(%rbp), %rax
-    movq %rax, -48(%rbp)
-    jmp .L__kefir_runtime_func___kefir_bigint_left_shift_label2
 .L__kefir_runtime_text_func___kefir_bigint_left_shift_end:
 
 __kefir_bigint_get_sign:

@@ -19,7 +19,9 @@ get:
     movdqu -64(%rbp), %xmm0
     movdqu %xmm0, -32(%rbp)
     test %esi, %esi
-    jnz .L__kefir_func_get_label7
+    jz .L__kefir_func_get_label3
+    movdqu -32(%rbp), %xmm0
+    movdqu %xmm0, -48(%rbp)
 .L__kefir_func_get_label3:
     test %edi, %edi
     jz .L__kefir_func_get_label5
@@ -31,10 +33,6 @@ get:
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_func_get_label7:
-    movdqu -32(%rbp), %xmm0
-    movdqu %xmm0, -48(%rbp)
-    jmp .L__kefir_func_get_label3
 .L__kefir_text_func_get_end:
 
 .L__kefir_text_section_end:

@@ -180,13 +180,11 @@ test7:
     cmp %edi, %edx
     jge .L__kefir_func_test7_label3
     cmp $3, %edx
-    je .L__kefir_func_test7_label6
+    jne .L__kefir_func_test7_label5
+    addl %eax, (%rcx)
 .L__kefir_func_test7_label5:
     add $1, %edx
     jmp .L__kefir_func_test7_label2
-.L__kefir_func_test7_label6:
-    addl %eax, (%rcx)
-    jmp .L__kefir_func_test7_label5
 .L__kefir_func_test7_label3:
     ret
 .L__kefir_text_func_test7_end:

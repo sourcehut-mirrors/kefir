@@ -88,8 +88,16 @@ static kefir_result_t do_schedule_impl(struct kefir_mem *mem,
                                                                       control_flow->code->klass->payload));
 
             if (terminator_props.block_terminator && terminator_props.branch) {
-                REQUIRE_OK(insert_sorted_by_loop_depth(mem, queue, loops, terminator_props.target_block_refs[0]));
-                REQUIRE_OK(insert_sorted_by_loop_depth(mem, queue, loops, terminator_props.target_block_refs[1]));
+                kefir_codegen_target_ir_block_ref_t lhs_block_ref = terminator_props.target_block_refs[0];
+                kefir_codegen_target_ir_block_ref_t rhs_block_ref = terminator_props.target_block_refs[1];
+                if (kefir_hashset_has(&control_flow->blocks[lhs_block_ref].successors,
+                                      (kefir_hashset_key_t) rhs_block_ref)) {
+                    REQUIRE_OK(insert_sorted_by_loop_depth(mem, queue, loops, rhs_block_ref));
+                    REQUIRE_OK(insert_sorted_by_loop_depth(mem, queue, loops, lhs_block_ref));
+                } else {
+                    REQUIRE_OK(insert_sorted_by_loop_depth(mem, queue, loops, lhs_block_ref));
+                    REQUIRE_OK(insert_sorted_by_loop_depth(mem, queue, loops, rhs_block_ref));
+                }
             } else if (terminator_props.block_terminator && terminator_props.inline_assembly) {
                 REQUIRE_OK(insert_sorted_by_loop_depth(mem, queue, loops,
                                                        block_tail->operation.inline_asm_node.target_block_ref));
