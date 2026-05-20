@@ -48,15 +48,15 @@ test3:
     xor %ecx, %ecx
 .L__kefir_func_test3_label2:
     cmp %edi, %ecx
-    jl .L__kefir_func_test3_label4
+    jge .L__kefir_func_test3_label3
+    movl $1, (%rax)
+    add $1, %ecx
+    jmp .L__kefir_func_test3_label2
+.L__kefir_func_test3_label3:
     movq y@GOTPCREL(%rip), %rax
     movl %edi, (%rax)
     movl (%rax), %eax
     ret
-.L__kefir_func_test3_label4:
-    movl $1, (%rax)
-    add $1, %ecx
-    jmp .L__kefir_func_test3_label2
 .L__kefir_text_func_test3_end:
 
 test4:
@@ -66,15 +66,15 @@ test4:
     xor %ecx, %ecx
 .L__kefir_func_test4_label2:
     cmp %edi, %ecx
-    jl .L__kefir_func_test4_label4
+    jge .L__kefir_func_test4_label3
+    addl $1, (%rax)
+    add $1, %ecx
+    jmp .L__kefir_func_test4_label2
+.L__kefir_func_test4_label3:
     movq y@GOTPCREL(%rip), %rax
     movl %edi, (%rax)
     movl (%rax), %eax
     ret
-.L__kefir_func_test4_label4:
-    addl $1, (%rax)
-    add $1, %ecx
-    jmp .L__kefir_func_test4_label2
 .L__kefir_text_func_test4_end:
 
 test5:
@@ -86,18 +86,18 @@ test5:
     mov %rax, %rdx
 .L__kefir_func_test5_label2:
     cmp %edi, %edx
-    jl .L__kefir_func_test5_label4
+    jge .L__kefir_func_test5_label3
+    mov $1, %eax
+    xchgl (%rcx), %eax
+    add $1, %edx
+    jmp .L__kefir_func_test5_label2
+.L__kefir_func_test5_label3:
     movq z@GOTPCREL(%rip), %rcx
     mov %rdi, %rax
     xchgl (%rcx), %eax
     movl (%rcx), %eax
     movsx %eax, %rax
     ret
-.L__kefir_func_test5_label4:
-    mov $1, %eax
-    xchgl (%rcx), %eax
-    add $1, %edx
-    jmp .L__kefir_func_test5_label2
 .L__kefir_text_func_test5_end:
 
 test6:
@@ -109,19 +109,19 @@ test6:
     mov %rax, %rsi
 .L__kefir_func_test6_label2:
     cmp %edi, %esi
-    jl .L__kefir_func_test6_label4
+    jge .L__kefir_func_test6_label3
+    mov %rcx, %rdx
+    mov $1, %eax
+    lock     xaddl %eax, (%rdx)
+    add $1, %esi
+    jmp .L__kefir_func_test6_label2
+.L__kefir_func_test6_label3:
     movq z@GOTPCREL(%rip), %rcx
     mov %rdi, %rax
     xchgl (%rcx), %eax
     movl (%rcx), %eax
     movsx %eax, %rax
     ret
-.L__kefir_func_test6_label4:
-    mov %rcx, %rdx
-    mov $1, %eax
-    lock     xaddl %eax, (%rdx)
-    add $1, %esi
-    jmp .L__kefir_func_test6_label2
 .L__kefir_text_func_test6_end:
 
 test7:
@@ -139,7 +139,14 @@ test7:
     mov %rax, %r13
 .L__kefir_func_test7_label2:
     cmp %ebx, %r13d
-    jl .L__kefir_func_test7_label4
+    jge .L__kefir_func_test7_label3
+    movl (%r12), %edi
+    lea 1(%edi), %eax
+    movl %eax, (%r12)
+    call fn@PLT
+    add $1, %r13d
+    jmp .L__kefir_func_test7_label2
+.L__kefir_func_test7_label3:
     movq x@GOTPCREL(%rip), %rax
     movl %ebx, (%rax)
     mov %rbx, %rax
@@ -149,13 +156,6 @@ test7:
     pop %rbx
     pop %rbp
     ret
-.L__kefir_func_test7_label4:
-    movl (%r12), %edi
-    lea 1(%edi), %eax
-    movl %eax, (%r12)
-    call fn@PLT
-    add $1, %r13d
-    jmp .L__kefir_func_test7_label2
 .L__kefir_text_func_test7_end:
 
 .L__kefir_text_section_end:

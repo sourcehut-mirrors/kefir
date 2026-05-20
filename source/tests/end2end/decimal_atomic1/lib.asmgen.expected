@@ -47,7 +47,10 @@ add32:
     movq %xmm0, %rcx
     mov %r12, %rax
     lock     cmpxchgl %ecx, (%rdx)
-    jnz .L__kefir_func_add32_label4
+    jz .L__kefir_func_add32_label3
+    fnclex
+    jmp .L__kefir_func_add32_label2
+.L__kefir_func_add32_label3:
     stmxcsr -64(%rbp)
     mov -64(%rbp), %rcx
     fnstsw %ax
@@ -63,9 +66,6 @@ add32:
     pop %rbx
     pop %rbp
     ret
-.L__kefir_func_add32_label4:
-    fnclex
-    jmp .L__kefir_func_add32_label2
 .L__kefir_text_func_add32_end:
 
 add64:
@@ -90,7 +90,10 @@ add64:
     movq %xmm0, %rcx
     mov %r12, %rax
     lock     cmpxchgq %rcx, (%rdx)
-    jnz .L__kefir_func_add64_label4
+    jz .L__kefir_func_add64_label3
+    fnclex
+    jmp .L__kefir_func_add64_label2
+.L__kefir_func_add64_label3:
     stmxcsr -64(%rbp)
     mov -64(%rbp), %rcx
     fnstsw %ax
@@ -106,9 +109,6 @@ add64:
     pop %rbx
     pop %rbp
     ret
-.L__kefir_func_add64_label4:
-    fnclex
-    jmp .L__kefir_func_add64_label2
 .L__kefir_text_func_add64_end:
 
 add128:
@@ -144,7 +144,10 @@ add128:
     lea -112(%rbp), %rcx
     call __atomic_compare_exchange@PLT
     test %al, %al
-    jz .L__kefir_func_add128_label4
+    jnz .L__kefir_func_add128_label3
+    fnclex
+    jmp .L__kefir_func_add128_label2
+.L__kefir_func_add128_label3:
     stmxcsr -128(%rbp)
     mov -128(%rbp), %rcx
     fnstsw %ax
@@ -160,9 +163,6 @@ add128:
     pop %rbx
     pop %rbp
     ret
-.L__kefir_func_add128_label4:
-    fnclex
-    jmp .L__kefir_func_add128_label2
 .L__kefir_text_func_add128_end:
 
 load32:

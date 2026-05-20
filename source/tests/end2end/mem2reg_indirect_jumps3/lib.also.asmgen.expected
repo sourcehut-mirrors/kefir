@@ -18,6 +18,10 @@ run_op:
     sub %rcx, %rdi
     xor %r9d, %r9d
     jmpq *(%rax, %rdx, 8)
+.L__kefir_func_run_op_label7:
+_kefir_local_public_label_run_op_sub:
+    add %rdi, %r9
+    jmp .L__kefir_func_run_op_label6
 .L__kefir_func_run_op_label5:
 _kefir_local_public_label_run_op_div:
     mov %r8, %rax
@@ -30,10 +34,6 @@ _kefir_local_public_label_run_op_mul:
     mov %r8, %rax
     imul %rcx, %rax
     add %rax, %r9
-    jmp .L__kefir_func_run_op_label6
-.L__kefir_func_run_op_label7:
-_kefir_local_public_label_run_op_sub:
-    add %rdi, %r9
     jmp .L__kefir_func_run_op_label6
 .L__kefir_func_run_op_label4:
 _kefir_local_public_label_run_op_add:

@@ -124,7 +124,10 @@ addf32:
     mov %rdi, %rdx
     movq %xmm1, %rcx
     lock     cmpxchgl %ecx, (%rdx)
-    jnz .L__kefir_func_addf32_label4
+    jz .L__kefir_func_addf32_label3
+    fnclex
+    jmp .L__kefir_func_addf32_label2
+.L__kefir_func_addf32_label3:
     stmxcsr -16(%rbp)
     mov -16(%rbp), %rcx
     fnstsw %ax
@@ -139,9 +142,6 @@ addf32:
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_func_addf32_label4:
-    fnclex
-    jmp .L__kefir_func_addf32_label2
 .L__kefir_text_func_addf32_end:
 
 addf64:
@@ -160,7 +160,10 @@ addf64:
     mov %rdi, %rdx
     movq %xmm1, %rcx
     lock     cmpxchgq %rcx, (%rdx)
-    jnz .L__kefir_func_addf64_label4
+    jz .L__kefir_func_addf64_label3
+    fnclex
+    jmp .L__kefir_func_addf64_label2
+.L__kefir_func_addf64_label3:
     stmxcsr -16(%rbp)
     mov -16(%rbp), %rcx
     fnstsw %ax
@@ -175,9 +178,6 @@ addf64:
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_func_addf64_label4:
-    fnclex
-    jmp .L__kefir_func_addf64_label2
 .L__kefir_text_func_addf64_end:
 
 addf32r:
@@ -196,7 +196,10 @@ addf32r:
     mov %rdi, %rdx
     movq %xmm1, %rcx
     lock     cmpxchgl %ecx, (%rdx)
-    jnz .L__kefir_func_addf32r_label4
+    jz .L__kefir_func_addf32r_label3
+    fnclex
+    jmp .L__kefir_func_addf32r_label2
+.L__kefir_func_addf32r_label3:
     stmxcsr -16(%rbp)
     mov -16(%rbp), %rcx
     fnstsw %ax
@@ -212,9 +215,6 @@ addf32r:
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_func_addf32r_label4:
-    fnclex
-    jmp .L__kefir_func_addf32r_label2
 .L__kefir_text_func_addf32r_end:
 
 addf64r:
@@ -233,7 +233,10 @@ addf64r:
     mov %rdi, %rdx
     movq %xmm1, %rcx
     lock     cmpxchgq %rcx, (%rdx)
-    jnz .L__kefir_func_addf64r_label4
+    jz .L__kefir_func_addf64r_label3
+    fnclex
+    jmp .L__kefir_func_addf64r_label2
+.L__kefir_func_addf64r_label3:
     stmxcsr -16(%rbp)
     mov -16(%rbp), %rcx
     fnstsw %ax
@@ -249,9 +252,6 @@ addf64r:
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_func_addf64r_label4:
-    fnclex
-    jmp .L__kefir_func_addf64r_label2
 .L__kefir_text_func_addf64r_end:
 
 .L__kefir_text_section_end:

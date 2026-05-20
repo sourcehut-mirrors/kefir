@@ -43,9 +43,6 @@ run_factorial:
     movsx %esi, %rsi
     movq factorial_result@GOTPCREL(%rip), %rdi
     jmpq *(%rdx, %rsi, 8)
-.L__kefir_func_run_factorial_label2:
-_kefir_local_public_label_run_factorial_terminate:
-    ret
 .L__kefir_func_run_factorial_label3:
 _kefir_local_public_label_run_factorial_round:
     movq (%rdi), %rdx
@@ -54,6 +51,9 @@ _kefir_local_public_label_run_factorial_round:
     add $-1, %rcx
     movq %rcx, (%rax)
     jmp .L__kefir_func_run_factorial_label1
+.L__kefir_func_run_factorial_label2:
+_kefir_local_public_label_run_factorial_terminate:
+    ret
 .L__kefir_text_func_run_factorial_end:
 
 .L__kefir_text_section_end:

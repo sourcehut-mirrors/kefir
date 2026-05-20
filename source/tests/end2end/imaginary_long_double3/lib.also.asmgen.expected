@@ -39,13 +39,7 @@ test:
     fstpt -128(%rbp)
 .L__kefir_func_test_label4:
     test %edi, %edi
-    jnz .L__kefir_func_test_label6
-    fldt -128(%rbp)
-    fldcw -8(%rbp)
-    lea (%rbp), %rsp
-    pop %rbp
-    ret
-.L__kefir_func_test_label6:
+    jz .L__kefir_func_test_label5
     movq -104(%rbp), %rax
     add $15, %rax
     and $-16, %rax
@@ -64,6 +58,12 @@ test:
     add $-1, %edi
     fstpt -128(%rbp)
     jmp .L__kefir_func_test_label4
+.L__kefir_func_test_label5:
+    fldt -128(%rbp)
+    fldcw -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
 .L__kefir_text_func_test_end:
 .section .rodata
     .align 8

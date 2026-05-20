@@ -22,6 +22,7 @@
 #include "kefir/codegen/target-ir/amd64/destructor_ops.h"
 #include "kefir/codegen/target-ir/amd64/code.h"
 #include "kefir/codegen/target-ir/amd64/topological_scheduler.h"
+#include "kefir/codegen/target-ir/loop_nest.h"
 #include "kefir/codegen/amd64/function.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
@@ -114,9 +115,23 @@ static kefir_result_t schedule_code(struct kefir_mem *mem,
     REQUIRE(schedule != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR schedule"));
     UNUSED(payload);
 
+    struct kefir_codegen_target_ir_loop_collection loops;
     struct kefir_codegen_target_ir_code_scheduler scheduler;
-    REQUIRE_OK(kefir_codegen_target_ir_amd64_topological_scheduler_init(control_flow, &scheduler));
-    REQUIRE_OK(kefir_codegen_target_ir_code_schedule_build(mem, schedule, &scheduler));
+    REQUIRE_OK(kefir_codegen_target_ir_loop_collection_init(&loops));
+    REQUIRE_OK(kefir_codegen_target_ir_amd64_topological_scheduler_init(mem, control_flow, &loops, &scheduler));
+    kefir_result_t res = kefir_codegen_target_ir_loop_collection_build(mem, &loops, control_flow);
+    REQUIRE_CHAIN(&res, kefir_codegen_target_ir_code_schedule_build(mem, schedule, &scheduler));
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_codegen_target_ir_loop_collection_free(mem, &loops);
+        kefir_codegen_target_ir_amd64_topological_scheduler_free(mem, &scheduler);
+        return res;
+    });
+    res = kefir_codegen_target_ir_loop_collection_free(mem, &loops);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_codegen_target_ir_amd64_topological_scheduler_free(mem, &scheduler);
+        return res;
+    });
+    REQUIRE_OK(kefir_codegen_target_ir_amd64_topological_scheduler_free(mem, &scheduler));
     return KEFIR_OK;
 }
 

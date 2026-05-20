@@ -22,10 +22,37 @@
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 
+struct scheduler_payload {
+    const struct kefir_codegen_target_ir_control_flow *control_flow;
+    const struct kefir_codegen_target_ir_loop_collection *loops;
+};
+
+static kefir_result_t insert_sorted_by_loop_depth(struct kefir_mem *mem, struct kefir_list *queue,
+                                                  const struct kefir_codegen_target_ir_loop_collection *loops,
+                                                  kefir_codegen_target_ir_block_ref_t block_ref) {
+    kefir_uint32_t depth;
+    REQUIRE_OK(kefir_codegen_target_ir_loop_level(loops, block_ref, &depth));
+    for (struct kefir_list_entry *iter = kefir_list_head(queue); iter != NULL; iter = iter->next) {
+        ASSIGN_DECL_CAST(kefir_codegen_target_ir_block_ref_t, other_block_ref, (kefir_uptr_t) iter->value);
+
+        kefir_uint32_t other_depth;
+        REQUIRE_OK(kefir_codegen_target_ir_loop_level(loops, other_block_ref, &other_depth));
+
+        if (other_depth <= depth) {
+            REQUIRE_OK(kefir_list_insert_after(mem, queue, iter->prev, (void *) (kefir_uptr_t) block_ref));
+            return KEFIR_OK;
+        }
+    }
+
+    REQUIRE_OK(kefir_list_insert_after(mem, queue, kefir_list_tail(queue), (void *) (kefir_uptr_t) block_ref));
+    return KEFIR_OK;
+}
+
 static kefir_result_t do_schedule_impl(struct kefir_mem *mem,
                                        const struct kefir_codegen_target_ir_code_schedule *schedule,
                                        struct kefir_codegen_target_ir_code_schedule_builder *schedule_builder,
                                        const struct kefir_codegen_target_ir_control_flow *control_flow,
+                                       const struct kefir_codegen_target_ir_loop_collection *loops,
                                        struct kefir_list *queue) {
 
     for (struct kefir_list_entry *iter = kefir_list_head(queue); iter != NULL; iter = kefir_list_head(queue)) {
@@ -44,7 +71,7 @@ static kefir_result_t do_schedule_impl(struct kefir_mem *mem,
         for (res = kefir_hashset_iter(&control_flow->blocks[block_ref].successors, &iter, &key); res == KEFIR_OK;
              res = kefir_hashset_next(&iter, &key)) {
             ASSIGN_DECL_CAST(kefir_codegen_target_ir_block_ref_t, successor_block_ref, key);
-            REQUIRE_OK(kefir_list_insert_after(mem, queue, NULL, (void *) (kefir_uptr_t) successor_block_ref));
+            REQUIRE_OK(insert_sorted_by_loop_depth(mem, queue, loops, successor_block_ref));
         }
         if (res != KEFIR_ITERATOR_END) {
             REQUIRE_OK(res);
@@ -61,13 +88,11 @@ static kefir_result_t do_schedule_impl(struct kefir_mem *mem,
                                                                       control_flow->code->klass->payload));
 
             if (terminator_props.block_terminator && terminator_props.branch) {
-                REQUIRE_OK(kefir_list_insert_after(mem, queue, NULL,
-                                                   (void *) (kefir_uptr_t) terminator_props.target_block_refs[0]));
-                REQUIRE_OK(kefir_list_insert_after(mem, queue, NULL,
-                                                   (void *) (kefir_uptr_t) terminator_props.target_block_refs[1]));
+                REQUIRE_OK(insert_sorted_by_loop_depth(mem, queue, loops, terminator_props.target_block_refs[0]));
+                REQUIRE_OK(insert_sorted_by_loop_depth(mem, queue, loops, terminator_props.target_block_refs[1]));
             } else if (terminator_props.block_terminator && terminator_props.inline_assembly) {
-                REQUIRE_OK(kefir_list_insert_after(
-                    mem, queue, NULL, (void *) (kefir_uptr_t) block_tail->operation.inline_asm_node.target_block_ref));
+                REQUIRE_OK(insert_sorted_by_loop_depth(mem, queue, loops,
+                                                       block_tail->operation.inline_asm_node.target_block_ref));
             }
         }
     }
@@ -77,7 +102,6 @@ static kefir_result_t do_schedule_impl(struct kefir_mem *mem,
 static kefir_result_t do_schedule(struct kefir_mem *mem, const struct kefir_codegen_target_ir_code_schedule *schedule,
                                   struct kefir_codegen_target_ir_code_schedule_builder *schedule_builder,
                                   kefir_codegen_target_ir_block_ref_t entry_point_ref, void *payload) {
-    UNUSED(payload);
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(schedule != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR schedule"));
     REQUIRE(schedule_builder != NULL,
@@ -85,13 +109,14 @@ static kefir_result_t do_schedule(struct kefir_mem *mem, const struct kefir_code
     REQUIRE(
         entry_point_ref != KEFIR_ID_NONE && entry_point_ref < kefir_codegen_target_ir_code_block_count(schedule->code),
         KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR schedule entry point"));
-    ASSIGN_DECL_CAST(const struct kefir_codegen_target_ir_control_flow *, control_flow, payload);
+    ASSIGN_DECL_CAST(const struct scheduler_payload *, scheduler_payload, payload);
 
     struct kefir_list queue;
     REQUIRE_OK(kefir_list_init(&queue));
     kefir_result_t res =
         kefir_list_insert_after(mem, &queue, kefir_list_tail(&queue), (void *) (kefir_uptr_t) entry_point_ref);
-    REQUIRE_CHAIN(&res, do_schedule_impl(mem, schedule, schedule_builder, control_flow, &queue));
+    REQUIRE_CHAIN(&res, do_schedule_impl(mem, schedule, schedule_builder, scheduler_payload->control_flow,
+                                         scheduler_payload->loops, &queue));
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_list_free(mem, &queue);
         return res;
@@ -101,12 +126,30 @@ static kefir_result_t do_schedule(struct kefir_mem *mem, const struct kefir_code
 }
 
 kefir_result_t kefir_codegen_target_ir_amd64_topological_scheduler_init(
-    const struct kefir_codegen_target_ir_control_flow *control_flow,
+    struct kefir_mem *mem, const struct kefir_codegen_target_ir_control_flow *control_flow,
+    const struct kefir_codegen_target_ir_loop_collection *loops,
     struct kefir_codegen_target_ir_code_scheduler *scheduler) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(control_flow != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR control flow"));
-    REQUIRE(scheduler != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR scheduler"));
+    REQUIRE(loops != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR loop collection"));
+    REQUIRE(scheduler != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to target IR scheduler"));
+
+    struct scheduler_payload *payload = KEFIR_MALLOC(mem, sizeof(struct scheduler_payload));
+    REQUIRE(payload != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate scheduler payload"));
+    payload->control_flow = control_flow;
+    payload->loops = loops;
 
     scheduler->do_schedule = do_schedule;
-    scheduler->payload = (void *) control_flow;
+    scheduler->payload = payload;
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_codegen_target_ir_amd64_topological_scheduler_free(
+    struct kefir_mem *mem, struct kefir_codegen_target_ir_code_scheduler *scheduler) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(scheduler != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR scheduler"));
+
+    KEFIR_FREE(mem, scheduler->payload);
     return KEFIR_OK;
 }

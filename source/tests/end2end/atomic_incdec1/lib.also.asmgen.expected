@@ -88,7 +88,10 @@ predec_ld:
     lea -32(%rbp), %rcx
     call __atomic_compare_exchange@PLT
     test %al, %al
-    jz .L__kefir_func_predec_ld_label4
+    jnz .L__kefir_func_predec_ld_label3
+    fnclex
+    jmp .L__kefir_func_predec_ld_label2
+.L__kefir_func_predec_ld_label3:
     stmxcsr -64(%rbp)
     mov -64(%rbp), %rcx
     fnstsw %ax
@@ -105,9 +108,6 @@ predec_ld:
     pop %rbx
     pop %rbp
     ret
-.L__kefir_func_predec_ld_label4:
-    fnclex
-    jmp .L__kefir_func_predec_ld_label2
 .L__kefir_text_func_predec_ld_end:
 .section .rodata
     .align 8
@@ -160,7 +160,10 @@ preinc_ld:
     lea -32(%rbp), %rcx
     call __atomic_compare_exchange@PLT
     test %al, %al
-    jz .L__kefir_func_preinc_ld_label4
+    jnz .L__kefir_func_preinc_ld_label3
+    fnclex
+    jmp .L__kefir_func_preinc_ld_label2
+.L__kefir_func_preinc_ld_label3:
     stmxcsr -64(%rbp)
     mov -64(%rbp), %rcx
     fnstsw %ax
@@ -177,9 +180,6 @@ preinc_ld:
     pop %rbx
     pop %rbp
     ret
-.L__kefir_func_preinc_ld_label4:
-    fnclex
-    jmp .L__kefir_func_preinc_ld_label2
 .L__kefir_text_func_preinc_ld_end:
 .section .rodata
     .align 8
@@ -205,7 +205,10 @@ predec_f32:
     mov %rsi, %rdx
     movq %xmm0, %rcx
     lock     cmpxchgl %ecx, (%rdx)
-    jnz .L__kefir_func_predec_f32_label4
+    jz .L__kefir_func_predec_f32_label3
+    fnclex
+    jmp .L__kefir_func_predec_f32_label2
+.L__kefir_func_predec_f32_label3:
     stmxcsr -16(%rbp)
     mov -16(%rbp), %rcx
     fnstsw %ax
@@ -220,9 +223,6 @@ predec_f32:
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_func_predec_f32_label4:
-    fnclex
-    jmp .L__kefir_func_predec_f32_label2
 .L__kefir_text_func_predec_f32_end:
 .section .rodata
     .align 4
@@ -247,7 +247,10 @@ predec_f64:
     mov %rsi, %rdx
     movq %xmm0, %rcx
     lock     cmpxchgq %rcx, (%rdx)
-    jnz .L__kefir_func_predec_f64_label4
+    jz .L__kefir_func_predec_f64_label3
+    fnclex
+    jmp .L__kefir_func_predec_f64_label2
+.L__kefir_func_predec_f64_label3:
     stmxcsr -16(%rbp)
     mov -16(%rbp), %rcx
     fnstsw %ax
@@ -262,9 +265,6 @@ predec_f64:
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_func_predec_f64_label4:
-    fnclex
-    jmp .L__kefir_func_predec_f64_label2
 .L__kefir_text_func_predec_f64_end:
 .section .rodata
     .align 8
@@ -325,7 +325,10 @@ preinc_f32:
     mov %rsi, %rdx
     movq %xmm0, %rcx
     lock     cmpxchgl %ecx, (%rdx)
-    jnz .L__kefir_func_preinc_f32_label4
+    jz .L__kefir_func_preinc_f32_label3
+    fnclex
+    jmp .L__kefir_func_preinc_f32_label2
+.L__kefir_func_preinc_f32_label3:
     stmxcsr -16(%rbp)
     mov -16(%rbp), %rcx
     fnstsw %ax
@@ -340,9 +343,6 @@ preinc_f32:
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_func_preinc_f32_label4:
-    fnclex
-    jmp .L__kefir_func_preinc_f32_label2
 .L__kefir_text_func_preinc_f32_end:
 .section .rodata
     .align 4
@@ -367,7 +367,10 @@ preinc_f64:
     mov %rsi, %rdx
     movq %xmm0, %rcx
     lock     cmpxchgq %rcx, (%rdx)
-    jnz .L__kefir_func_preinc_f64_label4
+    jz .L__kefir_func_preinc_f64_label3
+    fnclex
+    jmp .L__kefir_func_preinc_f64_label2
+.L__kefir_func_preinc_f64_label3:
     stmxcsr -16(%rbp)
     mov -16(%rbp), %rcx
     fnstsw %ax
@@ -382,9 +385,6 @@ preinc_f64:
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_func_preinc_f64_label4:
-    fnclex
-    jmp .L__kefir_func_preinc_f64_label2
 .L__kefir_text_func_preinc_f64_end:
 .section .rodata
     .align 8

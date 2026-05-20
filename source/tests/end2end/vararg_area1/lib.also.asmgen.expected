@@ -69,13 +69,7 @@ process:
     movl -68(%rbp), %eax
     movl -72(%rbp), %ecx
     cmp %ecx, %eax
-    jl .L__kefir_func_process_label8
-    movq -80(%rbp), %rbx
-    movq -32(%rbp), %rdi
-    movl -72(%rbp), %esi
-    call *%rbx
-    jmp .L__kefir_func_process_label14
-.L__kefir_func_process_label8:
+    jge .L__kefir_func_process_label7
     movl -64(%rbp), %eax
     cmp $48, %eax
     jae .L__kefir_func_process_label10
@@ -96,6 +90,12 @@ process:
     mov %rcx, -56(%rbp)
     mov (%rax), %rax
     jmp .L__kefir_func_process_label11
+.L__kefir_func_process_label7:
+    movq -80(%rbp), %rbx
+    movq -32(%rbp), %rdi
+    movl -72(%rbp), %esi
+    call *%rbx
+    jmp .L__kefir_func_process_label14
 .L__kefir_text_func_process_end:
 
 .L__kefir_text_section_end:

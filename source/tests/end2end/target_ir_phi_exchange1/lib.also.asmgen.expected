@@ -20,14 +20,14 @@ test2:
     mov %rbx, %rsi
     call test1@PLT
     test %eax, %eax
-    jnz .L__kefir_func_test2_label4
+    jz .L__kefir_func_test2_label5
+    xchg %rbx, %r12
+    jmp .L__kefir_func_test2_label2
+.L__kefir_func_test2_label5:
     pop %r12
     pop %rbx
     pop %rbp
     ret
-.L__kefir_func_test2_label4:
-    xchg %rbx, %r12
-    jmp .L__kefir_func_test2_label2
 .L__kefir_text_func_test2_end:
 
 .L__kefir_text_section_end:

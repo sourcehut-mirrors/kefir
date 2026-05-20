@@ -18,15 +18,15 @@ test1:
 .L__kefir_func_test1_label2:
     call callback1@PLT
     cmp $100, %rax
-    jl .L__kefir_func_test1_label7
+    jge .L__kefir_func_test1_label5
+    mov %rax, %rdi
+    jmp .L__kefir_func_test1_label2
+.L__kefir_func_test1_label5:
     add %rbx, %rax
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
     ret
-.L__kefir_func_test1_label7:
-    mov %rax, %rdi
-    jmp .L__kefir_func_test1_label2
 .L__kefir_text_func_test1_end:
 
 .L__kefir_text_section_end:

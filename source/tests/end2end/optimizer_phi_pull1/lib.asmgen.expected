@@ -23,15 +23,15 @@ somefn:
     addsd .L__kefir_func_somefn_label10(%rip), %xmm1
     lea -1(%edi), %eax
     test %edi, %edi
-    jnz .L__kefir_func_somefn_label7
+    jz .L__kefir_func_somefn_label8
+    mov %eax, %edi
+    movaps %xmm1, %xmm0
+    jmp .L__kefir_func_somefn_label2
+.L__kefir_func_somefn_label8:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_func_somefn_label7:
-    mov %eax, %edi
-    movaps %xmm1, %xmm0
-    jmp .L__kefir_func_somefn_label2
 .L__kefir_text_func_somefn_end:
 .section .rodata
     .align 8

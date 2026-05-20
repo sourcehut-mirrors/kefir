@@ -36,13 +36,13 @@ test2:
     xor %edx, %edx
 .L__kefir_func_test2_label2:
     cmp $10, %edx
-    jl .L__kefir_func_test2_label4
-    ret
-.L__kefir_func_test2_label4:
+    jge .L__kefir_func_test2_label3
     movsx %edx, %rsi
     movl %eax, (%rcx, %rsi, 4)
     add $1, %edx
     jmp .L__kefir_func_test2_label2
+.L__kefir_func_test2_label3:
+    ret
 .L__kefir_text_func_test2_end:
 
 test3:
@@ -82,19 +82,19 @@ test6:
     mov %rax, %r13
 .L__kefir_func_test6_label2:
     cmp $10, %r13d
-    jl .L__kefir_func_test6_label4
+    jge .L__kefir_func_test6_label3
+    call fn@PLT
+    movl 8(%r12), %eax
+    movl %eax, 4(%rbx)
+    add $1, %r13d
+    jmp .L__kefir_func_test6_label2
+.L__kefir_func_test6_label3:
     lea -24(%rbp), %rsp
     pop %r13
     pop %r12
     pop %rbx
     pop %rbp
     ret
-.L__kefir_func_test6_label4:
-    call fn@PLT
-    movl 8(%r12), %eax
-    movl %eax, 4(%rbx)
-    add $1, %r13d
-    jmp .L__kefir_func_test6_label2
 .L__kefir_text_func_test6_end:
 
 .L__kefir_text_section_end:

@@ -228,12 +228,7 @@ __kefir_bigint_subtract:
     movq -16(%rbp), %rax
     movq -40(%rbp), %rcx
     cmp %rcx, %rax
-    jb .L__kefir_runtime_func___kefir_bigint_subtract_label4
-    xor %eax, %eax
-    lea (%rbp), %rsp
-    pop %rbp
-    ret
-.L__kefir_runtime_func___kefir_bigint_subtract_label4:
+    jae .L__kefir_runtime_func___kefir_bigint_subtract_label3
     movq -24(%rbp), %rax
     movq -16(%rbp), %rcx
     movb (%rax, %rcx, 1), %dl
@@ -261,6 +256,11 @@ __kefir_bigint_subtract:
     movl %eax, -56(%rbp)
     addq $1, -16(%rbp)
     jmp .L__kefir_runtime_func___kefir_bigint_subtract_label2
+.L__kefir_runtime_func___kefir_bigint_subtract_label3:
+    xor %eax, %eax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
 .L__kefir_runtime_text_func___kefir_bigint_subtract_end:
 
 

@@ -23,8 +23,12 @@
 
 #include "kefir/codegen/target-ir/schedule.h"
 #include "kefir/codegen/target-ir/control_flow.h"
+#include "kefir/codegen/target-ir/loop_nest.h"
 
 kefir_result_t kefir_codegen_target_ir_amd64_topological_scheduler_init(
-    const struct kefir_codegen_target_ir_control_flow *, struct kefir_codegen_target_ir_code_scheduler *);
+    struct kefir_mem *, const struct kefir_codegen_target_ir_control_flow *,
+    const struct kefir_codegen_target_ir_loop_collection *, struct kefir_codegen_target_ir_code_scheduler *);
+kefir_result_t kefir_codegen_target_ir_amd64_topological_scheduler_free(
+    struct kefir_mem *, struct kefir_codegen_target_ir_code_scheduler *);
 
 #endif

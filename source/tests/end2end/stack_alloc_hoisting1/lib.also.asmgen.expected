@@ -14,12 +14,7 @@ test:
     xor %ecx, %ecx
 .L__kefir_func_test_label2:
     cmp $2, %eax
-    jl .L__kefir_func_test_label4
-    xor %eax, %eax
-    lea (%rbp), %rsp
-    pop %rbp
-    ret
-.L__kefir_func_test_label4:
+    jge .L__kefir_func_test_label3
     sub $1024, %rsp
     mov $16, %rdx
     cmp $0, %rdx
@@ -30,17 +25,22 @@ test:
     mov %rsp, %rdx
     lea 1(%eax), %esi
     cmp $0, %eax
-    je .L__kefir_func_test_label9
+    jne .L__kefir_func_test_label7
+    mov %esi, %eax
+    mov %rdx, %rcx
+    jmp .L__kefir_func_test_label2
+.L__kefir_func_test_label7:
     xor %eax, %eax
     cmp %rdx, %rcx
     sete %al
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_func_test_label9:
-    mov %esi, %eax
-    mov %rdx, %rcx
-    jmp .L__kefir_func_test_label2
+.L__kefir_func_test_label3:
+    xor %eax, %eax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
 .L__kefir_text_func_test_end:
 
 .L__kefir_text_section_end:

@@ -40,11 +40,7 @@ sum:
     xor %edx, %edx
 .L__kefir_func_sum_label4:
     test %edi, %edi
-    jnz .L__kefir_func_sum_label6
-    lea (%rbp), %rsp
-    pop %rbp
-    ret
-.L__kefir_func_sum_label6:
+    jz .L__kefir_func_sum_label5
     movl -32(%rbp), %ecx
     add $16, %rcx
     cmp $48, %rcx
@@ -68,6 +64,10 @@ sum:
     movq (%rcx), %r8
     movq 8(%rcx), %rcx
     jmp .L__kefir_func_sum_label9
+.L__kefir_func_sum_label5:
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
 .L__kefir_text_func_sum_end:
 
 sum2:
@@ -102,11 +102,7 @@ sum2:
     xor %edx, %edx
 .L__kefir_func_sum2_label4:
     test %edi, %edi
-    jnz .L__kefir_func_sum2_label6
-    lea (%rbp), %rsp
-    pop %rbp
-    ret
-.L__kefir_func_sum2_label6:
+    jz .L__kefir_func_sum2_label5
     movl -32(%rbp), %ecx
     add $16, %rcx
     cmp $48, %rcx
@@ -130,6 +126,10 @@ sum2:
     movq (%rcx), %r8
     movq 8(%rcx), %rcx
     jmp .L__kefir_func_sum2_label9
+.L__kefir_func_sum2_label5:
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
 .L__kefir_text_func_sum2_end:
 
 .L__kefir_text_section_end:
