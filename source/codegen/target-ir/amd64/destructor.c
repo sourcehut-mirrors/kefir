@@ -2271,6 +2271,7 @@ static kefir_result_t translate_instruction(struct destructor_state *state,
                     INVERT(jbe, ja);
                     INVERT(jae, jb);
                     INVERT(jb, jae);
+                    INVERT(jnb, jb);
                     INVERT(jg, jle);
                     INVERT(jle, jg);
                     INVERT(jge, jl);
@@ -2281,6 +2282,8 @@ static kefir_result_t translate_instruction(struct destructor_state *state,
                     INVERT(jno, jo);
                     INVERT(jc, jnc);
                     INVERT(jnc, jc);
+                    INVERT(jp, jnp);
+                    INVERT(jnp, jp);
 
 #undef INVERT
 
