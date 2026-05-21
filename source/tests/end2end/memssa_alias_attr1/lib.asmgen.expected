@@ -12,19 +12,23 @@
 .L__kefir_text_section_begin:
 test:
 .L__kefir_text_func_test_begin:
-    movq y@GOTPCREL(%rip), %rax
-    movq x@GOTPCREL(%rip), %rcx
-    xor %edx, %edx
-.L__kefir_func_test_label2:
+    movq x@GOTPCREL(%rip), %rax
+    movq y@GOTPCREL(%rip), %rcx
+    mov $0, %edx
     cmp $10, %edx
-    jge .L__kefir_func_test_label3
-    movl (%rax), %esi
-    add $1, %esi
-    movl %esi, (%rcx)
-    add $1, %edx
-    jmp .L__kefir_func_test_label2
-.L__kefir_func_test_label3:
+    jl .L__kefir_func_test_label3
+.L__kefir_func_test_label4:
     ret
+.L__kefir_func_test_label3:
+    xor %edx, %edx
+.L__kefir_func_test_label5:
+    movl (%rcx), %esi
+    add $1, %esi
+    movl %esi, (%rax)
+    add $1, %edx
+    cmp $10, %edx
+    jl .L__kefir_func_test_label5
+    jmp .L__kefir_func_test_label4
 .L__kefir_text_func_test_end:
 
 .L__kefir_text_section_end:
