@@ -100,4 +100,7 @@ kefir_result_t kefir_opt_code_util_distribute_loop_condition_dependencies_over_p
                                                                                     const struct kefir_opt_code_loop *,
                                                                                     kefir_size_t);
 
+kefir_result_t kefir_opt_code_util_loop_try_rotate(struct kefir_mem *, struct kefir_opt_code_container *,
+                                                   const struct kefir_opt_code_loop *, kefir_bool_t *);
+
 #endif
