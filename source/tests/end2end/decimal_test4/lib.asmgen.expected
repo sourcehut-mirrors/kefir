@@ -142,8 +142,8 @@ test_dec32_init:
     movq 8(%r12), %rcx
     mov %rbx, %rdx
     shr $1, %rdx
-    lea 1(%rdx), %rsi
-    sub $1, %rdx
+    lea -1(%rdx), %rsi
+    add $1, %rdx
     cmp $0, %rcx
     sete %cl
     cmp $0, %rax
@@ -175,16 +175,16 @@ test_dec32_init:
     mov %rdi, %rax
     jmp .L__kefir_func_test_dec32_init_label3
 .L__kefir_func_test_dec32_init_label4:
-    mov %rdx, %rax
+    mov %rsi, %rax
 .L__kefir_func_test_dec32_init_label6:
     mov %rax, %rcx
     imul %rbx, %rcx
     lea 1(%rax), %rdi
-    cmp %rsi, %rax
+    cmp %rdx, %rax
     ja .L__kefir_func_test_dec32_init_label9
-    mov %rdx, %rax
+    mov %rsi, %rax
 .L__kefir_func_test_dec32_init_label10:
-    cmp %rsi, %rax
+    cmp %rdx, %rax
     ja .L__kefir_func_test_dec32_init_label19
     movq 16(%r12), %r8
     mov %rcx, %r9

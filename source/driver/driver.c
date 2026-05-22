@@ -50,6 +50,7 @@
     "memory-ssa," \
     "gvn," \
     "phi-removal," \
+    "dead-code-elimination," \
     "licm," \
     "gvn," \
     "memory-ssa," \

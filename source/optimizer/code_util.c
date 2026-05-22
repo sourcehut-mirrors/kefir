@@ -1614,6 +1614,103 @@ static kefir_result_t try_rotate_branch_compare(struct kefir_mem *mem, struct ke
     return KEFIR_OK;
 }
 
+static kefir_result_t try_rotate_branch(struct kefir_mem *mem, struct kefir_opt_code_container *code,
+                                        const struct kefir_opt_code_loop *loop, kefir_opt_block_id_t latch_block_ref,
+                                        kefir_bool_t *rotated_ptr) {
+    kefir_opt_instruction_ref_t header_tail_ref;
+    REQUIRE_OK(kefir_opt_code_block_instr_control_tail(code, loop->header_ref, &header_tail_ref));
+    const struct kefir_opt_instruction *header_tail;
+    REQUIRE_OK(kefir_opt_code_container_instr(code, header_tail_ref, &header_tail));
+
+    kefir_opt_instruction_ref_t latch_tail_ref;
+    REQUIRE_OK(kefir_opt_code_block_instr_control_tail(code, latch_block_ref, &latch_tail_ref));
+    const struct kefir_opt_instruction *latch_tail;
+    REQUIRE_OK(kefir_opt_code_container_instr(code, latch_tail_ref, &latch_tail));
+
+    const struct kefir_opt_instruction *header_tail_condition_ref;
+    REQUIRE_OK(kefir_opt_code_container_instr(code, header_tail->operation.parameters.branch.condition_ref,
+                                              &header_tail_condition_ref));
+
+    REQUIRE(header_tail_condition_ref->operation.opcode == KEFIR_OPT_OPCODE_PHI ||
+                header_tail_condition_ref->block_id != loop->header_ref,
+            KEFIR_OK);
+
+    kefir_opt_instruction_ref_t preheader_branch_condition_ref = header_tail_condition_ref->id,
+                                latch_branch_condition_ref = header_tail_condition_ref->id;
+    if (header_tail_condition_ref->operation.opcode == KEFIR_OPT_OPCODE_PHI &&
+        header_tail_condition_ref->block_id == loop->header_ref) {
+        REQUIRE_OK(kefir_opt_code_container_phi_link_for(code, header_tail_condition_ref->id, latch_block_ref,
+                                                         &latch_branch_condition_ref));
+        REQUIRE_OK(kefir_opt_code_container_phi_link_for(code, header_tail_condition_ref->id, loop->preheader_ref,
+                                                         &preheader_branch_condition_ref));
+    }
+
+    kefir_opt_block_id_t in_loop_block_ref = KEFIR_ID_NONE, exit_loop_block_ref = KEFIR_ID_NONE,
+                         target_block_ref = KEFIR_ID_NONE, alternative_block_ref = KEFIR_ID_NONE;
+    if (kefir_hashset_has(&loop->blocks, (kefir_hashset_key_t) header_tail->operation.parameters.branch.target_block)) {
+        REQUIRE(!kefir_hashset_has(&loop->blocks,
+                                   (kefir_hashset_key_t) header_tail->operation.parameters.branch.alternative_block),
+                KEFIR_OK);
+        in_loop_block_ref = header_tail->operation.parameters.branch.target_block;
+        exit_loop_block_ref = header_tail->operation.parameters.branch.alternative_block;
+        target_block_ref = loop->header_ref;
+        alternative_block_ref = header_tail->operation.parameters.branch.alternative_block;
+    } else {
+        REQUIRE(kefir_hashset_has(&loop->blocks,
+                                  (kefir_hashset_key_t) header_tail->operation.parameters.branch.alternative_block) &&
+                    !kefir_hashset_has(&loop->blocks,
+                                       (kefir_hashset_key_t) header_tail->operation.parameters.branch.target_block),
+                KEFIR_OK);
+        in_loop_block_ref = header_tail->operation.parameters.branch.alternative_block;
+        exit_loop_block_ref = header_tail->operation.parameters.branch.target_block;
+        target_block_ref = header_tail->operation.parameters.branch.target_block;
+        alternative_block_ref = loop->header_ref;
+    }
+
+    kefir_opt_instruction_ref_t preheader_tail_ref;
+    REQUIRE_OK(kefir_opt_code_block_instr_control_tail(code, loop->preheader_ref, &preheader_tail_ref));
+    REQUIRE_OK(kefir_opt_code_container_drop_control(code, preheader_tail_ref));
+    REQUIRE_OK(kefir_opt_code_container_drop_instr(mem, code, preheader_tail_ref));
+    REQUIRE_OK(kefir_opt_code_builder_finalize_branch(
+        mem, code, loop->preheader_ref, header_tail->operation.parameters.branch.condition_variant,
+        preheader_branch_condition_ref, target_block_ref, alternative_block_ref, NULL));
+
+    REQUIRE_OK(kefir_opt_code_container_drop_control(code, latch_tail_ref));
+    REQUIRE_OK(kefir_opt_code_container_drop_instr(mem, code, latch_tail_ref));
+    REQUIRE_OK(kefir_opt_code_builder_finalize_branch(
+        mem, code, latch_block_ref, header_tail->operation.parameters.branch.condition_variant,
+        latch_branch_condition_ref, target_block_ref, alternative_block_ref, NULL));
+
+    REQUIRE_OK(kefir_opt_code_container_drop_control(code, header_tail_ref));
+    REQUIRE_OK(kefir_opt_code_container_drop_instr(mem, code, header_tail_ref));
+    REQUIRE_OK(kefir_opt_code_builder_finalize_jump(mem, code, loop->header_ref, in_loop_block_ref, NULL));
+
+    kefir_result_t res;
+    kefir_opt_instruction_ref_t phi_instr_ref;
+    for (res = kefir_opt_code_block_phi_head(code, exit_loop_block_ref, &phi_instr_ref);
+         res == KEFIR_OK && phi_instr_ref != KEFIR_ID_NONE;
+         kefir_opt_phi_next_sibling(code, phi_instr_ref, &phi_instr_ref)) {
+        kefir_opt_instruction_ref_t link_ref;
+        REQUIRE_OK(kefir_opt_code_container_phi_link_for(code, phi_instr_ref, loop->header_ref, &link_ref));
+
+        const struct kefir_opt_instruction *link_instr;
+        REQUIRE_OK(kefir_opt_code_container_instr(code, link_ref, &link_instr));
+
+        kefir_opt_instruction_ref_t preheader_link_ref = link_ref, latch_link_ref = link_ref;
+        if (link_instr->operation.opcode == KEFIR_OPT_OPCODE_PHI && link_instr->block_id == loop->header_ref) {
+            REQUIRE_OK(kefir_opt_code_container_phi_link_for(code, link_ref, latch_block_ref, &latch_link_ref));
+            REQUIRE_OK(kefir_opt_code_container_phi_link_for(code, link_ref, loop->preheader_ref, &preheader_link_ref));
+        }
+        REQUIRE_OK(
+            kefir_opt_code_container_phi_attach(mem, code, phi_instr_ref, loop->preheader_ref, preheader_link_ref));
+        REQUIRE_OK(kefir_opt_code_container_phi_attach(mem, code, phi_instr_ref, latch_block_ref, latch_link_ref));
+    }
+    REQUIRE_OK(res);
+
+    ASSIGN_PTR(rotated_ptr, true);
+    return KEFIR_OK;
+}
+
 static kefir_result_t loop_try_rotate_match_latch(const struct kefir_opt_code_container *code,
                                                   const struct kefir_opt_code_loop *loop,
                                                   kefir_opt_block_id_t *latch_block_ref_ptr) {
@@ -1636,8 +1733,8 @@ static kefir_result_t loop_try_rotate_match_latch(const struct kefir_opt_code_co
     return KEFIR_OK;
 }
 
-kefir_result_t loop_try_rotate_check_header_instrs(const struct kefir_opt_code_container *code,
-                                                   const struct kefir_opt_code_loop *loop) {
+static kefir_result_t loop_try_rotate_check_header_instrs(const struct kefir_opt_code_container *code,
+                                                          const struct kefir_opt_code_loop *loop) {
     kefir_result_t res;
     kefir_opt_instruction_ref_t instr_ref;
     for (res = kefir_opt_code_block_instr_head(code, loop->header_ref, &instr_ref);
@@ -1682,6 +1779,7 @@ kefir_result_t kefir_opt_code_util_loop_try_rotate(struct kefir_mem *mem, struct
     REQUIRE(loop != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer loop"));
 
     ASSIGN_PTR(rotated_ptr, false);
+    REQUIRE(loop->preheader_ref != KEFIR_ID_NONE, KEFIR_OK);
 
     kefir_opt_block_id_t latch_block_ref = KEFIR_ID_NONE;
     kefir_result_t res = loop_try_rotate_match_latch(code, loop, &latch_block_ref);
@@ -1696,6 +1794,10 @@ kefir_result_t kefir_opt_code_util_loop_try_rotate(struct kefir_mem *mem, struct
     switch (header_tail->operation.opcode) {
         case KEFIR_OPT_OPCODE_BRANCH_COMPARE:
             REQUIRE_OK(try_rotate_branch_compare(mem, code, loop, latch_block_ref, rotated_ptr));
+            break;
+
+        case KEFIR_OPT_OPCODE_BRANCH:
+            REQUIRE_OK(try_rotate_branch(mem, code, loop, latch_block_ref, rotated_ptr));
             break;
 
         default:

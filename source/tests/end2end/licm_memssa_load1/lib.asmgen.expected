@@ -194,12 +194,13 @@ test9:
     movq d@GOTPCREL(%rip), %rax
     movl (%rax), %eax
     movq a@GOTPCREL(%rip), %rcx
-.L__kefir_func_test9_label2:
     test %edi, %edi
-    jz .L__kefir_func_test9_label3
-    addl %eax, 4(%rcx)
-    jmp .L__kefir_func_test9_label2
+    jz .L__kefir_func_test9_label2
 .L__kefir_func_test9_label3:
+    addl %eax, 4(%rcx)
+    test %edi, %edi
+    jnz .L__kefir_func_test9_label3
+.L__kefir_func_test9_label2:
     ret
 .L__kefir_text_func_test9_end:
 
