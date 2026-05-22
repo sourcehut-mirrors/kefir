@@ -758,28 +758,28 @@ d32_to_ubitint180:
 .section .text
 __kefir_bigint_is_zero:
 .L__kefir_runtime_text_func___kefir_bigint_is_zero_begin:
-    lea -1(%rsi), %rcx
-    mov %rcx, %rax
+    lea 7(%rsi), %rax
     shr $3, %rax
-    shl $3, %rax
-    sub %rax, %rcx
+    lea -1(%rsi), %rcx
+    mov %rcx, %rdx
+    shr $3, %rdx
+    shl $3, %rdx
+    sub %rdx, %rcx
     add $1, %rcx
-    mov $1, %eax
-    shl %cl, %rax
-    sub $1, %eax
-    lea 7(%rsi), %rcx
-    shr $3, %rcx
+    mov $1, %edx
+    shl %cl, %rdx
+    sub $1, %edx
     cmp $0, %rsi
     je .L__kefir_runtime_func___kefir_bigint_is_zero_label9
-    xor %edx, %edx
+    xor %ecx, %ecx
 .L__kefir_runtime_func___kefir_bigint_is_zero_label3:
-    cmp %rcx, %rdx
+    cmp %rax, %rcx
     jae .L__kefir_runtime_func___kefir_bigint_is_zero_label8
-    movb (%rdi, %rdx, 1), %sil
-    add $1, %rdx
+    movb (%rdi, %rcx, 1), %sil
+    add $1, %rcx
     movzx %sil, %r8
-    and %eax, %r8d
-    cmp %rcx, %rdx
+    and %edx, %r8d
+    cmp %rax, %rcx
     cmove %r8, %rsi
     test %sil, %sil
     jz .L__kefir_runtime_func___kefir_bigint_is_zero_label3

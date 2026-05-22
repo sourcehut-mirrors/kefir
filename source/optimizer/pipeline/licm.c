@@ -369,19 +369,6 @@ static kefir_result_t process_nest(struct licm_state *state, struct kefir_opt_co
     return KEFIR_OK;
 }
 
-static kefir_result_t try_rotate_nest(struct licm_state *state, struct kefir_opt_code_loop *loop) {
-    for (struct kefir_opt_code_loop *nested = kefir_opt_code_loop_first_child(loop); nested != NULL;
-         nested = kefir_opt_code_loop_next_sibling(nested)) {
-        REQUIRE_OK(process_nest(state, nested));
-    }
-
-    if (loop->header_ref != state->func->code.entry_point && loop->header_ref != state->func->code.gate_block &&
-        !kefir_hashset_has(&state->control_flow.indirect_jump_target_blocks, (kefir_hashset_key_t) loop->header_ref)) {
-        REQUIRE_OK(kefir_opt_code_util_loop_try_rotate(state->mem, &state->func->code, loop, NULL));
-    }
-    return KEFIR_OK;
-}
-
 static kefir_result_t licm_impl(struct licm_state *state) {
     REQUIRE_OK(kefir_opt_code_control_flow_build(state->mem, &state->control_flow, &state->func->code));
     REQUIRE_OK(kefir_opt_code_liveness_build(state->mem, &state->liveness, &state->control_flow));
@@ -400,14 +387,6 @@ static kefir_result_t licm_impl(struct licm_state *state) {
     for (res = kefir_opt_code_loop_nest_collection_iter(&state->loops, &nest, &iter); res == KEFIR_OK && nest != NULL;
          res = kefir_opt_code_loop_nest_collection_next(&nest, &iter)) {
         REQUIRE_OK(process_nest(state, kefir_opt_loop_nest_top(nest)));
-    }
-    if (res != KEFIR_ITERATOR_END) {
-        REQUIRE_OK(res);
-    }
-
-    for (res = kefir_opt_code_loop_nest_collection_iter(&state->loops, &nest, &iter); res == KEFIR_OK && nest != NULL;
-         res = kefir_opt_code_loop_nest_collection_next(&nest, &iter)) {
-        REQUIRE_OK(try_rotate_nest(state, kefir_opt_loop_nest_top(nest)));
     }
     if (res != KEFIR_ITERATOR_END) {
         REQUIRE_OK(res);

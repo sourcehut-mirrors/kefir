@@ -50,7 +50,6 @@
     "memory-ssa," \
     "gvn," \
     "phi-removal," \
-    "dead-code-elimination," \
     "licm," \
     "gvn," \
     "memory-ssa," \
@@ -64,8 +63,9 @@
     "gvn," \
     "phi-removal," \
     "loop-removal," \
-    "merge-blocks," \
     "dead-code-elimination," \
+    "loop-rotate," \
+    "merge-blocks," \
     "late-cleanup," \
     "gcm," \
     "rematerialize," \

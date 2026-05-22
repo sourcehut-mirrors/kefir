@@ -1729,6 +1729,7 @@ static kefir_result_t loop_try_rotate_match_latch(const struct kefir_opt_code_co
                 latch_tail->operation.parameters.branch.target_block == loop->header_ref,
             KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to match loop latch"));
 
+    REQUIRE(loop->header_ref != latch_block_ref, KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to match loop latch"));
     *latch_block_ref_ptr = latch_block_ref;
     return KEFIR_OK;
 }

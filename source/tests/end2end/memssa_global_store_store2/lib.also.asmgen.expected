@@ -28,39 +28,17 @@
 test1:
 .L__kefir_text_func_test1_begin:
     mov %rdi, %rax
-    mov $0, %ecx
-    cmp %eax, %ecx
-    jl .L__kefir_func_test1_label3
-.L__kefir_func_test1_label4:
     movq x@GOTPCREL(%rip), %rcx
     movl %eax, (%rcx)
     ret
-.L__kefir_func_test1_label3:
-    xor %ecx, %ecx
-.L__kefir_func_test1_label5:
-    add $1, %ecx
-    cmp %eax, %ecx
-    jl .L__kefir_func_test1_label5
-    jmp .L__kefir_func_test1_label4
 .L__kefir_text_func_test1_end:
 
 test2:
 .L__kefir_text_func_test2_begin:
     mov %rdi, %rax
-    mov $0, %ecx
-    cmp %eax, %ecx
-    jl .L__kefir_func_test2_label3
-.L__kefir_func_test2_label4:
     movq x@GOTPCREL(%rip), %rcx
     movl %eax, (%rcx)
     ret
-.L__kefir_func_test2_label3:
-    xor %ecx, %ecx
-.L__kefir_func_test2_label5:
-    add $1, %ecx
-    cmp %eax, %ecx
-    jl .L__kefir_func_test2_label5
-    jmp .L__kefir_func_test2_label4
 .L__kefir_text_func_test2_end:
 
 test3:

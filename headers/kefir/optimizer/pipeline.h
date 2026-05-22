@@ -81,6 +81,7 @@ DECLARE_PASS(MemorySSA);
 DECLARE_PASS(SROA);
 DECLARE_PASS(InlineAsmUntie);
 DECLARE_PASS(LateCleanup);
+DECLARE_PASS(LoopRotate);
 #undef DECLARE_PASS
 #endif
 
