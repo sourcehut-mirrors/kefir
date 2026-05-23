@@ -19,19 +19,9 @@ test1:
     shl $58, %rdi
     shr $58, %rdi
     cmp $48, %dil
-    seta %al
-    mov $48, %cl
-    cmp %dil, %cl
-    sete %cl
-    or %cl, %al
-    setne %al
+    setae %al
     cmp $63, %dil
-    setb %cl
-    mov $63, %dl
-    cmp %dil, %dl
-    sete %dl
-    or %dl, %cl
-    setne %cl
+    setbe %cl
     and %cl, %al
     jnz .L__kefir_func_test1_label3
     mov $2, %eax
@@ -46,19 +36,9 @@ test2:
     shl $50, %rdi
     shr $50, %rdi
     cmp $16128, %di
-    seta %al
-    mov $16128, %cx
-    cmp %di, %cx
-    sete %cl
-    or %cl, %al
-    setne %al
+    setae %al
     cmp $16383, %di
-    setb %cl
-    mov $16383, %dx
-    cmp %di, %dx
-    sete %dl
-    or %dl, %cl
-    setne %cl
+    setbe %cl
     and %cl, %al
     jnz .L__kefir_func_test2_label3
     mov $2, %eax
@@ -73,19 +53,9 @@ test3:
     shl $35, %rdi
     shr $35, %rdi
     cmp $536870656, %edi
-    seta %al
-    mov $536870656, %ecx
-    cmp %edi, %ecx
-    sete %cl
-    or %cl, %al
-    setne %al
+    setae %al
     cmp $536870911, %edi
-    setb %cl
-    mov $536870911, %edx
-    cmp %edi, %edx
-    sete %dl
-    or %dl, %cl
-    setne %cl
+    setbe %cl
     and %cl, %al
     jnz .L__kefir_func_test3_label3
     mov $2, %eax
@@ -101,18 +71,10 @@ test4:
     shr $4, %rdi
     movabs $1152921504606846720, %rax
     cmp %rax, %rdi
-    seta %cl
-    cmp %rdi, %rax
-    sete %al
-    or %al, %cl
-    setne %al
+    setae %al
     movabs $1152921504606846975, %rcx
     cmp %rcx, %rdi
-    setb %dl
-    cmp %rdi, %rcx
-    sete %cl
-    or %cl, %dl
-    setne %cl
+    setbe %cl
     and %cl, %al
     jnz .L__kefir_func_test4_label3
     mov $2, %eax

@@ -65,6 +65,8 @@
     "loop-removal," \
     "dead-code-elimination," \
     "loop-rotate," \
+    "constant-fold," \
+    "op-simplify," \
     "merge-blocks," \
     "late-cleanup," \
     "gcm," \
