@@ -137,6 +137,11 @@ static kefir_result_t do_schedule_instr(struct gcm_state *state, kefir_opt_instr
     REQUIRE_OK(kefir_opt_code_loop_level(&state->loops, best_block_ref, &best_loop_level));
     for (kefir_opt_block_id_t iter_ref = late_block_ref;;
          iter_ref = state->control_flow.blocks[iter_ref].immediate_dominator) {
+        if (iter_ref == KEFIR_ID_NONE) {
+            best_block_ref = instr->block_id;
+            break;
+        }
+
         REQUIRE_OK(kefir_opt_code_loop_level(&state->loops, iter_ref, &iter_loop_level));
 
         if (iter_loop_level < best_loop_level && iter_ref != state->code->gate_block) {
@@ -224,6 +229,12 @@ static kefir_result_t gcm_schedule_late(struct gcm_state *state) {
 
             const struct kefir_opt_instruction *use_instr;
             REQUIRE_OK(kefir_opt_code_container_instr(state->code, use_iter.use_instr_ref, &use_instr));
+            kefir_bool_t reachable;
+            REQUIRE_OK(kefir_opt_code_control_flow_is_reachable_from_entry(&state->control_flow, use_instr->block_id,
+                                                                           &reachable));
+            if (!reachable) {
+                continue;
+            }
             if (use_instr->operation.opcode == KEFIR_OPT_OPCODE_PHI) {
                 struct kefir_opt_phi_node_link_iterator link_iter;
                 kefir_opt_block_id_t link_block_id;
@@ -231,6 +242,11 @@ static kefir_result_t gcm_schedule_late(struct gcm_state *state) {
                 for (res = kefir_opt_phi_node_link_iter(state->code, use_instr->id, &link_iter, &link_block_id,
                                                         &link_instr_ref);
                      res == KEFIR_OK; res = kefir_opt_phi_node_link_next(&link_iter, &link_block_id, &link_instr_ref)) {
+                    REQUIRE_OK(kefir_opt_code_control_flow_is_reachable_from_entry(&state->control_flow, link_block_id,
+                                                                                   &reachable));
+                    if (!reachable) {
+                        continue;
+                    }
                     if (link_instr_ref == instr_ref) {
                         if (late_schedule_block_ref == KEFIR_ID_NONE) {
                             late_schedule_block_ref = link_block_id;
