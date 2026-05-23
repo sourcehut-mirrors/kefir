@@ -750,12 +750,18 @@ static kefir_result_t translate_code(struct kefir_mem *mem, struct kefir_codegen
     for (const struct kefir_list_entry *iter = kefir_list_head(&func->preserve_vreg_points); iter != NULL;
          kefir_list_next(&iter)) {
         ASSIGN_DECL_CAST(kefir_asmcmp_instruction_index_t, idx, (kefir_uptr_t) iter->value);
+        kefir_asmcmp_virtual_register_index_t next_instr_idx =
+            kefir_asmcmp_context_instr_next(&func->code.context, idx);
 
         struct kefir_hashtreeset_iterator iter;
         for (res = kefir_hashtreeset_iter(&func->preserve_vregs, &iter); res == KEFIR_OK;
              res = kefir_hashtreeset_next(&iter)) {
             ASSIGN_DECL_CAST(kefir_asmcmp_virtual_register_index_t, vreg, iter.entry);
             REQUIRE_OK(kefir_asmcmp_amd64_touch_virtual_register(mem, &func->code, idx, vreg, &idx));
+            if (next_instr_idx != KEFIR_ASMCMP_INDEX_NONE) {
+                REQUIRE_OK(kefir_asmcmp_context_move_labels(mem, &func->code.context, idx, next_instr_idx));
+                next_instr_idx = KEFIR_ASMCMP_INDEX_NONE;
+            }
         }
         if (res != KEFIR_ITERATOR_END) {
             REQUIRE_OK(res);
