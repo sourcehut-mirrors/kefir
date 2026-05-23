@@ -88,6 +88,7 @@ kefir_result_t kefir_codegen_target_ir_loop_collection_init(struct kefir_codegen
     REQUIRE(loops != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to optimizer loop collection"));
 
+    REQUIRE_OK(kefir_hashtable_init(&loops->loop_preheaders, &kefir_hashtable_uint_ops));
     REQUIRE_OK(kefir_hashtable_init(&loops->loops, &kefir_hashtable_uint_ops));
     REQUIRE_OK(kefir_hashtable_on_removal(&loops->loops, free_loop, NULL));
     REQUIRE_OK(kefir_list_init(&loops->nests));
@@ -103,6 +104,7 @@ kefir_result_t kefir_codegen_target_ir_loop_collection_free(struct kefir_mem *me
 
     REQUIRE_OK(kefir_hashtable_free(mem, &loops->block_index));
     REQUIRE_OK(kefir_list_free(mem, &loops->nests));
+    REQUIRE_OK(kefir_hashtable_free(mem, &loops->loop_preheaders));
     REQUIRE_OK(kefir_hashtable_free(mem, &loops->loops));
     return KEFIR_OK;
 }
@@ -224,6 +226,8 @@ static kefir_result_t build_loop(struct kefir_mem *mem, struct kefir_codegen_tar
             if (is_dominator && control_flow->blocks[entry].successors.occupied == 1 &&
                 kefir_hashset_has(&control_flow->blocks[entry].successors, (kefir_hashset_key_t) loop_entry_block_id)) {
                 loop->preheader_ref = entry;
+                REQUIRE_OK(kefir_hashtable_insert(mem, &loops->loop_preheaders, (kefir_hashtable_key_t) entry,
+                                                  (kefir_hashtable_value_t) loop));
             }
         }
         if (res != KEFIR_ITERATOR_END) {
@@ -415,6 +419,22 @@ kefir_result_t kefir_codegen_target_ir_loop_collection_find_loop(
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_codegen_target_ir_loop_collection_find_loop_by_preheader(
+    const struct kefir_codegen_target_ir_loop_collection *loops, kefir_codegen_target_ir_block_ref_t block_id,
+    struct kefir_codegen_target_ir_loop **loop_ptr) {
+    REQUIRE(loops != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer loop collection"));
+
+    kefir_hashtable_value_t table_value;
+    kefir_result_t res = kefir_hashtable_at(&loops->loop_preheaders, (kefir_hashtable_key_t) block_id, &table_value);
+    if (res == KEFIR_NOT_FOUND) {
+        res = KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find loop with requested preheader");
+    }
+    REQUIRE_OK(res);
+
+    ASSIGN_PTR(loop_ptr, (struct kefir_codegen_target_ir_loop *) table_value);
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_codegen_target_ir_loop_level(const struct kefir_codegen_target_ir_loop_collection *loops,
                                                   kefir_codegen_target_ir_block_ref_t block_id, kefir_uint32_t *level) {
     REQUIRE(loops != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer loop collection"));
@@ -422,6 +442,23 @@ kefir_result_t kefir_codegen_target_ir_loop_level(const struct kefir_codegen_tar
 
     struct kefir_codegen_target_ir_loop *loop;
     kefir_result_t res = kefir_codegen_target_ir_loop_collection_find_loop(loops, block_id, &loop);
+    if (res != KEFIR_NOT_FOUND) {
+        REQUIRE_OK(res);
+        *level = loop->level;
+    } else {
+        *level = 0;
+    }
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_codegen_target_ir_loop_preheader_level(const struct kefir_codegen_target_ir_loop_collection *loops,
+                                                            kefir_codegen_target_ir_block_ref_t block_id,
+                                                            kefir_uint32_t *level) {
+    REQUIRE(loops != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer loop collection"));
+    REQUIRE(level != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to loop nest level"));
+
+    struct kefir_codegen_target_ir_loop *loop;
+    kefir_result_t res = kefir_codegen_target_ir_loop_collection_find_loop_by_preheader(loops, block_id, &loop);
     if (res != KEFIR_NOT_FOUND) {
         REQUIRE_OK(res);
         *level = loop->level;

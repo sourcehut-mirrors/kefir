@@ -1834,12 +1834,7 @@ __kefir_softfloat_scalbn:
     test %r8b, %r8b
     cmovz %rax, %r9
     test %r9d, %r9d
-    jz .L__kefir_runtime_func___kefir_softfloat_scalbn_label3
-    mov %edx, %eax
-    movaps %xmm1, %xmm0
-    mov %esi, %edi
-    jmp .L__kefir_runtime_func___kefir_softfloat_scalbn_label2
-.L__kefir_runtime_func___kefir_softfloat_scalbn_label3:
+    jnz .L__kefir_runtime_func___kefir_softfloat_scalbn_label11
     xor %eax, %eax
 .L__kefir_runtime_func___kefir_softfloat_scalbn_label5:
     movaps %xmm0, %xmm1
@@ -1862,6 +1857,11 @@ __kefir_softfloat_scalbn:
     mov %edx, %eax
     movaps %xmm1, %xmm0
     jmp .L__kefir_runtime_func___kefir_softfloat_scalbn_label5
+.L__kefir_runtime_func___kefir_softfloat_scalbn_label11:
+    mov %edx, %eax
+    movaps %xmm1, %xmm0
+    mov %esi, %edi
+    jmp .L__kefir_runtime_func___kefir_softfloat_scalbn_label2
 .L__kefir_runtime_func___kefir_softfloat_scalbn_label8:
     mov $-1022, %rax
     cmp $-1022, %ecx

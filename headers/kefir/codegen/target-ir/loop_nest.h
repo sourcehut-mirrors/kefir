@@ -42,6 +42,7 @@ typedef struct kefir_codegen_target_ir_loop_nest {
 } kefir_codegen_target_ir_loop_nest_t;
 
 typedef struct kefir_codegen_target_ir_loop_collection {
+    struct kefir_hashtable loop_preheaders;
     struct kefir_hashtable loops;
     struct kefir_list nests;
     struct kefir_hashtable block_index;
@@ -58,8 +59,13 @@ kefir_result_t kefir_codegen_target_ir_loop_collection_build(struct kefir_mem *,
 kefir_result_t kefir_codegen_target_ir_loop_collection_find_loop(const struct kefir_codegen_target_ir_loop_collection *,
                                                                  kefir_codegen_target_ir_block_ref_t,
                                                                  struct kefir_codegen_target_ir_loop **);
+kefir_result_t kefir_codegen_target_ir_loop_collection_find_loop_by_preheader(
+    const struct kefir_codegen_target_ir_loop_collection *, kefir_codegen_target_ir_block_ref_t,
+    struct kefir_codegen_target_ir_loop **);
 kefir_result_t kefir_codegen_target_ir_loop_level(const struct kefir_codegen_target_ir_loop_collection *,
                                                   kefir_codegen_target_ir_block_ref_t, kefir_uint32_t *);
+kefir_result_t kefir_codegen_target_ir_loop_preheader_level(const struct kefir_codegen_target_ir_loop_collection *,
+                                                            kefir_codegen_target_ir_block_ref_t, kefir_uint32_t *);
 
 typedef struct kefir_codegen_target_ir_loop_collection_iterator {
     struct kefir_hashtable_iterator iter;

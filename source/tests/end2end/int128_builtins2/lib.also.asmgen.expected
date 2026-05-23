@@ -358,18 +358,16 @@ __kefir_bigint_cast_signed:
 .L__kefir_runtime_func___kefir_bigint_cast_signed_label19:
     mov $0, %rcx
     cmp %r8, %rcx
-    jbe .L__kefir_runtime_func___kefir_bigint_cast_signed_label21
-.L__kefir_runtime_func___kefir_bigint_cast_signed_label25:
-    xor %eax, %eax
-    ret
-.L__kefir_runtime_func___kefir_bigint_cast_signed_label21:
+    ja .L__kefir_runtime_func___kefir_bigint_cast_signed_label25
     xor %eax, %eax
 .L__kefir_runtime_func___kefir_bigint_cast_signed_label22:
     movb $0, (%rdi, %rax, 1)
     add $1, %rax
     cmp %r8, %rax
     jbe .L__kefir_runtime_func___kefir_bigint_cast_signed_label22
-    jmp .L__kefir_runtime_func___kefir_bigint_cast_signed_label25
+.L__kefir_runtime_func___kefir_bigint_cast_signed_label25:
+    xor %eax, %eax
+    ret
 .L__kefir_runtime_func___kefir_bigint_cast_signed_label26:
     movzxb (%rdi, %r8, 1), %rdx
     mov %r8, %rcx
@@ -419,10 +417,7 @@ __kefir_bigint_least_significant_nonzero:
     mov %rcx, %r10
     cmovae %r8, %r10
     cmp $0, %esi
-    jne .L__kefir_runtime_func___kefir_bigint_least_significant_nonzero_label7
-    mov %r9, %rax
-    jmp .L__kefir_runtime_func___kefir_bigint_least_significant_nonzero_label4
-.L__kefir_runtime_func___kefir_bigint_least_significant_nonzero_label7:
+    je .L__kefir_runtime_func___kefir_bigint_least_significant_nonzero_label17
     xor %ecx, %ecx
     mov %rcx, %r11
 .L__kefir_runtime_func___kefir_bigint_least_significant_nonzero_label8:
@@ -438,6 +433,9 @@ __kefir_bigint_least_significant_nonzero:
     je .L__kefir_runtime_func___kefir_bigint_least_significant_nonzero_label12
     mov %rbx, %r11
     jmp .L__kefir_runtime_func___kefir_bigint_least_significant_nonzero_label8
+.L__kefir_runtime_func___kefir_bigint_least_significant_nonzero_label17:
+    mov %r9, %rax
+    jmp .L__kefir_runtime_func___kefir_bigint_least_significant_nonzero_label4
 .L__kefir_runtime_func___kefir_bigint_least_significant_nonzero_label12:
     shl $3, %rax
     add %r11, %rax
@@ -476,15 +474,7 @@ __kefir_bigint_trailing_zeros:
     sub %rcx, %rsi
     mov $0, %rcx
     cmp %r9, %rcx
-    jb .L__kefir_runtime_func___kefir_bigint_trailing_zeros_label4
-.L__kefir_runtime_func___kefir_bigint_trailing_zeros_label24:
-    lea -24(%rbp), %rsp
-    pop %r13
-    pop %r12
-    pop %rbx
-    pop %rbp
-    ret
-.L__kefir_runtime_func___kefir_bigint_trailing_zeros_label4:
+    jae .L__kefir_runtime_func___kefir_bigint_trailing_zeros_label24
     xor %r8d, %r8d
     xor %ecx, %ecx
 .L__kefir_runtime_func___kefir_bigint_trailing_zeros_label5:
@@ -519,6 +509,13 @@ __kefir_bigint_trailing_zeros:
     mov %rdx, %r8
     mov %r10, %rcx
     jmp .L__kefir_runtime_func___kefir_bigint_trailing_zeros_label5
+.L__kefir_runtime_func___kefir_bigint_trailing_zeros_label24:
+    lea -24(%rbp), %rsp
+    pop %r13
+    pop %r12
+    pop %rbx
+    pop %rbp
+    ret
 .L__kefir_runtime_func___kefir_bigint_trailing_zeros_label16:
     mov %rdx, %rax
     jmp .L__kefir_runtime_func___kefir_bigint_trailing_zeros_label24

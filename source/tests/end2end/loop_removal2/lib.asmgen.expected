@@ -61,19 +61,17 @@ test2:
     movq $0, -8(%rbp)
     mov $0, %rax
     cmp %rdi, %rax
-    jl .L__kefir_func_test2_label3
-.L__kefir_func_test2_label4:
-    movq -8(%rbp), %rax
-    lea (%rbp), %rsp
-    pop %rbp
-    ret
-.L__kefir_func_test2_label3:
+    jge .L__kefir_func_test2_label4
     xor %eax, %eax
 .L__kefir_func_test2_label5:
     add $1, %rax
     cmp %rdi, %rax
     jl .L__kefir_func_test2_label5
-    jmp .L__kefir_func_test2_label4
+.L__kefir_func_test2_label4:
+    movq -8(%rbp), %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
 .L__kefir_text_func_test2_end:
 
 test3:
@@ -84,13 +82,7 @@ test3:
     movq $0, -8(%rbp)
     mov $0, %rax
     cmp %rdi, %rax
-    jl .L__kefir_func_test3_label3
-.L__kefir_func_test3_label4:
-    movq -8(%rbp), %rax
-    lea (%rbp), %rsp
-    pop %rbp
-    ret
-.L__kefir_func_test3_label3:
+    jge .L__kefir_func_test3_label4
     xor %eax, %eax
     mov %rax, %rcx
 .L__kefir_func_test3_label5:
@@ -98,7 +90,11 @@ test3:
     add $1, %rcx
     cmp %rdi, %rcx
     jl .L__kefir_func_test3_label5
-    jmp .L__kefir_func_test3_label4
+.L__kefir_func_test3_label4:
+    movq -8(%rbp), %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
 .L__kefir_text_func_test3_end:
 
 test4:

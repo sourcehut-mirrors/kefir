@@ -13,15 +13,7 @@ test:
     sub $304, %rsp
     fstcw -8(%rbp)
     test %al, %al
-    je .L__kefir_func_test_label2
-    movdqu %xmm0, -256(%rbp)
-    movdqu %xmm1, -240(%rbp)
-    movdqu %xmm2, -224(%rbp)
-    movdqu %xmm3, -208(%rbp)
-    movdqu %xmm4, -192(%rbp)
-    movdqu %xmm5, -176(%rbp)
-    movdqu %xmm6, -160(%rbp)
-    movdqu %xmm7, -144(%rbp)
+    jne .L__kefir_func_test_label1
 .L__kefir_func_test_label2:
     mov %rdi, -304(%rbp)
     mov %rsi, -296(%rbp)
@@ -64,6 +56,16 @@ test:
     lea (%rbp), %rsp
     pop %rbp
     ret
+.L__kefir_func_test_label1:
+    movdqu %xmm0, -256(%rbp)
+    movdqu %xmm1, -240(%rbp)
+    movdqu %xmm2, -224(%rbp)
+    movdqu %xmm3, -208(%rbp)
+    movdqu %xmm4, -192(%rbp)
+    movdqu %xmm5, -176(%rbp)
+    movdqu %xmm6, -160(%rbp)
+    movdqu %xmm7, -144(%rbp)
+    jmp .L__kefir_func_test_label2
 .L__kefir_text_func_test_end:
 .section .rodata
     .align 8

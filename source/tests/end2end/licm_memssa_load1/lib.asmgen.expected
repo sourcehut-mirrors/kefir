@@ -123,10 +123,7 @@ test5:
     movq a@GOTPCREL(%rip), %rcx
     mov $0, %edx
     cmp %edi, %edx
-    jl .L__kefir_func_test5_label3
-.L__kefir_func_test5_label4:
-    ret
-.L__kefir_func_test5_label3:
+    jge .L__kefir_func_test5_label4
     xor %edx, %edx
 .L__kefir_func_test5_label5:
     movsx %edx, %rsi
@@ -134,7 +131,8 @@ test5:
     add $1, %edx
     cmp %edi, %edx
     jl .L__kefir_func_test5_label5
-    jmp .L__kefir_func_test5_label4
+.L__kefir_func_test5_label4:
+    ret
 .L__kefir_text_func_test5_end:
 
 test6:

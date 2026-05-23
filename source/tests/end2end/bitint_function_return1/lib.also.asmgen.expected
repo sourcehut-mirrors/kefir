@@ -2866,18 +2866,16 @@ __kefir_bigint_invert:
     shr $3, %rsi
     mov $0, %rax
     cmp %rsi, %rax
-    jb .L__kefir_runtime_func___kefir_bigint_invert_label3
-.L__kefir_runtime_func___kefir_bigint_invert_label4:
-    xor %eax, %eax
-    ret
-.L__kefir_runtime_func___kefir_bigint_invert_label3:
+    jae .L__kefir_runtime_func___kefir_bigint_invert_label4
     xor %eax, %eax
 .L__kefir_runtime_func___kefir_bigint_invert_label5:
     notb (%rdi, %rax, 1)
     add $1, %rax
     cmp %rsi, %rax
     jb .L__kefir_runtime_func___kefir_bigint_invert_label5
-    jmp .L__kefir_runtime_func___kefir_bigint_invert_label4
+.L__kefir_runtime_func___kefir_bigint_invert_label4:
+    xor %eax, %eax
+    ret
 .L__kefir_runtime_text_func___kefir_bigint_invert_end:
 
 

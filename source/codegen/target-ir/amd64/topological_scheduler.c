@@ -30,13 +30,17 @@ struct scheduler_payload {
 static kefir_result_t insert_sorted_by_loop_depth(struct kefir_mem *mem, struct kefir_list *queue,
                                                   const struct kefir_codegen_target_ir_loop_collection *loops,
                                                   kefir_codegen_target_ir_block_ref_t block_ref) {
-    kefir_uint32_t depth;
+    kefir_uint32_t depth, preheader_depth;
     REQUIRE_OK(kefir_codegen_target_ir_loop_level(loops, block_ref, &depth));
+    REQUIRE_OK(kefir_codegen_target_ir_loop_preheader_level(loops, block_ref, &preheader_depth));
+    depth = MAX(depth, preheader_depth);
     for (struct kefir_list_entry *iter = kefir_list_head(queue); iter != NULL; iter = iter->next) {
         ASSIGN_DECL_CAST(kefir_codegen_target_ir_block_ref_t, other_block_ref, (kefir_uptr_t) iter->value);
 
-        kefir_uint32_t other_depth;
+        kefir_uint32_t other_depth, other_preheader_depth;
         REQUIRE_OK(kefir_codegen_target_ir_loop_level(loops, other_block_ref, &other_depth));
+        REQUIRE_OK(kefir_codegen_target_ir_loop_preheader_level(loops, other_block_ref, &other_preheader_depth));
+        other_depth = MAX(other_depth, other_preheader_depth);
 
         if (other_depth <= depth) {
             REQUIRE_OK(kefir_list_insert_after(mem, queue, iter->prev, (void *) (kefir_uptr_t) block_ref));

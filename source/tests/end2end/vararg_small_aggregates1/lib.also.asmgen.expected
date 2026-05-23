@@ -12,15 +12,7 @@ sum:
     mov %rsp, %rbp
     sub $208, %rsp
     test %al, %al
-    je .L__kefir_func_sum_label2
-    movdqu %xmm0, -160(%rbp)
-    movdqu %xmm1, -144(%rbp)
-    movdqu %xmm2, -128(%rbp)
-    movdqu %xmm3, -112(%rbp)
-    movdqu %xmm4, -96(%rbp)
-    movdqu %xmm5, -80(%rbp)
-    movdqu %xmm6, -64(%rbp)
-    movdqu %xmm7, -48(%rbp)
+    jne .L__kefir_func_sum_label1
 .L__kefir_func_sum_label2:
     mov %rdi, -208(%rbp)
     mov %rsi, -200(%rbp)
@@ -70,6 +62,16 @@ sum:
     lea (%rbp), %rsp
     pop %rbp
     ret
+.L__kefir_func_sum_label1:
+    movdqu %xmm0, -160(%rbp)
+    movdqu %xmm1, -144(%rbp)
+    movdqu %xmm2, -128(%rbp)
+    movdqu %xmm3, -112(%rbp)
+    movdqu %xmm4, -96(%rbp)
+    movdqu %xmm5, -80(%rbp)
+    movdqu %xmm6, -64(%rbp)
+    movdqu %xmm7, -48(%rbp)
+    jmp .L__kefir_func_sum_label2
 .L__kefir_text_func_sum_end:
 
 .L__kefir_text_section_end:

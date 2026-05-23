@@ -57,14 +57,7 @@ test1:
     mov %rdi, %rbx
     mov $0, %rax
     cmp %rbx, %rax
-    jl .L__kefir_func_test1_label3
-.L__kefir_func_test1_label4:
-    xor %eax, %eax
-    pop %r12
-    pop %rbx
-    pop %rbp
-    ret
-.L__kefir_func_test1_label3:
+    jge .L__kefir_func_test1_label4
     xor %eax, %eax
     mov %rax, %r12
 .L__kefir_func_test1_label5:
@@ -73,7 +66,12 @@ test1:
     add %rax, %r12
     cmp %rbx, %r12
     jl .L__kefir_func_test1_label5
-    jmp .L__kefir_func_test1_label4
+.L__kefir_func_test1_label4:
+    xor %eax, %eax
+    pop %r12
+    pop %rbx
+    pop %rbp
+    ret
 .L__kefir_text_func_test1_end:
 
 test2:
@@ -87,15 +85,7 @@ test2:
     movq $0, -24(%rbp)
     mov $0, %rax
     cmp %rbx, %rax
-    jl .L__kefir_func_test2_label3
-.L__kefir_func_test2_label4:
-    movq -24(%rbp), %rax
-    lea -16(%rbp), %rsp
-    pop %r12
-    pop %rbx
-    pop %rbp
-    ret
-.L__kefir_func_test2_label3:
+    jge .L__kefir_func_test2_label4
     xor %eax, %eax
     mov %rax, %r12
 .L__kefir_func_test2_label5:
@@ -104,7 +94,13 @@ test2:
     add %rax, %r12
     cmp %rbx, %r12
     jl .L__kefir_func_test2_label5
-    jmp .L__kefir_func_test2_label4
+.L__kefir_func_test2_label4:
+    movq -24(%rbp), %rax
+    lea -16(%rbp), %rsp
+    pop %r12
+    pop %rbx
+    pop %rbp
+    ret
 .L__kefir_text_func_test2_end:
 
 test3:
@@ -118,15 +114,7 @@ test3:
     movq $0, -24(%rbp)
     mov $0, %rax
     cmp %rbx, %rax
-    jl .L__kefir_func_test3_label3
-.L__kefir_func_test3_label4:
-    movq -24(%rbp), %rax
-    lea -16(%rbp), %rsp
-    pop %r12
-    pop %rbx
-    pop %rbp
-    ret
-.L__kefir_func_test3_label3:
+    jge .L__kefir_func_test3_label4
     xor %eax, %eax
     mov %rax, %r12
 .L__kefir_func_test3_label5:
@@ -136,7 +124,13 @@ test3:
     add %rax, %r12
     cmp %rbx, %r12
     jl .L__kefir_func_test3_label5
-    jmp .L__kefir_func_test3_label4
+.L__kefir_func_test3_label4:
+    movq -24(%rbp), %rax
+    lea -16(%rbp), %rsp
+    pop %r12
+    pop %rbx
+    pop %rbp
+    ret
 .L__kefir_text_func_test3_end:
 
 test4:
