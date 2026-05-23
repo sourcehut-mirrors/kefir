@@ -10,19 +10,23 @@ test1:
 .L__kefir_text_func_test1_begin:
     imul %esi, %edx
     add $1, %edx
-    xor %eax, %eax
-.L__kefir_func_test1_label2:
+    mov $0, %eax
     cmp %esi, %eax
-    jge .L__kefir_func_test1_label3
+    jl .L__kefir_func_test1_label3
+.L__kefir_func_test1_label4:
+    ret
+.L__kefir_func_test1_label3:
+    xor %eax, %eax
+.L__kefir_func_test1_label5:
     movsx %eax, %rcx
     mov %rax, %r8
     shl $1, %r8d
     add %edx, %r8d
     movl %r8d, (%rdi, %rcx, 4)
     add $1, %eax
-    jmp .L__kefir_func_test1_label2
-.L__kefir_func_test1_label3:
-    ret
+    cmp %esi, %eax
+    jl .L__kefir_func_test1_label5
+    jmp .L__kefir_func_test1_label4
 .L__kefir_text_func_test1_end:
 
 .L__kefir_text_section_end:

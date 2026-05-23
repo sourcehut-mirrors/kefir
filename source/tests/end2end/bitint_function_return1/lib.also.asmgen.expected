@@ -2466,6 +2466,42 @@ __kefir_bigint_invert:
 #                "labels": []
 #            },
 #            {
+#                "opcode": "cmp",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 4,
+#                        "variant": "64bit"
+#                    },
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 10,
+#                        "variant": "64bit"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "jb",
+#                "args": [
+#                    {
+#                        "type": "internal_label",
+#                        "label": 6
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "jmp",
+#                "args": [
+#                    {
+#                        "type": "internal_label",
+#                        "label": 2
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
 #                "opcode": "produce_virtual_register",
 #                "args": [
 #                    {
@@ -2474,7 +2510,9 @@ __kefir_bigint_invert:
 #                        "variant": "default"
 #                    }
 #                ],
-#                "labels": []
+#                "labels": [
+#                    6
+#                ]
 #            },
 #            {
 #                "opcode": "virtual_register_link",
@@ -2504,41 +2542,11 @@ __kefir_bigint_invert:
 #                "labels": []
 #            },
 #            {
-#                "opcode": "weak_touch_virtual_register",
-#                "args": [
-#                    {
-#                        "type": "virtual_register",
-#                        "index": 11,
-#                        "variant": "default"
-#                    }
-#                ],
-#                "labels": [
-#                    1,
-#                    2
-#                ]
-#            },
-#            {
-#                "opcode": "cmp",
-#                "args": [
-#                    {
-#                        "type": "virtual_register",
-#                        "index": 11,
-#                        "variant": "64bit"
-#                    },
-#                    {
-#                        "type": "virtual_register",
-#                        "index": 10,
-#                        "variant": "64bit"
-#                    }
-#                ],
-#                "labels": []
-#            },
-#            {
-#                "opcode": "jb",
+#                "opcode": "jmp",
 #                "args": [
 #                    {
 #                        "type": "internal_label",
-#                        "label": 6
+#                        "label": 4
 #                    }
 #                ],
 #                "labels": []
@@ -2553,8 +2561,8 @@ __kefir_bigint_invert:
 #                    }
 #                ],
 #                "labels": [
-#                    3,
-#                    4
+#                    1,
+#                    2
 #                ]
 #            },
 #            {
@@ -2606,6 +2614,20 @@ __kefir_bigint_invert:
 #                "labels": []
 #            },
 #            {
+#                "opcode": "weak_touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 11,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": [
+#                    3,
+#                    4
+#                ]
+#            },
+#            {
 #                "opcode": "virtual_register_link",
 #                "args": [
 #                    {
@@ -2619,10 +2641,7 @@ __kefir_bigint_invert:
 #                        "variant": "default"
 #                    }
 #                ],
-#                "labels": [
-#                    5,
-#                    6
-#                ]
+#                "labels": []
 #            },
 #            {
 #                "opcode": "add",
@@ -2758,6 +2777,42 @@ __kefir_bigint_invert:
 #                "labels": []
 #            },
 #            {
+#                "opcode": "cmp",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 18,
+#                        "variant": "64bit"
+#                    },
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 10,
+#                        "variant": "64bit"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "jb",
+#                "args": [
+#                    {
+#                        "type": "internal_label",
+#                        "label": 7
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "jmp",
+#                "args": [
+#                    {
+#                        "type": "internal_label",
+#                        "label": 2
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
 #                "opcode": "virtual_register_link",
 #                "args": [
 #                    {
@@ -2771,7 +2826,9 @@ __kefir_bigint_invert:
 #                        "variant": "default"
 #                    }
 #                ],
-#                "labels": []
+#                "labels": [
+#                    7
+#                ]
 #            },
 #            {
 #                "opcode": "weak_touch_virtual_register",
@@ -2789,7 +2846,7 @@ __kefir_bigint_invert:
 #                "args": [
 #                    {
 #                        "type": "internal_label",
-#                        "label": 2
+#                        "label": 4
 #                    }
 #                ],
 #                "labels": []
@@ -2798,7 +2855,7 @@ __kefir_bigint_invert:
 #                "opcode": "noop",
 #                "args": [],
 #                "labels": [
-#                    7
+#                    5
 #                ]
 #            }
 #        ]
@@ -2807,16 +2864,20 @@ __kefir_bigint_invert:
 .L__kefir_runtime_text_func___kefir_bigint_invert_begin:
     sub $-7, %rsi
     shr $3, %rsi
-    xor %eax, %eax
-.L__kefir_runtime_func___kefir_bigint_invert_label2:
+    mov $0, %rax
     cmp %rsi, %rax
-    jae .L__kefir_runtime_func___kefir_bigint_invert_label3
-    notb (%rdi, %rax, 1)
-    add $1, %rax
-    jmp .L__kefir_runtime_func___kefir_bigint_invert_label2
-.L__kefir_runtime_func___kefir_bigint_invert_label3:
+    jb .L__kefir_runtime_func___kefir_bigint_invert_label3
+.L__kefir_runtime_func___kefir_bigint_invert_label4:
     xor %eax, %eax
     ret
+.L__kefir_runtime_func___kefir_bigint_invert_label3:
+    xor %eax, %eax
+.L__kefir_runtime_func___kefir_bigint_invert_label5:
+    notb (%rdi, %rax, 1)
+    add $1, %rax
+    cmp %rsi, %rax
+    jb .L__kefir_runtime_func___kefir_bigint_invert_label5
+    jmp .L__kefir_runtime_func___kefir_bigint_invert_label4
 .L__kefir_runtime_text_func___kefir_bigint_invert_end:
 
 

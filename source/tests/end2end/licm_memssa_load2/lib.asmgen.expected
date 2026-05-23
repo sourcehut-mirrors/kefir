@@ -72,17 +72,21 @@ test3:
 .L__kefir_text_func_test3_begin:
     movq x@GOTPCREL(%rip), %rax
     movq z@GOTPCREL(%rip), %rcx
-    xor %edx, %edx
-.L__kefir_func_test3_label2:
+    mov $0, %edx
     cmp %edi, %edx
-    jge .L__kefir_func_test3_label3
+    jl .L__kefir_func_test3_label3
+.L__kefir_func_test3_label4:
+    ret
+.L__kefir_func_test3_label3:
+    xor %edx, %edx
+.L__kefir_func_test3_label5:
     movsx %edx, %rsi
     movl (%rcx, %rsi, 4), %esi
     addl %esi, (%rax)
     add $1, %edx
-    jmp .L__kefir_func_test3_label2
-.L__kefir_func_test3_label3:
-    ret
+    cmp %edi, %edx
+    jl .L__kefir_func_test3_label5
+    jmp .L__kefir_func_test3_label4
 .L__kefir_text_func_test3_end:
 
 test4:

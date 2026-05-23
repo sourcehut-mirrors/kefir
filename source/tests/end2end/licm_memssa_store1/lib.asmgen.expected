@@ -35,13 +35,11 @@ test2:
     movq b@GOTPCREL(%rip), %rcx
     xor %edx, %edx
 .L__kefir_func_test2_label2:
-    cmp $10, %edx
-    jge .L__kefir_func_test2_label3
     movsx %edx, %rsi
     movl %eax, (%rcx, %rsi, 4)
     add $1, %edx
-    jmp .L__kefir_func_test2_label2
-.L__kefir_func_test2_label3:
+    cmp $10, %edx
+    jl .L__kefir_func_test2_label2
     ret
 .L__kefir_text_func_test2_end:
 
