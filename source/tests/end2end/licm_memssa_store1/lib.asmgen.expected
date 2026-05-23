@@ -78,27 +78,21 @@ test6:
     sub $8, %rsp
     movq b@GOTPCREL(%rip), %rbx
     movq c@GOTPCREL(%rip), %r12
-    mov $0, %eax
-    cmp $10, %eax
-    jl .L__kefir_func_test6_label3
-.L__kefir_func_test6_label4:
+    xor %eax, %eax
+    mov %rax, %r13
+.L__kefir_func_test6_label2:
+    call fn@PLT
+    movl 8(%r12), %eax
+    movl %eax, 4(%rbx)
+    add $1, %r13d
+    cmp $10, %r13d
+    jl .L__kefir_func_test6_label2
     lea -24(%rbp), %rsp
     pop %r13
     pop %r12
     pop %rbx
     pop %rbp
     ret
-.L__kefir_func_test6_label3:
-    xor %eax, %eax
-    mov %rax, %r13
-.L__kefir_func_test6_label5:
-    call fn@PLT
-    movl 8(%r12), %eax
-    movl %eax, 4(%rbx)
-    add $1, %r13d
-    cmp $10, %r13d
-    jl .L__kefir_func_test6_label5
-    jmp .L__kefir_func_test6_label4
 .L__kefir_text_func_test6_end:
 
 .L__kefir_text_section_end:

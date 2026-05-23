@@ -20,6 +20,7 @@
 
 #include "kefir/optimizer/pipeline.h"
 #include "kefir/optimizer/builder.h"
+#include "kefir/optimizer/code_util.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 #include "kefir/util/softfloat.h"
@@ -172,6 +173,176 @@ static kefir_result_t int_extract_bits_const_fold(struct kefir_mem *mem, struct 
         }
 
         REQUIRE_OK(kefir_opt_code_builder_uint_constant(mem, &func->code, block_id, value, replacement_ref));
+    }
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_opt_code_util_evaluate_int_comparison(kefir_opt_comparison_operation_t comparison,
+                                                           kefir_uint64_t lhs, kefir_uint64_t rhs,
+                                                           kefir_bool_t *comparison_result) {
+    switch (comparison) {
+        case KEFIR_OPT_COMPARISON_INT8_EQUALS:
+            *comparison_result = ((kefir_uint8_t) lhs) == ((kefir_uint8_t) rhs);
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT16_EQUALS:
+            *comparison_result = ((kefir_uint16_t) lhs) == ((kefir_uint16_t) rhs);
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT32_EQUALS:
+            *comparison_result = ((kefir_uint32_t) lhs) == ((kefir_uint32_t) rhs);
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT64_EQUALS:
+            *comparison_result = ((kefir_uint64_t) lhs) == ((kefir_uint64_t) rhs);
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT8_NOT_EQUALS:
+            *comparison_result = ((kefir_uint8_t) lhs) != ((kefir_uint8_t) rhs);
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT16_NOT_EQUALS:
+            *comparison_result = ((kefir_uint16_t) lhs) != ((kefir_uint16_t) rhs);
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT32_NOT_EQUALS:
+            *comparison_result = ((kefir_uint32_t) lhs) != ((kefir_uint32_t) rhs);
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT64_NOT_EQUALS:
+            *comparison_result = ((kefir_uint64_t) lhs) != ((kefir_uint64_t) rhs);
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT8_GREATER:
+            *comparison_result = ((kefir_int8_t) lhs) > ((kefir_int8_t) rhs);
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT16_GREATER:
+            *comparison_result = ((kefir_int16_t) lhs) > ((kefir_int16_t) rhs);
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT32_GREATER:
+            *comparison_result = ((kefir_int32_t) lhs) > ((kefir_int32_t) rhs);
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT64_GREATER:
+            *comparison_result = ((kefir_int64_t) lhs) > ((kefir_int64_t) rhs);
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT8_GREATER_OR_EQUALS:
+            *comparison_result = ((kefir_int8_t) lhs) >= ((kefir_int8_t) rhs);
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT16_GREATER_OR_EQUALS:
+            *comparison_result = ((kefir_int16_t) lhs) >= ((kefir_int16_t) rhs);
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT32_GREATER_OR_EQUALS:
+            *comparison_result = ((kefir_int32_t) lhs) >= ((kefir_int32_t) rhs);
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT64_GREATER_OR_EQUALS:
+            *comparison_result = ((kefir_int64_t) lhs) >= ((kefir_int64_t) rhs);
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT8_LESSER:
+            *comparison_result = ((kefir_int8_t) lhs) < ((kefir_int8_t) rhs);
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT16_LESSER:
+            *comparison_result = ((kefir_int16_t) lhs) < ((kefir_int16_t) rhs);
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT32_LESSER:
+            *comparison_result = ((kefir_int32_t) lhs) < ((kefir_int32_t) rhs);
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT64_LESSER:
+            *comparison_result = ((kefir_int64_t) lhs) < ((kefir_int64_t) rhs);
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT8_LESSER_OR_EQUALS:
+            *comparison_result = ((kefir_int8_t) lhs) <= ((kefir_int8_t) rhs);
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT16_LESSER_OR_EQUALS:
+            *comparison_result = ((kefir_int16_t) lhs) <= ((kefir_int16_t) rhs);
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT32_LESSER_OR_EQUALS:
+            *comparison_result = ((kefir_int32_t) lhs) <= ((kefir_int32_t) rhs);
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT64_LESSER_OR_EQUALS:
+            *comparison_result = ((kefir_int64_t) lhs) <= ((kefir_int64_t) rhs);
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT8_ABOVE:
+            *comparison_result = ((kefir_uint8_t) lhs) > ((kefir_uint8_t) rhs);
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT16_ABOVE:
+            *comparison_result = ((kefir_uint16_t) lhs) > ((kefir_uint16_t) rhs);
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT32_ABOVE:
+            *comparison_result = ((kefir_uint32_t) lhs) > ((kefir_uint32_t) rhs);
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT64_ABOVE:
+            *comparison_result = ((kefir_uint64_t) lhs) > ((kefir_uint64_t) rhs);
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT8_ABOVE_OR_EQUALS:
+            *comparison_result = ((kefir_uint8_t) lhs) >= ((kefir_uint8_t) rhs);
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT16_ABOVE_OR_EQUALS:
+            *comparison_result = ((kefir_uint16_t) lhs) >= ((kefir_uint16_t) rhs);
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT32_ABOVE_OR_EQUALS:
+            *comparison_result = ((kefir_uint32_t) lhs) >= ((kefir_uint32_t) rhs);
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT64_ABOVE_OR_EQUALS:
+            *comparison_result = ((kefir_uint64_t) lhs) >= ((kefir_uint64_t) rhs);
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT8_BELOW:
+            *comparison_result = ((kefir_uint8_t) lhs) < ((kefir_uint8_t) rhs);
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT16_BELOW:
+            *comparison_result = ((kefir_uint16_t) lhs) < ((kefir_uint16_t) rhs);
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT32_BELOW:
+            *comparison_result = ((kefir_uint32_t) lhs) < ((kefir_uint32_t) rhs);
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT64_BELOW:
+            *comparison_result = ((kefir_uint64_t) lhs) < ((kefir_uint64_t) rhs);
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT8_BELOW_OR_EQUALS:
+            *comparison_result = ((kefir_uint8_t) lhs) <= ((kefir_uint8_t) rhs);
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT16_BELOW_OR_EQUALS:
+            *comparison_result = ((kefir_uint16_t) lhs) <= ((kefir_uint16_t) rhs);
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT32_BELOW_OR_EQUALS:
+            *comparison_result = ((kefir_uint32_t) lhs) <= ((kefir_uint32_t) rhs);
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT64_BELOW_OR_EQUALS:
+            *comparison_result = ((kefir_uint64_t) lhs) <= ((kefir_uint64_t) rhs);
+            break;
+
+        default:
+            return KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unexpected optimizer comparison operation");
     }
     return KEFIR_OK;
 }
@@ -415,172 +586,12 @@ static kefir_result_t int_binary_const_fold(struct kefir_mem *mem, struct kefir_
             result.integer = ((kefir_int64_t) left.integer) >> right.integer;
             break;
 
-        case KEFIR_OPT_OPCODE_SCALAR_COMPARE:
-            switch (instr->operation.parameters.comparison) {
-                case KEFIR_OPT_COMPARISON_INT8_EQUALS:
-                    result.integer = ((kefir_uint8_t) left.integer) == ((kefir_uint8_t) right.integer);
-                    break;
-
-                case KEFIR_OPT_COMPARISON_INT16_EQUALS:
-                    result.integer = ((kefir_uint16_t) left.integer) == ((kefir_uint16_t) right.integer);
-                    break;
-
-                case KEFIR_OPT_COMPARISON_INT32_EQUALS:
-                    result.integer = ((kefir_uint32_t) left.integer) == ((kefir_uint32_t) right.integer);
-                    break;
-
-                case KEFIR_OPT_COMPARISON_INT64_EQUALS:
-                    result.integer = ((kefir_uint64_t) left.integer) == ((kefir_uint64_t) right.integer);
-                    break;
-
-                case KEFIR_OPT_COMPARISON_INT8_NOT_EQUALS:
-                    result.integer = ((kefir_uint8_t) left.integer) != ((kefir_uint8_t) right.integer);
-                    break;
-
-                case KEFIR_OPT_COMPARISON_INT16_NOT_EQUALS:
-                    result.integer = ((kefir_uint16_t) left.integer) != ((kefir_uint16_t) right.integer);
-                    break;
-
-                case KEFIR_OPT_COMPARISON_INT32_NOT_EQUALS:
-                    result.integer = ((kefir_uint32_t) left.integer) != ((kefir_uint32_t) right.integer);
-                    break;
-
-                case KEFIR_OPT_COMPARISON_INT64_NOT_EQUALS:
-                    result.integer = ((kefir_uint64_t) left.integer) != ((kefir_uint64_t) right.integer);
-                    break;
-
-                case KEFIR_OPT_COMPARISON_INT8_GREATER:
-                    result.integer = ((kefir_int8_t) left.integer) > ((kefir_int8_t) right.integer);
-                    break;
-
-                case KEFIR_OPT_COMPARISON_INT16_GREATER:
-                    result.integer = ((kefir_int16_t) left.integer) > ((kefir_int16_t) right.integer);
-                    break;
-
-                case KEFIR_OPT_COMPARISON_INT32_GREATER:
-                    result.integer = ((kefir_int32_t) left.integer) > ((kefir_int32_t) right.integer);
-                    break;
-
-                case KEFIR_OPT_COMPARISON_INT64_GREATER:
-                    result.integer = ((kefir_int64_t) left.integer) > ((kefir_int64_t) right.integer);
-                    break;
-
-                case KEFIR_OPT_COMPARISON_INT8_GREATER_OR_EQUALS:
-                    result.integer = ((kefir_int8_t) left.integer) >= ((kefir_int8_t) right.integer);
-                    break;
-
-                case KEFIR_OPT_COMPARISON_INT16_GREATER_OR_EQUALS:
-                    result.integer = ((kefir_int16_t) left.integer) >= ((kefir_int16_t) right.integer);
-                    break;
-
-                case KEFIR_OPT_COMPARISON_INT32_GREATER_OR_EQUALS:
-                    result.integer = ((kefir_int32_t) left.integer) >= ((kefir_int32_t) right.integer);
-                    break;
-
-                case KEFIR_OPT_COMPARISON_INT64_GREATER_OR_EQUALS:
-                    result.integer = ((kefir_int64_t) left.integer) >= ((kefir_int64_t) right.integer);
-                    break;
-
-                case KEFIR_OPT_COMPARISON_INT8_LESSER:
-                    result.integer = ((kefir_int8_t) left.integer) < ((kefir_int8_t) right.integer);
-                    break;
-
-                case KEFIR_OPT_COMPARISON_INT16_LESSER:
-                    result.integer = ((kefir_int16_t) left.integer) < ((kefir_int16_t) right.integer);
-                    break;
-
-                case KEFIR_OPT_COMPARISON_INT32_LESSER:
-                    result.integer = ((kefir_int32_t) left.integer) < ((kefir_int32_t) right.integer);
-                    break;
-
-                case KEFIR_OPT_COMPARISON_INT64_LESSER:
-                    result.integer = ((kefir_int64_t) left.integer) < ((kefir_int64_t) right.integer);
-                    break;
-
-                case KEFIR_OPT_COMPARISON_INT8_LESSER_OR_EQUALS:
-                    result.integer = ((kefir_int8_t) left.integer) <= ((kefir_int8_t) right.integer);
-                    break;
-
-                case KEFIR_OPT_COMPARISON_INT16_LESSER_OR_EQUALS:
-                    result.integer = ((kefir_int16_t) left.integer) <= ((kefir_int16_t) right.integer);
-                    break;
-
-                case KEFIR_OPT_COMPARISON_INT32_LESSER_OR_EQUALS:
-                    result.integer = ((kefir_int32_t) left.integer) <= ((kefir_int32_t) right.integer);
-                    break;
-
-                case KEFIR_OPT_COMPARISON_INT64_LESSER_OR_EQUALS:
-                    result.integer = ((kefir_int64_t) left.integer) <= ((kefir_int64_t) right.integer);
-                    break;
-
-                case KEFIR_OPT_COMPARISON_INT8_ABOVE:
-                    result.integer = ((kefir_uint8_t) left.uinteger) > ((kefir_uint8_t) right.uinteger);
-                    break;
-
-                case KEFIR_OPT_COMPARISON_INT16_ABOVE:
-                    result.integer = ((kefir_uint16_t) left.uinteger) > ((kefir_uint16_t) right.uinteger);
-                    break;
-
-                case KEFIR_OPT_COMPARISON_INT32_ABOVE:
-                    result.integer = ((kefir_uint32_t) left.uinteger) > ((kefir_uint32_t) right.uinteger);
-                    break;
-
-                case KEFIR_OPT_COMPARISON_INT64_ABOVE:
-                    result.integer = ((kefir_uint64_t) left.uinteger) > ((kefir_uint64_t) right.uinteger);
-                    break;
-
-                case KEFIR_OPT_COMPARISON_INT8_ABOVE_OR_EQUALS:
-                    result.integer = ((kefir_uint8_t) left.uinteger) >= ((kefir_uint8_t) right.uinteger);
-                    break;
-
-                case KEFIR_OPT_COMPARISON_INT16_ABOVE_OR_EQUALS:
-                    result.integer = ((kefir_uint16_t) left.uinteger) >= ((kefir_uint16_t) right.uinteger);
-                    break;
-
-                case KEFIR_OPT_COMPARISON_INT32_ABOVE_OR_EQUALS:
-                    result.integer = ((kefir_uint32_t) left.uinteger) >= ((kefir_uint32_t) right.uinteger);
-                    break;
-
-                case KEFIR_OPT_COMPARISON_INT64_ABOVE_OR_EQUALS:
-                    result.integer = ((kefir_uint64_t) left.uinteger) >= ((kefir_uint64_t) right.uinteger);
-                    break;
-
-                case KEFIR_OPT_COMPARISON_INT8_BELOW:
-                    result.integer = ((kefir_uint8_t) left.uinteger) < ((kefir_uint8_t) right.uinteger);
-                    break;
-
-                case KEFIR_OPT_COMPARISON_INT16_BELOW:
-                    result.integer = ((kefir_uint16_t) left.uinteger) < ((kefir_uint16_t) right.uinteger);
-                    break;
-
-                case KEFIR_OPT_COMPARISON_INT32_BELOW:
-                    result.integer = ((kefir_uint32_t) left.uinteger) < ((kefir_uint32_t) right.uinteger);
-                    break;
-
-                case KEFIR_OPT_COMPARISON_INT64_BELOW:
-                    result.integer = ((kefir_uint64_t) left.uinteger) < ((kefir_uint64_t) right.uinteger);
-                    break;
-
-                case KEFIR_OPT_COMPARISON_INT8_BELOW_OR_EQUALS:
-                    result.integer = ((kefir_uint8_t) left.uinteger) <= ((kefir_uint8_t) right.uinteger);
-                    break;
-
-                case KEFIR_OPT_COMPARISON_INT16_BELOW_OR_EQUALS:
-                    result.integer = ((kefir_uint16_t) left.uinteger) <= ((kefir_uint16_t) right.uinteger);
-                    break;
-
-                case KEFIR_OPT_COMPARISON_INT32_BELOW_OR_EQUALS:
-                    result.integer = ((kefir_uint32_t) left.uinteger) <= ((kefir_uint32_t) right.uinteger);
-                    break;
-
-                case KEFIR_OPT_COMPARISON_INT64_BELOW_OR_EQUALS:
-                    result.integer = ((kefir_uint64_t) left.uinteger) <= ((kefir_uint64_t) right.uinteger);
-                    break;
-
-                default:
-                    return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected optimizer comparison operation");
-            }
-            break;
+        case KEFIR_OPT_OPCODE_SCALAR_COMPARE: {
+            kefir_bool_t cmp;
+            REQUIRE_OK(kefir_opt_code_util_evaluate_int_comparison(instr->operation.parameters.comparison,
+                                                                   left.uinteger, right.uinteger, &cmp));
+            result.integer = cmp;
+        } break;
 
         case KEFIR_OPT_OPCODE_INT8_BOOL_OR:
             result.integer = ((kefir_uint8_t) left.uinteger) != 0 || ((kefir_uint8_t) right.uinteger != 0);

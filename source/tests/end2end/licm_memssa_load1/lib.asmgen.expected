@@ -49,19 +49,13 @@ test:
     movq x@GOTPCREL(%rip), %rax
     movl (%rax), %eax
     movq y@GOTPCREL(%rip), %rcx
-    mov $0, %edx
-    cmp $10, %edx
-    jl .L__kefir_func_test_label3
-.L__kefir_func_test_label4:
-    ret
-.L__kefir_func_test_label3:
     xor %edx, %edx
-.L__kefir_func_test_label5:
+.L__kefir_func_test_label2:
     addl %eax, (%rcx)
     add $1, %edx
     cmp $10, %edx
-    jl .L__kefir_func_test_label5
-    jmp .L__kefir_func_test_label4
+    jl .L__kefir_func_test_label2
+    ret
 .L__kefir_text_func_test_end:
 
 test0:
@@ -69,19 +63,13 @@ test0:
     movq x@GOTPCREL(%rip), %rax
     movl (%rax), %eax
     movq y@GOTPCREL(%rip), %rcx
-    mov $0, %edx
-    cmp $10, %edx
-    jl .L__kefir_func_test0_label3
-.L__kefir_func_test0_label4:
-    ret
-.L__kefir_func_test0_label3:
     xor %edx, %edx
-.L__kefir_func_test0_label5:
+.L__kefir_func_test0_label2:
     subl %eax, (%rcx)
     add $1, %edx
     cmp $10, %edx
-    jl .L__kefir_func_test0_label5
-    jmp .L__kefir_func_test0_label4
+    jl .L__kefir_func_test0_label2
+    ret
 .L__kefir_text_func_test0_end:
 
 test2:

@@ -235,20 +235,14 @@ test8:
 test9:
 .L__kefir_text_func_test9_begin:
     movq x@GOTPCREL(%rip), %rax
-    mov $0, %ecx
-    cmp $10, %ecx
-    jl .L__kefir_func_test9_label3
-.L__kefir_func_test9_label4:
-    ret
-.L__kefir_func_test9_label3:
     xor %ecx, %ecx
-.L__kefir_func_test9_label5:
+.L__kefir_func_test9_label2:
     movl (%rdi), %edx
     addl %edx, (%rax)
     add $1, %ecx
     cmp $10, %ecx
-    jl .L__kefir_func_test9_label5
-    jmp .L__kefir_func_test9_label4
+    jl .L__kefir_func_test9_label2
+    ret
 .L__kefir_text_func_test9_end:
 
 .L__kefir_text_section_end:

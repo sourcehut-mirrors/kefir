@@ -103,4 +103,7 @@ kefir_result_t kefir_opt_code_util_distribute_loop_condition_dependencies_over_p
 kefir_result_t kefir_opt_code_util_loop_try_rotate(struct kefir_mem *, struct kefir_opt_code_container *,
                                                    const struct kefir_opt_code_loop *, kefir_bool_t *);
 
+kefir_result_t kefir_opt_code_util_evaluate_int_comparison(kefir_opt_comparison_operation_t, kefir_uint64_t,
+                                                           kefir_uint64_t, kefir_bool_t *);
+
 #endif
