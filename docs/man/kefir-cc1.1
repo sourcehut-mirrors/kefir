@@ -403,6 +403,18 @@ Perform target-specific lowering of the SSA representation. Mandatory for bit-pr
 .\"
 .It Ar inline-asm-untie
 Untie inline assembly non-memory parameters from directly linking to memory locations. Improves integration with mem2reg.
+.\"
+.It Ar gcm
+Global code motion pass rescheduling pure computations.
+.\"
+.It Ar late-cleanup
+Phi factoring and deduplication improving code generation.
+.\"
+.It Ar rematerialize
+Conservative post-code motion rematerialization of constants and address computations.
+.\"
+.It Ar loop-rotate
+Loop rotation pass to move the condition from header into preheader and latch.
 .El
 .\"
 .Ss TARGET
