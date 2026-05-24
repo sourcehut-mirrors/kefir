@@ -67,6 +67,12 @@ static kefir_result_t gcm_schedule_early_inputs_phase2(kefir_opt_instruction_ref
 static kefir_result_t gcm_schedule_early(struct gcm_state *state) {
     for (kefir_opt_block_id_t block_ref = 0; block_ref < kefir_opt_code_container_block_count(state->code);
          block_ref++) {
+        kefir_bool_t reachable;
+        REQUIRE_OK(kefir_opt_code_control_flow_is_reachable_from_entry(&state->control_flow, block_ref, &reachable));
+        if (!reachable) {
+            continue;
+        }
+
         kefir_result_t res;
         kefir_opt_instruction_ref_t instr_ref;
         for (res = kefir_opt_code_block_instr_head(state->code, block_ref, &instr_ref);
