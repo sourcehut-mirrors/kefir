@@ -34,6 +34,7 @@ struct scheduler_payload {
     struct kefir_hashtable edge_freqs;
     struct kefir_hashtable continuation_benefit;
     struct kefir_hashset unchained_blocks;
+    struct kefir_list scheduled_chains;
     struct kefir_hashtable chains;
     struct kefir_hashtable chain_index;
 };
@@ -197,51 +198,64 @@ static kefir_result_t schedule_chain(struct kefir_mem *mem,
                                      struct scheduler_payload *scheduler_payload,
                                      kefir_codegen_target_ir_block_ref_t head_ref,
                                      kefir_codegen_target_ir_block_ref_t *next_chain_ref) {
-    kefir_hashtable_value_t table_value;
-    REQUIRE_OK(kefir_hashtable_at(&scheduler_payload->chains, (kefir_hashtable_key_t) head_ref, &table_value));
-    ASSIGN_DECL_CAST(struct chain *, chain, table_value);
+    kefir_hashtable_value_t *table_value_ptr;
+    REQUIRE_OK(kefir_hashtable_at_mut(&scheduler_payload->chains, (kefir_hashtable_key_t) head_ref, &table_value_ptr));
+    ASSIGN_DECL_CAST(struct chain *, chain, *table_value_ptr);
 
-    kefir_codegen_target_ir_block_ref_t deepest_loop_adjacent_chain = KEFIR_ID_NONE;
-    kefir_size_t deepest_loop_adjacent_chain_level = 0;
     for (const struct kefir_list_entry *iter = kefir_list_head(&chain->blocks); iter != NULL; kefir_list_next(&iter)) {
         ASSIGN_DECL_CAST(kefir_codegen_target_ir_block_ref_t, block_ref, (kefir_uptr_t) iter->value);
         if (!kefir_codegen_target_ir_code_is_gate_block(scheduler_payload->control_flow->code, block_ref)) {
             REQUIRE_OK(schedule_builder->schedule_block(mem, block_ref, schedule_builder->payload));
-
-            kefir_result_t res;
-            kefir_hashset_key_t entry;
-            struct kefir_hashset_iterator iter;
-            for (res =
-                     kefir_hashset_iter(&scheduler_payload->control_flow->blocks[block_ref].successors, &iter, &entry);
-                 res == KEFIR_OK; res = kefir_hashset_next(&iter, &entry)) {
-                ASSIGN_DECL_CAST(kefir_codegen_target_ir_block_ref_t, succ_block_ref, entry);
-                if (kefir_hashset_has(&chain->block_index, (kefir_hashset_key_t) succ_block_ref)) {
-                    continue;
-                }
-
-                struct kefir_codegen_target_ir_loop *loop;
-                res = kefir_codegen_target_ir_loop_collection_find_loop(
-                    scheduler_payload->loops, (kefir_codegen_target_ir_block_ref_t) succ_block_ref, &loop);
-                if (res != KEFIR_NOT_FOUND) {
-                    REQUIRE_OK(res);
-                    if (loop->level > deepest_loop_adjacent_chain_level) {
-                        kefir_hashtable_value_t chain_head;
-                        REQUIRE_OK(kefir_hashtable_at(&scheduler_payload->chain_index,
-                                                      (kefir_hashtable_key_t) succ_block_ref, &chain_head));
-                        if (kefir_hashtable_has(&scheduler_payload->chains, (kefir_hashtable_key_t) chain_head)) {
-                            deepest_loop_adjacent_chain = chain_head;
-                            deepest_loop_adjacent_chain_level = loop->level;
-                        }
-                    }
-                }
-            }
-            if (res != KEFIR_ITERATOR_END) {
-                REQUIRE_OK(res);
-            }
         }
     }
 
+    REQUIRE_OK(kefir_list_insert_after(mem, &scheduler_payload->scheduled_chains, NULL, (void *) chain));
+    *table_value_ptr = (kefir_hashtable_value_t) NULL;
     REQUIRE_OK(kefir_hashtable_delete(mem, &scheduler_payload->chains, (kefir_hashtable_key_t) head_ref));
+
+    kefir_codegen_target_ir_block_ref_t deepest_loop_adjacent_chain = KEFIR_ID_NONE;
+    kefir_size_t deepest_loop_adjacent_chain_level = 0;
+    for (const struct kefir_list_entry *chain_iter = kefir_list_head(&scheduler_payload->scheduled_chains);
+         deepest_loop_adjacent_chain == KEFIR_ID_NONE && chain_iter != NULL; kefir_list_next(&chain_iter)) {
+        ASSIGN_DECL_CAST(struct chain *, chain, chain_iter->value);
+
+        for (const struct kefir_list_entry *iter = kefir_list_head(&chain->blocks); iter != NULL;
+             kefir_list_next(&iter)) {
+            ASSIGN_DECL_CAST(kefir_codegen_target_ir_block_ref_t, block_ref, (kefir_uptr_t) iter->value);
+            if (!kefir_codegen_target_ir_code_is_gate_block(scheduler_payload->control_flow->code, block_ref)) {
+                kefir_result_t res;
+                kefir_hashset_key_t entry;
+                struct kefir_hashset_iterator iter;
+                for (res = kefir_hashset_iter(&scheduler_payload->control_flow->blocks[block_ref].successors, &iter,
+                                              &entry);
+                     res == KEFIR_OK; res = kefir_hashset_next(&iter, &entry)) {
+                    ASSIGN_DECL_CAST(kefir_codegen_target_ir_block_ref_t, succ_block_ref, entry);
+                    if (kefir_hashset_has(&chain->block_index, (kefir_hashset_key_t) succ_block_ref)) {
+                        continue;
+                    }
+
+                    struct kefir_codegen_target_ir_loop *loop;
+                    res = kefir_codegen_target_ir_loop_collection_find_loop(
+                        scheduler_payload->loops, (kefir_codegen_target_ir_block_ref_t) succ_block_ref, &loop);
+                    if (res != KEFIR_NOT_FOUND) {
+                        REQUIRE_OK(res);
+                        if (loop->level > deepest_loop_adjacent_chain_level) {
+                            kefir_hashtable_value_t chain_head;
+                            REQUIRE_OK(kefir_hashtable_at(&scheduler_payload->chain_index,
+                                                          (kefir_hashtable_key_t) succ_block_ref, &chain_head));
+                            if (kefir_hashtable_has(&scheduler_payload->chains, (kefir_hashtable_key_t) chain_head)) {
+                                deepest_loop_adjacent_chain = chain_head;
+                                deepest_loop_adjacent_chain_level = loop->level;
+                            }
+                        }
+                    }
+                }
+                if (res != KEFIR_ITERATOR_END) {
+                    REQUIRE_OK(res);
+                }
+            }
+        }
+    }
 
     *next_chain_ref = deepest_loop_adjacent_chain;
     return KEFIR_OK;
@@ -343,7 +357,22 @@ static kefir_result_t free_chain(struct kefir_mem *mem, struct kefir_hashtable *
     UNUSED(payload);
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     ASSIGN_DECL_CAST(struct chain *, chain, value);
-    REQUIRE(chain != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid scheduler chain"));
+
+    if (chain != NULL) {
+        REQUIRE_OK(kefir_hashset_free(mem, &chain->block_index));
+        REQUIRE_OK(kefir_list_free(mem, &chain->blocks));
+        KEFIR_FREE(mem, chain);
+    }
+    return KEFIR_OK;
+}
+
+static kefir_result_t free_scheduled_chain(struct kefir_mem *mem, struct kefir_list *list,
+                                           struct kefir_list_entry *entry, void *payload) {
+    UNUSED(list);
+    UNUSED(payload);
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(entry != NULL && entry->value, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid list entry"));
+    ASSIGN_DECL_CAST(struct chain *, chain, entry->value);
 
     REQUIRE_OK(kefir_hashset_free(mem, &chain->block_index));
     REQUIRE_OK(kefir_list_free(mem, &chain->blocks));
@@ -372,6 +401,8 @@ kefir_result_t kefir_codegen_target_ir_amd64_chain_scheduler_init(
     REQUIRE_CHAIN(&res, kefir_hashtable_init(&payload->chains, &kefir_hashtable_uint_ops));
     REQUIRE_CHAIN(&res, kefir_hashtable_on_removal(&payload->chains, free_chain, NULL));
     REQUIRE_CHAIN(&res, kefir_hashset_init(&payload->unchained_blocks, &kefir_hashtable_uint_ops));
+    REQUIRE_CHAIN(&res, kefir_list_init(&payload->scheduled_chains));
+    REQUIRE_CHAIN(&res, kefir_list_on_remove(&payload->scheduled_chains, free_scheduled_chain, NULL));
     REQUIRE_ELSE(res == KEFIR_OK, {
         KEFIR_FREE(mem, payload);
         return res;

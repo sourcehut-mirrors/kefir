@@ -1599,6 +1599,35 @@ test_dec128_cg_solve:
     movaps %xmm0, -160(%rbp)
     mov %r14d, %ebx
     jmp .L__kefir_func_test_dec128_cg_solve_label37
+.L__kefir_func_test_dec128_cg_solve_label46:
+    movdqu -192(%rbp), %xmm0
+    movdqu %xmm0, -96(%rbp)
+    mov %rax, -64(%rbp)
+    jmp .L__kefir_func_test_dec128_cg_solve_label12
+.L__kefir_func_test_dec128_cg_solve_label9:
+    movdqu .L__kefir_func_test_dec128_cg_solve_label57(%rip), %xmm1
+    movaps -208(%rbp), %xmm0
+    call __bid_eqtd2@PLT
+    test %eax, %eax
+    jz .L__kefir_func_test_dec128_cg_solve_label11
+    xor %eax, %eax
+    movdqu -208(%rbp), %xmm0
+    movdqu %xmm0, -96(%rbp)
+    mov %rax, -64(%rbp)
+.L__kefir_func_test_dec128_cg_solve_label12:
+    movl -64(%rbp), %ecx
+    movl -128(%rbp), %edx
+    cmp %edx, %ecx
+    jae .L__kefir_func_test_dec128_cg_solve_label13
+    mov -112(%rbp), %rdi
+    mov %r12, %rsi
+    mov -104(%rbp), %rdx
+    movaps -224(%rbp), %xmm0
+    call test_dec128_ax
+    movdqu .L__kefir_func_test_dec128_cg_solve_label58(%rip), %xmm0
+    movdqu %xmm0, -192(%rbp)
+    xor %eax, %eax
+    jmp .L__kefir_func_test_dec128_cg_solve_label15
 .L__kefir_func_test_dec128_cg_solve_label40:
     mov %rax, %rcx
     shl $4, %rcx
@@ -1628,7 +1657,7 @@ test_dec128_cg_solve:
     xor %eax, %eax
     mov %rax, %r15
 .L__kefir_func_test_dec128_cg_solve_label23:
-    movdqu .L__kefir_func_test_dec128_cg_solve_label57(%rip), %xmm0
+    movdqu .L__kefir_func_test_dec128_cg_solve_label59(%rip), %xmm0
     movdqu %xmm0, -192(%rbp)
     movq -56(%rbp), %rcx
     cmp %rcx, %r15
@@ -1696,35 +1725,6 @@ test_dec128_cg_solve:
     mov %r14, %rax
     movaps %xmm0, -208(%rbp)
     jmp .L__kefir_func_test_dec128_cg_solve_label6
-.L__kefir_func_test_dec128_cg_solve_label46:
-    movdqu -192(%rbp), %xmm0
-    movdqu %xmm0, -96(%rbp)
-    mov %rax, -64(%rbp)
-    jmp .L__kefir_func_test_dec128_cg_solve_label12
-.L__kefir_func_test_dec128_cg_solve_label9:
-    movdqu .L__kefir_func_test_dec128_cg_solve_label58(%rip), %xmm1
-    movaps -208(%rbp), %xmm0
-    call __bid_eqtd2@PLT
-    test %eax, %eax
-    jz .L__kefir_func_test_dec128_cg_solve_label11
-    xor %eax, %eax
-    movdqu -208(%rbp), %xmm0
-    movdqu %xmm0, -96(%rbp)
-    mov %rax, -64(%rbp)
-.L__kefir_func_test_dec128_cg_solve_label12:
-    movl -64(%rbp), %ecx
-    movl -128(%rbp), %edx
-    cmp %edx, %ecx
-    jae .L__kefir_func_test_dec128_cg_solve_label13
-    mov -112(%rbp), %rdi
-    mov %r12, %rsi
-    mov -104(%rbp), %rdx
-    movaps -224(%rbp), %xmm0
-    call test_dec128_ax
-    movdqu .L__kefir_func_test_dec128_cg_solve_label59(%rip), %xmm0
-    movdqu %xmm0, -192(%rbp)
-    xor %eax, %eax
-    jmp .L__kefir_func_test_dec128_cg_solve_label15
 .L__kefir_func_test_dec128_cg_solve_label13:
     mov %r13, %rdi
     call free@PLT
