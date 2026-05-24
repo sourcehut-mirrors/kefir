@@ -290,13 +290,13 @@ __kefir_bigint_unsigned_compare:
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_runtime_func___kefir_bigint_unsigned_compare_label10:
-    mov $1, %eax
+.L__kefir_runtime_func___kefir_bigint_unsigned_compare_label3:
+    xor %eax, %eax
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_runtime_func___kefir_bigint_unsigned_compare_label3:
-    xor %eax, %eax
+.L__kefir_runtime_func___kefir_bigint_unsigned_compare_label10:
+    mov $1, %eax
     lea (%rbp), %rsp
     pop %rbp
     ret

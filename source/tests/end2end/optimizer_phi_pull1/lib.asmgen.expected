@@ -56,11 +56,11 @@ assign_abs:
 condition1:
 .L__kefir_text_func_condition1_begin:
     cmp $0, %edi
-    jg .L__kefir_func_condition1_label3
-    mov $10, %eax
-    ret
-.L__kefir_func_condition1_label3:
+    jle .L__kefir_func_condition1_label2
     lea 10(%edi), %eax
+    ret
+.L__kefir_func_condition1_label2:
+    mov $10, %eax
     ret
 .L__kefir_text_func_condition1_end:
 

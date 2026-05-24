@@ -36,18 +36,7 @@ sum:
     movl -32(%rbp), %ecx
     add $16, %rcx
     cmp $48, %rcx
-    ja .L__kefir_func_sum_label8
-    movq -16(%rbp), %rcx
-    movl -32(%rbp), %esi
-    movq (%rcx, %rsi, 1), %r8
-    movq 8(%rcx, %rsi, 1), %rcx
-    addl $16, -32(%rbp)
-.L__kefir_func_sum_label9:
-    add %r8, %rax
-    adc %rcx, %rdx
-    add $-1, %edi
-    jmp .L__kefir_func_sum_label4
-.L__kefir_func_sum_label8:
+    jbe .L__kefir_func_sum_label7
     movq -24(%rbp), %rcx
     add $15, %rcx
     and $-16, %rcx
@@ -55,11 +44,18 @@ sum:
     movq %rsi, -24(%rbp)
     movq (%rcx), %r8
     movq 8(%rcx), %rcx
+.L__kefir_func_sum_label9:
+    add %r8, %rax
+    adc %rcx, %rdx
+    add $-1, %edi
+    jmp .L__kefir_func_sum_label4
+.L__kefir_func_sum_label7:
+    movq -16(%rbp), %rcx
+    movl -32(%rbp), %esi
+    movq (%rcx, %rsi, 1), %r8
+    movq 8(%rcx, %rsi, 1), %rcx
+    addl $16, -32(%rbp)
     jmp .L__kefir_func_sum_label9
-.L__kefir_func_sum_label5:
-    lea (%rbp), %rsp
-    pop %rbp
-    ret
 .L__kefir_func_sum_label1:
     movdqu %xmm0, -160(%rbp)
     movdqu %xmm1, -144(%rbp)
@@ -70,6 +66,10 @@ sum:
     movdqu %xmm6, -64(%rbp)
     movdqu %xmm7, -48(%rbp)
     jmp .L__kefir_func_sum_label2
+.L__kefir_func_sum_label5:
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
 .L__kefir_text_func_sum_end:
 
 sum2:
@@ -100,18 +100,7 @@ sum2:
     movl -32(%rbp), %ecx
     add $16, %rcx
     cmp $48, %rcx
-    ja .L__kefir_func_sum2_label8
-    movq -16(%rbp), %rcx
-    movl -32(%rbp), %esi
-    movq (%rcx, %rsi, 1), %r8
-    movq 8(%rcx, %rsi, 1), %rcx
-    addl $16, -32(%rbp)
-.L__kefir_func_sum2_label9:
-    add %r8, %rax
-    adc %rcx, %rdx
-    add $-1, %edi
-    jmp .L__kefir_func_sum2_label4
-.L__kefir_func_sum2_label8:
+    jbe .L__kefir_func_sum2_label7
     movq -24(%rbp), %rcx
     add $15, %rcx
     and $-16, %rcx
@@ -119,11 +108,18 @@ sum2:
     movq %rsi, -24(%rbp)
     movq (%rcx), %r8
     movq 8(%rcx), %rcx
+.L__kefir_func_sum2_label9:
+    add %r8, %rax
+    adc %rcx, %rdx
+    add $-1, %edi
+    jmp .L__kefir_func_sum2_label4
+.L__kefir_func_sum2_label7:
+    movq -16(%rbp), %rcx
+    movl -32(%rbp), %esi
+    movq (%rcx, %rsi, 1), %r8
+    movq 8(%rcx, %rsi, 1), %rcx
+    addl $16, -32(%rbp)
     jmp .L__kefir_func_sum2_label9
-.L__kefir_func_sum2_label5:
-    lea (%rbp), %rsp
-    pop %rbp
-    ret
 .L__kefir_func_sum2_label1:
     movdqu %xmm0, -160(%rbp)
     movdqu %xmm1, -144(%rbp)
@@ -134,6 +130,10 @@ sum2:
     movdqu %xmm6, -64(%rbp)
     movdqu %xmm7, -48(%rbp)
     jmp .L__kefir_func_sum2_label2
+.L__kefir_func_sum2_label5:
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
 .L__kefir_text_func_sum2_end:
 
 .L__kefir_text_section_end:

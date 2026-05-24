@@ -171,22 +171,7 @@ ldcuint:
     flds .L__kefir_constant_long_double_to_uint(%rip)
     fxch %st(1)
     fcomi %st(1)
-    jnb .L__kefir_func_ldcuint_label3
-    fstp %st(1)
-    fnstcww -24(%rbp)
-    movw -24(%rbp), %ax
-    or $3072, %ax
-    movw %ax, -32(%rbp)
-    fldcww -32(%rbp)
-    fistpq -16(%rbp)
-    mov -16(%rbp), %rax
-    fldcww -24(%rbp)
-.L__kefir_func_ldcuint_label6:
-    fldcw -8(%rbp)
-    lea (%rbp), %rsp
-    pop %rbp
-    ret
-.L__kefir_func_ldcuint_label3:
+    jb .L__kefir_func_ldcuint_label2
     fnstcww -24(%rbp)
     fsubp
     movw -24(%rbp), %ax
@@ -197,6 +182,21 @@ ldcuint:
     mov -16(%rbp), %rax
     fldcww -24(%rbp)
     btc $63, %rax
+.L__kefir_func_ldcuint_label6:
+    fldcw -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.L__kefir_func_ldcuint_label2:
+    fstp %st(1)
+    fnstcww -24(%rbp)
+    movw -24(%rbp), %ax
+    or $3072, %ax
+    movw %ax, -32(%rbp)
+    fldcww -32(%rbp)
+    fistpq -16(%rbp)
+    mov -16(%rbp), %rax
+    fldcww -24(%rbp)
     jmp .L__kefir_func_ldcuint_label6
 .L__kefir_text_func_ldcuint_end:
 

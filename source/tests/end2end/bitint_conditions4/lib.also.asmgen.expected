@@ -241,8 +241,8 @@ __kefir_bigint_is_zero:
     jnz .L__kefir_runtime_func___kefir_bigint_is_zero_label10
     addq $1, -24(%rbp)
     jmp .L__kefir_runtime_func___kefir_bigint_is_zero_label3
-.L__kefir_runtime_func___kefir_bigint_is_zero_label10:
-    xor %eax, %eax
+.L__kefir_runtime_func___kefir_bigint_is_zero_label12:
+    mov $1, %eax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -251,8 +251,8 @@ __kefir_bigint_is_zero:
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_runtime_func___kefir_bigint_is_zero_label12:
-    mov $1, %eax
+.L__kefir_runtime_func___kefir_bigint_is_zero_label10:
+    xor %eax, %eax
     lea (%rbp), %rsp
     pop %rbp
     ret

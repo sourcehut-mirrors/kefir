@@ -14,16 +14,16 @@ _kefir_local_public_label_test_label3:
     movsx %edi, %rcx
     xor %edi, %edi
     jmpq *(%rax, %rcx, 8)
-.L__kefir_func_test_label5:
-_kefir_local_public_label_test_label2:
-    imul %edx, %esi
-    mov %esi, %eax
-.L__kefir_func_test_label4:
-    ret
 .L__kefir_func_test_label3:
 _kefir_local_public_label_test_label1:
     mov %rsi, %rax
     add %edx, %eax
+.L__kefir_func_test_label4:
+    ret
+.L__kefir_func_test_label5:
+_kefir_local_public_label_test_label2:
+    imul %edx, %esi
+    mov %esi, %eax
     jmp .L__kefir_func_test_label4
 .L__kefir_text_func_test_end:
 

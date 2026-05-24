@@ -1966,8 +1966,8 @@ factorial:
     movl %ecx, -4(%rbp)
     addl $-1, -8(%rbp)
     jmp .L__kefir_func_factorial_label4
-.L__kefir_func_factorial_label5:
-    movl -4(%rbp), %eax
+.L__kefir_func_factorial_label8:
+    xor %eax, %eax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -1976,8 +1976,8 @@ factorial:
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_func_factorial_label8:
-    xor %eax, %eax
+.L__kefir_func_factorial_label5:
+    movl -4(%rbp), %eax
     lea (%rbp), %rsp
     pop %rbp
     ret

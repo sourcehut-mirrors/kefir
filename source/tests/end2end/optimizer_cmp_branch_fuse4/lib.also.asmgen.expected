@@ -29,12 +29,12 @@ int_equals_const:
     push %rbp
     mov %rsp, %rbp
     cmp $100, %rdi
-    je .L__kefir_func_int_equals_const_label3
-    xor %eax, %eax
+    jne .L__kefir_func_int_equals_const_label2
+    mov $1, %eax
     pop %rbp
     ret
-.L__kefir_func_int_equals_const_label3:
-    mov $1, %eax
+.L__kefir_func_int_equals_const_label2:
+    xor %eax, %eax
     pop %rbp
     ret
 .L__kefir_text_func_int_equals_const_end:
@@ -44,12 +44,12 @@ int_less_or_equal_const:
     push %rbp
     mov %rsp, %rbp
     cmp $998, %rdi
-    jle .L__kefir_func_int_less_or_equal_const_label3
-    xor %eax, %eax
+    jg .L__kefir_func_int_less_or_equal_const_label2
+    mov $1, %eax
     pop %rbp
     ret
-.L__kefir_func_int_less_or_equal_const_label3:
-    mov $1, %eax
+.L__kefir_func_int_less_or_equal_const_label2:
+    xor %eax, %eax
     pop %rbp
     ret
 .L__kefir_text_func_int_less_or_equal_const_end:
@@ -59,12 +59,12 @@ int_less_const:
     push %rbp
     mov %rsp, %rbp
     cmp $-5, %rdi
-    jl .L__kefir_func_int_less_const_label3
-    xor %eax, %eax
+    jge .L__kefir_func_int_less_const_label2
+    mov $1, %eax
     pop %rbp
     ret
-.L__kefir_func_int_less_const_label3:
-    mov $1, %eax
+.L__kefir_func_int_less_const_label2:
+    xor %eax, %eax
     pop %rbp
     ret
 .L__kefir_text_func_int_less_const_end:
@@ -74,12 +74,12 @@ int_below_or_equal_const:
     push %rbp
     mov %rsp, %rbp
     cmp $793, %rdi
-    jbe .L__kefir_func_int_below_or_equal_const_label3
-    xor %eax, %eax
+    ja .L__kefir_func_int_below_or_equal_const_label2
+    mov $1, %eax
     pop %rbp
     ret
-.L__kefir_func_int_below_or_equal_const_label3:
-    mov $1, %eax
+.L__kefir_func_int_below_or_equal_const_label2:
+    xor %eax, %eax
     pop %rbp
     ret
 .L__kefir_text_func_int_below_or_equal_const_end:
@@ -89,12 +89,12 @@ int_greater_or_equal_const:
     push %rbp
     mov %rsp, %rbp
     cmp $150, %rdi
-    jge .L__kefir_func_int_greater_or_equal_const_label3
-    xor %eax, %eax
+    jl .L__kefir_func_int_greater_or_equal_const_label2
+    mov $1, %eax
     pop %rbp
     ret
-.L__kefir_func_int_greater_or_equal_const_label3:
-    mov $1, %eax
+.L__kefir_func_int_greater_or_equal_const_label2:
+    xor %eax, %eax
     pop %rbp
     ret
 .L__kefir_text_func_int_greater_or_equal_const_end:
@@ -104,12 +104,12 @@ int_greater_const:
     push %rbp
     mov %rsp, %rbp
     cmp $876, %rdi
-    jg .L__kefir_func_int_greater_const_label3
-    xor %eax, %eax
+    jle .L__kefir_func_int_greater_const_label2
+    mov $1, %eax
     pop %rbp
     ret
-.L__kefir_func_int_greater_const_label3:
-    mov $1, %eax
+.L__kefir_func_int_greater_const_label2:
+    xor %eax, %eax
     pop %rbp
     ret
 .L__kefir_text_func_int_greater_const_end:
@@ -119,12 +119,12 @@ int_not_equal_const:
     push %rbp
     mov %rsp, %rbp
     cmp $-160, %rdi
-    jne .L__kefir_func_int_not_equal_const_label3
-    xor %eax, %eax
+    je .L__kefir_func_int_not_equal_const_label2
+    mov $1, %eax
     pop %rbp
     ret
-.L__kefir_func_int_not_equal_const_label3:
-    mov $1, %eax
+.L__kefir_func_int_not_equal_const_label2:
+    xor %eax, %eax
     pop %rbp
     ret
 .L__kefir_text_func_int_not_equal_const_end:
@@ -134,12 +134,12 @@ int_above_const:
     push %rbp
     mov %rsp, %rbp
     cmp $642, %rdi
-    ja .L__kefir_func_int_above_const_label3
-    xor %eax, %eax
+    jbe .L__kefir_func_int_above_const_label2
+    mov $1, %eax
     pop %rbp
     ret
-.L__kefir_func_int_above_const_label3:
-    mov $1, %eax
+.L__kefir_func_int_above_const_label2:
+    xor %eax, %eax
     pop %rbp
     ret
 .L__kefir_text_func_int_above_const_end:
@@ -149,12 +149,12 @@ int_below_const:
     push %rbp
     mov %rsp, %rbp
     cmp $76, %rdi
-    jb .L__kefir_func_int_below_const_label3
-    xor %eax, %eax
+    jae .L__kefir_func_int_below_const_label2
+    mov $1, %eax
     pop %rbp
     ret
-.L__kefir_func_int_below_const_label3:
-    mov $1, %eax
+.L__kefir_func_int_below_const_label2:
+    xor %eax, %eax
     pop %rbp
     ret
 .L__kefir_text_func_int_below_const_end:
@@ -164,12 +164,12 @@ int_above_or_equal_const:
     push %rbp
     mov %rsp, %rbp
     cmp $10, %rdi
-    jae .L__kefir_func_int_above_or_equal_const_label3
-    xor %eax, %eax
+    jb .L__kefir_func_int_above_or_equal_const_label2
+    mov $1, %eax
     pop %rbp
     ret
-.L__kefir_func_int_above_or_equal_const_label3:
-    mov $1, %eax
+.L__kefir_func_int_above_or_equal_const_label2:
+    xor %eax, %eax
     pop %rbp
     ret
 .L__kefir_text_func_int_above_or_equal_const_end:

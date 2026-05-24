@@ -137,11 +137,11 @@ test9:
 .L__kefir_text_func_test9_begin:
     movl (%rdi), %eax
     test %eax, %eax
-    jnz .L__kefir_func_test9_label3
-    mov $-1, %rax
-    ret
-.L__kefir_func_test9_label3:
+    jz .L__kefir_func_test9_label2
     add %eax, %eax
+    ret
+.L__kefir_func_test9_label2:
+    mov $-1, %rax
     ret
 .L__kefir_text_func_test9_end:
 

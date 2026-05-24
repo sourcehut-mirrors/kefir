@@ -20,13 +20,13 @@ dnot:
     movl %edi, -4(%rbp)
     movl -4(%rbp), %eax
     test %eax, %eax
-    jnz .L__kefir_func_dnot_label3
-    xor %eax, %eax
+    jz .L__kefir_func_dnot_label2
+    mov $1, %eax
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_func_dnot_label3:
-    mov $1, %eax
+.L__kefir_func_dnot_label2:
+    xor %eax, %eax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -105,15 +105,15 @@ dnotld:
     setnp %al
     cmovne %rcx, %rax
     test %al, %al
-    jz .L__kefir_func_dnotld_label3
-    xor %eax, %eax
+    jnz .L__kefir_func_dnotld_label2
+    mov $1, %eax
 .L__kefir_func_dnotld_label5:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_func_dnotld_label3:
-    mov $1, %eax
+.L__kefir_func_dnotld_label2:
+    xor %eax, %eax
     jmp .L__kefir_func_dnotld_label5
 .L__kefir_text_func_dnotld_end:
 .section .rodata

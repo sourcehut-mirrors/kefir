@@ -140,16 +140,16 @@ test7:
     movb $3, -24(%rbp)
     movl $4, -20(%rbp)
     test %edi, %edi
-    jnz .L__kefir_func_test7_label3
-    xor %eax, %eax
-    lea (%rbp), %rsp
-    pop %rbp
-    ret
-.L__kefir_func_test7_label3:
+    jz .L__kefir_func_test7_label2
     movq -16(%rbp), %rdi
     lea (%rbp), %rsp
     pop %rbp
     jmp callback1@PLT
+.L__kefir_func_test7_label2:
+    xor %eax, %eax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
 .L__kefir_text_func_test7_end:
 
 test8:
@@ -164,20 +164,20 @@ test8:
     shl $1, %eax
     movl %eax, -12(%rbp)
     test %edi, %edi
-    jnz .L__kefir_func_test8_label3
-    movb $3, -24(%rbp)
-    movl $4, -20(%rbp)
-    xor %eax, %eax
-    lea (%rbp), %rsp
-    pop %rbp
-    ret
-.L__kefir_func_test8_label3:
+    jz .L__kefir_func_test8_label2
     movb $3, -24(%rbp)
     movl $4, -20(%rbp)
     movq -16(%rbp), %rdi
     lea (%rbp), %rsp
     pop %rbp
     jmp callback1@PLT
+.L__kefir_func_test8_label2:
+    movb $3, -24(%rbp)
+    movl $4, -20(%rbp)
+    xor %eax, %eax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
 .L__kefir_text_func_test8_end:
 
 test9:
@@ -236,18 +236,18 @@ test11:
     shl $1, %eax
     movl %eax, -12(%rbp)
     test %edi, %edi
-    jnz .L__kefir_func_test11_label3
-    xor %eax, %eax
-    lea (%rbp), %rsp
-    pop %rbp
-    ret
-.L__kefir_func_test11_label3:
+    jz .L__kefir_func_test11_label2
     movb $3, -24(%rbp)
     movl $4, -20(%rbp)
     movq -16(%rbp), %rdi
     lea (%rbp), %rsp
     pop %rbp
     jmp callback1@PLT
+.L__kefir_func_test11_label2:
+    xor %eax, %eax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
 .L__kefir_text_func_test11_end:
 
 .L__kefir_text_section_end:

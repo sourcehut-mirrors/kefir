@@ -20,11 +20,11 @@ test1:
     cmp $255, %eax
     setle %al
     and %al, %cl
-    jnz .L__kefir_func_test1_label3
-    mov $2, %eax
-    ret
-.L__kefir_func_test1_label3:
+    jz .L__kefir_func_test1_label2
     mov $1, %eax
+    ret
+.L__kefir_func_test1_label2:
+    mov $2, %eax
     ret
 .L__kefir_text_func_test1_end:
 
@@ -36,11 +36,11 @@ test2:
     cmp $65535, %eax
     setle %al
     and %al, %cl
-    jnz .L__kefir_func_test2_label3
-    mov $2, %eax
-    ret
-.L__kefir_func_test2_label3:
+    jz .L__kefir_func_test2_label2
     mov $1, %eax
+    ret
+.L__kefir_func_test2_label2:
+    mov $2, %eax
     ret
 .L__kefir_text_func_test2_end:
 
@@ -53,11 +53,11 @@ test3:
     cmp %ecx, %edi
     setbe %cl
     and %cl, %al
-    jnz .L__kefir_func_test3_label3
-    mov $2, %eax
-    ret
-.L__kefir_func_test3_label3:
+    jz .L__kefir_func_test3_label2
     mov $1, %eax
+    ret
+.L__kefir_func_test3_label2:
+    mov $2, %eax
     ret
 .L__kefir_text_func_test3_end:
 
@@ -68,11 +68,11 @@ test4:
     cmp $-1, %rdi
     setbe %cl
     and %cl, %al
-    jnz .L__kefir_func_test4_label3
-    mov $2, %eax
-    ret
-.L__kefir_func_test4_label3:
+    jz .L__kefir_func_test4_label2
     mov $1, %eax
+    ret
+.L__kefir_func_test4_label2:
+    mov $2, %eax
     ret
 .L__kefir_text_func_test4_end:
 

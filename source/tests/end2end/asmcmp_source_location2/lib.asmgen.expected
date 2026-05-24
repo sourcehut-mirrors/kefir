@@ -518,98 +518,6 @@ factorial:
 #                }
 #            },
 #            {
-#                "opcode": "mov",
-#                "args": [
-#                    {
-#                        "type": "physical_register",
-#                        "reg": "eax"
-#                    },
-#                    {
-#                        "type": "indirect",
-#                        "basis": "local_var",
-#                        "identifier": 784,
-#                        "offset": 0,
-#                        "variant": "32bit"
-#                    }
-#                ],
-#                "labels": [
-#                    10
-#                ],
-#                "source_location": {
-#                    "source_id": "source\/tests\/end2end\/asmcmp_source_location2\/lib.kefir.asmgen.c",
-#                    "line": 31,
-#                    "column": 12
-#                }
-#            },
-#            {
-#                "opcode": "function_epilogue",
-#                "args": [],
-#                "labels": [
-#                    121
-#                ],
-#                "source_location": {
-#                    "source_id": "source\/tests\/end2end\/asmcmp_source_location2\/lib.kefir.asmgen.c",
-#                    "line": 31,
-#                    "column": 5
-#                }
-#            },
-#            {
-#                "opcode": "ret",
-#                "args": [],
-#                "labels": [],
-#                "source_location": {
-#                    "source_id": "source\/tests\/end2end\/asmcmp_source_location2\/lib.kefir.asmgen.c",
-#                    "line": 31,
-#                    "column": 5
-#                }
-#            },
-#            {
-#                "opcode": "mov",
-#                "args": [
-#                    {
-#                        "type": "physical_register",
-#                        "reg": "eax"
-#                    },
-#                    {
-#                        "type": "indirect",
-#                        "basis": "local_var",
-#                        "identifier": 48,
-#                        "offset": 0,
-#                        "variant": "32bit"
-#                    }
-#                ],
-#                "labels": [
-#                    14
-#                ],
-#                "source_location": {
-#                    "source_id": "source\/tests\/end2end\/asmcmp_source_location2\/lib.kefir.asmgen.c",
-#                    "line": 25,
-#                    "column": 16
-#                }
-#            },
-#            {
-#                "opcode": "function_epilogue",
-#                "args": [],
-#                "labels": [
-#                    137
-#                ],
-#                "source_location": {
-#                    "source_id": "source\/tests\/end2end\/asmcmp_source_location2\/lib.kefir.asmgen.c",
-#                    "line": 25,
-#                    "column": 9
-#                }
-#            },
-#            {
-#                "opcode": "ret",
-#                "args": [],
-#                "labels": [],
-#                "source_location": {
-#                    "source_id": "source\/tests\/end2end\/asmcmp_source_location2\/lib.kefir.asmgen.c",
-#                    "line": 25,
-#                    "column": 9
-#                }
-#            },
-#            {
 #                "opcode": "xor",
 #                "args": [
 #                    {
@@ -648,6 +556,98 @@ factorial:
 #                    "source_id": "source\/tests\/end2end\/asmcmp_source_location2\/lib.kefir.asmgen.c",
 #                    "line": 23,
 #                    "column": 9
+#                }
+#            },
+#            {
+#                "opcode": "mov",
+#                "args": [
+#                    {
+#                        "type": "physical_register",
+#                        "reg": "eax"
+#                    },
+#                    {
+#                        "type": "indirect",
+#                        "basis": "local_var",
+#                        "identifier": 48,
+#                        "offset": 0,
+#                        "variant": "32bit"
+#                    }
+#                ],
+#                "labels": [
+#                    14
+#                ],
+#                "source_location": {
+#                    "source_id": "source\/tests\/end2end\/asmcmp_source_location2\/lib.kefir.asmgen.c",
+#                    "line": 25,
+#                    "column": 16
+#                }
+#            },
+#            {
+#                "opcode": "function_epilogue",
+#                "args": [],
+#                "labels": [
+#                    133
+#                ],
+#                "source_location": {
+#                    "source_id": "source\/tests\/end2end\/asmcmp_source_location2\/lib.kefir.asmgen.c",
+#                    "line": 25,
+#                    "column": 9
+#                }
+#            },
+#            {
+#                "opcode": "ret",
+#                "args": [],
+#                "labels": [],
+#                "source_location": {
+#                    "source_id": "source\/tests\/end2end\/asmcmp_source_location2\/lib.kefir.asmgen.c",
+#                    "line": 25,
+#                    "column": 9
+#                }
+#            },
+#            {
+#                "opcode": "mov",
+#                "args": [
+#                    {
+#                        "type": "physical_register",
+#                        "reg": "eax"
+#                    },
+#                    {
+#                        "type": "indirect",
+#                        "basis": "local_var",
+#                        "identifier": 784,
+#                        "offset": 0,
+#                        "variant": "32bit"
+#                    }
+#                ],
+#                "labels": [
+#                    10
+#                ],
+#                "source_location": {
+#                    "source_id": "source\/tests\/end2end\/asmcmp_source_location2\/lib.kefir.asmgen.c",
+#                    "line": 31,
+#                    "column": 12
+#                }
+#            },
+#            {
+#                "opcode": "function_epilogue",
+#                "args": [],
+#                "labels": [
+#                    160
+#                ],
+#                "source_location": {
+#                    "source_id": "source\/tests\/end2end\/asmcmp_source_location2\/lib.kefir.asmgen.c",
+#                    "line": 31,
+#                    "column": 5
+#                }
+#            },
+#            {
+#                "opcode": "ret",
+#                "args": [],
+#                "labels": [],
+#                "source_location": {
+#                    "source_id": "source\/tests\/end2end\/asmcmp_source_location2\/lib.kefir.asmgen.c",
+#                    "line": 31,
+#                    "column": 5
 #                }
 #            },
 #            {
@@ -719,11 +719,9 @@ factorial:
 .loc 0 28 5
 .L__kefir_func_factorial_label116:
     jmp .L__kefir_func_factorial_label8
-.loc 0 31 12
-.L__kefir_func_factorial_label10:
-    movl -4(%rbp), %eax
-.loc 0 31 5
-.L__kefir_func_factorial_label121:
+.loc 0 23 9
+.L__kefir_func_factorial_label16:
+    xor %eax, %eax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -731,13 +729,15 @@ factorial:
 .L__kefir_func_factorial_label14:
     movl -8(%rbp), %eax
 .loc 0 25 9
-.L__kefir_func_factorial_label137:
+.L__kefir_func_factorial_label133:
     lea (%rbp), %rsp
     pop %rbp
     ret
-.loc 0 23 9
-.L__kefir_func_factorial_label16:
-    xor %eax, %eax
+.loc 0 31 12
+.L__kefir_func_factorial_label10:
+    movl -4(%rbp), %eax
+.loc 0 31 5
+.L__kefir_func_factorial_label160:
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -1023,7 +1023,7 @@ factorial:
 .L__kefir_debug_rnglist_section_entry_2:
     .byte 4
     .uleb128 .L__kefir_func_factorial_label16 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_factorial_label161 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_factorial_label14 - .L__kefir_text_section_begin
     .byte 4
     .uleb128 .L__kefir_func_factorial_label36 - .L__kefir_text_section_begin
     .uleb128 .L__kefir_func_factorial_label48 - .L__kefir_text_section_begin
@@ -1031,7 +1031,7 @@ factorial:
 .L__kefir_debug_rnglist_section_entry_3:
     .byte 4
     .uleb128 .L__kefir_func_factorial_label14 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_factorial_label16 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_factorial_label10 - .L__kefir_text_section_begin
     .byte 4
     .uleb128 .L__kefir_func_factorial_label48 - .L__kefir_text_section_begin
     .uleb128 .L__kefir_func_factorial_label73 - .L__kefir_text_section_begin
@@ -1039,7 +1039,7 @@ factorial:
 .L__kefir_debug_rnglist_section_entry_4:
     .byte 4
     .uleb128 .L__kefir_func_factorial_label8 - .L__kefir_text_section_begin
-    .uleb128 .L__kefir_func_factorial_label10 - .L__kefir_text_section_begin
+    .uleb128 .L__kefir_func_factorial_label16 - .L__kefir_text_section_begin
     .byte 0
 .L__kefir_debug_rnglist_section_entry_5:
     .byte 4

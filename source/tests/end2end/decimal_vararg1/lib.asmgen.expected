@@ -44,27 +44,21 @@ sum32:
     jz .L__kefir_func_sum32_label12
     movl -44(%rbp), %eax
     cmp $176, %eax
-    jae .L__kefir_func_sum32_label8
-    lea 16(%rax), %rax
-    movl %eax, -44(%rbp)
-    add -32(%rbp), %rax
-    movdqu -16(%rax), %xmm1
-.L__kefir_func_sum32_label9:
-    call __bid_addsd3@PLT
-    add $-1, %ebx
-    jmp .L__kefir_func_sum32_label4
-.L__kefir_func_sum32_label8:
+    jb .L__kefir_func_sum32_label7
     mov -40(%rbp), %rax
     lea 8(%rax), %rcx
     mov %rcx, -40(%rbp)
     movq (%rax), %xmm1
+.L__kefir_func_sum32_label9:
+    call __bid_addsd3@PLT
+    add $-1, %ebx
+    jmp .L__kefir_func_sum32_label4
+.L__kefir_func_sum32_label7:
+    lea 16(%rax), %rax
+    movl %eax, -44(%rbp)
+    add -32(%rbp), %rax
+    movdqu -16(%rax), %xmm1
     jmp .L__kefir_func_sum32_label9
-.L__kefir_func_sum32_label12:
-    ldmxcsr -16(%rbp)
-    lea -8(%rbp), %rsp
-    pop %rbx
-    pop %rbp
-    ret
 .L__kefir_func_sum32_label1:
     movdqu %xmm0, -176(%rbp)
     movdqu %xmm1, -160(%rbp)
@@ -75,6 +69,12 @@ sum32:
     movdqu %xmm6, -80(%rbp)
     movdqu %xmm7, -64(%rbp)
     jmp .L__kefir_func_sum32_label2
+.L__kefir_func_sum32_label12:
+    ldmxcsr -16(%rbp)
+    lea -8(%rbp), %rsp
+    pop %rbx
+    pop %rbp
+    ret
 .L__kefir_text_func_sum32_end:
 .section .rodata
     .align 4
@@ -111,27 +111,21 @@ sum64:
     jz .L__kefir_func_sum64_label12
     movl -44(%rbp), %eax
     cmp $176, %eax
-    jae .L__kefir_func_sum64_label8
-    lea 16(%rax), %rax
-    movl %eax, -44(%rbp)
-    add -32(%rbp), %rax
-    movdqu -16(%rax), %xmm1
-.L__kefir_func_sum64_label9:
-    call __bid_adddd3@PLT
-    add $-1, %ebx
-    jmp .L__kefir_func_sum64_label4
-.L__kefir_func_sum64_label8:
+    jb .L__kefir_func_sum64_label7
     mov -40(%rbp), %rax
     lea 8(%rax), %rcx
     mov %rcx, -40(%rbp)
     movq (%rax), %xmm1
+.L__kefir_func_sum64_label9:
+    call __bid_adddd3@PLT
+    add $-1, %ebx
+    jmp .L__kefir_func_sum64_label4
+.L__kefir_func_sum64_label7:
+    lea 16(%rax), %rax
+    movl %eax, -44(%rbp)
+    add -32(%rbp), %rax
+    movdqu -16(%rax), %xmm1
     jmp .L__kefir_func_sum64_label9
-.L__kefir_func_sum64_label12:
-    ldmxcsr -16(%rbp)
-    lea -8(%rbp), %rsp
-    pop %rbx
-    pop %rbp
-    ret
 .L__kefir_func_sum64_label1:
     movdqu %xmm0, -176(%rbp)
     movdqu %xmm1, -160(%rbp)
@@ -142,6 +136,12 @@ sum64:
     movdqu %xmm6, -80(%rbp)
     movdqu %xmm7, -64(%rbp)
     jmp .L__kefir_func_sum64_label2
+.L__kefir_func_sum64_label12:
+    ldmxcsr -16(%rbp)
+    lea -8(%rbp), %rsp
+    pop %rbx
+    pop %rbp
+    ret
 .L__kefir_text_func_sum64_end:
 .section .rodata
     .align 8
@@ -178,29 +178,23 @@ sum128:
     jz .L__kefir_func_sum128_label12
     movl -44(%rbp), %eax
     cmp $176, %eax
-    jae .L__kefir_func_sum128_label8
-    lea 16(%rax), %rax
-    movl %eax, -44(%rbp)
-    add -32(%rbp), %rax
-    movdqu -16(%rax), %xmm1
-.L__kefir_func_sum128_label9:
-    call __bid_addtd3@PLT
-    add $-1, %ebx
-    jmp .L__kefir_func_sum128_label4
-.L__kefir_func_sum128_label8:
+    jb .L__kefir_func_sum128_label7
     mov -40(%rbp), %rax
     add $15, %rax
     and $-16, %rax
     lea 16(%rax), %rcx
     mov %rcx, -40(%rbp)
     movdqu (%rax), %xmm1
+.L__kefir_func_sum128_label9:
+    call __bid_addtd3@PLT
+    add $-1, %ebx
+    jmp .L__kefir_func_sum128_label4
+.L__kefir_func_sum128_label7:
+    lea 16(%rax), %rax
+    movl %eax, -44(%rbp)
+    add -32(%rbp), %rax
+    movdqu -16(%rax), %xmm1
     jmp .L__kefir_func_sum128_label9
-.L__kefir_func_sum128_label12:
-    ldmxcsr -16(%rbp)
-    lea -8(%rbp), %rsp
-    pop %rbx
-    pop %rbp
-    ret
 .L__kefir_func_sum128_label1:
     movdqu %xmm0, -176(%rbp)
     movdqu %xmm1, -160(%rbp)
@@ -211,6 +205,12 @@ sum128:
     movdqu %xmm6, -80(%rbp)
     movdqu %xmm7, -64(%rbp)
     jmp .L__kefir_func_sum128_label2
+.L__kefir_func_sum128_label12:
+    ldmxcsr -16(%rbp)
+    lea -8(%rbp), %rsp
+    pop %rbx
+    pop %rbp
+    ret
 .L__kefir_text_func_sum128_end:
 .section .rodata
     .align 16
@@ -247,42 +247,30 @@ sum128_2:
     jz .L__kefir_func_sum128_2_label15
     movl -44(%rbp), %eax
     cmp $176, %eax
-    jae .L__kefir_func_sum128_2_label8
-    lea 16(%rax), %rax
-    movl %eax, -44(%rbp)
-    add -32(%rbp), %rax
-    movdqu -16(%rax), %xmm1
-.L__kefir_func_sum128_2_label9:
-    movl -44(%rbp), %eax
-    cmp $176, %eax
-    jae .L__kefir_func_sum128_2_label11
-    lea 16(%rax), %rax
-    movl %eax, -44(%rbp)
-    add -32(%rbp), %rax
-    movdqu -16(%rax), %xmm2
-.L__kefir_func_sum128_2_label12:
-    call __bid_addtd3@PLT
-    add $-1, %ebx
-    jmp .L__kefir_func_sum128_2_label4
-.L__kefir_func_sum128_2_label11:
-    mov -40(%rbp), %rax
-    lea 8(%rax), %rax
-    mov %rax, -40(%rbp)
-    jmp .L__kefir_func_sum128_2_label12
-.L__kefir_func_sum128_2_label8:
+    jb .L__kefir_func_sum128_2_label7
     mov -40(%rbp), %rax
     add $15, %rax
     and $-16, %rax
     lea 16(%rax), %rcx
     mov %rcx, -40(%rbp)
     movdqu (%rax), %xmm1
+.L__kefir_func_sum128_2_label9:
+    movl -44(%rbp), %eax
+    cmp $176, %eax
+    jb .L__kefir_func_sum128_2_label10
+    mov -40(%rbp), %rax
+    lea 8(%rax), %rax
+    mov %rax, -40(%rbp)
+.L__kefir_func_sum128_2_label12:
+    call __bid_addtd3@PLT
+    add $-1, %ebx
+    jmp .L__kefir_func_sum128_2_label4
+.L__kefir_func_sum128_2_label7:
+    lea 16(%rax), %rax
+    movl %eax, -44(%rbp)
+    add -32(%rbp), %rax
+    movdqu -16(%rax), %xmm1
     jmp .L__kefir_func_sum128_2_label9
-.L__kefir_func_sum128_2_label15:
-    ldmxcsr -16(%rbp)
-    lea -8(%rbp), %rsp
-    pop %rbx
-    pop %rbp
-    ret
 .L__kefir_func_sum128_2_label1:
     movdqu %xmm0, -176(%rbp)
     movdqu %xmm1, -160(%rbp)
@@ -293,6 +281,18 @@ sum128_2:
     movdqu %xmm6, -80(%rbp)
     movdqu %xmm7, -64(%rbp)
     jmp .L__kefir_func_sum128_2_label2
+.L__kefir_func_sum128_2_label10:
+    lea 16(%rax), %rax
+    movl %eax, -44(%rbp)
+    add -32(%rbp), %rax
+    movdqu -16(%rax), %xmm2
+    jmp .L__kefir_func_sum128_2_label12
+.L__kefir_func_sum128_2_label15:
+    ldmxcsr -16(%rbp)
+    lea -8(%rbp), %rsp
+    pop %rbx
+    pop %rbp
+    ret
 .L__kefir_text_func_sum128_2_end:
 .section .rodata
     .align 16

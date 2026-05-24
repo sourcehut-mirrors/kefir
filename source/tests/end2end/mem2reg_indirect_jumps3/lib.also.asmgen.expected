@@ -22,19 +22,6 @@ run_op:
 _kefir_local_public_label_run_op_sub:
     add %rdi, %r9
     jmp .L__kefir_func_run_op_label6
-.L__kefir_func_run_op_label5:
-_kefir_local_public_label_run_op_div:
-    mov %r8, %rax
-    cqo
-    idiv %rcx
-    add %rax, %r9
-    jmp .L__kefir_func_run_op_label6
-.L__kefir_func_run_op_label3:
-_kefir_local_public_label_run_op_mul:
-    mov %r8, %rax
-    imul %rcx, %rax
-    add %rax, %r9
-    jmp .L__kefir_func_run_op_label6
 .L__kefir_func_run_op_label4:
 _kefir_local_public_label_run_op_add:
     mov %r8, %rax
@@ -47,6 +34,19 @@ _kefir_local_public_label_run_op_ret:
     test %rsi, %rsi
     cmovz %r9, %rax
     ret
+.L__kefir_func_run_op_label3:
+_kefir_local_public_label_run_op_mul:
+    mov %r8, %rax
+    imul %rcx, %rax
+    add %rax, %r9
+    jmp .L__kefir_func_run_op_label6
+.L__kefir_func_run_op_label5:
+_kefir_local_public_label_run_op_div:
+    mov %r8, %rax
+    cqo
+    idiv %rcx
+    add %rax, %r9
+    jmp .L__kefir_func_run_op_label6
 .L__kefir_text_func_run_op_end:
 
 .L__kefir_text_section_end:

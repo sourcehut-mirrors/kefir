@@ -48,18 +48,6 @@ test2:
     call test@PLT
     addl $1, -36(%rbp)
     jmp .L__kefir_func_test2_label5
-.L__kefir_func_test2_label3:
-    movl $100, -44(%rbp)
-    mov $3, %edi
-    lea -48(%rbp), %rsi
-    lea -40(%rbp), %rdx
-    lea -44(%rbp), %rcx
-    xor %eax, %eax
-    call test@PLT
-    lea -8(%rbp), %rsp
-    pop %rbx
-    pop %rbp
-    ret
 .L__kefir_func_test2_label2:
     movl $10, -28(%rbp)
     movl $11, -32(%rbp)
@@ -72,7 +60,18 @@ test2:
     lea -24(%rbp), %r9
     xor %eax, %eax
     call test@PLT
-    jmp .L__kefir_func_test2_label3
+.L__kefir_func_test2_label3:
+    movl $100, -44(%rbp)
+    mov $3, %edi
+    lea -48(%rbp), %rsi
+    lea -40(%rbp), %rdx
+    lea -44(%rbp), %rcx
+    xor %eax, %eax
+    call test@PLT
+    lea -8(%rbp), %rsp
+    pop %rbx
+    pop %rbp
+    ret
 .L__kefir_text_func_test2_end:
 
 .L__kefir_text_section_end:

@@ -19,22 +19,7 @@ test:
     flds .L__kefir_constant_long_double_to_uint(%rip)
     fxch %st(1)
     fcomi %st(1)
-    jnb .L__kefir_func_test_label3
-    fstp %st(1)
-    fnstcww -48(%rbp)
-    movw -48(%rbp), %ax
-    or $3072, %ax
-    movw %ax, -64(%rbp)
-    fldcww -64(%rbp)
-    fistpq -56(%rbp)
-    mov -56(%rbp), %rax
-    fldcww -48(%rbp)
-.L__kefir_func_test_label6:
-    fldcw -8(%rbp)
-    lea (%rbp), %rsp
-    pop %rbp
-    ret
-.L__kefir_func_test_label3:
+    jb .L__kefir_func_test_label2
     fnstcww -48(%rbp)
     fsubp
     movw -48(%rbp), %ax
@@ -45,6 +30,21 @@ test:
     mov -56(%rbp), %rax
     fldcww -48(%rbp)
     btc $63, %rax
+.L__kefir_func_test_label6:
+    fldcw -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.L__kefir_func_test_label2:
+    fstp %st(1)
+    fnstcww -48(%rbp)
+    movw -48(%rbp), %ax
+    or $3072, %ax
+    movw %ax, -64(%rbp)
+    fldcww -64(%rbp)
+    fistpq -56(%rbp)
+    mov -56(%rbp), %rax
+    fldcww -48(%rbp)
     jmp .L__kefir_func_test_label6
 .L__kefir_text_func_test_end:
 .section .rodata

@@ -1510,6 +1510,9 @@ test_dec64_gravity_acceleration:
     movaps %xmm0, -272(%rbp)
     mov %r12d, %ebx
     jmp .L__kefir_func_test_dec64_gravity_acceleration_label4
+.L__kefir_func_test_dec64_gravity_acceleration_label3:
+    movdqu -240(%rbp), %xmm0
+    movdqu %xmm0, -272(%rbp)
 .L__kefir_func_test_dec64_gravity_acceleration_label7:
     movq -160(%rbp), %xmm1
     movdqu -152(%rbp), %xmm0
@@ -1548,10 +1551,6 @@ test_dec64_gravity_acceleration:
     pop %rbx
     pop %rbp
     ret
-.L__kefir_func_test_dec64_gravity_acceleration_label3:
-    movdqu -240(%rbp), %xmm0
-    movdqu %xmm0, -272(%rbp)
-    jmp .L__kefir_func_test_dec64_gravity_acceleration_label7
 .L__kefir_text_func_test_dec64_gravity_acceleration_end:
 .section .rodata
     .align 8
@@ -1669,6 +1668,9 @@ test_dec32_gravity_acceleration:
     mov %r12d, %ebx
     movaps %xmm0, -192(%rbp)
     jmp .L__kefir_func_test_dec32_gravity_acceleration_label4
+.L__kefir_func_test_dec32_gravity_acceleration_label3:
+    movdqu -160(%rbp), %xmm0
+    movdqu %xmm0, -192(%rbp)
 .L__kefir_func_test_dec32_gravity_acceleration_label7:
     movd -88(%rbp), %xmm1
     movq -84(%rbp), %rax
@@ -1706,10 +1708,6 @@ test_dec32_gravity_acceleration:
     pop %rbx
     pop %rbp
     ret
-.L__kefir_func_test_dec32_gravity_acceleration_label3:
-    movdqu -160(%rbp), %xmm0
-    movdqu %xmm0, -192(%rbp)
-    jmp .L__kefir_func_test_dec32_gravity_acceleration_label7
 .L__kefir_text_func_test_dec32_gravity_acceleration_end:
 .section .rodata
     .align 4
@@ -1919,6 +1917,9 @@ test_dec128_gravity_acceleration:
     movaps %xmm0, -432(%rbp)
     mov %r13d, %r12d
     jmp .L__kefir_func_test_dec128_gravity_acceleration_label4
+.L__kefir_func_test_dec128_gravity_acceleration_label3:
+    movdqu -400(%rbp), %xmm0
+    movdqu %xmm0, -432(%rbp)
 .L__kefir_func_test_dec128_gravity_acceleration_label7:
     movdqu -288(%rbp), %xmm1
     movdqu -240(%rbp), %xmm0
@@ -1961,10 +1962,6 @@ test_dec128_gravity_acceleration:
     pop %rbx
     pop %rbp
     ret
-.L__kefir_func_test_dec128_gravity_acceleration_label3:
-    movdqu -400(%rbp), %xmm0
-    movdqu %xmm0, -432(%rbp)
-    jmp .L__kefir_func_test_dec128_gravity_acceleration_label7
 .L__kefir_text_func_test_dec128_gravity_acceleration_end:
 .section .rodata
     .align 16

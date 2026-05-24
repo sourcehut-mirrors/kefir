@@ -45,7 +45,7 @@ test_is_lock_free:
 .L__kefir_text_func_test_is_lock_free_begin:
     mov $1, %eax
     cmp $2, %eax
-    je .L__kefir_func_test_is_lock_free_label5
+    jne .L__kefir_func_test_is_lock_free_label3
     mov $1, %eax
 .L__kefir_func_test_is_lock_free_label6:
     xor %ecx, %ecx
@@ -93,7 +93,7 @@ test_is_lock_free:
 .L__kefir_func_test_is_lock_free_label23:
     xor %eax, %eax
     ret
-.L__kefir_func_test_is_lock_free_label5:
+.L__kefir_func_test_is_lock_free_label3:
     mov $1, %eax
     jmp .L__kefir_func_test_is_lock_free_label6
 .L__kefir_text_func_test_is_lock_free_end:

@@ -43,20 +43,20 @@ get1:
     shr $32, %rax
     pxor %xmm0, %xmm0
     test %rax, %rax
-    js .L__kefir_func_get1_label3
-    cvtsi2ss %rax, %xmm0
-.L__kefir_func_get1_label6:
-    ldmxcsr -8(%rbp)
-    lea (%rbp), %rsp
-    pop %rbp
-    ret
-.L__kefir_func_get1_label3:
+    jns .L__kefir_func_get1_label2
     mov %rax, %rcx
     and $1, %rcx
     shr $1, %rax
     or %rax, %rcx
     cvtsi2ss %rcx, %xmm0
     addss %xmm0, %xmm0
+.L__kefir_func_get1_label6:
+    ldmxcsr -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.L__kefir_func_get1_label2:
+    cvtsi2ss %rax, %xmm0
     jmp .L__kefir_func_get1_label6
 .L__kefir_text_func_get1_end:
 
@@ -87,20 +87,20 @@ get3:
     shr $24, %rax
     pxor %xmm0, %xmm0
     test %rax, %rax
-    js .L__kefir_func_get3_label3
-    cvtsi2sd %rax, %xmm0
-.L__kefir_func_get3_label6:
-    ldmxcsr -8(%rbp)
-    lea (%rbp), %rsp
-    pop %rbp
-    ret
-.L__kefir_func_get3_label3:
+    jns .L__kefir_func_get3_label2
     mov %rax, %rcx
     and $1, %rcx
     shr $1, %rax
     or %rax, %rcx
     cvtsi2sd %rcx, %xmm0
     addsd %xmm0, %xmm0
+.L__kefir_func_get3_label6:
+    ldmxcsr -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.L__kefir_func_get3_label2:
+    cvtsi2sd %rax, %xmm0
     jmp .L__kefir_func_get3_label6
 .L__kefir_text_func_get3_end:
 
