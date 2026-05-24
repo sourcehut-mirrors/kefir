@@ -230,7 +230,11 @@ static kefir_result_t schedule_chain(struct kefir_mem *mem,
                                               &entry);
                      res == KEFIR_OK; res = kefir_hashset_next(&iter, &entry)) {
                     ASSIGN_DECL_CAST(kefir_codegen_target_ir_block_ref_t, succ_block_ref, entry);
-                    if (kefir_hashset_has(&chain->block_index, (kefir_hashset_key_t) succ_block_ref)) {
+
+                    kefir_hashtable_value_t chain_head;
+                    REQUIRE_OK(kefir_hashtable_at(&scheduler_payload->chain_index,
+                                                  (kefir_hashtable_key_t) succ_block_ref, &chain_head));
+                    if (!kefir_hashtable_has(&scheduler_payload->chains, (kefir_hashtable_key_t) chain_head)) {
                         continue;
                     }
 
@@ -240,13 +244,25 @@ static kefir_result_t schedule_chain(struct kefir_mem *mem,
                     if (res != KEFIR_NOT_FOUND) {
                         REQUIRE_OK(res);
                         if (loop->level > deepest_loop_adjacent_chain_level) {
-                            kefir_hashtable_value_t chain_head;
-                            REQUIRE_OK(kefir_hashtable_at(&scheduler_payload->chain_index,
-                                                          (kefir_hashtable_key_t) succ_block_ref, &chain_head));
                             if (kefir_hashtable_has(&scheduler_payload->chains, (kefir_hashtable_key_t) chain_head)) {
                                 deepest_loop_adjacent_chain = chain_head;
                                 deepest_loop_adjacent_chain_level = loop->level;
                             }
+                        }
+                    } else if (deepest_loop_adjacent_chain_level == 0) {
+                        if (deepest_loop_adjacent_chain != KEFIR_ID_NONE) {
+                            kefir_hashtable_value_t table_value, table_value2;
+                            REQUIRE_OK(kefir_hashtable_at(&scheduler_payload->continuation_benefit,
+                                                          (kefir_hashtable_key_t) succ_block_ref, &table_value));
+                            REQUIRE_OK(kefir_hashtable_at(&scheduler_payload->continuation_benefit,
+                                                          (kefir_hashtable_key_t) deepest_loop_adjacent_chain,
+                                                          &table_value2));
+                            if (table_value > table_value2) {
+                                deepest_loop_adjacent_chain = chain_head;
+                                deepest_loop_adjacent_chain_level = 0;
+                            }
+                        } else {
+                            deepest_loop_adjacent_chain = chain_head;
                         }
                     }
                 }

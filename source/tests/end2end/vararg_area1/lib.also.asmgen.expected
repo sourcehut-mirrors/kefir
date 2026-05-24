@@ -75,6 +75,16 @@ process:
     add -48(%rbp), %rax
     mov -8(%rax), %rax
     jmp .L__kefir_func_process_label11
+.L__kefir_func_process_label1:
+    movdqu %xmm0, -208(%rbp)
+    movdqu %xmm1, -192(%rbp)
+    movdqu %xmm2, -176(%rbp)
+    movdqu %xmm3, -160(%rbp)
+    movdqu %xmm4, -144(%rbp)
+    movdqu %xmm5, -128(%rbp)
+    movdqu %xmm6, -112(%rbp)
+    movdqu %xmm7, -96(%rbp)
+    jmp .L__kefir_func_process_label2
 .L__kefir_func_process_label4:
     xor %eax, %eax
 .L__kefir_func_process_label14:
@@ -88,16 +98,6 @@ process:
     movl -72(%rbp), %esi
     call *%rbx
     jmp .L__kefir_func_process_label14
-.L__kefir_func_process_label1:
-    movdqu %xmm0, -208(%rbp)
-    movdqu %xmm1, -192(%rbp)
-    movdqu %xmm2, -176(%rbp)
-    movdqu %xmm3, -160(%rbp)
-    movdqu %xmm4, -144(%rbp)
-    movdqu %xmm5, -128(%rbp)
-    movdqu %xmm6, -112(%rbp)
-    movdqu %xmm7, -96(%rbp)
-    jmp .L__kefir_func_process_label2
 .L__kefir_text_func_process_end:
 
 .L__kefir_text_section_end:

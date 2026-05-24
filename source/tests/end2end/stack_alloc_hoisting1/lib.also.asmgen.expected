@@ -29,15 +29,15 @@ test:
     mov %esi, %eax
     mov %rdx, %rcx
     jmp .L__kefir_func_test_label2
+.L__kefir_func_test_label3:
+    xor %eax, %eax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
 .L__kefir_func_test_label7:
     xor %eax, %eax
     cmp %rdx, %rcx
     sete %al
-    lea (%rbp), %rsp
-    pop %rbp
-    ret
-.L__kefir_func_test_label3:
-    xor %eax, %eax
     lea (%rbp), %rsp
     pop %rbp
     ret

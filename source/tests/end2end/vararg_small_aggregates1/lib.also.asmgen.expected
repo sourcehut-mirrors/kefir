@@ -59,10 +59,6 @@ sum:
     movw %si, -6(%rbp)
     addl $8, -32(%rbp)
     jmp .L__kefir_func_sum_label10
-.L__kefir_func_sum_label5:
-    lea (%rbp), %rsp
-    pop %rbp
-    ret
 .L__kefir_func_sum_label1:
     movdqu %xmm0, -160(%rbp)
     movdqu %xmm1, -144(%rbp)
@@ -73,6 +69,10 @@ sum:
     movdqu %xmm6, -64(%rbp)
     movdqu %xmm7, -48(%rbp)
     jmp .L__kefir_func_sum_label2
+.L__kefir_func_sum_label5:
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
 .L__kefir_text_func_sum_end:
 
 .L__kefir_text_section_end:

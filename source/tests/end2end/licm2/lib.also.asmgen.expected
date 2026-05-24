@@ -90,16 +90,6 @@ test2:
 .L__kefir_func_test2_label17:
     mov %r11d, %r9d
     jmp .L__kefir_func_test2_label2
-.L__kefir_func_test2_label8:
-    lea -24(%rbp), %rsp
-    pop %r13
-    pop %r12
-    pop %rbx
-    pop %rbp
-    ret
-.L__kefir_func_test2_label16:
-    mov %r11d, %r8d
-    jmp .L__kefir_func_test2_label5
 .L__kefir_func_test2_label3:
     xor %ecx, %ecx
     mov %rcx, %r8
@@ -129,6 +119,16 @@ test2:
     movl %r12d, (%r9, %rbx, 4)
     add $1, %r8d
     jmp .L__kefir_func_test2_label9
+.L__kefir_func_test2_label16:
+    mov %r11d, %r8d
+    jmp .L__kefir_func_test2_label5
+.L__kefir_func_test2_label8:
+    lea -24(%rbp), %rsp
+    pop %r13
+    pop %r12
+    pop %rbx
+    pop %rbp
+    ret
 .L__kefir_text_func_test2_end:
 
 .L__kefir_text_section_end:

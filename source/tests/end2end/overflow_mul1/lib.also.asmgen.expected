@@ -256,22 +256,22 @@ overflow_mul_long_long_ulong:
     movq %rax, (%rcx)
     mov %edx, %eax
     ret
-.L__kefir_func_overflow_mul_long_long_ulong_label8:
-    xor %edi, %edi
-    test %rsi, %rsi
-    setne %dil
-    jmp .L__kefir_func_overflow_mul_long_long_ulong_label3
 .L__kefir_func_overflow_mul_long_long_ulong_label5:
     neg %rax
     neg %rsi
     mov %r8d, %edi
     jmp .L__kefir_func_overflow_mul_long_long_ulong_label3
-.L__kefir_func_overflow_mul_long_long_ulong_label11:
-    mov %rdi, %rdx
-    jmp .L__kefir_func_overflow_mul_long_long_ulong_label9
 .L__kefir_func_overflow_mul_long_long_ulong_label13:
     mov %r8d, %edi
     jmp .L__kefir_func_overflow_mul_long_long_ulong_label3
+.L__kefir_func_overflow_mul_long_long_ulong_label8:
+    xor %edi, %edi
+    test %rsi, %rsi
+    setne %dil
+    jmp .L__kefir_func_overflow_mul_long_long_ulong_label3
+.L__kefir_func_overflow_mul_long_long_ulong_label11:
+    mov %rdi, %rdx
+    jmp .L__kefir_func_overflow_mul_long_long_ulong_label9
 .L__kefir_text_func_overflow_mul_long_long_ulong_end:
 
 overflow_mul_long_ulong_long:
