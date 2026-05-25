@@ -1,0 +1,55 @@
+
+KEFIR_EXTERNAL_TEST_BFS_DIR := $(KEFIR_EXTERNAL_TESTS_DIR)/bfs
+
+KEFIR_EXTERNAL_TEST_BFS_VERSION := 292b2520387368f42f97b86f561c96c1acfe5622
+KEFIR_EXTERNAL_TEST_BFS_ARCHIVE_FILENAME := $(KEFIR_EXTERNAL_TEST_BFS_VERSION).zip
+KEFIR_EXTERNAL_TEST_BFS_ARCHIVE := $(KEFIR_EXTERNAL_TEST_BFS_DIR)/$(KEFIR_EXTERNAL_TEST_BFS_ARCHIVE_FILENAME)
+KEFIR_EXTERNAL_TEST_BFS_SOURCE_DIR := $(KEFIR_EXTERNAL_TEST_BFS_DIR)/bfs-$(KEFIR_EXTERNAL_TEST_BFS_VERSION)
+KEFIR_EXTERNAL_TEST_BFS_URL := https://github.com/tavianator/bfs/archive/$(KEFIR_EXTERNAL_TEST_BFS_ARCHIVE_FILENAME)
+
+KEFIR_EXTERNAL_TEST_BFS_ARCHIVE_SHA256 := c3b94f52e00f596d1eb79ad6962329d60a259f56a01b87f09fb5a77d0f043fc7
+
+$(KEFIR_EXTERNAL_TEST_BFS_ARCHIVE):
+	@mkdir -p $(dir $@)
+	@echo "Downloading $(KEFIR_EXTERNAL_TEST_BFS_URL)"
+	@$(WGET) -O "$@.tmp" "$(KEFIR_EXTERNAL_TEST_BFS_URL)"
+	@$(SCRIPTS_DIR)/checksum_sha256.sh "$@.tmp" "$(KEFIR_EXTERNAL_TEST_BFS_ARCHIVE_SHA256)"
+	@mv "$@.tmp" "$@"
+
+$(KEFIR_EXTERNAL_TEST_BFS_SOURCE_DIR)/.extracted: $(KEFIR_EXTERNAL_TEST_BFS_ARCHIVE)
+	@echo "Extracting $(KEFIR_EXTERNAL_TEST_BFS_ARCHIVE_FILENAME)..."
+	@cd "$(KEFIR_EXTERNAL_TEST_BFS_DIR)" && unzip "$(KEFIR_EXTERNAL_TEST_BFS_ARCHIVE_FILENAME)"
+	@touch "$@"
+
+$(KEFIR_EXTERNAL_TEST_BFS_SOURCE_DIR)/build/.config.mk: $(KEFIR_EXTERNAL_TEST_BFS_SOURCE_DIR)/.extracted $(KEFIR_EXE)
+	@echo "Configuring bfs $(KEFIR_EXTERNAL_TEST_BFS_VERSION)..."
+	@cd "$(KEFIR_EXTERNAL_TEST_BFS_SOURCE_DIR)" && \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
+		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
+		CC="$(realpath $(KEFIR_EXE))" \
+		./configure
+	@touch "$@"
+
+$(KEFIR_EXTERNAL_TEST_BFS_SOURCE_DIR)/bin/bfs: $(KEFIR_EXTERNAL_TEST_BFS_SOURCE_DIR)/build/.config.mk
+	@echo "Building bfs $(KEFIR_EXTERNAL_TEST_BFS_VERSION)..."
+	@cd "$(KEFIR_EXTERNAL_TEST_BFS_SOURCE_DIR)" && \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
+		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
+		CC="$(realpath $(KEFIR_EXE))" \
+		$(MAKE)
+
+$(KEFIR_EXTERNAL_TEST_BFS_DIR)/tests.log: $(KEFIR_EXTERNAL_TEST_BFS_SOURCE_DIR)/bin/bfs
+	@echo "Testing bfs $(KEFIR_EXTERNAL_TEST_BFS_VERSION)..."
+	@cd "$(KEFIR_EXTERNAL_TEST_BFS_SOURCE_DIR)" && \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR))$(if $(LD_LIBRARY_PATH),:$(LD_LIBRARY_PATH))" \
+		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
+		CC="$(realpath $(KEFIR_EXE))" \
+		bash -c 'set -o pipefail; $(MAKE) check | tee "$(shell realpath $@.tmp)"'
+	@mv "$@.tmp" "$@"
+
+$(KEFIR_EXTERNAL_TESTS_DIR)/bfs.test.done: $(KEFIR_EXTERNAL_TEST_BFS_DIR)/tests.log
+	@"$(SOURCE_DIR)/tests/external/bfs/validate.sh" $(KEFIR_EXTERNAL_TEST_BFS_DIR)/tests.log
+	@echo "bfs $(KEFIR_EXTERNAL_TEST_BFS_VERSION) test suite successfully finished"
+	@touch "$@"
+
+EXTERNAL_TESTS_FAST_SUITE += $(KEFIR_EXTERNAL_TESTS_DIR)/bfs.test.done
