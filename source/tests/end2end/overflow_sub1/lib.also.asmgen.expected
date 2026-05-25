@@ -131,11 +131,9 @@ overflow_sub_long_int_int:
 
 overflow_sub_schar_schar_schar:
 .L__kefir_text_func_overflow_sub_schar_schar_schar_begin:
-    movsx %dil, %rax
-    movsx %sil, %rcx
-    mov %rax, %rsi
-    sub %rcx, %rsi
-    mov %rsi, %rcx
+    movsx %dil, %rcx
+    movsx %sil, %rax
+    sub %rax, %rcx
     seto %al
     movsx %cl, %rsi
     cmp %rsi, %rcx
@@ -148,11 +146,9 @@ overflow_sub_schar_schar_schar:
 
 overflow_sub_schar_schar_uchar:
 .L__kefir_text_func_overflow_sub_schar_schar_uchar_begin:
-    movsx %dil, %rax
-    movsx %sil, %rcx
-    mov %rax, %rsi
-    sub %rcx, %rsi
-    mov %rsi, %rcx
+    movsx %dil, %rcx
+    movsx %sil, %rax
+    sub %rax, %rcx
     seto %al
     movzx %cl, %rsi
     cmp %rsi, %rcx
@@ -165,11 +161,9 @@ overflow_sub_schar_schar_uchar:
 
 overflow_sub_schar_uchar_uchar:
 .L__kefir_text_func_overflow_sub_schar_uchar_uchar_begin:
-    movsx %dil, %rax
-    movzx %sil, %rcx
-    mov %rax, %rsi
-    sub %rcx, %rsi
-    mov %rsi, %rcx
+    movsx %dil, %rcx
+    movzx %sil, %rax
+    sub %rax, %rcx
     seto %al
     movzx %cl, %rsi
     cmp %rsi, %rcx
@@ -182,11 +176,9 @@ overflow_sub_schar_uchar_uchar:
 
 overflow_sub_int_short_uint:
 .L__kefir_text_func_overflow_sub_int_short_uint_begin:
-    movsx %edi, %rax
-    movsx %si, %rcx
-    mov %rax, %rsi
-    sub %rcx, %rsi
-    mov %rsi, %rcx
+    movsx %edi, %rcx
+    movsx %si, %rax
+    sub %rax, %rcx
     seto %al
     mov %ecx, %esi
     cmp %rsi, %rcx
@@ -223,11 +215,9 @@ overflow_sub_uint_short_ushort:
 
 overflow_sub_uchar_schar_uchar:
 .L__kefir_text_func_overflow_sub_uchar_schar_uchar_begin:
-    movzx %dil, %rax
-    movsx %sil, %rcx
-    mov %rax, %rsi
-    sub %rcx, %rsi
-    mov %rsi, %rcx
+    movzx %dil, %rcx
+    movsx %sil, %rax
+    sub %rax, %rcx
     seto %al
     movzx %cl, %rsi
     cmp %rsi, %rcx

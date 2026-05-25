@@ -38,8 +38,8 @@
 .L__kefir_text_section_begin:
 overflow_add_uchar_schar_uchar:
 .L__kefir_text_func_overflow_add_uchar_schar_uchar_begin:
-    movzx %dil, %rax
-    movsx %sil, %rcx
+    movzx %dil, %rcx
+    movsx %sil, %rax
     add %rax, %rcx
     seto %al
     movzx %cl, %rsi
@@ -155,8 +155,8 @@ overflow_add_ulong_ulong_ulong:
 
 overflow_add_schar_schar_schar:
 .L__kefir_text_func_overflow_add_schar_schar_schar_begin:
-    movsx %dil, %rax
-    movsx %sil, %rcx
+    movsx %dil, %rcx
+    movsx %sil, %rax
     add %rax, %rcx
     seto %al
     movsx %cl, %rsi
@@ -170,8 +170,8 @@ overflow_add_schar_schar_schar:
 
 overflow_add_schar_schar_uchar:
 .L__kefir_text_func_overflow_add_schar_schar_uchar_begin:
-    movsx %dil, %rax
-    movsx %sil, %rcx
+    movsx %dil, %rcx
+    movsx %sil, %rax
     add %rax, %rcx
     seto %al
     movzx %cl, %rsi
@@ -185,8 +185,8 @@ overflow_add_schar_schar_uchar:
 
 overflow_add_schar_uchar_uchar:
 .L__kefir_text_func_overflow_add_schar_uchar_uchar_begin:
-    movsx %dil, %rax
-    movzx %sil, %rcx
+    movsx %dil, %rcx
+    movzx %sil, %rax
     add %rax, %rcx
     seto %al
     movzx %cl, %rsi
@@ -213,8 +213,8 @@ overflow_add_ulong_long_long:
 
 overflow_add_int_short_uint:
 .L__kefir_text_func_overflow_add_int_short_uint_begin:
-    movsx %edi, %rax
-    movsx %si, %rcx
+    movsx %edi, %rcx
+    movsx %si, %rax
     add %rax, %rcx
     seto %al
     mov %ecx, %esi

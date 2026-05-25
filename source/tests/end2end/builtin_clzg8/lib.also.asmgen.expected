@@ -94,8 +94,7 @@ __kefir_bigint_leading_zeros:
     push %r13
     sub $8, %rsp
     mov %rdx, %rax
-    lea 7(%rsi), %rcx
-    mov %rcx, %r8
+    lea 7(%rsi), %r8
     shr $3, %r8
     lea -1(%r8), %rcx
     shl $3, %rcx
@@ -111,9 +110,8 @@ __kefir_bigint_leading_zeros:
     mov %r8, %rsi
     sub %rcx, %rsi
     movzxb -1(%rdi, %rsi, 1), %r10
-    mov $8, %esi
+    mov $8, %r11d
     cmp $0, %rcx
-    mov %rsi, %r11
     cmovbe %r9, %r11
     lea 1(%rcx), %rsi
     xor %ecx, %ecx

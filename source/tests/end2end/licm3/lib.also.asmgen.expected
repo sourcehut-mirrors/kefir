@@ -16,8 +16,7 @@ test1:
     sub $8, %rsp
     mov %rcx, %rax
     or %esi, %eax
-    xor %ecx, %ecx
-    mov %rcx, %r8
+    xor %r8d, %r8d
 .L__kefir_func_test1_label2:
     mov %rdx, %rcx
     mov %r8, %r9
@@ -58,8 +57,7 @@ test2:
     sub $8, %rsp
     mov %rcx, %rax
     or %esi, %eax
-    xor %ecx, %ecx
-    mov %rcx, %r8
+    xor %r8d, %r8d
 .L__kefir_func_test2_label2:
 _kefir_local_public_label_test2_outer:
     mov %rdx, %rcx

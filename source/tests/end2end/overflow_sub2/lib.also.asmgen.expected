@@ -18,11 +18,9 @@
 .L__kefir_text_section_begin:
 overflow_ssub:
 .L__kefir_text_func_overflow_ssub_begin:
-    movsx %edi, %rax
-    movsx %esi, %rcx
-    mov %rax, %rsi
-    sub %rcx, %rsi
-    mov %rsi, %rcx
+    movsx %edi, %rcx
+    movsx %esi, %rax
+    sub %rax, %rcx
     seto %al
     movsx %ecx, %rsi
     cmp %rsi, %rcx

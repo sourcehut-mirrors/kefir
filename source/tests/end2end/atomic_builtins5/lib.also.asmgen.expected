@@ -243,7 +243,8 @@ test_fetch_sub128:
     push %rbx
     push %r12
     push %r13
-    sub $72, %rsp
+    push %r14
+    sub $64, %rsp
     mov %rsi, %rbx
     mov %rdx, %r12
     mov %rdi, %r13
@@ -256,16 +257,14 @@ test_fetch_sub128:
     mov -56(%rbp), %rcx
     mov %rax, -80(%rbp)
     mov %rcx, -72(%rbp)
-    xor %eax, %eax
+    xor %r14d, %r14d
     neg %rbx
-    mov %eax, %ecx
-    sbb %r12, %rcx
-    mov %rcx, %r12
+    sbb %r12, %r14
 .L__kefir_func_test_fetch_sub128_label2:
     mov -80(%rbp), %rax
     mov -72(%rbp), %rcx
     add %rbx, %rax
-    adc %r12, %rcx
+    adc %r14, %rcx
     mov %rax, -48(%rbp)
     mov %rcx, -40(%rbp)
     mov $16, %edi
@@ -279,7 +278,8 @@ test_fetch_sub128:
     jz .L__kefir_func_test_fetch_sub128_label2
     mov -80(%rbp), %rax
     mov -72(%rbp), %rdx
-    lea -24(%rbp), %rsp
+    lea -32(%rbp), %rsp
+    pop %r14
     pop %r13
     pop %r12
     pop %rbx

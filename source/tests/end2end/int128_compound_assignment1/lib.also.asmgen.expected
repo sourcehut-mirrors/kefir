@@ -166,8 +166,8 @@ i128_mul:
     imul %rax, %rcx
     mov %rsi, %rdx
     mul %rdx
-    add %r8, %rcx
-    add %rcx, %rdx
+    add %rcx, %r8
+    add %r8, %rdx
     mov %rax, (%rdi)
     mov %rdx, 8(%rdi)
     lea (%rbp), %rsp
@@ -181,10 +181,9 @@ i128_shl:
     mov %rsp, %rbp
     sub $16, %rsp
     mov %rsi, %rcx
-    mov (%rdi), %rax
+    mov (%rdi), %rsi
     mov 8(%rdi), %rdx
-    shld %cl, %rax, %rdx
-    mov %rax, %rsi
+    shld %cl, %rsi, %rdx
     shl %cl, %rsi
     xor %eax, %eax
     test $64, %cl
@@ -339,8 +338,8 @@ u128_mul:
     imul %rax, %rcx
     mov %rsi, %rdx
     mul %rdx
-    add %r8, %rcx
-    add %rcx, %rdx
+    add %rcx, %r8
+    add %r8, %rdx
     mov %rax, (%rdi)
     mov %rdx, 8(%rdi)
     lea (%rbp), %rsp
@@ -354,10 +353,9 @@ u128_shl:
     mov %rsp, %rbp
     sub $16, %rsp
     mov %rsi, %rcx
-    mov (%rdi), %rax
+    mov (%rdi), %rsi
     mov 8(%rdi), %rdx
-    shld %cl, %rax, %rdx
-    mov %rax, %rsi
+    shld %cl, %rsi, %rdx
     shl %cl, %rsi
     xor %eax, %eax
     test $64, %cl
@@ -377,9 +375,8 @@ u128_shr:
     sub $16, %rsp
     mov %rsi, %rcx
     mov (%rdi), %rax
-    mov 8(%rdi), %rdx
-    shrd %cl, %rdx, %rax
-    mov %rdx, %rsi
+    mov 8(%rdi), %rsi
+    shrd %cl, %rsi, %rax
     shr %cl, %rsi
     xor %edx, %edx
     test $64, %cl

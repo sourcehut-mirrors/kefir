@@ -273,8 +273,7 @@ test4b:
     sub $16, %rsp
     movl %edi, -4(%rbp)
     movq someothervar@GOTPCREL(%rip), %rdx
-    lea -4(%rbp), %rax
-    mov %rax, %rcx
+    lea -4(%rbp), %rcx
     sub %rdx, %rcx
     test %rcx, %rcx
     lea 3(%rcx), %rax

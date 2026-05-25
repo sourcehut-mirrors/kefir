@@ -25,8 +25,8 @@ bnot1:
     movb -1(%rbp), %al
     shl $58, %rax
     sar $58, %rax
-    shl $58, %rax
     mov %rax, %rcx
+    shl $58, %rcx
     shr $58, %rcx
     xor %eax, %eax
     test %cl, %cl
@@ -45,8 +45,8 @@ bnot2:
     movw -2(%rbp), %ax
     shl $50, %rax
     sar $50, %rax
-    shl $50, %rax
     mov %rax, %rcx
+    shl $50, %rcx
     shr $50, %rcx
     xor %eax, %eax
     test %cx, %cx
@@ -65,8 +65,8 @@ bnot3:
     movl -4(%rbp), %eax
     shl $35, %rax
     sar $35, %rax
-    shl $35, %rax
     mov %rax, %rcx
+    shl $35, %rcx
     shr $35, %rcx
     xor %eax, %eax
     test %ecx, %ecx
@@ -85,8 +85,8 @@ bnot4:
     movq -8(%rbp), %rax
     shl $6, %rax
     sar $6, %rax
-    shl $6, %rax
     mov %rax, %rcx
+    shl $6, %rcx
     shr $6, %rcx
     xor %eax, %eax
     test %rcx, %rcx

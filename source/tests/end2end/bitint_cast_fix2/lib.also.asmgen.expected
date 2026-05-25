@@ -1168,13 +1168,13 @@ __kefir_bigint_unsigned_to_float:
     xor %eax, %eax
     movq %rax, -104(%rbp)
     movq -120(%rbp), %rax
-    movq -112(%rbp), %rcx
+    movq -112(%rbp), %rdx
     movq -136(%rbp), %rsi
-    movabs $2147483648, %rdx
+    movabs $2147483648, %rcx
     movabs $4294967295, %rdi
-    and %rdi, %rdx
-    and %rdx, %rax
-    lea 127(%rcx), %rdx
+    and %rdi, %rcx
+    and %rcx, %rax
+    add $127, %rdx
     mov $23, %ecx
     shl %cl, %rdx
     or %rdx, %rax
@@ -1565,9 +1565,9 @@ __kefir_bigint_util_add_digit_zero_extended:
     addq $1, -16(%rbp)
     jmp .L__kefir_runtime_func___kefir_bigint_util_add_digit_zero_extended_label2
 .L__kefir_runtime_func___kefir_bigint_util_add_digit_zero_extended_label7:
-    movb -52(%rbp), %al
     mov %rax, %rcx
-    and $255, %rcx
+    movb -52(%rbp), %cl
+    movzx %cl, %ecx
     lea -8(%rbp), %rax
     jmp .L__kefir_runtime_func___kefir_bigint_util_add_digit_zero_extended_label8
 .L__kefir_runtime_func___kefir_bigint_util_add_digit_zero_extended_label3:
@@ -1845,13 +1845,13 @@ __kefir_bigint_signed_to_float:
     xor %eax, %eax
     movq %rax, -104(%rbp)
     movq -120(%rbp), %rax
-    movq -112(%rbp), %rcx
+    movq -112(%rbp), %rdx
     movq -136(%rbp), %rsi
-    movabs $2147483648, %rdx
+    movabs $2147483648, %rcx
     movabs $4294967295, %rdi
-    and %rdi, %rdx
-    and %rdx, %rax
-    lea 127(%rcx), %rdx
+    and %rdi, %rcx
+    and %rcx, %rax
+    add $127, %rdx
     mov $23, %ecx
     shl %cl, %rdx
     or %rdx, %rax

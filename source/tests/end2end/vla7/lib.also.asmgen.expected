@@ -96,13 +96,12 @@ test2:
     mov %rsp, %rcx
     movq %rcx, -64(%rbp)
     cmp $0, %rax
-    jnz .L__kefir_func_test2_label3
-    mov %rax, %rcx
-    jmp .L__kefir_func_test2_label2
-.L__kefir_func_test2_label3:
+    jz .L__kefir_func_test2_label4
     mov %rax, %rsp
-    movq (%rsp), %rcx
+    movq (%rsp), %rax
     add $16, %rsp
+.L__kefir_func_test2_label4:
+    mov %rax, %rcx
     jmp .L__kefir_func_test2_label2
 .L__kefir_text_func_test2_end:
 

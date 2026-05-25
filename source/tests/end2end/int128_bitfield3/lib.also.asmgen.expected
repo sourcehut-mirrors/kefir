@@ -24,9 +24,8 @@ get_a:
 .L__kefir_text_func_get_a_begin:
     lea value(%rip), %rax
     movq value(%rip), %rdx
-    movzxw 8(%rax), %rax
+    movzxw 8(%rax), %rsi
     mov $48, %ecx
-    mov %rax, %rsi
     shld $48, %rdx, %rsi
     shl $48, %rdx
     xor %eax, %eax
@@ -47,12 +46,10 @@ get_a:
 get_b:
 .L__kefir_text_func_get_b_begin:
     lea value(%rip), %rax
-    movq 16(%rax), %rax
-    xor %edx, %edx
+    movq 16(%rax), %rdx
+    xor %esi, %esi
     mov $68, %ecx
-    mov %edx, %esi
-    shld $68, %rax, %rsi
-    mov %rax, %rdx
+    shld $68, %rdx, %rsi
     shl $68, %rdx
     xor %eax, %eax
     test $64, %cl
@@ -73,9 +70,8 @@ get_c:
 .L__kefir_text_func_get_c_begin:
     lea value(%rip), %rax
     movq 32(%rax), %rdx
-    movzxw 40(%rax), %rax
+    movzxw 40(%rax), %rsi
     mov $52, %ecx
-    mov %rax, %rsi
     shld $52, %rdx, %rsi
     shl $52, %rdx
     xor %eax, %eax
@@ -97,14 +93,13 @@ get_d:
 .L__kefir_text_func_get_d_begin:
     lea value(%rip), %rax
     movzxb 45(%rax), %rcx
-    movl 41(%rax), %eax
-    shl $32, %rcx
-    or %rcx, %rax
-    xor %edx, %edx
+    movl 41(%rax), %edx
+    mov %rcx, %rax
+    shl $32, %rax
+    or %rax, %rdx
+    xor %esi, %esi
     mov $89, %ecx
-    mov %edx, %esi
-    shld $89, %rax, %rsi
-    mov %rax, %rdx
+    shld $89, %rdx, %rsi
     shl $89, %rdx
     xor %eax, %eax
     test $64, %cl
@@ -128,7 +123,6 @@ set_a:
     sub $16, %rsp
     lea value(%rip), %rax
     movq value(%rip), %rdx
-    mov %rcx, %r8
     movw 8(%rax), %r8w
     mov $1, %r9d
     xor %r10d, %r10d
@@ -210,7 +204,6 @@ set_c:
     sub $16, %rsp
     lea value(%rip), %rax
     movq 32(%rax), %rdx
-    mov %rcx, %r8
     movw 40(%rax), %r8w
     mov $1, %r9d
     xor %r10d, %r10d

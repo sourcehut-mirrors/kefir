@@ -24,12 +24,11 @@ equals1:
     movb %sil, -1(%rbp)
     movb %dil, -2(%rbp)
     movb -2(%rbp), %al
-    mov %rcx, %rdx
     movb -1(%rbp), %dl
     shl $58, %rax
     sar $58, %rax
-    shl $58, %rax
     mov %rax, %rcx
+    shl $58, %rcx
     shr $58, %rcx
     shl $58, %rdx
     sar $58, %rdx
@@ -51,12 +50,11 @@ equals2:
     movw %si, -2(%rbp)
     movw %di, -4(%rbp)
     movw -4(%rbp), %ax
-    mov %rcx, %rdx
     movw -2(%rbp), %dx
     shl $50, %rax
     sar $50, %rax
-    shl $50, %rax
     mov %rax, %rcx
+    shl $50, %rcx
     shr $50, %rcx
     shl $50, %rdx
     sar $50, %rdx
@@ -81,8 +79,8 @@ equals3:
     movl -4(%rbp), %edx
     shl $35, %rax
     sar $35, %rax
-    shl $35, %rax
     mov %rax, %rcx
+    shl $35, %rcx
     shr $35, %rcx
     shl $35, %rdx
     sar $35, %rdx
@@ -107,8 +105,8 @@ equals4:
     movq -8(%rbp), %rdx
     shl $6, %rax
     sar $6, %rax
-    shl $6, %rax
     mov %rax, %rcx
+    shl $6, %rcx
     shr $6, %rcx
     shl $6, %rdx
     sar $6, %rdx

@@ -512,7 +512,6 @@ test5:
     mov $120, %edx
     call __kefir_bigint_signed_compare
     cmp $1, %al
-    mov %rax, %rbx
     sete %bl
     lea -64(%rbp), %rdi
     lea -80(%rbp), %rsi
@@ -521,7 +520,6 @@ test5:
     cmp $0, %al
     sete %al
     or %al, %bl
-    mov %rax, %rbx
     setne %bl
     movabs $2459547112355201022, %rdx
     shl $1, %rdx
@@ -534,7 +532,6 @@ test5:
     mov $120, %edx
     call __kefir_bigint_signed_compare
     cmp $-1, %al
-    mov %rax, %r12
     sete %r12b
     lea -48(%rbp), %rdi
     lea -80(%rbp), %rsi
@@ -557,7 +554,6 @@ test5:
     mov $120, %edx
     call __kefir_bigint_signed_compare
     cmp $1, %al
-    mov %rax, %rbx
     sete %bl
     lea -64(%rbp), %rdi
     lea -80(%rbp), %rsi
@@ -566,7 +562,6 @@ test5:
     cmp $0, %al
     sete %al
     or %al, %bl
-    mov %rax, %rbx
     setne %bl
     movl $1145372670, -64(%rbp)
     movl $572657937, -60(%rbp)
@@ -583,7 +578,6 @@ test5:
     mov $120, %edx
     call __kefir_bigint_signed_compare
     cmp $-1, %al
-    mov %rax, %r12
     sete %r12b
     lea -64(%rbp), %rdi
     lea -80(%rbp), %rsi
@@ -610,7 +604,6 @@ test5:
     mov $120, %edx
     call __kefir_bigint_signed_compare
     cmp $1, %al
-    mov %rax, %rbx
     sete %bl
     lea -64(%rbp), %rdi
     lea -80(%rbp), %rsi
@@ -619,7 +612,6 @@ test5:
     cmp $0, %al
     sete %al
     or %al, %bl
-    mov %rax, %rbx
     setne %bl
     movl $1145372671, -64(%rbp)
     movl $572657937, -60(%rbp)
@@ -636,7 +628,6 @@ test5:
     mov $120, %edx
     call __kefir_bigint_signed_compare
     cmp $-1, %al
-    mov %rax, %r12
     sete %r12b
     lea -64(%rbp), %rdi
     lea -80(%rbp), %rsi

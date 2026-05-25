@@ -85,7 +85,8 @@ test5:
     movl (%r12), %ebx
     call fn@PLT
     movl (%r12), %ecx
-    imul %ebx, %eax
+    imul %eax, %ebx
+    mov %ebx, %eax
     add %ecx, %eax
     pop %r12
     pop %rbx
@@ -109,7 +110,8 @@ test7:
     movl (%rdx), %ecx
     movl (%rdi), %eax
     movl (%rdx), %edx
-    add %ecx, %eax
+    add %eax, %ecx
+    mov %ecx, %eax
     add %edx, %eax
     ret
 .L__kefir_text_func_test7_end:
@@ -148,8 +150,7 @@ test9:
 test10:
 .L__kefir_text_func_test10_begin:
     movl (%rdi), %ecx
-    xor %eax, %eax
-    mov %rax, %rdx
+    xor %edx, %edx
     mov %ecx, %eax
 .L__kefir_func_test10_label2:
     mov %rax, %rsi
@@ -182,8 +183,7 @@ test11:
 test12:
 .L__kefir_text_func_test12_begin:
     movl (%rdi), %ecx
-    xor %eax, %eax
-    mov %rax, %rdx
+    xor %edx, %edx
 .L__kefir_func_test12_label2:
     cmp $10, %edx
     jge .L__kefir_func_test12_label3

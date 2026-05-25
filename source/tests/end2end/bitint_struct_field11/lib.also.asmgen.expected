@@ -89,7 +89,6 @@ get3:
     sub $16, %rsp
     movq %rdi, -8(%rbp)
     movq -8(%rbp), %rcx
-    mov %rax, %rdx
     movb 6(%rcx), %dl
     movw 4(%rcx), %ax
     movzx %ax, %eax

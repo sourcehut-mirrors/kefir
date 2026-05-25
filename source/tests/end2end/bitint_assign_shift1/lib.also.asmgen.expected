@@ -705,8 +705,10 @@ __kefir_bigint_arithmetic_right_shift:
 .L__kefir_runtime_func___kefir_bigint_arithmetic_right_shift_label20:
     movq -72(%rbp), %rax
     movq -80(%rbp), %rcx
-    sub %rcx, %rax
-    lea 1(%rax), %rcx
+    mov %rax, %rdx
+    sub %rcx, %rdx
+    mov %rdx, %rcx
+    add $1, %rcx
     lea -16(%rbp), %rax
     jmp .L__kefir_runtime_func___kefir_bigint_arithmetic_right_shift_label21
 .L__kefir_runtime_func___kefir_bigint_arithmetic_right_shift_label25:

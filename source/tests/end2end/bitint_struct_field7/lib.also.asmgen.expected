@@ -48,9 +48,7 @@ get3:
     movq %rsi, -24(%rbp)
     movdqu -32(%rbp), %xmm0
     movdqu %xmm0, -16(%rbp)
-    mov %rax, %rcx
     movb -10(%rbp), %cl
-    mov %rax, %rdx
     movw -12(%rbp), %dx
     movl -16(%rbp), %eax
     movabs $4294967295, %rsi

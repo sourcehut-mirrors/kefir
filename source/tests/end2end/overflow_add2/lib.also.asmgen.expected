@@ -18,8 +18,8 @@
 .L__kefir_text_section_begin:
 overflow_sadd:
 .L__kefir_text_func_overflow_sadd_begin:
-    movsx %edi, %rax
-    movsx %esi, %rcx
+    movsx %edi, %rcx
+    movsx %esi, %rax
     add %rax, %rcx
     seto %al
     movsx %ecx, %rsi

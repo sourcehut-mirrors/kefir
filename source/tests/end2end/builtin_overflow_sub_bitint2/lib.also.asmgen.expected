@@ -19,8 +19,9 @@ sub1:
     sub $32, %rsp
     mov %rdx, %rbx
     mov %rsi, %r12
-    shl $46, %rdi
-    mov %rdi, %rdx
+    mov %rdi, %rax
+    shl $46, %rax
+    mov %rax, %rdx
     sar $46, %rdx
     lea -48(%rbp), %rdi
     mov $66, %esi
@@ -48,7 +49,6 @@ sub1:
     mov $66, %edx
     call __kefir_bigint_unsigned_compare
     cmp $0, %al
-    mov %rax, %rbx
     sete %bl
     lea -32(%rbp), %rdi
     mov $66, %esi
@@ -57,12 +57,10 @@ sub1:
     mov $66, %ecx
     test %bl, %bl
     cmovz %rax, %rcx
-    mov $66, %eax
-    mov %rax, %rdx
+    mov $66, %edx
     sub %rcx, %rdx
-    mov %rdx, %rcx
     xor %eax, %eax
-    cmp $64, %rcx
+    cmp $64, %rdx
     seta %al
     lea -16(%rbp), %rsp
     pop %r12
@@ -80,8 +78,9 @@ sub2:
     sub $32, %rsp
     mov %rdx, %rbx
     mov %rsi, %r12
-    shl $14, %rdi
-    mov %rdi, %rdx
+    mov %rdi, %rax
+    shl $14, %rax
+    mov %rax, %rdx
     sar $14, %rdx
     lea -48(%rbp), %rdi
     mov $66, %esi
@@ -109,7 +108,6 @@ sub2:
     mov $66, %edx
     call __kefir_bigint_unsigned_compare
     cmp $0, %al
-    mov %rax, %rbx
     sete %bl
     lea -32(%rbp), %rdi
     mov $66, %esi
@@ -118,12 +116,10 @@ sub2:
     mov $66, %ecx
     test %bl, %bl
     cmovz %rax, %rcx
-    mov $66, %eax
-    mov %rax, %rdx
+    mov $66, %edx
     sub %rcx, %rdx
-    mov %rdx, %rcx
     xor %eax, %eax
-    cmp $64, %rcx
+    cmp $64, %rdx
     seta %al
     lea -16(%rbp), %rsp
     pop %r12
@@ -172,7 +168,6 @@ sub3:
     mov $82, %edx
     call __kefir_bigint_unsigned_compare
     cmp $0, %al
-    mov %rax, %rbx
     sete %bl
     lea -32(%rbp), %rdi
     mov $82, %esi
@@ -181,12 +176,10 @@ sub3:
     mov $82, %ecx
     test %bl, %bl
     cmovz %rax, %rcx
-    mov $82, %eax
-    mov %rax, %rdx
+    mov $82, %edx
     sub %rcx, %rdx
-    mov %rdx, %rcx
     xor %eax, %eax
-    cmp $64, %rcx
+    cmp $64, %rdx
     seta %al
     lea -8(%rbp), %rsp
     pop %rbx
@@ -410,8 +403,7 @@ __kefir_bigint_leading_zeros:
     push %r13
     sub $8, %rsp
     mov %rdx, %rax
-    lea 7(%rsi), %rcx
-    mov %rcx, %r8
+    lea 7(%rsi), %r8
     shr $3, %r8
     lea -1(%r8), %rcx
     shl $3, %rcx
@@ -427,9 +419,8 @@ __kefir_bigint_leading_zeros:
     mov %r8, %rsi
     sub %rcx, %rsi
     movzxb -1(%rdi, %rsi, 1), %r10
-    mov $8, %esi
+    mov $8, %r11d
     cmp $0, %rcx
-    mov %rsi, %r11
     cmovbe %r9, %r11
     lea 1(%rcx), %rsi
     xor %ecx, %ecx

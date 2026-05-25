@@ -30,8 +30,8 @@ add1:
     movb %dil, -1(%rbp)
     movb -1(%rbp), %al
     movq a@GOTPCREL(%rip), %r8
-    shl $58, %rax
     mov %rax, %rdi
+    shl $58, %rdi
     sar $58, %rdi
 .L__kefir_func_add1_label2:
     movb (%r8), %al
@@ -57,8 +57,8 @@ add2:
     movw %di, -2(%rbp)
     movw -2(%rbp), %ax
     movq b@GOTPCREL(%rip), %r8
-    shl $51, %rax
     mov %rax, %rdi
+    shl $51, %rdi
     sar $51, %rdi
 .L__kefir_func_add2_label2:
     movw (%r8), %ax
@@ -84,8 +84,8 @@ add3:
     movl %edi, -4(%rbp)
     movl -4(%rbp), %eax
     movq c@GOTPCREL(%rip), %r8
-    shl $37, %rax
-    mov %rax, %rdi
+    mov %eax, %edi
+    shl $37, %rdi
     sar $37, %rdi
 .L__kefir_func_add3_label2:
     movl (%r8), %eax
@@ -111,8 +111,8 @@ add4:
     movq %rdi, -8(%rbp)
     movq -8(%rbp), %rax
     movq d@GOTPCREL(%rip), %r8
-    shl $14, %rax
     mov %rax, %rdi
+    shl $14, %rdi
     sar $14, %rdi
 .L__kefir_func_add4_label2:
     movq (%r8), %rax

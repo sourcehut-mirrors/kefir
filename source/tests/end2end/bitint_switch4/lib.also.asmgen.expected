@@ -39,7 +39,6 @@ test1:
     mov $120, %edx
     call __kefir_bigint_signed_compare
     cmp $1, %al
-    mov %rax, %rbx
     sete %bl
     lea -64(%rbp), %rdi
     lea -80(%rbp), %rsi
@@ -48,7 +47,6 @@ test1:
     cmp $0, %al
     sete %al
     or %al, %bl
-    mov %rax, %rbx
     setne %bl
     mov $1, %edx
     neg %dl
@@ -62,7 +60,6 @@ test1:
     mov $120, %edx
     call __kefir_bigint_signed_compare
     cmp $-1, %al
-    mov %rax, %r12
     sete %r12b
     lea -64(%rbp), %rdi
     lea -80(%rbp), %rsi
@@ -83,7 +80,6 @@ test1:
     mov $120, %edx
     call __kefir_bigint_signed_compare
     cmp $1, %al
-    mov %rax, %rbx
     sete %bl
     lea -64(%rbp), %rdi
     lea -80(%rbp), %rsi
@@ -92,7 +88,6 @@ test1:
     cmp $0, %al
     sete %al
     or %al, %bl
-    mov %rax, %rbx
     setne %bl
     movl $0, -64(%rbp)
     movl $0, -60(%rbp)
@@ -109,7 +104,6 @@ test1:
     mov $120, %edx
     call __kefir_bigint_signed_compare
     cmp $-1, %al
-    mov %rax, %r12
     sete %r12b
     lea -64(%rbp), %rdi
     lea -80(%rbp), %rsi
@@ -605,9 +599,9 @@ __kefir_bigint_util_add_digit_zero_extended:
     addq $1, -16(%rbp)
     jmp .L__kefir_runtime_func___kefir_bigint_util_add_digit_zero_extended_label2
 .L__kefir_runtime_func___kefir_bigint_util_add_digit_zero_extended_label7:
-    movb -52(%rbp), %al
     mov %rax, %rcx
-    and $255, %rcx
+    movb -52(%rbp), %cl
+    movzx %cl, %ecx
     lea -8(%rbp), %rax
     jmp .L__kefir_runtime_func___kefir_bigint_util_add_digit_zero_extended_label8
 .L__kefir_runtime_func___kefir_bigint_util_add_digit_zero_extended_label3:

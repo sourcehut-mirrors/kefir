@@ -21,7 +21,6 @@ test1:
     shl $47, %rdi
     shr $47, %rdi
     cmp $0, %edi
-    mov %rax, %rcx
     sete %cl
     bsr %edi, %eax
     xor $31, %eax
@@ -37,7 +36,6 @@ test2:
     shl $32, %rax
     shr $32, %rax
     cmp $0, %eax
-    mov %rax, %rcx
     sete %cl
     bsr %edi, %eax
     xor $31, %eax
@@ -51,7 +49,6 @@ test3:
     shl $5, %rdi
     shr $5, %rdi
     cmp $0, %rdi
-    mov %rax, %rcx
     sete %cl
     bsr %rdi, %rax
     xor $63, %eax
@@ -67,7 +64,6 @@ test4:
     shl $0, %rax
     shr $0, %rax
     cmp $0, %rax
-    mov %rax, %rcx
     sete %cl
     bsr %rdi, %rax
     xor $63, %eax
@@ -95,7 +91,6 @@ test5:
     mov $120, %edx
     call __kefir_bigint_unsigned_compare
     cmp $0, %al
-    mov %rax, %r12
     sete %r12b
     lea -48(%rbp), %rdi
     mov $120, %esi
@@ -135,7 +130,6 @@ test6:
     mov $315, %edx
     call __kefir_bigint_unsigned_compare
     cmp $0, %al
-    mov %rax, %r13
     sete %r13b
     mov %r12, %rdi
     mov $315, %esi
@@ -209,8 +203,7 @@ __kefir_bigint_leading_zeros:
     push %r13
     sub $8, %rsp
     mov %rdx, %rax
-    lea 7(%rsi), %rcx
-    mov %rcx, %r8
+    lea 7(%rsi), %r8
     shr $3, %r8
     lea -1(%r8), %rcx
     shl $3, %rcx
@@ -226,9 +219,8 @@ __kefir_bigint_leading_zeros:
     mov %r8, %rsi
     sub %rcx, %rsi
     movzxb -1(%rdi, %rsi, 1), %r10
-    mov $8, %esi
+    mov $8, %r11d
     cmp $0, %rcx
-    mov %rsi, %r11
     cmovbe %r9, %r11
     lea 1(%rcx), %rsi
     xor %ecx, %ecx

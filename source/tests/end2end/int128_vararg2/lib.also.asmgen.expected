@@ -97,8 +97,7 @@ testx:
     cmp $48, %rax
     jbe .L__kefir_func_testx_label7
     movq -24(%rbp), %rax
-    add $15, %rax
-    mov %rax, %rcx
+    lea 15(%rax), %rcx
     and $-16, %rcx
     lea 16(%rcx), %rax
     movq %rax, -24(%rbp)

@@ -76,8 +76,7 @@ test6:
     sub $8, %rsp
     movq b@GOTPCREL(%rip), %rbx
     movq c@GOTPCREL(%rip), %r12
-    xor %eax, %eax
-    mov %rax, %r13
+    xor %r13d, %r13d
 .L__kefir_func_test6_label2:
     call fn@PLT
     movl 8(%r12), %eax

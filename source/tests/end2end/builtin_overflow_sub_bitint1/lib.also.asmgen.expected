@@ -19,8 +19,9 @@ sub1:
     sub $32, %rsp
     mov %rdx, %rbx
     mov %rsi, %r12
-    shl $46, %rdi
-    mov %rdi, %rdx
+    mov %rdi, %rax
+    shl $46, %rax
+    mov %rax, %rdx
     sar $46, %rdx
     lea -48(%rbp), %rdi
     mov $66, %esi
@@ -63,8 +64,9 @@ sub2:
     sub $32, %rsp
     mov %rdx, %rbx
     mov %rsi, %r12
-    shl $14, %rdi
-    mov %rdi, %rdx
+    mov %rdi, %rax
+    shl $14, %rax
+    mov %rax, %rdx
     sar $14, %rdx
     lea -48(%rbp), %rdi
     mov $66, %esi
@@ -318,8 +320,7 @@ __kefir_bigint_redundant_sign_bits:
     sub $8, %rsp
     cmp $0, %rsi
     je .L__kefir_runtime_func___kefir_bigint_redundant_sign_bits_label13
-    lea 7(%rsi), %rax
-    mov %rax, %rdx
+    lea 7(%rsi), %rdx
     shr $3, %rdx
     lea -1(%rdx), %rax
     movzxb -1(%rdi, %rdx, 1), %r8

@@ -89,8 +89,7 @@ test5:
     mov $0, %eax
     cmp %edi, %eax
     jge .L__kefir_func_test5_label4
-    xor %eax, %eax
-    mov %rax, %rdx
+    xor %edx, %edx
 .L__kefir_func_test5_label5:
     mov $1, %eax
     xchgl (%rcx), %eax
@@ -114,8 +113,7 @@ test6:
     mov $0, %eax
     cmp %edi, %eax
     jge .L__kefir_func_test6_label4
-    xor %eax, %eax
-    mov %rax, %rsi
+    xor %esi, %esi
 .L__kefir_func_test6_label5:
     mov %rcx, %rdx
     mov $1, %eax
@@ -146,8 +144,7 @@ test7:
     mov $0, %eax
     cmp %ebx, %eax
     jge .L__kefir_func_test7_label4
-    xor %eax, %eax
-    mov %rax, %r13
+    xor %r13d, %r13d
 .L__kefir_func_test7_label5:
     movl (%r12), %edi
     lea 1(%edi), %eax

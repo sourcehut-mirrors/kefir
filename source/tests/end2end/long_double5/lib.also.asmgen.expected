@@ -157,13 +157,12 @@ neq:
     fldt 32(%rbp)
     fldt 16(%rbp)
     xor %eax, %eax
-    xor %ecx, %ecx
+    xor %edx, %edx
     fucomip %st(1)
     fstp %st(0)
-    setnp %al
-    mov %rax, %rdx
-    cmovne %rcx, %rdx
-    mov %rdx, %rcx
+    mov %rax, %rcx
+    setnp %cl
+    cmovne %rdx, %rcx
     xor %eax, %eax
     test %cl, %cl
     sete %al

@@ -83,8 +83,7 @@ test3:
     mov $0, %rax
     cmp %rdi, %rax
     jge .L__kefir_func_test3_label4
-    xor %eax, %eax
-    mov %rax, %rcx
+    xor %ecx, %ecx
 .L__kefir_func_test3_label5:
     movq -8(%rbp), %rax
     add $1, %rcx
@@ -103,8 +102,7 @@ test4:
     mov %rsp, %rbp
     push %rbx
     sub $8, %rsp
-    xor %eax, %eax
-    mov %rax, %rbx
+    xor %ebx, %ebx
 .L__kefir_func_test4_label2:
     call fn@PLT
     add $1, %rbx
@@ -129,8 +127,7 @@ test6:
     mov %rsp, %rbp
     push %rbx
     sub $8, %rsp
-    xor %eax, %eax
-    mov %rax, %rbx
+    xor %ebx, %ebx
 .L__kefir_func_test6_label2:
     call fn@PLT
     add $1, %rbx
@@ -149,8 +146,7 @@ test7:
     mov %rsp, %rbp
     push %rbx
     sub $8, %rsp
-    xor %eax, %eax
-    mov %rax, %rbx
+    xor %ebx, %ebx
 .L__kefir_func_test7_label2:
     call fn@PLT
     add $1, %rbx
@@ -175,8 +171,7 @@ test9:
     mov %rsp, %rbp
     push %rbx
     sub $8, %rsp
-    xor %eax, %eax
-    mov %rax, %rbx
+    xor %ebx, %ebx
 .L__kefir_func_test9_label2:
     call fn@PLT
     add $1, %rbx
@@ -195,8 +190,7 @@ test10:
     mov %rsp, %rbp
     push %rbx
     sub $8, %rsp
-    movabs $-9223372036854775808, %rax
-    mov %rax, %rbx
+    movabs $-9223372036854775808, %rbx
 .L__kefir_func_test10_label2:
     call fn@PLT
     add $1, %rbx
@@ -222,8 +216,7 @@ test12:
     mov %rsp, %rbp
     push %rbx
     sub $8, %rsp
-    movabs $-9223372036854775808, %rax
-    mov %rax, %rbx
+    movabs $-9223372036854775808, %rbx
 .L__kefir_func_test12_label2:
     call fn@PLT
     add $1, %rbx
@@ -248,8 +241,7 @@ test14:
     mov %rsp, %rbp
     push %rbx
     sub $8, %rsp
-    xor %eax, %eax
-    mov %rax, %rbx
+    xor %ebx, %ebx
 .L__kefir_func_test14_label2:
     call fn@PLT
     add $1, %rbx
@@ -281,8 +273,7 @@ test17:
     mov %rsp, %rbp
     push %rbx
     sub $8, %rsp
-    movabs $9223372036854775807, %rax
-    mov %rax, %rbx
+    movabs $9223372036854775807, %rbx
 .L__kefir_func_test17_label2:
     call fn@PLT
     add $1, %rbx
@@ -302,8 +293,7 @@ test18:
     mov %rsp, %rbp
     push %rbx
     sub $8, %rsp
-    xor %eax, %eax
-    mov %rax, %rbx
+    xor %ebx, %ebx
 .L__kefir_func_test18_label2:
     call fn@PLT
     add $1, %rbx
@@ -323,8 +313,7 @@ test19:
     mov %rsp, %rbp
     push %rbx
     sub $8, %rsp
-    xor %eax, %eax
-    mov %rax, %rbx
+    xor %ebx, %ebx
 .L__kefir_func_test19_label2:
     call fn@PLT
     add $1, %rbx
@@ -349,8 +338,7 @@ test21:
     mov %rsp, %rbp
     push %rbx
     sub $8, %rsp
-    mov $-1, %rax
-    mov %rax, %rbx
+    mov $-1, %rbx
 .L__kefir_func_test21_label2:
     call fn@PLT
     add $1, %rbx

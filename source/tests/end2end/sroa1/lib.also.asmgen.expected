@@ -94,8 +94,7 @@ test4:
     mov $0, %eax
     cmp %esi, %eax
     jge .L__kefir_func_test4_label4
-    xor %eax, %eax
-    mov %rax, %rcx
+    xor %ecx, %ecx
 .L__kefir_func_test4_label5:
     movl -200(%rbp), %eax
     lea -40(%rbp), %rdx

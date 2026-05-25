@@ -16,8 +16,7 @@ test1:
     sub $8, %rsp
     mov %rcx, %rax
     or %esi, %eax
-    xor %ecx, %ecx
-    mov %rcx, %r8
+    xor %r8d, %r8d
 .L__kefir_func_test1_label2:
     movsx %r8d, %rcx
     imul $40, %rcx, %rcx
@@ -62,8 +61,7 @@ test2:
     mov %rcx, %rax
     mov %rax, %r8
     or %esi, %r8d
-    xor %ecx, %ecx
-    mov %rcx, %r9
+    xor %r9d, %r9d
 .L__kefir_func_test2_label2:
     movsx %r9d, %rcx
     imul $40, %rcx, %rcx
@@ -91,8 +89,7 @@ test2:
     mov %r11d, %r9d
     jmp .L__kefir_func_test2_label2
 .L__kefir_func_test2_label3:
-    xor %ecx, %ecx
-    mov %rcx, %r8
+    xor %r8d, %r8d
 .L__kefir_func_test2_label5:
     movsx %r8d, %rcx
     imul $40, %rcx, %rcx
@@ -104,8 +101,7 @@ test2:
     lea 1(%r8d), %r11d
     cmp %esi, %r8d
     jge .L__kefir_func_test2_label8
-    xor %ecx, %ecx
-    mov %rcx, %r8
+    xor %r8d, %r8d
 .L__kefir_func_test2_label9:
     cmp %edx, %r8d
     jge .L__kefir_func_test2_label16

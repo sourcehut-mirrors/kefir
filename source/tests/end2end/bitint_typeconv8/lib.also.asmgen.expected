@@ -1121,9 +1121,9 @@ __kefir_bigint_util_add_digit_zero_extended:
     addq $1, -16(%rbp)
     jmp .L__kefir_runtime_func___kefir_bigint_util_add_digit_zero_extended_label2
 .L__kefir_runtime_func___kefir_bigint_util_add_digit_zero_extended_label7:
-    movb -52(%rbp), %al
     mov %rax, %rcx
-    and $255, %rcx
+    movb -52(%rbp), %cl
+    movzx %cl, %ecx
     lea -8(%rbp), %rax
     jmp .L__kefir_runtime_func___kefir_bigint_util_add_digit_zero_extended_label8
 .L__kefir_runtime_func___kefir_bigint_util_add_digit_zero_extended_label3:

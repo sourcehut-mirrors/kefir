@@ -343,8 +343,7 @@ __kefir_bigint_cast_unsigned:
     xor %eax, %eax
     ret
 .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label11:
-    lea -1(%rsi), %rcx
-    mov %rcx, %rdx
+    lea -1(%rsi), %rdx
     shr $3, %rdx
     mov %rdx, %rcx
     shl $3, %rcx
@@ -372,7 +371,6 @@ __kefir_bigint_cast_unsigned:
     xor %eax, %eax
     ret
 .L__kefir_runtime_func___kefir_bigint_cast_unsigned_label21:
-    mov %rcx, %rsi
     movb (%rdi, %rax, 1), %sil
     mov %rax, %rcx
     shl $3, %rcx

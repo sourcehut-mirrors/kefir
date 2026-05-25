@@ -223,7 +223,6 @@ get8:
     sub $16, %rsp
     movq %rdi, -8(%rbp)
     movq -8(%rbp), %rcx
-    mov %rax, %rdx
     movb 21(%rcx), %dl
     movw 19(%rcx), %ax
     movzx %ax, %eax

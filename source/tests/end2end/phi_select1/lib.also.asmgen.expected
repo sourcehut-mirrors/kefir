@@ -90,16 +90,14 @@ select6:
     movaps %xmm0, %xmm3
     shufps $1, %xmm3, %xmm3
     test %edi, %edi
-    jz .L__kefir_func_select6_label2
-    movaps %xmm3, %xmm2
+    jnz .L__kefir_func_select6_label3
+    movaps %xmm1, %xmm0
+    movaps %xmm2, %xmm3
 .L__kefir_func_select6_label3:
-    insertps $16, %xmm2, %xmm0
+    insertps $16, %xmm3, %xmm0
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_func_select6_label2:
-    movaps %xmm1, %xmm0
-    jmp .L__kefir_func_select6_label3
 .L__kefir_text_func_select6_end:
 
 select7:

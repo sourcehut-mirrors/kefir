@@ -586,8 +586,7 @@ test_dec32_simulate:
     mov $0, %eax
     cmp %ebx, %eax
     jae .L__kefir_func_test_dec32_simulate_label4
-    xor %eax, %eax
-    mov %rax, %r12
+    xor %r12d, %r12d
 .L__kefir_func_test_dec32_simulate_label5:
     lea -56(%rbp), %rdi
     lea -36(%rbp), %rsi
@@ -1324,8 +1323,7 @@ test_dec64_simulate:
     mov $0, %eax
     cmp %ebx, %eax
     jae .L__kefir_func_test_dec64_simulate_label4
-    xor %eax, %eax
-    mov %rax, %r12
+    xor %r12d, %r12d
 .L__kefir_func_test_dec64_simulate_label5:
     lea -56(%rbp), %rdi
     lea -96(%rbp), %rsi
@@ -1481,7 +1479,6 @@ test_dec64_gravity_acceleration:
     movaps -224(%rbp), %xmm0
     call __bid_ltdd2@PLT
     cmp $0, %eax
-    mov %rax, %rbx
     setl %bl
     movaps -256(%rbp), %xmm0
     movaps -224(%rbp), %xmm1
@@ -1490,8 +1487,7 @@ test_dec64_gravity_acceleration:
     sete %al
     or %al, %bl
     jnz .L__kefir_func_test_dec64_gravity_acceleration_label3
-    xor %eax, %eax
-    mov %rax, %rbx
+    xor %ebx, %ebx
 .L__kefir_func_test_dec64_gravity_acceleration_label4:
     lea 1(%ebx), %r12d
     movq .L__kefir_func_test_dec64_gravity_acceleration_label17(%rip), %xmm0
@@ -1639,7 +1635,6 @@ test_dec32_gravity_acceleration:
     movaps -144(%rbp), %xmm0
     call __bid_ltsd2@PLT
     cmp $0, %eax
-    mov %rax, %rbx
     setl %bl
     movaps -176(%rbp), %xmm0
     movaps -144(%rbp), %xmm1
@@ -1648,8 +1643,7 @@ test_dec32_gravity_acceleration:
     sete %al
     or %al, %bl
     jnz .L__kefir_func_test_dec32_gravity_acceleration_label3
-    xor %eax, %eax
-    mov %rax, %rbx
+    xor %ebx, %ebx
 .L__kefir_func_test_dec32_gravity_acceleration_label4:
     lea 1(%ebx), %r12d
     movd .L__kefir_func_test_dec32_gravity_acceleration_label17(%rip), %xmm0
@@ -1888,7 +1882,6 @@ test_dec128_gravity_acceleration:
     movaps -384(%rbp), %xmm0
     call __bid_lttd2@PLT
     cmp $0, %eax
-    mov %rax, %r12
     setl %r12b
     movaps -416(%rbp), %xmm0
     movaps -384(%rbp), %xmm1
@@ -1897,8 +1890,7 @@ test_dec128_gravity_acceleration:
     sete %al
     or %al, %r12b
     jnz .L__kefir_func_test_dec128_gravity_acceleration_label3
-    xor %eax, %eax
-    mov %rax, %r12
+    xor %r12d, %r12d
 .L__kefir_func_test_dec128_gravity_acceleration_label4:
     lea 1(%r12d), %r13d
     movdqu .L__kefir_func_test_dec128_gravity_acceleration_label17(%rip), %xmm0
@@ -2728,8 +2720,7 @@ test_dec128_simulate:
     mov $0, %eax
     cmp %ebx, %eax
     jae .L__kefir_func_test_dec128_simulate_label4
-    xor %eax, %eax
-    mov %rax, %r12
+    xor %r12d, %r12d
 .L__kefir_func_test_dec128_simulate_label5:
     lea -96(%rbp), %rdi
     lea -176(%rbp), %rsi

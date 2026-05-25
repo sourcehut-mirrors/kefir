@@ -37,9 +37,8 @@ dec32_isinf:
     movaps %xmm0, -32(%rbp)
     movd .L__kefir_func_dec32_isinf_label4(%rip), %xmm1
     call __bid_eqsd2@PLT
-    xor %ecx, %ecx
+    xor %ebx, %ebx
     test %eax, %eax
-    mov %rcx, %rbx
     sete %bl
     movd .L__kefir_func_dec32_isinf_label5(%rip), %xmm1
     movaps -32(%rbp), %xmm0
@@ -75,9 +74,8 @@ dec64_isinf:
     movaps %xmm0, -32(%rbp)
     movq .L__kefir_func_dec64_isinf_label4(%rip), %xmm1
     call __bid_eqdd2@PLT
-    xor %ecx, %ecx
+    xor %ebx, %ebx
     test %eax, %eax
-    mov %rcx, %rbx
     sete %bl
     movq .L__kefir_func_dec64_isinf_label5(%rip), %xmm1
     movaps -32(%rbp), %xmm0
@@ -115,7 +113,6 @@ dec32_isfinite:
     movd .L__kefir_func_dec32_isfinite_label4(%rip), %xmm1
     call __bid_eqsd2@PLT
     test %eax, %eax
-    mov %rax, %r12
     sete %r12b
     movaps -32(%rbp), %xmm0
     movaps -32(%rbp), %xmm1
@@ -157,7 +154,6 @@ dec64_isfinite:
     movq .L__kefir_func_dec64_isfinite_label4(%rip), %xmm1
     call __bid_eqdd2@PLT
     test %eax, %eax
-    mov %rax, %r12
     sete %r12b
     movaps -32(%rbp), %xmm0
     movaps -32(%rbp), %xmm1
@@ -232,9 +228,8 @@ dec128_isinf:
     movaps %xmm0, -32(%rbp)
     movdqu .L__kefir_func_dec128_isinf_label4(%rip), %xmm1
     call __bid_eqtd2@PLT
-    xor %ecx, %ecx
+    xor %ebx, %ebx
     test %eax, %eax
-    mov %rcx, %rbx
     sete %bl
     movdqu .L__kefir_func_dec128_isinf_label5(%rip), %xmm1
     movaps -32(%rbp), %xmm0
@@ -307,7 +302,6 @@ dec128_isfinite:
     movdqu .L__kefir_func_dec128_isfinite_label4(%rip), %xmm1
     call __bid_eqtd2@PLT
     test %eax, %eax
-    mov %rax, %r12
     sete %r12b
     movaps -32(%rbp), %xmm0
     movaps -32(%rbp), %xmm1
