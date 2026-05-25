@@ -17,16 +17,15 @@ factorial:
     jle .L__kefir_func_factorial_label2
     lea -1(%rbx), %rdi
     call factorial_helper
-    imul %rax, %rbx
-    mov %rbx, %rax
-.L__kefir_func_factorial_label6:
+    imul %rbx, %rax
+.L__kefir_func_factorial_label5:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
     ret
 .L__kefir_func_factorial_label2:
     mov $1, %eax
-    jmp .L__kefir_func_factorial_label6
+    jmp .L__kefir_func_factorial_label5
 .L__kefir_text_func_factorial_end:
 
 factorial_helper2:
@@ -59,17 +58,16 @@ factorial_helper:
     sub $8, %rsp
     mov %rdi, %rbx
     cmp $1, %rbx
-    jle .L__kefir_func_factorial_helper_label2
+    jle .L__kefir_func_factorial_helper_label4
     lea -1(%rbx), %rdi
     call factorial_helper2
-    imul %rax, %rbx
-    mov %rbx, %rax
+    imul %rbx, %rax
 .L__kefir_func_factorial_helper_label6:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
     ret
-.L__kefir_func_factorial_helper_label2:
+.L__kefir_func_factorial_helper_label4:
     mov $1, %eax
     jmp .L__kefir_func_factorial_helper_label6
 .L__kefir_text_func_factorial_helper_end:

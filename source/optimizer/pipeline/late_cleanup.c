@@ -21,6 +21,7 @@
 #include "kefir/optimizer/pipeline.h"
 #include "kefir/optimizer/code.h"
 #include "kefir/optimizer/code_util.h"
+#include "kefir/optimizer/builder.h"
 #include "kefir/optimizer/control_flow.h"
 #include "kefir/core/error.h"
 #include "kefir/core/hash.h"
@@ -375,6 +376,45 @@ static kefir_result_t phi_dedup_apply(struct kefir_mem *mem, struct kefir_opt_co
     return KEFIR_OK;
 }
 
+static kefir_result_t return_specialize(struct kefir_mem *mem, struct kefir_opt_code_container *code,
+                                        kefir_opt_block_id_t block_ref) {
+    kefir_opt_instruction_ref_t tail_ref, tail_prev_ref;
+    REQUIRE_OK(kefir_opt_code_block_instr_control_tail(code, block_ref, &tail_ref));
+    REQUIRE(tail_ref != KEFIR_ID_NONE, KEFIR_OK);
+    REQUIRE_OK(kefir_opt_instruction_prev_control(code, tail_ref, &tail_prev_ref));
+    REQUIRE(tail_prev_ref == KEFIR_ID_NONE, KEFIR_OK);
+
+    const struct kefir_opt_instruction *tail_instr, *arg_instr;
+    REQUIRE_OK(kefir_opt_code_container_instr(code, tail_ref, &tail_instr));
+    REQUIRE(tail_instr->operation.opcode == KEFIR_OPT_OPCODE_RETURN &&
+                tail_instr->operation.parameters.refs[0] != KEFIR_ID_NONE,
+            KEFIR_OK);
+
+    REQUIRE_OK(kefir_opt_code_container_instr(code, tail_instr->operation.parameters.refs[0], &arg_instr));
+    REQUIRE(arg_instr->operation.opcode == KEFIR_OPT_OPCODE_PHI && arg_instr->block_id == block_ref, KEFIR_OK);
+
+    struct kefir_opt_phi_node_link_iterator link_iter;
+    kefir_opt_block_id_t link_block_id;
+    kefir_opt_instruction_ref_t link_instr_ref;
+    kefir_opt_instruction_ref_t phi_instr_ref = arg_instr->id;
+    kefir_result_t res;
+    for (res = kefir_opt_phi_node_link_iter(code, phi_instr_ref, &link_iter, &link_block_id, &link_instr_ref);
+         res == KEFIR_OK; res = kefir_opt_phi_node_link_next(&link_iter, &link_block_id, &link_instr_ref)) {
+        kefir_opt_block_id_t new_block_ref;
+        REQUIRE_OK(kefir_opt_code_container_new_block(mem, code, false, &new_block_ref));
+        REQUIRE_OK(kefir_opt_code_builder_finalize_return(mem, code, new_block_ref, link_instr_ref, NULL));
+
+        kefir_opt_instruction_ref_t link_block_tail_ref;
+        REQUIRE_OK(kefir_opt_code_block_instr_control_tail(code, link_block_id, &link_block_tail_ref));
+        REQUIRE_OK(kefir_opt_code_container_instruction_replace_control_flow_target(code, link_block_tail_ref,
+                                                                                    block_ref, new_block_ref));
+    }
+    if (res != KEFIR_ITERATOR_END) {
+        REQUIRE_OK(res);
+    }
+    return KEFIR_OK;
+}
+
 static kefir_result_t late_cleanup_impl(struct kefir_mem *mem, struct kefir_opt_code_container *code) {
     kefir_bool_t fixpoint_reached = false;
 
@@ -398,6 +438,8 @@ static kefir_result_t late_cleanup_impl(struct kefir_mem *mem, struct kefir_opt_
             if (res != KEFIR_ITERATOR_END) {
                 REQUIRE_OK(res);
             }
+
+            REQUIRE_OK(return_specialize(mem, code, block_ref));
         }
     }
     return KEFIR_OK;

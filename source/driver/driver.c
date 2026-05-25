@@ -67,8 +67,9 @@
     "loop-rotate," \
     "constant-fold," \
     "op-simplify," \
-    "merge-blocks," \
     "late-cleanup," \
+    "merge-blocks," \
+    "dead-code-elimination," \
     "gcm," \
     "rematerialize," \
     "tail-calls"

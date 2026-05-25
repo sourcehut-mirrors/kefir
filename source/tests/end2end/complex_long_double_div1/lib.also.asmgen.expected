@@ -818,13 +818,13 @@ __kefir_softfloat_fmaximum_numl:
     fucomi %st(1)
     fstpt -80(%rbp)
     fstpt -64(%rbp)
-    ja .L__kefir_runtime_func___kefir_softfloat_fmaximum_numl_label16
+    ja .L__kefir_runtime_func___kefir_softfloat_fmaximum_numl_label15
     fldt -80(%rbp)
     fldt -64(%rbp)
     fucomi %st(1)
     fstpt -64(%rbp)
     fstpt -80(%rbp)
-    ja .L__kefir_runtime_func___kefir_softfloat_fmaximum_numl_label15
+    ja .L__kefir_runtime_func___kefir_softfloat_fmaximum_numl_label14
     fldt -80(%rbp)
     fldt -64(%rbp)
     fld %st(0)
@@ -838,30 +838,8 @@ __kefir_softfloat_fmaximum_numl:
     setnp %al
     cmovne %rcx, %rax
     test %eax, %eax
-    jnz .L__kefir_runtime_func___kefir_softfloat_fmaximum_numl_label5
-    fldt -80(%rbp)
-    fucomi %st(0)
-    fstpt -80(%rbp)
-    jnp .L__kefir_runtime_func___kefir_softfloat_fmaximum_numl_label11
-    fldt -64(%rbp)
-    fucomi %st(0)
-    fldt -80(%rbp)
-    fld %st(1)
-    faddp
-    fstpt -80(%rbp)
-    fstpt -64(%rbp)
-    jp .L__kefir_runtime_func___kefir_softfloat_fmaximum_numl_label11
-    movdqu -64(%rbp), %xmm0
-    movdqu %xmm0, -80(%rbp)
-.L__kefir_runtime_func___kefir_softfloat_fmaximum_numl_label11:
-    fldt -80(%rbp)
-.L__kefir_runtime_func___kefir_softfloat_fmaximum_numl_label19:
-    fldcw -8(%rbp)
-    lea (%rbp), %rsp
-    pop %rbp
-    ret
-.L__kefir_runtime_func___kefir_softfloat_fmaximum_numl_label5:
-    fldt .L__kefir_runtime_func___kefir_softfloat_fmaximum_numl_label20(%rip)
+    jz .L__kefir_runtime_func___kefir_softfloat_fmaximum_numl_label8
+    fldt .L__kefir_runtime_func___kefir_softfloat_fmaximum_numl_label19(%rip)
     fldt -64(%rbp)
     fxam
     fnstsw %ax
@@ -872,7 +850,7 @@ __kefir_softfloat_fmaximum_numl:
     fchs
     fcmove %st(1), %st(0)
     fstp %st(1)
-    fldt .L__kefir_runtime_func___kefir_softfloat_fmaximum_numl_label21(%rip)
+    fldt .L__kefir_runtime_func___kefir_softfloat_fmaximum_numl_label20(%rip)
     fldt -80(%rbp)
     fxam
     fnstsw %ax
@@ -913,21 +891,44 @@ __kefir_softfloat_fmaximum_numl:
     movdqu %xmm0, -64(%rbp)
 .L__kefir_runtime_func___kefir_softfloat_fmaximum_numl_label7:
     fldt -64(%rbp)
-    jmp .L__kefir_runtime_func___kefir_softfloat_fmaximum_numl_label19
-.L__kefir_runtime_func___kefir_softfloat_fmaximum_numl_label16:
+.L__kefir_runtime_func___kefir_softfloat_fmaximum_numl_label18:
+    fldcw -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.L__kefir_runtime_func___kefir_softfloat_fmaximum_numl_label8:
     fldt -80(%rbp)
-    jmp .L__kefir_runtime_func___kefir_softfloat_fmaximum_numl_label19
-.L__kefir_runtime_func___kefir_softfloat_fmaximum_numl_label15:
+    fucomi %st(0)
+    fstpt -80(%rbp)
+    jnp .L__kefir_runtime_func___kefir_softfloat_fmaximum_numl_label10
     fldt -64(%rbp)
-    jmp .L__kefir_runtime_func___kefir_softfloat_fmaximum_numl_label19
+    fucomi %st(0)
+    fstpt -64(%rbp)
+    jnp .L__kefir_runtime_func___kefir_softfloat_fmaximum_numl_label13
+    fldt -80(%rbp)
+    fldt -64(%rbp)
+    faddp
+    jmp .L__kefir_runtime_func___kefir_softfloat_fmaximum_numl_label18
+.L__kefir_runtime_func___kefir_softfloat_fmaximum_numl_label10:
+    fldt -80(%rbp)
+    jmp .L__kefir_runtime_func___kefir_softfloat_fmaximum_numl_label18
+.L__kefir_runtime_func___kefir_softfloat_fmaximum_numl_label13:
+    fldt -64(%rbp)
+    jmp .L__kefir_runtime_func___kefir_softfloat_fmaximum_numl_label18
+.L__kefir_runtime_func___kefir_softfloat_fmaximum_numl_label15:
+    fldt -80(%rbp)
+    jmp .L__kefir_runtime_func___kefir_softfloat_fmaximum_numl_label18
+.L__kefir_runtime_func___kefir_softfloat_fmaximum_numl_label14:
+    fldt -64(%rbp)
+    jmp .L__kefir_runtime_func___kefir_softfloat_fmaximum_numl_label18
 .L__kefir_runtime_text_func___kefir_softfloat_fmaximum_numl_end:
 .section .rodata
     .align 8
-.L__kefir_runtime_func___kefir_softfloat_fmaximum_numl_label20:
+.L__kefir_runtime_func___kefir_softfloat_fmaximum_numl_label19:
     .quad 9223372036854775808
     .quad 16383
     .align 8
-.L__kefir_runtime_func___kefir_softfloat_fmaximum_numl_label21:
+.L__kefir_runtime_func___kefir_softfloat_fmaximum_numl_label20:
     .quad 9223372036854775808
     .quad 16383
 .section .text
