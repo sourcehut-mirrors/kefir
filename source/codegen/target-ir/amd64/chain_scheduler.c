@@ -440,6 +440,7 @@ kefir_result_t kefir_codegen_target_ir_amd64_chain_scheduler_free(
     REQUIRE_OK(kefir_hashtable_free(mem, &scheduler_payload->chains));
     REQUIRE_OK(kefir_hashtable_free(mem, &scheduler_payload->continuation_benefit));
     REQUIRE_OK(kefir_hashtable_free(mem, &scheduler_payload->edge_freqs));
+    REQUIRE_OK(kefir_list_free(mem, &scheduler_payload->scheduled_chains));
     KEFIR_FREE(mem, scheduler->payload);
     scheduler->payload = NULL;
     return KEFIR_OK;
