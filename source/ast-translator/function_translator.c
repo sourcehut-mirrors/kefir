@@ -230,11 +230,12 @@ kefir_result_t kefir_ast_translator_function_context_init(struct kefir_mem *mem,
         function->base.properties.function_definition.scoped_id;
     ctx->ir_func->flags.constructor = function_scoped_id->function.flags.constructor;
     ctx->ir_func->flags.destructor = function_scoped_id->function.flags.destructor;
-    ctx->ir_func->flags.inline_function =
+    ctx->ir_func->flags.inline_function_hint =
         (function_scoped_id->function.specifier == KEFIR_AST_FUNCTION_SPECIFIER_INLINE ||
          function_scoped_id->function.specifier == KEFIR_AST_FUNCTION_SPECIFIER_INLINE_NORETURN ||
          function_scoped_id->function.flags.gnu_inline || function_scoped_id->function.flags.always_inline) &&
         !function_scoped_id->function.flags.noinline;
+    ctx->ir_func->flags.noinline_function = function_scoped_id->function.flags.noinline;
     ctx->ir_func->flags.enable_fenv_access =
         function->base.properties.function_definition.pragma_stats.enable_fenv_access;
     ctx->ir_func->flags.disallow_fp_contract =

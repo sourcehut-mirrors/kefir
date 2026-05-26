@@ -68,7 +68,8 @@ kefir_result_t kefir_ir_function_alloc(struct kefir_mem *mem, struct kefir_ir_fu
     func->flags.used = false;
     func->flags.constructor = false;
     func->flags.destructor = false;
-    func->flags.inline_function = false;
+    func->flags.inline_function_hint = false;
+    func->flags.noinline_function = false;
     func->flags.enable_fenv_access = false;
     func->flags.disallow_fp_contract = false;
     func->flags.cx_limited_range = false;

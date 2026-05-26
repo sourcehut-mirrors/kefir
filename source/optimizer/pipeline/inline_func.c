@@ -29,6 +29,16 @@
 #include "kefir/core/util.h"
 #include <string.h>
 
+static kefir_result_t is_inline_candidate(struct kefir_opt_function *func, kefir_bool_t *candidate) {
+    *candidate = false;
+
+    if (func->ir_func->flags.inline_function_hint) {
+        *candidate = true;
+    }
+
+    return KEFIR_OK;
+}
+
 static kefir_result_t inline_func_impl(struct kefir_mem *mem, const struct kefir_opt_module *module,
                                        struct kefir_opt_function *func,
                                        struct kefir_opt_code_control_flow *control_flow,
@@ -53,12 +63,37 @@ static kefir_result_t inline_func_impl(struct kefir_mem *mem, const struct kefir
             REQUIRE_OK(kefir_opt_code_container_instr(&func->code, instr_ref, &instr));
             kefir_bool_t inlined = false;
             if (instr->operation.opcode == KEFIR_OPT_OPCODE_INVOKE) {
-                REQUIRE_OK(kefir_opt_try_inline_function_call(
-                    mem, module, func, control_flow, sequencing,
-                    &(struct kefir_opt_try_inline_function_call_parameters) {
-                        .max_inline_depth = config->max_inline_depth,
-                        .max_inlines_per_function = config->max_inlines_per_function},
-                    instr_ref, &inlined));
+                const struct kefir_opt_call_node *call_node;
+                REQUIRE_OK(kefir_opt_code_container_call(
+                    &func->code, instr->operation.parameters.function_call.call_ref, &call_node));
+
+                const struct kefir_ir_function_decl *ir_func_decl =
+                    kefir_ir_module_get_declaration(module->ir_module, call_node->function_declaration_id);
+                REQUIRE(ir_func_decl != NULL,
+                        KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to retrieve IR function declaration"));
+                const struct kefir_ir_function *ir_func =
+                    kefir_ir_module_get_function(module->ir_module, ir_func_decl->name);
+                if (ir_func == NULL) {
+                    REQUIRE_OK(kefir_opt_instruction_next_sibling(&func->code, instr_ref, &instr_ref));
+                    continue;
+                }
+                struct kefir_opt_function *called_func;
+                res = kefir_opt_module_get_function(module, ir_func->declaration->id, &called_func);
+                if (res == KEFIR_NOT_FOUND) {
+                    REQUIRE_OK(kefir_opt_instruction_next_sibling(&func->code, instr_ref, &instr_ref));
+                    continue;
+                }
+
+                kefir_bool_t candidate = false;
+                REQUIRE_OK(is_inline_candidate(called_func, &candidate));
+                if (candidate) {
+                    REQUIRE_OK(kefir_opt_try_inline_function_call(
+                        mem, module, func, control_flow, sequencing,
+                        &(struct kefir_opt_try_inline_function_call_parameters) {
+                            .max_inline_depth = config->max_inline_depth,
+                            .max_inlines_per_function = config->max_inlines_per_function},
+                        instr_ref, &inlined));
+                }
             }
             if (inlined) {
                 REQUIRE_OK(kefir_opt_code_container_block(&func->code, block_id, &block));
