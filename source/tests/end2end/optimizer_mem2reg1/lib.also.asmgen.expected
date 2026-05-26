@@ -89,9 +89,6 @@ quad_equation:
     xorpd .L__kefir_constant_float64_neg(%rip), %xmm2
     movdqu %xmm2, -64(%rbp)
     mov $-1, %r12d
-    test %ebx, %ebx
-    jnz .L__kefir_func_quad_equation_label2
-.L__kefir_func_quad_equation_label2:
     call sqrt@PLT
     mov $1, %eax
     test %ebx, %ebx

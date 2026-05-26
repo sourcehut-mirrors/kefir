@@ -79,18 +79,6 @@ test_is_lock_free:
     sete %al
 .L__kefir_func_test_is_lock_free_label18:
     test %eax, %eax
-    setne %al
-    movzx %al, %rax
-    test %al, %al
-    jz .L__kefir_func_test_is_lock_free_label21
-    xor %eax, %eax
-    mov $1, %edx
-    cmp $2, %edx
-    sete %al
-.L__kefir_func_test_is_lock_free_label21:
-    test %eax, %eax
-    jz .L__kefir_func_test_is_lock_free_label23
-.L__kefir_func_test_is_lock_free_label23:
     xor %eax, %eax
     ret
 .L__kefir_func_test_is_lock_free_label3:

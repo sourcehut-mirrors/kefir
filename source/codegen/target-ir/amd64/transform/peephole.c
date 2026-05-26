@@ -655,6 +655,30 @@ static kefir_result_t do_peephole(struct kefir_mem *mem, struct kefir_codegen_ta
                     break;
 
                 case KEFIR_TARGET_IR_AMD64_OPCODE(jmp):
+                    REQUIRE_OK(kefir_codegen_target_ir_amd64_peephole_jmp(mem, code, instr, &instr_replaced));
+                    break;
+
+                case KEFIR_TARGET_IR_AMD64_OPCODE(jz):
+                case KEFIR_TARGET_IR_AMD64_OPCODE(jnz):
+                case KEFIR_TARGET_IR_AMD64_OPCODE(je):
+                case KEFIR_TARGET_IR_AMD64_OPCODE(jne):
+                case KEFIR_TARGET_IR_AMD64_OPCODE(ja):
+                case KEFIR_TARGET_IR_AMD64_OPCODE(jbe):
+                case KEFIR_TARGET_IR_AMD64_OPCODE(jae):
+                case KEFIR_TARGET_IR_AMD64_OPCODE(jb):
+                case KEFIR_TARGET_IR_AMD64_OPCODE(jnb):
+                case KEFIR_TARGET_IR_AMD64_OPCODE(jg):
+                case KEFIR_TARGET_IR_AMD64_OPCODE(jle):
+                case KEFIR_TARGET_IR_AMD64_OPCODE(jge):
+                case KEFIR_TARGET_IR_AMD64_OPCODE(jl):
+                case KEFIR_TARGET_IR_AMD64_OPCODE(js):
+                case KEFIR_TARGET_IR_AMD64_OPCODE(jns):
+                case KEFIR_TARGET_IR_AMD64_OPCODE(jo):
+                case KEFIR_TARGET_IR_AMD64_OPCODE(jno):
+                case KEFIR_TARGET_IR_AMD64_OPCODE(jc):
+                case KEFIR_TARGET_IR_AMD64_OPCODE(jnc):
+                case KEFIR_TARGET_IR_AMD64_OPCODE(jp):
+                case KEFIR_TARGET_IR_AMD64_OPCODE(jnp):
                     REQUIRE_OK(kefir_codegen_target_ir_amd64_peephole_jcc(mem, code, instr, &instr_replaced));
                     break;
 

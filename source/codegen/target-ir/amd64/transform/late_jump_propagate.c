@@ -39,6 +39,16 @@ static kefir_result_t do_jump_propagation(struct kefir_mem *mem, struct kefir_co
                 !terminator_props.undefined_target,
             KEFIR_OK);
 
+    if (terminator_props.branch && terminator_props.target_block_refs[0] == terminator_props.target_block_refs[1]) {
+        struct kefir_codegen_target_ir_operation oper;
+        REQUIRE_OK(
+            code->klass->make_unconditional_jump(terminator_props.target_block_refs[0], &oper, code->klass->payload));
+
+        REQUIRE_OK(kefir_codegen_target_ir_code_replace_operation(mem, code, tail_ref, &oper, NULL));
+        *fixpoint = false;
+        return KEFIR_OK;
+    }
+
     kefir_bool_t do_replace = false;
     struct kefir_codegen_target_ir_operation replacement = tail_instr->operation;
     for (kefir_size_t i = 0; i < KEFIR_CODEGEN_TARGET_IR_OPERATION_NUM_OF_PARAMETERS; i++) {

@@ -27,7 +27,7 @@
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 
-kefir_result_t kefir_codegen_target_ir_amd64_peephole_jcc(struct kefir_mem *mem,
+kefir_result_t kefir_codegen_target_ir_amd64_peephole_jmp(struct kefir_mem *mem,
                                                           struct kefir_codegen_target_ir_code *code,
                                                           const struct kefir_codegen_target_ir_instruction *instr,
                                                           kefir_bool_t *replaced) {
@@ -70,6 +70,34 @@ kefir_result_t kefir_codegen_target_ir_amd64_peephole_jcc(struct kefir_mem *mem,
     oper.parameters[classification.operands[0].read_index] = arg_instr->operation.parameters[0];
 
     REQUIRE_OK(kefir_codegen_target_ir_code_replace_operation(mem, code, instr_ref, &oper, NULL));
+    *replaced = true;
+
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_codegen_target_ir_amd64_peephole_jcc(struct kefir_mem *mem,
+                                                          struct kefir_codegen_target_ir_code *code,
+                                                          const struct kefir_codegen_target_ir_instruction *instr,
+                                                          kefir_bool_t *replaced) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR code"));
+    REQUIRE(instr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR instruction"));
+    REQUIRE(replaced != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to boolean flag"));
+
+    struct kefir_codegen_target_ir_block_terminator_props terminator_props;
+    REQUIRE_OK(code->klass->is_block_terminator(code, instr, &terminator_props, code->klass->payload));
+    REQUIRE(terminator_props.block_terminator && !terminator_props.function_terminator && terminator_props.branch &&
+                !terminator_props.fallthrough,
+            KEFIR_OK);
+
+    REQUIRE(terminator_props.target_block_refs[0] == terminator_props.target_block_refs[1], KEFIR_OK);
+
+    struct kefir_codegen_target_ir_operation oper = {
+        .opcode = KEFIR_TARGET_IR_AMD64_OPCODE(jmp),
+        .parameters[0] = {.type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_BLOCK_REF,
+                          .block_ref = terminator_props.target_block_refs[0]}};
+
+    REQUIRE_OK(kefir_codegen_target_ir_code_replace_operation(mem, code, instr->instr_ref, &oper, NULL));
     *replaced = true;
 
     return KEFIR_OK;
