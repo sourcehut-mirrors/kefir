@@ -58,7 +58,7 @@ int test4b(int x) {
     return test4b(x + 1);
 }
 
-int test5(int x) {
+__attribute__((noinline)) int test5(int x) {
     asm("" : : "r"(&x));
     return test5(x + 1);
 }

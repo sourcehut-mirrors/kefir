@@ -22,6 +22,7 @@
 #include "kefir/optimizer/configuration.h"
 #include "kefir/optimizer/builder.h"
 #include "kefir/optimizer/code_util.h"
+#include "kefir/optimizer/trace.h"
 #include "kefir/optimizer/control_flow.h"
 #include "kefir/optimizer/inline.h"
 #include "kefir/core/queue.h"
@@ -29,11 +30,88 @@
 #include "kefir/core/util.h"
 #include <string.h>
 
-static kefir_result_t is_inline_candidate(struct kefir_opt_function *func, kefir_bool_t *candidate) {
+struct inline_candidate_instr_tracer {
+    const struct kefir_opt_module *module;
+    const struct kefir_opt_code_container *code;
+    kefir_size_t instructions;
+    kefir_bool_t leaf_function;
+    kefir_bool_t noinline;
+};
+
+#define TRACER_INSTR_LIMIT 128
+
+static kefir_result_t trace_instruction(kefir_opt_instruction_ref_t instr_ref, void *payload) {
+    UNUSED(instr_ref);
+    ASSIGN_DECL_CAST(struct inline_candidate_instr_tracer *, tracer, payload);
+    REQUIRE(tracer != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid code tracer payload"));
+
+    tracer->instructions++;
+    REQUIRE(tracer->instructions < TRACER_INSTR_LIMIT, KEFIR_YIELD);
+
+    const struct kefir_opt_instruction *instr;
+    REQUIRE_OK(kefir_opt_code_container_instr(tracer->code, instr_ref, &instr));
+
+    switch (instr->operation.opcode) {
+        case KEFIR_OPT_OPCODE_INVOKE: {
+            const struct kefir_opt_call_node *call_node;
+            REQUIRE_OK(kefir_opt_code_container_call(tracer->code, instr->operation.parameters.function_call.call_ref,
+                                                     &call_node));
+
+            const struct kefir_ir_function_decl *ir_func_decl =
+                kefir_ir_module_get_declaration(tracer->module->ir_module, call_node->function_declaration_id);
+            REQUIRE(ir_func_decl != NULL,
+                    KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to retrieve IR function declaration"));
+
+            static const char BUILTIN_PREFIX[] = "__kefir_builtin";
+            if (strncmp(BUILTIN_PREFIX, ir_func_decl->name, sizeof(BUILTIN_PREFIX) - 1) != 0) {
+                tracer->leaf_function = false;
+            } else if (strcmp(ir_func_decl->name, "__kefir_builtin_frame_address") == 0 ||
+                       strcmp(ir_func_decl->name, "__kefir_builtin_return_address") == 0) {
+                tracer->noinline = true;
+                return KEFIR_YIELD;
+            }
+        } break;
+
+        case KEFIR_OPT_OPCODE_INVOKE_VIRTUAL:
+            tracer->leaf_function = false;
+            break;
+
+        case KEFIR_OPT_OPCODE_TAIL_INVOKE:
+        case KEFIR_OPT_OPCODE_TAIL_INVOKE_VIRTUAL:
+            tracer->noinline = true;
+            return KEFIR_YIELD;
+
+        default:
+            // Intentionally left blank
+            break;
+    }
+    return KEFIR_OK;
+}
+
+static kefir_result_t is_inline_candidate(struct kefir_mem *mem, const struct kefir_opt_module *module,
+                                          struct kefir_opt_function *func, kefir_bool_t *candidate) {
     *candidate = false;
 
     if (func->ir_func->flags.inline_function_hint) {
         *candidate = true;
+        return KEFIR_OK;
+    }
+
+    struct inline_candidate_instr_tracer instr_trace_payloer = {
+        .module = module, .code = &func->code, .instructions = 0, .leaf_function = true, .noinline = false};
+    struct kefir_opt_code_container_tracer tracer = {.trace_instruction = trace_instruction,
+                                                     .payload = &instr_trace_payloer};
+    kefir_result_t res = kefir_opt_code_container_trace(mem, &func->code, &tracer);
+    if (res == KEFIR_YIELD) {
+        res = KEFIR_OK;
+    }
+    REQUIRE_OK(res);
+
+    if (!instr_trace_payloer.noinline &&
+        (instr_trace_payloer.instructions <= 16 ||
+         (instr_trace_payloer.instructions <= 24 && instr_trace_payloer.leaf_function))) {
+        *candidate = true;
+        return KEFIR_OK;
     }
 
     return KEFIR_OK;
@@ -85,7 +163,7 @@ static kefir_result_t inline_func_impl(struct kefir_mem *mem, const struct kefir
                 }
 
                 kefir_bool_t candidate = false;
-                REQUIRE_OK(is_inline_candidate(called_func, &candidate));
+                REQUIRE_OK(is_inline_candidate(mem, module, called_func, &candidate));
                 if (candidate) {
                     REQUIRE_OK(kefir_opt_try_inline_function_call(
                         mem, module, func, control_flow, sequencing,

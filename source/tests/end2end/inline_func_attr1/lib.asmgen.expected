@@ -30,8 +30,9 @@ main:
     call test3
     call test4
     call test5
+    mov $301, %edi
     pop %rbp
-    jmp test6
+    jmp test@PLT
 .L__kefir_text_func_main_end:
 
 test1:

@@ -12,54 +12,84 @@ test:
 .L__kefir_text_func_test_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $208, %rsp
-    movl $0, -208(%rbp)
-    movl $0, -204(%rbp)
-    movl $0, -200(%rbp)
-    movl $0, -196(%rbp)
-    movl $0, -192(%rbp)
-    movl $0, -188(%rbp)
-    movl $0, -184(%rbp)
-    movl $0, -180(%rbp)
-    movl $0, -176(%rbp)
-    movl $0, -172(%rbp)
-    movl $0, -168(%rbp)
-    movl $0, -164(%rbp)
-    movl $0, -160(%rbp)
-    movl $0, -156(%rbp)
-    movl $0, -152(%rbp)
-    movl $-2147483648, -148(%rbp)
-    movl $7, -144(%rbp)
-    movl $0, -140(%rbp)
-    movl $0, -136(%rbp)
-    movl $-2147483648, -132(%rbp)
-    movdqu -144(%rbp), %xmm0
-    movdqu %xmm0, -128(%rbp)
-    lea -128(%rbp), %rdi
+    sub $528, %rsp
+    movl $7, -528(%rbp)
+    movl $0, -524(%rbp)
+    movl $0, -520(%rbp)
+    movl $-2147483648, -516(%rbp)
+    movdqu -528(%rbp), %xmm0
+    movdqu %xmm0, -512(%rbp)
+    lea -512(%rbp), %rdi
     mov $128, %esi
     mov $512, %edx
     call __kefir_bigint_cast_unsigned
-    sub $128, %rsp
-    movdqu -208(%rbp), %xmm0
-    movdqu %xmm0, (%rsp)
-    movdqu -192(%rbp), %xmm0
-    movdqu %xmm0, 16(%rsp)
-    movdqu -176(%rbp), %xmm0
-    movdqu %xmm0, 32(%rsp)
-    movdqu -160(%rbp), %xmm0
-    movdqu %xmm0, 48(%rsp)
+    movl $0, -448(%rbp)
+    movl $0, -444(%rbp)
+    movl $0, -440(%rbp)
+    movl $0, -436(%rbp)
+    movl $0, -432(%rbp)
+    movl $0, -428(%rbp)
+    movl $0, -424(%rbp)
+    movl $0, -420(%rbp)
+    movl $0, -416(%rbp)
+    movl $0, -412(%rbp)
+    movl $0, -408(%rbp)
+    movl $0, -404(%rbp)
+    movl $0, -400(%rbp)
+    movl $0, -396(%rbp)
+    movl $0, -392(%rbp)
+    movl $-2147483648, -388(%rbp)
+    movdqu -512(%rbp), %xmm0
+    movdqu %xmm0, -128(%rbp)
+    movdqu -496(%rbp), %xmm0
+    movdqu %xmm0, -112(%rbp)
+    movdqu -480(%rbp), %xmm0
+    movdqu %xmm0, -96(%rbp)
+    movdqu -464(%rbp), %xmm0
+    movdqu %xmm0, -80(%rbp)
+    movdqu -448(%rbp), %xmm0
+    movdqu %xmm0, -64(%rbp)
+    movdqu -432(%rbp), %xmm0
+    movdqu %xmm0, -48(%rbp)
+    movdqu -416(%rbp), %xmm0
+    movdqu %xmm0, -32(%rbp)
+    movdqu -400(%rbp), %xmm0
+    movdqu %xmm0, -16(%rbp)
+    movdqu -64(%rbp), %xmm0
+    movdqu %xmm0, -528(%rbp)
+    movdqu -48(%rbp), %xmm0
+    movdqu %xmm0, -512(%rbp)
+    movdqu -32(%rbp), %xmm0
+    movdqu %xmm0, -496(%rbp)
+    movdqu -16(%rbp), %xmm0
+    movdqu %xmm0, -480(%rbp)
     movdqu -128(%rbp), %xmm0
-    movdqu %xmm0, 64(%rsp)
+    movdqu %xmm0, -464(%rbp)
     movdqu -112(%rbp), %xmm0
-    movdqu %xmm0, 80(%rsp)
+    movdqu %xmm0, -448(%rbp)
     movdqu -96(%rbp), %xmm0
-    movdqu %xmm0, 96(%rsp)
+    movdqu %xmm0, -432(%rbp)
     movdqu -80(%rbp), %xmm0
-    movdqu %xmm0, 112(%rsp)
-    lea -64(%rbp), %rdi
-    call umod
-    add $128, %rsp
-    movq -64(%rbp), %rax
+    movdqu %xmm0, -416(%rbp)
+    movdqu -528(%rbp), %xmm0
+    movdqu %xmm0, -384(%rbp)
+    movdqu -512(%rbp), %xmm0
+    movdqu %xmm0, -368(%rbp)
+    movdqu -496(%rbp), %xmm0
+    movdqu %xmm0, -352(%rbp)
+    movdqu -480(%rbp), %xmm0
+    movdqu %xmm0, -336(%rbp)
+    lea -384(%rbp), %rdi
+    mov $512, %esi
+    mov $1024, %edx
+    call __kefir_bigint_cast_unsigned
+    lea -384(%rbp), %rdi
+    lea -256(%rbp), %rsi
+    lea -464(%rbp), %rdx
+    mov $1024, %ecx
+    mov $512, %r8d
+    call __kefir_bigint_unsigned_divide
+    movq -256(%rbp), %rax
     lea (%rbp), %rsp
     pop %rbp
     ret

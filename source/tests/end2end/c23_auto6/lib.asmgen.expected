@@ -28,22 +28,13 @@ fn2:
 
 fn3:
 .L__kefir_text_func_fn3_begin:
-    push %rbp
-    mov %rsp, %rbp
-    push %rbx
-    sub $8, %rsp
+.L__kefir_func_fn3_label2:
+    lea -1(%edi), %eax
     cmp $0, %edi
-    jle .L__kefir_func_fn3_label4
-    mov %rdi, %rbx
+    jle .L__kefir_func_fn3_label5
+    mov %eax, %edi
+    jmp .L__kefir_func_fn3_label2
 .L__kefir_func_fn3_label5:
-    call fn1
-    add $-1, %ebx
-    cmp $0, %ebx
-    jg .L__kefir_func_fn3_label5
-.L__kefir_func_fn3_label4:
-    lea -8(%rbp), %rsp
-    pop %rbx
-    pop %rbp
     ret
 .L__kefir_text_func_fn3_end:
 

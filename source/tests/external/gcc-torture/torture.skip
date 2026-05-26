@@ -50,3 +50,6 @@ skip execute/20230630-4.c
 
 # Decimal -- skipped because only certain Kefir builds support the feature
 skip execute/pr80692.c
+
+# Undefined behavior
+skip execute/pr34099-2.c

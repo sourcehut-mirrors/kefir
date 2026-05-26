@@ -27,7 +27,9 @@ test3:
     mov %rsp, %rbp
     test %edi, %edi
     jz .L__kefir_func_test3_label2
-    call test2
+    test %edi, %edi
+    jz .L__kefir_func_test3_label2
+    call test1@PLT
 .L__kefir_func_test3_label2:
     pop %rbp
     ret
