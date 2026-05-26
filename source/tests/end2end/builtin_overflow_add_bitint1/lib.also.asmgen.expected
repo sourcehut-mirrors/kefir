@@ -363,7 +363,6 @@ __kefir_bigint_redundant_sign_bits:
     jmp .L__kefir_runtime_func___kefir_bigint_redundant_sign_bits_label3
 .L__kefir_runtime_func___kefir_bigint_redundant_sign_bits_label13:
     xor %eax, %eax
-.L__kefir_runtime_func___kefir_bigint_redundant_sign_bits_label17:
     lea -24(%rbp), %rsp
     pop %r13
     pop %r12
@@ -372,10 +371,20 @@ __kefir_bigint_redundant_sign_bits:
     ret
 .L__kefir_runtime_func___kefir_bigint_redundant_sign_bits_label12:
     sub $1, %rax
-    jmp .L__kefir_runtime_func___kefir_bigint_redundant_sign_bits_label17
+    lea -24(%rbp), %rsp
+    pop %r13
+    pop %r12
+    pop %rbx
+    pop %rbp
+    ret
 .L__kefir_runtime_func___kefir_bigint_redundant_sign_bits_label11:
     sub $1, %rax
-    jmp .L__kefir_runtime_func___kefir_bigint_redundant_sign_bits_label17
+    lea -24(%rbp), %rsp
+    pop %r13
+    pop %r12
+    pop %rbx
+    pop %rbp
+    ret
 .L__kefir_runtime_text_func___kefir_bigint_redundant_sign_bits_end:
 
 

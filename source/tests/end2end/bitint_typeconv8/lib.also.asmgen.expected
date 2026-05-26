@@ -23,7 +23,7 @@ get1:
     push %rbx
     sub $24, %rsp
     mov %rdi, %rbx
-    movd .L__kefir_func_get1_label4(%rip), %xmm0
+    movd .L__kefir_func_get1_label3(%rip), %xmm0
     lea -32(%rbp), %rdi
     mov $180, %esi
     call __kefir_bigint_signed_from_float
@@ -41,7 +41,7 @@ get1:
 .L__kefir_text_func_get1_end:
 .section .rodata
     .align 4
-.L__kefir_func_get1_label4:
+.L__kefir_func_get1_label3:
     .long 1162107249
 .section .text
 
@@ -53,7 +53,7 @@ get2:
     sub $40, %rsp
     stmxcsr -16(%rbp)
     mov %rdi, %rbx
-    movd .L__kefir_func_get2_label4(%rip), %xmm0
+    movd .L__kefir_func_get2_label3(%rip), %xmm0
     xorps .L__kefir_constant_float32_neg(%rip), %xmm0
     lea -48(%rbp), %rdi
     mov $180, %esi
@@ -73,7 +73,7 @@ get2:
 .L__kefir_text_func_get2_end:
 .section .rodata
     .align 4
-.L__kefir_func_get2_label4:
+.L__kefir_func_get2_label3:
     .long 1190490061
 .section .text
 
@@ -84,7 +84,7 @@ get3:
     push %rbx
     sub $24, %rsp
     mov %rdi, %rbx
-    movd .L__kefir_func_get3_label4(%rip), %xmm0
+    movd .L__kefir_func_get3_label3(%rip), %xmm0
     lea -32(%rbp), %rdi
     mov $180, %esi
     call __kefir_bigint_unsigned_from_float
@@ -102,7 +102,7 @@ get3:
 .L__kefir_text_func_get3_end:
 .section .rodata
     .align 4
-.L__kefir_func_get3_label4:
+.L__kefir_func_get3_label3:
     .long 1218012640
 .section .text
 
@@ -113,7 +113,7 @@ get4:
     push %rbx
     sub $24, %rsp
     mov %rdi, %rbx
-    movq .L__kefir_func_get4_label4(%rip), %xmm0
+    movq .L__kefir_func_get4_label3(%rip), %xmm0
     lea -32(%rbp), %rdi
     mov $180, %esi
     call __kefir_bigint_signed_from_double
@@ -131,7 +131,7 @@ get4:
 .L__kefir_text_func_get4_end:
 .section .rodata
     .align 8
-.L__kefir_func_get4_label4:
+.L__kefir_func_get4_label3:
     .quad 4659126844543131976
 .section .text
 
@@ -143,7 +143,7 @@ get5:
     sub $40, %rsp
     stmxcsr -16(%rbp)
     mov %rdi, %rbx
-    movq .L__kefir_func_get5_label4(%rip), %xmm0
+    movq .L__kefir_func_get5_label3(%rip), %xmm0
     xorpd .L__kefir_constant_float64_neg(%rip), %xmm0
     lea -48(%rbp), %rdi
     mov $180, %esi
@@ -163,7 +163,7 @@ get5:
 .L__kefir_text_func_get5_end:
 .section .rodata
     .align 8
-.L__kefir_func_get5_label4:
+.L__kefir_func_get5_label3:
     .quad 4674364750792595866
 .section .text
 
@@ -174,7 +174,7 @@ get6:
     push %rbx
     sub $24, %rsp
     mov %rdi, %rbx
-    movq .L__kefir_func_get6_label4(%rip), %xmm0
+    movq .L__kefir_func_get6_label3(%rip), %xmm0
     lea -32(%rbp), %rdi
     mov $180, %esi
     call __kefir_bigint_unsigned_from_double
@@ -192,7 +192,7 @@ get6:
 .L__kefir_text_func_get6_end:
 .section .rodata
     .align 8
-.L__kefir_func_get6_label4:
+.L__kefir_func_get6_label3:
     .quad 4689140822988292096
 .section .text
 

@@ -64,6 +64,7 @@ typedef struct kefir_codegen_amd64_stack_frame {
         kefir_asmcmp_virtual_register_index_t return_space_vreg;
         kefir_asm_amd64_xasmgen_register_t return_space_phreg;
     };
+    kefir_size_t epilogues;
 
     kefir_id_t next_local_id;
 } kefir_codegen_amd64_stack_frame_t;
@@ -90,6 +91,8 @@ kefir_result_t kefir_codegen_amd64_stack_frame_local_variable_offset(const struc
 
 kefir_result_t kefir_codegen_amd64_stack_frame_calculate(kefir_abi_amd64_variant_t,
                                                          struct kefir_codegen_amd64_stack_frame *);
+
+kefir_result_t kefir_codegen_amd64_stack_frame_register_epilogue(struct kefir_codegen_amd64_stack_frame *);
 
 typedef struct kefir_codegen_amd64_stack_frame_fused_epilogue {
     kefir_bool_t generated;

@@ -42,10 +42,15 @@ test3:
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-    ucomiss .L__kefir_func_test3_label10(%rip), %xmm0
+    ucomiss .L__kefir_func_test3_label9(%rip), %xmm0
     jp .L__kefir_func_test3_label5
-    ja .L__kefir_func_test3_label5
+    ja .L__kefir_func_test3_label4
 .L__kefir_func_test3_label5:
+    ldmxcsr -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.L__kefir_func_test3_label4:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -53,7 +58,7 @@ test3:
 .L__kefir_text_func_test3_end:
 .section .rodata
     .align 4
-.L__kefir_func_test3_label10:
+.L__kefir_func_test3_label9:
     .long 0
 .section .text
 
@@ -63,10 +68,15 @@ test4:
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-    ucomisd .L__kefir_func_test4_label10(%rip), %xmm0
+    ucomisd .L__kefir_func_test4_label9(%rip), %xmm0
     jp .L__kefir_func_test4_label5
-    ja .L__kefir_func_test4_label5
+    ja .L__kefir_func_test4_label4
 .L__kefir_func_test4_label5:
+    ldmxcsr -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.L__kefir_func_test4_label4:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -74,7 +84,7 @@ test4:
 .L__kefir_text_func_test4_end:
 .section .rodata
     .align 8
-.L__kefir_func_test4_label10:
+.L__kefir_func_test4_label9:
     .quad 0
 .section .text
 

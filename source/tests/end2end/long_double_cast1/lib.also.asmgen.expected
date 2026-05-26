@@ -33,7 +33,7 @@ inc:
     sub $16, %rsp
     fstcw -8(%rbp)
     fldt 16(%rbp)
-    fldt .L__kefir_func_inc_label4(%rip)
+    fldt .L__kefir_func_inc_label3(%rip)
     fxch %st(1)
     faddp
     fldcw -8(%rbp)
@@ -43,7 +43,7 @@ inc:
 .L__kefir_text_func_inc_end:
 .section .rodata
     .align 8
-.L__kefir_func_inc_label4:
+.L__kefir_func_inc_label3:
     .quad 9223372036854775808
     .quad 16383
 .section .text
@@ -182,7 +182,7 @@ ldcuint:
     mov -16(%rbp), %rax
     fldcww -24(%rbp)
     btc $63, %rax
-.L__kefir_func_ldcuint_label6:
+.L__kefir_func_ldcuint_label4:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -197,7 +197,7 @@ ldcuint:
     fistpq -16(%rbp)
     mov -16(%rbp), %rax
     fldcww -24(%rbp)
-    jmp .L__kefir_func_ldcuint_label6
+    jmp .L__kefir_func_ldcuint_label4
 .L__kefir_text_func_ldcuint_end:
 
 uintcld:

@@ -116,7 +116,6 @@ test1:
     and %al, %bl
     jz .L__kefir_func_test1_label6
     mov $1, %eax
-.L__kefir_func_test1_label9:
     lea -16(%rbp), %rsp
     pop %r12
     pop %rbx
@@ -124,10 +123,18 @@ test1:
     ret
 .L__kefir_func_test1_label7:
     mov $-1, %eax
-    jmp .L__kefir_func_test1_label9
+    lea -16(%rbp), %rsp
+    pop %r12
+    pop %rbx
+    pop %rbp
+    ret
 .L__kefir_func_test1_label6:
     xor %eax, %eax
-    jmp .L__kefir_func_test1_label9
+    lea -16(%rbp), %rsp
+    pop %r12
+    pop %rbx
+    pop %rbp
+    ret
 .L__kefir_text_func_test1_end:
 
 .L__kefir_text_section_end:

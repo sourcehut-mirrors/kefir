@@ -395,10 +395,16 @@ __kefir_bigint_arithmetic_right_shift:
     andb %al, -1(%r12, %r15, 1)
 .L__kefir_runtime_func___kefir_bigint_arithmetic_right_shift_label21:
     xor %eax, %eax
-    jmp .L__kefir_runtime_func___kefir_bigint_arithmetic_right_shift_label29
+    lea -40(%rbp), %rsp
+    pop %r15
+    pop %r14
+    pop %r13
+    pop %r12
+    pop %rbx
+    pop %rbp
+    ret
 .L__kefir_runtime_func___kefir_bigint_arithmetic_right_shift_label3:
     xor %eax, %eax
-.L__kefir_runtime_func___kefir_bigint_arithmetic_right_shift_label29:
     lea -40(%rbp), %rsp
     pop %r15
     pop %r14
@@ -750,10 +756,16 @@ __kefir_bigint_signed_multiply:
     mov -56(%rbp), %rdx
     call __kefir_bigint_cast_signed
     xor %eax, %eax
-    jmp .L__kefir_runtime_func___kefir_bigint_signed_multiply_label52
+    lea -40(%rbp), %rsp
+    pop %r15
+    pop %r14
+    pop %r13
+    pop %r12
+    pop %rbx
+    pop %rbp
+    ret
 .L__kefir_runtime_func___kefir_bigint_signed_multiply_label40:
     xor %eax, %eax
-.L__kefir_runtime_func___kefir_bigint_signed_multiply_label52:
     lea -40(%rbp), %rsp
     pop %r15
     pop %r14

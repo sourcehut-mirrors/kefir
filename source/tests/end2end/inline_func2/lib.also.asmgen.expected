@@ -18,14 +18,16 @@ factorial:
     lea -1(%rbx), %rdi
     call factorial_helper
     imul %rbx, %rax
-.L__kefir_func_factorial_label5:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
     ret
 .L__kefir_func_factorial_label2:
     mov $1, %eax
-    jmp .L__kefir_func_factorial_label5
+    lea -8(%rbp), %rsp
+    pop %rbx
+    pop %rbp
+    ret
 .L__kefir_text_func_factorial_end:
 
 factorial_helper2:
@@ -40,14 +42,16 @@ factorial_helper2:
     lea -1(%rbx), %rdi
     call factorial_helper2
     imul %rbx, %rax
-.L__kefir_func_factorial_helper2_label5:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
     ret
 .L__kefir_func_factorial_helper2_label2:
     mov $1, %eax
-    jmp .L__kefir_func_factorial_helper2_label5
+    lea -8(%rbp), %rsp
+    pop %rbx
+    pop %rbp
+    ret
 .L__kefir_text_func_factorial_helper2_end:
 
 factorial_helper:
@@ -62,14 +66,16 @@ factorial_helper:
     lea -1(%rbx), %rdi
     call factorial_helper2
     imul %rbx, %rax
-.L__kefir_func_factorial_helper_label6:
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
     ret
 .L__kefir_func_factorial_helper_label4:
     mov $1, %eax
-    jmp .L__kefir_func_factorial_helper_label6
+    lea -8(%rbp), %rsp
+    pop %rbx
+    pop %rbp
+    ret
 .L__kefir_text_func_factorial_helper_end:
 
 .L__kefir_text_section_end:

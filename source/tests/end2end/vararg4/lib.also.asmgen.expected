@@ -56,19 +56,22 @@ get:
     fstpt -64(%rbp)
 .L__kefir_func_get_label7:
     fldt -64(%rbp)
-.L__kefir_func_get_label11:
     ldmxcsr -16(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
 .L__kefir_func_get_label4:
-    fldt .L__kefir_func_get_label12(%rip)
-    jmp .L__kefir_func_get_label11
+    fldt .L__kefir_func_get_label11(%rip)
+    ldmxcsr -16(%rbp)
+    fldcw -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
 .L__kefir_text_func_get_end:
 .section .rodata
     .align 8
-.L__kefir_func_get_label12:
+.L__kefir_func_get_label11:
     .quad 9223372036854775808
     .quad 49151
 .section .text

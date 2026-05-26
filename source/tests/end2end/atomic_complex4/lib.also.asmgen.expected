@@ -42,11 +42,11 @@ f32_predec:
     movd -108(%rbp), %xmm1
     movaps %xmm0, -112(%rbp)
     movd -112(%rbp), %xmm2
-    addss .L__kefir_func_f32_predec_label9(%rip), %xmm2
+    addss .L__kefir_func_f32_predec_label8(%rip), %xmm2
     movd %xmm2, -112(%rbp)
     movaps %xmm1, -64(%rbp)
     movd -64(%rbp), %xmm2
-    addss .L__kefir_func_f32_predec_label10(%rip), %xmm2
+    addss .L__kefir_func_f32_predec_label9(%rip), %xmm2
     movd %xmm2, -64(%rbp)
     movd %xmm0, -48(%rbp)
     movd %xmm1, -44(%rbp)
@@ -86,10 +86,10 @@ f32_predec:
 .L__kefir_text_func_f32_predec_end:
 .section .rodata
     .align 4
-.L__kefir_func_f32_predec_label9:
+.L__kefir_func_f32_predec_label8:
     .long 3212836864
     .align 4
-.L__kefir_func_f32_predec_label10:
+.L__kefir_func_f32_predec_label9:
     .long 0
 .section .text
 
@@ -115,11 +115,11 @@ f32_preinc:
     movd -108(%rbp), %xmm1
     movaps %xmm0, -112(%rbp)
     movd -112(%rbp), %xmm2
-    addss .L__kefir_func_f32_preinc_label9(%rip), %xmm2
+    addss .L__kefir_func_f32_preinc_label8(%rip), %xmm2
     movd %xmm2, -112(%rbp)
     movaps %xmm1, -64(%rbp)
     movd -64(%rbp), %xmm2
-    addss .L__kefir_func_f32_preinc_label10(%rip), %xmm2
+    addss .L__kefir_func_f32_preinc_label9(%rip), %xmm2
     movd %xmm2, -64(%rbp)
     movd %xmm0, -48(%rbp)
     movd %xmm1, -44(%rbp)
@@ -159,10 +159,10 @@ f32_preinc:
 .L__kefir_text_func_f32_preinc_end:
 .section .rodata
     .align 4
-.L__kefir_func_f32_preinc_label9:
+.L__kefir_func_f32_preinc_label8:
     .long 1065353216
     .align 4
-.L__kefir_func_f32_preinc_label10:
+.L__kefir_func_f32_preinc_label9:
     .long 0
 .section .text
 
@@ -188,11 +188,11 @@ f64_predec:
     movq -120(%rbp), %xmm1
     movaps %xmm0, -128(%rbp)
     movq -128(%rbp), %xmm2
-    addsd .L__kefir_func_f64_predec_label9(%rip), %xmm2
+    addsd .L__kefir_func_f64_predec_label8(%rip), %xmm2
     movq %xmm2, -128(%rbp)
     movaps %xmm1, -112(%rbp)
     movq -112(%rbp), %xmm2
-    addsd .L__kefir_func_f64_predec_label10(%rip), %xmm2
+    addsd .L__kefir_func_f64_predec_label9(%rip), %xmm2
     movq %xmm2, -112(%rbp)
     movq %xmm0, -64(%rbp)
     movq %xmm1, -56(%rbp)
@@ -232,10 +232,10 @@ f64_predec:
 .L__kefir_text_func_f64_predec_end:
 .section .rodata
     .align 8
-.L__kefir_func_f64_predec_label9:
+.L__kefir_func_f64_predec_label8:
     .quad 13830554455654793216
     .align 8
-.L__kefir_func_f64_predec_label10:
+.L__kefir_func_f64_predec_label9:
     .quad 0
 .section .text
 
@@ -261,11 +261,11 @@ f64_preinc:
     movq -120(%rbp), %xmm1
     movaps %xmm0, -128(%rbp)
     movq -128(%rbp), %xmm2
-    addsd .L__kefir_func_f64_preinc_label9(%rip), %xmm2
+    addsd .L__kefir_func_f64_preinc_label8(%rip), %xmm2
     movq %xmm2, -128(%rbp)
     movaps %xmm1, -112(%rbp)
     movq -112(%rbp), %xmm2
-    addsd .L__kefir_func_f64_preinc_label10(%rip), %xmm2
+    addsd .L__kefir_func_f64_preinc_label9(%rip), %xmm2
     movq %xmm2, -112(%rbp)
     movq %xmm0, -64(%rbp)
     movq %xmm1, -56(%rbp)
@@ -305,10 +305,10 @@ f64_preinc:
 .L__kefir_text_func_f64_preinc_end:
 .section .rodata
     .align 8
-.L__kefir_func_f64_preinc_label9:
+.L__kefir_func_f64_preinc_label8:
     .quad 4607182418800017408
     .align 8
-.L__kefir_func_f64_preinc_label10:
+.L__kefir_func_f64_preinc_label9:
     .quad 0
 .section .text
 
@@ -335,9 +335,9 @@ f32_postdec:
     movd -60(%rbp), %xmm1
     movaps %xmm1, -48(%rbp)
     movaps %xmm0, %xmm2
-    addss .L__kefir_func_f32_postdec_label9(%rip), %xmm2
+    addss .L__kefir_func_f32_postdec_label8(%rip), %xmm2
     movaps %xmm1, %xmm3
-    addss .L__kefir_func_f32_postdec_label10(%rip), %xmm3
+    addss .L__kefir_func_f32_postdec_label9(%rip), %xmm3
     movd %xmm0, -64(%rbp)
     movd %xmm1, -60(%rbp)
     movd %xmm2, -56(%rbp)
@@ -374,10 +374,10 @@ f32_postdec:
 .L__kefir_text_func_f32_postdec_end:
 .section .rodata
     .align 4
-.L__kefir_func_f32_postdec_label9:
+.L__kefir_func_f32_postdec_label8:
     .long 3212836864
     .align 4
-.L__kefir_func_f32_postdec_label10:
+.L__kefir_func_f32_postdec_label9:
     .long 0
 .section .text
 
@@ -404,9 +404,9 @@ f32_postinc:
     movd -60(%rbp), %xmm1
     movaps %xmm1, -48(%rbp)
     movaps %xmm0, %xmm2
-    addss .L__kefir_func_f32_postinc_label9(%rip), %xmm2
+    addss .L__kefir_func_f32_postinc_label8(%rip), %xmm2
     movaps %xmm1, %xmm3
-    addss .L__kefir_func_f32_postinc_label10(%rip), %xmm3
+    addss .L__kefir_func_f32_postinc_label9(%rip), %xmm3
     movd %xmm0, -64(%rbp)
     movd %xmm1, -60(%rbp)
     movd %xmm2, -56(%rbp)
@@ -443,10 +443,10 @@ f32_postinc:
 .L__kefir_text_func_f32_postinc_end:
 .section .rodata
     .align 4
-.L__kefir_func_f32_postinc_label9:
+.L__kefir_func_f32_postinc_label8:
     .long 1065353216
     .align 4
-.L__kefir_func_f32_postinc_label10:
+.L__kefir_func_f32_postinc_label9:
     .long 0
 .section .text
 
@@ -473,9 +473,9 @@ f64_postdec:
     movq -104(%rbp), %xmm1
     movaps %xmm1, -112(%rbp)
     movaps %xmm0, %xmm2
-    addsd .L__kefir_func_f64_postdec_label9(%rip), %xmm2
+    addsd .L__kefir_func_f64_postdec_label8(%rip), %xmm2
     movaps %xmm1, %xmm3
-    addsd .L__kefir_func_f64_postdec_label10(%rip), %xmm3
+    addsd .L__kefir_func_f64_postdec_label9(%rip), %xmm3
     movq %xmm0, -64(%rbp)
     movq %xmm1, -56(%rbp)
     movq %xmm2, -48(%rbp)
@@ -512,10 +512,10 @@ f64_postdec:
 .L__kefir_text_func_f64_postdec_end:
 .section .rodata
     .align 8
-.L__kefir_func_f64_postdec_label9:
+.L__kefir_func_f64_postdec_label8:
     .quad 13830554455654793216
     .align 8
-.L__kefir_func_f64_postdec_label10:
+.L__kefir_func_f64_postdec_label9:
     .quad 0
 .section .text
 
@@ -542,9 +542,9 @@ f64_postinc:
     movq -104(%rbp), %xmm1
     movaps %xmm1, -112(%rbp)
     movaps %xmm0, %xmm2
-    addsd .L__kefir_func_f64_postinc_label9(%rip), %xmm2
+    addsd .L__kefir_func_f64_postinc_label8(%rip), %xmm2
     movaps %xmm1, %xmm3
-    addsd .L__kefir_func_f64_postinc_label10(%rip), %xmm3
+    addsd .L__kefir_func_f64_postinc_label9(%rip), %xmm3
     movq %xmm0, -64(%rbp)
     movq %xmm1, -56(%rbp)
     movq %xmm2, -48(%rbp)
@@ -581,10 +581,10 @@ f64_postinc:
 .L__kefir_text_func_f64_postinc_end:
 .section .rodata
     .align 8
-.L__kefir_func_f64_postinc_label9:
+.L__kefir_func_f64_postinc_label8:
     .quad 4607182418800017408
     .align 8
-.L__kefir_func_f64_postinc_label10:
+.L__kefir_func_f64_postinc_label9:
     .quad 0
 .section .text
 
