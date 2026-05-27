@@ -1118,19 +1118,19 @@ __kefir_softfloat_complex_float_div:
     movaps %xmm1, -144(%rbp)
     movaps %xmm0, -128(%rbp)
     xor %eax, %eax
-    movq %rax, -48(%rbp)
+    movq %rax, -40(%rbp)
     movd -160(%rbp), %xmm0
-    movd %xmm0, -48(%rbp)
-    movq -48(%rbp), %rax
-    and $2147483647, %rax
-    movq %rax, -48(%rbp)
-    xor %ecx, %ecx
-    movq %rcx, -40(%rbp)
-    movd -176(%rbp), %xmm0
     movd %xmm0, -40(%rbp)
-    movq -40(%rbp), %rcx
+    movq -40(%rbp), %rax
+    and $2147483647, %rax
+    movq %rax, -40(%rbp)
+    xor %ecx, %ecx
+    movq %rcx, -48(%rbp)
+    movd -176(%rbp), %xmm0
+    movd %xmm0, -48(%rbp)
+    movq -48(%rbp), %rcx
     and $2147483647, %rcx
-    movq %rcx, -40(%rbp)
+    movq %rcx, -48(%rbp)
     movq %rax, %xmm0
     movq %rcx, %xmm1
     call __kefir_softfloat_fmaximum_numf

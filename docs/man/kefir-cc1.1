@@ -353,7 +353,8 @@ Disable low-level optimizations in code generator.
 .El
 .\"
 .Ss OPTIMIZER
-Optimizer pipeline specification consists of comma separated names of optimization pipeline passes:
+Optimizer pipeline specification consists of comma separated names of pipeline passes. Vertical bar can be used to introduce barrier
+between passes, thus ensuring that all passes before the barrier run on all code before the next stage is reached.
 .Bl -tag -width Ds
 .\"
 .It Ar noop

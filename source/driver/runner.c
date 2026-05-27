@@ -307,7 +307,14 @@ static kefir_result_t dump_action_impl(struct kefir_mem *mem, const struct kefir
         const char *spec = options->optimizer_pipeline_spec;
 
         while (spec != NULL && *spec != '\0') {
-            const char *next_spec = strchr(spec, ',');
+            const char *next_comma = strchr(spec, ',');
+            const char *next_stage = strchr(spec, '|');
+
+            const char *next_spec = next_comma;
+            if (next_stage != NULL && (next_comma == NULL || next_stage < next_comma)) {
+                next_spec = next_stage;
+            }
+
             if (next_spec == NULL) {
                 REQUIRE_OK(
                     kefir_optimizer_configuration_add_pipeline_pass(mem, &compiler.optimizer_configuration, spec));
@@ -322,6 +329,9 @@ static kefir_result_t dump_action_impl(struct kefir_mem *mem, const struct kefir
                 spec = next_spec + 1;
             } else {
                 spec++;
+            }
+            if (next_spec != NULL && *next_spec == '|') {
+                REQUIRE_OK(kefir_optimizer_configuration_add_pipeline_stage(mem, &compiler.optimizer_configuration));
             }
         }
     }

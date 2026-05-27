@@ -160,7 +160,7 @@ static kefir_result_t output_compiler_config(FILE *output,
     }
 
     if (configuration->optimizer_pipeline_spec != NULL) {
-        fprintf(output, " --optimizer-pipeline %s", configuration->optimizer_pipeline_spec);
+        fprintf(output, " --optimizer-pipeline \"%s\"", configuration->optimizer_pipeline_spec);
     }
 
     if (configuration->features.declare_atomic_support) {

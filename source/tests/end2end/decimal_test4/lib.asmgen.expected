@@ -92,22 +92,6 @@ test_dec128_run:
     .quad 1, 3475090062469758976
 .section .text
 
-test_dec32_free:
-.L__kefir_text_func_test_dec32_free_begin:
-    push %rbp
-    mov %rsp, %rbp
-    push %rbx
-    sub $8, %rsp
-    mov %rdi, %rbx
-    movq 8(%rbx), %rdi
-    call free@PLT
-    movq 16(%rbx), %rdi
-    lea -8(%rbp), %rsp
-    pop %rbx
-    pop %rbp
-    jmp free@PLT
-.L__kefir_text_func_test_dec32_free_end:
-
 test_dec32_init:
 .L__kefir_text_func_test_dec32_init_begin:
     push %rbp
@@ -447,22 +431,6 @@ test_dec32_step:
 .L__kefir_func_test_dec32_step_label24:
     .long 847249408
 .section .text
-
-test_dec64_free:
-.L__kefir_text_func_test_dec64_free_begin:
-    push %rbp
-    mov %rsp, %rbp
-    push %rbx
-    sub $8, %rsp
-    mov %rdi, %rbx
-    movq 8(%rbx), %rdi
-    call free@PLT
-    movq 16(%rbx), %rdi
-    lea -8(%rbp), %rsp
-    pop %rbx
-    pop %rbp
-    jmp free@PLT
-.L__kefir_text_func_test_dec64_free_end:
 
 test_dec64_init:
 .L__kefir_text_func_test_dec64_init_begin:
@@ -839,8 +807,10 @@ test_dec32_run:
     mov %r12, %rsi
     call test_dec32_norm
     movaps %xmm0, -80(%rbp)
-    lea -56(%rbp), %rdi
-    call test_dec32_free
+    movq -48(%rbp), %rdi
+    call free@PLT
+    movq -40(%rbp), %rdi
+    call free@PLT
     movaps -96(%rbp), %xmm0
     movaps -80(%rbp), %xmm1
     call __bid_addsd3@PLT
@@ -898,8 +868,10 @@ test_dec64_run:
     mov %r12, %rsi
     call test_dec64_norm
     movaps %xmm0, -80(%rbp)
-    lea -56(%rbp), %rdi
-    call test_dec64_free
+    movq -48(%rbp), %rdi
+    call free@PLT
+    movq -40(%rbp), %rdi
+    call free@PLT
     movaps -96(%rbp), %xmm0
     movaps -80(%rbp), %xmm1
     call __bid_adddd3@PLT

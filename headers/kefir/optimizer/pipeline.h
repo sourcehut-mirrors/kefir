@@ -43,6 +43,7 @@ typedef struct kefir_optimizer_pass {
 
 typedef struct kefir_optimizer_pipeline {
     struct kefir_list pipeline;
+    kefir_size_t stages;
 } kefir_optimizer_pipeline_t;
 
 kefir_result_t kefir_optimizer_pass_resolve(const char *, const struct kefir_optimizer_pass **);
@@ -50,13 +51,12 @@ kefir_result_t kefir_optimizer_pass_resolve(const char *, const struct kefir_opt
 kefir_result_t kefir_optimizer_pipeline_init(struct kefir_optimizer_pipeline *);
 kefir_result_t kefir_optimizer_pipeline_free(struct kefir_mem *, struct kefir_optimizer_pipeline *);
 
+kefir_result_t kefir_optimizer_pipeline_add_stage(struct kefir_mem *, struct kefir_optimizer_pipeline *);
 kefir_result_t kefir_optimizer_pipeline_add(struct kefir_mem *, struct kefir_optimizer_pipeline *,
                                             const struct kefir_optimizer_pass *);
 
 kefir_result_t kefir_optimizer_pipeline_apply(struct kefir_mem *, struct kefir_opt_module *,
                                               const struct kefir_optimizer_configuration *);
-kefir_result_t kefir_optimizer_pipeline_apply_function(struct kefir_mem *, struct kefir_opt_module *, kefir_id_t,
-                                                       const struct kefir_optimizer_configuration *);
 
 #ifdef KEFIR_OPTIMIZER_PIPELINE_INTERNAL
 #define DECLARE_PASS(_id) extern const struct kefir_optimizer_pass KefirOptimizerPass##_id

@@ -25,6 +25,8 @@
 #include "kefir/core/util.h"
 #include <string.h>
 
+static struct kefir_optimizer_pass StageDelimPass = {.apply = NULL, .name = NULL, .payload = NULL};
+
 kefir_result_t kefir_optimizer_pass_resolve(const char *name, const struct kefir_optimizer_pass **pass_ptr) {
     REQUIRE(name != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer pass name"));
     REQUIRE(pass_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to optimizer pass"));
@@ -69,6 +71,7 @@ kefir_result_t kefir_optimizer_pipeline_init(struct kefir_optimizer_pipeline *pi
     REQUIRE(pipeline != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to optimizer pipeline"));
 
     REQUIRE_OK(kefir_list_init(&pipeline->pipeline));
+    pipeline->stages = 0;
     return KEFIR_OK;
 }
 
@@ -80,13 +83,53 @@ kefir_result_t kefir_optimizer_pipeline_free(struct kefir_mem *mem, struct kefir
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_optimizer_pipeline_add_stage(struct kefir_mem *mem, struct kefir_optimizer_pipeline *pipeline) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(pipeline != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer pipeline"));
+
+    REQUIRE_OK(kefir_list_insert_after(mem, &pipeline->pipeline, kefir_list_tail(&pipeline->pipeline),
+                                       (void *) &StageDelimPass));
+    pipeline->stages++;
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_optimizer_pipeline_add(struct kefir_mem *mem, struct kefir_optimizer_pipeline *pipeline,
                                             const struct kefir_optimizer_pass *pass) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(pipeline != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer pipeline"));
     REQUIRE(pass != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer pipeline pass"));
 
+    if (pass == &StageDelimPass) {
+        pipeline->stages++;
+    }
     REQUIRE_OK(kefir_list_insert_after(mem, &pipeline->pipeline, kefir_list_tail(&pipeline->pipeline), (void *) pass));
+    return KEFIR_OK;
+}
+
+static kefir_result_t kefir_optimizer_pipeline_apply_function(struct kefir_mem *mem, struct kefir_opt_module *module,
+                                                              kefir_id_t function_id, kefir_size_t stage,
+                                                              const struct kefir_optimizer_configuration *config) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer module"));
+    REQUIRE(config != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer config"));
+
+    struct kefir_opt_function *func;
+    REQUIRE_OK(kefir_opt_module_get_function(module, function_id, &func));
+
+    kefir_size_t current_stage = 0;
+    for (const struct kefir_list_entry *iter = kefir_list_head(&config->pipeline.pipeline); iter != NULL;
+         kefir_list_next(&iter)) {
+
+        ASSIGN_DECL_CAST(struct kefir_optimizer_pass *, pass, iter->value);
+        if (pass == &StageDelimPass) {
+            current_stage++;
+            continue;
+        }
+
+        if (current_stage == stage) {
+            REQUIRE_OK(pass->apply(mem, module, func, pass, config));
+        }
+    }
     return KEFIR_OK;
 }
 
@@ -96,31 +139,13 @@ kefir_result_t kefir_optimizer_pipeline_apply(struct kefir_mem *mem, struct kefi
     REQUIRE(module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer module"));
     REQUIRE(config != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer configuration"));
 
-    struct kefir_ir_module_function_iterator iter;
-    for (const struct kefir_ir_function *ir_func = kefir_ir_module_function_iter(module->ir_module, &iter, NULL);
-         ir_func != NULL; ir_func = kefir_ir_module_function_next(&iter, NULL)) {
+    for (kefir_size_t i = 0; i < config->pipeline.stages + 1; i++) {
+        struct kefir_ir_module_function_iterator iter;
+        for (const struct kefir_ir_function *ir_func = kefir_ir_module_function_iter(module->ir_module, &iter, NULL);
+             ir_func != NULL; ir_func = kefir_ir_module_function_next(&iter, NULL)) {
 
-        REQUIRE_OK(kefir_optimizer_pipeline_apply_function(mem, module, ir_func->declaration->id, config));
-    }
-    return KEFIR_OK;
-}
-
-kefir_result_t kefir_optimizer_pipeline_apply_function(struct kefir_mem *mem, struct kefir_opt_module *module,
-                                                       kefir_id_t function_id,
-                                                       const struct kefir_optimizer_configuration *config) {
-    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
-    REQUIRE(module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer module"));
-    REQUIRE(config != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer config"));
-
-    struct kefir_opt_function *func;
-    REQUIRE_OK(kefir_opt_module_get_function(module, function_id, &func));
-
-    for (const struct kefir_list_entry *iter = kefir_list_head(&config->pipeline.pipeline); iter != NULL;
-         kefir_list_next(&iter)) {
-
-        ASSIGN_DECL_CAST(struct kefir_optimizer_pass *, pass, iter->value);
-
-        REQUIRE_OK(pass->apply(mem, module, func, pass, config));
+            REQUIRE_OK(kefir_optimizer_pipeline_apply_function(mem, module, ir_func->declaration->id, i, config));
+        }
     }
     return KEFIR_OK;
 }

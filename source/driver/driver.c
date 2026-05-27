@@ -36,11 +36,11 @@
 
 // clang-format off
 #define KEFIR_OPTIMIZER_PIPELINE_FULL_SPEC                                                                             \
-    "inline-asm-untie," \
-    "inline-func," \
     "phi-removal," \
     "constant-fold," \
-    "mem2reg," \
+    "inline-asm-untie," \
+    "mem2reg|" \
+    "inline-func|" \
     "dead-alloc," \
     "local-alloc-sink," \
     "phi-removal," \

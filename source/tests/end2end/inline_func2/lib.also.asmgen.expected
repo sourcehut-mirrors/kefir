@@ -62,7 +62,7 @@ factorial_helper:
     sub $8, %rsp
     mov %rdi, %rbx
     cmp $1, %rbx
-    jle .L__kefir_func_factorial_helper_label4
+    jle .L__kefir_func_factorial_helper_label2
     lea -1(%rbx), %rdi
     call factorial_helper2
     imul %rbx, %rax
@@ -70,7 +70,7 @@ factorial_helper:
     pop %rbx
     pop %rbp
     ret
-.L__kefir_func_factorial_helper_label4:
+.L__kefir_func_factorial_helper_label2:
     mov $1, %eax
     lea -8(%rbp), %rsp
     pop %rbx

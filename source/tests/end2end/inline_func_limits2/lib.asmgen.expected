@@ -33,7 +33,7 @@ test1:
 
 test2:
 .L__kefir_text_func_test2_begin:
-    jmp test1
+    jmp test0@PLT
 .L__kefir_text_func_test2_end:
 
 .L__kefir_text_section_end:

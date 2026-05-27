@@ -17,14 +17,14 @@
                                 "control_next": null
                             },
                             {
-                                "id": 132,
+                                "id": 196,
                                 "opcode": "local_scope",
                                 "control_next": null
                             },
                             {
-                                "id": 194,
+                                "id": 180,
                                 "opcode": "alloc_local",
-                                "scope": 132,
+                                "scope": 196,
                                 "type_id": 92,
                                 "type_index": 0,
                                 "control_next": null
@@ -32,67 +32,67 @@
                             {
                                 "id": 98,
                                 "opcode": "int32_store",
-                                "location": 194,
+                                "location": 180,
                                 "value": 32,
                                 "flags": {
                                     "volatile": true
                                 },
-                                "control_next": 114,
+                                "control_next": 417,
                                 "memssa_node_ref": 1
                             },
                             {
-                                "id": 114,
+                                "id": 417,
                                 "opcode": "local_lifetime_mark",
-                                "arg": 132,
-                                "control_next": 164
+                                "arg": 196,
+                                "control_next": 401
                             },
                             {
-                                "id": 49,
+                                "id": 132,
                                 "opcode": "local_scope",
                                 "control_next": null
                             },
                             {
-                                "id": 209,
+                                "id": 257,
                                 "opcode": "alloc_local",
-                                "scope": 49,
+                                "scope": 132,
                                 "type_id": 92,
                                 "type_index": 0,
                                 "control_next": null
                             },
                             {
-                                "id": 306,
+                                "id": 449,
                                 "opcode": "int_const",
                                 "value": 1,
                                 "control_next": null
                             },
                             {
-                                "id": 385,
+                                "id": 160,
                                 "opcode": "int32_add",
                                 "args": [
                                     32,
-                                    306
+                                    449
                                 ],
                                 "control_next": null
                             },
                             {
-                                "id": 164,
+                                "id": 401,
                                 "opcode": "int32_store",
-                                "location": 209,
-                                "value": 385,
+                                "location": 257,
+                                "value": 160,
                                 "flags": {
                                     "volatile": true
                                 },
-                                "control_next": 2,
+                                "control_next": 385,
                                 "memssa_node_ref": 2
                             },
                             {
-                                "id": 2,
+                                "id": 385,
                                 "opcode": "local_lifetime_mark",
-                                "arg": 49,
-                                "control_next": 180
+                                "arg": 132,
+                                "control_next": 2
                             },
                             {
-                                "id": 180,
+                                "id": 2,
                                 "opcode": "return",
                                 "arg": null,
                                 "control_next": null
@@ -104,17 +104,17 @@
                             "predecessors": [],
                             "immediate_dominator": null,
                             "alive_instructions": [
-                                306,
-                                164,
-                                49,
+                                257,
                                 32,
-                                98,
+                                401,
+                                196,
+                                160,
                                 132,
                                 180,
-                                194,
-                                209,
+                                449,
+                                417,
                                 385,
-                                114,
+                                98,
                                 2
                             ]
                         }

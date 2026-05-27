@@ -41,6 +41,15 @@ kefir_result_t kefir_optimizer_configuration_add_pipeline_pass(struct kefir_mem 
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_optimizer_configuration_add_pipeline_stage(struct kefir_mem *mem,
+                                                                struct kefir_optimizer_configuration *conf) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(conf != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer configuration"));
+
+    REQUIRE_OK(kefir_optimizer_pipeline_add_stage(mem, &conf->pipeline));
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_optimizer_configuration_copy_from(struct kefir_mem *mem,
                                                        struct kefir_optimizer_configuration *dst_conf,
                                                        const struct kefir_optimizer_configuration *src_conf) {

@@ -353,18 +353,14 @@ __kefir_bigint_negate:
     shr $3, %rax
     mov $0, %rcx
     cmp %rax, %rcx
-    jae .L__kefir_runtime_func___kefir_bigint_negate_label7
+    jae .L__kefir_runtime_func___kefir_bigint_negate_label4
     xor %ecx, %ecx
-    mov $1, %esi
-.L__kefir_runtime_func___kefir_bigint_negate_label4:
+.L__kefir_runtime_func___kefir_bigint_negate_label5:
     notb (%rdi, %rcx, 1)
-    lea 1(%rsi), %r8
-    cmp %rax, %rsi
-    jae .L__kefir_runtime_func___kefir_bigint_negate_label7
-    mov %rsi, %rcx
-    mov %r8, %rsi
-    jmp .L__kefir_runtime_func___kefir_bigint_negate_label4
-.L__kefir_runtime_func___kefir_bigint_negate_label7:
+    add $1, %rcx
+    cmp %rax, %rcx
+    jb .L__kefir_runtime_func___kefir_bigint_negate_label5
+.L__kefir_runtime_func___kefir_bigint_negate_label4:
     mov $1, %esi
     call __kefir_bigint_util_add_digit_zero_extended
     xor %eax, %eax
