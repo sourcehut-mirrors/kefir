@@ -40,7 +40,7 @@ static kefir_result_t do_jump_propagation(struct kefir_mem *mem, struct kefir_co
             KEFIR_OK);
 
     if (terminator_props.branch && terminator_props.target_block_refs[0] == terminator_props.target_block_refs[1]) {
-        struct kefir_codegen_target_ir_operation oper;
+        struct kefir_codegen_target_ir_operation oper = {0};
         REQUIRE_OK(
             code->klass->make_unconditional_jump(terminator_props.target_block_refs[0], &oper, code->klass->payload));
 
