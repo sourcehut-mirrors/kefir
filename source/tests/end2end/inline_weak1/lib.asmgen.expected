@@ -1,0 +1,44 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.weak get
+.type get, @function
+.global get2
+.type get2, @function
+.global get3
+.type get3, @function
+.global get4
+.type get4, @function
+
+.section .text
+.L__kefir_text_section_begin:
+get:
+.L__kefir_text_func_get_begin:
+    mov $100, %eax
+    ret
+.L__kefir_text_func_get_end:
+
+get2:
+.L__kefir_text_func_get2_begin:
+    push %rbp
+    mov %rsp, %rbp
+    call get
+    add $1, %eax
+    pop %rbp
+    ret
+.L__kefir_text_func_get2_end:
+
+get3:
+.L__kefir_text_func_get3_begin:
+    mov $100, %eax
+    ret
+.L__kefir_text_func_get3_end:
+
+get4:
+.L__kefir_text_func_get4_begin:
+    mov $101, %eax
+    ret
+.L__kefir_text_func_get4_end:
+
+.L__kefir_text_section_end:
+
