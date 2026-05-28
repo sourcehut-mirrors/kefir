@@ -168,6 +168,7 @@ static kefir_result_t inline_func_impl(struct kefir_mem *mem, const struct kefir
                     REQUIRE_OK(kefir_opt_try_inline_function_call(
                         mem, module, func, control_flow, sequencing,
                         &(struct kefir_opt_try_inline_function_call_parameters) {
+                            .max_recursive_inline = config->max_recursive_inline,
                             .max_inline_depth = config->max_inline_depth,
                             .max_inlines_per_function = config->max_inlines_per_function},
                         instr_ref, &inlined));

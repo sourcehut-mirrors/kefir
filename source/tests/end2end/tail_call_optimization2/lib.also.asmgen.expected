@@ -12,38 +12,53 @@ factorial:
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-    ucomisd .L__kefir_func_factorial_label9(%rip), %xmm0
-    jp .L__kefir_func_factorial_label5
-    ja .L__kefir_func_factorial_label4
-.L__kefir_func_factorial_label5:
-    movq .L__kefir_func_factorial_label10(%rip), %xmm0
+    ucomisd .L__kefir_func_factorial_label15(%rip), %xmm0
+    jp .L__kefir_func_factorial_label9
+    jbe .L__kefir_func_factorial_label9
+    movq .L__kefir_func_factorial_label16(%rip), %xmm2
+    mulsd %xmm0, %xmm2
+    movaps %xmm0, %xmm1
+    subsd .L__kefir_func_factorial_label17(%rip), %xmm1
+    ucomisd .L__kefir_func_factorial_label18(%rip), %xmm1
+    jp .L__kefir_func_factorial_label6
+    jbe .L__kefir_func_factorial_label6
+    movaps %xmm2, %xmm0
+    mulsd %xmm1, %xmm0
+    subsd .L__kefir_func_factorial_label19(%rip), %xmm1
+    call factorial_helper
+.L__kefir_func_factorial_label7:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
-.L__kefir_func_factorial_label4:
-    movq .L__kefir_func_factorial_label11(%rip), %xmm2
-    mulsd %xmm0, %xmm2
-    movaps %xmm0, %xmm1
-    subsd .L__kefir_func_factorial_label12(%rip), %xmm1
+.L__kefir_func_factorial_label6:
     movaps %xmm2, %xmm0
+    jmp .L__kefir_func_factorial_label7
+.L__kefir_func_factorial_label9:
+    movq .L__kefir_func_factorial_label20(%rip), %xmm0
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
-    jmp factorial_helper
+    ret
 .L__kefir_text_func_factorial_end:
 .section .rodata
     .align 8
-.L__kefir_func_factorial_label9:
+.L__kefir_func_factorial_label15:
     .quad 4607182418800017408
     .align 8
-.L__kefir_func_factorial_label10:
+.L__kefir_func_factorial_label16:
     .quad 4607182418800017408
     .align 8
-.L__kefir_func_factorial_label11:
+.L__kefir_func_factorial_label17:
     .quad 4607182418800017408
     .align 8
-.L__kefir_func_factorial_label12:
+.L__kefir_func_factorial_label18:
+    .quad 4607182418800017408
+    .align 8
+.L__kefir_func_factorial_label19:
+    .quad 4607182418800017408
+    .align 8
+.L__kefir_func_factorial_label20:
     .quad 4607182418800017408
 .section .text
 

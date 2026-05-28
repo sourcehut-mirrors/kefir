@@ -60,9 +60,8 @@ static kefir_result_t map_block(struct do_inline_param *param, kefir_opt_block_i
     REQUIRE_OK(kefir_hashtree_insert(param->mem, &param->block_mapping, (kefir_hashtree_key_t) block_id,
                                      (kefir_hashtree_value_t) mapped_block_id));
     REQUIRE_OK(kefir_opt_function_block_inlined_from(param->mem, param->dst_function, mapped_block_id,
-                                                     param->src_function, block_id));
-    REQUIRE_OK(kefir_opt_function_block_inlined_from(param->mem, param->dst_function, mapped_block_id,
-                                                     param->dst_function, param->inline_predecessor_block_id));
+                                                     param->inline_predecessor_block_id, param->src_function,
+                                                     block_id));
     ASSIGN_PTR(mapped_block_id_ptr, mapped_block_id);
     return KEFIR_OK;
 }
@@ -1306,9 +1305,10 @@ static kefir_result_t can_inline_function(const struct kefir_opt_function *calle
                                           const struct kefir_opt_try_inline_function_call_parameters *inline_params,
                                           kefir_bool_t *can_inline_ptr) {
     kefir_bool_t can_inline;
-    REQUIRE_OK(kefir_opt_function_block_can_inline(
-        callee_function, call_node->block_id, called_function,
-        (inline_params == NULL ? KEFIR_SIZE_MAX : inline_params->max_inline_depth), &can_inline));
+    REQUIRE_OK(kefir_opt_function_block_can_inline(callee_function, call_node->block_id, called_function,
+                                                   (inline_params == NULL ? 5 : inline_params->max_inline_depth),
+                                                   (inline_params == NULL ? 1 : inline_params->max_recursive_inline),
+                                                   &can_inline));
 
     if (called_function->ir_func->flags.noinline_function || called_function->ir_func->declaration->vararg ||
         called_function->ir_func->declaration->returns_twice ||

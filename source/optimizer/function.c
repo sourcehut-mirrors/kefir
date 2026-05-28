@@ -25,7 +25,7 @@
 
 struct block_inline_entry {
     kefir_size_t num_of_source_functions;
-    struct kefir_hashtreeset source_functions;
+    struct kefir_hashtree source_functions;
 };
 
 static kefir_result_t free_block_inline_entry(struct kefir_mem *mem, struct kefir_hashtree *tree,
@@ -38,7 +38,7 @@ static kefir_result_t free_block_inline_entry(struct kefir_mem *mem, struct kefi
     ASSIGN_DECL_CAST(struct block_inline_entry *, entry, value);
     REQUIRE(entry != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer block inline entry"));
 
-    REQUIRE_OK(kefir_hashtreeset_free(mem, &entry->source_functions));
+    REQUIRE_OK(kefir_hashtree_free(mem, &entry->source_functions));
     KEFIR_FREE(mem, entry);
     return KEFIR_OK;
 }
@@ -74,6 +74,7 @@ kefir_result_t kefir_opt_function_free(struct kefir_mem *mem, struct kefir_opt_f
 
 kefir_result_t kefir_opt_function_block_inlined_from(struct kefir_mem *mem, struct kefir_opt_function *function,
                                                      kefir_opt_block_id_t block_id,
+                                                     kefir_opt_block_id_t caller_block_id,
                                                      const struct kefir_opt_function *source_function,
                                                      kefir_opt_block_id_t source_block_id) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
@@ -89,7 +90,7 @@ kefir_result_t kefir_opt_function_block_inlined_from(struct kefir_mem *mem, stru
         entry = KEFIR_MALLOC(mem, sizeof(struct block_inline_entry));
         REQUIRE(entry != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate block inline entry"));
         entry->num_of_source_functions = 0;
-        res = kefir_hashtreeset_init(&entry->source_functions, &kefir_hashtree_uint_ops);
+        res = kefir_hashtree_init(&entry->source_functions, &kefir_hashtree_uint_ops);
         REQUIRE_CHAIN(&res, kefir_hashtree_insert(mem, &function->inlines, (kefir_hashtree_key_t) block_id,
                                                   (kefir_hashtree_value_t) entry));
         REQUIRE_ELSE(res == KEFIR_OK, {
@@ -101,18 +102,50 @@ kefir_result_t kefir_opt_function_block_inlined_from(struct kefir_mem *mem, stru
         entry = (struct block_inline_entry *) node->value;
     }
 
-    if (function != source_function) {
-        REQUIRE_OK(kefir_hashtreeset_add(mem, &entry->source_functions,
-                                         (kefir_hashtreeset_entry_t) source_function->ir_func->declaration->id));
-        entry->num_of_source_functions++;
+    res = kefir_hashtree_at(&entry->source_functions, (kefir_hashtree_key_t) source_function->ir_func->declaration->id,
+                            &node);
+    if (res != KEFIR_NOT_FOUND) {
+        REQUIRE_OK(res);
+        node->value++;
+    } else {
+        REQUIRE_OK(kefir_hashtree_insert(mem, &entry->source_functions,
+                                         (kefir_hashtree_key_t) source_function->ir_func->declaration->id,
+                                         (kefir_hashtree_value_t) 1));
     }
+    entry->num_of_source_functions++;
 
     res = kefir_hashtree_at(&source_function->inlines, (kefir_hashtree_key_t) source_block_id, &node);
     if (res != KEFIR_NOT_FOUND) {
         REQUIRE_OK(res);
         ASSIGN_DECL_CAST(const struct block_inline_entry *, source_entry, node->value);
-        REQUIRE_OK(kefir_hashtreeset_merge(mem, &entry->source_functions, &source_entry->source_functions, NULL, NULL));
-        entry->num_of_source_functions += source_entry->num_of_source_functions;
+
+#define MERGE_ENTRY(_entry)                                                                                       \
+    do {                                                                                                          \
+        struct kefir_hashtree_node_iterator iter;                                                                 \
+        for (node = kefir_hashtree_iter(&(_entry)->source_functions, &iter); node != NULL;                        \
+             node = kefir_hashtree_next(&iter)) {                                                                 \
+                                                                                                                  \
+            struct kefir_hashtree_node *node2;                                                                    \
+            res = kefir_hashtree_at(&entry->source_functions, (kefir_hashtree_key_t) node->key, &node2);          \
+            if (res != KEFIR_NOT_FOUND) {                                                                         \
+                REQUIRE_OK(res);                                                                                  \
+                node2->value += node->value;                                                                      \
+            } else {                                                                                              \
+                REQUIRE_OK(kefir_hashtree_insert(mem, &entry->source_functions, (kefir_hashtree_key_t) node->key, \
+                                                 (kefir_hashtree_value_t) node->value));                          \
+            }                                                                                                     \
+        }                                                                                                         \
+        entry->num_of_source_functions += (_entry)->num_of_source_functions;                                      \
+    } while (0)
+        MERGE_ENTRY(source_entry);
+    }
+
+    res = kefir_hashtree_at(&function->inlines, (kefir_hashtree_key_t) caller_block_id, &node);
+    if (res != KEFIR_NOT_FOUND) {
+        REQUIRE_OK(res);
+        ASSIGN_DECL_CAST(const struct block_inline_entry *, caller_entry, node->value);
+        MERGE_ENTRY(caller_entry);
+#undef MERGE_ENTRY
     }
     return KEFIR_OK;
 }
@@ -120,7 +153,8 @@ kefir_result_t kefir_opt_function_block_inlined_from(struct kefir_mem *mem, stru
 kefir_result_t kefir_opt_function_block_can_inline(const struct kefir_opt_function *function,
                                                    kefir_opt_block_id_t block_id,
                                                    const struct kefir_opt_function *inlined_function,
-                                                   kefir_size_t max_inline_depth, kefir_bool_t *can_inline_ptr) {
+                                                   kefir_size_t max_inline_depth, kefir_size_t max_recursive_inline,
+                                                   kefir_bool_t *can_inline_ptr) {
     REQUIRE(function != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer function"));
     REQUIRE(inlined_function != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid inlined optimizer function"));
@@ -131,12 +165,15 @@ kefir_result_t kefir_opt_function_block_can_inline(const struct kefir_opt_functi
     if (res != KEFIR_NOT_FOUND) {
         REQUIRE_OK(res);
         ASSIGN_DECL_CAST(const struct block_inline_entry *, entry, node->value);
-        *can_inline_ptr =
-            !kefir_hashtreeset_has(&entry->source_functions,
-                                   (kefir_hashtreeset_entry_t) inlined_function->ir_func->declaration->id) &&
-            (entry->num_of_source_functions < max_inline_depth);
+        *can_inline_ptr = entry->num_of_source_functions < max_inline_depth;
+        res = kefir_hashtree_at(&entry->source_functions,
+                                (kefir_hashtree_key_t) inlined_function->ir_func->declaration->id, &node);
+        if (res != KEFIR_NOT_FOUND) {
+            REQUIRE_OK(res);
+            *can_inline_ptr = *can_inline_ptr && node->value < max_recursive_inline;
+        }
     } else {
-        *can_inline_ptr = true;
+        *can_inline_ptr = max_inline_depth > 0;
     }
 
     return KEFIR_OK;
