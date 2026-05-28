@@ -539,50 +539,62 @@ static kefir_result_t int_binary_const_fold(struct kefir_mem *mem, struct kefir_
             break;
 
         case KEFIR_OPT_OPCODE_INT8_LSHIFT:
+            REQUIRE(right.uinteger < 8, KEFIR_OK);
             result.uinteger = ((kefir_uint8_t) left.uinteger) << right.uinteger;
             break;
 
         case KEFIR_OPT_OPCODE_INT16_LSHIFT:
+            REQUIRE(right.uinteger < 16, KEFIR_OK);
             result.uinteger = ((kefir_uint16_t) left.uinteger) << right.uinteger;
             break;
 
         case KEFIR_OPT_OPCODE_INT32_LSHIFT:
+            REQUIRE(right.uinteger < 32, KEFIR_OK);
             result.uinteger = ((kefir_uint32_t) left.uinteger) << right.uinteger;
             break;
 
         case KEFIR_OPT_OPCODE_INT64_LSHIFT:
+            REQUIRE(right.uinteger < 64, KEFIR_OK);
             result.uinteger = ((kefir_uint64_t) left.uinteger) << right.uinteger;
             break;
 
         case KEFIR_OPT_OPCODE_INT8_RSHIFT:
+            REQUIRE(right.uinteger < 8, KEFIR_OK);
             result.uinteger = ((kefir_uint8_t) left.uinteger) >> right.uinteger;
             break;
 
         case KEFIR_OPT_OPCODE_INT16_RSHIFT:
+            REQUIRE(right.uinteger < 16, KEFIR_OK);
             result.uinteger = ((kefir_uint16_t) left.uinteger) >> right.uinteger;
             break;
 
         case KEFIR_OPT_OPCODE_INT32_RSHIFT:
+            REQUIRE(right.uinteger < 32, KEFIR_OK);
             result.uinteger = ((kefir_uint32_t) left.uinteger) >> right.uinteger;
             break;
 
         case KEFIR_OPT_OPCODE_INT64_RSHIFT:
+            REQUIRE(right.uinteger < 64, KEFIR_OK);
             result.uinteger = ((kefir_uint64_t) left.uinteger) >> right.uinteger;
             break;
 
         case KEFIR_OPT_OPCODE_INT8_ARSHIFT:
+            REQUIRE(right.uinteger < 8, KEFIR_OK);
             result.integer = ((kefir_int8_t) left.integer) >> right.integer;
             break;
 
         case KEFIR_OPT_OPCODE_INT16_ARSHIFT:
+            REQUIRE(right.uinteger < 16, KEFIR_OK);
             result.integer = ((kefir_int16_t) left.integer) >> right.integer;
             break;
 
         case KEFIR_OPT_OPCODE_INT32_ARSHIFT:
+            REQUIRE(right.uinteger < 32, KEFIR_OK);
             result.integer = ((kefir_int32_t) left.integer) >> right.integer;
             break;
 
         case KEFIR_OPT_OPCODE_INT64_ARSHIFT:
+            REQUIRE(right.uinteger < 64, KEFIR_OK);
             result.integer = ((kefir_int64_t) left.integer) >> right.integer;
             break;
 
