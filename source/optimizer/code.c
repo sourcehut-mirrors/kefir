@@ -3314,3 +3314,166 @@ kefir_result_t kefir_opt_code_container_replace_references(struct kefir_mem *mem
 }
 
 #undef REPLACE_REF
+
+kefir_result_t kefir_opt_code_container_clone(struct kefir_mem *mem, struct kefir_opt_code_container *dst_code,
+                                              const struct kefir_opt_code_container *src_code) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(dst_code != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid destinaton optimizer code container"));
+    REQUIRE(src_code != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid source optimizer code container"));
+    REQUIRE(dst_code->code == NULL && dst_code->blocks == NULL && dst_code->phi_nodes == NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected empty destination optimizer code container"));
+
+    if (src_code->length != 0) {
+        dst_code->code = KEFIR_MALLOC(mem, sizeof(struct kefir_opt_instruction) * src_code->capacity);
+        REQUIRE(dst_code->code != NULL,
+                KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate optimizer code container copy"));
+        dst_code->length = 0;
+        dst_code->capacity = src_code->capacity;
+
+        dst_code->recycle_instr_idx = src_code->recycle_instr_idx;
+        dst_code->entry_point = src_code->entry_point;
+        dst_code->gate_block = src_code->gate_block;
+
+        memcpy(dst_code->code, src_code->code, sizeof(struct kefir_opt_instruction) * src_code->length);
+
+        for (kefir_size_t i = 0; i < src_code->length; i++) {
+            REQUIRE_OK(kefir_hashtreeset_init(&dst_code->code[i].uses.instruction, &kefir_hashtree_uint_ops));
+            dst_code->length++;
+
+            REQUIRE_OK(kefir_hashtreeset_merge(mem, &dst_code->code[i].uses.instruction,
+                                               &src_code->code[i].uses.instruction, NULL, NULL));
+        }
+    } else {
+        dst_code->code = NULL;
+        dst_code->length = 0;
+        dst_code->capacity = 0;
+        dst_code->recycle_instr_idx = KEFIR_ID_NONE;
+        dst_code->entry_point = KEFIR_ID_NONE;
+    }
+
+    if (src_code->blocks_length != 0) {
+        dst_code->blocks = KEFIR_MALLOC(mem, sizeof(struct kefir_opt_code_block) * src_code->blocks_capacity);
+        REQUIRE(dst_code->blocks != NULL,
+                KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate optimizer code container copy"));
+        dst_code->blocks_length = 0;
+        dst_code->blocks_capacity = src_code->blocks_capacity;
+        dst_code->gate_block = src_code->gate_block;
+
+        memcpy(dst_code->blocks, src_code->blocks, sizeof(struct kefir_opt_code_block) * src_code->blocks_length);
+
+        for (kefir_size_t i = 0; i < src_code->blocks_length; i++) {
+            REQUIRE_OK(kefir_hashtreeset_init(&dst_code->blocks[i].public_labels, &kefir_hashtree_str_ops));
+            dst_code->blocks_length++;
+            REQUIRE_OK(kefir_hashtreeset_merge(mem, &dst_code->blocks[i].public_labels,
+                                               &src_code->blocks[i].public_labels, NULL, NULL));
+        }
+    } else {
+        dst_code->blocks = NULL;
+        dst_code->blocks_capacity = 0;
+        dst_code->blocks_length = 0;
+        dst_code->gate_block = KEFIR_ID_NONE;
+    }
+
+    if (src_code->phi_nodes_length != 0) {
+        dst_code->phi_nodes = KEFIR_MALLOC(mem, sizeof(struct kefir_opt_phi_node) * src_code->phi_nodes_capacity);
+        REQUIRE(dst_code->phi_nodes != NULL,
+                KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate optimizer code container copy"));
+        dst_code->phi_nodes_length = 0;
+        dst_code->phi_nodes_capacity = src_code->phi_nodes_capacity;
+
+        memcpy(dst_code->phi_nodes, src_code->phi_nodes,
+               sizeof(struct kefir_opt_phi_node) * src_code->phi_nodes_length);
+
+        for (kefir_size_t i = 0; i < src_code->phi_nodes_length; i++) {
+            REQUIRE_OK(kefir_hashtree_init(&dst_code->phi_nodes[i].links, &kefir_hashtree_uint_ops));
+            dst_code->phi_nodes_length++;
+
+            struct kefir_hashtree_node_iterator iter;
+            for (const struct kefir_hashtree_node *node = kefir_hashtree_iter(&src_code->phi_nodes[i].links, &iter);
+                 node != NULL; node = kefir_hashtree_next(&iter)) {
+                REQUIRE_OK(kefir_hashtree_insert(mem, &dst_code->phi_nodes[i].links, node->key, node->value));
+            }
+        }
+    } else {
+        dst_code->phi_nodes = NULL;
+        dst_code->phi_nodes_capacity = 0;
+        dst_code->phi_nodes_length = 0;
+    }
+
+    REQUIRE_OK(kefir_hashtree_clean(mem, &dst_code->call_nodes));
+    struct kefir_hashtree_node_iterator iter;
+    for (const struct kefir_hashtree_node *node = kefir_hashtree_iter(&src_code->call_nodes, &iter); node != NULL;
+         node = kefir_hashtree_next(&iter)) {
+        ASSIGN_DECL_CAST(struct kefir_opt_call_node *, call, node->value);
+
+        struct kefir_opt_call_node *clone = KEFIR_MALLOC(mem, sizeof(struct kefir_opt_call_node));
+        REQUIRE(clone != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate optimizer call node"));
+
+        memcpy(clone, call, sizeof(struct kefir_opt_call_node));
+        if (call->argument_count != 0) {
+            clone->arguments = KEFIR_MALLOC(mem, sizeof(kefir_opt_instruction_ref_t) * call->argument_count);
+            REQUIRE_ELSE(clone->arguments != NULL, {
+                KEFIR_FREE(mem, clone);
+                return KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate optimizer call node");
+            });
+            memcpy(clone->arguments, call->arguments, sizeof(kefir_opt_instruction_ref_t) * call->argument_count);
+        }
+
+        kefir_result_t res =
+            kefir_hashtree_insert(mem, &dst_code->call_nodes, node->key, (kefir_hashtree_value_t) clone);
+        REQUIRE_ELSE(res == KEFIR_OK, {
+            KEFIR_FREE(mem, clone->arguments);
+            KEFIR_FREE(mem, clone);
+            return res;
+        });
+    }
+    dst_code->next_call_node_id = src_code->next_call_node_id;
+
+    REQUIRE_OK(kefir_hashtree_clean(mem, &dst_code->inline_assembly));
+    for (const struct kefir_hashtree_node *node = kefir_hashtree_iter(&src_code->inline_assembly, &iter); node != NULL;
+         node = kefir_hashtree_next(&iter)) {
+        ASSIGN_DECL_CAST(struct kefir_opt_inline_assembly_node *, inline_asm, node->value);
+
+        struct kefir_opt_inline_assembly_node *clone = KEFIR_MALLOC(mem, sizeof(struct kefir_opt_inline_assembly_node));
+        REQUIRE(clone != NULL,
+                KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate optimizer inline assembly node"));
+
+        memcpy(clone, inline_asm, sizeof(struct kefir_opt_inline_assembly_node));
+        if (inline_asm->parameter_count != 0) {
+            clone->parameters =
+                KEFIR_MALLOC(mem, sizeof(struct kefir_opt_inline_assembly_parameter) * inline_asm->parameter_count);
+            REQUIRE_ELSE(clone->parameters != NULL, {
+                KEFIR_FREE(mem, clone);
+                return KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate optimizer inline assembly node");
+            });
+            memcpy(clone->parameters, inline_asm->parameters,
+                   sizeof(struct kefir_opt_inline_assembly_parameter) * inline_asm->parameter_count);
+        }
+
+        kefir_result_t res = kefir_hashtree_init(&clone->jump_targets, &kefir_hashtree_uint_ops);
+        REQUIRE_ELSE(res == KEFIR_OK, {
+            KEFIR_FREE(mem, clone->parameters);
+            KEFIR_FREE(mem, clone);
+            return res;
+        });
+
+        struct kefir_hashtree_node_iterator iter2;
+        for (const struct kefir_hashtree_node *node2 = kefir_hashtree_iter(&inline_asm->jump_targets, &iter2);
+             res == KEFIR_OK && node2 != NULL; node2 = kefir_hashtree_next(&iter2)) {
+            res = kefir_hashtree_insert(mem, &clone->jump_targets, node2->key, node2->value);
+        }
+        res = kefir_hashtree_insert(mem, &dst_code->inline_assembly, node->key, (kefir_hashtree_value_t) clone);
+        REQUIRE_ELSE(res == KEFIR_OK, {
+            kefir_hashtree_free(mem, &clone->jump_targets);
+            KEFIR_FREE(mem, clone->parameters);
+            KEFIR_FREE(mem, clone);
+            return res;
+        });
+    }
+    dst_code->next_inline_assembly_id = src_code->next_inline_assembly_id;
+
+    dst_code->event_listener = NULL;
+    return KEFIR_OK;
+}

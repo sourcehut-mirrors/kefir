@@ -624,4 +624,7 @@ kefir_result_t kefir_opt_code_container_instruction_replace_control_flow_target(
                                                                                 kefir_opt_block_id_t,
                                                                                 kefir_opt_block_id_t);
 
+kefir_result_t kefir_opt_code_container_clone(struct kefir_mem *, struct kefir_opt_code_container *,
+                                              const struct kefir_opt_code_container *);
+
 #endif
