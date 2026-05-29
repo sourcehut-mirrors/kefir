@@ -89,12 +89,28 @@ static kefir_result_t trace_instruction(kefir_opt_instruction_ref_t instr_ref, v
 }
 
 static kefir_result_t is_inline_candidate(struct kefir_mem *mem, const struct kefir_opt_module *module,
-                                          struct kefir_opt_function *func, kefir_bool_t *candidate) {
+                                          struct kefir_opt_function *caller_func, struct kefir_opt_function *func,
+                                          kefir_bool_t *candidate) {
     *candidate = false;
 
     if (func->ir_func->flags.inline_function_hint) {
         *candidate = true;
         return KEFIR_OK;
+    }
+
+    const struct kefir_ir_typeentry *return_typeentry = kefir_ir_type_at(func->ir_func->declaration->result, 0);
+    if (caller_func->ir_func->declaration->id == func->ir_func->declaration->id && return_typeentry != NULL) {
+        switch (return_typeentry->typecode) {
+            case KEFIR_IR_TYPE_STRUCT:
+            case KEFIR_IR_TYPE_ARRAY:
+            case KEFIR_IR_TYPE_UNION:
+                *candidate = false;
+                return KEFIR_OK;
+
+            default:
+                // Intentionally left blank
+                break;
+        }
     }
 
     struct inline_candidate_instr_tracer instr_trace_payloer = {
@@ -163,7 +179,7 @@ static kefir_result_t inline_func_impl(struct kefir_mem *mem, const struct kefir
                 }
 
                 kefir_bool_t candidate = false;
-                REQUIRE_OK(is_inline_candidate(mem, module, called_func, &candidate));
+                REQUIRE_OK(is_inline_candidate(mem, module, func, called_func, &candidate));
                 if (candidate) {
                     REQUIRE_OK(kefir_opt_try_inline_function_call(
                         mem, module, func, control_flow, sequencing,

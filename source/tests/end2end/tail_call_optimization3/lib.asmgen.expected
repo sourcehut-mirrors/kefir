@@ -47,11 +47,12 @@ test:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    movl %edi, -4(%rbp)
+    lea 1(%edi), %eax
+    movl %eax, -4(%rbp)
     movq someptr@GOTPCREL(%rip), %rax
     lea -4(%rbp), %rcx
     movq %rcx, (%rax)
-    add $1, %edi
+    add $2, %edi
     call test
     lea (%rbp), %rsp
     pop %rbp
@@ -60,7 +61,7 @@ test:
 
 test2:
 .L__kefir_text_func_test2_begin:
-    add $1, %edi
+    add $2, %edi
     jmp test2
 .L__kefir_text_func_test2_end:
 
@@ -69,7 +70,12 @@ test3:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    movl %edi, -4(%rbp)
+    movl %edi, -8(%rbp)
+    lea -8(%rbp), %rdi
+    call somefn@PLT
+    movl -8(%rbp), %eax
+    add $1, %eax
+    movl %eax, -4(%rbp)
     lea -4(%rbp), %rdi
     call somefn@PLT
     movl -4(%rbp), %edi
@@ -178,7 +184,8 @@ test9:
     sub $8, %rsp
     mov %rdi, %rbx
     call somejmp@PLT
-    lea 1(%ebx), %edi
+    call somejmp@PLT
+    lea 2(%ebx), %edi
     call test9
     lea -8(%rbp), %rsp
     pop %rbx
@@ -194,7 +201,8 @@ test10:
     sub $8, %rsp
     mov %rdi, %rbx
     call somejmp2@PLT
-    lea 1(%ebx), %edi
+    call somejmp2@PLT
+    lea 2(%ebx), %edi
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
@@ -219,7 +227,8 @@ test13:
 .L__kefir_text_func_test13_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $4096, %rsp
+    sub $8192, %rsp
+    movl $0, -8192(%rbp)
     movl $0, -4096(%rbp)
     call test13
     lea (%rbp), %rsp
@@ -231,9 +240,11 @@ test14:
 .L__kefir_text_func_test14_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $4096, %rsp
-    movl -4096(%rbp), %eax
+    sub $8192, %rsp
+    movl -8192(%rbp), %eax
+    movl -4096(%rbp), %ecx
     add %eax, %edi
+    add %ecx, %edi
     call test14
     lea (%rbp), %rsp
     pop %rbp

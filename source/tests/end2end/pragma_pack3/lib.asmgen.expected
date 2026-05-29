@@ -29,6 +29,7 @@ fn:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
+    movl $100, -8(%rbp)
     movl $100, -4(%rbp)
     call fn
     lea (%rbp), %rsp
@@ -40,6 +41,12 @@ fn2:
 .L__kefir_text_func_fn2_begin:
     push %rbp
     mov %rsp, %rbp
+    call fn2
+    call fn2
+    call fn2
+    call fn2
+    call fn2
+    call fn2
     call fn2
     call fn2
     call fn2
