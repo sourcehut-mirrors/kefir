@@ -170,7 +170,9 @@ kefir_result_t kefir_opt_function_block_can_inline(const struct kefir_opt_functi
                                 (kefir_hashtree_key_t) inlined_function->ir_func->declaration->id, &node);
         if (res != KEFIR_NOT_FOUND) {
             REQUIRE_OK(res);
-            *can_inline_ptr = *can_inline_ptr && node->value < max_recursive_inline;
+            *can_inline_ptr = *can_inline_ptr && node->value + (function->ir_func->declaration->id ==
+                                                                inlined_function->ir_func->declaration->id) <
+                                                     max_recursive_inline;
         }
     } else {
         *can_inline_ptr = max_inline_depth > 0;
