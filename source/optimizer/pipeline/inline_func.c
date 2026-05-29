@@ -90,13 +90,14 @@ static kefir_result_t trace_instruction(kefir_opt_instruction_ref_t instr_ref, v
 
 static kefir_result_t is_inline_candidate(struct kefir_mem *mem, const struct kefir_opt_module *module,
                                           struct kefir_opt_function *caller_func, struct kefir_opt_function *func,
-                                          kefir_bool_t *candidate) {
+                                          kefir_bool_t base_inline, kefir_bool_t *candidate) {
     *candidate = false;
 
     if (func->ir_func->flags.inline_function_hint) {
         *candidate = true;
         return KEFIR_OK;
     }
+    REQUIRE(!base_inline, KEFIR_OK);
 
     const struct kefir_ir_typeentry *return_typeentry = kefir_ir_type_at(func->ir_func->declaration->result, 0);
     if (caller_func->ir_func->declaration->id == func->ir_func->declaration->id && return_typeentry != NULL) {
@@ -138,7 +139,7 @@ static kefir_result_t inline_func_impl(struct kefir_mem *mem, const struct kefir
                                        struct kefir_opt_code_control_flow *control_flow,
                                        struct kefir_opt_code_sequencing *sequencing,
                                        const struct kefir_optimizer_configuration *config,
-                                       kefir_bool_t *fixpoint_reached) {
+                                       kefir_bool_t *fixpoint_reached, kefir_bool_t base_inline) {
     for (kefir_opt_block_id_t block_id = 0; block_id < control_flow->num_of_blocks; block_id++) {
         kefir_bool_t reachable;
         REQUIRE_OK(kefir_opt_code_control_flow_is_reachable_from_entry(control_flow, block_id, &reachable));
@@ -179,7 +180,7 @@ static kefir_result_t inline_func_impl(struct kefir_mem *mem, const struct kefir
                 }
 
                 kefir_bool_t candidate = false;
-                REQUIRE_OK(is_inline_candidate(mem, module, func, called_func, &candidate));
+                REQUIRE_OK(is_inline_candidate(mem, module, func, called_func, base_inline, &candidate));
                 if (candidate) {
                     REQUIRE_OK(kefir_opt_try_inline_function_call(
                         mem, module, func, control_flow, sequencing,
@@ -202,16 +203,10 @@ static kefir_result_t inline_func_impl(struct kefir_mem *mem, const struct kefir
     return KEFIR_OK;
 }
 
-static kefir_result_t inline_func_apply(struct kefir_mem *mem, struct kefir_opt_module *module,
-                                        struct kefir_opt_function *func, const struct kefir_optimizer_pass *pass,
-                                        const struct kefir_optimizer_configuration *config) {
-    UNUSED(pass);
-    UNUSED(config);
-    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
-    REQUIRE(module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer module"));
-    REQUIRE(func != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer function"));
-    REQUIRE(config != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer configuration"));
-
+static kefir_result_t inline_func_apply_impl(struct kefir_mem *mem, struct kefir_opt_module *module,
+                                             struct kefir_opt_function *func,
+                                             const struct kefir_optimizer_configuration *config,
+                                             kefir_bool_t base_inline) {
     struct kefir_opt_code_control_flow control_flow;
     struct kefir_opt_code_sequencing sequencing;
     REQUIRE_OK(kefir_opt_code_control_flow_init(&control_flow));
@@ -220,7 +215,8 @@ static kefir_result_t inline_func_apply(struct kefir_mem *mem, struct kefir_opt_
     kefir_bool_t fixpoint_reached = false;
     while (!fixpoint_reached && res == KEFIR_OK) {
         fixpoint_reached = true;
-        REQUIRE_CHAIN(&res, inline_func_impl(mem, module, func, &control_flow, &sequencing, config, &fixpoint_reached));
+        REQUIRE_CHAIN(&res, inline_func_impl(mem, module, func, &control_flow, &sequencing, config, &fixpoint_reached,
+                                             base_inline));
     }
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_opt_code_sequencing_free(mem, &sequencing);
@@ -236,5 +232,33 @@ static kefir_result_t inline_func_apply(struct kefir_mem *mem, struct kefir_opt_
     return KEFIR_OK;
 }
 
+static kefir_result_t inline_func_apply(struct kefir_mem *mem, struct kefir_opt_module *module,
+                                        struct kefir_opt_function *func, const struct kefir_optimizer_pass *pass,
+                                        const struct kefir_optimizer_configuration *config) {
+    UNUSED(pass);
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer module"));
+    REQUIRE(func != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer function"));
+    REQUIRE(config != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer configuration"));
+
+    REQUIRE_OK(inline_func_apply_impl(mem, module, func, config, false));
+    return KEFIR_OK;
+}
+
+static kefir_result_t inline_func_base_apply(struct kefir_mem *mem, struct kefir_opt_module *module,
+                                             struct kefir_opt_function *func, const struct kefir_optimizer_pass *pass,
+                                             const struct kefir_optimizer_configuration *config) {
+    UNUSED(pass);
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer module"));
+    REQUIRE(func != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer function"));
+    REQUIRE(config != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer configuration"));
+
+    REQUIRE_OK(inline_func_apply_impl(mem, module, func, config, true));
+    return KEFIR_OK;
+}
+
 const struct kefir_optimizer_pass KefirOptimizerPassInlineFunc = {
     .name = "inline-func", .apply = inline_func_apply, .payload = NULL};
+const struct kefir_optimizer_pass KefirOptimizerPassInlineFuncBase = {
+    .name = "inline-func-base", .apply = inline_func_base_apply, .payload = NULL};

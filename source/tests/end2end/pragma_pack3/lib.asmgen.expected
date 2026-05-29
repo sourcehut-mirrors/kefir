@@ -49,9 +49,8 @@ fn2:
     call fn2
     call fn2
     call fn2
-    call fn2
     pop %rbp
-    ret
+    jmp fn2
 .L__kefir_text_func_fn2_end:
 
 .L__kefir_text_section_end:

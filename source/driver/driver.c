@@ -73,7 +73,7 @@
     "gcm," \
     "rematerialize," \
     "tail-calls"
-#define KEFIR_OPTIMIZER_PIPELINE_MINI_SPEC "inline-asm-untie,inline-func,local-alloc-sink,dead-code-elimination,dead-alloc,lowering"
+#define KEFIR_OPTIMIZER_PIPELINE_MINI_SPEC "inline-asm-untie,inline-func-base,local-alloc-sink,dead-code-elimination,dead-alloc,lowering"
 // clang-format on
 
 static kefir_result_t driver_generate_asm_config(struct kefir_mem *mem, struct kefir_string_pool *symbols,

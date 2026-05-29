@@ -69,6 +69,7 @@ DECLARE_PASS(LocalAllocSink);
 DECLARE_PASS(MergeBlocks);
 DECLARE_PASS(DCE);
 DECLARE_PASS(InlineFunc);
+DECLARE_PASS(InlineFuncBase);
 DECLARE_PASS(TailCalls);
 DECLARE_PASS(DeadAlloc);
 DECLARE_PASS(Lowering);
