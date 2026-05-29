@@ -47,6 +47,8 @@ kefir_result_t kefir_opt_function_free(struct kefir_mem *, struct kefir_opt_func
 kefir_result_t kefir_opt_function_block_inlined_from(struct kefir_mem *, struct kefir_opt_function *,
                                                      kefir_opt_block_id_t, kefir_opt_block_id_t,
                                                      const struct kefir_opt_function *, kefir_opt_block_id_t);
+kefir_result_t kefir_opt_function_block_split_from(struct kefir_mem *, struct kefir_opt_function *,
+                                                   kefir_opt_block_id_t, kefir_opt_block_id_t);
 kefir_result_t kefir_opt_function_block_can_inline(const struct kefir_opt_function *, kefir_opt_block_id_t,
                                                    const struct kefir_opt_function *, kefir_size_t, kefir_size_t,
                                                    kefir_bool_t *);

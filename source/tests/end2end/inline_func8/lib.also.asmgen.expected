@@ -14,127 +14,41 @@ fib:
     push %r12
     push %r13
     push %r14
-    push %r15
-    sub $24, %rsp
     mov %rdi, %rbx
     cmp $1, %rbx
-    jbe .L__kefir_func_fib_label39
+    jbe .L__kefir_func_fib_label3
     lea -2(%rbx), %r14
     lea -3(%rbx), %r13
     lea -1(%rbx), %r12
     cmp $1, %r12
-    jbe .L__kefir_func_fib_label4
+    jbe .L__kefir_func_fib_label8
     mov %r14, %rdi
     call fibonacci
     mov %rax, %r12
     mov %r13, %rdi
     call fibonacci
     add %rax, %r12
-    mov %r12, -64(%rbp)
-.L__kefir_func_fib_label6:
+.L__kefir_func_fib_label8:
     cmp $1, %r14
-    jbe .L__kefir_func_fib_label8
-    lea -5(%rbx), %r15
-    lea -4(%rbx), %r14
-    cmp $1, %r13
-    jbe .L__kefir_func_fib_label11
-    mov %r14, %rdi
+    jbe .L__kefir_func_fib_label12
+    mov %r13, %rdi
     call fibonacci
     mov %rax, %r13
-    mov %r15, %rdi
+    lea -4(%rbx), %rdi
     call fibonacci
     add %rax, %r13
-    mov %r13, -56(%rbp)
-.L__kefir_func_fib_label13:
-    cmp $1, %r14
-    jbe .L__kefir_func_fib_label24
-    lea -6(%rbx), %r12
-    lea -7(%rbx), %r13
-    cmp $1, %r15
-    ja .L__kefir_func_fib_label19
-    mov %r15, -48(%rbp)
-.L__kefir_func_fib_label20:
-    cmp $1, %r12
-    jbe .L__kefir_func_fib_label22
-    lea -9(%rbx), %r14
-    lea -8(%rbx), %r12
-    cmp $1, %r13
-    ja .L__kefir_func_fib_label38
-    mov %r13, %r15
-.L__kefir_func_fib_label29:
-    cmp $1, %r12
-    jbe .L__kefir_func_fib_label31
-    lea -10(%rbx), %r12
-    cmp $1, %r14
-    jbe .L__kefir_func_fib_label34
-    mov %r12, %rdi
-    call fibonacci
-    mov %rax, %r13
-    lea -11(%rbx), %rdi
-    call fibonacci
-    add %rax, %r13
-.L__kefir_func_fib_label35:
-    mov %r12, %rdi
-    call fibonacci
-    add %rax, %r13
-.L__kefir_func_fib_label36:
-    add %r13, %r15
-.L__kefir_func_fib_label23:
-    mov -48(%rbp), %r14
-    add %r15, %r14
-.L__kefir_func_fib_label24:
-    mov -56(%rbp), %r13
-    add %r14, %r13
-.L__kefir_func_fib_label25:
-    mov -64(%rbp), %rax
-    add %r13, %rax
-    lea -40(%rbp), %rsp
-    pop %r15
+    mov %r13, %r14
+.L__kefir_func_fib_label12:
+    mov %r12, %rax
+    add %r14, %rax
     pop %r14
     pop %r13
     pop %r12
     pop %rbx
     pop %rbp
     ret
-.L__kefir_func_fib_label19:
-    mov %r12, %rdi
-    call fibonacci
-    mov %rax, %r14
-    mov %r13, %rdi
-    call fibonacci
-    add %rax, %r14
-    mov %r14, -48(%rbp)
-    jmp .L__kefir_func_fib_label20
-.L__kefir_func_fib_label38:
-    mov %r12, %rdi
-    call fibonacci
-    mov %rax, %r15
-    mov %r14, %rdi
-    call fibonacci
-    add %rax, %r15
-    jmp .L__kefir_func_fib_label29
-.L__kefir_func_fib_label34:
-    mov %r14, %r13
-    jmp .L__kefir_func_fib_label35
-.L__kefir_func_fib_label11:
-    mov %r13, -56(%rbp)
-    jmp .L__kefir_func_fib_label13
-.L__kefir_func_fib_label4:
-    mov %r12, -64(%rbp)
-    jmp .L__kefir_func_fib_label6
-.L__kefir_func_fib_label31:
-    mov %r12, %r13
-    jmp .L__kefir_func_fib_label36
-.L__kefir_func_fib_label22:
-    mov %r12, %r15
-    jmp .L__kefir_func_fib_label23
-.L__kefir_func_fib_label8:
-    mov %r14, %r13
-    jmp .L__kefir_func_fib_label25
-.L__kefir_func_fib_label39:
+.L__kefir_func_fib_label3:
     mov %rbx, %rax
-    lea -40(%rbp), %rsp
-    pop %r15
     pop %r14
     pop %r13
     pop %r12

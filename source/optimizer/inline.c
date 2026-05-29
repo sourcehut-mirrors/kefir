@@ -1402,6 +1402,7 @@ kefir_result_t kefir_opt_try_inline_function_call(
         kefir_opt_block_id_t split_block_id;
         REQUIRE_OK(kefir_opt_code_split_block_after(mem, &func->code, &func->debug_info, control_flow, sequencing,
                                                     instr_ref, &split_block_id));
+        REQUIRE_OK(kefir_opt_function_block_split_from(mem, func, split_block_id, block_id));
         REQUIRE_OK(do_inline(mem, module, func, called_func, block_id, split_block_id, call_node->node_id,
                              call_node->output_ref));
         func->num_of_inlines++;

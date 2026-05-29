@@ -150,6 +150,37 @@ kefir_result_t kefir_opt_function_block_inlined_from(struct kefir_mem *mem, stru
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_opt_function_block_split_from(struct kefir_mem *mem, struct kefir_opt_function *function,
+                                                   kefir_opt_block_id_t split_block_id, kefir_opt_block_id_t block_id) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(function != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer function"));
+
+    struct kefir_hashtree_node *node;
+    kefir_result_t res = kefir_hashtree_at(&function->inlines, (kefir_hashtree_key_t) block_id, &node);
+    if (res != KEFIR_NOT_FOUND) {
+        REQUIRE_OK(res);
+        ASSIGN_DECL_CAST(struct block_inline_entry *, entry, node->value);
+
+        struct block_inline_entry *split_entry = KEFIR_MALLOC(mem, sizeof(struct block_inline_entry));
+        REQUIRE(split_entry != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate block inline entry"));
+        split_entry->num_of_source_functions = entry->num_of_source_functions;
+        res = kefir_hashtree_init(&split_entry->source_functions, &kefir_hashtree_uint_ops);
+        REQUIRE_CHAIN(&res, kefir_hashtree_insert(mem, &function->inlines, (kefir_hashtree_key_t) split_block_id,
+                                                  (kefir_hashtree_value_t) split_entry));
+        REQUIRE_ELSE(res == KEFIR_OK, {
+            KEFIR_FREE(mem, split_entry);
+            return res;
+        });
+
+        struct kefir_hashtree_node_iterator iter;
+        for (const struct kefir_hashtree_node *node = kefir_hashtree_iter(&entry->source_functions, &iter);
+             node != NULL; node = kefir_hashtree_next(&iter)) {
+            REQUIRE_OK(kefir_hashtree_insert(mem, &split_entry->source_functions, node->key, node->value));
+        }
+    }
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_opt_function_block_can_inline(const struct kefir_opt_function *function,
                                                    kefir_opt_block_id_t block_id,
                                                    const struct kefir_opt_function *inlined_function,
