@@ -73,6 +73,8 @@
     "gcm," \
     "rematerialize," \
     "tail-calls"
+#define KEFIR_OPTIMIZER_PIPELINE_SIZE_SPEC                                                                             \
+    "inline-asm-untie,inline-func-base,mem2reg,constant-fold,op-simplify,local-alloc-sink,phi-removal,dead-code-elimination,dead-alloc,lowering,merge-blocks,tail-calls"
 #define KEFIR_OPTIMIZER_PIPELINE_MINI_SPEC "inline-asm-untie,inline-func-base,local-alloc-sink,dead-code-elimination,dead-alloc,lowering"
 // clang-format on
 
@@ -383,15 +385,28 @@ kefir_result_t kefir_driver_generate_compiler_config(struct kefir_mem *mem, stru
     if (compiler_config->features.declare_atomic_support) {
         compiler_config->features.declare_atomic_support = config->flags.enable_atomics;
     }
-    if (config->compiler.optimization_level > 0) {
-        compiler_config->optimizer_pipeline_spec = KEFIR_OPTIMIZER_PIPELINE_FULL_SPEC;
-        if (config->flags.omit_frame_pointer == KEFIR_DRIVER_FRAME_POINTER_OMISSION_UNSPECIFIED) {
-            compiler_config->codegen.omit_frame_pointer = true;
-        }
-        compiler_config->codegen.optimization = true;
-    } else {
-        compiler_config->optimizer_pipeline_spec = KEFIR_OPTIMIZER_PIPELINE_MINI_SPEC;
-        compiler_config->codegen.optimization = false;
+    switch (config->compiler.optimization_level) {
+        case KEFIR_DRIVER_OPTIMIZATION_NONE:
+        case KEFIR_DRIVER_OPTIMIZATION_DEFAULT:
+            compiler_config->optimizer_pipeline_spec = KEFIR_OPTIMIZER_PIPELINE_MINI_SPEC;
+            compiler_config->codegen.optimization = false;
+            break;
+
+        case KEFIR_DRIVER_OPTIMIZATION_SIZE:
+            compiler_config->optimizer_pipeline_spec = KEFIR_OPTIMIZER_PIPELINE_SIZE_SPEC;
+            if (config->flags.omit_frame_pointer == KEFIR_DRIVER_FRAME_POINTER_OMISSION_UNSPECIFIED) {
+                compiler_config->codegen.omit_frame_pointer = true;
+            }
+            compiler_config->codegen.optimization = true;
+            break;
+
+        case KEFIR_DRIVER_OPTIMIZATION_FULL:
+            compiler_config->optimizer_pipeline_spec = KEFIR_OPTIMIZER_PIPELINE_FULL_SPEC;
+            if (config->flags.omit_frame_pointer == KEFIR_DRIVER_FRAME_POINTER_OMISSION_UNSPECIFIED) {
+                compiler_config->codegen.omit_frame_pointer = true;
+            }
+            compiler_config->codegen.optimization = true;
+            break;
     }
 
     switch (config->assembler.target) {

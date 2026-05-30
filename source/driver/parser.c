@@ -240,23 +240,24 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_strin
                 config->standard_version = KEFIR_C17_STANDARD_VERSION;
             }
         } else if (STRNCMP("-O", arg) == 0) {
-            kefir_uint_t level;
+            const char *spec = NULL;
             if (strlen(arg) == 2) {
                 EXPECT_ARG;
-                if (isdigit(argv[index + 1][0])) {
-                    level = strtoul(argv[++index], NULL, 10);
-                } else {
-                    level = 1;
-                }
+                spec = argv[++index];
             } else {
-                if (isdigit(arg[2])) {
-                    level = strtoul(&arg[2], NULL, 10);
-                } else {
-                    level = 1;
-                }
+                spec = &arg[2];
             }
 
-            config->compiler.optimization_level = (kefir_int_t) level;
+            if (isdigit(*spec)) {
+                kefir_uint_t level = strtoul(&arg[2], NULL, 10);
+                if (level > 0) {
+                    config->compiler.optimization_level = KEFIR_DRIVER_OPTIMIZATION_FULL;
+                } else {
+                    config->compiler.optimization_level = KEFIR_DRIVER_OPTIMIZATION_NONE;
+                }
+            } else if (*spec == 's') {
+                config->compiler.optimization_level = KEFIR_DRIVER_OPTIMIZATION_SIZE;
+            }
         } else if (strcmp("-fPIC", arg) == 0 || strcmp("-fpic", arg) == 0) {
             config->flags.position_independent_code = true;
         } else if (strcmp("-fno-pic", arg) == 0) {

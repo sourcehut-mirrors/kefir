@@ -134,7 +134,7 @@ kefir_result_t kefir_driver_configuration_init(struct kefir_driver_configuration
     REQUIRE_OK(kefir_driver_target_default(&config->target));
     REQUIRE_OK(kefir_list_init(&config->run.args));
 
-    config->compiler.optimization_level = -1;
+    config->compiler.optimization_level = KEFIR_DRIVER_OPTIMIZATION_DEFAULT;
     config->compiler.char_signedness = KEFIR_DRIVER_CHAR_SIGNEDNESS_DEFAULT;
     config->compiler.tentative_definition_placement = KEFIR_DRIVER_TENTATIVE_DEFINITION_PLACEMENT_DEFAULT;
     config->compiler.symbol_visibility = KEFIR_DRIVER_SYMBOL_VISIBILITY_UNSET;

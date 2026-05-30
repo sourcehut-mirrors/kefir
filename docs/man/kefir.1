@@ -104,7 +104,8 @@ Generate code for specified target system (see
 section below)
 .\"
 .It Fl O Ar level
-Code optimization level (default is 0). All non-zero levels are equivalent to 1. All non-numerical levels (such as \-Os) are also equivalent to 1.
+Code optimization level (default is 0). All non-zero levels are equivalent to 1, which represents full optimization pipeline.
+Use \-Os for shorter pipeline excluding code motion and memory analysis passes. All other non-numerical values are equivalent to 0.
 .\"
 .It Fl fpreprocessed
 Skip preprocessor directive processing and macro expansion. Preprocessor skips over any directive except for
