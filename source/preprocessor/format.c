@@ -614,9 +614,14 @@ kefir_result_t kefir_preprocessor_format_cursor(FILE *out, const struct kefir_to
         }
 
         if (ws_format != KEFIR_PREPROCESSOR_WHITESPACE_FORMAT_ORIGINAL || !prev_token_non_newline_ws || !token_non_newline_ws || empty_line /* Print all whitespaces at the beginning of the line for indentation; collapse adjacent non-newline whitespaces within the line */) {
-            if (include_linemarkers && token->source_location.source != NULL && i != 0 && printed_newline &&
-                ((prev_location.source != NULL && strcmp(prev_location.source, token->source_location.source) != 0) ||
-                 prev_location.line + 1 != token->source_location.line)) {
+            kefir_bool_t filename_change = (prev_location.source != NULL && token->source_location.source != NULL &&
+                                            strcmp(prev_location.source, token->source_location.source) != 0);
+            if (include_linemarkers && token->source_location.source != NULL && i != 0 &&
+                (printed_newline || filename_change) &&
+                (filename_change || prev_location.line + 1 != token->source_location.line)) {
+                if (!printed_newline) {
+                    fprintf(out, "\n");
+                }
                 REQUIRE_OK(print_linemarker(out, &token->source_location));
             }
             REQUIRE_OK(format_token(out, token, ws_format, &prev_formatted_whitespace));

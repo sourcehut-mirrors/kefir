@@ -1,5 +1,7 @@
 # 1 "source/tests/end2end/include_cmdline_source_id1/test.h"
-void test2(); 
+void test2();
+# 1 "source/tests/end2end/include_cmdline_source_id1/lib.kefir.asmgen.c"
+ 
 
 void test() {
     test2();
