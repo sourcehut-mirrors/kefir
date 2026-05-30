@@ -509,13 +509,12 @@ static kefir_result_t build_predefined_macros(struct kefir_mem *mem,
 
 static kefir_result_t include_predefined(struct kefir_mem *mem,
                                          const struct kefir_compiler_runner_configuration *options,
-                                         struct kefir_compiler_context *compiler, const char *source_id,
-                                         struct kefir_token_buffer *tokens) {
+                                         struct kefir_compiler_context *compiler, struct kefir_token_buffer *tokens) {
     for (const struct kefir_list_entry *iter = kefir_list_head(&options->include_files); iter != NULL;
          kefir_list_next(&iter)) {
         REQUIRE_OK(kefir_compiler_preprocess_include(mem, compiler,
                                                      &compiler->preprocessor_context.macro_token_allocator, tokens,
-                                                     source_id, (const char *) iter->value));
+                                                     (const char *) iter->value, (const char *) iter->value));
     }
     return KEFIR_OK;
 }
@@ -589,7 +588,7 @@ static kefir_result_t dump_preprocessed_impl(struct kefir_mem *mem,
     PREPROCESSOR_INIT(mem, &preprocessor, options, compiler, &file_info, &source_cursor, source, length, source_id);
     REQUIRE_OK(kefir_token_incremental_cursor_handle_init(mem, &preprocessor, &token_allocator, &tokens_handle));
 
-    REQUIRE_OK(include_predefined(mem, options, compiler, source_id, &tokens_handle.buffer));
+    REQUIRE_OK(include_predefined(mem, options, compiler, &tokens_handle.buffer));
 
     if (output != NULL && !options->output_defined_macros) {
         tokens_handle.preprocessor_mode = true;
@@ -663,7 +662,7 @@ static kefir_result_t dump_ast_impl(struct kefir_mem *mem, const struct kefir_co
 
     REQUIRE_OK(kefir_token_allocator_init(&token_allocator));
     REQUIRE_OK(kefir_token_incremental_cursor_handle_init(mem, &preprocessor, &token_allocator, &tokens_handle));
-    REQUIRE_OK(include_predefined(mem, options, compiler, source_id, &tokens_handle.pp_buffer));
+    REQUIRE_OK(include_predefined(mem, options, compiler, &tokens_handle.pp_buffer));
     REQUIRE_OK(kefir_compiler_parse(mem, compiler, &tokens_handle.handle, &unit));
     REQUIRE_OK(kefir_compiler_analyze(mem, compiler, KEFIR_AST_NODE_BASE(unit)));
 
@@ -706,7 +705,7 @@ static kefir_result_t dump_ir_impl(struct kefir_mem *mem, const struct kefir_com
 
     REQUIRE_OK(kefir_token_allocator_init(&token_allocator));
     REQUIRE_OK(kefir_token_incremental_cursor_handle_init(mem, &preprocessor, &token_allocator, &tokens_handle));
-    REQUIRE_OK(include_predefined(mem, options, compiler, source_id, &tokens_handle.pp_buffer));
+    REQUIRE_OK(include_predefined(mem, options, compiler, &tokens_handle.pp_buffer));
     REQUIRE_OK(kefir_compiler_parse(mem, compiler, &tokens_handle.handle, &unit));
     REQUIRE_OK(kefir_compiler_analyze(mem, compiler, KEFIR_AST_NODE_BASE(unit)));
 
@@ -751,7 +750,7 @@ static kefir_result_t dump_opt_impl(struct kefir_mem *mem, const struct kefir_co
 
     REQUIRE_OK(kefir_token_allocator_init(&token_allocator));
     REQUIRE_OK(kefir_token_incremental_cursor_handle_init(mem, &preprocessor, &token_allocator, &tokens_handle));
-    REQUIRE_OK(include_predefined(mem, options, compiler, source_id, &tokens_handle.pp_buffer));
+    REQUIRE_OK(include_predefined(mem, options, compiler, &tokens_handle.pp_buffer));
     REQUIRE_OK(kefir_compiler_parse(mem, compiler, &tokens_handle.handle, &unit));
     REQUIRE_OK(kefir_compiler_analyze(mem, compiler, KEFIR_AST_NODE_BASE(unit)));
 
@@ -808,7 +807,7 @@ static kefir_result_t dump_asm_impl(struct kefir_mem *mem, const struct kefir_co
 
     REQUIRE_OK(kefir_token_allocator_init(&token_allocator));
     REQUIRE_OK(kefir_token_incremental_cursor_handle_init(mem, &preprocessor, &token_allocator, &tokens_handle));
-    REQUIRE_OK(include_predefined(mem, options, compiler, source_id, &tokens_handle.pp_buffer));
+    REQUIRE_OK(include_predefined(mem, options, compiler, &tokens_handle.pp_buffer));
     REQUIRE_OK(kefir_compiler_parse(mem, compiler, &tokens_handle.handle, &unit));
     REQUIRE_OK(kefir_compiler_analyze(mem, compiler, KEFIR_AST_NODE_BASE(unit)));
 

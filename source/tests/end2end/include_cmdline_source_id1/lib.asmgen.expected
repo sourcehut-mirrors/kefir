@@ -1,0 +1,6 @@
+# 1 "source/tests/end2end/include_cmdline_source_id1/test.h"
+void test2(); 
+
+void test() {
+    test2();
+}

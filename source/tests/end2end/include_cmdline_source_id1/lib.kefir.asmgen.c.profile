@@ -1,0 +1,1 @@
+KEFIR_CFLAGS="$KEFIR_CFLAGS -include $(dirname $SRC_FILE)/test.h -E --preprocessor-linemarkers"
