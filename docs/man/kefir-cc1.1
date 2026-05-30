@@ -64,6 +64,9 @@ Add directory to preprocessor embed search path
 .It Fl \-debug-info
 Include debug information into produced output
 .\"
+.It Fl \-optimizer-max-recursive-inline Ar depth
+Maximum depth of recursive function inlining (2 by default).
+.\"
 .It Fl \-optimizer-max-inline-depth Ar depth
 Maximum depth of function inlining (5 by default).
 .\"
@@ -394,7 +397,10 @@ Remove unnecessary jump and branch instructions and merge respective blocks.
 Remove dead local variable allocations.
 .\"
 .It Ar inline-func
-Perform function inlining.
+Perform function inlining based on inline function specifier and callee-size heuristics.
+.\"
+.It Ar inline-func-base
+Perform function inlining based on inline function specifier only.
 .\"
 .It Ar tail-calls
 Perform tail call optimization.
