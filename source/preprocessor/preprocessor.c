@@ -430,11 +430,15 @@ static kefir_result_t process_include(struct kefir_mem *mem, struct kefir_prepro
     }
 
     struct kefir_preprocessor_source_file source_file;
-    REQUIRE_OK(preprocessor->context->source_locator->open(
+    kefir_result_t res = preprocessor->context->source_locator->open(
         mem, preprocessor->context->source_locator, include_path, system_include, preprocessor->current_file,
         directive->type == KEFIR_PREPROCESSOR_DIRECTIVE_INCLUDE_NEXT ? KEFIR_PREPROCESSOR_SOURCE_LOCATOR_MODE_NEXT
                                                                      : KEFIR_PREPROCESSOR_SOURCE_LOCATOR_MODE_NORMAL,
-        &source_file));
+        &source_file);
+    if (res == KEFIR_NOT_FOUND) {
+        res = KEFIR_SET_ERRORF(KEFIR_LEXER_ERROR, "Unable to find requested include file %s", include_path);
+    }
+    REQUIRE_OK(res);
     if (kefir_hashtreeset_has(&preprocessor->context->include_once,
                               (kefir_hashtreeset_entry_t) source_file.info.filepath)) {
         REQUIRE_OK(source_file.close(mem, &source_file));
@@ -442,9 +446,9 @@ static kefir_result_t process_include(struct kefir_mem *mem, struct kefir_prepro
     }
 
     struct kefir_preprocessor subpreprocessor;
-    kefir_result_t res = kefir_preprocessor_init(mem, &subpreprocessor, preprocessor->lexer.symbols,
-                                                 &source_file.cursor, preprocessor->lexer.context,
-                                                 preprocessor->context, &source_file.info, preprocessor->extensions);
+    res = kefir_preprocessor_init(mem, &subpreprocessor, preprocessor->lexer.symbols, &source_file.cursor,
+                                  preprocessor->lexer.context, preprocessor->context, &source_file.info,
+                                  preprocessor->extensions);
     REQUIRE_ELSE(res == KEFIR_OK, {
         source_file.close(mem, &source_file);
         return res;
