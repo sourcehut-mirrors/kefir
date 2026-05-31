@@ -1351,7 +1351,8 @@ static kefir_result_t can_inline_function(const struct kefir_opt_function *calle
             if ((instruction->operation.opcode == KEFIR_OPT_OPCODE_GET_ARGUMENT &&
                  instruction->operation.parameters.index >= call_node->argument_count) ||
                 instruction->operation.opcode == KEFIR_OPT_OPCODE_TAIL_INVOKE ||
-                instruction->operation.opcode == KEFIR_OPT_OPCODE_TAIL_INVOKE_VIRTUAL) {
+                instruction->operation.opcode == KEFIR_OPT_OPCODE_TAIL_INVOKE_VIRTUAL ||
+                instruction->operation.opcode == KEFIR_OPT_OPCODE_UNREACHABLE) {
                 can_inline = false;
             }
         }
