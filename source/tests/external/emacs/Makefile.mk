@@ -58,6 +58,6 @@ $(KEFIR_EXTERNAL_TEST_EMACS_DIR)/tests.log: $(KEFIR_EXTERNAL_TEST_EMACS_SOURCE_D
 $(KEFIR_EXTERNAL_TESTS_DIR)/emacs.test.done: $(KEFIR_EXTERNAL_TEST_EMACS_DIR)/tests.log
 	@$(SOURCE_DIR)/tests/external/emacs/validate.sh "$(KEFIR_EXTERNAL_TEST_EMACS_DIR)/tests.log"
 	@touch "$@"
-	@echo "GU Emacs $(KEFIR_EXTERNAL_TEST_EMACS_VERSION) test successfully finished"
+	@echo "GNU Emacs $(KEFIR_EXTERNAL_TEST_EMACS_VERSION) test successfully finished"
 
 EXTERNAL_TESTS_FAST_SUITE += $(KEFIR_EXTERNAL_TESTS_DIR)/emacs.test.done
