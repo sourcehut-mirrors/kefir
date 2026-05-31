@@ -1075,9 +1075,11 @@ As a project, Kefir has the following goals, in order of priority:
   for non-x86_64 or non-Unix platforms is currently considered non-goal, but
   that might change in future.
 
-## History and future plans
+## History and current status
 
-The project has been in active development since November 2020. In that
+**I have decided to cease public development of this project, transferring it into private mode. The details are described [here](https://kefir.protopopov.lv/posts/announce2.html)**
+
+The project has been in active development since November 2020, public between June 2021 and May 2026. In that
 time-span, the author has released several intermediate versions, with complete
 descriptions available in the `CHANGELOG`. It shall be noted that the versioning
 scheme is inconsistent, and can be characterized as "vibe-versioning" (i.e.
@@ -1112,12 +1114,9 @@ about the release).
   analysis via memory SSA, 128-bit integer support, extension of real-world
   compatibility.
 
-**The author does not make any promises or commitments regarding future
-development**. Any commit to the project might be the final one without prior
-notice. Nevertheless, if development is terminated or indefinitely paused, the
-author will attempt to communicate this clearly. Furthermore, should any bugs in
-already published code be discovered after active development cessation, the
-author might issue limited fixes addressing the issue.
+**Starting from June 2026, the project development is conducted in private.**
+Should any bugs in already published code be discovered in the publicly
+available portion, the author might issue fixes addressing the issue.
 
 ## Distribution
 
