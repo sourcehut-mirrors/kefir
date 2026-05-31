@@ -6,14 +6,9 @@
 
 .section .text
 .L__kefir_text_section_begin:
-test1:
-.L__kefir_text_func_test1_begin:
-    ud2
-.L__kefir_text_func_test1_end:
-
 test2:
 .L__kefir_text_func_test2_begin:
-    jmp test1
+    ud2
 .L__kefir_text_func_test2_end:
 
 .L__kefir_text_section_end:

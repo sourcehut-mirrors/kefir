@@ -22,6 +22,7 @@
 #include "kefir/optimizer/code_util.h"
 #include "kefir/optimizer/builder.h"
 #include "kefir/optimizer/trace.h"
+#include "kefir/optimizer/liveness.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 
@@ -38,6 +39,9 @@ struct do_inline_param {
     kefir_opt_instruction_ref_t original_call_instr_ref;
     kefir_opt_instruction_ref_t result_phi_instr;
     struct kefir_opt_code_container src_code_clone;
+
+    struct kefir_opt_code_control_flow *dst_control_flow;
+    struct kefir_opt_code_liveness dst_liveness;
 
     struct kefir_hashtree block_mapping;
     struct kefir_hashtree instr_mapping;
@@ -916,6 +920,26 @@ static kefir_result_t inline_unreachable(struct do_inline_param *param, const st
         REQUIRE_OK(kefir_opt_code_container_phi_attach(param->mem, param->dst_code, param->result_phi_instr,
                                                        mapped_block_id, *mapped_instr_ref));
     }
+
+    kefir_result_t res;
+    kefir_hashset_key_t entry;
+    struct kefir_hashset_iterator iter;
+    for (res = kefir_hashset_iter(&param->dst_liveness.blocks[param->inline_successor_block_id].alive_instr, &iter,
+                                  &entry);
+         res == KEFIR_OK; res = kefir_hashset_next(&iter, &entry)) {
+        ASSIGN_DECL_CAST(kefir_opt_instruction_ref_t, instr_ref, entry);
+
+        const struct kefir_opt_instruction *instr;
+        REQUIRE_OK(kefir_opt_code_container_instr(param->dst_code, instr_ref, &instr));
+
+        if (instr->operation.opcode == KEFIR_OPT_OPCODE_LOCAL_SCOPE) {
+            kefir_opt_instruction_ref_t mapped_ref;
+            REQUIRE_OK(kefir_opt_code_builder_local_lifetime_mark(param->mem, param->dst_code, mapped_block_id,
+                                                                  instr_ref, &mapped_ref));
+            REQUIRE_OK(kefir_opt_code_container_add_control(param->dst_code, mapped_block_id, mapped_ref));
+        }
+    }
+
     REQUIRE_OK(
         kefir_opt_code_builder_finalize_unreachable(param->mem, param->dst_code, mapped_block_id, mapped_instr_ref));
 
@@ -1258,6 +1282,8 @@ static kefir_result_t do_inline_impl(struct do_inline_param *param) {
         REQUIRE_OK(kefir_opt_code_container_clone(param->mem, &param->src_code_clone, param->src_code));
         param->src_code = &param->src_code_clone;
     }
+    REQUIRE_OK(kefir_opt_code_liveness_build(param->mem, &param->dst_liveness, param->dst_control_flow));
+
     REQUIRE_OK(inline_blocks(param));
     REQUIRE_OK(map_inlined_phis(param));
     REQUIRE_OK(link_inlined_entry_block(param));
@@ -1274,13 +1300,16 @@ static kefir_result_t do_inline_impl(struct do_inline_param *param) {
 }
 
 static kefir_result_t do_inline(struct kefir_mem *mem, const struct kefir_opt_module *module,
-                                struct kefir_opt_function *dst_function, const struct kefir_opt_function *src_function,
+                                struct kefir_opt_function *dst_function,
+                                struct kefir_opt_code_control_flow *dst_control_flow,
+                                const struct kefir_opt_function *src_function,
                                 kefir_opt_block_id_t inline_predecessor_block_id,
                                 kefir_opt_block_id_t inline_successor_block_id, kefir_opt_call_id_t original_call_ref,
                                 kefir_opt_instruction_ref_t original_call_instr_ref) {
     struct do_inline_param param = {.mem = mem,
                                     .module = module,
                                     .dst_function = dst_function,
+                                    .dst_control_flow = dst_control_flow,
                                     .src_function = src_function,
                                     .src_code = &src_function->code,
                                     .dst_code = &dst_function->code,
@@ -1292,9 +1321,18 @@ static kefir_result_t do_inline(struct kefir_mem *mem, const struct kefir_opt_mo
     REQUIRE_OK(kefir_hashtree_init(&param.block_mapping, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtree_init(&param.instr_mapping, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_opt_code_container_init(&param.src_code_clone));
+    REQUIRE_OK(kefir_opt_code_liveness_init(&param.dst_liveness));
 
     kefir_result_t res = do_inline_impl(&param);
 
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_opt_code_liveness_free(mem, &param.dst_liveness);
+        kefir_opt_code_container_free(mem, &param.src_code_clone);
+        kefir_hashtree_free(mem, &param.block_mapping);
+        kefir_hashtree_free(mem, &param.instr_mapping);
+        return res;
+    });
+    res = kefir_opt_code_liveness_free(mem, &param.dst_liveness);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_opt_code_container_free(mem, &param.src_code_clone);
         kefir_hashtree_free(mem, &param.block_mapping);
@@ -1351,8 +1389,7 @@ static kefir_result_t can_inline_function(const struct kefir_opt_function *calle
             if ((instruction->operation.opcode == KEFIR_OPT_OPCODE_GET_ARGUMENT &&
                  instruction->operation.parameters.index >= call_node->argument_count) ||
                 instruction->operation.opcode == KEFIR_OPT_OPCODE_TAIL_INVOKE ||
-                instruction->operation.opcode == KEFIR_OPT_OPCODE_TAIL_INVOKE_VIRTUAL ||
-                instruction->operation.opcode == KEFIR_OPT_OPCODE_UNREACHABLE) {
+                instruction->operation.opcode == KEFIR_OPT_OPCODE_TAIL_INVOKE_VIRTUAL) {
                 can_inline = false;
             }
         }
@@ -1404,7 +1441,7 @@ kefir_result_t kefir_opt_try_inline_function_call(
         REQUIRE_OK(kefir_opt_code_split_block_after(mem, &func->code, &func->debug_info, control_flow, sequencing,
                                                     instr_ref, &split_block_id));
         REQUIRE_OK(kefir_opt_function_block_split_from(mem, func, split_block_id, block_id));
-        REQUIRE_OK(do_inline(mem, module, func, called_func, block_id, split_block_id, call_node->node_id,
+        REQUIRE_OK(do_inline(mem, module, func, control_flow, called_func, block_id, split_block_id, call_node->node_id,
                              call_node->output_ref));
         func->num_of_inlines++;
         ASSIGN_PTR(did_inline_ptr, true);
