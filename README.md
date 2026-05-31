@@ -1,5 +1,7 @@
 # Kefir C17/C23 compiler
 
+**I have decided to cease public development of this project, transferring it into private mode. The details are described [here](https://kefir.protopopov.lv/posts/announce2.html)**
+
 Kefir is an independent compiler for the C17/C23 programming language, developed
 by [Jevgenij Protopopov](https://www.protopopov.lv). Kefir has been validated
 with a test suite of 100 software projects, among which are GNU core- and
