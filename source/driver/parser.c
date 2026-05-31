@@ -242,13 +242,17 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_strin
         } else if (STRNCMP("-O", arg) == 0) {
             const char *spec = NULL;
             if (strlen(arg) == 2) {
-                EXPECT_ARG;
-                spec = argv[++index];
+                if (index + 1 < argc && isdigit(*argv[index + 1])) {
+                    EXPECT_ARG;
+                    spec = argv[++index];
+                }
             } else {
                 spec = &arg[2];
             }
 
-            if (isdigit(*spec)) {
+            if (spec == NULL) {
+                config->compiler.optimization_level = KEFIR_DRIVER_OPTIMIZATION_FULL;
+            } else if (isdigit(*spec)) {
                 kefir_uint_t level = strtoul(&arg[2], NULL, 10);
                 if (level > 0) {
                     config->compiler.optimization_level = KEFIR_DRIVER_OPTIMIZATION_FULL;
