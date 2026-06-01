@@ -1,0 +1,30 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global STR
+.type STR, @object
+.global STR2
+.type STR2, @object
+.global test1
+.type test1, @function
+
+.section .text
+.L__kefir_text_section_begin:
+test1:
+.L__kefir_text_func_test1_begin:
+    movl 4(%rsi), %eax
+    not %edi
+    xor $10, %eax
+    or %edi, %eax
+    ret
+.L__kefir_text_func_test1_end:
+
+.L__kefir_text_section_end:
+
+.section .data
+STR:
+    .byte 0x23, 0x5b, 0x5c, 0x5d, 0x5e, 0x7b, 0x7c, 0x7d, 0x7e, 0x00
+
+STR2:
+    .byte 0x31, 0x32, 0x2b, 0x2b, 0x00
+

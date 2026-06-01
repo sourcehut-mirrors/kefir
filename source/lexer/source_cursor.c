@@ -50,72 +50,85 @@ kefir_result_t kefir_lexer_source_cursor_init(struct kefir_lexer_source_cursor *
     return KEFIR_OK;
 }
 
+#define TRIGRAPH_SEQS(_trigraph, _separator)                                                                \
+    _trigraph(U'=', U'#') _separator _trigraph(U'(', U'[') _separator _trigraph(U'/', U'\\')                \
+        _separator _trigraph(U')', U']') _separator _trigraph(U'\'', U'^') _separator _trigraph(U'<', U'{') \
+            _separator _trigraph(U'!', U'|') _separator _trigraph(U'>', U'}') _separator _trigraph(U'-', U'~')
+
+static kefir_char32_t at_impl_physical(const struct kefir_lexer_source_cursor *cursor, kefir_size_t *index,
+                                       mbstate_t *mbstate, kefir_source_location_column_t *column) {
+    if (*index >= cursor->length) {
+        return KEFIR_LEXER_SOURCE_CURSOR_EOF;
+    }
+
+    kefir_char32_t character = KEFIR_LEXER_SOURCE_CURSOR_EOF;
+    size_t rc = mbrtoc32(&character, cursor->content + *index, cursor->length - *index, mbstate);
+    switch (rc) {
+        case (size_t) -1:
+        case (size_t) -2:
+        case (size_t) -3:
+            REQUIRE(*index < cursor->length, KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unexpected source cursor index"));
+            character = (kefir_int32_t) (*(cursor->content + *index));
+            (*index)++;
+            break;
+
+        case 0:
+            character = U'\0';
+            (*index)++;
+            break;
+
+        default:
+            (*index) += rc;
+            if (character != U'\0' && column != NULL) {
+                (*column)++;
+            }
+            if (character == U'?' && *index < cursor->length) {
+                kefir_char32_t character2;
+                mbstate_t mbstate2 = *mbstate;
+                rc = mbrtoc32(&character2, cursor->content + *index, cursor->length - *index, &mbstate2);
+                if (rc > 0 && character2 == U'?' && *index + rc < cursor->length) {
+                    kefir_char32_t character2;
+                    size_t rc2 =
+                        mbrtoc32(&character2, cursor->content + *index + rc, cursor->length - *index + rc, &mbstate2);
+#define DEF_TRIGRAPH(_in, _out)           \
+    if (rc2 > 0 && character2 == (_in)) { \
+        (*index) += rc + rc2;             \
+        if (column != NULL) {             \
+            (*column) += 2;               \
+        }                                 \
+        character = (_out);               \
+        *mbstate = mbstate2;              \
+    }
+                    TRIGRAPH_SEQS(DEF_TRIGRAPH, else)
+#undef DEF_TRIGRAPH
+                }
+            }
+            break;
+    }
+    return character;
+}
+
 static kefir_char32_t at_impl(const struct kefir_lexer_source_cursor *cursor, kefir_size_t count) {
     kefir_char32_t character = KEFIR_LEXER_SOURCE_CURSOR_EOF;
     kefir_size_t index = cursor->index;
     mbstate_t mbstate = cursor->mbstate;
     do {
-        if (index == cursor->length) {
-            character = KEFIR_LEXER_SOURCE_CURSOR_EOF;
+        character = at_impl_physical(cursor, &index, &mbstate, NULL);
+        kefir_size_t next_index = index;
+        if (character == KEFIR_LEXER_SOURCE_CURSOR_EOF) {
             break;
-        }
-
-        size_t rc = mbrtoc32(&character, cursor->content + index, cursor->length - index, &mbstate);
-        switch (rc) {
-            case (size_t) -1:
-            case (size_t) -2:
-            case (size_t) -3:
-                REQUIRE(index < cursor->length,
-                        KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unexpected source cursor index"));
-                character = (kefir_int32_t) (*(cursor->content + index));
-                break;
-
-            case 0:
-                character = U'\0';
-                index++;
-                break;
-
-            default:
-                index += rc;
-                if (character == U'\\' && index < cursor->length) {  // Convert physical line to logical
-                    kefir_char32_t character2;
-                    mbstate_t mbstate2 = {0};
-                    rc = mbrtoc32(&character2, cursor->content + index, cursor->length - index, &mbstate2);
-                    switch (rc) {
-                        case (size_t) -1:
-                        case (size_t) -2:
-                        case (size_t) -3:
-                        case 0:
-                            break;
-
-                        default:
-                            if (character2 == cursor->newline_char) {  // Skip line break
-                                index += rc;
-                                count++;
-                            } else if (character2 == cursor->carriage_return_char &&
-                                       cursor->index + rc < cursor->length) {
-                                mbstate_t mbstate2 = {0};
-                                kefir_size_t rc2 = mbrtoc32(&character2, cursor->content + index + rc,
-                                                            cursor->length - index - rc, &mbstate2);
-                                switch (rc2) {
-                                    case (size_t) -1:
-                                    case (size_t) -2:
-                                    case (size_t) -3:
-                                    case 0:
-                                        break;
-
-                                    default:
-                                        if (character2 == cursor->newline_char) {  // Skip line break
-                                            index += rc + rc2;
-                                            count++;
-                                        }
-                                        break;
-                                }
-                            }
-                            break;
-                    }
-                }
-                break;
+        } else if (character == U'\\' &&
+                   at_impl_physical(cursor, &next_index, &mbstate, NULL) == cursor->newline_char) {
+            index = next_index;
+            count++;
+        } else {
+            next_index = index;
+            if (character == U'\\' &&
+                at_impl_physical(cursor, &next_index, &mbstate, NULL) == cursor->carriage_return_char &&
+                at_impl_physical(cursor, &next_index, &mbstate, NULL) == cursor->newline_char) {
+                index = next_index;
+                count++;
+            }
         }
     } while (count--);
     return character;
@@ -134,87 +147,32 @@ static kefir_result_t next_impl(struct kefir_lexer_source_cursor *cursor, kefir_
                                 kefir_char32_t *last_char) {
     kefir_char32_t chr = KEFIR_LEXER_SOURCE_CURSOR_EOF;
     while (count--) {
-        if (cursor->length == cursor->index) {
+        chr = at_impl_physical(cursor, &cursor->index, &cursor->mbstate, &cursor->current_location.column);
+        if (chr == KEFIR_LEXER_SOURCE_CURSOR_EOF) {
             break;
         }
-        size_t rc = mbrtoc32(&chr, cursor->content + cursor->index, cursor->length - cursor->index, &cursor->mbstate);
-        switch (rc) {
-            case (size_t) -1:
-            case (size_t) -2:
-            case (size_t) -3:
-                if (cursor->index < cursor->length) {
-                    chr = (kefir_char32_t) * (cursor->content + cursor->index);
-                    cursor->index++;
-                    cursor->mbstate = (mbstate_t) {0};
-                } else {
-                    chr = U'\0';
-                }
-                break;
 
-            case 0:
-                chr = U'\0';
-                cursor->index++;
-                cursor->mbstate = (mbstate_t) {0};
-                break;
-
-            default:
-                cursor->index += rc;
-                if (chr == U'\n') {
+        if (chr == cursor->newline_char) {
+            cursor->current_location.column = 1;
+            cursor->current_location.line++;
+        } else {
+            kefir_size_t next_index = cursor->index;
+            if (chr == U'\\' && at_impl_physical(cursor, &next_index, &cursor->mbstate, NULL) == cursor->newline_char) {
+                cursor->index = next_index;
+                count++;
+                cursor->current_location.column = 1;
+                cursor->current_location.line++;
+            } else {
+                next_index = cursor->index;
+                if (chr == U'\\' &&
+                    at_impl_physical(cursor, &next_index, &cursor->mbstate, NULL) == cursor->carriage_return_char &&
+                    at_impl_physical(cursor, &next_index, &cursor->mbstate, NULL) == cursor->newline_char) {
+                    cursor->index = next_index;
+                    count++;
                     cursor->current_location.column = 1;
                     cursor->current_location.line++;
-                } else {
-                    kefir_bool_t skip_line_break = false;
-                    if (chr == U'\\' && cursor->index < cursor->length) {  // Convert physical line to logical
-                        kefir_char32_t character2;
-                        mbstate_t mbstate2 = {0};
-                        rc = mbrtoc32(&character2, cursor->content + cursor->index, cursor->length - cursor->index,
-                                      &mbstate2);
-                        switch (rc) {
-                            case (size_t) -1:
-                            case (size_t) -2:
-                            case (size_t) -3:
-                            case 0:
-                                break;
-
-                            default:
-                                if (character2 == cursor->newline_char) {  // Skip line break
-                                    cursor->index += rc;
-                                    count++;
-                                    skip_line_break = true;
-                                    cursor->current_location.column = 1;
-                                    cursor->current_location.line++;
-                                } else if (character2 == cursor->carriage_return_char &&
-                                           cursor->index + rc < cursor->length) {
-                                    mbstate_t mbstate2 = {0};
-                                    kefir_size_t rc2 = mbrtoc32(&character2, cursor->content + cursor->index + rc,
-                                                                cursor->length - cursor->index, &mbstate2);
-                                    switch (rc2) {
-                                        case (size_t) -1:
-                                        case (size_t) -2:
-                                        case (size_t) -3:
-                                        case 0:
-                                            break;
-
-                                        default:
-                                            if (character2 == cursor->newline_char) {  // Skip line break
-                                                cursor->index += rc + rc2;
-                                                count++;
-                                                skip_line_break = true;
-                                                cursor->current_location.column = 1;
-                                                cursor->current_location.line++;
-                                            }
-                                            break;
-                                    }
-                                }
-                                break;
-                        }
-                    }
-
-                    if (!skip_line_break) {
-                        cursor->current_location.column++;
-                    }
                 }
-                break;
+            }
         }
     }
     ASSIGN_PTR(last_char, chr);
