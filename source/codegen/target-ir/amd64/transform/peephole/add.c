@@ -65,26 +65,26 @@ kefir_result_t kefir_codegen_target_ir_amd64_peephole_add(struct kefir_mem *mem,
 
         if (res != KEFIR_NO_MATCH) {
             REQUIRE_OK(res);
-            const struct kefir_codegen_target_ir_value_type *value_type;
+            const struct kefir_codegen_target_ir_value_type *arg_value_type, *value_type;
             REQUIRE_OK(kefir_codegen_target_ir_code_value_props(
                 code, instr->operation.parameters[classification.operands[0].read_index].direct.value_ref,
-                &value_type));
-            if (value_type->constraint.type != KEFIR_CODEGEN_TARGET_IR_ALLOCATION_REQUIREMENT) {
+                &arg_value_type));
+            REQUIRE_OK(kefir_codegen_target_ir_code_value_props(code, classification.operands[0].output, &value_type));
+            if (arg_value_type->constraint.type != KEFIR_CODEGEN_TARGET_IR_ALLOCATION_REQUIREMENT) {
                 res = kefir_codegen_target_ir_amd64_match_immediate_operand(
                     code, &instr->operation.parameters[classification.operands[1].read_index], true, &rhs);
 
                 if (res != KEFIR_NO_MATCH) {
                     REQUIRE_OK(res);
                     result = instr->operation.opcode == KEFIR_TARGET_IR_AMD64_OPCODE(add) ? lhs + rhs : lhs - rhs;
-                    result = kefir_codegen_target_ir_sign_extend(result, value_type->variant);
+                    result = kefir_codegen_target_ir_zero_extend(result, value_type->variant);
 
                     REQUIRE_OK(kefir_codegen_target_ir_code_replace_operation(
                         mem, code, instr_ref,
                         &(struct kefir_codegen_target_ir_operation) {
                             .opcode = code->klass->assign_opcode,
                             .parameters[0] = {.type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INTEGER,
-                                              .immediate.int_immediate =
-                                                  kefir_codegen_target_ir_zero_extend(result, value_type->variant),
+                                              .immediate.int_immediate = result,
                                               .immediate.variant = KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT}},
                         NULL));
                     *replaced = true;

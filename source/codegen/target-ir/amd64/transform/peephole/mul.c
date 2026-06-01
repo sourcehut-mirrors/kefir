@@ -120,7 +120,7 @@ kefir_result_t kefir_codegen_target_ir_amd64_peephole_imul(struct kefir_mem *mem
             has_lhs_value = true;
         }
 
-        if (has_rhs_value) {
+        if (has_rhs_value && rhs_value >= KEFIR_INT32_MIN && rhs_value <= KEFIR_INT32_MAX) {
             REQUIRE_OK(kefir_codegen_target_ir_code_replace_operation(
                 mem, code, instr_ref,
                 &(struct kefir_codegen_target_ir_operation) {
@@ -134,7 +134,8 @@ kefir_result_t kefir_codegen_target_ir_amd64_peephole_imul(struct kefir_mem *mem
                 NULL));
             *replaced = true;
             return KEFIR_OK;
-        } else if (has_lhs_value && instr->operation.opcode == KEFIR_TARGET_IR_AMD64_OPCODE(imul)) {
+        } else if (has_lhs_value && lhs_value >= KEFIR_INT32_MIN && lhs_value <= KEFIR_INT32_MAX &&
+                   instr->operation.opcode == KEFIR_TARGET_IR_AMD64_OPCODE(imul)) {
             REQUIRE_OK(kefir_codegen_target_ir_code_replace_operation(
                 mem, code, instr_ref,
                 &(struct kefir_codegen_target_ir_operation) {

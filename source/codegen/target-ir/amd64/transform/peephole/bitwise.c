@@ -287,9 +287,12 @@ kefir_result_t peephole_const_operand_nonneg(struct kefir_mem *mem, struct kefir
         kefir_result_t res = kefir_codegen_target_ir_amd64_match_immediate(
             code, instr->operation.parameters[classification.operands[1].read_index].direct.value_ref, true,
             &rhs_value);
+
         if (res != KEFIR_NO_MATCH) {
             REQUIRE_OK(res);
-            if (rhs_value >= 0) {
+            kefir_int64_t rhs_value_trunc = kefir_codegen_target_ir_sign_extend(
+                rhs_value, instr->operation.parameters[classification.operands[1].read_index].direct.variant);
+            if (rhs_value_trunc >= 0 && rhs_value_trunc <= KEFIR_INT32_MAX) {
                 struct kefir_codegen_target_ir_operation oper = instr->operation;
                 oper.parameters[classification.operands[1].read_index] = (struct kefir_codegen_target_ir_operand) {
                     .type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INTEGER,
