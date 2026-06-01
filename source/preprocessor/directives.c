@@ -168,14 +168,18 @@ kefir_result_t kefir_preprocessor_directive_scanner_match(
         directive_scanner->newline_flag = true;
         return KEFIR_OK;
     }
-    if (chr != U'#') {
+    if (chr == U'%' && kefir_lexer_source_cursor_at(directive_scanner->lexer->cursor, 1) == ':') {
+        REQUIRE_OK(kefir_lexer_source_cursor_save(directive_scanner->lexer->cursor, &hash_state));
+        REQUIRE_OK(kefir_lexer_source_cursor_next(directive_scanner->lexer->cursor, 2));
+    } else if (chr == U'#') {
+        REQUIRE_OK(kefir_lexer_source_cursor_save(directive_scanner->lexer->cursor, &hash_state));
+        REQUIRE_OK(kefir_lexer_source_cursor_next(directive_scanner->lexer->cursor, 1));
+    } else {
         REQUIRE_OK(kefir_lexer_source_cursor_restore(directive_scanner->lexer->cursor, &initial_state));
         *directive_type = KEFIR_PREPROCESSOR_DIRECTIVE_PP_TOKEN;
         directive_scanner->newline_flag = true;
         return KEFIR_OK;
     }
-    REQUIRE_OK(kefir_lexer_source_cursor_save(directive_scanner->lexer->cursor, &hash_state));
-    REQUIRE_OK(kefir_lexer_source_cursor_next(directive_scanner->lexer->cursor, 1));
     const kefir_bool_t potential_linemarker =
         kefir_isspace32(kefir_lexer_source_cursor_at(directive_scanner->lexer->cursor, 0));
     REQUIRE_OK(skip_whitespaces_until(directive_scanner->lexer->cursor, directive_scanner->lexer->context->newline));

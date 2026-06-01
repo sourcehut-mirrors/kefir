@@ -505,7 +505,8 @@ static kefir_result_t match_concatenation(
         return res;
     });
     if (next_nonws_token == NULL || next_nonws_token->klass != KEFIR_TOKEN_PUNCTUATOR ||
-        next_nonws_token->punctuator != KEFIR_PUNCTUATOR_DOUBLE_HASH) {
+        (next_nonws_token->punctuator != KEFIR_PUNCTUATOR_DOUBLE_HASH &&
+         next_nonws_token->punctuator != KEFIR_PUNCTUATOR_DIGRAPH_DOUBLE_HASH)) {
         res = kefir_preprocessor_token_sequence_push_front(mem, seq, &whitespaces,
                                                            KEFIR_PREPROCESSOR_TOKEN_DESTINATION_NORMAL);
         REQUIRE_ELSE(res == KEFIR_OK, {
@@ -808,7 +809,8 @@ static kefir_result_t run_replacement_list_substitutions_impl(
         }
 
         if (!matched && arg_tree != NULL && current_token->klass == KEFIR_TOKEN_PUNCTUATOR &&
-            current_token->punctuator == KEFIR_PUNCTUATOR_HASH) {
+            (current_token->punctuator == KEFIR_PUNCTUATOR_HASH ||
+             current_token->punctuator == KEFIR_PUNCTUATOR_DIGRAPH_HASH)) {
             struct kefir_source_location source_location = current_token->source_location;
             const struct kefir_token *param_token = NULL;
             REQUIRE_OK(kefir_preprocessor_token_sequence_skip_whitespaces(mem, seq, &param_token, NULL));

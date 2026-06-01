@@ -1,0 +1,11 @@
+
+extern const char STR[];
+extern const char STR2[];
+int test1(int, int *);
+
+const char STR[] = "<::><%%>%:%:%:%:";
+const char STR2[] = "12" "++";
+
+int test1(int a, int *b) <%
+    return (~a) | b<:1:> ^ '\n';
+%>
