@@ -1,6 +1,6 @@
 # Kefir C17/C23 compiler
 
-**I have decided to cease public development of this project, transferring it into private mode. The details are described [here](https://kefir.protopopov.lv/posts/announce2.html) (updated on June 2, 2026)**
+**I have decided to cease public development of this project, transferring it into private mode. The details are described [here](https://kefir.protopopov.lv/posts/announce2.html) (updated on June 2, 2026). Maintenance policy is defined [here](MAINTENANCE.md).**
 
 Kefir is an independent compiler for the C17/C23 programming language, developed
 by [Jevgenij Protopopov](https://www.protopopov.lv). Kefir has been validated
@@ -1077,7 +1077,7 @@ As a project, Kefir has the following goals, in order of priority:
 
 ## History and current status
 
-**I have decided to cease public development of this project, transferring it into private mode. The details are described [here](https://kefir.protopopov.lv/posts/announce2.html)**
+**I have decided to cease public development of this project, transferring it into private mode. The details are described [here](https://kefir.protopopov.lv/posts/announce2.html) (updated on June 2, 2026). Maintenance policy is defined [here](MAINTENANCE.md).**
 
 The project has been in active development since November 2020, public between June 2021 and May 2026. In that
 time-span, the author has released several intermediate versions, with complete
@@ -1134,19 +1134,14 @@ contain more up-to-date code and each merge to that branch is tested as
 thoroughly as releases.
 
 In addition, the author maintains two `PKGBUILD` build scripts at ArchLinux User
-Repository: [kefir](https://aur.archlinux.org/packages/kefir) and
-[kefir-git](https://aur.archlinux.org/packages/kefir).
+Repository: [kefir](https://aur.archlinux.org/packages/kefir).
 
 The author is aware of kefir packages produced by the third parties. The author
 is not affiliated with any of these package maintainers, so use at your own
-discretion. Packages might be outdated or otherwise problematic:
+discretion.
 
-* [GNU Guix](https://packages.guix.gnu.org/packages/kefir/0.5.0/)
 * [FreeBSD](https://www.freshports.org/lang/kefir)
 * [Ubuntu PPA](https://codeberg.org/tkchia/ppa-de-rebus)
-* [Alpine package](https://pkgs.alpinelinux.org/package/edge/community/x86_64/kefir)
-* [Fedora package](https://packages.fedoraproject.org/pkgs/kefir/kefir/)
-* [Nelson H. F. Beebe's builds](https://www.math.utah.edu/~beebe/kefir/README.html)
 
 ## License
 
