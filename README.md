@@ -1125,7 +1125,9 @@ following sources:
 
 * [Kefir project at Sourcehut](https://sr.ht/~jprotopopov/kefir/) -- the primary development repository.
 * [Author's personal git repository](http://git.protopopov.lv/kefir) -- a mirror.
-* [Kefir repository at Codeberg](https://codeberg.org/jprotopopov/kefir) -- a secondary mirror.
+
+Previously there has also existed a mirror at codeberg, however the author
+phases it out as part of cessation of public development.
 
 The author publishes release tarballs at the [project's
 website](https://kefir.protopopov.lv). The author recommends to obtain the
@@ -1209,7 +1211,6 @@ Kefir-specific links:
 * [Kefir project at Sourcehut](https://sr.ht/~jprotopopov/kefir/) -- the primary development repository.
 * [Kefir mirror in author's personal git repository](http://git.protopopov.lv/kefir) --
   a mirror.
-* [Kefir repository at Codeberg](https://codeberg.org/jprotopopov/kefir) -- a secondary mirror.
 * [Author's PGP key](https://www.protopopov.lv/static/files/jprotopopov.gpg) --
   all git tags, releases and related artifacts will be signed with it until
   further notice.

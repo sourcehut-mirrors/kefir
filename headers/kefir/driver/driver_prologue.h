@@ -132,8 +132,7 @@ static kefir_result_t print_compiler_info(FILE *out, const char *exec_name) {
     );
 
     fprintf(out, "URLs  (primary): %s\n", "https://sr.ht/~jprotopopov/kefir");
-    fprintf(out, "     (mirror 1): %s\n", "https://git.protopopov.lv/kefir");
-    fprintf(out, "     (mirror 2): %s\n", "https://codeberg.org/jprotopopov/kefir");
+    fprintf(out, "       (mirror): %s\n", "https://git.protopopov.lv/kefir");
     return KEFIR_OK;
 }
 
