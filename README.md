@@ -1133,9 +1133,6 @@ source code from `master` branch of any of the official mirrors, as it might
 contain more up-to-date code and each merge to that branch is tested as
 thoroughly as releases.
 
-In addition, the author maintains two `PKGBUILD` build scripts at ArchLinux User
-Repository: [kefir](https://aur.archlinux.org/packages/kefir).
-
 The author is aware of kefir packages produced by the third parties. The author
 is not affiliated with any of these package maintainers, so use at your own
 discretion.
