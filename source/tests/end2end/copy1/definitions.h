@@ -21,6 +21,11 @@
 #ifndef DEFINITIONS_H_
 #define DEFINITIONS_H_
 
+#if defined(__clang__) && __clang_major__ >= 22
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wc2y-extensions"
+#endif
+
 #define REPEAT1(_fn) _fn(__COUNTER__)
 #define REPEAT2(_fn) REPEAT1(_fn) REPEAT1(_fn)
 #define REPEAT4(_fn) REPEAT2(_fn) REPEAT2(_fn)
@@ -62,6 +67,10 @@ REPEAT128(TEST)
 REPEAT128(TEST)
 #undef TEST
 #undef TEST_HELPER
+#endif
+
+#if defined(__clang__) && __clang_major__ >= 22
+#pragma GCC diagnostic pop
 #endif
 
 #endif

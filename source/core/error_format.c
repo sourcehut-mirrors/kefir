@@ -217,7 +217,7 @@ static kefir_result_t format_json(FILE *out, const struct kefir_error *error, ke
     REQUIRE_OK(kefir_json_output_init(&json, out, 4));
     REQUIRE_OK(kefir_json_output_array_begin(&json));
 
-    for (kefir_size_t i = 0; error != NULL; error = error->prev_error, i++) {
+    for (; error != NULL; error = error->prev_error) {
         REQUIRE_OK(kefir_json_output_object_begin(&json));
         REQUIRE_OK(kefir_json_output_object_key(&json, "overflow"));
         REQUIRE_OK(kefir_json_output_boolean(&json, error->error_overflow));

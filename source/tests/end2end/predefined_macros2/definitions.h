@@ -21,9 +21,18 @@
 #ifndef DEFINITIONS_H_
 #define DEFINITIONS_H_
 
+#if defined(__clang__) && __clang_major__ >= 22
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wc2y-extensions"
+#endif
+
 static int _temp = __COUNTER__;
 static int _temp2 = __COUNTER__;
 
 extern unsigned int Counters[];
+
+#if defined(__clang__) && __clang_major__ >= 22
+#pragma GCC diagnostic pop
+#endif
 
 #endif

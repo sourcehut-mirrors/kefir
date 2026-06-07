@@ -115,9 +115,8 @@ static kefir_result_t construct_inline_asm(struct kefir_mem *mem, const struct k
         kefir_opt_code_container_new_inline_assembly(mem, code, state->current_block->block_id, ir_inline_asm->id,
                                                      kefir_list_length(&ir_inline_asm->parameter_list), &instr_ref));
 
-    kefir_size_t param_idx = 0;
     for (const struct kefir_list_entry *iter = kefir_list_head(&ir_inline_asm->parameter_list); iter != NULL;
-         kefir_list_next(&iter), param_idx++) {
+         kefir_list_next(&iter)) {
         ASSIGN_DECL_CAST(const struct kefir_ir_inline_assembly_parameter *, ir_asm_param, iter->value);
 
         struct kefir_opt_inline_assembly_parameter inline_asm_param = {.location_ref = KEFIR_ID_NONE,
