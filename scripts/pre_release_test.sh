@@ -45,6 +45,7 @@ if [[ "x$1" == "x" ]]; then
     fatal "Usage: $SCRIPT_FILEPATH outdir"
 fi
 OUTDIR=`realpath "$1"`/`date "+%s"`
+LATEST_DIR=`realpath "$1"`/latest
 shift 1
 
 format_quote () {
@@ -207,4 +208,5 @@ main () {
 cd "$ROOT_DIR"
 make clean
 mkdir -p "$OUTDIR"
+ln -sf "$OUTDIR" "$LATEST_DIR"
 main "$@" 2>&1 | tee "$OUTDIR/main.log"
