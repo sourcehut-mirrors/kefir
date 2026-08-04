@@ -18,8 +18,10 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import sys
+import argparse
 from html.parser import HTMLParser
 from urllib.request import urlopen
+import urllib.request as urllib_request
 from urllib.parse import urljoin
 
 class TableParser(HTMLParser):
@@ -51,15 +53,24 @@ class TableParser(HTMLParser):
                 self.cells = list()
 
 if __name__ == '__main__':
-    if len(sys.argv) != 2:
-        print(f"Usage: {sys.argv[0]} URL", file=sys.stderr)
-        sys.exit(1)
+    parser = argparse.ArgumentParser(prog=sys.argv[0])
+    parser.add_argument('--username', type=str, required=False)
+    parser.add_argument('--password', type=str, required=False)
+    parser.add_argument('url', type=str)
+
+    args = parser.parse_args()
+
+    password_mgr = urllib_request.HTTPPasswordMgrWithDefaultRealm()
+    if args.username and args.password:
+        password_mgr.add_password(None, args.url, args.username, args.password)
+
+    auth_handler = urllib_request.HTTPBasicAuthHandler(password_mgr)
+    opener = urllib_request.build_opener(auth_handler)
         
-    page_url = sys.argv[1]
-    with urlopen(page_url) as f:
+    with opener.open(args.url) as f:
         html = f.read().decode('utf-8')
 
-    parser = TableParser(page_url)
+    parser = TableParser(args.url)
     parser.feed(html)
 
     for row in parser.rows:

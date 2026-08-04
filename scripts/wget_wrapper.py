@@ -20,14 +20,16 @@
 import os
 import sys
 import subprocess
-from shlex import quote
+import shlex
 
 if __name__ == '__main__':
     WGET_CMD = os.environ.get("WGET_CMD")
     WGET_URL_MAP = os.environ.get("WGET_URL_MAP")
 
     if not WGET_CMD:
-        WGET_CMD = 'wget'
+        WGET_CMD = ['wget']
+    else:
+        WGET_CMD = shlex.split(WGET_CMD)
 
     alts = dict()
     if WGET_URL_MAP and os.path.exists(WGET_URL_MAP):
@@ -42,4 +44,4 @@ if __name__ == '__main__':
         alts.get(arg, arg)
         for arg in sys.argv[1:]
     )
-    os.execvp(WGET_CMD, [WGET_CMD, '--tries=0', '--retry-connrefused', '--waitretry=10', '--timeout=30', *args])
+    os.execvp(WGET_CMD[0], [*WGET_CMD, '--tries=0', '--retry-connrefused', '--waitretry=10', '--timeout=30', *args])
