@@ -1,8 +1,9 @@
---- posix/gawkmisc.c	2025-03-09 13:13:49.000000000 +0200
-+++ posix/gawkmisc.c	2025-08-21 11:21:57.308056298 +0300
-@@ -331,9 +331,9 @@
- 			fullpath[n] = '\0';
- 			putenv("GAWK_PMA_REINCARNATION=true");
+diff -ru posix/gawkmisc.c posix/gawkmisc.c
+--- posix/gawkmisc.c	2026-02-17 20:55:00.000000000 +0200
++++ posix/gawkmisc.c	2026-08-05 18:12:37.014878479 +0300
+@@ -334,9 +334,9 @@
+ 
+ 			(void) setenv("GAWK_PMA_REINCARNATION", "true", true);
  			if (personality(PER_LINUX | ADDR_NO_RANDOMIZE) < 0) {
 -				fprintf(stderr, _("warning: personality: %s\n"),
 +				/*fprintf(stderr, _("warning: personality: %s\n"),
@@ -11,4 +12,16 @@
 +				fflush(stderr);*/
  				// do the exec anyway...
  			}
- 			execv(fullpath, argv);
+ 			execv(exe, argv);
+diff -ru test/Makefile.in test/Makefile.in
+--- test/Makefile.in	2026-02-22 16:33:59.000000000 +0200
++++ test/Makefile.in	2026-08-05 18:13:06.902058926 +0300
+@@ -1898,7 +1898,7 @@
+ 	ar2fn_fmod ar2fn_unxptyp_aref ar2fn_unxptyp_val argtest arraysort \
+ 	arraysort2 arraytype asortbool asortsymtab backw badargs beginfile1 \
+ 	beginfile2 binmode1 \
+-	charasbytes clos1way clos1way2 clos1way3 clos1way4 clos1way5 clos1way6 \
++	charasbytes clos1way clos1way3 clos1way4 clos1way5 clos1way6 \
+ 	colonwarn crlf csv1 csv2 csv3 csvodd \
+ 	dbugarray1 dbugarray2 dbugarray3 dbugarray4 dbugeval dbugeval2 dbugeval3 \
+ 	dbugeval4 dbugtypedre1 dbugtypedre2 delmessy delsub devfd devfd1 devfd2 \

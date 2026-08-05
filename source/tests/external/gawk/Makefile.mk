@@ -20,7 +20,7 @@ $(KEFIR_EXTERNAL_TEST_GAWK_SOURCE_DIR)/.extracted: $(KEFIR_EXTERNAL_TEST_GAWK_AR
 	@echo "Extracting $(KEFIR_EXTERNAL_TEST_GAWK_ARCHIVE_FILENAME)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_GAWK_DIR)" && tar xvfz "$(KEFIR_EXTERNAL_TEST_GAWK_ARCHIVE_FILENAME)"
 	@echo "Patching gawk $(KEFIR_EXTERNAL_TEST_GAWK_VERSION)..."
-# Fix personality failures in a container
+# Fix personality failures in a container and known race condition
 	@cd "$(KEFIR_EXTERNAL_TEST_GAWK_SOURCE_DIR)" && patch -p0 < "$(realpath $(SOURCE_DIR))/tests/external/gawk/gawk.patch"
 	@touch "$@"
 
