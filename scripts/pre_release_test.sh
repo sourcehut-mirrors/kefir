@@ -208,5 +208,5 @@ main () {
 cd "$ROOT_DIR"
 make clean
 mkdir -p "$OUTDIR"
-ln -sf "$OUTDIR" "$LATEST_DIR"
+ln -sfn "$OUTDIR" "$LATEST_DIR"
 main "$@" 2>&1 | tee "$OUTDIR/main.log"
