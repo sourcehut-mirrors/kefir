@@ -241,7 +241,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(long_double_const)(
     REQUIRE_OK(kefir_hashtree_insert(mem, &function->constants, (kefir_hashtree_key_t) label,
                                      (kefir_hashtree_value_t) instruction->id));
 
-    REQUIRE_OK(kefir_codegen_amd64_function_x87_push(mem, function, instruction->id));
+    REQUIRE_OK(KEFIR_CODEGEN_AMD64_FUNCTION_X87_PUSH(mem, function, instruction->id));
     if (function->codegen->config->position_independent_code) {
         REQUIRE_OK(kefir_asmcmp_amd64_fld(
             mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),

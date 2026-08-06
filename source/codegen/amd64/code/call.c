@@ -1076,7 +1076,7 @@ static kefir_result_t save_returns(struct kefir_mem *mem, struct kefir_codegen_a
 
             if (instruction->operation.opcode == KEFIR_OPT_OPCODE_INVOKE ||
                 instruction->operation.opcode == KEFIR_OPT_OPCODE_INVOKE_VIRTUAL) {
-                REQUIRE_OK(kefir_codegen_amd64_function_x87_push(mem, function, instruction->id));
+                REQUIRE_OK(KEFIR_CODEGEN_AMD64_FUNCTION_X87_PUSH(mem, function, instruction->id));
             } else {
                 REQUIRE_OK(kefir_asmcmp_amd64_fstp(
                     mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
@@ -1304,7 +1304,7 @@ static kefir_result_t invoke_impl(struct kefir_mem *mem, struct kefir_codegen_am
         kefir_ir_module_get_declaration(function->module->ir_module, call_node->function_declaration_id);
     REQUIRE(ir_func_decl != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to retrieve IR function declaration"));
 
-    REQUIRE_OK(kefir_codegen_amd64_function_x87_flush(mem, function));
+    REQUIRE_OK(KEFIR_CODEGEN_AMD64_FUNCTION_X87_FLUSH(mem, function));
 
     if (tail_call) {
         kefir_bool_t tail_call_possible;

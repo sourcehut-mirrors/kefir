@@ -1318,7 +1318,7 @@ static kefir_result_t translate_isnanl(struct kefir_mem *mem, struct kefir_codeg
 
     REQUIRE_OK(kefir_codegen_amd64_stack_frame_preserve_x87_control_word(&function->stack_frame));
 
-    REQUIRE_OK(kefir_codegen_amd64_function_x87_load(mem, function, call_node->arguments[0]));
+    REQUIRE_OK(KEFIR_CODEGEN_AMD64_FUNCTION_X87_LOAD(mem, function, call_node->arguments[0]));
     REQUIRE_OK(kefir_asmcmp_amd64_produce_virtual_register(
         mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), result_vreg, NULL));
     REQUIRE_OK(kefir_asmcmp_amd64_xor(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
@@ -1450,7 +1450,7 @@ static kefir_result_t translate_isinfl(struct kefir_mem *mem, struct kefir_codeg
     REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, call_node->arguments[0], &arg_vreg));
 
     REQUIRE_OK(kefir_codegen_amd64_stack_frame_preserve_x87_control_word(&function->stack_frame));
-    REQUIRE_OK(kefir_codegen_amd64_function_x87_flush(mem, function));
+    REQUIRE_OK(KEFIR_CODEGEN_AMD64_FUNCTION_X87_FLUSH(mem, function));
 
     REQUIRE_OK(kefir_asmcmp_amd64_movsx(
         mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
@@ -1566,8 +1566,8 @@ static kefir_result_t translate_isgreaterl(struct kefir_mem *mem, struct kefir_c
     REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, call_node->arguments[1], &arg2_vreg));
 
     REQUIRE_OK(kefir_codegen_amd64_stack_frame_preserve_x87_control_word(&function->stack_frame));
-    REQUIRE_OK(kefir_codegen_amd64_function_x87_load(mem, function, call_node->arguments[1]));
-    REQUIRE_OK(kefir_codegen_amd64_function_x87_load(mem, function, call_node->arguments[0]));
+    REQUIRE_OK(KEFIR_CODEGEN_AMD64_FUNCTION_X87_LOAD(mem, function, call_node->arguments[1]));
+    REQUIRE_OK(KEFIR_CODEGEN_AMD64_FUNCTION_X87_LOAD(mem, function, call_node->arguments[0]));
 
     REQUIRE_OK(kefir_asmcmp_amd64_produce_virtual_register(
         mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), result_vreg, NULL));
@@ -1660,8 +1660,8 @@ static kefir_result_t translate_isgreaterequall(struct kefir_mem *mem, struct ke
     REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, call_node->arguments[1], &arg2_vreg));
 
     REQUIRE_OK(kefir_codegen_amd64_stack_frame_preserve_x87_control_word(&function->stack_frame));
-    REQUIRE_OK(kefir_codegen_amd64_function_x87_load(mem, function, call_node->arguments[1]));
-    REQUIRE_OK(kefir_codegen_amd64_function_x87_load(mem, function, call_node->arguments[0]));
+    REQUIRE_OK(KEFIR_CODEGEN_AMD64_FUNCTION_X87_LOAD(mem, function, call_node->arguments[1]));
+    REQUIRE_OK(KEFIR_CODEGEN_AMD64_FUNCTION_X87_LOAD(mem, function, call_node->arguments[0]));
 
     REQUIRE_OK(kefir_asmcmp_amd64_produce_virtual_register(
         mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), result_vreg, NULL));
@@ -1754,8 +1754,8 @@ static kefir_result_t translate_islessl(struct kefir_mem *mem, struct kefir_code
     REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, call_node->arguments[1], &arg2_vreg));
 
     REQUIRE_OK(kefir_codegen_amd64_stack_frame_preserve_x87_control_word(&function->stack_frame));
-    REQUIRE_OK(kefir_codegen_amd64_function_x87_load(mem, function, call_node->arguments[0]));
-    REQUIRE_OK(kefir_codegen_amd64_function_x87_load(mem, function, call_node->arguments[1]));
+    REQUIRE_OK(KEFIR_CODEGEN_AMD64_FUNCTION_X87_LOAD(mem, function, call_node->arguments[0]));
+    REQUIRE_OK(KEFIR_CODEGEN_AMD64_FUNCTION_X87_LOAD(mem, function, call_node->arguments[1]));
 
     REQUIRE_OK(kefir_asmcmp_amd64_produce_virtual_register(
         mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), result_vreg, NULL));
@@ -1848,8 +1848,8 @@ static kefir_result_t translate_islessequall(struct kefir_mem *mem, struct kefir
     REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, call_node->arguments[1], &arg2_vreg));
 
     REQUIRE_OK(kefir_codegen_amd64_stack_frame_preserve_x87_control_word(&function->stack_frame));
-    REQUIRE_OK(kefir_codegen_amd64_function_x87_load(mem, function, call_node->arguments[0]));
-    REQUIRE_OK(kefir_codegen_amd64_function_x87_load(mem, function, call_node->arguments[1]));
+    REQUIRE_OK(KEFIR_CODEGEN_AMD64_FUNCTION_X87_LOAD(mem, function, call_node->arguments[0]));
+    REQUIRE_OK(KEFIR_CODEGEN_AMD64_FUNCTION_X87_LOAD(mem, function, call_node->arguments[1]));
 
     REQUIRE_OK(kefir_asmcmp_amd64_produce_virtual_register(
         mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), result_vreg, NULL));
@@ -1998,7 +1998,7 @@ static kefir_result_t translate_copysignl(struct kefir_mem *mem, struct kefir_co
     REQUIRE_OK(kefir_asmcmp_amd64_produce_virtual_register(
         mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), result_vreg, NULL));
 
-    REQUIRE_OK(kefir_codegen_amd64_function_x87_load(mem, function, call_node->arguments[1]));
+    REQUIRE_OK(KEFIR_CODEGEN_AMD64_FUNCTION_X87_LOAD(mem, function, call_node->arguments[1]));
     REQUIRE_OK(
         kefir_asmcmp_amd64_fxam(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), NULL));
     REQUIRE_OK(kefir_asmcmp_amd64_produce_virtual_register(
@@ -2006,11 +2006,11 @@ static kefir_result_t translate_copysignl(struct kefir_mem *mem, struct kefir_co
     REQUIRE_OK(kefir_asmcmp_amd64_fnstsw(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                                          &KEFIR_ASMCMP_MAKE_VREG16(tmp_vreg), NULL));
 
-    REQUIRE_OK(kefir_codegen_amd64_function_x87_load(mem, function, call_node->arguments[0]));
+    REQUIRE_OK(KEFIR_CODEGEN_AMD64_FUNCTION_X87_LOAD(mem, function, call_node->arguments[0]));
     REQUIRE_OK(
-        kefir_codegen_amd64_function_x87_consume_by(mem, function, call_node->arguments[0], call_node->output_ref));
-    REQUIRE_OK(kefir_codegen_amd64_function_x87_ensure(mem, function, 1));
-    REQUIRE_OK(kefir_codegen_amd64_function_x87_pop(mem, function));
+        KEFIR_CODEGEN_AMD64_FUNCTION_X87_CONSUME_BY(mem, function, call_node->arguments[0], call_node->output_ref));
+    REQUIRE_OK(KEFIR_CODEGEN_AMD64_FUNCTION_X87_ENSURE(mem, function, 1));
+    REQUIRE_OK(KEFIR_CODEGEN_AMD64_FUNCTION_X87_POP(mem, function));
 
     REQUIRE_OK(
         kefir_asmcmp_amd64_fabs(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), NULL));
@@ -2025,7 +2025,7 @@ static kefir_result_t translate_copysignl(struct kefir_mem *mem, struct kefir_co
     REQUIRE_OK(kefir_asmcmp_amd64_fstp(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                                        &KEFIR_ASMCMP_MAKE_X87(1), NULL));
 
-    REQUIRE_OK(kefir_codegen_amd64_function_x87_push(mem, function, call_node->output_ref));
+    REQUIRE_OK(KEFIR_CODEGEN_AMD64_FUNCTION_X87_PUSH(mem, function, call_node->output_ref));
 
     *result_vreg_ptr = result_vreg;
     return KEFIR_OK;
@@ -2210,11 +2210,11 @@ static kefir_result_t translate_isfinitel(struct kefir_mem *mem, struct kefir_co
     function->codegen_module->constants.isfinite_long_double = true;
     REQUIRE_OK(kefir_codegen_amd64_stack_frame_preserve_x87_control_word(&function->stack_frame));
 
-    REQUIRE_OK(kefir_codegen_amd64_function_x87_load(mem, function, call_node->arguments[0]));
+    REQUIRE_OK(KEFIR_CODEGEN_AMD64_FUNCTION_X87_LOAD(mem, function, call_node->arguments[0]));
     REQUIRE_OK(
-        kefir_codegen_amd64_function_x87_consume_by(mem, function, call_node->arguments[0], call_node->output_ref));
-    REQUIRE_OK(kefir_codegen_amd64_function_x87_ensure(mem, function, 1));
-    REQUIRE_OK(kefir_codegen_amd64_function_x87_pop(mem, function));
+        KEFIR_CODEGEN_AMD64_FUNCTION_X87_CONSUME_BY(mem, function, call_node->arguments[0], call_node->output_ref));
+    REQUIRE_OK(KEFIR_CODEGEN_AMD64_FUNCTION_X87_ENSURE(mem, function, 1));
+    REQUIRE_OK(KEFIR_CODEGEN_AMD64_FUNCTION_X87_POP(mem, function));
 
     REQUIRE_OK(
         kefir_asmcmp_amd64_fabs(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), NULL));

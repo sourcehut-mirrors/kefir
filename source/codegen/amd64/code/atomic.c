@@ -108,7 +108,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(atomic_load_complex)(
     struct kefir_mem *mem, struct kefir_codegen_amd64_function *function,
     const struct kefir_opt_instruction *instruction) {
     const char *atomic_memory_copy_fn_name = LIBATOMIC_LOAD;
-    REQUIRE_OK(kefir_codegen_amd64_function_x87_flush(mem, function));
+    REQUIRE_OK(KEFIR_CODEGEN_AMD64_FUNCTION_X87_FLUSH(mem, function));
     REQUIRE_OK(kefir_codegen_amd64_function_call_preserve_regs(mem, function, NULL, NULL));
 
     kefir_size_t total_size_qwords, total_alignment_qwords;
@@ -407,7 +407,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(atomic_copy_memory)(
 kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(atomic_load_long_double)(
     struct kefir_mem *mem, struct kefir_codegen_amd64_function *function,
     const struct kefir_opt_instruction *instruction) {
-    REQUIRE_OK(kefir_codegen_amd64_function_x87_flush(mem, function));
+    REQUIRE_OK(KEFIR_CODEGEN_AMD64_FUNCTION_X87_FLUSH(mem, function));
     REQUIRE_OK(kefir_codegen_amd64_function_call_preserve_regs(mem, function, NULL, NULL));
 
     kefir_asmcmp_virtual_register_index_t size_placement_vreg, result_vreg, target_ptr_placement_vreg, source_ptr_vreg,
@@ -646,7 +646,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(atomic_store_complex_long_do
 kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(atomic_store_long_double)(
     struct kefir_mem *mem, struct kefir_codegen_amd64_function *function,
     const struct kefir_opt_instruction *instruction) {
-    REQUIRE_OK(kefir_codegen_amd64_function_x87_flush(mem, function));
+    REQUIRE_OK(KEFIR_CODEGEN_AMD64_FUNCTION_X87_FLUSH(mem, function));
     REQUIRE_OK(kefir_codegen_amd64_function_call_preserve_regs(mem, function, NULL, NULL));
 
     kefir_asmcmp_virtual_register_index_t size_placement_vreg, target_ptr_vreg, target_ptr_placement_vreg,
@@ -809,7 +809,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(atomic_compare_exchange)(
 kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(atomic_compare_exchange_long_double)(
     struct kefir_mem *mem, struct kefir_codegen_amd64_function *function,
     const struct kefir_opt_instruction *instruction) {
-    REQUIRE_OK(kefir_codegen_amd64_function_x87_flush(mem, function));
+    REQUIRE_OK(KEFIR_CODEGEN_AMD64_FUNCTION_X87_FLUSH(mem, function));
     REQUIRE_OK(kefir_codegen_amd64_function_call_preserve_regs(mem, function, NULL, NULL));
 
     kefir_asmcmp_virtual_register_index_t size_placement_vreg, ptr_vreg, ptr_placement_vreg, expected_value_vreg,
@@ -1176,7 +1176,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(atomic_compare_exchange_comp
 kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(atomic_compare_exchange_complex_long_double)(
     struct kefir_mem *mem, struct kefir_codegen_amd64_function *function,
     const struct kefir_opt_instruction *instruction) {
-    REQUIRE_OK(kefir_codegen_amd64_function_x87_flush(mem, function));
+    REQUIRE_OK(KEFIR_CODEGEN_AMD64_FUNCTION_X87_FLUSH(mem, function));
     REQUIRE_OK(kefir_codegen_amd64_function_call_preserve_regs(mem, function, NULL, NULL));
 
     const kefir_size_t total_size =
@@ -1424,7 +1424,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(fenv_save)(struct kefir_mem 
     REQUIRE(function != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid codegen amd64 function"));
     REQUIRE(instruction != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer instruction"));
 
-    REQUIRE_OK(kefir_codegen_amd64_function_x87_flush(mem, function));
+    REQUIRE_OK(KEFIR_CODEGEN_AMD64_FUNCTION_X87_FLUSH(mem, function));
 
     kefir_asmcmp_virtual_register_index_t result_vreg;
 
@@ -1453,7 +1453,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(fenv_clear)(struct kefir_mem
     REQUIRE(function != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid codegen amd64 function"));
     REQUIRE(instruction != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer instruction"));
 
-    REQUIRE_OK(kefir_codegen_amd64_function_x87_flush(mem, function));
+    REQUIRE_OK(KEFIR_CODEGEN_AMD64_FUNCTION_X87_FLUSH(mem, function));
 
     REQUIRE_OK(kefir_asmcmp_amd64_fnclex(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                                          NULL));
@@ -1467,7 +1467,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(fenv_update)(struct kefir_me
     REQUIRE(function != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid codegen amd64 function"));
     REQUIRE(instruction != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer instruction"));
 
-    REQUIRE_OK(kefir_codegen_amd64_function_x87_flush(mem, function));
+    REQUIRE_OK(KEFIR_CODEGEN_AMD64_FUNCTION_X87_FLUSH(mem, function));
 
     kefir_asmcmp_virtual_register_index_t fenv_vreg, exception_vreg, tmp_vreg, tmp2_vreg;
     REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, instruction->operation.parameters.refs[0], &fenv_vreg));

@@ -279,11 +279,11 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(long_double_store)(
     REQUIRE_OK(kefir_asmcmp_amd64_mov(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                                       &target_value, &KEFIR_ASMCMP_MAKE_INT(0), NULL));
 
-    REQUIRE_OK(kefir_codegen_amd64_function_x87_load(
+    REQUIRE_OK(KEFIR_CODEGEN_AMD64_FUNCTION_X87_LOAD(
         mem, function, instruction->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_VALUE_REF]));
-    REQUIRE_OK(kefir_codegen_amd64_function_x87_consume_by(
+    REQUIRE_OK(KEFIR_CODEGEN_AMD64_FUNCTION_X87_CONSUME_BY(
         mem, function, instruction->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_VALUE_REF], instruction->id));
-    REQUIRE_OK(kefir_codegen_amd64_function_x87_pop(mem, function));
+    REQUIRE_OK(KEFIR_CODEGEN_AMD64_FUNCTION_X87_POP(mem, function));
     REQUIRE_OK(kefir_asmcmp_amd64_fstp(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                                        &target_value2, NULL));
 
@@ -570,7 +570,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(long_double_load)(struct kef
                                                            &function->prologue_tail));
 
     REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, value_vreg));
-    REQUIRE_OK(kefir_codegen_amd64_function_x87_push(mem, function, instruction->id));
+    REQUIRE_OK(KEFIR_CODEGEN_AMD64_FUNCTION_X87_PUSH(mem, function, instruction->id));
     REQUIRE_OK(kefir_asmcmp_amd64_fld(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                                       &source_value, NULL));
 

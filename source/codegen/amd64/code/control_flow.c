@@ -296,7 +296,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(jump)(struct kefir_mem *mem,
     REQUIRE(function != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid codegen amd64 function"));
     REQUIRE(instruction != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer instruction"));
 
-    REQUIRE_OK(kefir_codegen_amd64_function_x87_flush(mem, function));
+    REQUIRE_OK(KEFIR_CODEGEN_AMD64_FUNCTION_X87_FLUSH(mem, function));
 
     const struct kefir_opt_code_block *target_block, *source_block;
     REQUIRE_OK(kefir_opt_code_container_block(&function->function->code,
@@ -324,7 +324,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(jump)(struct kefir_mem *mem,
 kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(branch_compare)(struct kefir_mem *mem,
                                                                     struct kefir_codegen_amd64_function *function,
                                                                     const struct kefir_opt_instruction *instruction) {
-    REQUIRE_OK(kefir_codegen_amd64_function_x87_flush(mem, function));
+    REQUIRE_OK(KEFIR_CODEGEN_AMD64_FUNCTION_X87_FLUSH(mem, function));
 
     const struct kefir_opt_code_block *target_block, *alternative_block, *source_block;
     REQUIRE_OK(kefir_opt_code_container_block(&function->function->code,
@@ -770,7 +770,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(branch)(struct kefir_mem *me
     REQUIRE(function != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid codegen amd64 function"));
     REQUIRE(instruction != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer instruction"));
 
-    REQUIRE_OK(kefir_codegen_amd64_function_x87_flush(mem, function));
+    REQUIRE_OK(KEFIR_CODEGEN_AMD64_FUNCTION_X87_FLUSH(mem, function));
 
     const struct kefir_opt_code_block *target_block, *alternative_block, *source_block;
     REQUIRE_OK(kefir_opt_code_container_block(&function->function->code,
@@ -889,7 +889,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(ijump)(struct kefir_mem *mem
     REQUIRE(function != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid codegen amd64 function"));
     REQUIRE(instruction != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer instruction"));
 
-    REQUIRE_OK(kefir_codegen_amd64_function_x87_flush(mem, function));
+    REQUIRE_OK(KEFIR_CODEGEN_AMD64_FUNCTION_X87_FLUSH(mem, function));
     REQUIRE_OK(kefir_codegen_local_variable_allocator_mark_all_global(&function->variable_allocator));
 
     REQUIRE_OK(kefir_codegen_amd64_function_map_phi_outputs(mem, function, function->function->code.gate_block,
@@ -1006,7 +1006,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(select_compare)(struct kefir
                         arg2_asmcmp_vreg->parameters.spill_space_allocation.length,
                 KEFIR_SET_ERROR(KEFIR_INVALID_STATE,
                                 "Expected both virtual registers to be spill space allocations of the same length"));
-        REQUIRE_OK(kefir_codegen_amd64_function_x87_flush(mem, function));
+        REQUIRE_OK(KEFIR_CODEGEN_AMD64_FUNCTION_X87_FLUSH(mem, function));
         const kefir_size_t max_alignment = MAX(arg1_asmcmp_vreg->parameters.spill_space_allocation.alignment,
                                                arg2_asmcmp_vreg->parameters.spill_space_allocation.alignment);
         REQUIRE_OK(kefir_asmcmp_virtual_register_new_spill_space(
@@ -1405,7 +1405,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(select)(struct kefir_mem *me
                         arg2_asmcmp_vreg->parameters.spill_space_allocation.length,
                 KEFIR_SET_ERROR(KEFIR_INVALID_STATE,
                                 "Expected both virtual registers to be spill space allocations of the same length"));
-        REQUIRE_OK(kefir_codegen_amd64_function_x87_flush(mem, function));
+        REQUIRE_OK(KEFIR_CODEGEN_AMD64_FUNCTION_X87_FLUSH(mem, function));
         const kefir_size_t max_alignment = MAX(arg1_asmcmp_vreg->parameters.spill_space_allocation.alignment,
                                                arg2_asmcmp_vreg->parameters.spill_space_allocation.alignment);
         REQUIRE_OK(kefir_asmcmp_virtual_register_new_spill_space(

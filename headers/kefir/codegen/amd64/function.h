@@ -24,7 +24,10 @@
 #include "kefir/codegen/amd64/codegen.h"
 #include "kefir/codegen/amd64/asmcmp.h"
 #include "kefir/codegen/amd64/stack_frame.h"
+#include "kefir/codegen/amd64/x87.h"
 #include "kefir/codegen/variable_allocator.h"
+#include "kefir/codegen/function.h"
+#include "kefir/core/basic-types.h"
 #include "kefir/optimizer/schedule.h"
 #include "kefir/optimizer/linear_liveness.h"
 #include "kefir/target/abi/amd64/function.h"
@@ -40,6 +43,7 @@
 typedef struct kefir_codegen_amd64_module kefir_codegen_amd64_module_t;
 
 typedef struct kefir_codegen_amd64_function {
+    struct kefir_codegen_function function_iface;
     struct kefir_codegen_amd64 *codegen;
     struct kefir_codegen_amd64_module *codegen_module;
     const struct kefir_opt_module *module;
@@ -74,7 +78,7 @@ typedef struct kefir_codegen_amd64_function {
     struct kefir_list preserve_vreg_points;
     struct kefir_hashtree entry_registers;
 
-    struct kefir_list x87_stack;
+    struct kefir_codegen_amd64_x87 x87;
 
     kefir_asmcmp_instruction_index_t argument_touch_instr;
     kefir_asmcmp_instruction_index_t prologue_tail;
@@ -635,24 +639,14 @@ kefir_result_t kefir_codegen_amd64_tail_call_possible(struct kefir_mem *, struct
 kefir_result_t kefir_codegen_amd64_tail_call_return_aggregate_passthrough(struct kefir_codegen_amd64_function *,
                                                                           kefir_opt_call_id_t, kefir_bool_t *);
 
-kefir_result_t kefir_codegen_amd64_function_x87_ensure(struct kefir_mem *, struct kefir_codegen_amd64_function *,
-                                                       kefir_size_t);
-kefir_result_t kefir_codegen_amd64_function_x87_push(struct kefir_mem *, struct kefir_codegen_amd64_function *,
-                                                     kefir_opt_instruction_ref_t);
-kefir_result_t kefir_codegen_amd64_function_x87_pop(struct kefir_mem *, struct kefir_codegen_amd64_function *);
-kefir_result_t kefir_codegen_amd64_function_x87_load(struct kefir_mem *, struct kefir_codegen_amd64_function *,
-                                                     kefir_opt_instruction_ref_t);
-kefir_result_t kefir_codegen_amd64_function_x87_load_consume_by(struct kefir_mem *,
-                                                                struct kefir_codegen_amd64_function *,
-                                                                kefir_opt_instruction_ref_t,
-                                                                kefir_opt_instruction_ref_t);
-kefir_result_t kefir_codegen_amd64_function_x87_consume_by(struct kefir_mem *, struct kefir_codegen_amd64_function *,
-                                                           kefir_opt_instruction_ref_t, kefir_opt_instruction_ref_t);
-kefir_result_t kefir_codegen_amd64_function_x87_flush(struct kefir_mem *, struct kefir_codegen_amd64_function *);
-kefir_result_t kefir_codegen_amd64_function_x87_clear(struct kefir_mem *, struct kefir_codegen_amd64_function *,
-                                                      kefir_size_t);
-kefir_bool_t kefir_codegen_amd64_function_x87_has(const struct kefir_codegen_amd64_function *,
-                                                  kefir_opt_instruction_ref_t);
+#define KEFIR_CODEGEN_AMD64_FUNCTION_X87_ENSURE(_mem, _func, _capacity) (kefir_codegen_amd64_x87_ensure((_mem), &(_func)->code, &(_func)->x87, &(_func)->stack_frame, &(_func)->function_iface, (_capacity), (_func)->codegen->config->valgrind_compatible_x87))
+#define KEFIR_CODEGEN_AMD64_FUNCTION_X87_PUSH(_mem, _func, _instr_ref) (kefir_codegen_amd64_x87_push((_mem), &(_func)->code, &(_func)->x87, &(_func)->stack_frame, &(_func)->function_iface, (_instr_ref), (_func)->codegen->config->valgrind_compatible_x87))
+#define KEFIR_CODEGEN_AMD64_FUNCTION_X87_POP(_mem, _func) (kefir_codegen_amd64_x87_pop((_mem), &(_func)->x87))
+#define KEFIR_CODEGEN_AMD64_FUNCTION_X87_LOAD(_mem, _func, _instr_ref) (kefir_codegen_amd64_x87_load((_mem), &(_func)->code, &(_func)->x87, &(_func)->stack_frame, &(_func)->function_iface, (_instr_ref), (_func)->codegen->config->valgrind_compatible_x87))
+#define KEFIR_CODEGEN_AMD64_FUNCTION_X87_LOAD_CONSUME_BY(_mem, _func, _instr_ref, _consumer_instr_ref) (kefir_codegen_amd64_x87_load_consume_by((_mem), &(_func)->function->code, &(_func)->code, &(_func)->x87, &(_func)->stack_frame, &(_func)->function_iface, (_instr_ref), (_consumer_instr_ref), (_func)->codegen->config->valgrind_compatible_x87))
+#define KEFIR_CODEGEN_AMD64_FUNCTION_X87_CONSUME_BY(_mem, _func, _instr_ref, _consumer_instr_ref) (kefir_codegen_amd64_x87_consume_by((_mem), &(_func)->function->code, &(_func)->code, &(_func)->x87, &(_func)->stack_frame, &(_func)->function_iface, (_instr_ref), (_consumer_instr_ref), (_func)->codegen->abi_variant))
+#define KEFIR_CODEGEN_AMD64_FUNCTION_X87_FLUSH(_mem, _func) (kefir_codegen_amd64_x87_flush((_mem), &(_func)->code, &(_func)->x87, &(_func)->stack_frame, &(_func)->function_iface))
+#define KEFIR_CODEGEN_AMD64_FUNCTION_X87_CLEAR(_mem, _func, _preserve_top) (kefir_codegen_amd64_x87_clear((_mem), &(_func)->code, &(_func)->x87, (_preserve_top)))
 
 typedef struct kefir_codegen_amd64_function_x87_locations_iterator {
     const struct kefir_hashtree *x87_slots;
