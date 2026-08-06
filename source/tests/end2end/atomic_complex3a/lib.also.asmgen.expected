@@ -1,5 +1,5 @@
 .att_syntax
-.section .note.GNU-stack,"",%progbits
+.section .note.GNU-stack,"",@progbits
 
 .global add_ld
 .type add_ld, @function
@@ -865,7 +865,7 @@ subtract_f64:
 .L__kefir_text_section_end:
 
 .att_syntax
-.section .note.GNU-stack,"",%progbits
+.section .note.GNU-stack,"",@progbits
 
 
 .section .text

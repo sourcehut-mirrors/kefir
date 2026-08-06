@@ -1,5 +1,5 @@
 .att_syntax
-.section .note.GNU-stack,"",%progbits
+.section .note.GNU-stack,"",@progbits
 
 .global add32
 .type add32, @function
@@ -863,7 +863,7 @@ sub80:
     .long 0
     .long 2147483648
 .att_syntax
-.section .note.GNU-stack,"",%progbits
+.section .note.GNU-stack,"",@progbits
 
 
 .section .text

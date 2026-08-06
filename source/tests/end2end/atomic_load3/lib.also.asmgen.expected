@@ -1,5 +1,5 @@
 .att_syntax
-.section .note.GNU-stack,"",%progbits
+.section .note.GNU-stack,"",@progbits
 
 .global get_a1
 .type get_a1, @function

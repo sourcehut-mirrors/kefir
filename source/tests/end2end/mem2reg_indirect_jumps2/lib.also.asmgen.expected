@@ -1,5 +1,5 @@
 .att_syntax
-.section .note.GNU-stack,"",%progbits
+.section .note.GNU-stack,"",@progbits
 
 .global factorial2
 .type factorial2, @function

@@ -1,5 +1,5 @@
 .att_syntax
-.section .note.GNU-stack,"",%progbits
+.section .note.GNU-stack,"",@progbits
 
 .global d64_to_bitint180
 .type d64_to_bitint180, @function
@@ -752,7 +752,7 @@ d32_to_ubitint180:
 .L__kefir_constant_uint_to_long_double:
     .long 1602224128
 .att_syntax
-.section .note.GNU-stack,"",%progbits
+.section .note.GNU-stack,"",@progbits
 
 
 .section .text

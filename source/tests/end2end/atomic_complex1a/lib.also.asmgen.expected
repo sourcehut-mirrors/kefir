@@ -1,5 +1,5 @@
 .att_syntax
-.section .note.GNU-stack,"",%progbits
+.section .note.GNU-stack,"",@progbits
 
 .extern ld_1
 .extern f32_1
@@ -585,7 +585,7 @@ sub_f64:
     .long 0
     .long 2147483648
 .att_syntax
-.section .note.GNU-stack,"",%progbits
+.section .note.GNU-stack,"",@progbits
 
 
 .section .text

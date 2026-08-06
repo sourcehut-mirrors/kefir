@@ -1,5 +1,5 @@
 .att_syntax
-.section .note.GNU-stack,"",%progbits
+.section .note.GNU-stack,"",@progbits
 
 .global uint128_add_overflow
 .type uint128_add_overflow, @function
@@ -463,7 +463,7 @@ int128_sub_overflow:
 .L__kefir_text_section_end:
 
 .att_syntax
-.section .note.GNU-stack,"",%progbits
+.section .note.GNU-stack,"",@progbits
 
 
 .section .text

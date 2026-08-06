@@ -953,17 +953,17 @@ static kefir_result_t amd64_prologue(struct kefir_amd64_xasmgen *xasmgen) {
     switch (payload->syntax) {
         case KEFIR_AMD64_XASMGEN_SYNTAX_INTEL_PREFIX:
             fprintf(payload->output, ".intel_syntax prefix\n");
-            fprintf(payload->output, "%s\n\n", ".section .note.GNU-stack,\"\",%progbits");
+            fprintf(payload->output, "%s\n\n", ".section .note.GNU-stack,\"\",@progbits");
             break;
 
         case KEFIR_AMD64_XASMGEN_SYNTAX_INTEL_NOPREFIX:
             fprintf(payload->output, ".intel_syntax noprefix\n");
-            fprintf(payload->output, "%s\n\n", ".section .note.GNU-stack,\"\",%progbits");
+            fprintf(payload->output, "%s\n\n", ".section .note.GNU-stack,\"\",@progbits");
             break;
 
         case KEFIR_AMD64_XASMGEN_SYNTAX_ATT:
             fprintf(payload->output, ".att_syntax\n");
-            fprintf(payload->output, "%s\n\n", ".section .note.GNU-stack,\"\",%progbits");
+            fprintf(payload->output, "%s\n\n", ".section .note.GNU-stack,\"\",@progbits");
             break;
 
         case KEFIR_AMD64_XASMGEN_SYNTAX_YASM:

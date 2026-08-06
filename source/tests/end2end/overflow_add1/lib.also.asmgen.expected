@@ -1,5 +1,5 @@
 .att_syntax
-.section .note.GNU-stack,"",%progbits
+.section .note.GNU-stack,"",@progbits
 
 .global overflow_add_uchar_schar_uchar
 .type overflow_add_uchar_schar_uchar, @function

@@ -1,5 +1,5 @@
 .att_syntax
-.section .note.GNU-stack,"",%progbits
+.section .note.GNU-stack,"",@progbits
 
 .global test_sync_bool_compare_and_swap16
 .type test_sync_bool_compare_and_swap16, @function

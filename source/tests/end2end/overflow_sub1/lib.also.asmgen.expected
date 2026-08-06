@@ -1,5 +1,5 @@
 .att_syntax
-.section .note.GNU-stack,"",%progbits
+.section .note.GNU-stack,"",@progbits
 
 .global overflow_sub_long_ulong_ulong
 .type overflow_sub_long_ulong_ulong, @function

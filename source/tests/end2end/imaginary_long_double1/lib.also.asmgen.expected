@@ -1,5 +1,5 @@
 .att_syntax
-.section .note.GNU-stack,"",%progbits
+.section .note.GNU-stack,"",@progbits
 
 .global f80_arr
 .type f80_arr, @object
@@ -1176,7 +1176,7 @@ f80_const:
     .quad 11334371690021912576, 16386
 
 .att_syntax
-.section .note.GNU-stack,"",%progbits
+.section .note.GNU-stack,"",@progbits
 
 
 .section .text

@@ -1,5 +1,5 @@
 .att_syntax
-.section .note.GNU-stack,"",%progbits
+.section .note.GNU-stack,"",@progbits
 
 .global test_atomic_fetch_add16
 .type test_atomic_fetch_add16, @function

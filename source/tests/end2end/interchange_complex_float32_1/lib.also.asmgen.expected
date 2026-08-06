@@ -1,5 +1,5 @@
 .att_syntax
-.section .note.GNU-stack,"",%progbits
+.section .note.GNU-stack,"",@progbits
 
 .global f32
 .type f32, @object
@@ -1915,7 +1915,7 @@ f32_const:
 .section .debug_line
 .L__kefir_debug_lines_section_begin:
 .att_syntax
-.section .note.GNU-stack,"",%progbits
+.section .note.GNU-stack,"",@progbits
 
 
 .section .text
