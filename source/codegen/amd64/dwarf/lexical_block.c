@@ -19,9 +19,7 @@
 */
 
 #define KEFIR_CODEGEN_AMD64_DWARF_INTERNAL
-#define KEFIR_CODEGEN_AMD64_FUNCTION_INTERNAL
 #include "kefir/codegen/amd64/dwarf.h"
-#include "kefir/codegen/amd64/symbolic_labels.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 
@@ -46,11 +44,11 @@ static kefir_result_t generate_lexical_block_info(struct kefir_mem *mem,
                                                   kefir_ir_debug_entry_id_t entry_id,
                                                   kefir_codegen_amd64_dwarf_entry_id_t *dwarf_entry_id) {
     const struct kefir_ir_identifier *ir_identifier;
-    REQUIRE_OK(kefir_ir_module_get_identifier(codegen_function->module->ir_module,
-                                              codegen_function->function->ir_func->name, &ir_identifier));
+    REQUIRE_OK(kefir_ir_module_get_identifier(codegen_function->generic.module->ir_module,
+                                              codegen_function->generic.function->ir_func->name, &ir_identifier));
 
     const struct kefir_ir_debug_entry_attribute *attr;
-    REQUIRE_OK(kefir_ir_debug_entry_get_attribute(&codegen_function->module->ir_module->debug_info.entries, entry_id,
+    REQUIRE_OK(kefir_ir_debug_entry_get_attribute(&codegen_function->generic.module->ir_module->debug_info.entries, entry_id,
                                                   KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_CODE_BEGIN, &attr));
 
     kefir_codegen_amd64_dwarf_entry_id_t rnglist_entry_id = KEFIR_CODEGEN_AMD64_DWARF_NEXT_RNGLIST_ENTRY_ID(context);
@@ -94,10 +92,10 @@ static kefir_result_t generate_lexical_block_ranges(struct kefir_mem *mem,
                                          codegen_function->codegen->symbol_prefix, rnglist_entry_id));
 
     const struct kefir_ir_debug_entry_attribute *attr;
-    REQUIRE_OK(kefir_ir_debug_entry_get_attribute(&codegen_function->module->ir_module->debug_info.entries, entry_id,
+    REQUIRE_OK(kefir_ir_debug_entry_get_attribute(&codegen_function->generic.module->ir_module->debug_info.entries, entry_id,
                                                   KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_CODE_BEGIN, &attr));
     const kefir_size_t block_begin_idx = attr->code_index;
-    REQUIRE_OK(kefir_ir_debug_entry_get_attribute(&codegen_function->module->ir_module->debug_info.entries, entry_id,
+    REQUIRE_OK(kefir_ir_debug_entry_get_attribute(&codegen_function->generic.module->ir_module->debug_info.entries, entry_id,
                                                   KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_CODE_END, &attr));
     const kefir_size_t block_end_idx = attr->code_index;
 
@@ -121,7 +119,7 @@ kefir_result_t kefir_codegen_amd64_dwarf_generate_lexical_block(struct kefir_mem
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 codegen DWARF context"));
 
     const struct kefir_ir_debug_entry *entry;
-    REQUIRE_OK(kefir_ir_debug_entry_get(&codegen_function->module->ir_module->debug_info.entries, entry_id, &entry));
+    REQUIRE_OK(kefir_ir_debug_entry_get(&codegen_function->generic.module->ir_module->debug_info.entries, entry_id, &entry));
 
     KEFIR_DWARF_GENERATOR_SECTION(context->section, KEFIR_DWARF_GENERATOR_SECTION_ABBREV) {
         REQUIRE_OK(generate_lexical_block_abbrev(codegen_function->codegen, context));
@@ -158,13 +156,13 @@ kefir_result_t kefir_codegen_amd64_dwarf_generate_lexical_block_content(
     kefir_ir_debug_entry_id_t child_id;
     struct kefir_ir_debug_entry_child_iterator iter;
     kefir_result_t res;
-    for (res = kefir_ir_debug_entry_child_iter(&codegen_function->module->ir_module->debug_info.entries, entry_id,
+    for (res = kefir_ir_debug_entry_child_iter(&codegen_function->generic.module->ir_module->debug_info.entries, entry_id,
                                                &iter, &child_id);
          res == KEFIR_OK; res = kefir_ir_debug_entry_child_next(&iter, &child_id)) {
 
         const struct kefir_ir_debug_entry *child_entry;
         REQUIRE_OK(
-            kefir_ir_debug_entry_get(&codegen_function->module->ir_module->debug_info.entries, child_id, &child_entry));
+            kefir_ir_debug_entry_get(&codegen_function->generic.module->ir_module->debug_info.entries, child_id, &child_entry));
 
         switch (child_entry->tag) {
             case KEFIR_IR_DEBUG_ENTRY_LEXICAL_BLOCK:

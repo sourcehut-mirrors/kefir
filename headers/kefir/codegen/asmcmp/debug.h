@@ -103,15 +103,19 @@ typedef struct kefir_asmcmp_debug_info {
 
 kefir_result_t kefir_asmcmp_debug_info_source_map_init(struct kefir_asmcmp_debug_info_source_map *);
 kefir_result_t kefir_asmcmp_debug_info_source_map_free(struct kefir_mem *, struct kefir_asmcmp_debug_info_source_map *);
+kefir_result_t kefir_asmcmp_debug_info_source_map_reset(struct kefir_mem *, struct kefir_asmcmp_debug_info_source_map *);
 
 kefir_result_t kefir_asmcmp_debug_info_code_map_init(struct kefir_asmcmp_debug_info_code_map *);
 kefir_result_t kefir_asmcmp_debug_info_code_map_free(struct kefir_mem *, struct kefir_asmcmp_debug_info_code_map *);
+kefir_result_t kefir_asmcmp_debug_info_code_map_reset(struct kefir_mem *, struct kefir_asmcmp_debug_info_code_map *);
 
 kefir_result_t kefir_asmcmp_debug_info_value_map_init(struct kefir_asmcmp_debug_info_value_map *);
 kefir_result_t kefir_asmcmp_debug_info_value_map_free(struct kefir_mem *, struct kefir_asmcmp_debug_info_value_map *);
+kefir_result_t kefir_asmcmp_debug_info_value_map_reset(struct kefir_mem *, struct kefir_asmcmp_debug_info_value_map *);
 
 kefir_result_t kefir_asmcmp_debug_info_init(struct kefir_asmcmp_debug_info *);
 kefir_result_t kefir_asmcmp_debug_info_free(struct kefir_mem *, struct kefir_asmcmp_debug_info *);
+kefir_result_t kefir_asmcmp_debug_info_reset(struct kefir_mem *, struct kefir_asmcmp_debug_info *);
 
 kefir_result_t kefir_asmcmp_debug_info_source_map_add_location(
     struct kefir_mem *, struct kefir_asmcmp_debug_info_source_map *, struct kefir_string_pool *,

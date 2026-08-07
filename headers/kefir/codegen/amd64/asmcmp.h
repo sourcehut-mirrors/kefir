@@ -100,6 +100,8 @@ kefir_result_t kefir_asmcmp_amd64_init(const char *, kefir_abi_amd64_variant_t, 
                                        struct kefir_asmcmp_amd64 *);
 kefir_result_t kefir_asmcmp_amd64_free(struct kefir_mem *, struct kefir_asmcmp_amd64 *);
 
+kefir_result_t kefir_asmcmp_amd64_reset_code(struct kefir_mem *, struct kefir_asmcmp_amd64 *);
+
 typedef struct kefir_asmcmp_amd64_register_preallocation {
     kefir_asmcmp_amd64_register_preallocation_type_t type;
     union {

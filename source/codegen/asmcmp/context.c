@@ -161,6 +161,49 @@ kefir_result_t kefir_asmcmp_context_free(struct kefir_mem *mem, struct kefir_asm
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_asmcmp_context_reset(struct kefir_mem *mem, struct kefir_asmcmp_context *context) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmgen context"));
+
+    REQUIRE_OK(kefir_asmcmp_debug_info_reset(mem, &context->debug_info));
+    REQUIRE_OK(kefir_hashtree_clean(mem, &context->vreg_type_dependents));
+    REQUIRE_OK(kefir_hashtree_clean(mem, &context->inline_assembly));
+    REQUIRE_OK(kefir_string_pool_reset(mem, &context->strings));
+    REQUIRE_OK(kefir_hashtree_clean(mem, &context->label_positions));
+
+    for (kefir_size_t i = 0; i < CHUNK_COUNT(context->code_length); i++) {
+        KEFIR_FREE(mem, context->code_chunks[i]);
+    }
+    KEFIR_FREE(mem, context->code_chunks);
+    context->code_chunks = NULL;
+    context->code_length = 0;
+    context->code.head = KEFIR_ASMCMP_INDEX_NONE;
+    context->code.tail = KEFIR_ASMCMP_INDEX_NONE;
+
+    if (context->labels != NULL) {
+        for (kefir_size_t i = 0; i < context->labels_length; i++) {
+            REQUIRE_OK(kefir_hashtreeset_free(mem, &context->labels[i].public_labels));
+        }
+        memset(context->labels, 0, sizeof(struct kefir_asmcmp_label) * context->labels_length);
+    }
+    KEFIR_FREE(mem, context->labels);
+    context->labels_capacity = 0;
+    context->labels_length = 0;
+    context->labels = NULL;
+
+    if (context->virtual_registers != NULL) {
+        memset(context->virtual_registers, 0,
+               sizeof(struct kefir_asmcmp_virtual_register) * context->virtual_register_length);
+    }
+    KEFIR_FREE(mem, context->virtual_registers);
+    context->virtual_registers = NULL;
+    context->virtual_register_capacity = 0;
+    context->virtual_register_length = 0;
+
+    context->next_inline_asm_idx = 0;
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_asmcmp_context_instr_at(const struct kefir_asmcmp_context *context,
                                              kefir_asmcmp_instruction_index_t index,
                                              struct kefir_asmcmp_instruction **instr_ptr) {

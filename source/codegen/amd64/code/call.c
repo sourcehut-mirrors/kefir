@@ -18,8 +18,9 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#define KEFIR_CODEGEN_AMD64_FUNCTION_INTERNAL
 #include "kefir/codegen/amd64/function.h"
+#include "kefir/codegen/amd64/util.h"
+#include "kefir/codegen/amd64/instructions.h"
 #include "kefir/target/abi/amd64/return.h"
 #include "kefir/target/abi/util.h"
 #include "kefir/core/error.h"
@@ -53,7 +54,7 @@ kefir_result_t kefir_codegen_amd64_function_call_preserve_regs(
 
     if (call_node != NULL && call_node->return_space != KEFIR_ID_NONE) {
         kefir_asmcmp_virtual_register_index_t return_space;
-        REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, call_node->return_space, &return_space));
+        REQUIRE_OK(kefir_codegen_amd64_function_translator_vreg_of(&function->translator, call_node->return_space, &return_space));
         REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
                                                      KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, return_space_vreg));
         kefir_asm_amd64_xasmgen_register_t return_space_placement;
@@ -66,7 +67,7 @@ kefir_result_t kefir_codegen_amd64_function_call_preserve_regs(
                                                              *return_space_vreg, return_space, NULL));
     } else if (call_node != NULL) {
         const struct kefir_ir_function_decl *ir_func_decl =
-            kefir_ir_module_get_declaration(function->module->ir_module, call_node->function_declaration_id);
+            kefir_ir_module_get_declaration(function->generic.module->ir_module, call_node->function_declaration_id);
         REQUIRE(ir_func_decl != NULL,
                 KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to retrieve IR function declaration"));
 
@@ -100,7 +101,7 @@ static kefir_result_t prepare_parameters(struct kefir_mem *mem, struct kefir_cod
     kefir_size_t subarg_count = 0;
     for (kefir_size_t i = 0; i < call_node->argument_count; i++, subarg_count++) {
         kefir_asmcmp_virtual_register_index_t argument_vreg, argument_placement_vreg;
-        REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, call_node->arguments[i], &argument_vreg));
+        REQUIRE_OK(kefir_codegen_amd64_function_translator_vreg_of(&function->translator, call_node->arguments[i], &argument_vreg));
 
         kefir_size_t parameter_type_index = kefir_ir_type_child_index(ir_func_decl->params, i);
         kefir_size_t parameter_slot_index;
@@ -198,7 +199,7 @@ static kefir_result_t prepare_parameters(struct kefir_mem *mem, struct kefir_cod
     REQUIRE_OK(kefir_abi_amd64_function_decl_parameters_layout(abi_func_decl, &parameters_layout));
     for (kefir_size_t i = 0; i < call_node->argument_count; i++, subarg_count++) {
         kefir_asmcmp_virtual_register_index_t argument_vreg, argument_placement_vreg;
-        REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, call_node->arguments[i], &argument_vreg));
+        REQUIRE_OK(kefir_codegen_amd64_function_translator_vreg_of(&function->translator, call_node->arguments[i], &argument_vreg));
 
         kefir_size_t parameter_type_index = kefir_ir_type_child_index(ir_func_decl->params, i);
         kefir_size_t parameter_slot_index;
@@ -677,7 +678,7 @@ static kefir_result_t prepare_parameters(struct kefir_mem *mem, struct kefir_cod
 
     for (kefir_size_t i = 0; i < call_node->argument_count; i++, subarg_count++) {
         kefir_asmcmp_virtual_register_index_t argument_vreg_idx;
-        REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, call_node->arguments[i], &argument_vreg_idx));
+        REQUIRE_OK(kefir_codegen_amd64_function_translator_vreg_of(&function->translator, call_node->arguments[i], &argument_vreg_idx));
 
         const struct kefir_asmcmp_virtual_register *argument_vreg;
         REQUIRE_OK(kefir_asmcmp_virtual_register_get(&function->code.context, argument_vreg_idx, &argument_vreg));
@@ -1035,7 +1036,7 @@ static kefir_result_t save_returns(struct kefir_mem *mem, struct kefir_codegen_a
             kefir_bool_t is_bigint = false;
             if (call_node != NULL) {
                 const struct kefir_ir_function_decl *ir_func_decl =
-                    kefir_ir_module_get_declaration(function->module->ir_module, call_node->function_declaration_id);
+                    kefir_ir_module_get_declaration(function->generic.module->ir_module, call_node->function_declaration_id);
                 REQUIRE(ir_func_decl != NULL,
                         KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to retrieve IR function declaration"));
 
@@ -1122,12 +1123,12 @@ static kefir_result_t tail_invoke_impl(struct kefir_mem *mem, struct kefir_codeg
     REQUIRE_OK(kefir_codegen_amd64_tail_call_return_aggregate_passthrough(function, call_node->node_id,
                                                                           &passthrough_aggregate_return));
     if (passthrough_aggregate_return && function->stack_frame.return_space_vreg != KEFIR_ASMCMP_INDEX_NONE) {
-        REQUIRE_OK(kefir_codegen_local_variable_allocator_mark_return_space(&function->variable_allocator,
+        REQUIRE_OK(kefir_codegen_local_variable_allocator_mark_return_space(&function->generic.variable_allocator,
                                                                             call_node->return_space));
     }
 
     const struct kefir_ir_function_decl *ir_func_decl =
-        kefir_ir_module_get_declaration(function->module->ir_module, call_node->function_declaration_id);
+        kefir_ir_module_get_declaration(function->generic.module->ir_module, call_node->function_declaration_id);
     REQUIRE(ir_func_decl != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to retrieve IR function declaration"));
     REQUIRE_OK(prepare_parameters(mem, function, call_node, ir_func_decl, abi_func_decl, KEFIR_ASMCMP_INDEX_NONE,
                                   argument_placement, true));
@@ -1140,8 +1141,8 @@ static kefir_result_t tail_invoke_impl(struct kefir_mem *mem, struct kefir_codeg
                                                                       KEFIR_AMD64_XASMGEN_REGISTER_RAX));
 
         kefir_asmcmp_virtual_register_index_t func_vreg;
-        REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(
-            function, instruction->operation.parameters.function_call.indirect_ref, &func_vreg));
+        REQUIRE_OK(kefir_codegen_amd64_function_translator_vreg_of(
+            &function->translator, instruction->operation.parameters.function_call.indirect_ref, &func_vreg));
 
         REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(mem, &function->code,
                                                              kefir_asmcmp_context_instr_tail(&function->code.context),
@@ -1149,12 +1150,11 @@ static kefir_result_t tail_invoke_impl(struct kefir_mem *mem, struct kefir_codeg
     }
 
     REQUIRE_OK(
-        kefir_list_insert_after(mem, &function->preserve_vreg_points, NULL,
-                                (void *) (kefir_uptr_t) kefir_asmcmp_context_instr_tail(&function->code.context)));
+        kefir_codegen_amd64_function_translator_add_exit_point(mem, &function->translator, kefir_asmcmp_context_instr_tail(&function->code.context)));
 
     if (instruction->operation.opcode == KEFIR_OPT_OPCODE_TAIL_INVOKE) {
         const struct kefir_ir_identifier *ir_identifier;
-        REQUIRE_OK(kefir_ir_module_get_identifier(function->module->ir_module, ir_func_decl->name, &ir_identifier));
+        REQUIRE_OK(kefir_ir_module_get_identifier(function->generic.module->ir_module, ir_func_decl->name, &ir_identifier));
         kefir_asmcmp_external_label_relocation_t fn_location =
             function->codegen->config->position_independent_code &&
                     ir_identifier->scope == KEFIR_IR_IDENTIFIER_SCOPE_IMPORT
@@ -1216,7 +1216,7 @@ kefir_result_t kefir_codegen_amd64_do_call_direct(struct kefir_mem *mem, struct 
     }
 
     const struct kefir_ir_identifier *ir_identifier = NULL;
-    kefir_result_t res = kefir_ir_module_get_identifier(function->module->ir_module, function_name, &ir_identifier);
+    kefir_result_t res = kefir_ir_module_get_identifier(function->generic.module->ir_module, function_name, &ir_identifier);
     if (res == KEFIR_NOT_FOUND) {
         res = KEFIR_OK;
     }
@@ -1301,7 +1301,7 @@ static kefir_result_t invoke_impl(struct kefir_mem *mem, struct kefir_codegen_am
                                   struct kefir_hashtree *argument_placement, kefir_bool_t tail_call,
                                   kefir_asmcmp_virtual_register_index_t *result_vreg, kefir_bool_t *tail_call_done) {
     const struct kefir_ir_function_decl *ir_func_decl =
-        kefir_ir_module_get_declaration(function->module->ir_module, call_node->function_declaration_id);
+        kefir_ir_module_get_declaration(function->generic.module->ir_module, call_node->function_declaration_id);
     REQUIRE(ir_func_decl != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to retrieve IR function declaration"));
 
     REQUIRE_OK(KEFIR_CODEGEN_AMD64_FUNCTION_X87_FLUSH(mem, function));
@@ -1335,8 +1335,8 @@ static kefir_result_t invoke_impl(struct kefir_mem *mem, struct kefir_codegen_am
         REQUIRE_OK(kefir_codegen_amd64_do_call_direct(mem, function, ir_func_decl->name, &call_idx));
     } else {
         kefir_asmcmp_virtual_register_index_t func_vreg;
-        REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(
-            function, instruction->operation.parameters.function_call.indirect_ref, &func_vreg));
+        REQUIRE_OK(kefir_codegen_amd64_function_translator_vreg_of(
+            &function->translator, instruction->operation.parameters.function_call.indirect_ref, &func_vreg));
         REQUIRE_OK(kefir_codegen_amd64_do_call_indirect(mem, function, func_vreg, &call_idx));
     }
 
@@ -1344,7 +1344,7 @@ static kefir_result_t invoke_impl(struct kefir_mem *mem, struct kefir_codegen_am
     if (ir_func_decl->returns_twice) {
         REQUIRE_OK(kefir_asmcmp_amd64_preserve_active_virtual_registers(
             mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), NULL));
-        REQUIRE_OK(kefir_codegen_local_variable_allocator_mark_all_global(&function->variable_allocator));
+        REQUIRE_OK(kefir_codegen_local_variable_allocator_mark_all_global(&function->generic.variable_allocator));
     }
 
     if (!ir_func_decl->no_return) {
@@ -1374,11 +1374,11 @@ static kefir_result_t do_invoke(struct kefir_mem *mem, struct kefir_codegen_amd6
                                 kefir_asmcmp_virtual_register_index_t *result_vreg_ptr, kefir_bool_t *tail_call_done) {
     *tail_call_done = false;
     const struct kefir_opt_call_node *call_node = NULL;
-    REQUIRE_OK(kefir_opt_code_container_call(&function->function->code,
+    REQUIRE_OK(kefir_opt_code_container_call(&function->generic.function->code,
                                              instruction->operation.parameters.function_call.call_ref, &call_node));
 
     const struct kefir_ir_function_decl *ir_func_decl =
-        kefir_ir_module_get_declaration(function->module->ir_module, call_node->function_declaration_id);
+        kefir_ir_module_get_declaration(function->generic.module->ir_module, call_node->function_declaration_id);
     REQUIRE(ir_func_decl != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to find IR function declaration"));
 
     const char BUILTIN_PREFIX[] = "__kefir_builtin_";
@@ -1423,7 +1423,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(invoke)(struct kefir_mem *me
     kefir_bool_t tail_call_done;
     REQUIRE_OK(do_invoke(mem, function, instruction, false, &result_vreg, &tail_call_done));
     if (result_vreg != KEFIR_ID_NONE) {
-        REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, result_vreg));
+        REQUIRE_OK(kefir_codegen_amd64_function_translator_assign_vreg(mem, &function->translator, instruction->id, result_vreg));
     }
 
     return KEFIR_OK;
@@ -1443,5 +1443,84 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(tail_invoke)(struct kefir_me
         REQUIRE_OK(kefir_codegen_amd64_return_from_function(mem, function, instruction->id, result_vreg));
     }
 
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_codegen_amd64_tail_call_return_aggregate_passthrough(const struct kefir_codegen_amd64_function *function,
+                                                                          kefir_opt_call_id_t call_ref,
+                                                                          kefir_bool_t *passthrough) {
+    REQUIRE(function != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 codegen function"));
+    REQUIRE(passthrough != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to boolean flag"));
+
+    const struct kefir_opt_call_node *call_node;
+    REQUIRE_OK(kefir_opt_code_container_call(&function->generic.function->code, call_ref, &call_node));
+
+    const struct kefir_opt_instruction *return_space_instr = NULL;
+    *passthrough = false;
+    if (call_node->return_space != KEFIR_ID_NONE) {
+        REQUIRE_OK(
+            kefir_opt_code_container_instr(&function->generic.function->code, call_node->return_space, &return_space_instr));
+        if (return_space_instr->operation.opcode == KEFIR_OPT_OPCODE_ALLOC_LOCAL) {
+            const struct kefir_ir_type *alloc_ir_type = kefir_ir_module_get_named_type(
+                function->generic.module->ir_module, return_space_instr->operation.parameters.type.type_id);
+            REQUIRE(alloc_ir_type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to find IR type"));
+            if (kefir_ir_type_length(alloc_ir_type) > 0 &&
+                kefir_ir_type_length(function->generic.function->ir_func->declaration->result) > 0) {
+                kefir_bool_t same_type;
+                REQUIRE_OK(kefir_ir_type_same(function->generic.function->ir_func->declaration->result, 0, alloc_ir_type,
+                                              return_space_instr->operation.parameters.type.type_index, &same_type));
+                *passthrough =
+                    same_type && (function->generic.variable_allocator.return_space_variable_ref == KEFIR_ID_NONE ||
+                                  function->generic.variable_allocator.return_space_variable_ref == return_space_instr->id);
+            }
+        }
+    }
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_codegen_amd64_tail_call_possible(struct kefir_mem *mem,
+                                                      const struct kefir_codegen_amd64_function *function,
+                                                      kefir_opt_call_id_t call_ref,
+                                                      kefir_bool_t *tail_call_possible_ptr) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(function != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 codegen function"));
+    REQUIRE(tail_call_possible_ptr != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to boolean flag"));
+
+    const struct kefir_opt_call_node *call_node;
+    REQUIRE_OK(kefir_opt_code_container_call(&function->generic.function->code, call_ref, &call_node));
+
+    const struct kefir_ir_function_decl *ir_func_decl =
+        kefir_ir_module_get_declaration(function->generic.module->ir_module, call_node->function_declaration_id);
+    REQUIRE(ir_func_decl != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to find IR function declaration"));
+
+    struct kefir_abi_amd64_function_decl abi_func_decl;
+    REQUIRE_OK(kefir_abi_amd64_function_decl_alloc(mem, function->codegen->abi_variant, ir_func_decl, &abi_func_decl));
+
+    struct kefir_abi_amd64_function_parameter_requirements reqs, return_reqs;
+    const struct kefir_abi_amd64_function_parameters *parameters;
+    const struct kefir_abi_amd64_function_parameters *return_parameters;
+
+    kefir_result_t res = KEFIR_OK;
+    REQUIRE_CHAIN(&res, kefir_abi_amd64_function_decl_parameters(&abi_func_decl, &parameters));
+    REQUIRE_CHAIN(&res, kefir_abi_amd64_function_parameters_requirements(parameters, &reqs));
+    REQUIRE_CHAIN(&res, kefir_abi_amd64_function_decl_returns(&abi_func_decl, &return_parameters));
+    REQUIRE_CHAIN(&res, kefir_abi_amd64_function_parameters_requirements(return_parameters, &return_reqs));
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_abi_amd64_function_decl_free(mem, &abi_func_decl);
+        return KEFIR_OK;
+    });
+    REQUIRE_OK(kefir_abi_amd64_function_decl_free(mem, &abi_func_decl));
+
+    kefir_bool_t passthrough_aggregate_return = false;
+    REQUIRE_OK(
+        kefir_codegen_amd64_tail_call_return_aggregate_passthrough(function, call_ref, &passthrough_aggregate_return));
+
+    *tail_call_possible_ptr =
+        reqs.stack == 0 &&
+        (return_reqs.stack == 0 ||
+         (passthrough_aggregate_return && function->stack_frame.return_space_vreg != KEFIR_ASMCMP_INDEX_NONE) ||
+         ir_func_decl->no_return) &&
+        !ir_func_decl->returns_twice && !ir_func_decl->vararg;
     return KEFIR_OK;
 }

@@ -62,6 +62,15 @@ kefir_result_t kefir_asmcmp_debug_info_source_map_free(struct kefir_mem *mem,
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_asmcmp_debug_info_source_map_reset(struct kefir_mem *mem,
+                                                       struct kefir_asmcmp_debug_info_source_map *source_map) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(source_map != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmcmp source map"));
+
+    REQUIRE_OK(kefir_hashtree_clean(mem, &source_map->map));
+    return KEFIR_OK;
+}
+
 static kefir_result_t free_definition_entry(struct kefir_mem *mem, struct kefir_hashtable *table,
                                             kefir_hashtable_key_t key, kefir_hashtable_value_t value, void *payload) {
     UNUSED(table);
@@ -92,6 +101,15 @@ kefir_result_t kefir_asmcmp_debug_info_code_map_free(struct kefir_mem *mem,
     REQUIRE(code_map != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmcmp debug info code map"));
 
     REQUIRE_OK(kefir_hashtable_free(mem, &code_map->fragments));
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_asmcmp_debug_info_code_map_reset(struct kefir_mem *mem,
+                                                     struct kefir_asmcmp_debug_info_code_map *code_map) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(code_map != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmcmp debug info code map"));
+
+    REQUIRE_OK(kefir_hashtable_clear(mem, &code_map->fragments));
     return KEFIR_OK;
 }
 
@@ -128,6 +146,15 @@ kefir_result_t kefir_asmcmp_debug_info_value_map_free(struct kefir_mem *mem,
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_asmcmp_debug_info_value_map_reset(struct kefir_mem *mem,
+                                                      struct kefir_asmcmp_debug_info_value_map *value_map) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(value_map != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmcmp debug info value map"));
+
+    REQUIRE_OK(kefir_hashtable_clear(mem, &value_map->fragments));
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_asmcmp_debug_info_init(struct kefir_asmcmp_debug_info *debug_info) {
     REQUIRE(debug_info != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to asmcmp debug info"));
@@ -145,6 +172,16 @@ kefir_result_t kefir_asmcmp_debug_info_free(struct kefir_mem *mem, struct kefir_
     REQUIRE_OK(kefir_asmcmp_debug_info_source_map_free(mem, &debug_info->source_map));
     REQUIRE_OK(kefir_asmcmp_debug_info_code_map_free(mem, &debug_info->code_map));
     REQUIRE_OK(kefir_asmcmp_debug_info_value_map_free(mem, &debug_info->value_map));
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_asmcmp_debug_info_reset(struct kefir_mem *mem, struct kefir_asmcmp_debug_info *debug_info) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(debug_info != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmcmp debug info"));
+
+    REQUIRE_OK(kefir_asmcmp_debug_info_source_map_reset(mem, &debug_info->source_map));
+    REQUIRE_OK(kefir_asmcmp_debug_info_code_map_reset(mem, &debug_info->code_map));
+    REQUIRE_OK(kefir_asmcmp_debug_info_value_map_reset(mem, &debug_info->value_map));
     return KEFIR_OK;
 }
 

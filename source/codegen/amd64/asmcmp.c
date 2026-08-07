@@ -19,7 +19,6 @@
 */
 
 #include "kefir/codegen/amd64/asmcmp.h"
-#include "kefir/codegen/amd64/stack_frame.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 #include "kefir/target/asm/amd64/xasmgen.h"
@@ -105,6 +104,15 @@ kefir_result_t kefir_asmcmp_amd64_free(struct kefir_mem *mem, struct kefir_asmcm
     REQUIRE_OK(kefir_hashtreeset_free(mem, &target->externals));
     REQUIRE_OK(kefir_hashtable_free(mem, &target->register_preallocation));
     REQUIRE_OK(kefir_asmcmp_context_free(mem, &target->context));
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_asmcmp_amd64_reset_code(struct kefir_mem *mem, struct kefir_asmcmp_amd64 *target) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(target != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmgen amd64 target"));
+
+    REQUIRE_OK(kefir_hashtable_clear(mem, &target->register_preallocation));
+    REQUIRE_OK(kefir_asmcmp_context_reset(mem, &target->context));
     return KEFIR_OK;
 }
 

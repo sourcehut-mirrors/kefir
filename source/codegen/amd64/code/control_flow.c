@@ -18,9 +18,9 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#define KEFIR_CODEGEN_AMD64_FUNCTION_INTERNAL
 #include "kefir/codegen/amd64/function.h"
-#include "kefir/codegen/amd64/symbolic_labels.h"
+#include "kefir/codegen/amd64/util.h"
+#include "kefir/codegen/amd64/instructions.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 
@@ -32,11 +32,11 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(phi)(struct kefir_mem *mem,
     REQUIRE(instruction != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer instruction"));
 
     kefir_asmcmp_virtual_register_index_t vreg;
-    kefir_result_t res = kefir_codegen_amd64_function_vreg_of(function, instruction->id, &vreg);
+    kefir_result_t res = kefir_codegen_amd64_function_translator_vreg_of(&function->translator, instruction->id, &vreg);
     if (res == KEFIR_NOT_FOUND) {
         REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
                                                      KEFIR_ASMCMP_VIRTUAL_REGISTER_UNSPECIFIED, &vreg));
-        REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, vreg));
+        REQUIRE_OK(kefir_codegen_amd64_function_translator_assign_vreg(mem, &function->translator, instruction->id, vreg));
     } else {
         REQUIRE_OK(res);
     }
@@ -65,35 +65,34 @@ static kefir_result_t map_phi_outputs_impl(struct kefir_mem *mem, struct kefir_c
                                            struct kefir_hashtreeset *used_target_vregs,
                                            struct kefir_hashtreeset *used_source_vregs,
                                            struct kefir_hashtree *deferred_target_vregs) {
-    if (function->function->code.gate_block != KEFIR_ID_NONE &&
-        kefir_hashset_has(&function->control_flow.indirect_jump_target_blocks,
+    if (function->generic.function->code.gate_block != KEFIR_ID_NONE &&
+        kefir_hashset_has(&function->generic.control_flow.indirect_jump_target_blocks,
                           (kefir_hashset_key_t) target_block_ref)) {
-        target_block_ref = function->function->code.gate_block;
+        target_block_ref = function->generic.function->code.gate_block;
     }
 
     const struct kefir_opt_code_block *source_block;
-    REQUIRE_OK(kefir_opt_code_container_block(&function->function->code, source_block_ref, &source_block));
+    REQUIRE_OK(kefir_opt_code_container_block(&function->generic.function->code, source_block_ref, &source_block));
     const struct kefir_opt_code_block *target_block;
-    REQUIRE_OK(kefir_opt_code_container_block(&function->function->code, target_block_ref, &target_block));
+    REQUIRE_OK(kefir_opt_code_container_block(&function->generic.function->code, target_block_ref, &target_block));
 
     kefir_result_t res;
     kefir_opt_instruction_ref_t phi_instr_ref;
     kefir_opt_instruction_ref_t source_ref, target_ref;
     kefir_asmcmp_virtual_register_index_t source_vreg_idx, target_vreg_idx, deferred_target_vreg_idx;
     const struct kefir_opt_phi_node *source_phi = NULL;
-    for (res = kefir_opt_code_block_phi_head(&function->function->code, target_block_ref, &phi_instr_ref);
+    for (res = kefir_opt_code_block_phi_head(&function->generic.function->code, target_block_ref, &phi_instr_ref);
          res == KEFIR_OK && phi_instr_ref != KEFIR_ID_NONE;
-         res = kefir_opt_phi_next_sibling(&function->function->code, phi_instr_ref, &phi_instr_ref)) {
+         res = kefir_opt_phi_next_sibling(&function->generic.function->code, phi_instr_ref, &phi_instr_ref)) {
 
-        if (!kefir_opt_code_schedule_has(&function->schedule, phi_instr_ref) ||
-            !kefir_hashtreeset_has(&function->translated_instructions, (kefir_hashtreeset_entry_t) phi_instr_ref)) {
+        if (!kefir_opt_code_schedule_has(&function->generic.schedule, phi_instr_ref)) {
             continue;
         }
 
-        REQUIRE_OK(kefir_opt_code_container_phi_link_for(&function->function->code, phi_instr_ref, source_block_ref,
+        REQUIRE_OK(kefir_opt_code_container_phi_link_for(&function->generic.function->code, phi_instr_ref, source_block_ref,
                                                          &source_ref));
-        REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, source_ref, &source_vreg_idx));
-        kefir_result_t res = kefir_codegen_amd64_function_vreg_of(function, phi_instr_ref, &target_vreg_idx);
+        REQUIRE_OK(kefir_codegen_amd64_function_translator_vreg_of(&function->translator, source_ref, &source_vreg_idx));
+        kefir_result_t res = kefir_codegen_amd64_function_translator_vreg_of(&function->translator, phi_instr_ref, &target_vreg_idx);
         if (res == KEFIR_NOT_FOUND) {
             REQUIRE_OK(kefir_hashtreeset_add(mem, used_source_vregs, (kefir_hashtreeset_entry_t) source_vreg_idx));
         } else {
@@ -104,25 +103,24 @@ static kefir_result_t map_phi_outputs_impl(struct kefir_mem *mem, struct kefir_c
         }
     }
 
-    for (res = kefir_opt_code_block_phi_head(&function->function->code, target_block_ref, &phi_instr_ref);
+    for (res = kefir_opt_code_block_phi_head(&function->generic.function->code, target_block_ref, &phi_instr_ref);
          res == KEFIR_OK && phi_instr_ref != KEFIR_ID_NONE;
-         res = kefir_opt_phi_next_sibling(&function->function->code, phi_instr_ref, &phi_instr_ref)) {
+         res = kefir_opt_phi_next_sibling(&function->generic.function->code, phi_instr_ref, &phi_instr_ref)) {
 
-        if (!kefir_opt_code_schedule_has(&function->schedule, phi_instr_ref) ||
-            !kefir_hashtreeset_has(&function->translated_instructions, (kefir_hashtreeset_entry_t) phi_instr_ref)) {
+        if (!kefir_opt_code_schedule_has(&function->generic.schedule, phi_instr_ref)) {
             continue;
         }
 
         target_ref = phi_instr_ref;
-        REQUIRE_OK(kefir_opt_code_container_phi_link_for(&function->function->code, phi_instr_ref, source_block_ref,
+        REQUIRE_OK(kefir_opt_code_container_phi_link_for(&function->generic.function->code, phi_instr_ref, source_block_ref,
                                                          &source_ref));
 
-        REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, source_ref, &source_vreg_idx));
+        REQUIRE_OK(kefir_codegen_amd64_function_translator_vreg_of(&function->translator, source_ref, &source_vreg_idx));
 
         const struct kefir_asmcmp_virtual_register *source_vreg, *target_vreg;
         REQUIRE_OK(kefir_asmcmp_virtual_register_get(&function->code.context, source_vreg_idx, &source_vreg));
 
-        res = kefir_codegen_amd64_function_vreg_of(function, target_ref, &target_vreg_idx);
+        res = kefir_codegen_amd64_function_translator_vreg_of(&function->translator, target_ref, &target_vreg_idx);
 
         if (res == KEFIR_OK && kefir_hashtreeset_has(used_source_vregs, (kefir_hashtreeset_entry_t) target_vreg_idx)) {
             deferred_target_vreg_idx = target_vreg_idx;
@@ -131,21 +129,21 @@ static kefir_result_t map_phi_outputs_impl(struct kefir_mem *mem, struct kefir_c
         }
         if (res == KEFIR_NOT_FOUND || deferred_target_vreg_idx != KEFIR_ASMCMP_INDEX_NONE) {
             const struct kefir_opt_instruction *phi_instr;
-            REQUIRE_OK(kefir_opt_code_container_instr(&function->function->code, phi_instr_ref, &phi_instr));
+            REQUIRE_OK(kefir_opt_code_container_instr(&function->generic.function->code, phi_instr_ref, &phi_instr));
             const struct kefir_opt_phi_node *phi_node;
-            REQUIRE_OK(kefir_opt_code_container_phi(&function->function->code, phi_instr->operation.parameters.phi_ref,
+            REQUIRE_OK(kefir_opt_code_container_phi(&function->generic.function->code, phi_instr->operation.parameters.phi_ref,
                                                     &phi_node));
             if (deferred_target_vreg_idx == KEFIR_ASMCMP_INDEX_NONE && phi_node->number_of_links == 1 &&
                 !kefir_hashtreeset_has(transferred_vregs, (kefir_hashtreeset_entry_t) source_vreg_idx)) {
                 const struct kefir_opt_instruction *source_instr;
-                REQUIRE_OK(kefir_opt_code_container_instr(&function->function->code, source_ref, &source_instr));
+                REQUIRE_OK(kefir_opt_code_container_instr(&function->generic.function->code, source_ref, &source_instr));
                 if (source_instr->operation.opcode == KEFIR_OPT_OPCODE_PHI) {
-                    REQUIRE_OK(kefir_opt_code_container_phi(&function->function->code,
+                    REQUIRE_OK(kefir_opt_code_container_phi(&function->generic.function->code,
                                                             source_instr->operation.parameters.phi_ref, &source_phi));
                 }
 
                 if (source_phi == NULL || source_phi->number_of_links == 1) {
-                    REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, target_ref, source_vreg_idx));
+                    REQUIRE_OK(kefir_codegen_amd64_function_translator_assign_vreg(mem, &function->translator, target_ref, source_vreg_idx));
                     REQUIRE_OK(
                         kefir_hashtreeset_add(mem, transferred_vregs, (kefir_hashtreeset_entry_t) source_vreg_idx));
                     continue;
@@ -162,7 +160,7 @@ static kefir_result_t map_phi_outputs_impl(struct kefir_mem *mem, struct kefir_c
                                                  (kefir_hashtree_key_t) deferred_target_vreg_idx,
                                                  (kefir_hashtree_value_t) target_vreg_idx));
             } else {
-                REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, target_ref, target_vreg_idx));
+                REQUIRE_OK(kefir_codegen_amd64_function_translator_assign_vreg(mem, &function->translator, target_ref, target_vreg_idx));
             }
         } else {
             REQUIRE_OK(res);
@@ -175,7 +173,7 @@ static kefir_result_t map_phi_outputs_impl(struct kefir_mem *mem, struct kefir_c
 
         if (deferred_target_vreg_idx != KEFIR_ASMCMP_INDEX_NONE ||
             (source_block_ref != target_block_ref && source_vreg_idx != target_vreg_idx &&
-             !kefir_hashset_has(&function->liveness.blocks[source_block_ref].alive_instr,
+             !kefir_hashset_has(&function->generic.liveness.blocks[source_block_ref].alive_instr,
                                 (kefir_hashset_key_t) target_ref) &&
              !kefir_hashtreeset_has(used_source_vregs, (kefir_hashtreeset_entry_t) target_vreg_idx))) {
             REQUIRE_OK(kefir_hashtreeset_add(mem, used_target_vregs, (kefir_hashtreeset_entry_t) target_vreg_idx));
@@ -196,19 +194,18 @@ static kefir_result_t map_phi_outputs_impl(struct kefir_mem *mem, struct kefir_c
                                                              deferred_target_vreg, temporary_target_vreg, NULL));
     }
 
-    for (res = kefir_opt_code_block_phi_head(&function->function->code, target_block_ref, &phi_instr_ref);
+    for (res = kefir_opt_code_block_phi_head(&function->generic.function->code, target_block_ref, &phi_instr_ref);
          res == KEFIR_OK && phi_instr_ref != KEFIR_ID_NONE;
-         res = kefir_opt_phi_next_sibling(&function->function->code, phi_instr_ref, &phi_instr_ref)) {
+         res = kefir_opt_phi_next_sibling(&function->generic.function->code, phi_instr_ref, &phi_instr_ref)) {
 
-        if (!kefir_opt_code_schedule_has(&function->schedule, phi_instr_ref) ||
-            !kefir_hashtreeset_has(&function->translated_instructions, (kefir_hashtreeset_entry_t) phi_instr_ref)) {
+        if (!kefir_opt_code_schedule_has(&function->generic.schedule, phi_instr_ref)) {
             continue;
         }
 
         kefir_opt_instruction_ref_t target_ref = phi_instr_ref;
 
         kefir_asmcmp_virtual_register_index_t target_vreg_idx;
-        REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, target_ref, &target_vreg_idx));
+        REQUIRE_OK(kefir_codegen_amd64_function_translator_vreg_of(&function->translator, target_ref, &target_vreg_idx));
 
         REQUIRE_OK(kefir_asmcmp_amd64_weak_touch_virtual_register(
             mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), target_vreg_idx, NULL));
@@ -273,12 +270,11 @@ static kefir_result_t has_phi_outputs(struct kefir_codegen_amd64_function *funct
     kefir_opt_instruction_ref_t phi_instr_ref;
     kefir_result_t res;
     *has_outputs = false;
-    for (res = kefir_opt_code_block_phi_head(&function->function->code, target_block->id, &phi_instr_ref);
+    for (res = kefir_opt_code_block_phi_head(&function->generic.function->code, target_block->id, &phi_instr_ref);
          res == KEFIR_OK && phi_instr_ref != KEFIR_ID_NONE;
-         res = kefir_opt_phi_next_sibling(&function->function->code, phi_instr_ref, &phi_instr_ref)) {
+         res = kefir_opt_phi_next_sibling(&function->generic.function->code, phi_instr_ref, &phi_instr_ref)) {
 
-        if (!kefir_opt_code_schedule_has(&function->schedule, phi_instr_ref) ||
-            !kefir_hashtreeset_has(&function->translated_instructions, (kefir_hashtreeset_entry_t) phi_instr_ref)) {
+        if (!kefir_opt_code_schedule_has(&function->generic.schedule, phi_instr_ref)) {
             continue;
         }
 
@@ -299,19 +295,18 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(jump)(struct kefir_mem *mem,
     REQUIRE_OK(KEFIR_CODEGEN_AMD64_FUNCTION_X87_FLUSH(mem, function));
 
     const struct kefir_opt_code_block *target_block, *source_block;
-    REQUIRE_OK(kefir_opt_code_container_block(&function->function->code,
+    REQUIRE_OK(kefir_opt_code_container_block(&function->generic.function->code,
                                               instruction->operation.parameters.branch.target_block, &target_block));
-    REQUIRE_OK(kefir_opt_code_container_block(&function->function->code, instruction->block_id, &source_block));
+    REQUIRE_OK(kefir_opt_code_container_block(&function->generic.function->code, instruction->block_id, &source_block));
 
     REQUIRE_OK(kefir_codegen_amd64_function_map_phi_outputs(mem, function, target_block->id, instruction->block_id));
 
     const struct kefir_opt_code_block_schedule *target_block_schedule, *source_block_schedule;
-    REQUIRE_OK(kefir_opt_code_schedule_of_block(&function->schedule, target_block->id, &target_block_schedule));
-    REQUIRE_OK(kefir_opt_code_schedule_of_block(&function->schedule, source_block->id, &source_block_schedule));
+    REQUIRE_OK(kefir_opt_code_schedule_of_block(&function->generic.schedule, target_block->id, &target_block_schedule));
+    REQUIRE_OK(kefir_opt_code_schedule_of_block(&function->generic.schedule, source_block->id, &source_block_schedule));
     if (target_block_schedule->linear_position != source_block_schedule->linear_position + 1) {
-        struct kefir_hashtree_node *target_label_node;
-        REQUIRE_OK(kefir_hashtree_at(&function->labels, (kefir_hashtree_key_t) target_block->id, &target_label_node));
-        ASSIGN_DECL_CAST(kefir_asmcmp_label_index_t, target_label, target_label_node->value);
+        kefir_asmcmp_label_index_t target_label;
+        REQUIRE_OK(kefir_codegen_amd64_function_translator_get_block_label(&function->translator, target_block->id, &target_label));
 
         REQUIRE_OK(kefir_asmcmp_amd64_jmp(mem, &function->code,
                                           kefir_asmcmp_context_instr_tail(&function->code.context),
@@ -327,20 +322,20 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(branch_compare)(struct kefir
     REQUIRE_OK(KEFIR_CODEGEN_AMD64_FUNCTION_X87_FLUSH(mem, function));
 
     const struct kefir_opt_code_block *target_block, *alternative_block, *source_block;
-    REQUIRE_OK(kefir_opt_code_container_block(&function->function->code,
+    REQUIRE_OK(kefir_opt_code_container_block(&function->generic.function->code,
                                               instruction->operation.parameters.branch.target_block, &target_block));
     REQUIRE_OK(kefir_opt_code_container_block(
-        &function->function->code, instruction->operation.parameters.branch.alternative_block, &alternative_block));
-    REQUIRE_OK(kefir_opt_code_container_block(&function->function->code, instruction->block_id, &source_block));
+        &function->generic.function->code, instruction->operation.parameters.branch.alternative_block, &alternative_block));
+    REQUIRE_OK(kefir_opt_code_container_block(&function->generic.function->code, instruction->block_id, &source_block));
 
     kefir_asmcmp_virtual_register_index_t arg1_vreg_idx, arg2_vreg_idx;
     REQUIRE_OK(
-        kefir_codegen_amd64_function_vreg_of(function, instruction->operation.parameters.refs[0], &arg1_vreg_idx));
+        kefir_codegen_amd64_function_translator_vreg_of(&function->translator, instruction->operation.parameters.refs[0], &arg1_vreg_idx));
 
     switch (instruction->operation.parameters.branch.comparison.operation) {
 #define OP(_variant)                                                                                         \
     do {                                                                                                     \
-        REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, instruction->operation.parameters.refs[1], \
+        REQUIRE_OK(kefir_codegen_amd64_function_translator_vreg_of(&function->translator, instruction->operation.parameters.refs[1], \
                                                         &arg2_vreg_idx));                                    \
         REQUIRE_OK(kefir_asmcmp_amd64_cmp(mem, &function->code,                                              \
                                           kefir_asmcmp_context_instr_tail(&function->code.context),          \
@@ -413,10 +408,10 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(branch_compare)(struct kefir
             REQUIRE_OK(kefir_codegen_amd64_stack_frame_preserve_mxcsr(&function->stack_frame));
 
             const struct kefir_opt_instruction *arg2_instr;
-            REQUIRE_OK(kefir_opt_code_container_instr(&function->function->code,
+            REQUIRE_OK(kefir_opt_code_container_instr(&function->generic.function->code,
                                                       instruction->operation.parameters.refs[1], &arg2_instr));
             if (arg2_instr->operation.opcode != KEFIR_OPT_OPCODE_FLOAT32_CONST) {
-                REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, instruction->operation.parameters.refs[1],
+                REQUIRE_OK(kefir_codegen_amd64_function_translator_vreg_of(&function->translator, instruction->operation.parameters.refs[1],
                                                                 &arg2_vreg_idx));
                 REQUIRE_OK(kefir_asmcmp_amd64_ucomiss(
                     mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
@@ -426,8 +421,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(branch_compare)(struct kefir
                 REQUIRE_OK(
                     kefir_asmcmp_context_new_label(mem, &function->code.context, KEFIR_ASMCMP_INDEX_NONE, &label));
 
-                REQUIRE_OK(kefir_hashtree_insert(mem, &function->constants, (kefir_hashtree_key_t) label,
-                                                 (kefir_hashtree_value_t) arg2_instr->id));
+                REQUIRE_OK(kefir_codegen_amd64_function_translator_new_constant(mem, &function->translator, label, arg2_instr->id));
 
                 if (function->codegen->config->position_independent_code) {
                     REQUIRE_OK(kefir_asmcmp_amd64_ucomiss(
@@ -455,10 +449,10 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(branch_compare)(struct kefir
         case KEFIR_OPT_COMPARISON_FLOAT64_NOT_LESSER_OR_EQUAL:
             REQUIRE_OK(kefir_codegen_amd64_stack_frame_preserve_mxcsr(&function->stack_frame));
             const struct kefir_opt_instruction *arg2_instr;
-            REQUIRE_OK(kefir_opt_code_container_instr(&function->function->code,
+            REQUIRE_OK(kefir_opt_code_container_instr(&function->generic.function->code,
                                                       instruction->operation.parameters.refs[1], &arg2_instr));
             if (arg2_instr->operation.opcode != KEFIR_OPT_OPCODE_FLOAT64_CONST) {
-                REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, instruction->operation.parameters.refs[1],
+                REQUIRE_OK(kefir_codegen_amd64_function_translator_vreg_of(&function->translator, instruction->operation.parameters.refs[1],
                                                                 &arg2_vreg_idx));
                 REQUIRE_OK(kefir_asmcmp_amd64_ucomisd(
                     mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
@@ -468,8 +462,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(branch_compare)(struct kefir
                 REQUIRE_OK(
                     kefir_asmcmp_context_new_label(mem, &function->code.context, KEFIR_ASMCMP_INDEX_NONE, &label));
 
-                REQUIRE_OK(kefir_hashtree_insert(mem, &function->constants, (kefir_hashtree_key_t) label,
-                                                 (kefir_hashtree_value_t) arg2_instr->id));
+                REQUIRE_OK(kefir_codegen_amd64_function_translator_new_constant(mem, &function->translator, label, arg2_instr->id));
 
                 if (function->codegen->config->position_independent_code) {
                     REQUIRE_OK(kefir_asmcmp_amd64_ucomisd(
@@ -489,8 +482,6 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(branch_compare)(struct kefir
             return KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Unexpected optimizer comparison operation");
     }
 
-    struct kefir_hashtree_node *label_node;
-
     kefir_bool_t alternative_phi_outputs;
     kefir_asmcmp_label_index_t branch_label_idx;
     REQUIRE_OK(has_phi_outputs(function, alternative_block, &alternative_phi_outputs));
@@ -498,9 +489,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(branch_compare)(struct kefir
         REQUIRE_OK(
             kefir_asmcmp_context_new_label(mem, &function->code.context, KEFIR_ASMCMP_INDEX_NONE, &branch_label_idx));
     } else {
-        REQUIRE_OK(kefir_hashtree_at(&function->labels, (kefir_hashtree_key_t) alternative_block->id, &label_node));
-        ASSIGN_DECL_CAST(kefir_asmcmp_label_index_t, target_label, label_node->value);
-        branch_label_idx = target_label;
+        REQUIRE_OK(kefir_codegen_amd64_function_translator_get_block_label(&function->translator, alternative_block->id, &branch_label_idx));
     }
 
     switch (instruction->operation.parameters.branch.comparison.operation) {
@@ -732,12 +721,12 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(branch_compare)(struct kefir
     REQUIRE_OK(kefir_codegen_amd64_function_map_phi_outputs(mem, function, target_block->id, instruction->block_id));
 
     const struct kefir_opt_code_block_schedule *target_block_schedule, *source_block_schedule;
-    REQUIRE_OK(kefir_opt_code_schedule_of_block(&function->schedule, target_block->id, &target_block_schedule));
-    REQUIRE_OK(kefir_opt_code_schedule_of_block(&function->schedule, source_block->id, &source_block_schedule));
+    REQUIRE_OK(kefir_opt_code_schedule_of_block(&function->generic.schedule, target_block->id, &target_block_schedule));
+    REQUIRE_OK(kefir_opt_code_schedule_of_block(&function->generic.schedule, source_block->id, &source_block_schedule));
     if (alternative_phi_outputs ||
         target_block_schedule->linear_position != source_block_schedule->linear_position + 1) {
-        REQUIRE_OK(kefir_hashtree_at(&function->labels, (kefir_hashtree_key_t) target_block->id, &label_node));
-        ASSIGN_DECL_CAST(kefir_asmcmp_label_index_t, target_label, label_node->value);
+        kefir_asmcmp_label_index_t target_label;
+        REQUIRE_OK(kefir_codegen_amd64_function_translator_get_block_label(&function->translator, target_block->id, &target_label));
         REQUIRE_OK(kefir_asmcmp_amd64_jmp(mem, &function->code,
                                           kefir_asmcmp_context_instr_tail(&function->code.context),
                                           &KEFIR_ASMCMP_MAKE_INTERNAL_LABEL(target_label), NULL));
@@ -750,10 +739,10 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(branch_compare)(struct kefir
 
         const struct kefir_opt_code_block_schedule *alternative_block_schedule;
         REQUIRE_OK(
-            kefir_opt_code_schedule_of_block(&function->schedule, alternative_block->id, &alternative_block_schedule));
+            kefir_opt_code_schedule_of_block(&function->generic.schedule, alternative_block->id, &alternative_block_schedule));
         if (alternative_block_schedule->linear_position != source_block_schedule->linear_position + 1) {
-            REQUIRE_OK(kefir_hashtree_at(&function->labels, (kefir_hashtree_key_t) alternative_block->id, &label_node));
-            ASSIGN_DECL_CAST(kefir_asmcmp_label_index_t, target_label, label_node->value);
+            kefir_asmcmp_label_index_t target_label;
+            REQUIRE_OK(kefir_codegen_amd64_function_translator_get_block_label(&function->translator, alternative_block->id, &target_label));
             REQUIRE_OK(kefir_asmcmp_amd64_jmp(mem, &function->code,
                                               kefir_asmcmp_context_instr_tail(&function->code.context),
                                               &KEFIR_ASMCMP_MAKE_INTERNAL_LABEL(target_label), NULL));
@@ -773,19 +762,19 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(branch)(struct kefir_mem *me
     REQUIRE_OK(KEFIR_CODEGEN_AMD64_FUNCTION_X87_FLUSH(mem, function));
 
     const struct kefir_opt_code_block *target_block, *alternative_block, *source_block;
-    REQUIRE_OK(kefir_opt_code_container_block(&function->function->code,
+    REQUIRE_OK(kefir_opt_code_container_block(&function->generic.function->code,
                                               instruction->operation.parameters.branch.target_block, &target_block));
     REQUIRE_OK(kefir_opt_code_container_block(
-        &function->function->code, instruction->operation.parameters.branch.alternative_block, &alternative_block));
-    REQUIRE_OK(kefir_opt_code_container_block(&function->function->code, instruction->block_id, &source_block));
+        &function->generic.function->code, instruction->operation.parameters.branch.alternative_block, &alternative_block));
+    REQUIRE_OK(kefir_opt_code_container_block(&function->generic.function->code, instruction->block_id, &source_block));
 
     const kefir_bool_t invert_condition =
         KEFIR_OPT_BRANCH_CONDITION_VARIANT_IS_NEGATED(instruction->operation.parameters.branch.condition_variant);
     const struct kefir_opt_instruction *condition_instr;
     kefir_asmcmp_virtual_register_index_t condition_vreg_idx;
     REQUIRE_OK(kefir_opt_code_container_instr(
-        &function->function->code, instruction->operation.parameters.branch.condition_ref, &condition_instr));
-    REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, instruction->operation.parameters.branch.condition_ref,
+        &function->generic.function->code, instruction->operation.parameters.branch.condition_ref, &condition_instr));
+    REQUIRE_OK(kefir_codegen_amd64_function_translator_vreg_of(&function->translator, instruction->operation.parameters.branch.condition_ref,
                                                     &condition_vreg_idx));
 
     switch (instruction->operation.parameters.branch.condition_variant) {
@@ -818,7 +807,6 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(branch)(struct kefir_mem *me
             break;
     }
 
-    struct kefir_hashtree_node *label_node;
     kefir_bool_t alternative_phi_outputs;
     kefir_asmcmp_label_index_t branch_label_idx;
     REQUIRE_OK(has_phi_outputs(function, alternative_block, &alternative_phi_outputs));
@@ -835,8 +823,8 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(branch)(struct kefir_mem *me
                                              &KEFIR_ASMCMP_MAKE_INTERNAL_LABEL(branch_label_idx), NULL));
         }
     } else {
-        REQUIRE_OK(kefir_hashtree_at(&function->labels, (kefir_hashtree_key_t) alternative_block->id, &label_node));
-        ASSIGN_DECL_CAST(kefir_asmcmp_label_index_t, target_label, label_node->value);
+        kefir_asmcmp_label_index_t target_label;
+        REQUIRE_OK(kefir_codegen_amd64_function_translator_get_block_label(&function->translator, alternative_block->id, &target_label));
         if (invert_condition) {
             REQUIRE_OK(kefir_asmcmp_amd64_jnz(mem, &function->code,
                                               kefir_asmcmp_context_instr_tail(&function->code.context),
@@ -851,12 +839,12 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(branch)(struct kefir_mem *me
     REQUIRE_OK(kefir_codegen_amd64_function_map_phi_outputs(mem, function, target_block->id, instruction->block_id));
 
     const struct kefir_opt_code_block_schedule *target_block_schedule, *source_block_schedule;
-    REQUIRE_OK(kefir_opt_code_schedule_of_block(&function->schedule, target_block->id, &target_block_schedule));
-    REQUIRE_OK(kefir_opt_code_schedule_of_block(&function->schedule, source_block->id, &source_block_schedule));
+    REQUIRE_OK(kefir_opt_code_schedule_of_block(&function->generic.schedule, target_block->id, &target_block_schedule));
+    REQUIRE_OK(kefir_opt_code_schedule_of_block(&function->generic.schedule, source_block->id, &source_block_schedule));
     if (alternative_phi_outputs ||
         target_block_schedule->linear_position != source_block_schedule->linear_position + 1) {
-        REQUIRE_OK(kefir_hashtree_at(&function->labels, (kefir_hashtree_key_t) target_block->id, &label_node));
-        ASSIGN_DECL_CAST(kefir_asmcmp_label_index_t, target_label, label_node->value);
+        kefir_asmcmp_label_index_t target_label;
+        REQUIRE_OK(kefir_codegen_amd64_function_translator_get_block_label(&function->translator, target_block->id, &target_label));
         REQUIRE_OK(kefir_asmcmp_amd64_jmp(mem, &function->code,
                                           kefir_asmcmp_context_instr_tail(&function->code.context),
                                           &KEFIR_ASMCMP_MAKE_INTERNAL_LABEL(target_label), NULL));
@@ -869,10 +857,10 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(branch)(struct kefir_mem *me
 
         const struct kefir_opt_code_block_schedule *alternative_block_schedule;
         REQUIRE_OK(
-            kefir_opt_code_schedule_of_block(&function->schedule, alternative_block->id, &alternative_block_schedule));
+            kefir_opt_code_schedule_of_block(&function->generic.schedule, alternative_block->id, &alternative_block_schedule));
         if (alternative_block_schedule->linear_position != source_block_schedule->linear_position + 1) {
-            REQUIRE_OK(kefir_hashtree_at(&function->labels, (kefir_hashtree_key_t) alternative_block->id, &label_node));
-            ASSIGN_DECL_CAST(kefir_asmcmp_label_index_t, target_label, label_node->value);
+            kefir_asmcmp_label_index_t target_label;
+            REQUIRE_OK(kefir_codegen_amd64_function_translator_get_block_label(&function->translator, alternative_block->id, &target_label));
             REQUIRE_OK(kefir_asmcmp_amd64_jmp(mem, &function->code,
                                               kefir_asmcmp_context_instr_tail(&function->code.context),
                                               &KEFIR_ASMCMP_MAKE_INTERNAL_LABEL(target_label), NULL));
@@ -890,14 +878,14 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(ijump)(struct kefir_mem *mem
     REQUIRE(instruction != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer instruction"));
 
     REQUIRE_OK(KEFIR_CODEGEN_AMD64_FUNCTION_X87_FLUSH(mem, function));
-    REQUIRE_OK(kefir_codegen_local_variable_allocator_mark_all_global(&function->variable_allocator));
+    REQUIRE_OK(kefir_codegen_local_variable_allocator_mark_all_global(&function->generic.variable_allocator));
 
-    REQUIRE_OK(kefir_codegen_amd64_function_map_phi_outputs(mem, function, function->function->code.gate_block,
+    REQUIRE_OK(kefir_codegen_amd64_function_map_phi_outputs(mem, function, function->generic.function->code.gate_block,
                                                             instruction->block_id));
 
     kefir_asmcmp_virtual_register_index_t target_vreg_idx;
     REQUIRE_OK(
-        kefir_codegen_amd64_function_vreg_of(function, instruction->operation.parameters.refs[0], &target_vreg_idx));
+        kefir_codegen_amd64_function_translator_vreg_of(&function->translator, instruction->operation.parameters.refs[0], &target_vreg_idx));
 
     REQUIRE_OK(kefir_asmcmp_amd64_jmp(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                                       &KEFIR_ASMCMP_MAKE_VREG(target_vreg_idx), NULL));
@@ -915,11 +903,11 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(select_compare)(struct kefir
     kefir_asmcmp_virtual_register_index_t condition1_vreg, condition2_vreg, arg1_vreg, arg2_vreg, arg2_placement_vreg,
         result_vreg, result_placement_vreg;
     REQUIRE_OK(
-        kefir_codegen_amd64_function_vreg_of(function, instruction->operation.parameters.refs[0], &condition1_vreg));
+        kefir_codegen_amd64_function_translator_vreg_of(&function->translator, instruction->operation.parameters.refs[0], &condition1_vreg));
     REQUIRE_OK(
-        kefir_codegen_amd64_function_vreg_of(function, instruction->operation.parameters.refs[1], &condition2_vreg));
-    REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, instruction->operation.parameters.refs[2], &arg1_vreg));
-    REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, instruction->operation.parameters.refs[3], &arg2_vreg));
+        kefir_codegen_amd64_function_translator_vreg_of(&function->translator, instruction->operation.parameters.refs[1], &condition2_vreg));
+    REQUIRE_OK(kefir_codegen_amd64_function_translator_vreg_of(&function->translator, instruction->operation.parameters.refs[2], &arg1_vreg));
+    REQUIRE_OK(kefir_codegen_amd64_function_translator_vreg_of(&function->translator, instruction->operation.parameters.refs[3], &arg2_vreg));
 
     const struct kefir_asmcmp_virtual_register *arg1_asmcmp_vreg, *arg2_asmcmp_vreg;
     REQUIRE_OK(kefir_asmcmp_virtual_register_get(&function->code.context, arg1_vreg, &arg1_asmcmp_vreg));
@@ -1321,7 +1309,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(select_compare)(struct kefir
     REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(mem, &function->code,
                                                          kefir_asmcmp_context_instr_tail(&function->code.context),
                                                          result_vreg, result_placement_vreg, NULL));
-    REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, result_vreg));
+    REQUIRE_OK(kefir_codegen_amd64_function_translator_assign_vreg(mem, &function->translator, instruction->id, result_vreg));
     return KEFIR_OK;
 }
 
@@ -1334,9 +1322,9 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(select)(struct kefir_mem *me
 
     kefir_asmcmp_virtual_register_index_t condition_vreg, arg1_vreg, arg2_vreg, arg2_placement_vreg, result_vreg;
     REQUIRE_OK(
-        kefir_codegen_amd64_function_vreg_of(function, instruction->operation.parameters.refs[0], &condition_vreg));
-    REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, instruction->operation.parameters.refs[1], &arg1_vreg));
-    REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, instruction->operation.parameters.refs[2], &arg2_vreg));
+        kefir_codegen_amd64_function_translator_vreg_of(&function->translator, instruction->operation.parameters.refs[0], &condition_vreg));
+    REQUIRE_OK(kefir_codegen_amd64_function_translator_vreg_of(&function->translator, instruction->operation.parameters.refs[1], &arg1_vreg));
+    REQUIRE_OK(kefir_codegen_amd64_function_translator_vreg_of(&function->translator, instruction->operation.parameters.refs[2], &arg2_vreg));
 
     const struct kefir_asmcmp_virtual_register *arg1_asmcmp_vreg, *arg2_asmcmp_vreg;
     REQUIRE_OK(kefir_asmcmp_virtual_register_get(&function->code.context, arg1_vreg, &arg1_asmcmp_vreg));
@@ -1494,6 +1482,6 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(select)(struct kefir_mem *me
         }
     }
 
-    REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, result_vreg));
+    REQUIRE_OK(kefir_codegen_amd64_function_translator_assign_vreg(mem, &function->translator, instruction->id, result_vreg));
     return KEFIR_OK;
 }

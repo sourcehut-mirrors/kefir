@@ -18,9 +18,8 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#define KEFIR_CODEGEN_AMD64_FUNCTION_INTERNAL
-#include "kefir/codegen/amd64/function.h"
 #include "kefir/codegen/amd64/lowering.h"
+#include "kefir/codegen/amd64/lowering_symbols.h"
 #include "kefir/target/abi/amd64/base.h"
 #include "kefir/optimizer/builder.h"
 #include "kefir/optimizer/code_util.h"

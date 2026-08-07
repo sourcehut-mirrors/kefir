@@ -18,8 +18,9 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#define KEFIR_CODEGEN_AMD64_FUNCTION_INTERNAL
 #include "kefir/codegen/amd64/function.h"
+#include "kefir/codegen/amd64/util.h"
+#include "kefir/codegen/amd64/instructions.h"
 #include "kefir/codegen/amd64/symbolic_labels.h"
 #include "kefir/target/abi/amd64/return.h"
 #include "kefir/core/error.h"
@@ -27,7 +28,7 @@
 
 static kefir_result_t emulated_tls(struct kefir_mem *mem, struct kefir_codegen_amd64_function *function,
                                    const struct kefir_opt_instruction *instruction) {
-    const char *identifier = kefir_ir_module_get_named_symbol(function->module->ir_module,
+    const char *identifier = kefir_ir_module_get_named_symbol(function->generic.module->ir_module,
                                                               instruction->operation.parameters.variable.global_ref);
     REQUIRE(identifier != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to find named IR symbol"));
 
@@ -39,7 +40,7 @@ static kefir_result_t emulated_tls(struct kefir_mem *mem, struct kefir_codegen_a
     REQUIRE_OK(kefir_asmcmp_amd64_register_allocation_requirement(mem, &function->code, param_vreg, param_phreg));
 
     const struct kefir_ir_identifier *ir_identifier;
-    REQUIRE_OK(kefir_ir_module_get_identifier(function->module->ir_module, identifier, &ir_identifier));
+    REQUIRE_OK(kefir_ir_module_get_identifier(function->generic.module->ir_module, identifier, &ir_identifier));
     if (ir_identifier->scope != KEFIR_IR_IDENTIFIER_SCOPE_IMPORT &&
         !function->codegen->config->position_independent_code) {
         const char *emutls_v_label;
@@ -84,13 +85,13 @@ static kefir_result_t emulated_tls(struct kefir_mem *mem, struct kefir_codegen_a
                                                          kefir_asmcmp_context_instr_tail(&function->code.context),
                                                          result_vreg, result_placement_vreg, NULL));
 
-    REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, result_vreg));
+    REQUIRE_OK(kefir_codegen_amd64_function_translator_assign_vreg(mem, &function->translator, instruction->id, result_vreg));
     return KEFIR_OK;
 }
 
 static kefir_result_t general_dynamic_tls(struct kefir_mem *mem, struct kefir_codegen_amd64_function *function,
                                           const struct kefir_opt_instruction *instruction) {
-    const char *identifier = kefir_ir_module_get_named_symbol(function->module->ir_module,
+    const char *identifier = kefir_ir_module_get_named_symbol(function->generic.module->ir_module,
                                                               instruction->operation.parameters.variable.global_ref);
     REQUIRE(identifier != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to find named IR symbol"));
 
@@ -105,7 +106,7 @@ static kefir_result_t general_dynamic_tls(struct kefir_mem *mem, struct kefir_co
                                          NULL));
 
     const struct kefir_ir_identifier *ir_identifier;
-    REQUIRE_OK(kefir_ir_module_get_identifier(function->module->ir_module, identifier, &ir_identifier));
+    REQUIRE_OK(kefir_ir_module_get_identifier(function->generic.module->ir_module, identifier, &ir_identifier));
     REQUIRE_OK(kefir_asmcmp_amd64_lea(
         mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
         &KEFIR_ASMCMP_MAKE_VREG(param_vreg),
@@ -138,13 +139,13 @@ static kefir_result_t general_dynamic_tls(struct kefir_mem *mem, struct kefir_co
                                                          kefir_asmcmp_context_instr_tail(&function->code.context),
                                                          result_vreg, result_placement_vreg, NULL));
 
-    REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, result_vreg));
+    REQUIRE_OK(kefir_codegen_amd64_function_translator_assign_vreg(mem, &function->translator, instruction->id, result_vreg));
     return KEFIR_OK;
 }
 
 static kefir_result_t initial_exec_tls(struct kefir_mem *mem, struct kefir_codegen_amd64_function *function,
                                        const struct kefir_opt_instruction *instruction) {
-    const char *identifier = kefir_ir_module_get_named_symbol(function->module->ir_module,
+    const char *identifier = kefir_ir_module_get_named_symbol(function->generic.module->ir_module,
                                                               instruction->operation.parameters.variable.global_ref);
     REQUIRE(identifier != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to find named IR symbol"));
 
@@ -153,7 +154,7 @@ static kefir_result_t initial_exec_tls(struct kefir_mem *mem, struct kefir_codeg
                                                  KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &result_vreg));
 
     const struct kefir_ir_identifier *ir_identifier;
-    REQUIRE_OK(kefir_ir_module_get_identifier(function->module->ir_module, identifier, &ir_identifier));
+    REQUIRE_OK(kefir_ir_module_get_identifier(function->generic.module->ir_module, identifier, &ir_identifier));
     if (ir_identifier->scope != KEFIR_IR_IDENTIFIER_SCOPE_IMPORT &&
         !function->codegen->config->position_independent_code) {
         REQUIRE_OK(kefir_asmcmp_amd64_lea(
@@ -184,7 +185,7 @@ static kefir_result_t initial_exec_tls(struct kefir_mem *mem, struct kefir_codeg
             NULL));
     }
 
-    REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, result_vreg));
+    REQUIRE_OK(kefir_codegen_amd64_function_translator_assign_vreg(mem, &function->translator, instruction->id, result_vreg));
     return KEFIR_OK;
 }
 

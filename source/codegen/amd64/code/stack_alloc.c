@@ -19,19 +19,19 @@
 */
 
 #include "kefir/codegen/asmcmp/context.h"
-#define KEFIR_CODEGEN_AMD64_FUNCTION_INTERNAL
 #include "kefir/codegen/amd64/function.h"
+#include "kefir/codegen/amd64/instructions.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 
 static kefir_result_t ensure_dynamic_scope_vreg(struct kefir_mem *mem, struct kefir_codegen_amd64_function *function) {
-    if (function->dynamic_scope_vreg == KEFIR_ASMCMP_INDEX_NONE) {
+    if (function->translator.dynamic_scope_vreg == KEFIR_ASMCMP_INDEX_NONE) {
         REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
                                                      KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE,
-                                                     &function->dynamic_scope_vreg));
-        REQUIRE_OK(kefir_asmcmp_amd64_mov(mem, &function->code, function->prologue_tail,
-                                          &KEFIR_ASMCMP_MAKE_VREG64(function->dynamic_scope_vreg),
-                                          &KEFIR_ASMCMP_MAKE_INT(0), &function->prologue_tail));
+                                                     &function->translator.dynamic_scope_vreg));
+        REQUIRE_OK(kefir_asmcmp_amd64_mov(mem, &function->code, function->translator.prologue_tail,
+                                          &KEFIR_ASMCMP_MAKE_VREG64(function->translator.dynamic_scope_vreg),
+                                          &KEFIR_ASMCMP_MAKE_INT(0), &function->translator.prologue_tail));
 
         REQUIRE_OK(kefir_codegen_amd64_stack_frame_varying_stack_pointer(&function->stack_frame));
     }
@@ -51,17 +51,17 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(stack_alloc)(struct kefir_me
                                                  KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &result_vreg));
     REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
                                                  KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &tmp_vreg));
-    REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(
-        function, instruction->operation.parameters.refs[KEFIR_OPT_STACK_ALLOCATION_SIZE_REF], &size_vreg));
-    REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(
-        function, instruction->operation.parameters.refs[KEFIR_OPT_STACK_ALLOCATION_ALIGNMENT_REF], &alignment_vreg));
+    REQUIRE_OK(kefir_codegen_amd64_function_translator_vreg_of(
+        &function->translator, instruction->operation.parameters.refs[KEFIR_OPT_STACK_ALLOCATION_SIZE_REF], &size_vreg));
+    REQUIRE_OK(kefir_codegen_amd64_function_translator_vreg_of(
+        &function->translator, instruction->operation.parameters.refs[KEFIR_OPT_STACK_ALLOCATION_ALIGNMENT_REF], &alignment_vreg));
 
     REQUIRE_OK(ensure_dynamic_scope_vreg(mem, function));
 
     if (!instruction->operation.parameters.stack_allocation.within_scope) {
         REQUIRE_OK(kefir_asmcmp_amd64_mov(
             mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-            &KEFIR_ASMCMP_MAKE_VREG64(function->dynamic_scope_vreg), &KEFIR_ASMCMP_MAKE_INT(0), NULL));
+            &KEFIR_ASMCMP_MAKE_VREG64(function->translator.dynamic_scope_vreg), &KEFIR_ASMCMP_MAKE_INT(0), NULL));
     }
 
     REQUIRE_OK(kefir_asmcmp_amd64_sub(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
@@ -91,7 +91,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(stack_alloc)(struct kefir_me
                                       &KEFIR_ASMCMP_MAKE_VREG64(result_vreg),
                                       &KEFIR_ASMCMP_MAKE_PHREG(KEFIR_AMD64_XASMGEN_REGISTER_RSP), NULL));
 
-    REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, result_vreg));
+    REQUIRE_OK(kefir_codegen_amd64_function_translator_assign_vreg(mem, &function->translator, instruction->id, result_vreg));
     return KEFIR_OK;
 }
 
@@ -111,7 +111,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(push_scope)(struct kefir_mem
 
     REQUIRE_OK(kefir_asmcmp_amd64_mov(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                                       &KEFIR_ASMCMP_MAKE_VREG64(result_vreg),
-                                      &KEFIR_ASMCMP_MAKE_VREG64(function->dynamic_scope_vreg), NULL));
+                                      &KEFIR_ASMCMP_MAKE_VREG64(function->translator.dynamic_scope_vreg), NULL));
 
     REQUIRE_OK(kefir_asmcmp_amd64_sub(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                                       &KEFIR_ASMCMP_MAKE_PHREG(KEFIR_AMD64_XASMGEN_REGISTER_RSP),
@@ -120,13 +120,13 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(push_scope)(struct kefir_mem
     REQUIRE_OK(kefir_asmcmp_amd64_mov(
         mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
         &KEFIR_ASMCMP_MAKE_INDIRECT_PHYSICAL(KEFIR_AMD64_XASMGEN_REGISTER_RSP, 0, KEFIR_ASMCMP_OPERAND_VARIANT_64BIT),
-        &KEFIR_ASMCMP_MAKE_VREG64(function->dynamic_scope_vreg), NULL));
+        &KEFIR_ASMCMP_MAKE_VREG64(function->translator.dynamic_scope_vreg), NULL));
 
     REQUIRE_OK(kefir_asmcmp_amd64_mov(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-                                      &KEFIR_ASMCMP_MAKE_VREG64(function->dynamic_scope_vreg),
+                                      &KEFIR_ASMCMP_MAKE_VREG64(function->translator.dynamic_scope_vreg),
                                       &KEFIR_ASMCMP_MAKE_PHREG(KEFIR_AMD64_XASMGEN_REGISTER_RSP), NULL));
 
-    REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, result_vreg));
+    REQUIRE_OK(kefir_codegen_amd64_function_translator_assign_vreg(mem, &function->translator, instruction->id, result_vreg));
     return KEFIR_OK;
 }
 
@@ -143,7 +143,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(pop_scope)(struct kefir_mem 
     REQUIRE_OK(kefir_asmcmp_context_new_label(mem, &function->code.context, KEFIR_ASMCMP_INDEX_NONE, &label));
 
     REQUIRE_OK(kefir_asmcmp_amd64_cmp(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-                                      &KEFIR_ASMCMP_MAKE_VREG64(function->dynamic_scope_vreg),
+                                      &KEFIR_ASMCMP_MAKE_VREG64(function->translator.dynamic_scope_vreg),
                                       &KEFIR_ASMCMP_MAKE_INT(0), NULL));
 
     REQUIRE_OK(kefir_asmcmp_amd64_jz(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
@@ -151,11 +151,11 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(pop_scope)(struct kefir_mem 
 
     REQUIRE_OK(kefir_asmcmp_amd64_mov(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                                       &KEFIR_ASMCMP_MAKE_PHREG(KEFIR_AMD64_XASMGEN_REGISTER_RSP),
-                                      &KEFIR_ASMCMP_MAKE_VREG64(function->dynamic_scope_vreg), NULL));
+                                      &KEFIR_ASMCMP_MAKE_VREG64(function->translator.dynamic_scope_vreg), NULL));
 
     REQUIRE_OK(kefir_asmcmp_amd64_mov(
         mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-        &KEFIR_ASMCMP_MAKE_VREG64(function->dynamic_scope_vreg),
+        &KEFIR_ASMCMP_MAKE_VREG64(function->translator.dynamic_scope_vreg),
         &KEFIR_ASMCMP_MAKE_INDIRECT_PHYSICAL(KEFIR_AMD64_XASMGEN_REGISTER_RSP, 0, KEFIR_ASMCMP_OPERAND_VARIANT_64BIT),
         NULL));
 

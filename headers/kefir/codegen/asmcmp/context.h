@@ -379,6 +379,7 @@ typedef struct kefir_asmcmp_context {
 kefir_result_t kefir_asmcmp_context_init(const struct kefir_asmcmp_context_class *, void *,
                                          struct kefir_asmcmp_context *);
 kefir_result_t kefir_asmcmp_context_free(struct kefir_mem *, struct kefir_asmcmp_context *);
+kefir_result_t kefir_asmcmp_context_reset(struct kefir_mem *, struct kefir_asmcmp_context *);
 
 kefir_result_t kefir_asmcmp_context_instr_at(const struct kefir_asmcmp_context *, kefir_asmcmp_instruction_index_t,
                                              struct kefir_asmcmp_instruction **);

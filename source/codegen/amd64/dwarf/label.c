@@ -19,7 +19,6 @@
 */
 
 #define KEFIR_CODEGEN_AMD64_DWARF_INTERNAL
-#define KEFIR_CODEGEN_AMD64_FUNCTION_INTERNAL
 #include "kefir/codegen/amd64/dwarf.h"
 #include "kefir/codegen/amd64/symbolic_labels.h"
 #include "kefir/core/error.h"
@@ -53,16 +52,16 @@ static kefir_result_t generate_label_info(struct kefir_mem *mem, struct kefir_co
                                           kefir_codegen_amd64_dwarf_entry_id_t *dwarf_entry_id) {
 
     const struct kefir_ir_identifier *ir_identifier;
-    REQUIRE_OK(kefir_ir_module_get_identifier(codegen_function->module->ir_module,
-                                              codegen_function->function->ir_func->name, &ir_identifier));
+    REQUIRE_OK(kefir_ir_module_get_identifier(codegen_function->generic.module->ir_module,
+                                              codegen_function->generic.function->ir_func->name, &ir_identifier));
 
     const struct kefir_ir_debug_entry_attribute *attr;
     const struct kefir_opt_code_debug_info_code_reference *code_reference;
-    REQUIRE_OK(kefir_ir_debug_entry_get_attribute(&codegen_function->module->ir_module->debug_info.entries, entry_id,
+    REQUIRE_OK(kefir_ir_debug_entry_get_attribute(&codegen_function->generic.module->ir_module->debug_info.entries, entry_id,
                                                   KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_CODE_BEGIN, &attr));
 
     kefir_asmcmp_label_index_t begin_label = KEFIR_ASMCMP_INDEX_NONE;
-    kefir_result_t res = kefir_opt_code_debug_info_code_reference(&codegen_function->function->debug_info,
+    kefir_result_t res = kefir_opt_code_debug_info_code_reference(&codegen_function->generic.function->debug_info,
                                                                   attr->code_index, &code_reference);
     if (res != KEFIR_NOT_FOUND) {
         REQUIRE_OK(res);
@@ -95,7 +94,7 @@ static kefir_result_t generate_label_info(struct kefir_mem *mem, struct kefir_co
     ASSIGN_PTR(dwarf_entry_id, label_entry_id);
     REQUIRE_OK(KEFIR_AMD64_DWARF_ENTRY_INFO(&codegen_function->codegen->xasmgen, label_entry_id,
                                             context->abbrev.entries.label, codegen_function->codegen->symbol_prefix));
-    REQUIRE_OK(kefir_ir_debug_entry_get_attribute(&codegen_function->module->ir_module->debug_info.entries, entry_id,
+    REQUIRE_OK(kefir_ir_debug_entry_get_attribute(&codegen_function->generic.module->ir_module->debug_info.entries, entry_id,
                                                   KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_NAME, &attr));
     REQUIRE_OK(kefir_codegen_amd64_dwarf_generate_strp(mem, &codegen_function->codegen->xasmgen, context,
                                                        codegen_function->codegen->symbol_prefix, attr->name));
@@ -108,20 +107,20 @@ static kefir_result_t generate_label_info(struct kefir_mem *mem, struct kefir_co
                                                    begin_label))));
 
     kefir_bool_t has_source_location;
-    REQUIRE_OK(kefir_ir_debug_entry_has_attribute(&codegen_function->module->ir_module->debug_info.entries, entry_id,
+    REQUIRE_OK(kefir_ir_debug_entry_has_attribute(&codegen_function->generic.module->ir_module->debug_info.entries, entry_id,
                                                   KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_SOURCE_LOCATION,
                                                   &has_source_location));
     if (has_source_location) {
-        REQUIRE_OK(kefir_ir_debug_entry_get_attribute(&codegen_function->module->ir_module->debug_info.entries,
+        REQUIRE_OK(kefir_ir_debug_entry_get_attribute(&codegen_function->generic.module->ir_module->debug_info.entries,
                                                       entry_id, KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_SOURCE_LOCATION, &attr));
         REQUIRE_OK(kefir_codegen_amd64_dwarf_generate_strp(mem, &codegen_function->codegen->xasmgen, context,
                                                            codegen_function->codegen->symbol_prefix,
                                                            attr->source_location));
-        REQUIRE_OK(kefir_ir_debug_entry_get_attribute(&codegen_function->module->ir_module->debug_info.entries,
+        REQUIRE_OK(kefir_ir_debug_entry_get_attribute(&codegen_function->generic.module->ir_module->debug_info.entries,
                                                       entry_id, KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_SOURCE_LOCATION_LINE,
                                                       &attr));
         REQUIRE_OK(KEFIR_AMD64_DWARF_QWORD(&codegen_function->codegen->xasmgen, attr->line));
-        REQUIRE_OK(kefir_ir_debug_entry_get_attribute(&codegen_function->module->ir_module->debug_info.entries,
+        REQUIRE_OK(kefir_ir_debug_entry_get_attribute(&codegen_function->generic.module->ir_module->debug_info.entries,
                                                       entry_id, KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_SOURCE_LOCATION_COLUMN,
                                                       &attr));
         REQUIRE_OK(KEFIR_AMD64_DWARF_QWORD(&codegen_function->codegen->xasmgen, attr->column));

@@ -49,6 +49,14 @@ kefir_result_t kefir_string_pool_free(struct kefir_mem *mem, struct kefir_string
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_string_pool_reset(struct kefir_mem *mem, struct kefir_string_pool *table) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(table != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid string table pointer"));
+    REQUIRE_OK(kefir_hashtable_clear(mem, &table->named_strings));
+    REQUIRE_OK(kefir_hashtable_clear(mem, &table->strings));
+    return KEFIR_OK;
+}
+
 const char *kefir_string_pool_insert(struct kefir_mem *mem, struct kefir_string_pool *table, const char *string,
                                      kefir_id_t *id) {
     REQUIRE(mem != NULL, NULL);

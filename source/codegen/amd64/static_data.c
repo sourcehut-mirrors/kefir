@@ -18,14 +18,12 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <string.h>
 #include "kefir/codegen/amd64/static_data.h"
 #include "kefir/codegen/amd64/symbolic_labels.h"
 #include "kefir/target/abi/amd64/type_layout.h"
 #include "kefir/target/abi/util.h"
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
-#include "kefir/core/vector.h"
 
 struct static_data_param {
     struct kefir_codegen_amd64 *codegen;

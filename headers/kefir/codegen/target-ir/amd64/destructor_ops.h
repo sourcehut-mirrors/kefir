@@ -22,20 +22,19 @@
 #define KEFIR_CODEGEN_TARGET_AMD64_DESTRUCTOR_OPS_H_
 
 #include "kefir/codegen/target-ir/destructor_ops.h"
-#include "kefir/codegen/amd64/function.h"
+#include "kefir/core/hashtree.h"
+#include "kefir/optimizer/debug.h"
 
 typedef struct kefir_codegen_target_ir_destructor_amd64_ops {
     struct kefir_codegen_target_ir_destructor_ops ops;
-    const struct kefir_codegen_amd64_function *function;
     struct kefir_asmcmp_amd64 *code;
-    struct kefir_hashtree constants;
-    struct kefir_asmcmp_debug_info_code_map debug_code_map;
-    struct kefir_asmcmp_debug_info_value_map debug_value_map;
+    struct kefir_hashtree *constants;
+    const struct kefir_opt_code_debug_info *debug_info;
 } kefir_codegen_target_ir_destructor_amd64_ops_t;
 
-kefir_result_t kefir_codegen_target_ir_destructor_amd64_ops_init(const struct kefir_codegen_amd64_function *,
-                                                                 struct kefir_asmcmp_amd64 *,
-                                                                 struct kefir_codegen_target_ir_destructor_amd64_ops *);
+kefir_result_t kefir_codegen_target_ir_destructor_amd64_ops_init(
+    const struct kefir_opt_code_debug_info *, struct kefir_asmcmp_amd64 *, struct kefir_hashtree *,
+    struct kefir_codegen_target_ir_destructor_amd64_ops *);
 kefir_result_t kefir_codegen_target_ir_destructor_amd64_ops_free(struct kefir_mem *,
                                                                  struct kefir_codegen_target_ir_destructor_amd64_ops *);
 

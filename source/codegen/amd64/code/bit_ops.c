@@ -18,9 +18,8 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#define KEFIR_CODEGEN_AMD64_FUNCTION_INTERNAL
 #include "kefir/codegen/amd64/function.h"
-#include "kefir/codegen/amd64/symbolic_labels.h"
+#include "kefir/codegen/amd64/instructions.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 
@@ -35,8 +34,8 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(bits_extract_signed)(
 
     REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
                                                  KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &result_vreg));
-    REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(
-        function, instruction->operation.parameters.refs[KEFIR_OPT_BITFIELD_BASE_REF], &base_vreg));
+    REQUIRE_OK(kefir_codegen_amd64_function_translator_vreg_of(
+        &function->translator, instruction->operation.parameters.refs[KEFIR_OPT_BITFIELD_BASE_REF], &base_vreg));
 
     REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(
         mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), result_vreg, base_vreg, NULL));
@@ -52,7 +51,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(bits_extract_signed)(
                                       &KEFIR_ASMCMP_MAKE_INT(64 - (instruction->operation.parameters.bitfield.length)),
                                       NULL));
 
-    REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, result_vreg));
+    REQUIRE_OK(kefir_codegen_amd64_function_translator_assign_vreg(mem, &function->translator, instruction->id, result_vreg));
     return KEFIR_OK;
 }
 
@@ -67,8 +66,8 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(bits_extract_unsigned)(
 
     REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
                                                  KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &result_vreg));
-    REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(
-        function, instruction->operation.parameters.refs[KEFIR_OPT_BITFIELD_BASE_REF], &base_vreg));
+    REQUIRE_OK(kefir_codegen_amd64_function_translator_vreg_of(
+        &function->translator, instruction->operation.parameters.refs[KEFIR_OPT_BITFIELD_BASE_REF], &base_vreg));
 
     REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(
         mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), result_vreg, base_vreg, NULL));
@@ -84,7 +83,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(bits_extract_unsigned)(
                                       &KEFIR_ASMCMP_MAKE_INT(64 - (instruction->operation.parameters.bitfield.length)),
                                       NULL));
 
-    REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, result_vreg));
+    REQUIRE_OK(kefir_codegen_amd64_function_translator_assign_vreg(mem, &function->translator, instruction->id, result_vreg));
     return KEFIR_OK;
 }
 
@@ -101,10 +100,10 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(bits_insert)(struct kefir_me
                                                  KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &result_vreg));
     REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
                                                  KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &tmp_vreg));
-    REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(
-        function, instruction->operation.parameters.refs[KEFIR_OPT_BITFIELD_BASE_REF], &base_vreg));
-    REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(
-        function, instruction->operation.parameters.refs[KEFIR_OPT_BITFIELD_VALUE_REF], &value_vreg));
+    REQUIRE_OK(kefir_codegen_amd64_function_translator_vreg_of(
+        &function->translator, instruction->operation.parameters.refs[KEFIR_OPT_BITFIELD_BASE_REF], &base_vreg));
+    REQUIRE_OK(kefir_codegen_amd64_function_translator_vreg_of(
+        &function->translator, instruction->operation.parameters.refs[KEFIR_OPT_BITFIELD_VALUE_REF], &value_vreg));
 
     REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(
         mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), result_vreg, value_vreg, NULL));
@@ -131,6 +130,6 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(bits_insert)(struct kefir_me
                                      &KEFIR_ASMCMP_MAKE_VREG64(result_vreg), &KEFIR_ASMCMP_MAKE_VREG64(tmp_vreg),
                                      NULL));
 
-    REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, result_vreg));
+    REQUIRE_OK(kefir_codegen_amd64_function_translator_assign_vreg(mem, &function->translator, instruction->id, result_vreg));
     return KEFIR_OK;
 }

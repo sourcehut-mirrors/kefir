@@ -1,6 +1,24 @@
+/*
+    SPDX-License-Identifier: GPL-3.0
+
+    Copyright (C) 2020-2026  Jevgenijs Protopopovs
+
+    This file is part of Kefir project.
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, version 3.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 
 #define KEFIR_CODEGEN_AMD64_DWARF_INTERNAL
-#define KEFIR_CODEGEN_AMD64_FUNCTION_INTERNAL
 #include "kefir/codegen/amd64/dwarf.h"
 #include "kefir/codegen/amd64/symbolic_labels.h"
 #include "kefir/core/error.h"
@@ -19,7 +37,7 @@ kefir_result_t kefir_codegen_amd64_dwarf_collect_code_fragments(struct kefir_mem
 
     for (kefir_opt_code_debug_info_code_ref_t code_ref = begin_ref; code_ref <= end_ref; code_ref++) {
         const struct kefir_opt_code_debug_info_code_reference *code_reference;
-        kefir_result_t res = kefir_opt_code_debug_info_code_reference(&codegen_function->function->debug_info, code_ref,
+        kefir_result_t res = kefir_opt_code_debug_info_code_reference(&codegen_function->generic.function->debug_info, code_ref,
                                                                       &code_reference);
         if (res == KEFIR_NOT_FOUND) {
             continue;
@@ -134,8 +152,8 @@ kefir_result_t kefir_codegen_amd64_dwarf_generate_range_list(struct kefir_mem *m
                                                                                 end_ref, &fragment_tree);
 
     const struct kefir_ir_identifier *ir_identifier;
-    REQUIRE_CHAIN(&res, kefir_ir_module_get_identifier(codegen_function->module->ir_module,
-                                                       codegen_function->function->ir_func->name, &ir_identifier));
+    REQUIRE_CHAIN(&res, kefir_ir_module_get_identifier(codegen_function->generic.module->ir_module,
+                                                       codegen_function->generic.function->ir_func->name, &ir_identifier));
     struct kefir_hashtree_node_iterator tree_iter;
     for (struct kefir_hashtree_node *node = kefir_hashtree_iter(&fragment_tree, &tree_iter);
          res == KEFIR_OK && node != NULL; node = kefir_hashtree_next(&tree_iter)) {

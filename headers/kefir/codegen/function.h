@@ -22,11 +22,29 @@
 #define KEFIR_CODEGEN_FUNCTION_H_
 
 #include "kefir/optimizer/code.h"
+#include "kefir/optimizer/control_flow.h"
+#include "kefir/optimizer/linear_liveness.h"
+#include "kefir/optimizer/liveness.h"
+#include "kefir/optimizer/schedule.h"
+#include "kefir/optimizer/variable_scope.h"
 #include "kefir/codegen/asmcmp/type_defs.h"
+#include "kefir/codegen/variable_allocator.h"
 
 typedef struct kefir_codegen_function {
+    struct kefir_opt_code_control_flow control_flow;
+    struct kefir_opt_code_liveness liveness;
+    struct kefir_opt_code_variable_scopes variable_scopes;
+    struct kefir_codegen_local_variable_allocator variable_allocator;
+    struct kefir_opt_code_schedule schedule;
+    struct kefir_opt_code_linear_liveness linear_liveness;
+    const struct kefir_opt_module *module;
+    struct kefir_opt_function *function;
+
     kefir_result_t (*resolve_virtual_register)(kefir_opt_instruction_ref_t, kefir_asmcmp_virtual_register_index_t *, void *);
     void *payload;
 } kefir_codegen_function_t;
+
+kefir_result_t kefir_codegen_function_init(const struct kefir_opt_module *, struct kefir_opt_function *, struct kefir_codegen_function *);
+kefir_result_t kefir_codegen_function_free(struct kefir_mem *, struct kefir_codegen_function *);
 
 #endif
