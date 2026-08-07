@@ -72,7 +72,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     REQUIRE_OK(kefir_ir_data_finalize(mem, data1));
     REQUIRE_OK(kefir_ir_module_declare_global(mem, &module, "DataX", KEFIR_IR_IDENTIFIER_GLOBAL_DATA));
 
-    REQUIRE_OK(KEFIR_CODEGEN_TRANSLATE(mem, &codegen.iface, &module));
+    REQUIRE_OK(KEFIR_TEST_UTIL_CODEGEN_TRANSLATE(mem, &codegen.iface, &module));
 
     REQUIRE_OK(KEFIR_CODEGEN_CLOSE(mem, &codegen.iface));
     REQUIRE_OK(kefir_ir_module_free(mem, &module));

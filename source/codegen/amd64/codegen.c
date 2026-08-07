@@ -746,9 +746,11 @@ static kefir_result_t generate_fini_array(struct kefir_codegen_amd64_module *cod
     return KEFIR_OK;
 }
 
-static kefir_result_t translate_impl(struct kefir_mem *mem, struct kefir_codegen_amd64_module *codegen_module) {
+static kefir_result_t translate_impl(struct kefir_mem *mem, struct kefir_codegen_amd64_module *codegen_module, kefir_bool_t no_prologue) {
     REQUIRE_OK(kefir_opt_module_liveness_trace(mem, codegen_module->liveness, codegen_module->module));
-    REQUIRE_OK(KEFIR_AMD64_XASMGEN_PROLOGUE(&codegen_module->codegen->xasmgen));
+    if (!no_prologue) {
+        REQUIRE_OK(KEFIR_AMD64_XASMGEN_PROLOGUE(&codegen_module->codegen->xasmgen));
+    }
     REQUIRE_OK(translate_module_identifiers(codegen_module->module->ir_module, codegen_module->codegen,
                                             codegen_module->liveness));
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_NEWLINE(&codegen_module->codegen->xasmgen, 1));
@@ -822,7 +824,7 @@ static kefir_result_t translate_impl(struct kefir_mem *mem, struct kefir_codegen
     return KEFIR_OK;
 }
 
-static kefir_result_t translate_fn(struct kefir_mem *mem, struct kefir_codegen *cg, struct kefir_opt_module *module) {
+static kefir_result_t translate_fn(struct kefir_mem *mem, struct kefir_codegen *cg, struct kefir_opt_module *module, kefir_bool_t no_prologue) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(cg != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid amd64 codegen"));
     REQUIRE(module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer module"));
@@ -833,7 +835,7 @@ static kefir_result_t translate_fn(struct kefir_mem *mem, struct kefir_codegen *
     REQUIRE_OK(kefir_opt_module_liveness_init(&liveness));
     REQUIRE_OK(kefir_codegen_amd64_module_init(&codegen_module, codegen, module, &liveness));
     kefir_result_t res = KEFIR_OK;
-    REQUIRE_CHAIN(&res, translate_impl(mem, &codegen_module));
+    REQUIRE_CHAIN(&res, translate_impl(mem, &codegen_module, no_prologue));
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_opt_module_liveness_free(mem, &liveness);
         kefir_codegen_amd64_module_free(mem, &codegen_module);

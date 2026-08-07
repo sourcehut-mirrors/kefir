@@ -736,9 +736,6 @@ cld3:
     .quad 0, 0
     .quad 0, 0
 
-.att_syntax
-.section .note.GNU-stack,"",@progbits
-
 
 .section .text
 __kefir_softfloat_complex_float_mul:

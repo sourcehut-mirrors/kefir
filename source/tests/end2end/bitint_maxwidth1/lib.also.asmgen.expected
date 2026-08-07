@@ -1161,9 +1161,6 @@ maxalign:
 maxwidth:
     .long 65535
 
-.att_syntax
-.section .note.GNU-stack,"",@progbits
-
 
 .section .text
 __kefir_bigint_right_shift_whole_digits:

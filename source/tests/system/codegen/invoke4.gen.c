@@ -80,7 +80,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     REQUIRE_OK(kefir_irbuilder_type_append(mem, addstruct_decl_result, KEFIR_IR_TYPE_ARRAY, 0, 4));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, addstruct_decl_result, KEFIR_IR_TYPE_INT64, 0, 0));
 
-    REQUIRE_OK(KEFIR_CODEGEN_TRANSLATE(mem, &codegen.iface, &module));
+    REQUIRE_OK(KEFIR_TEST_UTIL_CODEGEN_TRANSLATE(mem, &codegen.iface, &module));
     REQUIRE_OK(KEFIR_CODEGEN_CLOSE(mem, &codegen.iface));
     REQUIRE_OK(kefir_ir_module_free(mem, &module));
     return EXIT_SUCCESS;

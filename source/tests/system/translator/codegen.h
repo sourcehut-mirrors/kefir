@@ -32,7 +32,7 @@
         struct kefir_ir_module module;                                                             \
         REQUIRE_OK(kefir_ir_module_alloc(mem, &module));                                           \
         REQUIRE_OK((fn) (mem, &module, &ir_target));                                               \
-        KEFIR_CODEGEN_TRANSLATE(mem, &codegen.iface, &module);                                     \
+        KEFIR_TEST_UTIL_CODEGEN_TRANSLATE(mem, &codegen.iface, &module);                                     \
         REQUIRE_OK(kefir_ir_module_free(mem, &module));                                            \
         KEFIR_CODEGEN_CLOSE(mem, &codegen.iface);                                                  \
     } while (0)

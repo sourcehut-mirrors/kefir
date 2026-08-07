@@ -66,7 +66,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     kefir_irbuilder_block_appendu64_2(mem, &func->body, KEFIR_IR_OPCODE_BRANCH, 2,
                                       KEFIR_IR_BRANCH_CONDITION_8BIT);  // [C-1, SZ]
 
-    KEFIR_CODEGEN_TRANSLATE(mem, &codegen.iface, &module);
+    KEFIR_TEST_UTIL_CODEGEN_TRANSLATE(mem, &codegen.iface, &module);
 
     KEFIR_CODEGEN_CLOSE(mem, &codegen.iface);
     REQUIRE_OK(kefir_ir_module_free(mem, &module));

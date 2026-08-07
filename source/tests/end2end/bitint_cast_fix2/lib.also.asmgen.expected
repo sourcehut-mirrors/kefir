@@ -109,9 +109,6 @@ uarr:
     .quad 10303347530931533393
     .quad 5
 
-.att_syntax
-.section .note.GNU-stack,"",@progbits
-
 
 .section .text
 __kefir_bigint_is_zero:

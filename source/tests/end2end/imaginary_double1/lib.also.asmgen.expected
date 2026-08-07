@@ -926,9 +926,6 @@ f64_const:
     .long 2147483648
     .long 0
     .long 0
-.att_syntax
-.section .note.GNU-stack,"",@progbits
-
 
 .section .text
 __kefir_softfloat_complex_double_div:

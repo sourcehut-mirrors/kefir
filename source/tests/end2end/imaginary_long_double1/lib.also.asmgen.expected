@@ -1175,9 +1175,6 @@ f80_const_ptr:
 f80_const:
     .quad 11334371690021912576, 16386
 
-.att_syntax
-.section .note.GNU-stack,"",@progbits
-
 
 .section .text
 __kefir_softfloat_complex_long_double_div:

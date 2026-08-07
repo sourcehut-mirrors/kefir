@@ -34,4 +34,6 @@ typedef struct kefir_test_codegen {
 kefir_result_t kefir_test_codegen_init(struct kefir_mem *, struct kefir_test_codegen *, FILE *,
                                        const struct kefir_codegen_configuration *);
 
+#define KEFIR_TEST_UTIL_CODEGEN_TRANSLATE(mem, codegen, module) KEFIR_CODEGEN_TRANSLATE((mem), (codegen), (module), false)
+
 #endif

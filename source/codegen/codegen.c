@@ -37,7 +37,7 @@ const struct kefir_codegen_configuration KefirCodegenDefaultConfiguration = {
     .consume_optimizer_code = false};
 
 kefir_result_t kefir_codegen_translate_ir(struct kefir_mem *mem, struct kefir_codegen *codegen,
-                                          struct kefir_ir_module *ir_module) {
+                                          struct kefir_ir_module *ir_module, kefir_bool_t no_prologue) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(codegen != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid code generator"));
     REQUIRE(ir_module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR module"));
@@ -45,7 +45,7 @@ kefir_result_t kefir_codegen_translate_ir(struct kefir_mem *mem, struct kefir_co
     struct kefir_opt_module opt_module;
     REQUIRE_OK(kefir_opt_module_init(mem, ir_module, &opt_module));
 
-    kefir_result_t res = codegen->translate_optimized(mem, codegen, &opt_module);
+    kefir_result_t res = codegen->translate_optimized(mem, codegen, &opt_module, no_prologue);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_opt_module_free(mem, &opt_module);
         return res;

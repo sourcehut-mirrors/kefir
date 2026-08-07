@@ -751,9 +751,6 @@ d32_to_ubitint180:
     .align 16
 .L__kefir_constant_uint_to_long_double:
     .long 1602224128
-.att_syntax
-.section .note.GNU-stack,"",@progbits
-
 
 .section .text
 __kefir_bigint_is_zero:

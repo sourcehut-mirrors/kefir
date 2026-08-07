@@ -162,9 +162,6 @@ test1:
 value:
     .skip 40
 
-.att_syntax
-.section .note.GNU-stack,"",@progbits
-
 
 .section .text
 __kefir_bigint_unsigned_compare:

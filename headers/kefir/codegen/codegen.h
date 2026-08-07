@@ -51,18 +51,18 @@ typedef struct kefir_codegen_configuration {
 } kefir_codegen_configuration_t;
 
 typedef struct kefir_codegen {
-    kefir_result_t (*translate_optimized)(struct kefir_mem *, struct kefir_codegen *, struct kefir_opt_module *);
+    kefir_result_t (*translate_optimized)(struct kefir_mem *, struct kefir_codegen *, struct kefir_opt_module *, kefir_bool_t);
     kefir_result_t (*close)(struct kefir_mem *, struct kefir_codegen *);
 
     void *data;
     void *self;
 } kefir_codegen_t;
 
-kefir_result_t kefir_codegen_translate_ir(struct kefir_mem *, struct kefir_codegen *, struct kefir_ir_module *);
+kefir_result_t kefir_codegen_translate_ir(struct kefir_mem *, struct kefir_codegen *, struct kefir_ir_module *, kefir_bool_t);
 
-#define KEFIR_CODEGEN_TRANSLATE(mem, codegen, module) (kefir_codegen_translate_ir((mem), (codegen), (module)))
-#define KEFIR_CODEGEN_TRANSLATE_OPTIMIZED(mem, codegen, module) \
-    ((codegen)->translate_optimized((mem), (codegen), (module)))
+#define KEFIR_CODEGEN_TRANSLATE(mem, codegen, module, _no_prologue) (kefir_codegen_translate_ir((mem), (codegen), (module), (_no_prologue)))
+#define KEFIR_CODEGEN_TRANSLATE_OPTIMIZED(mem, codegen, module, _no_prologue) \
+    ((codegen)->translate_optimized((mem), (codegen), (module), (_no_prologue)))
 #define KEFIR_CODEGEN_CLOSE(mem, codegen) ((codegen)->close((mem), (codegen)))
 
 extern const struct kefir_codegen_configuration KefirCodegenDefaultConfiguration;

@@ -2002,9 +2002,6 @@ f80_const:
 
 .section .debug_line
 .L__kefir_debug_lines_section_begin:
-.att_syntax
-.section .note.GNU-stack,"",@progbits
-
 
 .section .text
 __kefir_softfloat_complex_long_double_div:

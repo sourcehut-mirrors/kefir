@@ -462,9 +462,6 @@ int128_sub_overflow:
 
 .L__kefir_text_section_end:
 
-.att_syntax
-.section .note.GNU-stack,"",@progbits
-
 
 .section .text
 __kefir_bigint_unsigned_compare:

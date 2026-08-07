@@ -824,7 +824,7 @@ static kefir_result_t dump_asm_impl(struct kefir_mem *mem, const struct kefir_co
     if (compiler->profile->optimizer_enabled) {
         REQUIRE_OK(kefir_compiler_optimize(mem, compiler, &module, &opt_module, true));
         if (output != NULL) {
-            REQUIRE_OK(kefir_compiler_codegen_optimized(mem, compiler, &opt_module, output));
+            REQUIRE_OK(kefir_compiler_codegen_optimized(mem, compiler, &opt_module, output, false));
         }
     } else if (output != NULL) {
         REQUIRE_OK(kefir_compiler_codegen(mem, compiler, &module, output));

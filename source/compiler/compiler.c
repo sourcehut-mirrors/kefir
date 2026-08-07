@@ -559,7 +559,7 @@ kefir_result_t kefir_compiler_codegen(struct kefir_mem *mem, struct kefir_compil
     struct kefir_codegen *codegen = NULL;
     REQUIRE_OK(
         context->profile->new_codegen(mem, output, &context->codegen_configuration, runtime_hooks_ptr, &codegen));
-    kefir_result_t res = KEFIR_CODEGEN_TRANSLATE(mem, codegen, module);
+    kefir_result_t res = KEFIR_CODEGEN_TRANSLATE(mem, codegen, module, false);
     REQUIRE_ELSE(res == KEFIR_OK, {
         context->profile->free_codegen(mem, codegen);
         return res;
@@ -569,7 +569,7 @@ kefir_result_t kefir_compiler_codegen(struct kefir_mem *mem, struct kefir_compil
 }
 
 kefir_result_t kefir_compiler_codegen_optimized(struct kefir_mem *mem, struct kefir_compiler_context *context,
-                                                struct kefir_opt_module *module, FILE *output) {
+                                                struct kefir_opt_module *module, FILE *output, kefir_bool_t no_prologue) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid compiler context"));
     REQUIRE(module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer module"));
@@ -585,7 +585,7 @@ kefir_result_t kefir_compiler_codegen_optimized(struct kefir_mem *mem, struct ke
     struct kefir_codegen *codegen = NULL;
     REQUIRE_OK(
         context->profile->new_codegen(mem, output, &context->codegen_configuration, runtime_hooks_ptr, &codegen));
-    kefir_result_t res = KEFIR_CODEGEN_TRANSLATE_OPTIMIZED(mem, codegen, module);
+    kefir_result_t res = KEFIR_CODEGEN_TRANSLATE_OPTIMIZED(mem, codegen, module, no_prologue);
     REQUIRE_ELSE(res == KEFIR_OK, {
         context->profile->free_codegen(mem, codegen);
         return res;

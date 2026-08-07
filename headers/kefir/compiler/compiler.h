@@ -115,6 +115,6 @@ kefir_result_t kefir_compiler_optimize(struct kefir_mem *, struct kefir_compiler
 kefir_result_t kefir_compiler_codegen(struct kefir_mem *, struct kefir_compiler_context *, struct kefir_ir_module *,
                                       FILE *);
 kefir_result_t kefir_compiler_codegen_optimized(struct kefir_mem *, struct kefir_compiler_context *,
-                                                struct kefir_opt_module *, FILE *);
+                                                struct kefir_opt_module *, FILE *, kefir_bool_t);
 
 #endif

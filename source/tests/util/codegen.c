@@ -2,8 +2,9 @@
 #include "kefir/test/util.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
+#include <stdbool.h>
 
-static kefir_result_t translate_impl(struct kefir_mem *mem, struct kefir_codegen *cg, struct kefir_opt_module *module) {
+static kefir_result_t translate_impl(struct kefir_mem *mem, struct kefir_codegen *cg, struct kefir_opt_module *module, kefir_bool_t no_prologue) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(cg != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid amd64 codegen"));
     REQUIRE(module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer module"));
@@ -12,7 +13,7 @@ static kefir_result_t translate_impl(struct kefir_mem *mem, struct kefir_codegen
 
     codegen->new_codegen.config = codegen->config;
     REQUIRE_OK(kefir_opt_module_construct(mem, kft_util_get_ir_target_platform(), module, true));
-    REQUIRE_OK(KEFIR_CODEGEN_TRANSLATE_OPTIMIZED(mem, &codegen->new_codegen.codegen, module));
+    REQUIRE_OK(KEFIR_CODEGEN_TRANSLATE_OPTIMIZED(mem, &codegen->new_codegen.codegen, module, no_prologue));
     return KEFIR_OK;
 }
 
