@@ -660,7 +660,7 @@ test1:
 #                                "index": 0
 #                            },
 #                            "type": {
-#                                "variant": "default",
+#                                "variant": "32bit",
 #                                "kind": "general_purpose"
 #                            },
 #                            "allocation": {
@@ -765,7 +765,7 @@ test1:
 #                                "index": 0
 #                            },
 #                            "type": {
-#                                "variant": "default",
+#                                "variant": "32bit",
 #                                "kind": "general_purpose"
 #                            },
 #                            "allocation": {
@@ -800,7 +800,7 @@ test1:
 #                                "index": 1
 #                            },
 #                            "type": {
-#                                "variant": "default",
+#                                "variant": "32bit",
 #                                "kind": "general_purpose"
 #                            },
 #                            "allocation": {
@@ -1933,7 +1933,7 @@ test2:
 #                                "index": 1
 #                            },
 #                            "type": {
-#                                "variant": "default",
+#                                "variant": "32bit",
 #                                "kind": "general_purpose"
 #                            },
 #                            "allocation": {

@@ -88,7 +88,7 @@ mod3:
     sar $35, %rcx
     cdq
     idiv %ecx
-    mov %rdx, %rax
+    mov %edx, %eax
     lea (%rbp), %rsp
     pop %rbp
     ret

@@ -54,7 +54,7 @@ rotate_left:
     cdq
     mov $64, %ecx
     idiv %ecx
-    mov %rdx, %rcx
+    mov %edx, %ecx
     mov %rsi, %rax
     neg %eax
     cdq
@@ -76,7 +76,7 @@ rotate_right:
     cdq
     mov $64, %ecx
     idiv %ecx
-    mov %rdx, %rcx
+    mov %edx, %ecx
     mov %rsi, %rax
     neg %eax
     cdq

@@ -1756,13 +1756,13 @@ test_dec32_run_simulation:
     xor %edx, %edx
     mov $3, %ecx
     div %ecx
-    mov %rax, %rbx
+    mov %eax, %ebx
     mov %r14, %rax
     shl $1, %eax
     xor %edx, %edx
     mov $3, %ecx
     div %ecx
-    mov %rax, %r12
+    mov %eax, %r12d
     mov $0, %eax
     cmp %r14d, %eax
     jb .L__kefir_func_test_dec32_run_simulation_label6
@@ -2151,12 +2151,12 @@ test_dec64_run_simulation:
     xor %edx, %edx
     mov $3, %ecx
     div %ecx
-    mov %rax, %r14
+    mov %eax, %r14d
     mov %r13, %rax
     xor %edx, %edx
     mov $3, %ecx
     div %ecx
-    mov %rax, %r12
+    mov %eax, %r12d
     movq .L__kefir_func_test_dec64_run_simulation_label38(%rip), %xmm1
     movaps -160(%rbp), %xmm0
     call __bid_muldd3@PLT
@@ -2356,12 +2356,12 @@ test_dec128_run_simulation:
     xor %edx, %edx
     mov $3, %ecx
     div %ecx
-    mov %rax, %r14
+    mov %eax, %r14d
     mov %r13, %rax
     xor %edx, %edx
     mov $3, %ecx
     div %ecx
-    mov %rax, %r12
+    mov %eax, %r12d
     movdqu .L__kefir_func_test_dec128_run_simulation_label38(%rip), %xmm1
     movaps -176(%rbp), %xmm0
     call __bid_multd3@PLT

@@ -88,7 +88,7 @@ mod3:
     shr $35, %rcx
     xor %edx, %edx
     div %ecx
-    mov %rdx, %rax
+    mov %edx, %eax
     lea (%rbp), %rsp
     pop %rbp
     ret

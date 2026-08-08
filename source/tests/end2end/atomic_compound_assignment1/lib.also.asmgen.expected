@@ -606,7 +606,7 @@ divide_i8:
     movsx %sil, %rax
     cdq
     idiv %r9d
-    mov %rax, %r8
+    mov %eax, %r8d
     mov %rdi, %rdx
     mov %r8, %rcx
     mov %rsi, %rax
@@ -684,7 +684,7 @@ modulo_i8:
     movsx %sil, %rax
     cdq
     idiv %r9d
-    mov %rdx, %r8
+    mov %edx, %r8d
     mov %rdi, %rdx
     mov %r8, %rcx
     mov %rsi, %rax
@@ -777,7 +777,7 @@ divide_i16:
     movsx %si, %rax
     cdq
     idiv %r9d
-    mov %rax, %r8
+    mov %eax, %r8d
     mov %rdi, %rdx
     mov %r8, %rcx
     mov %rsi, %rax
@@ -795,7 +795,7 @@ divide_i32:
     movsx %r8d, %rax
     cdq
     idiv %esi
-    mov %rax, %r9
+    mov %eax, %r9d
     mov %rdi, %rdx
     mov %r9, %rcx
     mov %r8, %rax
@@ -832,7 +832,7 @@ modulo_i16:
     movsx %si, %rax
     cdq
     idiv %r9d
-    mov %rdx, %r8
+    mov %edx, %r8d
     mov %rdi, %rdx
     mov %r8, %rcx
     mov %rsi, %rax
@@ -850,7 +850,7 @@ modulo_i32:
     movsx %r8d, %rax
     cdq
     idiv %esi
-    mov %rdx, %r9
+    mov %edx, %r9d
     mov %rdi, %rdx
     mov %r9, %rcx
     mov %r8, %rax

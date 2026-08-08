@@ -214,7 +214,7 @@ divint:
     mov %rdi, %rax
     cdq
     idiv %esi
-    mov %rax, %rcx
+    mov %eax, %ecx
     mov %rdi, %rax
     cdq
     idiv %esi
@@ -238,7 +238,7 @@ modint:
     mov %rdi, %rax
     cdq
     idiv %esi
-    mov %rdx, %rcx
+    mov %edx, %ecx
     mov %rdi, %rax
     cdq
     idiv %esi
@@ -519,7 +519,7 @@ divchar:
     mov %rdi, %rax
     cdq
     idiv %esi
-    mov %rax, %rcx
+    mov %eax, %ecx
     mov %rdi, %rax
     cdq
     idiv %esi
@@ -567,7 +567,7 @@ modchar:
     mov %rdi, %rax
     cdq
     idiv %esi
-    mov %rdx, %rcx
+    mov %edx, %ecx
     mov %rdi, %rax
     cdq
     idiv %esi
@@ -930,7 +930,7 @@ divshort:
     mov %rdi, %rax
     cdq
     idiv %esi
-    mov %rax, %rcx
+    mov %eax, %ecx
     mov %rdi, %rax
     cdq
     idiv %esi
@@ -956,7 +956,7 @@ modshort:
     mov %rdi, %rax
     cdq
     idiv %esi
-    mov %rdx, %rcx
+    mov %edx, %ecx
     mov %rdi, %rax
     cdq
     idiv %esi
@@ -1095,7 +1095,7 @@ udivuint:
     mov %rdi, %rax
     xor %edx, %edx
     div %esi
-    mov %rax, %rcx
+    mov %eax, %ecx
     mov %rdi, %rax
     xor %edx, %edx
     div %esi
@@ -1119,7 +1119,7 @@ umoduint:
     mov %rdi, %rax
     xor %edx, %edx
     div %esi
-    mov %rdx, %rcx
+    mov %edx, %ecx
     mov %rdi, %rax
     xor %edx, %edx
     div %esi
@@ -1224,7 +1224,7 @@ udivuchar:
     mov %rdi, %rax
     cdq
     idiv %esi
-    mov %rax, %rcx
+    mov %eax, %ecx
     mov %rdi, %rax
     cdq
     idiv %esi
@@ -1272,7 +1272,7 @@ umoduchar:
     mov %rdi, %rax
     cdq
     idiv %esi
-    mov %rdx, %rcx
+    mov %edx, %ecx
     mov %rdi, %rax
     cdq
     idiv %esi
@@ -1356,7 +1356,7 @@ udivushort:
     mov %rdi, %rax
     cdq
     idiv %esi
-    mov %rax, %rcx
+    mov %eax, %ecx
     mov %rdi, %rax
     cdq
     idiv %esi
@@ -1382,7 +1382,7 @@ umodushort:
     mov %rdi, %rax
     cdq
     idiv %esi
-    mov %rdx, %rcx
+    mov %edx, %ecx
     mov %rdi, %rax
     cdq
     idiv %esi

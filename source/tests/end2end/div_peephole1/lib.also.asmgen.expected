@@ -105,7 +105,7 @@ div_int0:
 div_int1:
 .L__kefir_text_func_div_int1_begin:
     mov %rdi, %rax
-    shr $1, %rax
+    shr $1, %eax
     ret
 .L__kefir_text_func_div_int1_end:
 
@@ -158,21 +158,21 @@ div_char7:
 div_int10:
 .L__kefir_text_func_div_int10_begin:
     mov %rdi, %rax
-    shr $10, %rax
+    shr $10, %eax
     ret
 .L__kefir_text_func_div_int10_end:
 
 div_int16:
 .L__kefir_text_func_div_int16_begin:
     mov %rdi, %rax
-    shr $16, %rax
+    shr $16, %eax
     ret
 .L__kefir_text_func_div_int16_end:
 
 div_int23:
 .L__kefir_text_func_div_int23_begin:
     mov %rdi, %rax
-    shr $23, %rax
+    shr $23, %eax
     ret
 .L__kefir_text_func_div_int23_end:
 

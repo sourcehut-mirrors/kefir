@@ -1099,6 +1099,7 @@ static kefir_result_t scan_instructions(struct constructor_state *state) {
                     if (classification.operands[i].class == KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_WRITE ||
                         classification.operands[i].class == KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_READ_WRITE) {
                         output_vreg = vreg_idx;
+                        output_variant = classification.operands[i].implicit_parameter.variant;
                     }
                 }
             } else {
