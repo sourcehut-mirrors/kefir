@@ -21,6 +21,7 @@
 #define KEFIR_CODEGEN_TARGET_IR_AMD64_PEEPHOLE_INTERNAL
 #include "kefir/codegen/target-ir/amd64/transform.h"
 #include "kefir/codegen/target-ir/amd64/code.h"
+#include "kefir/codegen/target-ir/amd64/util.h"
 #include "kefir/codegen/target-ir/transform.h"
 #include "kefir/codegen/target-ir/tie.h"
 #include "kefir/codegen/target-ir/control_flow.h"
@@ -111,9 +112,7 @@ kefir_result_t kefir_codegen_target_ir_amd64_peephole_div(struct kefir_mem *mem,
                 &(struct kefir_codegen_target_ir_value_type) {
                     .kind = output_value_type->kind,
                     .metadata = output_value_type->metadata,
-                    .variant = output_value_type->variant != KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT
-                                   ? output_value_type->variant
-                                   : KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_64BIT}));
+                    .variant = output_value_type->variant}));
             REQUIRE_OK(kefir_codegen_target_ir_add_produced_resource_aspects(mem, code, shr_value_ref.instr_ref));
             REQUIRE_OK(kefir_codegen_target_ir_code_replace_value(mem, code, shr_value_ref, output_value_ref));
             REQUIRE_OK(kefir_codegen_target_ir_code_drop_instruction(mem, code, instr_ref));
@@ -188,12 +187,9 @@ kefir_result_t kefir_codegen_target_ir_amd64_peephole_idiv(struct kefir_mem *mem
             struct kefir_codegen_target_ir_value_type arg1_value_type_copy = *arg1_value_type;
             struct kefir_codegen_target_ir_value_type arg2_value_type_copy = *arg2_value_type;
             struct kefir_codegen_target_ir_value_type output_value_type_copy = *output_value_type;
-
+            
             kefir_codegen_target_ir_operand_variant_t variant =
-                oper.parameters[classification.operands[1].read_index].direct.variant !=
-                        KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT
-                    ? oper.parameters[classification.operands[1].read_index].direct.variant
-                    : KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_64BIT;
+                oper.parameters[classification.operands[1].read_index].direct.variant;
 
             struct kefir_codegen_target_ir_use_iterator use_iter;
             kefir_codegen_target_ir_instruction_ref_t use_instr_ref;
