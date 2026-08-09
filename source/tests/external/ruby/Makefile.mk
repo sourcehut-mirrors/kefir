@@ -40,7 +40,7 @@ $(KEFIR_EXTERNAL_TEST_RUBY_SOURCE_DIR)/Makefile: $(KEFIR_EXTERNAL_TEST_RUBY_SOUR
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		LC_ALL=C.UTF-8 \
 		CC="$(realpath $(KEFIR_EXE))" \
-		./configure --disable-install-rdoc
+		./configure --disable-install-rdoc --disable-yjit --disable-zjit 
 
 $(KEFIR_EXTERNAL_TEST_RUBY_SOURCE_DIR)/ruby: $(KEFIR_EXTERNAL_TEST_RUBY_SOURCE_DIR)/Makefile
 	@echo "Building ruby $(KEFIR_EXTERNAL_TEST_RUBY_VERSION)..."
