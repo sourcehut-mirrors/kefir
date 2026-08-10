@@ -83,7 +83,6 @@ typedef enum kefir_asmcmp_amd64_opcode {
 
 typedef enum kefir_asmcmp_amd64_register_preallocation_type {
     KEFIR_ASMCMP_AMD64_REGISTER_PREALLOCATION_SAME_AS,
-    KEFIR_ASMCMP_AMD64_REGISTER_PREALLOCATION_HINT,
     KEFIR_ASMCMP_AMD64_REGISTER_PREALLOCATION_REQUIREMENT
 } kefir_asmcmp_amd64_register_preallocation_type_t;
 
@@ -113,10 +112,6 @@ typedef struct kefir_asmcmp_amd64_register_preallocation {
 kefir_result_t kefir_asmcmp_amd64_register_allocation_same_as(struct kefir_mem *, struct kefir_asmcmp_amd64 *,
                                                               kefir_asmcmp_virtual_register_index_t,
                                                               kefir_asmcmp_virtual_register_index_t);
-
-kefir_result_t kefir_asmcmp_amd64_register_allocation_hint(struct kefir_mem *, struct kefir_asmcmp_amd64 *,
-                                                           kefir_asmcmp_virtual_register_index_t,
-                                                           kefir_asm_amd64_xasmgen_register_t);
 
 kefir_result_t kefir_asmcmp_amd64_register_allocation_requirement(struct kefir_mem *, struct kefir_asmcmp_amd64 *,
                                                                   kefir_asmcmp_virtual_register_index_t,

@@ -223,8 +223,7 @@ static kefir_result_t resolve_preallocation(struct kefir_codegen_amd64_function 
         REQUIRE_OK(res);
 
         if (preallocation != NULL) {
-            if (preallocation->type == KEFIR_ASMCMP_AMD64_REGISTER_PREALLOCATION_REQUIREMENT ||
-                preallocation->type == KEFIR_ASMCMP_AMD64_REGISTER_PREALLOCATION_HINT) {
+            if (preallocation->type == KEFIR_ASMCMP_AMD64_REGISTER_PREALLOCATION_REQUIREMENT) {
                 *preallocation_reg = preallocation->reg;
                 return KEFIR_OK;
             } else if (preallocation->type == KEFIR_ASMCMP_AMD64_REGISTER_PREALLOCATION_SAME_AS) {

@@ -88,7 +88,6 @@ static kefir_result_t construct_target_ir_get_allocation_constraint(
             constraint->physical_register = preallocation->reg;
             break;
 
-        case KEFIR_ASMCMP_AMD64_REGISTER_PREALLOCATION_HINT:
         case KEFIR_ASMCMP_AMD64_REGISTER_PREALLOCATION_SAME_AS:
             constraint->type = KEFIR_CODEGEN_TARGET_IR_ALLOCATION_NO_CONSTRAINT;
             break;

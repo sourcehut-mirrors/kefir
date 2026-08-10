@@ -187,24 +187,6 @@ kefir_result_t kefir_asmcmp_amd64_register_allocation_same_as(struct kefir_mem *
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_asmcmp_amd64_register_allocation_hint(struct kefir_mem *mem, struct kefir_asmcmp_amd64 *target,
-                                                           kefir_asmcmp_virtual_register_index_t vreg_idx,
-                                                           kefir_asm_amd64_xasmgen_register_t reg) {
-    PREALLOCATION_IMPL(
-        mem, target, vreg_idx,
-        {
-            preallocation->type = KEFIR_ASMCMP_AMD64_REGISTER_PREALLOCATION_HINT;
-            preallocation->reg = reg;
-        },
-        {
-            if (preallocation->type == KEFIR_ASMCMP_AMD64_REGISTER_PREALLOCATION_SAME_AS) {
-                preallocation->type = KEFIR_ASMCMP_AMD64_REGISTER_PREALLOCATION_HINT;
-                preallocation->reg = reg;
-            }
-        });
-    return KEFIR_OK;
-}
-
 kefir_result_t kefir_asmcmp_amd64_register_allocation_requirement(struct kefir_mem *mem,
                                                                   struct kefir_asmcmp_amd64 *target,
                                                                   kefir_asmcmp_virtual_register_index_t vreg_idx,
