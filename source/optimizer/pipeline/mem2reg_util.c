@@ -92,6 +92,10 @@ kefir_result_t kefir_opt_code_util_extend_load_value(struct kefir_mem *mem, stru
     return KEFIR_OK;
 }
 
+struct block_phis {
+    struct kefir_hashtable phis;
+};
+
 struct mem2reg_state {
     struct kefir_mem *mem;
     struct kefir_opt_code_container *code;
@@ -183,15 +187,34 @@ static kefir_result_t mem2reg_insert_phis(struct mem2reg_state *state, kefir_opt
         for (res = kefir_hashset_iter(&state->control_flow->blocks[block_ref].dominance_frontier, &iter, &entry);
              res == KEFIR_OK; res = kefir_hashset_next(&iter, &entry)) {
             ASSIGN_DECL_CAST(kefir_opt_block_id_t, frontier_block_ref, entry);
-            kefir_uint64_t key = (((kefir_uint64_t) instr_ref) << 32) | (kefir_uint32_t) frontier_block_ref;
-            if (frontier_block_ref == state->control_flow->code->entry_point ||
-                kefir_hashtable_has(&state->inserted_phis, (kefir_hashtable_key_t) key)) {
+            if (frontier_block_ref == state->control_flow->code->entry_point) {
+                continue;
+            }
+
+            struct block_phis *phis;
+            kefir_hashtable_value_t table_value;
+            res = kefir_hashtable_at(&state->inserted_phis, (kefir_hashtable_key_t) frontier_block_ref, &table_value);
+            if (res == KEFIR_NOT_FOUND) {
+                phis = KEFIR_MALLOC(state->mem, sizeof(struct block_phis));
+                REQUIRE(phis != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate block phis"));
+                res = kefir_hashtable_init(&phis->phis, &kefir_hashtable_uint_ops);
+                REQUIRE_CHAIN(&res, kefir_hashtable_insert(state->mem, &state->inserted_phis, (kefir_hashtable_key_t) frontier_block_ref, (kefir_hashtable_value_t) phis));
+                REQUIRE_ELSE(res == KEFIR_OK, {
+                    KEFIR_FREE(state->mem, phis);
+                    return res;
+                });
+            } else {
+                REQUIRE_OK(res);
+                phis = (struct block_phis *) table_value;
+            }
+
+            if (kefir_hashtable_has(&phis->phis, (kefir_hashset_key_t) instr_ref)) {
                 continue;
             }
 
             kefir_opt_instruction_ref_t phi_instr_ref;
             REQUIRE_OK(kefir_opt_code_container_new_phi(state->mem, state->code, frontier_block_ref, &phi_instr_ref));
-            REQUIRE_OK(kefir_hashtable_insert(state->mem, &state->inserted_phis, (kefir_hashtable_key_t) key,
+            REQUIRE_OK(kefir_hashtable_insert(state->mem, &phis->phis, (kefir_hashtable_key_t) instr_ref,
                                               (kefir_hashtable_value_t) phi_instr_ref));
             REQUIRE_OK(kefir_list_insert_after(state->mem, &state->block_queue, NULL,
                                                (void *) (kefir_uptr_t) frontier_block_ref));
@@ -484,23 +507,29 @@ static kefir_result_t mem2reg_link_successor_phis(struct mem2reg_state *state, s
          res = kefir_hashset_next(&iter, &key)) {
         ASSIGN_DECL_CAST(kefir_opt_block_id_t, successor_block_ref, (kefir_uptr_t) key);
 
-        struct kefir_hashset_iterator iter2;
-        kefir_hashset_key_t entry2;
-        for (res = kefir_hashset_iter(state->candidates, &iter2, &entry2); res == KEFIR_OK;
-             res = kefir_hashset_next(&iter2, &entry2)) {
-            ASSIGN_DECL_CAST(kefir_opt_instruction_ref_t, instr_ref, entry2);
+        kefir_hashtable_value_t table_value;
+        res = kefir_hashtable_at(&state->inserted_phis, (kefir_hashtable_key_t) successor_block_ref, &table_value);
+        if (res == KEFIR_NOT_FOUND) {
+            continue;
+        }
+        REQUIRE_OK(res);
+        ASSIGN_DECL_CAST(struct block_phis *, phis, table_value);
 
-            kefir_uint64_t key = (((kefir_uint64_t) instr_ref) << 32) | (kefir_uint32_t) successor_block_ref;
-            kefir_hashtable_value_t table_value;
-            res = kefir_hashtable_at(&state->inserted_phis, key, &table_value);
-            if (res != KEFIR_NOT_FOUND) {
-                REQUIRE_OK(res);
-                kefir_opt_instruction_ref_t link_ref;
-                REQUIRE_OK(mem2reg_find_link_for(state, frame, instr_ref, block_ref, NULL, &link_ref));
+        struct kefir_hashtable_iterator iter2;
+        kefir_hashtable_key_t table_key;
+        for (res = kefir_hashtable_iter(&phis->phis, &iter2, &table_key, &table_value); res == KEFIR_OK;
+             res = kefir_hashtable_next(&iter2, &table_key, &table_value)) {
+            ASSIGN_DECL_CAST(kefir_opt_instruction_ref_t, instr_ref, table_key);
+            ASSIGN_DECL_CAST(kefir_opt_instruction_ref_t, phi_instr_ref, table_value);
 
-                REQUIRE_OK(kefir_opt_code_container_phi_attach(
-                    state->mem, state->code, (kefir_opt_instruction_ref_t) table_value, block_ref, link_ref));
-            }
+            kefir_opt_instruction_ref_t link_ref;
+            REQUIRE_OK(mem2reg_find_link_for(state, frame, instr_ref, block_ref, NULL, &link_ref));
+
+            REQUIRE_OK(kefir_opt_code_container_phi_attach(
+                state->mem, state->code, phi_instr_ref, block_ref, link_ref));
+        }
+        if (res != KEFIR_ITERATOR_END) {
+            REQUIRE_OK(res);
         }
     }
     if (res != KEFIR_ITERATOR_END) {
@@ -693,20 +722,24 @@ static kefir_result_t mem2reg_link(struct mem2reg_state *state) {
 
         if (!frame->unfolded) {
             kefir_result_t res;
-            struct kefir_hashset_iterator iter2;
-            kefir_hashset_key_t entry2;
-            for (res = kefir_hashset_iter(state->candidates, &iter2, &entry2); res == KEFIR_OK;
-                 res = kefir_hashset_next(&iter2, &entry2)) {
-                ASSIGN_DECL_CAST(kefir_opt_instruction_ref_t, original_instr_ref, entry2);
 
-                kefir_uint64_t key = (((kefir_uint64_t) original_instr_ref) << 32) | (kefir_uint32_t) frame->block_ref;
+            kefir_hashtable_value_t table_value;
+            res = kefir_hashtable_at(&state->inserted_phis, (kefir_hashtable_key_t) frame->block_ref, &table_value);
+            if (res != KEFIR_NOT_FOUND) {
+                REQUIRE_OK(res);
+                ASSIGN_DECL_CAST(struct block_phis *, phis, table_value);
+
+                struct kefir_hashtable_iterator iter2;
+                kefir_hashtable_key_t table_key;
                 kefir_hashtable_value_t table_value;
-                res = kefir_hashtable_at(&state->inserted_phis, key, &table_value);
-                if (res != KEFIR_NOT_FOUND) {
-                    REQUIRE_OK(res);
+                for (res = kefir_hashtable_iter(&phis->phis, &iter2, &table_key, &table_value); res == KEFIR_OK;
+                    res = kefir_hashtable_next(&iter2, &table_key, &table_value)) {
                     REQUIRE_OK(kefir_hashtable_insert(state->mem, &frame->content,
-                                                      (kefir_hashtable_key_t) original_instr_ref,
-                                                      (kefir_opt_instruction_ref_t) table_value));
+                                                    table_key,
+                                                    table_value));
+                }
+                if (res != KEFIR_ITERATOR_END) {
+                    REQUIRE_OK(res);
                 }
             }
 
@@ -781,6 +814,20 @@ static kefir_result_t mem2reg_do(struct mem2reg_state *state) {
     return KEFIR_OK;
 }
 
+kefir_result_t free_block_phis(struct kefir_mem *mem, struct kefir_hashtable *table,
+                                                          kefir_hashtable_key_t key, kefir_hashtable_value_t value, void *payload) {
+    UNUSED(table);
+    UNUSED(key);
+    UNUSED(payload);
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    ASSIGN_DECL_CAST(struct block_phis *, phis, value);
+    REQUIRE(phis != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid block phis"));
+
+    REQUIRE_OK(kefir_hashtable_free(mem, &phis->phis));
+    KEFIR_FREE(mem, phis);
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_opt_code_util_mem2reg_apply(struct kefir_mem *mem, struct kefir_opt_code_container *code,
                                                  struct kefir_opt_code_debug_info *debug_info,
                                                  const struct kefir_ir_module *ir_module,
@@ -802,6 +849,7 @@ kefir_result_t kefir_opt_code_util_mem2reg_apply(struct kefir_mem *mem, struct k
     REQUIRE_OK(kefir_hashset_init(&state.visited_blocks, &kefir_hashtable_uint_ops));
     REQUIRE_OK(kefir_list_init(&state.block_queue));
     REQUIRE_OK(kefir_hashtable_init(&state.inserted_phis, &kefir_hashtable_uint_ops));
+    REQUIRE_OK(kefir_hashtable_on_removal(&state.inserted_phis, free_block_phis, NULL));
     REQUIRE_OK(kefir_hashtable_init(&state.candidate_types, &kefir_hashtable_uint_ops));
 
     kefir_result_t res = KEFIR_OK;
