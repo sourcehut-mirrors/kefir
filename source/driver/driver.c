@@ -62,6 +62,7 @@
     "op-simplify," \
     "gvn," \
     "phi-removal," \
+    "dead-code-elimination," \
     "loop-removal," \
     "dead-code-elimination," \
     "loop-rotate," \

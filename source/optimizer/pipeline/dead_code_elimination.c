@@ -18,6 +18,8 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "kefir/core/basic-types.h"
+#include "kefir/optimizer/code.h"
 #include "kefir/optimizer/pipeline.h"
 #include "kefir/optimizer/builder.h"
 #include "kefir/optimizer/code_util.h"
@@ -25,6 +27,7 @@
 #include "kefir/optimizer/liveness.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
+#include <stdbool.h>
 #include <string.h>
 
 struct payload_param {
@@ -46,6 +49,16 @@ static kefir_result_t is_instruction_alive(kefir_opt_instruction_ref_t instr_ref
     REQUIRE(alive_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to boolean flag"));
     ASSIGN_DECL_CAST(struct payload_param *, param, payload);
     REQUIRE(param != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code DCE parameter"));
+
+    const struct kefir_opt_instruction *instr;
+    REQUIRE_OK(kefir_opt_code_container_instr(param->control_flow->code, instr_ref, &instr));
+    if (KEFIR_OPT_INSTRUCTION_IS_NONVOLATILE_LOAD(instr)) {
+        struct kefir_opt_instruction_use_iterator use_iter;
+        if (kefir_opt_code_container_instruction_use_instr_iter(param->control_flow->code, instr_ref, &use_iter) == KEFIR_ITERATOR_END) {
+            *alive_ptr = false;
+            return KEFIR_OK;
+        }
+    }
 
     REQUIRE_OK(kefir_opt_code_liveness_instruction_is_alive(param->liveness, instr_ref, alive_ptr));
     return KEFIR_OK;
