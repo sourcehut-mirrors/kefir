@@ -18,6 +18,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "kefir/codegen/target-ir/code.h"
 #define KEFIR_CODEGEN_TARGET_IR_AMD64_PEEPHOLE_INTERNAL
 #include "kefir/codegen/target-ir/amd64/transform.h"
 #include "kefir/codegen/target-ir/amd64/code.h"
@@ -99,6 +100,8 @@ kefir_result_t kefir_codegen_target_ir_amd64_peephole_add(struct kefir_mem *mem,
         classification.operands[1].read_index != KEFIR_CODEGEN_TARGET_IR_TIED_READ_INDEX_NONE &&
         instr->operation.parameters[classification.operands[0].read_index].type ==
             KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF &&
+        instr->operation.parameters[classification.operands[0].read_index].direct.variant !=
+            KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_32BIT &&
         instr->operation.parameters[classification.operands[1].read_index].type ==
             KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INTEGER &&
         instr->operation.parameters[classification.operands[1].read_index].immediate.int_immediate == 0) {
