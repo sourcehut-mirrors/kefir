@@ -71,7 +71,10 @@ Maximum depth of recursive function inlining (2 by default).
 Maximum depth of function inlining (5 by default).
 .\"
 .It Fl \-optimizer-max-inlines-per-func Ar inlines
-Maximum number of inlined functions (10 by default).
+Maximum number of inlines per function (10 by default).
+.\"
+.It Fl \-optimizer-inline-target-blocks Ar inlines
+Maximum number of optimizer IR blocks in the inline target function (8192 by default).
 .\"
 .It Fl \-enable-lowering
 Perform target-specific SSA lowering (mandatory for bit-precise integer support) [default]

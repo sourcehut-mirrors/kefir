@@ -287,6 +287,7 @@ static kefir_result_t dump_action_impl(struct kefir_mem *mem, const struct kefir
     compiler.optimizer_configuration.max_recursive_inline = options->optimizer.max_recursive_inline;
     compiler.optimizer_configuration.max_inline_depth = options->optimizer.max_inline_depth;
     compiler.optimizer_configuration.max_inlines_per_function = options->optimizer.max_inlines_per_function;
+    compiler.optimizer_configuration.max_inline_target_block_count = options->optimizer.max_inline_target_block_count;
     switch (options->codegen.decimal_encoding) {
         case KEFIR_COMPILER_RUNNER_DECIMAL_ENCODING_DEFAULT:
             compiler.optimizer_configuration.decimal_encoding = profile.type_traits.data_model->decimal_encoding;

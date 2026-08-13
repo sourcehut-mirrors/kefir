@@ -207,6 +207,8 @@ static kefir_result_t inline_func_apply_impl(struct kefir_mem *mem, struct kefir
                                              struct kefir_opt_function *func,
                                              const struct kefir_optimizer_configuration *config,
                                              kefir_bool_t base_inline) {
+    REQUIRE(kefir_opt_code_container_block_count(&func->code) <= config->max_inline_target_block_count, KEFIR_OK);
+
     struct kefir_opt_code_control_flow control_flow;
     struct kefir_opt_code_sequencing sequencing;
     REQUIRE_OK(kefir_opt_code_control_flow_init(&control_flow));

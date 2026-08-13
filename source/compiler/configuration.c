@@ -70,6 +70,7 @@ kefir_result_t kefir_compiler_runner_configuration_init(struct kefir_compiler_ru
         .optimizer = {.max_recursive_inline = 2,
                       .max_inline_depth = 5,
                       .max_inlines_per_function = 10,
+                      .max_inline_target_block_count = 8192,
                       .disable_lowering = false,
                       .cx_limited_range = false},
         .dependency_output = {.target_name = NULL,

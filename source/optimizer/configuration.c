@@ -12,6 +12,7 @@ kefir_result_t kefir_optimizer_configuration_init(struct kefir_optimizer_configu
     conf->max_recursive_inline = 2;
     conf->max_inline_depth = 5;
     conf->max_inlines_per_function = 10;
+    conf->max_inline_target_block_count = 8192;
     conf->debug_info = true;
     conf->position_independent_code = false;
     conf->imprecise_decimal_bitint_conv = false;
@@ -64,6 +65,7 @@ kefir_result_t kefir_optimizer_configuration_copy_from(struct kefir_mem *mem,
     dst_conf->max_inline_depth = src_conf->max_inline_depth;
     dst_conf->max_recursive_inline = src_conf->max_recursive_inline;
     dst_conf->max_inlines_per_function = src_conf->max_inlines_per_function;
+    dst_conf->max_inline_target_block_count = src_conf->max_inline_target_block_count;
     dst_conf->decimal_encoding = src_conf->decimal_encoding;
     dst_conf->imprecise_decimal_bitint_conv = src_conf->imprecise_decimal_bitint_conv;
     dst_conf->target_lowering = src_conf->target_lowering;
