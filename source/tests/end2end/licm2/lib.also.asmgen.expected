@@ -67,11 +67,11 @@ test2:
     imul $40, %rcx, %rcx
     mov %rdi, %r10
     add %rcx, %r10
-    mov %rdx, %rcx
-    mov %r9, %r11
-    shl %cl, %r11d
-    mov %r11, %rcx
     lea 1(%r9d), %r11d
+    mov %rdx, %rcx
+    mov %r9, %rbx
+    shl %cl, %ebx
+    mov %rbx, %rcx
     cmp %esi, %r9d
     jge .L__kefir_func_test2_label3
     xor %r9d, %r9d

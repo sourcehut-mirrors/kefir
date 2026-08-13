@@ -247,12 +247,12 @@
                             "predecessors": [],
                             "immediate_dominator": null,
                             "alive_instructions": [
+                                241,
                                 208,
                                 80,
                                 192,
-                                241,
-                                160,
                                 32,
+                                160,
                                 176,
                                 128
                             ]

@@ -210,17 +210,17 @@ __kefir_bigint_util_add_digit_zero_extended:
     push %rbp
     mov %rsp, %rbp
     sub $64, %rsp
-    movq %rdx, -48(%rbp)
-    movb %sil, -52(%rbp)
+    movq %rdx, -40(%rbp)
+    movb %sil, -48(%rbp)
     movq %rdi, -24(%rbp)
-    movq -48(%rbp), %rax
+    movq -40(%rbp), %rax
     add $7, %rax
     mov $8, %ecx
     xor %edx, %edx
     div %rcx
     movq %rax, -32(%rbp)
-    movl $0, -40(%rbp)
     movl $0, -56(%rbp)
+    movl $0, -52(%rbp)
     xor %eax, %eax
     movq %rax, -16(%rbp)
 .L__kefir_runtime_func___kefir_bigint_util_add_digit_zero_extended_label2:
@@ -237,29 +237,29 @@ __kefir_bigint_util_add_digit_zero_extended:
     xor %ecx, %ecx
     cmp %rcx, %rax
     jz .L__kefir_runtime_func___kefir_bigint_util_add_digit_zero_extended_label7
-    movl -40(%rbp), %ecx
+    movl -56(%rbp), %ecx
     lea -8(%rbp), %rax
 .L__kefir_runtime_func___kefir_bigint_util_add_digit_zero_extended_label8:
     movl %ecx, (%rax)
-    movl -56(%rbp), %eax
+    movl -52(%rbp), %eax
     movl -4(%rbp), %ecx
     movl -8(%rbp), %edx
     add %ecx, %eax
     add %edx, %eax
-    movl %eax, -36(%rbp)
-    movl -36(%rbp), %eax
+    movl %eax, -44(%rbp)
+    movl -44(%rbp), %eax
     movq -24(%rbp), %rcx
     movq -16(%rbp), %rdx
     movb %al, (%rcx, %rdx, 1)
-    movl -36(%rbp), %eax
+    movl -44(%rbp), %eax
     mov $8, %ecx
     shr %cl, %eax
-    movl %eax, -56(%rbp)
+    movl %eax, -52(%rbp)
     addq $1, -16(%rbp)
     jmp .L__kefir_runtime_func___kefir_bigint_util_add_digit_zero_extended_label2
 .L__kefir_runtime_func___kefir_bigint_util_add_digit_zero_extended_label7:
     mov %rax, %rcx
-    movb -52(%rbp), %cl
+    movb -48(%rbp), %cl
     movzx %cl, %ecx
     lea -8(%rbp), %rax
     jmp .L__kefir_runtime_func___kefir_bigint_util_add_digit_zero_extended_label8

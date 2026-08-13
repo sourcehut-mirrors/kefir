@@ -49,15 +49,15 @@ test2:
     addl $1, -12(%rbp)
     jmp .L__kefir_func_test2_label5
 .L__kefir_func_test2_label2:
-    movl $10, -16(%rbp)
+    movl $10, -12(%rbp)
     movl $11, -20(%rbp)
-    movl $12, -12(%rbp)
+    movl $12, -16(%rbp)
     mov $5, %edi
     lea -24(%rbp), %rsi
     lea -28(%rbp), %rdx
-    lea -16(%rbp), %rcx
+    lea -12(%rbp), %rcx
     lea -20(%rbp), %r8
-    lea -12(%rbp), %r9
+    lea -16(%rbp), %r9
     xor %eax, %eax
     call test@PLT
 .L__kefir_func_test2_label3:

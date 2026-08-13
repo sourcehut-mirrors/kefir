@@ -85,12 +85,12 @@
                             ],
                             "immediate_dominator": null,
                             "alive_instructions": [
-                                80,
-                                48,
-                                32,
                                 64,
                                 0,
-                                16
+                                16,
+                                80,
+                                48,
+                                32
                             ]
                         }
                     },

@@ -26,22 +26,22 @@ test1:
     mov 16(%rbp), %r13
     movq %rax, -40(%rbp)
     movl %r10d, -68(%rbp)
-    movw %r11w, -56(%rbp)
+    movw %r11w, -52(%rbp)
     movb %bl, -28(%rbp)
     movq %r12, -48(%rbp)
     movl %r13d, -32(%rbp)
-    movw %r9w, -54(%rbp)
-    movb %r8b, -72(%rbp)
+    movw %r9w, -50(%rbp)
+    movb %r8b, -56(%rbp)
     movq %rcx, -64(%rbp)
-    movl %edx, -52(%rbp)
-    movw %si, -70(%rbp)
-    movb %dil, -71(%rbp)
-    movb -71(%rbp), %al
+    movl %edx, -72(%rbp)
+    movw %si, -54(%rbp)
+    movb %dil, -55(%rbp)
+    movb -55(%rbp), %al
     movq a@GOTPCREL(%rip), %rcx
     shl $59, %rax
     shr $59, %rax
     movb %al, (%rcx)
-    movb -72(%rbp), %al
+    movb -56(%rbp), %al
     movq a@GOTPCREL(%rip), %rcx
     shl $59, %rax
     shr $59, %rax
@@ -51,22 +51,22 @@ test1:
     shl $59, %rax
     shr $59, %rax
     movb %al, 2(%rcx)
-    movw -70(%rbp), %ax
-    movq b@GOTPCREL(%rip), %rcx
-    shl $52, %rax
-    shr $52, %rax
-    movw %ax, (%rcx)
     movw -54(%rbp), %ax
     movq b@GOTPCREL(%rip), %rcx
     shl $52, %rax
     shr $52, %rax
+    movw %ax, (%rcx)
+    movw -50(%rbp), %ax
+    movq b@GOTPCREL(%rip), %rcx
+    shl $52, %rax
+    shr $52, %rax
     movw %ax, 2(%rcx)
-    movw -56(%rbp), %ax
+    movw -52(%rbp), %ax
     movq b@GOTPCREL(%rip), %rcx
     shl $52, %rax
     shr $52, %rax
     movw %ax, 4(%rcx)
-    movl -52(%rbp), %eax
+    movl -72(%rbp), %eax
     movq c@GOTPCREL(%rip), %rcx
     shl $37, %rax
     shr $37, %rax

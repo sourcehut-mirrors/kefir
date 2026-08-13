@@ -1804,10 +1804,10 @@ test_dec32_run_simulation:
 .L__kefir_func_test_dec32_run_simulation_label18:
     cmp %ebx, %r15d
     jae .L__kefir_func_test_dec32_run_simulation_label19
-    movaps -112(%rbp), %xmm1
+    movaps -128(%rbp), %xmm1
     jmp .L__kefir_func_test_dec32_run_simulation_label23
 .L__kefir_func_test_dec32_run_simulation_label21:
-    movaps -128(%rbp), %xmm1
+    movaps -112(%rbp), %xmm1
     jmp .L__kefir_func_test_dec32_run_simulation_label23
 .L__kefir_func_test_dec32_run_simulation_label11:
     movd .L__kefir_func_test_dec32_run_simulation_label40(%rip), %xmm0
@@ -1882,10 +1882,10 @@ test_dec32_run_simulation:
     .long 847249409
     .align 4
 .L__kefir_func_test_dec32_run_simulation_label37:
-    .long 847249418
+    .long 847249410
     .align 4
 .L__kefir_func_test_dec32_run_simulation_label38:
-    .long 847249410
+    .long 847249418
     .align 4
 .L__kefir_func_test_dec32_run_simulation_label39:
     .long 847249408

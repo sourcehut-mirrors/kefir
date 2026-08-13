@@ -100,16 +100,16 @@
                             "predecessors": [],
                             "immediate_dominator": null,
                             "alive_instructions": [
-                                80,
                                 256,
+                                16,
                                 208,
-                                240,
+                                80,
                                 48,
                                 32,
-                                64,
                                 0,
+                                240,
+                                64,
                                 128,
-                                16,
                                 224
                             ]
                         }
@@ -279,21 +279,21 @@
                             "predecessors": [],
                             "immediate_dominator": null,
                             "alive_instructions": [
+                                3123,
                                 577,
-                                736,
                                 80,
                                 32,
                                 160,
-                                3123,
                                 128,
-                                416,
                                 1969,
+                                416,
+                                736,
+                                112,
                                 624,
                                 481,
                                 528,
-                                112,
-                                0,
                                 177,
+                                0,
                                 16
                             ]
                         }
@@ -309,17 +309,17 @@
                                 "control_next": 944
                             },
                             {
-                                "id": 1953,
-                                "opcode": "float64_const",
-                                "value": 1.000000,
-                                "control_next": null
-                            },
-                            {
                                 "id": 1697,
                                 "opcode": "alloc_local",
                                 "scope": 0,
                                 "type_id": 102,
                                 "type_index": 0,
+                                "control_next": null
+                            },
+                            {
+                                "id": 1953,
+                                "opcode": "float64_const",
+                                "value": 1.000000,
                                 "control_next": null
                             },
                             {
@@ -340,10 +340,10 @@
                             ],
                             "immediate_dominator": 0,
                             "alive_instructions": [
-                                944,
-                                1953,
                                 80,
                                 624,
+                                1953,
+                                944,
                                 1697,
                                 0,
                                 128,
@@ -403,11 +403,11 @@
                             "alive_instructions": [
                                 976,
                                 624,
-                                1953,
+                                80,
                                 1697,
                                 0,
                                 1986,
-                                80,
+                                1953,
                                 128,
                                 1072,
                                 1057
@@ -474,12 +474,12 @@
                                 1264,
                                 624,
                                 80,
-                                1616,
-                                1248,
                                 0,
+                                1616,
                                 209,
                                 1408,
-                                273
+                                273,
+                                1248
                             ]
                         }
                     },
@@ -570,12 +570,12 @@
                             "alive_instructions": [
                                 1488,
                                 1632,
-                                1280,
+                                1456,
                                 80,
                                 1648,
-                                1616,
                                 0,
-                                1456,
+                                1616,
+                                1280,
                                 1313,
                                 1472,
                                 1408
@@ -615,11 +615,11 @@
                             ],
                             "immediate_dominator": 6,
                             "alive_instructions": [
-                                2161,
-                                0,
-                                1681,
                                 1664,
-                                80
+                                0,
+                                2161,
+                                80,
+                                1681
                             ]
                         }
                     },
@@ -681,9 +681,9 @@
                             "immediate_dominator": 7,
                             "alive_instructions": [
                                 1920,
-                                3442,
-                                1936,
                                 3697,
+                                1936,
+                                3442,
                                 1904,
                                 0,
                                 80
@@ -749,16 +749,16 @@
                             "immediate_dominator": 5,
                             "alive_instructions": [
                                 1184,
-                                1216,
-                                1168,
-                                1953,
-                                1136,
                                 624,
+                                1216,
+                                80,
+                                1136,
                                 1697,
                                 0,
-                                80,
                                 128,
-                                1200
+                                1200,
+                                1168,
+                                1953
                             ]
                         }
                     },
@@ -791,10 +791,10 @@
                             "alive_instructions": [
                                 832,
                                 0,
+                                624,
                                 896,
                                 128,
-                                80,
-                                624
+                                80
                             ]
                         }
                     }

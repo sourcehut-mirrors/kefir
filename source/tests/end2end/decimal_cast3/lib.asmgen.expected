@@ -755,28 +755,28 @@ d32_to_ubitint180:
 .section .text
 __kefir_bigint_is_zero:
 .L__kefir_runtime_text_func___kefir_bigint_is_zero_begin:
-    lea 7(%rsi), %rax
-    shr $3, %rax
     lea -1(%rsi), %rcx
-    mov %rcx, %rdx
-    shr $3, %rdx
-    shl $3, %rdx
-    sub %rdx, %rcx
+    mov %rcx, %rax
+    shr $3, %rax
+    shl $3, %rax
+    sub %rax, %rcx
     add $1, %rcx
-    mov $1, %edx
-    shl %cl, %rdx
-    sub $1, %edx
+    mov $1, %eax
+    shl %cl, %rax
+    sub $1, %eax
+    lea 7(%rsi), %rcx
+    shr $3, %rcx
     cmp $0, %rsi
     je .L__kefir_runtime_func___kefir_bigint_is_zero_label9
-    xor %ecx, %ecx
+    xor %edx, %edx
 .L__kefir_runtime_func___kefir_bigint_is_zero_label3:
-    cmp %rax, %rcx
+    cmp %rcx, %rdx
     jae .L__kefir_runtime_func___kefir_bigint_is_zero_label8
-    movb (%rdi, %rcx, 1), %sil
-    add $1, %rcx
+    movb (%rdi, %rdx, 1), %sil
+    add $1, %rdx
     movzx %sil, %r8
-    and %edx, %r8d
-    cmp %rax, %rcx
+    and %eax, %r8d
+    cmp %rcx, %rdx
     cmove %r8, %rsi
     test %sil, %sil
     jz .L__kefir_runtime_func___kefir_bigint_is_zero_label3
@@ -807,11 +807,11 @@ __kefir_bigint_unsigned_from_long_double:
     fstpt -64(%rbp)
     movq -56(%rbp), %r14
     movq -64(%rbp), %rdx
+    lea 7(%rbx), %r15
+    shr $3, %r15
     mov %r14, %r13
     and $32767, %r13
     lea -16383(%r13), %rax
-    lea 7(%rbx), %r15
-    shr $3, %r15
     cmp $0, %rax
     jge .L__kefir_runtime_func___kefir_bigint_unsigned_from_long_double_label2
     mov $0, %rcx
