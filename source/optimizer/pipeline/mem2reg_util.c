@@ -481,6 +481,7 @@ static kefir_result_t mem2reg_find_link_for(struct mem2reg_state *state, struct 
                                             kefir_opt_block_id_t base_block_ref,
                                             const struct kefir_opt_instruction *use_instr,
                                             kefir_opt_instruction_ref_t *link_ref) {
+    struct mem2reg_link_frame *top_frame = frame;
     for (; frame != NULL; frame = frame->parent) {
         kefir_hashtable_value_t table_value;
         kefir_bool_t found = kefir_hashtable_at_raw(&frame->content, (kefir_hashtable_key_t) alloc_instr_ref, &table_value);
@@ -490,6 +491,9 @@ static kefir_result_t mem2reg_find_link_for(struct mem2reg_state *state, struct 
                                                             true));
             } else {
                 *link_ref = table_value;
+                if (top_frame != frame) {
+                    REQUIRE_OK(kefir_hashtable_insert(state->mem, &top_frame->content, (kefir_hashtable_key_t) alloc_instr_ref, table_value));
+                }
             }
             return KEFIR_OK;
         }

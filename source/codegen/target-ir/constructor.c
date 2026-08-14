@@ -1447,11 +1447,15 @@ static kefir_result_t find_link_for(struct constructor_state *state, struct phi_
                                     kefir_asmcmp_virtual_register_index_t vreg_idx,
                                     kefir_codegen_target_ir_block_ref_t predecessor_block_ref,
                                     struct kefir_codegen_target_ir_value_ref *value_ref) {
+    struct phi_link_frame *top_frame = frame;
     for (; frame != NULL; frame = frame->parent) {
         kefir_hashtable_value_t table_value;
         kefir_bool_t found = kefir_hashtable_at_raw(&frame->content, (kefir_hashtable_key_t) vreg_idx, &table_value);
         if (found) {
             *value_ref = KEFIR_CODEGEN_TARGET_IR_VALUE_REF_FROM(table_value);
+            if (top_frame != frame) {
+                REQUIRE_OK(kefir_hashtable_insert(state->mem, &top_frame->content, (kefir_hashtable_key_t) vreg_idx, table_value));
+            }
             return KEFIR_OK;
         }
     }
