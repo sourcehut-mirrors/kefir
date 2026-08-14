@@ -18,8 +18,6 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "kefir/core/basic-types.h"
-#include <stdbool.h>
 #define KEFIR_HASHTABLE_INTERNAL
 #include "kefir/core/hashtable.h"
 #include "kefir/core/error.h"
@@ -212,6 +210,7 @@ kefir_result_t kefir_hashtable_clear(struct kefir_mem *mem, struct kefir_hashtab
 static kefir_uint64_t next_power_of_2(kefir_uint64_t x) {
     REQUIRE(x != 0, 1);
 
+    x--;
     x |= x >> 1;
     x |= x >> 2;
     x |= x >> 4;

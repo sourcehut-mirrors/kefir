@@ -121,9 +121,8 @@ static kefir_hashtable_hash_t kefir_hashtable_str_hash(kefir_hashtable_key_t key
     const char *str = (const char *) key;
     REQUIRE(str != NULL, 0);
     kefir_hashtable_hash_t hash = 7;
-    const kefir_size_t length = strlen(str);
-    for (kefir_size_t i = 0; i < length; i++) {
-        hash = (hash * 31) + str[i];
+    for (; *str != '\0'; str++) {
+        hash = (hash * 31) + *str;
     }
     return hash;
 }
@@ -155,7 +154,7 @@ static kefir_bool_t kefir_hashtable_str_equal(kefir_hashtable_key_t key1, kefir_
         const kefir_uint64_t hash = (_ops_hash) ((_key), (_ops_payload));                                            \
         const kefir_uint32_t upper_part = hash >> 32;                                                                \
         const kefir_uint32_t lower_part = (hash & ((1ull << 32) - 1)) | 1;                                           \
-        const kefir_size_t index = KEFIR_HASHTABLE_WRAPAROUND(upper_part, (_capacity));                              \
+        kefir_size_t index = KEFIR_HASHTABLE_WRAPAROUND(upper_part, (_capacity));                              \
         const kefir_uint8_t state = (_entry_states)[index];                                                          \
         if (state == KEFIR_HASHTABLE_ENTRY_EMPTY) {                                                                  \
             *(_position_ptr) = index;                                                                                \
@@ -172,8 +171,9 @@ static kefir_bool_t kefir_hashtable_str_equal(kefir_hashtable_key_t key1, kefir_
         }                                                                                                            \
                                                                                                                      \
         kefir_size_t deleted_index = ~0ull;                                                                          \
-        for (kefir_size_t i = 0; i < (_capacity); i++) {                                                             \
-            kefir_size_t current_index = KEFIR_HASHTABLE_WRAPAROUND(index + i * lower_part, (_capacity));            \
+        index += lower_part; \
+        for (kefir_size_t i = 1; i < (_capacity); i++, index += lower_part) {                                                             \
+            kefir_size_t current_index = KEFIR_HASHTABLE_WRAPAROUND(index, (_capacity));            \
             (*(_collisions_ptr))++;                                                                                  \
             const kefir_uint8_t current_state = (_entry_states)[current_index];                                      \
             if (current_state == KEFIR_HASHTABLE_ENTRY_EMPTY) {                                                      \
@@ -212,9 +212,9 @@ static kefir_bool_t kefir_hashtable_str_equal(kefir_hashtable_key_t key1, kefir_
             const kefir_uint32_t upper_part = hash >> 32;                                                     \
             const kefir_uint32_t lower_part = (hash & ((1ull << 32) - 1)) | 1;                                \
             const kefir_size_t capacity = (_hashtable)->capacity;                                             \
-            const kefir_size_t base_index = KEFIR_HASHTABLE_WRAPAROUND(upper_part, capacity);                 \
-            for (kefir_size_t i = 0; i < capacity; i++) {                                                     \
-                const kefir_size_t index = KEFIR_HASHTABLE_WRAPAROUND(base_index + i * lower_part, capacity); \
+            kefir_size_t base_index = KEFIR_HASHTABLE_WRAPAROUND(upper_part, capacity);                 \
+            for (kefir_size_t i = 0; i < capacity; i++, base_index += lower_part) {                                                     \
+                const kefir_size_t index = KEFIR_HASHTABLE_WRAPAROUND(base_index, capacity); \
                 const kefir_uint8_t state = (_hashtable)->entry_states[index];                                \
                 if (state == KEFIR_HASHTABLE_ENTRY_EMPTY) {                                                   \
                     break;                                                                                    \

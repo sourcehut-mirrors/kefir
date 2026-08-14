@@ -158,6 +158,7 @@ kefir_result_t kefir_hashset_add(struct kefir_mem *mem, struct kefir_hashset *ha
 static kefir_uint64_t next_power_of_2(kefir_uint64_t x) {
     REQUIRE(x != 0, 1);
 
+    x--;
     x |= x >> 1;
     x |= x >> 2;
     x |= x >> 4;
