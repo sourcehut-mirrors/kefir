@@ -18,21 +18,18 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "kefir/core/basic-types.h"
 #include "kefir/optimizer/code.h"
 #include "kefir/optimizer/pipeline.h"
-#include "kefir/optimizer/builder.h"
 #include "kefir/optimizer/code_util.h"
 #include "kefir/optimizer/control_flow.h"
-#include "kefir/optimizer/liveness.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
-#include <stdbool.h>
-#include <string.h>
+#include "kefir/optimizer/trace.h"
 
 struct payload_param {
+    struct kefir_mem *mem;
     struct kefir_opt_code_control_flow *control_flow;
-    struct kefir_opt_code_liveness *liveness;
+    struct kefir_hashset *alive_instr;
 };
 
 static kefir_result_t is_block_alive(kefir_opt_block_id_t block_id, kefir_bool_t *alive_ptr, void *payload) {
@@ -60,7 +57,7 @@ static kefir_result_t is_instruction_alive(kefir_opt_instruction_ref_t instr_ref
         }
     }
 
-    REQUIRE_OK(kefir_opt_code_liveness_instruction_is_alive(param->liveness, instr_ref, alive_ptr));
+    *alive_ptr = kefir_hashset_has(param->alive_instr, (kefir_hashset_key_t) instr_ref);
     return KEFIR_OK;
 }
 
@@ -75,12 +72,24 @@ static kefir_result_t is_block_predecessor(kefir_opt_block_id_t predecessor_bloc
     return KEFIR_OK;
 }
 
+static kefir_result_t trace_instruction(kefir_opt_instruction_ref_t instr_ref, void *payload) {
+    ASSIGN_DECL_CAST(struct payload_param *, param, payload);
+    REQUIRE(param != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code DCE parameter"));
+
+    REQUIRE_OK(kefir_hashset_add(param->mem, param->alive_instr, (kefir_hashset_key_t) instr_ref));
+    return KEFIR_OK;
+}
+
 static kefir_result_t dead_code_elimination_impl(struct kefir_mem *mem, struct kefir_opt_function *func,
                                                  struct kefir_opt_code_control_flow *control_flow,
-                                                 struct kefir_opt_code_liveness *liveness) {
+                                                 struct kefir_hashset *alive_instr) {
     REQUIRE_OK(kefir_opt_code_control_flow_build(mem, control_flow, &func->code));
-    REQUIRE_OK(kefir_opt_code_liveness_build(mem, liveness, control_flow));
-    struct payload_param param = {.control_flow = control_flow, .liveness = liveness};
+    struct payload_param param = {.mem = mem, .control_flow = control_flow, .alive_instr = alive_instr};
+    const struct kefir_opt_code_container_tracer tracer = {
+        .trace_instruction = trace_instruction,
+        .payload = &param
+    };
+    REQUIRE_OK(kefir_opt_code_container_trace(mem, &func->code, &tracer));
     struct kefir_opt_code_container_dead_code_index index = {.is_block_alive = is_block_alive,
                                                              .is_instruction_alive = is_instruction_alive,
                                                              .is_block_predecessor = is_block_predecessor,
@@ -100,16 +109,16 @@ static kefir_result_t dead_code_elimination_apply(struct kefir_mem *mem, struct 
     REQUIRE(func != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer function"));
 
     struct kefir_opt_code_control_flow control_flow;
-    struct kefir_opt_code_liveness liveness;
+    struct kefir_hashset alive_instr;
     REQUIRE_OK(kefir_opt_code_control_flow_init(&control_flow));
-    REQUIRE_OK(kefir_opt_code_liveness_init(&liveness));
-    kefir_result_t res = dead_code_elimination_impl(mem, func, &control_flow, &liveness);
+    REQUIRE_OK(kefir_hashset_init(&alive_instr, &kefir_hashtable_uint_ops));
+    kefir_result_t res = dead_code_elimination_impl(mem, func, &control_flow, &alive_instr);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        kefir_opt_code_liveness_free(mem, &liveness);
+        kefir_hashset_free(mem, &alive_instr);
         kefir_opt_code_control_flow_free(mem, &control_flow);
         return res;
     });
-    res = kefir_opt_code_liveness_free(mem, &liveness);
+    res = kefir_hashset_free(mem, &alive_instr);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_opt_code_control_flow_free(mem, &control_flow);
         return res;
