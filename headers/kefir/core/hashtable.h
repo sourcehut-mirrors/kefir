@@ -80,6 +80,7 @@ kefir_result_t kefir_hashtable_trim(struct kefir_mem *, struct kefir_hashtable *
 kefir_result_t kefir_hashtable_ensure(struct kefir_mem *, struct kefir_hashtable *, kefir_size_t);
 kefir_result_t kefir_hashtable_at_mut(const struct kefir_hashtable *, kefir_hashtable_key_t,
                                       kefir_hashtable_value_t **);
+kefir_bool_t kefir_hashtable_at_raw(const struct kefir_hashtable *, kefir_hashtable_key_t, kefir_hashtable_value_t *);
 kefir_result_t kefir_hashtable_at(const struct kefir_hashtable *, kefir_hashtable_key_t, kefir_hashtable_value_t *);
 kefir_result_t kefir_hashtable_at2(const struct kefir_hashtable *, kefir_hashtable_key_t, kefir_hashtable_key_t *,
                                    kefir_hashtable_value_t *);

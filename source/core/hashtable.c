@@ -18,6 +18,8 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "kefir/core/basic-types.h"
+#include <stdbool.h>
 #define KEFIR_HASHTABLE_INTERNAL
 #include "kefir/core/hashtable.h"
 #include "kefir/core/error.h"
@@ -266,18 +268,18 @@ kefir_result_t kefir_hashtable_at_mut(const struct kefir_hashtable *hashtable, k
 #undef AT_MUT
 }
 
-kefir_result_t kefir_hashtable_at(const struct kefir_hashtable *hashtable, kefir_hashtable_key_t key,
+kefir_bool_t kefir_hashtable_at_raw(const struct kefir_hashtable *hashtable, kefir_hashtable_key_t key,
                                   kefir_hashtable_value_t *value_ptr) {
-    REQUIRE(hashtable != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid hashtable"));
+    REQUIRE(hashtable != NULL, false);
 
 #define AT(_ops_hash, _ops_equal, _ops_payload)                     \
     KEFIR_HASHTABLE_HAS(                                            \
         hashtable, _ops_hash, _ops_equal, _ops_payload, key,        \
         {                                                           \
             ASSIGN_PTR(value_ptr, hashtable->entries[index].value); \
-            return KEFIR_OK;                                        \
+            return true;                                        \
         },                                                          \
-        return KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find requested key in the hashtable"););
+        return false;);
 
     if (hashtable->ops == &kefir_hashtable_uint_ops) {
         AT(kefir_hashtable_uint_hash, kefir_hashtable_uint_equal, NULL);
@@ -288,6 +290,14 @@ kefir_result_t kefir_hashtable_at(const struct kefir_hashtable *hashtable, kefir
     }
 
 #undef AT
+}
+
+kefir_result_t kefir_hashtable_at(const struct kefir_hashtable *hashtable, kefir_hashtable_key_t key,
+                                  kefir_hashtable_value_t *value_ptr) {
+    REQUIRE(hashtable != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid hashtable"));
+
+    REQUIRE(kefir_hashtable_at_raw(hashtable, key, value_ptr), KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find requested key in the hashtable"));
+    return KEFIR_OK;
 }
 
 kefir_result_t kefir_hashtable_at2(const struct kefir_hashtable *hashtable, kefir_hashtable_key_t key,

@@ -20,6 +20,7 @@
 
 #include "kefir/codegen/target-ir/constructor.h"
 #include "kefir/codegen/target-ir/control_flow.h"
+#include "kefir/core/basic-types.h"
 #include "kefir/core/hashtable.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
@@ -1448,9 +1449,8 @@ static kefir_result_t find_link_for(struct constructor_state *state, struct phi_
                                     struct kefir_codegen_target_ir_value_ref *value_ref) {
     for (; frame != NULL; frame = frame->parent) {
         kefir_hashtable_value_t table_value;
-        kefir_result_t res = kefir_hashtable_at(&frame->content, (kefir_hashtable_key_t) vreg_idx, &table_value);
-        if (res != KEFIR_NOT_FOUND) {
-            REQUIRE_OK(res);
+        kefir_bool_t found = kefir_hashtable_at_raw(&frame->content, (kefir_hashtable_key_t) vreg_idx, &table_value);
+        if (found) {
             *value_ref = KEFIR_CODEGEN_TARGET_IR_VALUE_REF_FROM(table_value);
             return KEFIR_OK;
         }

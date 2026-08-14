@@ -18,6 +18,8 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "kefir/core/basic-types.h"
+#include "kefir/core/hashtable.h"
 #include "kefir/optimizer/code.h"
 #include "kefir/optimizer/builder.h"
 #include "kefir/optimizer/mem2reg_util.h"
@@ -481,9 +483,8 @@ static kefir_result_t mem2reg_find_link_for(struct mem2reg_state *state, struct 
                                             kefir_opt_instruction_ref_t *link_ref) {
     for (; frame != NULL; frame = frame->parent) {
         kefir_hashtable_value_t table_value;
-        kefir_result_t res = kefir_hashtable_at(&frame->content, (kefir_hashtable_key_t) alloc_instr_ref, &table_value);
-        if (res != KEFIR_NOT_FOUND) {
-            REQUIRE_OK(res);
+        kefir_bool_t found = kefir_hashtable_at_raw(&frame->content, (kefir_hashtable_key_t) alloc_instr_ref, &table_value);
+        if (found) {
             if (((kefir_opt_instruction_ref_t) table_value) == KEFIR_ID_NONE) {
                 REQUIRE_OK(mem2reg_assign_placeholder_value(state, alloc_instr_ref, base_block_ref, use_instr, link_ref,
                                                             true));
