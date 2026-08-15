@@ -21,9 +21,10 @@
 #ifndef KEFIR_OPTIMIZER_VARIABLE_SCOPE_H_
 #define KEFIR_OPTIMIZER_VARIABLE_SCOPE_H_
 
+#include "kefir/core/basic-types.h"
+#include "kefir/optimizer/code.h"
 #include "kefir/optimizer/liveness.h"
 #include "kefir/core/hashset.h"
-#include "kefir/core/graph.h"
 
 typedef struct kefir_opt_code_variable_scope {
     kefir_bool_t global;
@@ -36,7 +37,6 @@ typedef struct kefir_opt_code_block_variable_scopes {
 } kefir_opt_code_block_variable_scopes_t;
 
 typedef struct kefir_opt_code_variable_scopes {
-    struct kefir_graph scope_interference;
     struct kefir_hashtree scopes;
     struct kefir_hashtree block_scopes;
     struct kefir_hashset global_scopes;
@@ -48,11 +48,6 @@ kefir_result_t kefir_opt_code_variable_scopes_free(struct kefir_mem *, struct ke
 kefir_result_t kefir_opt_code_variable_scopes_build(struct kefir_mem *, struct kefir_opt_code_variable_scopes *,
                                                     const struct kefir_opt_code_liveness *);
 
-typedef struct kefir_opt_code_variable_scope_interference_iterator {
-    struct kefir_graph_edge_iterator edge_iter;
-} kefir_opt_code_variable_scope_interference_iterator_t;
-
-kefir_result_t kefir_opt_code_variable_scope_interference_iter(const struct kefir_opt_code_variable_scopes *, struct kefir_opt_code_variable_scope_interference_iterator *, kefir_opt_instruction_ref_t, kefir_opt_instruction_ref_t *);
-kefir_result_t kefir_opt_code_variable_scope_interference_next(struct kefir_opt_code_variable_scope_interference_iterator *, kefir_opt_instruction_ref_t *);
+kefir_result_t kefir_opt_code_variable_scope_interference_enumerate(struct kefir_mem *, const struct kefir_opt_code_variable_scopes *, kefir_opt_instruction_ref_t, kefir_result_t (*)(kefir_opt_instruction_ref_t, void *), void *);
 
 #endif

@@ -19,6 +19,7 @@
 */
 
 #include "kefir/codegen/variable_allocator.h"
+#include "kefir/core/basic-types.h"
 #include "kefir/target/abi/util.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
@@ -100,7 +101,10 @@ static kefir_result_t do_allocate_var(struct allocator_state *state, kefir_opt_i
     return KEFIR_OK;
 }
 
-static kefir_result_t fill_interfere_scope_vars(struct allocator_state *state, kefir_opt_instruction_ref_t scope_ref) {
+static kefir_result_t fill_interfere_scope_vars(kefir_opt_instruction_ref_t scope_ref, void *payload) {
+    ASSIGN_DECL_CAST(struct allocator_state *, state, payload);
+    REQUIRE(state != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Unexpected variable allocator state"));
+
     struct kefir_hashtree_node *node;
     kefir_result_t res = kefir_hashtree_at(&state->scopes->scopes, (kefir_hashtree_key_t) scope_ref, &node);
     REQUIRE(res != KEFIR_NOT_FOUND, KEFIR_OK);
@@ -177,17 +181,7 @@ static kefir_result_t allocator_run_impl(struct allocator_state *state) {
         ASSIGN_DECL_CAST(kefir_opt_instruction_ref_t, scope_ref, node->key);
 
         REQUIRE_OK(kefir_hashtree_clean(state->mem, &state->current_allocation));
-        struct kefir_opt_code_variable_scope_interference_iterator scope_iter;
-        kefir_opt_instruction_ref_t interfere_scope_ref;
-        for (res =
-                 kefir_opt_code_variable_scope_interference_iter(state->scopes, &scope_iter, scope_ref, &interfere_scope_ref);
-             res == KEFIR_OK; res = kefir_opt_code_variable_scope_interference_next(&scope_iter, &interfere_scope_ref)) {
-            REQUIRE_OK(fill_interfere_scope_vars(state, interfere_scope_ref));
-        }
-        if (res != KEFIR_ITERATOR_END) {
-            REQUIRE_OK(res);
-        }
-
+        REQUIRE_OK(kefir_opt_code_variable_scope_interference_enumerate(state->mem, state->scopes, scope_ref, fill_interfere_scope_vars, state));
         REQUIRE_OK(allocate_scope_vars(state, scope_ref));
     }
     return KEFIR_OK;

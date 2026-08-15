@@ -19,8 +19,14 @@
 */
 
 #include "kefir/optimizer/variable_scope.h"
+#include "kefir/core/basic-types.h"
 #include "kefir/core/error.h"
+#include "kefir/core/hashset.h"
+#include "kefir/core/hashtree.h"
+#include "kefir/core/mem.h"
 #include "kefir/core/util.h"
+#include "kefir/optimizer/code.h"
+#include <string.h>
 
 static kefir_result_t free_block_scopes(struct kefir_mem *mem, struct kefir_hashtree *tree, kefir_hashtree_key_t key,
                                         kefir_hashtree_value_t value, void *payload) {
@@ -53,7 +59,6 @@ kefir_result_t kefir_opt_code_variable_scopes_init(struct kefir_opt_code_variabl
     REQUIRE(scopes != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to optimizer variables scopes"));
 
-    REQUIRE_OK(kefir_graph_init(&scopes->scope_interference));
     REQUIRE_OK(kefir_hashtree_init(&scopes->scopes, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtree_on_removal(&scopes->scopes, free_scope_variables, NULL));
     REQUIRE_OK(kefir_hashset_init(&scopes->global_scopes, &kefir_hashtable_uint_ops));
@@ -67,7 +72,6 @@ kefir_result_t kefir_opt_code_variable_scopes_free(struct kefir_mem *mem,
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(scopes != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer variables scopes"));
 
-    REQUIRE_OK(kefir_graph_free(mem, &scopes->scope_interference));
     REQUIRE_OK(kefir_hashtree_free(mem, &scopes->scopes));
     REQUIRE_OK(kefir_hashset_free(mem, &scopes->global_scopes));
     REQUIRE_OK(kefir_hashtree_free(mem, &scopes->block_scopes));
@@ -157,98 +161,6 @@ static kefir_result_t process_scope(struct kefir_mem *mem, const struct kefir_op
     return KEFIR_OK;
 }
 
-static kefir_result_t build_scope_interferences(struct kefir_mem *mem, struct kefir_opt_code_variable_scopes *scopes) {
-    kefir_result_t res;
-
-    kefir_bool_t has_unscoped_vars = kefir_hashtree_has(&scopes->scopes, (kefir_hashtree_key_t) KEFIR_ID_NONE);
-
-    struct kefir_hashtree_node_iterator block_iter;
-    for (struct kefir_hashtree_node *node = kefir_hashtree_iter(&scopes->block_scopes, &block_iter); node != NULL;
-         node = kefir_hashtree_next(&block_iter)) {
-        ASSIGN_DECL_CAST(const struct kefir_opt_code_block_variable_scopes *, block_scopes, node->value);
-
-        kefir_hashset_key_t entry;
-        struct kefir_hashset_iterator iter;
-        for (res = kefir_hashset_iter(&block_scopes->scopes, &iter, &entry); res == KEFIR_OK;
-             res = kefir_hashset_next(&iter, &entry)) {
-            ASSIGN_DECL_CAST(kefir_opt_instruction_ref_t, scope_ref, entry);
-
-            kefir_hashset_key_t entry2;
-            struct kefir_hashset_iterator iter2;
-            for (res = kefir_hashset_iter(&block_scopes->scopes, &iter2, &entry2); res == KEFIR_OK;
-                 res = kefir_hashset_next(&iter2, &entry2)) {
-                ASSIGN_DECL_CAST(kefir_opt_instruction_ref_t, scope_ref2, entry2);
-                if (scope_ref != scope_ref2) {
-                    REQUIRE_OK(kefir_graph_add_edge(mem, &scopes->scope_interference,
-                                                    (kefir_graph_vertex_id_t) scope_ref,
-                                                    (kefir_graph_vertex_id_t) scope_ref2));
-                    REQUIRE_OK(kefir_graph_add_edge(mem, &scopes->scope_interference,
-                                                    (kefir_graph_vertex_id_t) scope_ref2,
-                                                    (kefir_graph_vertex_id_t) scope_ref));
-                }
-            }
-            if (res != KEFIR_ITERATOR_END) {
-                REQUIRE_OK(res);
-            }
-
-            for (res = kefir_hashset_iter(&scopes->global_scopes, &iter2, &entry2); res == KEFIR_OK;
-                 res = kefir_hashset_next(&iter2, &entry2)) {
-                ASSIGN_DECL_CAST(kefir_opt_instruction_ref_t, scope_ref2, entry2);
-                REQUIRE_OK(kefir_graph_add_edge(mem, &scopes->scope_interference, (kefir_graph_vertex_id_t) scope_ref,
-                                                (kefir_graph_vertex_id_t) scope_ref2));
-                REQUIRE_OK(kefir_graph_add_edge(mem, &scopes->scope_interference, (kefir_graph_vertex_id_t) scope_ref2,
-                                                (kefir_graph_vertex_id_t) scope_ref));
-            }
-            if (res != KEFIR_ITERATOR_END) {
-                REQUIRE_OK(res);
-            }
-            if (has_unscoped_vars) {
-                REQUIRE_OK(kefir_graph_add_edge(mem, &scopes->scope_interference, (kefir_graph_vertex_id_t) scope_ref,
-                                                (kefir_graph_vertex_id_t) KEFIR_ID_NONE));
-                REQUIRE_OK(kefir_graph_add_edge(mem, &scopes->scope_interference,
-                                                (kefir_graph_vertex_id_t) KEFIR_ID_NONE,
-                                                (kefir_graph_vertex_id_t) scope_ref));
-            }
-        }
-        if (res != KEFIR_ITERATOR_END) {
-            REQUIRE_OK(res);
-        }
-    }
-
-    kefir_hashset_key_t entry;
-    struct kefir_hashset_iterator iter;
-    for (res = kefir_hashset_iter(&scopes->global_scopes, &iter, &entry); res == KEFIR_OK;
-         res = kefir_hashset_next(&iter, &entry)) {
-        ASSIGN_DECL_CAST(kefir_opt_instruction_ref_t, scope_ref, entry);
-
-        kefir_hashset_key_t entry2;
-        struct kefir_hashset_iterator iter2;
-        for (res = kefir_hashset_iter(&scopes->global_scopes, &iter2, &entry2); res == KEFIR_OK;
-             res = kefir_hashset_next(&iter2, &entry2)) {
-            ASSIGN_DECL_CAST(kefir_opt_instruction_ref_t, scope_ref2, entry2);
-            REQUIRE_OK(kefir_graph_add_edge(mem, &scopes->scope_interference, (kefir_graph_vertex_id_t) scope_ref,
-                                            (kefir_graph_vertex_id_t) scope_ref2));
-            REQUIRE_OK(kefir_graph_add_edge(mem, &scopes->scope_interference, (kefir_graph_vertex_id_t) scope_ref2,
-                                            (kefir_graph_vertex_id_t) scope_ref));
-        }
-        if (res != KEFIR_ITERATOR_END) {
-            REQUIRE_OK(res);
-        }
-
-        if (has_unscoped_vars) {
-            REQUIRE_OK(kefir_graph_add_edge(mem, &scopes->scope_interference, (kefir_graph_vertex_id_t) scope_ref,
-                                            (kefir_graph_vertex_id_t) KEFIR_ID_NONE));
-            REQUIRE_OK(kefir_graph_add_edge(mem, &scopes->scope_interference, (kefir_graph_vertex_id_t) KEFIR_ID_NONE,
-                                            (kefir_graph_vertex_id_t) scope_ref));
-        }
-    }
-    if (res != KEFIR_ITERATOR_END) {
-        REQUIRE_OK(res);
-    }
-
-    return KEFIR_OK;
-}
-
 static kefir_result_t scopes_build_impl(struct kefir_mem *mem, struct kefir_opt_code_variable_scopes *scopes,
                                         const struct kefir_opt_code_liveness *liveness) {
     kefir_result_t res;
@@ -280,8 +192,6 @@ static kefir_result_t scopes_build_impl(struct kefir_mem *mem, struct kefir_opt_
         REQUIRE_OK(kefir_hashset_add(mem, &scopes->global_scopes, (kefir_hashset_key_t) KEFIR_ID_NONE));
     };
 
-    REQUIRE_OK(build_scope_interferences(mem, scopes));
-
     return KEFIR_OK;
 }
 
@@ -296,33 +206,92 @@ kefir_result_t kefir_opt_code_variable_scopes_build(struct kefir_mem *mem,
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_opt_code_variable_scope_interference_iter(const struct kefir_opt_code_variable_scopes *scopes,
-    struct kefir_opt_code_variable_scope_interference_iterator *iter,
-    kefir_opt_instruction_ref_t scope_ref, kefir_opt_instruction_ref_t *interfere_scope_ref_ptr) {
-    REQUIRE(scopes != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer variables scopes"));
-    REQUIRE(iter != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to optimizer variables scope iterator"));
-    
-    kefir_graph_vertex_id_t interference;
-    kefir_result_t res = kefir_graph_edge_iter(&scopes->scope_interference, &iter->edge_iter, (kefir_graph_vertex_id_t) scope_ref, &interference);
-    if (res == KEFIR_ITERATOR_END) {
-        res = KEFIR_SET_ERROR(KEFIR_ITERATOR_END, "End of variable scope interference iterator");
-    }
-    REQUIRE_OK(res);
+static kefir_result_t interference_enumerate_impl(const struct kefir_opt_code_variable_scopes *scopes, kefir_bool_t *visited, kefir_opt_instruction_ref_t scope_ref, kefir_result_t (*callback)(kefir_opt_instruction_ref_t, void *), void *payload) {
+    if (kefir_hashset_has(&scopes->global_scopes, (kefir_hashset_key_t) scope_ref)) {
+        struct kefir_hashtree_node_iterator iter;
+        for (const struct kefir_hashtree_node *node = kefir_hashtree_iter(&scopes->scopes, &iter);
+            node != NULL;
+            node = kefir_hashtree_next(&iter)) {
+            REQUIRE_OK(callback((kefir_opt_instruction_ref_t) node->key, payload));
+        }
+    } else {
+        const struct kefir_opt_code_variable_scope *scope = NULL;
+        struct kefir_hashtree_node *node;
+        kefir_result_t res = kefir_hashtree_at(&scopes->scopes, (kefir_hashtree_key_t) scope_ref, &node);
+        if (res != KEFIR_NOT_FOUND) {
+            REQUIRE_OK(res);
+            scope = (const struct kefir_opt_code_variable_scope *) node->value;
+        } else {
+            return KEFIR_OK;
+        }
 
-    ASSIGN_PTR(interfere_scope_ref_ptr, (kefir_opt_instruction_ref_t) interference);
+        struct kefir_hashset_iterator iter;
+        kefir_hashset_key_t key;
+        for (res = kefir_hashset_iter(&scopes->global_scopes, &iter, &key);
+            res == KEFIR_OK;
+            res = kefir_hashset_next(&iter, &key)) {
+            ASSIGN_DECL_CAST(kefir_opt_instruction_ref_t, other_scope_ref, key);
+            if (other_scope_ref == KEFIR_ID_NONE && other_scope_ref != scope_ref) {
+                REQUIRE_OK(callback(other_scope_ref, payload));
+            } else if (other_scope_ref != scope_ref && !visited[KEFIR_OPT_INSTR_REF_INDEX_OF(other_scope_ref)]) {
+                visited[KEFIR_OPT_INSTR_REF_INDEX_OF(other_scope_ref)] = true;
+                REQUIRE_OK(callback(other_scope_ref, payload));
+            }
+        }
+        if (res != KEFIR_ITERATOR_END) {
+            REQUIRE_OK(res);
+        }
+
+        for (res = kefir_hashset_iter(&scope->blocks, &iter, &key);
+            res == KEFIR_OK;
+            res = kefir_hashset_next(&iter, &key)) {
+            ASSIGN_DECL_CAST(kefir_opt_block_id_t, block_id, key);
+
+            res = kefir_hashtree_at(&scopes->block_scopes, (kefir_hashtree_key_t) block_id, &node);
+            if (res == KEFIR_NOT_FOUND) {
+                continue;
+            }
+            REQUIRE_OK(res);
+            ASSIGN_DECL_CAST(const struct kefir_opt_code_block_variable_scopes *, block_scopes, node->value);
+
+            struct kefir_hashset_iterator iter2;
+            for (res = kefir_hashset_iter(&block_scopes->scopes, &iter2, &key);
+                res == KEFIR_OK;
+                res = kefir_hashset_next(&iter2, &key)) {
+                ASSIGN_DECL_CAST(kefir_opt_instruction_ref_t, other_scope_ref, key);
+                if (other_scope_ref != scope_ref && !visited[KEFIR_OPT_INSTR_REF_INDEX_OF(other_scope_ref)] && !kefir_hashset_has(&scopes->global_scopes, (kefir_hashset_key_t) other_scope_ref)) {
+                    visited[KEFIR_OPT_INSTR_REF_INDEX_OF(other_scope_ref)] = true;
+                    REQUIRE_OK(callback(other_scope_ref, payload));
+                }
+            }
+            if (res != KEFIR_ITERATOR_END) {
+                REQUIRE_OK(res);
+            }
+        }
+        if (res != KEFIR_ITERATOR_END) {
+            REQUIRE_OK(res);
+        }
+    }
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_opt_code_variable_scope_interference_next(struct kefir_opt_code_variable_scope_interference_iterator *iter, kefir_opt_instruction_ref_t *interfere_scope_ref_ptr) {
-    REQUIRE(iter != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer variables scope iterator"));
-    
-    kefir_graph_vertex_id_t interference;
-    kefir_result_t res = kefir_graph_edge_next(&iter->edge_iter, &interference);
-    if (res == KEFIR_ITERATOR_END) {
-        res = KEFIR_SET_ERROR(KEFIR_ITERATOR_END, "End of variable scope interference iterator");
-    }
-    REQUIRE_OK(res);
+kefir_result_t kefir_opt_code_variable_scope_interference_enumerate(struct kefir_mem *mem, const struct kefir_opt_code_variable_scopes *scopes, kefir_opt_instruction_ref_t scope_ref, kefir_result_t (*callback)(kefir_opt_instruction_ref_t, void *), void *payload) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(scopes != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer variables scopes"));
+    REQUIRE(callback != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer variables scope enumerator callback"));
 
-    ASSIGN_PTR(interfere_scope_ref_ptr, (kefir_opt_instruction_ref_t) interference);
+    struct kefir_hashtree_node *node;
+    REQUIRE_OK(kefir_hashtree_max(&scopes->scopes, &node));
+    kefir_size_t visited_size = 1;
+    if (node != NULL) {
+        visited_size = ((kefir_size_t) node->key) + 1;
+    }
+    kefir_bool_t *visited = KEFIR_MALLOC(mem, sizeof(kefir_bool_t) * visited_size);
+    REQUIRE(visited != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate visited set"));
+    memset(visited, 0, sizeof(kefir_bool_t) * visited_size);
+
+    kefir_result_t res = interference_enumerate_impl(scopes, visited, scope_ref, callback, payload);
+    KEFIR_FREE(mem, visited);
+    REQUIRE_OK(res);
     return KEFIR_OK;
 }
