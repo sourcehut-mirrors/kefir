@@ -1,3 +1,23 @@
+/*
+    SPDX-License-Identifier: GPL-3.0
+
+    Copyright (C) 2020-2026  Jevgenijs Protopopovs
+
+    This file is part of Kefir project.
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, version 3.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
 #include "kefir/codegen/variable_allocator.h"
 #include "kefir/target/abi/util.h"
 #include "kefir/core/error.h"
@@ -82,10 +102,10 @@ static kefir_result_t do_allocate_var(struct allocator_state *state, kefir_opt_i
 
 static kefir_result_t fill_interfere_scope_vars(struct allocator_state *state, kefir_opt_instruction_ref_t scope_ref) {
     struct kefir_hashtree_node *node;
-    kefir_result_t res = kefir_hashtree_at(&state->scopes->scope_variables, (kefir_hashtree_key_t) scope_ref, &node);
+    kefir_result_t res = kefir_hashtree_at(&state->scopes->scopes, (kefir_hashtree_key_t) scope_ref, &node);
     REQUIRE(res != KEFIR_NOT_FOUND, KEFIR_OK);
     REQUIRE_OK(res);
-    ASSIGN_DECL_CAST(struct kefir_opt_code_scope_variables *, interfere_variables, node->value);
+    ASSIGN_DECL_CAST(struct kefir_opt_code_variable_scope *, interfere_variables, node->value);
 
     kefir_hashset_key_t entry;
     struct kefir_hashset_iterator iter;
@@ -117,10 +137,10 @@ static kefir_result_t fill_interfere_scope_vars(struct allocator_state *state, k
 
 static kefir_result_t allocate_scope_vars(struct allocator_state *state, kefir_opt_instruction_ref_t scope_ref) {
     struct kefir_hashtree_node *node;
-    kefir_result_t res = kefir_hashtree_at(&state->scopes->scope_variables, (kefir_hashtree_key_t) scope_ref, &node);
+    kefir_result_t res = kefir_hashtree_at(&state->scopes->scopes, (kefir_hashtree_key_t) scope_ref, &node);
     REQUIRE(res != KEFIR_NOT_FOUND, KEFIR_OK);
     REQUIRE_OK(res);
-    ASSIGN_DECL_CAST(struct kefir_opt_code_scope_variables *, variables, node->value);
+    ASSIGN_DECL_CAST(struct kefir_opt_code_variable_scope *, variables, node->value);
 
     kefir_hashset_key_t entry;
     struct kefir_hashset_iterator iter;
@@ -152,17 +172,16 @@ static kefir_result_t allocator_run_impl(struct allocator_state *state) {
     }
 
     struct kefir_hashtree_node_iterator scopes_iter;
-    for (struct kefir_hashtree_node *node = kefir_hashtree_iter(&state->scopes->scope_variables, &scopes_iter);
+    for (struct kefir_hashtree_node *node = kefir_hashtree_iter(&state->scopes->scopes, &scopes_iter);
          node != NULL; node = kefir_hashtree_next(&scopes_iter)) {
         ASSIGN_DECL_CAST(kefir_opt_instruction_ref_t, scope_ref, node->key);
 
         REQUIRE_OK(kefir_hashtree_clean(state->mem, &state->current_allocation));
-        struct kefir_graph_edge_iterator edge_iter;
-        kefir_graph_vertex_id_t interfere_vertex_id;
+        struct kefir_opt_code_variable_scope_interference_iterator scope_iter;
+        kefir_opt_instruction_ref_t interfere_scope_ref;
         for (res =
-                 kefir_graph_edge_iter(&state->scopes->scope_interference, &edge_iter, scope_ref, &interfere_vertex_id);
-             res == KEFIR_OK; res = kefir_graph_edge_next(&edge_iter, &interfere_vertex_id)) {
-            ASSIGN_DECL_CAST(kefir_opt_instruction_ref_t, interfere_scope_ref, interfere_vertex_id);
+                 kefir_opt_code_variable_scope_interference_iter(state->scopes, &scope_iter, scope_ref, &interfere_scope_ref);
+             res == KEFIR_OK; res = kefir_opt_code_variable_scope_interference_next(&scope_iter, &interfere_scope_ref)) {
             REQUIRE_OK(fill_interfere_scope_vars(state, interfere_scope_ref));
         }
         if (res != KEFIR_ITERATOR_END) {

@@ -391,9 +391,9 @@ static kefir_result_t variable_allocator_type_layout(kefir_id_t type_id, kefir_s
 
 static kefir_result_t detect_extra_alignment(struct kefir_mem *mem, struct kefir_codegen_amd64_function *func) {
     struct kefir_hashtree_node_iterator scopes_iter;
-    for (struct kefir_hashtree_node *node = kefir_hashtree_iter(&func->generic.variable_scopes.scope_variables, &scopes_iter);
+    for (struct kefir_hashtree_node *node = kefir_hashtree_iter(&func->generic.variable_scopes.scopes, &scopes_iter);
          node != NULL; node = kefir_hashtree_next(&scopes_iter)) {
-        ASSIGN_DECL_CAST(struct kefir_opt_code_scope_variables *, scope_vars, node->value);
+        ASSIGN_DECL_CAST(struct kefir_opt_code_variable_scope *, scope_vars, node->value);
 
         kefir_result_t res;
         kefir_hashset_key_t entry;
