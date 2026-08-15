@@ -20,6 +20,7 @@
 
 #include "kefir/optimizer/liveness.h"
 #include "kefir/optimizer/code_util.h"
+#include "kefir/optimizer/trace.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 #include <string.h>
@@ -253,5 +254,32 @@ kefir_result_t kefir_opt_code_liveness_instruction_is_alive(const struct kefir_o
     REQUIRE_OK(kefir_opt_code_container_instr(liveness->code, instr_ref, &instr));
 
     *alive_ptr = kefir_hashset_has(&liveness->blocks[instr->block_id].alive_instr, (kefir_hashset_key_t) instr_ref);
+    return KEFIR_OK;
+}
+
+struct global_liveness_param {
+    struct kefir_mem *mem;
+    struct kefir_hashset *liveness;
+};
+
+static kefir_result_t trace_instruction(kefir_opt_instruction_ref_t instr_ref, void *payload) {
+    ASSIGN_DECL_CAST(struct global_liveness_param *, param, payload);
+    REQUIRE(param != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code global liveness payload"));
+
+    REQUIRE_OK(kefir_hashset_add(param->mem, param->liveness, (kefir_hashset_key_t) instr_ref));
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_opt_code_liveness_collect_global(struct kefir_mem *mem, const struct kefir_opt_code_container *code, struct kefir_hashset *liveness) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code"));
+    REQUIRE(liveness != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid liveness hashset"));
+    
+    struct global_liveness_param param = {.mem = mem, .liveness = liveness};
+    const struct kefir_opt_code_container_tracer tracer = {
+        .trace_instruction = trace_instruction,
+        .payload = &param
+    };
+    REQUIRE_OK(kefir_opt_code_container_trace(mem, code, &tracer));
     return KEFIR_OK;
 }

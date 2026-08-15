@@ -1599,7 +1599,7 @@ static kefir_result_t format_function_opt(struct kefir_json_output *json, kefir_
         REQUIRE_CHAIN(&res, kefir_opt_code_control_flow_build(param->mem, &control_flow, &function->code));
         REQUIRE_CHAIN(&res, kefir_opt_code_liveness_build(param->mem, &liveness, &control_flow));
         REQUIRE_CHAIN(&res,
-                      kefir_opt_code_memssa_construct(param->mem, &memssa, &function->code, &control_flow, &liveness));
+                      kefir_opt_code_memssa_construct(param->mem, &memssa, &function->code, &control_flow));
     }
 
     REQUIRE_CHAIN(&res, format_function(param->mem, json, param->module, function,

@@ -25,6 +25,7 @@
 #include "kefir/optimizer/memory_ssa.h"
 #include "kefir/optimizer/iteration_space.h"
 #include "kefir/optimizer/mem2reg_util.h"
+#include "kefir/optimizer/liveness.h"
 #include "kefir/optimizer/escape.h"
 #include "kefir/optimizer/alias.h"
 #include "kefir/core/error.h"

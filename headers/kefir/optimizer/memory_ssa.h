@@ -21,10 +21,8 @@
 #ifndef KEFIR_OPTIMIZER_MEMORY_SSA_H_
 #define KEFIR_OPTIMIZER_MEMORY_SSA_H_
 
-#include "kefir/core/hashset.h"
 #include "kefir/optimizer/code.h"
 #include "kefir/optimizer/control_flow.h"
-#include "kefir/optimizer/liveness.h"
 
 typedef kefir_uint32_t kefir_opt_code_memssa_node_ref_t;
 
@@ -145,7 +143,6 @@ kefir_result_t kefir_opt_code_memssa_use_next(struct kefir_opt_code_memssa_use_i
 kefir_result_t kefir_opt_memssa_util_is_instr_memory(const struct kefir_opt_instruction *, kefir_uint32_t *);
 kefir_result_t kefir_opt_code_memssa_construct(struct kefir_mem *, struct kefir_opt_code_memssa *,
                                                const struct kefir_opt_code_container *,
-                                               const struct kefir_opt_code_control_flow *,
-                                               const struct kefir_opt_code_liveness *);
+                                               const struct kefir_opt_code_control_flow *);
 
 #endif

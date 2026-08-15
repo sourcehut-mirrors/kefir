@@ -44,4 +44,6 @@ kefir_result_t kefir_opt_code_liveness_build(struct kefir_mem *, struct kefir_op
 kefir_result_t kefir_opt_code_liveness_instruction_is_alive(const struct kefir_opt_code_liveness *,
                                                             kefir_opt_instruction_ref_t, kefir_bool_t *);
 
+kefir_result_t kefir_opt_code_liveness_collect_global(struct kefir_mem *, const struct kefir_opt_code_container *, struct kefir_hashset *);
+
 #endif

@@ -24,7 +24,7 @@
 #include "kefir/optimizer/control_flow.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
-#include "kefir/optimizer/trace.h"
+#include "kefir/optimizer/liveness.h"
 
 struct payload_param {
     struct kefir_mem *mem;
@@ -72,24 +72,12 @@ static kefir_result_t is_block_predecessor(kefir_opt_block_id_t predecessor_bloc
     return KEFIR_OK;
 }
 
-static kefir_result_t trace_instruction(kefir_opt_instruction_ref_t instr_ref, void *payload) {
-    ASSIGN_DECL_CAST(struct payload_param *, param, payload);
-    REQUIRE(param != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code DCE parameter"));
-
-    REQUIRE_OK(kefir_hashset_add(param->mem, param->alive_instr, (kefir_hashset_key_t) instr_ref));
-    return KEFIR_OK;
-}
-
 static kefir_result_t dead_code_elimination_impl(struct kefir_mem *mem, struct kefir_opt_function *func,
                                                  struct kefir_opt_code_control_flow *control_flow,
                                                  struct kefir_hashset *alive_instr) {
     REQUIRE_OK(kefir_opt_code_control_flow_build(mem, control_flow, &func->code));
+    REQUIRE_OK(kefir_opt_code_liveness_collect_global(mem, &func->code, alive_instr));
     struct payload_param param = {.mem = mem, .control_flow = control_flow, .alive_instr = alive_instr};
-    const struct kefir_opt_code_container_tracer tracer = {
-        .trace_instruction = trace_instruction,
-        .payload = &param
-    };
-    REQUIRE_OK(kefir_opt_code_container_trace(mem, &func->code, &tracer));
     struct kefir_opt_code_container_dead_code_index index = {.is_block_alive = is_block_alive,
                                                              .is_instruction_alive = is_instruction_alive,
                                                              .is_block_predecessor = is_block_predecessor,

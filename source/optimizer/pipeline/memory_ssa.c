@@ -23,7 +23,6 @@
 #include "kefir/optimizer/control_flow.h"
 #include "kefir/optimizer/memory_ssa.h"
 #include "kefir/optimizer/sequencing.h"
-#include "kefir/optimizer/builder.h"
 #include "kefir/optimizer/alias.h"
 #include "kefir/optimizer/escape.h"
 #include "kefir/optimizer/code_util.h"
@@ -32,7 +31,6 @@
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 #include "kefir/core/bitset.h"
-#include <string.h>
 
 #define MEMSSA_WALK_LIMIT 128
 
@@ -1293,21 +1291,18 @@ static kefir_result_t memory_ssa_apply(struct kefir_mem *mem, struct kefir_opt_m
 
     struct kefir_opt_code_control_flow control_flow;
     struct kefir_opt_code_sequencing sequencing;
-    struct kefir_opt_code_liveness liveness;
     struct kefir_opt_code_memssa memssa;
     struct kefir_opt_code_escape_analysis escapes;
     struct node_ref_queue queue = {.queue = NULL, .top = 0, .capacity = 0};
     struct kefir_hashset visited;
     REQUIRE_OK(kefir_opt_code_control_flow_init(&control_flow));
     REQUIRE_OK(kefir_opt_code_sequencing_init(&sequencing));
-    REQUIRE_OK(kefir_opt_code_liveness_init(&liveness));
     REQUIRE_OK(kefir_opt_code_memssa_init(&memssa));
     REQUIRE_OK(kefir_opt_code_escape_analysis_init(&escapes));
     REQUIRE_OK(kefir_hashset_init(&visited, &kefir_hashtable_uint_ops));
 
     kefir_result_t res = kefir_opt_code_control_flow_build(mem, &control_flow, &func->code);
-    REQUIRE_CHAIN(&res, kefir_opt_code_liveness_build(mem, &liveness, &control_flow));
-    REQUIRE_CHAIN(&res, kefir_opt_code_memssa_construct(mem, &memssa, &func->code, &control_flow, &liveness));
+    REQUIRE_CHAIN(&res, kefir_opt_code_memssa_construct(mem, &memssa, &func->code, &control_flow));
     REQUIRE_CHAIN(&res, kefir_opt_code_escape_analysis_build(mem, &escapes, &func->code));
     REQUIRE_CHAIN(
         &res, do_optimize(mem, module, func, config, &control_flow, &sequencing, &memssa, &escapes, &queue, &visited));
@@ -1316,7 +1311,6 @@ static kefir_result_t memory_ssa_apply(struct kefir_mem *mem, struct kefir_opt_m
         kefir_hashset_free(mem, &visited);
         kefir_opt_code_escape_analysis_free(mem, &escapes);
         kefir_opt_code_memssa_free(mem, &memssa);
-        kefir_opt_code_liveness_free(mem, &liveness);
         kefir_opt_code_sequencing_free(mem, &sequencing);
         kefir_opt_code_control_flow_free(mem, &control_flow);
         return res;
@@ -1325,7 +1319,6 @@ static kefir_result_t memory_ssa_apply(struct kefir_mem *mem, struct kefir_opt_m
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_opt_code_escape_analysis_free(mem, &escapes);
         kefir_opt_code_memssa_free(mem, &memssa);
-        kefir_opt_code_liveness_free(mem, &liveness);
         kefir_opt_code_sequencing_free(mem, &sequencing);
         kefir_opt_code_control_flow_free(mem, &control_flow);
         return res;
@@ -1333,19 +1326,11 @@ static kefir_result_t memory_ssa_apply(struct kefir_mem *mem, struct kefir_opt_m
     res = kefir_opt_code_escape_analysis_free(mem, &escapes);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_opt_code_memssa_free(mem, &memssa);
-        kefir_opt_code_liveness_free(mem, &liveness);
         kefir_opt_code_sequencing_free(mem, &sequencing);
         kefir_opt_code_control_flow_free(mem, &control_flow);
         return res;
     });
     res = kefir_opt_code_memssa_free(mem, &memssa);
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        kefir_opt_code_liveness_free(mem, &liveness);
-        kefir_opt_code_sequencing_free(mem, &sequencing);
-        kefir_opt_code_control_flow_free(mem, &control_flow);
-        return res;
-    });
-    res = kefir_opt_code_liveness_free(mem, &liveness);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_opt_code_sequencing_free(mem, &sequencing);
         kefir_opt_code_control_flow_free(mem, &control_flow);

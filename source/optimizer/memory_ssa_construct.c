@@ -20,6 +20,7 @@
 
 #include "kefir/optimizer/memory_ssa.h"
 #include "kefir/optimizer/code_util.h"
+#include "kefir/optimizer/liveness.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 #include <string.h>
@@ -29,7 +30,7 @@ struct construct_state {
     struct kefir_opt_code_memssa *memssa;
     const struct kefir_opt_code_container *code;
     const struct kefir_opt_code_control_flow *control_flow;
-    const struct kefir_opt_code_liveness *liveness;
+    struct kefir_hashset liveness;
 
     struct kefir_list block_queue;
     struct kefir_hashtable inserted_phis;
@@ -300,20 +301,20 @@ static kefir_result_t insert_missing_nodes(struct kefir_mem *mem, struct constru
     REQUIRE_OK(kefir_opt_code_block_instr_control_tail(state->code, frame->block_ref, &block_tail_ref));
 
     kefir_result_t res;
-    struct kefir_hashset_iterator iter;
-    kefir_hashset_key_t entry;
-    for (res = kefir_hashset_iter(&state->liveness->blocks[frame->block_ref].alive_instr, &iter, &entry);
-         res == KEFIR_OK; res = kefir_hashset_next(&iter, &entry)) {
-        if (entry != block_tail_ref && !state->processed_instr[KEFIR_OPT_INSTR_REF_INDEX_OF(entry)]) {
+    kefir_opt_instruction_ref_t instr_ref;
+    for (res = kefir_opt_code_block_instr_head(state->code, frame->block_ref, &instr_ref);
+        res == KEFIR_OK && instr_ref != KEFIR_ID_NONE;
+        res = kefir_opt_instruction_next_sibling(state->code, instr_ref, &instr_ref)) {
+        if (instr_ref != block_tail_ref && !state->processed_instr[KEFIR_OPT_INSTR_REF_INDEX_OF(instr_ref)] && kefir_hashset_has(&state->liveness, (kefir_hashset_key_t) instr_ref)) {
             const struct kefir_opt_instruction *instr;
-            REQUIRE_OK(kefir_opt_code_container_instr(state->code, (kefir_opt_instruction_ref_t) entry, &instr));
+            REQUIRE_OK(kefir_opt_code_container_instr(state->code, instr_ref, &instr));
             if (instr->block_id != frame->block_ref) {
                 continue;
             }
 
             REQUIRE_OK(kefir_list_insert_after(mem, &state->instr_queue, kefir_list_tail(&state->instr_queue),
-                                               (void *) (kefir_uptr_t) entry));
-            REQUIRE_OK(kefir_hashset_add(mem, &state->instr_queue_index, (kefir_hashset_key_t) entry));
+                                               (void *) (kefir_uptr_t) instr_ref));
+            REQUIRE_OK(kefir_hashset_add(mem, &state->instr_queue_index, (kefir_hashset_key_t) instr_ref));
             ASSIGN_PTR(has_missing_nodes, true);
         }
     }
@@ -506,6 +507,7 @@ static kefir_result_t simplify(struct kefir_mem *mem, struct construct_state *st
 }
 
 static kefir_result_t construct_impl(struct kefir_mem *mem, struct construct_state *state) {
+    REQUIRE_OK(kefir_opt_code_liveness_collect_global(mem, state->code, &state->liveness));
     REQUIRE_OK(kefir_opt_code_memssa_provision(mem, state->memssa, kefir_opt_code_container_length(state->code)));
     memset(state->processed_instr, 0, sizeof(kefir_bool_t) * state->code->length);
     memset(state->visited_blocks, 0, sizeof(kefir_bool_t) * kefir_opt_code_container_block_count(state->code));
@@ -518,20 +520,19 @@ static kefir_result_t construct_impl(struct kefir_mem *mem, struct construct_sta
 
 kefir_result_t kefir_opt_code_memssa_construct(struct kefir_mem *mem, struct kefir_opt_code_memssa *memssa,
                                                const struct kefir_opt_code_container *code,
-                                               const struct kefir_opt_code_control_flow *control_flow,
-                                               const struct kefir_opt_code_liveness *liveness) {
+                                               const struct kefir_opt_code_control_flow *control_flow) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(memssa != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer memory ssa"));
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code"));
     REQUIRE(control_flow != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer control flow"));
-    REQUIRE(liveness != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code liveness"));
 
     struct construct_state state = {
-        .mem = mem, .memssa = memssa, .code = code, .control_flow = control_flow, .liveness = liveness};
+        .mem = mem, .memssa = memssa, .code = code, .control_flow = control_flow};
     REQUIRE_OK(kefir_hashtable_init(&state.inserted_phis, &kefir_hashtable_uint_ops));
     REQUIRE_OK(kefir_list_init(&state.block_queue));
     REQUIRE_OK(kefir_list_init(&state.instr_queue));
     REQUIRE_OK(kefir_hashset_init(&state.instr_queue_index, &kefir_hashtable_uint_ops));
+    REQUIRE_OK(kefir_hashset_init(&state.liveness, &kefir_hashtable_uint_ops));
 
     state.processed_instr = KEFIR_MALLOC(mem, sizeof(kefir_bool_t) * code->length);
     REQUIRE(state.processed_instr != NULL,
@@ -545,6 +546,15 @@ kefir_result_t kefir_opt_code_memssa_construct(struct kefir_mem *mem, struct kef
     kefir_result_t res = construct_impl(mem, &state);
     KEFIR_FREE(mem, state.processed_instr);
     KEFIR_FREE(mem, state.visited_blocks);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_hashset_free(mem, &state.liveness);
+        kefir_hashset_free(mem, &state.instr_queue_index);
+        kefir_list_free(mem, &state.instr_queue);
+        kefir_list_free(mem, &state.block_queue);
+        kefir_hashtable_free(mem, &state.inserted_phis);
+        return res;
+    });
+    res = kefir_hashset_free(mem, &state.liveness);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_hashset_free(mem, &state.instr_queue_index);
         kefir_list_free(mem, &state.instr_queue);
