@@ -807,11 +807,11 @@ __kefir_bigint_unsigned_from_long_double:
     fstpt -64(%rbp)
     movq -56(%rbp), %r14
     movq -64(%rbp), %rdx
-    lea 7(%rbx), %r15
-    shr $3, %r15
     mov %r14, %r13
     and $32767, %r13
     lea -16383(%r13), %rax
+    lea 7(%rbx), %r15
+    shr $3, %r15
     cmp $0, %rax
     jge .L__kefir_runtime_func___kefir_bigint_unsigned_from_long_double_label2
     mov $0, %rcx

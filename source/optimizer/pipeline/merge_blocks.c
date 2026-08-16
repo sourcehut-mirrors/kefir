@@ -19,139 +19,109 @@
 */
 
 #include "kefir/optimizer/pipeline.h"
-#include "kefir/optimizer/builder.h"
 #include "kefir/optimizer/code_util.h"
 #include "kefir/optimizer/control_flow.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
-#include <string.h>
-
-struct merge_entry {
-    struct kefir_hashset candidates;
-};
 
 struct merge_state {
     struct kefir_opt_code_control_flow control_flow;
-    struct kefir_hashtable entries;
+    struct kefir_list merge_order;
+    struct kefir_list stack;
 };
 
-static kefir_result_t collect_candidates(struct kefir_mem *mem, struct kefir_opt_function *func,
-                                         struct merge_state *state) {
-    kefir_result_t res;
-    kefir_size_t block_count = kefir_opt_code_container_block_count(&func->code);
+static kefir_result_t collect_merge_order(struct kefir_mem *mem, struct kefir_opt_function *func,
+                                       struct merge_state *state) {
+    REQUIRE_OK(kefir_list_clear(mem, &state->stack));
+    REQUIRE_OK(kefir_list_insert_after(mem, &state->stack, NULL, (void *) (kefir_uptr_t) func->code.entry_point));
 
-    for (kefir_opt_block_id_t block_ref = 0; block_ref < block_count; block_ref++) {
-        kefir_opt_block_id_t immediate_dominator_ref = state->control_flow.blocks[block_ref].immediate_dominator;
+    for (struct kefir_list_entry *iter = kefir_list_head(&state->stack);
+        iter != NULL;
+        iter = kefir_list_head(&state->stack)) {
+        ASSIGN_DECL_CAST(kefir_uint64_t, key, (kefir_uptr_t) iter->value);
+        REQUIRE_OK(kefir_list_pop(mem, &state->stack, iter));
+        kefir_opt_block_id_t block_id = (kefir_uint32_t) key;
+        kefir_bool_t children_processed = (key >> 32) != 0;
 
-        const struct kefir_opt_code_block *block;
-        REQUIRE_OK(kefir_opt_code_container_block(&func->code, block_ref, &block));
-        kefir_opt_instruction_ref_t phi_instr_ref;
-        REQUIRE_OK(kefir_opt_code_block_phi_head(&func->code, block_ref, &phi_instr_ref));
-        if (block_ref != func->code.gate_block && immediate_dominator_ref != KEFIR_ID_NONE &&
-            immediate_dominator_ref != func->code.gate_block &&
-            kefir_hashset_size(&state->control_flow.blocks[block_ref].predecessors) == 1 &&
-            kefir_hashset_has(&state->control_flow.blocks[block_ref].predecessors,
-                              (kefir_hashset_key_t) immediate_dominator_ref) &&
-            !kefir_hashset_has(&state->control_flow.indirect_jump_target_blocks, (kefir_hashset_key_t) block_ref) &&
-            phi_instr_ref == KEFIR_ID_NONE) {
+        if (!children_processed) {
+            key = (1ull << 32) | (kefir_uint32_t) block_id;
+            REQUIRE_OK(kefir_list_insert_after(mem, &state->stack, NULL, (void *) (kefir_uptr_t) key));
 
-            const struct kefir_opt_code_block *pred_block;
-            REQUIRE_OK(kefir_opt_code_container_block(&func->code, immediate_dominator_ref, &pred_block));
-
-            kefir_opt_instruction_ref_t pred_block_tail_ref, block_tail_ref;
-            REQUIRE_OK(
-                kefir_opt_code_block_instr_control_tail(&func->code, immediate_dominator_ref, &pred_block_tail_ref));
-            REQUIRE_OK(kefir_opt_code_block_instr_control_tail(&func->code, block_ref, &block_tail_ref));
-
-            const struct kefir_opt_instruction *pred_block_tail, *block_tail;
-            REQUIRE_OK(kefir_opt_code_container_instr(&func->code, pred_block_tail_ref, &pred_block_tail));
-            REQUIRE_OK(kefir_opt_code_container_instr(&func->code, block_tail_ref, &block_tail));
-
-            if ((pred_block_tail->operation.opcode == KEFIR_OPT_OPCODE_JUMP ||
-                 pred_block_tail->operation.opcode == KEFIR_OPT_OPCODE_BRANCH ||
-                 pred_block_tail->operation.opcode == KEFIR_OPT_OPCODE_BRANCH_COMPARE) &&
-                (block_tail->operation.opcode == KEFIR_OPT_OPCODE_JUMP ||
-                 block_tail->operation.opcode == KEFIR_OPT_OPCODE_BRANCH ||
-                 block_tail->operation.opcode == KEFIR_OPT_OPCODE_BRANCH_COMPARE ||
-                 block_tail->operation.opcode == KEFIR_OPT_OPCODE_INLINE_ASSEMBLY ||
-                 block_tail->operation.opcode == KEFIR_OPT_OPCODE_RETURN ||
-                 block_tail->operation.opcode == KEFIR_OPT_OPCODE_UNREACHABLE ||
-                 block_tail->operation.opcode == KEFIR_OPT_OPCODE_TAIL_INVOKE ||
-                 block_tail->operation.opcode == KEFIR_OPT_OPCODE_TAIL_INVOKE_VIRTUAL) &&
-                !kefir_hashset_has(&state->control_flow.blocks[block_ref].successors,
-                                   (kefir_hashset_key_t) func->code.gate_block)) {
-                struct merge_entry *entry;
-                kefir_hashtable_value_t table_value;
-                res =
-                    kefir_hashtable_at(&state->entries, (kefir_hashtable_key_t) immediate_dominator_ref, &table_value);
-                if (res != KEFIR_NOT_FOUND) {
-                    REQUIRE_OK(res);
-                    entry = (struct merge_entry *) table_value;
-                } else {
-                    entry = KEFIR_MALLOC(mem, sizeof(struct merge_entry));
-                    REQUIRE(entry != NULL,
-                            KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate block merge entry"));
-                    res = kefir_hashset_init(&entry->candidates, &kefir_hashtable_uint_ops);
-                    REQUIRE_CHAIN(&res, kefir_hashtable_insert(mem, &state->entries,
-                                                               (kefir_hashtable_key_t) immediate_dominator_ref,
-                                                               (kefir_hashtable_value_t) entry));
-                    REQUIRE_ELSE(res == KEFIR_OK, {
-                        KEFIR_FREE(mem, entry);
-                        return res;
-                    });
-                }
-                REQUIRE_OK(kefir_hashset_add(mem, &entry->candidates, (kefir_hashset_key_t) block_ref));
+            struct kefir_opt_control_flow_dominator_tree_iterator dom_iter;
+            kefir_opt_block_id_t dominated_block_ref;
+            kefir_result_t res;
+            for (res = kefir_opt_control_flow_dominator_tree_iter(&state->control_flow, &dom_iter, block_id,
+                                                                  &dominated_block_ref);
+                 res == KEFIR_OK; res = kefir_opt_control_flow_dominator_tree_next(&dom_iter, &dominated_block_ref)) {
+                REQUIRE_OK(kefir_list_insert_after(mem, &state->stack, NULL, (void *) (kefir_uptr_t) dominated_block_ref));
             }
-        }
-    }
-    return KEFIR_OK;
-}
+            if (res != KEFIR_ITERATOR_END) {
+                REQUIRE_OK(res);
+            }
+        } else if (block_id != func->code.gate_block) {
+            kefir_opt_instruction_ref_t block_tail_ref;
+            const struct kefir_opt_instruction *block_tail;
+            REQUIRE_OK(
+                kefir_opt_code_block_instr_control_tail(&func->code, block_id, &block_tail_ref));
+            if (block_tail_ref == KEFIR_ID_NONE) {
+                continue;
+            }
+            REQUIRE_OK(kefir_opt_code_container_instr(&func->code, block_tail_ref, &block_tail));
+            if (!(block_tail->operation.opcode == KEFIR_OPT_OPCODE_JUMP ||
+                block_tail->operation.opcode == KEFIR_OPT_OPCODE_BRANCH ||
+                block_tail->operation.opcode == KEFIR_OPT_OPCODE_BRANCH_COMPARE)) {
+                continue;
+            }
 
-static kefir_result_t pick_candidate(struct kefir_mem *mem, struct kefir_opt_function *func, struct merge_state *state,
-                                     kefir_opt_block_id_t *block_id_ptr, kefir_opt_block_id_t *successor_block_id_ptr) {
-    UNUSED(func);
-    kefir_result_t res;
-    for (; state->entries.occupied > 0;) {
-        struct kefir_hashtable_iterator iter;
-        kefir_hashtable_key_t table_key;
-        kefir_hashtable_value_t table_value;
-        for (res = kefir_hashtable_iter(&state->entries, &iter, &table_key, &table_value); res == KEFIR_OK;
-             res = kefir_hashtable_next(&iter, &table_key, &table_value)) {
-            ASSIGN_DECL_CAST(kefir_opt_block_id_t, block_id, table_key);
-            ASSIGN_DECL_CAST(struct merge_entry *, entry, table_value);
-            struct kefir_hashset_iterator candidate_iter;
-            kefir_hashset_key_t cadidate_key;
-            for (res = kefir_hashset_iter(&entry->candidates, &candidate_iter, &cadidate_key); res == KEFIR_OK;
-                 res = kefir_hashset_next(&candidate_iter, &cadidate_key)) {
-                ASSIGN_DECL_CAST(kefir_opt_block_id_t, successor_block_id, cadidate_key);
-                if (!kefir_hashtable_has(&state->entries, (kefir_hashtable_key_t) successor_block_id)) {
-                    *block_id_ptr = block_id;
-                    *successor_block_id_ptr = successor_block_id;
-                    REQUIRE_OK(kefir_hashset_delete(&entry->candidates, (kefir_hashset_key_t) successor_block_id));
-                    if (kefir_hashset_size(&entry->candidates) == 0) {
-                        REQUIRE_OK(kefir_hashtable_delete(mem, &state->entries, (kefir_hashtable_key_t) block_id));
-                    }
-                    return KEFIR_OK;
+            kefir_hashset_key_t hash_key;
+            struct kefir_hashset_iterator iter;
+            kefir_result_t res;
+            for (res = kefir_hashset_iter(&state->control_flow.blocks[block_id].successors, &iter, &hash_key);
+                res == KEFIR_OK;
+                res = kefir_hashset_next(&iter, &hash_key)) {
+                ASSIGN_DECL_CAST(kefir_opt_block_id_t, successor_block_id, hash_key);
+
+                kefir_opt_instruction_ref_t phi_instr_ref;
+                REQUIRE_OK(kefir_opt_code_block_phi_head(&func->code, successor_block_id, &phi_instr_ref));
+
+                kefir_opt_instruction_ref_t successor_block_tail_ref;
+                REQUIRE_OK(kefir_opt_code_block_instr_control_tail(&func->code, successor_block_id, &successor_block_tail_ref));
+
+                if (successor_block_tail_ref == KEFIR_ID_NONE) {
+                    continue;
+                }
+
+                const struct kefir_opt_instruction *successor_block_tail;
+                REQUIRE_OK(kefir_opt_code_container_instr(&func->code, successor_block_tail_ref, &successor_block_tail));
+
+                if (phi_instr_ref == KEFIR_ID_NONE && successor_block_id != func->code.entry_point && successor_block_id != func->code.gate_block &&
+                    state->control_flow.blocks[successor_block_id].predecessors.occupied == 1 &&
+                    kefir_hashset_has(&state->control_flow.blocks[successor_block_id].predecessors, (kefir_hashset_key_t) block_id) &&
+                    !kefir_hashset_has(&state->control_flow.blocks[successor_block_id].successors, (kefir_hashset_key_t) func->code.gate_block) &&
+                    !kefir_hashset_has(&state->control_flow.indirect_jump_target_blocks, (kefir_hashset_key_t) successor_block_id) &&
+                    (successor_block_tail->operation.opcode == KEFIR_OPT_OPCODE_JUMP ||
+                    successor_block_tail->operation.opcode == KEFIR_OPT_OPCODE_BRANCH ||
+                    successor_block_tail->operation.opcode == KEFIR_OPT_OPCODE_BRANCH_COMPARE ||
+                    successor_block_tail->operation.opcode == KEFIR_OPT_OPCODE_INLINE_ASSEMBLY ||
+                    successor_block_tail->operation.opcode == KEFIR_OPT_OPCODE_RETURN ||
+                    successor_block_tail->operation.opcode == KEFIR_OPT_OPCODE_UNREACHABLE ||
+                    successor_block_tail->operation.opcode == KEFIR_OPT_OPCODE_TAIL_INVOKE ||
+                    successor_block_tail->operation.opcode == KEFIR_OPT_OPCODE_TAIL_INVOKE_VIRTUAL)) {
+                    key = (((kefir_uint64_t) successor_block_id) << 32) | (kefir_uint32_t) block_id;
+                    REQUIRE_OK(kefir_list_insert_after(mem, &state->merge_order, kefir_list_tail(&state->merge_order), (void *) (kefir_uptr_t) key));
                 }
             }
             if (res != KEFIR_ITERATOR_END) {
                 REQUIRE_OK(res);
             }
         }
-        if (res != KEFIR_ITERATOR_END) {
-            REQUIRE_OK(res);
-        }
-
-        REQUIRE_OK(kefir_hashtable_iter(&state->entries, &iter, &table_key, NULL));
-        REQUIRE_OK(kefir_hashtable_delete(mem, &state->entries, table_key));
     }
-    return KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find candidates for merge");
+    return KEFIR_OK;
 }
 
-static kefir_result_t do_merge(struct kefir_mem *mem, struct kefir_opt_function *func, struct merge_state *state,
+static kefir_result_t do_merge(struct kefir_mem *mem, struct kefir_opt_function *func,
                                kefir_opt_block_id_t block_id, kefir_opt_block_id_t successor_block_id,
                                kefir_bool_t *merged) {
-    UNUSED(state);
     const struct kefir_opt_code_block *block, *successor_block;
     REQUIRE_OK(kefir_opt_code_container_block(&func->code, block_id, &block));
     REQUIRE_OK(kefir_opt_code_container_block(&func->code, successor_block_id, &successor_block));
@@ -285,33 +255,18 @@ static kefir_result_t block_merge_impl(struct kefir_mem *mem, struct kefir_opt_f
     kefir_bool_t merged_blocks = true;
     for (; merged_blocks;) {
         REQUIRE_OK(kefir_opt_code_control_flow_build(mem, &state->control_flow, &func->code));
-        REQUIRE_OK(collect_candidates(mem, func, state));
+        REQUIRE_OK(collect_merge_order(mem, func, state));
 
         merged_blocks = false;
-        for (;;) {
-            kefir_opt_block_id_t block_id = KEFIR_ID_NONE, successor_block_id = KEFIR_ID_NONE;
-            kefir_result_t res = pick_candidate(mem, func, state, &block_id, &successor_block_id);
-            if (res == KEFIR_NOT_FOUND) {
-                break;
-            }
-            REQUIRE_OK(res);
-            REQUIRE_OK(do_merge(mem, func, state, block_id, successor_block_id, &merged_blocks));
+        for (const struct kefir_list_entry *iter = kefir_list_head(&state->merge_order);
+            iter != NULL;
+            kefir_list_next(&iter)) {
+            ASSIGN_DECL_CAST(kefir_uint64_t, key, (kefir_uptr_t) iter->value);
+            kefir_opt_block_id_t block_id = (kefir_uint32_t) key, successor_block_id = key >> 32;
+            REQUIRE_OK(do_merge(mem, func, block_id, successor_block_id, &merged_blocks));
         }
+        REQUIRE_OK(kefir_list_clear(mem, &state->merge_order));
     }
-    return KEFIR_OK;
-}
-
-kefir_result_t free_entry(struct kefir_mem *mem, struct kefir_hashtable *table, kefir_hashtable_key_t key,
-                          kefir_hashtable_value_t value, void *payload) {
-    UNUSED(table);
-    UNUSED(key);
-    UNUSED(payload);
-    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
-    ASSIGN_DECL_CAST(struct merge_entry *, entry, value);
-    REQUIRE(entry != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer block merge entry"));
-
-    REQUIRE_OK(kefir_hashset_free(mem, &entry->candidates));
-    KEFIR_FREE(mem, entry);
     return KEFIR_OK;
 }
 
@@ -326,16 +281,28 @@ static kefir_result_t merge_blocks_apply(struct kefir_mem *mem, struct kefir_opt
 
     struct merge_state state;
     REQUIRE_OK(kefir_opt_code_control_flow_init(&state.control_flow));
-    REQUIRE_OK(kefir_hashtable_init(&state.entries, &kefir_hashtable_uint_ops));
-    REQUIRE_OK(kefir_hashtable_on_removal(&state.entries, free_entry, NULL));
-    kefir_result_t res = KEFIR_OK;
-    REQUIRE_CHAIN(&res, block_merge_impl(mem, func, &state));
+    REQUIRE_OK(kefir_list_init(&state.merge_order));
+    REQUIRE_OK(kefir_list_init(&state.stack));
+    kefir_result_t res = block_merge_impl(mem, func, &state);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        kefir_hashtable_free(mem, &state.entries);
+        kefir_list_free(mem, &state.stack);
+        kefir_list_free(mem, &state.merge_order);
         kefir_opt_code_control_flow_free(mem, &state.control_flow);
         return res;
     });
-    res = kefir_hashtable_free(mem, &state.entries);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_list_free(mem, &state.stack);
+        kefir_list_free(mem, &state.merge_order);
+        kefir_opt_code_control_flow_free(mem, &state.control_flow);
+        return res;
+    });
+    res = kefir_list_free(mem, &state.stack);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_list_free(mem, &state.merge_order);
+        kefir_opt_code_control_flow_free(mem, &state.control_flow);
+        return res;
+    });
+    res = kefir_list_free(mem, &state.merge_order);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_opt_code_control_flow_free(mem, &state.control_flow);
         return res;

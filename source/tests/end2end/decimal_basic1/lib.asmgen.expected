@@ -477,7 +477,7 @@ arg32y:
 .L__kefir_func_arg32y_label30:
     movd -24(%rbp), %xmm0
 .loc 0 260 13
-.L__kefir_func_arg32y_label283:
+.L__kefir_func_arg32y_label294:
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -501,7 +501,7 @@ arg32y:
 .L__kefir_func_arg32y_label56:
     movd -12(%rbp), %xmm0
 .loc 0 269 13
-.L__kefir_func_arg32y_label342:
+.L__kefir_func_arg32y_label331:
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -786,7 +786,7 @@ arg64y:
 .L__kefir_func_arg64y_label30:
     movq -48(%rbp), %xmm0
 .loc 0 300 13
-.L__kefir_func_arg64y_label285:
+.L__kefir_func_arg64y_label296:
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -1258,7 +1258,7 @@ arg128y:
 .L__kefir_func_arg128y_label30:
     movdqu -96(%rbp), %xmm0
 .loc 0 340 13
-.L__kefir_func_arg128y_label285:
+.L__kefir_func_arg128y_label296:
     lea (%rbp), %rsp
     pop %rbp
     ret
