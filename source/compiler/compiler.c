@@ -21,6 +21,7 @@
 #include "kefir/compiler/compiler.h"
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
+#include "kefir/ir/debug.h"
 #include "kefir/parser/parser.h"
 #include "kefir/parser/rules.h"
 #include "kefir/ast/analyzer/analyzer.h"
@@ -538,6 +539,11 @@ kefir_result_t kefir_compiler_optimize(struct kefir_mem *mem, struct kefir_compi
         func->debug_info.record_debug_info = context->optimizer_configuration.debug_info;
     }
     REQUIRE_OK(kefir_optimizer_pipeline_apply(mem, opt_module, &context->optimizer_configuration));
+
+    for (struct kefir_ir_function *ir_func = kefir_ir_module_function_iter(ir_module, &iter, NULL);
+         ir_func != NULL; ir_func = kefir_ir_module_function_next(&iter, NULL)) {
+        REQUIRE_OK(kefir_ir_debug_function_source_map_compute_cache(mem, &ir_func->debug_info.source_map));
+    }
 
     return KEFIR_OK;
 }

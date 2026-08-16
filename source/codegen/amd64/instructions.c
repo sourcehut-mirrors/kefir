@@ -82,7 +82,7 @@ kefir_result_t kefir_codegen_amd64_function_translate_instruction(struct kefir_m
         function->codegen->config->debug_info) {
         const struct kefir_ir_debug_source_location *source_location;
         kefir_result_t res = kefir_ir_debug_function_source_map_find(
-            &function->generic.function->ir_func->debug_info.source_map, instruction_location, &source_location);
+            mem, &function->generic.function->ir_func->debug_info.source_map, instruction_location, &source_location);
         if (res != KEFIR_NOT_FOUND) {
             REQUIRE_OK(res);
             const kefir_asmcmp_instruction_index_t end_idx = kefir_asmcmp_context_instr_length(&function->code.context);

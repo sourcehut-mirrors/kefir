@@ -22,6 +22,7 @@
 #define KEFIR_IR_DEBUG_H_
 
 #include "kefir/core/basic-types.h"
+#include "kefir/core/hashtable.h"
 #include "kefir/core/string_pool.h"
 #include "kefir/core/source_location.h"
 #include "kefir/core/interval_tree.h"
@@ -201,6 +202,7 @@ typedef struct kefir_ir_debug_source_location {
 
 typedef struct kefir_ir_debug_function_source_map {
     struct kefir_interval_tree locations;
+    struct kefir_hashtable location_cache;
 } kefir_ir_debug_function_source_map_t;
 
 typedef struct kefir_ir_debug_function_source_map_iterator {
@@ -273,7 +275,9 @@ kefir_result_t kefir_ir_debug_function_source_map_insert(struct kefir_mem *,
                                                          struct kefir_string_pool *,
                                                          const struct kefir_source_location *, kefir_size_t,
                                                          kefir_size_t);
-kefir_result_t kefir_ir_debug_function_source_map_find(const struct kefir_ir_debug_function_source_map *, kefir_size_t,
+kefir_result_t kefir_ir_debug_function_source_map_compute_cache(struct kefir_mem *,
+                                                         struct kefir_ir_debug_function_source_map *);
+kefir_result_t kefir_ir_debug_function_source_map_find(struct kefir_mem *, const struct kefir_ir_debug_function_source_map *, kefir_size_t,
                                                        const struct kefir_ir_debug_source_location **);
 
 kefir_result_t kefir_ir_debug_function_source_map_iter(const struct kefir_ir_debug_function_source_map *,
