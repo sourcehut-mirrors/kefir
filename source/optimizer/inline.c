@@ -23,6 +23,7 @@
 #include "kefir/optimizer/builder.h"
 #include "kefir/optimizer/trace.h"
 #include "kefir/optimizer/liveness.h"
+#include "kefir/optimizer/configuration.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 
@@ -1361,14 +1362,14 @@ static kefir_result_t can_inline_function(const struct kefir_opt_function *calle
                                           kefir_bool_t *can_inline_ptr) {
     kefir_bool_t can_inline;
     REQUIRE_OK(kefir_opt_function_block_can_inline(callee_function, call_node->block_id, called_function,
-                                                   (inline_params == NULL ? 5 : inline_params->max_inline_depth),
-                                                   (inline_params == NULL ? 1 : inline_params->max_recursive_inline),
+                                                   (inline_params == NULL ? KEFIR_OPTIMIZER_CONFIG_DEFAULT_MAX_INLINE_DEPTH : inline_params->max_inline_depth),
+                                                   (inline_params == NULL ? KEFIR_OPTIMIZER_CONFIG_DEFAULT_MAX_RECURSIVE_INLINE : inline_params->max_recursive_inline),
                                                    &can_inline));
 
     if (called_function->ir_func->flags.inline_behavior == KEFIR_IR_FUNCTION_NO_INLINE ||
         called_function->ir_func->declaration->vararg ||
         called_function->ir_func->declaration->returns_twice ||
-        (inline_params == NULL || callee_function->num_of_inlines >= inline_params->max_inlines_per_function)) {
+        (inline_params == NULL || callee_function->num_of_inlines >= inline_params->max_inlines_per_caller)) {
         can_inline = false;
     }
 

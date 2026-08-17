@@ -1,3 +1,23 @@
+/*
+    SPDX-License-Identifier: GPL-3.0
+
+    Copyright (C) 2020-2026  Jevgenijs Protopopovs
+
+    This file is part of Kefir project.
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, version 3.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
 #include "kefir/optimizer/configuration.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
@@ -9,10 +29,12 @@ kefir_result_t kefir_optimizer_configuration_init(struct kefir_optimizer_configu
     REQUIRE(target_platform != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR target platform"));
 
     REQUIRE_OK(kefir_optimizer_pipeline_init(&conf->pipeline));
-    conf->max_recursive_inline = 2;
-    conf->max_inline_depth = 5;
-    conf->max_inlines_per_function = 10;
-    conf->max_inline_target_block_count = 8192;
+    conf->max_recursive_inline = KEFIR_OPTIMIZER_CONFIG_DEFAULT_MAX_RECURSIVE_INLINE;
+    conf->max_inline_depth = KEFIR_OPTIMIZER_CONFIG_DEFAULT_MAX_INLINE_DEPTH;
+    conf->max_inlines_per_caller = KEFIR_OPTIMIZER_CONFIG_DEFAULT_MAX_INLINES_PER_CALLER;
+    conf->max_inline_caller_blocks = KEFIR_OPTIMIZER_CONFIG_DEFAULT_MAX_INLINE_CALLER_BLOCKS;
+    conf->max_inline_callee_instructions = KEFIR_OPTIMIZER_CONFIG_DEFAULT_MAX_INLINE_CALLEE_INSTRUCTIONS;
+    conf->max_inline_leaf_callee_instructions = KEFIR_OPTIMIZER_CONFIG_DEFAULT_MAX_INLINE_LEAF_CALLEE_INSTRUCTIONS;
     conf->debug_info = true;
     conf->position_independent_code = false;
     conf->imprecise_decimal_bitint_conv = false;
@@ -64,8 +86,10 @@ kefir_result_t kefir_optimizer_configuration_copy_from(struct kefir_mem *mem,
     dst_conf->debug_info = src_conf->debug_info;
     dst_conf->max_inline_depth = src_conf->max_inline_depth;
     dst_conf->max_recursive_inline = src_conf->max_recursive_inline;
-    dst_conf->max_inlines_per_function = src_conf->max_inlines_per_function;
-    dst_conf->max_inline_target_block_count = src_conf->max_inline_target_block_count;
+    dst_conf->max_inlines_per_caller = src_conf->max_inlines_per_caller;
+    dst_conf->max_inline_caller_blocks = src_conf->max_inline_caller_blocks;
+    dst_conf->max_inline_callee_instructions = src_conf->max_inline_callee_instructions;
+    dst_conf->max_inline_leaf_callee_instructions = src_conf->max_inline_leaf_callee_instructions;
     dst_conf->decimal_encoding = src_conf->decimal_encoding;
     dst_conf->imprecise_decimal_bitint_conv = src_conf->imprecise_decimal_bitint_conv;
     dst_conf->target_lowering = src_conf->target_lowering;

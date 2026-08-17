@@ -25,6 +25,13 @@
 #include "kefir/ir/platform.h"
 #include "kefir/core/data_model.h"
 
+#define KEFIR_OPTIMIZER_CONFIG_DEFAULT_MAX_RECURSIVE_INLINE 2
+#define KEFIR_OPTIMIZER_CONFIG_DEFAULT_MAX_INLINE_DEPTH 5
+#define KEFIR_OPTIMIZER_CONFIG_DEFAULT_MAX_INLINES_PER_CALLER 10
+#define KEFIR_OPTIMIZER_CONFIG_DEFAULT_MAX_INLINE_CALLER_BLOCKS 8192
+#define KEFIR_OPTIMIZER_CONFIG_DEFAULT_MAX_INLINE_CALLEE_INSTRUCTIONS 16
+#define KEFIR_OPTIMIZER_CONFIG_DEFAULT_MAX_INLINE_LEAF_CALLEE_INSTRUCTIONS 24
+
 typedef struct kefir_optimizer_configuration {
     struct kefir_optimizer_pipeline pipeline;
 
@@ -32,8 +39,10 @@ typedef struct kefir_optimizer_configuration {
     kefir_bool_t position_independent_code;
     kefir_size_t max_recursive_inline;
     kefir_size_t max_inline_depth;
-    kefir_size_t max_inlines_per_function;
-    kefir_size_t max_inline_target_block_count;
+    kefir_size_t max_inlines_per_caller;
+    kefir_size_t max_inline_caller_blocks;
+    kefir_size_t max_inline_callee_instructions;
+    kefir_size_t max_inline_leaf_callee_instructions;
     kefir_size_t imprecise_decimal_bitint_conv;
     kefir_data_model_decimal_encoding_t decimal_encoding;
     const struct kefir_optimizer_target_lowering *target_lowering;

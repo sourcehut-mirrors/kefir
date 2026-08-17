@@ -90,6 +90,7 @@ static kefir_result_t trace_instruction(kefir_opt_instruction_ref_t instr_ref, v
 
 static kefir_result_t is_inline_candidate(struct kefir_mem *mem, const struct kefir_opt_module *module,
                                           struct kefir_opt_function *caller_func, struct kefir_opt_function *func,
+                                          const struct kefir_optimizer_configuration *config,
                                           kefir_bool_t base_inline, kefir_bool_t *candidate) {
     *candidate = false;
     REQUIRE(func->ir_func->flags.inline_behavior != KEFIR_IR_FUNCTION_NO_INLINE, KEFIR_OK);
@@ -116,19 +117,19 @@ static kefir_result_t is_inline_candidate(struct kefir_mem *mem, const struct ke
         }
     }
 
-    struct inline_candidate_instr_tracer instr_trace_payloer = {
+    struct inline_candidate_instr_tracer instr_trace_payload = {
         .module = module, .code = &func->code, .instructions = 0, .leaf_function = true, .noinline = false};
     struct kefir_opt_code_container_tracer tracer = {.trace_instruction = trace_instruction,
-                                                     .payload = &instr_trace_payloer};
+                                                     .payload = &instr_trace_payload};
     kefir_result_t res = kefir_opt_code_container_trace(mem, &func->code, &tracer);
     if (res == KEFIR_YIELD) {
         res = KEFIR_OK;
     }
     REQUIRE_OK(res);
 
-    if (!instr_trace_payloer.noinline &&
-        (instr_trace_payloer.instructions <= 16 ||
-         (instr_trace_payloer.instructions <= 24 && instr_trace_payloer.leaf_function))) {
+    if (!instr_trace_payload.noinline &&
+        (instr_trace_payload.instructions <= config->max_inline_callee_instructions ||
+         (instr_trace_payload.instructions <= config->max_inline_leaf_callee_instructions && instr_trace_payload.leaf_function))) {
         *candidate = true;
         return KEFIR_OK;
     }
@@ -182,14 +183,14 @@ static kefir_result_t inline_func_impl(struct kefir_mem *mem, const struct kefir
                 }
 
                 kefir_bool_t candidate = false;
-                REQUIRE_OK(is_inline_candidate(mem, module, func, called_func, base_inline, &candidate));
+                REQUIRE_OK(is_inline_candidate(mem, module, func, called_func, config, base_inline, &candidate));
                 if (candidate) {
                     REQUIRE_OK(kefir_opt_try_inline_function_call(
                         mem, module, func, control_flow, sequencing,
                         &(struct kefir_opt_try_inline_function_call_parameters) {
                             .max_recursive_inline = config->max_recursive_inline,
                             .max_inline_depth = config->max_inline_depth,
-                            .max_inlines_per_function = config->max_inlines_per_function},
+                            .max_inlines_per_caller = config->max_inlines_per_caller},
                         instr_ref, &inlined));
                 }
             }
@@ -209,7 +210,7 @@ static kefir_result_t inline_func_apply_impl(struct kefir_mem *mem, struct kefir
                                              struct kefir_opt_function *func,
                                              const struct kefir_optimizer_configuration *config,
                                              kefir_bool_t base_inline) {
-    REQUIRE(kefir_opt_code_container_block_count(&func->code) <= config->max_inline_target_block_count, KEFIR_OK);
+    REQUIRE(kefir_opt_code_container_block_count(&func->code) <= config->max_inline_caller_blocks, KEFIR_OK);
 
     struct kefir_opt_code_control_flow control_flow;
     struct kefir_opt_code_sequencing sequencing;

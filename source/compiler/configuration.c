@@ -19,6 +19,7 @@
 */
 
 #include "kefir/compiler/configuration.h"
+#include "kefir/optimizer/configuration.h"
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
 #include <string.h>
@@ -67,10 +68,12 @@ kefir_result_t kefir_compiler_runner_configuration_init(struct kefir_compiler_ru
                     .print_details = NULL,
                     .optimization = KEFIR_CODEGEN_OPTIMIZATION_FULL},
         .optimizer_pipeline_spec = NULL,
-        .optimizer = {.max_recursive_inline = 2,
-                      .max_inline_depth = 5,
-                      .max_inlines_per_function = 10,
-                      .max_inline_target_block_count = 8192,
+        .optimizer = {.max_recursive_inline = KEFIR_OPTIMIZER_CONFIG_DEFAULT_MAX_RECURSIVE_INLINE,
+                      .max_inline_depth = KEFIR_OPTIMIZER_CONFIG_DEFAULT_MAX_INLINE_DEPTH,
+                      .max_inlines_per_caller = KEFIR_OPTIMIZER_CONFIG_DEFAULT_MAX_INLINES_PER_CALLER,
+                      .max_inline_caller_blocks = KEFIR_OPTIMIZER_CONFIG_DEFAULT_MAX_INLINE_CALLER_BLOCKS,
+                        .max_inline_callee_instructions = KEFIR_OPTIMIZER_CONFIG_DEFAULT_MAX_INLINE_CALLEE_INSTRUCTIONS,
+                        .max_inline_leaf_callee_instructions = KEFIR_OPTIMIZER_CONFIG_DEFAULT_MAX_INLINE_LEAF_CALLEE_INSTRUCTIONS,
                       .disable_lowering = false,
                       .cx_limited_range = false},
         .dependency_output = {.target_name = NULL,
