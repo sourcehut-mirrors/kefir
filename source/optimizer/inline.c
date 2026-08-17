@@ -1283,7 +1283,22 @@ static kefir_result_t do_inline_impl(struct do_inline_param *param) {
         REQUIRE_OK(kefir_opt_code_container_clone(param->mem, &param->src_code_clone, param->src_code));
         param->src_code = &param->src_code_clone;
     }
-    REQUIRE_OK(kefir_opt_code_liveness_build(param->mem, &param->dst_liveness, param->dst_control_flow));
+
+    for (kefir_opt_block_id_t block_id = 0; block_id < kefir_opt_code_container_block_count(param->src_code); block_id++) {
+        kefir_opt_instruction_ref_t tail_ref;
+        REQUIRE_OK(kefir_opt_code_block_instr_control_tail(param->src_code, block_id, &tail_ref));
+        if (tail_ref == KEFIR_ID_NONE) {
+            continue;
+        }
+
+        const struct kefir_opt_instruction *tail;
+        REQUIRE_OK(kefir_opt_code_container_instr(param->src_code, tail_ref, &tail));
+
+        if (tail->operation.opcode == KEFIR_OPT_OPCODE_UNREACHABLE) {
+            REQUIRE_OK(kefir_opt_code_liveness_build(param->mem, &param->dst_liveness, param->dst_control_flow));
+            break;
+        }
+    }
 
     REQUIRE_OK(inline_blocks(param));
     REQUIRE_OK(map_inlined_phis(param));
