@@ -101,6 +101,7 @@
         {
             "identifier": 0,
             "name": "while1",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "get_local_scope",
@@ -250,6 +251,7 @@
         {
             "identifier": 1,
             "name": "while2",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "uint_const",
@@ -307,6 +309,7 @@
         {
             "identifier": 2,
             "name": "while3",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "long_double_const",

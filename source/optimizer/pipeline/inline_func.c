@@ -92,8 +92,10 @@ static kefir_result_t is_inline_candidate(struct kefir_mem *mem, const struct ke
                                           struct kefir_opt_function *caller_func, struct kefir_opt_function *func,
                                           kefir_bool_t base_inline, kefir_bool_t *candidate) {
     *candidate = false;
+    REQUIRE(func->ir_func->flags.inline_behavior != KEFIR_IR_FUNCTION_NO_INLINE, KEFIR_OK);
 
-    if (func->ir_func->flags.inline_function_hint) {
+    if (func->ir_func->flags.inline_behavior == KEFIR_IR_FUNCTION_INLINE_HINT ||
+        func->ir_func->flags.inline_behavior == KEFIR_IR_FUNCTION_ALWAYS_INLINE) {
         *candidate = true;
         return KEFIR_OK;
     }

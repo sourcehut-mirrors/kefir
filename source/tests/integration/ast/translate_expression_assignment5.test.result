@@ -240,6 +240,7 @@
         {
             "identifier": 3,
             "name": "assign_add_double",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "float32_const",
@@ -295,6 +296,7 @@
         {
             "identifier": 1,
             "name": "assign_add_ullong",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "uint_const",
@@ -347,6 +349,7 @@
         {
             "identifier": 0,
             "name": "assign_add_int",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "int_const",
@@ -399,6 +402,7 @@
         {
             "identifier": 4,
             "name": "assign_add_double_int",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "float64_const",
@@ -460,6 +464,7 @@
         {
             "identifier": 5,
             "name": "assign_add_ptr_int",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "int_const",
@@ -522,6 +527,7 @@
         {
             "identifier": 2,
             "name": "assign_add_float",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "float32_const",
@@ -574,6 +580,7 @@
         {
             "identifier": 6,
             "name": "assign_add_ptr2_int",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "int_const",

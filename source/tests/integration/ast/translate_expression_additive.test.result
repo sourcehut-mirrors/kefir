@@ -189,6 +189,7 @@
         {
             "identifier": 0,
             "name": "add_integral",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "int_const",
@@ -240,6 +241,7 @@
         {
             "identifier": 6,
             "name": "sub_pointer_integer",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "int_const",
@@ -365,6 +367,7 @@
         {
             "identifier": 2,
             "name": "add_pointer_int",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "int_const",
@@ -468,6 +471,7 @@
         {
             "identifier": 3,
             "name": "sub_integral",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "int_const",
@@ -522,6 +526,7 @@
         {
             "identifier": 5,
             "name": "sub_pointers",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "int_const",
@@ -625,6 +630,7 @@
         {
             "identifier": 4,
             "name": "sub_floating_point",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "int_const",
@@ -730,6 +736,7 @@
         {
             "identifier": 1,
             "name": "add_floating_point",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "int_const",

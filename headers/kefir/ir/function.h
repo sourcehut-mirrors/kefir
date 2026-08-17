@@ -44,6 +44,13 @@ typedef struct kefir_ir_function_decl {
     };
 } kefir_ir_function_decl_t;
 
+typedef enum kefir_ir_function_inline {
+    KEFIR_IR_FUNCTION_INLINE_DEFAULT,
+    KEFIR_IR_FUNCTION_NO_INLINE,
+    KEFIR_IR_FUNCTION_INLINE_HINT,
+    KEFIR_IR_FUNCTION_ALWAYS_INLINE
+} kefir_ir_function_inline_t;
+
 typedef struct kefir_ir_function {
     const char *name;
     struct kefir_ir_function_decl *declaration;
@@ -52,8 +59,7 @@ typedef struct kefir_ir_function {
         kefir_bool_t used;
         kefir_bool_t constructor;
         kefir_bool_t destructor;
-        kefir_bool_t inline_function_hint;
-        kefir_bool_t noinline_function;
+        kefir_ir_function_inline_t inline_behavior;
         kefir_bool_t enable_fenv_access;
         kefir_bool_t disallow_fp_contract;
         kefir_bool_t cx_limited_range;

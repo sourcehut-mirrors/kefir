@@ -408,6 +408,7 @@
         {
             "identifier": 4,
             "name": "call1",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "int_const",
@@ -430,6 +431,7 @@
         {
             "identifier": 6,
             "name": "call2",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "float32_const",
@@ -462,6 +464,7 @@
         {
             "identifier": 8,
             "name": "call3",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "invoke",
@@ -476,6 +479,7 @@
         {
             "identifier": 10,
             "name": "call4",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "invoke",
@@ -490,6 +494,7 @@
         {
             "identifier": 12,
             "name": "call5",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "int_const",
@@ -511,6 +516,7 @@
         {
             "identifier": 14,
             "name": "call6",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "get_local_scope",

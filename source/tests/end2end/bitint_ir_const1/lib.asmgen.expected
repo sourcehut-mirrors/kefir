@@ -780,6 +780,7 @@
         {
             "identifier": 44,
             "name": "get",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "bitint_signed_const",

@@ -156,6 +156,7 @@
         {
             "identifier": 0,
             "name": "inline_asm1",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "get_global",
@@ -193,6 +194,7 @@
         {
             "identifier": 1,
             "name": "inline_asm2",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "get_global",

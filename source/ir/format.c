@@ -1030,6 +1030,25 @@ static kefir_result_t kefir_ir_format_function(struct kefir_json_output *json, c
         REQUIRE_OK(kefir_json_output_boolean(json, true));
     }
 
+    REQUIRE_OK(kefir_json_output_object_key(json, "inline"));
+    switch (func->flags.inline_behavior) {
+        case KEFIR_IR_FUNCTION_INLINE_DEFAULT:
+            REQUIRE_OK(kefir_json_output_string(json, "default"));
+            break;
+
+        case KEFIR_IR_FUNCTION_NO_INLINE:
+            REQUIRE_OK(kefir_json_output_string(json, "no_inline"));
+            break;
+            
+        case KEFIR_IR_FUNCTION_INLINE_HINT:
+            REQUIRE_OK(kefir_json_output_string(json, "inline_hint"));
+            break;
+
+        case KEFIR_IR_FUNCTION_ALWAYS_INLINE:
+            REQUIRE_OK(kefir_json_output_string(json, "always_inline"));
+            break;
+    }
+
     REQUIRE_OK(callback->format_function(json, func->declaration->id, callback->payload));
 
     if (debug_info) {

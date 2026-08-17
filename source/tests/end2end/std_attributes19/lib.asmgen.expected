@@ -929,6 +929,7 @@
         {
             "identifier": 46,
             "name": "get",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "invoke",
@@ -949,6 +950,7 @@
         {
             "identifier": 48,
             "name": "get2",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "invoke",
@@ -969,6 +971,7 @@
         {
             "identifier": 50,
             "name": "get3",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "invoke",

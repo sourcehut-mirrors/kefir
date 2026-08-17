@@ -1673,6 +1673,7 @@
         {
             "identifier": 45,
             "name": "d2",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "get_local_scope",

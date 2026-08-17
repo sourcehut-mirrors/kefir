@@ -86,6 +86,7 @@
         {
             "identifier": 0,
             "name": "conditional1",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "uint_const",
@@ -114,6 +115,7 @@
         {
             "identifier": 1,
             "name": "conditional2",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "float32_const",
@@ -162,6 +164,7 @@
         {
             "identifier": 2,
             "name": "conditional3",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "get_local_scope",
@@ -222,6 +225,7 @@
         {
             "identifier": 3,
             "name": "conditional4",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "int_const",

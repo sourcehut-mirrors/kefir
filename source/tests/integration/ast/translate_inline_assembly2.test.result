@@ -51,6 +51,7 @@
         {
             "identifier": 0,
             "name": "inline_asm1",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "inline_assembly",

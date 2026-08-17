@@ -61,6 +61,7 @@
         {
             "identifier": 1,
             "name": "divide",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "int_const",
@@ -216,6 +217,7 @@
         {
             "identifier": 2,
             "name": "modulo",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "int_const",
@@ -284,6 +286,7 @@
         {
             "identifier": 0,
             "name": "multiply",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "int_const",

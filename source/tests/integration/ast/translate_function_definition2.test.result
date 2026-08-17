@@ -135,6 +135,7 @@
         {
             "identifier": 1,
             "name": "intat",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "get_local_scope",

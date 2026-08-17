@@ -994,12 +994,14 @@
             "name": "test0",
             "enable_fenv_access": true,
             "disallow_fp_contract": true,
+            "inline": "default",
             "body": [],
             "public_labels": []
         },
         {
             "identifier": 49,
             "name": "test1",
+            "inline": "default",
             "body": [],
             "public_labels": []
         },
@@ -1007,6 +1009,7 @@
             "identifier": 50,
             "name": "test2",
             "enable_fenv_access": true,
+            "inline": "default",
             "body": [],
             "public_labels": []
         },
@@ -1014,6 +1017,7 @@
             "identifier": 51,
             "name": "test3",
             "disallow_fp_contract": true,
+            "inline": "default",
             "body": [],
             "public_labels": []
         },
@@ -1022,6 +1026,7 @@
             "name": "test4",
             "enable_fenv_access": true,
             "disallow_fp_contract": true,
+            "inline": "default",
             "body": [],
             "public_labels": []
         }

@@ -165,6 +165,7 @@
         {
             "identifier": 0,
             "name": "return0",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "return"
@@ -175,6 +176,7 @@
         {
             "identifier": 1,
             "name": "return1",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "int_const",
@@ -202,6 +204,7 @@
         {
             "identifier": 2,
             "name": "return2",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "int_const",
@@ -232,6 +235,7 @@
         {
             "identifier": 3,
             "name": "return3",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "get_local_scope",
@@ -278,6 +282,7 @@
         {
             "identifier": 4,
             "name": "return4",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "uint_const",

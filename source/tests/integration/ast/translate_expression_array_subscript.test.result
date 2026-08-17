@@ -63,6 +63,7 @@
         {
             "identifier": 0,
             "name": "func1",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "get_global",

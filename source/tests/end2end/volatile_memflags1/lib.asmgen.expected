@@ -1433,6 +1433,7 @@
         {
             "identifier": 54,
             "name": "getA",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "get_global",
@@ -1455,6 +1456,7 @@
         {
             "identifier": 55,
             "name": "getB",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "get_global",
@@ -1477,6 +1479,7 @@
         {
             "identifier": 56,
             "name": "getC",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "get_global",
@@ -1499,6 +1502,7 @@
         {
             "identifier": 57,
             "name": "getD",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "get_global",
@@ -1521,6 +1525,7 @@
         {
             "identifier": 58,
             "name": "setA",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "get_local_scope",
@@ -1609,6 +1614,7 @@
         {
             "identifier": 59,
             "name": "setB",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "get_local_scope",
@@ -1697,6 +1703,7 @@
         {
             "identifier": 60,
             "name": "setC",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "get_local_scope",
@@ -1785,6 +1792,7 @@
         {
             "identifier": 61,
             "name": "setD",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "get_local_scope",
@@ -1873,6 +1881,7 @@
         {
             "identifier": 62,
             "name": "setS",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "get_local_scope",
@@ -2599,6 +2608,7 @@
         {
             "identifier": 63,
             "name": "sumS",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "get_local_scope",
@@ -2969,6 +2979,7 @@
         {
             "identifier": 64,
             "name": "vla_test",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "get_local_scope",

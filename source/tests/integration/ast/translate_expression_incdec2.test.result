@@ -282,6 +282,7 @@
         {
             "identifier": 2,
             "name": "decrement_int1",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "get_local_scope",
@@ -330,6 +331,7 @@
         {
             "identifier": 3,
             "name": "decrement_int2",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "get_local_scope",
@@ -378,6 +380,7 @@
         {
             "identifier": 0,
             "name": "increment_int1",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "get_local_scope",
@@ -426,6 +429,7 @@
         {
             "identifier": 1,
             "name": "increment_int2",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "get_local_scope",
@@ -474,6 +478,7 @@
         {
             "identifier": 5,
             "name": "increment_double",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "get_local_scope",
@@ -522,6 +527,7 @@
         {
             "identifier": 8,
             "name": "increment_pointer1",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "get_local_scope",
@@ -577,6 +583,7 @@
         {
             "identifier": 9,
             "name": "increment_pointer2",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "get_local_scope",
@@ -632,6 +639,7 @@
         {
             "identifier": 7,
             "name": "decrement_double",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "get_local_scope",
@@ -680,6 +688,7 @@
         {
             "identifier": 10,
             "name": "decrement_pointer1",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "get_local_scope",
@@ -735,6 +744,7 @@
         {
             "identifier": 11,
             "name": "decrement_pointer2",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "get_local_scope",
@@ -790,6 +800,7 @@
         {
             "identifier": 6,
             "name": "decrement_float",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "get_local_scope",
@@ -838,6 +849,7 @@
         {
             "identifier": 4,
             "name": "increment_float",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "get_local_scope",

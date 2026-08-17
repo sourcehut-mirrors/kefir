@@ -288,6 +288,7 @@
         {
             "identifier": 0,
             "name": "plus",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "int_const",
@@ -323,6 +324,7 @@
         {
             "identifier": 1,
             "name": "minus",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "int_const",
@@ -373,6 +375,7 @@
         {
             "identifier": 2,
             "name": "invert",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "int_const",
@@ -416,6 +419,7 @@
         {
             "identifier": 7,
             "name": "alignof",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "uint_const",
@@ -499,6 +503,7 @@
         {
             "identifier": 5,
             "name": "sizeof1",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "uint_const",
@@ -582,6 +587,7 @@
         {
             "identifier": 6,
             "name": "sizeof2",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "uint_const",
@@ -645,6 +651,7 @@
         {
             "identifier": 8,
             "name": "indirection",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "int_const",
@@ -757,6 +764,7 @@
         {
             "identifier": 3,
             "name": "logical_negate",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "int_const",
@@ -847,6 +855,7 @@
         {
             "identifier": 4,
             "name": "logical_negate2",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "long_double_const",

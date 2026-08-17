@@ -95,6 +95,7 @@
         {
             "identifier": 3,
             "name": "or",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "int_const",
@@ -145,6 +146,7 @@
         {
             "identifier": 2,
             "name": "and",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "int_const",
@@ -195,6 +197,7 @@
         {
             "identifier": 4,
             "name": "xor",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "int_const",
@@ -245,6 +248,7 @@
         {
             "identifier": 0,
             "name": "left_shift",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "int_const",
@@ -288,6 +292,7 @@
         {
             "identifier": 1,
             "name": "right_shift",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "int_const",

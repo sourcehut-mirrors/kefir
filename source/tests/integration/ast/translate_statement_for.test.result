@@ -228,6 +228,7 @@
         {
             "identifier": 0,
             "name": "for1",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "invoke",
@@ -246,6 +247,7 @@
         {
             "identifier": 3,
             "name": "for2",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "get_local_scope",
@@ -367,6 +369,7 @@
         {
             "identifier": 5,
             "name": "for3",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "get_local_scope",
@@ -542,6 +545,7 @@
         {
             "identifier": 8,
             "name": "for4",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "long_double_const",

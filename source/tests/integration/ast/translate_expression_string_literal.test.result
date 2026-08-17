@@ -83,6 +83,7 @@
         {
             "identifier": 0,
             "name": "string_literal1",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "string_ref",
@@ -94,6 +95,7 @@
         {
             "identifier": 1,
             "name": "string_literal2",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "string_ref",
@@ -105,6 +107,7 @@
         {
             "identifier": 2,
             "name": "string_literal3",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "string_ref",

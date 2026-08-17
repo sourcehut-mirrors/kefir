@@ -1004,30 +1004,35 @@
         {
             "identifier": 48,
             "name": "test",
+            "inline": "default",
             "body": [],
             "public_labels": []
         },
         {
             "identifier": 49,
             "name": "test2",
+            "inline": "inline_hint",
             "body": [],
             "public_labels": []
         },
         {
             "identifier": 50,
             "name": "test3",
+            "inline": "default",
             "body": [],
             "public_labels": []
         },
         {
             "identifier": 51,
             "name": "test4",
+            "inline": "default",
             "body": [],
             "public_labels": []
         },
         {
             "identifier": 52,
             "name": "test5",
+            "inline": "default",
             "body": [],
             "public_labels": []
         }

@@ -255,6 +255,7 @@
         {
             "identifier": 1,
             "name": "assign_union",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "get_local_scope",
@@ -308,6 +309,7 @@
         {
             "identifier": 0,
             "name": "assign_struct",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "get_local_scope",

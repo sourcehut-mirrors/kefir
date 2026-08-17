@@ -490,6 +490,7 @@
         {
             "identifier": 7,
             "name": "add_value",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "get_global",
@@ -553,6 +554,7 @@
         {
             "identifier": 6,
             "name": "get_value",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "get_global",
@@ -575,6 +577,7 @@
         {
             "identifier": 5,
             "name": "set_value",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "get_local_scope",
@@ -663,6 +666,7 @@
         {
             "identifier": 8,
             "name": "invoke_callback",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "get_global",

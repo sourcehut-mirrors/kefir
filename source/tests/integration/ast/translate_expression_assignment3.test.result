@@ -241,6 +241,7 @@
         {
             "identifier": 4,
             "name": "assign_multiply_int_double",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "float64_const",
@@ -302,6 +303,7 @@
         {
             "identifier": 5,
             "name": "assign_divide_int",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "int_const",
@@ -354,6 +356,7 @@
         {
             "identifier": 8,
             "name": "assign_divide_double",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "float32_const",
@@ -409,6 +412,7 @@
         {
             "identifier": 6,
             "name": "assign_divide_ullong",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "int_const",
@@ -464,6 +468,7 @@
         {
             "identifier": 2,
             "name": "assign_multiply_float",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "int_const",
@@ -522,6 +527,7 @@
         {
             "identifier": 9,
             "name": "assign_divide_ullong_double",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "float64_const",
@@ -580,6 +586,7 @@
         {
             "identifier": 3,
             "name": "assign_multiply_double",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "float32_const",
@@ -635,6 +642,7 @@
         {
             "identifier": 1,
             "name": "assign_multiply_ullong",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "int_const",
@@ -690,6 +698,7 @@
         {
             "identifier": 7,
             "name": "assign_divide_float",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "int_const",
@@ -748,6 +757,7 @@
         {
             "identifier": 0,
             "name": "assign_multiply_int",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "int_const",

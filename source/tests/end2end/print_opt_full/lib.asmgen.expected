@@ -163,6 +163,7 @@
         {
             "identifier": 46,
             "name": "test4",
+            "inline": "default",
             "code": {
                 "entry_point": 0,
                 "blocks": [

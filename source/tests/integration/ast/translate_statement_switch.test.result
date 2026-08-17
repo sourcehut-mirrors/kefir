@@ -60,6 +60,7 @@
         {
             "identifier": 0,
             "name": "switch1",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "get_global",
@@ -328,6 +329,7 @@
         {
             "identifier": 1,
             "name": "switch2",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "get_global",

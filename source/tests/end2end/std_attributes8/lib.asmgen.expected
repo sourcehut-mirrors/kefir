@@ -1032,6 +1032,7 @@
         {
             "identifier": 53,
             "name": "main",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "invoke",
@@ -1069,18 +1070,21 @@
         {
             "identifier": 50,
             "name": "test4",
+            "inline": "default",
             "body": [],
             "public_labels": []
         },
         {
             "identifier": 51,
             "name": "test5",
+            "inline": "default",
             "body": [],
             "public_labels": []
         },
         {
             "identifier": 52,
             "name": "test6",
+            "inline": "default",
             "body": [],
             "public_labels": []
         }

@@ -1365,7 +1365,8 @@ static kefir_result_t can_inline_function(const struct kefir_opt_function *calle
                                                    (inline_params == NULL ? 1 : inline_params->max_recursive_inline),
                                                    &can_inline));
 
-    if (called_function->ir_func->flags.noinline_function || called_function->ir_func->declaration->vararg ||
+    if (called_function->ir_func->flags.inline_behavior == KEFIR_IR_FUNCTION_NO_INLINE ||
+        called_function->ir_func->declaration->vararg ||
         called_function->ir_func->declaration->returns_twice ||
         (inline_params == NULL || callee_function->num_of_inlines >= inline_params->max_inlines_per_function)) {
         can_inline = false;

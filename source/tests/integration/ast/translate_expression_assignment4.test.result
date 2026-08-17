@@ -245,6 +245,7 @@
         {
             "identifier": 7,
             "name": "assign_biwise_and_ullong",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "int_const",
@@ -297,6 +298,7 @@
         {
             "identifier": 11,
             "name": "assign_biwise_xor_ullong",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "int_const",
@@ -352,6 +354,7 @@
         {
             "identifier": 0,
             "name": "assign_modulo_int",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "int_const",
@@ -404,6 +407,7 @@
         {
             "identifier": 3,
             "name": "assign_shl_ullong",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "int_const",
@@ -456,6 +460,7 @@
         {
             "identifier": 5,
             "name": "assign_shr_ullong",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "int_const",
@@ -508,6 +513,7 @@
         {
             "identifier": 8,
             "name": "assign_bitwise_or_int",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "int_const",
@@ -560,6 +566,7 @@
         {
             "identifier": 9,
             "name": "assign_biwise_or_ullong",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "uint_const",
@@ -619,6 +626,7 @@
         {
             "identifier": 2,
             "name": "assign_shl_int",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "int_const",
@@ -671,6 +679,7 @@
         {
             "identifier": 4,
             "name": "assign_shr_int",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "int_const",
@@ -723,6 +732,7 @@
         {
             "identifier": 1,
             "name": "assign_modulo_ullong",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "int_const",
@@ -775,6 +785,7 @@
         {
             "identifier": 6,
             "name": "assign_bitwise_and_int",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "int_const",
@@ -827,6 +838,7 @@
         {
             "identifier": 10,
             "name": "assign_bitwise_xor_int",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "int_const",

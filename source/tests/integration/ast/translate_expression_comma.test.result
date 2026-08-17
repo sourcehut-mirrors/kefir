@@ -112,6 +112,7 @@
         {
             "identifier": 0,
             "name": "comma1",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "uint_const",
@@ -123,6 +124,7 @@
         {
             "identifier": 1,
             "name": "comma2",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "uint_const",
@@ -148,6 +150,7 @@
         {
             "identifier": 2,
             "name": "comma3",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "uint_const",
@@ -173,6 +176,7 @@
         {
             "identifier": 3,
             "name": "comma4",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "uint_const",
@@ -205,6 +209,7 @@
         {
             "identifier": 4,
             "name": "comma5",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "int_const",
@@ -230,6 +235,7 @@
         {
             "identifier": 5,
             "name": "comma6",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "int_const",

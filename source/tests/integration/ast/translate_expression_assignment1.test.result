@@ -404,6 +404,7 @@
         {
             "identifier": 7,
             "name": "enum",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "int_const",
@@ -439,6 +440,7 @@
         {
             "identifier": 8,
             "name": "pointer",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "int_const",
@@ -477,6 +479,7 @@
         {
             "identifier": 3,
             "name": "assign_int",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "int_const",
@@ -571,6 +574,7 @@
         {
             "identifier": 0,
             "name": "assign_bool",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "uint_const",
@@ -645,6 +649,7 @@
         {
             "identifier": 1,
             "name": "assign_char",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "int_const",
@@ -767,6 +772,7 @@
         {
             "identifier": 4,
             "name": "assign_long",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "int_const",
@@ -864,6 +870,7 @@
         {
             "identifier": 2,
             "name": "assign_short",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "int_const",
@@ -927,6 +934,7 @@
         {
             "identifier": 5,
             "name": "assign_long_long",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "int_const",
@@ -993,6 +1001,7 @@
         {
             "identifier": 6,
             "name": "assign_float_double",
+            "inline": "default",
             "body": [
                 {
                     "opcode": "float32_const",
