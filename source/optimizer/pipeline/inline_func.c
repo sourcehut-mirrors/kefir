@@ -95,8 +95,7 @@ static kefir_result_t is_inline_candidate(struct kefir_mem *mem, const struct ke
     *candidate = false;
     REQUIRE(func->ir_func->flags.inline_behavior != KEFIR_IR_FUNCTION_NO_INLINE, KEFIR_OK);
 
-    if (func->ir_func->flags.inline_behavior == KEFIR_IR_FUNCTION_INLINE_HINT ||
-        func->ir_func->flags.inline_behavior == KEFIR_IR_FUNCTION_ALWAYS_INLINE) {
+    if (func->ir_func->flags.inline_behavior == KEFIR_IR_FUNCTION_ALWAYS_INLINE) {
         *candidate = true;
         return KEFIR_OK;
     }
@@ -127,9 +126,16 @@ static kefir_result_t is_inline_candidate(struct kefir_mem *mem, const struct ke
     }
     REQUIRE_OK(res);
 
+    kefir_size_t max_instructions = config->max_inline_callee_instructions;
+    kefir_size_t leaf_max_instructions = config->max_inline_leaf_callee_instructions;
+    if (func->ir_func->flags.inline_behavior != KEFIR_IR_FUNCTION_INLINE_HINT) {
+        max_instructions = max_instructions / 4 * 3;
+        leaf_max_instructions = leaf_max_instructions / 4 * 3;
+    }
+
     if (!instr_trace_payload.noinline &&
-        (instr_trace_payload.instructions <= config->max_inline_callee_instructions ||
-         (instr_trace_payload.instructions <= config->max_inline_leaf_callee_instructions && instr_trace_payload.leaf_function))) {
+        (instr_trace_payload.instructions <= max_instructions ||
+         (instr_trace_payload.instructions <= leaf_max_instructions && instr_trace_payload.leaf_function))) {
         *candidate = true;
         return KEFIR_OK;
     }

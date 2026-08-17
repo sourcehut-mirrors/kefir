@@ -233,39 +233,14 @@ __kefir_bigint_negate:
 .L__kefir_runtime_text_func___kefir_bigint_negate_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $48, %rsp
-    movq %rsi, -40(%rbp)
-    movq %rdi, -48(%rbp)
-    movq -48(%rbp), %rax
-    movq -40(%rbp), %rcx
-    movq %rcx, -24(%rbp)
-    movq %rax, -16(%rbp)
-    movq -24(%rbp), %rax
-    add $7, %rax
-    mov $8, %ecx
-    xor %edx, %edx
-    div %rcx
-    movq %rax, -32(%rbp)
-    xor %eax, %eax
-    movq %rax, -8(%rbp)
-.L__kefir_runtime_func___kefir_bigint_negate_label3:
-    movq -8(%rbp), %rax
-    movq -32(%rbp), %rcx
-    cmp %rcx, %rax
-    jae .L__kefir_runtime_func___kefir_bigint_negate_label4
-    movq -16(%rbp), %rax
-    movq -8(%rbp), %rcx
-    movb (%rax, %rcx, 1), %dl
-    movq -16(%rbp), %rax
-    movq -8(%rbp), %rcx
-    and $-1, %dl
-    not %dl
-    movb %dl, (%rax, %rcx, 1)
-    addq $1, -8(%rbp)
-    jmp .L__kefir_runtime_func___kefir_bigint_negate_label3
-.L__kefir_runtime_func___kefir_bigint_negate_label4:
-    movq -48(%rbp), %rdi
-    movq -40(%rbp), %rdx
+    sub $16, %rsp
+    movq %rsi, -8(%rbp)
+    movq %rdi, -16(%rbp)
+    movq -16(%rbp), %rdi
+    movq -8(%rbp), %rsi
+    call __kefir_bigint_invert
+    movq -16(%rbp), %rdi
+    movq -8(%rbp), %rdx
     mov $1, %esi
     call __kefir_bigint_util_add_digit_zero_extended
     xor %eax, %eax

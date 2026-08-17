@@ -20,9 +20,9 @@
 
 #include "./definitions.h"
 
-inline long factorial_helper(long);
+inline __attribute__((always_inline)) long factorial_helper(long);
 
-inline long factorial_helper2(long x) {
+inline __attribute__((always_inline)) long factorial_helper2(long x) {
     if (x > 1) {
         return x * factorial_helper(x - 1);
     } else {
@@ -30,7 +30,7 @@ inline long factorial_helper2(long x) {
     }
 }
 
-inline long factorial_helper(long x) {
+inline __attribute__((always_inline)) long factorial_helper(long x) {
     return factorial_helper2(x);
 }
 

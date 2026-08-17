@@ -2,25 +2,11 @@
 .section .note.GNU-stack,"",@progbits
 
 .extern test1
-.global test2
-.type test2, @function
 .global test3
 .type test3, @function
 
 .section .text
 .L__kefir_text_section_begin:
-test2:
-.L__kefir_text_func_test2_begin:
-    push %rbp
-    mov %rsp, %rbp
-    test %edi, %edi
-    jz .L__kefir_func_test2_label2
-    call test1@PLT
-.L__kefir_func_test2_label2:
-    pop %rbp
-    ret
-.L__kefir_text_func_test2_end:
-
 test3:
 .L__kefir_text_func_test3_begin:
     push %rbp

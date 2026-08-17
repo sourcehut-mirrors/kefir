@@ -20,7 +20,7 @@
 
 extern int test1(void) __attribute__((returns_twice));
 
-void test2(int x) {
+inline void test2(int x) {
     if (x) {
         volatile long a = 0;
         test1();

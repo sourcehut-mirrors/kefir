@@ -20,7 +20,7 @@
 
 #include "./definitions.h"
 
-inline unsigned long fibonacci(unsigned long n) {
+inline __attribute__((always_inline)) unsigned long fibonacci(unsigned long n) {
     if (n <= 1) {
         return n;
     }

@@ -35,6 +35,6 @@ int test(int a, int b) {
     return x.a ^ x.b;
 }
 
-struct B get4(struct B x) {
+inline struct B get4(struct B x) {
     return (struct B) {.a = x.a + x.b, .b = x.a - x.b};
 }
