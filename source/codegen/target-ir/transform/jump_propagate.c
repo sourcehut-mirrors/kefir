@@ -22,7 +22,7 @@
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 
-static kefir_result_t do_jump_propagation(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code,
+static kefir_result_t do_jump_propagation(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code, const struct kefir_codegen_target_ir_control_flow *control_flow,
                                           kefir_codegen_target_ir_block_ref_t block_ref) {
     kefir_codegen_target_ir_instruction_ref_t tail_ref =
         kefir_codegen_target_ir_code_block_control_tail(code, block_ref);
@@ -67,12 +67,21 @@ static kefir_result_t do_jump_propagation(struct kefir_mem *mem, struct kefir_co
             continue;
         }
 
+        kefir_codegen_target_ir_block_ref_t propagated_ref = target_terminator_props.target_block_refs[0];
+        kefir_codegen_target_ir_block_ref_t phis_block_ref = propagated_ref;
+        if (kefir_hashtreeset_has(&control_flow->indirect_jump_targets, (kefir_hashtreeset_entry_t) phis_block_ref)) {
+            phis_block_ref = code->indirect_jump_gate_block;
+        }
+        if (phis_block_ref == KEFIR_ID_NONE) {
+            continue;
+        }
+
         kefir_result_t res;
         struct kefir_codegen_target_ir_value_phi_node_iterator phi_node_iter;
         kefir_codegen_target_ir_instruction_ref_t phi_ref;
         kefir_bool_t has_link = false;
         for (res = kefir_codegen_target_ir_code_phi_node_iter(code, &phi_node_iter,
-                                                              target_terminator_props.target_block_refs[0], &phi_ref);
+                                                              phis_block_ref, &phi_ref);
              res == KEFIR_OK && !has_link; res = kefir_codegen_target_ir_code_phi_node_next(&phi_node_iter, &phi_ref)) {
             kefir_codegen_target_ir_value_ref_t link_value_ref;
             res = kefir_codegen_target_ir_code_phi_link_for(code, phi_ref, block_ref, &link_value_ref);
@@ -88,11 +97,11 @@ static kefir_result_t do_jump_propagation(struct kefir_mem *mem, struct kefir_co
             continue;
         }
 
-        replacement.parameters[i].block_ref = target_terminator_props.target_block_refs[0];
+        replacement.parameters[i].block_ref = propagated_ref;
         do_replace = true;
 
         for (res = kefir_codegen_target_ir_code_phi_node_iter(code, &phi_node_iter,
-                                                              target_terminator_props.target_block_refs[0], &phi_ref);
+                                                              phis_block_ref, &phi_ref);
              res == KEFIR_OK; res = kefir_codegen_target_ir_code_phi_node_next(&phi_node_iter, &phi_ref)) {
             kefir_codegen_target_ir_value_ref_t link_value_ref;
             REQUIRE_OK(kefir_codegen_target_ir_code_phi_link_for(code, phi_ref, target_block_ref, &link_value_ref));
@@ -118,9 +127,18 @@ kefir_result_t kefir_codegen_target_ir_transform_jump_propagate(struct kefir_mem
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR code"));
 
-    for (kefir_size_t i = 0; i < kefir_codegen_target_ir_code_block_count(code); i++) {
+    struct kefir_codegen_target_ir_control_flow control_flow;
+    REQUIRE_OK(kefir_codegen_target_ir_control_flow_init(&control_flow, code));
+
+    kefir_result_t res = kefir_codegen_target_ir_control_flow_build(mem, &control_flow);
+    for (kefir_size_t i = 0; res == KEFIR_OK && i < kefir_codegen_target_ir_code_block_count(code); i++) {
         kefir_codegen_target_ir_block_ref_t block_ref = kefir_codegen_target_ir_code_block_by_index(code, i);
-        REQUIRE_OK(do_jump_propagation(mem, code, block_ref));
+        REQUIRE_CHAIN(&res, do_jump_propagation(mem, code, &control_flow, block_ref));
     }
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_codegen_target_ir_control_flow_free(mem, &control_flow);
+        return res;
+    });
+    REQUIRE_OK(kefir_codegen_target_ir_control_flow_free(mem, &control_flow));
     return KEFIR_OK;
 }

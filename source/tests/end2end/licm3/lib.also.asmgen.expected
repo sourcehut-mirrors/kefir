@@ -73,7 +73,7 @@ _kefir_local_public_label_test2_outer:
     xor %r8d, %r8d
 .L__kefir_func_test2_label4:
     cmp %edx, %r8d
-    je .L__kefir_func_test2_label10
+    je .L__kefir_func_test2_label6
     movsx %r8d, %r11
     mov %eax, %ebx
     sub %r8d, %ebx
@@ -81,7 +81,7 @@ _kefir_local_public_label_test2_outer:
     movl %ebx, (%r9, %r11, 4)
     add $1, %r8d
     jmp .L__kefir_func_test2_label4
-.L__kefir_func_test2_label10:
+.L__kefir_func_test2_label6:
     mov %r10d, %r8d
     jmp .L__kefir_func_test2_label2
 .L__kefir_func_test2_label8:

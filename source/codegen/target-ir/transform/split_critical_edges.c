@@ -73,7 +73,7 @@ static kefir_result_t update_operand(struct kefir_codegen_target_ir_operand *ope
     return KEFIR_OK;
 }
 
-static kefir_result_t split_edge(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code,
+static kefir_result_t split_edge(struct kefir_mem *mem, struct kefir_codegen_target_ir_code *code, const struct kefir_codegen_target_ir_control_flow *control_flow,
                                  kefir_codegen_target_ir_block_ref_t source_block_ref,
                                  kefir_codegen_target_ir_block_ref_t target_block_ref) {
     REQUIRE(!kefir_codegen_target_ir_code_is_gate_block(code, source_block_ref), KEFIR_OK);
@@ -130,9 +130,15 @@ static kefir_result_t split_edge(struct kefir_mem *mem, struct kefir_codegen_tar
     REQUIRE_OK(kefir_codegen_target_ir_code_replace_instruction(mem, code, new_tail_ref, source_block_tail_ref));
     REQUIRE_OK(kefir_codegen_target_ir_code_drop_instruction(mem, code, source_block_tail_ref));
 
+    kefir_codegen_target_ir_block_ref_t phis_block_ref = target_block_ref;
+    if (kefir_hashtreeset_has(&control_flow->indirect_jump_targets, (kefir_hashtreeset_entry_t) phis_block_ref) &&
+        code->indirect_jump_gate_block) {
+        phis_block_ref = code->indirect_jump_gate_block;
+    }
+
     struct kefir_codegen_target_ir_value_phi_node_iterator phi_node_iter;
     kefir_codegen_target_ir_instruction_ref_t phi_ref;
-    for (res = kefir_codegen_target_ir_code_phi_node_iter(code, &phi_node_iter, target_block_ref, &phi_ref);
+    for (res = kefir_codegen_target_ir_code_phi_node_iter(code, &phi_node_iter, phis_block_ref, &phi_ref);
          res == KEFIR_OK; res = kefir_codegen_target_ir_code_phi_node_next(&phi_node_iter, &phi_ref)) {
         kefir_codegen_target_ir_value_ref_t link_value_ref;
         REQUIRE_OK(kefir_codegen_target_ir_code_phi_link_for(code, phi_ref, source_block_ref, &link_value_ref));
@@ -164,16 +170,26 @@ static kefir_result_t split_critical_edges(struct kefir_mem *mem, struct kefir_c
             continue;
         }
 
-        for (res = kefir_hashset_iter(&control_flow->blocks[block_ref].successors, &iter, &key); res == KEFIR_OK;
-             res = kefir_hashset_next(&iter, &key)) {
-            ASSIGN_DECL_CAST(kefir_codegen_target_ir_block_ref_t, successor_block_ref, key);
-            if (kefir_codegen_target_ir_control_flow_is_critical_edge(control_flow, block_ref, successor_block_ref)) {
-                const kefir_uint64_t edge = (((kefir_uint64_t) block_ref) << 32) | (kefir_uint32_t) successor_block_ref;
+        kefir_codegen_target_ir_instruction_ref_t tail_ref =
+            kefir_codegen_target_ir_code_block_control_tail(code, block_ref);
+        REQUIRE(tail_ref != KEFIR_ID_NONE, KEFIR_OK);
+
+        const struct kefir_codegen_target_ir_instruction *tail_instr;
+        REQUIRE_OK(kefir_codegen_target_ir_code_instruction(code, tail_ref, &tail_instr));
+
+        struct kefir_codegen_target_ir_block_terminator_props terminator_props;
+        REQUIRE_OK(code->klass->is_block_terminator(code, tail_instr, &terminator_props, code->klass->payload));
+
+        if (terminator_props.block_terminator && !terminator_props.function_terminator && !terminator_props.undefined_target &&
+            terminator_props.branch) {
+            if (kefir_codegen_target_ir_control_flow_is_critical_edge(control_flow, block_ref, terminator_props.target_block_refs[0])) {
+                const kefir_uint64_t edge = (((kefir_uint64_t) block_ref) << 32) | (kefir_uint32_t) terminator_props.target_block_refs[0];
                 REQUIRE_OK(kefir_hashset_add(mem, critical_edges, (kefir_hashset_key_t) edge));
             }
-        }
-        if (res != KEFIR_ITERATOR_END) {
-            REQUIRE_OK(res);
+            if (kefir_codegen_target_ir_control_flow_is_critical_edge(control_flow, block_ref, terminator_props.target_block_refs[1])) {
+                const kefir_uint64_t edge = (((kefir_uint64_t) block_ref) << 32) | (kefir_uint32_t) terminator_props.target_block_refs[1];
+                REQUIRE_OK(kefir_hashset_add(mem, critical_edges, (kefir_hashset_key_t) edge));
+            }
         }
     }
 
@@ -182,7 +198,7 @@ static kefir_result_t split_critical_edges(struct kefir_mem *mem, struct kefir_c
         ASSIGN_DECL_CAST(kefir_uint64_t, edge, key);
         kefir_codegen_target_ir_block_ref_t block_ref = edge >> 32;
         kefir_codegen_target_ir_block_ref_t successor_block_ref = (kefir_uint32_t) edge;
-        REQUIRE_OK(split_edge(mem, code, block_ref, successor_block_ref));
+        REQUIRE_OK(split_edge(mem, code, control_flow, block_ref, successor_block_ref));
     }
     if (res != KEFIR_ITERATOR_END) {
         REQUIRE_OK(res);
