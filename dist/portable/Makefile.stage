@@ -2,6 +2,7 @@ CC=cc
 LD=ld
 CCLD=$(CC)
 AS=as
+WGET?=wget
 LIBGCC_DIR=
 ROOT_DIR := $(dir $(realpath $(lastword $(MAKEFILE_LIST))))/../..
 WORK_DIR=$(ROOT_DIR)/bin/portable/work
@@ -42,14 +43,14 @@ $(TARGET_DIR)/bin/kefir:
 $(MUSL_ARCHIVE):
 	@mkdir -p $(dir $@)
 	@echo "Downloading $(MUSL_URL)"
-	@wget -O "$@.tmp" "$(MUSL_URL)"
+	@$(WGET) -O "$@.tmp" "$(MUSL_URL)"
 	@$(ROOT_DIR)/scripts/checksum_sha256.sh "$@.tmp" "$(MUSL_ARCHIVE_SHA256)"
 	@mv "$@.tmp" "$@"
 
 $(BINUTILS_ARCHIVE):
 	@mkdir -p $(dir $@)
 	@echo "Downloading $(BINUTILS_URL)"
-	@wget -O "$@.tmp" "$(BINUTILS_URL)"
+	@$(WGET) -O "$@.tmp" "$(BINUTILS_URL)"
 	@$(ROOT_DIR)/scripts/checksum_sha256.sh "$@.tmp" "$(BINUTILS_ARCHIVE_SHA256)"
 	@mv "$@.tmp" "$@"
 
