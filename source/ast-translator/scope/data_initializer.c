@@ -118,7 +118,7 @@ static kefir_result_t translate_pointer_to_identifier(struct kefir_mem *mem,
 }
 
 struct designator_resolve_param {
-    struct kefir_ir_type_tree *ir_type_tree;
+    const struct kefir_ir_type_tree *ir_type_tree;
     kefir_size_t *slot;
 };
 
@@ -145,7 +145,7 @@ static kefir_result_t add_designated_slot(struct kefir_ast_type_layout *layout,
 
 static kefir_result_t resolve_designated_slot(struct kefir_ast_type_layout *root,
                                               const struct kefir_ast_designator *designator,
-                                              struct kefir_ir_type_tree *ir_type_tree, kefir_size_t base_slot,
+                                              const struct kefir_ir_type_tree *ir_type_tree, kefir_size_t base_slot,
                                               struct kefir_ast_type_layout **resolved_layout, kefir_size_t *slot,
                                               const struct kefir_source_location *source_location) {
     *resolved_layout = root;
@@ -174,7 +174,7 @@ struct traversal_param {
     const struct kefir_ir_type *type;
     struct kefir_ir_data *data;
     kefir_size_t base_slot;
-    struct kefir_ir_type_tree ir_type_tree;
+    const struct kefir_ir_type_tree *ir_type_tree;
 };
 
 const kefir_ir_string_literal_type_t KefirAstIrStringLiteralTypes[] = {
@@ -184,6 +184,15 @@ const kefir_ir_string_literal_type_t KefirAstIrStringLiteralTypes[] = {
     [KEFIR_AST_STRING_LITERAL_UNICODE32] = KEFIR_IR_STRING_LITERAL_UNICODE32,
     [KEFIR_AST_STRING_LITERAL_WIDE] = KEFIR_IR_STRING_LITERAL_UNICODE32};
 
+
+static kefir_result_t kefir_ast_translate_data_initializer_impl(struct kefir_mem *, const struct kefir_ast_context *,
+                                                    struct kefir_ir_module *,
+                                                    struct kefir_ast_type_layout *,
+                                                    const struct kefir_ir_type *,
+                                                    const struct kefir_ir_type_tree *,
+                                                    const struct kefir_ast_initializer *,
+                                                    struct kefir_ir_data *, kefir_size_t);
+
 static kefir_result_t visit_value(const struct kefir_ast_designator *designator, struct kefir_ast_node_base *expression,
                                   void *payload) {
     REQUIRE(expression != NULL, KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Expected valid AST expression node"));
@@ -192,7 +201,7 @@ static kefir_result_t visit_value(const struct kefir_ast_designator *designator,
 
     struct kefir_ast_type_layout *resolved_layout = NULL;
     kefir_size_t slot = 0;
-    REQUIRE_OK(resolve_designated_slot(param->type_layout, designator, &param->ir_type_tree, param->base_slot,
+    REQUIRE_OK(resolve_designated_slot(param->type_layout, designator, param->ir_type_tree, param->base_slot,
                                        &resolved_layout, &slot, &expression->source_location));
 
     struct kefir_ast_constant_expression_value value;
@@ -510,8 +519,8 @@ static kefir_result_t visit_value(const struct kefir_ast_designator *designator,
             break;
 
         case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPOUND:
-            REQUIRE_OK(kefir_ast_translate_data_initializer(param->mem, param->context, param->module, resolved_layout,
-                                                            param->type, value.compound.initializer, param->data,
+            REQUIRE_OK(kefir_ast_translate_data_initializer_impl(param->mem, param->context, param->module, resolved_layout,
+                                                            param->type, param->ir_type_tree, value.compound.initializer, param->data,
                                                             slot));
             break;
     }
@@ -540,7 +549,7 @@ static kefir_result_t visit_string_literal(const struct kefir_ast_designator *de
 
     struct kefir_ast_type_layout *resolved_layout = NULL;
     kefir_size_t slot = 0;
-    REQUIRE_OK(resolve_designated_slot(param->type_layout, designator, &param->ir_type_tree, param->base_slot,
+    REQUIRE_OK(resolve_designated_slot(param->type_layout, designator, param->ir_type_tree, param->base_slot,
                                        &resolved_layout, &slot, &expression->source_location));
 
     if (resolved_layout->type->tag == KEFIR_AST_TYPE_ARRAY &&
@@ -562,11 +571,38 @@ static kefir_result_t visit_initializer_list(const struct kefir_ast_designator *
 
     struct kefir_ast_type_layout *resolved_layout = NULL;
     kefir_size_t slot = 0;
-    REQUIRE_OK(resolve_designated_slot(param->type_layout, designator, &param->ir_type_tree, param->base_slot,
+    REQUIRE_OK(resolve_designated_slot(param->type_layout, designator, param->ir_type_tree, param->base_slot,
                                        &resolved_layout, &slot, &initializer->source_location));
 
-    REQUIRE_OK(kefir_ast_translate_data_initializer(param->mem, param->context, param->module, resolved_layout,
-                                                    param->type, initializer, param->data, slot));
+    REQUIRE_OK(kefir_ast_translate_data_initializer_impl(param->mem, param->context, param->module, resolved_layout,
+                                                    param->type, param->ir_type_tree, initializer, param->data, slot));
+    return KEFIR_OK;
+}
+
+static kefir_result_t kefir_ast_translate_data_initializer_impl(struct kefir_mem *mem, const struct kefir_ast_context *context,
+                                                    struct kefir_ir_module *module,
+                                                    struct kefir_ast_type_layout *type_layout,
+                                                    const struct kefir_ir_type *type,
+                                                    const struct kefir_ir_type_tree *type_tree,
+                                                    const struct kefir_ast_initializer *initializer,
+                                                    struct kefir_ir_data *data, kefir_size_t base_slot) {
+    struct traversal_param param = {.mem = mem,
+                                    .context = context,
+                                    .module = module,
+                                    .type_layout = type_layout,
+                                    .type = type,
+                                    .ir_type_tree = type_tree,
+                                    .data = data,
+                                    .base_slot = base_slot};
+
+    struct kefir_ast_initializer_traversal initializer_traversal;
+    KEFIR_AST_INITIALIZER_TRAVERSAL_INIT(&initializer_traversal);
+    initializer_traversal.visit_value = visit_value;
+    initializer_traversal.visit_string_literal = visit_string_literal;
+    initializer_traversal.visit_initializer_list = visit_initializer_list;
+    initializer_traversal.payload = &param;
+
+    REQUIRE_OK(kefir_ast_traverse_initializer(mem, context, initializer, type_layout->type, &initializer_traversal));
     return KEFIR_OK;
 }
 
@@ -584,28 +620,14 @@ kefir_result_t kefir_ast_translate_data_initializer(struct kefir_mem *mem, const
     REQUIRE(initializer != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST initializer"));
     REQUIRE(data != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR data"));
 
-    struct traversal_param param = {.mem = mem,
-                                    .context = context,
-                                    .module = module,
-                                    .type_layout = type_layout,
-                                    .type = type,
-                                    .data = data,
-                                    .base_slot = base_slot};
-
-    struct kefir_ast_initializer_traversal initializer_traversal;
-    KEFIR_AST_INITIALIZER_TRAVERSAL_INIT(&initializer_traversal);
-    initializer_traversal.visit_value = visit_value;
-    initializer_traversal.visit_string_literal = visit_string_literal;
-    initializer_traversal.visit_initializer_list = visit_initializer_list;
-    initializer_traversal.payload = &param;
-
-    REQUIRE_OK(kefir_ir_type_tree_init(mem, type, &param.ir_type_tree));
+    struct kefir_ir_type_tree type_tree;
+    REQUIRE_OK(kefir_ir_type_tree_init(mem, type, &type_tree));
     kefir_result_t res =
-        kefir_ast_traverse_initializer(mem, context, initializer, type_layout->type, &initializer_traversal);
+        kefir_ast_translate_data_initializer_impl(mem, context, module, type_layout, type, &type_tree, initializer, data, base_slot);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        kefir_ir_type_tree_free(mem, &param.ir_type_tree);
+        kefir_ir_type_tree_free(mem, &type_tree);
         return res;
     });
-    REQUIRE_OK(kefir_ir_type_tree_free(mem, &param.ir_type_tree));
+    REQUIRE_OK(kefir_ir_type_tree_free(mem, &type_tree));
     return KEFIR_OK;
 }
