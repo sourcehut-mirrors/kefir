@@ -23,15 +23,10 @@
 
 #include "kefir/lexer/lexem.h"
 
-typedef struct kefir_token_buffer_chunk {
+typedef struct kefir_token_buffer {
+    const struct kefir_token **tokens;
     kefir_size_t length;
     kefir_size_t capacity;
-    const struct kefir_token *content[];
-} kefir_token_buffer_chunk_t;
-
-typedef struct kefir_token_buffer {
-    struct kefir_hashtree chunks;
-    kefir_size_t length;
 } kefir_token_buffer_t;
 
 kefir_result_t kefir_token_buffer_init(struct kefir_token_buffer *);
