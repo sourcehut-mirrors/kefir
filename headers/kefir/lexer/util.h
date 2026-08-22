@@ -18,12 +18,16 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef KEFIR_UTIL_CHAR32_H_
-#define KEFIR_UTIL_CHAR32_H_
+#ifndef KEFIR_LEXER_UTIL_H_
+#define KEFIR_LEXER_UTIL_H_
 
-#include "kefir/core/basic-types.h"
+#include "kefir/lexer/source_cursor.h"
 
-kefir_size_t kefir_strlen32(const kefir_char32_t *);
-kefir_char32_t kefir_dectohex32(kefir_uint64_t);
+kefir_bool_t kefir_lexer_char_isspace(kefir_lexer_char_t);
+kefir_bool_t kefir_lexer_char_isdigit(kefir_lexer_char_t);
+kefir_bool_t kefir_lexer_char_isoctdigit(kefir_lexer_char_t);
+kefir_bool_t kefir_lexer_char_ishexdigit(kefir_lexer_char_t);
+kefir_bool_t kefir_lexer_char_isnondigit(kefir_lexer_char_t);
+kefir_uint32_t kefir_lexer_char_hex2dec(kefir_lexer_char_t);
 
 #endif

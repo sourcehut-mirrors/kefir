@@ -425,7 +425,7 @@ kefir_result_t kefir_token_new_string_literal_unicode32(struct kefir_mem *, cons
 kefir_result_t kefir_token_new_string_literal_wide(struct kefir_mem *, const kefir_wchar_t *, kefir_size_t,
                                                    struct kefir_token *);
 kefir_result_t kefir_token_new_string_literal_raw(struct kefir_mem *, kefir_string_literal_token_type_t,
-                                                  const kefir_char32_t *, kefir_size_t, struct kefir_token *);
+                                                  const char *, kefir_size_t, struct kefir_token *);
 kefir_bool_t kefir_token_string_literal_type_concat(kefir_string_literal_token_type_t,
                                                     kefir_string_literal_token_type_t,
                                                     kefir_string_literal_token_type_t *);

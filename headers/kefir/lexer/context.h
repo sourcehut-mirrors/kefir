@@ -21,10 +21,8 @@
 #ifndef KEFIR_LEXER_CONTEXT_H_
 #define KEFIR_LEXER_CONTEXT_H_
 
-#include "kefir/lexer/base.h"
 #include "kefir/core/basic-types.h"
 #include "kefir/core/data_model.h"
-#include "kefir/core/standard_version.h"
 
 typedef struct kefir_lexer_context {
     kefir_uint64_t integer_max_value;
@@ -34,7 +32,7 @@ typedef struct kefir_lexer_context {
     kefir_uint64_t long_long_max_value;
     kefir_uint64_t ulong_long_max_value;
 
-    kefir_char32_t newline;
+    char newline;
 } kefir_lexer_context_t;
 
 kefir_result_t kefir_lexer_context_default(struct kefir_lexer_context *);

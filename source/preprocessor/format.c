@@ -27,9 +27,7 @@
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
 #include "kefir/core/os_error.h"
-#include "kefir/util/uchar.h"
 #include "kefir/util/char32.h"
-#include <ctype.h>
 #include <wctype.h>
 #include <string.h>
 #include <stdio.h>
@@ -429,17 +427,9 @@ static kefir_result_t format_string_literal(FILE *out, const struct kefir_token 
                 break;
         }
 
-        char mb[MB_LEN_MAX];
-        mbstate_t mbstate = {0};
-        for (kefir_size_t i = 0; i < token->string_literal->length; i++) {
-            kefir_char32_t chr = ((const kefir_char32_t *) token->string_literal->literal)[i];
-            size_t rc = c32rtomb(mb, chr, &mbstate);
-            if (rc == (size_t) -1) {
-                mbstate = (mbstate_t) {0};
-                fprintf(out, "%c", chr);
-            } else if (rc != 0) {
-                fprintf(out, "%.*s", (int) rc, mb);
-            }
+        for (kefir_size_t i = 0; i < token->string_literal->length - 1; i++) {
+            char chr = ((const char *) token->string_literal->literal)[i];
+            fprintf(out, "%c", chr);
         }
         fprintf(out, "\"");
         return KEFIR_OK;

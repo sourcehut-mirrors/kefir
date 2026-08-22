@@ -72,8 +72,8 @@ static struct kefir_token_extension_class EXT_CLASS = {.free = ext_free,
 
 static kefir_result_t failed_lex(struct kefir_mem *mem, struct kefir_lexer *lexer, struct kefir_token *token) {
     UNUSED(mem);
-    if (kefir_lexer_source_cursor_at(lexer->cursor, 0) == U'`' &&
-        kefir_lexer_source_cursor_at(lexer->cursor, 1) == U'`') {
+    if (kefir_lexer_source_cursor_at(lexer->cursor, 0) == '`' &&
+        kefir_lexer_source_cursor_at(lexer->cursor, 1) == '`') {
         REQUIRE_OK(kefir_token_new_extension(mem, &EXT_CLASS, NULL, token));
         REQUIRE_OK(kefir_lexer_source_cursor_next(lexer->cursor, 2));
         return KEFIR_OK;

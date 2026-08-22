@@ -14,28 +14,28 @@ kefir_result_t kefir_lexer_scan_string(struct kefir_mem *mem, struct kefir_lexer
     REQUIRE(lexer != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid lexer"));
     REQUIRE(strbuf != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid string buffer"));
 
-    kefir_char32_t chr = kefir_lexer_source_cursor_at(lexer->cursor, 0);
-    for (; chr != KEFIR_LEXER_SOURCE_CURSOR_EOF && chr != U'\"';) {
+    kefir_lexer_char_t chr = kefir_lexer_source_cursor_at(lexer->cursor, 0);
+    for (; chr != KEFIR_LEXER_SOURCE_CURSOR_EOF && chr != '\"';) {
 
-        if (chr == U'\\') {
-            REQUIRE_OK(kefir_string_buffer_append(mem, strbuf, chr));
+        if (chr == '\\') {
+            REQUIRE_OK(kefir_string_buffer_append_literal(mem, strbuf, chr));
             REQUIRE_OK(kefir_lexer_source_cursor_next(lexer->cursor, 1));
             chr = kefir_lexer_source_cursor_at(lexer->cursor, 0);
             if (chr != KEFIR_LEXER_SOURCE_CURSOR_EOF) {
-                REQUIRE_OK(kefir_string_buffer_append(mem, strbuf, chr));
+                REQUIRE_OK(kefir_string_buffer_append_literal(mem, strbuf, chr));
                 REQUIRE_OK(kefir_lexer_source_cursor_next(lexer->cursor, 1));
                 chr = kefir_lexer_source_cursor_at(lexer->cursor, 0);
             }
         } else {
-            REQUIRE(chr != U'\n', KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, &lexer->cursor->location,
+            REQUIRE(chr != '\n', KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, &lexer->cursor->location,
                                                          "Unexpected newline character"));
-            REQUIRE_OK(kefir_string_buffer_append(mem, strbuf, chr));
+            REQUIRE_OK(kefir_string_buffer_append_literal(mem, strbuf, chr));
             REQUIRE_OK(kefir_lexer_source_cursor_next(lexer->cursor, 1));
             chr = kefir_lexer_source_cursor_at(lexer->cursor, 0);
         }
     }
 
-    REQUIRE(chr == U'\"', KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, &lexer->cursor->location,
+    REQUIRE(chr == '\"', KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, &lexer->cursor->location,
                                                  "Expected string terminating double quote"));
     REQUIRE_OK(kefir_lexer_source_cursor_next(lexer->cursor, 1));
     return KEFIR_OK;
@@ -48,7 +48,7 @@ static kefir_result_t match_impl(struct kefir_mem *mem, struct kefir_lexer *lexe
     ASSIGN_DECL_CAST(struct params *, params, payload);
 
     kefir_string_literal_token_type_t type;
-    kefir_result_t res = kefir_lexer_cursor_match_string(lexer->cursor, U"\"");
+    kefir_result_t res = kefir_lexer_cursor_match_string(lexer->cursor, "\"");
     if (res != KEFIR_NO_MATCH) {
         REQUIRE_OK(res);
         type = KEFIR_STRING_LITERAL_TOKEN_MULTIBYTE;
@@ -56,7 +56,7 @@ static kefir_result_t match_impl(struct kefir_mem *mem, struct kefir_lexer *lexe
     }
 
     if (res == KEFIR_NO_MATCH) {
-        res = kefir_lexer_cursor_match_string(lexer->cursor, U"u8\"");
+        res = kefir_lexer_cursor_match_string(lexer->cursor, "u8\"");
         if (res != KEFIR_NO_MATCH) {
             REQUIRE_OK(res);
             type = KEFIR_STRING_LITERAL_TOKEN_UNICODE8;
@@ -65,7 +65,7 @@ static kefir_result_t match_impl(struct kefir_mem *mem, struct kefir_lexer *lexe
     }
 
     if (res == KEFIR_NO_MATCH) {
-        res = kefir_lexer_cursor_match_string(lexer->cursor, U"u\"");
+        res = kefir_lexer_cursor_match_string(lexer->cursor, "u\"");
         if (res != KEFIR_NO_MATCH) {
             REQUIRE_OK(res);
             type = KEFIR_STRING_LITERAL_TOKEN_UNICODE16;
@@ -74,7 +74,7 @@ static kefir_result_t match_impl(struct kefir_mem *mem, struct kefir_lexer *lexe
     }
 
     if (res == KEFIR_NO_MATCH) {
-        res = kefir_lexer_cursor_match_string(lexer->cursor, U"U\"");
+        res = kefir_lexer_cursor_match_string(lexer->cursor, "U\"");
         if (res != KEFIR_NO_MATCH) {
             REQUIRE_OK(res);
             type = KEFIR_STRING_LITERAL_TOKEN_UNICODE32;
@@ -83,7 +83,7 @@ static kefir_result_t match_impl(struct kefir_mem *mem, struct kefir_lexer *lexe
     }
 
     if (res == KEFIR_NO_MATCH) {
-        res = kefir_lexer_cursor_match_string(lexer->cursor, U"L\"");
+        res = kefir_lexer_cursor_match_string(lexer->cursor, "L\"");
         if (res != KEFIR_NO_MATCH) {
             REQUIRE_OK(res);
             type = KEFIR_STRING_LITERAL_TOKEN_WIDE;
@@ -96,12 +96,12 @@ static kefir_result_t match_impl(struct kefir_mem *mem, struct kefir_lexer *lexe
     }
 
     struct kefir_string_buffer strbuf;
-    REQUIRE_OK(kefir_string_buffer_init(mem, &strbuf, KEFIR_STRING_BUFFER_UNICODE32));
+    REQUIRE_OK(kefir_string_buffer_init(mem, &strbuf, KEFIR_STRING_BUFFER_MULTIBYTE));
 
     res = kefir_lexer_scan_string(mem, lexer, &strbuf);
     if (res == KEFIR_OK) {
         kefir_size_t length = 0;
-        const kefir_char32_t *content = kefir_string_buffer_value(&strbuf, &length);
+        const char *content = kefir_string_buffer_value(&strbuf, &length);
         res = kefir_token_new_string_literal_raw(mem, type, content, length, params->token);
     }
     REQUIRE_ELSE(res == KEFIR_OK, { kefir_string_buffer_free(mem, &strbuf); });

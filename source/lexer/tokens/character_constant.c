@@ -21,41 +21,78 @@
 #include "kefir/lexer/lexer.h"
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
-#include "kefir/util/char32.h"
+#include "kefir/lexer/util.h"
 #include "kefir/core/source_error.h"
-#include "kefir/util/uchar.h"
+
+static kefir_result_t scan_char32(struct kefir_lexer_source_cursor *cursor, kefir_char32_t *char32, kefir_bool_t *success) {       
+    mbstate_t mbstate = {0};
+    *success = false;
+    for (kefir_size_t i = 0; !*success && kefir_lexer_source_cursor_at(cursor, i) != KEFIR_LEXER_SOURCE_CURSOR_EOF; i++) {
+        char c = kefir_lexer_source_cursor_at(cursor, i);
+        size_t rc = mbrtoc32(char32, &c, 1, &mbstate);
+        switch (rc) {
+            case (size_t) -3:
+            case (size_t) -2:
+                // Intentionally left blank
+                break;
+
+            case (size_t) -1:
+                *success = true;
+                break;
+
+            case 0:
+                REQUIRE_OK(kefir_lexer_source_cursor_next(cursor, 1));
+                *char32 = U'\0';
+                *success = true;
+                break;
+
+            default:
+                REQUIRE_OK(kefir_lexer_source_cursor_next(cursor, i + 1));
+                *success = true;
+                break;
+        }
+    }
+    return KEFIR_OK;
+}
 
 static kefir_result_t next_character(struct kefir_lexer_source_cursor *cursor, kefir_uint_t *value,
                                      kefir_bool_t *continueScan) {
     struct kefir_source_location char_location = cursor->location;
-    kefir_char32_t chr = kefir_lexer_source_cursor_at(cursor, 0);
-    kefir_char32_t next_chr = kefir_lexer_source_cursor_at(cursor, 1);
+    kefir_char32_t char32;
+    kefir_lexer_char_t current_chr = kefir_lexer_source_cursor_at(cursor, 0);
     kefir_bool_t hex_oct_escape = false;
-    if (chr == U'\\') {
+    if (current_chr == '\\') {
         *continueScan = true;
-        hex_oct_escape = next_chr == U'x' || kefir_isoctdigit32(next_chr) || kefir_ishexdigit32(next_chr);
-        REQUIRE_OK(kefir_lexer_cursor_next_escape_sequence(cursor, &chr));
-    } else if (chr == U'\'') {
+        kefir_lexer_char_t next_chr = kefir_lexer_source_cursor_at(cursor, 1);
+        hex_oct_escape = next_chr == 'x' || kefir_lexer_char_isoctdigit(next_chr) || kefir_lexer_char_ishexdigit(next_chr);
+        REQUIRE_OK(kefir_lexer_cursor_next_escape_sequence(cursor, &char32));
+    } else if (current_chr == '\'') {
         *continueScan = false;
     } else {
-        REQUIRE(chr != KEFIR_LEXER_SOURCE_CURSOR_EOF && chr != cursor->newline_char,
+        REQUIRE(current_chr != KEFIR_LEXER_SOURCE_CURSOR_EOF && current_chr != cursor->newline_char,
                 KEFIR_SET_ERROR(KEFIR_LEXER_ERROR, "Unable to match character constant"));
         *continueScan = true;
-        REQUIRE_OK(kefir_lexer_source_cursor_next(cursor, 1));
+        
+        kefir_bool_t success = false;
+        REQUIRE_OK(scan_char32(cursor, &char32, &success));
+        if (!success) {
+            char32 = kefir_lexer_source_cursor_at(cursor, 0);
+            REQUIRE_OK(kefir_lexer_source_cursor_next(cursor, 1));
+        }
     }
 
     if (*continueScan) {
         char multibyte[MB_LEN_MAX];
         size_t sz = 1;
         if (hex_oct_escape) {
-            REQUIRE(chr <= KEFIR_UCHAR_MAX, KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, &char_location,
-                                                                   "Escape sequence exceeds maximum character value"));
-            multibyte[0] = (char) chr;
+            REQUIRE(char32 <= KEFIR_UCHAR_MAX, KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, &char_location,
+                                                                "Escape sequence exceeds maximum character value"));
+            multibyte[0] = (char) char32;
         } else {
             mbstate_t mbstate = {0};
-            sz = c32rtomb(multibyte, chr, &mbstate);
+            sz = c32rtomb(multibyte, char32, &mbstate);
             if (sz == (size_t) -1) {
-                *multibyte = (char) chr;
+                *multibyte = (char) char32;
                 sz = 1;
             }
         }
@@ -70,35 +107,39 @@ static kefir_result_t next_character(struct kefir_lexer_source_cursor *cursor, k
 }
 static kefir_result_t next_wide_character(struct kefir_lexer_source_cursor *cursor, kefir_char32_t *value,
                                           kefir_bool_t *continueScan) {
-    kefir_char32_t chr = kefir_lexer_source_cursor_at(cursor, 0);
-    if (chr == U'\\') {
+    kefir_lexer_char_t chr = kefir_lexer_source_cursor_at(cursor, 0);
+    if (chr == '\\') {
         *continueScan = true;
         REQUIRE_OK(kefir_lexer_cursor_next_escape_sequence(cursor, value));
-    } else if (chr == U'\'') {
+    } else if (chr == '\'') {
         *continueScan = false;
     } else {
         *continueScan = true;
-        *value = chr;
-        REQUIRE_OK(kefir_lexer_source_cursor_next(cursor, 1));
+        kefir_bool_t success = false;
+        REQUIRE_OK(scan_char32(cursor, value, &success));
+        if (!success) {
+            *value = kefir_lexer_source_cursor_at(cursor, 0);
+            REQUIRE_OK(kefir_lexer_source_cursor_next(cursor, 1));
+        }
     }
     return KEFIR_OK;
 }
 
 static kefir_result_t match_narrow_character(struct kefir_mem *mem, struct kefir_lexer *lexer,
                                              struct kefir_token *token) {
-    REQUIRE(kefir_lexer_source_cursor_at(lexer->cursor, 0) == U'\'',
+    REQUIRE(kefir_lexer_source_cursor_at(lexer->cursor, 0) == '\'',
             KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to match character constant"));
     REQUIRE_OK(kefir_lexer_source_cursor_next(lexer->cursor, 1));
 
     kefir_uint_t character_value = 0;
-    kefir_char32_t chr = kefir_lexer_source_cursor_at(lexer->cursor, 0);
-    REQUIRE(chr != U'\'', KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, &lexer->cursor->location,
+    kefir_lexer_char_t chr = kefir_lexer_source_cursor_at(lexer->cursor, 0);
+    REQUIRE(chr != '\'', KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, &lexer->cursor->location,
                                                  "Empty character constant is not permitted"));
     for (kefir_bool_t scan = true; scan;) {
         REQUIRE_OK(next_character(lexer->cursor, &character_value, &scan));
     }
     chr = kefir_lexer_source_cursor_at(lexer->cursor, 0);
-    REQUIRE(chr == U'\'', KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, &lexer->cursor->location,
+    REQUIRE(chr == '\'', KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, &lexer->cursor->location,
                                                  "Character constant shall terminate with single quote"));
     REQUIRE_OK(kefir_lexer_source_cursor_next(lexer->cursor, 1));
     REQUIRE_OK(kefir_token_new_constant_char(mem, (kefir_int_t) character_value, token));
@@ -107,21 +148,21 @@ static kefir_result_t match_narrow_character(struct kefir_mem *mem, struct kefir
 
 static kefir_result_t match_unicode8_character(struct kefir_mem *mem, struct kefir_lexer *lexer,
                                                struct kefir_token *token) {
-    REQUIRE(kefir_lexer_source_cursor_at(lexer->cursor, 0) == U'u' &&
-                kefir_lexer_source_cursor_at(lexer->cursor, 1) == U'8' &&
-                kefir_lexer_source_cursor_at(lexer->cursor, 2) == U'\'',
+    REQUIRE(kefir_lexer_source_cursor_at(lexer->cursor, 0) == 'u' &&
+                kefir_lexer_source_cursor_at(lexer->cursor, 1) == '8' &&
+                kefir_lexer_source_cursor_at(lexer->cursor, 2) == '\'',
             KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to match unicode8 character constant"));
     REQUIRE_OK(kefir_lexer_source_cursor_next(lexer->cursor, 3));
 
     kefir_uint_t character_value = 0;
-    kefir_char32_t chr = kefir_lexer_source_cursor_at(lexer->cursor, 0);
-    REQUIRE(chr != U'\'', KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, &lexer->cursor->location,
+    kefir_lexer_char_t chr = kefir_lexer_source_cursor_at(lexer->cursor, 0);
+    REQUIRE(chr != '\'', KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, &lexer->cursor->location,
                                                  "Empty character constant is not permitted"));
     for (kefir_bool_t scan = true; scan;) {
         REQUIRE_OK(next_character(lexer->cursor, &character_value, &scan));
     }
     chr = kefir_lexer_source_cursor_at(lexer->cursor, 0);
-    REQUIRE(chr == U'\'', KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, &lexer->cursor->location,
+    REQUIRE(chr == '\'', KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, &lexer->cursor->location,
                                                  "Character constant shall terminate with single quote"));
     REQUIRE_OK(kefir_lexer_source_cursor_next(lexer->cursor, 1));
     REQUIRE_OK(kefir_token_new_constant_unicode8_char(mem, (kefir_int_t) character_value, token));
@@ -129,14 +170,14 @@ static kefir_result_t match_unicode8_character(struct kefir_mem *mem, struct kef
 }
 
 static kefir_result_t scan_wide_character(struct kefir_lexer *lexer, kefir_char32_t *value) {
-    kefir_char32_t chr = kefir_lexer_source_cursor_at(lexer->cursor, 0);
-    REQUIRE(chr != U'\'', KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, &lexer->cursor->location,
+    kefir_lexer_char_t chr = kefir_lexer_source_cursor_at(lexer->cursor, 0);
+    REQUIRE(chr != '\'', KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, &lexer->cursor->location,
                                                  "Empty character constant is not permitted"));
     for (kefir_bool_t scan = true; scan;) {
         REQUIRE_OK(next_wide_character(lexer->cursor, value, &scan));
     }
     chr = kefir_lexer_source_cursor_at(lexer->cursor, 0);
-    REQUIRE(chr == U'\'', KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, &lexer->cursor->location,
+    REQUIRE(chr == '\'', KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, &lexer->cursor->location,
                                                  "Character constant shall terminate with single quote"));
     REQUIRE_OK(kefir_lexer_source_cursor_next(lexer->cursor, 1));
     return KEFIR_OK;
@@ -145,8 +186,8 @@ static kefir_result_t scan_wide_character(struct kefir_lexer *lexer, kefir_char3
 static kefir_result_t match_wide_character(struct kefir_mem *mem, struct kefir_lexer *lexer,
                                            struct kefir_token *token) {
     UNUSED(token);
-    REQUIRE(kefir_lexer_source_cursor_at(lexer->cursor, 0) == U'L' &&
-                kefir_lexer_source_cursor_at(lexer->cursor, 1) == U'\'',
+    REQUIRE(kefir_lexer_source_cursor_at(lexer->cursor, 0) == 'L' &&
+                kefir_lexer_source_cursor_at(lexer->cursor, 1) == '\'',
             KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to match wide character constant"));
     REQUIRE_OK(kefir_lexer_source_cursor_next(lexer->cursor, 2));
 
@@ -159,8 +200,8 @@ static kefir_result_t match_wide_character(struct kefir_mem *mem, struct kefir_l
 static kefir_result_t match_unicode16_character(struct kefir_mem *mem, struct kefir_lexer *lexer,
                                                 struct kefir_token *token) {
     UNUSED(token);
-    REQUIRE(kefir_lexer_source_cursor_at(lexer->cursor, 0) == U'u' &&
-                kefir_lexer_source_cursor_at(lexer->cursor, 1) == U'\'',
+    REQUIRE(kefir_lexer_source_cursor_at(lexer->cursor, 0) == 'u' &&
+                kefir_lexer_source_cursor_at(lexer->cursor, 1) == '\'',
             KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to match unicode character constant"));
     REQUIRE_OK(kefir_lexer_source_cursor_next(lexer->cursor, 2));
 
@@ -173,8 +214,8 @@ static kefir_result_t match_unicode16_character(struct kefir_mem *mem, struct ke
 static kefir_result_t match_unicode32_character(struct kefir_mem *mem, struct kefir_lexer *lexer,
                                                 struct kefir_token *token) {
     UNUSED(token);
-    REQUIRE(kefir_lexer_source_cursor_at(lexer->cursor, 0) == U'U' &&
-                kefir_lexer_source_cursor_at(lexer->cursor, 1) == U'\'',
+    REQUIRE(kefir_lexer_source_cursor_at(lexer->cursor, 0) == 'U' &&
+                kefir_lexer_source_cursor_at(lexer->cursor, 1) == '\'',
             KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to match unicode character constant"));
     REQUIRE_OK(kefir_lexer_source_cursor_next(lexer->cursor, 2));
 

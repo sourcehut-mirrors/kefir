@@ -21,46 +21,46 @@
 #include "kefir/lexer/lexer.h"
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
-#include "kefir/util/char32.h"
 #include "kefir/core/source_error.h"
 #include "kefir/core/string_buffer.h"
 #include "kefir/util/dfp.h"
+#include "kefir/lexer/util.h"
 
 static kefir_result_t match_fractional_part(struct kefir_mem *mem, struct kefir_lexer_source_cursor *cursor,
                                             struct kefir_string_buffer *strbuf) {
     kefir_size_t integer_digits = 0;
     kefir_size_t fraction_digits = 0;
 
-    kefir_char32_t chr = kefir_lexer_source_cursor_at(cursor, 0);
-    for (; kefir_isdigit32(chr) || chr == U'\'';
+    kefir_lexer_char_t chr = kefir_lexer_source_cursor_at(cursor, 0);
+    for (; kefir_lexer_char_isdigit(chr) || chr == '\'';
          kefir_lexer_source_cursor_next(cursor, 1), chr = kefir_lexer_source_cursor_at(cursor, 0)) {
-        if (chr == U'\'') {
+        if (chr == '\'') {
             REQUIRE(integer_digits > 0, KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to match floating constant"));
-            kefir_char32_t next_chr = kefir_lexer_source_cursor_at(cursor, 1);
-            REQUIRE(kefir_isdigit32(next_chr), KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to match floating constant"));
+            kefir_lexer_char_t next_chr = kefir_lexer_source_cursor_at(cursor, 1);
+            REQUIRE(kefir_lexer_char_isdigit(next_chr), KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to match floating constant"));
         } else {
-            REQUIRE_OK(kefir_string_buffer_append(mem, strbuf, chr));
+            REQUIRE_OK(kefir_string_buffer_append_literal(mem, strbuf, chr));
             integer_digits++;
         }
     }
 
-    if (chr == U'.') {
-        REQUIRE_OK(kefir_string_buffer_append(mem, strbuf, chr));
+    if (chr == '.') {
+        REQUIRE_OK(kefir_string_buffer_append_literal(mem, strbuf, chr));
         REQUIRE_OK(kefir_lexer_source_cursor_next(cursor, 1));
     } else {
-        REQUIRE(integer_digits > 0 && (chr == U'e' || chr == U'E'),
+        REQUIRE(integer_digits > 0 && (chr == 'e' || chr == 'E'),
                 KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to match floating constant"));
         return KEFIR_OK;
     }
     chr = kefir_lexer_source_cursor_at(cursor, 0);
-    for (; kefir_isdigit32(chr) || chr == U'\'';
+    for (; kefir_lexer_char_isdigit(chr) || chr == '\'';
          kefir_lexer_source_cursor_next(cursor, 1), chr = kefir_lexer_source_cursor_at(cursor, 0)) {
-        if (chr == U'\'') {
+        if (chr == '\'') {
             REQUIRE(fraction_digits > 0, KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to match floating constant"));
-            kefir_char32_t next_chr = kefir_lexer_source_cursor_at(cursor, 1);
-            REQUIRE(kefir_isdigit32(next_chr), KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to match floating constant"));
+            kefir_lexer_char_t next_chr = kefir_lexer_source_cursor_at(cursor, 1);
+            REQUIRE(kefir_lexer_char_isdigit(next_chr), KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to match floating constant"));
         } else {
-            REQUIRE_OK(kefir_string_buffer_append(mem, strbuf, chr));
+            REQUIRE_OK(kefir_string_buffer_append_literal(mem, strbuf, chr));
             fraction_digits++;
         }
     }
@@ -71,26 +71,26 @@ static kefir_result_t match_fractional_part(struct kefir_mem *mem, struct kefir_
 
 static kefir_result_t match_exponent(struct kefir_mem *mem, struct kefir_lexer_source_cursor *cursor,
                                      struct kefir_string_buffer *strbuf) {
-    kefir_char32_t chr = kefir_lexer_source_cursor_at(cursor, 0);
-    REQUIRE(chr == U'e' || chr == U'E', KEFIR_OK);
-    REQUIRE_OK(kefir_string_buffer_append(mem, strbuf, chr));
+    kefir_lexer_char_t chr = kefir_lexer_source_cursor_at(cursor, 0);
+    REQUIRE(chr == 'e' || chr == 'E', KEFIR_OK);
+    REQUIRE_OK(kefir_string_buffer_append_literal(mem, strbuf, chr));
     REQUIRE_OK(kefir_lexer_source_cursor_next(cursor, 1));
     chr = kefir_lexer_source_cursor_at(cursor, 0);
-    if (chr == U'+' || chr == U'-') {
-        REQUIRE_OK(kefir_string_buffer_append(mem, strbuf, chr));
+    if (chr == '+' || chr == '-') {
+        REQUIRE_OK(kefir_string_buffer_append_literal(mem, strbuf, chr));
         REQUIRE_OK(kefir_lexer_source_cursor_next(cursor, 1));
     }
 
     struct kefir_source_location exponent_location = cursor->location;
     kefir_size_t exponent_digits = 0;
-    for (chr = kefir_lexer_source_cursor_at(cursor, 0); kefir_isdigit32(chr) || chr == U'\'';
+    for (chr = kefir_lexer_source_cursor_at(cursor, 0); kefir_lexer_char_isdigit(chr) || chr == '\'';
          kefir_lexer_source_cursor_next(cursor, 1), chr = kefir_lexer_source_cursor_at(cursor, 0)) {
-        if (chr == U'\'') {
+        if (chr == '\'') {
             REQUIRE(exponent_digits > 0, KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to match floating constant"));
-            kefir_char32_t next_chr = kefir_lexer_source_cursor_at(cursor, 1);
-            REQUIRE(kefir_isdigit32(next_chr), KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to match floating constant"));
+            kefir_lexer_char_t next_chr = kefir_lexer_source_cursor_at(cursor, 1);
+            REQUIRE(kefir_lexer_char_isdigit(next_chr), KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to match floating constant"));
         } else {
-            REQUIRE_OK(kefir_string_buffer_append(mem, strbuf, chr));
+            REQUIRE_OK(kefir_string_buffer_append_literal(mem, strbuf, chr));
             exponent_digits++;
         }
     }
@@ -116,43 +116,43 @@ enum fp_constant_type {
 
 static kefir_result_t match_suffix(struct kefir_lexer_source_cursor *cursor, enum fp_constant_type *constant_type,
                                    kefir_bool_t *imaginary) {
-    kefir_char32_t chr = kefir_lexer_source_cursor_at(cursor, 0);
+    kefir_lexer_char_t chr = kefir_lexer_source_cursor_at(cursor, 0);
     *constant_type = DOUBLE_CONSTANT;
     *imaginary = false;
-    if (chr == U'i' || chr == U'I') {
+    if (chr == 'i' || chr == 'I') {
         *imaginary = true;
         REQUIRE_OK(kefir_lexer_source_cursor_next(cursor, 1));
         chr = kefir_lexer_source_cursor_at(cursor, 0);
     }
 
     switch (chr) {
-        case U'l':
-        case U'L':
+        case 'l':
+        case 'L':
             *constant_type = LONG_DOUBLE_CONSTANT;
             REQUIRE_OK(kefir_lexer_source_cursor_next(cursor, 1));
             break;
 
-        case U'f':
-        case U'F':
-            if (kefir_lexer_source_cursor_at(cursor, 1) == U'3' && kefir_lexer_source_cursor_at(cursor, 2) == U'2') {
-                if (kefir_lexer_source_cursor_at(cursor, 3) == U'x') {
+        case 'f':
+        case 'F':
+            if (kefir_lexer_source_cursor_at(cursor, 1) == '3' && kefir_lexer_source_cursor_at(cursor, 2) == '2') {
+                if (kefir_lexer_source_cursor_at(cursor, 3) == 'x') {
                     *constant_type = FLOAT32X_CONSTANT;
                     REQUIRE_OK(kefir_lexer_source_cursor_next(cursor, 4));
                 } else {
                     *constant_type = FLOAT32_CONSTANT;
                     REQUIRE_OK(kefir_lexer_source_cursor_next(cursor, 3));
                 }
-            } else if (kefir_lexer_source_cursor_at(cursor, 1) == U'6' &&
-                       kefir_lexer_source_cursor_at(cursor, 2) == U'4') {
-                if (kefir_lexer_source_cursor_at(cursor, 3) == U'x') {
+            } else if (kefir_lexer_source_cursor_at(cursor, 1) == '6' &&
+                       kefir_lexer_source_cursor_at(cursor, 2) == '4') {
+                if (kefir_lexer_source_cursor_at(cursor, 3) == 'x') {
                     *constant_type = FLOAT64X_CONSTANT;
                     REQUIRE_OK(kefir_lexer_source_cursor_next(cursor, 4));
                 } else {
                     *constant_type = FLOAT64_CONSTANT;
                     REQUIRE_OK(kefir_lexer_source_cursor_next(cursor, 3));
                 }
-            } else if (kefir_lexer_source_cursor_at(cursor, 1) == U'8' &&
-                       kefir_lexer_source_cursor_at(cursor, 2) == U'0') {
+            } else if (kefir_lexer_source_cursor_at(cursor, 1) == '8' &&
+                       kefir_lexer_source_cursor_at(cursor, 2) == '0') {
                 *constant_type = FLOAT80_CONSTANT;
                 REQUIRE_OK(kefir_lexer_source_cursor_next(cursor, 3));
             } else {
@@ -161,30 +161,30 @@ static kefir_result_t match_suffix(struct kefir_lexer_source_cursor *cursor, enu
             }
             break;
 
-        case U'd':
-        case U'D': {
-            kefir_char32_t chr2 = kefir_lexer_source_cursor_at(cursor, 1);
-            kefir_char32_t chr3 = kefir_lexer_source_cursor_at(cursor, 2);
-            kefir_char32_t chr4 = kefir_lexer_source_cursor_at(cursor, 3);
-            if (chr2 == U'f' || chr2 == U'F') {
+        case 'd':
+        case 'D': {
+            kefir_lexer_char_t chr2 = kefir_lexer_source_cursor_at(cursor, 1),
+                chr3 = kefir_lexer_source_cursor_at(cursor, 2),
+                chr4 = kefir_lexer_source_cursor_at(cursor, 3);
+            if (chr2 == 'f' || chr2 == 'F') {
                 *constant_type = DECIMAL32_CONSTANT;
                 REQUIRE_OK(kefir_lexer_source_cursor_next(cursor, 2));
-            } else if (chr2 == U'd' || chr2 == U'D') {
+            } else if (chr2 == 'd' || chr2 == 'D') {
                 *constant_type = DECIMAL64_CONSTANT;
                 REQUIRE_OK(kefir_lexer_source_cursor_next(cursor, 2));
-            } else if (chr2 == U'l' || chr2 == U'L') {
+            } else if (chr2 == 'l' || chr2 == 'L') {
                 *constant_type = DECIMAL128_CONSTANT;
                 REQUIRE_OK(kefir_lexer_source_cursor_next(cursor, 2));
-            } else if (chr2 == U'3' && chr3 == U'2') {
+            } else if (chr2 == '3' && chr3 == '2') {
                 *constant_type = DECIMAL32_CONSTANT;
                 REQUIRE_OK(kefir_lexer_source_cursor_next(cursor, 3));
-            } else if (chr2 == U'6' && chr3 == U'4' && chr4 == 'x') {
+            } else if (chr2 == '6' && chr3 == '4' && chr4 == 'x') {
                 *constant_type = DECIMAL64X_CONSTANT;
                 REQUIRE_OK(kefir_lexer_source_cursor_next(cursor, 4));
-            } else if (chr2 == U'6' && chr3 == U'4') {
+            } else if (chr2 == '6' && chr3 == '4') {
                 *constant_type = DECIMAL64_CONSTANT;
                 REQUIRE_OK(kefir_lexer_source_cursor_next(cursor, 3));
-            } else if (chr2 == U'1' && chr3 == U'2' && chr4 == U'8') {
+            } else if (chr2 == '1' && chr3 == '2' && chr4 == '8') {
                 *constant_type = DECIMAL128_CONSTANT;
                 REQUIRE_OK(kefir_lexer_source_cursor_next(cursor, 4));
             }
@@ -196,7 +196,7 @@ static kefir_result_t match_suffix(struct kefir_lexer_source_cursor *cursor, enu
     }
 
     chr = kefir_lexer_source_cursor_at(cursor, 0);
-    if (chr == U'i' || chr == U'I') {
+    if (chr == 'i' || chr == 'I') {
         REQUIRE(!*imaginary,
                 KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, &cursor->location, "Duplicate imaginary suffix"));
         *imaginary = true;
@@ -326,40 +326,40 @@ static kefir_result_t match_hexadecimal_fractional_part(struct kefir_mem *mem, s
                                                         struct kefir_string_buffer *strbuf) {
     kefir_size_t integer_digits = 0;
     kefir_size_t fraction_digits = 0;
-    kefir_char32_t chr = kefir_lexer_source_cursor_at(cursor, 0);
-    for (; kefir_ishexdigit32(chr) || chr == U'\'';
+    kefir_lexer_char_t chr = kefir_lexer_source_cursor_at(cursor, 0);
+    for (; kefir_lexer_char_ishexdigit(chr) || chr == '\'';
          kefir_lexer_source_cursor_next(cursor, 1), chr = kefir_lexer_source_cursor_at(cursor, 0)) {
-        if (chr == U'\'') {
+        if (chr == '\'') {
             REQUIRE(integer_digits > 0,
                     KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to match hexadecimal floating constant"));
-            kefir_char32_t next_chr = kefir_lexer_source_cursor_at(cursor, 1);
-            REQUIRE(kefir_ishexdigit32(next_chr),
+            kefir_lexer_char_t next_chr = kefir_lexer_source_cursor_at(cursor, 1);
+            REQUIRE(kefir_lexer_char_ishexdigit(next_chr),
                     KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to match hexadecimal floating constant"));
         } else {
-            REQUIRE_OK(kefir_string_buffer_append(mem, strbuf, chr));
+            REQUIRE_OK(kefir_string_buffer_append_literal(mem, strbuf, chr));
             integer_digits++;
         }
     }
 
-    if (chr == U'.') {
-        REQUIRE_OK(kefir_string_buffer_append(mem, strbuf, chr));
+    if (chr == '.') {
+        REQUIRE_OK(kefir_string_buffer_append_literal(mem, strbuf, chr));
         REQUIRE_OK(kefir_lexer_source_cursor_next(cursor, 1));
     } else {
-        REQUIRE(integer_digits > 0 && (chr == U'p' || chr == U'P'),
+        REQUIRE(integer_digits > 0 && (chr == 'p' || chr == 'P'),
                 KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to match hexdecimal floating constant"));
         return KEFIR_OK;
     }
     chr = kefir_lexer_source_cursor_at(cursor, 0);
-    for (; kefir_ishexdigit32(chr) || chr == U'\'';
+    for (; kefir_lexer_char_ishexdigit(chr) || chr == '\'';
          kefir_lexer_source_cursor_next(cursor, 1), chr = kefir_lexer_source_cursor_at(cursor, 0)) {
-        if (chr == U'\'') {
+        if (chr == '\'') {
             REQUIRE(fraction_digits > 0,
                     KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to match hexadecimal floating constant"));
-            kefir_char32_t next_chr = kefir_lexer_source_cursor_at(cursor, 1);
-            REQUIRE(kefir_ishexdigit32(next_chr),
+            kefir_lexer_char_t next_chr = kefir_lexer_source_cursor_at(cursor, 1);
+            REQUIRE(kefir_lexer_char_ishexdigit(next_chr),
                     KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to match hexadecimal floating constant"));
         } else {
-            REQUIRE_OK(kefir_string_buffer_append(mem, strbuf, chr));
+            REQUIRE_OK(kefir_string_buffer_append_literal(mem, strbuf, chr));
             fraction_digits++;
         }
     }
@@ -370,28 +370,28 @@ static kefir_result_t match_hexadecimal_fractional_part(struct kefir_mem *mem, s
 
 static kefir_result_t match_hexadecimal_exponent(struct kefir_mem *mem, struct kefir_lexer_source_cursor *cursor,
                                                  struct kefir_string_buffer *strbuf) {
-    kefir_char32_t chr = kefir_lexer_source_cursor_at(cursor, 0);
-    REQUIRE(chr == U'p' || chr == U'P', KEFIR_OK);
-    REQUIRE_OK(kefir_string_buffer_append(mem, strbuf, chr));
+    kefir_lexer_char_t chr = kefir_lexer_source_cursor_at(cursor, 0);
+    REQUIRE(chr == 'p' || chr == 'P', KEFIR_OK);
+    REQUIRE_OK(kefir_string_buffer_append_literal(mem, strbuf, chr));
     REQUIRE_OK(kefir_lexer_source_cursor_next(cursor, 1));
     chr = kefir_lexer_source_cursor_at(cursor, 0);
-    if (chr == U'+' || chr == U'-') {
-        REQUIRE_OK(kefir_string_buffer_append(mem, strbuf, chr));
+    if (chr == '+' || chr == '-') {
+        REQUIRE_OK(kefir_string_buffer_append_literal(mem, strbuf, chr));
         REQUIRE_OK(kefir_lexer_source_cursor_next(cursor, 1));
     }
 
     struct kefir_source_location exponent_location = cursor->location;
     kefir_size_t exponent_digits = 0;
-    for (chr = kefir_lexer_source_cursor_at(cursor, 0); kefir_isdigit32(chr) || chr == U'\'';
+    for (chr = kefir_lexer_source_cursor_at(cursor, 0); kefir_lexer_char_isdigit(chr) || chr == '\'';
          kefir_lexer_source_cursor_next(cursor, 1), chr = kefir_lexer_source_cursor_at(cursor, 0)) {
-        if (chr == U'\'') {
+        if (chr == '\'') {
             REQUIRE(exponent_digits > 0,
                     KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to match hexadecimal floating constant"));
-            kefir_char32_t next_chr = kefir_lexer_source_cursor_at(cursor, 1);
-            REQUIRE(kefir_isdigit32(next_chr),
+            kefir_lexer_char_t next_chr = kefir_lexer_source_cursor_at(cursor, 1);
+            REQUIRE(kefir_lexer_char_ishexdigit(next_chr),
                     KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to match hexadecimal floating constant"));
         } else {
-            REQUIRE_OK(kefir_string_buffer_append(mem, strbuf, chr));
+            REQUIRE_OK(kefir_string_buffer_append_literal(mem, strbuf, chr));
             exponent_digits++;
         }
     }
@@ -405,12 +405,12 @@ static kefir_result_t match_hexadecimal_impl(struct kefir_mem *mem, struct kefir
     enum fp_constant_type type;
     kefir_bool_t imaginary;
 
-    kefir_char32_t chr = kefir_lexer_source_cursor_at(cursor, 0);
-    kefir_char32_t chr2 = kefir_lexer_source_cursor_at(cursor, 1);
-    REQUIRE(chr == U'0' && (chr2 == U'x' || chr2 == U'X'),
+    kefir_lexer_char_t chr = kefir_lexer_source_cursor_at(cursor, 0),
+        chr2 = kefir_lexer_source_cursor_at(cursor, 1);
+    REQUIRE(chr == '0' && (chr2 == 'x' || chr2 == 'X'),
             KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to match hexadecimal floating constant"));
-    REQUIRE_OK(kefir_string_buffer_append(mem, strbuf, chr));
-    REQUIRE_OK(kefir_string_buffer_append(mem, strbuf, chr2));
+    REQUIRE_OK(kefir_string_buffer_append_literal(mem, strbuf, chr));
+    REQUIRE_OK(kefir_string_buffer_append_literal(mem, strbuf, chr2));
     REQUIRE_OK(kefir_lexer_source_cursor_next(cursor, 2));
     REQUIRE_OK(match_hexadecimal_fractional_part(mem, cursor, strbuf));
     REQUIRE_OK(match_hexadecimal_exponent(mem, cursor, strbuf));

@@ -32,7 +32,7 @@ kefir_result_t kefir_token_new_string_literal_raw_from_escaped_multibyte(struct 
     REQUIRE(token != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to token"));
 
     struct kefir_string_buffer strbuf;
-    REQUIRE_OK(kefir_string_buffer_init(mem, &strbuf, KEFIR_STRING_BUFFER_UNICODE32));
+    REQUIRE_OK(kefir_string_buffer_init(mem, &strbuf, KEFIR_STRING_BUFFER_MULTIBYTE));
     kefir_result_t res = kefir_preprocessor_escape_string(mem, &strbuf, content, length);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_string_buffer_free(mem, &strbuf);
@@ -40,7 +40,7 @@ kefir_result_t kefir_token_new_string_literal_raw_from_escaped_multibyte(struct 
     });
 
     kefir_size_t buflen;
-    const kefir_char32_t *value = kefir_string_buffer_value(&strbuf, &buflen);
+    const char *value = kefir_string_buffer_value(&strbuf, &buflen);
     res = kefir_token_new_string_literal_raw(mem, type, value, buflen, token);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_string_buffer_free(mem, &strbuf);

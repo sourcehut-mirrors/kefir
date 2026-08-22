@@ -31,7 +31,7 @@ kefir_result_t kefir_lexer_context_default(struct kefir_lexer_context *context) 
     context->ulong_max_value = KEFIR_ULONG_MAX;
     context->long_long_max_value = KEFIR_LONG_LONG_MAX;
     context->ulong_long_max_value = KEFIR_ULONG_LONG_MAX;
-    context->newline = U'\n';
+    context->newline = '\n';
     return KEFIR_OK;
 }
 

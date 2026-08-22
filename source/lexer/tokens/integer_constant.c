@@ -23,7 +23,7 @@
 #include "kefir/core/error.h"
 #include "kefir/core/source_error.h"
 #include "kefir/core/string_buffer.h"
-#include "kefir/util/char32.h"
+#include "kefir/lexer/util.h"
 #include <string.h>
 
 enum integer_constant_type {
@@ -324,18 +324,18 @@ static kefir_result_t build_integral_constant(struct kefir_mem *mem, const struc
 
 static kefir_result_t next_decimal_constant(struct kefir_mem *mem, struct kefir_lexer_source_cursor *cursor,
                                             struct kefir_string_buffer *strbuf, kefir_size_t *base) {
-    kefir_char32_t chr = kefir_lexer_source_cursor_at(cursor, 0);
-    REQUIRE(kefir_isdigit32(chr) && chr != U'0',
+    kefir_lexer_char_t chr = kefir_lexer_source_cursor_at(cursor, 0);
+    REQUIRE(kefir_lexer_char_isdigit(chr) && chr != '0',
             KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to match decimal integer constant"));
 
-    for (; kefir_isdigit32(chr) || chr == U'\'';
+    for (; kefir_lexer_char_isdigit(chr) || chr == '\'';
          kefir_lexer_source_cursor_next(cursor, 1), chr = kefir_lexer_source_cursor_at(cursor, 0)) {
-        if (chr == U'\'') {
-            if (!kefir_isdigit32(kefir_lexer_source_cursor_at(cursor, 1))) {
+        if (chr == '\'') {
+            if (!kefir_lexer_char_isdigit(kefir_lexer_source_cursor_at(cursor, 1))) {
                 break;
             }
         } else {
-            REQUIRE_OK(kefir_string_buffer_append(mem, strbuf, chr));
+            REQUIRE_OK(kefir_string_buffer_append_literal(mem, strbuf, chr));
         }
     }
     *base = 10;
@@ -344,21 +344,21 @@ static kefir_result_t next_decimal_constant(struct kefir_mem *mem, struct kefir_
 
 static kefir_result_t next_hexadecimal_constant(struct kefir_mem *mem, struct kefir_lexer_source_cursor *cursor,
                                                 struct kefir_string_buffer *strbuf, kefir_size_t *base) {
-    kefir_char32_t init_chr = kefir_lexer_source_cursor_at(cursor, 0);
-    kefir_char32_t init_chr2 = kefir_lexer_source_cursor_at(cursor, 1);
-    kefir_char32_t chr = kefir_lexer_source_cursor_at(cursor, 2);
-    REQUIRE(init_chr == U'0' && (init_chr2 == U'x' || init_chr2 == U'X') && kefir_ishexdigit32(chr),
+    kefir_lexer_char_t init_chr = kefir_lexer_source_cursor_at(cursor, 0),
+        init_chr2 = kefir_lexer_source_cursor_at(cursor, 1),
+        chr = kefir_lexer_source_cursor_at(cursor, 2);
+    REQUIRE(init_chr == '0' && (init_chr2 == 'x' || init_chr2 == 'X') && kefir_lexer_char_ishexdigit(chr),
             KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to match hexadecimal integer constant"));
     REQUIRE_OK(kefir_lexer_source_cursor_next(cursor, 2));
 
-    for (; kefir_ishexdigit32(chr) || chr == U'\'';
+    for (; kefir_lexer_char_ishexdigit(chr) || chr == '\'';
          kefir_lexer_source_cursor_next(cursor, 1), chr = kefir_lexer_source_cursor_at(cursor, 0)) {
-        if (chr == U'\'') {
-            if (!kefir_ishexdigit32(kefir_lexer_source_cursor_at(cursor, 1))) {
+        if (chr == '\'') {
+            if (!kefir_lexer_char_ishexdigit(kefir_lexer_source_cursor_at(cursor, 1))) {
                 break;
             }
         } else {
-            REQUIRE_OK(kefir_string_buffer_append(mem, strbuf, chr));
+            REQUIRE_OK(kefir_string_buffer_append_literal(mem, strbuf, chr));
         }
     }
     *base = 16;
@@ -367,22 +367,22 @@ static kefir_result_t next_hexadecimal_constant(struct kefir_mem *mem, struct ke
 
 static kefir_result_t next_binary_constant(struct kefir_mem *mem, struct kefir_lexer_source_cursor *cursor,
                                            struct kefir_string_buffer *strbuf, kefir_size_t *base) {
-    kefir_char32_t init_chr = kefir_lexer_source_cursor_at(cursor, 0);
-    kefir_char32_t init_chr2 = kefir_lexer_source_cursor_at(cursor, 1);
-    kefir_char32_t chr = kefir_lexer_source_cursor_at(cursor, 2);
-    REQUIRE(init_chr == U'0' && (init_chr2 == U'b' || init_chr2 == U'B') && (chr == U'0' || chr == U'1'),
+    kefir_lexer_char_t init_chr = kefir_lexer_source_cursor_at(cursor, 0),
+        init_chr2 = kefir_lexer_source_cursor_at(cursor, 1),
+        chr = kefir_lexer_source_cursor_at(cursor, 2);
+    REQUIRE(init_chr == '0' && (init_chr2 == 'b' || init_chr2 == 'B') && (chr == '0' || chr == '1'),
             KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to match binary integer constant"));
     REQUIRE_OK(kefir_lexer_source_cursor_next(cursor, 2));
 
-    for (; chr == U'0' || chr == U'1' || chr == U'\'';
+    for (; chr == '0' || chr == '1' || chr == '\'';
          kefir_lexer_source_cursor_next(cursor, 1), chr = kefir_lexer_source_cursor_at(cursor, 0)) {
-        if (chr == U'\'') {
-            const kefir_char32_t next_chr = kefir_lexer_source_cursor_at(cursor, 1);
-            if (next_chr != U'0' && next_chr != U'1') {
+        if (chr == '\'') {
+            const kefir_lexer_char_t next_chr = kefir_lexer_source_cursor_at(cursor, 1);
+            if (next_chr != '0' && next_chr != '1') {
                 break;
             }
         } else {
-            REQUIRE_OK(kefir_string_buffer_append(mem, strbuf, chr));
+            REQUIRE_OK(kefir_string_buffer_append_literal(mem, strbuf, chr));
         }
     }
     *base = 2;
@@ -391,17 +391,17 @@ static kefir_result_t next_binary_constant(struct kefir_mem *mem, struct kefir_l
 
 static kefir_result_t next_octal_constant(struct kefir_mem *mem, struct kefir_lexer_source_cursor *cursor,
                                           struct kefir_string_buffer *strbuf, kefir_size_t *base) {
-    kefir_char32_t chr = kefir_lexer_source_cursor_at(cursor, 0);
-    REQUIRE(chr == U'0', KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to match octal integer constant"));
+    kefir_lexer_char_t chr = kefir_lexer_source_cursor_at(cursor, 0);
+    REQUIRE(chr == '0', KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to match octal integer constant"));
 
-    for (; kefir_isoctdigit32(chr) || chr == U'\'';
+    for (; kefir_lexer_char_isoctdigit(chr) || chr == '\'';
          kefir_lexer_source_cursor_next(cursor, 1), chr = kefir_lexer_source_cursor_at(cursor, 0)) {
-        if (chr == U'\'') {
-            if (!kefir_isoctdigit32(kefir_lexer_source_cursor_at(cursor, 1))) {
+        if (chr == '\'') {
+            if (!kefir_lexer_char_isoctdigit(kefir_lexer_source_cursor_at(cursor, 1))) {
                 break;
             }
         } else {
-            REQUIRE_OK(kefir_string_buffer_append(mem, strbuf, chr));
+            REQUIRE_OK(kefir_string_buffer_append_literal(mem, strbuf, chr));
         }
     }
     *base = 8;
@@ -414,41 +414,41 @@ static kefir_result_t scan_suffix(struct kefir_mem *mem, struct kefir_lexer_sour
                                   const struct kefir_source_location *source_location) {
     UNUSED(literal);
     static const struct Suffix {
-        const kefir_char32_t *suffix;
+        const char *suffix;
         enum integer_constant_type type;
     } SUFFIXES[] = {
-        {U"uLL", CONSTANT_UNSIGNED_LONG_LONG},
-        {U"ull", CONSTANT_UNSIGNED_LONG_LONG},
-        {U"LLu", CONSTANT_UNSIGNED_LONG_LONG},
-        {U"llu", CONSTANT_UNSIGNED_LONG_LONG},
-        {U"ULL", CONSTANT_UNSIGNED_LONG_LONG},
-        {U"Ull", CONSTANT_UNSIGNED_LONG_LONG},
-        {U"LLU", CONSTANT_UNSIGNED_LONG_LONG},
-        {U"llU", CONSTANT_UNSIGNED_LONG_LONG},
-        {U"wbu", CONSTANT_UNSIGNED_BIT_PRECISE},
-        {U"wbU", CONSTANT_UNSIGNED_BIT_PRECISE},
-        {U"uwb", CONSTANT_UNSIGNED_BIT_PRECISE},
-        {U"Uwb", CONSTANT_UNSIGNED_BIT_PRECISE},
-        {U"WBu", CONSTANT_UNSIGNED_BIT_PRECISE},
-        {U"WBU", CONSTANT_UNSIGNED_BIT_PRECISE},
-        {U"uWB", CONSTANT_UNSIGNED_BIT_PRECISE},
-        {U"UWB", CONSTANT_UNSIGNED_BIT_PRECISE},
-        {U"wb", CONSTANT_BIT_PRECISE},
-        {U"WB", CONSTANT_BIT_PRECISE},
-        {U"uL", CONSTANT_UNSIGNED_LONG},
-        {U"ul", CONSTANT_UNSIGNED_LONG},
-        {U"Lu", CONSTANT_UNSIGNED_LONG},
-        {U"lu", CONSTANT_UNSIGNED_LONG},
-        {U"UL", CONSTANT_UNSIGNED_LONG},
-        {U"Ul", CONSTANT_UNSIGNED_LONG},
-        {U"LU", CONSTANT_UNSIGNED_LONG},
-        {U"lU", CONSTANT_UNSIGNED_LONG},
-        {U"u", CONSTANT_UNSIGNED_INT},
-        {U"U", CONSTANT_UNSIGNED_INT},
-        {U"LL", CONSTANT_LONG_LONG},
-        {U"ll", CONSTANT_LONG_LONG},
-        {U"L", CONSTANT_LONG},
-        {U"l", CONSTANT_LONG},
+        {"uLL", CONSTANT_UNSIGNED_LONG_LONG},
+        {"ull", CONSTANT_UNSIGNED_LONG_LONG},
+        {"LLu", CONSTANT_UNSIGNED_LONG_LONG},
+        {"llu", CONSTANT_UNSIGNED_LONG_LONG},
+        {"ULL", CONSTANT_UNSIGNED_LONG_LONG},
+        {"Ull", CONSTANT_UNSIGNED_LONG_LONG},
+        {"LLU", CONSTANT_UNSIGNED_LONG_LONG},
+        {"llU", CONSTANT_UNSIGNED_LONG_LONG},
+        {"wbu", CONSTANT_UNSIGNED_BIT_PRECISE},
+        {"wbU", CONSTANT_UNSIGNED_BIT_PRECISE},
+        {"uwb", CONSTANT_UNSIGNED_BIT_PRECISE},
+        {"Uwb", CONSTANT_UNSIGNED_BIT_PRECISE},
+        {"WBu", CONSTANT_UNSIGNED_BIT_PRECISE},
+        {"WBU", CONSTANT_UNSIGNED_BIT_PRECISE},
+        {"uWB", CONSTANT_UNSIGNED_BIT_PRECISE},
+        {"UWB", CONSTANT_UNSIGNED_BIT_PRECISE},
+        {"wb", CONSTANT_BIT_PRECISE},
+        {"WB", CONSTANT_BIT_PRECISE},
+        {"uL", CONSTANT_UNSIGNED_LONG},
+        {"ul", CONSTANT_UNSIGNED_LONG},
+        {"Lu", CONSTANT_UNSIGNED_LONG},
+        {"lu", CONSTANT_UNSIGNED_LONG},
+        {"UL", CONSTANT_UNSIGNED_LONG},
+        {"Ul", CONSTANT_UNSIGNED_LONG},
+        {"LU", CONSTANT_UNSIGNED_LONG},
+        {"lU", CONSTANT_UNSIGNED_LONG},
+        {"u", CONSTANT_UNSIGNED_INT},
+        {"U", CONSTANT_UNSIGNED_INT},
+        {"LL", CONSTANT_LONG_LONG},
+        {"ll", CONSTANT_LONG_LONG},
+        {"L", CONSTANT_LONG},
+        {"l", CONSTANT_LONG},
     };
     static const kefir_size_t SUFFIXES_LENGTH = sizeof(SUFFIXES) / sizeof(SUFFIXES[0]);
 
@@ -458,7 +458,7 @@ static kefir_result_t scan_suffix(struct kefir_mem *mem, struct kefir_lexer_sour
         kefir_result_t res = kefir_lexer_cursor_match_string(cursor, suffix->suffix);
         if (res == KEFIR_OK) {
             matchedSuffix = suffix;
-            REQUIRE_OK(kefir_lexer_source_cursor_next(cursor, kefir_strlen32(suffix->suffix)));
+            REQUIRE_OK(kefir_lexer_source_cursor_next(cursor, strlen(suffix->suffix)));
         } else {
             REQUIRE(res == KEFIR_NO_MATCH, res);
         }

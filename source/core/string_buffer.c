@@ -238,6 +238,7 @@ static kefir_result_t append_wide(struct kefir_mem *mem, struct kefir_string_buf
         switch (rc) {
             case -1:
                 return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Failed to convert unicode32 character into wide");
+                
             case 0:
                 REQUIRE_OK(insert_buffer(mem, buffer, wchr.bytes, sizeof(kefir_wchar_t)));
                 begin = end;

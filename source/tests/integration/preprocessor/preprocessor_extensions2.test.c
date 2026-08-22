@@ -31,7 +31,7 @@ static kefir_result_t before_lex(struct kefir_mem *mem, struct kefir_lexer *lexe
     UNUSED(mem);
     UNUSED(token);
     REQUIRE(lexer->extension_payload != NULL, KEFIR_INTERNAL_ERROR);
-    while (kefir_lexer_source_cursor_at(lexer->cursor, 0) == U'_') {
+    while (kefir_lexer_source_cursor_at(lexer->cursor, 0) == '_') {
         REQUIRE_OK(kefir_lexer_source_cursor_next(lexer->cursor, 1));
     }
     return KEFIR_OK;
@@ -39,7 +39,7 @@ static kefir_result_t before_lex(struct kefir_mem *mem, struct kefir_lexer *lexe
 
 static kefir_result_t failed_lex(struct kefir_mem *mem, struct kefir_lexer *lexer, struct kefir_token *token) {
     UNUSED(mem);
-    if (kefir_lexer_source_cursor_at(lexer->cursor, 0) == U'`') {
+    if (kefir_lexer_source_cursor_at(lexer->cursor, 0) == '`') {
         REQUIRE_OK(kefir_token_new_constant_char(mem, '`', token));
         REQUIRE_OK(kefir_lexer_source_cursor_next(lexer->cursor, 1));
         return KEFIR_OK;

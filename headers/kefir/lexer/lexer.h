@@ -31,7 +31,7 @@
 #include "kefir/core/list.h"
 #include "kefir/core/string_buffer.h"
 #include "kefir/lexer/context.h"
-#include "kefir/util/json.h"
+#include "kefir/core/standard_version.h"
 
 typedef struct kefir_lexer kefir_lexer_t;
 
@@ -78,7 +78,7 @@ kefir_result_t kefir_lexer_init_punctuators(struct kefir_mem *, struct kefir_lex
 kefir_result_t kefir_lexer_match_punctuator(struct kefir_mem *, struct kefir_lexer *, struct kefir_token *);
 
 kefir_result_t kefir_lexer_init_keywords(struct kefir_mem *, struct kefir_lexer *);
-kefir_result_t kefir_lexer_get_keyword(const struct kefir_trie *, const kefir_char32_t *, kefir_keyword_token_t *);
+kefir_result_t kefir_lexer_get_keyword(const struct kefir_trie *, const char *, kefir_keyword_token_t *);
 kefir_result_t kefir_lexer_scan_identifier_or_keyword(struct kefir_mem *, struct kefir_lexer_source_cursor *,
                                                       kefir_lexer_mode_t, struct kefir_string_pool *,
                                                       const struct kefir_trie *, struct kefir_token *);

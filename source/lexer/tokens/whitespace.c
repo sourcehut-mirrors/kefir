@@ -22,14 +22,14 @@
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
 #include "kefir/core/source_error.h"
-#include "kefir/util/char32.h"
+#include "kefir/lexer/util.h"
 
 enum whitespace_match { WHITESPACE_NO_MATCH = 0, WHITESPACE_MATCH, WHITESPACE_NEWLINE };
 
 static kefir_result_t skip_whitespaces(const struct kefir_lexer_context *context,
                                        struct kefir_lexer_source_cursor *cursor, enum whitespace_match *match) {
-    kefir_char32_t chr;
-    if (kefir_isspace32((chr = kefir_lexer_source_cursor_at(cursor, 0))) || chr == U'\0') {
+    kefir_lexer_char_t chr;
+    if (kefir_lexer_char_isspace((chr = kefir_lexer_source_cursor_at(cursor, 0))) || chr == '\0') {
         if (chr == context->newline) {
             *match = MAX(*match, WHITESPACE_NEWLINE);
         } else {
@@ -41,19 +41,19 @@ static kefir_result_t skip_whitespaces(const struct kefir_lexer_context *context
 }
 
 static kefir_result_t skip_multiline_comment(struct kefir_lexer_source_cursor *cursor, enum whitespace_match *match) {
-    if (kefir_lexer_source_cursor_at(cursor, 0) == U'/' && kefir_lexer_source_cursor_at(cursor, 1) == U'*') {
+    if (kefir_lexer_source_cursor_at(cursor, 0) == '/' && kefir_lexer_source_cursor_at(cursor, 1) == '*') {
         *match = MAX(*match, WHITESPACE_MATCH);
 
         REQUIRE_OK(kefir_lexer_source_cursor_next(cursor, 2));
         for (;;) {
-            if ((kefir_lexer_source_cursor_at(cursor, 0) == U'*' && kefir_lexer_source_cursor_at(cursor, 1) == U'/') ||
+            if ((kefir_lexer_source_cursor_at(cursor, 0) == '*' && kefir_lexer_source_cursor_at(cursor, 1) == '/') ||
                 kefir_lexer_source_cursor_at(cursor, 0) == KEFIR_LEXER_SOURCE_CURSOR_EOF) {
                 break;
             } else {
                 REQUIRE_OK(kefir_lexer_source_cursor_skip(cursor, 1));
             }
         }
-        REQUIRE((kefir_lexer_source_cursor_at(cursor, 0) == U'*' && kefir_lexer_source_cursor_at(cursor, 1) == U'/'),
+        REQUIRE((kefir_lexer_source_cursor_at(cursor, 0) == '*' && kefir_lexer_source_cursor_at(cursor, 1) == '/'),
                 KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, &cursor->location, "Expected end of multiline comment"));
         REQUIRE_OK(kefir_lexer_source_cursor_next(cursor, 2));
     }
@@ -71,7 +71,7 @@ kefir_result_t kefir_lexer_skip_multiline_comment(struct kefir_lexer_source_curs
 
 static kefir_result_t skip_oneline_comment(const struct kefir_lexer_context *context,
                                            struct kefir_lexer_source_cursor *cursor, enum whitespace_match *match) {
-    if (kefir_lexer_source_cursor_at(cursor, 0) == U'/' && kefir_lexer_source_cursor_at(cursor, 1) == U'/') {
+    if (kefir_lexer_source_cursor_at(cursor, 0) == '/' && kefir_lexer_source_cursor_at(cursor, 1) == '/') {
         *match = MAX(*match, WHITESPACE_MATCH);
 
         REQUIRE_OK(kefir_lexer_source_cursor_next(cursor, 2));

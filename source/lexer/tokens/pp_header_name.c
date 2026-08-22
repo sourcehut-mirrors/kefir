@@ -21,20 +21,19 @@
 #include "kefir/lexer/lexer.h"
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
-#include "kefir/util/char32.h"
 #include "kefir/core/source_error.h"
 #include "kefir/core/string_buffer.h"
 
 static kefir_result_t match_header_name(struct kefir_mem *mem, struct kefir_lexer *lexer, struct kefir_token *token,
                                         struct kefir_string_buffer *strbuf) {
-    kefir_char32_t chr = kefir_lexer_source_cursor_at(lexer->cursor, 0);
-    kefir_char32_t terminator;
-    if (chr == U'<') {
+    kefir_lexer_char_t chr = kefir_lexer_source_cursor_at(lexer->cursor, 0);
+    kefir_lexer_char_t terminator;
+    if (chr == '<') {
         REQUIRE_OK(kefir_lexer_source_cursor_next(lexer->cursor, 1));
-        terminator = U'>';
-    } else if (chr == U'\"') {
+        terminator = '>';
+    } else if (chr == '\"') {
         REQUIRE_OK(kefir_lexer_source_cursor_next(lexer->cursor, 1));
-        terminator = U'\"';
+        terminator = '\"';
     } else {
         return KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to match pp header name");
     }
@@ -48,7 +47,7 @@ static kefir_result_t match_header_name(struct kefir_mem *mem, struct kefir_lexe
         scan_pp_header_name = chr != terminator;
         if (scan_pp_header_name) {
             REQUIRE_OK(kefir_lexer_source_cursor_next(lexer->cursor, 1));
-            REQUIRE_OK(kefir_string_buffer_append(mem, strbuf, chr));
+            REQUIRE_OK(kefir_string_buffer_append_literal(mem, strbuf, chr));
         }
     }
 
@@ -57,7 +56,7 @@ static kefir_result_t match_header_name(struct kefir_mem *mem, struct kefir_lexe
     const char *header_name = kefir_string_buffer_value(strbuf, &header_name_length);
     REQUIRE(header_name_length > 0, KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, &lexer->cursor->location,
                                                            "Preprocessor header name cannot be empty"));
-    REQUIRE_OK(kefir_token_new_pp_header_name(mem, terminator == U'>', header_name, header_name_length, token));
+    REQUIRE_OK(kefir_token_new_pp_header_name(mem, terminator == '>', header_name, header_name_length, token));
     return KEFIR_OK;
 }
 
