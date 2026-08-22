@@ -279,7 +279,7 @@ kefir_result_t kefir_preprocessor_skip_group(struct kefir_mem *mem, struct kefir
             case KEFIR_PREPROCESSOR_DIRECTIVE_PRAGMA:
             case KEFIR_PREPROCESSOR_DIRECTIVE_EMPTY:
             case KEFIR_PREPROCESSOR_DIRECTIVE_NON:
-            case KEFIR_PREPROCESSOR_DIRECTIVE_PP_TOKEN:
+            case KEFIR_PREPROCESSOR_DIRECTIVE_PP_TOKENS:
             case KEFIR_PREPROCESSOR_DIRECTIVE_LINEMARKER:
                 REQUIRE_OK(kefir_preprocessor_directive_scanner_skip_line(mem, &preprocessor->directive_scanner));
                 break;
@@ -1224,7 +1224,7 @@ static kefir_result_t run_directive(struct kefir_mem *mem, struct kefir_preproce
                                     kefir_preprocessor_token_destination_t *token_destination) {
     *token_destination = KEFIR_PREPROCESSOR_TOKEN_DESTINATION_NORMAL;
     REQUIRE(preprocessor->mode != KEFIR_PREPROCESSOR_MODE_MINIMAL ||
-                directive->type == KEFIR_PREPROCESSOR_DIRECTIVE_PP_TOKEN ||
+                directive->type == KEFIR_PREPROCESSOR_DIRECTIVE_PP_TOKENS ||
                 directive->type == KEFIR_PREPROCESSOR_DIRECTIVE_LINEMARKER,
             KEFIR_OK);
 
@@ -1377,11 +1377,9 @@ static kefir_result_t run_directive(struct kefir_mem *mem, struct kefir_preproce
             // Skip empty and unknown directives
             break;
 
-        case KEFIR_PREPROCESSOR_DIRECTIVE_PP_TOKEN: {
-            const struct kefir_token *allocated_token;
-            REQUIRE_OK(kefir_token_allocator_emplace(mem, token_allocator, &directive->pp_token, &allocated_token));
-            REQUIRE_OK(kefir_token_buffer_emplace(mem, buffer, allocated_token));
-        } break;
+        case KEFIR_PREPROCESSOR_DIRECTIVE_PP_TOKENS:
+            REQUIRE_OK(kefir_token_buffer_copy(mem, buffer, &directive->pp_tokens));
+            break;
 
         case KEFIR_PREPROCESSOR_DIRECTIVE_SENTINEL:
             // Intentionally left blank

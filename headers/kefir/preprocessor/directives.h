@@ -50,7 +50,7 @@ typedef enum kefir_preprocessor_directive_type {
     KEFIR_PREPROCESSOR_DIRECTIVE_PRAGMA,
     KEFIR_PREPROCESSOR_DIRECTIVE_EMPTY,
     KEFIR_PREPROCESSOR_DIRECTIVE_NON,
-    KEFIR_PREPROCESSOR_DIRECTIVE_PP_TOKEN,
+    KEFIR_PREPROCESSOR_DIRECTIVE_PP_TOKENS,
     KEFIR_PREPROCESSOR_DIRECTIVE_LINEMARKER,
     KEFIR_PREPROCESSOR_DIRECTIVE_SENTINEL
 } kefir_preprocessor_directive_type_t;
@@ -84,7 +84,6 @@ typedef struct kefir_preprocessor_directive {
         struct kefir_preprocessor_define_directive define_directive;
         struct kefir_preprocessor_undef_directive undef_directive;
         struct kefir_token_buffer pp_tokens;
-        struct kefir_token pp_token;
         struct {
             const char *filename;
             kefir_size_t line_number;
