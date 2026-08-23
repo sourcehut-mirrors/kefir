@@ -66,8 +66,9 @@ static kefir_result_t token_cursor_flush(const struct kefir_token_cursor_handle 
     REQUIRE_OK(kefir_token_buffer_flush_front(inc_handle->mem, &inc_handle->buffer, length - inc_handle->cursor_offset,
                                               &flushed));
     inc_handle->cursor_offset += flushed;
+    inc_handle->flushed += flushed;
 
-    if (flushed > 0) {
+    if (inc_handle->flushed * 4 >= inc_handle->buffer.length + inc_handle->pp_buffer.length) {
         struct kefir_token_allocator_gc gc;
         REQUIRE_OK(kefir_token_allocator_gc_init(inc_handle->mem, inc_handle->preprocessor_state.token_allocator, &gc));
 
@@ -80,6 +81,7 @@ static kefir_result_t token_cursor_flush(const struct kefir_token_cursor_handle 
             return res;
         });
         REQUIRE_OK(kefir_token_allocator_gc_free(inc_handle->mem, &gc));
+        inc_handle->flushed = 0;
     }
     return KEFIR_OK;
 }
@@ -101,6 +103,7 @@ kefir_result_t kefir_token_incremental_cursor_handle_init(struct kefir_mem *mem,
     handle->handle.get_token = get_token;
     handle->handle.flush = token_cursor_flush;
     handle->cursor_offset = 0;
+    handle->flushed = 0;
     handle->preprocessor_mode = false;
     handle->handle.payload[0] = (kefir_uptr_t) handle;
     return KEFIR_OK;

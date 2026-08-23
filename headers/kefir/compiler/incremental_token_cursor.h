@@ -32,6 +32,7 @@ typedef struct kefir_token_incremental_cursor_handle {
     struct kefir_token_buffer buffer;
     struct kefir_token_buffer pp_buffer;
     kefir_size_t cursor_offset;
+    kefir_size_t flushed;
 
     struct kefir_mem *mem;
     struct kefir_preprocessor_state preprocessor_state;

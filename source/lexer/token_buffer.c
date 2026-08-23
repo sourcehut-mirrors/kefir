@@ -124,7 +124,8 @@ kefir_result_t kefir_token_buffer_flush_front(struct kefir_mem *mem, struct kefi
     REQUIRE(buffer != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid token buffer"));
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
 
-    kefir_size_t flush = MIN(buffer->length, length) / FLUSH_UNIT * FLUSH_UNIT;
+    const kefir_size_t flush_unit = MAX(buffer->length / 8, FLUSH_UNIT);
+    kefir_size_t flush = MIN(buffer->length, length) / flush_unit * flush_unit;
     ASSIGN_PTR(flushed_length_ptr, flush);
     REQUIRE(flush > 0, KEFIR_OK);
     if (flush < buffer->length) {
