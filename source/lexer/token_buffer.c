@@ -23,12 +23,17 @@
 #include "kefir/core/error.h"
 #include <string.h>
 
+#define CHUNK_CAPACITY 4096
+#define CHUNK_COUNT(_len) (((_len) + CHUNK_CAPACITY - 1) / CHUNK_CAPACITY)
+#define CHUNK_INDEX(_idx) ((_idx) / CHUNK_CAPACITY)
+#define CHUNK_OFFSET(_idx) ((_idx) % CHUNK_CAPACITY)
+
 kefir_result_t kefir_token_buffer_init(struct kefir_token_buffer *buffer) {
     REQUIRE(buffer != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid token buffer"));
 
-    buffer->tokens = NULL;
+    buffer->token_chunks = NULL;
     buffer->length = 0;
-    buffer->capacity = 0;
+    buffer->chunk_count = 0;
     return KEFIR_OK;
 }
 
@@ -36,7 +41,10 @@ kefir_result_t kefir_token_buffer_free(struct kefir_mem *mem, struct kefir_token
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(buffer != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid token buffer"));
 
-    KEFIR_FREE(mem, buffer->tokens);
+    for (kefir_size_t i = 0; i < CHUNK_COUNT(buffer->length); i++) {
+        KEFIR_FREE(mem, buffer->token_chunks[i]);
+    }
+    KEFIR_FREE(mem, buffer->token_chunks);
     memset(buffer, 0, sizeof(struct kefir_token_buffer));
     return KEFIR_OK;
 }
@@ -45,37 +53,11 @@ kefir_result_t kefir_token_buffer_reset(struct kefir_mem *mem, struct kefir_toke
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(buffer != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid token buffer"));
 
-    KEFIR_FREE(mem, buffer->tokens);
+    for (kefir_size_t i = 0; i < buffer->chunk_count; i++) {
+        KEFIR_FREE(mem, buffer->token_chunks[i]);
+    }
+    KEFIR_FREE(mem, buffer->token_chunks);
     memset(buffer, 0, sizeof(struct kefir_token_buffer));
-    return KEFIR_OK;
-}
-
-static kefir_uint64_t round_capacity_up(kefir_uint64_t n) {
-    if (n <= 1) {
-        return n;
-    }
-    n--;
-    n |= n >> 1;
-    n |= n >> 2;
-    n |= n >> 4;
-    n |= n >> 8;
-    n |= n >> 16;
-    n |= n >> 32;
-    n++;
-    return n;
-}
-
-
-static kefir_result_t ensure_capacity(struct kefir_mem *mem, struct kefir_token_buffer *buffer, kefir_size_t extra) {
-    if (buffer->length + extra > buffer->capacity) {
-        kefir_size_t new_capacity = round_capacity_up(buffer->capacity + extra);
-        new_capacity = MAX(new_capacity, 128);
-        const struct kefir_token **new_tokens = KEFIR_REALLOC(mem, buffer->tokens, sizeof(struct kefir_token *) * new_capacity);
-        REQUIRE(new_tokens != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate token buffer"));
-
-        buffer->tokens = new_tokens;
-        buffer->capacity = new_capacity;
-    }
     return KEFIR_OK;
 }
 
@@ -85,8 +67,27 @@ kefir_result_t kefir_token_buffer_emplace(struct kefir_mem *mem, struct kefir_to
     REQUIRE(buffer != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid token buffer"));
     REQUIRE(token != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid token"));
 
-    REQUIRE_OK(ensure_capacity(mem, buffer, 1));
-    buffer->tokens[buffer->length++] = token;
+    if (CHUNK_COUNT(buffer->length + 1) >= buffer->chunk_count) {
+        const kefir_size_t new_count = buffer->chunk_count + 1;
+        const struct kefir_token ***new_chunks = KEFIR_REALLOC(mem, buffer->token_chunks, sizeof(struct kefir_token **) * new_count);
+        REQUIRE(new_chunks != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate token buffer"));
+        new_chunks[buffer->chunk_count] = NULL;
+
+        buffer->token_chunks = new_chunks;
+        buffer->chunk_count = new_count;
+    }
+
+    const kefir_size_t index = CHUNK_INDEX(buffer->length);
+    const kefir_size_t offset = CHUNK_OFFSET(buffer->length);
+    if (offset == 0) {
+        const struct kefir_token **chunk = KEFIR_MALLOC(mem, sizeof(struct kefir_token *) * CHUNK_CAPACITY);
+        REQUIRE(chunk != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate token buffer"));
+
+        buffer->token_chunks[index] = chunk;
+    }
+    
+    buffer->token_chunks[index][offset] = token;
+    buffer->length++;
     return KEFIR_OK;
 }
 
@@ -96,14 +97,10 @@ kefir_result_t kefir_token_buffer_insert(struct kefir_mem *mem, struct kefir_tok
     REQUIRE(dst != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid destination token buffer"));
     REQUIRE(src != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid source token buffer"));
 
-    if (src->length > 0) {
-        REQUIRE_OK(ensure_capacity(mem, dst, src->length));
-        memcpy(&dst->tokens[dst->length], src->tokens, sizeof(struct kefir_token *) * src->length);
-        dst->length += src->length;
+    for (kefir_size_t i = 0; i < kefir_token_buffer_length(src); i++) {
+        REQUIRE_OK(kefir_token_buffer_emplace(mem, dst, kefir_token_buffer_at(src, i)));
     }
-
-    KEFIR_FREE(mem, src->tokens);
-    memset(src, 0, sizeof(struct kefir_token_buffer));
+    REQUIRE_OK(kefir_token_buffer_reset(mem, src));
     return KEFIR_OK;
 }
 
@@ -112,6 +109,9 @@ kefir_result_t kefir_token_buffer_pop(struct kefir_mem *mem, struct kefir_token_
     REQUIRE(buffer != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid token buffer"));
     REQUIRE(buffer->length > 0, KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Cannot pop token from empty buffer"));
 
+    if (buffer->length % CHUNK_CAPACITY == 1) {
+        KEFIR_FREE(mem, buffer->token_chunks[CHUNK_INDEX(buffer->length)]);
+    }
     buffer->length--;
     return KEFIR_OK;
 }
@@ -124,12 +124,17 @@ kefir_result_t kefir_token_buffer_flush_front(struct kefir_mem *mem, struct kefi
     REQUIRE(buffer != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid token buffer"));
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
 
-    const kefir_size_t flush_unit = MAX(buffer->length / 8, FLUSH_UNIT);
-    kefir_size_t flush = MIN(buffer->length, length) / flush_unit * flush_unit;
+    const kefir_size_t flush_chunks = MIN(buffer->length, length) / CHUNK_CAPACITY;
+    const kefir_size_t flush = flush_chunks * CHUNK_CAPACITY;
     ASSIGN_PTR(flushed_length_ptr, flush);
-    REQUIRE(flush > 0, KEFIR_OK);
-    if (flush < buffer->length) {
-        memmove(&buffer->tokens[0], &buffer->tokens[flush], sizeof(struct kefir_token *) * (buffer->length - flush));
+    REQUIRE(flush_chunks > 0, KEFIR_OK);
+
+    for (kefir_size_t i = 0; i < flush_chunks; i++) {
+        KEFIR_FREE(mem, buffer->token_chunks[i]);
+    }
+    const kefir_size_t move_chunks = CHUNK_COUNT(buffer->length) - flush_chunks;
+    if (move_chunks > 0) {
+        memmove(&buffer->token_chunks[0], &buffer->token_chunks[flush_chunks], sizeof(struct kefir_token **) * move_chunks);
     }
     buffer->length -= flush;
 
@@ -142,10 +147,8 @@ kefir_result_t kefir_token_buffer_copy(struct kefir_mem *mem, struct kefir_token
     REQUIRE(dst != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid destination token buffer"));
     REQUIRE(src != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid source token buffer"));
 
-    if (src->length > 0) {
-        REQUIRE_OK(ensure_capacity(mem, dst, src->length));
-        memcpy(&dst->tokens[dst->length], src->tokens, sizeof(struct kefir_token *) * src->length);
-        dst->length += src->length;
+    for (kefir_size_t i = 0; i < kefir_token_buffer_length(src); i++) {
+        REQUIRE_OK(kefir_token_buffer_emplace(mem, dst, kefir_token_buffer_at(src, i)));
     }
     return KEFIR_OK;
 }
@@ -160,7 +163,7 @@ const struct kefir_token *kefir_token_buffer_at(const struct kefir_token_buffer 
     REQUIRE(buffer != NULL, NULL);
     REQUIRE(index < buffer->length, NULL);
 
-    return buffer->tokens[index];
+    return buffer->token_chunks[CHUNK_INDEX(index)][CHUNK_OFFSET(index)];
 }
 
 static kefir_result_t token_cursor_get_token(kefir_size_t index, const struct kefir_token **token_ptr,
