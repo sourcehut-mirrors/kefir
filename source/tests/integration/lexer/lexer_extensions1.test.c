@@ -46,8 +46,8 @@ static kefir_result_t failed_lex(struct kefir_mem *mem, struct kefir_lexer *lexe
 
 static kefir_result_t after_lex(struct kefir_mem *mem, struct kefir_lexer *lexer, struct kefir_token *token) {
     UNUSED(lexer);
-    if (token->klass == KEFIR_TOKEN_CONSTANT && token->constant->type == KEFIR_CONSTANT_TOKEN_INTEGER &&
-        token->constant->integer == 0) {
+    if (token->klass == KEFIR_TOKEN_CONSTANT && token->constant.type == KEFIR_CONSTANT_TOKEN_INTEGER &&
+        token->constant.integer == 0) {
         REQUIRE_OK(kefir_token_free(mem, token));
         REQUIRE_OK(kefir_token_new_constant_int(mem, 1, token));
     }

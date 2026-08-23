@@ -204,6 +204,20 @@ typedef enum kefir_string_literal_token_type {
     KEFIR_STRING_LITERAL_TOKEN_WIDE
 } kefir_string_literal_token_type_t;
 
+typedef union kefir_large_constant_token {
+    kefir_long_double_t long_double;
+    struct {
+        kefir_float64_t real;
+        kefir_float64_t imaginary;
+    } complex_float64;
+    struct {
+        kefir_long_double_t real;
+        kefir_long_double_t imaginary;
+    } complex_long_double;
+    struct kefir_bigint bitprecise;
+    kefir_dfp_decimal128_t decimal128;
+} kefir_large_constant_token_t;
+
 typedef struct kefir_constant_token {
     kefir_constant_token_type_t type;
     union {
@@ -211,27 +225,17 @@ typedef struct kefir_constant_token {
         kefir_uint64_t uinteger;
         kefir_float32_t float32;
         kefir_float64_t float64;
-        kefir_long_double_t long_double;
         struct {
             kefir_float32_t real;
             kefir_float32_t imaginary;
         } complex_float32;
-        struct {
-            kefir_float64_t real;
-            kefir_float64_t imaginary;
-        } complex_float64;
-        struct {
-            kefir_long_double_t real;
-            kefir_long_double_t imaginary;
-        } complex_long_double;
         kefir_int_t character;
         kefir_wchar_t wide_char;
         kefir_char16_t unicode16_char;
         kefir_char32_t unicode32_char;
-        struct kefir_bigint bitprecise;
         kefir_dfp_decimal32_t decimal32;
         kefir_dfp_decimal64_t decimal64;
-        kefir_dfp_decimal128_t decimal128;
+        union kefir_large_constant_token *large;
     };
 } kefir_constant_token_t;
 
@@ -346,7 +350,7 @@ typedef struct kefir_token {
             const char *keyword_spelling;
         };
         const char *identifier;
-        struct kefir_constant_token *constant;
+        struct kefir_constant_token constant;
         struct kefir_string_literal_token *string_literal;
         kefir_punctuator_token_t punctuator;
         struct kefir_pragma_token *pragma;

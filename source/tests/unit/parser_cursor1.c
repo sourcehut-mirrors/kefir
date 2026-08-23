@@ -39,8 +39,8 @@ DEFINE_CASE(parser_token_cursor1, "Parser - token array stream") {
         token = kefir_parser_token_cursor_at(&cursor, 0, true);
         ASSERT(token != NULL);
         ASSERT(token->klass == KEFIR_TOKEN_CONSTANT);
-        ASSERT(token->constant->type == KEFIR_CONSTANT_TOKEN_CHAR);
-        ASSERT(token->constant->character == 'X');
+        ASSERT(token->constant.type == KEFIR_CONSTANT_TOKEN_CHAR);
+        ASSERT(token->constant.character == 'X');
 
         token = kefir_parser_token_cursor_at(&cursor, 1, true);
         ASSERT(token != NULL);
@@ -130,8 +130,8 @@ DEFINE_CASE(parser_token_cursor1, "Parser - token array stream") {
         token = kefir_parser_token_cursor_at(&cursor, 0, true);
         ASSERT(token != NULL);
         ASSERT(token->klass == KEFIR_TOKEN_CONSTANT);
-        ASSERT(token->constant->type == KEFIR_CONSTANT_TOKEN_CHAR);
-        ASSERT(token->constant->character == 'X');
+        ASSERT(token->constant.type == KEFIR_CONSTANT_TOKEN_CHAR);
+        ASSERT(token->constant.character == 'X');
 
         token = kefir_parser_token_cursor_at(&cursor, 1, true);
         ASSERT(token != NULL);

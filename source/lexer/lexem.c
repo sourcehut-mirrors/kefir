@@ -136,11 +136,9 @@ kefir_result_t kefir_token_new_constant_int(struct kefir_mem *mem, kefir_int64_t
     REQUIRE(token != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to token"));
     REQUIRE_OK(kefir_source_location_empty(&token->source_location));
 
-    token->constant = KEFIR_MALLOC(mem, sizeof(struct kefir_constant_token));
-    REQUIRE(token->constant != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate constant token"));
     token->klass = KEFIR_TOKEN_CONSTANT;
-    token->constant->type = KEFIR_CONSTANT_TOKEN_INTEGER;
-    token->constant->integer = value;
+    token->constant.type = KEFIR_CONSTANT_TOKEN_INTEGER;
+    token->constant.integer = value;
     token->macro_expansions = NULL;
     return KEFIR_OK;
 }
@@ -150,11 +148,9 @@ kefir_result_t kefir_token_new_constant_uint(struct kefir_mem *mem, kefir_uint64
     REQUIRE(token != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to token"));
     REQUIRE_OK(kefir_source_location_empty(&token->source_location));
 
-    token->constant = KEFIR_MALLOC(mem, sizeof(struct kefir_constant_token));
-    REQUIRE(token->constant != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate constant token"));
     token->klass = KEFIR_TOKEN_CONSTANT;
-    token->constant->type = KEFIR_CONSTANT_TOKEN_UNSIGNED_INTEGER;
-    token->constant->uinteger = value;
+    token->constant.type = KEFIR_CONSTANT_TOKEN_UNSIGNED_INTEGER;
+    token->constant.uinteger = value;
     token->macro_expansions = NULL;
     return KEFIR_OK;
 }
@@ -164,11 +160,9 @@ kefir_result_t kefir_token_new_constant_long(struct kefir_mem *mem, kefir_int64_
     REQUIRE(token != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to token"));
     REQUIRE_OK(kefir_source_location_empty(&token->source_location));
 
-    token->constant = KEFIR_MALLOC(mem, sizeof(struct kefir_constant_token));
-    REQUIRE(token->constant != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate constant token"));
     token->klass = KEFIR_TOKEN_CONSTANT;
-    token->constant->type = KEFIR_CONSTANT_TOKEN_LONG_INTEGER;
-    token->constant->integer = value;
+    token->constant.type = KEFIR_CONSTANT_TOKEN_LONG_INTEGER;
+    token->constant.integer = value;
     token->macro_expansions = NULL;
     return KEFIR_OK;
 }
@@ -178,11 +172,9 @@ kefir_result_t kefir_token_new_constant_ulong(struct kefir_mem *mem, kefir_uint6
     REQUIRE(token != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to token"));
     REQUIRE_OK(kefir_source_location_empty(&token->source_location));
 
-    token->constant = KEFIR_MALLOC(mem, sizeof(struct kefir_constant_token));
-    REQUIRE(token->constant != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate constant token"));
     token->klass = KEFIR_TOKEN_CONSTANT;
-    token->constant->type = KEFIR_CONSTANT_TOKEN_UNSIGNED_LONG_INTEGER;
-    token->constant->uinteger = value;
+    token->constant.type = KEFIR_CONSTANT_TOKEN_UNSIGNED_LONG_INTEGER;
+    token->constant.uinteger = value;
     token->macro_expansions = NULL;
     return KEFIR_OK;
 }
@@ -193,11 +185,9 @@ kefir_result_t kefir_token_new_constant_long_long(struct kefir_mem *mem, kefir_i
     REQUIRE(token != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to token"));
     REQUIRE_OK(kefir_source_location_empty(&token->source_location));
 
-    token->constant = KEFIR_MALLOC(mem, sizeof(struct kefir_constant_token));
-    REQUIRE(token->constant != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate constant token"));
     token->klass = KEFIR_TOKEN_CONSTANT;
-    token->constant->type = KEFIR_CONSTANT_TOKEN_LONG_LONG_INTEGER;
-    token->constant->integer = value;
+    token->constant.type = KEFIR_CONSTANT_TOKEN_LONG_LONG_INTEGER;
+    token->constant.integer = value;
     token->macro_expansions = NULL;
     return KEFIR_OK;
 }
@@ -208,11 +198,9 @@ kefir_result_t kefir_token_new_constant_ulong_long(struct kefir_mem *mem, kefir_
     REQUIRE(token != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to token"));
     REQUIRE_OK(kefir_source_location_empty(&token->source_location));
 
-    token->constant = KEFIR_MALLOC(mem, sizeof(struct kefir_constant_token));
-    REQUIRE(token->constant != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate constant token"));
     token->klass = KEFIR_TOKEN_CONSTANT;
-    token->constant->type = KEFIR_CONSTANT_TOKEN_UNSIGNED_LONG_LONG_INTEGER;
-    token->constant->integer = value;
+    token->constant.type = KEFIR_CONSTANT_TOKEN_UNSIGNED_LONG_LONG_INTEGER;
+    token->constant.integer = value;
     token->macro_expansions = NULL;
     return KEFIR_OK;
 }
@@ -224,11 +212,11 @@ kefir_result_t kefir_token_new_constant_bit_precise(struct kefir_mem *mem, struc
     REQUIRE(bigint != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid big integer"));
     REQUIRE_OK(kefir_source_location_empty(&token->source_location));
 
-    token->constant = KEFIR_MALLOC(mem, sizeof(struct kefir_constant_token));
-    REQUIRE(token->constant != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate constant token"));
+    token->constant.large = KEFIR_MALLOC(mem, sizeof(union kefir_large_constant_token));
+    REQUIRE(token->constant.large != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate constant token"));
     token->klass = KEFIR_TOKEN_CONSTANT;
-    token->constant->type = KEFIR_CONSTANT_TOKEN_BIT_PRECISE;
-    REQUIRE_OK(kefir_bigint_move(&token->constant->bitprecise, bigint));
+    token->constant.type = KEFIR_CONSTANT_TOKEN_BIT_PRECISE;
+    REQUIRE_OK(kefir_bigint_move(&token->constant.large->bitprecise, bigint));
     token->macro_expansions = NULL;
     return KEFIR_OK;
 }
@@ -240,11 +228,11 @@ kefir_result_t kefir_token_new_constant_unsigned_bit_precise(struct kefir_mem *m
     REQUIRE(bigint != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid big integer"));
     REQUIRE_OK(kefir_source_location_empty(&token->source_location));
 
-    token->constant = KEFIR_MALLOC(mem, sizeof(struct kefir_constant_token));
-    REQUIRE(token->constant != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate constant token"));
+    token->constant.large = KEFIR_MALLOC(mem, sizeof(union kefir_large_constant_token));
+    REQUIRE(token->constant.large != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate constant token"));
     token->klass = KEFIR_TOKEN_CONSTANT;
-    token->constant->type = KEFIR_CONSTANT_TOKEN_UNSIGNED_BIT_PRECISE;
-    REQUIRE_OK(kefir_bigint_move(&token->constant->bitprecise, bigint));
+    token->constant.type = KEFIR_CONSTANT_TOKEN_UNSIGNED_BIT_PRECISE;
+    REQUIRE_OK(kefir_bigint_move(&token->constant.large->bitprecise, bigint));
     token->macro_expansions = NULL;
     return KEFIR_OK;
 }
@@ -254,11 +242,9 @@ kefir_result_t kefir_token_new_constant_char(struct kefir_mem *mem, kefir_int_t 
     REQUIRE(token != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to token"));
     REQUIRE_OK(kefir_source_location_empty(&token->source_location));
 
-    token->constant = KEFIR_MALLOC(mem, sizeof(struct kefir_constant_token));
-    REQUIRE(token->constant != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate constant token"));
     token->klass = KEFIR_TOKEN_CONSTANT;
-    token->constant->type = KEFIR_CONSTANT_TOKEN_CHAR;
-    token->constant->character = value;
+    token->constant.type = KEFIR_CONSTANT_TOKEN_CHAR;
+    token->constant.character = value;
     token->macro_expansions = NULL;
     return KEFIR_OK;
 }
@@ -269,11 +255,9 @@ kefir_result_t kefir_token_new_constant_unicode8_char(struct kefir_mem *mem, kef
     REQUIRE(token != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to token"));
     REQUIRE_OK(kefir_source_location_empty(&token->source_location));
 
-    token->constant = KEFIR_MALLOC(mem, sizeof(struct kefir_constant_token));
-    REQUIRE(token->constant != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate constant token"));
     token->klass = KEFIR_TOKEN_CONSTANT;
-    token->constant->type = KEFIR_CONSTANT_TOKEN_UNICODE8_CHAR;
-    token->constant->character = value;
+    token->constant.type = KEFIR_CONSTANT_TOKEN_UNICODE8_CHAR;
+    token->constant.character = value;
     token->macro_expansions = NULL;
     return KEFIR_OK;
 }
@@ -284,11 +268,9 @@ kefir_result_t kefir_token_new_constant_wide_char(struct kefir_mem *mem, kefir_w
     REQUIRE(token != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to token"));
     REQUIRE_OK(kefir_source_location_empty(&token->source_location));
 
-    token->constant = KEFIR_MALLOC(mem, sizeof(struct kefir_constant_token));
-    REQUIRE(token->constant != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate constant token"));
     token->klass = KEFIR_TOKEN_CONSTANT;
-    token->constant->type = KEFIR_CONSTANT_TOKEN_WIDE_CHAR;
-    token->constant->wide_char = value;
+    token->constant.type = KEFIR_CONSTANT_TOKEN_WIDE_CHAR;
+    token->constant.wide_char = value;
     token->macro_expansions = NULL;
     return KEFIR_OK;
 }
@@ -299,11 +281,9 @@ kefir_result_t kefir_token_new_constant_unicode16_char(struct kefir_mem *mem, ke
     REQUIRE(token != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to token"));
     REQUIRE_OK(kefir_source_location_empty(&token->source_location));
 
-    token->constant = KEFIR_MALLOC(mem, sizeof(struct kefir_constant_token));
-    REQUIRE(token->constant != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate constant token"));
     token->klass = KEFIR_TOKEN_CONSTANT;
-    token->constant->type = KEFIR_CONSTANT_TOKEN_UNICODE16_CHAR;
-    token->constant->unicode16_char = value;
+    token->constant.type = KEFIR_CONSTANT_TOKEN_UNICODE16_CHAR;
+    token->constant.unicode16_char = value;
     token->macro_expansions = NULL;
     return KEFIR_OK;
 }
@@ -314,11 +294,9 @@ kefir_result_t kefir_token_new_constant_unicode32_char(struct kefir_mem *mem, ke
     REQUIRE(token != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to token"));
     REQUIRE_OK(kefir_source_location_empty(&token->source_location));
 
-    token->constant = KEFIR_MALLOC(mem, sizeof(struct kefir_constant_token));
-    REQUIRE(token->constant != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate constant token"));
     token->klass = KEFIR_TOKEN_CONSTANT;
-    token->constant->type = KEFIR_CONSTANT_TOKEN_UNICODE32_CHAR;
-    token->constant->unicode32_char = value;
+    token->constant.type = KEFIR_CONSTANT_TOKEN_UNICODE32_CHAR;
+    token->constant.unicode32_char = value;
     token->macro_expansions = NULL;
     return KEFIR_OK;
 }
@@ -328,11 +306,9 @@ kefir_result_t kefir_token_new_constant_float(struct kefir_mem *mem, kefir_float
     REQUIRE(token != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to token"));
     REQUIRE_OK(kefir_source_location_empty(&token->source_location));
 
-    token->constant = KEFIR_MALLOC(mem, sizeof(struct kefir_constant_token));
-    REQUIRE(token->constant != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate constant token"));
     token->klass = KEFIR_TOKEN_CONSTANT;
-    token->constant->type = KEFIR_CONSTANT_TOKEN_FLOAT;
-    token->constant->float32 = value;
+    token->constant.type = KEFIR_CONSTANT_TOKEN_FLOAT;
+    token->constant.float32 = value;
     token->macro_expansions = NULL;
     return KEFIR_OK;
 }
@@ -343,11 +319,9 @@ kefir_result_t kefir_token_new_constant_float32(struct kefir_mem *mem, kefir_flo
     REQUIRE(token != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to token"));
     REQUIRE_OK(kefir_source_location_empty(&token->source_location));
 
-    token->constant = KEFIR_MALLOC(mem, sizeof(struct kefir_constant_token));
-    REQUIRE(token->constant != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate constant token"));
     token->klass = KEFIR_TOKEN_CONSTANT;
-    token->constant->type = KEFIR_CONSTANT_TOKEN_FLOAT32;
-    token->constant->float32 = value;
+    token->constant.type = KEFIR_CONSTANT_TOKEN_FLOAT32;
+    token->constant.float32 = value;
     token->macro_expansions = NULL;
     return KEFIR_OK;
 }
@@ -358,11 +332,9 @@ kefir_result_t kefir_token_new_constant_float32x(struct kefir_mem *mem, kefir_fl
     REQUIRE(token != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to token"));
     REQUIRE_OK(kefir_source_location_empty(&token->source_location));
 
-    token->constant = KEFIR_MALLOC(mem, sizeof(struct kefir_constant_token));
-    REQUIRE(token->constant != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate constant token"));
     token->klass = KEFIR_TOKEN_CONSTANT;
-    token->constant->type = KEFIR_CONSTANT_TOKEN_FLOAT32X;
-    token->constant->float64 = value;
+    token->constant.type = KEFIR_CONSTANT_TOKEN_FLOAT32X;
+    token->constant.float64 = value;
     token->macro_expansions = NULL;
     return KEFIR_OK;
 }
@@ -373,11 +345,9 @@ kefir_result_t kefir_token_new_constant_double(struct kefir_mem *mem, kefir_floa
     REQUIRE(token != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to token"));
     REQUIRE_OK(kefir_source_location_empty(&token->source_location));
 
-    token->constant = KEFIR_MALLOC(mem, sizeof(struct kefir_constant_token));
-    REQUIRE(token->constant != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate constant token"));
     token->klass = KEFIR_TOKEN_CONSTANT;
-    token->constant->type = KEFIR_CONSTANT_TOKEN_DOUBLE;
-    token->constant->float64 = value;
+    token->constant.type = KEFIR_CONSTANT_TOKEN_DOUBLE;
+    token->constant.float64 = value;
     token->macro_expansions = NULL;
     return KEFIR_OK;
 }
@@ -388,11 +358,9 @@ kefir_result_t kefir_token_new_constant_float64(struct kefir_mem *mem, kefir_flo
     REQUIRE(token != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to token"));
     REQUIRE_OK(kefir_source_location_empty(&token->source_location));
 
-    token->constant = KEFIR_MALLOC(mem, sizeof(struct kefir_constant_token));
-    REQUIRE(token->constant != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate constant token"));
     token->klass = KEFIR_TOKEN_CONSTANT;
-    token->constant->type = KEFIR_CONSTANT_TOKEN_FLOAT64;
-    token->constant->float64 = value;
+    token->constant.type = KEFIR_CONSTANT_TOKEN_FLOAT64;
+    token->constant.float64 = value;
     token->macro_expansions = NULL;
     return KEFIR_OK;
 }
@@ -403,11 +371,11 @@ kefir_result_t kefir_token_new_constant_float64x(struct kefir_mem *mem, kefir_lo
     REQUIRE(token != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to token"));
     REQUIRE_OK(kefir_source_location_empty(&token->source_location));
 
-    token->constant = KEFIR_MALLOC(mem, sizeof(struct kefir_constant_token));
-    REQUIRE(token->constant != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate constant token"));
+    token->constant.large = KEFIR_MALLOC(mem, sizeof(union kefir_large_constant_token));
+    REQUIRE(token->constant.large != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate constant token"));
     token->klass = KEFIR_TOKEN_CONSTANT;
-    token->constant->type = KEFIR_CONSTANT_TOKEN_FLOAT64X;
-    token->constant->long_double = value;
+    token->constant.type = KEFIR_CONSTANT_TOKEN_FLOAT64X;
+    token->constant.large->long_double = value;
     token->macro_expansions = NULL;
     return KEFIR_OK;
 }
@@ -418,11 +386,11 @@ kefir_result_t kefir_token_new_constant_long_double(struct kefir_mem *mem, kefir
     REQUIRE(token != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to token"));
     REQUIRE_OK(kefir_source_location_empty(&token->source_location));
 
-    token->constant = KEFIR_MALLOC(mem, sizeof(struct kefir_constant_token));
-    REQUIRE(token->constant != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate constant token"));
+    token->constant.large = KEFIR_MALLOC(mem, sizeof(union kefir_large_constant_token));
+    REQUIRE(token->constant.large != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate constant token"));
     token->klass = KEFIR_TOKEN_CONSTANT;
-    token->constant->type = KEFIR_CONSTANT_TOKEN_LONG_DOUBLE;
-    token->constant->long_double = value;
+    token->constant.type = KEFIR_CONSTANT_TOKEN_LONG_DOUBLE;
+    token->constant.large->long_double = value;
     token->macro_expansions = NULL;
     return KEFIR_OK;
 }
@@ -433,11 +401,11 @@ kefir_result_t kefir_token_new_constant_float80(struct kefir_mem *mem, kefir_lon
     REQUIRE(token != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to token"));
     REQUIRE_OK(kefir_source_location_empty(&token->source_location));
 
-    token->constant = KEFIR_MALLOC(mem, sizeof(struct kefir_constant_token));
-    REQUIRE(token->constant != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate constant token"));
+    token->constant.large = KEFIR_MALLOC(mem, sizeof(union kefir_large_constant_token));
+    REQUIRE(token->constant.large != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate constant token"));
     token->klass = KEFIR_TOKEN_CONSTANT;
-    token->constant->type = KEFIR_CONSTANT_TOKEN_FLOAT80;
-    token->constant->long_double = value;
+    token->constant.type = KEFIR_CONSTANT_TOKEN_FLOAT80;
+    token->constant.large->long_double = value;
     token->macro_expansions = NULL;
     return KEFIR_OK;
 }
@@ -448,11 +416,9 @@ kefir_result_t kefir_token_new_constant_decimal32(struct kefir_mem *mem, kefir_d
     REQUIRE(token != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to token"));
     REQUIRE_OK(kefir_source_location_empty(&token->source_location));
 
-    token->constant = KEFIR_MALLOC(mem, sizeof(struct kefir_constant_token));
-    REQUIRE(token->constant != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate constant token"));
     token->klass = KEFIR_TOKEN_CONSTANT;
-    token->constant->type = KEFIR_CONSTANT_TOKEN_DECIMAL32;
-    token->constant->decimal32 = value;
+    token->constant.type = KEFIR_CONSTANT_TOKEN_DECIMAL32;
+    token->constant.decimal32 = value;
     token->macro_expansions = NULL;
     return KEFIR_OK;
 }
@@ -463,11 +429,9 @@ kefir_result_t kefir_token_new_constant_decimal64(struct kefir_mem *mem, kefir_d
     REQUIRE(token != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to token"));
     REQUIRE_OK(kefir_source_location_empty(&token->source_location));
 
-    token->constant = KEFIR_MALLOC(mem, sizeof(struct kefir_constant_token));
-    REQUIRE(token->constant != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate constant token"));
     token->klass = KEFIR_TOKEN_CONSTANT;
-    token->constant->type = KEFIR_CONSTANT_TOKEN_DECIMAL64;
-    token->constant->decimal64 = value;
+    token->constant.type = KEFIR_CONSTANT_TOKEN_DECIMAL64;
+    token->constant.decimal64 = value;
     token->macro_expansions = NULL;
     return KEFIR_OK;
 }
@@ -478,11 +442,11 @@ kefir_result_t kefir_token_new_constant_decimal128(struct kefir_mem *mem, kefir_
     REQUIRE(token != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to token"));
     REQUIRE_OK(kefir_source_location_empty(&token->source_location));
 
-    token->constant = KEFIR_MALLOC(mem, sizeof(struct kefir_constant_token));
-    REQUIRE(token->constant != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate constant token"));
+    token->constant.large = KEFIR_MALLOC(mem, sizeof(union kefir_large_constant_token));
+    REQUIRE(token->constant.large != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate constant token"));
     token->klass = KEFIR_TOKEN_CONSTANT;
-    token->constant->type = KEFIR_CONSTANT_TOKEN_DECIMAL128;
-    token->constant->decimal128 = value;
+    token->constant.type = KEFIR_CONSTANT_TOKEN_DECIMAL128;
+    token->constant.large->decimal128 = value;
     token->macro_expansions = NULL;
     return KEFIR_OK;
 }
@@ -493,11 +457,11 @@ kefir_result_t kefir_token_new_constant_decimal64x(struct kefir_mem *mem, kefir_
     REQUIRE(token != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to token"));
     REQUIRE_OK(kefir_source_location_empty(&token->source_location));
 
-    token->constant = KEFIR_MALLOC(mem, sizeof(struct kefir_constant_token));
-    REQUIRE(token->constant != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate constant token"));
+    token->constant.large = KEFIR_MALLOC(mem, sizeof(union kefir_large_constant_token));
+    REQUIRE(token->constant.large != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate constant token"));
     token->klass = KEFIR_TOKEN_CONSTANT;
-    token->constant->type = KEFIR_CONSTANT_TOKEN_DECIMAL64X;
-    token->constant->decimal128 = value;
+    token->constant.type = KEFIR_CONSTANT_TOKEN_DECIMAL64X;
+    token->constant.large->decimal128 = value;
     token->macro_expansions = NULL;
     return KEFIR_OK;
 }
@@ -508,12 +472,10 @@ kefir_result_t kefir_token_new_constant_complex_float(struct kefir_mem *mem, kef
     REQUIRE(token != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to token"));
     REQUIRE_OK(kefir_source_location_empty(&token->source_location));
 
-    token->constant = KEFIR_MALLOC(mem, sizeof(struct kefir_constant_token));
-    REQUIRE(token->constant != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate constant token"));
     token->klass = KEFIR_TOKEN_CONSTANT;
-    token->constant->type = KEFIR_CONSTANT_TOKEN_COMPLEX_FLOAT;
-    token->constant->complex_float32.real = real_value;
-    token->constant->complex_float32.imaginary = imaginary_value;
+    token->constant.type = KEFIR_CONSTANT_TOKEN_COMPLEX_FLOAT;
+    token->constant.complex_float32.real = real_value;
+    token->constant.complex_float32.imaginary = imaginary_value;
     token->macro_expansions = NULL;
     return KEFIR_OK;
 }
@@ -524,12 +486,10 @@ kefir_result_t kefir_token_new_constant_complex_float32(struct kefir_mem *mem, k
     REQUIRE(token != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to token"));
     REQUIRE_OK(kefir_source_location_empty(&token->source_location));
 
-    token->constant = KEFIR_MALLOC(mem, sizeof(struct kefir_constant_token));
-    REQUIRE(token->constant != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate constant token"));
     token->klass = KEFIR_TOKEN_CONSTANT;
-    token->constant->type = KEFIR_CONSTANT_TOKEN_COMPLEX_FLOAT32;
-    token->constant->complex_float32.real = real_value;
-    token->constant->complex_float32.imaginary = imaginary_value;
+    token->constant.type = KEFIR_CONSTANT_TOKEN_COMPLEX_FLOAT32;
+    token->constant.complex_float32.real = real_value;
+    token->constant.complex_float32.imaginary = imaginary_value;
     token->macro_expansions = NULL;
     return KEFIR_OK;
 }
@@ -540,12 +500,12 @@ kefir_result_t kefir_token_new_constant_complex_double(struct kefir_mem *mem, ke
     REQUIRE(token != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to token"));
     REQUIRE_OK(kefir_source_location_empty(&token->source_location));
 
-    token->constant = KEFIR_MALLOC(mem, sizeof(struct kefir_constant_token));
-    REQUIRE(token->constant != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate constant token"));
+    token->constant.large = KEFIR_MALLOC(mem, sizeof(union kefir_large_constant_token));
+    REQUIRE(token->constant.large != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate constant token"));
     token->klass = KEFIR_TOKEN_CONSTANT;
-    token->constant->type = KEFIR_CONSTANT_TOKEN_COMPLEX_DOUBLE;
-    token->constant->complex_float64.real = real_value;
-    token->constant->complex_float64.imaginary = imaginary_value;
+    token->constant.type = KEFIR_CONSTANT_TOKEN_COMPLEX_DOUBLE;
+    token->constant.large->complex_float64.real = real_value;
+    token->constant.large->complex_float64.imaginary = imaginary_value;
     token->macro_expansions = NULL;
     return KEFIR_OK;
 }
@@ -556,12 +516,12 @@ kefir_result_t kefir_token_new_constant_complex_float32x(struct kefir_mem *mem, 
     REQUIRE(token != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to token"));
     REQUIRE_OK(kefir_source_location_empty(&token->source_location));
 
-    token->constant = KEFIR_MALLOC(mem, sizeof(struct kefir_constant_token));
-    REQUIRE(token->constant != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate constant token"));
+    token->constant.large = KEFIR_MALLOC(mem, sizeof(union kefir_large_constant_token));
+    REQUIRE(token->constant.large != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate constant token"));
     token->klass = KEFIR_TOKEN_CONSTANT;
-    token->constant->type = KEFIR_CONSTANT_TOKEN_COMPLEX_FLOAT32X;
-    token->constant->complex_float64.real = real_value;
-    token->constant->complex_float64.imaginary = imaginary_value;
+    token->constant.type = KEFIR_CONSTANT_TOKEN_COMPLEX_FLOAT32X;
+    token->constant.large->complex_float64.real = real_value;
+    token->constant.large->complex_float64.imaginary = imaginary_value;
     token->macro_expansions = NULL;
     return KEFIR_OK;
 }
@@ -572,12 +532,12 @@ kefir_result_t kefir_token_new_constant_complex_float64(struct kefir_mem *mem, k
     REQUIRE(token != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to token"));
     REQUIRE_OK(kefir_source_location_empty(&token->source_location));
 
-    token->constant = KEFIR_MALLOC(mem, sizeof(struct kefir_constant_token));
-    REQUIRE(token->constant != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate constant token"));
+    token->constant.large = KEFIR_MALLOC(mem, sizeof(union kefir_large_constant_token));
+    REQUIRE(token->constant.large != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate constant token"));
     token->klass = KEFIR_TOKEN_CONSTANT;
-    token->constant->type = KEFIR_CONSTANT_TOKEN_COMPLEX_FLOAT64;
-    token->constant->complex_float64.real = real_value;
-    token->constant->complex_float64.imaginary = imaginary_value;
+    token->constant.type = KEFIR_CONSTANT_TOKEN_COMPLEX_FLOAT64;
+    token->constant.large->complex_float64.real = real_value;
+    token->constant.large->complex_float64.imaginary = imaginary_value;
     token->macro_expansions = NULL;
     return KEFIR_OK;
 }
@@ -589,12 +549,12 @@ kefir_result_t kefir_token_new_constant_complex_long_double(struct kefir_mem *me
     REQUIRE(token != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to token"));
     REQUIRE_OK(kefir_source_location_empty(&token->source_location));
 
-    token->constant = KEFIR_MALLOC(mem, sizeof(struct kefir_constant_token));
-    REQUIRE(token->constant != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate constant token"));
+    token->constant.large = KEFIR_MALLOC(mem, sizeof(union kefir_large_constant_token));
+    REQUIRE(token->constant.large != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate constant token"));
     token->klass = KEFIR_TOKEN_CONSTANT;
-    token->constant->type = KEFIR_CONSTANT_TOKEN_COMPLEX_LONG_DOUBLE;
-    token->constant->complex_long_double.real = real_value;
-    token->constant->complex_long_double.imaginary = imaginary_value;
+    token->constant.type = KEFIR_CONSTANT_TOKEN_COMPLEX_LONG_DOUBLE;
+    token->constant.large->complex_long_double.real = real_value;
+    token->constant.large->complex_long_double.imaginary = imaginary_value;
     token->macro_expansions = NULL;
     return KEFIR_OK;
 }
@@ -606,12 +566,12 @@ kefir_result_t kefir_token_new_constant_complex_float64x(struct kefir_mem *mem, 
     REQUIRE(token != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to token"));
     REQUIRE_OK(kefir_source_location_empty(&token->source_location));
 
-    token->constant = KEFIR_MALLOC(mem, sizeof(struct kefir_constant_token));
-    REQUIRE(token->constant != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate constant token"));
+    token->constant.large = KEFIR_MALLOC(mem, sizeof(union kefir_large_constant_token));
+    REQUIRE(token->constant.large != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate constant token"));
     token->klass = KEFIR_TOKEN_CONSTANT;
-    token->constant->type = KEFIR_CONSTANT_TOKEN_COMPLEX_FLOAT64X;
-    token->constant->complex_long_double.real = real_value;
-    token->constant->complex_long_double.imaginary = imaginary_value;
+    token->constant.type = KEFIR_CONSTANT_TOKEN_COMPLEX_FLOAT64X;
+    token->constant.large->complex_long_double.real = real_value;
+    token->constant.large->complex_long_double.imaginary = imaginary_value;
     token->macro_expansions = NULL;
     return KEFIR_OK;
 }
@@ -623,12 +583,12 @@ kefir_result_t kefir_token_new_constant_complex_float80(struct kefir_mem *mem, k
     REQUIRE(token != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to token"));
     REQUIRE_OK(kefir_source_location_empty(&token->source_location));
 
-    token->constant = KEFIR_MALLOC(mem, sizeof(struct kefir_constant_token));
-    REQUIRE(token->constant != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate constant token"));
+    token->constant.large = KEFIR_MALLOC(mem, sizeof(union kefir_large_constant_token));
+    REQUIRE(token->constant.large != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate constant token"));
     token->klass = KEFIR_TOKEN_CONSTANT;
-    token->constant->type = KEFIR_CONSTANT_TOKEN_COMPLEX_FLOAT80;
-    token->constant->complex_long_double.real = real_value;
-    token->constant->complex_long_double.imaginary = imaginary_value;
+    token->constant.type = KEFIR_CONSTANT_TOKEN_COMPLEX_FLOAT80;
+    token->constant.large->complex_long_double.real = real_value;
+    token->constant.large->complex_long_double.imaginary = imaginary_value;
     token->macro_expansions = NULL;
     return KEFIR_OK;
 }
@@ -954,9 +914,54 @@ kefir_result_t kefir_token_copy(struct kefir_mem *mem, struct kefir_token *dst, 
         REQUIRE(src->extension->klass != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Invalid extension token"));
         REQUIRE_OK(src->extension->klass->copy(mem, dst, src));
     } else if (src->klass == KEFIR_TOKEN_CONSTANT) {
-        dst->constant = KEFIR_MALLOC(mem, sizeof(struct kefir_constant_token));
-        REQUIRE(dst->constant != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate constant token"));
-        memcpy(dst->constant, src->constant, sizeof(struct kefir_constant_token));
+        switch (src->constant.type) {
+            case KEFIR_CONSTANT_TOKEN_INTEGER:
+            case KEFIR_CONSTANT_TOKEN_LONG_INTEGER:
+            case KEFIR_CONSTANT_TOKEN_LONG_LONG_INTEGER:
+            case KEFIR_CONSTANT_TOKEN_UNSIGNED_INTEGER:
+            case KEFIR_CONSTANT_TOKEN_UNSIGNED_LONG_INTEGER:
+            case KEFIR_CONSTANT_TOKEN_UNSIGNED_LONG_LONG_INTEGER:
+            case KEFIR_CONSTANT_TOKEN_FLOAT:
+            case KEFIR_CONSTANT_TOKEN_FLOAT32:
+            case KEFIR_CONSTANT_TOKEN_FLOAT32X:
+            case KEFIR_CONSTANT_TOKEN_DOUBLE:
+            case KEFIR_CONSTANT_TOKEN_FLOAT64:
+            case KEFIR_CONSTANT_TOKEN_COMPLEX_FLOAT:
+            case KEFIR_CONSTANT_TOKEN_COMPLEX_FLOAT32:
+            case KEFIR_CONSTANT_TOKEN_DECIMAL32:
+            case KEFIR_CONSTANT_TOKEN_DECIMAL64:
+            case KEFIR_CONSTANT_TOKEN_CHAR:
+            case KEFIR_CONSTANT_TOKEN_WIDE_CHAR:
+            case KEFIR_CONSTANT_TOKEN_UNICODE8_CHAR:
+            case KEFIR_CONSTANT_TOKEN_UNICODE16_CHAR:
+            case KEFIR_CONSTANT_TOKEN_UNICODE32_CHAR:
+                dst->constant = src->constant;
+                break;
+
+            case KEFIR_CONSTANT_TOKEN_FLOAT64X:
+            case KEFIR_CONSTANT_TOKEN_LONG_DOUBLE:
+            case KEFIR_CONSTANT_TOKEN_FLOAT80:
+            case KEFIR_CONSTANT_TOKEN_COMPLEX_DOUBLE:
+            case KEFIR_CONSTANT_TOKEN_COMPLEX_LONG_DOUBLE:
+            case KEFIR_CONSTANT_TOKEN_COMPLEX_FLOAT32X:
+            case KEFIR_CONSTANT_TOKEN_COMPLEX_FLOAT64:
+            case KEFIR_CONSTANT_TOKEN_COMPLEX_FLOAT64X:
+            case KEFIR_CONSTANT_TOKEN_COMPLEX_FLOAT80:
+            case KEFIR_CONSTANT_TOKEN_DECIMAL128:
+            case KEFIR_CONSTANT_TOKEN_DECIMAL64X:
+                dst->constant.large = KEFIR_MALLOC(mem, sizeof(union kefir_large_constant_token));
+                REQUIRE(dst->constant.large != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate constant token"));
+                memcpy(dst->constant.large, src->constant.large, sizeof(union kefir_large_constant_token));
+                break;
+
+            case KEFIR_CONSTANT_TOKEN_BIT_PRECISE:
+            case KEFIR_CONSTANT_TOKEN_UNSIGNED_BIT_PRECISE:
+                dst->constant.large = KEFIR_MALLOC(mem, sizeof(union kefir_large_constant_token));
+                REQUIRE(dst->constant.large != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate constant token"));
+                REQUIRE_OK(kefir_bigint_init(&dst->constant.large->bitprecise));
+                REQUIRE_OK(kefir_bigint_copy_resize(mem, &dst->constant.large->bitprecise, &src->constant.large->bitprecise));
+                break;
+        }
     } else if (src->klass == KEFIR_TOKEN_PRAGMA) {
         dst->pragma = KEFIR_MALLOC(mem, sizeof(struct kefir_pragma_token));
         REQUIRE(dst->pragma != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate pragma token"));
@@ -1019,12 +1024,50 @@ kefir_result_t kefir_token_free(struct kefir_mem *mem, struct kefir_token *token
             break;
 
         case KEFIR_TOKEN_CONSTANT:
-            if (token->constant->type == KEFIR_CONSTANT_TOKEN_BIT_PRECISE ||
-                token->constant->type == KEFIR_CONSTANT_TOKEN_UNSIGNED_BIT_PRECISE) {
-                REQUIRE_OK(kefir_bigint_free(mem, &token->constant->bitprecise));
+            switch (token->constant.type) {
+                case KEFIR_CONSTANT_TOKEN_INTEGER:
+                case KEFIR_CONSTANT_TOKEN_LONG_INTEGER:
+                case KEFIR_CONSTANT_TOKEN_LONG_LONG_INTEGER:
+                case KEFIR_CONSTANT_TOKEN_UNSIGNED_INTEGER:
+                case KEFIR_CONSTANT_TOKEN_UNSIGNED_LONG_INTEGER:
+                case KEFIR_CONSTANT_TOKEN_UNSIGNED_LONG_LONG_INTEGER:
+                case KEFIR_CONSTANT_TOKEN_FLOAT:
+                case KEFIR_CONSTANT_TOKEN_FLOAT32:
+                case KEFIR_CONSTANT_TOKEN_FLOAT32X:
+                case KEFIR_CONSTANT_TOKEN_DOUBLE:
+                case KEFIR_CONSTANT_TOKEN_FLOAT64:
+                case KEFIR_CONSTANT_TOKEN_COMPLEX_FLOAT:
+                case KEFIR_CONSTANT_TOKEN_COMPLEX_FLOAT32:
+                case KEFIR_CONSTANT_TOKEN_DECIMAL32:
+                case KEFIR_CONSTANT_TOKEN_DECIMAL64:
+                case KEFIR_CONSTANT_TOKEN_CHAR:
+                case KEFIR_CONSTANT_TOKEN_WIDE_CHAR:
+                case KEFIR_CONSTANT_TOKEN_UNICODE8_CHAR:
+                case KEFIR_CONSTANT_TOKEN_UNICODE16_CHAR:
+                case KEFIR_CONSTANT_TOKEN_UNICODE32_CHAR:
+                    // Intentionally left blank
+                    break;
+
+                case KEFIR_CONSTANT_TOKEN_FLOAT64X:
+                case KEFIR_CONSTANT_TOKEN_LONG_DOUBLE:
+                case KEFIR_CONSTANT_TOKEN_FLOAT80:
+                case KEFIR_CONSTANT_TOKEN_COMPLEX_DOUBLE:
+                case KEFIR_CONSTANT_TOKEN_COMPLEX_LONG_DOUBLE:
+                case KEFIR_CONSTANT_TOKEN_COMPLEX_FLOAT32X:
+                case KEFIR_CONSTANT_TOKEN_COMPLEX_FLOAT64:
+                case KEFIR_CONSTANT_TOKEN_COMPLEX_FLOAT64X:
+                case KEFIR_CONSTANT_TOKEN_COMPLEX_FLOAT80:
+                case KEFIR_CONSTANT_TOKEN_DECIMAL128:
+                case KEFIR_CONSTANT_TOKEN_DECIMAL64X:
+                    KEFIR_FREE(mem, token->constant.large);
+                    break;
+
+                case KEFIR_CONSTANT_TOKEN_BIT_PRECISE:
+                case KEFIR_CONSTANT_TOKEN_UNSIGNED_BIT_PRECISE:
+                    REQUIRE_OK(kefir_bigint_free(mem, &token->constant.large->bitprecise));
+                    KEFIR_FREE(mem, token->constant.large);
+                    break;
             }
-            KEFIR_FREE(mem, token->constant);
-            token->constant = NULL;
             break;
 
         case KEFIR_TOKEN_PRAGMA:

@@ -667,17 +667,17 @@ static kefir_result_t format_constant(struct kefir_json_output *json, const stru
         case KEFIR_CONSTANT_TOKEN_BIT_PRECISE: {
             REQUIRE_OK(kefir_json_output_string(json, "bitprecise"));
             REQUIRE_OK(kefir_json_output_object_key(json, "value"));
-            REQUIRE_OK(kefir_json_output_bigint(json, &constant->bitprecise));
+            REQUIRE_OK(kefir_json_output_bigint(json, &constant->large->bitprecise));
             REQUIRE_OK(kefir_json_output_object_key(json, "width"));
-            REQUIRE_OK(kefir_json_output_integer(json, constant->bitprecise.bitwidth));
+            REQUIRE_OK(kefir_json_output_integer(json, constant->large->bitprecise.bitwidth));
         } break;
 
         case KEFIR_CONSTANT_TOKEN_UNSIGNED_BIT_PRECISE:
             REQUIRE_OK(kefir_json_output_string(json, "bitprecise_unsigned"));
             REQUIRE_OK(kefir_json_output_object_key(json, "value"));
-            REQUIRE_OK(kefir_json_output_bigint(json, &constant->bitprecise));
+            REQUIRE_OK(kefir_json_output_bigint(json, &constant->large->bitprecise));
             REQUIRE_OK(kefir_json_output_object_key(json, "width"));
-            REQUIRE_OK(kefir_json_output_integer(json, constant->bitprecise.bitwidth));
+            REQUIRE_OK(kefir_json_output_integer(json, constant->large->bitprecise.bitwidth));
             break;
 
         case KEFIR_CONSTANT_TOKEN_FLOAT:
@@ -713,19 +713,19 @@ static kefir_result_t format_constant(struct kefir_json_output *json, const stru
         case KEFIR_CONSTANT_TOKEN_FLOAT64X:
             REQUIRE_OK(kefir_json_output_string(json, "float64x"));
             REQUIRE_OK(kefir_json_output_object_key(json, "value"));
-            REQUIRE_OK(kefir_json_output_hex_long_double(json, constant->long_double));
+            REQUIRE_OK(kefir_json_output_hex_long_double(json, constant->large->long_double));
             break;
 
         case KEFIR_CONSTANT_TOKEN_LONG_DOUBLE:
             REQUIRE_OK(kefir_json_output_string(json, "long_double"));
             REQUIRE_OK(kefir_json_output_object_key(json, "value"));
-            REQUIRE_OK(kefir_json_output_hex_long_double(json, constant->long_double));
+            REQUIRE_OK(kefir_json_output_hex_long_double(json, constant->large->long_double));
             break;
 
         case KEFIR_CONSTANT_TOKEN_FLOAT80:
             REQUIRE_OK(kefir_json_output_string(json, "float80"));
             REQUIRE_OK(kefir_json_output_object_key(json, "value"));
-            REQUIRE_OK(kefir_json_output_hex_long_double(json, constant->long_double));
+            REQUIRE_OK(kefir_json_output_hex_long_double(json, constant->large->long_double));
             break;
 
         case KEFIR_CONSTANT_TOKEN_DECIMAL32: {
@@ -751,7 +751,7 @@ static kefir_result_t format_constant(struct kefir_json_output *json, const stru
             REQUIRE_OK(kefir_json_output_object_key(json, "value"));
             char buf[128] = {0};
             REQUIRE_OK(kefir_dfp_require_supported(NULL));
-            kefir_dfp_decimal128_format(buf, sizeof(buf), constant->decimal128);
+            kefir_dfp_decimal128_format(buf, sizeof(buf), constant->large->decimal128);
             REQUIRE_OK(kefir_json_output_string(json, buf));
         } break;
 
@@ -760,7 +760,7 @@ static kefir_result_t format_constant(struct kefir_json_output *json, const stru
             REQUIRE_OK(kefir_json_output_object_key(json, "value"));
             char buf[128] = {0};
             REQUIRE_OK(kefir_dfp_require_supported(NULL));
-            kefir_dfp_decimal128_format(buf, sizeof(buf), constant->decimal128);
+            kefir_dfp_decimal128_format(buf, sizeof(buf), constant->large->decimal128);
             REQUIRE_OK(kefir_json_output_string(json, buf));
         } break;
 
@@ -783,49 +783,49 @@ static kefir_result_t format_constant(struct kefir_json_output *json, const stru
         case KEFIR_CONSTANT_TOKEN_COMPLEX_DOUBLE:
             REQUIRE_OK(kefir_json_output_string(json, "complex_double"));
             REQUIRE_OK(kefir_json_output_object_key(json, "real_value"));
-            REQUIRE_OK(kefir_json_output_hexfloat(json, constant->complex_float64.real));
+            REQUIRE_OK(kefir_json_output_hexfloat(json, constant->large->complex_float64.real));
             REQUIRE_OK(kefir_json_output_object_key(json, "imaginary_value"));
-            REQUIRE_OK(kefir_json_output_hexfloat(json, constant->complex_float64.imaginary));
+            REQUIRE_OK(kefir_json_output_hexfloat(json, constant->large->complex_float64.imaginary));
             break;
 
         case KEFIR_CONSTANT_TOKEN_COMPLEX_FLOAT32X:
             REQUIRE_OK(kefir_json_output_string(json, "complex_float32x"));
             REQUIRE_OK(kefir_json_output_object_key(json, "real_value"));
-            REQUIRE_OK(kefir_json_output_hexfloat(json, constant->complex_float64.real));
+            REQUIRE_OK(kefir_json_output_hexfloat(json, constant->large->complex_float64.real));
             REQUIRE_OK(kefir_json_output_object_key(json, "imaginary_value"));
-            REQUIRE_OK(kefir_json_output_hexfloat(json, constant->complex_float64.imaginary));
+            REQUIRE_OK(kefir_json_output_hexfloat(json, constant->large->complex_float64.imaginary));
             break;
 
         case KEFIR_CONSTANT_TOKEN_COMPLEX_FLOAT64:
             REQUIRE_OK(kefir_json_output_string(json, "complex_float64"));
             REQUIRE_OK(kefir_json_output_object_key(json, "real_value"));
-            REQUIRE_OK(kefir_json_output_hexfloat(json, constant->complex_float64.real));
+            REQUIRE_OK(kefir_json_output_hexfloat(json, constant->large->complex_float64.real));
             REQUIRE_OK(kefir_json_output_object_key(json, "imaginary_value"));
-            REQUIRE_OK(kefir_json_output_hexfloat(json, constant->complex_float64.imaginary));
+            REQUIRE_OK(kefir_json_output_hexfloat(json, constant->large->complex_float64.imaginary));
             break;
 
         case KEFIR_CONSTANT_TOKEN_COMPLEX_LONG_DOUBLE:
             REQUIRE_OK(kefir_json_output_string(json, "complex_double"));
             REQUIRE_OK(kefir_json_output_object_key(json, "real_value"));
-            REQUIRE_OK(kefir_json_output_hex_long_double(json, constant->complex_long_double.real));
+            REQUIRE_OK(kefir_json_output_hex_long_double(json, constant->large->complex_long_double.real));
             REQUIRE_OK(kefir_json_output_object_key(json, "imaginary_value"));
-            REQUIRE_OK(kefir_json_output_hex_long_double(json, constant->complex_long_double.imaginary));
+            REQUIRE_OK(kefir_json_output_hex_long_double(json, constant->large->complex_long_double.imaginary));
             break;
 
         case KEFIR_CONSTANT_TOKEN_COMPLEX_FLOAT64X:
             REQUIRE_OK(kefir_json_output_string(json, "complex_float64x"));
             REQUIRE_OK(kefir_json_output_object_key(json, "real_value"));
-            REQUIRE_OK(kefir_json_output_hex_long_double(json, constant->complex_long_double.real));
+            REQUIRE_OK(kefir_json_output_hex_long_double(json, constant->large->complex_long_double.real));
             REQUIRE_OK(kefir_json_output_object_key(json, "imaginary_value"));
-            REQUIRE_OK(kefir_json_output_hex_long_double(json, constant->complex_long_double.imaginary));
+            REQUIRE_OK(kefir_json_output_hex_long_double(json, constant->large->complex_long_double.imaginary));
             break;
 
         case KEFIR_CONSTANT_TOKEN_COMPLEX_FLOAT80:
             REQUIRE_OK(kefir_json_output_string(json, "complex_float80"));
             REQUIRE_OK(kefir_json_output_object_key(json, "real_value"));
-            REQUIRE_OK(kefir_json_output_hex_long_double(json, constant->complex_long_double.real));
+            REQUIRE_OK(kefir_json_output_hex_long_double(json, constant->large->complex_long_double.real));
             REQUIRE_OK(kefir_json_output_object_key(json, "imaginary_value"));
-            REQUIRE_OK(kefir_json_output_hex_long_double(json, constant->complex_long_double.imaginary));
+            REQUIRE_OK(kefir_json_output_hex_long_double(json, constant->large->complex_long_double.imaginary));
             break;
 
         case KEFIR_CONSTANT_TOKEN_CHAR:
@@ -1006,7 +1006,7 @@ kefir_result_t kefir_token_format(struct kefir_json_output *json, const struct k
             REQUIRE_OK(kefir_json_output_string(json, "constant"));
             REQUIRE_OK(kefir_json_output_object_key(json, "preprocessor"));
             REQUIRE_OK(kefir_json_output_boolean(json, false));
-            REQUIRE_OK(format_constant(json, token->constant));
+            REQUIRE_OK(format_constant(json, &token->constant));
             break;
 
         case KEFIR_TOKEN_PP_WHITESPACE:
