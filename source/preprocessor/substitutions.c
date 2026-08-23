@@ -432,8 +432,15 @@ static kefir_bool_t substitution_continue_running(const struct kefir_token_buffe
         return true;
     }
 
-    const struct kefir_token *token = kefir_token_buffer_at(buffer, buf_length - 1);
-    return token != NULL && (token->klass == KEFIR_TOKEN_STRING_LITERAL || token->klass == KEFIR_TOKEN_PP_WHITESPACE);
+    for (kefir_size_t i = 0; i < MIN(buf_length, 16); i++) {
+        const struct kefir_token *token = kefir_token_buffer_at(buffer, buf_length - i - 1);
+        if (token != NULL && token->klass == KEFIR_TOKEN_STRING_LITERAL) {
+            break;
+        } else if (token != NULL && token->klass != KEFIR_TOKEN_PP_WHITESPACE) {
+            return false;
+        }
+    }
+    return true;
 }
 
 static kefir_result_t run_substitutions(struct kefir_mem *mem, struct kefir_preprocessor *preprocessor,
