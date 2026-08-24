@@ -38,7 +38,7 @@ kefir_result_t kefir_ast_translate_labeled_statement_node(struct kefir_mem *mem,
         mem, context, builder, node->base.properties.statement_props.flow_control_statement));
 
     if (node->base.properties.statement_props.scoped_id->label.public_label != NULL) {
-        REQUIRE_OK(kefir_irblock_add_public_label(mem, builder->block, context->ast_context->symbols,
+        REQUIRE_OK(kefir_irblock_add_public_label(mem, builder->block, &context->module->symbols,
                                                   node->base.properties.statement_props.scoped_id->label.public_label,
                                                   KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder)));
     }
