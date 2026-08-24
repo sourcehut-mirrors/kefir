@@ -119,7 +119,7 @@ static kefir_result_t match_suffix(struct kefir_lexer_source_cursor *cursor, enu
     kefir_lexer_char_t chr = kefir_lexer_source_cursor_at(cursor, 0);
     *constant_type = DOUBLE_CONSTANT;
     *imaginary = false;
-    if (chr == 'i' || chr == 'I') {
+    if (chr == 'i' || chr == 'I' || chr == 'j' || chr == 'J') {
         *imaginary = true;
         REQUIRE_OK(kefir_lexer_source_cursor_next(cursor, 1));
         chr = kefir_lexer_source_cursor_at(cursor, 0);
@@ -196,7 +196,7 @@ static kefir_result_t match_suffix(struct kefir_lexer_source_cursor *cursor, enu
     }
 
     chr = kefir_lexer_source_cursor_at(cursor, 0);
-    if (chr == 'i' || chr == 'I') {
+    if (chr == 'i' || chr == 'I' || chr == 'j' || chr == 'J') {
         REQUIRE(!*imaginary,
                 KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, &cursor->location, "Duplicate imaginary suffix"));
         *imaginary = true;
