@@ -54,6 +54,8 @@ typedef struct kefir_ast_global_context {
     struct kefir_hashset analyzed_types;
     kefir_uint64_t encountered_errors;
 
+    struct kefir_memory_arena memory_arena;
+
     struct {
         kefir_id_t next_id;
     } temporary_ids;

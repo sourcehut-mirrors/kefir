@@ -22,6 +22,7 @@
 #define KEFIR_AST_CONTEXT_H_
 
 #include "kefir/core/mem.h"
+#include "kefir/core/memory_arena.h"
 #include "kefir/core/standard_version.h"
 #include "kefir/ast/base.h"
 #include "kefir/ast/scope.h"
@@ -156,6 +157,7 @@ typedef struct kefir_ast_context {
     const struct kefir_ast_scoped_identifier *surrounding_function;
     const char *surrounding_function_name;
     const struct kefir_ast_context_configuration *configuration;
+    struct kefir_memory_arena *memory_arena;
 
     kefir_id_t context_id;
 

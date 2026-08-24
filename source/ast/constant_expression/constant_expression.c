@@ -349,7 +349,7 @@ static kefir_result_t is_initializer_statically_known(const struct kefir_ast_ini
                                                       kefir_bool_t *is_statically_known) {
     if (initializer->type == KEFIR_AST_INITIALIZER_EXPRESSION) {
         REQUIRE_OK(kefir_ast_constant_expression_is_statically_known(
-            &initializer->expression->properties.expression_props.constant_expression_value, is_statically_known));
+            KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(initializer->expression), is_statically_known));
     } else {
         *is_statically_known = true;
         for (kefir_size_t i = 0; i < initializer->list.entries_length && *is_statically_known; i++) {

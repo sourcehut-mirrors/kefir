@@ -27,6 +27,7 @@
 #include <stdint.h>
 #include <wchar.h>
 #include <limits.h>
+#include <stddef.h>
 #include "kefir/core/base.h"
 #include "kefir/util/uchar.h"
 
@@ -119,6 +120,7 @@ typedef float kefir_float32_t;
 typedef double kefir_float64_t;
 typedef long double kefir_long_double_t;
 typedef kefir_uint32_t kefir_id_t;
+typedef max_align_t kefir_max_align_t;
 
 #define KEFIR_ID_FMT KEFIR_UINT32_FMT
 #define KEFIR_ID_NONE (~(kefir_id_t) 0ull)

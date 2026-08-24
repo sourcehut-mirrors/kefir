@@ -563,6 +563,7 @@ kefir_result_t kefir_ast_global_context_init(struct kefir_mem *mem, const struct
     REQUIRE_OK(kefir_hashtree_on_removal(&context->owned_objects, free_owned_object, NULL));
     REQUIRE_OK(kefir_ast_context_type_cache_init(&context->cache, &context->context));
     REQUIRE_OK(kefir_hashset_init(&context->analyzed_types, &kefir_hashtable_uint_ops));
+    REQUIRE_OK(kefir_memory_arena_init(mem, &context->memory_arena));
 
     REQUIRE_OK(kefir_ast_pragma_state_init(&context->pragmas));
 
@@ -601,6 +602,7 @@ kefir_result_t kefir_ast_global_context_init(struct kefir_mem *mem, const struct
     context->context.context_id = context->next_context_id++;
     context->encountered_errors = 0;
     context->context.configuration = &context->configuration;
+    context->context.memory_arena = &context->memory_arena;
     context->context.payload = context;
 
     context->context.extensions = extensions;
@@ -634,6 +636,7 @@ kefir_result_t kefir_ast_global_context_free(struct kefir_mem *mem, struct kefir
     REQUIRE_OK(kefir_bigint_pool_free(mem, &context->bigint_pool));
     REQUIRE_OK(kefir_ast_type_bundle_free(mem, &context->type_bundle));
     REQUIRE_OK(kefir_string_pool_free(mem, &context->symbols));
+    REQUIRE_OK(kefir_memory_arena_free(&context->memory_arena));
     return KEFIR_OK;
 }
 

@@ -187,12 +187,12 @@ kefir_result_t kefir_ast_evaluate_builtin_node(struct kefir_mem *mem, const stru
                 REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION(expr1_node),
                         KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &expr1_node->source_location,
                                                "Unable to evaluate constant expression"));
-                *value = expr1_node->properties.expression_props.constant_expression_value;
+                *value = *KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(expr1_node);
             } else {
                 REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION(expr2_node),
                         KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &expr2_node->source_location,
                                                "Unable to evaluate constant expression"));
-                *value = expr2_node->properties.expression_props.constant_expression_value;
+                *value = *KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(expr2_node);
             }
         } break;
 

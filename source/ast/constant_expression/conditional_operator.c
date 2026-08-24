@@ -48,15 +48,15 @@ kefir_result_t kefir_ast_evaluate_conditional_operator_node(struct kefir_mem *me
             REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION(node->expr1),
                     KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->expr1->source_location,
                                            "Unable to evaluate constant expression"));
-            *value = node->expr1->properties.expression_props.constant_expression_value;
+            *value = *KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->expr1);
         } else {
-            *value = node->condition->properties.expression_props.constant_expression_value;
+            *value = *KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->condition);
         }
     } else {
         REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION(node->expr2),
                 KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->expr2->source_location,
                                        "Unable to evaluate constant expression"));
-        *value = node->expr2->properties.expression_props.constant_expression_value;
+        *value = *KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->expr2);
     }
     return KEFIR_OK;
 }

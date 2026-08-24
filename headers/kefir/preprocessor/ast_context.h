@@ -30,6 +30,7 @@ typedef struct kefir_preprocessor_ast_context {
     struct kefir_bigint_pool bigint_pool;
     struct kefir_ast_pragma_state pragma_state;
     struct kefir_ast_context_configuration configuration;
+    struct kefir_memory_arena memory_arena;
 } kefir_preprocessor_ast_context_t;
 
 kefir_result_t kefir_preprocessor_ast_context_init(struct kefir_mem *, struct kefir_preprocessor_ast_context *,

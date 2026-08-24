@@ -47,9 +47,9 @@ typedef struct kefir_ast_node_properties {
         struct {
             kefir_bool_t lvalue;
             kefir_bool_t constant_expression;
-            struct kefir_ast_constant_expression_value constant_expression_value;
             kefir_bool_t addressable;
             kefir_bool_t atomic;
+            struct kefir_ast_constant_expression_value *constant_expression_value;
             struct kefir_ast_bitfield_properties bitfield_props;
             const char *identifier;
             struct {
@@ -150,9 +150,9 @@ kefir_result_t kefir_ast_node_properties_clone(struct kefir_ast_node_properties 
      (_node)->properties.expression_props.constant_expression)
 #define KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(_node, _klass) \
     (KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION((_node)) &&          \
-     (_node)->properties.expression_props.constant_expression_value.klass == (_klass))
+     (_node)->properties.expression_props.constant_expression_value->klass == (_klass))
 #define KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(_node)                                                               \
-    (KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION((_node)) ? &(_node)->properties.expression_props.constant_expression_value \
+    (KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION((_node)) ? (_node)->properties.expression_props.constant_expression_value \
                                                     : NULL)
 
 #endif

@@ -536,6 +536,7 @@ kefir_result_t kefir_ast_function_declaration_context_init(struct kefir_mem *mem
     context->context.function_decl_contexts = parent->function_decl_contexts;
     context->context.context_id = parent->global_context->next_context_id++;
     context->context.configuration = parent->configuration;
+    context->context.memory_arena = parent->memory_arena;
     context->context.payload = context;
 
     context->context.extensions = parent->extensions;

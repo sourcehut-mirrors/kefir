@@ -1,0 +1,94 @@
+/*
+    SPDX-License-Identifier: GPL-3.0
+
+    Copyright (C) 2020-2026  Jevgenijs Protopopovs
+
+    This file is part of Kefir project.
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, version 3.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+#include "kefir/core/memory_arena.h"
+#include "kefir/core/error.h"
+#include "kefir/core/util.h"
+#include <string.h>
+
+#define CHUNK_CAPACITY 4096
+
+kefir_result_t kefir_memory_arena_init(struct kefir_mem *mem, struct kefir_memory_arena *arena) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(arena != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to memory arena"));
+
+    arena->mem = mem;
+    arena->chunk = NULL;
+    arena->special_chunk = NULL;
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_memory_arena_free(struct kefir_memory_arena *arena) {
+    REQUIRE(arena != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory arena"));
+
+    for (struct kefir_memory_arena_chunk *chunk = arena->chunk; chunk != NULL;) {
+        struct kefir_memory_arena_chunk *prev = chunk->prev;
+        KEFIR_FREE(arena->mem, chunk);
+        chunk = prev;
+    }
+
+    for (struct kefir_memory_arena_chunk *chunk = arena->special_chunk; chunk != NULL;) {
+        struct kefir_memory_arena_chunk *prev = chunk->prev;
+        KEFIR_FREE(arena->mem, chunk);
+        chunk = prev;
+    }
+
+    memset(arena, 0, sizeof(struct kefir_memory_arena));
+    return KEFIR_OK;
+}
+
+void *kefir_memory_arena_alloc(struct kefir_memory_arena *arena, kefir_size_t size, kefir_size_t alignment) {
+    REQUIRE(arena != NULL, NULL);
+
+    alignment = MAX(alignment, 1);
+    if (size > CHUNK_CAPACITY) {
+        struct kefir_memory_arena_chunk *chunk = KEFIR_MALLOC(arena->mem, sizeof(struct kefir_memory_arena_chunk) + size);
+        REQUIRE(chunk != NULL, NULL);
+
+        chunk->prev = arena->special_chunk;
+        chunk->top = size;
+        arena->special_chunk = chunk;
+        return chunk->chunk;
+    }
+
+    if (arena->chunk == NULL) {
+        struct kefir_memory_arena_chunk *chunk = KEFIR_MALLOC(arena->mem, sizeof(struct kefir_memory_arena_chunk) + CHUNK_CAPACITY);
+        REQUIRE(chunk != NULL, NULL);
+
+        chunk->prev = arena->chunk;
+        chunk->top = 0;
+        arena->chunk = chunk;
+    }
+
+    kefir_size_t begin = (arena->chunk->top + alignment - 1) / alignment * alignment;
+    kefir_size_t end = begin + size;
+    if (end > CHUNK_CAPACITY) {
+        struct kefir_memory_arena_chunk *chunk = KEFIR_MALLOC(arena->mem, sizeof(struct kefir_memory_arena_chunk) + CHUNK_CAPACITY);
+        REQUIRE(chunk != NULL, NULL);
+
+        chunk->prev = arena->chunk;
+        chunk->top = size;
+        arena->chunk = chunk;
+        return chunk->chunk;
+    }
+
+    arena->chunk->top = end;
+    return &arena->chunk->chunk[begin];
+}

@@ -260,6 +260,7 @@ kefir_result_t kefir_preprocessor_ast_context_init(struct kefir_mem *mem,
     REQUIRE_OK(kefir_ast_context_configuration_defaults(&context->configuration));
     REQUIRE_OK(kefir_ast_context_type_cache_init(&context->cache, &context->context));
     REQUIRE_OK(kefir_ast_pragma_state_init(&context->pragma_state));
+    REQUIRE_OK(kefir_memory_arena_init(mem, &context->memory_arena));
     context->context.type_bundle = &context->type_bundle;
     context->context.cache = &context->cache;
     context->context.bigint_pool = &context->bigint_pool;
@@ -272,6 +273,7 @@ kefir_result_t kefir_preprocessor_ast_context_init(struct kefir_mem *mem,
     context->context.surrounding_function_name = NULL;
     context->context.context_id = 0;
     context->context.configuration = &context->configuration;
+    context->context.memory_arena = &context->memory_arena;
     context->context.payload = context;
 
     context->context.extensions = extensions;
@@ -296,6 +298,7 @@ kefir_result_t kefir_preprocessor_ast_context_free(struct kefir_mem *mem,
     REQUIRE_OK(kefir_ast_context_type_cache_free(mem, &context->cache));
     REQUIRE_OK(kefir_bigint_pool_free(mem, &context->bigint_pool));
     REQUIRE_OK(kefir_ast_type_bundle_free(mem, &context->type_bundle));
+    REQUIRE_OK(kefir_memory_arena_free(&context->memory_arena));
     *context = (struct kefir_preprocessor_ast_context) {0};
     return KEFIR_OK;
 }
