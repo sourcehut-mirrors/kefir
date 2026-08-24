@@ -25,7 +25,7 @@
                             {
                                 "id": 353,
                                 "opcode": "get_global",
-                                "global_ref": 1,
+                                "global_ref": 0,
                                 "control_next": null
                             },
                             {

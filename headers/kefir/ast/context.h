@@ -49,6 +49,7 @@ typedef enum kefir_ast_context_tentative_definition_placement {
 
 typedef struct kefir_ast_context_configuration {
     kefir_c_language_standard_version_t standard_version;
+    kefir_bool_t debug_info;
     struct {
         kefir_bool_t permissive_pointer_conv;
         kefir_bool_t non_strict_qualifiers;

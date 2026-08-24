@@ -1161,6 +1161,7 @@ static kefir_result_t inline_debug_entries(struct do_inline_param *param) {
     kefir_ir_debug_entry_id_t child_entry_id;
     const kefir_size_t ir_mapping_base = param->dst_function->debug_info_mapping.ir_code_length;
     ASSIGN_DECL_CAST(struct kefir_ir_debug_entries *, entries, &param->module->ir_module->debug_info.entries);
+    REQUIRE(entries->enable, KEFIR_OK);
 
     kefir_ir_debug_entry_id_t inlined_function_lexical_block_id;
     REQUIRE_OK(kefir_ir_debug_entry_new_child(param->mem, entries,

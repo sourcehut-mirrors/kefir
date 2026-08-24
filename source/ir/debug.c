@@ -53,6 +53,7 @@ kefir_result_t kefir_ir_debug_entries_init(struct kefir_ir_debug_entries *entrie
     REQUIRE_OK(kefir_hashtree_init(&entries->entries, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtree_on_removal(&entries->entries, free_root_debug_entry, NULL));
     entries->next_entry_id = 0;
+    entries->enable = true;
     return KEFIR_OK;
 }
 
@@ -151,6 +152,11 @@ kefir_result_t kefir_ir_debug_entry_new(struct kefir_mem *mem, struct kefir_ir_d
     REQUIRE(entry_id_ptr != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer tp IR debug entry identifier"));
 
+    if (!entries->enable) {
+        *entry_id_ptr = KEFIR_IR_DEBUG_ENTRY_ID_NONE;
+        return KEFIR_OK;
+    }
+
     struct kefir_ir_debug_entry *entry = KEFIR_MALLOC(mem, sizeof(struct kefir_ir_debug_entry));
     REQUIRE(entry != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate IR debug entry"));
 
@@ -181,6 +187,11 @@ kefir_result_t kefir_ir_debug_entry_new_child(struct kefir_mem *mem, struct kefi
     REQUIRE(entries != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR debug entries"));
     REQUIRE(entry_id_ptr != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer tp IR debug entry identifier"));
+
+    if (!entries->enable) {
+        *entry_id_ptr = KEFIR_IR_DEBUG_ENTRY_ID_NONE;
+        return KEFIR_OK;
+    }
 
     struct kefir_ir_debug_entry *parent_entry;
     REQUIRE_OK(debug_entry_get(entries, parent_entry_id, &parent_entry));
@@ -220,6 +231,8 @@ kefir_result_t kefir_ir_debug_entry_add_attribute(struct kefir_mem *mem, struct 
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(entries != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR debug entries"));
     REQUIRE(attribute != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR debug entry attribute"));
+
+    REQUIRE(entries->enable, KEFIR_OK);
 
     struct kefir_ir_debug_entry *entry;
     REQUIRE_OK(debug_entry_get(entries, entry_id, &entry));

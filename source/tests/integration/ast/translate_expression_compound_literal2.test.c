@@ -43,7 +43,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     const struct kefir_ast_context *context = &local_context.context;
 
     struct kefir_ir_module module;
-    REQUIRE_OK(kefir_ir_module_alloc(mem, &module));
+    REQUIRE_OK(kefir_ir_module_alloc(mem, &module, false));
 
     struct kefir_ast_type_name *type_name1 =
         kefir_ast_new_type_name(mem, kefir_ast_declarator_array(mem, KEFIR_AST_DECLARATOR_ARRAY_UNBOUNDED, NULL,

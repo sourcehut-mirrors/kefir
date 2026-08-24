@@ -1035,6 +1035,7 @@ kefir_result_t kefir_ast_translator_generate_object_scope_debug_information(
     kefir_ir_debug_entry_id_t parent_entry_id, kefir_size_t lifetime_begin, kefir_size_t lifetime_end) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST context"));
+    REQUIRE(context->configuration->debug_info, KEFIR_OK);
     REQUIRE(translator_env != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST translator environment"));
     REQUIRE(module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR module"));

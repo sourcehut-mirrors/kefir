@@ -62,7 +62,8 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     REQUIRE_OK(kefir_ast_analyze_node(mem, context, KEFIR_AST_NODE_BASE(compound1)));
 
     struct kefir_ir_module module;
-    REQUIRE_OK(kefir_ir_module_alloc(mem, &module));
+    REQUIRE_OK(kefir_ir_module_alloc(mem, &module, false));
+    module.debug_info.entries.enable = false;
 
     struct kefir_ast_translator_global_scope_layout translator_global_scope;
     struct kefir_ast_translator_local_scope_layout translator_local_scope;

@@ -116,7 +116,7 @@ static kefir_result_t destroy_bigint(struct kefir_mem *mem, struct kefir_hashtab
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_ir_module_alloc(struct kefir_mem *mem, struct kefir_ir_module *module) {
+kefir_result_t kefir_ir_module_alloc(struct kefir_mem *mem, struct kefir_ir_module *module, kefir_bool_t debug_info) {
     UNUSED(mem);
     REQUIRE(module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR module pointer"));
     REQUIRE_OK(kefir_string_pool_init(&module->symbols));
@@ -144,6 +144,7 @@ kefir_result_t kefir_ir_module_alloc(struct kefir_mem *mem, struct kefir_ir_modu
     module->next_function_decl_id = 0;
     module->next_inline_assembly_id = 0;
     module->next_bigint_id = 0;
+    module->debug_info.entries.enable = debug_info;
     return KEFIR_OK;
 }
 

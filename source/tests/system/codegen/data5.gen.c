@@ -39,7 +39,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     codegen.config = &codegen_config;
 
     struct kefir_ir_module module;
-    REQUIRE_OK(kefir_ir_module_alloc(mem, &module));
+    REQUIRE_OK(kefir_ir_module_alloc(mem, &module, false));
 
     kefir_id_t int8type_id;
     struct kefir_ir_type *int8type = kefir_ir_module_new_type(mem, &module, 1, &int8type_id);

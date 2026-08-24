@@ -17,6 +17,7 @@ kefir_result_t kefir_ast_context_configuration_defaults(struct kefir_ast_context
                      .symbol_visibility = KEFIR_AST_DECLARATOR_VISIBILITY_UNSET,
                      .max_errors = (kefir_uint32_t) -1},
         .standard_version = KEFIR_DEFAULT_STANDARD_VERSION,
+        .debug_info = false,
         .warning_output = stderr};
     return KEFIR_OK;
 }

@@ -33,7 +33,7 @@
 
 kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     struct kefir_ir_module module;
-    REQUIRE_OK(kefir_ir_module_alloc(mem, &module));
+    REQUIRE_OK(kefir_ir_module_alloc(mem, &module, false));
     kefir_id_t func_params, func_returns;
     struct kefir_ir_type *decl_params = kefir_ir_module_new_type(mem, &module, 0, &func_params),
                          *decl_result = kefir_ir_module_new_type(mem, &module, 1, &func_returns);

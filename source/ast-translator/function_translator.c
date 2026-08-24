@@ -251,7 +251,9 @@ kefir_result_t kefir_ast_translator_function_context_init(struct kefir_mem *mem,
              KEFIR_AST_PRAGMA_VALUE_DEFAULT &&
          context->environment->configuration->cx_limited_range);
 
-    ctx->local_translator_context.function_debug_info = &ctx->ir_func->debug_info;
+    if (ctx->local_context->context.configuration->debug_info) {
+        ctx->local_translator_context.function_debug_info = &ctx->ir_func->debug_info;
+    }
 
     return KEFIR_OK;
 }

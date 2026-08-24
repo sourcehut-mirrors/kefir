@@ -31,7 +31,7 @@
 kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     struct kefir_test_codegen codegen;
     struct kefir_ir_module module;
-    REQUIRE_OK(kefir_ir_module_alloc(mem, &module));
+    REQUIRE_OK(kefir_ir_module_alloc(mem, &module, false));
 
     kefir_id_t func_params, func_returns;
     struct kefir_ir_type *proxysum_decl_params = kefir_ir_module_new_type(mem, &module, 8, &func_params),

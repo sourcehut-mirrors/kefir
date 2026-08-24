@@ -96,7 +96,7 @@ typedef struct kefir_ir_module {
     struct kefir_ir_module_debug_info debug_info;
 } kefir_ir_module_t;
 
-kefir_result_t kefir_ir_module_alloc(struct kefir_mem *, struct kefir_ir_module *);
+kefir_result_t kefir_ir_module_alloc(struct kefir_mem *, struct kefir_ir_module *, kefir_bool_t);
 
 kefir_result_t kefir_ir_module_free(struct kefir_mem *, struct kefir_ir_module *);
 

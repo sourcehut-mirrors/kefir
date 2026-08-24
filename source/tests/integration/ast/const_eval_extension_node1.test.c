@@ -59,7 +59,7 @@ static kefir_result_t evaluate_extension_node(struct kefir_mem *mem, const struc
 
 kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     struct kefir_ir_module module;
-    REQUIRE_OK(kefir_ir_module_alloc(mem, &module));
+    REQUIRE_OK(kefir_ir_module_alloc(mem, &module, false));
     struct kefir_ast_translator_environment env;
     REQUIRE_OK(kefir_ast_translator_environment_init(&env, kft_util_get_ir_target_platform()));
 

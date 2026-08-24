@@ -132,6 +132,7 @@ typedef struct kefir_ir_debug_entry {
 } kefir_ir_debug_entry_t;
 
 typedef struct kefir_ir_debug_entries {
+    kefir_bool_t enable;
     struct kefir_hashtree entries;
     kefir_ir_debug_entry_id_t next_entry_id;
 } kefir_ir_debug_entries_t;
@@ -209,6 +210,7 @@ typedef struct kefir_ir_debug_function_source_map_iterator {
     struct kefir_interval_tree_iterator iter;
     struct kefir_ir_debug_source_location *source_location;
 } kefir_ir_debug_function_source_map_iterator_t;
+
 typedef struct kefir_ir_function_debug_info {
     struct kefir_ir_debug_function_source_map source_map;
     struct kefir_source_location source_location;

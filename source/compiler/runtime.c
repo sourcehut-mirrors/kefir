@@ -87,7 +87,7 @@ static kefir_result_t generate_runtime_functions_impl(struct kefir_mem *mem, FIL
 
     res = kefir_token_buffer_free(mem, &buffer);
     REQUIRE_CHAIN(&res, kefir_compiler_analyze(mem, context, KEFIR_AST_NODE_BASE(defs_unit)));
-    REQUIRE_CHAIN(&res, kefir_ir_module_alloc(mem, &ir_module));
+    REQUIRE_CHAIN(&res, kefir_ir_module_alloc(mem, &ir_module, false));
     REQUIRE_ELSE(res == KEFIR_OK, {
         KEFIR_AST_NODE_FREE(mem, KEFIR_AST_NODE_BASE(defs_unit));
         return res;
@@ -144,6 +144,7 @@ static kefir_result_t generate_runtime_functions(struct kefir_mem *mem, FILE *ou
     REQUIRE_OK(kefir_compiler_context_load_predefined_defs(mem, &context));
 
     context.parser_configuration.statement_expressions = true;
+    context.ast_global_context.configuration.debug_info = false;
     context.codegen_configuration = hooks->compiler_context->codegen_configuration;
     context.codegen_configuration.debug_info = false;
     context.codegen_configuration.runtime_function_generator_mode = true;

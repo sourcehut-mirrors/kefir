@@ -128,6 +128,11 @@ kefir_result_t kefir_ast_translator_context_push_debug_hierarchy_entry(struct ke
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected a valid AST translator context"));
 
+    if (!context->ast_context->configuration->debug_info) {
+        ASSIGN_PTR(entry_id_ptr, KEFIR_IR_DEBUG_ENTRY_ID_NONE);
+        return KEFIR_OK;
+    }
+
     kefir_ir_debug_entry_id_t entry_id;
     if (context->debug_entry_hierarchy != KEFIR_IR_DEBUG_ENTRY_ID_NONE) {
         REQUIRE_OK(kefir_ir_debug_entry_new_child(mem, &context->module->debug_info.entries,
@@ -144,6 +149,7 @@ kefir_result_t kefir_ast_translator_context_pop_debug_hierarchy_entry(struct kef
                                                                       struct kefir_ast_translator_context *context) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected a valid AST translator context"));
+    REQUIRE(context->ast_context->configuration->debug_info, KEFIR_OK);
     REQUIRE(context->debug_entry_hierarchy != KEFIR_IR_DEBUG_ENTRY_ID_NONE,
             KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "AST translation context debug entry hierarchy is empty"));
 

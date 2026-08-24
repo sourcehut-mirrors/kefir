@@ -124,7 +124,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     REQUIRE_OK(kefir_abi_amd64_target_platform(KEFIR_ABI_AMD64_VARIANT_SYSTEM_V, &ir_target));
     REQUIRE_OK(kefir_test_codegen_init(mem, &codegen, stdout, NULL));
     struct kefir_ir_module module;
-    REQUIRE_OK(kefir_ir_module_alloc(mem, &module));
+    REQUIRE_OK(kefir_ir_module_alloc(mem, &module, false));
     REQUIRE_OK(generate_ir(mem, &module, &ir_target));
     KEFIR_TEST_UTIL_CODEGEN_TRANSLATE(mem, &codegen.iface, &module);
     REQUIRE_OK(kefir_ir_module_free(mem, &module));

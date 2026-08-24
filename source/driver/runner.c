@@ -264,6 +264,7 @@ static kefir_result_t dump_action_impl(struct kefir_mem *mem, const struct kefir
     compiler.ast_global_context.configuration.analysis.imprecise_decimal_bitint_conv =
         options->features.imprecise_decimal_bitint_conv;
     compiler.ast_global_context.configuration.analysis.max_errors = options->features.max_analyzer_errors;
+    compiler.ast_global_context.configuration.debug_info = options->debug_info;
 
     compiler.translator_configuration.empty_structs = options->features.empty_structs;
     compiler.translator_configuration.precise_bitfield_load_store = options->features.precise_bitfield_load_store;
@@ -716,7 +717,7 @@ static kefir_result_t dump_ir_impl(struct kefir_mem *mem, const struct kefir_com
     REQUIRE_OK(kefir_token_incremental_cursor_handle_free(&tokens_handle));
     REQUIRE_OK(kefir_token_allocator_free(mem, &token_allocator));
 
-    REQUIRE_OK(kefir_ir_module_alloc(mem, &module));
+    REQUIRE_OK(kefir_ir_module_alloc(mem, &module, options->debug_info));
     REQUIRE_OK(kefir_compiler_translate(mem, compiler, unit, &module, true, true));
 
     REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, KEFIR_AST_NODE_BASE(unit)));
@@ -762,7 +763,7 @@ static kefir_result_t dump_opt_impl(struct kefir_mem *mem, const struct kefir_co
     REQUIRE_OK(kefir_token_incremental_cursor_handle_free(&tokens_handle));
     REQUIRE_OK(kefir_token_allocator_free(mem, &token_allocator));
 
-    REQUIRE_OK(kefir_ir_module_alloc(mem, &module));
+    REQUIRE_OK(kefir_ir_module_alloc(mem, &module, options->debug_info));
     REQUIRE_OK(kefir_compiler_translate(mem, compiler, unit, &module, true, true));
 
     REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, KEFIR_AST_NODE_BASE(unit)));
@@ -820,7 +821,7 @@ static kefir_result_t dump_asm_impl(struct kefir_mem *mem, const struct kefir_co
     REQUIRE_OK(kefir_token_incremental_cursor_handle_free(&tokens_handle));
     REQUIRE_OK(kefir_token_allocator_free(mem, &token_allocator));
 
-    REQUIRE_OK(kefir_ir_module_alloc(mem, &module));
+    REQUIRE_OK(kefir_ir_module_alloc(mem, &module, options->debug_info));
     REQUIRE_OK(kefir_compiler_translate(mem, compiler, unit, &module, true, true));
 
     REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, KEFIR_AST_NODE_BASE(unit)));
