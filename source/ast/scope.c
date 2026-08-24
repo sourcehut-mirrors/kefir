@@ -55,6 +55,14 @@ kefir_result_t kefir_ast_identifier_flat_scope_free(struct kefir_mem *mem,
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_ast_identifier_flat_scope_reset(struct kefir_mem *mem,
+                                                    struct kefir_ast_identifier_flat_scope *scope) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(scope != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST identifier scope"));
+    REQUIRE_OK(kefir_hashtree_clean(mem, &scope->content));
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_ast_scoped_identifier_run_cleanup(struct kefir_mem *mem,
                                                        struct kefir_ast_scoped_identifier *scoped_id) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));

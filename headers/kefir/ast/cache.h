@@ -33,6 +33,7 @@ typedef struct kefir_ast_context_type_cache {
 kefir_result_t kefir_ast_context_type_cache_init(struct kefir_ast_context_type_cache *,
                                                  const struct kefir_ast_context *);
 kefir_result_t kefir_ast_context_type_cache_free(struct kefir_mem *, struct kefir_ast_context_type_cache *);
+kefir_result_t kefir_ast_context_type_cache_reset(struct kefir_mem *, struct kefir_ast_context_type_cache *);
 
 kefir_result_t kefir_ast_context_type_cache_get_type(struct kefir_mem *, struct kefir_ast_context_type_cache *,
                                                      const struct kefir_ast_type *,

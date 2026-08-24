@@ -54,6 +54,26 @@ kefir_result_t kefir_memory_arena_free(struct kefir_memory_arena *arena) {
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_memory_arena_reset(struct kefir_memory_arena *arena) {
+    REQUIRE(arena != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory arena"));
+
+    for (struct kefir_memory_arena_chunk *chunk = arena->chunk; chunk != NULL;) {
+        struct kefir_memory_arena_chunk *prev = chunk->prev;
+        KEFIR_FREE(arena->mem, chunk);
+        chunk = prev;
+    }
+
+    for (struct kefir_memory_arena_chunk *chunk = arena->special_chunk; chunk != NULL;) {
+        struct kefir_memory_arena_chunk *prev = chunk->prev;
+        KEFIR_FREE(arena->mem, chunk);
+        chunk = prev;
+    }
+
+    arena->chunk = NULL;
+    arena->special_chunk = NULL;
+    return KEFIR_OK;
+}
+
 void *kefir_memory_arena_alloc(struct kefir_memory_arena *arena, kefir_size_t size, kefir_size_t alignment) {
     REQUIRE(arena != NULL, NULL);
 

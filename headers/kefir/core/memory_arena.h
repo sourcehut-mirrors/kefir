@@ -37,6 +37,7 @@ typedef struct kefir_memory_arena {
 
 kefir_result_t kefir_memory_arena_init(struct kefir_mem *, struct kefir_memory_arena *);
 kefir_result_t kefir_memory_arena_free(struct kefir_memory_arena *);
+kefir_result_t kefir_memory_arena_reset(struct kefir_memory_arena *);
 
 void *kefir_memory_arena_alloc(struct kefir_memory_arena *, kefir_size_t, kefir_size_t);
 

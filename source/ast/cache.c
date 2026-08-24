@@ -57,6 +57,14 @@ kefir_result_t kefir_ast_context_type_cache_free(struct kefir_mem *mem, struct k
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_ast_context_type_cache_reset(struct kefir_mem *mem, struct kefir_ast_context_type_cache *cache) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(cache != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST context type cache"));
+
+    REQUIRE_OK(kefir_hashtree_clean(mem, &cache->types));
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_ast_context_type_cache_get_type(struct kefir_mem *mem, struct kefir_ast_context_type_cache *cache,
                                                      const struct kefir_ast_type *type,
                                                      kefir_ast_target_environment_opaque_type_t *opaque_type_ptr,

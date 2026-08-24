@@ -640,6 +640,33 @@ kefir_result_t kefir_ast_global_context_free(struct kefir_mem *mem, struct kefir
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_ast_global_context_reset(struct kefir_mem *mem, struct kefir_ast_global_context *context) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST translatation context"));
+
+    REQUIRE_OK(kefir_hashset_clear(mem, &context->analyzed_types));
+    REQUIRE_OK(kefir_ast_identifier_flat_scope_reset(mem, &context->tag_scope));
+    REQUIRE_OK(kefir_ast_identifier_flat_scope_reset(mem, &context->ordinary_scope));
+    REQUIRE_OK(kefir_ast_identifier_flat_scope_reset(mem, &context->constant_identifiers));
+    REQUIRE_OK(kefir_ast_identifier_flat_scope_reset(mem, &context->type_identifiers));
+    REQUIRE_OK(kefir_ast_identifier_flat_scope_reset(mem, &context->function_identifiers));
+    REQUIRE_OK(kefir_ast_identifier_flat_scope_reset(mem, &context->object_identifiers));
+    REQUIRE_OK(kefir_ast_context_type_cache_reset(mem, &context->cache));
+    REQUIRE_OK(kefir_hashtree_clean(mem, &context->owned_objects));
+    REQUIRE_OK(kefir_list_clear(mem, &context->function_decl_contexts));
+    REQUIRE_OK(kefir_bigint_pool_reset(mem, &context->bigint_pool));
+    REQUIRE_OK(kefir_ast_type_bundle_reset(mem, &context->type_bundle));
+    REQUIRE_OK(kefir_string_pool_reset(mem, &context->symbols));
+    REQUIRE_OK(kefir_memory_arena_reset(&context->memory_arena));
+    REQUIRE_OK(kefir_ast_pragma_state_init(&context->pragmas));
+
+    context->temporary_ids.next_id = 0;
+    context->next_context_id = 0;
+    context->context.context_id = context->next_context_id++;
+    context->encountered_errors = 0;
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_ast_global_context_resolve_scoped_ordinary_identifier(
     const struct kefir_ast_global_context *context, const char *identifier,
     const struct kefir_ast_scoped_identifier **scoped_id) {

@@ -103,6 +103,7 @@ kefir_bool_t kefir_ast_type_is_variably_modified(const struct kefir_ast_type *);
 
 kefir_result_t kefir_ast_type_bundle_init(struct kefir_ast_type_bundle *, struct kefir_string_pool *);
 kefir_result_t kefir_ast_type_bundle_free(struct kefir_mem *, struct kefir_ast_type_bundle *);
+kefir_result_t kefir_ast_type_bundle_reset(struct kefir_mem *, struct kefir_ast_type_bundle *);
 
 kefir_ast_function_specifier_t kefir_ast_context_merge_function_specifiers(kefir_ast_function_specifier_t,
                                                                            kefir_ast_function_specifier_t);

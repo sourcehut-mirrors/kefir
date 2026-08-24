@@ -1268,6 +1268,14 @@ kefir_result_t kefir_bigint_pool_free(struct kefir_mem *mem, struct kefir_bigint
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_bigint_pool_reset(struct kefir_mem *mem, struct kefir_bigint_pool *pool) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(pool != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid big integer pool"));
+
+    REQUIRE_OK(kefir_list_clear(mem, &pool->bigints));
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_bigint_pool_alloc(struct kefir_mem *mem, struct kefir_bigint_pool *pool,
                                        struct kefir_bigint **bigint_ptr) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));

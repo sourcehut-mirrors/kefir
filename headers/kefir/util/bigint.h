@@ -140,6 +140,7 @@ typedef struct kefir_bigint_pool {
 
 kefir_result_t kefir_bigint_pool_init(struct kefir_bigint_pool *);
 kefir_result_t kefir_bigint_pool_free(struct kefir_mem *, struct kefir_bigint_pool *);
+kefir_result_t kefir_bigint_pool_reset(struct kefir_mem *, struct kefir_bigint_pool *);
 
 kefir_result_t kefir_bigint_pool_alloc(struct kefir_mem *, struct kefir_bigint_pool *, struct kefir_bigint **);
 

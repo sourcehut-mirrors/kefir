@@ -720,6 +720,7 @@ static kefir_result_t dump_ir_impl(struct kefir_mem *mem, const struct kefir_com
     REQUIRE_OK(kefir_compiler_translate(mem, compiler, unit, &module, true, true));
 
     REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, KEFIR_AST_NODE_BASE(unit)));
+    REQUIRE_OK(kefir_ast_global_context_reset(mem, &compiler->ast_global_context));
 
     if (output != NULL) {
         REQUIRE_OK(kefir_ir_format_module(output, &module, options->debug_info));
@@ -765,6 +766,7 @@ static kefir_result_t dump_opt_impl(struct kefir_mem *mem, const struct kefir_co
     REQUIRE_OK(kefir_compiler_translate(mem, compiler, unit, &module, true, true));
 
     REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, KEFIR_AST_NODE_BASE(unit)));
+    REQUIRE_OK(kefir_ast_global_context_reset(mem, &compiler->ast_global_context));
 
     REQUIRE_OK(kefir_opt_module_init(mem, &module, &opt_module));
     REQUIRE_OK(kefir_compiler_optimize(mem, compiler, &module, &opt_module, true));
@@ -822,6 +824,7 @@ static kefir_result_t dump_asm_impl(struct kefir_mem *mem, const struct kefir_co
     REQUIRE_OK(kefir_compiler_translate(mem, compiler, unit, &module, true, true));
 
     REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, KEFIR_AST_NODE_BASE(unit)));
+    REQUIRE_OK(kefir_ast_global_context_reset(mem, &compiler->ast_global_context));
 
     REQUIRE_OK(kefir_opt_module_init(mem, &module, &opt_module));
     if (compiler->profile->optimizer_enabled) {

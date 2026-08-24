@@ -378,6 +378,13 @@ kefir_result_t kefir_ast_type_bundle_free(struct kefir_mem *mem, struct kefir_as
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_ast_type_bundle_reset(struct kefir_mem *mem, struct kefir_ast_type_bundle *type_bundle) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(type_bundle != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST type type_bundlesitory"));
+    REQUIRE_OK(kefir_list_clear(mem, &type_bundle->types));
+    return KEFIR_OK;
+}
+
 kefir_ast_function_specifier_t kefir_ast_context_merge_function_specifiers(kefir_ast_function_specifier_t s1,
                                                                            kefir_ast_function_specifier_t s2) {
     _Static_assert(KEFIR_AST_FUNCTION_SPECIFIER_NONE < 4,
