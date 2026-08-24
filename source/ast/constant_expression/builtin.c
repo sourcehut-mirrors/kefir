@@ -200,7 +200,7 @@ kefir_result_t kefir_ast_evaluate_builtin_node(struct kefir_mem *mem, const stru
             struct kefir_ast_node_base *arg = node->arguments[0];
 
             value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
-            if (!arg->properties.expression_props.constant_expression) {
+            if (!KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION(arg)) {
                 value->integer = 0;
             } else {
                 kefir_bool_t is_statically_known;
@@ -214,7 +214,7 @@ kefir_result_t kefir_ast_evaluate_builtin_node(struct kefir_mem *mem, const stru
             struct kefir_ast_node_base *arg = node->arguments[0];
 
             value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
-            if (!arg->properties.expression_props.constant_expression) {
+            if (!KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION(arg)) {
                 value->integer = 0;
             } else {
                 value->integer = 1;

@@ -257,7 +257,7 @@ static kefir_result_t translate_inputs(struct kefir_mem *mem, const struct kefir
                     KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert explicit register into string pool"));
         }
 
-        if (constraints.immediate && param->parameter->properties.expression_props.constant_expression) {
+        if (constraints.immediate && KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION(param->parameter)) {
             REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION(param->parameter),
                     KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &param->parameter->source_location,
                                            "Unable to evaluate constant expression"));

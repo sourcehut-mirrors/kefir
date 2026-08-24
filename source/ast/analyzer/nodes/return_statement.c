@@ -64,7 +64,7 @@ kefir_result_t kefir_ast_analyze_return_statement_node(struct kefir_mem *mem, co
         kefir_result_t res;
         REQUIRE_MATCH_OK(&res,
                          kefir_ast_type_assignable(mem, context, value_type,
-                                                   node->expression->properties.expression_props.constant_expression,
+                                                   KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION(node->expression),
                                                    function_return_type),
                          KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->base.source_location,
                                                 "Returned value shall be assignable to the function return type"));

@@ -35,7 +35,7 @@ static kefir_result_t preanalyze_initializer(struct kefir_mem *mem, const struct
                                              struct kefir_ast_initializer_properties *properties) {
     if (initializer->type == KEFIR_AST_INITIALIZER_EXPRESSION) {
         REQUIRE_OK(kefir_ast_analyze_node(mem, context, initializer->expression));
-        if (properties != NULL && !initializer->expression->properties.expression_props.constant_expression) {
+        if (properties != NULL && !KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION(initializer->expression)) {
             struct kefir_ast_compound_literal *compound_literal;
             kefir_result_t res = kefir_ast_downcast_compound_literal(initializer->expression, &compound_literal, false);
             if (res != KEFIR_NO_MATCH) {

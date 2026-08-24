@@ -228,7 +228,7 @@ kefir_result_t kefir_ast_analyze_builtin_node(struct kefir_mem *mem, const struc
             struct kefir_ast_node_base *cond_node = node->arguments[0];
             REQUIRE_OK(kefir_ast_analyze_node(mem, context, cond_node));
             REQUIRE(cond_node->properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION &&
-                        cond_node->properties.expression_props.constant_expression,
+                        KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION(cond_node),
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &cond_node->source_location,
                                            "Expected a constant expression"));
 

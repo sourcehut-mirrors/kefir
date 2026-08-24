@@ -46,7 +46,6 @@ typedef struct kefir_ast_node_properties {
     union {
         struct {
             kefir_bool_t lvalue;
-            kefir_bool_t constant_expression;
             kefir_bool_t addressable;
             kefir_bool_t atomic;
             struct kefir_ast_constant_expression_value *constant_expression_value;
@@ -147,7 +146,7 @@ kefir_result_t kefir_ast_node_properties_clone(struct kefir_ast_node_properties 
 
 #define KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION(_node)                       \
     ((_node)->properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION && \
-     (_node)->properties.expression_props.constant_expression)
+     (_node)->properties.expression_props.constant_expression_value != NULL)
 #define KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(_node, _klass) \
     (KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION((_node)) &&          \
      (_node)->properties.expression_props.constant_expression_value->klass == (_klass))

@@ -102,21 +102,21 @@ static kefir_result_t visit_array_subscript(const struct kefir_ast_visitor *visi
 
     if (array_type->tag == KEFIR_AST_TYPE_ARRAY) {
         REQUIRE_OK(KEFIR_AST_NODE_VISIT(visitor, node->array, payload));
-        *param->constant = *param->constant && node->subscript->properties.expression_props.constant_expression;
+        *param->constant = *param->constant && KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION(node->subscript);
     } else if (array_type->tag == KEFIR_AST_TYPE_SCALAR_POINTER) {
-        *param->constant = *param->constant && node->array->properties.expression_props.constant_expression &&
-                           node->subscript->properties.expression_props.constant_expression;
+        *param->constant = *param->constant && KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION(node->array) &&
+                           KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION(node->subscript);
     } else if (array_type->tag == KEFIR_AST_TYPE_SCALAR_NULL_POINTER) {
         return KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->array->source_location, "Unexpected null pointer");
     } else if (subscript_type->tag == KEFIR_AST_TYPE_ARRAY) {
         REQUIRE_OK(KEFIR_AST_NODE_VISIT(visitor, node->subscript, payload));
-        *param->constant = *param->constant && node->array->properties.expression_props.constant_expression;
+        *param->constant = *param->constant && KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION(node->array);
     } else {
         REQUIRE(
             subscript_type->tag != KEFIR_AST_TYPE_SCALAR_NULL_POINTER,
             KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->subscript->source_location, "Unexpected null pointer"));
-        *param->constant = *param->constant && node->array->properties.expression_props.constant_expression &&
-                           node->subscript->properties.expression_props.constant_expression;
+        *param->constant = *param->constant && KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION(node->array) &&
+                           KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION(node->subscript);
     }
     return KEFIR_OK;
 }
@@ -128,7 +128,7 @@ static kefir_result_t visit_struct_indirect_member(const struct kefir_ast_visito
     REQUIRE(payload != NULL, KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Expected valid payload"));
     ASSIGN_DECL_CAST(struct visitor_param *, param, payload);
 
-    *param->constant = *param->constant && node->structure->properties.expression_props.constant_expression;
+    *param->constant = *param->constant && KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION(node->structure);
     return KEFIR_OK;
 }
 
@@ -139,7 +139,7 @@ static kefir_result_t visit_compound_literal(const struct kefir_ast_visitor *vis
     REQUIRE(payload != NULL, KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Expected valid payload"));
     ASSIGN_DECL_CAST(struct visitor_param *, param, payload);
 
-    *param->constant = *param->constant && node->base.properties.expression_props.constant_expression;
+    *param->constant = *param->constant && KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION(KEFIR_AST_NODE_BASE(node));
     return KEFIR_OK;
 }
 

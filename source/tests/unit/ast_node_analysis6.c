@@ -33,7 +33,7 @@
         _args ASSERT_OK(kefir_ast_analyze_node((_mem), (_context), KEFIR_AST_NODE_BASE(call1)));        \
         ASSERT(call1->base.properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION);                  \
         ASSERT(KEFIR_AST_TYPE_SAME(call1->base.properties.type, (_type)));                              \
-        ASSERT(!call1->base.properties.expression_props.constant_expression);                           \
+        ASSERT(!KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION(KEFIR_AST_NODE_BASE(call1)));                           \
         ASSERT(!call1->base.properties.expression_props.lvalue);                                        \
         ASSERT(!call1->base.properties.expression_props.addressable);                                   \
         KEFIR_AST_NODE_FREE((_mem), KEFIR_AST_NODE_BASE(call1));                                        \
@@ -305,7 +305,7 @@ END_CASE
         _init ASSERT_OK(kefir_ast_analyze_node((_mem), (_context), KEFIR_AST_NODE_BASE(compound)));       \
         ASSERT(compound->base.properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION);                 \
         ASSERT(KEFIR_AST_TYPE_SAME(compound->base.properties.type, (_result_type)));                      \
-        ASSERT(compound->base.properties.expression_props.constant_expression == (_constant));            \
+        ASSERT(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION(KEFIR_AST_NODE_BASE(compound)) == (_constant));            \
         ASSERT(compound->base.properties.expression_props.lvalue);                                        \
         ASSERT(compound->base.properties.expression_props.addressable);                                   \
         ASSERT(!compound->base.properties.expression_props.bitfield_props.bitfield);                      \

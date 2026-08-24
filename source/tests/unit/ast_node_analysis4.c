@@ -37,7 +37,7 @@ struct kefir_ast_constant *make_constant(struct kefir_mem *, const struct kefir_
         ASSERT(!oper->base.properties.expression_props.lvalue);                                                    \
         ASSERT(!oper->base.properties.expression_props.bitfield_props.bitfield);                                   \
         ASSERT(!oper->base.properties.expression_props.addressable);                                               \
-        ASSERT(!oper->base.properties.expression_props.constant_expression);                                       \
+        ASSERT(!KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION(KEFIR_AST_NODE_BASE(oper)));                                       \
         ASSERT_OK(KEFIR_AST_NODE_FREE((_mem), KEFIR_AST_NODE_BASE(oper)));                                         \
     } while (0)
 

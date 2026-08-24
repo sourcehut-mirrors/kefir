@@ -99,6 +99,6 @@ kefir_result_t kefir_ast_node_assignable(struct kefir_mem *mem, const struct kef
     const struct kefir_ast_type *value_type =
         KEFIR_AST_TYPE_CONV_EXPRESSION_ALL(mem, context->type_bundle, node->properties.type);
     REQUIRE_OK(kefir_ast_type_assignable(mem, context, value_type,
-                                         node->properties.expression_props.constant_expression, target_type));
+                                         KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION(node), target_type));
     return KEFIR_OK;
 }

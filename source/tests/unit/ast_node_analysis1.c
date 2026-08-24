@@ -32,7 +32,7 @@
         ASSERT_OK(kefir_ast_analyze_node((_mem), (_context), KEFIR_AST_NODE_BASE(const1))); \
         ASSERT(const1->base.properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION);     \
         ASSERT(KEFIR_AST_TYPE_SAME(const1->base.properties.type, (_const_type)));           \
-        ASSERT(const1->base.properties.expression_props.constant_expression);               \
+        ASSERT(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION(KEFIR_AST_NODE_BASE(const1)));               \
         ASSERT(!const1->base.properties.expression_props.lvalue);                           \
         KEFIR_AST_NODE_FREE((_mem), KEFIR_AST_NODE_BASE(const1));                           \
     } while (0)
@@ -100,7 +100,7 @@ END_CASE
         ASSERT(KEFIR_AST_TYPE_SAME(                                                                                  \
             literal->base.properties.type,                                                                           \
             kefir_ast_type_array((_mem), (_context)->type_bundle, (_underlying), sizeof(LITERAL), NULL)));           \
-        ASSERT(literal->base.properties.expression_props.constant_expression);                                       \
+        ASSERT(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION(KEFIR_AST_NODE_BASE(literal)));                                       \
         ASSERT(!literal->base.properties.expression_props.lvalue);                                                   \
         ASSERT(literal->base.properties.expression_props.string_literal.type == (_literal_type));                    \
         ASSERT(literal->base.properties.expression_props.string_literal.length == sizeof(LITERAL));                  \
@@ -283,7 +283,7 @@ END_CASE
         ASSERT_OK(kefir_ast_analyze_node((_mem), (_context), KEFIR_AST_NODE_BASE(identifier)));                   \
         ASSERT(identifier->base.properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION);                       \
         ASSERT(KEFIR_AST_TYPE_SAME(kefir_ast_type_lvalue_conversion(identifier->base.properties.type), (_type))); \
-        ASSERT(identifier->base.properties.expression_props.constant_expression == (_constant));                  \
+        ASSERT(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION(KEFIR_AST_NODE_BASE(identifier)) == (_constant));                  \
         ASSERT(identifier->base.properties.expression_props.lvalue == (_lvalue));                                 \
         KEFIR_AST_NODE_FREE((_mem), KEFIR_AST_NODE_BASE(identifier));                                             \
     } while (0)
@@ -349,7 +349,7 @@ END_CASE
         ASSERT(addr->base.properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION);                                  \
         ASSERT(KEFIR_AST_TYPE_SAME(kefir_ast_type_lvalue_conversion(addr->base.properties.type),                       \
                                    (kefir_ast_type_pointer((_mem), (_context)->type_bundle, kefir_ast_type_void())))); \
-        ASSERT(addr->base.properties.expression_props.constant_expression);                                            \
+        ASSERT(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION(KEFIR_AST_NODE_BASE(addr)));                                            \
         ASSERT(!addr->base.properties.expression_props.lvalue);                                                        \
         ASSERT(addr->base.properties.expression_props.scoped_id->label.point == (_point));                             \
         KEFIR_AST_NODE_FREE((_mem), KEFIR_AST_NODE_BASE(addr));                                                        \
@@ -394,7 +394,7 @@ END_CASE
         ASSERT_OK(kefir_ast_analyze_node((_mem), (_context), KEFIR_AST_NODE_BASE(subscript)));                 \
         ASSERT(subscript->base.properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION);                     \
         ASSERT(KEFIR_AST_TYPE_SAME(subscript->base.properties.type, (_type)));                                 \
-        ASSERT(subscript->base.properties.expression_props.constant_expression == (_const));                   \
+        ASSERT(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION(KEFIR_AST_NODE_BASE(subscript)) == (_const));                   \
         ASSERT(subscript->base.properties.expression_props.lvalue);                                            \
         KEFIR_AST_NODE_FREE((_mem), KEFIR_AST_NODE_BASE(subscript));                                           \
                                                                                                                \
@@ -404,7 +404,7 @@ END_CASE
         ASSERT_OK(kefir_ast_analyze_node((_mem), (_context), KEFIR_AST_NODE_BASE(subscript2)));                \
         ASSERT(subscript2->base.properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION);                    \
         ASSERT(KEFIR_AST_TYPE_SAME(subscript2->base.properties.type, (_type)));                                \
-        ASSERT(subscript2->base.properties.expression_props.constant_expression == (_const));                  \
+        ASSERT(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION(KEFIR_AST_NODE_BASE(subscript2)) == (_const));                  \
         ASSERT(subscript2->base.properties.expression_props.lvalue);                                           \
         KEFIR_AST_NODE_FREE((_mem), KEFIR_AST_NODE_BASE(subscript2));                                          \
     } while (0)
@@ -417,7 +417,7 @@ END_CASE
         ASSERT_OK(kefir_ast_analyze_node((_mem), (_context), KEFIR_AST_NODE_BASE(subscript)));                 \
         ASSERT(subscript->base.properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION);                     \
         ASSERT(KEFIR_AST_TYPE_SAME(subscript->base.properties.type, (_type)));                                 \
-        ASSERT(subscript->base.properties.expression_props.constant_expression == (_cnst_expr));               \
+        ASSERT(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION(KEFIR_AST_NODE_BASE(subscript)) == (_cnst_expr));               \
         ASSERT(subscript->base.properties.expression_props.lvalue);                                            \
         KEFIR_AST_NODE_FREE((_mem), KEFIR_AST_NODE_BASE(subscript));                                           \
                                                                                                                \
@@ -427,7 +427,7 @@ END_CASE
         ASSERT_OK(kefir_ast_analyze_node((_mem), (_context), KEFIR_AST_NODE_BASE(subscript2)));                \
         ASSERT(subscript2->base.properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION);                    \
         ASSERT(KEFIR_AST_TYPE_SAME(subscript2->base.properties.type, (_type)));                                \
-        ASSERT(subscript2->base.properties.expression_props.constant_expression == (_cnst_expr));              \
+        ASSERT(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION(KEFIR_AST_NODE_BASE(subscript2)) == (_cnst_expr));              \
         ASSERT(subscript2->base.properties.expression_props.lvalue);                                           \
         KEFIR_AST_NODE_FREE((_mem), KEFIR_AST_NODE_BASE(subscript2));                                          \
     } while (0)
@@ -443,7 +443,7 @@ END_CASE
         ASSERT_OK(kefir_ast_analyze_node((_mem), (_context), KEFIR_AST_NODE_BASE(subscript)));                     \
         ASSERT(subscript->base.properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION);                         \
         ASSERT(KEFIR_AST_TYPE_SAME(subscript->base.properties.type, (_type)));                                     \
-        ASSERT(subscript->base.properties.expression_props.constant_expression == (_const));                       \
+        ASSERT(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION(KEFIR_AST_NODE_BASE(subscript)) == (_const));                       \
         ASSERT(subscript->base.properties.expression_props.lvalue);                                                \
         KEFIR_AST_NODE_FREE((_mem), KEFIR_AST_NODE_BASE(subscript));                                               \
     } while (0)
@@ -523,7 +523,7 @@ END_CASE
         ASSERT_OK(kefir_ast_analyze_node((_mem), (_context), KEFIR_AST_NODE_BASE(member)));                       \
         ASSERT(member->base.properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION);                           \
         ASSERT(KEFIR_AST_TYPE_SAME(member->base.properties.type, (_type)));                                       \
-        ASSERT(member->base.properties.expression_props.constant_expression == (_constant));                      \
+        ASSERT(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION(KEFIR_AST_NODE_BASE(member)) == (_constant));                      \
         ASSERT(member->base.properties.expression_props.lvalue);                                                  \
         KEFIR_AST_NODE_FREE((_mem), KEFIR_AST_NODE_BASE(member));                                                 \
     } while (0)
@@ -614,7 +614,7 @@ END_CASE
         ASSERT_OK(kefir_ast_analyze_node((_mem), (_context), KEFIR_AST_NODE_BASE(member)));                       \
         ASSERT(member->base.properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION);                           \
         ASSERT(KEFIR_AST_TYPE_SAME(member->base.properties.type, (_type)));                                       \
-        ASSERT(member->base.properties.expression_props.constant_expression == (_constant));                      \
+        ASSERT(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION(KEFIR_AST_NODE_BASE(member)) == (_constant));                      \
         ASSERT(member->base.properties.expression_props.lvalue);                                                  \
         KEFIR_AST_NODE_FREE((_mem), KEFIR_AST_NODE_BASE(member));                                                 \
     } while (0)
@@ -709,7 +709,7 @@ END_CASE
         ASSERT_OK(kefir_ast_analyze_node((_mem), (_context), KEFIR_AST_NODE_BASE(call1)));                     \
         ASSERT(call1->base.properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION);                         \
         ASSERT(KEFIR_AST_TYPE_SAME(call1->base.properties.type, (_type)));                                     \
-        ASSERT(!call1->base.properties.expression_props.constant_expression);                                  \
+        ASSERT(!KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION(KEFIR_AST_NODE_BASE(call1)));                                  \
         ASSERT(!call1->base.properties.expression_props.lvalue);                                               \
         ASSERT(!call1->base.properties.expression_props.addressable);                                          \
         KEFIR_AST_NODE_FREE((_mem), KEFIR_AST_NODE_BASE(call1));                                               \
@@ -848,7 +848,7 @@ END_CASE
         ASSERT_OK(kefir_ast_analyze_node((_mem), (_context), KEFIR_AST_NODE_BASE(oper)));           \
         ASSERT(oper->base.properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION);               \
         ASSERT(KEFIR_AST_TYPE_SAME(oper->base.properties.type, (_type)));                           \
-        ASSERT(oper->base.properties.expression_props.constant_expression == (_constant));          \
+        ASSERT(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION(KEFIR_AST_NODE_BASE(oper)) == (_constant));          \
         ASSERT(oper->base.properties.expression_props.lvalue == (_lvalue));                         \
         ASSERT(oper->base.properties.expression_props.addressable == (_addresable));                \
         ASSERT(!oper->base.properties.expression_props.bitfield_props.bitfield);                    \
@@ -1244,7 +1244,7 @@ END_CASE
         ASSERT_OK(kefir_ast_analyze_node((_mem), (_context), type_name));        \
         ASSERT(type_name->properties.category == KEFIR_AST_NODE_CATEGORY_TYPE);  \
         ASSERT(KEFIR_AST_TYPE_SAME(type_name->properties.type, (_type)));        \
-        ASSERT(!type_name->properties.expression_props.constant_expression);     \
+        ASSERT(!KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION(type_name));     \
         ASSERT(!type_name->properties.expression_props.lvalue);                  \
         ASSERT(!type_name->properties.expression_props.addressable);             \
         KEFIR_AST_NODE_FREE((_mem), type_name);                                  \

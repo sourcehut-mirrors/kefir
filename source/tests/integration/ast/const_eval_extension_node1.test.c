@@ -40,7 +40,6 @@ static kefir_result_t analyze_extension_node(struct kefir_mem *mem, const struct
     UNUSED(context);
     node->properties.category = KEFIR_AST_NODE_CATEGORY_EXPRESSION;
     node->properties.type = kefir_ast_type_signed_int();
-    node->properties.expression_props.constant_expression = true;
     return KEFIR_OK;
 }
 

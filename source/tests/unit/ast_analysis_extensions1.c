@@ -29,7 +29,6 @@ static kefir_result_t analyze_extension_node(struct kefir_mem *mem, const struct
     UNUSED(context);
     node->properties.category = KEFIR_AST_NODE_CATEGORY_EXPRESSION;
     node->properties.type = kefir_ast_type_signed_int();
-    node->properties.expression_props.constant_expression = true;
     return KEFIR_OK;
 }
 
@@ -51,7 +50,7 @@ DEFINE_CASE(ast_analysis_extension_node1, "AST analysis - extension node #1") {
 
     ASSERT(node1->base.properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION);
     ASSERT(KEFIR_AST_TYPE_SAME(node1->base.properties.type, kefir_ast_type_signed_int()));
-    ASSERT(!node1->base.properties.expression_props.constant_expression);
+    ASSERT(!KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION(KEFIR_AST_NODE_BASE(node1)));
     ASSERT(!node1->base.properties.expression_props.addressable);
     ASSERT(!node1->base.properties.expression_props.bitfield_props.bitfield);
     ASSERT(node1->base.properties.expression_props.identifier == NULL);
@@ -90,7 +89,7 @@ static kefir_result_t after_node_analysis(struct kefir_mem *mem, const struct ke
     if (node->klass->type == KEFIR_AST_CONSTANT) {
         struct kefir_ast_constant *constant = node->self;
         if (constant->type == KEFIR_AST_UINT_CONSTANT) {
-            node->properties.expression_props.constant_expression = false;
+            node->properties.expression_props.constant_expression_value = NULL;
         }
     }
     return KEFIR_OK;
@@ -117,13 +116,13 @@ DEFINE_CASE(ast_analysis_before_after_extensions, "AST analysis - before & after
     ASSERT_OK(kefir_ast_analyze_node(&kft_mem, &context.context, KEFIR_AST_NODE_BASE(node2)));
     ASSERT(node2->base.properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION);
     ASSERT(KEFIR_AST_TYPE_SAME(node2->base.properties.type, kefir_ast_type_signed_int()));
-    ASSERT(node2->base.properties.expression_props.constant_expression);
+    ASSERT(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION(KEFIR_AST_NODE_BASE(node2)));
 
     struct kefir_ast_constant *node3 = kefir_ast_new_constant_uint(&kft_mem, 1);
     ASSERT_OK(kefir_ast_analyze_node(&kft_mem, &context.context, KEFIR_AST_NODE_BASE(node3)));
     ASSERT(node3->base.properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION);
     ASSERT(KEFIR_AST_TYPE_SAME(node3->base.properties.type, kefir_ast_type_unsigned_int()));
-    ASSERT(!node3->base.properties.expression_props.constant_expression);
+    ASSERT(!KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION(KEFIR_AST_NODE_BASE(node3)));
 
     ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(node1)));
     ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(node2)));

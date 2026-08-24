@@ -527,7 +527,7 @@ DEFINE_CASE(ast_node_analysis_builtins1, "AST node analysis - va_start builtin")
         ASSERT_OK(kefir_ast_analyze_node(&kft_mem, context, KEFIR_AST_NODE_BASE(builtin1)));
         ASSERT(builtin1->base.properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION);
         ASSERT(KEFIR_AST_TYPE_SAME(builtin1->base.properties.type, kefir_ast_type_void()));
-        ASSERT(!builtin1->base.properties.expression_props.constant_expression);
+        ASSERT(!KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION(KEFIR_AST_NODE_BASE(builtin1)));
         ASSERT(!builtin1->base.properties.expression_props.lvalue);
         ASSERT(!builtin1->base.properties.expression_props.addressable);
         KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(builtin1));
@@ -558,7 +558,7 @@ DEFINE_CASE(ast_node_analysis_builtins2, "AST node analysis - va_end builtin") {
         ASSERT_OK(kefir_ast_analyze_node(&kft_mem, context, KEFIR_AST_NODE_BASE(builtin1)));
         ASSERT(builtin1->base.properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION);
         ASSERT(KEFIR_AST_TYPE_SAME(builtin1->base.properties.type, kefir_ast_type_void()));
-        ASSERT(!builtin1->base.properties.expression_props.constant_expression);
+        ASSERT(!KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION(KEFIR_AST_NODE_BASE(builtin1)));
         ASSERT(!builtin1->base.properties.expression_props.lvalue);
         ASSERT(!builtin1->base.properties.expression_props.addressable);
         KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(builtin1));
@@ -595,7 +595,7 @@ DEFINE_CASE(ast_node_analysis_builtins3, "AST node analysis - va_copy builtin") 
         ASSERT_OK(kefir_ast_analyze_node(&kft_mem, context, KEFIR_AST_NODE_BASE(builtin1)));
         ASSERT(builtin1->base.properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION);
         ASSERT(KEFIR_AST_TYPE_SAME(builtin1->base.properties.type, kefir_ast_type_void()));
-        ASSERT(!builtin1->base.properties.expression_props.constant_expression);
+        ASSERT(!KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION(KEFIR_AST_NODE_BASE(builtin1)));
         ASSERT(!builtin1->base.properties.expression_props.lvalue);
         ASSERT(!builtin1->base.properties.expression_props.addressable);
         KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(builtin1));
@@ -633,7 +633,7 @@ DEFINE_CASE(ast_node_analysis_builtins4, "AST node analysis - va_arg builtin") {
         ASSERT_OK(kefir_ast_analyze_node(&kft_mem, context, KEFIR_AST_NODE_BASE(builtin1)));
         ASSERT(builtin1->base.properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION);
         ASSERT(KEFIR_AST_TYPE_SAME(builtin1->base.properties.type, type_name1->base.properties.type));
-        ASSERT(!builtin1->base.properties.expression_props.constant_expression);
+        ASSERT(!KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION(KEFIR_AST_NODE_BASE(builtin1)));
         ASSERT(!builtin1->base.properties.expression_props.lvalue);
         ASSERT(!builtin1->base.properties.expression_props.addressable);
         KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(builtin1));

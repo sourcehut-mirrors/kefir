@@ -26,7 +26,7 @@
 static kefir_result_t is_initializer_constant(const struct kefir_ast_initializer *initializer, kefir_bool_t *constant) {
     switch (initializer->type) {
         case KEFIR_AST_INITIALIZER_EXPRESSION:
-            *constant = initializer->expression->properties.expression_props.constant_expression;
+            *constant = KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION(initializer->expression);
             break;
 
         case KEFIR_AST_INITIALIZER_LIST:
