@@ -135,6 +135,10 @@ kefir_result_t kefir_ir_module_drop_named_types(struct kefir_mem *, struct kefir
                                                 kefir_result_t (*)(kefir_id_t, const struct kefir_ir_type *,
                                                                    kefir_bool_t *, void *),
                                                 void *);
+kefir_result_t kefir_ir_module_drop_types(struct kefir_mem *, struct kefir_ir_module *,
+                                                kefir_result_t (*)(const struct kefir_ir_type *,
+                                                                   kefir_bool_t *, void *),
+                                                void *);
 
 typedef struct kefir_ir_module_function_declaration_iterator {
     struct kefir_hashtable_iterator iter;

@@ -697,6 +697,30 @@ kefir_result_t kefir_ir_module_drop_named_types(struct kefir_mem *mem, struct ke
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_ir_module_drop_types(struct kefir_mem *mem, struct kefir_ir_module *module,
+                                                kefir_result_t (*is_garbage)(const struct kefir_ir_type *,
+                                                                             kefir_bool_t *, void *),
+                                                void *payload) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR module"));
+    REQUIRE(is_garbage != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR module named type cleanup callback"));
+
+    for (struct kefir_list_entry *iter = kefir_list_head(&module->types); iter != NULL;) {
+        struct kefir_list_entry *next = iter->next;
+
+        ASSIGN_DECL_CAST(const struct kefir_ir_type *, type, iter->value);
+        kefir_bool_t garbage;
+        REQUIRE_OK(is_garbage(type, &garbage, payload));
+        if (garbage) {
+            REQUIRE_OK(kefir_list_pop(mem, &module->types, iter));
+        }
+
+        iter = next;
+    }
+    return KEFIR_OK;
+}
+
 struct kefir_ir_inline_assembly *kefir_ir_module_new_inline_assembly(struct kefir_mem *mem,
                                                                      struct kefir_ir_module *module,
                                                                      const char *template, kefir_id_t *inline_asm_id) {

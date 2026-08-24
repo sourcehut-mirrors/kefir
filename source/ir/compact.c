@@ -288,11 +288,28 @@ static kefir_result_t is_named_type_garbage(kefir_id_t type_id, const struct kef
 
     struct kefir_hashtree_node *index_node = NULL;
     kefir_result_t res = kefir_hashtree_at(&params->type_index, (kefir_hashtree_key_t) type, &index_node);
+    REQUIRE(res == KEFIR_NOT_FOUND || res == KEFIR_OK, res);
     if (res == KEFIR_NOT_FOUND || type_id != index_node->value) {
-        REQUIRE(res == KEFIR_NOT_FOUND || res == KEFIR_OK, res);
         *is_garbage = true;
     } else {
-        REQUIRE_OK(res);
+        *is_garbage = false;
+    }
+    return KEFIR_OK;
+}
+
+static kefir_result_t is_type_garbage(const struct kefir_ir_type *type,
+                                            kefir_bool_t *is_garbage, void *payload) {
+    REQUIRE(type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR type"));
+    REQUIRE(is_garbage != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to boolean flag"));
+    ASSIGN_DECL_CAST(struct compact_params *, params, payload);
+    REQUIRE(params != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR compation parameters"));
+
+    struct kefir_hashtree_node *index_node = NULL;
+    kefir_result_t res = kefir_hashtree_at(&params->type_index, (kefir_hashtree_key_t) type, &index_node);
+    REQUIRE(res == KEFIR_NOT_FOUND || res == KEFIR_OK, res);
+    if (res == KEFIR_NOT_FOUND || type != (const struct kefir_ir_type *) index_node->key) {
+        *is_garbage = true;
+    } else {
         *is_garbage = false;
     }
     return KEFIR_OK;
@@ -301,6 +318,7 @@ static kefir_result_t is_named_type_garbage(kefir_id_t type_id, const struct kef
 static kefir_result_t drop_unused_named_types(struct kefir_mem *mem, struct kefir_ir_module *module,
                                               struct compact_params *params) {
     REQUIRE_OK(kefir_ir_module_drop_named_types(mem, module, is_named_type_garbage, params));
+    REQUIRE_OK(kefir_ir_module_drop_types(mem, module, is_type_garbage, params));
     return KEFIR_OK;
 }
 
