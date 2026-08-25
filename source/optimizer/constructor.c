@@ -456,7 +456,7 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             break;
 
         case KEFIR_IR_OPCODE_LONG_DOUBLE_CONST:
-            REQUIRE_OK(kefir_opt_code_builder_long_double_constant(mem, code, current_block_id, instr->arg.long_double,
+            REQUIRE_OK(kefir_opt_code_builder_long_double_constant(mem, code, current_block_id, kefir_ir_long_double_construct(instr->arg.u64_2[0], instr->arg.u64_2[1]),
                                                                    &instr_ref));
             REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));
             break;

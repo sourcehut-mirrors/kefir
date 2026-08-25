@@ -132,7 +132,10 @@ kefir_result_t kefir_irblock_appendf32(struct kefir_irblock *bcblock, kefir_irop
 kefir_result_t kefir_irblock_append_ldouble(struct kefir_irblock *bcblock, kefir_iropcode_t opcode,
                                             kefir_long_double_t ldouble) {
     REQUIRE(bcblock != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR block"));
-    struct kefir_irinstr instr = {.opcode = opcode, .arg = {.long_double = ldouble}};
+    struct kefir_irinstr instr = {.opcode = opcode, .arg = {.u64_2 = {
+        kefir_ir_long_double_upper_half(ldouble),
+        kefir_ir_long_double_lower_half(ldouble)
+    }}};
     return kefir_vector_append(&bcblock->content, &instr);
 }
 

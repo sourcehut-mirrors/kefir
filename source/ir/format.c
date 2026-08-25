@@ -148,7 +148,7 @@ kefir_result_t kefir_ir_format_instr_immediate(struct kefir_json_output *json, c
             break;
 
         case KEFIR_IR_OPCODE_LONG_DOUBLE_CONST:
-            REQUIRE_OK(kefir_json_output_long_double(json, instr->arg.long_double));
+            REQUIRE_OK(kefir_json_output_long_double(json, kefir_ir_long_double_construct(instr->arg.u64_2[0], instr->arg.u64_2[1])));
             break;
 
         case KEFIR_IR_OPCODE_STRING_REF:

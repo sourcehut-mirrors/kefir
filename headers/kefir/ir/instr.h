@@ -79,7 +79,6 @@ typedef struct kefir_irinstr {
         kefir_uint32_t u32[4];
         kefir_float64_t f64;
         kefir_float32_t f32[4];
-        kefir_long_double_t long_double;
     } arg;
 } kefir_irinstr_t;
 
