@@ -598,6 +598,7 @@ kefir_result_t kefir_ast_translator_function_context_finalize(
     REQUIRE(function_context != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST translator function context"));
 
+    REQUIRE_OK(kefir_irblock_finalize(mem, &function_context->ir_func->body));
     REQUIRE_OK(kefir_ast_translate_local_scope(mem, &function_context->local_context->context, function_context->module,
                                                &function_context->local_scope_layout));
     return KEFIR_OK;

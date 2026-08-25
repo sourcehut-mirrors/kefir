@@ -93,6 +93,7 @@ struct kefir_irinstr *kefir_irblock_at(const struct kefir_irblock *, kefir_size_
 kefir_result_t kefir_irblock_public_labels_iter(const struct kefir_irblock *, struct kefir_hashtree_node_iterator *,
                                                 const char **, kefir_size_t *);
 kefir_result_t kefir_irblock_public_labels_next(struct kefir_hashtree_node_iterator *, const char **, kefir_size_t *);
+kefir_result_t kefir_irblock_finalize(struct kefir_mem *, struct kefir_irblock *);
 kefir_result_t kefir_irblock_appendi64(struct kefir_irblock *, kefir_iropcode_t, kefir_int64_t);
 kefir_result_t kefir_irblock_appendu64(struct kefir_irblock *, kefir_iropcode_t, kefir_uint64_t);
 kefir_result_t kefir_irblock_appendu64_2(struct kefir_irblock *, kefir_iropcode_t, kefir_uint64_t, kefir_uint64_t);

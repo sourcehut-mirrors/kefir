@@ -76,6 +76,13 @@ kefir_result_t kefir_irblock_public_labels_next(struct kefir_hashtree_node_itera
     }
 }
 
+kefir_result_t kefir_irblock_finalize(struct kefir_mem *mem, struct kefir_irblock *block) {
+    REQUIRE(block != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR block"));
+
+    REQUIRE_OK(kefir_vector_realloc(mem, kefir_vector_length(&block->content), &block->content));
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_irblock_appendi64(struct kefir_irblock *bcblock, kefir_iropcode_t opcode, kefir_int64_t arg) {
     REQUIRE(bcblock != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR block"));
     struct kefir_irinstr instr = {.opcode = opcode, .arg = {.i64 = arg}};

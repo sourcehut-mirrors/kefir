@@ -113,7 +113,7 @@ kefir_result_t kefir_vector_realloc(struct kefir_mem *mem, kefir_size_t new_capa
     REQUIRE(vector->length <= new_capacity,
             KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Expected new capacity to fit current vector length"));
     vector->content = KEFIR_REALLOC(mem, vector->content, vector->element_size * new_capacity);
-    if (vector->content == NULL) {
+    if (vector->content == NULL && new_capacity > 0) {
         vector->length = 0;
         vector->capacity = 0;
         vector->element_size = 0;
