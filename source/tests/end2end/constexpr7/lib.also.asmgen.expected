@@ -61,9 +61,7 @@ __kefir_temporary_6:
     .long 4294967172
     .zero 4
     .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
+    .zero 3
     .zero 4
 
     .align 8

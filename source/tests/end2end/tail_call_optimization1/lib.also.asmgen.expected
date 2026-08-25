@@ -203,38 +203,7 @@ ops:
     .quad 0
     .quad 0
     .quad 0
-    .quad 0
-    .quad 0
-    .quad 0
-    .quad 0
-    .quad 0
-    .quad 0
-    .quad 0
-    .quad 0
-    .quad 0
-    .quad 0
-    .quad 0
-    .quad 0
-    .quad 0
-    .quad 0
-    .quad 0
-    .quad 0
-    .quad 0
-    .quad 0
-    .quad 0
-    .quad 0
-    .quad 0
-    .quad 0
-    .quad 0
-    .quad 0
-    .quad 0
-    .quad 0
-    .quad 0
-    .quad 0
-    .quad 0
-    .quad 0
-    .quad 0
-    .quad 0
+    .zero 256
     .quad 0
     .quad 0
     .quad 0
@@ -243,14 +212,7 @@ ops:
     .quad 0
     .quad op_minus
     .quad op_print
-    .quad 0
-    .quad 0
-    .quad 0
-    .quad 0
-    .quad 0
-    .quad 0
-    .quad 0
-    .quad 0
+    .zero 64
     .quad 0
     .quad 0
     .quad 0
@@ -259,30 +221,7 @@ ops:
     .quad op_prev
     .quad 0
     .quad op_next
-    .quad 0
-    .quad 0
-    .quad 0
-    .quad 0
-    .quad 0
-    .quad 0
-    .quad 0
-    .quad 0
-    .quad 0
-    .quad 0
-    .quad 0
-    .quad 0
-    .quad 0
-    .quad 0
-    .quad 0
-    .quad 0
-    .quad 0
-    .quad 0
-    .quad 0
-    .quad 0
-    .quad 0
-    .quad 0
-    .quad 0
-    .quad 0
+    .zero 192
     .quad 0
     .quad 0
     .quad 0

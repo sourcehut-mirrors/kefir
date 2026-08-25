@@ -23,7 +23,7 @@
 #include "kefir/core/error.h"
 #include <string.h>
 
-#define BLOCK_CAPACITY 128
+#define BLOCK_CAPACITY 8
 #define BLOCK_SIZE (BLOCK_CAPACITY * sizeof(struct kefir_ir_data_value))
 
 static kefir_result_t on_block_init(struct kefir_mem *mem, struct kefir_block_tree *tree, kefir_size_t block_id,

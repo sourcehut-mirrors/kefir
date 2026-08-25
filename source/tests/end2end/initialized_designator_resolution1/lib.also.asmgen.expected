@@ -34,16 +34,10 @@ s2:
     .long 0
     .long 0
     .long 0
-    .long 0
+    .zero 4
     .zero 4
     .zero 24
-    .long 0
-    .long 0
-    .long 0
-    .long 0
-    .long 0
-    .zero 4
-    .zero 24
+    .zero 48
     .long 1098
     .long 0
 

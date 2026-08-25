@@ -25,17 +25,7 @@ t1:
     .long 0
     .long 0
     .long 0
-    .long 0
-    .long 0
-    .long 0
-    .long 0
-    .long 0
-    .long 0
-    .long 0
-    .long 0
-    .long 0
-    .long 0
-    .long 0
+    .zero 44
 
     .align 8
 t2:
@@ -44,37 +34,8 @@ t2:
     .quad 0
     .long 0
     .long 0
-    .long 0
-    .long 0
-    .long 0
-    .long 0
-    .long 0
-    .long 0
-    .long 0
-    .long 0
-    .long 0
-    .long 0
-    .long 0
-    .long 0
-    .long 0
-    .long 0
-    .quad 0
-    .long 0
-    .long 0
-    .long 0
-    .long 0
-    .long 0
-    .long 0
-    .long 0
-    .long 0
-    .long 0
-    .long 0
-    .long 0
-    .long 0
-    .long 0
-    .long 0
-    .long 0
-    .long 0
+    .zero 56
+    .zero 72
 
     .align 8
 t3:
@@ -82,55 +43,10 @@ t3:
     .zero 7
     .quad 0
     .long 0
-    .long 0
-    .long 0
-    .long 0
-    .long 0
-    .long 0
-    .long 0
-    .long 0
-    .long 0
-    .long 0
-    .long 0
-    .long 0
-    .long 0
-    .long 0
-    .long 0
-    .long 0
+    .zero 60
+    .zero 72
     .quad 0
-    .long 0
-    .long 0
-    .long 0
-    .long 0
-    .long 0
-    .long 0
-    .long 0
-    .long 0
-    .long 0
-    .long 0
-    .long 0
-    .long 0
-    .long 0
-    .long 0
-    .long 0
-    .long 0
-    .quad 0
-    .long 0
-    .long 0
-    .long 0
-    .long 0
-    .long 0
-    .long 0
-    .long 0
-    .long 0
-    .long 0
-    .long 0
-    .long 0
-    .long 0
-    .long 0
-    .long 0
-    .long 0
-    .long 0
+    .zero 64
 
     .align 8
 arr1:
