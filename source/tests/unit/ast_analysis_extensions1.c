@@ -22,12 +22,14 @@
 #include "kefir/ast/local_context.h"
 #include "kefir/ast/analyzer/analyzer.h"
 #include "kefir/test/util.h"
+#include "kefir/core/error.h"
 
 static kefir_result_t analyze_extension_node(struct kefir_mem *mem, const struct kefir_ast_context *context,
                                              struct kefir_ast_node_base *node) {
     UNUSED(mem);
     UNUSED(context);
     node->properties.category = KEFIR_AST_NODE_CATEGORY_EXPRESSION;
+    REQUIRE_OK(kefir_ast_node_allocate_expression_props(context->memory_arena, node));
     node->properties.type = kefir_ast_type_signed_int();
     return KEFIR_OK;
 }
@@ -51,12 +53,12 @@ DEFINE_CASE(ast_analysis_extension_node1, "AST analysis - extension node #1") {
     ASSERT(node1->base.properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION);
     ASSERT(KEFIR_AST_TYPE_SAME(node1->base.properties.type, kefir_ast_type_signed_int()));
     ASSERT(!KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION(KEFIR_AST_NODE_BASE(node1)));
-    ASSERT(!node1->base.properties.expression_props.addressable);
-    ASSERT(!node1->base.properties.expression_props.bitfield_props.bitfield);
-    ASSERT(node1->base.properties.expression_props.identifier == NULL);
-    ASSERT(!node1->base.properties.expression_props.lvalue);
-    ASSERT(node1->base.properties.expression_props.scoped_id == NULL);
-    ASSERT(node1->base.properties.expression_props.string_literal.content == NULL);
+    ASSERT(!node1->base.properties.expression_props->addressable);
+    ASSERT(!node1->base.properties.expression_props->bitfield_props.bitfield);
+    ASSERT(node1->base.properties.expression_props->identifier == NULL);
+    ASSERT(!node1->base.properties.expression_props->lvalue);
+    ASSERT(node1->base.properties.expression_props->scoped_id == NULL);
+    ASSERT(node1->base.properties.expression_props->string_literal.content == NULL);
 
     ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(node1)));
     ASSERT_OK(kefir_ast_global_context_free(&kft_mem, &context));
@@ -70,6 +72,7 @@ static kefir_result_t visit_identifier_node(const struct kefir_ast_visitor *visi
     ASSIGN_DECL_CAST(struct kefir_ast_analysis_parameters *, param, payload);
 
     param->base->properties.category = KEFIR_AST_NODE_CATEGORY_STATEMENT;
+    REQUIRE_OK(kefir_ast_node_allocate_statement_props(param->context->memory_arena, param->base));
     return KEFIR_OK;
 }
 
@@ -89,7 +92,7 @@ static kefir_result_t after_node_analysis(struct kefir_mem *mem, const struct ke
     if (node->klass->type == KEFIR_AST_CONSTANT) {
         struct kefir_ast_constant *constant = node->self;
         if (constant->type == KEFIR_AST_UINT_CONSTANT) {
-            node->properties.expression_props.constant_expression_value = NULL;
+            node->properties.expression_props->constant_expression_value = NULL;
         }
     }
     return KEFIR_OK;

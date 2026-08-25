@@ -36,8 +36,9 @@ kefir_result_t kefir_ast_analyze_for_statement_node(struct kefir_mem *mem, const
     REQUIRE(node != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST for statement"));
     REQUIRE(base != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST base node"));
 
-    REQUIRE_OK(kefir_ast_node_properties_init(&base->properties));
+    REQUIRE_OK(kefir_ast_node_properties_reset(&base->properties, KEFIR_AST_NODE_CATEGORY_STATEMENT));
     base->properties.category = KEFIR_AST_NODE_CATEGORY_STATEMENT;
+    REQUIRE_OK(kefir_ast_node_allocate_statement_props(context->memory_arena, base));
 
     REQUIRE(context->flow_control_tree != NULL,
             KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->base.source_location,
@@ -48,16 +49,16 @@ kefir_result_t kefir_ast_analyze_for_statement_node(struct kefir_mem *mem, const
     REQUIRE_OK(kefir_ast_flow_control_tree_top(context->flow_control_tree, &direct_parent));
     REQUIRE_OK(kefir_ast_flow_control_tree_push(mem, context->flow_control_tree, KEFIR_AST_FLOW_CONTROL_STRUCTURE_FOR,
                                                 &associated_scopes,
-                                                &base->properties.statement_props.flow_control_statement));
+                                                &base->properties.statement_props->flow_control_statement));
 
-    base->properties.statement_props.flow_control_statement->value.loop.continuation =
+    base->properties.statement_props->flow_control_statement->value.loop.continuation =
         kefir_ast_flow_control_point_alloc(mem, context->flow_control_tree, direct_parent);
-    REQUIRE(base->properties.statement_props.flow_control_statement->value.loop.continuation != NULL,
+    REQUIRE(base->properties.statement_props->flow_control_statement->value.loop.continuation != NULL,
             KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST flow control point"));
 
-    base->properties.statement_props.flow_control_statement->value.loop.end =
+    base->properties.statement_props->flow_control_statement->value.loop.end =
         kefir_ast_flow_control_point_alloc(mem, context->flow_control_tree, direct_parent);
-    REQUIRE(base->properties.statement_props.flow_control_statement->value.loop.end != NULL,
+    REQUIRE(base->properties.statement_props->flow_control_statement->value.loop.end != NULL,
             KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST flow control point"));
 
     kefir_result_t res;
@@ -71,18 +72,18 @@ kefir_result_t kefir_ast_analyze_for_statement_node(struct kefir_mem *mem, const
                                  "Expected the first clause of for statement to be either declaration or expression"));
             for (kefir_size_t i = 0; i < declaration->init_declarators_length; i++) {
                 struct kefir_ast_init_declarator *init_declarator = declaration->init_declarators[i];
-                REQUIRE(init_declarator->base.properties.declaration_props.storage ==
+                REQUIRE(init_declarator->base.properties.declaration_props->storage ==
                                 KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_AUTO ||
-                            init_declarator->base.properties.declaration_props.storage ==
+                            init_declarator->base.properties.declaration_props->storage ==
                                 KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_REGISTER ||
-                            init_declarator->base.properties.declaration_props.storage ==
+                            init_declarator->base.properties.declaration_props->storage ==
                                 KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_CONSTEXPR,
                         KEFIR_SET_SOURCE_ERROR(
                             KEFIR_ANALYSIS_ERROR, &node->init->source_location,
                             "Expected the first clause of for statement to declare only auto or register identifiers"));
             }
         } else if (node->init->properties.category == KEFIR_AST_NODE_CATEGORY_INIT_DECLARATOR &&
-                   node->init->properties.declaration_props.static_assertion) {
+                   node->init->properties.declaration_props->static_assertion) {
             // Intentionally left blank
         } else {
             REQUIRE(node->init->properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION,

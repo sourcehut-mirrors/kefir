@@ -50,7 +50,7 @@ kefir_result_t kefir_ast_analyze_array_subscript_node(struct kefir_mem *mem, con
     const struct kefir_ast_type *type = NULL;
 
     if (array_type->tag == KEFIR_AST_TYPE_SCALAR_POINTER) {
-        REQUIRE(!node->array->properties.expression_props.atomic,
+        REQUIRE(!node->array->properties.expression_props->atomic,
                 KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->array->source_location,
                                        "Array subscript cannot operate on atomic type"));
         REQUIRE(KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(subcript_type),
@@ -58,7 +58,7 @@ kefir_result_t kefir_ast_analyze_array_subscript_node(struct kefir_mem *mem, con
                                        "Expected one of subscript operands to have integral type"));
         type = array_type->referenced_type;
     } else {
-        REQUIRE(!node->subscript->properties.expression_props.atomic,
+        REQUIRE(!node->subscript->properties.expression_props->atomic,
                 KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->subscript->source_location,
                                        "Array subscript cannot operate on atomic type"));
         REQUIRE(subcript_type->tag == KEFIR_AST_TYPE_SCALAR_POINTER,
@@ -69,18 +69,19 @@ kefir_result_t kefir_ast_analyze_array_subscript_node(struct kefir_mem *mem, con
                                        "Expected one of subscript operands to have integral type"));
         type = subcript_type->referenced_type;
     }
-    REQUIRE_OK(kefir_ast_node_properties_init(&base->properties));
+    REQUIRE_OK(kefir_ast_node_properties_reset(&base->properties, KEFIR_AST_NODE_CATEGORY_EXPRESSION));
     base->properties.category = KEFIR_AST_NODE_CATEGORY_EXPRESSION;
+    REQUIRE_OK(kefir_ast_node_allocate_expression_props(context->memory_arena, base));
     base->properties.type = type;
-    base->properties.expression_props.lvalue = true;
-    base->properties.expression_props.addressable = true;
-    base->properties.expression_props.atomic = KEFIR_AST_TYPE_IS_ATOMIC(type);
+    base->properties.expression_props->lvalue = true;
+    base->properties.expression_props->addressable = true;
+    base->properties.expression_props->atomic = KEFIR_AST_TYPE_IS_ATOMIC(type);
     const struct kefir_ast_type *unqualified_type = kefir_ast_unqualified_type(type);
-    if (base->properties.expression_props.atomic &&
+    if (base->properties.expression_props->atomic &&
         (KEFIR_AST_TYPE_IS_AGGREGATE_TYPE(unqualified_type) || KEFIR_AST_TYPE_IS_COMPLEX_TYPE(unqualified_type))) {
         REQUIRE_OK(context->allocate_temporary_value(mem, context, type, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_UNKNOWN,
                                                      NULL, &base->source_location,
-                                                     &base->properties.expression_props.temporary_identifier));
+                                                     &base->properties.expression_props->temporary_identifier));
     }
     return KEFIR_OK;
 }

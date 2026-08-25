@@ -40,7 +40,7 @@ kefir_result_t kefir_ast_analyze_cast_operator_node(struct kefir_mem *mem, const
             KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &cast->base.source_location,
                                    "Cast operator operand shall be an expression"));
 
-    REQUIRE_OK(kefir_ast_node_properties_init(&base->properties));
+    REQUIRE_OK(kefir_ast_node_properties_reset(&base->properties, KEFIR_AST_NODE_CATEGORY_EXPRESSION));
     const struct kefir_ast_type *expr_type =
         KEFIR_AST_TYPE_CONV_EXPRESSION_ALL(mem, context->type_bundle, cast->expr->properties.type);
     const struct kefir_ast_type *cast_type = kefir_ast_unqualified_type(cast->type_name->base.properties.type);
@@ -65,5 +65,6 @@ kefir_result_t kefir_ast_analyze_cast_operator_node(struct kefir_mem *mem, const
 
     base->properties.category = KEFIR_AST_NODE_CATEGORY_EXPRESSION;
     base->properties.type = cast_type;
+    REQUIRE_OK(kefir_ast_node_allocate_expression_props(context->memory_arena, base));
     return KEFIR_OK;
 }

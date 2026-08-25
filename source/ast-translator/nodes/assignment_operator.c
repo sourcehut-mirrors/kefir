@@ -38,11 +38,11 @@ static kefir_result_t store_value(struct kefir_mem *mem, struct kefir_ast_transl
     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_VSTACK_PICK, 1));
     REQUIRE_OK(kefir_ast_translator_store_lvalue(mem, context, builder, node->target));
 
-    if (node->target->properties.expression_props.bitfield_props.bitfield &&
+    if (node->target->properties.expression_props->bitfield_props.bitfield &&
         KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(result_normalized_type)) {
         kefir_bool_t signedness;
         REQUIRE_OK(kefir_ast_type_is_signed(context->ast_context->type_traits, result_normalized_type, &signedness));
-        const kefir_size_t bitwidth = node->target->properties.expression_props.bitfield_props.width;
+        const kefir_size_t bitwidth = node->target->properties.expression_props->bitfield_props.width;
         if (signedness) {
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU32(builder, KEFIR_IR_OPCODE_BITS_EXTRACT_SIGNED, 0, bitwidth));
         } else {
@@ -227,13 +227,13 @@ static kefir_result_t translate_binary_op(struct kefir_mem *mem, struct kefir_as
         if (node->operation == KEFIR_AST_ASSIGNMENT_MULTIPLY || node->operation == KEFIR_AST_ASSIGNMENT_DIVIDE) {
             common_type = kefir_ast_type_multiplicative_common_arithmetic(
                 context->ast_context->type_traits, target_normalized_type,
-                node->target->properties.expression_props.bitfield_props, value_normalized_type,
-                node->value->properties.expression_props.bitfield_props);
+                node->target->properties.expression_props->bitfield_props, value_normalized_type,
+                node->value->properties.expression_props->bitfield_props);
         } else {
             common_type = kefir_ast_type_common_arithmetic(context->ast_context->type_traits, target_normalized_type,
-                                                           node->target->properties.expression_props.bitfield_props,
+                                                           node->target->properties.expression_props->bitfield_props,
                                                            value_normalized_type,
-                                                           node->value->properties.expression_props.bitfield_props);
+                                                           node->value->properties.expression_props->bitfield_props);
         }
         REQUIRE(common_type != NULL,
                 KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to determine common arithmetic type"));
@@ -262,7 +262,7 @@ static kefir_result_t translate_binary_op(struct kefir_mem *mem, struct kefir_as
     }
 
     kefir_bool_t preserve_fenv = false;
-    if (node->target->properties.expression_props.atomic && operation_type != NULL &&
+    if (node->target->properties.expression_props->atomic && operation_type != NULL &&
         KEFIR_AST_TYPE_IS_FLOATING_POINT(operation_type)) {
         preserve_fenv = true;
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_FENV_SAVE, 0));
@@ -272,7 +272,7 @@ static kefir_result_t translate_binary_op(struct kefir_mem *mem, struct kefir_as
 
     kefir_bool_t atomic_aggregate_target_value;
     REQUIRE_OK(kefir_ast_translate_lvalue(mem, context, builder, node->target));
-    if (!node->target->properties.expression_props.atomic) {
+    if (!node->target->properties.expression_props->atomic) {
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_VSTACK_PICK, 0));
         REQUIRE_OK(
             kefir_ast_translator_resolve_lvalue(mem, context, builder, node->target, &atomic_aggregate_target_value));

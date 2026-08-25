@@ -38,43 +38,47 @@ kefir_result_t kefir_ast_try_analyze_identifier(struct kefir_mem *mem, const str
     REQUIRE_OK(kefir_ast_check_scoped_identifier_deprecation(context, scoped_id, &node->base.source_location));
     switch (scoped_id->klass) {
         case KEFIR_AST_SCOPE_IDENTIFIER_OBJECT:
-            REQUIRE_OK(kefir_ast_node_properties_init(&base->properties));
+            REQUIRE_OK(kefir_ast_node_properties_reset(&base->properties, KEFIR_AST_NODE_CATEGORY_EXPRESSION));
             base->properties.category = KEFIR_AST_NODE_CATEGORY_EXPRESSION;
+            REQUIRE_OK(kefir_ast_node_allocate_expression_props(context->memory_arena, base));
             base->properties.type = scoped_id->object.type;
-            base->properties.expression_props.lvalue = scoped_id->object.type->tag != KEFIR_AST_TYPE_ARRAY;
-            base->properties.expression_props.addressable =
+            base->properties.expression_props->lvalue = scoped_id->object.type->tag != KEFIR_AST_TYPE_ARRAY;
+            base->properties.expression_props->addressable =
                 scoped_id->object.storage != KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_REGISTER;
-            base->properties.expression_props.atomic = KEFIR_AST_TYPE_IS_ATOMIC(scoped_id->object.type);
-            base->properties.expression_props.alignment =
+            base->properties.expression_props->atomic = KEFIR_AST_TYPE_IS_ATOMIC(scoped_id->object.type);
+            base->properties.expression_props->alignment =
                 scoped_id->object.alignment != NULL ? scoped_id->object.alignment->value : 0;
 
             const struct kefir_ast_type *unqualified_type = kefir_ast_unqualified_type(scoped_id->object.type);
-            if (base->properties.expression_props.atomic && (KEFIR_AST_TYPE_IS_AGGREGATE_TYPE(unqualified_type) ||
+            if (base->properties.expression_props->atomic && (KEFIR_AST_TYPE_IS_AGGREGATE_TYPE(unqualified_type) ||
                                                              KEFIR_AST_TYPE_IS_COMPLEX_TYPE(unqualified_type))) {
                 REQUIRE_OK(context->allocate_temporary_value(
                     mem, context, scoped_id->object.type, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_UNKNOWN, NULL,
-                    &base->source_location, &base->properties.expression_props.temporary_identifier));
+                    &base->source_location, &base->properties.expression_props->temporary_identifier));
             }
             break;
 
         case KEFIR_AST_SCOPE_IDENTIFIER_FUNCTION:
-            REQUIRE_OK(kefir_ast_node_properties_init(&base->properties));
+            REQUIRE_OK(kefir_ast_node_properties_reset(&base->properties, KEFIR_AST_NODE_CATEGORY_EXPRESSION));
             base->properties.category = KEFIR_AST_NODE_CATEGORY_EXPRESSION;
+            REQUIRE_OK(kefir_ast_node_allocate_expression_props(context->memory_arena, base));
             base->properties.type = scoped_id->function.type;
-            base->properties.expression_props.addressable = true;
+            base->properties.expression_props->addressable = true;
             break;
 
         case KEFIR_AST_SCOPE_IDENTIFIER_ENUM_CONSTANT:
-            REQUIRE_OK(kefir_ast_node_properties_init(&base->properties));
+            REQUIRE_OK(kefir_ast_node_properties_reset(&base->properties, KEFIR_AST_NODE_CATEGORY_EXPRESSION));
             base->properties.category = KEFIR_AST_NODE_CATEGORY_EXPRESSION;
+            REQUIRE_OK(kefir_ast_node_allocate_expression_props(context->memory_arena, base));
             base->properties.type = scoped_id->enum_constant.type;
             break;
 
         case KEFIR_AST_SCOPE_IDENTIFIER_TYPE_DEFINITION:
-            REQUIRE_OK(kefir_ast_node_properties_init(&base->properties));
+            REQUIRE_OK(kefir_ast_node_properties_reset(&base->properties, KEFIR_AST_NODE_CATEGORY_EXPRESSION));
             base->properties.category = KEFIR_AST_NODE_CATEGORY_TYPE;
+            REQUIRE_OK(kefir_ast_node_allocate_type_props(context->memory_arena, base));
             base->properties.type = scoped_id->type_definition.type;
-            base->properties.type_props.alignment =
+            base->properties.type_props->alignment =
                 scoped_id->type_definition.alignment != NULL ? scoped_id->type_definition.alignment->value : 0;
             break;
 
@@ -82,11 +86,11 @@ kefir_result_t kefir_ast_try_analyze_identifier(struct kefir_mem *mem, const str
             return KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Unexpected scoped identifier type");
     }
 
-    base->properties.expression_props.identifier =
+    base->properties.expression_props->identifier =
         kefir_string_pool_insert(mem, context->symbols, node->identifier, NULL);
-    REQUIRE(base->properties.expression_props.identifier != NULL,
+    REQUIRE(base->properties.expression_props->identifier != NULL,
             KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert identifier into symbol table"));
-    base->properties.expression_props.scoped_id = scoped_id;
+    base->properties.expression_props->scoped_id = scoped_id;
     return KEFIR_OK;
 }
 

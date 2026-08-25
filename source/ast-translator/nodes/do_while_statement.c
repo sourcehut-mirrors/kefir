@@ -46,12 +46,12 @@ kefir_result_t kefir_ast_translate_do_while_statement_node(struct kefir_mem *mem
                                                   &KEFIR_IR_DEBUG_ENTRY_ATTR_CODE_BEGIN(beginning)));
 
     REQUIRE_OK(kefir_ast_translator_mark_associated_scope_objects_lifetime(
-        mem, context, builder, node->base.properties.statement_props.flow_control_statement));
+        mem, context, builder, node->base.properties.statement_props->flow_control_statement));
 
     REQUIRE_OK(kefir_ast_translate_statement(mem, node->body, builder, context));
 
     struct kefir_ast_flow_control_structure *flow_control_stmt =
-        node->base.properties.statement_props.flow_control_statement;
+        node->base.properties.statement_props->flow_control_statement;
     REQUIRE_OK(kefir_ast_translator_flow_control_point_resolve(mem, flow_control_stmt->value.loop.continuation,
                                                                KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder)));
 
@@ -103,11 +103,11 @@ kefir_result_t kefir_ast_translate_do_while_statement_node(struct kefir_mem *mem
                                                   &KEFIR_IR_DEBUG_ENTRY_ATTR_CODE_END(statement_end_index)));
     REQUIRE_OK(kefir_ast_translator_generate_object_scope_debug_information(
         mem, context->ast_context, context->environment, context->module, context->debug_entries,
-        node->base.properties.statement_props.flow_control_statement->associated_scopes.ordinary_scope,
+        node->base.properties.statement_props->flow_control_statement->associated_scopes.ordinary_scope,
         lexical_block_entry_id, beginning, statement_end_index));
     REQUIRE_OK(kefir_ast_translator_context_pop_debug_hierarchy_entry(mem, context));
     REQUIRE_OK(kefir_ast_translator_mark_associated_scope_objects_lifetime(
-        mem, context, builder, node->base.properties.statement_props.flow_control_statement));
+        mem, context, builder, node->base.properties.statement_props->flow_control_statement));
 
     return KEFIR_OK;
 }

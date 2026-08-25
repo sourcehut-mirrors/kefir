@@ -63,8 +63,9 @@ kefir_result_t kefir_ast_analyze_expression_statement_node(struct kefir_mem *mem
     REQUIRE(node != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST expression statement"));
     REQUIRE(base != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST base node"));
 
-    REQUIRE_OK(kefir_ast_node_properties_init(&base->properties));
+    REQUIRE_OK(kefir_ast_node_properties_reset(&base->properties, KEFIR_AST_NODE_CATEGORY_STATEMENT));
     base->properties.category = KEFIR_AST_NODE_CATEGORY_STATEMENT;
+    REQUIRE_OK(kefir_ast_node_allocate_statement_props(context->memory_arena, base));
 
     if (node->expression != NULL) {
         REQUIRE_OK(kefir_ast_analyze_node(mem, context, node->expression));

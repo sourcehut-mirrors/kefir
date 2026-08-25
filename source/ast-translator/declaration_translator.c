@@ -34,8 +34,8 @@
 static kefir_result_t translate_vla_declaration(struct kefir_mem *mem, const struct kefir_ast_node_base *node,
                                                 struct kefir_irbuilder_block *builder,
                                                 struct kefir_ast_translator_context *context) {
-    REQUIRE(node->properties.declaration_props.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_AUTO ||
-                node->properties.declaration_props.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_REGISTER,
+    REQUIRE(node->properties.declaration_props->storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_AUTO ||
+                node->properties.declaration_props->storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_REGISTER,
             KEFIR_SET_ERROR(KEFIR_INVALID_STATE,
                             "Variable-length array can only have either automatic or register storage specifier"));
 
@@ -44,15 +44,15 @@ static kefir_result_t translate_vla_declaration(struct kefir_mem *mem, const str
     REQUIRE_MATCH_OK(&res, kefir_ast_downcast_init_declarator(node, &declaration, false),
                      KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected AST init declarator"));
     ASSIGN_DECL_CAST(struct kefir_ast_translator_scoped_identifier_object *, identifier_data,
-                     declaration->base.properties.declaration_props.scoped_id->payload.ptr);
+                     declaration->base.properties.declaration_props->scoped_id->payload.ptr);
 
     REQUIRE_OK(kefir_ast_translator_resolve_vla_element(
-        mem, context, builder, declaration->base.properties.declaration_props.scoped_id->object.vl_array));
+        mem, context, builder, declaration->base.properties.declaration_props->scoped_id->object.vl_array));
     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_SCOPE_PUSH, 0));
     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT64_STORE, KEFIR_IR_MEMORY_FLAG_NONE));
 
     REQUIRE_OK(kefir_ast_translator_resolve_local_type_layout(
-        builder, declaration->base.properties.declaration_props.scoped_id->definition_scope->identifier,
+        builder, declaration->base.properties.declaration_props->scoped_id->definition_scope->identifier,
         context->ast_context->context_id, identifier_data->identifier, identifier_data->type_id,
         identifier_data->layout));
     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_UINT_CONST,
@@ -60,7 +60,7 @@ static kefir_result_t translate_vla_declaration(struct kefir_mem *mem, const str
     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT64_ADD, 0));
     REQUIRE_OK(kefir_ast_translate_sizeof(mem, context, builder, node->properties.type, &node->source_location));
     REQUIRE_OK(kefir_ast_translator_resolve_local_type_layout(
-        builder, declaration->base.properties.declaration_props.scoped_id->definition_scope->identifier,
+        builder, declaration->base.properties.declaration_props->scoped_id->definition_scope->identifier,
         context->ast_context->context_id, identifier_data->identifier, identifier_data->type_id,
         identifier_data->layout));
     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_UINT_CONST,
@@ -95,8 +95,8 @@ static kefir_result_t translate_init_declarator(struct kefir_mem *mem, const str
                                                 struct kefir_ast_translator_context *context) {
     REQUIRE(node->properties.category == KEFIR_AST_NODE_CATEGORY_INIT_DECLARATOR,
             KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected init declarator node"));
-    if (node->properties.declaration_props.static_assertion ||
-        node->properties.declaration_props.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_TYPEDEF) {
+    if (node->properties.declaration_props->static_assertion ||
+        node->properties.declaration_props->storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_TYPEDEF) {
         // Deliberately left blank
     } else if (KEFIR_AST_TYPE_IS_VL_ARRAY(node->properties.type)) {
         REQUIRE_OK(translate_vla_declaration(mem, node, builder, context));
@@ -109,15 +109,15 @@ static kefir_result_t translate_init_declarator(struct kefir_mem *mem, const str
         struct kefir_ast_init_declarator *init_decl = NULL;
         REQUIRE_MATCH_OK(&res, kefir_ast_downcast_init_declarator(node, &init_decl, false),
                          KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected node to be init declarator"));
-        kefir_ast_scoped_identifier_storage_t storage = node->properties.declaration_props.storage;
+        kefir_ast_scoped_identifier_storage_t storage = node->properties.declaration_props->storage;
         REQUIRE(storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_AUTO ||
                     storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_REGISTER ||
                     storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_CONSTEXPR,
                 KEFIR_OK);
 
         REQUIRE_OK(kefir_ast_translator_object_lvalue(mem, context, builder,
-                                                      node->properties.declaration_props.identifier,
-                                                      node->properties.declaration_props.scoped_id));
+                                                      node->properties.declaration_props->identifier,
+                                                      node->properties.declaration_props->scoped_id));
         kefir_bool_t constant_init = false;
         if (storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_CONSTEXPR) {
             kefir_bool_t trivial_initializer = false;
@@ -143,7 +143,7 @@ static kefir_result_t translate_init_declarator(struct kefir_mem *mem, const str
                 const kefir_size_t type_index = translator_type->object.layout->value;
 
                 REQUIRE_OK(kefir_ast_translator_fetch_temporary(
-                    mem, context, builder, &node->properties.declaration_props.temporary_identifier));
+                    mem, context, builder, &node->properties.declaration_props->temporary_identifier));
                 REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU32(builder, KEFIR_IR_OPCODE_COPY_MEMORY, type_id, type_index));
                 constant_init = true;
             }

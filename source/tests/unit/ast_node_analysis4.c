@@ -34,9 +34,9 @@ struct kefir_ast_constant *make_constant(struct kefir_mem *, const struct kefir_
         ASSERT_OK(kefir_ast_analyze_node((_mem), (_context), KEFIR_AST_NODE_BASE(oper)));                          \
         ASSERT(oper->base.properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION);                              \
         ASSERT(KEFIR_AST_TYPE_SAME(oper->base.properties.type, (_type)));                                          \
-        ASSERT(!oper->base.properties.expression_props.lvalue);                                                    \
-        ASSERT(!oper->base.properties.expression_props.bitfield_props.bitfield);                                   \
-        ASSERT(!oper->base.properties.expression_props.addressable);                                               \
+        ASSERT(!oper->base.properties.expression_props->lvalue);                                                    \
+        ASSERT(!oper->base.properties.expression_props->bitfield_props.bitfield);                                   \
+        ASSERT(!oper->base.properties.expression_props->addressable);                                               \
         ASSERT(!KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION(KEFIR_AST_NODE_BASE(oper)));                                       \
         ASSERT_OK(KEFIR_AST_NODE_FREE((_mem), KEFIR_AST_NODE_BASE(oper)));                                         \
     } while (0)

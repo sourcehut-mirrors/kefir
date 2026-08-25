@@ -47,8 +47,9 @@ kefir_result_t kefir_ast_analyze_inline_assembly_node(struct kefir_mem *mem, con
     REQUIRE(node != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST compound statement"));
     REQUIRE(base != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST base node"));
 
-    REQUIRE_OK(kefir_ast_node_properties_init(&base->properties));
+    REQUIRE_OK(kefir_ast_node_properties_reset(&base->properties, KEFIR_AST_NODE_CATEGORY_INLINE_ASSEMBLY));
     base->properties.category = KEFIR_AST_NODE_CATEGORY_INLINE_ASSEMBLY;
+    REQUIRE_OK(kefir_ast_node_allocate_inline_asm_props(context->memory_arena, base));
 
     if (context->flow_control_tree != NULL) {
         for (const struct kefir_list_entry *iter = kefir_list_head(&node->outputs); iter != NULL;
@@ -56,16 +57,16 @@ kefir_result_t kefir_ast_analyze_inline_assembly_node(struct kefir_mem *mem, con
             ASSIGN_DECL_CAST(struct kefir_ast_inline_assembly_parameter *, param, iter->value);
             REQUIRE_OK(kefir_ast_analyze_node(mem, context, param->parameter));
             REQUIRE(param->parameter->properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION &&
-                        param->parameter->properties.expression_props.lvalue,
+                        param->parameter->properties.expression_props->lvalue,
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->base.source_location,
                                            "Expected lvalue expression as inline assembly output"));
 
-            if (param->parameter->properties.expression_props.scoped_id != NULL &&
-                param->parameter->properties.expression_props.scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_OBJECT &&
-                param->parameter->properties.expression_props.scoped_id->object.storage ==
+            if (param->parameter->properties.expression_props->scoped_id != NULL &&
+                param->parameter->properties.expression_props->scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_OBJECT &&
+                param->parameter->properties.expression_props->scoped_id->object.storage ==
                     KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_REGISTER &&
-                param->parameter->properties.expression_props.scoped_id->object.asm_label != NULL) {
-                param->explicit_register = param->parameter->properties.expression_props.scoped_id->object.asm_label;
+                param->parameter->properties.expression_props->scoped_id->object.asm_label != NULL) {
+                param->explicit_register = param->parameter->properties.expression_props->scoped_id->object.asm_label;
             }
         }
 
@@ -77,12 +78,12 @@ kefir_result_t kefir_ast_analyze_inline_assembly_node(struct kefir_mem *mem, con
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->base.source_location,
                                            "Expected an expression as inline assembly input"));
 
-            if (param->parameter->properties.expression_props.scoped_id != NULL &&
-                param->parameter->properties.expression_props.scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_OBJECT &&
-                param->parameter->properties.expression_props.scoped_id->object.storage ==
+            if (param->parameter->properties.expression_props->scoped_id != NULL &&
+                param->parameter->properties.expression_props->scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_OBJECT &&
+                param->parameter->properties.expression_props->scoped_id->object.storage ==
                     KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_REGISTER &&
-                param->parameter->properties.expression_props.scoped_id->object.asm_label != NULL) {
-                param->explicit_register = param->parameter->properties.expression_props.scoped_id->object.asm_label;
+                param->parameter->properties.expression_props->scoped_id->object.asm_label != NULL) {
+                param->explicit_register = param->parameter->properties.expression_props->scoped_id->object.asm_label;
             }
         }
 
@@ -96,10 +97,10 @@ kefir_result_t kefir_ast_analyze_inline_assembly_node(struct kefir_mem *mem, con
                                           "Expected inline assembly statement to be enclosed into a code block");
         }
         REQUIRE_OK(context->current_flow_control_point(mem, context,
-                                                       &base->properties.inline_assembly.origin_flow_control_point));
+                                                       &base->properties.inline_assembly->origin_flow_control_point));
 
         REQUIRE_OK(kefir_ast_flow_control_block_add_branching_point(mem, context->flow_control_tree, block,
-                                                                    &base->properties.inline_assembly.branching_point));
+                                                                    &base->properties.inline_assembly->branching_point));
         for (const struct kefir_list_entry *iter = kefir_list_head(&node->jump_labels); iter != NULL;
              kefir_list_next(&iter)) {
 
@@ -109,7 +110,7 @@ kefir_result_t kefir_ast_analyze_inline_assembly_node(struct kefir_mem *mem, con
             REQUIRE_OK(
                 context->reference_label(mem, context, jump_label, NULL, &node->base.source_location, &scoped_id));
             kefir_result_t res = kefir_ast_flow_control_branching_point_append(
-                mem, base->properties.inline_assembly.branching_point, jump_label, scoped_id->label.point);
+                mem, base->properties.inline_assembly->branching_point, jump_label, scoped_id->label.point);
             if (res != KEFIR_ALREADY_EXISTS) {
                 REQUIRE_OK(res);
             }
@@ -128,8 +129,8 @@ kefir_result_t kefir_ast_analyze_inline_assembly_node(struct kefir_mem *mem, con
                 KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->base.source_location,
                                        "Inline assembly directive in global scope cannot have jump labels"));
 
-        base->properties.inline_assembly.origin_flow_control_point = NULL;
-        base->properties.inline_assembly.branching_point = NULL;
+        base->properties.inline_assembly->origin_flow_control_point = NULL;
+        base->properties.inline_assembly->branching_point = NULL;
     }
 
     return KEFIR_OK;

@@ -344,11 +344,11 @@ static kefir_result_t translate_sizeof(struct kefir_mem *mem, struct kefir_ast_t
                                        const struct kefir_ast_unary_operation *node) {
     if (KEFIR_AST_TYPE_IS_VL_ARRAY(node->arg->properties.type) &&
         node->arg->properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION &&
-        node->arg->properties.expression_props.scoped_id != NULL) {
+        node->arg->properties.expression_props->scoped_id != NULL) {
         ASSIGN_DECL_CAST(struct kefir_ast_translator_scoped_identifier_object *, identifier_data,
-                         node->arg->properties.expression_props.scoped_id->payload.ptr);
+                         node->arg->properties.expression_props->scoped_id->payload.ptr);
         REQUIRE_OK(kefir_ast_translator_resolve_local_type_layout(
-            builder, node->arg->properties.expression_props.scoped_id->definition_scope->identifier,
+            builder, node->arg->properties.expression_props->scoped_id->definition_scope->identifier,
             context->ast_context->context_id, identifier_data->identifier, identifier_data->type_id,
             identifier_data->layout));
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_UINT_CONST,
@@ -372,14 +372,14 @@ static kefir_result_t translate_indirection(struct kefir_mem *mem, struct kefir_
     const struct kefir_ast_type *normalized_type = kefir_ast_translator_normalize_type(node->base.properties.type);
     REQUIRE_OK(kefir_ast_translate_expression(mem, node->arg, builder, context));
     if (normalized_type->tag != KEFIR_AST_TYPE_VOID) {
-        if (node->base.properties.expression_props.atomic) {
+        if (node->base.properties.expression_props->atomic) {
             kefir_bool_t atomic_aggregate;
             REQUIRE_OK(kefir_ast_translator_atomic_load_value(
                 node->base.properties.type, context->ast_context->type_traits, builder, &atomic_aggregate));
             if (atomic_aggregate) {
                 REQUIRE_OK(kefir_ast_translator_load_atomic_aggregate_value(
                     mem, node->base.properties.type, context, builder,
-                    &node->base.properties.expression_props.temporary_identifier, &node->base.source_location));
+                    &node->base.properties.expression_props->temporary_identifier, &node->base.source_location));
             }
         } else {
             REQUIRE_OK(kefir_ast_translator_load_value(node->base.properties.type, context->ast_context->type_traits,
@@ -548,14 +548,14 @@ static kefir_result_t translate_preincdec(struct kefir_mem *mem, struct kefir_as
     REQUIRE_OK(kefir_ast_translate_lvalue(mem, context, builder, node->arg));
 
     kefir_bool_t preserve_fenv = false;
-    if (node->arg->properties.expression_props.atomic && KEFIR_AST_TYPE_IS_FLOATING_POINT(normalized_type)) {
+    if (node->arg->properties.expression_props->atomic && KEFIR_AST_TYPE_IS_FLOATING_POINT(normalized_type)) {
         preserve_fenv = true;
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_FENV_SAVE, 0));
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_VSTACK_EXCHANGE, 1));
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_FENV_CLEAR, 0));
     }
 
-    if (!node->arg->properties.expression_props.atomic) {
+    if (!node->arg->properties.expression_props->atomic) {
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_VSTACK_PICK, 0));
         REQUIRE_OK(
             kefir_ast_translator_resolve_lvalue(mem, context, builder, node->arg, &atomic_aggregate_target_value));
@@ -619,14 +619,14 @@ static kefir_result_t translate_postincdec(struct kefir_mem *mem, struct kefir_a
     REQUIRE_OK(kefir_ast_translate_lvalue(mem, context, builder, node->arg));
 
     kefir_bool_t preserve_fenv = false;
-    if (node->arg->properties.expression_props.atomic && KEFIR_AST_TYPE_IS_FLOATING_POINT(normalized_type)) {
+    if (node->arg->properties.expression_props->atomic && KEFIR_AST_TYPE_IS_FLOATING_POINT(normalized_type)) {
         preserve_fenv = true;
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_FENV_SAVE, 0));
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_VSTACK_EXCHANGE, 1));
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_FENV_CLEAR, 0));
     }
 
-    if (!node->arg->properties.expression_props.atomic) {
+    if (!node->arg->properties.expression_props->atomic) {
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_VSTACK_PICK, 0));
         REQUIRE_OK(
             kefir_ast_translator_resolve_lvalue(mem, context, builder, node->arg, &atomic_aggregate_target_value));
@@ -720,20 +720,20 @@ kefir_result_t kefir_ast_translate_unary_operation_node(struct kefir_mem *mem,
 
         case KEFIR_AST_OPERATION_ALIGNOF:
             if (node->arg->properties.category == KEFIR_AST_NODE_CATEGORY_TYPE) {
-                if (node->arg->properties.type_props.alignment == 0) {
+                if (node->arg->properties.type_props->alignment == 0) {
                     REQUIRE_OK(kefir_ast_translate_alignof(mem, context, builder, node->arg->properties.type,
                                                            &node->base.source_location));
                 } else {
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_UINT_CONST,
-                                                               node->arg->properties.type_props.alignment));
+                                                               node->arg->properties.type_props->alignment));
                 }
             } else if (node->arg->properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION) {
-                if (node->arg->properties.expression_props.alignment == 0) {
+                if (node->arg->properties.expression_props->alignment == 0) {
                     REQUIRE_OK(kefir_ast_translate_alignof(mem, context, builder, node->arg->properties.type,
                                                            &node->base.source_location));
                 } else {
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_UINT_CONST,
-                                                               node->arg->properties.expression_props.alignment));
+                                                               node->arg->properties.expression_props->alignment));
                 }
             }
             break;

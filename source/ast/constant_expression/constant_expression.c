@@ -232,6 +232,7 @@ kefir_result_t kefir_ast_evaluate_comparison(struct kefir_mem *mem, const struct
     REQUIRE(lt_comparison != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed toa allocate AST node"));
 
     lt_comparison->properties.category = KEFIR_AST_NODE_CATEGORY_EXPRESSION;
+    REQUIRE_OK(kefir_ast_node_allocate_expression_props(context->memory_arena, lt_comparison));
     lt_comparison->properties.type = kefir_ast_type_signed_int();
 
     struct kefir_ast_constant_expression_value lt_value;
@@ -247,6 +248,7 @@ kefir_result_t kefir_ast_evaluate_comparison(struct kefir_mem *mem, const struct
     REQUIRE(eq_comparison != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed toa allocate AST node"));
 
     eq_comparison->properties.category = KEFIR_AST_NODE_CATEGORY_EXPRESSION;
+    REQUIRE_OK(kefir_ast_node_allocate_expression_props(context->memory_arena, eq_comparison));
     eq_comparison->properties.type = kefir_ast_type_signed_int();
 
     struct kefir_ast_constant_expression_value eq_value;

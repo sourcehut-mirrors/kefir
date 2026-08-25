@@ -35,8 +35,9 @@ kefir_result_t kefir_ast_analyze_do_while_statement_node(struct kefir_mem *mem, 
     REQUIRE(node != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST do while statement"));
     REQUIRE(base != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST base node"));
 
-    REQUIRE_OK(kefir_ast_node_properties_init(&base->properties));
+    REQUIRE_OK(kefir_ast_node_properties_reset(&base->properties, KEFIR_AST_NODE_CATEGORY_STATEMENT));
     base->properties.category = KEFIR_AST_NODE_CATEGORY_STATEMENT;
+    REQUIRE_OK(kefir_ast_node_allocate_statement_props(context->memory_arena, base));
 
     REQUIRE(context->flow_control_tree != NULL,
             KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->base.source_location,
@@ -47,16 +48,16 @@ kefir_result_t kefir_ast_analyze_do_while_statement_node(struct kefir_mem *mem, 
     REQUIRE_OK(kefir_ast_flow_control_tree_top(context->flow_control_tree, &direct_parent));
     REQUIRE_OK(kefir_ast_flow_control_tree_push(mem, context->flow_control_tree, KEFIR_AST_FLOW_CONTROL_STRUCTURE_DO,
                                                 &associated_scopes,
-                                                &base->properties.statement_props.flow_control_statement));
+                                                &base->properties.statement_props->flow_control_statement));
 
-    base->properties.statement_props.flow_control_statement->value.loop.continuation =
+    base->properties.statement_props->flow_control_statement->value.loop.continuation =
         kefir_ast_flow_control_point_alloc(mem, context->flow_control_tree, direct_parent);
-    REQUIRE(base->properties.statement_props.flow_control_statement->value.loop.continuation != NULL,
+    REQUIRE(base->properties.statement_props->flow_control_statement->value.loop.continuation != NULL,
             KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST flow control point"));
 
-    base->properties.statement_props.flow_control_statement->value.loop.end =
+    base->properties.statement_props->flow_control_statement->value.loop.end =
         kefir_ast_flow_control_point_alloc(mem, context->flow_control_tree, direct_parent);
-    REQUIRE(base->properties.statement_props.flow_control_statement->value.loop.end != NULL,
+    REQUIRE(base->properties.statement_props->flow_control_statement->value.loop.end != NULL,
             KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST flow control point"));
 
     REQUIRE_OK(kefir_ast_analyze_node(mem, context, node->controlling_expr));

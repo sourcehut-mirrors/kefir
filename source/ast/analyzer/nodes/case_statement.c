@@ -46,8 +46,9 @@ kefir_result_t kefir_ast_analyze_case_statement_node(struct kefir_mem *mem, cons
     REQUIRE(node != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST case statement"));
     REQUIRE(base != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST base node"));
 
-    REQUIRE_OK(kefir_ast_node_properties_init(&base->properties));
+    REQUIRE_OK(kefir_ast_node_properties_reset(&base->properties, KEFIR_AST_NODE_CATEGORY_STATEMENT));
     base->properties.category = KEFIR_AST_NODE_CATEGORY_STATEMENT;
+    REQUIRE_OK(kefir_ast_node_allocate_statement_props(context->memory_arena, base));
 
     REQUIRE(context->flow_control_tree != NULL,
             KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->base.source_location,
@@ -62,7 +63,7 @@ kefir_result_t kefir_ast_analyze_case_statement_node(struct kefir_mem *mem, cons
     } else {
         REQUIRE_OK(res);
     }
-    base->properties.statement_props.flow_control_statement = switch_statement;
+    base->properties.statement_props->flow_control_statement = switch_statement;
 
     REQUIRE_OK(kefir_ast_flow_control_tree_top(context->flow_control_tree, &direct_parent));
 
@@ -108,7 +109,7 @@ kefir_result_t kefir_ast_analyze_case_statement_node(struct kefir_mem *mem, cons
         REQUIRE_OK(kefir_hashtree_insert(mem, &switch_statement->value.switchStatement.case_range_end_nodes,
                                          (kefir_hashtree_key_t) case_identifier,
                                          (kefir_hashtree_key_t) KEFIR_AST_NODE_REF(end_node)));
-        base->properties.statement_props.target_flow_control_point = point;
+        base->properties.statement_props->target_flow_control_point = point;
 
         switch_statement->value.switchStatement.num_of_cases++;
     } else if (node->expression != NULL) {
@@ -139,7 +140,7 @@ kefir_result_t kefir_ast_analyze_case_statement_node(struct kefir_mem *mem, cons
         REQUIRE_OK(kefir_hashtree_insert(mem, &switch_statement->value.switchStatement.case_label_nodes,
                                          (kefir_hashtree_key_t) case_identifier,
                                          (kefir_hashtree_value_t) KEFIR_AST_NODE_REF(node->expression)));
-        base->properties.statement_props.target_flow_control_point = point;
+        base->properties.statement_props->target_flow_control_point = point;
         switch_statement->value.switchStatement.num_of_cases++;
     } else {
         REQUIRE(switch_statement->value.switchStatement.defaultCase == NULL,
@@ -149,7 +150,7 @@ kefir_result_t kefir_ast_analyze_case_statement_node(struct kefir_mem *mem, cons
             kefir_ast_flow_control_point_alloc(mem, context->flow_control_tree, direct_parent);
         REQUIRE(switch_statement->value.switchStatement.defaultCase != NULL,
                 KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST flow control point"));
-        base->properties.statement_props.target_flow_control_point =
+        base->properties.statement_props->target_flow_control_point =
             switch_statement->value.switchStatement.defaultCase;
     }
 

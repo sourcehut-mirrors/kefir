@@ -39,8 +39,9 @@ kefir_result_t kefir_ast_analyze_statement_expression_node(struct kefir_mem *mem
     REQUIRE(node != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST compound statement"));
     REQUIRE(base != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST base node"));
 
-    REQUIRE_OK(kefir_ast_node_properties_init(&base->properties));
+    REQUIRE_OK(kefir_ast_node_properties_reset(&base->properties, KEFIR_AST_NODE_CATEGORY_EXPRESSION));
     base->properties.category = KEFIR_AST_NODE_CATEGORY_EXPRESSION;
+    REQUIRE_OK(kefir_ast_node_allocate_expression_props(context->memory_arena, base));
 
     REQUIRE(context->flow_control_tree != NULL,
             KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->base.source_location,
@@ -49,7 +50,7 @@ kefir_result_t kefir_ast_analyze_statement_expression_node(struct kefir_mem *mem
     REQUIRE_OK(context->push_block(mem, context, &associated_scopes.ordinary_scope, &associated_scopes.tag_scope));
     REQUIRE_OK(kefir_ast_flow_control_tree_push(mem, context->flow_control_tree, KEFIR_AST_FLOW_CONTROL_STRUCTURE_BLOCK,
                                                 &associated_scopes,
-                                                &base->properties.expression_props.flow_control_statement));
+                                                &base->properties.expression_props->flow_control_statement));
 
     kefir_bool_t has_analysis_errors = false;
     for (kefir_size_t i = 0; i < node->block_length; i++) {

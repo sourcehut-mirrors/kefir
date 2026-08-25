@@ -81,8 +81,9 @@ kefir_result_t kefir_ast_analyze_conditional_operator_node(struct kefir_mem *mem
     const struct kefir_ast_type *type2 =
         KEFIR_AST_TYPE_CONV_EXPRESSION_ALL(mem, context->type_bundle, node->expr2->properties.type);
 
-    REQUIRE_OK(kefir_ast_node_properties_init(&base->properties));
+    REQUIRE_OK(kefir_ast_node_properties_reset(&base->properties, KEFIR_AST_NODE_CATEGORY_EXPRESSION));
     base->properties.category = KEFIR_AST_NODE_CATEGORY_EXPRESSION;
+    REQUIRE_OK(kefir_ast_node_allocate_expression_props(context->memory_arena, base));
 
     REQUIRE(KEFIR_AST_TYPE_IS_SCALAR_TYPE(cond_type),
             KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->condition->source_location,
@@ -92,8 +93,8 @@ kefir_result_t kefir_ast_analyze_conditional_operator_node(struct kefir_mem *mem
         REQUIRE_OK(ensure_decimal_floating_point_types(left_expr->properties.type, &left_expr->source_location,
                                                        node->expr2->properties.type, &node->expr2->source_location));
         base->properties.type = kefir_ast_type_common_arithmetic(
-            context->type_traits, type1, left_expr->properties.expression_props.bitfield_props, type2,
-            node->expr2->properties.expression_props.bitfield_props);
+            context->type_traits, type1, left_expr->properties.expression_props->bitfield_props, type2,
+            node->expr2->properties.expression_props->bitfield_props);
     } else if ((type1->tag == KEFIR_AST_TYPE_STRUCTURE || type1->tag == KEFIR_AST_TYPE_UNION) &&
                (type2->tag == KEFIR_AST_TYPE_STRUCTURE || type2->tag == KEFIR_AST_TYPE_UNION) &&
                KEFIR_AST_TYPE_SAME(type1, type2)) {

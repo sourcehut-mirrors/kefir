@@ -35,8 +35,9 @@ kefir_result_t kefir_ast_analyze_unary_operation_node(struct kefir_mem *mem, con
     REQUIRE(node != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST unary operation"));
     REQUIRE(base != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST base node"));
     REQUIRE_OK(kefir_ast_analyze_node(mem, context, node->arg));
-    REQUIRE_OK(kefir_ast_node_properties_init(&base->properties));
+    REQUIRE_OK(kefir_ast_node_properties_reset(&base->properties, KEFIR_AST_NODE_CATEGORY_EXPRESSION));
     base->properties.category = KEFIR_AST_NODE_CATEGORY_EXPRESSION;
+    REQUIRE_OK(kefir_ast_node_allocate_expression_props(context->memory_arena, base));
     switch (node->type) {
         case KEFIR_AST_OPERATION_PLUS:
         case KEFIR_AST_OPERATION_NEGATE: {
@@ -50,7 +51,7 @@ kefir_result_t kefir_ast_analyze_unary_operation_node(struct kefir_mem *mem, con
                                            "Unary operator operand shall be an arithmetic expression"));
             if (KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(type1)) {
                 base->properties.type = kefir_ast_type_int_promotion(
-                    context->type_traits, type1, node->arg->properties.expression_props.bitfield_props);
+                    context->type_traits, type1, node->arg->properties.expression_props->bitfield_props);
             } else {
                 base->properties.type = type1;
             }
@@ -66,7 +67,7 @@ kefir_result_t kefir_ast_analyze_unary_operation_node(struct kefir_mem *mem, con
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->arg->source_location,
                                            "Inversion operand shall be an integral expression"));
             base->properties.type = kefir_ast_type_int_promotion(context->type_traits, type1,
-                                                                 node->arg->properties.expression_props.bitfield_props);
+                                                                 node->arg->properties.expression_props->bitfield_props);
         } break;
 
         case KEFIR_AST_OPERATION_LOGICAL_NEGATE: {
@@ -88,7 +89,7 @@ kefir_result_t kefir_ast_analyze_unary_operation_node(struct kefir_mem *mem, con
             REQUIRE(node->arg->properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION,
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->arg->source_location,
                                            "Increment/decrement operator operand shall be a scalar lvalue"));
-            REQUIRE(node->arg->properties.expression_props.lvalue,
+            REQUIRE(node->arg->properties.expression_props->lvalue,
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->arg->source_location,
                                            "Increment/decrement operator operand shall be a scalar lvalue"));
 
@@ -109,7 +110,7 @@ kefir_result_t kefir_ast_analyze_unary_operation_node(struct kefir_mem *mem, con
             REQUIRE(node->arg->properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION,
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->arg->source_location,
                                            "Address operator operand shall be an addrssable expression"));
-            REQUIRE(node->arg->properties.expression_props.addressable,
+            REQUIRE(node->arg->properties.expression_props->addressable,
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->arg->source_location,
                                            "Address operator operand shall be an addrssable expression"));
             const struct kefir_ast_type *type = node->arg->properties.type;
@@ -127,18 +128,18 @@ kefir_result_t kefir_ast_analyze_unary_operation_node(struct kefir_mem *mem, con
                                            "Indirection operator operand shall be a pointer"));
             type = type->referenced_type;
             base->properties.type = type;
-            base->properties.expression_props.atomic = KEFIR_AST_TYPE_IS_ATOMIC(type);
+            base->properties.expression_props->atomic = KEFIR_AST_TYPE_IS_ATOMIC(type);
             if (type->tag != KEFIR_AST_TYPE_FUNCTION) {
-                base->properties.expression_props.lvalue = true;
+                base->properties.expression_props->lvalue = true;
             }
-            base->properties.expression_props.addressable = true;
+            base->properties.expression_props->addressable = true;
 
             const struct kefir_ast_type *unqualified_type = kefir_ast_unqualified_type(type);
-            if (base->properties.expression_props.atomic && (KEFIR_AST_TYPE_IS_AGGREGATE_TYPE(unqualified_type) ||
+            if (base->properties.expression_props->atomic && (KEFIR_AST_TYPE_IS_AGGREGATE_TYPE(unqualified_type) ||
                                                              KEFIR_AST_TYPE_IS_COMPLEX_TYPE(unqualified_type))) {
                 REQUIRE_OK(context->allocate_temporary_value(
                     mem, context, type, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_UNKNOWN, NULL, &base->source_location,
-                    &base->properties.expression_props.temporary_identifier));
+                    &base->properties.expression_props->temporary_identifier));
             }
         } break;
 
@@ -148,7 +149,7 @@ kefir_result_t kefir_ast_analyze_unary_operation_node(struct kefir_mem *mem, con
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->arg->source_location,
                                            "Sizeof operator expects expression or type name"));
             const struct kefir_ast_type *type = node->arg->properties.type;
-            REQUIRE(!node->arg->properties.expression_props.bitfield_props.bitfield,
+            REQUIRE(node->arg->properties.category == KEFIR_AST_NODE_CATEGORY_TYPE || !node->arg->properties.expression_props->bitfield_props.bitfield,
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->arg->source_location,
                                            "Sizeof operator cannot be applied to bit-fields"));
             REQUIRE(type->tag != KEFIR_AST_TYPE_FUNCTION || context->configuration->analysis.ext_pointer_arithmetics,

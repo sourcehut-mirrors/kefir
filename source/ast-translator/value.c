@@ -433,14 +433,14 @@ kefir_result_t kefir_ast_translator_resolve_lvalue(struct kefir_mem *mem, struct
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to boolean flag"));
 
     *atomic_aggregate = false;
-    if (node->properties.expression_props.bitfield_props.bitfield) {
+    if (node->properties.expression_props->bitfield_props.bitfield) {
         struct kefir_ast_struct_member *struct_member = NULL;
         kefir_result_t res;
         REQUIRE_MATCH_OK(
             &res, kefir_ast_downcast_any_struct_member(node, &struct_member, false),
             KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Expected bit-field node to be a direct/indirect structure member"));
         REQUIRE_OK(resolve_bitfield(mem, context, builder, struct_member));
-    } else if (node->properties.expression_props.atomic) {
+    } else if (node->properties.expression_props->atomic) {
         REQUIRE_OK(kefir_ast_translator_atomic_load_value(node->properties.type, context->ast_context->type_traits,
                                                           builder, atomic_aggregate));
     } else {
@@ -480,7 +480,7 @@ kefir_result_t kefir_ast_translator_store_lvalue(struct kefir_mem *mem, struct k
     REQUIRE(builder != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR block builder"));
     REQUIRE(node != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST node base"));
 
-    if (node->properties.expression_props.bitfield_props.bitfield) {
+    if (node->properties.expression_props->bitfield_props.bitfield) {
         struct kefir_ast_struct_member *struct_member = NULL;
         const struct kefir_ast_translator_type *translator_type = NULL;
         struct kefir_ast_type_layout *member_layout = NULL;
@@ -493,7 +493,7 @@ kefir_result_t kefir_ast_translator_store_lvalue(struct kefir_mem *mem, struct k
         REQUIRE_OK(resolve_bitfield_layout(mem, context, struct_member, &translator_type, &member_layout));
         REQUIRE_OK(kefir_ast_translator_store_layout_value(mem, context, builder, translator_type->object.ir_type,
                                                            member_layout, true, &node->source_location));
-    } else if (node->properties.expression_props.atomic) {
+    } else if (node->properties.expression_props->atomic) {
         REQUIRE_OK(atomic_store_value(mem, node->properties.type, context, builder, &node->source_location));
     } else {
         REQUIRE_OK(

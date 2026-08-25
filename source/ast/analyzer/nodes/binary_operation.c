@@ -265,11 +265,12 @@ kefir_result_t kefir_ast_analyze_binary_operation_node(struct kefir_mem *mem, co
         KEFIR_AST_TYPE_CONV_EXPRESSION_ALL(mem, context->type_bundle, node->arg1->properties.type);
     const struct kefir_ast_type *type2 =
         KEFIR_AST_TYPE_CONV_EXPRESSION_ALL(mem, context->type_bundle, node->arg2->properties.type);
-    REQUIRE_OK(kefir_ast_node_properties_init(&base->properties));
+    REQUIRE_OK(kefir_ast_node_properties_reset(&base->properties, KEFIR_AST_NODE_CATEGORY_EXPRESSION));
     base->properties.category = KEFIR_AST_NODE_CATEGORY_EXPRESSION;
+    REQUIRE_OK(kefir_ast_node_allocate_expression_props(context->memory_arena, base));
 
-    struct kefir_ast_bitfield_properties bitfield1 = node->arg1->properties.expression_props.bitfield_props;
-    struct kefir_ast_bitfield_properties bitfield2 = node->arg2->properties.expression_props.bitfield_props;
+    struct kefir_ast_bitfield_properties bitfield1 = node->arg1->properties.expression_props->bitfield_props;
+    struct kefir_ast_bitfield_properties bitfield2 = node->arg2->properties.expression_props->bitfield_props;
 
     const struct kefir_source_location *location1 = &node->arg1->source_location;
     const struct kefir_source_location *location2 = &node->arg2->source_location;

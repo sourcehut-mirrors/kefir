@@ -42,8 +42,9 @@ kefir_result_t kefir_ast_analyze_compound_statement_node(struct kefir_mem *mem, 
     const kefir_bool_t empty_current_pragma_state = !KEFIR_AST_PRAGMA_STATE_IS_PRESENT(&current_pragma_state);
     REQUIRE_OK(context->update_pragma_state(mem, context, &node->pragmas));
 
-    REQUIRE_OK(kefir_ast_node_properties_init(&base->properties));
+    REQUIRE_OK(kefir_ast_node_properties_reset(&base->properties, KEFIR_AST_NODE_CATEGORY_STATEMENT));
     base->properties.category = KEFIR_AST_NODE_CATEGORY_STATEMENT;
+    REQUIRE_OK(kefir_ast_node_allocate_statement_props(context->memory_arena, base));
 
     REQUIRE(context->flow_control_tree != NULL,
             KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->base.source_location,
@@ -52,7 +53,7 @@ kefir_result_t kefir_ast_analyze_compound_statement_node(struct kefir_mem *mem, 
     REQUIRE_OK(context->push_block(mem, context, &associated_scopes.ordinary_scope, &associated_scopes.tag_scope));
     REQUIRE_OK(kefir_ast_flow_control_tree_push(mem, context->flow_control_tree, KEFIR_AST_FLOW_CONTROL_STRUCTURE_BLOCK,
                                                 &associated_scopes,
-                                                &base->properties.statement_props.flow_control_statement));
+                                                &base->properties.statement_props->flow_control_statement));
 
     kefir_bool_t has_analysis_errors = false;
     for (kefir_size_t i = 0; i < node->block_length; i++) {

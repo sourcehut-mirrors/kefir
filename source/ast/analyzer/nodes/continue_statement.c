@@ -63,8 +63,9 @@ kefir_result_t kefir_ast_analyze_continue_statement_node(struct kefir_mem *mem, 
     REQUIRE(node != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST continue statement"));
     REQUIRE(base != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST base node"));
 
-    REQUIRE_OK(kefir_ast_node_properties_init(&base->properties));
+    REQUIRE_OK(kefir_ast_node_properties_reset(&base->properties, KEFIR_AST_NODE_CATEGORY_STATEMENT));
     base->properties.category = KEFIR_AST_NODE_CATEGORY_STATEMENT;
+    REQUIRE_OK(kefir_ast_node_allocate_statement_props(context->memory_arena, base));
 
     REQUIRE(context->flow_control_tree != NULL,
             KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->base.source_location,
@@ -79,8 +80,8 @@ kefir_result_t kefir_ast_analyze_continue_statement_node(struct kefir_mem *mem, 
     } else {
         REQUIRE_OK(res);
     }
-    base->properties.statement_props.target_flow_control_point = flow_control_stmt->value.loop.continuation;
+    base->properties.statement_props->target_flow_control_point = flow_control_stmt->value.loop.continuation;
     REQUIRE_OK(
-        context->current_flow_control_point(mem, context, &base->properties.statement_props.origin_flow_control_point));
+        context->current_flow_control_point(mem, context, &base->properties.statement_props->origin_flow_control_point));
     return KEFIR_OK;
 }

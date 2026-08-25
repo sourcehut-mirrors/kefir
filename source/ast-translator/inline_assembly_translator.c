@@ -323,7 +323,7 @@ static kefir_result_t translate_inputs(struct kefir_mem *mem, const struct kefir
                                               "Unexpected immediate inline assembly parameter type");
             }
             klass = KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_IMMEDIATE;
-        } else if (constraints.memory_location && param->parameter->properties.expression_props.lvalue) {
+        } else if (constraints.memory_location && param->parameter->properties.expression_props->lvalue) {
             param_value = ir_inline_asm->slots++;
             REQUIRE_OK(kefir_ast_translate_lvalue(mem, context, builder, param->parameter));
             klass = KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ_LOCATION;
@@ -457,12 +457,12 @@ kefir_result_t kefir_ast_translate_inline_assembly(struct kefir_mem *mem, const 
 
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INLINE_ASSEMBLY, ir_inline_asm_id));
 
-        if (!kefir_hashtree_empty(&inline_asm->base.properties.inline_assembly.branching_point->branches)) {
+        if (!kefir_hashtree_empty(&inline_asm->base.properties.inline_assembly->branching_point->branches)) {
             kefir_size_t patch_index = kefir_irblock_length(builder->block);
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_JUMP, 0));
             struct kefir_hashtree_node_iterator iter;
             for (const struct kefir_hashtree_node *node =
-                     kefir_hashtree_iter(&inline_asm->base.properties.inline_assembly.branching_point->branches, &iter);
+                     kefir_hashtree_iter(&inline_asm->base.properties.inline_assembly->branching_point->branches, &iter);
                  node != NULL; node = kefir_hashtree_next(&iter)) {
 
                 ASSIGN_DECL_CAST(const char *, jump_label, node->key);
@@ -470,7 +470,7 @@ kefir_result_t kefir_ast_translate_inline_assembly(struct kefir_mem *mem, const 
 
                 kefir_size_t jump_trampoline = kefir_irblock_length(builder->block);
                 REQUIRE_OK(kefir_ast_translate_jump(
-                    mem, context, builder, inline_asm->base.properties.inline_assembly.origin_flow_control_point,
+                    mem, context, builder, inline_asm->base.properties.inline_assembly->origin_flow_control_point,
                     jump_target, &inline_asm->base.source_location));
 
                 struct kefir_ir_inline_assembly_jump_target *ir_jump_target = NULL;

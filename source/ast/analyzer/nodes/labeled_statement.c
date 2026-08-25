@@ -41,8 +41,9 @@ kefir_result_t kefir_ast_analyze_labeled_statement_node(struct kefir_mem *mem, c
     struct kefir_ast_flow_control_structure *parent = NULL;
     REQUIRE_OK(kefir_ast_flow_control_tree_top(context->flow_control_tree, &parent));
 
-    REQUIRE_OK(kefir_ast_node_properties_init(&base->properties));
+    REQUIRE_OK(kefir_ast_node_properties_reset(&base->properties, KEFIR_AST_NODE_CATEGORY_STATEMENT));
     base->properties.category = KEFIR_AST_NODE_CATEGORY_STATEMENT;
+    REQUIRE_OK(kefir_ast_node_allocate_statement_props(context->memory_arena, base));
     if (node->statement != NULL) {
         REQUIRE_OK(kefir_ast_analyze_node(mem, context, node->statement));
         REQUIRE(node->statement->properties.category == KEFIR_AST_NODE_CATEGORY_STATEMENT ||
@@ -56,7 +57,7 @@ kefir_result_t kefir_ast_analyze_labeled_statement_node(struct kefir_mem *mem, c
     REQUIRE_OK(context->reference_label(
         mem, context, node->label, parent,
         node->statement != NULL ? &node->statement->source_location : &node->base.source_location, &scoped_id));
-    base->properties.statement_props.target_flow_control_point = scoped_id->label.point;
-    base->properties.statement_props.scoped_id = scoped_id;
+    base->properties.statement_props->target_flow_control_point = scoped_id->label.point;
+    base->properties.statement_props->scoped_id = scoped_id;
     return KEFIR_OK;
 }

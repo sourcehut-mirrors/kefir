@@ -40,74 +40,81 @@ typedef struct kefir_ast_node_class {
     kefir_result_t (*free)(struct kefir_mem *, struct kefir_ast_node_base *);
 } kefir_ast_node_class_t;
 
+typedef struct kefir_ast_node_expression_properties {
+    kefir_bool_t lvalue;
+    kefir_bool_t addressable;
+    kefir_bool_t atomic;
+    struct kefir_ast_constant_expression_value *constant_expression_value;
+    struct kefir_ast_bitfield_properties bitfield_props;
+    const char *identifier;
+    struct {
+        kefir_ast_string_literal_type_t type;
+        void *content;
+        kefir_size_t length;
+    } string_literal;
+    const struct kefir_ast_scoped_identifier *scoped_id;
+    struct kefir_ast_temporary_identifier temporary_identifier;
+    struct kefir_ast_flow_control_structure *flow_control_statement;
+    struct kefir_ast_flow_control_point *flow_control_point;
+    kefir_size_t alignment;
+
+    struct {
+        kefir_bool_t enabled;
+        struct kefir_ast_temporary_identifier temporary_identifier;
+    } preserve_after_eval;
+} kefir_ast_node_expression_properties_t;
+
+typedef struct kefir_ast_node_declaration_properties {
+    kefir_ast_scoped_identifier_storage_t storage;
+    kefir_ast_function_specifier_t function;
+    const char *identifier;
+    kefir_size_t alignment;
+    kefir_bool_t static_assertion;
+    const struct kefir_ast_type *original_type;
+    const struct kefir_ast_scoped_identifier *scoped_id;
+    struct kefir_ast_temporary_identifier temporary_identifier;
+} kefir_ast_node_declaration_properties_t;
+
+typedef struct kefir_ast_node_statement_properties {
+    struct kefir_ast_flow_control_point *origin_flow_control_point;
+    struct kefir_ast_flow_control_point *target_flow_control_point;
+    struct kefir_ast_flow_control_structure *flow_control_statement;
+    const struct kefir_ast_scoped_identifier *scoped_id;
+    const struct kefir_ast_type *return_type;
+} kefir_ast_node_statement_properties_t;
+
+typedef struct kefir_ast_node_function_definition_properties {
+    kefir_ast_function_specifier_t function;
+    const char *identifier;
+    const struct kefir_ast_scoped_identifier *scoped_id;
+
+    struct {
+        kefir_bool_t enable_fenv_access;
+        kefir_bool_t disallow_fp_contract;
+        kefir_ast_pragma_on_off_value_t cx_limited_range;
+    } pragma_stats;
+} kefir_ast_node_function_definition_properties_t;
+
+typedef struct kefir_ast_node_type_properties {
+    kefir_size_t alignment;
+    kefir_ast_scoped_identifier_storage_t storage;
+} kefir_ast_node_type_properties_t;
+
+typedef struct kefir_ast_node_inline_assembly_properties {
+    struct kefir_ast_flow_control_point *origin_flow_control_point;
+    struct kefir_ast_flow_control_branching_point *branching_point;
+} kefir_ast_node_inline_assembly_properties_t;
+
 typedef struct kefir_ast_node_properties {
     kefir_ast_node_category_t category;
     const struct kefir_ast_type *type;
     union {
-        struct {
-            kefir_bool_t lvalue;
-            kefir_bool_t addressable;
-            kefir_bool_t atomic;
-            struct kefir_ast_constant_expression_value *constant_expression_value;
-            struct kefir_ast_bitfield_properties bitfield_props;
-            const char *identifier;
-            struct {
-                kefir_ast_string_literal_type_t type;
-                void *content;
-                kefir_size_t length;
-            } string_literal;
-            const struct kefir_ast_scoped_identifier *scoped_id;
-            struct kefir_ast_temporary_identifier temporary_identifier;
-            struct kefir_ast_flow_control_structure *flow_control_statement;
-            struct kefir_ast_flow_control_point *flow_control_point;
-            kefir_size_t alignment;
-
-            struct {
-                kefir_bool_t enabled;
-                struct kefir_ast_temporary_identifier temporary_identifier;
-            } preserve_after_eval;
-        } expression_props;
-
-        struct {
-            kefir_ast_scoped_identifier_storage_t storage;
-            kefir_ast_function_specifier_t function;
-            const char *identifier;
-            kefir_size_t alignment;
-            kefir_bool_t static_assertion;
-            const struct kefir_ast_type *original_type;
-            const struct kefir_ast_scoped_identifier *scoped_id;
-            struct kefir_ast_temporary_identifier temporary_identifier;
-        } declaration_props;
-
-        struct {
-            struct kefir_ast_flow_control_point *origin_flow_control_point;
-            struct kefir_ast_flow_control_point *target_flow_control_point;
-            struct kefir_ast_flow_control_structure *flow_control_statement;
-            const struct kefir_ast_scoped_identifier *scoped_id;
-            const struct kefir_ast_type *return_type;
-        } statement_props;
-
-        struct {
-            kefir_ast_function_specifier_t function;
-            const char *identifier;
-            const struct kefir_ast_scoped_identifier *scoped_id;
-
-            struct {
-                kefir_bool_t enable_fenv_access;
-                kefir_bool_t disallow_fp_contract;
-                kefir_ast_pragma_on_off_value_t cx_limited_range;
-            } pragma_stats;
-        } function_definition;
-
-        struct {
-            kefir_size_t alignment;
-            kefir_ast_scoped_identifier_storage_t storage;
-        } type_props;
-
-        struct {
-            struct kefir_ast_flow_control_point *origin_flow_control_point;
-            struct kefir_ast_flow_control_branching_point *branching_point;
-        } inline_assembly;
+        struct kefir_ast_node_expression_properties *expression_props;
+        struct kefir_ast_node_declaration_properties *declaration_props;
+        struct kefir_ast_node_statement_properties *statement_props;
+        struct kefir_ast_node_function_definition_properties *function_definition;
+        struct kefir_ast_node_type_properties *type_props;
+        struct kefir_ast_node_inline_assembly_properties *inline_assembly;
     };
 } kefir_ast_node_properties_t;
 
@@ -140,18 +147,26 @@ kefir_result_t kefir_ast_visitor_init(struct kefir_ast_visitor *,
                                       KEFIR_AST_VISITOR_METHOD(method, kefir_ast_node_base));
 
 kefir_result_t kefir_ast_node_properties_init(struct kefir_ast_node_properties *);
+kefir_result_t kefir_ast_node_properties_reset(struct kefir_ast_node_properties *, kefir_ast_node_category_t);
 
 kefir_result_t kefir_ast_node_properties_clone(struct kefir_ast_node_properties *,
                                                const struct kefir_ast_node_properties *);
 
 #define KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION(_node)                       \
     ((_node)->properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION && \
-     (_node)->properties.expression_props.constant_expression_value != NULL)
+     (_node)->properties.expression_props->constant_expression_value != NULL)
 #define KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(_node, _klass) \
     (KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION((_node)) &&          \
-     (_node)->properties.expression_props.constant_expression_value->klass == (_klass))
+     (_node)->properties.expression_props->constant_expression_value->klass == (_klass))
 #define KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(_node)                                                               \
-    (KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION((_node)) ? (_node)->properties.expression_props.constant_expression_value \
+    (KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION((_node)) ? (_node)->properties.expression_props->constant_expression_value \
                                                     : NULL)
+
+kefir_result_t kefir_ast_node_allocate_expression_props(struct kefir_memory_arena *, struct kefir_ast_node_base *);
+kefir_result_t kefir_ast_node_allocate_declaration_props(struct kefir_memory_arena *, struct kefir_ast_node_base *);
+kefir_result_t kefir_ast_node_allocate_statement_props(struct kefir_memory_arena *, struct kefir_ast_node_base *);
+kefir_result_t kefir_ast_node_allocate_function_definition_props(struct kefir_memory_arena *, struct kefir_ast_node_base *);
+kefir_result_t kefir_ast_node_allocate_type_props(struct kefir_memory_arena *, struct kefir_ast_node_base *);
+kefir_result_t kefir_ast_node_allocate_inline_asm_props(struct kefir_memory_arena *, struct kefir_ast_node_base *);
 
 #endif

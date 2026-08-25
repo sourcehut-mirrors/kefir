@@ -120,7 +120,7 @@ kefir_result_t kefir_ast_analyze_assignment_operator_node(struct kefir_mem *mem,
             KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->value->source_location,
                                    "Both assignment operands shall be expressions"));
 
-    REQUIRE(node->target->properties.expression_props.lvalue,
+    REQUIRE(node->target->properties.expression_props->lvalue,
             KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->target->source_location,
                                    "Expected non-const lvalue as assignment target operand"));
     struct kefir_ast_type_qualification target_qualifications;
@@ -129,7 +129,7 @@ kefir_result_t kefir_ast_analyze_assignment_operator_node(struct kefir_mem *mem,
             KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->target->source_location,
                                    "Expected non-const lvalue as assignment target operand"));
 
-    REQUIRE_OK(kefir_ast_node_properties_init(&base->properties));
+    REQUIRE_OK(kefir_ast_node_properties_reset(&base->properties, KEFIR_AST_NODE_CATEGORY_EXPRESSION));
     switch (node->operation) {
         case KEFIR_AST_ASSIGNMENT_SIMPLE:
             REQUIRE_OK(validate_simple_assignment(mem, context, node, base));
@@ -141,8 +141,9 @@ kefir_result_t kefir_ast_analyze_assignment_operator_node(struct kefir_mem *mem,
     }
 
     base->properties.category = KEFIR_AST_NODE_CATEGORY_EXPRESSION;
+    REQUIRE_OK(kefir_ast_node_allocate_expression_props(context->memory_arena, base));
     base->properties.type =
         KEFIR_AST_TYPE_CONV_EXPRESSION_ALL(mem, context->type_bundle, node->target->properties.type);
-    base->properties.expression_props.bitfield_props = node->target->properties.expression_props.bitfield_props;
+    base->properties.expression_props->bitfield_props = node->target->properties.expression_props->bitfield_props;
     return KEFIR_OK;
 }

@@ -47,7 +47,7 @@ static kefir_result_t init_function_declaration(struct kefir_mem *mem, struct ke
     const char *identifier = decl_identifier->identifier;
 
     char identifier_buf[1024];
-    const struct kefir_ast_scoped_identifier *scoped_id = function->base.properties.function_definition.scoped_id;
+    const struct kefir_ast_scoped_identifier *scoped_id = function->base.properties.function_definition->scoped_id;
     if (scoped_id->function.flags.gnu_inline &&
         scoped_id->function.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN &&
         kefir_ast_function_specifier_is_inline(scoped_id->function.specifier) &&
@@ -70,7 +70,7 @@ static kefir_result_t init_function_declaration(struct kefir_mem *mem, struct ke
             REQUIRE_OK(kefir_ast_translator_function_declaration_init(
                 mem, context->ast_context, context->environment, context->ast_context->type_bundle,
                 context->ast_context->type_traits, context->module, identifier, true,
-                function->base.properties.function_definition.scoped_id->function.type, NULL, 0,
+                function->base.properties.function_definition->scoped_id->function.type, NULL, 0,
                 &args->function_declaration, &function->base.source_location));
             break;
 
@@ -89,7 +89,7 @@ static kefir_result_t init_function_declaration(struct kefir_mem *mem, struct ke
                     struct kefir_ast_init_declarator *decl = decl_list->init_declarators[i];
                     REQUIRE_CHAIN(&res, kefir_hashtree_insert(
                                             mem, &declarations,
-                                            (kefir_hashtree_key_t) decl->base.properties.declaration_props.identifier,
+                                            (kefir_hashtree_key_t) decl->base.properties.declaration_props->identifier,
                                             (kefir_hashtree_value_t) KEFIR_AST_NODE_BASE(decl)));
                 }
             }
@@ -109,11 +109,11 @@ static kefir_result_t init_function_declaration(struct kefir_mem *mem, struct ke
                 ASSIGN_DECL_CAST(struct kefir_ast_node_base *, param, iter->value);
                 REQUIRE_CHAIN_SET(&res,
                                   param->properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION &&
-                                      param->properties.expression_props.identifier != NULL,
+                                      param->properties.expression_props->identifier != NULL,
                                   KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Expected parameter to be AST identifier"));
                 REQUIRE_CHAIN(&res,
                               kefir_hashtree_at(&declarations,
-                                                (kefir_hashtree_key_t) param->properties.expression_props.identifier,
+                                                (kefir_hashtree_key_t) param->properties.expression_props->identifier,
                                                 &tree_node));
 
                 declaration_list[declaration_index] = (struct kefir_ast_node_base *) tree_node->value;
@@ -174,7 +174,7 @@ kefir_result_t kefir_ast_translator_function_context_init(struct kefir_mem *mem,
 
     ctx->function_definition = function;
     ctx->module = context->module;
-    ctx->local_context = function->base.properties.function_definition.scoped_id->function.local_context;
+    ctx->local_context = function->base.properties.function_definition->scoped_id->function.local_context;
     kefir_result_t res = kefir_ast_translator_context_init_local(mem, &ctx->local_translator_context,
                                                                  &ctx->local_context->context, NULL, context);
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -227,7 +227,7 @@ kefir_result_t kefir_ast_translator_function_context_init(struct kefir_mem *mem,
     ctx->local_translator_context.global_scope_layout = context->global_scope_layout;
     ctx->local_translator_context.local_scope_layout = &ctx->local_scope_layout;
     const struct kefir_ast_scoped_identifier *function_scoped_id =
-        function->base.properties.function_definition.scoped_id;
+        function->base.properties.function_definition->scoped_id;
     ctx->ir_func->flags.constructor = function_scoped_id->function.flags.constructor;
     ctx->ir_func->flags.destructor = function_scoped_id->function.flags.destructor;
     if (function_scoped_id->function.flags.noinline || function_scoped_id->function.flags.weak) {
@@ -242,12 +242,12 @@ kefir_result_t kefir_ast_translator_function_context_init(struct kefir_mem *mem,
         ctx->ir_func->flags.inline_behavior = KEFIR_IR_FUNCTION_INLINE_DEFAULT;
     }
     ctx->ir_func->flags.enable_fenv_access =
-        function->base.properties.function_definition.pragma_stats.enable_fenv_access;
+        function->base.properties.function_definition->pragma_stats.enable_fenv_access;
     ctx->ir_func->flags.disallow_fp_contract =
-        function->base.properties.function_definition.pragma_stats.disallow_fp_contract;
+        function->base.properties.function_definition->pragma_stats.disallow_fp_contract;
     ctx->ir_func->flags.cx_limited_range =
-        (function->base.properties.function_definition.pragma_stats.cx_limited_range == KEFIR_AST_PRAGMA_VALUE_ON) ||
-        (function->base.properties.function_definition.pragma_stats.cx_limited_range ==
+        (function->base.properties.function_definition->pragma_stats.cx_limited_range == KEFIR_AST_PRAGMA_VALUE_ON) ||
+        (function->base.properties.function_definition->pragma_stats.cx_limited_range ==
              KEFIR_AST_PRAGMA_VALUE_DEFAULT &&
          context->environment->configuration->cx_limited_range);
 
@@ -327,7 +327,7 @@ static kefir_result_t generate_debug_info(struct kefir_mem *mem,
                                                   &KEFIR_IR_DEBUG_ENTRY_ATTR_TYPE(subprogram_return_type_id)));
 
     const struct kefir_ast_scoped_identifier *scoped_id =
-        function_context->function_definition->base.properties.function_definition.scoped_id;
+        function_context->function_definition->base.properties.function_definition->scoped_id;
     REQUIRE_OK(kefir_ir_debug_entry_add_attribute(
         mem, &function_context->module->debug_info.entries, &function_context->module->symbols, subprogram_entry_id,
         &KEFIR_IR_DEBUG_ENTRY_ATTR_EXTERNAL(scoped_id->function.storage != KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC)));
@@ -401,7 +401,7 @@ kefir_result_t kefir_ast_translator_function_context_translate(
     }
 
     REQUIRE_OK(kefir_ast_translator_mark_associated_scope_objects_lifetime(
-        mem, context, builder, function->body->base.properties.statement_props.flow_control_statement));
+        mem, context, builder, function->body->base.properties.statement_props->flow_control_statement));
 
     const struct kefir_ast_declarator_function *decl_func = NULL;
     REQUIRE_OK(kefir_ast_declarator_unpack_function(function->declarator, &decl_func));
@@ -432,7 +432,7 @@ kefir_result_t kefir_ast_translator_function_context_translate(
             if (init_decl->base.properties.type->tag != KEFIR_AST_TYPE_VOID) {
                 REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_GET_ARGUMENT, parameter_id));
                 if (param_identifier != NULL && param_identifier->identifier != NULL) {
-                    scoped_id = init_decl->base.properties.declaration_props.scoped_id;
+                    scoped_id = init_decl->base.properties.declaration_props->scoped_id;
                     REQUIRE_OK(kefir_ast_translator_object_lvalue(mem, context, builder, param_identifier->identifier,
                                                                   scoped_id));
                     REQUIRE_OK(xchg_param_address(builder));
@@ -444,12 +444,12 @@ kefir_result_t kefir_ast_translator_function_context_translate(
                 }
             }
         } else if (param->properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION &&
-                   param->properties.expression_props.identifier != NULL) {
+                   param->properties.expression_props->identifier != NULL) {
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_GET_ARGUMENT, parameter_id));
 
-            scoped_id = param->properties.expression_props.scoped_id;
+            scoped_id = param->properties.expression_props->scoped_id;
             REQUIRE_OK(kefir_ast_translator_object_lvalue(mem, context, builder,
-                                                          param->properties.expression_props.identifier, scoped_id));
+                                                          param->properties.expression_props->identifier, scoped_id));
             REQUIRE_OK(xchg_param_address(builder));
 
             const struct kefir_ast_type *default_promotion =
@@ -491,7 +491,7 @@ kefir_result_t kefir_ast_translator_function_context_translate(
                 REQUIRE_OK(kefir_ast_declarator_unpack_identifier(init_decl->declarator, &param_identifier));
                 if (init_decl->base.properties.type->tag != KEFIR_AST_TYPE_VOID) {
                     if (param_identifier != NULL && param_identifier->identifier != NULL) {
-                        scoped_id = init_decl->base.properties.declaration_props.scoped_id;
+                        scoped_id = init_decl->base.properties.declaration_props->scoped_id;
                         REQUIRE_OK(generate_parameter_debug_info(mem, function_context, subprogram_entry_id,
                                                                  param_identifier->identifier, scoped_id->object.type,
                                                                  parameter_index));
@@ -501,10 +501,10 @@ kefir_result_t kefir_ast_translator_function_context_translate(
                     }
                 }
             } else if (param->properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION &&
-                       param->properties.expression_props.identifier != NULL) {
-                scoped_id = param->properties.expression_props.scoped_id;
+                       param->properties.expression_props->identifier != NULL) {
+                scoped_id = param->properties.expression_props->scoped_id;
                 REQUIRE_OK(generate_parameter_debug_info(mem, function_context, subprogram_entry_id,
-                                                         param->properties.expression_props.identifier,
+                                                         param->properties.expression_props->identifier,
                                                          scoped_id->object.type, parameter_index));
             } else {
                 return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR,
@@ -536,7 +536,7 @@ kefir_result_t kefir_ast_translator_function_context_translate(
             struct kefir_ast_init_declarator *init_decl = param_decl->init_declarators[0];
 
             REQUIRE_OK(kefir_ast_type_list_variable_modificators(
-                init_decl->base.properties.declaration_props.original_type, translate_variably_modified,
+                init_decl->base.properties.declaration_props->original_type, translate_variably_modified,
                 &(struct vl_modified_param) {.mem = mem, .context = context, .builder = builder}));
         }
     }
@@ -552,7 +552,7 @@ kefir_result_t kefir_ast_translator_function_context_translate(
             struct kefir_ast_init_declarator *decl = decl_list->init_declarators[i];
 
             REQUIRE_OK(kefir_ast_type_list_variable_modificators(
-                decl->base.properties.declaration_props.original_type, translate_variably_modified,
+                decl->base.properties.declaration_props->original_type, translate_variably_modified,
                 &(struct vl_modified_param) {.mem = mem, .context = context, .builder = builder}));
         }
     }
@@ -582,12 +582,12 @@ kefir_result_t kefir_ast_translator_function_context_translate(
                                                   &KEFIR_IR_DEBUG_ENTRY_ATTR_CODE_END(function_end_index)));
     REQUIRE_OK(kefir_ast_translator_generate_object_scope_debug_information(
         mem, context->ast_context, context->environment, context->module, context->debug_entries,
-        function->body->base.properties.statement_props.flow_control_statement->associated_scopes.ordinary_scope,
+        function->body->base.properties.statement_props->flow_control_statement->associated_scopes.ordinary_scope,
         subprogram_entry_id, function_begin_index, function_end_index));
     REQUIRE_OK(
         kefir_ast_translator_context_pop_debug_hierarchy_entry(mem, &function_context->local_translator_context));
     REQUIRE_OK(kefir_ast_translator_mark_associated_scope_objects_lifetime(
-        mem, context, builder, function->body->base.properties.statement_props.flow_control_statement));
+        mem, context, builder, function->body->base.properties.statement_props->flow_control_statement));
 
     return KEFIR_OK;
 }

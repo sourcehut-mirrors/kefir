@@ -38,7 +38,7 @@ kefir_result_t kefir_ast_translate_while_statement_node(struct kefir_mem *mem,
     REQUIRE(node != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST while statement node"));
 
     struct kefir_ast_flow_control_structure *flow_control_stmt =
-        node->base.properties.statement_props.flow_control_statement;
+        node->base.properties.statement_props->flow_control_statement;
     REQUIRE_OK(kefir_ast_translator_flow_control_point_resolve(mem, flow_control_stmt->value.loop.continuation,
                                                                KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder)));
 
@@ -51,7 +51,7 @@ kefir_result_t kefir_ast_translate_while_statement_node(struct kefir_mem *mem,
                                                   &KEFIR_IR_DEBUG_ENTRY_ATTR_CODE_BEGIN(statement_begin_index)));
 
     REQUIRE_OK(kefir_ast_translator_mark_associated_scope_objects_lifetime(
-        mem, context, builder, node->base.properties.statement_props.flow_control_statement));
+        mem, context, builder, node->base.properties.statement_props->flow_control_statement));
 
     REQUIRE_OK(kefir_ast_translate_expression(mem, node->controlling_expr, builder, context));
     const struct kefir_ast_type *controlling_expr_type =
@@ -115,11 +115,11 @@ kefir_result_t kefir_ast_translate_while_statement_node(struct kefir_mem *mem,
                                                   &KEFIR_IR_DEBUG_ENTRY_ATTR_CODE_END(statement_end_index)));
     REQUIRE_OK(kefir_ast_translator_generate_object_scope_debug_information(
         mem, context->ast_context, context->environment, context->module, context->debug_entries,
-        node->base.properties.statement_props.flow_control_statement->associated_scopes.ordinary_scope,
+        node->base.properties.statement_props->flow_control_statement->associated_scopes.ordinary_scope,
         lexical_block_entry_id, statement_begin_index, statement_end_index));
     REQUIRE_OK(kefir_ast_translator_context_pop_debug_hierarchy_entry(mem, context));
     REQUIRE_OK(kefir_ast_translator_mark_associated_scope_objects_lifetime(
-        mem, context, builder, node->base.properties.statement_props.flow_control_statement));
+        mem, context, builder, node->base.properties.statement_props->flow_control_statement));
 
     return KEFIR_OK;
 }

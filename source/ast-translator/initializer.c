@@ -135,7 +135,7 @@ static kefir_result_t traverse_scalar(const struct kefir_ast_designator *designa
     } else if (expression->klass->type == KEFIR_AST_COMPOUND_LITERAL &&
                (expr_type->tag == KEFIR_AST_TYPE_STRUCTURE || expr_type->tag == KEFIR_AST_TYPE_UNION) &&
                KEFIR_AST_TYPE_COMPATIBLE(param->context->ast_context->type_traits, expr_type, type_layout->type) &&
-               !expression->properties.expression_props.preserve_after_eval.enabled) {
+               !expression->properties.expression_props->preserve_after_eval.enabled) {
         struct kefir_ast_compound_literal *compound_literal;
         REQUIRE_OK(kefir_ast_downcast_compound_literal(expression, &compound_literal, false));
 
@@ -158,11 +158,11 @@ static kefir_result_t traverse_scalar(const struct kefir_ast_designator *designa
                 kefir_hashtreeset_add(param->mem, param->repeated_expressions, (kefir_hashtreeset_entry_t) expression));
         } else {
             REQUIRE(
-                expression->properties.expression_props.preserve_after_eval.enabled,
+                expression->properties.expression_props->preserve_after_eval.enabled,
                 KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected repeated initializer expression value to be preserved"));
             REQUIRE_OK(kefir_ast_translator_fetch_temporary(
                 param->mem, param->context, param->builder,
-                &expression->properties.expression_props.preserve_after_eval.temporary_identifier));
+                &expression->properties.expression_props->preserve_after_eval.temporary_identifier));
             REQUIRE_OK(kefir_ast_translator_load_value(expression->properties.type,
                                                        param->context->ast_context->type_traits, param->builder));
         }

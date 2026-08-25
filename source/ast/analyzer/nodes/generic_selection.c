@@ -40,6 +40,7 @@ kefir_result_t kefir_ast_analyze_generic_selection_node(struct kefir_mem *mem, c
             : node->control->properties.type;
 
     base->properties.category = KEFIR_AST_NODE_CATEGORY_EXPRESSION;
+    REQUIRE_OK(kefir_ast_node_allocate_expression_props(context->memory_arena, base));
     kefir_bool_t matched = false;
     for (kefir_size_t i = 0; i < node->associations_length; i++) {
         struct kefir_ast_generic_selection_assoc *assoc = &node->associations[i];
@@ -48,14 +49,14 @@ kefir_result_t kefir_ast_analyze_generic_selection_node(struct kefir_mem *mem, c
         if (!matched &&
             KEFIR_AST_TYPE_COMPATIBLE(context->type_traits, control_type, assoc->type_name->base.properties.type)) {
             base->properties.type = assoc->expr->properties.type;
-            base->properties.expression_props = assoc->expr->properties.expression_props;
+            *base->properties.expression_props = *assoc->expr->properties.expression_props;
             matched = true;
         }
     }
     if (!matched && node->default_assoc != NULL) {
         REQUIRE_OK(kefir_ast_analyze_node(mem, context, node->default_assoc));
         base->properties.type = node->default_assoc->properties.type;
-        base->properties.expression_props = node->default_assoc->properties.expression_props;
+        *base->properties.expression_props = *node->default_assoc->properties.expression_props;
         matched = true;
     }
 

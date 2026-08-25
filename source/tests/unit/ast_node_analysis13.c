@@ -39,8 +39,8 @@ DEFINE_CASE(ast_node_analysis_inline_assembly1, "AST node analysis - inline asse
 
     ASSERT_OK(kefir_ast_analyze_node(&kft_mem, &global_context.context, KEFIR_AST_NODE_BASE(inline_asm1)));
     ASSERT(inline_asm1->base.properties.category == KEFIR_AST_NODE_CATEGORY_INLINE_ASSEMBLY);
-    ASSERT(inline_asm1->base.properties.inline_assembly.origin_flow_control_point == NULL);
-    ASSERT(inline_asm1->base.properties.inline_assembly.branching_point == NULL);
+    ASSERT(inline_asm1->base.properties.inline_assembly->origin_flow_control_point == NULL);
+    ASSERT(inline_asm1->base.properties.inline_assembly->branching_point == NULL);
 
     struct kefir_ast_inline_assembly *inline_asm2 = kefir_ast_new_inline_assembly(
         &kft_mem, (struct kefir_ast_inline_assembly_qualifiers) {.inline_qualifier = true}, "Some other assembly code");
@@ -78,10 +78,10 @@ DEFINE_CASE(ast_node_analysis_inline_assembly2, "AST node analysis - inline asse
 
     ASSERT_OK(kefir_ast_analyze_node(&kft_mem, &local_context.context, KEFIR_AST_NODE_BASE(inline_asm1)));
     ASSERT(inline_asm1->base.properties.category == KEFIR_AST_NODE_CATEGORY_INLINE_ASSEMBLY);
-    ASSERT(inline_asm1->base.properties.inline_assembly.origin_flow_control_point != NULL);
+    ASSERT(inline_asm1->base.properties.inline_assembly->origin_flow_control_point != NULL);
     ASSERT(kefir_ast_flow_control_structure_parent(
-               inline_asm1->base.properties.inline_assembly.origin_flow_control_point->self) == flow_control);
-    ASSERT(inline_asm1->base.properties.inline_assembly.branching_point != NULL);
+               inline_asm1->base.properties.inline_assembly->origin_flow_control_point->self) == flow_control);
+    ASSERT(inline_asm1->base.properties.inline_assembly->branching_point != NULL);
 
     ASSERT_OK(local_context.context.define_identifier(
         &kft_mem, &local_context.context, true, "a1", kefir_ast_type_signed_int(),
@@ -111,26 +111,26 @@ DEFINE_CASE(ast_node_analysis_inline_assembly2, "AST node analysis - inline asse
 
     ASSERT_OK(kefir_ast_analyze_node(&kft_mem, &local_context.context, KEFIR_AST_NODE_BASE(inline_asm2)));
     ASSERT(inline_asm2->base.properties.category == KEFIR_AST_NODE_CATEGORY_INLINE_ASSEMBLY);
-    ASSERT(inline_asm2->base.properties.inline_assembly.origin_flow_control_point != NULL);
+    ASSERT(inline_asm2->base.properties.inline_assembly->origin_flow_control_point != NULL);
     ASSERT(kefir_ast_flow_control_structure_parent(
-               inline_asm2->base.properties.inline_assembly.origin_flow_control_point->self) == flow_control);
-    ASSERT(inline_asm2->base.properties.inline_assembly.branching_point != NULL);
+               inline_asm2->base.properties.inline_assembly->origin_flow_control_point->self) == flow_control);
+    ASSERT(inline_asm2->base.properties.inline_assembly->branching_point != NULL);
 
     struct kefir_hashtree_node *label_node;
-    ASSERT_OK(kefir_hashtree_at(&inline_asm2->base.properties.inline_assembly.branching_point->branches,
+    ASSERT_OK(kefir_hashtree_at(&inline_asm2->base.properties.inline_assembly->branching_point->branches,
                                 (kefir_hashtree_key_t) "label1", &label_node));
     const struct kefir_ast_scoped_identifier *scoped_id;
     ASSERT_OK(
         local_context.context.reference_label(&kft_mem, &local_context.context, "label1", NULL, NULL, &scoped_id));
     ASSERT(scoped_id->label.point == (void *) label_node->value);
 
-    ASSERT_OK(kefir_hashtree_at(&inline_asm2->base.properties.inline_assembly.branching_point->branches,
+    ASSERT_OK(kefir_hashtree_at(&inline_asm2->base.properties.inline_assembly->branching_point->branches,
                                 (kefir_hashtree_key_t) "label2", &label_node));
     ASSERT_OK(
         local_context.context.reference_label(&kft_mem, &local_context.context, "label2", NULL, NULL, &scoped_id));
     ASSERT(scoped_id->label.point == (void *) label_node->value);
 
-    ASSERT_OK(kefir_hashtree_at(&inline_asm2->base.properties.inline_assembly.branching_point->branches,
+    ASSERT_OK(kefir_hashtree_at(&inline_asm2->base.properties.inline_assembly->branching_point->branches,
                                 (kefir_hashtree_key_t) "label3", &label_node));
     ASSERT_OK(
         local_context.context.reference_label(&kft_mem, &local_context.context, "label3", NULL, NULL, &scoped_id));

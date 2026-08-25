@@ -64,7 +64,7 @@ kefir_result_t kefir_ast_analyze_function_call_node(struct kefir_mem *mem, const
         REQUIRE_OK(implicit_function_declaration(mem, context, node->function));
     }
 
-    REQUIRE_OK(kefir_ast_node_properties_init(&base->properties));
+    REQUIRE_OK(kefir_ast_node_properties_reset(&base->properties, KEFIR_AST_NODE_CATEGORY_EXPRESSION));
 
     REQUIRE_OK(kefir_ast_analyze_node(mem, context, node->function));
     for (kefir_size_t i = 0; i < node->argument_length; i++) {
@@ -118,19 +118,20 @@ kefir_result_t kefir_ast_analyze_function_call_node(struct kefir_mem *mem, const
     REQUIRE_OK(kefir_ast_type_completion(mem, context, &return_type, return_type));
     base->properties.category = KEFIR_AST_NODE_CATEGORY_EXPRESSION;
     base->properties.type = return_type;
+    REQUIRE_OK(kefir_ast_node_allocate_expression_props(context->memory_arena, base));
 
     if (KEFIR_AST_TYPE_IS_AGGREGATE_TYPE(return_type)) {
         REQUIRE_OK(context->allocate_temporary_value(
             mem, context, return_type, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_UNKNOWN, NULL, &base->source_location,
-            &base->properties.expression_props.temporary_identifier));
+            &base->properties.expression_props->temporary_identifier));
     }
 
     if (context->flow_control_tree != NULL) {
         struct kefir_ast_flow_control_structure *top_control_struct;
         REQUIRE_OK(kefir_ast_flow_control_tree_top(context->flow_control_tree, &top_control_struct));
-        base->properties.expression_props.flow_control_point =
+        base->properties.expression_props->flow_control_point =
             kefir_ast_flow_control_point_alloc(mem, context->flow_control_tree, top_control_struct);
-        REQUIRE(base->properties.expression_props.flow_control_point != NULL,
+        REQUIRE(base->properties.expression_props->flow_control_point != NULL,
                 KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate AST flow control point"));
     }
     return KEFIR_OK;

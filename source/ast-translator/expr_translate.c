@@ -117,9 +117,9 @@ kefir_result_t kefir_ast_translate_expression(struct kefir_mem *mem, const struc
     const kefir_size_t begin_ir_index = KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder);
     REQUIRE_OK(KEFIR_AST_NODE_VISIT(&visitor, base, &param));
 
-    if (base->properties.expression_props.preserve_after_eval.enabled) {
+    if (base->properties.expression_props->preserve_after_eval.enabled) {
         REQUIRE_OK(kefir_ast_translator_fetch_temporary(
-            mem, context, builder, &base->properties.expression_props.preserve_after_eval.temporary_identifier));
+            mem, context, builder, &base->properties.expression_props->preserve_after_eval.temporary_identifier));
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_VSTACK_PICK, 1));
         REQUIRE_OK(
             kefir_ast_translator_store_value(mem, base->properties.type, context, builder, &base->source_location));

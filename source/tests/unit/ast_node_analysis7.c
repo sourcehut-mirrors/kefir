@@ -60,11 +60,11 @@ DEFINE_CASE(ast_node_analysis_init_declarators1, "AST node analysis - declaratio
                                  (struct kefir_ast_type_qualification) {.constant = true});
     ASSERT(decl1->base.properties.category == KEFIR_AST_NODE_CATEGORY_INIT_DECLARATOR);
     ASSERT(KEFIR_AST_TYPE_SAME(decl1->base.properties.type, type1));
-    ASSERT(decl1->base.properties.declaration_props.function == KEFIR_AST_FUNCTION_SPECIFIER_NONE);
-    ASSERT(decl1->base.properties.declaration_props.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN);
-    ASSERT(decl1->base.properties.declaration_props.identifier != NULL);
-    ASSERT(strcmp(decl1->base.properties.declaration_props.identifier, "some_var1") == 0);
-    ASSERT(decl1->base.properties.declaration_props.alignment == 16);
+    ASSERT(decl1->base.properties.declaration_props->function == KEFIR_AST_FUNCTION_SPECIFIER_NONE);
+    ASSERT(decl1->base.properties.declaration_props->storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN);
+    ASSERT(decl1->base.properties.declaration_props->identifier != NULL);
+    ASSERT(strcmp(decl1->base.properties.declaration_props->identifier, "some_var1") == 0);
+    ASSERT(decl1->base.properties.declaration_props->alignment == 16);
 
     const struct kefir_ast_scoped_identifier *scoped_id1 = NULL;
     ASSERT_OK(kefir_ast_local_context_resolve_scoped_ordinary_identifier(&local_context, "some_var1", &scoped_id1));
@@ -118,11 +118,11 @@ DEFINE_CASE(ast_node_analysis_init_declarators2, "AST node analysis - declaratio
                                  (struct kefir_ast_type_qualification) {.restricted = true, .volatile_type = true});
     ASSERT(decl1->base.properties.category == KEFIR_AST_NODE_CATEGORY_INIT_DECLARATOR);
     ASSERT(KEFIR_AST_TYPE_SAME(decl1->base.properties.type, type1));
-    ASSERT(decl1->base.properties.declaration_props.function == KEFIR_AST_FUNCTION_SPECIFIER_NONE);
-    ASSERT(decl1->base.properties.declaration_props.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_AUTO);
-    ASSERT(decl1->base.properties.declaration_props.identifier != NULL);
-    ASSERT(strcmp(decl1->base.properties.declaration_props.identifier, "declaration_one") == 0);
-    ASSERT(decl1->base.properties.declaration_props.alignment == 4);
+    ASSERT(decl1->base.properties.declaration_props->function == KEFIR_AST_FUNCTION_SPECIFIER_NONE);
+    ASSERT(decl1->base.properties.declaration_props->storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_AUTO);
+    ASSERT(decl1->base.properties.declaration_props->identifier != NULL);
+    ASSERT(strcmp(decl1->base.properties.declaration_props->identifier, "declaration_one") == 0);
+    ASSERT(decl1->base.properties.declaration_props->alignment == 4);
 
     const struct kefir_ast_scoped_identifier *scoped_id1 = NULL;
     ASSERT_OK(
@@ -202,11 +202,11 @@ DEFINE_CASE(ast_node_analysis_init_declarators3, "AST node analysis - declaratio
         &kft_mem, context->type_bundle, type1, (struct kefir_ast_type_qualification) {.constant = true});
     ASSERT(decl1->base.properties.category == KEFIR_AST_NODE_CATEGORY_INIT_DECLARATOR);
     ASSERT(KEFIR_AST_TYPE_SAME(decl1->base.properties.type, qualifier_type1));
-    ASSERT(decl1->base.properties.declaration_props.function == KEFIR_AST_FUNCTION_SPECIFIER_NONE);
-    ASSERT(decl1->base.properties.declaration_props.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC);
-    ASSERT(decl1->base.properties.declaration_props.identifier != NULL);
-    ASSERT(strcmp(decl1->base.properties.declaration_props.identifier, "VaRiAblE123") == 0);
-    ASSERT(decl1->base.properties.declaration_props.alignment == 8);
+    ASSERT(decl1->base.properties.declaration_props->function == KEFIR_AST_FUNCTION_SPECIFIER_NONE);
+    ASSERT(decl1->base.properties.declaration_props->storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC);
+    ASSERT(decl1->base.properties.declaration_props->identifier != NULL);
+    ASSERT(strcmp(decl1->base.properties.declaration_props->identifier, "VaRiAblE123") == 0);
+    ASSERT(decl1->base.properties.declaration_props->alignment == 8);
 
     const struct kefir_ast_scoped_identifier *scoped_id1 = NULL;
     ASSERT_OK(kefir_ast_local_context_resolve_scoped_ordinary_identifier(&local_context, "VaRiAblE123", &scoped_id1));
@@ -257,11 +257,11 @@ DEFINE_CASE(ast_node_analysis_init_declarators4, "AST node analysis - declaratio
     const struct kefir_ast_type *type1 = kefir_ast_type_unsigned_long_long();
     ASSERT(decl1->base.properties.category == KEFIR_AST_NODE_CATEGORY_INIT_DECLARATOR);
     ASSERT(KEFIR_AST_TYPE_SAME(decl1->base.properties.type, type1));
-    ASSERT(decl1->base.properties.declaration_props.function == KEFIR_AST_FUNCTION_SPECIFIER_NONE);
-    ASSERT(decl1->base.properties.declaration_props.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN_THREAD_LOCAL);
-    ASSERT(decl1->base.properties.declaration_props.identifier != NULL);
-    ASSERT(strcmp(decl1->base.properties.declaration_props.identifier, "globalVariable") == 0);
-    ASSERT(decl1->base.properties.declaration_props.alignment == 0);
+    ASSERT(decl1->base.properties.declaration_props->function == KEFIR_AST_FUNCTION_SPECIFIER_NONE);
+    ASSERT(decl1->base.properties.declaration_props->storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN_THREAD_LOCAL);
+    ASSERT(decl1->base.properties.declaration_props->identifier != NULL);
+    ASSERT(strcmp(decl1->base.properties.declaration_props->identifier, "globalVariable") == 0);
+    ASSERT(decl1->base.properties.declaration_props->alignment == 0);
 
     const struct kefir_ast_scoped_identifier *scoped_id1 = NULL;
     ASSERT_OK(
@@ -318,11 +318,11 @@ DEFINE_CASE(ast_node_analysis_init_declarators5, "AST node analysis - declaratio
 
     ASSERT(decl1->base.properties.category == KEFIR_AST_NODE_CATEGORY_INIT_DECLARATOR);
     ASSERT(KEFIR_AST_TYPE_SAME(decl1->base.properties.type, type1));
-    ASSERT(decl1->base.properties.declaration_props.function == KEFIR_AST_FUNCTION_SPECIFIER_NONE);
-    ASSERT(decl1->base.properties.declaration_props.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC_THREAD_LOCAL);
-    ASSERT(decl1->base.properties.declaration_props.identifier != NULL);
-    ASSERT(strcmp(decl1->base.properties.declaration_props.identifier, "counter") == 0);
-    ASSERT(decl1->base.properties.declaration_props.alignment == 0);
+    ASSERT(decl1->base.properties.declaration_props->function == KEFIR_AST_FUNCTION_SPECIFIER_NONE);
+    ASSERT(decl1->base.properties.declaration_props->storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC_THREAD_LOCAL);
+    ASSERT(decl1->base.properties.declaration_props->identifier != NULL);
+    ASSERT(strcmp(decl1->base.properties.declaration_props->identifier, "counter") == 0);
+    ASSERT(decl1->base.properties.declaration_props->alignment == 0);
 
     const struct kefir_ast_scoped_identifier *scoped_id1 = NULL;
     ASSERT_OK(kefir_ast_global_context_resolve_scoped_ordinary_identifier(&global_context, "counter", &scoped_id1));
@@ -395,12 +395,12 @@ DEFINE_CASE(ast_node_analysis_init_declarators6, "AST node analysis - declaratio
 
     ASSERT(decl1->base.properties.category == KEFIR_AST_NODE_CATEGORY_INIT_DECLARATOR);
     ASSERT(KEFIR_AST_TYPE_SAME(decl1->base.properties.type, type2));
-    ASSERT(KEFIR_AST_TYPE_SAME(decl1->base.properties.declaration_props.original_type, type1));
-    ASSERT(decl1->base.properties.declaration_props.function == KEFIR_AST_FUNCTION_SPECIFIER_NONE);
-    ASSERT(decl1->base.properties.declaration_props.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN);
-    ASSERT(decl1->base.properties.declaration_props.identifier != NULL);
-    ASSERT(strcmp(decl1->base.properties.declaration_props.identifier, "arr") == 0);
-    ASSERT(decl1->base.properties.declaration_props.alignment == 0);
+    ASSERT(KEFIR_AST_TYPE_SAME(decl1->base.properties.declaration_props->original_type, type1));
+    ASSERT(decl1->base.properties.declaration_props->function == KEFIR_AST_FUNCTION_SPECIFIER_NONE);
+    ASSERT(decl1->base.properties.declaration_props->storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN);
+    ASSERT(decl1->base.properties.declaration_props->identifier != NULL);
+    ASSERT(strcmp(decl1->base.properties.declaration_props->identifier, "arr") == 0);
+    ASSERT(decl1->base.properties.declaration_props->alignment == 0);
 
     const struct kefir_ast_scoped_identifier *scoped_id1 = NULL;
     ASSERT_OK(kefir_ast_global_context_resolve_scoped_ordinary_identifier(&global_context, "arr", &scoped_id1));
@@ -494,11 +494,11 @@ DEFINE_CASE(ast_node_analysis_init_declarators7, "AST node analysis - declaratio
 
     ASSERT(decl2->base.properties.category == KEFIR_AST_NODE_CATEGORY_INIT_DECLARATOR);
     ASSERT(KEFIR_AST_TYPE_SAME(decl2->base.properties.type, type2));
-    ASSERT(decl2->base.properties.declaration_props.function == KEFIR_AST_FUNCTION_SPECIFIER_NONE);
-    ASSERT(decl2->base.properties.declaration_props.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_AUTO);
-    ASSERT(decl2->base.properties.declaration_props.identifier != NULL);
-    ASSERT(strcmp(decl2->base.properties.declaration_props.identifier, "some_struct") == 0);
-    ASSERT(decl2->base.properties.declaration_props.alignment == 0);
+    ASSERT(decl2->base.properties.declaration_props->function == KEFIR_AST_FUNCTION_SPECIFIER_NONE);
+    ASSERT(decl2->base.properties.declaration_props->storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_AUTO);
+    ASSERT(decl2->base.properties.declaration_props->identifier != NULL);
+    ASSERT(strcmp(decl2->base.properties.declaration_props->identifier, "some_struct") == 0);
+    ASSERT(decl2->base.properties.declaration_props->alignment == 0);
 
     const struct kefir_ast_scoped_identifier *scoped_id1 = NULL;
     ASSERT_OK(kefir_ast_local_context_resolve_scoped_ordinary_identifier(&local_context, "some_struct", &scoped_id1));
@@ -584,11 +584,11 @@ DEFINE_CASE(ast_node_analysis_init_declarators8, "AST node analysis - declaratio
 
     ASSERT(decl1->base.properties.category == KEFIR_AST_NODE_CATEGORY_INIT_DECLARATOR);
     ASSERT(KEFIR_AST_TYPE_SAME(decl1->base.properties.type, type2));
-    ASSERT(decl1->base.properties.declaration_props.function == KEFIR_AST_FUNCTION_SPECIFIER_NONE);
-    ASSERT(decl1->base.properties.declaration_props.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_TYPEDEF);
-    ASSERT(decl1->base.properties.declaration_props.identifier != NULL);
-    ASSERT(strcmp(decl1->base.properties.declaration_props.identifier, "unionS_t") == 0);
-    ASSERT(decl1->base.properties.declaration_props.alignment == 0);
+    ASSERT(decl1->base.properties.declaration_props->function == KEFIR_AST_FUNCTION_SPECIFIER_NONE);
+    ASSERT(decl1->base.properties.declaration_props->storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_TYPEDEF);
+    ASSERT(decl1->base.properties.declaration_props->identifier != NULL);
+    ASSERT(strcmp(decl1->base.properties.declaration_props->identifier, "unionS_t") == 0);
+    ASSERT(decl1->base.properties.declaration_props->alignment == 0);
 
     const struct kefir_ast_scoped_identifier *scoped_id1 = NULL;
     ASSERT_OK(kefir_ast_local_context_resolve_scoped_ordinary_identifier(&local_context, "unionS_t", &scoped_id1));
@@ -611,11 +611,11 @@ DEFINE_CASE(ast_node_analysis_init_declarators8, "AST node analysis - declaratio
 
     ASSERT(decl2->base.properties.category == KEFIR_AST_NODE_CATEGORY_INIT_DECLARATOR);
     ASSERT(KEFIR_AST_TYPE_SAME(decl2->base.properties.type, type3));
-    ASSERT(decl2->base.properties.declaration_props.function == KEFIR_AST_FUNCTION_SPECIFIER_NONE);
-    ASSERT(decl2->base.properties.declaration_props.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC);
-    ASSERT(decl2->base.properties.declaration_props.identifier != NULL);
-    ASSERT(strcmp(decl2->base.properties.declaration_props.identifier, "Something") == 0);
-    ASSERT(decl2->base.properties.declaration_props.alignment == 0);
+    ASSERT(decl2->base.properties.declaration_props->function == KEFIR_AST_FUNCTION_SPECIFIER_NONE);
+    ASSERT(decl2->base.properties.declaration_props->storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC);
+    ASSERT(decl2->base.properties.declaration_props->identifier != NULL);
+    ASSERT(strcmp(decl2->base.properties.declaration_props->identifier, "Something") == 0);
+    ASSERT(decl2->base.properties.declaration_props->alignment == 0);
 
     const struct kefir_ast_scoped_identifier *scoped_id2 = NULL;
     ASSERT_OK(kefir_ast_local_context_resolve_scoped_ordinary_identifier(&local_context, "Something", &scoped_id2));

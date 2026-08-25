@@ -36,8 +36,9 @@ kefir_result_t kefir_ast_analyze_comma_operator_node(struct kefir_mem *mem, cons
     REQUIRE(node->expressions_length > 0, KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->base.source_location,
                                                                  "Comma expression shall have at least one operand"));
 
-    REQUIRE_OK(kefir_ast_node_properties_init(&base->properties));
+    REQUIRE_OK(kefir_ast_node_properties_reset(&base->properties, KEFIR_AST_NODE_CATEGORY_EXPRESSION));
     base->properties.category = KEFIR_AST_NODE_CATEGORY_EXPRESSION;
+    REQUIRE_OK(kefir_ast_node_allocate_expression_props(context->memory_arena, base));
 
     for (kefir_size_t i = 0; i < node->expressions_length; i++) {
         struct kefir_ast_node_base *expr = node->expressions[i];
@@ -47,11 +48,11 @@ kefir_result_t kefir_ast_analyze_comma_operator_node(struct kefir_mem *mem, cons
                                        "All comma operands shall be expressions"));
 
         base->properties.type = KEFIR_AST_TYPE_CONV_EXPRESSION_ALL(mem, context->type_bundle, expr->properties.type);
-        base->properties.expression_props.lvalue = expr->properties.expression_props.lvalue;
-        base->properties.expression_props.atomic = expr->properties.expression_props.atomic;
-        base->properties.expression_props.addressable = expr->properties.expression_props.addressable;
-        base->properties.expression_props.bitfield_props = expr->properties.expression_props.bitfield_props;
-        base->properties.expression_props.alignment = expr->properties.expression_props.alignment;
+        base->properties.expression_props->lvalue = expr->properties.expression_props->lvalue;
+        base->properties.expression_props->atomic = expr->properties.expression_props->atomic;
+        base->properties.expression_props->addressable = expr->properties.expression_props->addressable;
+        base->properties.expression_props->bitfield_props = expr->properties.expression_props->bitfield_props;
+        base->properties.expression_props->alignment = expr->properties.expression_props->alignment;
     }
 
     return KEFIR_OK;

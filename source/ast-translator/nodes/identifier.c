@@ -36,21 +36,21 @@ static kefir_result_t translate_object_identifier(struct kefir_mem *mem, struct 
                                                   const struct kefir_ast_identifier *node,
                                                   const struct kefir_ast_scoped_identifier *scoped_identifier) {
     kefir_bool_t skip_translate_expr = false;
-    if (scoped_identifier->object.constant_expression.present && !node->base.properties.expression_props.atomic) {
+    if (scoped_identifier->object.constant_expression.present && !node->base.properties.expression_props->atomic) {
         REQUIRE_OK(kefir_ast_try_translate_constant(mem, node->base.properties.type,
                                                     &scoped_identifier->object.constant_expression.value, builder,
                                                     context, &skip_translate_expr));
     }
     if (!skip_translate_expr) {
         REQUIRE_OK(kefir_ast_translator_object_lvalue(mem, context, builder, node->identifier, scoped_identifier));
-        if (node->base.properties.expression_props.atomic) {
+        if (node->base.properties.expression_props->atomic) {
             kefir_bool_t atomic_aggregate;
             REQUIRE_OK(kefir_ast_translator_atomic_load_value(
                 scoped_identifier->object.type, context->ast_context->type_traits, builder, &atomic_aggregate));
             if (atomic_aggregate) {
                 REQUIRE_OK(kefir_ast_translator_load_atomic_aggregate_value(
                     mem, node->base.properties.type, context, builder,
-                    &node->base.properties.expression_props.temporary_identifier, &node->base.source_location));
+                    &node->base.properties.expression_props->temporary_identifier, &node->base.source_location));
             }
         } else {
             REQUIRE_OK(kefir_ast_translator_load_value(scoped_identifier->object.type,
@@ -93,7 +93,7 @@ kefir_result_t kefir_ast_translate_identifier_node(struct kefir_mem *mem, struct
     REQUIRE(builder != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR block builder"));
     REQUIRE(node != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST identifier node"));
 
-    const struct kefir_ast_scoped_identifier *scoped_identifier = node->base.properties.expression_props.scoped_id;
+    const struct kefir_ast_scoped_identifier *scoped_identifier = node->base.properties.expression_props->scoped_id;
     switch (scoped_identifier->klass) {
         case KEFIR_AST_SCOPE_IDENTIFIER_OBJECT:
             REQUIRE_OK(translate_object_identifier(mem, context, builder, node, scoped_identifier));

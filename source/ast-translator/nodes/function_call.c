@@ -80,10 +80,10 @@ kefir_result_t kefir_ast_translate_function_call_node(struct kefir_mem *mem,
     char identifier_buf[1024];
     const char *function_name = NULL;
     if (node->function->properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION &&
-        node->function->properties.expression_props.identifier != NULL &&
-        node->function->properties.expression_props.scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_FUNCTION) {
-        const struct kefir_ast_scoped_identifier *scoped_id = node->function->properties.expression_props.scoped_id;
-        function_name = node->function->properties.expression_props.identifier;
+        node->function->properties.expression_props->identifier != NULL &&
+        node->function->properties.expression_props->scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_FUNCTION) {
+        const struct kefir_ast_scoped_identifier *scoped_id = node->function->properties.expression_props->scoped_id;
+        function_name = node->function->properties.expression_props->identifier;
         if (scoped_id->function.flags.gnu_inline &&
             kefir_ast_function_specifier_is_inline(scoped_id->function.specifier) &&
             !scoped_id->function.inline_definition && scoped_id->function.asm_label == NULL) {
@@ -98,7 +98,7 @@ kefir_result_t kefir_ast_translate_function_call_node(struct kefir_mem *mem,
 
     if (KEFIR_AST_TYPE_IS_AGGREGATE_TYPE(node->base.properties.type)) {
         REQUIRE_OK(kefir_ast_translator_fetch_temporary(mem, context, builder,
-                                                        &node->base.properties.expression_props.temporary_identifier));
+                                                        &node->base.properties.expression_props->temporary_identifier));
     }
 
     struct kefir_ir_function_decl *ir_decl = NULL;
@@ -172,7 +172,7 @@ kefir_result_t kefir_ast_translate_function_call_node(struct kefir_mem *mem,
 
     if (ir_decl->no_return) {
         REQUIRE_OK(kefir_ast_translator_mark_associated_scope_objects_lifetime(
-            mem, context, builder, node->base.properties.expression_props.flow_control_point->self));
+            mem, context, builder, node->base.properties.expression_props->flow_control_point->self));
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_UNREACHABLE, 0));
     }
     return KEFIR_OK;

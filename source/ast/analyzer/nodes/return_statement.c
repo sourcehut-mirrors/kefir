@@ -35,8 +35,9 @@ kefir_result_t kefir_ast_analyze_return_statement_node(struct kefir_mem *mem, co
     REQUIRE(node != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST return statement"));
     REQUIRE(base != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST base node"));
 
-    REQUIRE_OK(kefir_ast_node_properties_init(&base->properties));
+    REQUIRE_OK(kefir_ast_node_properties_reset(&base->properties, KEFIR_AST_NODE_CATEGORY_STATEMENT));
     base->properties.category = KEFIR_AST_NODE_CATEGORY_STATEMENT;
+    REQUIRE_OK(kefir_ast_node_allocate_statement_props(context->memory_arena, base));
 
     if (node->expression != NULL) {
         REQUIRE_OK(kefir_ast_analyze_node(mem, context, node->expression));
@@ -69,13 +70,13 @@ kefir_result_t kefir_ast_analyze_return_statement_node(struct kefir_mem *mem, co
                          KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->base.source_location,
                                                 "Returned value shall be assignable to the function return type"));
     }
-    base->properties.statement_props.return_type = function_return_type;
+    base->properties.statement_props->return_type = function_return_type;
 
     struct kefir_ast_flow_control_structure *top_control_struct;
     REQUIRE_OK(kefir_ast_flow_control_tree_top(context->flow_control_tree, &top_control_struct));
-    base->properties.statement_props.origin_flow_control_point =
+    base->properties.statement_props->origin_flow_control_point =
         kefir_ast_flow_control_point_alloc(mem, context->flow_control_tree, top_control_struct);
-    REQUIRE(base->properties.statement_props.origin_flow_control_point != NULL,
+    REQUIRE(base->properties.statement_props->origin_flow_control_point != NULL,
             KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate AST flow control point"));
     return KEFIR_OK;
 }

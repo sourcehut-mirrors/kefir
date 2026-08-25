@@ -179,9 +179,9 @@ kefir_result_t kefir_ast_evaluate_function_call_node(struct kefir_mem *mem, cons
 
     const char *function_name = NULL;
     if (node->function->properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION &&
-        node->function->properties.expression_props.identifier != NULL &&
-        node->function->properties.expression_props.scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_FUNCTION) {
-        function_name = node->function->properties.expression_props.identifier;
+        node->function->properties.expression_props->identifier != NULL &&
+        node->function->properties.expression_props->scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_FUNCTION) {
+        function_name = node->function->properties.expression_props->identifier;
     }
 
     REQUIRE(function_name != NULL, KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->base.source_location,

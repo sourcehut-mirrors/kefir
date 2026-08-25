@@ -31,7 +31,8 @@ kefir_result_t kefir_ast_analyze_attribute_declaration_node(struct kefir_mem *me
     REQUIRE(node != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST declaration"));
     REQUIRE(base != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST base node"));
 
-    REQUIRE_OK(kefir_ast_node_properties_init(&base->properties));
+    REQUIRE_OK(kefir_ast_node_properties_reset(&base->properties, KEFIR_AST_NODE_CATEGORY_DECLARATION));
     base->properties.category = KEFIR_AST_NODE_CATEGORY_DECLARATION;
+    REQUIRE_OK(kefir_ast_node_allocate_expression_props(context->memory_arena, base));
     return KEFIR_OK;
 }

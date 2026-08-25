@@ -57,7 +57,7 @@ kefir_result_t kefir_ast_evaluate_compound_literal_node(struct kefir_mem *mem, c
     const struct kefir_ast_type *unqualified_type = kefir_ast_unqualified_type(node->base.properties.type);
     if (unqualified_type->tag == KEFIR_AST_TYPE_ARRAY) {
         const struct kefir_ast_scoped_identifier *scoped_id =
-            node->base.properties.expression_props.temporary_identifier.scoped_id;
+            node->base.properties.expression_props->temporary_identifier.scoped_id;
         REQUIRE(unqualified_type->tag == KEFIR_AST_TYPE_ARRAY &&
                     (scoped_id->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN ||
                      scoped_id->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC),
@@ -66,7 +66,7 @@ kefir_result_t kefir_ast_evaluate_compound_literal_node(struct kefir_mem *mem, c
                                        "external/static storage"));
         value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS;
         value->pointer.type = KEFIR_AST_CONSTANT_EXPRESSION_POINTER_IDENTIFER;
-        value->pointer.base.literal = node->base.properties.expression_props.temporary_identifier.identifier;
+        value->pointer.base.literal = node->base.properties.expression_props->temporary_identifier.identifier;
         value->pointer.offset = 0;
         value->pointer.pointer_node = KEFIR_AST_NODE_BASE(node);
         value->pointer.scoped_id = scoped_id;

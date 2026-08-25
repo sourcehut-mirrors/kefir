@@ -44,7 +44,7 @@ kefir_result_t kefir_ast_translate_statement_expression_node(struct kefir_mem *m
                                                   &KEFIR_IR_DEBUG_ENTRY_ATTR_CODE_BEGIN(statement_begin_index)));
 
     REQUIRE_OK(kefir_ast_translator_mark_associated_scope_objects_lifetime(
-        mem, context, builder, node->base.properties.expression_props.flow_control_statement));
+        mem, context, builder, node->base.properties.expression_props->flow_control_statement));
 
     for (kefir_size_t i = 0; i < node->block_length; i++) {
         struct kefir_ast_node_base *item = node->block_items[i];
@@ -85,21 +85,21 @@ kefir_result_t kefir_ast_translate_statement_expression_node(struct kefir_mem *m
                                                   &KEFIR_IR_DEBUG_ENTRY_ATTR_CODE_END(statement_end_index)));
     REQUIRE_OK(kefir_ast_translator_generate_object_scope_debug_information(
         mem, context->ast_context, context->environment, context->module, context->debug_entries,
-        node->base.properties.expression_props.flow_control_statement->associated_scopes.ordinary_scope,
+        node->base.properties.expression_props->flow_control_statement->associated_scopes.ordinary_scope,
         lexical_block_entry_id, statement_begin_index, statement_end_index));
     REQUIRE_OK(kefir_ast_translator_context_pop_debug_hierarchy_entry(mem, context));
 
     if (kefir_ast_flow_control_block_contains_vl_arrays(
-            node->base.properties.expression_props.flow_control_statement)) {
+            node->base.properties.expression_props->flow_control_statement)) {
         kefir_id_t vla_element;
         REQUIRE_OK(kefir_ast_flow_control_block_vl_array_head(
-            node->base.properties.expression_props.flow_control_statement, &vla_element));
+            node->base.properties.expression_props->flow_control_statement, &vla_element));
 
         REQUIRE_OK(kefir_ast_translator_resolve_vla_element(mem, context, builder, vla_element));
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT64_LOAD, KEFIR_IR_MEMORY_FLAG_NONE));
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_SCOPE_POP, 0));
     }
     REQUIRE_OK(kefir_ast_translator_mark_associated_scope_objects_lifetime(
-        mem, context, builder, node->base.properties.expression_props.flow_control_statement));
+        mem, context, builder, node->base.properties.expression_props->flow_control_statement));
     return KEFIR_OK;
 }

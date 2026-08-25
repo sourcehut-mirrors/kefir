@@ -48,12 +48,12 @@ kefir_result_t kefir_ast_translate_return_statement_node(struct kefir_mem *mem,
         if (KEFIR_AST_TYPE_IS_SCALAR_TYPE(return_normalized_type)) {
             REQUIRE_OK(kefir_ast_translate_typeconv(mem, context->module, builder, context->ast_context->type_traits,
                                                     return_normalized_type,
-                                                    node->base.properties.statement_props.return_type));
+                                                    node->base.properties.statement_props->return_type));
         }
     }
 
     REQUIRE_OK(kefir_ast_translator_mark_associated_scope_objects_lifetime(
-        mem, context, builder, node->base.properties.statement_props.origin_flow_control_point->self));
+        mem, context, builder, node->base.properties.statement_props->origin_flow_control_point->self));
 
     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_RETURN, 0));
     return KEFIR_OK;

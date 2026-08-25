@@ -37,13 +37,13 @@ kefir_result_t kefir_ast_translate_goto_statement_node(struct kefir_mem *mem,
 
     if (node->base.klass->type == KEFIR_AST_GOTO_STATEMENT) {
         REQUIRE_OK(kefir_ast_translate_jump(
-            mem, context, builder, node->base.properties.statement_props.origin_flow_control_point,
-            node->base.properties.statement_props.target_flow_control_point, &node->base.source_location));
+            mem, context, builder, node->base.properties.statement_props->origin_flow_control_point,
+            node->base.properties.statement_props->target_flow_control_point, &node->base.source_location));
     } else {
         REQUIRE_OK(kefir_ast_translator_mark_associated_scope_objects_lifetime(
-            mem, context, builder, node->base.properties.statement_props.origin_flow_control_point->self));
+            mem, context, builder, node->base.properties.statement_props->origin_flow_control_point->self));
         struct kefir_ast_flow_control_structure *goto_parent =
-            node->base.properties.statement_props.origin_flow_control_point->self;
+            node->base.properties.statement_props->origin_flow_control_point->self;
         while (goto_parent != NULL) {
             if (goto_parent->type == KEFIR_AST_FLOW_CONTROL_STRUCTURE_BLOCK) {
                 REQUIRE(!kefir_ast_flow_control_block_contains_vl_arrays(goto_parent),

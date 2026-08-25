@@ -158,15 +158,15 @@ kefir_result_t kefir_ast_analyze_node(struct kefir_mem *mem, const struct kefir_
             mem, context, base, &value);
         if (res != KEFIR_NOT_CONSTANT) {
             REQUIRE_OK(res);
-            if (base->properties.expression_props.constant_expression_value == NULL) {
-                base->properties.expression_props.constant_expression_value = kefir_memory_arena_alloc(context->memory_arena,
+            if (base->properties.expression_props->constant_expression_value == NULL) {
+                base->properties.expression_props->constant_expression_value = kefir_memory_arena_alloc(context->memory_arena,
                     sizeof(struct kefir_ast_constant_expression_value), _Alignof(struct kefir_ast_constant_expression_value));
-                REQUIRE(base->properties.expression_props.constant_expression_value != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST constant expression value"));
+                REQUIRE(base->properties.expression_props->constant_expression_value != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST constant expression value"));
             }
-            *base->properties.expression_props.constant_expression_value = value;
+            *base->properties.expression_props->constant_expression_value = value;
         } else {
             kefir_pop_error(KEFIR_NOT_CONSTANT);
-            base->properties.expression_props.constant_expression_value = NULL;
+            base->properties.expression_props->constant_expression_value = NULL;
         }
     }
     kefir_clear_warnings();

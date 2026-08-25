@@ -84,23 +84,24 @@ kefir_result_t kefir_ast_analyze_struct_member_node(struct kefir_mem *mem, const
         type = kefir_ast_type_qualified(mem, context->type_bundle, type, *qualification);
     }
 
-    REQUIRE_OK(kefir_ast_node_properties_init(&base->properties));
+    REQUIRE_OK(kefir_ast_node_properties_reset(&base->properties, KEFIR_AST_NODE_CATEGORY_EXPRESSION));
     base->properties.category = KEFIR_AST_NODE_CATEGORY_EXPRESSION;
+    REQUIRE_OK(kefir_ast_node_allocate_expression_props(context->memory_arena, base));
     base->properties.type = type;
-    base->properties.expression_props.lvalue = true;
-    base->properties.expression_props.addressable = !field->bitfield;
-    base->properties.expression_props.bitfield_props.bitfield = field->bitfield;
-    base->properties.expression_props.atomic = KEFIR_AST_TYPE_IS_ATOMIC(type);
+    base->properties.expression_props->lvalue = true;
+    base->properties.expression_props->addressable = !field->bitfield;
+    base->properties.expression_props->bitfield_props.bitfield = field->bitfield;
+    base->properties.expression_props->atomic = KEFIR_AST_TYPE_IS_ATOMIC(type);
     if (field->bitfield) {
-        base->properties.expression_props.bitfield_props.width = field->bitwidth;
+        base->properties.expression_props->bitfield_props.width = field->bitwidth;
     }
 
     const struct kefir_ast_type *unqualified_type = kefir_ast_unqualified_type(type);
-    if (base->properties.expression_props.atomic &&
+    if (base->properties.expression_props->atomic &&
         (KEFIR_AST_TYPE_IS_AGGREGATE_TYPE(unqualified_type) || KEFIR_AST_TYPE_IS_COMPLEX_TYPE(unqualified_type))) {
         REQUIRE_OK(context->allocate_temporary_value(mem, context, type, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_UNKNOWN,
                                                      NULL, &base->source_location,
-                                                     &base->properties.expression_props.temporary_identifier));
+                                                     &base->properties.expression_props->temporary_identifier));
     }
     return KEFIR_OK;
 }

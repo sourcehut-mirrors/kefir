@@ -123,13 +123,14 @@ static kefir_result_t analyze_function_parameter_identifiers_impl(
                                                                 &decl_node->source_location, &param_scoped_id));
 
             decl->base.properties.category = KEFIR_AST_NODE_CATEGORY_INIT_DECLARATOR;
-            decl->base.properties.declaration_props.alignment = 0;
-            decl->base.properties.declaration_props.function = KEFIR_AST_FUNCTION_SPECIFIER_NONE;
-            decl->base.properties.declaration_props.identifier = identifier;
-            decl->base.properties.declaration_props.scoped_id = param_scoped_id;
-            decl->base.properties.declaration_props.static_assertion = false;
-            decl->base.properties.declaration_props.storage = storage;
-            decl->base.properties.declaration_props.original_type = original_type;
+            REQUIRE_OK(kefir_ast_node_allocate_declaration_props(context->memory_arena, KEFIR_AST_NODE_BASE(decl)));
+            decl->base.properties.declaration_props->alignment = 0;
+            decl->base.properties.declaration_props->function = KEFIR_AST_FUNCTION_SPECIFIER_NONE;
+            decl->base.properties.declaration_props->identifier = identifier;
+            decl->base.properties.declaration_props->scoped_id = param_scoped_id;
+            decl->base.properties.declaration_props->static_assertion = false;
+            decl->base.properties.declaration_props->storage = storage;
+            decl->base.properties.declaration_props->original_type = original_type;
             decl->base.properties.type = type;
 
             if (KEFIR_AST_TYPE_IS_LONG_DOUBLE(kefir_ast_unqualified_type(type))) {
@@ -138,6 +139,7 @@ static kefir_result_t analyze_function_parameter_identifiers_impl(
         }
 
         decl_list->base.properties.category = KEFIR_AST_NODE_CATEGORY_DECLARATION;
+        REQUIRE_OK(kefir_ast_node_allocate_declaration_props(context->memory_arena, KEFIR_AST_NODE_BASE(decl_list)));
     }
 
     for (const struct kefir_list_entry *iter = kefir_list_head(&decl_func->parameters); iter != NULL;
@@ -197,8 +199,9 @@ kefir_result_t kefir_ast_analyze_function_definition_node(struct kefir_mem *mem,
     REQUIRE_OK(context->update_pragma_state(mem, context, &node->pragmas));
     REQUIRE_OK(context->collect_pragma_state(mem, context, &global_pragma_state));
 
-    REQUIRE_OK(kefir_ast_node_properties_init(&base->properties));
+    REQUIRE_OK(kefir_ast_node_properties_reset(&base->properties, KEFIR_AST_NODE_CATEGORY_FUNCTION_DEFINITION));
     base->properties.category = KEFIR_AST_NODE_CATEGORY_FUNCTION_DEFINITION;
+    REQUIRE_OK(kefir_ast_node_allocate_function_definition_props(context->memory_arena, base));
 
     struct kefir_ast_local_context *local_context = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_local_context));
     REQUIRE(local_context != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST local context"));
@@ -219,7 +222,7 @@ kefir_result_t kefir_ast_analyze_function_definition_node(struct kefir_mem *mem,
     struct kefir_ast_declarator_attributes attributes;
     REQUIRE_CHAIN(&res, kefir_ast_analyze_declaration(mem, &local_context->context, &node->specifiers, node->declarator,
                                                       &function_identifier, &type, &storage,
-                                                      &base->properties.function_definition.function, &alignment,
+                                                      &base->properties.function_definition->function, &alignment,
                                                       KEFIR_AST_DECLARATION_ANALYSIS_FUNCTION_DEFINITION_CONTEXT,
                                                       &attributes, &node->base.source_location));
     REQUIRE_CHAIN_SET(
@@ -239,10 +242,10 @@ kefir_result_t kefir_ast_analyze_function_definition_node(struct kefir_mem *mem,
                       KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->base.source_location,
                                              "Function definition cannot have non-zero alignment"));
     if (res == KEFIR_OK) {
-        base->properties.function_definition.identifier =
+        base->properties.function_definition->identifier =
             kefir_string_pool_insert(mem, context->symbols, function_identifier, NULL);
         REQUIRE_CHAIN_SET(
-            &res, base->properties.function_definition.identifier != NULL,
+            &res, base->properties.function_definition->identifier != NULL,
             KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert function identifier into symbol table"));
     }
 
@@ -269,8 +272,8 @@ kefir_result_t kefir_ast_analyze_function_definition_node(struct kefir_mem *mem,
 
     const struct kefir_ast_scoped_identifier *scoped_id = NULL;
     REQUIRE_CHAIN(&res, kefir_ast_check_type_deprecation(context, type, &base->source_location));
-    REQUIRE_CHAIN(&res, context->define_identifier(mem, context, false, base->properties.function_definition.identifier,
-                                                   type, storage, base->properties.function_definition.function, NULL,
+    REQUIRE_CHAIN(&res, context->define_identifier(mem, context, false, base->properties.function_definition->identifier,
+                                                   type, storage, base->properties.function_definition->function, NULL,
                                                    NULL, &attributes, &node->base.source_location, &scoped_id));
     REQUIRE_CHAIN_SET(
         &res, scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_FUNCTION,
@@ -283,23 +286,24 @@ kefir_result_t kefir_ast_analyze_function_definition_node(struct kefir_mem *mem,
     });
 
     base->properties.type = scoped_id->function.type;
-    base->properties.function_definition.scoped_id = scoped_id;
+    base->properties.function_definition->scoped_id = scoped_id;
 
     local_context->context.surrounding_function = scoped_id;
-    local_context->context.surrounding_function_name = base->properties.function_definition.identifier;
+    local_context->context.surrounding_function_name = base->properties.function_definition->identifier;
     *scoped_id->function.local_context_ptr = local_context;
 
     REQUIRE_OK(local_context->context.update_pragma_state(mem, &local_context->context, &node->body->pragmas));
 
-    REQUIRE_OK(kefir_ast_node_properties_init(&node->body->base.properties));
+    REQUIRE_OK(kefir_ast_node_properties_reset(&node->body->base.properties, KEFIR_AST_NODE_CATEGORY_STATEMENT));
     node->body->base.properties.category = KEFIR_AST_NODE_CATEGORY_STATEMENT;
+    REQUIRE_OK(kefir_ast_node_allocate_statement_props(context->memory_arena, KEFIR_AST_NODE_BASE(node->body)));
 
     REQUIRE(local_context->context.flow_control_tree != NULL,
             KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR,
                             "Expected function definition local context to have valid flow control tree"));
     REQUIRE_OK(kefir_ast_flow_control_tree_push(mem, local_context->context.flow_control_tree,
                                                 KEFIR_AST_FLOW_CONTROL_STRUCTURE_BLOCK, &associated_scopes,
-                                                &node->body->base.properties.statement_props.flow_control_statement));
+                                                &node->body->base.properties.statement_props->flow_control_statement));
 
     const struct kefir_ast_declarator_function *decl_func = NULL;
     REQUIRE_OK(kefir_ast_declarator_unpack_function(node->declarator, &decl_func));
@@ -361,20 +365,20 @@ kefir_result_t kefir_ast_analyze_function_definition_node(struct kefir_mem *mem,
             &scoped_id));
     }
 
-    base->properties.function_definition.pragma_stats.enable_fenv_access =
+    base->properties.function_definition->pragma_stats.enable_fenv_access =
         KEFIR_AST_PRAGMA_STATE_FENV_ACCESS_ON(&global_pragma_state) || local_context->pragma_stats.enable_fenv_access;
-    base->properties.function_definition.pragma_stats.disallow_fp_contract =
+    base->properties.function_definition->pragma_stats.disallow_fp_contract =
         KEFIR_AST_PRAGMA_STATE_FP_CONTRACT_OFF(&global_pragma_state) ||
         local_context->pragma_stats.disallow_fp_contract;
     if (global_pragma_state.cx_limited_range.present) {
-        base->properties.function_definition.pragma_stats.cx_limited_range = global_pragma_state.cx_limited_range.value;
+        base->properties.function_definition->pragma_stats.cx_limited_range = global_pragma_state.cx_limited_range.value;
     } else {
-        base->properties.function_definition.pragma_stats.cx_limited_range = KEFIR_AST_PRAGMA_VALUE_DEFAULT;
+        base->properties.function_definition->pragma_stats.cx_limited_range = KEFIR_AST_PRAGMA_VALUE_DEFAULT;
     }
     if ((local_context->pragma_stats.cx_limited_range == KEFIR_AST_PRAGMA_VALUE_ON &&
-         base->properties.function_definition.pragma_stats.cx_limited_range != KEFIR_AST_PRAGMA_VALUE_OFF) ||
+         base->properties.function_definition->pragma_stats.cx_limited_range != KEFIR_AST_PRAGMA_VALUE_OFF) ||
         local_context->pragma_stats.cx_limited_range == KEFIR_AST_PRAGMA_VALUE_OFF) {
-        base->properties.function_definition.pragma_stats.cx_limited_range =
+        base->properties.function_definition->pragma_stats.cx_limited_range =
             local_context->pragma_stats.cx_limited_range;
     }
     return KEFIR_OK;

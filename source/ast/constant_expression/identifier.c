@@ -35,7 +35,7 @@ kefir_result_t kefir_ast_evaluate_identifier_node(struct kefir_mem *mem, const s
             KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->base.source_location,
                                    "Expected constant expression AST node"));
 
-    const struct kefir_ast_scoped_identifier *scoped_id = node->base.properties.expression_props.scoped_id;
+    const struct kefir_ast_scoped_identifier *scoped_id = node->base.properties.expression_props->scoped_id;
     switch (scoped_id->klass) {
         case KEFIR_AST_SCOPE_IDENTIFIER_ENUM_CONSTANT:
             *value = scoped_id->enum_constant.value;

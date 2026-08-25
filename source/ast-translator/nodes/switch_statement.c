@@ -44,12 +44,12 @@ kefir_result_t kefir_ast_translate_switch_statement_node(struct kefir_mem *mem,
                                                   &KEFIR_IR_DEBUG_ENTRY_ATTR_CODE_BEGIN(statement_begin_index)));
 
     REQUIRE_OK(kefir_ast_translator_mark_associated_scope_objects_lifetime(
-        mem, context, builder, node->base.properties.statement_props.flow_control_statement));
+        mem, context, builder, node->base.properties.statement_props->flow_control_statement));
 
     REQUIRE_OK(kefir_ast_translate_expression(mem, node->expression, builder, context));
 
     struct kefir_ast_flow_control_structure *flow_control_stmt =
-        node->base.properties.statement_props.flow_control_statement;
+        node->base.properties.statement_props->flow_control_statement;
     REQUIRE_OK(kefir_ast_translate_typeconv(mem, context->module, builder, context->ast_context->type_traits,
                                             node->expression->properties.type,
                                             flow_control_stmt->value.switchStatement.controlling_expression_type));
@@ -335,11 +335,11 @@ kefir_result_t kefir_ast_translate_switch_statement_node(struct kefir_mem *mem,
                                                   &KEFIR_IR_DEBUG_ENTRY_ATTR_CODE_END(statement_end_index)));
     REQUIRE_OK(kefir_ast_translator_generate_object_scope_debug_information(
         mem, context->ast_context, context->environment, context->module, context->debug_entries,
-        node->base.properties.statement_props.flow_control_statement->associated_scopes.ordinary_scope,
+        node->base.properties.statement_props->flow_control_statement->associated_scopes.ordinary_scope,
         lexical_block_entry_id, statement_begin_index, statement_end_index));
     REQUIRE_OK(kefir_ast_translator_context_pop_debug_hierarchy_entry(mem, context));
     REQUIRE_OK(kefir_ast_translator_mark_associated_scope_objects_lifetime(
-        mem, context, builder, node->base.properties.statement_props.flow_control_statement));
+        mem, context, builder, node->base.properties.statement_props->flow_control_statement));
 
     return KEFIR_OK;
 }

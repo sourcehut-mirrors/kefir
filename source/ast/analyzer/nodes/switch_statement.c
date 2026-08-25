@@ -36,8 +36,9 @@ kefir_result_t kefir_ast_analyze_switch_statement_node(struct kefir_mem *mem, co
     REQUIRE(node != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST switch statement"));
     REQUIRE(base != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST base node"));
 
-    REQUIRE_OK(kefir_ast_node_properties_init(&base->properties));
+    REQUIRE_OK(kefir_ast_node_properties_reset(&base->properties, KEFIR_AST_NODE_CATEGORY_STATEMENT));
     base->properties.category = KEFIR_AST_NODE_CATEGORY_STATEMENT;
+    REQUIRE_OK(kefir_ast_node_allocate_statement_props(context->memory_arena, base));
 
     REQUIRE(context->flow_control_tree != NULL,
             KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->base.source_location,
@@ -59,7 +60,7 @@ kefir_result_t kefir_ast_analyze_switch_statement_node(struct kefir_mem *mem, co
                                    "Expected switch controlling expression to be an integral expression"));
     const struct kefir_ast_type *controlling_expr_type =
         kefir_ast_type_int_promotion(context->type_traits, normalized_controlling_expr_type,
-                                     node->expression->properties.expression_props.bitfield_props);
+                                     node->expression->properties.expression_props->bitfield_props);
     REQUIRE(
         controlling_expr_type != NULL,
         KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unable to perform integral promotion on controlling expression type"));
@@ -73,7 +74,7 @@ kefir_result_t kefir_ast_analyze_switch_statement_node(struct kefir_mem *mem, co
     REQUIRE(stmt->value.switchStatement.end != NULL,
             KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST flow control point"));
 
-    base->properties.statement_props.flow_control_statement = stmt;
+    base->properties.statement_props->flow_control_statement = stmt;
 
     REQUIRE_OK(kefir_ast_analyze_node(mem, context, node->statement));
     REQUIRE(node->statement->properties.category == KEFIR_AST_NODE_CATEGORY_STATEMENT ||

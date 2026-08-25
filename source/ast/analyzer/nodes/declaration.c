@@ -37,8 +37,9 @@ kefir_result_t kefir_ast_analyze_declaration_node(struct kefir_mem *mem, const s
 
     REQUIRE_OK(context->update_pragma_state(mem, context, &node->pragmas));
 
-    REQUIRE_OK(kefir_ast_node_properties_init(&base->properties));
+    REQUIRE_OK(kefir_ast_node_properties_reset(&base->properties, KEFIR_AST_NODE_CATEGORY_DECLARATION));
     base->properties.category = KEFIR_AST_NODE_CATEGORY_DECLARATION;
+    REQUIRE_OK(kefir_ast_node_allocate_expression_props(context->memory_arena, base));
 
     const struct kefir_ast_type *base_type = NULL;
     kefir_ast_scoped_identifier_storage_t storage = KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_UNKNOWN;

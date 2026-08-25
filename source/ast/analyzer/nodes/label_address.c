@@ -42,7 +42,8 @@ kefir_result_t kefir_ast_analyze_label_address_node(struct kefir_mem *mem, const
                                    "Addressed identifier should reference a label"));
 
     base->properties.category = KEFIR_AST_NODE_CATEGORY_EXPRESSION;
+    REQUIRE_OK(kefir_ast_node_allocate_expression_props(context->memory_arena, base));
     base->properties.type = kefir_ast_type_pointer(mem, context->type_bundle, kefir_ast_type_void());
-    base->properties.expression_props.scoped_id = scoped_id;
+    base->properties.expression_props->scoped_id = scoped_id;
     return KEFIR_OK;
 }

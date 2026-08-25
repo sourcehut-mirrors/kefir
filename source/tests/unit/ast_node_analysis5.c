@@ -35,9 +35,9 @@ struct kefir_ast_constant *make_constant(struct kefir_mem *, const struct kefir_
         ASSERT_OK(kefir_ast_analyze_node((_mem), (_context), KEFIR_AST_NODE_BASE(oper))); \
         ASSERT(oper->base.properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION);     \
         ASSERT(KEFIR_AST_TYPE_SAME(oper->base.properties.type, (_type)));                 \
-        ASSERT(!oper->base.properties.expression_props.lvalue);                           \
-        ASSERT(!oper->base.properties.expression_props.bitfield_props.bitfield);          \
-        ASSERT(!oper->base.properties.expression_props.addressable);                      \
+        ASSERT(!oper->base.properties.expression_props->lvalue);                           \
+        ASSERT(!oper->base.properties.expression_props->bitfield_props.bitfield);          \
+        ASSERT(!oper->base.properties.expression_props->addressable);                      \
         ASSERT(!KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION(KEFIR_AST_NODE_BASE(oper)));              \
         ASSERT_OK(KEFIR_AST_NODE_FREE((_mem), KEFIR_AST_NODE_BASE(oper)));                \
     } while (0)
@@ -505,10 +505,10 @@ DEFINE_CASE(ast_node_analysis_comma_operator, "AST node analysis - comma operato
 
     ASSERT_OK(kefir_ast_analyze_node(&kft_mem, context, KEFIR_AST_NODE_BASE(comma)));
     ASSERT(comma->base.properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION);
-    ASSERT(!comma->base.properties.expression_props.lvalue);
+    ASSERT(!comma->base.properties.expression_props->lvalue);
     ASSERT(!KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION(KEFIR_AST_NODE_BASE(comma)));
-    ASSERT(!comma->base.properties.expression_props.bitfield_props.bitfield);
-    ASSERT(!comma->base.properties.expression_props.addressable);
+    ASSERT(!comma->base.properties.expression_props->bitfield_props.bitfield);
+    ASSERT(!comma->base.properties.expression_props->addressable);
     ASSERT(KEFIR_AST_TYPE_SAME(comma->base.properties.type, kefir_ast_type_float()));
     ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(comma)));
 
@@ -530,10 +530,10 @@ DEFINE_CASE(ast_node_analysis_comma_operator, "AST node analysis - comma operato
 
     ASSERT_OK(kefir_ast_analyze_node(&kft_mem, context, KEFIR_AST_NODE_BASE(comma)));
     ASSERT(comma->base.properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION);
-    ASSERT(!comma->base.properties.expression_props.lvalue);
+    ASSERT(!comma->base.properties.expression_props->lvalue);
     ASSERT(!KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION(KEFIR_AST_NODE_BASE(comma)));
-    ASSERT(!comma->base.properties.expression_props.bitfield_props.bitfield);
-    ASSERT(!comma->base.properties.expression_props.addressable);
+    ASSERT(!comma->base.properties.expression_props->bitfield_props.bitfield);
+    ASSERT(!comma->base.properties.expression_props->addressable);
     ASSERT(KEFIR_AST_TYPE_SAME(comma->base.properties.type,
                                kefir_ast_type_pointer(&kft_mem, context->type_bundle, kefir_ast_type_char())));
     ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(comma)));

@@ -34,15 +34,15 @@ kefir_result_t kefir_ast_evaluate_label_address_node(struct kefir_mem *mem, cons
     REQUIRE(node->base.properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION,
             KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->base.source_location,
                                    "Expected constant expression AST node"));
-    REQUIRE(node->base.properties.expression_props.scoped_id->label.public_label != NULL,
+    REQUIRE(node->base.properties.expression_props->scoped_id->label.public_label != NULL,
             KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->base.source_location,
                                    "Expected constant expression AST node"));
 
     value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS;
     value->pointer.type = KEFIR_AST_CONSTANT_EXPRESSION_POINTER_IDENTIFER;
-    value->pointer.base.literal = node->base.properties.expression_props.scoped_id->label.public_label;
+    value->pointer.base.literal = node->base.properties.expression_props->scoped_id->label.public_label;
     value->pointer.offset = 0;
     value->pointer.pointer_node = KEFIR_AST_NODE_BASE(node);
-    value->pointer.scoped_id = node->base.properties.expression_props.scoped_id;
+    value->pointer.scoped_id = node->base.properties.expression_props->scoped_id;
     return KEFIR_OK;
 }

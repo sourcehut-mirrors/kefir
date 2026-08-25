@@ -100,11 +100,11 @@ static kefir_result_t resolve_flexible_array_member_visit_value(const struct kef
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid flexible array member resolution params"));
 
     if (expression->properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION &&
-        expression->properties.expression_props.string_literal.content != NULL && designator != NULL &&
+        expression->properties.expression_props->string_literal.content != NULL && designator != NULL &&
         designator->type == KEFIR_AST_DESIGNATOR_MEMBER && designator->next == NULL &&
         strcmp(designator->member, params->flexible_array_member->identifier) == 0) {
         params->flexible_array_member_size =
-            MAX(params->flexible_array_member_size, expression->properties.expression_props.string_literal.length);
+            MAX(params->flexible_array_member_size, expression->properties.expression_props->string_literal.length);
     } else {
         REQUIRE_OK(kefir_ast_designator_unroll(designator, resolve_flexible_array_member_designator_callback, payload));
     }

@@ -30,14 +30,16 @@
 #include "kefir/ast/local_context.h"
 #include "kefir/test/util.h"
 #include "kefir/test/module_shim.h"
+#include "kefir/core/error.h"
 
 static kefir_result_t analyze_extension_node(struct kefir_mem *mem, const struct kefir_ast_context *context,
                                              struct kefir_ast_node_base *node) {
     UNUSED(mem);
     UNUSED(context);
     node->properties.category = KEFIR_AST_NODE_CATEGORY_EXPRESSION;
+    REQUIRE_OK(kefir_ast_node_allocate_expression_props(context->memory_arena, node));
     node->properties.type = kefir_ast_type_signed_int();
-    node->properties.expression_props.lvalue = true;
+    node->properties.expression_props->lvalue = true;
     return KEFIR_OK;
 }
 

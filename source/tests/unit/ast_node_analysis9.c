@@ -42,14 +42,14 @@ DEFINE_CASE(valueast_node_analysis_conditional_statements1, "AST node analysis -
         KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement(&kft_mem, NULL)), NULL);
     ASSERT_OK(kefir_ast_analyze_node(&kft_mem, context, KEFIR_AST_NODE_BASE(stmt1)));
     ASSERT(stmt1->base.properties.category == KEFIR_AST_NODE_CATEGORY_STATEMENT);
-    ASSERT(stmt1->base.properties.statement_props.flow_control_statement != NULL);
-    ASSERT(stmt1->base.properties.statement_props.flow_control_statement->type == KEFIR_AST_FLOW_CONTROL_STRUCTURE_IF);
+    ASSERT(stmt1->base.properties.statement_props->flow_control_statement != NULL);
+    ASSERT(stmt1->base.properties.statement_props->flow_control_statement->type == KEFIR_AST_FLOW_CONTROL_STRUCTURE_IF);
     ASSERT(stmt1->condition->properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION);
     ASSERT(KEFIR_AST_TYPE_SAME(stmt1->condition->properties.type, kefir_ast_type_boolean()));
     ASSERT(stmt1->thenBranch->properties.category == KEFIR_AST_NODE_CATEGORY_STATEMENT);
     ASSERT(stmt1->elseBranch == NULL);
-    ASSERT(stmt1->base.properties.statement_props.flow_control_statement->value.conditional.thenBranchEnd != NULL);
-    ASSERT(stmt1->base.properties.statement_props.flow_control_statement->value.conditional.elseBranchEnd == NULL);
+    ASSERT(stmt1->base.properties.statement_props->flow_control_statement->value.conditional.thenBranchEnd != NULL);
+    ASSERT(stmt1->base.properties.statement_props->flow_control_statement->value.conditional.elseBranchEnd == NULL);
 
     struct kefir_ast_conditional_statement *stmt2 = kefir_ast_new_conditional_statement(
         &kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bool(&kft_mem, false)),
@@ -59,14 +59,14 @@ DEFINE_CASE(valueast_node_analysis_conditional_statements1, "AST node analysis -
             &kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, -1)))));
     ASSERT_OK(kefir_ast_analyze_node(&kft_mem, context, KEFIR_AST_NODE_BASE(stmt2)));
     ASSERT(stmt2->base.properties.category == KEFIR_AST_NODE_CATEGORY_STATEMENT);
-    ASSERT(stmt2->base.properties.statement_props.flow_control_statement != NULL);
-    ASSERT(stmt2->base.properties.statement_props.flow_control_statement->type == KEFIR_AST_FLOW_CONTROL_STRUCTURE_IF);
+    ASSERT(stmt2->base.properties.statement_props->flow_control_statement != NULL);
+    ASSERT(stmt2->base.properties.statement_props->flow_control_statement->type == KEFIR_AST_FLOW_CONTROL_STRUCTURE_IF);
     ASSERT(stmt2->condition->properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION);
     ASSERT(KEFIR_AST_TYPE_SAME(stmt2->condition->properties.type, kefir_ast_type_boolean()));
     ASSERT(stmt2->thenBranch->properties.category == KEFIR_AST_NODE_CATEGORY_STATEMENT);
     ASSERT(stmt2->elseBranch->properties.category == KEFIR_AST_NODE_CATEGORY_STATEMENT);
-    ASSERT(stmt2->base.properties.statement_props.flow_control_statement->value.conditional.thenBranchEnd != NULL);
-    ASSERT(stmt2->base.properties.statement_props.flow_control_statement->value.conditional.elseBranchEnd != NULL);
+    ASSERT(stmt2->base.properties.statement_props->flow_control_statement->value.conditional.thenBranchEnd != NULL);
+    ASSERT(stmt2->base.properties.statement_props->flow_control_statement->value.conditional.elseBranchEnd != NULL);
 
     ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(stmt1)));
     ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(stmt2)));
@@ -118,15 +118,15 @@ DEFINE_CASE(ast_node_analysis_conditinal_statements2, "AST node analysis - condi
     ASSERT_OK(kefir_ast_analyze_node(&kft_mem, context, KEFIR_AST_NODE_BASE(stmt1)));
 
     ASSERT(stmt1->base.properties.category == KEFIR_AST_NODE_CATEGORY_STATEMENT);
-    ASSERT(stmt1->base.properties.statement_props.flow_control_statement != NULL);
-    ASSERT(stmt1->base.properties.statement_props.flow_control_statement->type == KEFIR_AST_FLOW_CONTROL_STRUCTURE_IF);
+    ASSERT(stmt1->base.properties.statement_props->flow_control_statement != NULL);
+    ASSERT(stmt1->base.properties.statement_props->flow_control_statement->type == KEFIR_AST_FLOW_CONTROL_STRUCTURE_IF);
     ASSERT(stmt1->condition->properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION);
     ASSERT(KEFIR_AST_TYPE_SAME(stmt1->condition->properties.type,
                                kefir_ast_type_pointer(&kft_mem, context->type_bundle, kefir_ast_type_void())));
     ASSERT(stmt1->thenBranch->properties.category == KEFIR_AST_NODE_CATEGORY_STATEMENT);
     ASSERT(stmt1->elseBranch->properties.category == KEFIR_AST_NODE_CATEGORY_STATEMENT);
-    ASSERT(stmt1->base.properties.statement_props.flow_control_statement->value.conditional.thenBranchEnd != NULL);
-    ASSERT(stmt1->base.properties.statement_props.flow_control_statement->value.conditional.elseBranchEnd != NULL);
+    ASSERT(stmt1->base.properties.statement_props->flow_control_statement->value.conditional.thenBranchEnd != NULL);
+    ASSERT(stmt1->base.properties.statement_props->flow_control_statement->value.conditional.elseBranchEnd != NULL);
 
     ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(decl1)));
     ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(stmt1)));
@@ -171,15 +171,15 @@ DEFINE_CASE(ast_node_analysis_conditinal_statements3, "AST node analysis - condi
                                             KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_analyze_node(&kft_mem, context, KEFIR_AST_NODE_BASE(stmt2)));
     ASSERT(stmt2->base.properties.category == KEFIR_AST_NODE_CATEGORY_STATEMENT);
-    ASSERT(stmt2->base.properties.statement_props.flow_control_statement != NULL);
-    ASSERT(stmt2->base.properties.statement_props.flow_control_statement->type == KEFIR_AST_FLOW_CONTROL_STRUCTURE_IF);
+    ASSERT(stmt2->base.properties.statement_props->flow_control_statement != NULL);
+    ASSERT(stmt2->base.properties.statement_props->flow_control_statement->type == KEFIR_AST_FLOW_CONTROL_STRUCTURE_IF);
     ASSERT(stmt2->condition->properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION);
     ASSERT(KEFIR_AST_TYPE_SAME(stmt2->condition->properties.type,
                                kefir_ast_type_array(&kft_mem, context->type_bundle, kefir_ast_type_char(), 10, NULL)));
     ASSERT(stmt2->thenBranch->properties.category == KEFIR_AST_NODE_CATEGORY_STATEMENT);
     ASSERT(stmt2->elseBranch->properties.category == KEFIR_AST_NODE_CATEGORY_STATEMENT);
-    ASSERT(stmt2->base.properties.statement_props.flow_control_statement->value.conditional.thenBranchEnd != NULL);
-    ASSERT(stmt2->base.properties.statement_props.flow_control_statement->value.conditional.elseBranchEnd != NULL);
+    ASSERT(stmt2->base.properties.statement_props->flow_control_statement->value.conditional.thenBranchEnd != NULL);
+    ASSERT(stmt2->base.properties.statement_props->flow_control_statement->value.conditional.elseBranchEnd != NULL);
 
     struct kefir_ast_conditional_statement *stmt3 =
         kefir_ast_new_conditional_statement(&kft_mem,
@@ -189,14 +189,14 @@ DEFINE_CASE(ast_node_analysis_conditinal_statements3, "AST node analysis - condi
                                             KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_analyze_node(&kft_mem, context, KEFIR_AST_NODE_BASE(stmt3)));
     ASSERT(stmt3->base.properties.category == KEFIR_AST_NODE_CATEGORY_STATEMENT);
-    ASSERT(stmt3->base.properties.statement_props.flow_control_statement != NULL);
-    ASSERT(stmt3->base.properties.statement_props.flow_control_statement->type == KEFIR_AST_FLOW_CONTROL_STRUCTURE_IF);
+    ASSERT(stmt3->base.properties.statement_props->flow_control_statement != NULL);
+    ASSERT(stmt3->base.properties.statement_props->flow_control_statement->type == KEFIR_AST_FLOW_CONTROL_STRUCTURE_IF);
     ASSERT(stmt3->condition->properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION);
     ASSERT(KEFIR_AST_TYPE_SAME(stmt3->condition->properties.type, type_traits->size_type));
     ASSERT(stmt3->thenBranch->properties.category == KEFIR_AST_NODE_CATEGORY_STATEMENT);
     ASSERT(stmt3->elseBranch->properties.category == KEFIR_AST_NODE_CATEGORY_STATEMENT);
-    ASSERT(stmt3->base.properties.statement_props.flow_control_statement->value.conditional.thenBranchEnd != NULL);
-    ASSERT(stmt3->base.properties.statement_props.flow_control_statement->value.conditional.elseBranchEnd != NULL);
+    ASSERT(stmt3->base.properties.statement_props->flow_control_statement->value.conditional.thenBranchEnd != NULL);
+    ASSERT(stmt3->base.properties.statement_props->flow_control_statement->value.conditional.elseBranchEnd != NULL);
 
     struct kefir_ast_conditional_statement *stmt4 =
         kefir_ast_new_conditional_statement(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bool(&kft_mem, true)),
@@ -295,44 +295,44 @@ DEFINE_CASE(ast_node_analysis_switch_statements1, "AST node analysis - switch st
     ASSERT_OK(kefir_ast_analyze_node(&kft_mem, context, KEFIR_AST_NODE_BASE(switch1)));
 
     ASSERT(switch1->base.properties.category == KEFIR_AST_NODE_CATEGORY_STATEMENT);
-    ASSERT(switch1->base.properties.statement_props.target_flow_control_point == NULL);
-    ASSERT(switch1->base.properties.statement_props.origin_flow_control_point == NULL);
-    ASSERT(switch1->base.properties.statement_props.flow_control_statement != NULL);
+    ASSERT(switch1->base.properties.statement_props->target_flow_control_point == NULL);
+    ASSERT(switch1->base.properties.statement_props->origin_flow_control_point == NULL);
+    ASSERT(switch1->base.properties.statement_props->flow_control_statement != NULL);
     struct kefir_ast_flow_control_structure *switch1_statement =
-        switch1->base.properties.statement_props.flow_control_statement;
+        switch1->base.properties.statement_props->flow_control_statement;
 
     struct kefir_hashtree_node *tree_node = NULL;
     ASSERT(case1->properties.category == KEFIR_AST_NODE_CATEGORY_STATEMENT);
-    ASSERT(case1->properties.statement_props.flow_control_statement == switch1_statement);
+    ASSERT(case1->properties.statement_props->flow_control_statement == switch1_statement);
     ASSERT_OK(kefir_hashtree_at(&switch1_statement->value.switchStatement.case_label_nodes, (kefir_hashtree_key_t) 0,
                                 &tree_node));
     ASSERT((void *) tree_node->value == case_labels[0]);
     ASSERT_OK(kefir_hashtree_at(&switch1_statement->value.switchStatement.case_flow_control_points,
                                 (kefir_hashtree_key_t) 0, &tree_node));
-    ASSERT((void *) tree_node->value == case1->properties.statement_props.target_flow_control_point);
+    ASSERT((void *) tree_node->value == case1->properties.statement_props->target_flow_control_point);
 
     ASSERT(case2->properties.category == KEFIR_AST_NODE_CATEGORY_STATEMENT);
-    ASSERT(case2->properties.statement_props.flow_control_statement == switch1_statement);
+    ASSERT(case2->properties.statement_props->flow_control_statement == switch1_statement);
     ASSERT_OK(kefir_hashtree_at(&switch1_statement->value.switchStatement.case_label_nodes, (kefir_hashtree_key_t) 1,
                                 &tree_node));
     ASSERT((void *) tree_node->value == case_labels[1]);
     ASSERT_OK(kefir_hashtree_at(&switch1_statement->value.switchStatement.case_flow_control_points,
                                 (kefir_hashtree_key_t) 1, &tree_node));
-    ASSERT((void *) tree_node->value == case2->properties.statement_props.target_flow_control_point);
+    ASSERT((void *) tree_node->value == case2->properties.statement_props->target_flow_control_point);
 
     ASSERT(case3->properties.category == KEFIR_AST_NODE_CATEGORY_STATEMENT);
-    ASSERT(case3->properties.statement_props.flow_control_statement == switch1_statement);
+    ASSERT(case3->properties.statement_props->flow_control_statement == switch1_statement);
     ASSERT_OK(kefir_hashtree_at(&switch1_statement->value.switchStatement.case_label_nodes, (kefir_hashtree_key_t) 2,
                                 &tree_node));
     ASSERT((void *) tree_node->value == case_labels[2]);
     ASSERT_OK(kefir_hashtree_at(&switch1_statement->value.switchStatement.case_flow_control_points,
                                 (kefir_hashtree_key_t) 2, &tree_node));
-    ASSERT((void *) tree_node->value == case3->properties.statement_props.target_flow_control_point);
+    ASSERT((void *) tree_node->value == case3->properties.statement_props->target_flow_control_point);
 
     ASSERT(case4->properties.category == KEFIR_AST_NODE_CATEGORY_STATEMENT);
-    ASSERT(case4->properties.statement_props.flow_control_statement == switch1_statement);
+    ASSERT(case4->properties.statement_props->flow_control_statement == switch1_statement);
     ASSERT(switch1_statement->value.switchStatement.defaultCase ==
-           case4->properties.statement_props.target_flow_control_point);
+           case4->properties.statement_props->target_flow_control_point);
 
     ASSERT(switch1_statement->value.switchStatement.end != NULL);
 
@@ -451,73 +451,73 @@ DEFINE_CASE(ast_node_analysis_switch_statements3, "AST node analysis - switch st
     ASSERT_OK(kefir_ast_analyze_node(&kft_mem, context, KEFIR_AST_NODE_BASE(switch2)));
 
     ASSERT(switch1->base.properties.category == KEFIR_AST_NODE_CATEGORY_STATEMENT);
-    ASSERT(switch1->base.properties.statement_props.target_flow_control_point == NULL);
-    ASSERT(switch1->base.properties.statement_props.flow_control_statement != NULL);
+    ASSERT(switch1->base.properties.statement_props->target_flow_control_point == NULL);
+    ASSERT(switch1->base.properties.statement_props->flow_control_statement != NULL);
     struct kefir_ast_flow_control_structure *switch1_statement =
-        switch1->base.properties.statement_props.flow_control_statement;
+        switch1->base.properties.statement_props->flow_control_statement;
 
     struct kefir_hashtree_node *tree_node = NULL;
     ASSERT(case1->properties.category == KEFIR_AST_NODE_CATEGORY_STATEMENT);
-    ASSERT(case1->properties.statement_props.flow_control_statement == switch1_statement);
+    ASSERT(case1->properties.statement_props->flow_control_statement == switch1_statement);
     ASSERT_OK(kefir_hashtree_at(&switch1_statement->value.switchStatement.case_label_nodes, (kefir_hashtree_key_t) 0,
                                 &tree_node));
     ASSERT((void *) tree_node->value == case_labels[0]);
     ASSERT_OK(kefir_hashtree_at(&switch1_statement->value.switchStatement.case_flow_control_points,
                                 (kefir_hashtree_key_t) 0, &tree_node));
-    ASSERT((void *) tree_node->value == case1->properties.statement_props.target_flow_control_point);
+    ASSERT((void *) tree_node->value == case1->properties.statement_props->target_flow_control_point);
 
     ASSERT(case2->properties.category == KEFIR_AST_NODE_CATEGORY_STATEMENT);
-    ASSERT(case2->properties.statement_props.flow_control_statement == switch1_statement);
+    ASSERT(case2->properties.statement_props->flow_control_statement == switch1_statement);
     ASSERT_OK(kefir_hashtree_at(&switch1_statement->value.switchStatement.case_label_nodes, (kefir_hashtree_key_t) 1,
                                 &tree_node));
     ASSERT((void *) tree_node->value == case_labels[1]);
     ASSERT_OK(kefir_hashtree_at(&switch1_statement->value.switchStatement.case_flow_control_points,
                                 (kefir_hashtree_key_t) 1, &tree_node));
-    ASSERT((void *) tree_node->value == case2->properties.statement_props.target_flow_control_point);
+    ASSERT((void *) tree_node->value == case2->properties.statement_props->target_flow_control_point);
 
     ASSERT(case3->properties.category == KEFIR_AST_NODE_CATEGORY_STATEMENT);
-    ASSERT(case3->properties.statement_props.flow_control_statement == switch1_statement);
+    ASSERT(case3->properties.statement_props->flow_control_statement == switch1_statement);
     ASSERT_OK(kefir_hashtree_at(&switch1_statement->value.switchStatement.case_label_nodes, (kefir_hashtree_key_t) 2,
                                 &tree_node));
     ASSERT((void *) tree_node->value == case_labels[2]);
     ASSERT_OK(kefir_hashtree_at(&switch1_statement->value.switchStatement.case_flow_control_points,
                                 (kefir_hashtree_key_t) 2, &tree_node));
-    ASSERT((void *) tree_node->value == case3->properties.statement_props.target_flow_control_point);
+    ASSERT((void *) tree_node->value == case3->properties.statement_props->target_flow_control_point);
 
     ASSERT(switch1_statement->value.switchStatement.end != NULL);
 
     ASSERT(switch2->base.properties.category == KEFIR_AST_NODE_CATEGORY_STATEMENT);
-    ASSERT(switch2->base.properties.statement_props.target_flow_control_point == NULL);
-    ASSERT(switch2->base.properties.statement_props.flow_control_statement != NULL);
+    ASSERT(switch2->base.properties.statement_props->target_flow_control_point == NULL);
+    ASSERT(switch2->base.properties.statement_props->flow_control_statement != NULL);
     struct kefir_ast_flow_control_structure *switch2_statement =
-        switch2->base.properties.statement_props.flow_control_statement;
+        switch2->base.properties.statement_props->flow_control_statement;
 
     ASSERT(case4->properties.category == KEFIR_AST_NODE_CATEGORY_STATEMENT);
-    ASSERT(case4->properties.statement_props.flow_control_statement == switch2_statement);
+    ASSERT(case4->properties.statement_props->flow_control_statement == switch2_statement);
     ASSERT_OK(kefir_hashtree_at(&switch2_statement->value.switchStatement.case_label_nodes, (kefir_hashtree_key_t) 0,
                                 &tree_node));
     ASSERT((void *) tree_node->value == case_labels[3]);
     ASSERT_OK(kefir_hashtree_at(&switch2_statement->value.switchStatement.case_flow_control_points,
                                 (kefir_hashtree_key_t) 0, &tree_node));
-    ASSERT((void *) tree_node->value == case4->properties.statement_props.target_flow_control_point);
+    ASSERT((void *) tree_node->value == case4->properties.statement_props->target_flow_control_point);
 
     ASSERT(case5->properties.category == KEFIR_AST_NODE_CATEGORY_STATEMENT);
-    ASSERT(case5->properties.statement_props.flow_control_statement == switch2_statement);
+    ASSERT(case5->properties.statement_props->flow_control_statement == switch2_statement);
     ASSERT_OK(kefir_hashtree_at(&switch2_statement->value.switchStatement.case_label_nodes, (kefir_hashtree_key_t) 1,
                                 &tree_node));
     ASSERT((void *) tree_node->value == case_labels[4]);
     ASSERT_OK(kefir_hashtree_at(&switch2_statement->value.switchStatement.case_flow_control_points,
                                 (kefir_hashtree_key_t) 1, &tree_node));
-    ASSERT((void *) tree_node->value == case5->properties.statement_props.target_flow_control_point);
+    ASSERT((void *) tree_node->value == case5->properties.statement_props->target_flow_control_point);
 
     ASSERT(case6->properties.category == KEFIR_AST_NODE_CATEGORY_STATEMENT);
-    ASSERT(case6->properties.statement_props.flow_control_statement == switch2_statement);
+    ASSERT(case6->properties.statement_props->flow_control_statement == switch2_statement);
     ASSERT_OK(kefir_hashtree_at(&switch2_statement->value.switchStatement.case_label_nodes, (kefir_hashtree_key_t) 2,
                                 &tree_node));
     ASSERT((void *) tree_node->value == case_labels[5]);
     ASSERT_OK(kefir_hashtree_at(&switch2_statement->value.switchStatement.case_flow_control_points,
                                 (kefir_hashtree_key_t) 2, &tree_node));
-    ASSERT((void *) tree_node->value == case6->properties.statement_props.target_flow_control_point);
+    ASSERT((void *) tree_node->value == case6->properties.statement_props->target_flow_control_point);
 
     ASSERT(switch2_statement->value.switchStatement.end != NULL);
 
@@ -581,75 +581,75 @@ DEFINE_CASE(ast_node_analysis_switch_statements4, "AST node analysis - switch st
     ASSERT_OK(kefir_ast_analyze_node(&kft_mem, context, KEFIR_AST_NODE_BASE(switch2)));
 
     ASSERT(switch1->base.properties.category == KEFIR_AST_NODE_CATEGORY_STATEMENT);
-    ASSERT(switch1->base.properties.statement_props.target_flow_control_point == NULL);
-    ASSERT(switch1->base.properties.statement_props.origin_flow_control_point == NULL);
-    ASSERT(switch1->base.properties.statement_props.flow_control_statement != NULL);
+    ASSERT(switch1->base.properties.statement_props->target_flow_control_point == NULL);
+    ASSERT(switch1->base.properties.statement_props->origin_flow_control_point == NULL);
+    ASSERT(switch1->base.properties.statement_props->flow_control_statement != NULL);
     struct kefir_ast_flow_control_structure *switch1_statement =
-        switch1->base.properties.statement_props.flow_control_statement;
+        switch1->base.properties.statement_props->flow_control_statement;
 
     struct kefir_hashtree_node *tree_node = NULL;
     ASSERT(case1->properties.category == KEFIR_AST_NODE_CATEGORY_STATEMENT);
-    ASSERT(case1->properties.statement_props.flow_control_statement == switch1_statement);
+    ASSERT(case1->properties.statement_props->flow_control_statement == switch1_statement);
     ASSERT_OK(kefir_hashtree_at(&switch1_statement->value.switchStatement.case_label_nodes, (kefir_hashtree_key_t) 0,
                                 &tree_node));
     ASSERT((void *) tree_node->value == case_labels[0]);
     ASSERT_OK(kefir_hashtree_at(&switch1_statement->value.switchStatement.case_flow_control_points,
                                 (kefir_hashtree_key_t) 0, &tree_node));
-    ASSERT((void *) tree_node->value == case1->properties.statement_props.target_flow_control_point);
+    ASSERT((void *) tree_node->value == case1->properties.statement_props->target_flow_control_point);
 
     ASSERT(case2->properties.category == KEFIR_AST_NODE_CATEGORY_STATEMENT);
-    ASSERT(case2->properties.statement_props.flow_control_statement == switch1_statement);
+    ASSERT(case2->properties.statement_props->flow_control_statement == switch1_statement);
     ASSERT_OK(kefir_hashtree_at(&switch1_statement->value.switchStatement.case_label_nodes, (kefir_hashtree_key_t) 1,
                                 &tree_node));
     ASSERT((void *) tree_node->value == case_labels[1]);
     ASSERT_OK(kefir_hashtree_at(&switch1_statement->value.switchStatement.case_flow_control_points,
                                 (kefir_hashtree_key_t) 1, &tree_node));
-    ASSERT((void *) tree_node->value == case2->properties.statement_props.target_flow_control_point);
+    ASSERT((void *) tree_node->value == case2->properties.statement_props->target_flow_control_point);
 
     ASSERT(case3->properties.category == KEFIR_AST_NODE_CATEGORY_STATEMENT);
-    ASSERT(case3->properties.statement_props.flow_control_statement == switch1_statement);
+    ASSERT(case3->properties.statement_props->flow_control_statement == switch1_statement);
     ASSERT_OK(kefir_hashtree_at(&switch1_statement->value.switchStatement.case_label_nodes, (kefir_hashtree_key_t) 2,
                                 &tree_node));
     ASSERT((void *) tree_node->value == case_labels[2]);
     ASSERT_OK(kefir_hashtree_at(&switch1_statement->value.switchStatement.case_flow_control_points,
                                 (kefir_hashtree_key_t) 2, &tree_node));
-    ASSERT((void *) tree_node->value == case3->properties.statement_props.target_flow_control_point);
+    ASSERT((void *) tree_node->value == case3->properties.statement_props->target_flow_control_point);
 
     ASSERT(switch1_statement->value.switchStatement.end != NULL);
 
     ASSERT(switch2->base.properties.category == KEFIR_AST_NODE_CATEGORY_STATEMENT);
-    ASSERT(switch2->base.properties.statement_props.target_flow_control_point == NULL);
-    ASSERT(switch2->base.properties.statement_props.origin_flow_control_point == NULL);
-    ASSERT(switch2->base.properties.statement_props.flow_control_statement != NULL);
+    ASSERT(switch2->base.properties.statement_props->target_flow_control_point == NULL);
+    ASSERT(switch2->base.properties.statement_props->origin_flow_control_point == NULL);
+    ASSERT(switch2->base.properties.statement_props->flow_control_statement != NULL);
     struct kefir_ast_flow_control_structure *switch2_statement =
-        switch2->base.properties.statement_props.flow_control_statement;
+        switch2->base.properties.statement_props->flow_control_statement;
 
     ASSERT(case4->properties.category == KEFIR_AST_NODE_CATEGORY_STATEMENT);
-    ASSERT(case4->properties.statement_props.flow_control_statement == switch2_statement);
+    ASSERT(case4->properties.statement_props->flow_control_statement == switch2_statement);
     ASSERT_OK(kefir_hashtree_at(&switch2_statement->value.switchStatement.case_label_nodes, (kefir_hashtree_key_t) 0,
                                 &tree_node));
     ASSERT((void *) tree_node->value == case_labels[3]);
     ASSERT_OK(kefir_hashtree_at(&switch2_statement->value.switchStatement.case_flow_control_points,
                                 (kefir_hashtree_key_t) 0, &tree_node));
-    ASSERT((void *) tree_node->value == case4->properties.statement_props.target_flow_control_point);
+    ASSERT((void *) tree_node->value == case4->properties.statement_props->target_flow_control_point);
 
     ASSERT(case5->properties.category == KEFIR_AST_NODE_CATEGORY_STATEMENT);
-    ASSERT(case5->properties.statement_props.flow_control_statement == switch2_statement);
+    ASSERT(case5->properties.statement_props->flow_control_statement == switch2_statement);
     ASSERT_OK(kefir_hashtree_at(&switch2_statement->value.switchStatement.case_label_nodes, (kefir_hashtree_key_t) 1,
                                 &tree_node));
     ASSERT((void *) tree_node->value == case_labels[4]);
     ASSERT_OK(kefir_hashtree_at(&switch2_statement->value.switchStatement.case_flow_control_points,
                                 (kefir_hashtree_key_t) 1, &tree_node));
-    ASSERT((void *) tree_node->value == case5->properties.statement_props.target_flow_control_point);
+    ASSERT((void *) tree_node->value == case5->properties.statement_props->target_flow_control_point);
 
     ASSERT(case6->properties.category == KEFIR_AST_NODE_CATEGORY_STATEMENT);
-    ASSERT(case6->properties.statement_props.flow_control_statement == switch2_statement);
+    ASSERT(case6->properties.statement_props->flow_control_statement == switch2_statement);
     ASSERT_OK(kefir_hashtree_at(&switch2_statement->value.switchStatement.case_label_nodes, (kefir_hashtree_key_t) 2,
                                 &tree_node));
     ASSERT((void *) tree_node->value == case_labels[5]);
     ASSERT_OK(kefir_hashtree_at(&switch2_statement->value.switchStatement.case_flow_control_points,
                                 (kefir_hashtree_key_t) 2, &tree_node));
-    ASSERT((void *) tree_node->value == case6->properties.statement_props.target_flow_control_point);
+    ASSERT((void *) tree_node->value == case6->properties.statement_props->target_flow_control_point);
 
     ASSERT(switch2_statement->value.switchStatement.end != NULL);
     ASSERT(kefir_ast_flow_control_structure_parent(kefir_ast_flow_control_structure_parent(switch1_statement)) ==
@@ -697,47 +697,47 @@ DEFINE_CASE(ast_node_analysis_switch_statements5, "AST node analysis - switch st
     ASSERT_OK(kefir_ast_analyze_node(&kft_mem, context, KEFIR_AST_NODE_BASE(switch1)));
 
     ASSERT(switch1->base.properties.category == KEFIR_AST_NODE_CATEGORY_STATEMENT);
-    ASSERT(switch1->base.properties.statement_props.target_flow_control_point == NULL);
-    ASSERT(switch1->base.properties.statement_props.origin_flow_control_point == NULL);
-    ASSERT(switch1->base.properties.statement_props.flow_control_statement != NULL);
+    ASSERT(switch1->base.properties.statement_props->target_flow_control_point == NULL);
+    ASSERT(switch1->base.properties.statement_props->origin_flow_control_point == NULL);
+    ASSERT(switch1->base.properties.statement_props->flow_control_statement != NULL);
     struct kefir_ast_flow_control_structure *switch1_statement =
-        switch1->base.properties.statement_props.flow_control_statement;
+        switch1->base.properties.statement_props->flow_control_statement;
 
     struct kefir_hashtree_node *tree_node = NULL;
     ASSERT(case1->properties.category == KEFIR_AST_NODE_CATEGORY_STATEMENT);
-    ASSERT(case1->properties.statement_props.flow_control_statement == switch1_statement);
+    ASSERT(case1->properties.statement_props->flow_control_statement == switch1_statement);
     ASSERT_OK(kefir_hashtree_at(&switch1_statement->value.switchStatement.case_label_nodes, (kefir_hashtree_key_t) 0,
                                 &tree_node));
     ASSERT((void *) tree_node->value == case_labels[0]);
     ASSERT_OK(kefir_hashtree_at(&switch1_statement->value.switchStatement.case_flow_control_points,
                                 (kefir_hashtree_key_t) 0, &tree_node));
-    ASSERT((void *) tree_node->value == case1->properties.statement_props.target_flow_control_point);
+    ASSERT((void *) tree_node->value == case1->properties.statement_props->target_flow_control_point);
 
     ASSERT(case2->properties.category == KEFIR_AST_NODE_CATEGORY_STATEMENT);
-    ASSERT(case2->properties.statement_props.flow_control_statement == switch1_statement);
+    ASSERT(case2->properties.statement_props->flow_control_statement == switch1_statement);
     ASSERT_OK(kefir_hashtree_at(&switch1_statement->value.switchStatement.case_label_nodes, (kefir_hashtree_key_t) 1,
                                 &tree_node));
     ASSERT((void *) tree_node->value == case_labels[1]);
     ASSERT_OK(kefir_hashtree_at(&switch1_statement->value.switchStatement.case_flow_control_points,
                                 (kefir_hashtree_key_t) 1, &tree_node));
-    ASSERT((void *) tree_node->value == case2->properties.statement_props.target_flow_control_point);
+    ASSERT((void *) tree_node->value == case2->properties.statement_props->target_flow_control_point);
 
     ASSERT(case2_if->properties.category == KEFIR_AST_NODE_CATEGORY_STATEMENT);
-    ASSERT(case2_if->properties.statement_props.target_flow_control_point == NULL);
-    ASSERT(case2_if->properties.statement_props.origin_flow_control_point == NULL);
-    ASSERT(case2_if->properties.statement_props.flow_control_statement != NULL);
-    ASSERT(case2_if->properties.statement_props.flow_control_statement->type == KEFIR_AST_FLOW_CONTROL_STRUCTURE_IF);
-    ASSERT(case2_if->properties.statement_props.flow_control_statement->value.conditional.thenBranchEnd != NULL);
-    ASSERT(case2_if->properties.statement_props.flow_control_statement->value.conditional.elseBranchEnd == NULL);
+    ASSERT(case2_if->properties.statement_props->target_flow_control_point == NULL);
+    ASSERT(case2_if->properties.statement_props->origin_flow_control_point == NULL);
+    ASSERT(case2_if->properties.statement_props->flow_control_statement != NULL);
+    ASSERT(case2_if->properties.statement_props->flow_control_statement->type == KEFIR_AST_FLOW_CONTROL_STRUCTURE_IF);
+    ASSERT(case2_if->properties.statement_props->flow_control_statement->value.conditional.thenBranchEnd != NULL);
+    ASSERT(case2_if->properties.statement_props->flow_control_statement->value.conditional.elseBranchEnd == NULL);
 
     ASSERT(case3->properties.category == KEFIR_AST_NODE_CATEGORY_STATEMENT);
-    ASSERT(case3->properties.statement_props.flow_control_statement == switch1_statement);
+    ASSERT(case3->properties.statement_props->flow_control_statement == switch1_statement);
     ASSERT_OK(kefir_hashtree_at(&switch1_statement->value.switchStatement.case_label_nodes, (kefir_hashtree_key_t) 2,
                                 &tree_node));
     ASSERT((void *) tree_node->value == case_labels[2]);
     ASSERT_OK(kefir_hashtree_at(&switch1_statement->value.switchStatement.case_flow_control_points,
                                 (kefir_hashtree_key_t) 2, &tree_node));
-    ASSERT((void *) tree_node->value == case3->properties.statement_props.target_flow_control_point);
+    ASSERT((void *) tree_node->value == case3->properties.statement_props->target_flow_control_point);
 
     ASSERT(switch1_statement->value.switchStatement.end != NULL);
 

@@ -1859,7 +1859,7 @@ static kefir_result_t resolve_function_declarator(struct kefir_mem *mem, const s
                           parameter_identifier != NULL && parameter_identifier->identifier != NULL
                               ? parameter_identifier->identifier
                               : NULL,
-                          declaration->base.properties.type, &declaration->base.properties.declaration_props.storage));
+                          declaration->base.properties.type, &declaration->base.properties.declaration_props->storage));
         } else if (res == KEFIR_NO_MATCH) {
             struct kefir_ast_identifier *identifier = NULL;
             REQUIRE_MATCH(

@@ -21,6 +21,7 @@
 #include "kefir/core/basic-types.h"
 #include "kefir/ir/module.h"
 #include "kefir/core/mem.h"
+#include "kefir/core/error.h"
 #include "kefir/ir/builder.h"
 #include "kefir/ast/node.h"
 #include "kefir/ast-translator/translator.h"
@@ -37,6 +38,7 @@ static kefir_result_t analyze_extension_node(struct kefir_mem *mem, const struct
     UNUSED(context);
     node->properties.category = KEFIR_AST_NODE_CATEGORY_EXPRESSION;
     node->properties.type = kefir_ast_type_signed_int();
+    REQUIRE_OK(kefir_ast_node_allocate_expression_props(context->memory_arena, node));
     return KEFIR_OK;
 }
 

@@ -89,6 +89,7 @@ static kefir_result_t analyze_extension_node(struct kefir_mem *mem, const struct
             KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected extension node class"));
 
     node->properties.category = KEFIR_AST_NODE_CATEGORY_EXPRESSION;
+    REQUIRE_OK(kefir_ast_node_allocate_expression_props(context->memory_arena, node));
     node->properties.type = kefir_ast_type_double();
 
     return KEFIR_OK;

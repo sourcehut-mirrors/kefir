@@ -42,14 +42,15 @@ kefir_result_t kefir_ast_analyze_init_declarator_node(struct kefir_mem *mem, con
     REQUIRE(base != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST base node"));
     REQUIRE(type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST type"));
 
-    REQUIRE_OK(kefir_ast_node_properties_init(&base->properties));
+    REQUIRE_OK(kefir_ast_node_properties_reset(&base->properties, KEFIR_AST_NODE_CATEGORY_INIT_DECLARATOR));
     base->properties.category = KEFIR_AST_NODE_CATEGORY_INIT_DECLARATOR;
+    REQUIRE_OK(kefir_ast_node_allocate_expression_props(context->memory_arena, base));
     const char *identifier = NULL;
     struct kefir_ast_declarator_attributes attributes;
     REQUIRE_OK(kefir_ast_analyze_declaration_declarator(mem, context, specifiers, node->declarator, &identifier, &type,
                                                         &aligment, KEFIR_AST_DECLARATION_ANALYSIS_NORMAL, &attributes));
-    base->properties.declaration_props.function = function;
-    base->properties.declaration_props.alignment = aligment;
+    base->properties.declaration_props->function = function;
+    base->properties.declaration_props->alignment = aligment;
 
     REQUIRE(
         !KEFIR_AST_TYPE_IS_AUTO(type) || node->initializer != NULL,
@@ -62,21 +63,21 @@ kefir_result_t kefir_ast_analyze_init_declarator_node(struct kefir_mem *mem, con
                 KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert declarator identifier into symbol table"));
     }
 
-    base->properties.declaration_props.identifier = identifier;
+    base->properties.declaration_props->identifier = identifier;
     REQUIRE_OK(kefir_ast_analyze_type(mem, context, context->type_analysis_context, type, &node->base.source_location));
 
-    if (base->properties.declaration_props.identifier != NULL) {
+    if (base->properties.declaration_props->identifier != NULL) {
         struct kefir_ast_alignment *alignment = NULL;
-        if (base->properties.declaration_props.alignment != 0) {
-            alignment = kefir_ast_alignment_const_expression(mem, base->properties.declaration_props.alignment);
+        if (base->properties.declaration_props->alignment != 0) {
+            alignment = kefir_ast_alignment_const_expression(mem, base->properties.declaration_props->alignment);
             REQUIRE(alignment != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST alignment"));
         }
 
         const struct kefir_ast_scoped_identifier *scoped_id = NULL;
         kefir_result_t res = kefir_ast_check_type_deprecation(context, type, &base->source_location);
         REQUIRE_CHAIN(&res, context->define_identifier(
-                                mem, context, node->initializer == NULL, base->properties.declaration_props.identifier,
-                                type, storage, base->properties.declaration_props.function, alignment,
+                                mem, context, node->initializer == NULL, base->properties.declaration_props->identifier,
+                                type, storage, base->properties.declaration_props->function, alignment,
                                 node->initializer, &attributes, &base->source_location, &scoped_id));
         REQUIRE_ELSE(res == KEFIR_OK, {
             if (alignment != NULL) {
@@ -89,23 +90,23 @@ kefir_result_t kefir_ast_analyze_init_declarator_node(struct kefir_mem *mem, con
         switch (scoped_id->klass) {
             case KEFIR_AST_SCOPE_IDENTIFIER_OBJECT:
                 base->properties.type = scoped_id->object.type;
-                base->properties.declaration_props.storage = scoped_id->object.storage;
+                base->properties.declaration_props->storage = scoped_id->object.storage;
                 if (scoped_id->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_CONSTEXPR) {
                     REQUIRE_OK(context->allocate_temporary_value(
                         mem, context, scoped_id->object.type, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_CONSTEXPR_STATIC,
                         node->initializer, &node->base.source_location,
-                        &base->properties.declaration_props.temporary_identifier));
+                        &base->properties.declaration_props->temporary_identifier));
                 }
                 break;
 
             case KEFIR_AST_SCOPE_IDENTIFIER_FUNCTION:
                 base->properties.type = scoped_id->function.type;
-                base->properties.declaration_props.storage = scoped_id->function.storage;
+                base->properties.declaration_props->storage = scoped_id->function.storage;
                 break;
 
             case KEFIR_AST_SCOPE_IDENTIFIER_TYPE_DEFINITION:
                 base->properties.type = scoped_id->type_definition.type;
-                base->properties.declaration_props.storage = storage;
+                base->properties.declaration_props->storage = storage;
                 break;
 
             case KEFIR_AST_SCOPE_IDENTIFIER_ENUM_CONSTANT:
@@ -114,12 +115,12 @@ kefir_result_t kefir_ast_analyze_init_declarator_node(struct kefir_mem *mem, con
                 return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unexpected AST scoped identifier class");
         }
 
-        base->properties.declaration_props.original_type = type;
-        base->properties.declaration_props.scoped_id = scoped_id;
+        base->properties.declaration_props->original_type = type;
+        base->properties.declaration_props->scoped_id = scoped_id;
     } else {
         base->properties.type = type;
-        base->properties.declaration_props.original_type = type;
-        base->properties.declaration_props.storage = storage;
+        base->properties.declaration_props->original_type = type;
+        base->properties.declaration_props->storage = storage;
     }
     return KEFIR_OK;
 }

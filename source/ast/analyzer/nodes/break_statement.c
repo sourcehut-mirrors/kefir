@@ -63,8 +63,9 @@ kefir_result_t kefir_ast_analyze_break_statement_node(struct kefir_mem *mem, con
     REQUIRE(node != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST break statement"));
     REQUIRE(base != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST base node"));
 
-    REQUIRE_OK(kefir_ast_node_properties_init(&base->properties));
+    REQUIRE_OK(kefir_ast_node_properties_reset(&base->properties, KEFIR_AST_NODE_CATEGORY_STATEMENT));
     base->properties.category = KEFIR_AST_NODE_CATEGORY_STATEMENT;
+    REQUIRE_OK(kefir_ast_node_allocate_statement_props(context->memory_arena, base));
 
     REQUIRE(context->flow_control_tree != NULL,
             KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->base.source_location,
@@ -80,12 +81,12 @@ kefir_result_t kefir_ast_analyze_break_statement_node(struct kefir_mem *mem, con
         REQUIRE_OK(res);
     }
     if (flow_control_stmt->type == KEFIR_AST_FLOW_CONTROL_STRUCTURE_SWITCH) {
-        base->properties.statement_props.target_flow_control_point = flow_control_stmt->value.switchStatement.end;
+        base->properties.statement_props->target_flow_control_point = flow_control_stmt->value.switchStatement.end;
     } else {
-        base->properties.statement_props.target_flow_control_point = flow_control_stmt->value.loop.end;
+        base->properties.statement_props->target_flow_control_point = flow_control_stmt->value.loop.end;
     }
 
     REQUIRE_OK(
-        context->current_flow_control_point(mem, context, &base->properties.statement_props.origin_flow_control_point));
+        context->current_flow_control_point(mem, context, &base->properties.statement_props->origin_flow_control_point));
     return KEFIR_OK;
 }

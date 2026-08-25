@@ -69,9 +69,9 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
         case KEFIR_AST_BUILTIN_VA_ARG: {
             struct kefir_ast_node_base *vararg = node->arguments[0];
             REQUIRE_OK(resolve_vararg(mem, context, builder, vararg));
-            if (node->base.properties.expression_props.temporary_identifier.scoped_id != NULL) {
+            if (node->base.properties.expression_props->temporary_identifier.scoped_id != NULL) {
                 REQUIRE_OK(kefir_ast_translator_fetch_temporary(
-                    mem, context, builder, &node->base.properties.expression_props.temporary_identifier));
+                    mem, context, builder, &node->base.properties.expression_props->temporary_identifier));
             } else {
                 REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_NULL_REF, 0));
             }
@@ -243,26 +243,26 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
             struct kefir_ast_node_base *arg1_node = node->arguments[0];
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDF32(
                 builder, KEFIR_IR_OPCODE_FLOAT32_CONST,
-                nan(arg1_node->properties.expression_props.string_literal.content), 0.0f));
+                nan(arg1_node->properties.expression_props->string_literal.content), 0.0f));
         } break;
 
         case KEFIR_AST_BUILTIN_NAN_FLOAT64: {
             struct kefir_ast_node_base *arg1_node = node->arguments[0];
             REQUIRE_OK(
                 KEFIR_IRBUILDER_BLOCK_APPENDF64(builder, KEFIR_IR_OPCODE_FLOAT64_CONST,
-                                                nan(arg1_node->properties.expression_props.string_literal.content)));
+                                                nan(arg1_node->properties.expression_props->string_literal.content)));
         } break;
 
         case KEFIR_AST_BUILTIN_NAN_LONG_DOUBLE: {
             struct kefir_ast_node_base *arg1_node = node->arguments[0];
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPEND_LONG_DOUBLE(
                 builder, KEFIR_IR_OPCODE_LONG_DOUBLE_CONST,
-                nan(arg1_node->properties.expression_props.string_literal.content)));
+                nan(arg1_node->properties.expression_props->string_literal.content)));
         } break;
 
         case KEFIR_AST_BUILTIN_KEFIR_UNREACHABLE: {
             REQUIRE_OK(kefir_ast_translator_mark_associated_scope_objects_lifetime(
-                mem, context, builder, node->base.properties.expression_props.flow_control_point->self));
+                mem, context, builder, node->base.properties.expression_props->flow_control_point->self));
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_UNREACHABLE, 0));
         } break;
 
@@ -285,8 +285,8 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
                 KEFIR_AST_TYPE_IS_128BIT_INTEGER_TYPE(arg1_type) || KEFIR_AST_TYPE_IS_128BIT_INTEGER_TYPE(arg2_type) ||
                 KEFIR_AST_TYPE_IS_128BIT_INTEGER_TYPE(result_type)) {
                 const struct kefir_ast_type *common_type = kefir_ast_type_common_arithmetic(
-                    context->ast_context->type_traits, arg1_type, arg1_node->properties.expression_props.bitfield_props,
-                    arg2_type, arg2_node->properties.expression_props.bitfield_props);
+                    context->ast_context->type_traits, arg1_type, arg1_node->properties.expression_props->bitfield_props,
+                    arg2_type, arg2_node->properties.expression_props->bitfield_props);
                 REQUIRE(common_type != NULL,
                         KEFIR_SET_ERROR(KEFIR_INVALID_STATE,
                                         "Failed to obtain common type for bit-precise overflow builtin operands"));
@@ -1462,9 +1462,9 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
 
         case KEFIR_AST_BUILTIN_KEFIR_BITFIELD_WIDTH: {
             struct kefir_ast_node_base *arg = node->arguments[0];
-            if (arg->properties.expression_props.bitfield_props.bitfield) {
+            if (arg->properties.expression_props->bitfield_props.bitfield) {
                 REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT_CONST,
-                                                           arg->properties.expression_props.bitfield_props.width));
+                                                           arg->properties.expression_props->bitfield_props.width));
             } else {
                 REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT_CONST, -1));
             }

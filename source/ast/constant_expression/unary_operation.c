@@ -343,18 +343,18 @@ kefir_result_t kefir_ast_evaluate_unary_operation_node(struct kefir_mem *mem, co
         case KEFIR_AST_OPERATION_ALIGNOF: {
             kefir_size_t alignment = 0;
             if (node->arg->properties.category == KEFIR_AST_NODE_CATEGORY_TYPE) {
-                if (node->arg->properties.type_props.alignment == 0) {
+                if (node->arg->properties.type_props->alignment == 0) {
                     REQUIRE_OK(calculate_type_alignment(mem, context, node->arg->properties.type, &alignment,
                                                         &node->base.source_location));
                 } else {
-                    alignment = node->arg->properties.type_props.alignment;
+                    alignment = node->arg->properties.type_props->alignment;
                 }
             } else if (node->arg->properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION) {
-                if (node->arg->properties.expression_props.alignment == 0) {
+                if (node->arg->properties.expression_props->alignment == 0) {
                     REQUIRE_OK(calculate_type_alignment(mem, context, node->arg->properties.type, &alignment,
                                                         &node->base.source_location));
                 } else {
-                    alignment = node->arg->properties.expression_props.alignment;
+                    alignment = node->arg->properties.expression_props->alignment;
                 }
             }
             value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;

@@ -242,7 +242,7 @@ kefir_result_t kefir_ast_evaluate_builtin_node(struct kefir_mem *mem, const stru
         case KEFIR_AST_BUILTIN_NAN_LONG_DOUBLE: {
             struct kefir_ast_node_base *arg = node->arguments[0];
             value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT;
-            value->floating_point = nanl(arg->properties.expression_props.string_literal.content);
+            value->floating_point = nanl(arg->properties.expression_props->string_literal.content);
         } break;
 
         case KEFIR_AST_BUILTIN_KEFIR_ISNAN: {
@@ -859,8 +859,8 @@ kefir_result_t kefir_ast_evaluate_builtin_node(struct kefir_mem *mem, const stru
         case KEFIR_AST_BUILTIN_KEFIR_BITFIELD_WIDTH: {
             struct kefir_ast_node_base *arg = node->arguments[0];
             value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
-            if (arg->properties.expression_props.bitfield_props.bitfield) {
-                value->integer = arg->properties.expression_props.bitfield_props.width;
+            if (arg->properties.expression_props->bitfield_props.bitfield) {
+                value->integer = arg->properties.expression_props->bitfield_props.width;
             } else {
                 value->integer = -1;
             }
