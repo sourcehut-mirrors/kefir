@@ -28,7 +28,7 @@
                               void *payload) {                                                                 \
         REQUIRE(base != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST node base"));       \
         REQUIRE(visitor != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST node visitor")); \
-        ASSIGN_DECL_CAST(const struct type *, node, base->self);                                               \
+        ASSIGN_DECL_CAST(const struct type *, node, KEFIR_AST_NODE_SELF(base));                                               \
         if (visitor->handler != NULL) {                                                                        \
             return visitor->handler(visitor, node, payload);                                                   \
         } else if (visitor->generic_handler != NULL) {                                                         \

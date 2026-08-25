@@ -29,7 +29,7 @@ NODE_VISIT_IMPL(ast_function_definition_visit, kefir_ast_function_definition, fu
 kefir_result_t ast_function_definition_free(struct kefir_mem *mem, struct kefir_ast_node_base *base) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(base != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST node base"));
-    ASSIGN_DECL_CAST(struct kefir_ast_function_definition *, node, base->self);
+    ASSIGN_DECL_CAST(struct kefir_ast_function_definition *, node, KEFIR_AST_NODE_SELF(base));
 
     REQUIRE_OK(kefir_ast_declarator_specifier_list_free(mem, &node->specifiers));
     REQUIRE_OK(kefir_ast_declarator_free(mem, node->declarator));
@@ -127,7 +127,6 @@ struct kefir_ast_function_definition *kefir_ast_new_function_definition(struct k
     REQUIRE(func != NULL, NULL);
     func->base.refcount = 1;
     func->base.klass = &AST_FUNCTION_DEFINITION_CLASS;
-    func->base.self = func;
     func->declarations = NULL;
     func->declarations_capacity = 0;
     func->declarations_length = 0;

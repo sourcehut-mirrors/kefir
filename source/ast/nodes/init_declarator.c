@@ -28,7 +28,7 @@ NODE_VISIT_IMPL(ast_init_declarator_visit, kefir_ast_init_declarator, init_decla
 kefir_result_t ast_init_declarator_free(struct kefir_mem *mem, struct kefir_ast_node_base *base) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(base != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST node base"));
-    ASSIGN_DECL_CAST(struct kefir_ast_init_declarator *, node, base->self);
+    ASSIGN_DECL_CAST(struct kefir_ast_init_declarator *, node, KEFIR_AST_NODE_SELF(base));
     if (node->declarator != NULL) {
         REQUIRE_OK(kefir_ast_declarator_free(mem, node->declarator));
         node->declarator = NULL;
@@ -53,7 +53,6 @@ struct kefir_ast_init_declarator *kefir_ast_new_init_declarator(struct kefir_mem
     REQUIRE(init_declarator != NULL, NULL);
     init_declarator->base.refcount = 1;
     init_declarator->base.klass = &AST_DECLARATION_CLASS;
-    init_declarator->base.self = init_declarator;
     kefir_result_t res = kefir_ast_node_properties_init(&init_declarator->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
         KEFIR_FREE(mem, init_declarator);

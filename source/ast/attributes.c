@@ -84,7 +84,7 @@ kefir_result_t kefir_ast_node_attributes_clone(struct kefir_mem *mem, struct kef
         ASSIGN_DECL_CAST(struct kefir_ast_attribute_list *, attribute_list, iter->value);
         struct kefir_ast_node_base *clone = KEFIR_AST_NODE_REF(KEFIR_AST_NODE_BASE(attribute_list));
         REQUIRE(clone != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to clone AST attribute list"));
-        kefir_result_t res = kefir_ast_node_attributes_append(mem, dest, clone->self);
+        kefir_result_t res = kefir_ast_node_attributes_append(mem, dest, KEFIR_AST_NODE_SELF(clone));
         REQUIRE_ELSE(res == KEFIR_OK, {
             KEFIR_AST_NODE_FREE(mem, clone);
             return res;

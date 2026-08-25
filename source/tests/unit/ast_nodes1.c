@@ -29,8 +29,8 @@ DEFINE_CASE(ast_nodes_constants, "AST nodes - constants") {
     ASSERT(bool2 != NULL);
     ASSERT(bool1->base.klass->type == KEFIR_AST_CONSTANT);
     ASSERT(bool2->base.klass->type == KEFIR_AST_CONSTANT);
-    ASSERT(bool1->base.self == bool1);
-    ASSERT(bool2->base.self == bool2);
+    ASSERT(KEFIR_AST_NODE_SELF(KEFIR_AST_NODE_BASE(bool1)) == bool1);
+    ASSERT(KEFIR_AST_NODE_SELF(KEFIR_AST_NODE_BASE(bool2)) == bool2);
     ASSERT(bool1->type == KEFIR_AST_BOOL_CONSTANT);
     ASSERT(bool2->type == KEFIR_AST_BOOL_CONSTANT);
     ASSERT(bool1->value.boolean);
@@ -42,7 +42,7 @@ DEFINE_CASE(ast_nodes_constants, "AST nodes - constants") {
         struct kefir_ast_constant *chrc = kefir_ast_new_constant_char(&kft_mem, chr);
         ASSERT(chrc != NULL);
         ASSERT(chrc->base.klass->type == KEFIR_AST_CONSTANT);
-        ASSERT(chrc->base.self = chrc);
+        ASSERT(KEFIR_AST_NODE_SELF(KEFIR_AST_NODE_BASE(chrc)) == chrc);
         ASSERT(chrc->type = KEFIR_AST_CHAR_CONSTANT);
         ASSERT(chrc->value.character == chr);
         ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(chrc)));
@@ -58,9 +58,9 @@ DEFINE_CASE(ast_nodes_constants, "AST nodes - constants") {
         ASSERT(wchrc->base.klass->type == KEFIR_AST_CONSTANT);
         ASSERT(u16chrc->base.klass->type == KEFIR_AST_CONSTANT);
         ASSERT(u32chrc->base.klass->type == KEFIR_AST_CONSTANT);
-        ASSERT(wchrc->base.self = wchrc);
-        ASSERT(u16chrc->base.self = u16chrc);
-        ASSERT(u32chrc->base.self = u32chrc);
+        ASSERT(KEFIR_AST_NODE_SELF(KEFIR_AST_NODE_BASE(wchrc)) == wchrc);
+        ASSERT(KEFIR_AST_NODE_SELF(KEFIR_AST_NODE_BASE(u16chrc)) == u16chrc);
+        ASSERT(KEFIR_AST_NODE_SELF(KEFIR_AST_NODE_BASE(u32chrc)) == u32chrc);
         ASSERT(wchrc->type = KEFIR_AST_WIDE_CHAR_CONSTANT);
         ASSERT(u16chrc->type = KEFIR_AST_UNICODE16_CHAR_CONSTANT);
         ASSERT(u32chrc->type = KEFIR_AST_UNICODE32_CHAR_CONSTANT);
@@ -82,9 +82,9 @@ DEFINE_CASE(ast_nodes_constants, "AST nodes - constants") {
         ASSERT(intc->base.klass->type == KEFIR_AST_CONSTANT);
         ASSERT(longc->base.klass->type == KEFIR_AST_CONSTANT);
         ASSERT(llongc->base.klass->type == KEFIR_AST_CONSTANT);
-        ASSERT(intc->base.self == intc);
-        ASSERT(longc->base.self == longc);
-        ASSERT(llongc->base.self == llongc);
+        ASSERT(KEFIR_AST_NODE_SELF(KEFIR_AST_NODE_BASE(intc)) == intc);
+        ASSERT(KEFIR_AST_NODE_SELF(KEFIR_AST_NODE_BASE(longc)) == longc);
+        ASSERT(KEFIR_AST_NODE_SELF(KEFIR_AST_NODE_BASE(llongc)) == llongc);
         ASSERT(intc->type == KEFIR_AST_INT_CONSTANT);
         ASSERT(longc->type == KEFIR_AST_LONG_CONSTANT);
         ASSERT(llongc->type == KEFIR_AST_LONG_LONG_CONSTANT);
@@ -106,9 +106,9 @@ DEFINE_CASE(ast_nodes_constants, "AST nodes - constants") {
         ASSERT(intc->base.klass->type == KEFIR_AST_CONSTANT);
         ASSERT(longc->base.klass->type == KEFIR_AST_CONSTANT);
         ASSERT(llongc->base.klass->type == KEFIR_AST_CONSTANT);
-        ASSERT(intc->base.self == intc);
-        ASSERT(longc->base.self == longc);
-        ASSERT(llongc->base.self == llongc);
+        ASSERT(KEFIR_AST_NODE_SELF(KEFIR_AST_NODE_BASE(intc)) == intc);
+        ASSERT(KEFIR_AST_NODE_SELF(KEFIR_AST_NODE_BASE(longc)) == longc);
+        ASSERT(KEFIR_AST_NODE_SELF(KEFIR_AST_NODE_BASE(llongc)) == llongc);
         ASSERT(intc->type == KEFIR_AST_UINT_CONSTANT);
         ASSERT(longc->type == KEFIR_AST_ULONG_CONSTANT);
         ASSERT(llongc->type == KEFIR_AST_ULONG_LONG_CONSTANT);
@@ -130,9 +130,9 @@ DEFINE_CASE(ast_nodes_constants, "AST nodes - constants") {
         ASSERT(floatc->base.klass->type == KEFIR_AST_CONSTANT);
         ASSERT(doublec->base.klass->type == KEFIR_AST_CONSTANT);
         ASSERT(ldoublec->base.klass->type == KEFIR_AST_CONSTANT);
-        ASSERT(floatc->base.self == floatc);
-        ASSERT(doublec->base.self == doublec);
-        ASSERT(ldoublec->base.self == ldoublec);
+        ASSERT(KEFIR_AST_NODE_SELF(KEFIR_AST_NODE_BASE(floatc)) == floatc);
+        ASSERT(KEFIR_AST_NODE_SELF(KEFIR_AST_NODE_BASE(doublec)) == doublec);
+        ASSERT(KEFIR_AST_NODE_SELF(KEFIR_AST_NODE_BASE(ldoublec)) == ldoublec);
         ASSERT(floatc->type == KEFIR_AST_FLOAT_CONSTANT);
         ASSERT(doublec->type == KEFIR_AST_DOUBLE_CONSTANT);
         ASSERT(ldoublec->type == KEFIR_AST_LONG_DOUBLE_CONSTANT);
@@ -155,9 +155,9 @@ DEFINE_CASE(ast_nodes_constants, "AST nodes - constants") {
             ASSERT(floatc->base.klass->type == KEFIR_AST_CONSTANT);
             ASSERT(doublec->base.klass->type == KEFIR_AST_CONSTANT);
             ASSERT(ldoublec->base.klass->type == KEFIR_AST_CONSTANT);
-            ASSERT(floatc->base.self == floatc);
-            ASSERT(doublec->base.self == doublec);
-            ASSERT(ldoublec->base.self == ldoublec);
+            ASSERT(KEFIR_AST_NODE_SELF(KEFIR_AST_NODE_BASE(floatc)) == floatc);
+            ASSERT(KEFIR_AST_NODE_SELF(KEFIR_AST_NODE_BASE(doublec)) == doublec);
+            ASSERT(KEFIR_AST_NODE_SELF(KEFIR_AST_NODE_BASE(ldoublec)) == ldoublec);
             ASSERT(floatc->type == KEFIR_AST_COMPLEX_FLOAT_CONSTANT);
             ASSERT(doublec->type == KEFIR_AST_COMPLEX_DOUBLE_CONSTANT);
             ASSERT(ldoublec->type == KEFIR_AST_COMPLEX_LONG_DOUBLE_CONSTANT);
@@ -186,8 +186,8 @@ DEFINE_CASE(ast_nodes_identifiers, "AST nodes - identifiers") {
     ASSERT(sym2 != NULL);
     ASSERT(sym1->base.klass->type == KEFIR_AST_IDENTIFIER);
     ASSERT(sym2->base.klass->type == KEFIR_AST_IDENTIFIER);
-    ASSERT(sym1->base.self == sym1);
-    ASSERT(sym2->base.self == sym2);
+    ASSERT(KEFIR_AST_NODE_SELF(KEFIR_AST_NODE_BASE(sym1)) == sym1);
+    ASSERT(KEFIR_AST_NODE_SELF(KEFIR_AST_NODE_BASE(sym2)) == sym2);
     ASSERT(strcmp(sym1->identifier, "symbol1") == 0);
     ASSERT(strcmp(sym2->identifier, "symbol_test1234") == 0);
     ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(sym1)));
@@ -206,8 +206,8 @@ DEFINE_CASE(ast_nodes_label_address, "AST nodes - label address") {
     ASSERT(addr2 != NULL);
     ASSERT(addr1->base.klass->type == KEFIR_AST_LABEL_ADDRESS);
     ASSERT(addr2->base.klass->type == KEFIR_AST_LABEL_ADDRESS);
-    ASSERT(addr1->base.self == addr1);
-    ASSERT(addr2->base.self == addr2);
+    ASSERT(KEFIR_AST_NODE_SELF(KEFIR_AST_NODE_BASE(addr1)) == addr1);
+    ASSERT(KEFIR_AST_NODE_SELF(KEFIR_AST_NODE_BASE(addr2)) == addr2);
     ASSERT(strcmp(addr1->label, "label1") == 0);
     ASSERT(strcmp(addr2->label, "label123_test827_testTestTEST") == 0);
     ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(addr1)));
@@ -223,8 +223,8 @@ DEFINE_CASE(ast_nodes_string_literals_multibyte, "AST nodes - multibyte string l
     ASSERT(sym2 != NULL);
     ASSERT(sym1->base.klass->type == KEFIR_AST_STRING_LITERAL);
     ASSERT(sym2->base.klass->type == KEFIR_AST_STRING_LITERAL);
-    ASSERT(sym1->base.self == sym1);
-    ASSERT(sym2->base.self == sym2);
+    ASSERT(KEFIR_AST_NODE_SELF(KEFIR_AST_NODE_BASE(sym1)) == sym1);
+    ASSERT(KEFIR_AST_NODE_SELF(KEFIR_AST_NODE_BASE(sym2)) == sym2);
     ASSERT(sym1->type == KEFIR_AST_STRING_LITERAL_MULTIBYTE);
     ASSERT(sym2->type == KEFIR_AST_STRING_LITERAL_MULTIBYTE);
     ASSERT(strcmp(sym1->literal, "Hello, world!") == 0);
@@ -246,8 +246,8 @@ DEFINE_CASE(ast_nodes_string_literals_unicode8, "AST nodes - unicode8 string lit
     ASSERT(sym2 != NULL);
     ASSERT(sym1->base.klass->type == KEFIR_AST_STRING_LITERAL);
     ASSERT(sym2->base.klass->type == KEFIR_AST_STRING_LITERAL);
-    ASSERT(sym1->base.self == sym1);
-    ASSERT(sym2->base.self == sym2);
+    ASSERT(KEFIR_AST_NODE_SELF(KEFIR_AST_NODE_BASE(sym1)) == sym1);
+    ASSERT(KEFIR_AST_NODE_SELF(KEFIR_AST_NODE_BASE(sym2)) == sym2);
     ASSERT(sym1->type == KEFIR_AST_STRING_LITERAL_UNICODE8);
     ASSERT(sym2->type == KEFIR_AST_STRING_LITERAL_UNICODE8);
     ASSERT(memcmp(sym1->literal, STRING1, sizeof(STRING1)) == 0);
@@ -270,8 +270,8 @@ DEFINE_CASE(ast_nodes_string_literals_unicode16, "AST nodes - unicode16 string l
     ASSERT(sym2 != NULL);
     ASSERT(sym1->base.klass->type == KEFIR_AST_STRING_LITERAL);
     ASSERT(sym2->base.klass->type == KEFIR_AST_STRING_LITERAL);
-    ASSERT(sym1->base.self == sym1);
-    ASSERT(sym2->base.self == sym2);
+    ASSERT(KEFIR_AST_NODE_SELF(KEFIR_AST_NODE_BASE(sym1)) == sym1);
+    ASSERT(KEFIR_AST_NODE_SELF(KEFIR_AST_NODE_BASE(sym2)) == sym2);
     ASSERT(sym1->type == KEFIR_AST_STRING_LITERAL_UNICODE16);
     ASSERT(sym2->type == KEFIR_AST_STRING_LITERAL_UNICODE16);
     ASSERT(memcmp(sym1->literal, STRING1, sizeof(STRING1)) == 0);
@@ -294,8 +294,8 @@ DEFINE_CASE(ast_nodes_string_literals_unicode32, "AST nodes - unicode32 string l
     ASSERT(sym2 != NULL);
     ASSERT(sym1->base.klass->type == KEFIR_AST_STRING_LITERAL);
     ASSERT(sym2->base.klass->type == KEFIR_AST_STRING_LITERAL);
-    ASSERT(sym1->base.self == sym1);
-    ASSERT(sym2->base.self == sym2);
+    ASSERT(KEFIR_AST_NODE_SELF(KEFIR_AST_NODE_BASE(sym1)) == sym1);
+    ASSERT(KEFIR_AST_NODE_SELF(KEFIR_AST_NODE_BASE(sym2)) == sym2);
     ASSERT(sym1->type == KEFIR_AST_STRING_LITERAL_UNICODE32);
     ASSERT(sym2->type == KEFIR_AST_STRING_LITERAL_UNICODE32);
     ASSERT(memcmp(sym1->literal, STRING1, sizeof(STRING1)) == 0);
@@ -318,8 +318,8 @@ DEFINE_CASE(ast_nodes_string_literals_wide, "AST nodes - wide string literals") 
     ASSERT(sym2 != NULL);
     ASSERT(sym1->base.klass->type == KEFIR_AST_STRING_LITERAL);
     ASSERT(sym2->base.klass->type == KEFIR_AST_STRING_LITERAL);
-    ASSERT(sym1->base.self == sym1);
-    ASSERT(sym2->base.self == sym2);
+    ASSERT(KEFIR_AST_NODE_SELF(KEFIR_AST_NODE_BASE(sym1)) == sym1);
+    ASSERT(KEFIR_AST_NODE_SELF(KEFIR_AST_NODE_BASE(sym2)) == sym2);
     ASSERT(sym1->type == KEFIR_AST_STRING_LITERAL_WIDE);
     ASSERT(sym2->type == KEFIR_AST_STRING_LITERAL_WIDE);
     ASSERT(memcmp(sym1->literal, STRING1, sizeof(STRING1)) == 0);
@@ -354,8 +354,8 @@ DEFINE_CASE(ast_nodes_type_name, "AST nodes - type name") {
     ASSERT(type2 != NULL);
     ASSERT(type1->base.klass->type == KEFIR_AST_TYPE_NAME);
     ASSERT(type2->base.klass->type == KEFIR_AST_TYPE_NAME);
-    ASSERT(type1->base.self == type1);
-    ASSERT(type2->base.self == type2);
+    ASSERT(KEFIR_AST_NODE_SELF(KEFIR_AST_NODE_BASE(type1)) == type1);
+    ASSERT(KEFIR_AST_NODE_SELF(KEFIR_AST_NODE_BASE(type2)) == type2);
 
     struct kefir_ast_declarator_specifier *specifier1 = NULL;
     struct kefir_list_entry *iter = kefir_ast_declarator_specifier_list_iter(&type1->type_decl.specifiers, &specifier1);
@@ -411,7 +411,7 @@ DEFINE_CASE(ast_nodes_array_subscripts, "AST nodes - array sybscripts") {
         kefir_ast_new_array_subscript(&kft_mem, KEFIR_AST_NODE_BASE(array), KEFIR_AST_NODE_BASE(index));
     ASSERT(subscript != NULL);
     ASSERT(subscript->base.klass->type == KEFIR_AST_ARRAY_SUBSCRIPT);
-    ASSERT(subscript->base.self == subscript);
+    ASSERT(KEFIR_AST_NODE_SELF(KEFIR_AST_NODE_BASE(subscript)) == subscript);
     ASSERT(subscript->array == KEFIR_AST_NODE_BASE(array));
     ASSERT(subscript->subscript == KEFIR_AST_NODE_BASE(index));
     ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(subscript)));
@@ -480,12 +480,12 @@ DEFINE_CASE(ast_nodes_struct_members, "AST nodes - struct members") {
         "field2");
     ASSERT(member != NULL);
     ASSERT(member->base.klass->type == KEFIR_AST_STRUCTURE_MEMBER);
-    ASSERT(member->base.self == member);
+    ASSERT(KEFIR_AST_NODE_SELF(KEFIR_AST_NODE_BASE(member)) == member);
     ASSERT(strcmp(member->member, "field2") == 0);
     ASSERT(member->structure != NULL);
     ASSERT(((struct kefir_ast_node_base *) member->structure)->klass->type == KEFIR_AST_STRUCTURE_INDIRECT_MEMBER);
     ASSIGN_DECL_CAST(struct kefir_ast_struct_member *, member2,
-                     ((struct kefir_ast_node_base *) member->structure)->self);
+                     KEFIR_AST_NODE_SELF(((struct kefir_ast_node_base *) member->structure)));
     ASSERT(member2->base.klass->type == KEFIR_AST_STRUCTURE_INDIRECT_MEMBER);
     ASSERT(strcmp(member2->member, "field1") == 0);
     ASSERT(member2->structure != NULL);
@@ -508,7 +508,7 @@ DEFINE_CASE(ast_nodes_unary_operations, "AST nodes - unary operations") {
             &kft_mem, UNARY_OPERATORS[i], KEFIR_AST_NODE_BASE(kefir_ast_new_constant_uint(&kft_mem, i)));
         ASSERT(unary_op != NULL);
         ASSERT(unary_op->base.klass->type == KEFIR_AST_UNARY_OPERATION);
-        ASSERT(unary_op->base.self == unary_op);
+        ASSERT(KEFIR_AST_NODE_SELF(KEFIR_AST_NODE_BASE(unary_op)) == unary_op);
         ASSERT(unary_op->type == UNARY_OPERATORS[i]);
         ASSERT(unary_op->arg != NULL);
         ASSERT(unary_op->arg->klass->type == KEFIR_AST_CONSTANT);
@@ -538,7 +538,7 @@ DEFINE_CASE(ast_nodes_binary_operations, "AST nodes - binary operations") {
             KEFIR_AST_NODE_BASE(kefir_ast_new_constant_uint(&kft_mem, i)));
         ASSERT(binary_op != NULL);
         ASSERT(binary_op->base.klass->type == KEFIR_AST_BINARY_OPERATION);
-        ASSERT(binary_op->base.self == binary_op);
+        ASSERT(KEFIR_AST_NODE_SELF(KEFIR_AST_NODE_BASE(binary_op)) == binary_op);
         ASSERT(binary_op->type == BINARY_OPERATORS[i]);
         ASSERT(binary_op->arg1 != NULL);
         ASSERT(binary_op->arg1->klass->type == KEFIR_AST_IDENTIFIER);

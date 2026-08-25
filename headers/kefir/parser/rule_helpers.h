@@ -101,7 +101,7 @@
             struct kefir_ast_node_base *attribute = NULL;                                      \
             *(_res) = KEFIR_PARSER_RULE_APPLY((_mem), (_parser), attribute_list, &attribute);  \
             if (*(_res) == KEFIR_OK && attribute != NULL) {                                    \
-                *(_res) = kefir_ast_node_attributes_append((_mem), (_attrs), attribute->self); \
+                *(_res) = kefir_ast_node_attributes_append((_mem), (_attrs), KEFIR_AST_NODE_SELF(attribute)); \
                 attribute = NULL;                                                              \
             }                                                                                  \
         }                                                                                      \

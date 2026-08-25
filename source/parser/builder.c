@@ -195,7 +195,7 @@ kefir_result_t kefir_parser_ast_builder_function_call_append(struct kefir_mem *m
         return KEFIR_SET_ERROR(KEFIR_INVALID_CHANGE, "Expected function call node");
     });
 
-    res = kefir_ast_function_call_append(mem, (struct kefir_ast_function_call *) function->self, arg);
+    res = kefir_ast_function_call_append(mem, (struct kefir_ast_function_call *) KEFIR_AST_NODE_SELF(function), arg);
     REQUIRE_ELSE(res == KEFIR_OK, {
         KEFIR_AST_NODE_FREE(mem, function);
         KEFIR_AST_NODE_FREE(mem, arg);
@@ -307,7 +307,7 @@ kefir_result_t kefir_parser_ast_builder_cast(struct kefir_mem *mem, struct kefir
     });
 
     struct kefir_ast_cast_operator *cast =
-        kefir_ast_new_cast_operator(mem, (struct kefir_ast_type_name *) type_name->self, expression);
+        kefir_ast_new_cast_operator(mem, (struct kefir_ast_type_name *) KEFIR_AST_NODE_SELF(type_name), expression);
     REQUIRE_ELSE(cast != NULL, {
         KEFIR_AST_NODE_FREE(mem, type_name);
         KEFIR_AST_NODE_FREE(mem, expression);
@@ -430,7 +430,7 @@ kefir_result_t kefir_parser_ast_builder_comma_operator(struct kefir_mem *mem,
     });
 
     if (expr1->klass->type == KEFIR_AST_COMMA_OPERATOR) {
-        ASSIGN_DECL_CAST(struct kefir_ast_comma_operator *, comma, expr1->self);
+        ASSIGN_DECL_CAST(struct kefir_ast_comma_operator *, comma, KEFIR_AST_NODE_SELF(expr1));
         res = kefir_ast_comma_append(mem, comma, expr2);
         REQUIRE_ELSE(res == KEFIR_OK, {
             KEFIR_AST_NODE_FREE(mem, expr1);
@@ -502,7 +502,7 @@ kefir_result_t kefir_parser_ast_builder_static_assertion(struct kefir_mem *mem,
     });
 
     struct kefir_ast_static_assertion *static_assertion =
-        kefir_ast_new_static_assertion(mem, assertion, string_literal != NULL ? string_literal->self : NULL);
+        kefir_ast_new_static_assertion(mem, assertion, string_literal != NULL ? KEFIR_AST_NODE_SELF(string_literal) : NULL);
     REQUIRE_ELSE(static_assertion != NULL, {
         if (string_literal != NULL) {
             KEFIR_AST_NODE_FREE(mem, string_literal);
@@ -575,7 +575,7 @@ kefir_result_t kefir_parser_ast_builder_generic_selection_append(struct kefir_me
         return KEFIR_SET_ERROR(KEFIR_INVALID_CHANGE, "Expected AST type name node");
     });
 
-    res = kefir_ast_generic_selection_append(mem, generic_selection->self, type_name->self, expression);
+    res = kefir_ast_generic_selection_append(mem, KEFIR_AST_NODE_SELF(generic_selection), KEFIR_AST_NODE_SELF(type_name), expression);
     REQUIRE_ELSE(res == KEFIR_OK, {
         KEFIR_AST_NODE_FREE(mem, generic_selection);
         KEFIR_AST_NODE_FREE(mem, type_name);
@@ -610,7 +610,7 @@ kefir_result_t kefir_parser_ast_builder_generic_selection_append_default(struct 
         return KEFIR_SET_ERROR(KEFIR_INVALID_CHANGE, "Expected AST generic selection node");
     });
 
-    res = kefir_ast_generic_selection_append(mem, generic_selection->self, NULL, expression);
+    res = kefir_ast_generic_selection_append(mem, KEFIR_AST_NODE_SELF(generic_selection), NULL, expression);
     REQUIRE_ELSE(res == KEFIR_OK, {
         KEFIR_AST_NODE_FREE(mem, generic_selection);
         KEFIR_AST_NODE_FREE(mem, expression);
@@ -639,7 +639,7 @@ kefir_result_t kefir_parser_ast_builder_compound_literal(struct kefir_mem *mem,
         return KEFIR_SET_ERROR(KEFIR_INVALID_CHANGE, "Expected AST type name");
     });
 
-    struct kefir_ast_compound_literal *compound = kefir_ast_new_compound_literal(mem, type_name->self);
+    struct kefir_ast_compound_literal *compound = kefir_ast_new_compound_literal(mem, KEFIR_AST_NODE_SELF(type_name));
     REQUIRE_ELSE(compound != NULL, {
         KEFIR_AST_NODE_FREE(mem, type_name);
         return KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST compound literal");
@@ -695,7 +695,7 @@ kefir_result_t kefir_parser_ast_builder_init_declarator(struct kefir_mem *mem, s
         KEFIR_AST_NODE_FREE(mem, declaration);
         return KEFIR_SET_ERROR(KEFIR_INVALID_CHANGE, "Expected node of AST declaration list type");
     });
-    ASSIGN_DECL_CAST(struct kefir_ast_declaration *, decl_list, declaration->self);
+    ASSIGN_DECL_CAST(struct kefir_ast_declaration *, decl_list, KEFIR_AST_NODE_SELF(declaration));
 
     struct kefir_ast_init_declarator *init_declarator = kefir_ast_new_init_declarator(mem, declarator, initializer);
     REQUIRE_ELSE(init_declarator != NULL, {
@@ -764,7 +764,7 @@ kefir_result_t kefir_parser_ast_builder_compound_statement_append(struct kefir_m
         return KEFIR_SET_ERROR(KEFIR_INVALID_CHANGE, "Expected AST compound statement");
     });
 
-    ASSIGN_DECL_CAST(struct kefir_ast_compound_statement *, compound, compound_stmt->self);
+    ASSIGN_DECL_CAST(struct kefir_ast_compound_statement *, compound, KEFIR_AST_NODE_SELF(compound_stmt));
     res = kefir_ast_compound_statement_append(mem, compound, stmt);
     REQUIRE_ELSE(res == KEFIR_OK, {
         KEFIR_AST_NODE_FREE(mem, compound_stmt);
@@ -1401,7 +1401,7 @@ kefir_result_t kefir_parser_ast_builder_translation_unit_append(struct kefir_mem
         KEFIR_AST_NODE_FREE(mem, unit_node);
         return KEFIR_SET_ERROR(KEFIR_INVALID_CHANGE, "Expected AST translation unit");
     });
-    ASSIGN_DECL_CAST(struct kefir_ast_translation_unit *, unit, unit_node->self);
+    ASSIGN_DECL_CAST(struct kefir_ast_translation_unit *, unit, KEFIR_AST_NODE_SELF(unit_node));
 
     res = kefir_ast_translation_unit_append(mem, unit, node);
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -1452,7 +1452,7 @@ kefir_result_t kefir_parser_ast_builder_builtin_append(struct kefir_mem *mem,
         return KEFIR_SET_ERROR(KEFIR_INVALID_CHANGE, "Expected builtin node");
     });
 
-    res = kefir_ast_builtin_append(mem, (struct kefir_ast_builtin *) builtin->self, arg);
+    res = kefir_ast_builtin_append(mem, (struct kefir_ast_builtin *) KEFIR_AST_NODE_SELF(builtin), arg);
     REQUIRE_ELSE(res == KEFIR_OK, {
         KEFIR_AST_NODE_FREE(mem, builtin);
         KEFIR_AST_NODE_FREE(mem, arg);
@@ -1551,7 +1551,7 @@ kefir_result_t kefir_parser_ast_builder_statement_expression_append(struct kefir
         return KEFIR_SET_ERROR(KEFIR_INVALID_CHANGE, "Expected AST statement expression");
     });
 
-    ASSIGN_DECL_CAST(struct kefir_ast_statement_expression *, expr, stmt_expr->self);
+    ASSIGN_DECL_CAST(struct kefir_ast_statement_expression *, expr, KEFIR_AST_NODE_SELF(stmt_expr));
 
     if (expr->result != NULL) {
         res = kefir_ast_statement_expression_append(mem, expr, expr->result);
@@ -1600,7 +1600,7 @@ kefir_result_t kefir_parser_ast_builder_attribute(struct kefir_mem *mem, struct 
         return KEFIR_SET_ERROR(KEFIR_INVALID_CHANGE, "Expected AST attribute list");
     });
 
-    ASSIGN_DECL_CAST(struct kefir_ast_attribute_list *, list, list_node->self);
+    ASSIGN_DECL_CAST(struct kefir_ast_attribute_list *, list, KEFIR_AST_NODE_SELF(list_node));
 
     struct kefir_ast_attribute *attr = NULL;
     kefir_result_t res = kefir_ast_attribute_list_append(mem, builder->parser->symbols, prefix, name, list, &attr);
@@ -1635,7 +1635,7 @@ kefir_result_t kefir_parser_ast_builder_attribute_parameter(struct kefir_mem *me
         return KEFIR_SET_ERROR(KEFIR_INVALID_CHANGE, "Expected AST attribute list");
     });
 
-    ASSIGN_DECL_CAST(struct kefir_ast_attribute_list *, list, list_node->self);
+    ASSIGN_DECL_CAST(struct kefir_ast_attribute_list *, list, KEFIR_AST_NODE_SELF(list_node));
     REQUIRE_ELSE(kefir_list_length(&list->list) > 0, {
         KEFIR_AST_NODE_FREE(mem, param);
         KEFIR_AST_NODE_FREE(mem, list_node);
@@ -1672,7 +1672,7 @@ kefir_result_t kefir_parser_ast_builder_attribute_unstructured_parameter(struct 
         return KEFIR_SET_ERROR(KEFIR_INVALID_CHANGE, "Expected AST attribute list");
     });
 
-    ASSIGN_DECL_CAST(struct kefir_ast_attribute_list *, list, list_node->self);
+    ASSIGN_DECL_CAST(struct kefir_ast_attribute_list *, list, KEFIR_AST_NODE_SELF(list_node));
     REQUIRE_ELSE(kefir_list_length(&list->list) > 0, {
         KEFIR_AST_NODE_FREE(mem, list_node);
         return KEFIR_SET_ERROR(KEFIR_INVALID_CHANGE, "Expected non-empty AST attribute list");
@@ -1736,7 +1736,7 @@ kefir_result_t kefir_parser_ast_builder_inline_assembly_add_output(struct kefir_
         KEFIR_AST_NODE_FREE(mem, parameter);
         return KEFIR_SET_ERROR(KEFIR_INVALID_CHANGE, "Expected AST inline assembly node");
     });
-    ASSIGN_DECL_CAST(struct kefir_ast_inline_assembly *, inline_asm, inline_asm_node->self);
+    ASSIGN_DECL_CAST(struct kefir_ast_inline_assembly *, inline_asm, KEFIR_AST_NODE_SELF(inline_asm_node));
 
     res = kefir_ast_inline_assembly_add_output(mem, builder->parser->symbols, inline_asm, parameter_name, constraint,
                                                parameter);
@@ -1776,7 +1776,7 @@ kefir_result_t kefir_parser_ast_builder_inline_assembly_add_input(struct kefir_m
         KEFIR_AST_NODE_FREE(mem, parameter);
         return KEFIR_SET_ERROR(KEFIR_INVALID_CHANGE, "Expected AST inline assembly node");
     });
-    ASSIGN_DECL_CAST(struct kefir_ast_inline_assembly *, inline_asm, inline_asm_node->self);
+    ASSIGN_DECL_CAST(struct kefir_ast_inline_assembly *, inline_asm, KEFIR_AST_NODE_SELF(inline_asm_node));
 
     res = kefir_ast_inline_assembly_add_input(mem, builder->parser->symbols, inline_asm, parameter_name, constraint,
                                               parameter);
@@ -1808,7 +1808,7 @@ kefir_result_t kefir_parser_ast_builder_inline_assembly_add_clobber(struct kefir
         KEFIR_AST_NODE_FREE(mem, inline_asm_node);
         return KEFIR_SET_ERROR(KEFIR_INVALID_CHANGE, "Expected AST inline assembly node");
     });
-    ASSIGN_DECL_CAST(struct kefir_ast_inline_assembly *, inline_asm, inline_asm_node->self);
+    ASSIGN_DECL_CAST(struct kefir_ast_inline_assembly *, inline_asm, KEFIR_AST_NODE_SELF(inline_asm_node));
 
     kefir_result_t res = kefir_ast_inline_assembly_add_clobber(mem, builder->parser->symbols, inline_asm, clobber);
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -1839,7 +1839,7 @@ kefir_result_t kefir_parser_ast_builder_inline_assembly_add_jump_target(struct k
         KEFIR_AST_NODE_FREE(mem, inline_asm_node);
         return KEFIR_SET_ERROR(KEFIR_INVALID_CHANGE, "Expected AST inline assembly node");
     });
-    ASSIGN_DECL_CAST(struct kefir_ast_inline_assembly *, inline_asm, inline_asm_node->self);
+    ASSIGN_DECL_CAST(struct kefir_ast_inline_assembly *, inline_asm, KEFIR_AST_NODE_SELF(inline_asm_node));
 
     kefir_result_t res =
         kefir_ast_inline_assembly_add_jump_label(mem, builder->parser->symbols, inline_asm, jump_target);

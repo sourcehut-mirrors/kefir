@@ -35,7 +35,7 @@ DEFINE_CASE(ast_attribute_declaration1, "AST declarators - attribute declaration
     struct kefir_ast_attribute_declaration *decl = kefir_ast_new_attribute_declaration(&kft_mem);
     ASSERT(decl != NULL);
     ASSERT(decl->base.klass->type == KEFIR_AST_ATTRIBUTE_DECLARATION);
-    ASSERT(decl->base.self == decl);
+    ASSERT(KEFIR_AST_NODE_SELF(KEFIR_AST_NODE_BASE(decl)) == decl);
 
     struct kefir_ast_attribute_list *attr_list = kefir_ast_new_attribute_list(&kft_mem);
     struct kefir_ast_attribute *attr;

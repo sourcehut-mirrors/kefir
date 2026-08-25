@@ -76,7 +76,7 @@ kefir_result_t make_unit(struct kefir_mem *mem, const struct kefir_ast_context *
     REQUIRE_OK(kefir_parser_init(mem, &parser, context->symbols, &cursor, NULL));
     struct kefir_ast_node_base *node = NULL;
     REQUIRE_OK(KEFIR_PARSER_NEXT_TRANSLATION_UNIT(mem, &parser, &node));
-    *result = node->self;
+    *result = KEFIR_AST_NODE_SELF(node);
 
     REQUIRE_OK(kefir_parser_free(mem, &parser));
     for (kefir_size_t i = 0; i < counter; i++) {

@@ -28,7 +28,7 @@ NODE_VISIT_IMPL(ast_assignment_operator_visit, kefir_ast_assignment_operator, as
 kefir_result_t ast_assignment_operator_free(struct kefir_mem *mem, struct kefir_ast_node_base *base) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(base != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST node base"));
-    ASSIGN_DECL_CAST(struct kefir_ast_assignment_operator *, node, base->self);
+    ASSIGN_DECL_CAST(struct kefir_ast_assignment_operator *, node, KEFIR_AST_NODE_SELF(base));
     REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, node->target));
     REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, node->value));
     KEFIR_FREE(mem, node);
@@ -57,7 +57,6 @@ struct kefir_ast_assignment_operator *kefir_ast_new_compound_assignment(struct k
     REQUIRE(assignment != NULL, NULL);
     assignment->base.refcount = 1;
     assignment->base.klass = &AST_ASSIGNMENT_OPERATOR_CLASS;
-    assignment->base.self = assignment;
     kefir_result_t res = kefir_ast_node_properties_init(&assignment->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
         KEFIR_FREE(mem, assignment);

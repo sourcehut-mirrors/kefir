@@ -28,7 +28,7 @@ NODE_VISIT_IMPL(ast_static_assertion_visit, kefir_ast_static_assertion, static_a
 kefir_result_t ast_static_assertion_free(struct kefir_mem *mem, struct kefir_ast_node_base *base) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(base != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST node base"));
-    ASSIGN_DECL_CAST(struct kefir_ast_static_assertion *, node, base->self);
+    ASSIGN_DECL_CAST(struct kefir_ast_static_assertion *, node, KEFIR_AST_NODE_SELF(base));
     REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, node->condition));
     if (node->string != NULL) {
         REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, KEFIR_AST_NODE_BASE(node->string)));
@@ -50,7 +50,6 @@ struct kefir_ast_static_assertion *kefir_ast_new_static_assertion(struct kefir_m
     REQUIRE(static_assertion != NULL, NULL);
     static_assertion->base.refcount = 1;
     static_assertion->base.klass = &AST_STATIC_ASSERTION_CLASS;
-    static_assertion->base.self = static_assertion;
     kefir_result_t res = kefir_ast_node_properties_init(&static_assertion->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
         KEFIR_FREE(mem, static_assertion);

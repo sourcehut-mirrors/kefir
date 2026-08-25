@@ -41,8 +41,8 @@ DEFINE_CASE(ast_initializer_construction1, "AST initializer - construction #1") 
     ASSERT(init1->type == KEFIR_AST_INITIALIZER_EXPRESSION);
     ASSERT(init1->expression != NULL);
     ASSERT(init1->expression->klass->type == KEFIR_AST_CONSTANT);
-    ASSERT(((struct kefir_ast_constant *) init1->expression->self)->type == KEFIR_AST_INT_CONSTANT);
-    ASSERT(((struct kefir_ast_constant *) init1->expression->self)->value.integer == 100);
+    ASSERT(((struct kefir_ast_constant *) KEFIR_AST_NODE_SELF(init1->expression))->type == KEFIR_AST_INT_CONSTANT);
+    ASSERT(((struct kefir_ast_constant *) KEFIR_AST_NODE_SELF(init1->expression))->value.integer == 100);
     ASSERT_OK(kefir_ast_initializer_free(&kft_mem, init1));
 
     struct kefir_ast_initializer *init2 = kefir_ast_new_expression_initializer(
@@ -51,8 +51,8 @@ DEFINE_CASE(ast_initializer_construction1, "AST initializer - construction #1") 
     ASSERT(init2->type == KEFIR_AST_INITIALIZER_EXPRESSION);
     ASSERT(init2->expression != NULL);
     ASSERT(init2->expression->klass->type == KEFIR_AST_CONSTANT);
-    ASSERT(((struct kefir_ast_constant *) init2->expression->self)->type == KEFIR_AST_DOUBLE_CONSTANT);
-    ASSERT(DOUBLE_EQUALS(((struct kefir_ast_constant *) init2->expression->self)->value.float64, 3.14, DOUBLE_EPSILON));
+    ASSERT(((struct kefir_ast_constant *) KEFIR_AST_NODE_SELF(init2->expression))->type == KEFIR_AST_DOUBLE_CONSTANT);
+    ASSERT(DOUBLE_EQUALS(((struct kefir_ast_constant *) KEFIR_AST_NODE_SELF(init2->expression))->value.float64, 3.14, DOUBLE_EPSILON));
     ASSERT_OK(kefir_ast_initializer_free(&kft_mem, init2));
 
     struct kefir_ast_initializer *init3 = kefir_ast_new_expression_initializer(
@@ -61,7 +61,7 @@ DEFINE_CASE(ast_initializer_construction1, "AST initializer - construction #1") 
     ASSERT(init3->type == KEFIR_AST_INITIALIZER_EXPRESSION);
     ASSERT(init3->expression != NULL);
     ASSERT(init3->expression->klass->type == KEFIR_AST_IDENTIFIER);
-    ASSERT(strcmp(((struct kefir_ast_identifier *) init3->expression->self)->identifier, "test") == 0);
+    ASSERT(strcmp(((struct kefir_ast_identifier *) KEFIR_AST_NODE_SELF(init3->expression))->identifier, "test") == 0);
     ASSERT_OK(kefir_ast_initializer_free(&kft_mem, init3));
 
     ASSERT_OK(kefir_ast_local_context_free(&kft_mem, &local_context));

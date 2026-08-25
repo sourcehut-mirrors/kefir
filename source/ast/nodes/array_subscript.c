@@ -28,7 +28,7 @@ NODE_VISIT_IMPL(ast_array_subscript_visit, kefir_ast_array_subscript, array_subs
 kefir_result_t ast_array_subscript_free(struct kefir_mem *mem, struct kefir_ast_node_base *base) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(base != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST node base"));
-    ASSIGN_DECL_CAST(struct kefir_ast_array_subscript *, node, base->self);
+    ASSIGN_DECL_CAST(struct kefir_ast_array_subscript *, node, KEFIR_AST_NODE_SELF(base));
     REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, node->array));
     REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, node->subscript));
     KEFIR_FREE(mem, node);
@@ -48,7 +48,6 @@ struct kefir_ast_array_subscript *kefir_ast_new_array_subscript(struct kefir_mem
     REQUIRE(array_subscript != NULL, NULL);
     array_subscript->base.refcount = 1;
     array_subscript->base.klass = &AST_ARRAY_SUBSCRIPT_CLASS;
-    array_subscript->base.self = array_subscript;
     kefir_result_t res = kefir_ast_node_properties_init(&array_subscript->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
         KEFIR_FREE(mem, array_subscript);

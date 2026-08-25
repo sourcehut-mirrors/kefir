@@ -212,8 +212,8 @@ DEFINE_CASE(ast_declarator_construction7, "AST declarators - array construction 
     ASSERT(decl->array.declarator->identifier.asm_label == NULL);
     ASSERT(decl->array.length != NULL);
     ASSERT(decl->array.length->klass->type == KEFIR_AST_CONSTANT);
-    ASSERT(((struct kefir_ast_constant *) decl->array.length->self)->type == KEFIR_AST_INT_CONSTANT);
-    ASSERT(((struct kefir_ast_constant *) decl->array.length->self)->value.integer == 100);
+    ASSERT(((struct kefir_ast_constant *) KEFIR_AST_NODE_SELF(decl->array.length))->type == KEFIR_AST_INT_CONSTANT);
+    ASSERT(((struct kefir_ast_constant *) KEFIR_AST_NODE_SELF(decl->array.length))->value.integer == 100);
     ASSERT(!decl->array.static_array);
     ASSERT(kefir_ast_type_qualifier_list_iter(&decl->array.type_qualifiers, NULL) == NULL);
 
@@ -281,8 +281,8 @@ DEFINE_CASE(ast_declarator_construction9, "AST declarators - array construction 
     ASSERT(decl->array.declarator->klass == KEFIR_AST_DECLARATOR_POINTER);
     ASSERT(decl->array.length != NULL);
     ASSERT(decl->array.length->klass->type == KEFIR_AST_CONSTANT);
-    ASSERT(((struct kefir_ast_constant *) decl->array.length->self)->type == KEFIR_AST_INT_CONSTANT);
-    ASSERT(((struct kefir_ast_constant *) decl->array.length->self)->value.integer == 1);
+    ASSERT(((struct kefir_ast_constant *) KEFIR_AST_NODE_SELF(decl->array.length))->type == KEFIR_AST_INT_CONSTANT);
+    ASSERT(((struct kefir_ast_constant *) KEFIR_AST_NODE_SELF(decl->array.length))->value.integer == 1);
     ASSERT(!decl->array.static_array);
     ASSERT(kefir_ast_type_qualifier_list_iter(&decl->array.type_qualifiers, NULL) == NULL);
 
@@ -331,7 +331,7 @@ DEFINE_CASE(ast_declarator_construction10, "AST declarators - function construct
         ASSIGN_DECL_CAST(struct kefir_ast_node_base *, param, iter->value);
         ASSERT(param != NULL);
         ASSERT(param->klass->type == KEFIR_AST_IDENTIFIER);
-        ASSERT(strcmp(((struct kefir_ast_identifier *) param->self)->identifier, PARAMS[i]) == 0);
+        ASSERT(strcmp(((struct kefir_ast_identifier *) KEFIR_AST_NODE_SELF(param))->identifier, PARAMS[i]) == 0);
         kefir_list_next(&iter);
     }
 

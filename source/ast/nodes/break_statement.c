@@ -28,7 +28,7 @@ NODE_VISIT_IMPL(ast_break_statement_visit, kefir_ast_break_statement, break_stat
 kefir_result_t ast_break_statement_free(struct kefir_mem *mem, struct kefir_ast_node_base *base) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(base != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST node base"));
-    ASSIGN_DECL_CAST(struct kefir_ast_break_statement *, node, base->self);
+    ASSIGN_DECL_CAST(struct kefir_ast_break_statement *, node, KEFIR_AST_NODE_SELF(base));
     REQUIRE_OK(kefir_ast_node_attributes_free(mem, &node->attributes));
     KEFIR_FREE(mem, node);
     return KEFIR_OK;
@@ -44,7 +44,6 @@ struct kefir_ast_break_statement *kefir_ast_new_break_statement(struct kefir_mem
     REQUIRE(stmt != NULL, NULL);
     stmt->base.refcount = 1;
     stmt->base.klass = &AST_BREAK_STATEMENT_CLASS;
-    stmt->base.self = stmt;
     kefir_result_t res = kefir_ast_node_properties_init(&stmt->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
         KEFIR_FREE(mem, stmt);

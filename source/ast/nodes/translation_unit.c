@@ -28,7 +28,7 @@ NODE_VISIT_IMPL(ast_translation_unit_visit, kefir_ast_translation_unit, translat
 kefir_result_t ast_translation_unit_free(struct kefir_mem *mem, struct kefir_ast_node_base *base) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(base != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST node base"));
-    ASSIGN_DECL_CAST(struct kefir_ast_translation_unit *, node, base->self);
+    ASSIGN_DECL_CAST(struct kefir_ast_translation_unit *, node, KEFIR_AST_NODE_SELF(base));
 
     for (kefir_size_t i = 0; i < node->external_definitions_length; i++) {
         if (node->external_definitions[i] != NULL) {
@@ -50,7 +50,6 @@ struct kefir_ast_translation_unit *kefir_ast_new_translation_unit(struct kefir_m
     REQUIRE(unit != NULL, NULL);
     unit->base.refcount = 1;
     unit->base.klass = &AST_TRANSLATION_UNIT_CLASS;
-    unit->base.self = unit;
     unit->external_definitions = NULL;
     unit->external_definitions_capacity = 0;
     unit->external_definitions_length = 0;

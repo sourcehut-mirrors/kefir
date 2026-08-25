@@ -29,7 +29,7 @@ NODE_VISIT_IMPL(ast_struct_indirect_member_visit, kefir_ast_struct_member, struc
 kefir_result_t ast_struct_member_free(struct kefir_mem *mem, struct kefir_ast_node_base *base) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(base != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST node base"));
-    ASSIGN_DECL_CAST(struct kefir_ast_struct_member *, node, base->self);
+    ASSIGN_DECL_CAST(struct kefir_ast_struct_member *, node, KEFIR_AST_NODE_SELF(base));
     REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, node->structure));
     KEFIR_FREE(mem, node);
     return KEFIR_OK;
@@ -54,7 +54,6 @@ struct kefir_ast_struct_member *kefir_ast_new_struct_member(struct kefir_mem *me
     REQUIRE(struct_member != NULL, NULL);
     struct_member->base.refcount = 1;
     struct_member->base.klass = &AST_STRUCT_MEMBER_CLASS;
-    struct_member->base.self = struct_member;
     kefir_result_t res = kefir_ast_node_properties_init(&struct_member->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
         KEFIR_FREE(mem, struct_member);
@@ -84,7 +83,6 @@ struct kefir_ast_struct_member *kefir_ast_new_struct_indirect_member(struct kefi
     REQUIRE(struct_member != NULL, NULL);
     struct_member->base.refcount = 1;
     struct_member->base.klass = &AST_STRUCT_INDIRECT_MEMBER_CLASS;
-    struct_member->base.self = struct_member;
     kefir_result_t res = kefir_ast_node_properties_init(&struct_member->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
         KEFIR_FREE(mem, struct_member);

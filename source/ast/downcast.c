@@ -30,7 +30,7 @@
         REQUIRE(result != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to " _err)); \
                                                                                                               \
         REQUIRE((_cond), KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to downcast AST node to " _err));            \
-        *result = node->self;                                                                                 \
+        *result = KEFIR_AST_NODE_SELF(node);                                                                                 \
         return KEFIR_OK;                                                                                      \
     }
 

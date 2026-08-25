@@ -28,7 +28,7 @@ NODE_VISIT_IMPL(ast_comma_operator_visit, kefir_ast_comma_operator, comma_operat
 kefir_result_t ast_comma_operator_free(struct kefir_mem *mem, struct kefir_ast_node_base *base) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(base != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST node base"));
-    ASSIGN_DECL_CAST(struct kefir_ast_comma_operator *, node, base->self);
+    ASSIGN_DECL_CAST(struct kefir_ast_comma_operator *, node, KEFIR_AST_NODE_SELF(base));
     for (kefir_size_t i = 0; i < node->expressions_length; i++) {
         REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, node->expressions[i]));
     }
@@ -47,7 +47,6 @@ struct kefir_ast_comma_operator *kefir_ast_new_comma_operator(struct kefir_mem *
     REQUIRE(comma != NULL, NULL);
     comma->base.refcount = 1;
     comma->base.klass = &AST_COMMA_OPERATOR_CLASS;
-    comma->base.self = comma;
     comma->expressions = NULL;
     comma->expressions_capacity = 0;
     comma->expressions_length = 0;

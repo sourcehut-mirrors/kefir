@@ -58,9 +58,9 @@ DEFINE_CASE(ast_declarator_specifier_construction2, "AST declarator specifiers -
         ASSERT(specifier->type_specifier.specifier == KEFIR_AST_TYPE_SPECIFIER_ATOMIC);
         ASSERT(specifier->type_specifier.value.atomic_type->klass->type == KEFIR_AST_CONSTANT);
         ASSERT(specifier->type_specifier.value.atomic_type != NULL);
-        ASSERT(((struct kefir_ast_constant *) specifier->type_specifier.value.atomic_type->self)->type ==
+        ASSERT(((struct kefir_ast_constant *) KEFIR_AST_NODE_SELF(specifier->type_specifier.value.atomic_type))->type ==
                KEFIR_AST_INT_CONSTANT);
-        ASSERT(((struct kefir_ast_constant *) specifier->type_specifier.value.atomic_type->self)->value.integer == i);
+        ASSERT(((struct kefir_ast_constant *) KEFIR_AST_NODE_SELF(specifier->type_specifier.value.atomic_type))->value.integer == i);
         ASSERT_OK(kefir_ast_declarator_specifier_free(&kft_mem, specifier));
     }
 }
@@ -229,8 +229,8 @@ DEFINE_CASE(ast_declarator_specifier_construction11, "AST declarator specifiers 
         ASSERT(specifier->klass == KEFIR_AST_ALIGNMENT_SPECIFIER);
         ASSERT(specifier->alignment_specifier != NULL);
         ASSERT(specifier->alignment_specifier->klass->type == KEFIR_AST_CONSTANT);
-        ASSERT(((struct kefir_ast_constant *) specifier->alignment_specifier->self)->type == KEFIR_AST_INT_CONSTANT);
-        ASSERT(((struct kefir_ast_constant *) specifier->alignment_specifier->self)->value.integer == i);
+        ASSERT(((struct kefir_ast_constant *) KEFIR_AST_NODE_SELF(specifier->alignment_specifier))->type == KEFIR_AST_INT_CONSTANT);
+        ASSERT(((struct kefir_ast_constant *) KEFIR_AST_NODE_SELF(specifier->alignment_specifier))->value.integer == i);
         ASSERT_OK(kefir_ast_declarator_specifier_free(&kft_mem, specifier));
     }
 }

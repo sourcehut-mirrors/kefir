@@ -28,7 +28,7 @@ NODE_VISIT_IMPL(ast_cast_operator_visit, kefir_ast_cast_operator, cast_operator)
 kefir_result_t ast_cast_operator_free(struct kefir_mem *mem, struct kefir_ast_node_base *base) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(base != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST node base"));
-    ASSIGN_DECL_CAST(struct kefir_ast_cast_operator *, node, base->self);
+    ASSIGN_DECL_CAST(struct kefir_ast_cast_operator *, node, KEFIR_AST_NODE_SELF(base));
     REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, KEFIR_AST_NODE_BASE(node->type_name)));
     REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, node->expr));
     KEFIR_FREE(mem, node);
@@ -48,7 +48,6 @@ struct kefir_ast_cast_operator *kefir_ast_new_cast_operator(struct kefir_mem *me
     REQUIRE(cast != NULL, NULL);
     cast->base.refcount = 1;
     cast->base.klass = &AST_CAST_OPERATOR_CLASS;
-    cast->base.self = cast;
     kefir_result_t res = kefir_ast_node_properties_init(&cast->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
         KEFIR_FREE(mem, cast);

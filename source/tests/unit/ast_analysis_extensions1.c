@@ -90,7 +90,7 @@ static kefir_result_t after_node_analysis(struct kefir_mem *mem, const struct ke
     UNUSED(mem);
     UNUSED(context);
     if (node->klass->type == KEFIR_AST_CONSTANT) {
-        struct kefir_ast_constant *constant = node->self;
+        struct kefir_ast_constant *constant = KEFIR_AST_NODE_SELF(node);
         if (constant->type == KEFIR_AST_UINT_CONSTANT) {
             node->properties.expression_props->constant_expression_value = NULL;
         }

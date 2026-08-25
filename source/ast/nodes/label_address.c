@@ -28,7 +28,7 @@ NODE_VISIT_IMPL(ast_label_address_visit, kefir_ast_label_address, label_address)
 kefir_result_t ast_label_address_free(struct kefir_mem *mem, struct kefir_ast_node_base *base) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(base != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST node base"));
-    ASSIGN_DECL_CAST(struct kefir_ast_label_address *, node, base->self);
+    ASSIGN_DECL_CAST(struct kefir_ast_label_address *, node, KEFIR_AST_NODE_SELF(base));
     KEFIR_FREE(mem, node);
     return KEFIR_OK;
 }
@@ -47,7 +47,6 @@ struct kefir_ast_label_address *kefir_ast_new_label_address(struct kefir_mem *me
     REQUIRE(id != NULL, NULL);
     id->base.refcount = 1;
     id->base.klass = &AST_LABEL_ADDRESS_CLASS;
-    id->base.self = id;
     kefir_result_t res = kefir_ast_node_properties_init(&id->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
         KEFIR_FREE(mem, id);

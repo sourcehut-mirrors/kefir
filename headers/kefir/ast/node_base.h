@@ -121,7 +121,6 @@ typedef struct kefir_ast_node_properties {
 typedef struct kefir_ast_node_base {
     kefir_uint64_t refcount;
     const struct kefir_ast_node_class *klass;
-    void *self;
     struct kefir_ast_node_properties properties;
     struct kefir_source_location source_location;
 } kefir_ast_node_base_t;
@@ -130,9 +129,11 @@ typedef struct kefir_ast_node_base {
     typedef struct id {                    \
         struct kefir_ast_node_base base;   \
         struct content;                    \
-    } id##_t
+    } id##_t; \
+    _Static_assert(offsetof(struct id, base) == 0, "Unexpected offset of AST node base")
 
 #define KEFIR_AST_NODE_BASE(node) (&(node)->base)
+#define KEFIR_AST_NODE_SELF(node) ((void *) (node))
 #define KEFIR_AST_NODE_VISIT(visitor, base, payload) ((base)->klass->visit((base), (visitor), (payload)))
 #define KEFIR_AST_NODE_REF(base) (kefir_ast_node_ref((base)))
 #define KEFIR_AST_NODE_FREE(mem, base) (kefir_ast_node_free((mem), (base)))

@@ -291,7 +291,7 @@ static kefir_result_t generate_ir(struct kefir_mem *mem, struct kefir_ir_module 
         if (node->properties.category == KEFIR_AST_NODE_CATEGORY_FUNCTION_DEFINITION) {
             struct kefir_ast_translator_function_context func_ctx;
             REQUIRE_OK(kefir_ast_translator_function_context_init(
-                mem, &translator_context, (struct kefir_ast_function_definition *) node->self, &func_ctx));
+                mem, &translator_context, (struct kefir_ast_function_definition *) KEFIR_AST_NODE_SELF(node), &func_ctx));
             REQUIRE_OK(kefir_ast_translator_function_context_translate(mem, &func_ctx));
             REQUIRE_OK(kefir_ast_translator_function_context_finalize(mem, &func_ctx));
             REQUIRE_OK(kefir_ast_translator_function_context_free(mem, &func_ctx));

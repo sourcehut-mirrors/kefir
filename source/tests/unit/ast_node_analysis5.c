@@ -154,7 +154,7 @@ DEFINE_CASE(ast_node_analysis_compound_assignment_operator1, "AST node analysis 
             KEFIR_AST_NODE_BASE(kefir_ast_new_unary_operation(
                 &kft_mem, KEFIR_AST_OPERATION_INDIRECTION,
                 KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator(
-                    &kft_mem, (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(KEFIR_AST_NODE_BASE(TYPES2[i]))->self,
+                    &kft_mem, (struct kefir_ast_type_name *) KEFIR_AST_NODE_SELF(KEFIR_AST_NODE_REF(KEFIR_AST_NODE_BASE(TYPES2[i]))),
                     KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 0)))))),
             KEFIR_AST_NODE_BASE(make_constant(&kft_mem, TYPES[i])), TYPES[i]);
 
@@ -318,7 +318,7 @@ DEFINE_CASE(ast_node_analysis_compound_assignment_operator2, "AST node analysis 
                             &kft_mem, KEFIR_AST_OPERATION_INDIRECTION,
                             KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator(
                                 &kft_mem,
-                                (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(KEFIR_AST_NODE_BASE(TYPES2[i]))->self,
+                                (struct kefir_ast_type_name *) KEFIR_AST_NODE_SELF(KEFIR_AST_NODE_REF(KEFIR_AST_NODE_BASE(TYPES2[i]))),
                                 KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 0)))))),
                         KEFIR_AST_NODE_BASE(make_constant(&kft_mem, TYPES[j])), TYPES[i]);
                 } else {
@@ -328,7 +328,7 @@ DEFINE_CASE(ast_node_analysis_compound_assignment_operator2, "AST node analysis 
                             &kft_mem, KEFIR_AST_OPERATION_INDIRECTION,
                             KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator(
                                 &kft_mem,
-                                (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(KEFIR_AST_NODE_BASE(TYPES2[i]))->self,
+                                (struct kefir_ast_type_name *) KEFIR_AST_NODE_SELF(KEFIR_AST_NODE_REF(KEFIR_AST_NODE_BASE(TYPES2[i]))),
                                 KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 0)))))),
                         KEFIR_AST_NODE_BASE(make_constant(&kft_mem, TYPES[j])));
                 }
@@ -451,7 +451,7 @@ DEFINE_CASE(ast_node_analysis_compound_assignment_operator3, "AST node analysis 
                         &kft_mem, KEFIR_AST_OPERATION_INDIRECTION,
                         KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator(
                             &kft_mem,
-                            (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(KEFIR_AST_NODE_BASE(TYPES2[i]))->self,
+                            (struct kefir_ast_type_name *) KEFIR_AST_NODE_SELF(KEFIR_AST_NODE_REF(KEFIR_AST_NODE_BASE(TYPES2[i]))),
                             KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 0)))))),
                     KEFIR_AST_NODE_BASE(make_constant(&kft_mem, TYPES[j])), TYPES[i]);
             }

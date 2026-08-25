@@ -28,7 +28,7 @@ NODE_VISIT_IMPL(ast_compound_statement_visit, kefir_ast_compound_statement, comp
 kefir_result_t ast_compound_statement_free(struct kefir_mem *mem, struct kefir_ast_node_base *base) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(base != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST node base"));
-    ASSIGN_DECL_CAST(struct kefir_ast_compound_statement *, node, base->self);
+    ASSIGN_DECL_CAST(struct kefir_ast_compound_statement *, node, KEFIR_AST_NODE_SELF(base));
     for (kefir_size_t i = 0; i < node->block_length; i++) {
         REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, node->block_items[i]));
     }
@@ -48,7 +48,6 @@ struct kefir_ast_compound_statement *kefir_ast_new_compound_statement(struct kef
     REQUIRE(stmt != NULL, NULL);
     stmt->base.refcount = 1;
     stmt->base.klass = &AST_COMPOUND_STATEMENT_CLASS;
-    stmt->base.self = stmt;
     stmt->block_items = NULL;
     stmt->block_capacity = 0;
     stmt->block_length = 0;

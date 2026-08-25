@@ -85,7 +85,7 @@ static kefir_result_t scan_init_declaration(struct kefir_mem *mem, struct kefir_
     REQUIRE_OK(kefir_parser_ast_builder_peek(builder, &declaration_node));
     REQUIRE(declaration_node->klass->type == KEFIR_AST_DECLARATION,
             KEFIR_SET_ERROR(KEFIR_INVALID_CHANGE, "Expected node of AST declaration list type"));
-    ASSIGN_DECL_CAST(struct kefir_ast_declaration *, decl_list, declaration_node->self);
+    ASSIGN_DECL_CAST(struct kefir_ast_declaration *, decl_list, KEFIR_AST_NODE_SELF(declaration_node));
 
     struct kefir_source_location source_location = PARSER_CURSOR(builder->parser, 0)->source_location;
     REQUIRE_OK(builder->parser->ruleset.declarator(mem, builder->parser, &declarator));

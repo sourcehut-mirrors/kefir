@@ -29,7 +29,7 @@ NODE_VISIT_IMPL(ast_generic_selection_visit, kefir_ast_generic_selection, generi
 kefir_result_t ast_generic_selection_free(struct kefir_mem *mem, struct kefir_ast_node_base *base) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(base != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST node base"));
-    ASSIGN_DECL_CAST(struct kefir_ast_generic_selection *, node, base->self);
+    ASSIGN_DECL_CAST(struct kefir_ast_generic_selection *, node, KEFIR_AST_NODE_SELF(base));
     REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, node->control));
     for (kefir_size_t i = 0; i < node->associations_length; i++) {
         REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, KEFIR_AST_NODE_BASE(node->associations[i].type_name)));
@@ -55,7 +55,6 @@ struct kefir_ast_generic_selection *kefir_ast_new_generic_selection(struct kefir
     REQUIRE(selection != NULL, NULL);
     selection->base.refcount = 1;
     selection->base.klass = &AST_GENERIC_SELECTION_CLASS;
-    selection->base.self = selection;
     kefir_result_t res = kefir_ast_node_properties_init(&selection->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
         KEFIR_FREE(mem, selection);

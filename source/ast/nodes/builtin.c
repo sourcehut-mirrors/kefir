@@ -28,7 +28,7 @@ NODE_VISIT_IMPL(ast_builtin_visit, kefir_ast_builtin, builtin)
 kefir_result_t ast_builtin_free(struct kefir_mem *mem, struct kefir_ast_node_base *base) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(base != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST node base"));
-    ASSIGN_DECL_CAST(struct kefir_ast_builtin *, node, base->self);
+    ASSIGN_DECL_CAST(struct kefir_ast_builtin *, node, KEFIR_AST_NODE_SELF(base));
     for (kefir_size_t i = 0; i < node->argument_length; i++) {
         REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, node->arguments[i]));
     }
@@ -47,7 +47,6 @@ struct kefir_ast_builtin *kefir_ast_new_builtin(struct kefir_mem *mem, kefir_ast
     REQUIRE(builtin != NULL, NULL);
     builtin->base.refcount = 1;
     builtin->base.klass = &AST_BUILTIN_CLASS;
-    builtin->base.self = builtin;
     kefir_result_t res = kefir_ast_node_properties_init(&builtin->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
         KEFIR_FREE(mem, builtin);

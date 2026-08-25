@@ -41,11 +41,11 @@ DEFINE_CASE(ast_nodes_generic_selections, "AST nodes - generic selections") {
         kefir_ast_new_generic_selection(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 5)));
     ASSERT(selection1 != NULL);
     ASSERT(selection1->base.klass->type == KEFIR_AST_GENERIC_SELECTION);
-    ASSERT(selection1->base.self == selection1);
+    ASSERT(KEFIR_AST_NODE_SELF(KEFIR_AST_NODE_BASE(selection1)) == selection1);
     ASSERT(selection1->control != NULL);
     ASSERT(selection1->control->klass->type == KEFIR_AST_CONSTANT);
-    ASSERT(((struct kefir_ast_constant *) selection1->control->self)->type == KEFIR_AST_INT_CONSTANT);
-    ASSERT(((struct kefir_ast_constant *) selection1->control->self)->value.integer == 5);
+    ASSERT(((struct kefir_ast_constant *) KEFIR_AST_NODE_SELF(selection1->control))->type == KEFIR_AST_INT_CONSTANT);
+    ASSERT(((struct kefir_ast_constant *) KEFIR_AST_NODE_SELF(selection1->control))->value.integer == 5);
     ASSERT(selection1->associations_length == 0);
     ASSERT(selection1->default_assoc == NULL);
 
@@ -59,8 +59,8 @@ DEFINE_CASE(ast_nodes_generic_selections, "AST nodes - generic selections") {
     ASSERT(selection1->associations_length == 1);
     ASSERT_ASSOC(selection1, 0, type_name1, {
         ASSERT(assoc->expr->klass->type == KEFIR_AST_CONSTANT);
-        ASSERT(((struct kefir_ast_constant *) assoc->expr->self)->type == KEFIR_AST_BOOL_CONSTANT);
-        ASSERT(((struct kefir_ast_constant *) assoc->expr->self)->value.boolean == true);
+        ASSERT(((struct kefir_ast_constant *) KEFIR_AST_NODE_SELF(assoc->expr))->type == KEFIR_AST_BOOL_CONSTANT);
+        ASSERT(((struct kefir_ast_constant *) KEFIR_AST_NODE_SELF(assoc->expr))->value.boolean == true);
     });
     ASSERT(selection1->default_assoc == NULL);
 
@@ -76,13 +76,13 @@ DEFINE_CASE(ast_nodes_generic_selections, "AST nodes - generic selections") {
     ASSERT(selection1->associations_length == 2);
     ASSERT_ASSOC(selection1, 0, type_name1, {
         ASSERT(assoc->expr->klass->type == KEFIR_AST_CONSTANT);
-        ASSERT(((struct kefir_ast_constant *) assoc->expr->self)->type == KEFIR_AST_BOOL_CONSTANT);
-        ASSERT(((struct kefir_ast_constant *) assoc->expr->self)->value.boolean == true);
+        ASSERT(((struct kefir_ast_constant *) KEFIR_AST_NODE_SELF(assoc->expr))->type == KEFIR_AST_BOOL_CONSTANT);
+        ASSERT(((struct kefir_ast_constant *) KEFIR_AST_NODE_SELF(assoc->expr))->value.boolean == true);
     });
     ASSERT_ASSOC(selection1, 1, type_name3, {
         ASSERT(assoc->expr->klass->type == KEFIR_AST_IDENTIFIER);
-        ASSERT(((struct kefir_ast_identifier *) assoc->expr->self)->identifier != NULL);
-        ASSERT(strcmp(((struct kefir_ast_identifier *) assoc->expr->self)->identifier, "true") == 0);
+        ASSERT(((struct kefir_ast_identifier *) KEFIR_AST_NODE_SELF(assoc->expr))->identifier != NULL);
+        ASSERT(strcmp(((struct kefir_ast_identifier *) KEFIR_AST_NODE_SELF(assoc->expr))->identifier, "true") == 0);
     });
     ASSERT(selection1->default_assoc == NULL);
 
@@ -97,18 +97,18 @@ DEFINE_CASE(ast_nodes_generic_selections, "AST nodes - generic selections") {
     ASSERT(selection1->associations_length == 3);
     ASSERT_ASSOC(selection1, 0, type_name1, {
         ASSERT(assoc->expr->klass->type == KEFIR_AST_CONSTANT);
-        ASSERT(((struct kefir_ast_constant *) assoc->expr->self)->type == KEFIR_AST_BOOL_CONSTANT);
-        ASSERT(((struct kefir_ast_constant *) assoc->expr->self)->value.boolean == true);
+        ASSERT(((struct kefir_ast_constant *) KEFIR_AST_NODE_SELF(assoc->expr))->type == KEFIR_AST_BOOL_CONSTANT);
+        ASSERT(((struct kefir_ast_constant *) KEFIR_AST_NODE_SELF(assoc->expr))->value.boolean == true);
     });
     ASSERT_ASSOC(selection1, 1, type_name3, {
         ASSERT(assoc->expr->klass->type == KEFIR_AST_IDENTIFIER);
-        ASSERT(((struct kefir_ast_identifier *) assoc->expr->self)->identifier != NULL);
-        ASSERT(strcmp(((struct kefir_ast_identifier *) assoc->expr->self)->identifier, "true") == 0);
+        ASSERT(((struct kefir_ast_identifier *) KEFIR_AST_NODE_SELF(assoc->expr))->identifier != NULL);
+        ASSERT(strcmp(((struct kefir_ast_identifier *) KEFIR_AST_NODE_SELF(assoc->expr))->identifier, "true") == 0);
     });
     ASSERT_ASSOC(selection1, 2, type_name4, {
         ASSERT(assoc->expr->klass->type == KEFIR_AST_STRING_LITERAL);
-        ASSERT(((struct kefir_ast_string_literal *) assoc->expr->self)->literal != NULL);
-        ASSERT(strcmp(((struct kefir_ast_string_literal *) assoc->expr->self)->literal, "Hello, world!") == 0);
+        ASSERT(((struct kefir_ast_string_literal *) KEFIR_AST_NODE_SELF(assoc->expr))->literal != NULL);
+        ASSERT(strcmp(((struct kefir_ast_string_literal *) KEFIR_AST_NODE_SELF(assoc->expr))->literal, "Hello, world!") == 0);
     });
     ASSERT(selection1->default_assoc == NULL);
 
@@ -117,23 +117,23 @@ DEFINE_CASE(ast_nodes_generic_selections, "AST nodes - generic selections") {
     ASSERT(selection1->associations_length == 3);
     ASSERT_ASSOC(selection1, 0, type_name1, {
         ASSERT(assoc->expr->klass->type == KEFIR_AST_CONSTANT);
-        ASSERT(((struct kefir_ast_constant *) assoc->expr->self)->type == KEFIR_AST_BOOL_CONSTANT);
-        ASSERT(((struct kefir_ast_constant *) assoc->expr->self)->value.boolean == true);
+        ASSERT(((struct kefir_ast_constant *) KEFIR_AST_NODE_SELF(assoc->expr))->type == KEFIR_AST_BOOL_CONSTANT);
+        ASSERT(((struct kefir_ast_constant *) KEFIR_AST_NODE_SELF(assoc->expr))->value.boolean == true);
     });
     ASSERT_ASSOC(selection1, 1, type_name3, {
         ASSERT(assoc->expr->klass->type == KEFIR_AST_IDENTIFIER);
-        ASSERT(((struct kefir_ast_identifier *) assoc->expr->self)->identifier != NULL);
-        ASSERT(strcmp(((struct kefir_ast_identifier *) assoc->expr->self)->identifier, "true") == 0);
+        ASSERT(((struct kefir_ast_identifier *) KEFIR_AST_NODE_SELF(assoc->expr))->identifier != NULL);
+        ASSERT(strcmp(((struct kefir_ast_identifier *) KEFIR_AST_NODE_SELF(assoc->expr))->identifier, "true") == 0);
     });
     ASSERT_ASSOC(selection1, 2, type_name4, {
         ASSERT(assoc->expr->klass->type == KEFIR_AST_STRING_LITERAL);
-        ASSERT(((struct kefir_ast_string_literal *) assoc->expr->self)->literal != NULL);
-        ASSERT(strcmp(((struct kefir_ast_string_literal *) assoc->expr->self)->literal, "Hello, world!") == 0);
+        ASSERT(((struct kefir_ast_string_literal *) KEFIR_AST_NODE_SELF(assoc->expr))->literal != NULL);
+        ASSERT(strcmp(((struct kefir_ast_string_literal *) KEFIR_AST_NODE_SELF(assoc->expr))->literal, "Hello, world!") == 0);
     });
     ASSERT(selection1->default_assoc != NULL);
     ASSERT(selection1->default_assoc->klass->type == KEFIR_AST_CONSTANT);
-    ASSERT(((struct kefir_ast_constant *) selection1->default_assoc->self)->type == KEFIR_AST_CHAR_CONSTANT);
-    ASSERT(((struct kefir_ast_constant *) selection1->default_assoc->self)->value.character == 'H');
+    ASSERT(((struct kefir_ast_constant *) KEFIR_AST_NODE_SELF(selection1->default_assoc))->type == KEFIR_AST_CHAR_CONSTANT);
+    ASSERT(((struct kefir_ast_constant *) KEFIR_AST_NODE_SELF(selection1->default_assoc))->value.character == 'H');
 
     struct kefir_ast_constant *cnst2 = kefir_ast_new_constant_char(&kft_mem, 'H');
     ASSERT_NOK(kefir_ast_generic_selection_append(&kft_mem, selection1, NULL, KEFIR_AST_NODE_BASE(cnst2)));
@@ -154,7 +154,7 @@ END_CASE
         struct kefir_ast_cast_operator *cast = kefir_ast_new_cast_operator((_mem), (_type_name), (_expr)); \
         ASSERT(cast != NULL);                                                                              \
         ASSERT(cast->base.klass->type == KEFIR_AST_CAST_OPERATOR);                                         \
-        ASSERT(cast->base.self == cast);                                                                   \
+        ASSERT(KEFIR_AST_NODE_SELF(KEFIR_AST_NODE_BASE(cast)) == cast);                                                                   \
         ASSERT(cast->type_name == (_type_name));                                                           \
         _checker ASSERT_OK(KEFIR_AST_NODE_FREE((_mem), KEFIR_AST_NODE_BASE(cast)));                        \
     } while (0)
@@ -175,8 +175,8 @@ DEFINE_CASE(ast_nodes_cast_operators, "AST nodes - cast operators") {
 
     ASSERT_CAST(&kft_mem, type_name1, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_uint(&kft_mem, 100)), {
         ASSERT(cast->expr->klass->type == KEFIR_AST_CONSTANT);
-        ASSERT(((struct kefir_ast_constant *) cast->expr->self)->type == KEFIR_AST_UINT_CONSTANT);
-        ASSERT(((struct kefir_ast_constant *) cast->expr->self)->value.uinteger == 100);
+        ASSERT(((struct kefir_ast_constant *) KEFIR_AST_NODE_SELF(cast->expr))->type == KEFIR_AST_UINT_CONSTANT);
+        ASSERT(((struct kefir_ast_constant *) KEFIR_AST_NODE_SELF(cast->expr))->value.uinteger == 100);
     });
 
     struct kefir_ast_type_name *type_name2 =
@@ -186,8 +186,8 @@ DEFINE_CASE(ast_nodes_cast_operators, "AST nodes - cast operators") {
 
     ASSERT_CAST(&kft_mem, type_name2, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long_long(&kft_mem, 1234)), {
         ASSERT(cast->expr->klass->type == KEFIR_AST_CONSTANT);
-        ASSERT(((struct kefir_ast_constant *) cast->expr->self)->type == KEFIR_AST_LONG_LONG_CONSTANT);
-        ASSERT(((struct kefir_ast_constant *) cast->expr->self)->value.long_long == 1234);
+        ASSERT(((struct kefir_ast_constant *) KEFIR_AST_NODE_SELF(cast->expr))->type == KEFIR_AST_LONG_LONG_CONSTANT);
+        ASSERT(((struct kefir_ast_constant *) KEFIR_AST_NODE_SELF(cast->expr))->value.long_long == 1234);
     });
 
     struct kefir_ast_type_name *type_name3 = kefir_ast_new_type_name(
@@ -197,8 +197,8 @@ DEFINE_CASE(ast_nodes_cast_operators, "AST nodes - cast operators") {
 
     ASSERT_CAST(&kft_mem, type_name3, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long(&kft_mem, 0)), {
         ASSERT(cast->expr->klass->type == KEFIR_AST_CONSTANT);
-        ASSERT(((struct kefir_ast_constant *) cast->expr->self)->type == KEFIR_AST_LONG_CONSTANT);
-        ASSERT(((struct kefir_ast_constant *) cast->expr->self)->value.long_integer == 0);
+        ASSERT(((struct kefir_ast_constant *) KEFIR_AST_NODE_SELF(cast->expr))->type == KEFIR_AST_LONG_CONSTANT);
+        ASSERT(((struct kefir_ast_constant *) KEFIR_AST_NODE_SELF(cast->expr))->value.long_integer == 0);
     });
 
     struct kefir_ast_type_name *type_name4 =
@@ -215,8 +215,8 @@ DEFINE_CASE(ast_nodes_cast_operators, "AST nodes - cast operators") {
                                           KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(&kft_mem, &symbols, "x")))),
         {
             ASSERT(cast->expr->klass->type == KEFIR_AST_UNARY_OPERATION);
-            ASSERT(((struct kefir_ast_unary_operation *) cast->expr->self)->type == KEFIR_AST_OPERATION_ADDRESS);
-            ASSERT(((struct kefir_ast_unary_operation *) cast->expr->self)->arg->klass->type == KEFIR_AST_IDENTIFIER);
+            ASSERT(((struct kefir_ast_unary_operation *) KEFIR_AST_NODE_SELF(cast->expr))->type == KEFIR_AST_OPERATION_ADDRESS);
+            ASSERT(((struct kefir_ast_unary_operation *) KEFIR_AST_NODE_SELF(cast->expr))->arg->klass->type == KEFIR_AST_IDENTIFIER);
         });
 
     ASSERT_OK(kefir_ast_type_bundle_free(&kft_mem, &type_bundle));
@@ -232,7 +232,7 @@ END_CASE
             kefir_ast_new_conditional_operator((_mem), (_condition), (_expr1), (_expr2)); \
         ASSERT(oper != NULL);                                                             \
         ASSERT(oper->base.klass->type == KEFIR_AST_CONDITIONAL_OPERATION);                \
-        ASSERT(oper->base.self == oper);                                                  \
+        ASSERT(KEFIR_AST_NODE_SELF(KEFIR_AST_NODE_BASE(oper)) == oper);                                                  \
         _checker ASSERT_OK(KEFIR_AST_NODE_FREE((_mem), KEFIR_AST_NODE_BASE(oper)));       \
     } while (0)
 
@@ -248,16 +248,16 @@ DEFINE_CASE(ast_nodes_conditional_operators, "AST nodes - conditional operators"
         KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, -1)),
         KEFIR_AST_NODE_BASE(kefir_ast_new_constant_uint(&kft_mem, 2)), {
             ASSERT(oper->condition->klass->type == KEFIR_AST_CONSTANT);
-            ASSERT(((struct kefir_ast_constant *) oper->condition->self)->type == KEFIR_AST_BOOL_CONSTANT);
-            ASSERT(((struct kefir_ast_constant *) oper->condition->self)->value.boolean);
+            ASSERT(((struct kefir_ast_constant *) KEFIR_AST_NODE_SELF(oper->condition))->type == KEFIR_AST_BOOL_CONSTANT);
+            ASSERT(((struct kefir_ast_constant *) KEFIR_AST_NODE_SELF(oper->condition))->value.boolean);
 
             ASSERT(oper->expr1->klass->type == KEFIR_AST_CONSTANT);
-            ASSERT(((struct kefir_ast_constant *) oper->expr1->self)->type == KEFIR_AST_INT_CONSTANT);
-            ASSERT(((struct kefir_ast_constant *) oper->expr1->self)->value.integer == -1);
+            ASSERT(((struct kefir_ast_constant *) KEFIR_AST_NODE_SELF(oper->expr1))->type == KEFIR_AST_INT_CONSTANT);
+            ASSERT(((struct kefir_ast_constant *) KEFIR_AST_NODE_SELF(oper->expr1))->value.integer == -1);
 
             ASSERT(oper->expr2->klass->type == KEFIR_AST_CONSTANT);
-            ASSERT(((struct kefir_ast_constant *) oper->expr2->self)->type == KEFIR_AST_UINT_CONSTANT);
-            ASSERT(((struct kefir_ast_constant *) oper->expr2->self)->value.uinteger == 2);
+            ASSERT(((struct kefir_ast_constant *) KEFIR_AST_NODE_SELF(oper->expr2))->type == KEFIR_AST_UINT_CONSTANT);
+            ASSERT(((struct kefir_ast_constant *) KEFIR_AST_NODE_SELF(oper->expr2))->value.uinteger == 2);
         });
 
     ASSERT_CONDITIONAL(
@@ -265,13 +265,13 @@ DEFINE_CASE(ast_nodes_conditional_operators, "AST nodes - conditional operators"
         KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(&kft_mem, &symbols, "y")),
         KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(&kft_mem, &symbols, "z")), {
             ASSERT(oper->condition->klass->type == KEFIR_AST_IDENTIFIER);
-            ASSERT(strcmp(((struct kefir_ast_identifier *) oper->condition->self)->identifier, "x") == 0);
+            ASSERT(strcmp(((struct kefir_ast_identifier *) KEFIR_AST_NODE_SELF(oper->condition))->identifier, "x") == 0);
 
             ASSERT(oper->expr1->klass->type == KEFIR_AST_IDENTIFIER);
-            ASSERT(strcmp(((struct kefir_ast_identifier *) oper->expr1->self)->identifier, "y") == 0);
+            ASSERT(strcmp(((struct kefir_ast_identifier *) KEFIR_AST_NODE_SELF(oper->expr1))->identifier, "y") == 0);
 
             ASSERT(oper->expr2->klass->type == KEFIR_AST_IDENTIFIER);
-            ASSERT(strcmp(((struct kefir_ast_identifier *) oper->expr2->self)->identifier, "z") == 0);
+            ASSERT(strcmp(((struct kefir_ast_identifier *) KEFIR_AST_NODE_SELF(oper->expr2))->identifier, "z") == 0);
         });
 
     ASSERT_OK(kefir_ast_type_bundle_free(&kft_mem, &type_bundle));
@@ -301,13 +301,13 @@ DEFINE_CASE(ast_nodes_assignment_operators, "AST nodes - assignment operators") 
             KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 100)));
         ASSERT(oper != NULL);
         ASSERT(oper->base.klass->type == KEFIR_AST_ASSIGNMENT_OPERATOR);
-        ASSERT(oper->base.self == oper);
+        ASSERT(KEFIR_AST_NODE_SELF(KEFIR_AST_NODE_BASE(oper)) == oper);
         ASSERT(oper->operation == OPERATIONS[i]);
         ASSERT(oper->target->klass->type == KEFIR_AST_IDENTIFIER);
-        ASSERT(strcmp(((struct kefir_ast_identifier *) oper->target->self)->identifier, "x") == 0);
+        ASSERT(strcmp(((struct kefir_ast_identifier *) KEFIR_AST_NODE_SELF(oper->target))->identifier, "x") == 0);
         ASSERT(oper->value->klass->type == KEFIR_AST_CONSTANT);
-        ASSERT(((struct kefir_ast_constant *) oper->value->self)->type == KEFIR_AST_INT_CONSTANT);
-        ASSERT(((struct kefir_ast_constant *) oper->value->self)->value.integer == 100);
+        ASSERT(((struct kefir_ast_constant *) KEFIR_AST_NODE_SELF(oper->value))->type == KEFIR_AST_INT_CONSTANT);
+        ASSERT(((struct kefir_ast_constant *) KEFIR_AST_NODE_SELF(oper->value))->value.integer == 100);
         ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(oper)));
     }
 
@@ -316,13 +316,13 @@ DEFINE_CASE(ast_nodes_assignment_operators, "AST nodes - assignment operators") 
         KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 100)));
     ASSERT(oper != NULL);
     ASSERT(oper->base.klass->type == KEFIR_AST_ASSIGNMENT_OPERATOR);
-    ASSERT(oper->base.self == oper);
+    ASSERT(KEFIR_AST_NODE_SELF(KEFIR_AST_NODE_BASE(oper)) == oper);
     ASSERT(oper->operation == KEFIR_AST_ASSIGNMENT_SIMPLE);
     ASSERT(oper->target->klass->type == KEFIR_AST_IDENTIFIER);
-    ASSERT(strcmp(((struct kefir_ast_identifier *) oper->target->self)->identifier, "x") == 0);
+    ASSERT(strcmp(((struct kefir_ast_identifier *) KEFIR_AST_NODE_SELF(oper->target))->identifier, "x") == 0);
     ASSERT(oper->value->klass->type == KEFIR_AST_CONSTANT);
-    ASSERT(((struct kefir_ast_constant *) oper->value->self)->type == KEFIR_AST_INT_CONSTANT);
-    ASSERT(((struct kefir_ast_constant *) oper->value->self)->value.integer == 100);
+    ASSERT(((struct kefir_ast_constant *) KEFIR_AST_NODE_SELF(oper->value))->type == KEFIR_AST_INT_CONSTANT);
+    ASSERT(((struct kefir_ast_constant *) KEFIR_AST_NODE_SELF(oper->value))->value.integer == 100);
     ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(oper)));
 
     ASSERT_OK(kefir_ast_type_bundle_free(&kft_mem, &type_bundle));
@@ -340,7 +340,7 @@ DEFINE_CASE(ast_nodes_comma_operators, "AST nodes - comma operators") {
     struct kefir_ast_comma_operator *comma = kefir_ast_new_comma_operator(&kft_mem);
     ASSERT(comma != NULL);
     ASSERT(comma->base.klass->type == KEFIR_AST_COMMA_OPERATOR);
-    ASSERT(comma->base.self == comma);
+    ASSERT(KEFIR_AST_NODE_SELF(KEFIR_AST_NODE_BASE(comma)) == comma);
 
     for (kefir_size_t i = 0; i < 10; i++) {
         ASSERT_OK(
@@ -348,7 +348,7 @@ DEFINE_CASE(ast_nodes_comma_operators, "AST nodes - comma operators") {
         ASSERT(comma->expressions_length == i + 1);
         struct kefir_ast_node_base *expr = comma->expressions[comma->expressions_length - 1];
         ASSERT(expr->klass->type == KEFIR_AST_CONSTANT);
-        ASSIGN_DECL_CAST(struct kefir_ast_constant *, cnst, expr->self);
+        ASSIGN_DECL_CAST(struct kefir_ast_constant *, cnst, KEFIR_AST_NODE_SELF(expr));
         ASSERT(cnst->type == KEFIR_AST_INT_CONSTANT);
         ASSERT(cnst->value.integer == (kefir_int_t) i);
     }
@@ -375,7 +375,7 @@ DEFINE_CASE(ast_nodes_compound_literals, "AST nodes - compound literals") {
     struct kefir_ast_compound_literal *compound = kefir_ast_new_compound_literal(&kft_mem, type_name1);
     ASSERT(compound != NULL);
     ASSERT(compound->base.klass->type == KEFIR_AST_COMPOUND_LITERAL);
-    ASSERT(compound->base.self == compound);
+    ASSERT(KEFIR_AST_NODE_SELF(KEFIR_AST_NODE_BASE(compound)) == compound);
     ASSERT(compound->initializer->list.entries_length == 0);
 
     ASSERT_OK(kefir_ast_initializer_list_append(
@@ -428,7 +428,7 @@ DEFINE_CASE(ast_nodes_compound_literals, "AST nodes - compound literals") {
     compound = kefir_ast_new_compound_literal(&kft_mem, type_name2);
     ASSERT(compound != NULL);
     ASSERT(compound->base.klass->type == KEFIR_AST_COMPOUND_LITERAL);
-    ASSERT(compound->base.self == compound);
+    ASSERT(KEFIR_AST_NODE_SELF(KEFIR_AST_NODE_BASE(compound)) == compound);
     ASSERT(compound->initializer->list.entries_length == 0);
 
     ASSERT_OK(kefir_ast_initializer_list_append(

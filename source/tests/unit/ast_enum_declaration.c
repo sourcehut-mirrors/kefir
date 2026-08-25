@@ -88,8 +88,8 @@ DEFINE_CASE(ast_enum_declaration2, "AST Declarations - enum declaration #2") {
         ASSERT(strcmp(entry->constant, "field2") == 0);
         ASSERT(entry->value != NULL);
         ASSERT(entry->value->klass->type == KEFIR_AST_CONSTANT);
-        ASSERT(((struct kefir_ast_constant *) entry->value->self)->type == KEFIR_AST_INT_CONSTANT);
-        ASSERT(((struct kefir_ast_constant *) entry->value->self)->value.integer == 1);
+        ASSERT(((struct kefir_ast_constant *) KEFIR_AST_NODE_SELF(entry->value))->type == KEFIR_AST_INT_CONSTANT);
+        ASSERT(((struct kefir_ast_constant *) KEFIR_AST_NODE_SELF(entry->value))->value.integer == 1);
     } while (0);
 
     do {
@@ -100,8 +100,8 @@ DEFINE_CASE(ast_enum_declaration2, "AST Declarations - enum declaration #2") {
         ASSERT(strcmp(entry->constant, "field3") == 0);
         ASSERT(entry->value != NULL);
         ASSERT(entry->value->klass->type == KEFIR_AST_CONSTANT);
-        ASSERT(((struct kefir_ast_constant *) entry->value->self)->type == KEFIR_AST_INT_CONSTANT);
-        ASSERT(((struct kefir_ast_constant *) entry->value->self)->value.integer == 2);
+        ASSERT(((struct kefir_ast_constant *) KEFIR_AST_NODE_SELF(entry->value))->type == KEFIR_AST_INT_CONSTANT);
+        ASSERT(((struct kefir_ast_constant *) KEFIR_AST_NODE_SELF(entry->value))->value.integer == 2);
     } while (0);
 
     do {
@@ -121,8 +121,8 @@ DEFINE_CASE(ast_enum_declaration2, "AST Declarations - enum declaration #2") {
         ASSERT(strcmp(entry->constant, "field5") == 0);
         ASSERT(entry->value != NULL);
         ASSERT(entry->value->klass->type == KEFIR_AST_CONSTANT);
-        ASSERT(((struct kefir_ast_constant *) entry->value->self)->type == KEFIR_AST_INT_CONSTANT);
-        ASSERT(((struct kefir_ast_constant *) entry->value->self)->value.integer == 20);
+        ASSERT(((struct kefir_ast_constant *) KEFIR_AST_NODE_SELF(entry->value))->type == KEFIR_AST_INT_CONSTANT);
+        ASSERT(((struct kefir_ast_constant *) KEFIR_AST_NODE_SELF(entry->value))->value.integer == 20);
     } while (0);
 
     kefir_list_next(&iter);

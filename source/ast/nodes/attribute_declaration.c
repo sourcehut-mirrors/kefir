@@ -28,7 +28,7 @@ NODE_VISIT_IMPL(ast_attribute_declaration_visit, kefir_ast_attribute_declaration
 kefir_result_t ast_attribute_declaration_free(struct kefir_mem *mem, struct kefir_ast_node_base *base) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(base != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST node base"));
-    ASSIGN_DECL_CAST(struct kefir_ast_attribute_declaration *, node, base->self);
+    ASSIGN_DECL_CAST(struct kefir_ast_attribute_declaration *, node, KEFIR_AST_NODE_SELF(base));
     REQUIRE_OK(kefir_ast_node_attributes_free(mem, &node->attributes));
     KEFIR_FREE(mem, node);
     return KEFIR_OK;
@@ -46,7 +46,6 @@ struct kefir_ast_attribute_declaration *kefir_ast_new_attribute_declaration(stru
     REQUIRE(attribute_declaration != NULL, NULL);
     attribute_declaration->base.refcount = 1;
     attribute_declaration->base.klass = &AST_ATTRIBUTE_DECLARATION_LIST_CLASS;
-    attribute_declaration->base.self = attribute_declaration;
     kefir_result_t res = kefir_ast_node_properties_init(&attribute_declaration->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
         KEFIR_FREE(mem, attribute_declaration);

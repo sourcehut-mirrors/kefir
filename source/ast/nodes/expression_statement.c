@@ -28,7 +28,7 @@ NODE_VISIT_IMPL(ast_expression_statement_visit, kefir_ast_expression_statement, 
 kefir_result_t ast_expression_statement_free(struct kefir_mem *mem, struct kefir_ast_node_base *base) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(base != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST node base"));
-    ASSIGN_DECL_CAST(struct kefir_ast_expression_statement *, node, base->self);
+    ASSIGN_DECL_CAST(struct kefir_ast_expression_statement *, node, KEFIR_AST_NODE_SELF(base));
     if (node->expression != NULL) {
         KEFIR_AST_NODE_FREE(mem, node->expression);
     }
@@ -49,7 +49,6 @@ struct kefir_ast_expression_statement *kefir_ast_new_expression_statement(struct
     REQUIRE(expr_stmt != NULL, NULL);
     expr_stmt->base.refcount = 1;
     expr_stmt->base.klass = &AST_EXPRESSION_STATEMENT_CLASS;
-    expr_stmt->base.self = expr_stmt;
     kefir_result_t res = kefir_ast_node_properties_init(&expr_stmt->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
         KEFIR_FREE(mem, expr_stmt);

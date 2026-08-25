@@ -103,7 +103,7 @@ DEFINE_CASE(ast_node_analysis_function_definitions1, "AST node analysis - functi
     ASSERT(KEFIR_AST_TYPE_SAME(func->base.properties.function_definition->scoped_id->function.type, type));
 
     ASSERT(param1->base.properties.category == KEFIR_AST_NODE_CATEGORY_DECLARATION);
-    ASSIGN_DECL_CAST(struct kefir_ast_declaration *, param1_decl_list, param1->base.self);
+    ASSIGN_DECL_CAST(struct kefir_ast_declaration *, param1_decl_list, KEFIR_AST_NODE_SELF(KEFIR_AST_NODE_BASE(param1)));
     ASSERT(param1_decl_list->init_declarators_length == 1);
     struct kefir_ast_node_base *param1_decl = KEFIR_AST_NODE_BASE(param1_decl_list->init_declarators[0]);
     ASSERT(strcmp(param1_decl->properties.declaration_props->identifier, "param1") == 0);
@@ -117,7 +117,7 @@ DEFINE_CASE(ast_node_analysis_function_definitions1, "AST node analysis - functi
                                kefir_ast_type_unsigned_int()));
 
     ASSERT(param2->base.properties.category == KEFIR_AST_NODE_CATEGORY_DECLARATION);
-    ASSIGN_DECL_CAST(struct kefir_ast_declaration *, param2_decl_list, param2->base.self);
+    ASSIGN_DECL_CAST(struct kefir_ast_declaration *, param2_decl_list, KEFIR_AST_NODE_SELF(KEFIR_AST_NODE_BASE(param2)));
     ASSERT(param2_decl_list->init_declarators_length == 1);
     struct kefir_ast_node_base *param2_decl = KEFIR_AST_NODE_BASE(param2_decl_list->init_declarators[0]);
     ASSERT(strcmp(param2_decl->properties.declaration_props->identifier, "param2") == 0);
@@ -371,7 +371,7 @@ DEFINE_CASE(ast_node_analysis_translation_unit1, "AST node analysis - translatio
     ASSERT(unit->base.properties.category == KEFIR_AST_NODE_CATEGORY_TRANSLATION_UNIT);
 
     ASSERT(decl1->base.properties.category == KEFIR_AST_NODE_CATEGORY_DECLARATION);
-    ASSIGN_DECL_CAST(struct kefir_ast_declaration *, decl1_decl_list, decl1->base.self);
+    ASSIGN_DECL_CAST(struct kefir_ast_declaration *, decl1_decl_list, KEFIR_AST_NODE_SELF(KEFIR_AST_NODE_BASE(decl1)));
     ASSERT(decl1_decl_list->init_declarators_length == 1);
     struct kefir_ast_node_base *decl1_decl = KEFIR_AST_NODE_BASE(decl1_decl_list->init_declarators[0]);
     ASSERT(strcmp(decl1_decl->properties.declaration_props->identifier, "x") == 0);

@@ -28,7 +28,7 @@ NODE_VISIT_IMPL(ast_conditional_statement_visit, kefir_ast_conditional_statement
 kefir_result_t ast_conditional_statement_free(struct kefir_mem *mem, struct kefir_ast_node_base *base) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(base != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST node base"));
-    ASSIGN_DECL_CAST(struct kefir_ast_conditional_statement *, node, base->self);
+    ASSIGN_DECL_CAST(struct kefir_ast_conditional_statement *, node, KEFIR_AST_NODE_SELF(base));
     REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, node->condition));
     REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, node->thenBranch));
     if (node->elseBranch != NULL) {
@@ -55,7 +55,6 @@ struct kefir_ast_conditional_statement *kefir_ast_new_conditional_statement(stru
     REQUIRE(stmt != NULL, NULL);
     stmt->base.refcount = 1;
     stmt->base.klass = &AST_CONDITIONAL_STATEMENT_CLASS;
-    stmt->base.self = stmt;
     kefir_result_t res = kefir_ast_node_properties_init(&stmt->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
         KEFIR_FREE(mem, stmt);

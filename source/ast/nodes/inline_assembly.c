@@ -28,7 +28,7 @@ NODE_VISIT_IMPL(ast_inline_assembly_visit, kefir_ast_inline_assembly, inline_ass
 kefir_result_t ast_inline_assembly_free(struct kefir_mem *mem, struct kefir_ast_node_base *base) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(base != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST node base"));
-    ASSIGN_DECL_CAST(struct kefir_ast_inline_assembly *, node, base->self);
+    ASSIGN_DECL_CAST(struct kefir_ast_inline_assembly *, node, KEFIR_AST_NODE_SELF(base));
     REQUIRE_OK(kefir_list_free(mem, &node->outputs));
     REQUIRE_OK(kefir_list_free(mem, &node->inputs));
     REQUIRE_OK(kefir_list_free(mem, &node->clobbers));
@@ -66,7 +66,6 @@ struct kefir_ast_inline_assembly *kefir_ast_new_inline_assembly(struct kefir_mem
     REQUIRE(inline_assembly != NULL, NULL);
     inline_assembly->base.refcount = 1;
     inline_assembly->base.klass = &AST_INLINE_ASSEMBLY_CLASS;
-    inline_assembly->base.self = inline_assembly;
     kefir_result_t res = kefir_ast_node_properties_init(&inline_assembly->base.properties);
     REQUIRE_CHAIN(&res, kefir_source_location_empty(&inline_assembly->base.source_location));
     REQUIRE_CHAIN(&res, kefir_list_init(&inline_assembly->outputs));

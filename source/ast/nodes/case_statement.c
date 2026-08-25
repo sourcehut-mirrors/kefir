@@ -28,7 +28,7 @@ NODE_VISIT_IMPL(ast_case_statement_visit, kefir_ast_case_statement, case_stateme
 kefir_result_t ast_case_statement_free(struct kefir_mem *mem, struct kefir_ast_node_base *base) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(base != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST node base"));
-    ASSIGN_DECL_CAST(struct kefir_ast_case_statement *, node, base->self);
+    ASSIGN_DECL_CAST(struct kefir_ast_case_statement *, node, KEFIR_AST_NODE_SELF(base));
     if (node->expression != NULL) {
         KEFIR_AST_NODE_FREE(mem, node->expression);
     }
@@ -55,7 +55,6 @@ struct kefir_ast_case_statement *kefir_ast_new_case_statement(struct kefir_mem *
     REQUIRE(case_stmt != NULL, NULL);
     case_stmt->base.refcount = 1;
     case_stmt->base.klass = &AST_CASE_STATEMENT_CLASS;
-    case_stmt->base.self = case_stmt;
     kefir_result_t res = kefir_ast_node_properties_init(&case_stmt->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
         KEFIR_FREE(mem, case_stmt);
@@ -89,7 +88,6 @@ struct kefir_ast_case_statement *kefir_ast_new_range_case_statement(struct kefir
     REQUIRE(case_stmt != NULL, NULL);
     case_stmt->base.refcount = 1;
     case_stmt->base.klass = &AST_CASE_STATEMENT_CLASS;
-    case_stmt->base.self = case_stmt;
     kefir_result_t res = kefir_ast_node_properties_init(&case_stmt->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
         KEFIR_FREE(mem, case_stmt);

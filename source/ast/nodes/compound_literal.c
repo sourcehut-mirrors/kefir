@@ -29,7 +29,7 @@ NODE_VISIT_IMPL(ast_compound_literal_visit, kefir_ast_compound_literal, compound
 kefir_result_t ast_compound_literal_free(struct kefir_mem *mem, struct kefir_ast_node_base *base) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(base != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST node base"));
-    ASSIGN_DECL_CAST(struct kefir_ast_compound_literal *, node, base->self);
+    ASSIGN_DECL_CAST(struct kefir_ast_compound_literal *, node, KEFIR_AST_NODE_SELF(base));
     REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, KEFIR_AST_NODE_BASE(node->type_name)));
     REQUIRE_OK(kefir_ast_initializer_free(mem, node->initializer));
     KEFIR_FREE(mem, node);
@@ -48,7 +48,6 @@ struct kefir_ast_compound_literal *kefir_ast_new_compound_literal(struct kefir_m
     REQUIRE(literal != NULL, NULL);
     literal->base.refcount = 1;
     literal->base.klass = &AST_COMPOUND_LITERAL_CLASS;
-    literal->base.self = literal;
     kefir_result_t res = kefir_ast_node_properties_init(&literal->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
         KEFIR_FREE(mem, literal);

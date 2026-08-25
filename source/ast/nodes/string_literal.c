@@ -46,7 +46,7 @@ NODE_VISIT_IMPL(ast_string_literal_visit, kefir_ast_string_literal, string_liter
 kefir_result_t ast_string_literal_free(struct kefir_mem *mem, struct kefir_ast_node_base *base) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(base != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST node base"));
-    ASSIGN_DECL_CAST(struct kefir_ast_string_literal *, node, base->self);
+    ASSIGN_DECL_CAST(struct kefir_ast_string_literal *, node, KEFIR_AST_NODE_SELF(base));
     KEFIR_FREE(mem, node->literal);
     KEFIR_FREE(mem, node);
     return KEFIR_OK;
@@ -74,7 +74,6 @@ struct kefir_ast_string_literal *kefir_ast_new_string_literal(struct kefir_mem *
 
     string_literal->base.refcount = 1;
     string_literal->base.klass = &AST_STRING_LITERAL_CLASS;
-    string_literal->base.self = string_literal;
     kefir_result_t res = kefir_ast_node_properties_init(&string_literal->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
         KEFIR_FREE(mem, literal_copy);

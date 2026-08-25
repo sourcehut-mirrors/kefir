@@ -29,7 +29,7 @@ NODE_VISIT_IMPL(ast_goto_address_statement_visit, kefir_ast_goto_statement, goto
 kefir_result_t ast_goto_statement_free(struct kefir_mem *mem, struct kefir_ast_node_base *base) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(base != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST node base"));
-    ASSIGN_DECL_CAST(struct kefir_ast_goto_statement *, node, base->self);
+    ASSIGN_DECL_CAST(struct kefir_ast_goto_statement *, node, KEFIR_AST_NODE_SELF(base));
     if (base->klass->type == KEFIR_AST_GOTO_STATEMENT) {
         node->identifier = NULL;
     } else {
@@ -62,7 +62,6 @@ struct kefir_ast_goto_statement *kefir_ast_new_goto_statement(struct kefir_mem *
     REQUIRE(stmt != NULL, NULL);
     stmt->base.refcount = 1;
     stmt->base.klass = &AST_GOTO_STATEMENT_CLASS;
-    stmt->base.self = stmt;
     kefir_result_t res = kefir_ast_node_properties_init(&stmt->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
         KEFIR_FREE(mem, stmt);
@@ -92,7 +91,6 @@ struct kefir_ast_goto_statement *kefir_ast_new_goto_address_statement(struct kef
     REQUIRE(stmt != NULL, NULL);
     stmt->base.refcount = 1;
     stmt->base.klass = &AST_GOTO_ADDRESS_STATEMENT_CLASS;
-    stmt->base.self = stmt;
     kefir_result_t res = kefir_ast_node_properties_init(&stmt->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
         KEFIR_FREE(mem, stmt);
