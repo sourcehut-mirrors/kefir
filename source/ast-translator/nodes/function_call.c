@@ -98,7 +98,7 @@ kefir_result_t kefir_ast_translate_function_call_node(struct kefir_mem *mem,
 
     if (KEFIR_AST_TYPE_IS_AGGREGATE_TYPE(node->base.properties.type)) {
         REQUIRE_OK(kefir_ast_translator_fetch_temporary(mem, context, builder,
-                                                        &node->base.properties.expression_props->temporary_identifier));
+                                                        node->base.properties.expression_props->temporary_identifier));
     }
 
     struct kefir_ir_function_decl *ir_decl = NULL;

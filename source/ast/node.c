@@ -67,11 +67,21 @@ kefir_result_t kefir_ast_node_properties_reset(struct kefir_ast_node_properties 
             struct kefir_ast_node_expression_properties *expr_props = props->expression_props;
             if (expr_props != NULL) {
                 struct kefir_ast_constant_expression_value *const_expr_value = expr_props->constant_expression_value;
+                struct kefir_ast_temporary_identifier *temporary_identifier = expr_props->temporary_identifier;
+                struct kefir_ast_temporary_identifier *preserve_after_eval_temporary_identifier = expr_props->preserve_after_eval_temporary_identifier;
                 if (const_expr_value != NULL) {
                     memset(const_expr_value, 0, sizeof(struct kefir_ast_constant_expression_value));
                 }
+                if (temporary_identifier != NULL) {
+                    memset(temporary_identifier, 0, sizeof(struct kefir_ast_temporary_identifier));
+                }
+                if (preserve_after_eval_temporary_identifier != NULL) {
+                    memset(preserve_after_eval_temporary_identifier, 0, sizeof(struct kefir_ast_temporary_identifier));
+                }
                 *expr_props = (struct kefir_ast_node_expression_properties) {
-                    .constant_expression_value = const_expr_value
+                    .constant_expression_value = const_expr_value,
+                    .temporary_identifier = temporary_identifier,
+                    .preserve_after_eval_temporary_identifier = preserve_after_eval_temporary_identifier
                 };
             }
             *props = (struct kefir_ast_node_properties) {
@@ -221,3 +231,15 @@ kefir_result_t kefir_ast_node_allocate_inline_asm_props(struct kefir_memory_aren
     }
     return KEFIR_OK;
 }
+
+kefir_result_t kefir_ast_node_allocate_temporary_identifier(struct kefir_memory_arena *arena, struct kefir_ast_temporary_identifier **temporary_identifier_ptr) {
+    REQUIRE(arena != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory arena"));
+    REQUIRE(temporary_identifier_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to AST temporary identifier"));
+
+    if (*temporary_identifier_ptr == NULL) {
+        *temporary_identifier_ptr = kefir_memory_arena_alloc(arena, sizeof(struct kefir_ast_temporary_identifier), _Alignof(struct kefir_ast_temporary_identifier));
+        REQUIRE(*temporary_identifier_ptr != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST temporary identifier"));
+    }
+    return KEFIR_OK;
+}
+

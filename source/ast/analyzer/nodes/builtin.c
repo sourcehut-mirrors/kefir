@@ -90,9 +90,10 @@ kefir_result_t kefir_ast_analyze_builtin_node(struct kefir_mem *mem, const struc
             const struct kefir_ast_type *unqualified_type = kefir_ast_unqualified_type(type->properties.type);
             if (KEFIR_AST_TYPE_IS_AGGREGATE_TYPE(unqualified_type) ||
                 KEFIR_AST_TYPE_IS_COMPLEX_TYPE(unqualified_type)) {
+                REQUIRE_OK(kefir_ast_node_allocate_temporary_identifier(context->memory_arena, &base->properties.expression_props->temporary_identifier));
                 REQUIRE_OK(context->allocate_temporary_value(
                     mem, context, unqualified_type, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_UNKNOWN, NULL,
-                    &base->source_location, &base->properties.expression_props->temporary_identifier));
+                    &base->source_location, base->properties.expression_props->temporary_identifier));
             }
         } break;
 
@@ -317,8 +318,8 @@ kefir_result_t kefir_ast_analyze_builtin_node(struct kefir_mem *mem, const struc
             REQUIRE_OK(kefir_ast_analyze_node(mem, context, arg1_node));
             REQUIRE(
                 arg1_node->properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION &&
-                    (arg1_node->properties.expression_props->string_literal.type == KEFIR_AST_STRING_LITERAL_MULTIBYTE ||
-                     arg1_node->properties.expression_props->string_literal.type == KEFIR_AST_STRING_LITERAL_UNICODE8),
+                    (arg1_node->properties.expression_props->string_literal->type == KEFIR_AST_STRING_LITERAL_MULTIBYTE ||
+                     arg1_node->properties.expression_props->string_literal->type == KEFIR_AST_STRING_LITERAL_UNICODE8),
                 KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &arg1_node->source_location,
                                        "Expected multibyte string literal"));
 
@@ -333,8 +334,8 @@ kefir_result_t kefir_ast_analyze_builtin_node(struct kefir_mem *mem, const struc
             REQUIRE_OK(kefir_ast_analyze_node(mem, context, arg1_node));
             REQUIRE(
                 arg1_node->properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION &&
-                    (arg1_node->properties.expression_props->string_literal.type == KEFIR_AST_STRING_LITERAL_MULTIBYTE ||
-                     arg1_node->properties.expression_props->string_literal.type == KEFIR_AST_STRING_LITERAL_UNICODE8),
+                    (arg1_node->properties.expression_props->string_literal->type == KEFIR_AST_STRING_LITERAL_MULTIBYTE ||
+                     arg1_node->properties.expression_props->string_literal->type == KEFIR_AST_STRING_LITERAL_UNICODE8),
                 KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &arg1_node->source_location,
                                        "Expected multibyte string literal"));
 
@@ -349,8 +350,8 @@ kefir_result_t kefir_ast_analyze_builtin_node(struct kefir_mem *mem, const struc
             REQUIRE_OK(kefir_ast_analyze_node(mem, context, arg1_node));
             REQUIRE(
                 arg1_node->properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION &&
-                    (arg1_node->properties.expression_props->string_literal.type == KEFIR_AST_STRING_LITERAL_MULTIBYTE ||
-                     arg1_node->properties.expression_props->string_literal.type == KEFIR_AST_STRING_LITERAL_UNICODE8),
+                    (arg1_node->properties.expression_props->string_literal->type == KEFIR_AST_STRING_LITERAL_MULTIBYTE ||
+                     arg1_node->properties.expression_props->string_literal->type == KEFIR_AST_STRING_LITERAL_UNICODE8),
                 KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &arg1_node->source_location,
                                        "Expected multibyte string literal"));
 

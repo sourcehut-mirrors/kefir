@@ -69,9 +69,10 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
         case KEFIR_AST_BUILTIN_VA_ARG: {
             struct kefir_ast_node_base *vararg = node->arguments[0];
             REQUIRE_OK(resolve_vararg(mem, context, builder, vararg));
-            if (node->base.properties.expression_props->temporary_identifier.scoped_id != NULL) {
+            if (node->base.properties.expression_props->temporary_identifier != NULL &&
+                node->base.properties.expression_props->temporary_identifier->scoped_id != NULL) {
                 REQUIRE_OK(kefir_ast_translator_fetch_temporary(
-                    mem, context, builder, &node->base.properties.expression_props->temporary_identifier));
+                    mem, context, builder, node->base.properties.expression_props->temporary_identifier));
             } else {
                 REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_NULL_REF, 0));
             }
@@ -243,21 +244,21 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
             struct kefir_ast_node_base *arg1_node = node->arguments[0];
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDF32(
                 builder, KEFIR_IR_OPCODE_FLOAT32_CONST,
-                nan(arg1_node->properties.expression_props->string_literal.content), 0.0f));
+                nan(arg1_node->properties.expression_props->string_literal->literal), 0.0f));
         } break;
 
         case KEFIR_AST_BUILTIN_NAN_FLOAT64: {
             struct kefir_ast_node_base *arg1_node = node->arguments[0];
             REQUIRE_OK(
                 KEFIR_IRBUILDER_BLOCK_APPENDF64(builder, KEFIR_IR_OPCODE_FLOAT64_CONST,
-                                                nan(arg1_node->properties.expression_props->string_literal.content)));
+                                                nan(arg1_node->properties.expression_props->string_literal->literal)));
         } break;
 
         case KEFIR_AST_BUILTIN_NAN_LONG_DOUBLE: {
             struct kefir_ast_node_base *arg1_node = node->arguments[0];
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPEND_LONG_DOUBLE(
                 builder, KEFIR_IR_OPCODE_LONG_DOUBLE_CONST,
-                nan(arg1_node->properties.expression_props->string_literal.content)));
+                nan(arg1_node->properties.expression_props->string_literal->literal)));
         } break;
 
         case KEFIR_AST_BUILTIN_KEFIR_UNREACHABLE: {

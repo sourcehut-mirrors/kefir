@@ -52,17 +52,15 @@ kefir_result_t kefir_ast_analyze_string_literal_node(struct kefir_mem *mem, cons
     REQUIRE(node != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST string literal"));
     REQUIRE(base != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST base node"));
 
-    const struct kefir_ast_type *elt_type = string_element_type(context->type_traits, node->type);
+    const struct kefir_ast_type *elt_type = string_element_type(context->type_traits, node->data.type);
     REQUIRE(elt_type != NULL,
             KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unable to detect AST string literal underlying type"));
 
     REQUIRE_OK(kefir_ast_node_properties_reset(&base->properties, KEFIR_AST_NODE_CATEGORY_EXPRESSION));
     base->properties.category = KEFIR_AST_NODE_CATEGORY_EXPRESSION;
     REQUIRE_OK(kefir_ast_node_allocate_expression_props(context->memory_arena, base));
-    base->properties.type = kefir_ast_type_array(mem, context->type_bundle, elt_type, node->length, NULL);
+    base->properties.type = kefir_ast_type_array(mem, context->type_bundle, elt_type, node->data.length, NULL);
     base->properties.expression_props->addressable = true;
-    base->properties.expression_props->string_literal.type = node->type;
-    base->properties.expression_props->string_literal.content = node->literal;
-    base->properties.expression_props->string_literal.length = node->length;
+    base->properties.expression_props->string_literal = &node->data;
     return KEFIR_OK;
 }

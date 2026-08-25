@@ -39,8 +39,8 @@ kefir_result_t kefir_ast_translate_string_literal_node(struct kefir_mem *mem,
         [KEFIR_AST_STRING_LITERAL_UNICODE16] = KEFIR_IR_STRING_LITERAL_UNICODE16,
         [KEFIR_AST_STRING_LITERAL_UNICODE32] = KEFIR_IR_STRING_LITERAL_UNICODE32,
         [KEFIR_AST_STRING_LITERAL_WIDE] = KEFIR_IR_STRING_LITERAL_UNICODE32};
-    REQUIRE_OK(kefir_ir_module_string_literal(mem, context->module, LiteralTypes[node->type], true, node->literal,
-                                              node->length, &literal_id));
+    REQUIRE_OK(kefir_ir_module_string_literal(mem, context->module, LiteralTypes[node->data.type], true, node->data.literal,
+                                              node->data.length, &literal_id));
     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_STRING_REF, literal_id));
     return KEFIR_OK;
 }

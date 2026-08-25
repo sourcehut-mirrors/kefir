@@ -48,7 +48,7 @@ kefir_result_t kefir_ast_translate_array_subscript_node(struct kefir_mem *mem,
     if (atomic_aggregate_element) {
         REQUIRE_OK(kefir_ast_translator_load_atomic_aggregate_value(
             mem, node->base.properties.type, context, builder,
-            &node->base.properties.expression_props->temporary_identifier, &node->base.source_location));
+            node->base.properties.expression_props->temporary_identifier, &node->base.source_location));
     }
     return KEFIR_OK;
 }

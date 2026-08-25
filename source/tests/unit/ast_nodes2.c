@@ -107,8 +107,8 @@ DEFINE_CASE(ast_nodes_generic_selections, "AST nodes - generic selections") {
     });
     ASSERT_ASSOC(selection1, 2, type_name4, {
         ASSERT(assoc->expr->klass->type == KEFIR_AST_STRING_LITERAL);
-        ASSERT(((struct kefir_ast_string_literal *) KEFIR_AST_NODE_SELF(assoc->expr))->literal != NULL);
-        ASSERT(strcmp(((struct kefir_ast_string_literal *) KEFIR_AST_NODE_SELF(assoc->expr))->literal, "Hello, world!") == 0);
+        ASSERT(((struct kefir_ast_string_literal *) KEFIR_AST_NODE_SELF(assoc->expr))->data.literal != NULL);
+        ASSERT(strcmp(((struct kefir_ast_string_literal *) KEFIR_AST_NODE_SELF(assoc->expr))->data.literal, "Hello, world!") == 0);
     });
     ASSERT(selection1->default_assoc == NULL);
 
@@ -127,8 +127,8 @@ DEFINE_CASE(ast_nodes_generic_selections, "AST nodes - generic selections") {
     });
     ASSERT_ASSOC(selection1, 2, type_name4, {
         ASSERT(assoc->expr->klass->type == KEFIR_AST_STRING_LITERAL);
-        ASSERT(((struct kefir_ast_string_literal *) KEFIR_AST_NODE_SELF(assoc->expr))->literal != NULL);
-        ASSERT(strcmp(((struct kefir_ast_string_literal *) KEFIR_AST_NODE_SELF(assoc->expr))->literal, "Hello, world!") == 0);
+        ASSERT(((struct kefir_ast_string_literal *) KEFIR_AST_NODE_SELF(assoc->expr))->data.literal != NULL);
+        ASSERT(strcmp(((struct kefir_ast_string_literal *) KEFIR_AST_NODE_SELF(assoc->expr))->data.literal, "Hello, world!") == 0);
     });
     ASSERT(selection1->default_assoc != NULL);
     ASSERT(selection1->default_assoc->klass->type == KEFIR_AST_CONSTANT);

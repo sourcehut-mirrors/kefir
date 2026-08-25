@@ -48,13 +48,15 @@ kefir_result_t kefir_ast_try_analyze_identifier(struct kefir_mem *mem, const str
             base->properties.expression_props->atomic = KEFIR_AST_TYPE_IS_ATOMIC(scoped_id->object.type);
             base->properties.expression_props->alignment =
                 scoped_id->object.alignment != NULL ? scoped_id->object.alignment->value : 0;
+            REQUIRE(scoped_id->object.alignment->value <= KEFIR_UINT32_MAX, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected scoped identifier alignment"));
 
             const struct kefir_ast_type *unqualified_type = kefir_ast_unqualified_type(scoped_id->object.type);
             if (base->properties.expression_props->atomic && (KEFIR_AST_TYPE_IS_AGGREGATE_TYPE(unqualified_type) ||
                                                              KEFIR_AST_TYPE_IS_COMPLEX_TYPE(unqualified_type))) {
+                REQUIRE_OK(kefir_ast_node_allocate_temporary_identifier(context->memory_arena, &base->properties.expression_props->temporary_identifier));
                 REQUIRE_OK(context->allocate_temporary_value(
                     mem, context, scoped_id->object.type, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_UNKNOWN, NULL,
-                    &base->source_location, &base->properties.expression_props->temporary_identifier));
+                    &base->source_location, base->properties.expression_props->temporary_identifier));
             }
             break;
 

@@ -242,7 +242,7 @@ kefir_result_t kefir_ast_evaluate_builtin_node(struct kefir_mem *mem, const stru
         case KEFIR_AST_BUILTIN_NAN_LONG_DOUBLE: {
             struct kefir_ast_node_base *arg = node->arguments[0];
             value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT;
-            value->floating_point = nanl(arg->properties.expression_props->string_literal.content);
+            value->floating_point = nanl(arg->properties.expression_props->string_literal->literal);
         } break;
 
         case KEFIR_AST_BUILTIN_KEFIR_ISNAN: {

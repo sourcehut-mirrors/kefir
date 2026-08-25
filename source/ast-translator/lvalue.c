@@ -236,9 +236,9 @@ kefir_result_t kefir_ast_translate_compound_literal_lvalue(struct kefir_mem *mem
     REQUIRE(node != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST compound literal node"));
 
     REQUIRE_OK(kefir_ast_translator_fetch_temporary(mem, context, builder,
-                                                    &node->base.properties.expression_props->temporary_identifier));
+                                                    node->base.properties.expression_props->temporary_identifier));
     const kefir_ast_scoped_identifier_storage_t storage =
-        node->base.properties.expression_props->temporary_identifier.scoped_id->object.storage;
+        node->base.properties.expression_props->temporary_identifier->scoped_id->object.storage;
     if (storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_AUTO || storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_REGISTER ||
         storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_CONSTEXPR) {
         REQUIRE_OK(kefir_ast_translate_initializer(mem, context, builder, node->base.properties.type,

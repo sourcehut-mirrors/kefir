@@ -80,7 +80,7 @@ typedef struct kefir_ast_type_qualification {
 
 typedef struct kefir_ast_bitfield_properties {
     kefir_bool_t bitfield;
-    kefir_size_t width;
+    kefir_uint32_t width;
 } kefir_ast_bitfield_properties_t;
 
 #endif

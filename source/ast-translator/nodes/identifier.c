@@ -50,7 +50,7 @@ static kefir_result_t translate_object_identifier(struct kefir_mem *mem, struct 
             if (atomic_aggregate) {
                 REQUIRE_OK(kefir_ast_translator_load_atomic_aggregate_value(
                     mem, node->base.properties.type, context, builder,
-                    &node->base.properties.expression_props->temporary_identifier, &node->base.source_location));
+                    node->base.properties.expression_props->temporary_identifier, &node->base.source_location));
             }
         } else {
             REQUIRE_OK(kefir_ast_translator_load_value(scoped_identifier->object.type,

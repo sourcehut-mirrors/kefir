@@ -58,7 +58,7 @@ DEFINE_CASE(ast_analysis_extension_node1, "AST analysis - extension node #1") {
     ASSERT(node1->base.properties.expression_props->identifier == NULL);
     ASSERT(!node1->base.properties.expression_props->lvalue);
     ASSERT(node1->base.properties.expression_props->scoped_id == NULL);
-    ASSERT(node1->base.properties.expression_props->string_literal.content == NULL);
+    ASSERT(node1->base.properties.expression_props->string_literal == NULL);
 
     ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(node1)));
     ASSERT_OK(kefir_ast_global_context_free(&kft_mem, &context));

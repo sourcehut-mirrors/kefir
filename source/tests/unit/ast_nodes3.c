@@ -41,7 +41,7 @@ DEFINE_CASE(ast_nodes_static_assertions1, "AST nodes - static assertions #1") {
     ASSERT(((struct kefir_ast_constant *) KEFIR_AST_NODE_SELF(assert1->condition))->type == KEFIR_AST_INT_CONSTANT);
     ASSERT(((struct kefir_ast_constant *) KEFIR_AST_NODE_SELF(assert1->condition))->value.integer == 123);
     ASSERT(assert1->string != NULL);
-    ASSERT(strcmp(assert1->string->literal, "Hello, goodbye!") == 0);
+    ASSERT(strcmp(assert1->string->data.literal, "Hello, goodbye!") == 0);
 
     struct kefir_ast_static_assertion *assert2 = kefir_ast_new_static_assertion(
         &kft_mem,
@@ -56,7 +56,7 @@ DEFINE_CASE(ast_nodes_static_assertions1, "AST nodes - static assertions #1") {
     ASSERT(assert2->condition != NULL);
     ASSERT(assert2->condition->klass->type == KEFIR_AST_BINARY_OPERATION);
     ASSERT(assert2->string != NULL);
-    ASSERT(strcmp(assert2->string->literal, "Something") == 0);
+    ASSERT(strcmp(assert2->string->data.literal, "Something") == 0);
 
     ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(assert1)));
     ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(assert2)));
@@ -173,8 +173,8 @@ DEFINE_CASE(ast_nodes_expression_statements1, "AST nodes - expression statements
     ASSERT(KEFIR_AST_NODE_SELF(KEFIR_AST_NODE_BASE(stmt1)) == stmt1);
     ASSERT(stmt1->expression != NULL);
     ASSERT(stmt1->expression->klass->type == KEFIR_AST_STRING_LITERAL);
-    ASSERT(((struct kefir_ast_string_literal *) KEFIR_AST_NODE_SELF(stmt1->expression))->literal != NULL);
-    ASSERT(strcmp(((struct kefir_ast_string_literal *) KEFIR_AST_NODE_SELF(stmt1->expression))->literal, "Goodbye, cruel world!") ==
+    ASSERT(((struct kefir_ast_string_literal *) KEFIR_AST_NODE_SELF(stmt1->expression))->data.literal != NULL);
+    ASSERT(strcmp(((struct kefir_ast_string_literal *) KEFIR_AST_NODE_SELF(stmt1->expression))->data.literal, "Goodbye, cruel world!") ==
            0);
 
     struct kefir_ast_expression_statement *stmt2 = kefir_ast_new_expression_statement(

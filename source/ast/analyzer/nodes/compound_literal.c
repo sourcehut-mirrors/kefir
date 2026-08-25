@@ -45,9 +45,10 @@ kefir_result_t kefir_ast_analyze_compound_literal_node(struct kefir_mem *mem, co
                                              &initializer_properties));
     REQUIRE_OK(kefir_ast_node_properties_reset(&base->properties, KEFIR_AST_NODE_CATEGORY_EXPRESSION));
     REQUIRE_OK(kefir_ast_node_allocate_expression_props(context->memory_arena, base));
+    REQUIRE_OK(kefir_ast_node_allocate_temporary_identifier(context->memory_arena, &base->properties.expression_props->temporary_identifier));
     REQUIRE_OK(context->allocate_temporary_value(
         mem, context, initializer_properties.type, node->type_name->base.properties.type_props->storage,
-        node->initializer, &node->base.source_location, &base->properties.expression_props->temporary_identifier));
+        node->initializer, &node->base.source_location, base->properties.expression_props->temporary_identifier));
 
     const struct kefir_ast_type *type = initializer_properties.type;
     if (node->type_name->base.properties.type->tag == KEFIR_AST_TYPE_QUALIFIED) {

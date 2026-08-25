@@ -41,35 +41,30 @@ typedef struct kefir_ast_node_class {
 } kefir_ast_node_class_t;
 
 typedef struct kefir_ast_node_expression_properties {
-    kefir_bool_t lvalue;
-    kefir_bool_t addressable;
-    kefir_bool_t atomic;
+    kefir_uint32_t lvalue : 1,
+                   addressable : 1,
+                   atomic : 1,
+                   preserve_after_eval : 1;
+    kefir_uint32_t alignment;
     struct kefir_ast_constant_expression_value *constant_expression_value;
     struct kefir_ast_bitfield_properties bitfield_props;
     const char *identifier;
-    struct {
-        kefir_ast_string_literal_type_t type;
-        void *content;
-        kefir_size_t length;
-    } string_literal;
+    const struct kefir_ast_string_literal_data *string_literal;
     const struct kefir_ast_scoped_identifier *scoped_id;
-    struct kefir_ast_temporary_identifier temporary_identifier;
-    struct kefir_ast_flow_control_structure *flow_control_statement;
-    struct kefir_ast_flow_control_point *flow_control_point;
-    kefir_size_t alignment;
-
-    struct {
-        kefir_bool_t enabled;
-        struct kefir_ast_temporary_identifier temporary_identifier;
-    } preserve_after_eval;
+    struct kefir_ast_temporary_identifier *temporary_identifier;
+    union {
+        struct kefir_ast_flow_control_structure *flow_control_statement;
+        struct kefir_ast_flow_control_point *flow_control_point;
+    };
+    struct kefir_ast_temporary_identifier *preserve_after_eval_temporary_identifier;
 } kefir_ast_node_expression_properties_t;
 
 typedef struct kefir_ast_node_declaration_properties {
     kefir_ast_scoped_identifier_storage_t storage;
     kefir_ast_function_specifier_t function;
-    const char *identifier;
-    kefir_size_t alignment;
     kefir_bool_t static_assertion;
+    kefir_uint32_t alignment;
+    const char *identifier;
     const struct kefir_ast_type *original_type;
     const struct kefir_ast_scoped_identifier *scoped_id;
     struct kefir_ast_temporary_identifier temporary_identifier;
@@ -96,7 +91,7 @@ typedef struct kefir_ast_node_function_definition_properties {
 } kefir_ast_node_function_definition_properties_t;
 
 typedef struct kefir_ast_node_type_properties {
-    kefir_size_t alignment;
+    kefir_uint32_t alignment;
     kefir_ast_scoped_identifier_storage_t storage;
 } kefir_ast_node_type_properties_t;
 
@@ -169,5 +164,6 @@ kefir_result_t kefir_ast_node_allocate_statement_props(struct kefir_memory_arena
 kefir_result_t kefir_ast_node_allocate_function_definition_props(struct kefir_memory_arena *, struct kefir_ast_node_base *);
 kefir_result_t kefir_ast_node_allocate_type_props(struct kefir_memory_arena *, struct kefir_ast_node_base *);
 kefir_result_t kefir_ast_node_allocate_inline_asm_props(struct kefir_memory_arena *, struct kefir_ast_node_base *);
+kefir_result_t kefir_ast_node_allocate_temporary_identifier(struct kefir_memory_arena *, struct kefir_ast_temporary_identifier **);
 
 #endif

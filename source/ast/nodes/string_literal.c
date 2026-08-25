@@ -47,7 +47,7 @@ kefir_result_t ast_string_literal_free(struct kefir_mem *mem, struct kefir_ast_n
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(base != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST node base"));
     ASSIGN_DECL_CAST(struct kefir_ast_string_literal *, node, KEFIR_AST_NODE_SELF(base));
-    KEFIR_FREE(mem, node->literal);
+    KEFIR_FREE(mem, node->data.literal);
     KEFIR_FREE(mem, node);
     return KEFIR_OK;
 }
@@ -88,9 +88,9 @@ struct kefir_ast_string_literal *kefir_ast_new_string_literal(struct kefir_mem *
     });
 
     memcpy(literal_copy, literal, sz);
-    string_literal->type = type;
-    string_literal->literal = literal_copy;
-    string_literal->length = length;
+    string_literal->data.type = type;
+    string_literal->data.literal = literal_copy;
+    string_literal->data.length = length;
     return string_literal;
 }
 

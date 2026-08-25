@@ -41,4 +41,19 @@ typedef struct kefir_ast_flow_control_structure kefir_ast_flow_control_structure
 typedef kefir_int64_t kefir_ast_constant_expression_int_t;
 typedef kefir_uint64_t kefir_ast_constant_expression_uint_t;
 
+
+typedef enum kefir_ast_string_literal_type {
+    KEFIR_AST_STRING_LITERAL_MULTIBYTE,
+    KEFIR_AST_STRING_LITERAL_UNICODE8,
+    KEFIR_AST_STRING_LITERAL_UNICODE16,
+    KEFIR_AST_STRING_LITERAL_UNICODE32,
+    KEFIR_AST_STRING_LITERAL_WIDE
+} kefir_ast_string_literal_type_t;
+
+typedef struct kefir_ast_string_literal_data {
+    kefir_ast_string_literal_type_t type;
+    void *literal;
+    kefir_size_t length;
+} kefir_ast_string_literal_data_t;
+
 #endif

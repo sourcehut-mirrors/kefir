@@ -103,7 +103,7 @@ static kefir_result_t string_literal_stop_fn(struct kefir_ast_node_base *node,
                                              const struct kefir_ast_type_traits *type_traits,
                                              kefir_bool_t (**stop_fn)(const struct kefir_ast_type *, void *),
                                              void **stop_payload) {
-    switch (node->properties.expression_props->string_literal.type) {
+    switch (node->properties.expression_props->string_literal->type) {
         case KEFIR_AST_STRING_LITERAL_MULTIBYTE:
         case KEFIR_AST_STRING_LITERAL_UNICODE8:
             *stop_fn = is_char_array;
@@ -178,7 +178,7 @@ static kefir_result_t traverse_aggregate_union_impl(struct kefir_ast_designator 
         const struct kefir_ast_type *type = NULL;
         REQUIRE_OK(kefir_ast_type_traversal_next(mem, traversal, &type, NULL));
         REQUIRE_OK(kefir_ast_analyze_initializer(mem, context, type, entry->value, NULL));
-    } else if (entry->value->expression->properties.expression_props->string_literal.content != NULL) {
+    } else if (entry->value->expression->properties.expression_props->string_literal != NULL && entry->value->expression->properties.expression_props->string_literal->literal != NULL) {
         REQUIRE_OK(traverse_aggregate_union_string_literal(mem, context, traversal, entry));
     } else if (KEFIR_AST_TYPE_IS_SCALAR_TYPE(entry->value->expression->properties.type)) {
         const struct kefir_ast_type *type = NULL;
@@ -288,12 +288,12 @@ static kefir_result_t analyze_array(struct kefir_mem *mem, const struct kefir_as
     struct kefir_ast_node_base *head_expr = kefir_ast_initializer_head(initializer);
     kefir_size_t array_length = 0;
     kefir_bool_t is_string = false;
-    if (head_expr != NULL && head_expr->properties.expression_props->string_literal.content != NULL) {
+    if (head_expr != NULL && head_expr->properties.expression_props->string_literal != NULL && head_expr->properties.expression_props->string_literal->literal != NULL) {
         kefir_bool_t (*stop_fn)(const struct kefir_ast_type *, void *) = NULL;
         void *stop_payload = NULL;
         REQUIRE_OK(string_literal_stop_fn(head_expr, context->type_traits, &stop_fn, &stop_payload));
         if (stop_fn(type, stop_payload)) {
-            array_length = head_expr->properties.expression_props->string_literal.length;
+            array_length = head_expr->properties.expression_props->string_literal->length;
             is_string = true;
         }
     }
@@ -386,15 +386,19 @@ static kefir_result_t traverse_scalar(const struct kefir_ast_designator *designa
     UNUSED(designator);
     REQUIRE(expression != NULL, KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Expected valid AST expression node"));
     REQUIRE(payload != NULL, KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Expected valid payload"));
-    REQUIRE(!expression->properties.expression_props->preserve_after_eval.enabled, KEFIR_OK);
+    REQUIRE(!expression->properties.expression_props->preserve_after_eval, KEFIR_OK);
     ASSIGN_DECL_CAST(struct obtain_temporaries_for_ranges_param *, param, payload);
 
     if (kefir_hashtreeset_has(&param->repeated_nodes, (kefir_hashtreeset_entry_t) expression)) {
+        if (expression->properties.expression_props->preserve_after_eval_temporary_identifier == NULL) {
+            expression->properties.expression_props->preserve_after_eval_temporary_identifier = kefir_memory_arena_alloc(param->context->memory_arena, sizeof(struct kefir_ast_temporary_identifier), _Alignof(struct kefir_ast_temporary_identifier));
+            REQUIRE(expression->properties.expression_props->preserve_after_eval_temporary_identifier != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST temporary identifier"));
+        }
         REQUIRE_OK(param->context->allocate_temporary_value(
             param->mem, param->context, expression->properties.type, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_UNKNOWN, NULL,
             &expression->source_location,
-            &expression->properties.expression_props->preserve_after_eval.temporary_identifier));
-        expression->properties.expression_props->preserve_after_eval.enabled = true;
+            expression->properties.expression_props->preserve_after_eval_temporary_identifier));
+        expression->properties.expression_props->preserve_after_eval = true;
     }
     REQUIRE_OK(kefir_hashtreeset_add(param->mem, &param->repeated_nodes, (kefir_hashtreeset_entry_t) expression));
 

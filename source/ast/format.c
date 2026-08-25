@@ -361,39 +361,39 @@ static kefir_result_t visit_string_literal(const struct kefir_ast_visitor *visit
     REQUIRE_OK(kefir_json_output_object_key(json, "class"));
     REQUIRE_OK(kefir_json_output_string(json, "string_literal"));
     REQUIRE_OK(kefir_json_output_object_key(json, "type"));
-    switch (node->type) {
+    switch (node->data.type) {
         case KEFIR_AST_STRING_LITERAL_MULTIBYTE:
             REQUIRE_OK(kefir_json_output_string(json, "multibyte"));
             REQUIRE_OK(kefir_json_output_object_key(json, "content"));
-            REQUIRE_OK(kefir_json_output_raw_string(json, node->literal, node->length));
+            REQUIRE_OK(kefir_json_output_raw_string(json, node->data.literal, node->data.length));
             break;
 
         case KEFIR_AST_STRING_LITERAL_UNICODE8:
             REQUIRE_OK(kefir_json_output_string(json, "unicode8"));
             REQUIRE_OK(kefir_json_output_object_key(json, "content"));
-            REQUIRE_OK(kefir_json_output_raw_string(json, node->literal, node->length));
+            REQUIRE_OK(kefir_json_output_raw_string(json, node->data.literal, node->data.length));
             break;
 
         case KEFIR_AST_STRING_LITERAL_UNICODE16:
             REQUIRE_OK(kefir_json_output_string(json, "unicode16"));
             REQUIRE_OK(kefir_json_output_object_key(json, "content"));
-            REQUIRE_OK(kefir_json_output_raw_string(json, node->literal, node->length * sizeof(kefir_char16_t)));
+            REQUIRE_OK(kefir_json_output_raw_string(json, node->data.literal, node->data.length * sizeof(kefir_char16_t)));
             break;
 
         case KEFIR_AST_STRING_LITERAL_UNICODE32:
             REQUIRE_OK(kefir_json_output_string(json, "unicode32"));
             REQUIRE_OK(kefir_json_output_object_key(json, "content"));
-            REQUIRE_OK(kefir_json_output_raw_string(json, node->literal, node->length * sizeof(kefir_char32_t)));
+            REQUIRE_OK(kefir_json_output_raw_string(json, node->data.literal, node->data.length * sizeof(kefir_char32_t)));
             break;
 
         case KEFIR_AST_STRING_LITERAL_WIDE:
             REQUIRE_OK(kefir_json_output_string(json, "wide"));
             REQUIRE_OK(kefir_json_output_object_key(json, "content"));
-            REQUIRE_OK(kefir_json_output_raw_string(json, node->literal, node->length * sizeof(kefir_wchar_t)));
+            REQUIRE_OK(kefir_json_output_raw_string(json, node->data.literal, node->data.length * sizeof(kefir_wchar_t)));
             break;
     }
     REQUIRE_OK(kefir_json_output_object_key(json, "length"));
-    REQUIRE_OK(kefir_json_output_uinteger(json, node->length));
+    REQUIRE_OK(kefir_json_output_uinteger(json, node->data.length));
     if (param->display_source_location) {
         REQUIRE_OK(format_source_location(json, KEFIR_AST_NODE_BASE(node)));
     }

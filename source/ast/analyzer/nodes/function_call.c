@@ -121,9 +121,10 @@ kefir_result_t kefir_ast_analyze_function_call_node(struct kefir_mem *mem, const
     REQUIRE_OK(kefir_ast_node_allocate_expression_props(context->memory_arena, base));
 
     if (KEFIR_AST_TYPE_IS_AGGREGATE_TYPE(return_type)) {
+        REQUIRE_OK(kefir_ast_node_allocate_temporary_identifier(context->memory_arena, &base->properties.expression_props->temporary_identifier));
         REQUIRE_OK(context->allocate_temporary_value(
             mem, context, return_type, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_UNKNOWN, NULL, &base->source_location,
-            &base->properties.expression_props->temporary_identifier));
+            base->properties.expression_props->temporary_identifier));
     }
 
     if (context->flow_control_tree != NULL) {

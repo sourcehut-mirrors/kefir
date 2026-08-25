@@ -70,9 +70,7 @@ KEFIR_AST_NODE_STRUCT(kefir_ast_constant, {
 KEFIR_AST_NODE_STRUCT(kefir_ast_identifier, { const char *identifier; });
 
 KEFIR_AST_NODE_STRUCT(kefir_ast_string_literal, {
-    kefir_ast_string_literal_type_t type;
-    void *literal;
-    kefir_size_t length;
+    struct kefir_ast_string_literal_data data;
 });
 
 typedef struct kefir_ast_type_declaration {
