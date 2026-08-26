@@ -36,9 +36,6 @@ typedef struct kefir_ast_analysis_parameters {
 kefir_result_t kefir_ast_analyze_alignment(struct kefir_mem *, const struct kefir_ast_context *,
                                            struct kefir_ast_alignment *);
 
-kefir_result_t kefir_ast_node_is_lvalue_reference_constant(const struct kefir_ast_context *,
-                                                           const struct kefir_ast_node_base *, kefir_bool_t *);
-
 kefir_result_t kefir_ast_type_assignable(struct kefir_mem *, const struct kefir_ast_context *,
                                          const struct kefir_ast_type *, kefir_bool_t, const struct kefir_ast_type *);
 
