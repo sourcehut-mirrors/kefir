@@ -20,6 +20,7 @@
 
 #include "kefir/ast/constant_expression_impl.h"
 #include "kefir/ast/type_conv.h"
+#include "kefir/ast/downcast.h"
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
 #include "kefir/core/source_error.h"
@@ -242,7 +243,9 @@ kefir_result_t kefir_ast_evaluate_builtin_node(struct kefir_mem *mem, const stru
         case KEFIR_AST_BUILTIN_NAN_LONG_DOUBLE: {
             struct kefir_ast_node_base *arg = node->arguments[0];
             value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT;
-            KEFIR_AST_CONSTANT_EXPRESSION_SET_FLOAT(value, nanl(arg->properties.expression_props->string_literal->literal));
+            struct kefir_ast_string_literal *string;
+            REQUIRE_OK(kefir_ast_downcast_string_literal(arg, &string, false));
+            KEFIR_AST_CONSTANT_EXPRESSION_SET_FLOAT(value, nanl(string->data.literal));
         } break;
 
         case KEFIR_AST_BUILTIN_KEFIR_ISNAN: {

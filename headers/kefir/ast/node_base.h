@@ -50,8 +50,6 @@ typedef struct kefir_ast_node_expression_properties {
     kefir_uint32_t alignment;
     struct kefir_ast_constant_expression_value *constant_expression_value;
     struct kefir_ast_bitfield_properties bitfield_props;
-    const char *identifier;
-    const struct kefir_ast_string_literal_data *string_literal;
     const struct kefir_ast_scoped_identifier *scoped_id;
     struct kefir_ast_temporary_identifier *temporary_identifier;
     union {

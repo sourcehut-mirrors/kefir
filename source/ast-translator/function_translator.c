@@ -106,14 +106,15 @@ static kefir_result_t init_function_declaration(struct kefir_mem *mem, struct ke
                  res == KEFIR_OK && iter != NULL; declaration_index++, kefir_list_next(&iter)) {
 
                 struct kefir_hashtree_node *tree_node = NULL;
+                struct kefir_ast_identifier *identifier;
                 ASSIGN_DECL_CAST(struct kefir_ast_node_base *, param, iter->value);
-                REQUIRE_CHAIN_SET(&res,
-                                  param->properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION &&
-                                      param->properties.expression_props->identifier != NULL,
-                                  KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Expected parameter to be AST identifier"));
+                res = kefir_ast_downcast_identifier(param, &identifier, false);
+                if (res == KEFIR_NO_MATCH) {
+                    res = KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Expected parameter to be AST identifier");
+                }
                 REQUIRE_CHAIN(&res,
                               kefir_hashtree_at(&declarations,
-                                                (kefir_hashtree_key_t) param->properties.expression_props->identifier,
+                                                (kefir_hashtree_key_t) identifier->identifier,
                                                 &tree_node));
 
                 declaration_list[declaration_index] = (struct kefir_ast_node_base *) tree_node->value;
@@ -443,13 +444,21 @@ kefir_result_t kefir_ast_translator_function_context_translate(
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_VSTACK_POP, 0));
                 }
             }
-        } else if (param->properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION &&
-                   param->properties.expression_props->identifier != NULL) {
+        } else {
+            struct kefir_ast_identifier *identifier;
+            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, param, iter->value);
+            res = kefir_ast_downcast_identifier(param, &identifier, false);
+            if (res == KEFIR_NO_MATCH) {
+                res = KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR,
+                                   "Expected function parameter to be either AST declaration or identifier");
+            }
+            REQUIRE_OK(res);
+
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_GET_ARGUMENT, parameter_id));
 
             scoped_id = param->properties.expression_props->scoped_id;
             REQUIRE_OK(kefir_ast_translator_object_lvalue(mem, context, builder,
-                                                          param->properties.expression_props->identifier, scoped_id));
+                                                          identifier->identifier, scoped_id));
             REQUIRE_OK(xchg_param_address(builder));
 
             const struct kefir_ast_type *default_promotion =
@@ -463,9 +472,6 @@ kefir_result_t kefir_ast_translator_function_context_translate(
 
             REQUIRE_OK(kefir_ast_translator_store_value(mem, scoped_id->object.type, context, builder,
                                                         &function_context->function_definition->base.source_location));
-        } else {
-            return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR,
-                                   "Expected function parameter to be either AST declaration or identifier");
         }
     }
 
@@ -500,15 +506,20 @@ kefir_result_t kefir_ast_translator_function_context_translate(
                                                                  init_decl->base.properties.type, parameter_index));
                     }
                 }
-            } else if (param->properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION &&
-                       param->properties.expression_props->identifier != NULL) {
+            } else {
+                struct kefir_ast_identifier *identifier;
+                ASSIGN_DECL_CAST(struct kefir_ast_node_base *, param, iter->value);
+                res = kefir_ast_downcast_identifier(param, &identifier, false);
+                if (res == KEFIR_NO_MATCH) {
+                    res = KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR,
+                                    "Expected function parameter to be either AST declaration or identifier");
+                }
+                REQUIRE_OK(res);
+
                 scoped_id = param->properties.expression_props->scoped_id;
                 REQUIRE_OK(generate_parameter_debug_info(mem, function_context, subprogram_entry_id,
-                                                         param->properties.expression_props->identifier,
+                                                         identifier->identifier,
                                                          scoped_id->object.type, parameter_index));
-            } else {
-                return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR,
-                                       "Expected function parameter to be either AST declaration or identifier");
             }
         }
 

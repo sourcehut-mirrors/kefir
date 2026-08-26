@@ -316,10 +316,17 @@ kefir_result_t kefir_ast_analyze_builtin_node(struct kefir_mem *mem, const struc
                                            "nanf builtin invocation should have single string literal parameter"));
             struct kefir_ast_node_base *arg1_node = node->arguments[0];
             REQUIRE_OK(kefir_ast_analyze_node(mem, context, arg1_node));
+            struct kefir_ast_string_literal *string;
+            kefir_result_t res = kefir_ast_downcast_string_literal(arg1_node, &string, false);
+            if (res == KEFIR_NO_MATCH) {
+                res = KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &arg1_node->source_location,
+                                       "Expected multibyte string literal");
+            }
+            REQUIRE_OK(res);
             REQUIRE(
                 arg1_node->properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION &&
-                    (arg1_node->properties.expression_props->string_literal->type == KEFIR_AST_STRING_LITERAL_MULTIBYTE ||
-                     arg1_node->properties.expression_props->string_literal->type == KEFIR_AST_STRING_LITERAL_UNICODE8),
+                    (string->data.type == KEFIR_AST_STRING_LITERAL_MULTIBYTE ||
+                     string->data.type == KEFIR_AST_STRING_LITERAL_UNICODE8),
                 KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &arg1_node->source_location,
                                        "Expected multibyte string literal"));
 
@@ -332,10 +339,17 @@ kefir_result_t kefir_ast_analyze_builtin_node(struct kefir_mem *mem, const struc
                                            "nanf builtin invocation should have single string literal parameter"));
             struct kefir_ast_node_base *arg1_node = node->arguments[0];
             REQUIRE_OK(kefir_ast_analyze_node(mem, context, arg1_node));
+            struct kefir_ast_string_literal *string;
+            kefir_result_t res = kefir_ast_downcast_string_literal(arg1_node, &string, false);
+            if (res == KEFIR_NO_MATCH) {
+                res = KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &arg1_node->source_location,
+                                       "Expected multibyte string literal");
+            }
+            REQUIRE_OK(res);
             REQUIRE(
                 arg1_node->properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION &&
-                    (arg1_node->properties.expression_props->string_literal->type == KEFIR_AST_STRING_LITERAL_MULTIBYTE ||
-                     arg1_node->properties.expression_props->string_literal->type == KEFIR_AST_STRING_LITERAL_UNICODE8),
+                    (string->data.type == KEFIR_AST_STRING_LITERAL_MULTIBYTE ||
+                     string->data.type == KEFIR_AST_STRING_LITERAL_UNICODE8),
                 KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &arg1_node->source_location,
                                        "Expected multibyte string literal"));
 
@@ -348,10 +362,17 @@ kefir_result_t kefir_ast_analyze_builtin_node(struct kefir_mem *mem, const struc
                                            "nanf builtin invocation should have single string literal parameter"));
             struct kefir_ast_node_base *arg1_node = node->arguments[0];
             REQUIRE_OK(kefir_ast_analyze_node(mem, context, arg1_node));
+            struct kefir_ast_string_literal *string;
+            kefir_result_t res = kefir_ast_downcast_string_literal(arg1_node, &string, false);
+            if (res == KEFIR_NO_MATCH) {
+                res = KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &arg1_node->source_location,
+                                       "Expected multibyte string literal");
+            }
+            REQUIRE_OK(res);
             REQUIRE(
                 arg1_node->properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION &&
-                    (arg1_node->properties.expression_props->string_literal->type == KEFIR_AST_STRING_LITERAL_MULTIBYTE ||
-                     arg1_node->properties.expression_props->string_literal->type == KEFIR_AST_STRING_LITERAL_UNICODE8),
+                    (string->data.type == KEFIR_AST_STRING_LITERAL_MULTIBYTE ||
+                     string->data.type == KEFIR_AST_STRING_LITERAL_UNICODE8),
                 KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &arg1_node->source_location,
                                        "Expected multibyte string literal"));
 

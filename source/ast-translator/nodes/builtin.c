@@ -27,6 +27,7 @@
 #include "kefir/ast-translator/type.h"
 #include "kefir/ast-translator/temporaries.h"
 #include "kefir/ast/type_conv.h"
+#include "kefir/ast/downcast.h"
 #include "kefir/ast-translator/util.h"
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
@@ -242,23 +243,29 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
 
         case KEFIR_AST_BUILTIN_NAN_FLOAT32: {
             struct kefir_ast_node_base *arg1_node = node->arguments[0];
+            struct kefir_ast_string_literal *string;
+            REQUIRE_OK(kefir_ast_downcast_string_literal(arg1_node, &string, false));
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDF32(
                 builder, KEFIR_IR_OPCODE_FLOAT32_CONST,
-                nan(arg1_node->properties.expression_props->string_literal->literal), 0.0f));
+                nan(string->data.literal), 0.0f));
         } break;
 
         case KEFIR_AST_BUILTIN_NAN_FLOAT64: {
             struct kefir_ast_node_base *arg1_node = node->arguments[0];
+            struct kefir_ast_string_literal *string;
+            REQUIRE_OK(kefir_ast_downcast_string_literal(arg1_node, &string, false));
             REQUIRE_OK(
                 KEFIR_IRBUILDER_BLOCK_APPENDF64(builder, KEFIR_IR_OPCODE_FLOAT64_CONST,
-                                                nan(arg1_node->properties.expression_props->string_literal->literal)));
+                                                nan(string->data.literal)));
         } break;
 
         case KEFIR_AST_BUILTIN_NAN_LONG_DOUBLE: {
             struct kefir_ast_node_base *arg1_node = node->arguments[0];
+            struct kefir_ast_string_literal *string;
+            REQUIRE_OK(kefir_ast_downcast_string_literal(arg1_node, &string, false));
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPEND_LONG_DOUBLE(
                 builder, KEFIR_IR_OPCODE_LONG_DOUBLE_CONST,
-                nan(arg1_node->properties.expression_props->string_literal->literal)));
+                nan(string->data.literal)));
         } break;
 
         case KEFIR_AST_BUILTIN_KEFIR_UNREACHABLE: {

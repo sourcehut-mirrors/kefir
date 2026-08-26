@@ -47,7 +47,7 @@ kefir_result_t kefir_ast_analyze_static_assertion_node(struct kefir_mem *mem, co
                                    "Expected static assert condition expression"));
     REQUIRE(
         node->string == NULL || (node->string->base.properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION &&
-                                 node->string->base.properties.expression_props->string_literal != NULL && node->string->base.properties.expression_props->string_literal->literal != NULL),
+                                 node->string->data.literal != NULL),
         KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->string->base.source_location, "Expected string literal"));
 
     REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(node->condition, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER),
@@ -67,7 +67,7 @@ kefir_result_t kefir_ast_analyze_static_assertion_node(struct kefir_mem *mem, co
     if (node->string != NULL) {
         REQUIRE(condition,
                 KEFIR_SET_SOURCE_ERRORF(KEFIR_STATIC_ASSERT, &node->base.source_location, "%s",
-                                        node->string->base.properties.expression_props->string_literal->literal));
+                                        node->string->data.literal));
     } else {
         REQUIRE(condition,
                 KEFIR_SET_SOURCE_ERROR(KEFIR_STATIC_ASSERT, &node->base.source_location, "Failed static assertion"));

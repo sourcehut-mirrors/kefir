@@ -102,10 +102,6 @@ END_CASE
             kefir_ast_type_array((_mem), (_context)->type_bundle, (_underlying), sizeof(LITERAL), NULL)));           \
         ASSERT(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION(KEFIR_AST_NODE_BASE(literal)));                                       \
         ASSERT(!literal->base.properties.expression_props->lvalue);                                                   \
-        ASSERT(literal->base.properties.expression_props->string_literal->type == (_literal_type));                    \
-        ASSERT(literal->base.properties.expression_props->string_literal->length == sizeof(LITERAL));                  \
-        ASSERT(memcmp(literal->base.properties.expression_props->string_literal->literal, LITERAL, sizeof(LITERAL)) == \
-               0);                                                                                                   \
         KEFIR_AST_NODE_FREE((_mem), KEFIR_AST_NODE_BASE(literal));                                                   \
     } while (0)
 

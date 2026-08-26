@@ -19,6 +19,7 @@
 */
 
 #include "kefir/ast/constant_expression_impl.h"
+#include "kefir/ast/downcast.h"
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
 #include "kefir/core/source_error.h"
@@ -179,9 +180,14 @@ kefir_result_t kefir_ast_evaluate_function_call_node(struct kefir_mem *mem, cons
 
     const char *function_name = NULL;
     if (node->function->properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION &&
-        node->function->properties.expression_props->identifier != NULL &&
+        node->function->properties.expression_props->scoped_id != NULL &&
         node->function->properties.expression_props->scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_FUNCTION) {
-        function_name = node->function->properties.expression_props->identifier;
+        struct kefir_ast_identifier *identifier;
+        kefir_result_t res = kefir_ast_downcast_identifier(node->function, &identifier, false);
+        if (res != KEFIR_NO_MATCH) {
+            REQUIRE_OK(res);
+            function_name = identifier->identifier;
+        }
     }
 
     REQUIRE(function_name != NULL, KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->base.source_location,

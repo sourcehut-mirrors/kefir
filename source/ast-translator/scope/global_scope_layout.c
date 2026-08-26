@@ -27,6 +27,7 @@
 #include "kefir/ast/type_completion.h"
 #include "kefir/ast/initializer_traversal.h"
 #include "kefir/ast/designator.h"
+#include "kefir/ast/downcast.h"
 #include "kefir/ast/analyzer/initializer.h"
 #include "kefir/core/source_error.h"
 
@@ -100,14 +101,20 @@ static kefir_result_t resolve_flexible_array_member_visit_value(const struct kef
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid flexible array member resolution params"));
 
     if (expression->properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION &&
-        expression->properties.expression_props->string_literal != NULL && expression->properties.expression_props->string_literal->literal != NULL && designator != NULL &&
+        designator != NULL &&
         designator->type == KEFIR_AST_DESIGNATOR_MEMBER && designator->next == NULL &&
         strcmp(designator->member, params->flexible_array_member->identifier) == 0) {
-        params->flexible_array_member_size =
-            MAX(params->flexible_array_member_size, expression->properties.expression_props->string_literal->length);
-    } else {
-        REQUIRE_OK(kefir_ast_designator_unroll(designator, resolve_flexible_array_member_designator_callback, payload));
+        struct kefir_ast_string_literal *string;
+        kefir_result_t res = kefir_ast_downcast_string_literal(expression, &string, false);
+        if (res != KEFIR_NO_MATCH) {
+            REQUIRE_OK(res);
+            params->flexible_array_member_size =
+                MAX(params->flexible_array_member_size, string->data.length);
+            return KEFIR_OK;
+        }
     }
+
+    REQUIRE_OK(kefir_ast_designator_unroll(designator, resolve_flexible_array_member_designator_callback, payload));
     return KEFIR_OK;
 }
 

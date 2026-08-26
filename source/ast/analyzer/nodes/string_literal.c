@@ -61,6 +61,5 @@ kefir_result_t kefir_ast_analyze_string_literal_node(struct kefir_mem *mem, cons
     REQUIRE_OK(kefir_ast_node_allocate_expression_props(context->memory_arena, base));
     base->properties.type = kefir_ast_type_array(mem, context->type_bundle, elt_type, node->data.length, NULL);
     base->properties.expression_props->addressable = true;
-    base->properties.expression_props->string_literal = &node->data;
     return KEFIR_OK;
 }
