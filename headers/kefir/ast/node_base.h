@@ -44,7 +44,9 @@ typedef struct kefir_ast_node_expression_properties {
     kefir_uint32_t lvalue : 1,
                    addressable : 1,
                    atomic : 1,
-                   preserve_after_eval : 1;
+                   preserve_after_eval : 1,
+                   constant_expression_evaluated : 1,
+                   constant_expression : 1;
     kefir_uint32_t alignment;
     struct kefir_ast_constant_expression_value *constant_expression_value;
     struct kefir_ast_bitfield_properties bitfield_props;
@@ -150,7 +152,7 @@ kefir_result_t kefir_ast_node_properties_clone(struct kefir_ast_node_properties 
 
 #define KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION(_node)                       \
     ((_node)->properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION && \
-     (_node)->properties.expression_props->constant_expression_value != NULL)
+     (_node)->properties.expression_props->constant_expression)
 #define KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(_node, _klass) \
     (KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION((_node)) &&          \
      (_node)->properties.expression_props->constant_expression_value->klass == (_klass))

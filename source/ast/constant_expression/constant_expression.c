@@ -391,3 +391,31 @@ kefir_result_t kefir_ast_constant_expression_is_statically_known(
 
     return KEFIR_OK;
 }
+
+kefir_result_t kefir_ast_constant_expression_evaluate_node(struct kefir_mem *mem, const struct kefir_ast_context *context, struct kefir_ast_node_base *node) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST context"));
+    REQUIRE(node != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST node"));
+    REQUIRE(node->properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST expression node"));
+    REQUIRE(!node->properties.expression_props->constant_expression_evaluated, KEFIR_OK);
+
+    struct kefir_ast_constant_expression_value value;
+    kefir_result_t res = kefir_ast_constant_expression_value_evaluate(
+        mem, context, node, &value);
+    if (res != KEFIR_NOT_CONSTANT) {
+        REQUIRE_OK(res);
+        if (node->properties.expression_props->constant_expression_value == NULL) {
+            node->properties.expression_props->constant_expression_value = kefir_memory_arena_alloc(context->memory_arena,
+                sizeof(struct kefir_ast_constant_expression_value), _Alignof(struct kefir_ast_constant_expression_value));
+            REQUIRE(node->properties.expression_props->constant_expression_value != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST constant expression value"));
+        }
+        *node->properties.expression_props->constant_expression_value = value;
+        node->properties.expression_props->constant_expression = true;
+    } else {
+        kefir_pop_error(KEFIR_NOT_CONSTANT);
+        node->properties.expression_props->constant_expression = false;
+    }
+    node->properties.expression_props->constant_expression_evaluated = true;
+
+    return KEFIR_OK;
+}

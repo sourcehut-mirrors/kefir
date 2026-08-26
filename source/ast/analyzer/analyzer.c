@@ -153,21 +153,7 @@ kefir_result_t kefir_ast_analyze_node(struct kefir_mem *mem, const struct kefir_
     REQUIRE_OK(KEFIR_AST_NODE_VISIT(&visitor, base, &param));
 
     if (base->properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION) {
-        struct kefir_ast_constant_expression_value value;
-        res = kefir_ast_constant_expression_value_evaluate(
-            mem, context, base, &value);
-        if (res != KEFIR_NOT_CONSTANT) {
-            REQUIRE_OK(res);
-            if (base->properties.expression_props->constant_expression_value == NULL) {
-                base->properties.expression_props->constant_expression_value = kefir_memory_arena_alloc(context->memory_arena,
-                    sizeof(struct kefir_ast_constant_expression_value), _Alignof(struct kefir_ast_constant_expression_value));
-                REQUIRE(base->properties.expression_props->constant_expression_value != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST constant expression value"));
-            }
-            *base->properties.expression_props->constant_expression_value = value;
-        } else {
-            kefir_pop_error(KEFIR_NOT_CONSTANT);
-            base->properties.expression_props->constant_expression_value = NULL;
-        }
+        REQUIRE_OK(kefir_ast_constant_expression_evaluate_node(mem, context, base));
     }
     kefir_clear_warnings();
 
@@ -197,7 +183,6 @@ kefir_result_t kefir_ast_is_null_pointer_constant(struct kefir_mem *mem, const s
                  unqualified_type->referenced_type->tag == KEFIR_AST_TYPE_VOID),
             KEFIR_OK);
 
-    REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION(node), KEFIR_OK);
     switch (KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node)->klass) {
         case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER:
             if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(unqualified_type) &&

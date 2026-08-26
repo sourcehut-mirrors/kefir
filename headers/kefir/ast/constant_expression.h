@@ -118,4 +118,6 @@ kefir_result_t kefir_ast_constant_expression_value_equal(const struct kefir_ast_
 kefir_result_t kefir_ast_constant_expression_is_statically_known(const struct kefir_ast_constant_expression_value *,
                                                                  kefir_bool_t *);
 
+kefir_result_t kefir_ast_constant_expression_evaluate_node(struct kefir_mem *, const struct kefir_ast_context *, struct kefir_ast_node_base *);
+
 #endif
