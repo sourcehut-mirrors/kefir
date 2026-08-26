@@ -110,7 +110,7 @@ static kefir_result_t evaluate_constant_extension_node(struct kefir_mem *mem, co
             KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected extension node class"));
 
     value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT;
-    value->floating_point = M_PI;
+    KEFIR_AST_CONSTANT_EXPRESSION_SET_FLOAT(value, M_PI);
 
     return KEFIR_OK;
 }

@@ -269,7 +269,7 @@ static kefir_result_t translate_inputs(struct kefir_mem *mem, const struct kefir
                                                                 KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT)) {
                 imm_type = KEFIR_IR_INLINE_ASSEMBLY_IMMEDIATE_IDENTIFIER_BASED;
                 param_value =
-                    (kefir_int64_t) KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(param->parameter)->floating_point;
+                    (kefir_int64_t) KEFIR_AST_CONSTANT_EXPRESSION_GET_FLOAT(KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(param->parameter));
             } else if (KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(param->parameter,
                                                                 KEFIR_AST_CONSTANT_EXPRESSION_CLASS_DECIMAL)) {
                 REQUIRE_OK(kefir_dfp_require_supported(&node->source_location));
@@ -309,10 +309,10 @@ static kefir_result_t translate_inputs(struct kefir_mem *mem, const struct kefir
                         REQUIRE_OK(kefir_ir_module_string_literal(
                             mem, context->module,
                             StringLiteralTypes[KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(param->parameter)
-                                                   ->pointer.base.string.type],
+                                                   ->pointer.base.string->type],
                             true,
-                            KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(param->parameter)->pointer.base.string.content,
-                            KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(param->parameter)->pointer.base.string.length,
+                            KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(param->parameter)->pointer.base.string->literal,
+                            KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(param->parameter)->pointer.base.string->length,
                             &id));
                         imm_literal_base = id;
                         param_value = KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(param->parameter)->pointer.offset;

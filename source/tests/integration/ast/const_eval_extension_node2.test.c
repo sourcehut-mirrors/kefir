@@ -59,7 +59,6 @@ static kefir_result_t evaluate_pointer_extension_node(struct kefir_mem *mem, con
     pointer->type = KEFIR_AST_CONSTANT_EXPRESSION_POINTER_IDENTIFER;
     pointer->base.literal = "HELLO";
     pointer->offset = (kefir_uptr_t) ext_node->payload;
-    pointer->pointer_node = node;
     pointer->scoped_id = NULL;
     return KEFIR_OK;
 }

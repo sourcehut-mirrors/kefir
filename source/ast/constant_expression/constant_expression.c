@@ -182,12 +182,12 @@ kefir_result_t kefir_ast_constant_expression_value_to_boolean(const struct kefir
             break;
 
         case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT:
-            *boolean = (kefir_bool_t) value->floating_point;
+            *boolean = (kefir_bool_t) KEFIR_AST_CONSTANT_EXPRESSION_GET_FLOAT(value);
             break;
 
         case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT:
-            *boolean = (kefir_bool_t) value->complex_floating_point.real ||
-                       (kefir_bool_t) value->complex_floating_point.imaginary;
+            *boolean = (kefir_bool_t) KEFIR_AST_CONSTANT_EXPRESSION_GET_COMPLEX_REAL(value) ||
+                       (kefir_bool_t) KEFIR_AST_CONSTANT_EXPRESSION_GET_COMPLEX_IMAGINARY(value);
             break;
 
         case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS:
@@ -306,12 +306,12 @@ kefir_result_t kefir_ast_constant_expression_value_equal(const struct kefir_ast_
             break;
 
         case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT:
-            *equal_ptr = lhs_value->floating_point == rhs_value->floating_point;
+            *equal_ptr = KEFIR_AST_CONSTANT_EXPRESSION_GET_FLOAT(lhs_value) == KEFIR_AST_CONSTANT_EXPRESSION_GET_FLOAT(rhs_value);
             break;
 
         case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT:
-            *equal_ptr = lhs_value->complex_floating_point.real == rhs_value->complex_floating_point.real &&
-                         lhs_value->complex_floating_point.imaginary == rhs_value->complex_floating_point.imaginary;
+            *equal_ptr = KEFIR_AST_CONSTANT_EXPRESSION_GET_COMPLEX_REAL(lhs_value) == KEFIR_AST_CONSTANT_EXPRESSION_GET_COMPLEX_REAL(rhs_value) &&
+                         KEFIR_AST_CONSTANT_EXPRESSION_GET_COMPLEX_IMAGINARY(lhs_value) == KEFIR_AST_CONSTANT_EXPRESSION_GET_COMPLEX_IMAGINARY(rhs_value);
             break;
 
         case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS:
@@ -418,4 +418,26 @@ kefir_result_t kefir_ast_constant_expression_evaluate_node(struct kefir_mem *mem
     node->properties.expression_props->constant_expression_evaluated = true;
 
     return KEFIR_OK;
+}
+
+union floating_point_parts {
+    kefir_ast_constant_expression_float_t floating_point;
+    kefir_uint64_t parts[2];
+};
+
+_Static_assert(sizeof(kefir_ast_constant_expression_float_t) <= sizeof(kefir_uint64_t[2]), "Unexpected long double sizeof");
+
+kefir_ast_constant_expression_float_t kefir_ast_constant_expression_get_float(const kefir_uint64_t parts[2]) {
+    union floating_point_parts value = {
+        .parts = {parts[0], parts[1]}
+    };
+    return value.floating_point;
+}
+
+void kefir_ast_constant_expression_set_float(kefir_uint64_t parts[2], kefir_ast_constant_expression_float_t fp) {
+    union floating_point_parts value = {
+        .floating_point = fp
+    };
+    parts[0] = value.parts[0];
+    parts[1] = value.parts[1];
 }

@@ -355,6 +355,11 @@ DEFINE_CASE(ast_constant_expression_binary_operations1, "AST constant expression
 }
 END_CASE
 
+#if defined(__GNUC__) && !defined(__clang__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wstringop-overread"
+#endif
+
 DEFINE_CASE(ast_constant_expression_binary_operations2, "AST constant expressions - binary operations #2") {
     const struct kefir_ast_type_traits *type_traits = kefir_util_default_type_traits();
     struct kefir_ast_global_context global_context;
@@ -552,6 +557,10 @@ DEFINE_CASE(ast_constant_expression_binary_operations3, "AST constant expression
     ASSERT_OK(kefir_ast_global_context_free(&kft_mem, &global_context));
 }
 END_CASE
+
+#if defined(__GNUC__) && !defined(__clang__)
+#pragma GCC diagnostic pop
+#endif
 
 DEFINE_CASE(ast_constant_expression_binary_operations4, "AST constant expressions - binary operations #4") {
     const struct kefir_ast_type_traits *type_traits = kefir_util_default_type_traits();

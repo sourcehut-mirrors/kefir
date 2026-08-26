@@ -46,7 +46,7 @@
         struct kefir_ast_node_base *base = KEFIR_AST_NODE_BASE((_node));                                        \
         ASSERT_OK(kefir_ast_analyze_node((_mem), (_context), base));                                            \
         ASSERT(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(base, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT));      \
-        ASSERT(DOUBLE_EQUALS((double) KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(base)->floating_point, (_value), \
+        ASSERT(DOUBLE_EQUALS((double) KEFIR_AST_CONSTANT_EXPRESSION_GET_FLOAT(KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(base)), (_value), \
                              DOUBLE_EPSILON));                                                                  \
         ASSERT_OK(KEFIR_AST_NODE_FREE((_mem), base));                                                           \
     } while (0)
@@ -71,7 +71,7 @@
         ASSERT(KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(base)->klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS); \
         ASSERT(KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(base)->pointer.type ==                                        \
                KEFIR_AST_CONSTANT_EXPRESSION_POINTER_LITERAL);                                                        \
-        ASSERT(strcmp(KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(base)->pointer.base.string.content, (_value)) == 0);   \
+        ASSERT(strcmp(KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(base)->pointer.base.string->literal, (_value)) == 0);   \
         ASSERT(KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(base)->pointer.offset == 0);                                  \
         ASSERT_OK(KEFIR_AST_NODE_FREE((_mem), base));                                                                 \
     } while (0)

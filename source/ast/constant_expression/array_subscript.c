@@ -89,6 +89,5 @@ kefir_result_t kefir_ast_evaluate_array_subscript_node(struct kefir_mem *mem, co
                                       &node->base.source_location));
     value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS;
     value->pointer.offset += offset;
-    value->pointer.pointer_node = KEFIR_AST_NODE_BASE(node);
     return KEFIR_OK;
 }

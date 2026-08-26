@@ -68,7 +68,6 @@ kefir_result_t kefir_ast_evaluate_compound_literal_node(struct kefir_mem *mem, c
         value->pointer.type = KEFIR_AST_CONSTANT_EXPRESSION_POINTER_IDENTIFER;
         value->pointer.base.literal = node->base.properties.expression_props->temporary_identifier->identifier;
         value->pointer.offset = 0;
-        value->pointer.pointer_node = KEFIR_AST_NODE_BASE(node);
         value->pointer.scoped_id = scoped_id;
     } else {
         const struct kefir_ast_node_base *initializer = kefir_ast_initializer_head(node->initializer);

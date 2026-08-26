@@ -73,7 +73,6 @@ static kefir_result_t visit_identifier(const struct kefir_ast_visitor *visitor, 
     param->pointer->type = KEFIR_AST_CONSTANT_EXPRESSION_POINTER_IDENTIFER;
     param->pointer->base.literal = identifier;
     param->pointer->offset = 0;
-    param->pointer->pointer_node = KEFIR_AST_NODE_BASE(node);
     param->pointer->scoped_id = scoped_id;
     return KEFIR_OK;
 }
@@ -115,7 +114,6 @@ static kefir_result_t visit_structure_member(const struct kefir_ast_visitor *vis
 
     *param->pointer = base_pointer;
     param->pointer->offset += object_info.relative_offset;
-    param->pointer->pointer_node = KEFIR_AST_NODE_BASE(node);
 
     return KEFIR_OK;
 }
@@ -171,7 +169,6 @@ static kefir_result_t visit_array_subscript(const struct kefir_ast_visitor *visi
 
     *param->pointer = base_pointer;
     param->pointer->offset += object_info.relative_offset;
-    param->pointer->pointer_node = KEFIR_AST_NODE_BASE(node);
 
     return KEFIR_OK;
 }
@@ -208,7 +205,6 @@ static kefir_result_t visit_struct_indirect_member(const struct kefir_ast_visito
 
     *param->pointer = KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->structure)->pointer;
     param->pointer->offset += object_info.relative_offset;
-    param->pointer->pointer_node = KEFIR_AST_NODE_BASE(node);
 
     return KEFIR_OK;
 }
@@ -223,7 +219,6 @@ static kefir_result_t visit_compound_literal(const struct kefir_ast_visitor *vis
     param->pointer->type = KEFIR_AST_CONSTANT_EXPRESSION_POINTER_IDENTIFER;
     param->pointer->base.literal = node->base.properties.expression_props->temporary_identifier->identifier;
     param->pointer->offset = 0;
-    param->pointer->pointer_node = KEFIR_AST_NODE_BASE(node);
     param->pointer->scoped_id = node->base.properties.expression_props->temporary_identifier->scoped_id;
     return KEFIR_OK;
 }

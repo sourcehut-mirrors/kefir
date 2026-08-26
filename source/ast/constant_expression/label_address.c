@@ -42,7 +42,6 @@ kefir_result_t kefir_ast_evaluate_label_address_node(struct kefir_mem *mem, cons
     value->pointer.type = KEFIR_AST_CONSTANT_EXPRESSION_POINTER_IDENTIFER;
     value->pointer.base.literal = node->base.properties.expression_props->scoped_id->label.public_label;
     value->pointer.offset = 0;
-    value->pointer.pointer_node = KEFIR_AST_NODE_BASE(node);
     value->pointer.scoped_id = node->base.properties.expression_props->scoped_id;
     return KEFIR_OK;
 }

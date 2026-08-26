@@ -90,13 +90,13 @@ kefir_result_t kefir_ast_evaluate_unary_operation_node(struct kefir_mem *mem, co
             } else if (KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(node->arg,
                                                                 KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT)) {
                 value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT;
-                value->complex_floating_point.real =
-                    KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg)->complex_floating_point.real;
-                value->complex_floating_point.imaginary =
-                    KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg)->complex_floating_point.imaginary;
+                KEFIR_AST_CONSTANT_EXPRESSION_SET_COMPLEX_REAL(value,
+                    KEFIR_AST_CONSTANT_EXPRESSION_GET_COMPLEX_REAL(KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg)));
+                KEFIR_AST_CONSTANT_EXPRESSION_SET_COMPLEX_IMAGINARY(value,
+                    KEFIR_AST_CONSTANT_EXPRESSION_GET_COMPLEX_IMAGINARY(KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg)));
             } else if (KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(node->arg, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT)) {
                 value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT;
-                value->floating_point = KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg)->floating_point;
+                KEFIR_AST_CONSTANT_EXPRESSION_SET_FLOAT(value, KEFIR_AST_CONSTANT_EXPRESSION_GET_FLOAT(KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg)));
             } else if (KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(node->arg,
                                                                 KEFIR_AST_CONSTANT_EXPRESSION_CLASS_DECIMAL)) {
                 value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_DECIMAL;
@@ -183,13 +183,13 @@ kefir_result_t kefir_ast_evaluate_unary_operation_node(struct kefir_mem *mem, co
             } else if (KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(node->arg,
                                                                 KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT)) {
                 value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT;
-                value->complex_floating_point.real =
-                    -KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg)->complex_floating_point.real;
-                value->complex_floating_point.imaginary =
-                    -KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg)->complex_floating_point.imaginary;
+                KEFIR_AST_CONSTANT_EXPRESSION_SET_COMPLEX_REAL(value,
+                    -KEFIR_AST_CONSTANT_EXPRESSION_GET_COMPLEX_REAL(KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg)));
+                KEFIR_AST_CONSTANT_EXPRESSION_SET_COMPLEX_IMAGINARY(value,
+                    -KEFIR_AST_CONSTANT_EXPRESSION_GET_COMPLEX_IMAGINARY(KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg)));
             } else if (KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(node->arg, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT)) {
                 value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT;
-                value->floating_point = -KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg)->floating_point;
+                KEFIR_AST_CONSTANT_EXPRESSION_SET_FLOAT(value, -KEFIR_AST_CONSTANT_EXPRESSION_GET_FLOAT(KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg)));
             } else if (KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(node->arg,
                                                                 KEFIR_AST_CONSTANT_EXPRESSION_CLASS_DECIMAL)) {
                 REQUIRE_OK(kefir_dfp_require_supported(&node->arg->source_location));
@@ -260,11 +260,10 @@ kefir_result_t kefir_ast_evaluate_unary_operation_node(struct kefir_mem *mem, co
             } else if (KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(node->arg,
                                                                 KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT)) {
                 value->integer =
-                    !((kefir_bool_t) KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg)->complex_floating_point.real ||
-                      (kefir_bool_t) KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg)
-                          ->complex_floating_point.imaginary);
+                    !((kefir_bool_t) KEFIR_AST_CONSTANT_EXPRESSION_GET_COMPLEX_REAL(KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg)) ||
+                      (kefir_bool_t) KEFIR_AST_CONSTANT_EXPRESSION_GET_COMPLEX_IMAGINARY(KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg)));
             } else if (KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(node->arg, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT)) {
-                value->integer = !KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg)->floating_point;
+                value->integer = !KEFIR_AST_CONSTANT_EXPRESSION_GET_FLOAT(KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg));
             } else if (KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(node->arg,
                                                                 KEFIR_AST_CONSTANT_EXPRESSION_CLASS_DECIMAL)) {
                 REQUIRE_OK(kefir_dfp_require_supported(&node->arg->source_location));

@@ -50,17 +50,11 @@ typedef kefir_dfp_decimal128_t kefir_ast_constant_expression_decimal_t;
 #define KEFIR_AST_CONSTANT_EXPRESSION_INT_MAX KEFIR_INT64_MAX
 
 typedef struct kefir_ast_constant_expression_pointer {
-    const struct kefir_ast_node_base *pointer_node;
-
     kefir_ast_constant_expression_pointer_base_type_t type;
     union {
         const char *literal;
         kefir_size_t integral;
-        struct {
-            kefir_ast_string_literal_type_t type;
-            const void *content;
-            kefir_size_t length;
-        } string;
+        const struct kefir_ast_string_literal_data *string;
     } base;
 
     const struct kefir_ast_scoped_identifier *scoped_id;
@@ -77,11 +71,11 @@ typedef struct kefir_ast_constant_expression_value {
             };
             struct kefir_bigint *bitprecise;
         };
-        kefir_ast_constant_expression_float_t floating_point;
+        kefir_uint64_t floating_point[2];
         kefir_ast_constant_expression_decimal_t decimal;
         struct {
-            kefir_ast_constant_expression_float_t real;
-            kefir_ast_constant_expression_float_t imaginary;
+            kefir_uint64_t real[2];
+            kefir_uint64_t imaginary[2];
         } complex_floating_point;
         struct kefir_ast_constant_expression_pointer pointer;
         struct {
@@ -90,6 +84,27 @@ typedef struct kefir_ast_constant_expression_value {
         } compound;
     };
 } kefir_ast_constant_expression_value_t;
+
+kefir_ast_constant_expression_float_t kefir_ast_constant_expression_get_float(const kefir_uint64_t[2]);
+void kefir_ast_constant_expression_set_float(kefir_uint64_t[2], kefir_ast_constant_expression_float_t);
+
+#define KEFIR_AST_CONSTANT_EXPRESSION_GET_FLOAT(_value) \
+    (kefir_ast_constant_expression_get_float((_value)->floating_point))
+
+#define KEFIR_AST_CONSTANT_EXPRESSION_GET_COMPLEX_REAL(_value) \
+    (kefir_ast_constant_expression_get_float((_value)->complex_floating_point.real))
+
+#define KEFIR_AST_CONSTANT_EXPRESSION_GET_COMPLEX_IMAGINARY(_value) \
+    (kefir_ast_constant_expression_get_float((_value)->complex_floating_point.imaginary))
+
+#define KEFIR_AST_CONSTANT_EXPRESSION_SET_FLOAT(_value, _fp) \
+    (kefir_ast_constant_expression_set_float((_value)->floating_point, (_fp)))
+
+#define KEFIR_AST_CONSTANT_EXPRESSION_SET_COMPLEX_REAL(_value, _fp) \
+    (kefir_ast_constant_expression_set_float((_value)->complex_floating_point.real, (_fp)))
+
+#define KEFIR_AST_CONSTANT_EXPRESSION_SET_COMPLEX_IMAGINARY(_value, _fp) \
+    (kefir_ast_constant_expression_set_float((_value)->complex_floating_point.imaginary, (_fp)))
 
 #define KEFIR_AST_CONSTANT_EXPRESSION_INT_VALUE(_value)                                                  \
     ((struct kefir_ast_constant_expression_value) {.klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER, \

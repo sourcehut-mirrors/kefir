@@ -306,52 +306,52 @@ static kefir_result_t visit_value(const struct kefir_ast_designator *designator,
                 case KEFIR_IR_TYPE_INT32:
                 case KEFIR_IR_TYPE_INT64:
                     REQUIRE_OK(
-                        kefir_ir_data_set_integer(param->mem, param->data, slot, (kefir_int64_t) value.floating_point));
+                        kefir_ir_data_set_integer(param->mem, param->data, slot, (kefir_int64_t) KEFIR_AST_CONSTANT_EXPRESSION_GET_FLOAT(&value)));
                     break;
 
                 case KEFIR_IR_TYPE_FLOAT32:
-                    REQUIRE_OK(kefir_ir_data_set_float32(param->mem, param->data, slot, value.floating_point));
+                    REQUIRE_OK(kefir_ir_data_set_float32(param->mem, param->data, slot, KEFIR_AST_CONSTANT_EXPRESSION_GET_FLOAT(&value)));
                     break;
 
                 case KEFIR_IR_TYPE_FLOAT64:
-                    REQUIRE_OK(kefir_ir_data_set_float64(param->mem, param->data, slot, value.floating_point));
+                    REQUIRE_OK(kefir_ir_data_set_float64(param->mem, param->data, slot, KEFIR_AST_CONSTANT_EXPRESSION_GET_FLOAT(&value)));
                     break;
 
                 case KEFIR_IR_TYPE_LONG_DOUBLE:
-                    REQUIRE_OK(kefir_ir_data_set_long_double(param->mem, param->data, slot, value.floating_point));
+                    REQUIRE_OK(kefir_ir_data_set_long_double(param->mem, param->data, slot, KEFIR_AST_CONSTANT_EXPRESSION_GET_FLOAT(&value)));
                     break;
 
                 case KEFIR_IR_TYPE_COMPLEX_FLOAT32:
                     REQUIRE_OK(
-                        kefir_ir_data_set_complex_float32(param->mem, param->data, slot, value.floating_point, 0.0f));
+                        kefir_ir_data_set_complex_float32(param->mem, param->data, slot, KEFIR_AST_CONSTANT_EXPRESSION_GET_FLOAT(&value), 0.0f));
                     break;
 
                 case KEFIR_IR_TYPE_COMPLEX_FLOAT64:
                     REQUIRE_OK(
-                        kefir_ir_data_set_complex_float64(param->mem, param->data, slot, value.floating_point, 0.0));
+                        kefir_ir_data_set_complex_float64(param->mem, param->data, slot, KEFIR_AST_CONSTANT_EXPRESSION_GET_FLOAT(&value), 0.0));
                     break;
 
                 case KEFIR_IR_TYPE_COMPLEX_LONG_DOUBLE:
                     REQUIRE_OK(kefir_ir_data_set_complex_long_double(param->mem, param->data, slot,
-                                                                     value.floating_point, 0.0L));
+                                                                     KEFIR_AST_CONSTANT_EXPRESSION_GET_FLOAT(&value), 0.0L));
                     break;
 
                 case KEFIR_IR_TYPE_DECIMAL32:
                     REQUIRE_OK(kefir_dfp_require_supported(NULL));
                     REQUIRE_OK(kefir_ir_data_set_decimal32(param->mem, param->data, slot,
-                                                           kefir_dfp_decimal32_from_long_double(value.floating_point)));
+                                                           kefir_dfp_decimal32_from_long_double(KEFIR_AST_CONSTANT_EXPRESSION_GET_FLOAT(&value))));
                     break;
 
                 case KEFIR_IR_TYPE_DECIMAL64:
                     REQUIRE_OK(kefir_dfp_require_supported(NULL));
                     REQUIRE_OK(kefir_ir_data_set_decimal64(param->mem, param->data, slot,
-                                                           kefir_dfp_decimal64_from_long_double(value.floating_point)));
+                                                           kefir_dfp_decimal64_from_long_double(KEFIR_AST_CONSTANT_EXPRESSION_GET_FLOAT(&value))));
                     break;
 
                 case KEFIR_IR_TYPE_DECIMAL128:
                     REQUIRE_OK(kefir_dfp_require_supported(NULL));
                     REQUIRE_OK(kefir_ir_data_set_decimal128(
-                        param->mem, param->data, slot, kefir_dfp_decimal128_from_long_double(value.floating_point)));
+                        param->mem, param->data, slot, kefir_dfp_decimal128_from_long_double(KEFIR_AST_CONSTANT_EXPRESSION_GET_FLOAT(&value))));
                     break;
 
                 default:
@@ -434,61 +434,61 @@ static kefir_result_t visit_value(const struct kefir_ast_designator *designator,
                 case KEFIR_IR_TYPE_INT32:
                 case KEFIR_IR_TYPE_INT64:
                     REQUIRE_OK(kefir_ir_data_set_integer(param->mem, param->data, slot,
-                                                         (kefir_int64_t) value.complex_floating_point.real));
+                                                         (kefir_int64_t) KEFIR_AST_CONSTANT_EXPRESSION_GET_COMPLEX_REAL(&value)));
                     break;
 
                 case KEFIR_IR_TYPE_FLOAT32:
                     REQUIRE_OK(
-                        kefir_ir_data_set_float32(param->mem, param->data, slot, value.complex_floating_point.real));
+                        kefir_ir_data_set_float32(param->mem, param->data, slot, KEFIR_AST_CONSTANT_EXPRESSION_GET_COMPLEX_REAL(&value)));
                     break;
 
                 case KEFIR_IR_TYPE_FLOAT64:
                     REQUIRE_OK(
-                        kefir_ir_data_set_float64(param->mem, param->data, slot, value.complex_floating_point.real));
+                        kefir_ir_data_set_float64(param->mem, param->data, slot, KEFIR_AST_CONSTANT_EXPRESSION_GET_COMPLEX_REAL(&value)));
                     break;
 
                 case KEFIR_IR_TYPE_LONG_DOUBLE:
                     REQUIRE_OK(kefir_ir_data_set_long_double(param->mem, param->data, slot,
-                                                             value.complex_floating_point.real));
+                                                             KEFIR_AST_CONSTANT_EXPRESSION_GET_COMPLEX_REAL(&value)));
                     break;
 
                 case KEFIR_IR_TYPE_COMPLEX_FLOAT32:
                     REQUIRE_OK(kefir_ir_data_set_complex_float32(param->mem, param->data, slot,
-                                                                 value.complex_floating_point.real,
-                                                                 value.complex_floating_point.imaginary));
+                                                                 KEFIR_AST_CONSTANT_EXPRESSION_GET_COMPLEX_REAL(&value),
+                                                                 KEFIR_AST_CONSTANT_EXPRESSION_GET_COMPLEX_IMAGINARY(&value)));
                     break;
 
                 case KEFIR_IR_TYPE_COMPLEX_FLOAT64:
                     REQUIRE_OK(kefir_ir_data_set_complex_float64(param->mem, param->data, slot,
-                                                                 value.complex_floating_point.real,
-                                                                 value.complex_floating_point.imaginary));
+                                                                 KEFIR_AST_CONSTANT_EXPRESSION_GET_COMPLEX_REAL(&value),
+                                                                 KEFIR_AST_CONSTANT_EXPRESSION_GET_COMPLEX_IMAGINARY(&value)));
                     break;
 
                 case KEFIR_IR_TYPE_COMPLEX_LONG_DOUBLE:
                     REQUIRE_OK(kefir_ir_data_set_complex_long_double(param->mem, param->data, slot,
-                                                                     value.complex_floating_point.real,
-                                                                     value.complex_floating_point.imaginary));
+                                                                     KEFIR_AST_CONSTANT_EXPRESSION_GET_COMPLEX_REAL(&value),
+                                                                     KEFIR_AST_CONSTANT_EXPRESSION_GET_COMPLEX_IMAGINARY(&value)));
                     break;
 
                 case KEFIR_IR_TYPE_DECIMAL32:
                     REQUIRE_OK(kefir_dfp_require_supported(NULL));
                     REQUIRE_OK(kefir_ir_data_set_decimal32(
                         param->mem, param->data, slot,
-                        kefir_dfp_decimal32_from_long_double(value.complex_floating_point.real)));
+                        kefir_dfp_decimal32_from_long_double(KEFIR_AST_CONSTANT_EXPRESSION_GET_COMPLEX_REAL(&value))));
                     break;
 
                 case KEFIR_IR_TYPE_DECIMAL64:
                     REQUIRE_OK(kefir_dfp_require_supported(NULL));
                     REQUIRE_OK(kefir_ir_data_set_decimal64(
                         param->mem, param->data, slot,
-                        kefir_dfp_decimal64_from_long_double(value.complex_floating_point.real)));
+                        kefir_dfp_decimal64_from_long_double(KEFIR_AST_CONSTANT_EXPRESSION_GET_COMPLEX_REAL(&value))));
                     break;
 
                 case KEFIR_IR_TYPE_DECIMAL128:
                     REQUIRE_OK(kefir_dfp_require_supported(NULL));
                     REQUIRE_OK(kefir_ir_data_set_decimal128(
                         param->mem, param->data, slot,
-                        kefir_dfp_decimal128_from_long_double(value.complex_floating_point.real)));
+                        kefir_dfp_decimal128_from_long_double(KEFIR_AST_CONSTANT_EXPRESSION_GET_COMPLEX_REAL(&value))));
                     break;
 
                 default:
@@ -510,8 +510,8 @@ static kefir_result_t visit_value(const struct kefir_ast_designator *designator,
                 case KEFIR_AST_CONSTANT_EXPRESSION_POINTER_LITERAL: {
                     kefir_id_t id;
                     REQUIRE_OK(kefir_ir_module_string_literal(
-                        param->mem, param->module, KefirAstIrStringLiteralTypes[value.pointer.base.string.type], true,
-                        value.pointer.base.string.content, value.pointer.base.string.length, &id));
+                        param->mem, param->module, KefirAstIrStringLiteralTypes[value.pointer.base.string->type], true,
+                        value.pointer.base.string->literal, value.pointer.base.string->length, &id));
                     REQUIRE_OK(
                         kefir_ir_data_set_string_pointer(param->mem, param->data, slot, id, value.pointer.offset));
                 } break;

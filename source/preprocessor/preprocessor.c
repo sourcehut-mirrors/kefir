@@ -925,7 +925,7 @@ static kefir_result_t evaluate_pp_tokens_as_bool(struct kefir_mem *mem, struct k
             break;
 
         case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT:
-            *result = expr_value.floating_point != 0;
+            *result =  KEFIR_AST_CONSTANT_EXPRESSION_GET_FLOAT(&expr_value) != 0;
             break;
 
         case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_DECIMAL:
@@ -934,7 +934,7 @@ static kefir_result_t evaluate_pp_tokens_as_bool(struct kefir_mem *mem, struct k
             break;
 
         case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT:
-            *result = expr_value.complex_floating_point.real != 0 || expr_value.complex_floating_point.imaginary != 0;
+            *result = KEFIR_AST_CONSTANT_EXPRESSION_GET_COMPLEX_REAL(&expr_value) != 0 || KEFIR_AST_CONSTANT_EXPRESSION_GET_COMPLEX_IMAGINARY(&expr_value) != 0;
             break;
 
         default:

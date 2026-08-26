@@ -387,7 +387,6 @@ kefir_result_t kefir_ast_evaluate_struct_member_node(struct kefir_mem *mem, cons
             value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS;
         }
         value->pointer.offset += member_offset;
-        value->pointer.pointer_node = KEFIR_AST_NODE_BASE(node);
     } else if (KEFIR_AST_TYPE_IS_SCALAR_TYPE(unqualified_type)) {
         REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(node->structure, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPOUND),
                 KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->structure->source_location,

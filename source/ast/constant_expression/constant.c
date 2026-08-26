@@ -41,7 +41,6 @@ kefir_result_t kefir_ast_evaluate_scalar_node(struct kefir_mem *mem, const struc
             value->pointer.type = KEFIR_AST_CONSTANT_EXPRESSION_POINTER_INTEGER;
             value->pointer.base.integral = 0;
             value->pointer.offset = 0;
-            value->pointer.pointer_node = KEFIR_AST_NODE_BASE(node);
             value->pointer.scoped_id = NULL;
             break;
 
@@ -124,21 +123,21 @@ kefir_result_t kefir_ast_evaluate_scalar_node(struct kefir_mem *mem, const struc
         case KEFIR_AST_FLOAT_CONSTANT:
         case KEFIR_AST_FLOAT32_CONSTANT:
             value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT;
-            value->floating_point = node->value.float32;
+            KEFIR_AST_CONSTANT_EXPRESSION_SET_FLOAT(value, node->value.float32);
             break;
 
         case KEFIR_AST_DOUBLE_CONSTANT:
         case KEFIR_AST_FLOAT32X_CONSTANT:
         case KEFIR_AST_FLOAT64_CONSTANT:
             value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT;
-            value->floating_point = node->value.float64;
+            KEFIR_AST_CONSTANT_EXPRESSION_SET_FLOAT(value, node->value.float64);
             break;
 
         case KEFIR_AST_LONG_DOUBLE_CONSTANT:
         case KEFIR_AST_FLOAT64X_CONSTANT:
         case KEFIR_AST_FLOAT80_CONSTANT:
             value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT;
-            value->floating_point = node->value.long_double;
+            KEFIR_AST_CONSTANT_EXPRESSION_SET_FLOAT(value, node->value.long_double);
             break;
 
         case KEFIR_AST_DECIMAL32_CONSTANT:
@@ -162,24 +161,24 @@ kefir_result_t kefir_ast_evaluate_scalar_node(struct kefir_mem *mem, const struc
         case KEFIR_AST_COMPLEX_FLOAT_CONSTANT:
         case KEFIR_AST_COMPLEX_FLOAT32_CONSTANT:
             value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT;
-            value->complex_floating_point.real = node->value.complex_float32.real;
-            value->complex_floating_point.imaginary = node->value.complex_float32.imaginary;
+            KEFIR_AST_CONSTANT_EXPRESSION_SET_COMPLEX_REAL(value, node->value.complex_float32.real);
+            KEFIR_AST_CONSTANT_EXPRESSION_SET_COMPLEX_IMAGINARY(value, node->value.complex_float32.imaginary);
             break;
 
         case KEFIR_AST_COMPLEX_DOUBLE_CONSTANT:
         case KEFIR_AST_COMPLEX_FLOAT32X_CONSTANT:
         case KEFIR_AST_COMPLEX_FLOAT64_CONSTANT:
             value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT;
-            value->complex_floating_point.real = node->value.complex_float64.real;
-            value->complex_floating_point.imaginary = node->value.complex_float64.imaginary;
+            KEFIR_AST_CONSTANT_EXPRESSION_SET_COMPLEX_REAL(value, node->value.complex_float64.real);
+            KEFIR_AST_CONSTANT_EXPRESSION_SET_COMPLEX_IMAGINARY(value, node->value.complex_float64.imaginary);
             break;
 
         case KEFIR_AST_COMPLEX_LONG_DOUBLE_CONSTANT:
         case KEFIR_AST_COMPLEX_FLOAT64X_CONSTANT:
         case KEFIR_AST_COMPLEX_FLOAT80_CONSTANT:
             value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT;
-            value->complex_floating_point.real = node->value.complex_long_double.real;
-            value->complex_floating_point.imaginary = node->value.complex_long_double.imaginary;
+            KEFIR_AST_CONSTANT_EXPRESSION_SET_COMPLEX_REAL(value, node->value.complex_long_double.real);
+            KEFIR_AST_CONSTANT_EXPRESSION_SET_COMPLEX_IMAGINARY(value, node->value.complex_long_double.imaginary);
             break;
     }
     return KEFIR_OK;

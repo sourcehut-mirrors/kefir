@@ -230,22 +230,22 @@ kefir_result_t kefir_ast_constant_expression_value_cast(struct kefir_mem *mem, c
 
             case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT:
                 if (unqualified_destination_type->tag == KEFIR_AST_TYPE_SCALAR_BOOL) {
-                    value->integer = (kefir_bool_t) source->floating_point;
+                    value->integer = (kefir_bool_t) KEFIR_AST_CONSTANT_EXPRESSION_GET_FLOAT(source);
                 } else if (KEFIR_AST_TYPE_IS_IMAGINARY_TYPE(unqualified_source_type)) {
                     value->integer = 0;
                 } else {
                     REQUIRE_OK(cast_integral_type_from_float(mem, context, unqualified_destination_type, value,
-                                                             source->floating_point, &node->source_location));
+                                                             KEFIR_AST_CONSTANT_EXPRESSION_GET_FLOAT(source), &node->source_location));
                 }
                 break;
 
             case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT:
                 if (unqualified_destination_type->tag == KEFIR_AST_TYPE_SCALAR_BOOL) {
-                    value->integer = (kefir_bool_t) source->complex_floating_point.real ||
-                                     (kefir_bool_t) source->complex_floating_point.imaginary;
+                    value->integer = (kefir_bool_t) KEFIR_AST_CONSTANT_EXPRESSION_GET_COMPLEX_REAL(source) ||
+                                     (kefir_bool_t) KEFIR_AST_CONSTANT_EXPRESSION_GET_COMPLEX_IMAGINARY(source);
                 } else {
                     REQUIRE_OK(cast_integral_type_from_float(mem, context, unqualified_destination_type, value,
-                                                             source->complex_floating_point.real,
+                                                             KEFIR_AST_CONSTANT_EXPRESSION_GET_COMPLEX_REAL(source),
                                                              &node->source_location));
                 }
                 break;
@@ -256,7 +256,6 @@ kefir_result_t kefir_ast_constant_expression_value_cast(struct kefir_mem *mem, c
                 } else {
                     value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS;
                     value->pointer = source->pointer;
-                    value->pointer.pointer_node = node;
                 }
                 break;
 
@@ -326,13 +325,15 @@ kefir_result_t kefir_ast_constant_expression_value_cast(struct kefir_mem *mem, c
                                                                                                                   \
         kefir_bool_t signed_integer = false;                                                                      \
         REQUIRE_OK(kefir_ast_type_is_signed(context->type_traits, unqualified_source_type, &signed_integer));     \
+        kefir_ast_constant_expression_float_t fp; \
         if (signed_integer) {                                                                                     \
             REQUIRE_OK(kefir_bigint_resize_cast_signed(mem, tmp_bigint, tmp2_bigint->bitwidth));                  \
-            REQUIRE_OK(kefir_bigint_signed_to_long_double(tmp_bigint, tmp2_bigint, &value->floating_point));      \
+            REQUIRE_OK(kefir_bigint_signed_to_long_double(tmp_bigint, tmp2_bigint, &fp));      \
         } else {                                                                                                  \
             REQUIRE_OK(kefir_bigint_resize_cast_unsigned(mem, tmp_bigint, tmp2_bigint->bitwidth));                \
-            REQUIRE_OK(kefir_bigint_unsigned_to_long_double(tmp_bigint, tmp2_bigint, &value->floating_point));    \
+            REQUIRE_OK(kefir_bigint_unsigned_to_long_double(tmp_bigint, tmp2_bigint, &fp));    \
         }                                                                                                         \
+        KEFIR_AST_CONSTANT_EXPRESSION_SET_FLOAT(value, fp); \
     } while (0)
                 if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(unqualified_source_type)) {
                     DO_CONV_TO_FLOAT(source->bitprecise->bitwidth);
@@ -340,25 +341,25 @@ kefir_result_t kefir_ast_constant_expression_value_cast(struct kefir_mem *mem, c
                     DO_CONV_TO_FLOAT(context->type_traits->data_model->scalar_width.int128_bits);
 #undef DO_CONV_TO_FLOAT
                 } else {
-                    value->floating_point = (kefir_ast_constant_expression_float_t) source->integer;
+                    KEFIR_AST_CONSTANT_EXPRESSION_SET_FLOAT(value, (kefir_ast_constant_expression_float_t) source->integer);
                 }
                 break;
 
             case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT:
                 if (KEFIR_AST_TYPE_IS_IMAGINARY_TYPE(unqualified_source_type)) {
-                    value->floating_point = 0.0;
+                    KEFIR_AST_CONSTANT_EXPRESSION_SET_FLOAT(value, 0.0);
                 } else {
-                    value->floating_point = source->floating_point;
+                    KEFIR_AST_CONSTANT_EXPRESSION_SET_FLOAT(value, KEFIR_AST_CONSTANT_EXPRESSION_GET_FLOAT(source));
                 }
                 break;
 
             case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT:
-                value->floating_point = source->complex_floating_point.real;
+                KEFIR_AST_CONSTANT_EXPRESSION_SET_FLOAT(value, KEFIR_AST_CONSTANT_EXPRESSION_GET_COMPLEX_REAL(source));
                 break;
 
             case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_DECIMAL:
                 REQUIRE_OK(kefir_dfp_require_supported(&node->source_location));
-                value->floating_point = kefir_dfp_decimal128_to_long_double(source->decimal);
+                KEFIR_AST_CONSTANT_EXPRESSION_SET_FLOAT(value, kefir_dfp_decimal128_to_long_double(source->decimal));
                 break;
 
             case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS:
@@ -375,23 +376,23 @@ kefir_result_t kefir_ast_constant_expression_value_cast(struct kefir_mem *mem, c
         value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT;
         switch (source->klass) {
             case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER:
-                value->floating_point = 0.0;
+                KEFIR_AST_CONSTANT_EXPRESSION_SET_FLOAT(value, 0.0);
                 break;
 
             case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT:
                 if (KEFIR_AST_TYPE_IS_IMAGINARY_TYPE(unqualified_source_type)) {
-                    value->floating_point = source->floating_point;
+                    KEFIR_AST_CONSTANT_EXPRESSION_SET_FLOAT(value, KEFIR_AST_CONSTANT_EXPRESSION_GET_FLOAT(source));
                 } else {
-                    value->floating_point = 0.0;
+                    KEFIR_AST_CONSTANT_EXPRESSION_SET_FLOAT(value, 0.0);
                 }
                 break;
 
             case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT:
-                value->floating_point = source->complex_floating_point.imaginary;
+                KEFIR_AST_CONSTANT_EXPRESSION_SET_FLOAT(value, KEFIR_AST_CONSTANT_EXPRESSION_GET_COMPLEX_IMAGINARY(source));
                 break;
 
             case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_DECIMAL:
-                value->floating_point = 0.0;
+                KEFIR_AST_CONSTANT_EXPRESSION_SET_FLOAT(value, 0.0);
                 break;
 
             case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS:
@@ -460,12 +461,12 @@ kefir_result_t kefir_ast_constant_expression_value_cast(struct kefir_mem *mem, c
                 if (KEFIR_AST_TYPE_IS_IMAGINARY_TYPE(unqualified_source_type)) {
                     value->decimal = kefir_dfp_decimal128_from_long_double(0.0L);
                 } else {
-                    value->decimal = kefir_dfp_decimal128_from_long_double(source->floating_point);
+                    value->decimal = kefir_dfp_decimal128_from_long_double(KEFIR_AST_CONSTANT_EXPRESSION_GET_FLOAT(source));
                 }
                 break;
 
             case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT:
-                value->decimal = kefir_dfp_decimal128_from_long_double(source->complex_floating_point.real);
+                value->decimal = kefir_dfp_decimal128_from_long_double(KEFIR_AST_CONSTANT_EXPRESSION_GET_COMPLEX_REAL(source));
                 break;
 
             case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS:
@@ -498,15 +499,17 @@ kefir_result_t kefir_ast_constant_expression_value_cast(struct kefir_mem *mem, c
                                                                                                                      \
         kefir_bool_t signed_integer = false;                                                                         \
         REQUIRE_OK(kefir_ast_type_is_signed(context->type_traits, unqualified_source_type, &signed_integer));        \
+        kefir_ast_constant_expression_float_t fp; \
         if (signed_integer) {                                                                                        \
             REQUIRE_OK(kefir_bigint_cast_signed(tmp_bigint, (_width), tmp_bigint->bitwidth));                        \
             REQUIRE_OK(                                                                                              \
-                kefir_bigint_signed_to_long_double(tmp_bigint, tmp2_bigint, &value->complex_floating_point.real));   \
+                kefir_bigint_signed_to_long_double(tmp_bigint, tmp2_bigint, &fp));   \
         } else {                                                                                                     \
             REQUIRE_OK(kefir_bigint_cast_unsigned(tmp_bigint, (_width), tmp_bigint->bitwidth));                      \
             REQUIRE_OK(                                                                                              \
-                kefir_bigint_unsigned_to_long_double(tmp_bigint, tmp2_bigint, &value->complex_floating_point.real)); \
+                kefir_bigint_unsigned_to_long_double(tmp_bigint, tmp2_bigint, &fp)); \
         }                                                                                                            \
+        KEFIR_AST_CONSTANT_EXPRESSION_SET_COMPLEX_REAL(value, fp); \
     } while (0)
                 if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(unqualified_source_type)) {
                     DO_CONV_TO_COMPLEX(source->bitprecise->bitwidth);
@@ -514,30 +517,30 @@ kefir_result_t kefir_ast_constant_expression_value_cast(struct kefir_mem *mem, c
                     DO_CONV_TO_COMPLEX(context->type_traits->data_model->scalar_width.int128_bits);
 #undef DO_CONV_TO_COMPLEX
                 } else {
-                    value->complex_floating_point.real = (kefir_ast_constant_expression_float_t) source->integer;
+                    KEFIR_AST_CONSTANT_EXPRESSION_SET_COMPLEX_REAL(value, (kefir_ast_constant_expression_float_t) source->integer);
                 }
-                value->complex_floating_point.imaginary = 0.0;
+                KEFIR_AST_CONSTANT_EXPRESSION_SET_COMPLEX_IMAGINARY(value, 0.0);
                 break;
 
             case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT:
                 if (KEFIR_AST_TYPE_IS_IMAGINARY_TYPE(unqualified_source_type)) {
-                    value->complex_floating_point.real = 0.0;
-                    value->complex_floating_point.imaginary = source->floating_point;
+                    KEFIR_AST_CONSTANT_EXPRESSION_SET_COMPLEX_REAL(value, 0.0);
+                    KEFIR_AST_CONSTANT_EXPRESSION_SET_COMPLEX_IMAGINARY(value, KEFIR_AST_CONSTANT_EXPRESSION_GET_FLOAT(source));
                 } else {
-                    value->complex_floating_point.real = source->floating_point;
-                    value->complex_floating_point.imaginary = 0.0;
+                    KEFIR_AST_CONSTANT_EXPRESSION_SET_COMPLEX_REAL(value, KEFIR_AST_CONSTANT_EXPRESSION_GET_FLOAT(source));
+                    KEFIR_AST_CONSTANT_EXPRESSION_SET_COMPLEX_IMAGINARY(value, 0.0);
                 }
                 break;
 
             case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT:
-                value->complex_floating_point.real = source->complex_floating_point.real;
-                value->complex_floating_point.imaginary = source->complex_floating_point.imaginary;
+                KEFIR_AST_CONSTANT_EXPRESSION_SET_COMPLEX_REAL(value, KEFIR_AST_CONSTANT_EXPRESSION_GET_COMPLEX_REAL(source));
+                KEFIR_AST_CONSTANT_EXPRESSION_SET_COMPLEX_IMAGINARY(value, KEFIR_AST_CONSTANT_EXPRESSION_GET_COMPLEX_IMAGINARY(source));
                 break;
 
             case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_DECIMAL:
                 REQUIRE_OK(kefir_dfp_require_supported(&node->source_location));
-                value->complex_floating_point.real = kefir_dfp_decimal128_to_long_double(source->decimal);
-                value->complex_floating_point.imaginary = 0.0;
+                KEFIR_AST_CONSTANT_EXPRESSION_SET_COMPLEX_REAL(value, kefir_dfp_decimal128_to_long_double(source->decimal));
+                KEFIR_AST_CONSTANT_EXPRESSION_SET_COMPLEX_IMAGINARY(value, 0.0);
                 break;
 
             case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPOUND:
@@ -557,7 +560,6 @@ kefir_result_t kefir_ast_constant_expression_value_cast(struct kefir_mem *mem, c
                 value->pointer.type = KEFIR_AST_CONSTANT_EXPRESSION_POINTER_INTEGER;
                 value->pointer.base.integral = source->integer;
                 value->pointer.offset = 0;
-                value->pointer.pointer_node = node;
                 break;
 
             case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT:
@@ -568,7 +570,6 @@ kefir_result_t kefir_ast_constant_expression_value_cast(struct kefir_mem *mem, c
 
             case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS:
                 value->pointer = source->pointer;
-                value->pointer.pointer_node = node;
                 break;
 
             case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPOUND:
@@ -582,7 +583,6 @@ kefir_result_t kefir_ast_constant_expression_value_cast(struct kefir_mem *mem, c
         value->pointer.type = KEFIR_AST_CONSTANT_EXPRESSION_POINTER_INTEGER;
         value->pointer.base.integral = 0;
         value->pointer.offset = 0;
-        value->pointer.pointer_node = node;
     } else if (KEFIR_AST_TYPE_COMPATIBLE(context->type_traits, unqualified_destination_type, unqualified_source_type)) {
         *value = *source;
     } else {

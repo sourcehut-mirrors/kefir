@@ -76,7 +76,7 @@ kefir_result_t kefir_ast_try_translate_constant(struct kefir_mem *mem, const str
                 case KEFIR_AST_TYPE_SCALAR_INTERCHANGE_FLOAT32:
                     if (builder != NULL) {
                         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDF32(builder, KEFIR_IR_OPCODE_FLOAT32_CONST,
-                                                                   (kefir_float32_t) value->floating_point, 0.0f));
+                                                                   (kefir_float32_t) KEFIR_AST_CONSTANT_EXPRESSION_GET_FLOAT(value), 0.0f));
                     }
                     *success_ptr = true;
                     break;
@@ -86,7 +86,7 @@ kefir_result_t kefir_ast_try_translate_constant(struct kefir_mem *mem, const str
                 case KEFIR_AST_TYPE_SCALAR_EXTENDED_FLOAT32:
                     if (builder != NULL) {
                         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDF64(builder, KEFIR_IR_OPCODE_FLOAT64_CONST,
-                                                                   (kefir_float64_t) value->floating_point));
+                                                                   (kefir_float64_t) KEFIR_AST_CONSTANT_EXPRESSION_GET_FLOAT(value)));
                     }
                     *success_ptr = true;
                     break;
@@ -96,7 +96,7 @@ kefir_result_t kefir_ast_try_translate_constant(struct kefir_mem *mem, const str
                 case KEFIR_AST_TYPE_SCALAR_EXTENDED_FLOAT64:
                     if (builder != NULL) {
                         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPEND_LONG_DOUBLE(builder, KEFIR_IR_OPCODE_LONG_DOUBLE_CONST,
-                                                                            value->floating_point));
+                                                                            KEFIR_AST_CONSTANT_EXPRESSION_GET_FLOAT(value)));
                     }
                     *success_ptr = true;
                     break;
@@ -153,29 +153,29 @@ kefir_result_t kefir_ast_try_translate_constant(struct kefir_mem *mem, const str
                 switch (classification) {
                     case KEFIR_AST_TYPE_DATA_MODEL_COMPLEX_FLOAT:
                         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDF32(builder, KEFIR_IR_OPCODE_FLOAT32_CONST,
-                                                                   (kefir_float32_t) value->complex_floating_point.real,
+                                                                   (kefir_float32_t) KEFIR_AST_CONSTANT_EXPRESSION_GET_COMPLEX_REAL(value),
                                                                    0.0f));
                         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDF32(
                             builder, KEFIR_IR_OPCODE_FLOAT32_CONST,
-                            (kefir_float32_t) value->complex_floating_point.imaginary, 0.0f));
+                            (kefir_float32_t) KEFIR_AST_CONSTANT_EXPRESSION_GET_COMPLEX_IMAGINARY(value), 0.0f));
                         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_COMPLEX_FLOAT64_FROM, 0));
                         break;
 
                     case KEFIR_AST_TYPE_DATA_MODEL_COMPLEX_DOUBLE:
                         REQUIRE_OK(
                             KEFIR_IRBUILDER_BLOCK_APPENDF64(builder, KEFIR_IR_OPCODE_FLOAT64_CONST,
-                                                            (kefir_float64_t) value->complex_floating_point.real));
+                                                            (kefir_float64_t) KEFIR_AST_CONSTANT_EXPRESSION_GET_COMPLEX_REAL(value)));
                         REQUIRE_OK(
                             KEFIR_IRBUILDER_BLOCK_APPENDF64(builder, KEFIR_IR_OPCODE_FLOAT64_CONST,
-                                                            (kefir_float64_t) value->complex_floating_point.imaginary));
+                                                            (kefir_float64_t) KEFIR_AST_CONSTANT_EXPRESSION_GET_COMPLEX_IMAGINARY(value)));
                         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_COMPLEX_FLOAT64_FROM, 0));
                         break;
 
                     case KEFIR_AST_TYPE_DATA_MODEL_COMPLEX_LONG_DOUBLE:
                         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPEND_LONG_DOUBLE(builder, KEFIR_IR_OPCODE_LONG_DOUBLE_CONST,
-                                                                            value->complex_floating_point.real));
+                                                                            KEFIR_AST_CONSTANT_EXPRESSION_GET_COMPLEX_REAL(value)));
                         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPEND_LONG_DOUBLE(builder, KEFIR_IR_OPCODE_LONG_DOUBLE_CONST,
-                                                                            value->complex_floating_point.imaginary));
+                                                                            KEFIR_AST_CONSTANT_EXPRESSION_GET_COMPLEX_IMAGINARY(value)));
                         REQUIRE_OK(
                             KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_COMPLEX_LONG_DOUBLE_FROM, 0));
                         break;
@@ -206,8 +206,8 @@ kefir_result_t kefir_ast_try_translate_constant(struct kefir_mem *mem, const str
                         if (builder != NULL) {
                             kefir_id_t id;
                             REQUIRE_OK(kefir_ir_module_string_literal(
-                                mem, context->module, KefirAstIrStringLiteralTypes[value->pointer.base.string.type],
-                                true, value->pointer.base.string.content, value->pointer.base.string.length, &id));
+                                mem, context->module, KefirAstIrStringLiteralTypes[value->pointer.base.string->type],
+                                true, value->pointer.base.string->literal, value->pointer.base.string->length, &id));
                             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_STRING_REF, id));
                             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT_CONST,
                                                                        value->pointer.offset));

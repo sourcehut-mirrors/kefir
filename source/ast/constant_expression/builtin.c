@@ -234,7 +234,7 @@ kefir_result_t kefir_ast_evaluate_builtin_node(struct kefir_mem *mem, const stru
         case KEFIR_AST_BUILTIN_INFINITY_FLOAT64:
         case KEFIR_AST_BUILTIN_INFINITY_LONG_DOUBLE:
             value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT;
-            value->floating_point = INFINITY;
+            KEFIR_AST_CONSTANT_EXPRESSION_SET_FLOAT(value, INFINITY);
             break;
 
         case KEFIR_AST_BUILTIN_NAN_FLOAT32:
@@ -242,7 +242,7 @@ kefir_result_t kefir_ast_evaluate_builtin_node(struct kefir_mem *mem, const stru
         case KEFIR_AST_BUILTIN_NAN_LONG_DOUBLE: {
             struct kefir_ast_node_base *arg = node->arguments[0];
             value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT;
-            value->floating_point = nanl(arg->properties.expression_props->string_literal->literal);
+            KEFIR_AST_CONSTANT_EXPRESSION_SET_FLOAT(value, nanl(arg->properties.expression_props->string_literal->literal));
         } break;
 
         case KEFIR_AST_BUILTIN_KEFIR_ISNAN: {
@@ -262,7 +262,7 @@ kefir_result_t kefir_ast_evaluate_builtin_node(struct kefir_mem *mem, const stru
                     REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(arg, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT),
                             KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &arg->source_location,
                                                    "Expected floating-point constant expression"));
-                    value->integer = (_Bool) isnan(KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(arg)->floating_point);
+                    value->integer = (_Bool) isnan(KEFIR_AST_CONSTANT_EXPRESSION_GET_FLOAT(KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(arg)));
                     break;
 
                 case KEFIR_AST_TYPE_SCALAR_DECIMAL32:
@@ -301,7 +301,7 @@ kefir_result_t kefir_ast_evaluate_builtin_node(struct kefir_mem *mem, const stru
                             KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &arg->source_location,
                                                    "Expected floating-point constant expression"));
                     const kefir_ast_constant_expression_float_t fp_value =
-                        KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(arg)->floating_point;
+                        KEFIR_AST_CONSTANT_EXPRESSION_GET_FLOAT(KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(arg));
                     if (getenv(KEFIR_DISABLE_LONG_DOUBLE_FLAG) == NULL) {
                         value->integer = isinf(fp_value) ? (isgreater(fp_value, 0.0) ? 1 : -1) : 0;
                     } else {
@@ -350,8 +350,8 @@ kefir_result_t kefir_ast_evaluate_builtin_node(struct kefir_mem *mem, const stru
                                            "Expected floating-point constant expression"));
 
             value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT;
-            value->floating_point = copysignl(KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(arg1_node)->floating_point,
-                                              KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(arg2_node)->floating_point);
+            KEFIR_AST_CONSTANT_EXPRESSION_SET_FLOAT(value, copysignl(KEFIR_AST_CONSTANT_EXPRESSION_GET_FLOAT(KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(arg1_node)),
+                                              KEFIR_AST_CONSTANT_EXPRESSION_GET_FLOAT(KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(arg2_node))));
         } break;
 
         case KEFIR_AST_BUILTIN_KEFIR_CONSTRUCT_COMPLEX_FLOAT:
@@ -368,9 +368,9 @@ kefir_result_t kefir_ast_evaluate_builtin_node(struct kefir_mem *mem, const stru
                                            "Expected floating-point constant expression"));
 
             value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPOUND;
-            value->complex_floating_point.real = KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(arg1_node)->floating_point;
-            value->complex_floating_point.imaginary =
-                KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(arg2_node)->floating_point;
+            KEFIR_AST_CONSTANT_EXPRESSION_SET_COMPLEX_REAL(value, KEFIR_AST_CONSTANT_EXPRESSION_GET_FLOAT(KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(arg1_node)));
+            KEFIR_AST_CONSTANT_EXPRESSION_SET_COMPLEX_IMAGINARY(value,
+                KEFIR_AST_CONSTANT_EXPRESSION_GET_FLOAT(KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(arg2_node)));
         } break;
 
         case KEFIR_AST_BUILTIN_KEFIR_ISFINITE: {
@@ -386,7 +386,7 @@ kefir_result_t kefir_ast_evaluate_builtin_node(struct kefir_mem *mem, const stru
                         KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &arg1_node->source_location,
                                                "Expected floating-point constant expression"));
                     value->integer =
-                        isfinite((kefir_float32_t) KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(arg1_node)->floating_point)
+                        isfinite((kefir_float32_t) KEFIR_AST_CONSTANT_EXPRESSION_GET_FLOAT(KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(arg1_node)))
                             ? 1
                             : 0;
                     break;
@@ -399,7 +399,7 @@ kefir_result_t kefir_ast_evaluate_builtin_node(struct kefir_mem *mem, const stru
                         KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &arg1_node->source_location,
                                                "Expected floating-point constant expression"));
                     value->integer =
-                        isfinite((kefir_float64_t) KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(arg1_node)->floating_point)
+                        isfinite((kefir_float64_t) KEFIR_AST_CONSTANT_EXPRESSION_GET_FLOAT(KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(arg1_node)))
                             ? 1
                             : 0;
                     break;
@@ -413,7 +413,7 @@ kefir_result_t kefir_ast_evaluate_builtin_node(struct kefir_mem *mem, const stru
                                                "Expected floating-point constant expression"));
                     value->integer =
                         isfinite(
-                            (kefir_long_double_t) KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(arg1_node)->floating_point)
+                            (kefir_long_double_t) KEFIR_AST_CONSTANT_EXPRESSION_GET_FLOAT(KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(arg1_node)))
                             ? 1
                             : 0;
                     break;
@@ -904,7 +904,7 @@ kefir_result_t kefir_ast_evaluate_builtin_node(struct kefir_mem *mem, const stru
                 kefir_uint32_t parts[4];
             } val = {.parts = {0, -1610612736, 32767, 0}};
             value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT;
-            value->floating_point = val.value;
+            KEFIR_AST_CONSTANT_EXPRESSION_SET_FLOAT(value, val.value);
         } break;
 
         case KEFIR_AST_BUILTIN_VA_START:
