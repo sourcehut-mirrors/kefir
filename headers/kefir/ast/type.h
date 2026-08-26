@@ -91,6 +91,8 @@ typedef struct kefir_ast_type_traits {
 typedef struct kefir_ast_type_bundle {
     struct kefir_string_pool *symbols;
     struct kefir_list types;
+    struct kefir_hashtable pointers;
+    struct kefir_hashtable qualified;
 } kefir_ast_type_bundle_t;
 
 kefir_result_t kefir_ast_type_traits_init(const struct kefir_data_model_descriptor *, struct kefir_ast_type_traits *);
@@ -104,6 +106,12 @@ kefir_bool_t kefir_ast_type_is_variably_modified(const struct kefir_ast_type *);
 kefir_result_t kefir_ast_type_bundle_init(struct kefir_ast_type_bundle *, struct kefir_string_pool *);
 kefir_result_t kefir_ast_type_bundle_free(struct kefir_mem *, struct kefir_ast_type_bundle *);
 kefir_result_t kefir_ast_type_bundle_reset(struct kefir_mem *, struct kefir_ast_type_bundle *);
+
+kefir_result_t kefir_ast_type_bundle_find_pointer(const struct kefir_ast_type_bundle *, const struct kefir_ast_type *, const struct kefir_ast_type **);
+kefir_result_t kefir_ast_type_bundle_set_pointer(struct kefir_mem *, struct kefir_ast_type_bundle *, const struct kefir_ast_type *, const struct kefir_ast_type *);
+
+kefir_result_t kefir_ast_type_bundle_find_qualified(const struct kefir_ast_type_bundle *, const struct kefir_ast_type *, const struct kefir_ast_type_qualification *, const struct kefir_ast_type **);
+kefir_result_t kefir_ast_type_bundle_set_qualified(struct kefir_mem *, struct kefir_ast_type_bundle *, const struct kefir_ast_type *, const struct kefir_ast_type_qualification *, const struct kefir_ast_type *);
 
 kefir_ast_function_specifier_t kefir_ast_context_merge_function_specifiers(kefir_ast_function_specifier_t,
                                                                            kefir_ast_function_specifier_t);

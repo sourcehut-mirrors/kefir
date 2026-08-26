@@ -80,6 +80,15 @@ const struct kefir_ast_type *kefir_ast_type_qualified(struct kefir_mem *mem, str
                                                       struct kefir_ast_type_qualification qualification) {
     REQUIRE(mem != NULL, NULL);
     REQUIRE(base_type != NULL, NULL);
+
+    if (type_bundle != NULL) {
+        const struct kefir_ast_type *qual_type;
+        kefir_result_t res = kefir_ast_type_bundle_find_qualified(type_bundle, base_type, &qualification, &qual_type);
+        if (res == KEFIR_OK) {
+            return qual_type;
+        }
+    }
+
     struct kefir_ast_type *type = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_type));
     REQUIRE(type != NULL, NULL);
     if (type_bundle != NULL) {
@@ -105,6 +114,10 @@ const struct kefir_ast_type *kefir_ast_type_qualified(struct kefir_mem *mem, str
     type->ops.free = free_qualified_type;
     type->qualified_type.qualification = qualification;
     type->qualified_type.type = base_type;
+
+    if (type_bundle != NULL) {
+        kefir_ast_type_bundle_set_qualified(mem, type_bundle, base_type, &qualification, type);
+    }
     return type;
 }
 

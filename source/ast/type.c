@@ -362,26 +362,144 @@ static kefir_result_t free_type_bundle(struct kefir_mem *mem, struct kefir_list 
     return KEFIR_OK;
 }
 
+enum {
+    CONSTANT_QUALIFIER = 0,
+    RESTRICTED_QUALIFIER = 1,
+    VOLATILE_QUALIFIER = 2,
+    ATOMIC_QUALIFIER = 3,
+    QUALIFIER_COUNT = 4
+};
+
+struct qualified_entry {
+    const struct kefir_ast_type *qualifiers[1 << QUALIFIER_COUNT];
+};
+
+static kefir_result_t free_qualified_entry(struct kefir_mem *mem, struct kefir_hashtable *table,
+                                                          kefir_hashtable_key_t key, kefir_hashtable_value_t value, void *payload) {
+    UNUSED(table);
+    UNUSED(key);
+    UNUSED(payload);
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    ASSIGN_DECL_CAST(struct qualified_entry *, entry, value);
+    REQUIRE(entry != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST type bundle qualified entry"));
+
+    KEFIR_FREE(mem, entry);
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_ast_type_bundle_init(struct kefir_ast_type_bundle *type_bundle,
                                           struct kefir_string_pool *symbols) {
-    REQUIRE(type_bundle != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST type type_bundlesitory"));
+    REQUIRE(type_bundle != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST type bundle"));
     type_bundle->symbols = symbols;
     REQUIRE_OK(kefir_list_init(&type_bundle->types));
     REQUIRE_OK(kefir_list_on_remove(&type_bundle->types, free_type_bundle, NULL));
+    REQUIRE_OK(kefir_hashtable_init(&type_bundle->pointers, &kefir_hashtable_uint_ops));
+    REQUIRE_OK(kefir_hashtable_init(&type_bundle->qualified, &kefir_hashtable_uint_ops));
+    REQUIRE_OK(kefir_hashtable_on_removal(&type_bundle->qualified, free_qualified_entry, NULL));
     return KEFIR_OK;
 }
 
 kefir_result_t kefir_ast_type_bundle_free(struct kefir_mem *mem, struct kefir_ast_type_bundle *type_bundle) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
-    REQUIRE(type_bundle != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST type type_bundlesitory"));
+    REQUIRE(type_bundle != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST type bundle"));
+    REQUIRE_OK(kefir_hashtable_free(mem, &type_bundle->qualified));
+    REQUIRE_OK(kefir_hashtable_free(mem, &type_bundle->pointers));
     REQUIRE_OK(kefir_list_free(mem, &type_bundle->types));
     return KEFIR_OK;
 }
 
 kefir_result_t kefir_ast_type_bundle_reset(struct kefir_mem *mem, struct kefir_ast_type_bundle *type_bundle) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
-    REQUIRE(type_bundle != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST type type_bundlesitory"));
+    REQUIRE(type_bundle != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST type bundle"));
+    REQUIRE_OK(kefir_hashtable_clear(mem, &type_bundle->pointers));
     REQUIRE_OK(kefir_list_clear(mem, &type_bundle->types));
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_ast_type_bundle_find_pointer(const struct kefir_ast_type_bundle *type_bundle, const struct kefir_ast_type *referenced_type, const struct kefir_ast_type **type_ptr) {
+    REQUIRE(type_bundle != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST type bundle"));
+    REQUIRE(referenced_type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST type"));
+
+    kefir_hashtable_value_t table_value;
+    kefir_result_t res = kefir_hashtable_at(&type_bundle->pointers, (kefir_hashtable_key_t) referenced_type, &table_value);
+    if (res == KEFIR_NOT_FOUND) {
+        res = KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find AST pointer type");
+    }
+    REQUIRE_OK(res);
+
+    ASSIGN_PTR(type_ptr, (const struct kefir_ast_type *) table_value);
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_ast_type_bundle_set_pointer(struct kefir_mem *mem, struct kefir_ast_type_bundle *type_bundle, const struct kefir_ast_type *referenced_type, const struct kefir_ast_type *type) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(type_bundle != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST type bundle"));
+    REQUIRE(referenced_type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST type"));
+    REQUIRE(type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer AST type"));
+
+    kefir_result_t res = kefir_hashtable_insert(mem, &type_bundle->pointers, (kefir_hashtable_key_t) referenced_type, (kefir_hashtable_value_t) type);
+    if (res == KEFIR_ALREADY_EXISTS) {
+        res = KEFIR_SET_ERROR(KEFIR_ALREADY_EXISTS, "AST pointer type already exists in type bundle");
+    }
+    REQUIRE_OK(res);
+    return KEFIR_OK;
+}
+
+#define QUALIFICATION_INDEX(_qual) \
+    ((((kefir_uint32_t) (_qual)->constant) << CONSTANT_QUALIFIER) | \
+    (((kefir_uint32_t) (_qual)->restricted) << RESTRICTED_QUALIFIER) | \
+    (((kefir_uint32_t) (_qual)->volatile_type) << VOLATILE_QUALIFIER) | \
+    (((kefir_uint32_t) (_qual)->atomic_type) << ATOMIC_QUALIFIER))
+
+kefir_result_t kefir_ast_type_bundle_find_qualified(const struct kefir_ast_type_bundle *type_bundle, const struct kefir_ast_type *unqualified_type, const struct kefir_ast_type_qualification *qualifications, const struct kefir_ast_type **type_ptr) {
+    REQUIRE(type_bundle != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST type bundle"));
+    REQUIRE(unqualified_type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST type"));
+    REQUIRE(qualifications != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST type qualifications"));
+
+    kefir_hashtable_value_t table_value;
+    kefir_result_t res = kefir_hashtable_at(&type_bundle->qualified, (kefir_hashtable_key_t) unqualified_type, &table_value);
+    if (res == KEFIR_NOT_FOUND) {
+        res = KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find AST pointer type");
+    }
+    REQUIRE_OK(res);
+
+    ASSIGN_DECL_CAST(struct qualified_entry *, entry, table_value);
+    kefir_size_t idx = QUALIFICATION_INDEX(qualifications);
+    REQUIRE(entry->qualifiers[idx] != NULL, KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find AST pointer type"));
+
+    ASSIGN_PTR(type_ptr, entry->qualifiers[idx]);
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_ast_type_bundle_set_qualified(struct kefir_mem *mem, struct kefir_ast_type_bundle *type_bundle, const struct kefir_ast_type *unqualified_type, const struct kefir_ast_type_qualification *qualifications, const struct kefir_ast_type *type) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(type_bundle != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST type bundle"));
+    REQUIRE(unqualified_type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST type"));
+    REQUIRE(qualifications != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST type qualifications"));
+    REQUIRE(type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid qualified AST type"));
+
+    struct qualified_entry *entry = NULL;
+
+    kefir_hashtable_value_t table_value;
+    kefir_result_t res = kefir_hashtable_at(&type_bundle->qualified, (kefir_hashtable_key_t) unqualified_type, &table_value);
+    if (res != KEFIR_NOT_FOUND) {
+        REQUIRE_OK(res);
+        entry = (struct qualified_entry *) table_value;
+    } else {
+        entry = KEFIR_CALLOC(mem, 1, sizeof(struct qualified_entry));
+        REQUIRE(entry != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST type bundle qualified entry"));
+
+        res = kefir_hashtable_insert(mem, &type_bundle->qualified, (kefir_hashtable_key_t) unqualified_type, (kefir_hashtable_value_t) entry);
+        REQUIRE_ELSE(res == KEFIR_OK, {
+            KEFIR_FREE(mem, entry);
+            return res;
+        });
+    }
+    
+    kefir_size_t idx = QUALIFICATION_INDEX(qualifications);
+    REQUIRE(entry->qualifiers[idx] == NULL, KEFIR_SET_ERROR(KEFIR_ALREADY_EXISTS, "AST qualified type already exists in type bundle"));
+    entry->qualifiers[idx] = type;
+    
     return KEFIR_OK;
 }
 

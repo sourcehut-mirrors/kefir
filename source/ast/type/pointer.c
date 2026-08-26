@@ -64,6 +64,15 @@ const struct kefir_ast_type *kefir_ast_type_pointer(struct kefir_mem *mem, struc
                                                     const struct kefir_ast_type *base_type) {
     REQUIRE(mem != NULL, NULL);
     REQUIRE(base_type != NULL, NULL);
+
+    if (type_bundle != NULL) {
+        const struct kefir_ast_type *ptr_type;
+        kefir_result_t res = kefir_ast_type_bundle_find_pointer(type_bundle, base_type, &ptr_type);
+        if (res == KEFIR_OK) {
+            return ptr_type;
+        }
+    }
+
     struct kefir_ast_type *type = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_type));
     REQUIRE(type != NULL, NULL);
     if (type_bundle != NULL) {
@@ -73,6 +82,8 @@ const struct kefir_ast_type *kefir_ast_type_pointer(struct kefir_mem *mem, struc
             KEFIR_FREE(mem, type);
             return NULL;
         });
+
+        kefir_ast_type_bundle_set_pointer(mem, type_bundle, base_type, type);
     }
     type->tag = KEFIR_AST_TYPE_SCALAR_POINTER;
     type->ops.same = same_pointer_type;
