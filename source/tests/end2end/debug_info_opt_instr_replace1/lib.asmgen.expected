@@ -91,9 +91,9 @@
                 "debug": {
                     "local_variables": [
                         {
-                            "variable_id": 197568495620,
+                            "variable_id": 188978561026,
                             "allocations": [
-                                80
+                                416
                             ]
                         },
                         {
@@ -109,9 +109,9 @@
                             ]
                         },
                         {
-                            "variable_id": 188978561025,
+                            "variable_id": 197568495621,
                             "allocations": [
-                                416
+                                80
                             ]
                         }
                     ],

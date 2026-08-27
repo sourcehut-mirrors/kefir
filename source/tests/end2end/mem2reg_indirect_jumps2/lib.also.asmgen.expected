@@ -14,7 +14,7 @@ factorial2:
 .L__kefir_text_func_factorial2_begin:
     mov %rsi, %rax
 .L__kefir_func_factorial2_label2:
-    lea __kefir_function_factorial2_static_branches_7(%rip), %rcx
+    lea __kefir_function_factorial2_static_branches_5(%rip), %rcx
     xor %edx, %edx
     cmp $1, %rdi
     setg %dl
@@ -36,7 +36,7 @@ run_factorial:
 .L__kefir_func_run_factorial_label1:
     movq factorial_param@GOTPCREL(%rip), %rax
     movq (%rax), %rcx
-    lea __kefir_function_run_factorial_static_branches_3(%rip), %rdx
+    lea __kefir_function_run_factorial_static_branches_2(%rip), %rdx
     xor %esi, %esi
     cmp $1, %rcx
     setg %sil
@@ -60,12 +60,12 @@ _kefir_local_public_label_run_factorial_terminate:
 
 .section .data
     .align 16
-__kefir_function_factorial2_static_branches_7:
+__kefir_function_factorial2_static_branches_5:
     .quad _kefir_local_public_label_factorial2_terminate
     .quad _kefir_local_public_label_factorial2_round
 
     .align 16
-__kefir_function_run_factorial_static_branches_3:
+__kefir_function_run_factorial_static_branches_2:
     .quad _kefir_local_public_label_run_factorial_terminate
     .quad _kefir_local_public_label_run_factorial_round
 

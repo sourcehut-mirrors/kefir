@@ -47,7 +47,29 @@
             "identifier": 0,
             "type": [
                 {
-                    "type": "int64"
+                    "type": "struct",
+                    "fields": [
+                        {
+                            "type": "struct",
+                            "fields": [
+                                {
+                                    "type": "int8"
+                                },
+                                {
+                                    "type": "int64"
+                                },
+                                {
+                                    "type": "float"
+                                },
+                                {
+                                    "type": "int32"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "int32"
+                        }
+                    ]
                 }
             ]
         },
@@ -115,29 +137,7 @@
             "identifier": 2,
             "type": [
                 {
-                    "type": "struct",
-                    "fields": [
-                        {
-                            "type": "struct",
-                            "fields": [
-                                {
-                                    "type": "int8"
-                                },
-                                {
-                                    "type": "int64"
-                                },
-                                {
-                                    "type": "float"
-                                },
-                                {
-                                    "type": "int32"
-                                }
-                            ]
-                        },
-                        {
-                            "type": "int32"
-                        }
-                    ]
+                    "type": "int64"
                 }
             ]
         },
@@ -189,8 +189,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 4294967296,
-                    "type": 0,
+                    "id": 4294967298,
+                    "type": 2,
                     "type_index": 0
                 },
                 {
@@ -336,8 +336,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 4294967298,
-                    "type": 2,
+                    "id": 4294967296,
+                    "type": 0,
                     "type_index": 0
                 },
                 {

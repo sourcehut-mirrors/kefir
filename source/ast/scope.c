@@ -23,9 +23,9 @@
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
 
-static kefir_result_t flat_scope_removal(struct kefir_mem *mem, struct kefir_hashtree *tree, kefir_hashtree_key_t key,
-                                         kefir_hashtree_value_t value, void *payload) {
-    UNUSED(tree);
+static kefir_result_t flat_scope_removal(struct kefir_mem *mem, struct kefir_hashtable *table, kefir_hashtable_key_t key,
+                                         kefir_hashtable_value_t value, void *payload) {
+    UNUSED(table);
     UNUSED(key);
     ASSIGN_DECL_CAST(struct kefir_ast_identifier_flat_scope *, scope, payload);
     if (scope->remove_callback != NULL) {
@@ -40,8 +40,8 @@ kefir_result_t kefir_ast_identifier_flat_scope_init(struct kefir_ast_identifier_
     scope->remove_callback = NULL;
     scope->remove_payload = NULL;
     scope->identifier = identifier;
-    REQUIRE_OK(kefir_hashtree_init(&scope->content, &kefir_hashtree_str_ops));
-    REQUIRE_OK(kefir_hashtree_on_removal(&scope->content, flat_scope_removal, scope));
+    REQUIRE_OK(kefir_hashtable_init(&scope->content, &kefir_hashtable_str_ops));
+    REQUIRE_OK(kefir_hashtable_on_removal(&scope->content, flat_scope_removal, scope));
     return KEFIR_OK;
 }
 
@@ -49,7 +49,7 @@ kefir_result_t kefir_ast_identifier_flat_scope_free(struct kefir_mem *mem,
                                                     struct kefir_ast_identifier_flat_scope *scope) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(scope != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST identifier scope"));
-    REQUIRE_OK(kefir_hashtree_free(mem, &scope->content));
+    REQUIRE_OK(kefir_hashtable_free(mem, &scope->content));
     scope->remove_callback = NULL;
     scope->remove_payload = NULL;
     return KEFIR_OK;
@@ -59,7 +59,7 @@ kefir_result_t kefir_ast_identifier_flat_scope_reset(struct kefir_mem *mem,
                                                     struct kefir_ast_identifier_flat_scope *scope) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(scope != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST identifier scope"));
-    REQUIRE_OK(kefir_hashtree_clean(mem, &scope->content));
+    REQUIRE_OK(kefir_hashtable_clear(mem, &scope->content));
     return KEFIR_OK;
 }
 
@@ -110,8 +110,8 @@ kefir_result_t kefir_ast_identifier_flat_scope_insert(struct kefir_mem *mem,
     REQUIRE(identifier != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST identifier"));
     REQUIRE(scoped_identifier != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST scoped identifier"));
-    REQUIRE_OK(kefir_hashtree_insert(mem, &scope->content, (kefir_hashtree_key_t) identifier,
-                                     (kefir_hashtree_value_t) scoped_identifier));
+    REQUIRE_OK(kefir_hashtable_insert(mem, &scope->content, (kefir_hashtable_key_t) identifier,
+                                     (kefir_hashtable_value_t) scoped_identifier));
     return KEFIR_OK;
 }
 
@@ -122,9 +122,9 @@ kefir_result_t kefir_ast_identifier_flat_scope_at(const struct kefir_ast_identif
     REQUIRE(identifier != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST identifier"));
     REQUIRE(scope_identifier != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST scoped identifier pointer"));
-    struct kefir_hashtree_node *node = NULL;
-    REQUIRE_OK(kefir_hashtree_at(&scope->content, (kefir_hashtree_key_t) identifier, &node));
-    *scope_identifier = (struct kefir_ast_scoped_identifier *) node->value;
+    kefir_hashtable_value_t table_value;
+    REQUIRE_OK(kefir_hashtable_at(&scope->content, (kefir_hashtable_key_t) identifier, &table_value));
+    *scope_identifier = (struct kefir_ast_scoped_identifier *) table_value;
     return KEFIR_OK;
 }
 
@@ -132,44 +132,48 @@ kefir_bool_t kefir_ast_identifier_flat_scope_has(const struct kefir_ast_identifi
                                                  const char *identifier) {
     REQUIRE(scope != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST identifier scope"));
     REQUIRE(identifier != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST identifier"));
-    return kefir_hashtree_has(&scope->content, (kefir_hashtree_key_t) identifier);
+    return kefir_hashtable_has(&scope->content, (kefir_hashtable_key_t) identifier);
 }
 
 kefir_bool_t kefir_ast_identifier_flat_scope_empty(const struct kefir_ast_identifier_flat_scope *scope) {
     REQUIRE(scope != NULL, true);
-    return kefir_hashtree_empty(&scope->content);
+    return scope->content.occupied == 0;
 }
 
 kefir_result_t kefir_ast_identifier_flat_scope_iter(const struct kefir_ast_identifier_flat_scope *scope,
                                                     struct kefir_ast_identifier_flat_scope_iterator *iter) {
     REQUIRE(scope != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST identifier scope"));
     REQUIRE(iter != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST identifier scope iterator"));
-    const struct kefir_hashtree_node *node = kefir_hashtree_iter(&scope->content, &iter->iter);
-    if (node != NULL) {
-        iter->identifier = (const char *) node->key;
-        iter->value = (struct kefir_ast_scoped_identifier *) node->value;
-        return KEFIR_OK;
-    } else {
+    kefir_hashtable_key_t key;
+    kefir_hashtable_value_t value;
+    kefir_result_t res = kefir_hashtable_iter(&scope->content, &iter->iter, &key, &value);
+    if (res == KEFIR_ITERATOR_END) {
+        res = KEFIR_SET_ERROR(KEFIR_ITERATOR_END, "End of AST flat scope content iterator");
         iter->identifier = NULL;
         iter->value = NULL;
-        return KEFIR_ITERATOR_END;
     }
+    REQUIRE_OK(res);
+    iter->identifier = (const char *) key;
+    iter->value = (struct kefir_ast_scoped_identifier *) value;
+    return KEFIR_OK;
 }
 
 kefir_result_t kefir_ast_identifier_flat_scope_next(const struct kefir_ast_identifier_flat_scope *scope,
                                                     struct kefir_ast_identifier_flat_scope_iterator *iter) {
     REQUIRE(scope != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST identifier scope"));
     REQUIRE(iter != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST identifier scope iterator"));
-    const struct kefir_hashtree_node *node = kefir_hashtree_next(&iter->iter);
-    if (node != NULL) {
-        iter->identifier = (const char *) node->key;
-        iter->value = (struct kefir_ast_scoped_identifier *) node->value;
-        return KEFIR_OK;
-    } else {
+    kefir_hashtable_key_t key;
+    kefir_hashtable_value_t value;
+    kefir_result_t res = kefir_hashtable_next(&iter->iter, &key, &value);
+    if (res == KEFIR_ITERATOR_END) {
+        res = KEFIR_SET_ERROR(KEFIR_ITERATOR_END, "End of AST flat scope content iterator");
         iter->identifier = NULL;
         iter->value = NULL;
-        return KEFIR_ITERATOR_END;
     }
+    REQUIRE_OK(res);
+    iter->identifier = (const char *) key;
+    iter->value = (struct kefir_ast_scoped_identifier *) value;
+    return KEFIR_OK;
 }
 
 static kefir_result_t multi_scope_remove(struct kefir_mem *mem, void *raw_scope, void *payload) {

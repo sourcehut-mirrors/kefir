@@ -68,15 +68,7 @@
             "identifier": 3,
             "type": [
                 {
-                    "type": "struct",
-                    "fields": [
-                        {
-                            "type": "int32"
-                        },
-                        {
-                            "type": "float"
-                        }
-                    ]
+                    "type": "double"
                 }
             ]
         },
@@ -100,7 +92,15 @@
             "identifier": 5,
             "type": [
                 {
-                    "type": "double"
+                    "type": "struct",
+                    "fields": [
+                        {
+                            "type": "int32"
+                        },
+                        {
+                            "type": "float"
+                        }
+                    ]
                 }
             ]
         }
@@ -148,7 +148,7 @@
         {
             "identifier": "struct1",
             "storage": "thread_local",
-            "type": 3,
+            "type": 5,
             "value": [
                 {
                     "class": "aggregate"
@@ -165,7 +165,7 @@
         {
             "identifier": "floatingPoint",
             "storage": "thread_local",
-            "type": 5,
+            "type": 3,
             "value": [
                 {
                     "class": "float64",

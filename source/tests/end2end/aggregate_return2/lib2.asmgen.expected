@@ -313,7 +313,7 @@
                                 "id": 80,
                                 "opcode": "alloc_local",
                                 "scope": 0,
-                                "type_id": 102,
+                                "type_id": 103,
                                 "type_index": 0,
                                 "control_next": null
                             },
@@ -344,7 +344,7 @@
                                 "id": 160,
                                 "opcode": "alloc_local",
                                 "scope": 0,
-                                "type_id": 102,
+                                "type_id": 103,
                                 "type_index": 0,
                                 "control_next": null
                             },

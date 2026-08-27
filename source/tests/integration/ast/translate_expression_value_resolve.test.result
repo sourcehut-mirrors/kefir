@@ -164,7 +164,7 @@
             "identifier": 19,
             "type": [
                 {
-                    "type": "int16"
+                    "type": "int32"
                 }
             ]
         },
@@ -172,7 +172,7 @@
             "identifier": 16,
             "type": [
                 {
-                    "type": "int16"
+                    "type": "double"
                 }
             ]
         },
@@ -180,12 +180,7 @@
             "identifier": 3,
             "type": [
                 {
-                    "type": "union",
-                    "fields": [
-                        {
-                            "type": "float"
-                        }
-                    ]
+                    "type": "int64"
                 }
             ]
         },
@@ -197,7 +192,7 @@
             "identifier": 15,
             "type": [
                 {
-                    "type": "int64"
+                    "type": "int16"
                 }
             ]
         },
@@ -205,12 +200,7 @@
             "identifier": 10,
             "type": [
                 {
-                    "type": "struct",
-                    "fields": [
-                        {
-                            "type": "int8"
-                        }
-                    ]
+                    "type": "int8"
                 }
             ]
         },
@@ -218,7 +208,11 @@
             "identifier": 20,
             "type": [
                 {
-                    "type": "int64"
+                    "type": "array",
+                    "length": 2,
+                    "element_type": {
+                        "type": "int32"
+                    }
                 }
             ]
         },
@@ -243,7 +237,7 @@
             "identifier": 1,
             "type": [
                 {
-                    "type": "int32"
+                    "type": "int8"
                 }
             ]
         },
@@ -255,7 +249,7 @@
             "identifier": 8,
             "type": [
                 {
-                    "type": "int64"
+                    "type": "int32"
                 }
             ]
         },
@@ -263,11 +257,12 @@
             "identifier": 4,
             "type": [
                 {
-                    "type": "array",
-                    "length": 2,
-                    "element_type": {
-                        "type": "int32"
-                    }
+                    "type": "union",
+                    "fields": [
+                        {
+                            "type": "float"
+                        }
+                    ]
                 }
             ]
         },
@@ -275,7 +270,7 @@
             "identifier": 17,
             "type": [
                 {
-                    "type": "int32"
+                    "type": "int64"
                 }
             ]
         },
@@ -283,7 +278,7 @@
             "identifier": 14,
             "type": [
                 {
-                    "type": "int8"
+                    "type": "int64"
                 }
             ]
         },
@@ -295,7 +290,7 @@
             "identifier": 18,
             "type": [
                 {
-                    "type": "int64"
+                    "type": "int16"
                 }
             ]
         },
@@ -319,7 +314,12 @@
             "identifier": 6,
             "type": [
                 {
-                    "type": "double"
+                    "type": "struct",
+                    "fields": [
+                        {
+                            "type": "int8"
+                        }
+                    ]
                 }
             ]
         },
@@ -327,7 +327,7 @@
             "identifier": 7,
             "type": [
                 {
-                    "type": "int8"
+                    "type": "int16"
                 }
             ]
         },
@@ -335,7 +335,7 @@
             "identifier": 2,
             "type": [
                 {
-                    "type": "float"
+                    "type": "int32"
                 }
             ]
         },
@@ -343,7 +343,7 @@
             "identifier": 11,
             "type": [
                 {
-                    "type": "int32"
+                    "type": "int64"
                 }
             ]
         },
@@ -351,7 +351,7 @@
             "identifier": 9,
             "type": [
                 {
-                    "type": "int16"
+                    "type": "float"
                 }
             ]
         },
@@ -378,7 +378,7 @@
         {
             "identifier": "enum",
             "storage": "global",
-            "type": 1,
+            "type": 8,
             "value": [
                 {
                     "class": "undefined"
@@ -388,7 +388,7 @@
         {
             "identifier": "float",
             "storage": "global",
-            "type": 2,
+            "type": 9,
             "value": [
                 {
                     "class": "undefined"
@@ -398,7 +398,7 @@
         {
             "identifier": "union",
             "storage": "global",
-            "type": 3,
+            "type": 4,
             "value": [
                 {
                     "class": "undefined",
@@ -409,7 +409,7 @@
         {
             "identifier": "array1",
             "storage": "global",
-            "type": 4,
+            "type": 20,
             "value": [
                 {
                     "class": "undefined",
@@ -431,7 +431,7 @@
         {
             "identifier": "double",
             "storage": "global",
-            "type": 6,
+            "type": 16,
             "value": [
                 {
                     "class": "undefined"
@@ -441,7 +441,7 @@
         {
             "identifier": "boolean",
             "storage": "global",
-            "type": 7,
+            "type": 1,
             "value": [
                 {
                     "class": "undefined"
@@ -451,7 +451,7 @@
         {
             "identifier": "void_ptr",
             "storage": "global",
-            "type": 8,
+            "type": 14,
             "value": [
                 {
                     "class": "undefined"
@@ -461,7 +461,7 @@
         {
             "identifier": "qualified",
             "storage": "global",
-            "type": 9,
+            "type": 18,
             "value": [
                 {
                     "class": "undefined"
@@ -471,7 +471,7 @@
         {
             "identifier": "structure",
             "storage": "global",
-            "type": 10,
+            "type": 6,
             "value": [
                 {
                     "class": "undefined",
@@ -482,7 +482,7 @@
         {
             "identifier": "signed_int",
             "storage": "global",
-            "type": 11,
+            "type": 19,
             "value": [
                 {
                     "class": "undefined"
@@ -502,7 +502,7 @@
         {
             "identifier": "signed_long",
             "storage": "global",
-            "type": 13,
+            "type": 17,
             "value": [
                 {
                     "class": "undefined"
@@ -512,7 +512,7 @@
         {
             "identifier": "unsigned_char",
             "storage": "global",
-            "type": 14,
+            "type": 10,
             "value": [
                 {
                     "class": "undefined"
@@ -522,7 +522,7 @@
         {
             "identifier": "unsigned_long",
             "storage": "global",
-            "type": 15,
+            "type": 13,
             "value": [
                 {
                     "class": "undefined"
@@ -532,7 +532,7 @@
         {
             "identifier": "signed_short",
             "storage": "global",
-            "type": 16,
+            "type": 7,
             "value": [
                 {
                     "class": "undefined"
@@ -542,7 +542,7 @@
         {
             "identifier": "unsigned_int",
             "storage": "global",
-            "type": 17,
+            "type": 2,
             "value": [
                 {
                     "class": "undefined"
@@ -552,7 +552,7 @@
         {
             "identifier": "signed_long_long",
             "storage": "global",
-            "type": 18,
+            "type": 3,
             "value": [
                 {
                     "class": "undefined"
@@ -562,7 +562,7 @@
         {
             "identifier": "unsigned_short",
             "storage": "global",
-            "type": 19,
+            "type": 15,
             "value": [
                 {
                     "class": "undefined"
@@ -572,7 +572,7 @@
         {
             "identifier": "unsigned_long_long",
             "storage": "global",
-            "type": 20,
+            "type": 11,
             "value": [
                 {
                     "class": "undefined"

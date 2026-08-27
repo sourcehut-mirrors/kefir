@@ -22,24 +22,14 @@
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
 
-static kefir_result_t child_node_remove(struct kefir_mem *mem, struct kefir_list *list, struct kefir_list_entry *entry,
-                                        void *payload) {
-    UNUSED(list);
-    UNUSED(payload);
-    ASSIGN_DECL_CAST(struct kefir_tree_node *, node, entry->value);
-    REQUIRE_OK(kefir_tree_free(mem, node));
-    KEFIR_FREE(mem, node);
-    return KEFIR_OK;
-}
-
 kefir_result_t kefir_tree_init(struct kefir_tree_node *root, void *value) {
     REQUIRE(root != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid tree node"));
     root->value = value;
     root->parent = NULL;
     root->prev_sibling = NULL;
     root->next_sibling = NULL;
-    REQUIRE_OK(kefir_list_init(&root->children));
-    REQUIRE_OK(kefir_list_on_remove(&root->children, child_node_remove, NULL));
+    root->first_child = NULL;
+    root->last_child = NULL;
     root->removal_callback = NULL;
     root->removal_payload = NULL;
     return KEFIR_OK;
@@ -52,7 +42,12 @@ kefir_result_t kefir_tree_free(struct kefir_mem *mem, struct kefir_tree_node *no
     if (node->removal_callback != NULL) {
         REQUIRE_OK(node->removal_callback(mem, node->value, node->removal_payload));
     }
-    REQUIRE_OK(kefir_list_free(mem, &node->children));
+    for (struct kefir_tree_node *child = node->first_child; child != NULL;) {
+        struct kefir_tree_node *next = child->next_sibling;
+        REQUIRE_OK(kefir_tree_free(mem, child));
+        KEFIR_FREE(mem, child);
+        child = next;
+    }
     return KEFIR_OK;
 }
 
@@ -74,21 +69,16 @@ kefir_result_t kefir_tree_insert_child(struct kefir_mem *mem, struct kefir_tree_
     child->parent = node;
     child->removal_callback = node->removal_callback;
     child->removal_payload = node->removal_payload;
-    kefir_result_t res = kefir_list_init(&child->children);
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, child);
-        return res;
-    });
-    res = kefir_list_on_remove(&child->children, child_node_remove, NULL);
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        kefir_list_free(mem, &child->children);
-        KEFIR_FREE(mem, child);
-        return res;
-    });
-    struct kefir_list_entry *last_child = kefir_list_tail(&node->children);
-    REQUIRE_OK(kefir_list_insert_after(mem, &node->children, last_child, child));
-    child->prev_sibling = last_child != NULL ? (struct kefir_tree_node *) last_child->value : NULL;
+    child->first_child = NULL;
+    child->last_child = NULL;
+    child->prev_sibling = node->last_child;
     child->next_sibling = NULL;
+
+    if (node->first_child == NULL) {
+        node->first_child = child;
+    }
+    node->last_child = child;
+
     if (child->prev_sibling != NULL) {
         child->prev_sibling->next_sibling = child;
     }
@@ -111,19 +101,11 @@ kefir_result_t kefir_tree_insert_parent(struct kefir_mem *mem, struct kefir_tree
     child->next_sibling = NULL;
     child->removal_callback = node->removal_callback;
     child->removal_payload = node->removal_payload;
-    kefir_result_t res = kefir_list_init(&child->children);
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, child);
-        return res;
-    });
-    res = kefir_list_on_remove(&child->children, child_node_remove, NULL);
-    REQUIRE_CHAIN(&res, kefir_list_move_all(&child->children, &node->children));
-    REQUIRE_CHAIN(&res, kefir_list_insert_after(mem, &node->children, NULL, child));
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        kefir_list_free(mem, &child->children);
-        KEFIR_FREE(mem, child);
-        return res;
-    });
+    child->first_child = node->first_child;
+    child->last_child = node->last_child;
+    
+    node->first_child = child;
+    node->last_child = child;
 
     node->value = value;
     for (struct kefir_tree_node *subchild = kefir_tree_first_child(child); subchild != NULL;
@@ -137,9 +119,7 @@ kefir_result_t kefir_tree_insert_parent(struct kefir_mem *mem, struct kefir_tree
 
 struct kefir_tree_node *kefir_tree_first_child(const struct kefir_tree_node *node) {
     REQUIRE(node != NULL, NULL);
-    struct kefir_list_entry *head = kefir_list_head(&node->children);
-    REQUIRE(head != NULL, NULL);
-    return (struct kefir_tree_node *) head->value;
+    return node->first_child;
 }
 
 struct kefir_tree_node *kefir_tree_next_sibling(const struct kefir_tree_node *node) {

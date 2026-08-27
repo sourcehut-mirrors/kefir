@@ -10,7 +10,7 @@ test:
 .L__kefir_text_func_test_begin:
 .L__kefir_func_test_label5:
 _kefir_local_public_label_test_label3:
-    lea __kefir_function_test_static_arr_4(%rip), %rax
+    lea __kefir_function_test_static_arr_5(%rip), %rax
     movsx %edi, %rcx
     xor %edi, %edi
     jmpq *(%rax, %rcx, 8)
@@ -30,7 +30,7 @@ _kefir_local_public_label_test_label2:
 
 .section .data
     .align 16
-__kefir_function_test_static_arr_4:
+__kefir_function_test_static_arr_5:
     .quad _kefir_local_public_label_test_label1
     .quad _kefir_local_public_label_test_label2
     .quad _kefir_local_public_label_test_label3

@@ -8,7 +8,7 @@
 .L__kefir_text_section_begin:
 getarr:
 .L__kefir_text_func_getarr_begin:
-    lea __kefir_function_getarr_static_arr_0(%rip), %rax
+    lea __kefir_function_getarr_static_arr_2(%rip), %rax
     movq %rax, (%rdi)
     mov $1000, %eax
     ret
@@ -18,7 +18,7 @@ getarr:
 
 .section .data
     .align 16
-__kefir_function_getarr_static_arr_0:
+__kefir_function_getarr_static_arr_2:
     .long 4294967295
     .long 4294967294
     .long 4294967293

@@ -15,7 +15,7 @@
             "alias": null
         },
         {
-            "symbol": "__kefir_function_sum_static___func___3",
+            "symbol": "__kefir_function_sum_static___func___2",
             "type": "global_data",
             "scope": "local",
             "visibility": "default",
@@ -62,7 +62,11 @@
             "identifier": 6,
             "type": [
                 {
-                    "type": "int32"
+                    "type": "array",
+                    "length": 4,
+                    "element_type": {
+                        "type": "int8"
+                    }
                 }
             ]
         },
@@ -70,11 +74,7 @@
             "identifier": 7,
             "type": [
                 {
-                    "type": "array",
-                    "length": 4,
-                    "element_type": {
-                        "type": "int8"
-                    }
+                    "type": "int32"
                 }
             ]
         },
@@ -100,9 +100,9 @@
     ],
     "data": [
         {
-            "identifier": "__kefir_function_sum_static___func___3",
+            "identifier": "__kefir_function_sum_static___func___2",
             "storage": "global",
-            "type": 7,
+            "type": 6,
             "value": [
                 {
                     "class": "string",
@@ -168,8 +168,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 4294967298,
-                    "type": 6,
+                    "id": 4294967299,
+                    "type": 7,
                     "type_index": 0
                 },
                 {
@@ -228,8 +228,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 4294967298,
-                    "type": 6,
+                    "id": 4294967299,
+                    "type": 7,
                     "type_index": 0
                 },
                 {

@@ -3873,7 +3873,7 @@ test4:
 #                        {
 #                            "type": "rip_indirect_external",
 #                            "type": "absolute",
-#                            "base": "__kefir_function_test4_static_arr_10",
+#                            "base": "__kefir_function_test4_static_arr_11",
 #                            "variant": "default"
 #                        }
 #                    ],
@@ -3991,7 +3991,7 @@ test4:
 .L__kefir_func_test4_label3:
 _kefir_local_public_label_test4_label1:
     movl -4(%rbp), %eax
-    lea __kefir_function_test4_static_arr_10(%rip), %rcx
+    lea __kefir_function_test4_static_arr_11(%rip), %rcx
     movsx %eax, %rax
     jmpq *(%rcx, %rax, 8)
 .L__kefir_func_test4_label2:
@@ -4169,7 +4169,7 @@ init_array:
 #                            "operand": {
 #                                "type": "external_label",
 #                                "type": "absolute",
-#                                "label": "__kefir_function_init_array_static_array_13",
+#                                "label": "__kefir_function_init_array_static_array_12",
 #                                "offset": 0
 #                            }
 #                        },
@@ -4182,7 +4182,7 @@ init_array:
 #                            "operand": {
 #                                "type": "external_label",
 #                                "type": "absolute",
-#                                "label": "__kefir_function_init_array_static_array_13",
+#                                "label": "__kefir_function_init_array_static_array_12",
 #                                "offset": 20
 #                            }
 #                        },
@@ -4211,7 +4211,7 @@ init_array:
 #                            "operand": {
 #                                "type": "external_label",
 #                                "type": "absolute",
-#                                "label": "__kefir_function_init_array_static_array_13",
+#                                "label": "__kefir_function_init_array_static_array_12",
 #                                "offset": 4
 #                            }
 #                        },
@@ -4253,7 +4253,7 @@ init_array:
 #                            "operand": {
 #                                "type": "external_label",
 #                                "type": "absolute",
-#                                "label": "__kefir_function_init_array_static_array_13",
+#                                "label": "__kefir_function_init_array_static_array_12",
 #                                "offset": 8
 #                            }
 #                        },
@@ -4266,7 +4266,7 @@ init_array:
 #                            "operand": {
 #                                "type": "external_label",
 #                                "type": "absolute",
-#                                "label": "__kefir_function_init_array_static_x_12",
+#                                "label": "__kefir_function_init_array_static_x_13",
 #                                "offset": 0
 #                            }
 #                        },
@@ -4295,7 +4295,7 @@ init_array:
 #                            "operand": {
 #                                "type": "external_label",
 #                                "type": "absolute",
-#                                "label": "__kefir_function_init_array_static_array_13",
+#                                "label": "__kefir_function_init_array_static_array_12",
 #                                "offset": 12
 #                            }
 #                        },
@@ -4336,7 +4336,7 @@ init_array:
 #                            "operand": {
 #                                "type": "external_label",
 #                                "type": "absolute",
-#                                "label": "__kefir_function_init_array_static_array_13",
+#                                "label": "__kefir_function_init_array_static_array_12",
 #                                "offset": 16
 #                            }
 #                        },
@@ -4425,15 +4425,15 @@ init_array:
     push %rbx
     sub $8, %rsp
 lea test4, %rax
-mov %rax, (__kefir_function_init_array_static_array_13)
-lea __kefir_function_init_array_static_array_13 + 20, %rax
-mov %rax, (__kefir_function_init_array_static_array_13 + 4)
+mov %rax, (__kefir_function_init_array_static_array_12)
+lea __kefir_function_init_array_static_array_12 + 20, %rax
+mov %rax, (__kefir_function_init_array_static_array_12 + 4)
 lea .L__kefir_string_literal4 + 2, %rax
-mov %rax, (__kefir_function_init_array_static_array_13 + 8)
-lea __kefir_function_init_array_static_x_12, %rax
-mov %rax, (__kefir_function_init_array_static_array_13 + 12)
+mov %rax, (__kefir_function_init_array_static_array_12 + 8)
+lea __kefir_function_init_array_static_x_13, %rax
+mov %rax, (__kefir_function_init_array_static_array_12 + 12)
 mov $4, %rax
-mov %rax, (__kefir_function_init_array_static_array_13 + 16)
+mov %rax, (__kefir_function_init_array_static_array_12 + 16)
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
@@ -4444,17 +4444,17 @@ mov %rax, (__kefir_function_init_array_static_array_13 + 16)
 
 .section .data
     .align 16
-__kefir_function_test4_static_arr_10:
+__kefir_function_test4_static_arr_11:
     .quad _kefir_local_public_label_test4_label1
     .quad _kefir_local_public_label_test4_label2
 
 .section .bss
     .align 4
-__kefir_function_init_array_static_x_12:
+__kefir_function_init_array_static_x_13:
     .skip 4
 
     .align 16
-__kefir_function_init_array_static_array_13:
+__kefir_function_init_array_static_array_12:
     .skip 40
 
 .section .rodata

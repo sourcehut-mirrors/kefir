@@ -13,7 +13,7 @@ run_op:
     xor %edx, %edx
     mov $5, %rdi
     div %rdi
-    lea __kefir_function_run_op_static_branches_6(%rip), %rax
+    lea __kefir_function_run_op_static_branches_5(%rip), %rax
     mov %r8, %rdi
     sub %rcx, %rdi
     xor %r9d, %r9d
@@ -53,7 +53,7 @@ _kefir_local_public_label_run_op_div:
 
 .section .data
     .align 16
-__kefir_function_run_op_static_branches_6:
+__kefir_function_run_op_static_branches_5:
     .quad _kefir_local_public_label_run_op_add
     .quad _kefir_local_public_label_run_op_sub
     .quad _kefir_local_public_label_run_op_mul

@@ -256,9 +256,9 @@
         },
         {
             "identifier": 1,
-            "name": "sum2",
+            "name": "sum3",
             "parameters": 2,
-            "vararg": false,
+            "vararg": true,
             "returns": 3,
             "returns_twice": false,
             "no_return": false
@@ -310,9 +310,9 @@
         },
         {
             "identifier": 2,
-            "name": "sum3",
+            "name": "sum2",
             "parameters": 4,
-            "vararg": true,
+            "vararg": false,
             "returns": 5,
             "returns_twice": false,
             "no_return": false

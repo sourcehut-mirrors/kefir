@@ -42,15 +42,11 @@
             "identifier": 3,
             "type": [
                 {
-                    "type": "struct",
-                    "fields": [
-                        {
-                            "type": "int8"
-                        },
-                        {
-                            "type": "int64"
-                        }
-                    ]
+                    "type": "array",
+                    "length": 16,
+                    "element_type": {
+                        "type": "int16"
+                    }
                 }
             ]
         },
@@ -74,7 +70,15 @@
             "identifier": 1,
             "type": [
                 {
-                    "type": "int32"
+                    "type": "union",
+                    "fields": [
+                        {
+                            "type": "int8"
+                        },
+                        {
+                            "type": "int64"
+                        }
+                    ]
                 }
             ]
         },
@@ -110,15 +114,7 @@
             "identifier": 0,
             "type": [
                 {
-                    "type": "union",
-                    "fields": [
-                        {
-                            "type": "int8"
-                        },
-                        {
-                            "type": "int64"
-                        }
-                    ]
+                    "type": "int32"
                 }
             ]
         },
@@ -134,11 +130,15 @@
             "identifier": 2,
             "type": [
                 {
-                    "type": "array",
-                    "length": 16,
-                    "element_type": {
-                        "type": "int16"
-                    }
+                    "type": "struct",
+                    "fields": [
+                        {
+                            "type": "int8"
+                        },
+                        {
+                            "type": "int64"
+                        }
+                    ]
                 }
             ]
         },
@@ -159,7 +159,7 @@
         {
             "identifier": "W",
             "storage": "global",
-            "type": 0,
+            "type": 1,
             "value": [
                 {
                     "class": "undefined",
@@ -170,7 +170,7 @@
         {
             "identifier": "X",
             "storage": "global",
-            "type": 1,
+            "type": 0,
             "value": [
                 {
                     "class": "undefined"
@@ -180,7 +180,7 @@
         {
             "identifier": "Y",
             "storage": "global",
-            "type": 2,
+            "type": 3,
             "value": [
                 {
                     "class": "undefined",
@@ -191,7 +191,7 @@
         {
             "identifier": "Z",
             "storage": "global",
-            "type": 3,
+            "type": 2,
             "value": [
                 {
                     "class": "undefined",

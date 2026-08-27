@@ -8,9 +8,9 @@
 .L__kefir_text_section_begin:
 getarr:
 .L__kefir_text_func_getarr_begin:
-    lea __kefir_function_getarr_static_arr_0(%rip), %rax
+    lea __kefir_function_getarr_static_arr_2(%rip), %rax
     movq %rax, (%rdi)
-    lea __kefir_function_getarr_static_len_1(%rip), %rax
+    lea __kefir_function_getarr_static_len_3(%rip), %rax
     ret
 .L__kefir_text_func_getarr_end:
 
@@ -18,7 +18,7 @@ getarr:
 
 .section .data
     .align 16
-__kefir_function_getarr_static_arr_0:
+__kefir_function_getarr_static_arr_2:
     .long 4294967295
     .long 4294967294
     .long 4294967293
@@ -30,6 +30,6 @@ __kefir_function_getarr_static_arr_0:
 
 .section .rodata
     .align 8
-__kefir_function_getarr_static_len_1:
+__kefir_function_getarr_static_len_3:
     .quad 350
 

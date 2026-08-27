@@ -37,7 +37,7 @@
                                 "id": 128,
                                 "opcode": "alloc_local",
                                 "scope": 0,
-                                "type_id": 95,
+                                "type_id": 98,
                                 "type_index": 0,
                                 "control_next": null
                             },
@@ -56,7 +56,7 @@
                                 "id": 176,
                                 "opcode": "alloc_local",
                                 "scope": 0,
-                                "type_id": 95,
+                                "type_id": 98,
                                 "type_index": 0,
                                 "control_next": null
                             },
@@ -78,7 +78,7 @@
                                 "target": 128,
                                 "source": 208,
                                 "type": {
-                                    "id": 95,
+                                    "id": 98,
                                     "index": 0
                                 },
                                 "control_next": 320,
@@ -228,7 +228,7 @@
                                 "id": 128,
                                 "opcode": "alloc_local",
                                 "scope": 0,
-                                "type_id": 95,
+                                "type_id": 98,
                                 "type_index": 0,
                                 "control_next": null
                             },

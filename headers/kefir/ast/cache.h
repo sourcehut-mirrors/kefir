@@ -27,7 +27,7 @@
 
 typedef struct kefir_ast_context_type_cache {
     const struct kefir_ast_context *context;
-    struct kefir_hashtree types;
+    struct kefir_hashtable types;
 } kefir_ast_context_type_cache_t;
 
 kefir_result_t kefir_ast_context_type_cache_init(struct kefir_ast_context_type_cache *,

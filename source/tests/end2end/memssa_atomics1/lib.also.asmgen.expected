@@ -40,7 +40,7 @@ test3:
 .L__kefir_text_func_test3_begin:
     movl (%rdi), %eax
     mov $1, %ecx
-    xchgl %ecx, __kefir_function_test3_static_z_10(%rip)
+    xchgl %ecx, __kefir_function_test3_static_z_11(%rip)
     movl (%rdi), %ecx
     add %ecx, %eax
     ret
@@ -50,7 +50,7 @@ test4:
 .L__kefir_text_func_test4_begin:
     movl (%rdi), %eax
     mov $1, %ecx
-    xchgl %ecx, __kefir_function_test4_static_z_16(%rip)
+    xchgl %ecx, __kefir_function_test4_static_z_17(%rip)
     movl (%rdi), %ecx
     add %ecx, %eax
     ret
@@ -75,7 +75,7 @@ test6:
 test7:
 .L__kefir_text_func_test7_begin:
     movl (%rdi), %ecx
-    lea __kefir_function_test7_static_z_34(%rip), %rdx
+    lea __kefir_function_test7_static_z_35(%rip), %rdx
     mov %ecx, %eax
     lock     xaddl %eax, (%rdx)
     movl (%rdi), %eax
@@ -87,11 +87,11 @@ test7:
 
 .section .bss
     .align 4
-__kefir_function_test3_static_z_10:
+__kefir_function_test3_static_z_11:
     .skip 4
 
     .align 4
-__kefir_function_test4_static_z_16:
+__kefir_function_test4_static_z_17:
     .skip 4
 
     .align 4
@@ -99,10 +99,10 @@ __kefir_function_test5_static_z_23:
     .skip 4
 
     .align 4
-__kefir_function_test6_static_z_28:
+__kefir_function_test6_static_z_29:
     .skip 4
 
     .align 4
-__kefir_function_test7_static_z_34:
+__kefir_function_test7_static_z_35:
     .skip 4
 

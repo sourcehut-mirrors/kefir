@@ -2,6 +2,15 @@
     "externals": [
         {
             "class": "declaration",
+            "identifier": "global_var100",
+            "type": [
+                {
+                    "type": "int8"
+                }
+            ]
+        },
+        {
+            "class": "declaration",
             "identifier": "global_var1",
             "type": [
                 {
@@ -17,18 +26,23 @@
                     "type": "int64"
                 }
             ]
-        },
-        {
-            "class": "declaration",
-            "identifier": "global_var100",
-            "type": [
-                {
-                    "type": "int8"
-                }
-            ]
         }
     ],
     "external_thread_locals": [
+        {
+            "class": "declaration",
+            "identifier": "global_var101",
+            "type": [
+                {
+                    "type": "array",
+                    "length": 100,
+                    "element_type": {
+                        "type": "int64"
+                    },
+                    "alignment": 32
+                }
+            ]
+        },
         {
             "class": "declaration",
             "identifier": "global_var3",
@@ -48,20 +62,6 @@
                     "element_type": {
                         "type": "int8"
                     }
-                }
-            ]
-        },
-        {
-            "class": "declaration",
-            "identifier": "global_var101",
-            "type": [
-                {
-                    "type": "array",
-                    "length": 100,
-                    "element_type": {
-                        "type": "int64"
-                    },
-                    "alignment": 32
                 }
             ]
         }
@@ -92,21 +92,21 @@
     },
     "local_statics": [
         {
-            "identifier": "local_static_var1",
+            "identifier": "local_static_var2",
             "offset": 0
         },
         {
-            "identifier": "local_static_var2",
+            "identifier": "local_static_var1",
             "offset": 0
         }
     ],
     "local_thread_local_statics": [
         {
-            "identifier": "local_static_var3",
+            "identifier": "local_static_var4",
             "offset": 0
         },
         {
-            "identifier": "local_static_var4",
+            "identifier": "local_static_var3",
             "offset": 0
         }
     ],

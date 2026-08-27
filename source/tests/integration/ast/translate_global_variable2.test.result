@@ -55,7 +55,7 @@
             "identifier": 4,
             "type": [
                 {
-                    "type": "int8"
+                    "type": "int32"
                 }
             ]
         },
@@ -71,7 +71,7 @@
             "identifier": 5,
             "type": [
                 {
-                    "type": "double"
+                    "type": "int64"
                 }
             ]
         },
@@ -87,7 +87,7 @@
             "identifier": 6,
             "type": [
                 {
-                    "type": "float"
+                    "type": "int8"
                 }
             ]
         },
@@ -95,7 +95,7 @@
             "identifier": 1,
             "type": [
                 {
-                    "type": "int64"
+                    "type": "double"
                 }
             ]
         },
@@ -103,7 +103,7 @@
             "identifier": 2,
             "type": [
                 {
-                    "type": "int32"
+                    "type": "float"
                 }
             ]
         }
@@ -124,7 +124,7 @@
         {
             "identifier": "ptr2",
             "storage": "global",
-            "type": 1,
+            "type": 5,
             "value": [
                 {
                     "class": "integer",
@@ -135,7 +135,7 @@
         {
             "identifier": "integer",
             "storage": "global",
-            "type": 2,
+            "type": 4,
             "value": [
                 {
                     "class": "integer",
@@ -146,7 +146,7 @@
         {
             "identifier": "character",
             "storage": "global",
-            "type": 4,
+            "type": 6,
             "value": [
                 {
                     "class": "integer",
@@ -157,7 +157,7 @@
         {
             "identifier": "floatingPoint2",
             "storage": "global",
-            "type": 5,
+            "type": 1,
             "value": [
                 {
                     "class": "float64",
@@ -168,7 +168,7 @@
         {
             "identifier": "floatingPoint",
             "storage": "global",
-            "type": 6,
+            "type": 2,
             "value": [
                 {
                     "class": "float32",

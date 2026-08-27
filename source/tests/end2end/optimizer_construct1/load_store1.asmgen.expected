@@ -108,7 +108,7 @@
                                 "id": 96,
                                 "opcode": "alloc_local",
                                 "scope": 0,
-                                "type_id": 117,
+                                "type_id": 118,
                                 "type_index": 0,
                                 "control_next": null,
                                 "ir_instruction": 9
@@ -129,7 +129,7 @@
                                 "id": 144,
                                 "opcode": "alloc_local",
                                 "scope": 0,
-                                "type_id": 116,
+                                "type_id": 115,
                                 "type_index": 0,
                                 "control_next": null,
                                 "ir_instruction": 14
@@ -303,7 +303,7 @@
                 "debug": {
                     "local_variables": [
                         {
-                            "variable_id": 214748364812,
+                            "variable_id": 214748364811,
                             "allocations": [
                                 144
                             ]
@@ -311,13 +311,13 @@
                         {
                             "variable_id": 214748364813,
                             "allocations": [
-                                96
+                                48
                             ]
                         },
                         {
                             "variable_id": 214748364814,
                             "allocations": [
-                                48
+                                96
                             ]
                         }
                     ],
@@ -410,7 +410,7 @@
                             {
                                 "id": 64,
                                 "opcode": "get_global",
-                                "global_ref": 4,
+                                "global_ref": 10,
                                 "control_next": null,
                                 "ir_instruction": 8
                             },
@@ -436,7 +436,7 @@
                             {
                                 "id": 112,
                                 "opcode": "get_global",
-                                "global_ref": 6,
+                                "global_ref": 8,
                                 "control_next": null,
                                 "ir_instruction": 15
                             },
@@ -462,7 +462,7 @@
                             {
                                 "id": 176,
                                 "opcode": "get_global",
-                                "global_ref": 8,
+                                "global_ref": 12,
                                 "control_next": null,
                                 "ir_instruction": 23
                             },
@@ -495,7 +495,7 @@
                             {
                                 "id": 224,
                                 "opcode": "get_global",
-                                "global_ref": 10,
+                                "global_ref": 14,
                                 "control_next": null,
                                 "ir_instruction": 30
                             },
@@ -521,7 +521,7 @@
                             {
                                 "id": 272,
                                 "opcode": "get_global",
-                                "global_ref": 12,
+                                "global_ref": 16,
                                 "control_next": null,
                                 "ir_instruction": 37
                             },
@@ -547,7 +547,7 @@
                             {
                                 "id": 320,
                                 "opcode": "get_global",
-                                "global_ref": 14,
+                                "global_ref": 4,
                                 "control_next": null,
                                 "ir_instruction": 44
                             },
@@ -573,7 +573,7 @@
                             {
                                 "id": 384,
                                 "opcode": "get_global",
-                                "global_ref": 16,
+                                "global_ref": 6,
                                 "control_next": null,
                                 "ir_instruction": 52
                             },

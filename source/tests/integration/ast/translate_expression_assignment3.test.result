@@ -46,7 +46,7 @@
             "identifier": 3,
             "type": [
                 {
-                    "type": "int64"
+                    "type": "float"
                 }
             ]
         },
@@ -70,7 +70,7 @@
             "identifier": 1,
             "type": [
                 {
-                    "type": "float"
+                    "type": "int64"
                 }
             ]
         },

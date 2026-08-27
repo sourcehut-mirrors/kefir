@@ -6,7 +6,7 @@
             "type": [
                 {
                     "type": "array",
-                    "length": 8,
+                    "length": 14,
                     "element_type": {
                         "type": "int8"
                     }
@@ -38,7 +38,7 @@
             "type": [
                 {
                     "type": "array",
-                    "length": 4,
+                    "length": 1,
                     "element_type": {
                         "type": "int8"
                     }
@@ -66,7 +66,7 @@
             "type": [
                 {
                     "type": "array",
-                    "length": 14,
+                    "length": 4,
                     "element_type": {
                         "type": "int8"
                     }
@@ -94,7 +94,7 @@
             "type": [
                 {
                     "type": "array",
-                    "length": 1,
+                    "length": 8,
                     "element_type": {
                         "type": "int8"
                     }
@@ -197,8 +197,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 4294967296,
-                    "type": 0,
+                    "id": 4294967299,
+                    "type": 3,
                     "type_index": 0
                 },
                 {
@@ -241,8 +241,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 4294967297,
-                    "type": 1,
+                    "id": 4294967296,
+                    "type": 0,
                     "type_index": 0
                 },
                 {
@@ -368,8 +368,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 4294967298,
-                    "type": 2,
+                    "id": 4294967297,
+                    "type": 1,
                     "type_index": 0
                 },
                 {
@@ -397,8 +397,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 4294967299,
-                    "type": 3,
+                    "id": 4294967298,
+                    "type": 2,
                     "type_index": 0
                 },
                 {

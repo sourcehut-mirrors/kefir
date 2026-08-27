@@ -105,11 +105,11 @@
     ],
     "function_declarations": [
         {
-            "identifier": 2,
-            "name": "test4",
-            "parameters": 6,
+            "identifier": 24,
+            "name": "test2",
+            "parameters": 50,
             "vararg": false,
-            "returns": 7,
+            "returns": 51,
             "returns_twice": false,
             "no_return": false
         },
@@ -123,20 +123,20 @@
             "no_return": false
         },
         {
-            "identifier": 0,
-            "name": "test1",
-            "parameters": 2,
+            "identifier": 34,
+            "name": "test4",
+            "parameters": 70,
             "vararg": false,
-            "returns": 3,
+            "returns": 71,
             "returns_twice": false,
             "no_return": false
         },
         {
-            "identifier": 1,
-            "name": "test2",
-            "parameters": 4,
+            "identifier": 29,
+            "name": "test1",
+            "parameters": 60,
             "vararg": false,
-            "returns": 5,
+            "returns": 61,
             "returns_twice": false,
             "no_return": false
         },

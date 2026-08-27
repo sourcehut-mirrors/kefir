@@ -27,20 +27,7 @@
             "identifier": 1,
             "type": [
                 {
-                    "type": "array",
-                    "length": 3,
-                    "element_type": {
-                        "type": "struct",
-                        "fields": [
-                            {
-                                "type": "array",
-                                "length": 5,
-                                "element_type": {
-                                    "type": "int32"
-                                }
-                            }
-                        ]
-                    }
+                    "type": "int32"
                 }
             ]
         },
@@ -69,7 +56,20 @@
             "identifier": 2,
             "type": [
                 {
-                    "type": "int32"
+                    "type": "array",
+                    "length": 3,
+                    "element_type": {
+                        "type": "struct",
+                        "fields": [
+                            {
+                                "type": "array",
+                                "length": 5,
+                                "element_type": {
+                                    "type": "int32"
+                                }
+                            }
+                        ]
+                    }
                 }
             ]
         }
@@ -178,7 +178,7 @@
         {
             "identifier": "array2",
             "storage": "global",
-            "type": 1,
+            "type": 2,
             "value": [
                 {
                     "class": "aggregate"

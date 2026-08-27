@@ -96,7 +96,7 @@
             "identifier": 4,
             "type": [
                 {
-                    "type": "double"
+                    "type": "int64"
                 }
             ]
         },
@@ -152,7 +152,7 @@
             "identifier": 2,
             "type": [
                 {
-                    "type": "int64"
+                    "type": "double"
                 }
             ]
         },

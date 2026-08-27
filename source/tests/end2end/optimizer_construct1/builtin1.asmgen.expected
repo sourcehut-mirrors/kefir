@@ -20,7 +20,7 @@
                                 "id": 80,
                                 "opcode": "alloc_local",
                                 "scope": 0,
-                                "type_id": 93,
+                                "type_id": 94,
                                 "type_index": 0,
                                 "control_next": null,
                                 "ir_instruction": 8
@@ -37,7 +37,7 @@
                                 "id": 96,
                                 "opcode": "alloc_local",
                                 "scope": 0,
-                                "type_id": 93,
+                                "type_id": 94,
                                 "type_index": 0,
                                 "control_next": null,
                                 "ir_instruction": 11
@@ -117,13 +117,13 @@
                             ]
                         },
                         {
-                            "variable_id": 188978561025,
+                            "variable_id": 188978561026,
                             "allocations": [
                                 80
                             ]
                         },
                         {
-                            "variable_id": 188978561026,
+                            "variable_id": 188978561027,
                             "allocations": [
                                 96
                             ]

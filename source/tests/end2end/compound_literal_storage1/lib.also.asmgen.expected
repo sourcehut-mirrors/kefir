@@ -104,13 +104,13 @@ get5:
     movl -4(%rbp), %eax
     test %eax, %eax
     jz .L__kefir_func_get5_label4
-    lea __kefir_function_get5_static___kefir_local_temporary_0_12(%rip), %rax
+    lea __kefir_function_get5_static___kefir_local_temporary_0_13(%rip), %rax
 .L__kefir_func_get5_label3:
     lea (%rbp), %rsp
     pop %rbp
     ret
 .L__kefir_func_get5_label4:
-    lea __kefir_function_get5_static___kefir_local_temporary_1_13(%rip), %rax
+    lea __kefir_function_get5_static___kefir_local_temporary_1_11(%rip), %rax
     jmp .L__kefir_func_get5_label3
 .L__kefir_text_func_get5_end:
 
@@ -153,7 +153,7 @@ __kefir_function_get1_static___kefir_local_temporary_0_3:
     .long 8
 
     .align 4
-__kefir_function_get5_static___kefir_local_temporary_0_12:
+__kefir_function_get5_static___kefir_local_temporary_0_13:
     .long 4294967196
     .long 4294967096
     .long 4294966996
@@ -164,7 +164,7 @@ __kefir_function_get5_static___kefir_local_temporary_0_12:
     .long 4294966496
 
     .align 4
-__kefir_function_get5_static___kefir_local_temporary_1_13:
+__kefir_function_get5_static___kefir_local_temporary_1_11:
     .long 4294966496
     .long 4294966596
     .long 4294966696

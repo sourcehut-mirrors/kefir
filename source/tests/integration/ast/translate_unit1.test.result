@@ -156,7 +156,11 @@
         },
         {
             "identifier": 11,
-            "type": []
+            "type": [
+                {
+                    "type": "int64"
+                }
+            ]
         },
         {
             "identifier": 16,
@@ -260,23 +264,19 @@
         },
         {
             "identifier": 7,
-            "type": [
-                {
-                    "type": "int64"
-                }
-            ]
+            "type": []
         },
         {
             "identifier": 12,
+            "type": []
+        },
+        {
+            "identifier": 4,
             "type": [
                 {
                     "type": "int64"
                 }
             ]
-        },
-        {
-            "identifier": 4,
-            "type": []
         },
         {
             "identifier": 10,
@@ -406,7 +406,7 @@
         },
         {
             "identifier": 4,
-            "name": "invoke_callback",
+            "name": "set_value",
             "parameters": 11,
             "vararg": false,
             "returns": 12,
@@ -442,7 +442,7 @@
         },
         {
             "identifier": 0,
-            "name": "add_value",
+            "name": "get_value",
             "parameters": 3,
             "vararg": false,
             "returns": 4,
@@ -469,7 +469,7 @@
         },
         {
             "identifier": 1,
-            "name": "get_value",
+            "name": "invoke_callback",
             "parameters": 5,
             "vararg": false,
             "returns": 6,
@@ -478,7 +478,7 @@
         },
         {
             "identifier": 2,
-            "name": "set_value",
+            "name": "add_value",
             "parameters": 7,
             "vararg": false,
             "returns": 8,

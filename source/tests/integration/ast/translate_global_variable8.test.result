@@ -42,9 +42,9 @@
             "type": [
                 {
                     "type": "array",
-                    "length": 30,
+                    "length": 31,
                     "element_type": {
-                        "type": "int8"
+                        "type": "int32"
                     }
                 }
             ]
@@ -53,24 +53,16 @@
             "identifier": 4,
             "type": [
                 {
-                    "type": "int32"
-                }
-            ]
-        },
-        {
-            "identifier": 3,
-            "type": [
-                {
                     "type": "array",
-                    "length": 29,
+                    "length": 30,
                     "element_type": {
-                        "type": "int32"
+                        "type": "int8"
                     }
                 }
             ]
         },
         {
-            "identifier": 1,
+            "identifier": 3,
             "type": [
                 {
                     "type": "array",
@@ -82,11 +74,19 @@
             ]
         },
         {
+            "identifier": 1,
+            "type": [
+                {
+                    "type": "int32"
+                }
+            ]
+        },
+        {
             "identifier": 2,
             "type": [
                 {
                     "type": "array",
-                    "length": 31,
+                    "length": 29,
                     "element_type": {
                         "type": "int32"
                     }
@@ -98,7 +98,7 @@
         {
             "identifier": "string1",
             "storage": "global",
-            "type": 0,
+            "type": 4,
             "value": [
                 {
                     "class": "string",
@@ -114,7 +114,7 @@
         {
             "identifier": "string2",
             "storage": "global",
-            "type": 1,
+            "type": 3,
             "value": [
                 {
                     "class": "string",
@@ -130,7 +130,7 @@
         {
             "identifier": "string3",
             "storage": "global",
-            "type": 2,
+            "type": 0,
             "value": [
                 {
                     "class": "string",
@@ -146,7 +146,7 @@
         {
             "identifier": "string4",
             "storage": "global",
-            "type": 3,
+            "type": 2,
             "value": [
                 {
                     "class": "string",
@@ -163,52 +163,6 @@
     "string_literals": [
         {
             "id": 0,
-            "public": false,
-            "type": "multibyte",
-            "literal": "Global UTF-8 string literal\n\r\u0000",
-            "length": 30
-        },
-        {
-            "id": 1,
-            "public": false,
-            "type": "unicode16",
-            "literal": [
-                71,
-                108,
-                111,
-                98,
-                97,
-                108,
-                32,
-                85,
-                84,
-                70,
-                45,
-                49,
-                54,
-                32,
-                115,
-                116,
-                114,
-                105,
-                110,
-                103,
-                32,
-                108,
-                105,
-                116,
-                101,
-                114,
-                97,
-                108,
-                10,
-                13,
-                0
-            ],
-            "length": 31
-        },
-        {
-            "id": 2,
             "public": false,
             "type": "unicode32",
             "literal": [
@@ -247,7 +201,7 @@
             "length": 31
         },
         {
-            "id": 3,
+            "id": 1,
             "public": false,
             "type": "unicode32",
             "literal": [
@@ -282,6 +236,52 @@
                 0
             ],
             "length": 29
+        },
+        {
+            "id": 2,
+            "public": false,
+            "type": "unicode16",
+            "literal": [
+                71,
+                108,
+                111,
+                98,
+                97,
+                108,
+                32,
+                85,
+                84,
+                70,
+                45,
+                49,
+                54,
+                32,
+                115,
+                116,
+                114,
+                105,
+                110,
+                103,
+                32,
+                108,
+                105,
+                116,
+                101,
+                114,
+                97,
+                108,
+                10,
+                13,
+                0
+            ],
+            "length": 31
+        },
+        {
+            "id": 3,
+            "public": false,
+            "type": "multibyte",
+            "literal": "Global UTF-8 string literal\n\r\u0000",
+            "length": 30
         }
     ],
     "function_declarations": [],

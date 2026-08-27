@@ -934,23 +934,23 @@ factorial:
 .L__kefir_debug_info_section_entry_10:
     .byte 6
     .long .L__kefir_debug_str_section_entry_3
-    .long .L__kefir_debug_info_section_entry_3 - .L__kefir_debug_info_section
+    .long .L__kefir_debug_info_section_entry_11 - .L__kefir_debug_info_section
     .long .L__kefir_debug_loclist_section_entry_7
+    .byte 0
+    .byte 0
+    .long .L__kefir_debug_str_section_entry_4
+    .quad 0
+    .quad 0
+.L__kefir_debug_info_section_entry_12:
+    .byte 6
+    .long .L__kefir_debug_str_section_entry_5
+    .long .L__kefir_debug_info_section_entry_3 - .L__kefir_debug_info_section
+    .long .L__kefir_debug_loclist_section_entry_8
     .byte 0
     .byte 0
     .long .L__kefir_debug_str_section_entry_1
     .quad 27
     .quad 9
-.L__kefir_debug_info_section_entry_11:
-    .byte 6
-    .long .L__kefir_debug_str_section_entry_4
-    .long .L__kefir_debug_info_section_entry_12 - .L__kefir_debug_info_section
-    .long .L__kefir_debug_loclist_section_entry_8
-    .byte 0
-    .byte 0
-    .long .L__kefir_debug_str_section_entry_5
-    .quad 0
-    .quad 0
     .byte 0
 .L__kefir_debug_info_section_entry_3:
     .byte 2
@@ -958,7 +958,7 @@ factorial:
     .byte 4
     .byte 4
     .byte 5
-.L__kefir_debug_info_section_entry_12:
+.L__kefir_debug_info_section_entry_11:
     .byte 7
     .long .L__kefir_debug_info_section_entry_13 - .L__kefir_debug_info_section
 .L__kefir_debug_info_section_entry_14:
@@ -1001,14 +1001,14 @@ factorial:
     .byte 120
     .byte 0
 .L__kefir_debug_loclist_section_entry_7:
+    .byte 0
+.L__kefir_debug_loclist_section_entry_8:
     .byte 4
     .uleb128 .L__kefir_func_factorial_label36 - .L__kefir_text_section_begin
     .uleb128 .L__kefir_func_factorial_label161 - .L__kefir_text_section_begin
     .byte 2
     .byte 145
     .byte 124
-    .byte 0
-.L__kefir_debug_loclist_section_entry_8:
     .byte 0
 .L__kefir_debug_loclists_section_end:
 
@@ -1056,15 +1056,15 @@ factorial:
     .byte 8
     .byte 0
     .long 0
-.L__kefir_debug_str_section_entry_5:
+.L__kefir_debug_str_section_entry_4:
     .ascii "\000"
 .L__kefir_debug_str_section_entry_2:
     .ascii "x\000"
 .L__kefir_debug_str_section_entry_7:
     .ascii "char\000"
-.L__kefir_debug_str_section_entry_3:
+.L__kefir_debug_str_section_entry_5:
     .ascii "result\000"
-.L__kefir_debug_str_section_entry_4:
+.L__kefir_debug_str_section_entry_3:
     .ascii "__func__\000"
 .L__kefir_debug_str_section_entry_0:
     .ascii "factorial\000"

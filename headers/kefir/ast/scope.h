@@ -132,7 +132,7 @@ typedef struct kefir_ast_scoped_identifier {
 } kefir_ast_scoped_identifier_t;
 
 typedef struct kefir_ast_identifier_flat_scope_iterator {
-    struct kefir_hashtree_node_iterator iter;
+    struct kefir_hashtable_iterator iter;
 
     const char *identifier;
     struct kefir_ast_scoped_identifier *value;
@@ -140,7 +140,7 @@ typedef struct kefir_ast_identifier_flat_scope_iterator {
 
 typedef struct kefir_ast_identifier_flat_scope {
     kefir_id_t identifier;
-    struct kefir_hashtree content;
+    struct kefir_hashtable content;
 
     kefir_result_t (*remove_callback)(struct kefir_mem *, struct kefir_ast_scoped_identifier *, void *);
     void *remove_payload;

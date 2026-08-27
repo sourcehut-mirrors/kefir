@@ -17,8 +17,8 @@ get:
 .section .rodata
     .align 8
 s1:
-    .quad .L__kefir_string_literal1
+    .quad .L__kefir_string_literal2
 
 .section .rodata
-.L__kefir_string_literal1:
+.L__kefir_string_literal2:
     .ascii "HELLO WORLD!\000"

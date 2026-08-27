@@ -154,25 +154,43 @@
                         {
                             "variable_id": 188978561032,
                             "allocations": [
-                                576
+                                336
                             ]
                         },
                         {
-                            "variable_id": 188978561026,
+                            "variable_id": 188978561033,
                             "allocations": [
-                                48
+                                256
                             ]
                         },
                         {
                             "variable_id": 188978561031,
                             "allocations": [
-                                496
+                                48
                             ]
                         },
                         {
                             "variable_id": 188978561029,
                             "allocations": [
-                                336
+                                176
+                            ]
+                        },
+                        {
+                            "variable_id": 188978561025,
+                            "allocations": [
+                                416
+                            ]
+                        },
+                        {
+                            "variable_id": 188978561030,
+                            "allocations": [
+                                96
+                            ]
+                        },
+                        {
+                            "variable_id": 188978561027,
+                            "allocations": [
+                                496
                             ]
                         },
                         {
@@ -182,27 +200,9 @@
                             ]
                         },
                         {
-                            "variable_id": 188978561030,
-                            "allocations": [
-                                416
-                            ]
-                        },
-                        {
-                            "variable_id": 188978561027,
-                            "allocations": [
-                                176
-                            ]
-                        },
-                        {
-                            "variable_id": 188978561025,
-                            "allocations": [
-                                96
-                            ]
-                        },
-                        {
                             "variable_id": 188978561028,
                             "allocations": [
-                                256
+                                576
                             ]
                         }
                     ],

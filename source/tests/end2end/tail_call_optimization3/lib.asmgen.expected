@@ -267,7 +267,7 @@ test4a:
     sar $2, %rax
     lock     xaddl %eax, (%rdx)
     lea -4(%rbp), %rax
-    movq %rax, __kefir_function_test4a_static_ptr_11(%rip)
+    movq %rax, __kefir_function_test4a_static_ptr_12(%rip)
     call temp@PLT
     movl -4(%rbp), %edi
     add $1, %edi
@@ -292,7 +292,7 @@ test4b:
     sar $2, %rax
     lock     xaddl %eax, (%rdx)
     lea -4(%rbp), %rax
-    movq %rax, __kefir_function_test4b_static_ptr_14(%rip)
+    movq %rax, __kefir_function_test4b_static_ptr_15(%rip)
     add $1, %edi
     call test4b
     lea (%rbp), %rsp
@@ -304,10 +304,10 @@ test4b:
 
 .section .bss
     .align 8
-__kefir_function_test4a_static_ptr_11:
+__kefir_function_test4a_static_ptr_12:
     .skip 8
 
     .align 8
-__kefir_function_test4b_static_ptr_14:
+__kefir_function_test4b_static_ptr_15:
     .skip 8
 

@@ -16,7 +16,7 @@
 .L__kefir_text_section_begin:
 t3:
 .L__kefir_text_func_t3_begin:
-    lea __kefir_function_t3_static_t3_8(%rip), %rax
+    lea __kefir_function_t3_static_t3_7(%rip), %rax
     ret
 .L__kefir_text_func_t3_end:
 
@@ -87,7 +87,7 @@ t2s:
     .quad 5
 
     .align 8
-__kefir_function_t3_static_t3_8:
+__kefir_function_t3_static_t3_7:
     .long 3
     .zero 4
     .quad 4

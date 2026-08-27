@@ -116,7 +116,7 @@ test5:
     mov %rsp, %rbp
     sub $400, %rsp
     lea -400(%rbp), %rax
-    movq %rax, __kefir_function_test5_static_leak_23(%rip)
+    movq %rax, __kefir_function_test5_static_leak_24(%rip)
     movl $0, -40(%rbp)
     movl %edi, -200(%rbp)
     mov $0, %eax
@@ -218,6 +218,6 @@ test10:
 
 .section .bss
     .align 8
-__kefir_function_test5_static_leak_23:
+__kefir_function_test5_static_leak_24:
     .skip 8
 

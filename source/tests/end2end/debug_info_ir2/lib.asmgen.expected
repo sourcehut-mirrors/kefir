@@ -17,7 +17,7 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "entry": 0
+                "entry": 72
             }
         },
         {
@@ -27,7 +27,7 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "entry": 5
+                "entry": 48
             }
         },
         {
@@ -37,7 +37,7 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "entry": 8
+                "entry": 33
             }
         },
         {
@@ -47,7 +47,7 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "entry": 11
+                "entry": 21
             }
         },
         {
@@ -57,7 +57,7 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "entry": 13
+                "entry": 25
             }
         },
         {
@@ -67,7 +67,7 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "entry": 16
+                "entry": 52
             }
         },
         {
@@ -77,7 +77,7 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "entry": 17
+                "entry": 55
             }
         },
         {
@@ -87,7 +87,7 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "entry": 21
+                "entry": 85
             }
         },
         {
@@ -97,7 +97,7 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "entry": 25
+                "entry": 28
             }
         },
         {
@@ -107,7 +107,7 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "entry": 27
+                "entry": 43
             }
         },
         {
@@ -117,7 +117,7 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "entry": 30
+                "entry": 82
             }
         },
         {
@@ -127,7 +127,7 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "entry": 33
+                "entry": 5
             }
         },
         {
@@ -137,7 +137,7 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "entry": 35
+                "entry": 0
             }
         },
         {
@@ -147,7 +147,7 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "entry": 38
+                "entry": 23
             }
         },
         {
@@ -157,7 +157,7 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "entry": 40
+                "entry": 100
             }
         },
         {
@@ -167,7 +167,7 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "entry": 43
+                "entry": 38
             }
         },
         {
@@ -177,7 +177,7 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "entry": 46
+                "entry": 16
             }
         },
         {
@@ -187,7 +187,7 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "entry": 48
+                "entry": 14
             }
         },
         {
@@ -197,17 +197,17 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "entry": 50
+                "entry": 103
             }
         },
         {
-            "symbol": "__kefir_function_test1_static___func___4",
+            "symbol": "__kefir_function_test1_static___func___1",
             "type": "global_data",
             "scope": "local",
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "entry": 130
+                "entry": 127
             }
         },
         {
@@ -217,7 +217,7 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "entry": 53
+                "entry": 108
             }
         },
         {
@@ -227,7 +227,7 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "entry": 57
+                "entry": 41
             }
         },
         {
@@ -237,7 +237,7 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "entry": 60
+                "entry": 30
             }
         },
         {
@@ -247,7 +247,7 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "entry": 62
+                "entry": 46
             }
         },
         {
@@ -257,7 +257,7 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "entry": 64
+                "entry": 69
             }
         },
         {
@@ -267,7 +267,7 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "entry": 67
+                "entry": 98
             }
         },
         {
@@ -277,7 +277,7 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "entry": 69
+                "entry": 106
             }
         },
         {
@@ -287,7 +287,7 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "entry": 71
+                "entry": 88
             }
         },
         {
@@ -297,7 +297,7 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "entry": 74
+                "entry": 50
             }
         },
         {
@@ -307,7 +307,7 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "entry": 76
+                "entry": 9
             }
         },
         {
@@ -317,7 +317,7 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "entry": 78
+                "entry": 91
             }
         },
         {
@@ -327,7 +327,7 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "entry": 80
+                "entry": 93
             }
         },
         {
@@ -337,7 +337,7 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "entry": 83
+                "entry": 35
             }
         },
         {
@@ -347,7 +347,7 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "entry": 86
+                "entry": 96
             }
         },
         {
@@ -357,7 +357,7 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "entry": 88
+                "entry": 53
             }
         },
         {
@@ -367,7 +367,7 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "entry": 90
+                "entry": 58
             }
         },
         {
@@ -377,7 +377,7 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "entry": 93
+                "entry": 19
             }
         },
         {
@@ -387,7 +387,7 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "entry": 95
+                "entry": 64
             }
         },
         {
@@ -397,7 +397,7 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "entry": 98
+                "entry": 80
             }
         },
         {
@@ -407,7 +407,7 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "entry": 100
+                "entry": 67
             }
         },
         {
@@ -417,7 +417,7 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "entry": 102
+                "entry": 75
             }
         },
         {
@@ -427,7 +427,7 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "entry": 104
+                "entry": 12
             }
         },
         {
@@ -437,7 +437,7 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "entry": 105
+                "entry": 61
             }
         },
         {
@@ -447,19 +447,11 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "entry": 108
+                "entry": 77
             }
         }
     ],
     "types": [
-        {
-            "identifier": 92,
-            "type": [
-                {
-                    "type": "int64"
-                }
-            ]
-        },
         {
             "identifier": 88,
             "type": [
@@ -470,6 +462,14 @@
         },
         {
             "identifier": 94,
+            "type": [
+                {
+                    "type": "float"
+                }
+            ]
+        },
+        {
+            "identifier": 91,
             "type": [
                 {
                     "type": "array",
@@ -500,16 +500,16 @@
             "identifier": 93,
             "type": [
                 {
-                    "type": "float"
+                    "type": "int64"
                 }
             ]
         }
     ],
     "data": [
         {
-            "identifier": "__kefir_function_test1_static___func___4",
+            "identifier": "__kefir_function_test1_static___func___1",
             "storage": "global",
-            "type": 94,
+            "type": 91,
             "value": [
                 {
                     "class": "string",
@@ -535,7 +535,7 @@
     "function_declarations": [
         {
             "identifier": 23,
-            "name": "__kefir_builtin_ffs",
+            "name": "__kefir_builtin_isless",
             "parameters": 46,
             "vararg": false,
             "returns": 47,
@@ -544,7 +544,7 @@
         },
         {
             "identifier": 18,
-            "name": "__kefir_builtin_isfinitef64",
+            "name": "__kefir_builtin_clrsb",
             "parameters": 36,
             "vararg": false,
             "returns": 37,
@@ -553,7 +553,7 @@
         },
         {
             "identifier": 24,
-            "name": "__kefir_builtin_copysign",
+            "name": "__kefir_builtin_islessequalf",
             "parameters": 48,
             "vararg": false,
             "returns": 49,
@@ -562,7 +562,7 @@
         },
         {
             "identifier": 15,
-            "name": "__kefir_builtin_isgreaterequalf",
+            "name": "__kefir_builtin_clz",
             "parameters": 30,
             "vararg": false,
             "returns": 31,
@@ -571,7 +571,7 @@
         },
         {
             "identifier": 27,
-            "name": "__kefir_builtin_bswap16",
+            "name": "__kefir_builtin_copysign",
             "parameters": 54,
             "vararg": false,
             "returns": 55,
@@ -580,7 +580,7 @@
         },
         {
             "identifier": 28,
-            "name": "__kefir_builtin_bswap32",
+            "name": "test1",
             "parameters": 56,
             "vararg": false,
             "returns": 57,
@@ -589,7 +589,7 @@
         },
         {
             "identifier": 40,
-            "name": "__kefir_builtin_ffsl",
+            "name": "__kefir_builtin_isgreaterequalf",
             "parameters": 80,
             "vararg": false,
             "returns": 81,
@@ -598,7 +598,7 @@
         },
         {
             "identifier": 5,
-            "name": "__kefir_builtin_ffsll",
+            "name": "__kefir_builtin_isfinitef32",
             "parameters": 10,
             "vararg": false,
             "returns": 11,
@@ -607,7 +607,7 @@
         },
         {
             "identifier": 42,
-            "name": "__kefir_builtin_islessequalf",
+            "name": "__kefir_builtin_popcount",
             "parameters": 84,
             "vararg": false,
             "returns": 85,
@@ -616,7 +616,7 @@
         },
         {
             "identifier": 20,
-            "name": "__kefir_builtin_return_address",
+            "name": "__kefir_builtin_flt_rounds",
             "parameters": 40,
             "vararg": false,
             "returns": 41,
@@ -634,7 +634,7 @@
         },
         {
             "identifier": 17,
-            "name": "__kefir_builtin_isfinitef32",
+            "name": "__kefir_builtin_ffs",
             "parameters": 34,
             "vararg": false,
             "returns": 35,
@@ -643,7 +643,7 @@
         },
         {
             "identifier": 14,
-            "name": "__kefir_builtin_popcountl",
+            "name": "__kefir_builtin_isgreaterequall",
             "parameters": 28,
             "vararg": false,
             "returns": 29,
@@ -652,7 +652,7 @@
         },
         {
             "identifier": 21,
-            "name": "__kefir_builtin_clz",
+            "name": "__kefir_builtin_clrsbl",
             "parameters": 42,
             "vararg": false,
             "returns": 43,
@@ -661,7 +661,7 @@
         },
         {
             "identifier": 6,
-            "name": "__kefir_builtin_flt_rounds",
+            "name": "__kefir_builtin_parity",
             "parameters": 12,
             "vararg": false,
             "returns": 13,
@@ -670,7 +670,7 @@
         },
         {
             "identifier": 11,
-            "name": "__kefir_builtin_copysignl",
+            "name": "__kefir_builtin_ctz",
             "parameters": 22,
             "vararg": false,
             "returns": 23,
@@ -679,7 +679,7 @@
         },
         {
             "identifier": 16,
-            "name": "__kefir_builtin_isgreaterequall",
+            "name": "__kefir_builtin_copysignf",
             "parameters": 32,
             "vararg": false,
             "returns": 33,
@@ -688,7 +688,7 @@
         },
         {
             "identifier": 2,
-            "name": "__kefir_builtin_clrsb",
+            "name": "__kefir_builtin_bswap64",
             "parameters": 4,
             "vararg": false,
             "returns": 5,
@@ -697,7 +697,7 @@
         },
         {
             "identifier": 38,
-            "name": "__kefir_builtin_clzl",
+            "name": "__kefir_builtin_parityl",
             "parameters": 76,
             "vararg": false,
             "returns": 77,
@@ -706,7 +706,7 @@
         },
         {
             "identifier": 34,
-            "name": "__kefir_builtin_clrsbl",
+            "name": "__kefir_builtin_isgreaterl",
             "parameters": 68,
             "vararg": false,
             "returns": 69,
@@ -715,7 +715,7 @@
         },
         {
             "identifier": 31,
-            "name": "__kefir_builtin_islessf",
+            "name": "__kefir_builtin_islessequall",
             "parameters": 62,
             "vararg": false,
             "returns": 63,
@@ -724,7 +724,7 @@
         },
         {
             "identifier": 9,
-            "name": "__kefir_builtin_popcountll",
+            "name": "__kefir_builtin_ffsll",
             "parameters": 18,
             "vararg": false,
             "returns": 19,
@@ -733,7 +733,7 @@
         },
         {
             "identifier": 3,
-            "name": "__kefir_builtin_clzll",
+            "name": "__kefir_builtin_trap",
             "parameters": 6,
             "vararg": false,
             "returns": 7,
@@ -742,7 +742,7 @@
         },
         {
             "identifier": 35,
-            "name": "__kefir_builtin_isless",
+            "name": "__kefir_builtin_bswap16",
             "parameters": 70,
             "vararg": false,
             "returns": 71,
@@ -751,7 +751,7 @@
         },
         {
             "identifier": 39,
-            "name": "__kefir_builtin_ctzl",
+            "name": "__kefir_builtin_parityll",
             "parameters": 78,
             "vararg": false,
             "returns": 79,
@@ -760,7 +760,7 @@
         },
         {
             "identifier": 32,
-            "name": "__kefir_builtin_islessl",
+            "name": "__kefir_builtin_clzl",
             "parameters": 64,
             "vararg": false,
             "returns": 65,
@@ -769,7 +769,7 @@
         },
         {
             "identifier": 0,
-            "name": "test1",
+            "name": "__kefir_builtin_isgreater",
             "parameters": 0,
             "vararg": false,
             "returns": 1,
@@ -778,7 +778,7 @@
         },
         {
             "identifier": 36,
-            "name": "__kefir_builtin_parity",
+            "name": "__kefir_builtin_clrsbll",
             "parameters": 72,
             "vararg": false,
             "returns": 73,
@@ -787,7 +787,7 @@
         },
         {
             "identifier": 29,
-            "name": "__kefir_builtin_bswap64",
+            "name": "__kefir_builtin_isgreaterequal",
             "parameters": 58,
             "vararg": false,
             "returns": 59,
@@ -796,7 +796,7 @@
         },
         {
             "identifier": 1,
-            "name": "__kefir_builtin_isgreaterequal",
+            "name": "__kefir_builtin_isfinitel",
             "parameters": 2,
             "vararg": false,
             "returns": 3,
@@ -805,7 +805,7 @@
         },
         {
             "identifier": 33,
-            "name": "__kefir_builtin_parityl",
+            "name": "__kefir_builtin_copysignl",
             "parameters": 66,
             "vararg": false,
             "returns": 67,
@@ -814,7 +814,7 @@
         },
         {
             "identifier": 41,
-            "name": "__kefir_builtin_trap",
+            "name": "__kefir_builtin_islessequal",
             "parameters": 82,
             "vararg": false,
             "returns": 83,
@@ -823,7 +823,7 @@
         },
         {
             "identifier": 26,
-            "name": "__kefir_builtin_popcount",
+            "name": "__kefir_builtin_ctzl",
             "parameters": 52,
             "vararg": false,
             "returns": 53,
@@ -832,7 +832,7 @@
         },
         {
             "identifier": 8,
-            "name": "__kefir_builtin_isgreaterl",
+            "name": "__kefir_builtin_popcountl",
             "parameters": 16,
             "vararg": false,
             "returns": 17,
@@ -841,7 +841,7 @@
         },
         {
             "identifier": 19,
-            "name": "__kefir_builtin_islessequal",
+            "name": "__kefir_builtin_bswap32",
             "parameters": 38,
             "vararg": false,
             "returns": 39,
@@ -850,7 +850,7 @@
         },
         {
             "identifier": 43,
-            "name": "__kefir_builtin_islessequall",
+            "name": "__kefir_builtin_return_address",
             "parameters": 86,
             "vararg": false,
             "returns": 87,
@@ -859,7 +859,7 @@
         },
         {
             "identifier": 25,
-            "name": "__kefir_builtin_parityll",
+            "name": "__kefir_builtin_frame_address",
             "parameters": 50,
             "vararg": false,
             "returns": 51,
@@ -868,7 +868,7 @@
         },
         {
             "identifier": 37,
-            "name": "__kefir_builtin_frame_address",
+            "name": "__kefir_builtin_islessf",
             "parameters": 74,
             "vararg": false,
             "returns": 75,
@@ -877,7 +877,7 @@
         },
         {
             "identifier": 13,
-            "name": "__kefir_builtin_isgreater",
+            "name": "__kefir_builtin_islessl",
             "parameters": 26,
             "vararg": false,
             "returns": 27,
@@ -886,7 +886,7 @@
         },
         {
             "identifier": 22,
-            "name": "__kefir_builtin_ctz",
+            "name": "__kefir_builtin_isgreaterf",
             "parameters": 44,
             "vararg": false,
             "returns": 45,
@@ -895,7 +895,7 @@
         },
         {
             "identifier": 30,
-            "name": "__kefir_builtin_clrsbll",
+            "name": "__kefir_builtin_ffsl",
             "parameters": 60,
             "vararg": false,
             "returns": 61,
@@ -904,7 +904,7 @@
         },
         {
             "identifier": 7,
-            "name": "__kefir_builtin_isgreaterf",
+            "name": "__kefir_builtin_ctzll",
             "parameters": 14,
             "vararg": false,
             "returns": 15,
@@ -913,7 +913,7 @@
         },
         {
             "identifier": 12,
-            "name": "__kefir_builtin_isfinitel",
+            "name": "__kefir_builtin_clzll",
             "parameters": 24,
             "vararg": false,
             "returns": 25,
@@ -922,7 +922,7 @@
         },
         {
             "identifier": 4,
-            "name": "__kefir_builtin_ctzll",
+            "name": "__kefir_builtin_isfinitef64",
             "parameters": 8,
             "vararg": false,
             "returns": 9,
@@ -931,7 +931,7 @@
         },
         {
             "identifier": 10,
-            "name": "__kefir_builtin_copysignf",
+            "name": "__kefir_builtin_popcountll",
             "parameters": 20,
             "vararg": false,
             "returns": 21,
@@ -982,7 +982,7 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 188978561025,
+                    "id": 188978561026,
                     "type": 88,
                     "type_index": 0
                 },
@@ -1008,8 +1008,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 188978561026,
-                    "type": 92,
+                    "id": 188978561027,
+                    "type": 93,
                     "type_index": 0
                 },
                 {
@@ -1034,8 +1034,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 188978561027,
-                    "type": 93,
+                    "id": 188978561028,
+                    "type": 94,
                     "type_index": 0
                 },
                 {
@@ -1158,7 +1158,7 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 188978561025,
+                    "id": 188978561026,
                     "type": 88,
                     "type_index": 0
                 },
@@ -1204,7 +1204,7 @@
                 {
                     "opcode": "get_local",
                     "id": 188978561031,
-                    "type": 92,
+                    "type": 93,
                     "type_index": 0
                 },
                 {
@@ -1288,7 +1288,7 @@
                 {
                     "opcode": "get_local",
                     "id": 188978561032,
-                    "type": 92,
+                    "type": 93,
                     "type_index": 0
                 },
                 {
@@ -1464,7 +1464,7 @@
                 "attributes": [
                     {
                         "tag": "name",
-                        "value": "__kefir_builtin_isgreaterequal"
+                        "value": "__kefir_builtin_isgreater"
                     },
                     {
                         "tag": "type",
@@ -1488,7 +1488,7 @@
                     },
                     {
                         "tag": "source_location_line",
-                        "value": 662
+                        "value": 658
                     },
                     {
                         "tag": "source_location_column",
@@ -1564,7 +1564,7 @@
                 "attributes": [
                     {
                         "tag": "name",
-                        "value": "__kefir_builtin_clrsb"
+                        "value": "__kefir_builtin_isfinitel"
                     },
                     {
                         "tag": "type",
@@ -1588,11 +1588,11 @@
                     },
                     {
                         "tag": "source_location_line",
-                        "value": 633
+                        "value": 678
                     },
                     {
                         "tag": "source_location_column",
-                        "value": 12
+                        "value": 5
                     }
                 ],
                 "children": [
@@ -1602,7 +1602,7 @@
                         "attributes": [
                             {
                                 "tag": "type",
-                                "value": 6
+                                "value": 8
                             }
                         ],
                         "children": []
@@ -1630,15 +1630,34 @@
             },
             {
                 "identifier": 8,
+                "tag": "type_float",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "long double"
+                    },
+                    {
+                        "tag": "size",
+                        "value": 16
+                    },
+                    {
+                        "tag": "alignment",
+                        "value": 16
+                    }
+                ],
+                "children": []
+            },
+            {
+                "identifier": 9,
                 "tag": "subprogram",
                 "attributes": [
                     {
                         "tag": "name",
-                        "value": "__kefir_builtin_clzll"
+                        "value": "__kefir_builtin_bswap64"
                     },
                     {
                         "tag": "type",
-                        "value": 6
+                        "value": 10
                     },
                     {
                         "tag": "function_prototyped",
@@ -1658,16 +1677,16 @@
                     },
                     {
                         "tag": "source_location_line",
-                        "value": 649
+                        "value": 639
                     },
                     {
                         "tag": "source_location_column",
-                        "value": 12
+                        "value": 22
                     }
                 ],
                 "children": [
                     {
-                        "identifier": 9,
+                        "identifier": 11,
                         "tag": "function_parameter",
                         "attributes": [
                             {
@@ -1699,7 +1718,229 @@
                 "children": []
             },
             {
-                "identifier": 11,
+                "identifier": 12,
+                "tag": "subprogram",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "__kefir_builtin_trap"
+                    },
+                    {
+                        "tag": "type",
+                        "value": 13
+                    },
+                    {
+                        "tag": "function_prototyped",
+                        "value": true
+                    },
+                    {
+                        "tag": "external",
+                        "value": true
+                    },
+                    {
+                        "tag": "declaration",
+                        "value": true
+                    },
+                    {
+                        "tag": "source_location",
+                        "value": "<predefined-defs>"
+                    },
+                    {
+                        "tag": "source_location_line",
+                        "value": 626
+                    },
+                    {
+                        "tag": "source_location_column",
+                        "value": 13
+                    }
+                ],
+                "children": []
+            },
+            {
+                "identifier": 13,
+                "tag": "type_void",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "void"
+                    }
+                ],
+                "children": []
+            },
+            {
+                "identifier": 14,
+                "tag": "subprogram",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "__kefir_builtin_isfinitef64"
+                    },
+                    {
+                        "tag": "type",
+                        "value": 6
+                    },
+                    {
+                        "tag": "function_prototyped",
+                        "value": true
+                    },
+                    {
+                        "tag": "external",
+                        "value": true
+                    },
+                    {
+                        "tag": "declaration",
+                        "value": true
+                    },
+                    {
+                        "tag": "source_location",
+                        "value": "<predefined-defs>"
+                    },
+                    {
+                        "tag": "source_location_line",
+                        "value": 677
+                    },
+                    {
+                        "tag": "source_location_column",
+                        "value": 5
+                    }
+                ],
+                "children": [
+                    {
+                        "identifier": 15,
+                        "tag": "function_parameter",
+                        "attributes": [
+                            {
+                                "tag": "type",
+                                "value": 3
+                            }
+                        ],
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "identifier": 16,
+                "tag": "subprogram",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "__kefir_builtin_isfinitef32"
+                    },
+                    {
+                        "tag": "type",
+                        "value": 6
+                    },
+                    {
+                        "tag": "function_prototyped",
+                        "value": true
+                    },
+                    {
+                        "tag": "external",
+                        "value": true
+                    },
+                    {
+                        "tag": "declaration",
+                        "value": true
+                    },
+                    {
+                        "tag": "source_location",
+                        "value": "<predefined-defs>"
+                    },
+                    {
+                        "tag": "source_location_line",
+                        "value": 676
+                    },
+                    {
+                        "tag": "source_location_column",
+                        "value": 5
+                    }
+                ],
+                "children": [
+                    {
+                        "identifier": 17,
+                        "tag": "function_parameter",
+                        "attributes": [
+                            {
+                                "tag": "type",
+                                "value": 18
+                            }
+                        ],
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "identifier": 18,
+                "tag": "type_float",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "float"
+                    },
+                    {
+                        "tag": "size",
+                        "value": 4
+                    },
+                    {
+                        "tag": "alignment",
+                        "value": 4
+                    }
+                ],
+                "children": []
+            },
+            {
+                "identifier": 19,
+                "tag": "subprogram",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "__kefir_builtin_parity"
+                    },
+                    {
+                        "tag": "type",
+                        "value": 6
+                    },
+                    {
+                        "tag": "function_prototyped",
+                        "value": true
+                    },
+                    {
+                        "tag": "external",
+                        "value": true
+                    },
+                    {
+                        "tag": "declaration",
+                        "value": true
+                    },
+                    {
+                        "tag": "source_location",
+                        "value": "<predefined-defs>"
+                    },
+                    {
+                        "tag": "source_location_line",
+                        "value": 635
+                    },
+                    {
+                        "tag": "source_location_column",
+                        "value": 12
+                    }
+                ],
+                "children": [
+                    {
+                        "identifier": 20,
+                        "tag": "function_parameter",
+                        "attributes": [
+                            {
+                                "tag": "type",
+                                "value": 6
+                            }
+                        ],
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "identifier": 21,
                 "tag": "subprogram",
                 "attributes": [
                     {
@@ -1737,7 +1978,7 @@
                 ],
                 "children": [
                     {
-                        "identifier": 12,
+                        "identifier": 22,
                         "tag": "function_parameter",
                         "attributes": [
                             {
@@ -1750,7 +1991,58 @@
                 ]
             },
             {
-                "identifier": 13,
+                "identifier": 23,
+                "tag": "subprogram",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "__kefir_builtin_popcountl"
+                    },
+                    {
+                        "tag": "type",
+                        "value": 6
+                    },
+                    {
+                        "tag": "function_prototyped",
+                        "value": true
+                    },
+                    {
+                        "tag": "external",
+                        "value": true
+                    },
+                    {
+                        "tag": "declaration",
+                        "value": true
+                    },
+                    {
+                        "tag": "source_location",
+                        "value": "<predefined-defs>"
+                    },
+                    {
+                        "tag": "source_location_line",
+                        "value": 645
+                    },
+                    {
+                        "tag": "source_location_column",
+                        "value": 12
+                    }
+                ],
+                "children": [
+                    {
+                        "identifier": 24,
+                        "tag": "function_parameter",
+                        "attributes": [
+                            {
+                                "tag": "type",
+                                "value": 10
+                            }
+                        ],
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "identifier": 25,
                 "tag": "subprogram",
                 "attributes": [
                     {
@@ -1788,12 +2080,12 @@
                 ],
                 "children": [
                     {
-                        "identifier": 14,
+                        "identifier": 26,
                         "tag": "function_parameter",
                         "attributes": [
                             {
                                 "tag": "type",
-                                "value": 15
+                                "value": 27
                             }
                         ],
                         "children": []
@@ -1801,7 +2093,7 @@
                 ]
             },
             {
-                "identifier": 15,
+                "identifier": 27,
                 "tag": "type_signed_int",
                 "attributes": [
                     {
@@ -1820,7 +2112,569 @@
                 "children": []
             },
             {
-                "identifier": 16,
+                "identifier": 28,
+                "tag": "subprogram",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "__kefir_builtin_popcountll"
+                    },
+                    {
+                        "tag": "type",
+                        "value": 6
+                    },
+                    {
+                        "tag": "function_prototyped",
+                        "value": true
+                    },
+                    {
+                        "tag": "external",
+                        "value": true
+                    },
+                    {
+                        "tag": "declaration",
+                        "value": true
+                    },
+                    {
+                        "tag": "source_location",
+                        "value": "<predefined-defs>"
+                    },
+                    {
+                        "tag": "source_location_line",
+                        "value": 652
+                    },
+                    {
+                        "tag": "source_location_column",
+                        "value": 12
+                    }
+                ],
+                "children": [
+                    {
+                        "identifier": 29,
+                        "tag": "function_parameter",
+                        "attributes": [
+                            {
+                                "tag": "type",
+                                "value": 10
+                            }
+                        ],
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "identifier": 30,
+                "tag": "subprogram",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "__kefir_builtin_ctz"
+                    },
+                    {
+                        "tag": "type",
+                        "value": 6
+                    },
+                    {
+                        "tag": "function_prototyped",
+                        "value": true
+                    },
+                    {
+                        "tag": "external",
+                        "value": true
+                    },
+                    {
+                        "tag": "declaration",
+                        "value": true
+                    },
+                    {
+                        "tag": "source_location",
+                        "value": "<predefined-defs>"
+                    },
+                    {
+                        "tag": "source_location_line",
+                        "value": 632
+                    },
+                    {
+                        "tag": "source_location_column",
+                        "value": 12
+                    }
+                ],
+                "children": [
+                    {
+                        "identifier": 31,
+                        "tag": "function_parameter",
+                        "attributes": [
+                            {
+                                "tag": "type",
+                                "value": 32
+                            }
+                        ],
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "identifier": 32,
+                "tag": "type_unsigned_int",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "unsigned int"
+                    },
+                    {
+                        "tag": "size",
+                        "value": 4
+                    },
+                    {
+                        "tag": "alignment",
+                        "value": 4
+                    }
+                ],
+                "children": []
+            },
+            {
+                "identifier": 33,
+                "tag": "subprogram",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "__kefir_builtin_clzll"
+                    },
+                    {
+                        "tag": "type",
+                        "value": 6
+                    },
+                    {
+                        "tag": "function_prototyped",
+                        "value": true
+                    },
+                    {
+                        "tag": "external",
+                        "value": true
+                    },
+                    {
+                        "tag": "declaration",
+                        "value": true
+                    },
+                    {
+                        "tag": "source_location",
+                        "value": "<predefined-defs>"
+                    },
+                    {
+                        "tag": "source_location_line",
+                        "value": 649
+                    },
+                    {
+                        "tag": "source_location_column",
+                        "value": 12
+                    }
+                ],
+                "children": [
+                    {
+                        "identifier": 34,
+                        "tag": "function_parameter",
+                        "attributes": [
+                            {
+                                "tag": "type",
+                                "value": 10
+                            }
+                        ],
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "identifier": 35,
+                "tag": "subprogram",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "__kefir_builtin_islessl"
+                    },
+                    {
+                        "tag": "type",
+                        "value": 1
+                    },
+                    {
+                        "tag": "function_prototyped",
+                        "value": true
+                    },
+                    {
+                        "tag": "external",
+                        "value": true
+                    },
+                    {
+                        "tag": "declaration",
+                        "value": true
+                    },
+                    {
+                        "tag": "source_location",
+                        "value": "<predefined-defs>"
+                    },
+                    {
+                        "tag": "source_location_line",
+                        "value": 667
+                    },
+                    {
+                        "tag": "source_location_column",
+                        "value": 14
+                    }
+                ],
+                "children": [
+                    {
+                        "identifier": 36,
+                        "tag": "function_parameter",
+                        "attributes": [
+                            {
+                                "tag": "type",
+                                "value": 8
+                            }
+                        ],
+                        "children": []
+                    },
+                    {
+                        "identifier": 37,
+                        "tag": "function_parameter",
+                        "attributes": [
+                            {
+                                "tag": "type",
+                                "value": 8
+                            }
+                        ],
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "identifier": 38,
+                "tag": "subprogram",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "__kefir_builtin_isgreaterequall"
+                    },
+                    {
+                        "tag": "type",
+                        "value": 1
+                    },
+                    {
+                        "tag": "function_prototyped",
+                        "value": true
+                    },
+                    {
+                        "tag": "external",
+                        "value": true
+                    },
+                    {
+                        "tag": "declaration",
+                        "value": true
+                    },
+                    {
+                        "tag": "source_location",
+                        "value": "<predefined-defs>"
+                    },
+                    {
+                        "tag": "source_location_line",
+                        "value": 663
+                    },
+                    {
+                        "tag": "source_location_column",
+                        "value": 14
+                    }
+                ],
+                "children": [
+                    {
+                        "identifier": 39,
+                        "tag": "function_parameter",
+                        "attributes": [
+                            {
+                                "tag": "type",
+                                "value": 8
+                            }
+                        ],
+                        "children": []
+                    },
+                    {
+                        "identifier": 40,
+                        "tag": "function_parameter",
+                        "attributes": [
+                            {
+                                "tag": "type",
+                                "value": 8
+                            }
+                        ],
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "identifier": 41,
+                "tag": "subprogram",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "__kefir_builtin_clz"
+                    },
+                    {
+                        "tag": "type",
+                        "value": 6
+                    },
+                    {
+                        "tag": "function_prototyped",
+                        "value": true
+                    },
+                    {
+                        "tag": "external",
+                        "value": true
+                    },
+                    {
+                        "tag": "declaration",
+                        "value": true
+                    },
+                    {
+                        "tag": "source_location",
+                        "value": "<predefined-defs>"
+                    },
+                    {
+                        "tag": "source_location_line",
+                        "value": 631
+                    },
+                    {
+                        "tag": "source_location_column",
+                        "value": 12
+                    }
+                ],
+                "children": [
+                    {
+                        "identifier": 42,
+                        "tag": "function_parameter",
+                        "attributes": [
+                            {
+                                "tag": "type",
+                                "value": 32
+                            }
+                        ],
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "identifier": 43,
+                "tag": "subprogram",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "__kefir_builtin_copysignf"
+                    },
+                    {
+                        "tag": "type",
+                        "value": 18
+                    },
+                    {
+                        "tag": "function_prototyped",
+                        "value": true
+                    },
+                    {
+                        "tag": "external",
+                        "value": true
+                    },
+                    {
+                        "tag": "declaration",
+                        "value": true
+                    },
+                    {
+                        "tag": "source_location",
+                        "value": "<predefined-defs>"
+                    },
+                    {
+                        "tag": "source_location_line",
+                        "value": 673
+                    },
+                    {
+                        "tag": "source_location_column",
+                        "value": 7
+                    }
+                ],
+                "children": [
+                    {
+                        "identifier": 44,
+                        "tag": "function_parameter",
+                        "attributes": [
+                            {
+                                "tag": "type",
+                                "value": 18
+                            }
+                        ],
+                        "children": []
+                    },
+                    {
+                        "identifier": 45,
+                        "tag": "function_parameter",
+                        "attributes": [
+                            {
+                                "tag": "type",
+                                "value": 18
+                            }
+                        ],
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "identifier": 46,
+                "tag": "subprogram",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "__kefir_builtin_ffs"
+                    },
+                    {
+                        "tag": "type",
+                        "value": 6
+                    },
+                    {
+                        "tag": "function_prototyped",
+                        "value": true
+                    },
+                    {
+                        "tag": "external",
+                        "value": true
+                    },
+                    {
+                        "tag": "declaration",
+                        "value": true
+                    },
+                    {
+                        "tag": "source_location",
+                        "value": "<predefined-defs>"
+                    },
+                    {
+                        "tag": "source_location_line",
+                        "value": 630
+                    },
+                    {
+                        "tag": "source_location_column",
+                        "value": 12
+                    }
+                ],
+                "children": [
+                    {
+                        "identifier": 47,
+                        "tag": "function_parameter",
+                        "attributes": [
+                            {
+                                "tag": "type",
+                                "value": 6
+                            }
+                        ],
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "identifier": 48,
+                "tag": "subprogram",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "__kefir_builtin_clrsb"
+                    },
+                    {
+                        "tag": "type",
+                        "value": 6
+                    },
+                    {
+                        "tag": "function_prototyped",
+                        "value": true
+                    },
+                    {
+                        "tag": "external",
+                        "value": true
+                    },
+                    {
+                        "tag": "declaration",
+                        "value": true
+                    },
+                    {
+                        "tag": "source_location",
+                        "value": "<predefined-defs>"
+                    },
+                    {
+                        "tag": "source_location_line",
+                        "value": 633
+                    },
+                    {
+                        "tag": "source_location_column",
+                        "value": 12
+                    }
+                ],
+                "children": [
+                    {
+                        "identifier": 49,
+                        "tag": "function_parameter",
+                        "attributes": [
+                            {
+                                "tag": "type",
+                                "value": 6
+                            }
+                        ],
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "identifier": 50,
+                "tag": "subprogram",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "__kefir_builtin_bswap32"
+                    },
+                    {
+                        "tag": "type",
+                        "value": 32
+                    },
+                    {
+                        "tag": "function_prototyped",
+                        "value": true
+                    },
+                    {
+                        "tag": "external",
+                        "value": true
+                    },
+                    {
+                        "tag": "declaration",
+                        "value": true
+                    },
+                    {
+                        "tag": "source_location",
+                        "value": "<predefined-defs>"
+                    },
+                    {
+                        "tag": "source_location_line",
+                        "value": 638
+                    },
+                    {
+                        "tag": "source_location_column",
+                        "value": 21
+                    }
+                ],
+                "children": [
+                    {
+                        "identifier": 51,
+                        "tag": "function_parameter",
+                        "attributes": [
+                            {
+                                "tag": "type",
+                                "value": 32
+                            }
+                        ],
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "identifier": 52,
                 "tag": "subprogram",
                 "attributes": [
                     {
@@ -1859,1611 +2713,7 @@
                 "children": []
             },
             {
-                "identifier": 17,
-                "tag": "subprogram",
-                "attributes": [
-                    {
-                        "tag": "name",
-                        "value": "__kefir_builtin_isgreaterf"
-                    },
-                    {
-                        "tag": "type",
-                        "value": 1
-                    },
-                    {
-                        "tag": "function_prototyped",
-                        "value": true
-                    },
-                    {
-                        "tag": "external",
-                        "value": true
-                    },
-                    {
-                        "tag": "declaration",
-                        "value": true
-                    },
-                    {
-                        "tag": "source_location",
-                        "value": "<predefined-defs>"
-                    },
-                    {
-                        "tag": "source_location_line",
-                        "value": 657
-                    },
-                    {
-                        "tag": "source_location_column",
-                        "value": 14
-                    }
-                ],
-                "children": [
-                    {
-                        "identifier": 18,
-                        "tag": "function_parameter",
-                        "attributes": [
-                            {
-                                "tag": "type",
-                                "value": 19
-                            }
-                        ],
-                        "children": []
-                    },
-                    {
-                        "identifier": 20,
-                        "tag": "function_parameter",
-                        "attributes": [
-                            {
-                                "tag": "type",
-                                "value": 19
-                            }
-                        ],
-                        "children": []
-                    }
-                ]
-            },
-            {
-                "identifier": 19,
-                "tag": "type_float",
-                "attributes": [
-                    {
-                        "tag": "name",
-                        "value": "float"
-                    },
-                    {
-                        "tag": "size",
-                        "value": 4
-                    },
-                    {
-                        "tag": "alignment",
-                        "value": 4
-                    }
-                ],
-                "children": []
-            },
-            {
-                "identifier": 21,
-                "tag": "subprogram",
-                "attributes": [
-                    {
-                        "tag": "name",
-                        "value": "__kefir_builtin_isgreaterl"
-                    },
-                    {
-                        "tag": "type",
-                        "value": 1
-                    },
-                    {
-                        "tag": "function_prototyped",
-                        "value": true
-                    },
-                    {
-                        "tag": "external",
-                        "value": true
-                    },
-                    {
-                        "tag": "declaration",
-                        "value": true
-                    },
-                    {
-                        "tag": "source_location",
-                        "value": "<predefined-defs>"
-                    },
-                    {
-                        "tag": "source_location_line",
-                        "value": 659
-                    },
-                    {
-                        "tag": "source_location_column",
-                        "value": 14
-                    }
-                ],
-                "children": [
-                    {
-                        "identifier": 22,
-                        "tag": "function_parameter",
-                        "attributes": [
-                            {
-                                "tag": "type",
-                                "value": 23
-                            }
-                        ],
-                        "children": []
-                    },
-                    {
-                        "identifier": 24,
-                        "tag": "function_parameter",
-                        "attributes": [
-                            {
-                                "tag": "type",
-                                "value": 23
-                            }
-                        ],
-                        "children": []
-                    }
-                ]
-            },
-            {
-                "identifier": 23,
-                "tag": "type_float",
-                "attributes": [
-                    {
-                        "tag": "name",
-                        "value": "long double"
-                    },
-                    {
-                        "tag": "size",
-                        "value": 16
-                    },
-                    {
-                        "tag": "alignment",
-                        "value": 16
-                    }
-                ],
-                "children": []
-            },
-            {
-                "identifier": 25,
-                "tag": "subprogram",
-                "attributes": [
-                    {
-                        "tag": "name",
-                        "value": "__kefir_builtin_popcountll"
-                    },
-                    {
-                        "tag": "type",
-                        "value": 6
-                    },
-                    {
-                        "tag": "function_prototyped",
-                        "value": true
-                    },
-                    {
-                        "tag": "external",
-                        "value": true
-                    },
-                    {
-                        "tag": "declaration",
-                        "value": true
-                    },
-                    {
-                        "tag": "source_location",
-                        "value": "<predefined-defs>"
-                    },
-                    {
-                        "tag": "source_location_line",
-                        "value": 652
-                    },
-                    {
-                        "tag": "source_location_column",
-                        "value": 12
-                    }
-                ],
-                "children": [
-                    {
-                        "identifier": 26,
-                        "tag": "function_parameter",
-                        "attributes": [
-                            {
-                                "tag": "type",
-                                "value": 10
-                            }
-                        ],
-                        "children": []
-                    }
-                ]
-            },
-            {
-                "identifier": 27,
-                "tag": "subprogram",
-                "attributes": [
-                    {
-                        "tag": "name",
-                        "value": "__kefir_builtin_copysignf"
-                    },
-                    {
-                        "tag": "type",
-                        "value": 19
-                    },
-                    {
-                        "tag": "function_prototyped",
-                        "value": true
-                    },
-                    {
-                        "tag": "external",
-                        "value": true
-                    },
-                    {
-                        "tag": "declaration",
-                        "value": true
-                    },
-                    {
-                        "tag": "source_location",
-                        "value": "<predefined-defs>"
-                    },
-                    {
-                        "tag": "source_location_line",
-                        "value": 673
-                    },
-                    {
-                        "tag": "source_location_column",
-                        "value": 7
-                    }
-                ],
-                "children": [
-                    {
-                        "identifier": 28,
-                        "tag": "function_parameter",
-                        "attributes": [
-                            {
-                                "tag": "type",
-                                "value": 19
-                            }
-                        ],
-                        "children": []
-                    },
-                    {
-                        "identifier": 29,
-                        "tag": "function_parameter",
-                        "attributes": [
-                            {
-                                "tag": "type",
-                                "value": 19
-                            }
-                        ],
-                        "children": []
-                    }
-                ]
-            },
-            {
-                "identifier": 30,
-                "tag": "subprogram",
-                "attributes": [
-                    {
-                        "tag": "name",
-                        "value": "__kefir_builtin_copysignl"
-                    },
-                    {
-                        "tag": "type",
-                        "value": 23
-                    },
-                    {
-                        "tag": "function_prototyped",
-                        "value": true
-                    },
-                    {
-                        "tag": "external",
-                        "value": true
-                    },
-                    {
-                        "tag": "declaration",
-                        "value": true
-                    },
-                    {
-                        "tag": "source_location",
-                        "value": "<predefined-defs>"
-                    },
-                    {
-                        "tag": "source_location_line",
-                        "value": 675
-                    },
-                    {
-                        "tag": "source_location_column",
-                        "value": 13
-                    }
-                ],
-                "children": [
-                    {
-                        "identifier": 31,
-                        "tag": "function_parameter",
-                        "attributes": [
-                            {
-                                "tag": "type",
-                                "value": 23
-                            }
-                        ],
-                        "children": []
-                    },
-                    {
-                        "identifier": 32,
-                        "tag": "function_parameter",
-                        "attributes": [
-                            {
-                                "tag": "type",
-                                "value": 23
-                            }
-                        ],
-                        "children": []
-                    }
-                ]
-            },
-            {
-                "identifier": 33,
-                "tag": "subprogram",
-                "attributes": [
-                    {
-                        "tag": "name",
-                        "value": "__kefir_builtin_isfinitel"
-                    },
-                    {
-                        "tag": "type",
-                        "value": 6
-                    },
-                    {
-                        "tag": "function_prototyped",
-                        "value": true
-                    },
-                    {
-                        "tag": "external",
-                        "value": true
-                    },
-                    {
-                        "tag": "declaration",
-                        "value": true
-                    },
-                    {
-                        "tag": "source_location",
-                        "value": "<predefined-defs>"
-                    },
-                    {
-                        "tag": "source_location_line",
-                        "value": 678
-                    },
-                    {
-                        "tag": "source_location_column",
-                        "value": 5
-                    }
-                ],
-                "children": [
-                    {
-                        "identifier": 34,
-                        "tag": "function_parameter",
-                        "attributes": [
-                            {
-                                "tag": "type",
-                                "value": 23
-                            }
-                        ],
-                        "children": []
-                    }
-                ]
-            },
-            {
-                "identifier": 35,
-                "tag": "subprogram",
-                "attributes": [
-                    {
-                        "tag": "name",
-                        "value": "__kefir_builtin_isgreater"
-                    },
-                    {
-                        "tag": "type",
-                        "value": 1
-                    },
-                    {
-                        "tag": "function_prototyped",
-                        "value": true
-                    },
-                    {
-                        "tag": "external",
-                        "value": true
-                    },
-                    {
-                        "tag": "declaration",
-                        "value": true
-                    },
-                    {
-                        "tag": "source_location",
-                        "value": "<predefined-defs>"
-                    },
-                    {
-                        "tag": "source_location_line",
-                        "value": 658
-                    },
-                    {
-                        "tag": "source_location_column",
-                        "value": 14
-                    }
-                ],
-                "children": [
-                    {
-                        "identifier": 36,
-                        "tag": "function_parameter",
-                        "attributes": [
-                            {
-                                "tag": "type",
-                                "value": 3
-                            }
-                        ],
-                        "children": []
-                    },
-                    {
-                        "identifier": 37,
-                        "tag": "function_parameter",
-                        "attributes": [
-                            {
-                                "tag": "type",
-                                "value": 3
-                            }
-                        ],
-                        "children": []
-                    }
-                ]
-            },
-            {
-                "identifier": 38,
-                "tag": "subprogram",
-                "attributes": [
-                    {
-                        "tag": "name",
-                        "value": "__kefir_builtin_popcountl"
-                    },
-                    {
-                        "tag": "type",
-                        "value": 6
-                    },
-                    {
-                        "tag": "function_prototyped",
-                        "value": true
-                    },
-                    {
-                        "tag": "external",
-                        "value": true
-                    },
-                    {
-                        "tag": "declaration",
-                        "value": true
-                    },
-                    {
-                        "tag": "source_location",
-                        "value": "<predefined-defs>"
-                    },
-                    {
-                        "tag": "source_location_line",
-                        "value": 645
-                    },
-                    {
-                        "tag": "source_location_column",
-                        "value": 12
-                    }
-                ],
-                "children": [
-                    {
-                        "identifier": 39,
-                        "tag": "function_parameter",
-                        "attributes": [
-                            {
-                                "tag": "type",
-                                "value": 10
-                            }
-                        ],
-                        "children": []
-                    }
-                ]
-            },
-            {
-                "identifier": 40,
-                "tag": "subprogram",
-                "attributes": [
-                    {
-                        "tag": "name",
-                        "value": "__kefir_builtin_isgreaterequalf"
-                    },
-                    {
-                        "tag": "type",
-                        "value": 1
-                    },
-                    {
-                        "tag": "function_prototyped",
-                        "value": true
-                    },
-                    {
-                        "tag": "external",
-                        "value": true
-                    },
-                    {
-                        "tag": "declaration",
-                        "value": true
-                    },
-                    {
-                        "tag": "source_location",
-                        "value": "<predefined-defs>"
-                    },
-                    {
-                        "tag": "source_location_line",
-                        "value": 661
-                    },
-                    {
-                        "tag": "source_location_column",
-                        "value": 14
-                    }
-                ],
-                "children": [
-                    {
-                        "identifier": 41,
-                        "tag": "function_parameter",
-                        "attributes": [
-                            {
-                                "tag": "type",
-                                "value": 19
-                            }
-                        ],
-                        "children": []
-                    },
-                    {
-                        "identifier": 42,
-                        "tag": "function_parameter",
-                        "attributes": [
-                            {
-                                "tag": "type",
-                                "value": 19
-                            }
-                        ],
-                        "children": []
-                    }
-                ]
-            },
-            {
-                "identifier": 43,
-                "tag": "subprogram",
-                "attributes": [
-                    {
-                        "tag": "name",
-                        "value": "__kefir_builtin_isgreaterequall"
-                    },
-                    {
-                        "tag": "type",
-                        "value": 1
-                    },
-                    {
-                        "tag": "function_prototyped",
-                        "value": true
-                    },
-                    {
-                        "tag": "external",
-                        "value": true
-                    },
-                    {
-                        "tag": "declaration",
-                        "value": true
-                    },
-                    {
-                        "tag": "source_location",
-                        "value": "<predefined-defs>"
-                    },
-                    {
-                        "tag": "source_location_line",
-                        "value": 663
-                    },
-                    {
-                        "tag": "source_location_column",
-                        "value": 14
-                    }
-                ],
-                "children": [
-                    {
-                        "identifier": 44,
-                        "tag": "function_parameter",
-                        "attributes": [
-                            {
-                                "tag": "type",
-                                "value": 23
-                            }
-                        ],
-                        "children": []
-                    },
-                    {
-                        "identifier": 45,
-                        "tag": "function_parameter",
-                        "attributes": [
-                            {
-                                "tag": "type",
-                                "value": 23
-                            }
-                        ],
-                        "children": []
-                    }
-                ]
-            },
-            {
-                "identifier": 46,
-                "tag": "subprogram",
-                "attributes": [
-                    {
-                        "tag": "name",
-                        "value": "__kefir_builtin_isfinitef32"
-                    },
-                    {
-                        "tag": "type",
-                        "value": 6
-                    },
-                    {
-                        "tag": "function_prototyped",
-                        "value": true
-                    },
-                    {
-                        "tag": "external",
-                        "value": true
-                    },
-                    {
-                        "tag": "declaration",
-                        "value": true
-                    },
-                    {
-                        "tag": "source_location",
-                        "value": "<predefined-defs>"
-                    },
-                    {
-                        "tag": "source_location_line",
-                        "value": 676
-                    },
-                    {
-                        "tag": "source_location_column",
-                        "value": 5
-                    }
-                ],
-                "children": [
-                    {
-                        "identifier": 47,
-                        "tag": "function_parameter",
-                        "attributes": [
-                            {
-                                "tag": "type",
-                                "value": 19
-                            }
-                        ],
-                        "children": []
-                    }
-                ]
-            },
-            {
-                "identifier": 48,
-                "tag": "subprogram",
-                "attributes": [
-                    {
-                        "tag": "name",
-                        "value": "__kefir_builtin_isfinitef64"
-                    },
-                    {
-                        "tag": "type",
-                        "value": 6
-                    },
-                    {
-                        "tag": "function_prototyped",
-                        "value": true
-                    },
-                    {
-                        "tag": "external",
-                        "value": true
-                    },
-                    {
-                        "tag": "declaration",
-                        "value": true
-                    },
-                    {
-                        "tag": "source_location",
-                        "value": "<predefined-defs>"
-                    },
-                    {
-                        "tag": "source_location_line",
-                        "value": 677
-                    },
-                    {
-                        "tag": "source_location_column",
-                        "value": 5
-                    }
-                ],
-                "children": [
-                    {
-                        "identifier": 49,
-                        "tag": "function_parameter",
-                        "attributes": [
-                            {
-                                "tag": "type",
-                                "value": 3
-                            }
-                        ],
-                        "children": []
-                    }
-                ]
-            },
-            {
-                "identifier": 50,
-                "tag": "subprogram",
-                "attributes": [
-                    {
-                        "tag": "name",
-                        "value": "__kefir_builtin_islessequal"
-                    },
-                    {
-                        "tag": "type",
-                        "value": 1
-                    },
-                    {
-                        "tag": "function_prototyped",
-                        "value": true
-                    },
-                    {
-                        "tag": "external",
-                        "value": true
-                    },
-                    {
-                        "tag": "declaration",
-                        "value": true
-                    },
-                    {
-                        "tag": "source_location",
-                        "value": "<predefined-defs>"
-                    },
-                    {
-                        "tag": "source_location_line",
-                        "value": 670
-                    },
-                    {
-                        "tag": "source_location_column",
-                        "value": 14
-                    }
-                ],
-                "children": [
-                    {
-                        "identifier": 51,
-                        "tag": "function_parameter",
-                        "attributes": [
-                            {
-                                "tag": "type",
-                                "value": 3
-                            }
-                        ],
-                        "children": []
-                    },
-                    {
-                        "identifier": 52,
-                        "tag": "function_parameter",
-                        "attributes": [
-                            {
-                                "tag": "type",
-                                "value": 3
-                            }
-                        ],
-                        "children": []
-                    }
-                ]
-            },
-            {
                 "identifier": 53,
-                "tag": "subprogram",
-                "attributes": [
-                    {
-                        "tag": "name",
-                        "value": "__kefir_builtin_return_address"
-                    },
-                    {
-                        "tag": "type",
-                        "value": 54
-                    },
-                    {
-                        "tag": "function_prototyped",
-                        "value": true
-                    },
-                    {
-                        "tag": "external",
-                        "value": true
-                    },
-                    {
-                        "tag": "declaration",
-                        "value": true
-                    },
-                    {
-                        "tag": "source_location",
-                        "value": "<predefined-defs>"
-                    },
-                    {
-                        "tag": "source_location_line",
-                        "value": 627
-                    },
-                    {
-                        "tag": "source_location_column",
-                        "value": 13
-                    }
-                ],
-                "children": [
-                    {
-                        "identifier": 56,
-                        "tag": "function_parameter",
-                        "attributes": [
-                            {
-                                "tag": "type",
-                                "value": 6
-                            }
-                        ],
-                        "children": []
-                    }
-                ]
-            },
-            {
-                "identifier": 54,
-                "tag": "type_pointer",
-                "attributes": [
-                    {
-                        "tag": "size",
-                        "value": 8
-                    },
-                    {
-                        "tag": "alignment",
-                        "value": 8
-                    },
-                    {
-                        "tag": "type",
-                        "value": 55
-                    }
-                ],
-                "children": []
-            },
-            {
-                "identifier": 55,
-                "tag": "type_void",
-                "attributes": [
-                    {
-                        "tag": "name",
-                        "value": "void"
-                    }
-                ],
-                "children": []
-            },
-            {
-                "identifier": 57,
-                "tag": "subprogram",
-                "attributes": [
-                    {
-                        "tag": "name",
-                        "value": "__kefir_builtin_clz"
-                    },
-                    {
-                        "tag": "type",
-                        "value": 6
-                    },
-                    {
-                        "tag": "function_prototyped",
-                        "value": true
-                    },
-                    {
-                        "tag": "external",
-                        "value": true
-                    },
-                    {
-                        "tag": "declaration",
-                        "value": true
-                    },
-                    {
-                        "tag": "source_location",
-                        "value": "<predefined-defs>"
-                    },
-                    {
-                        "tag": "source_location_line",
-                        "value": 631
-                    },
-                    {
-                        "tag": "source_location_column",
-                        "value": 12
-                    }
-                ],
-                "children": [
-                    {
-                        "identifier": 58,
-                        "tag": "function_parameter",
-                        "attributes": [
-                            {
-                                "tag": "type",
-                                "value": 59
-                            }
-                        ],
-                        "children": []
-                    }
-                ]
-            },
-            {
-                "identifier": 59,
-                "tag": "type_unsigned_int",
-                "attributes": [
-                    {
-                        "tag": "name",
-                        "value": "unsigned int"
-                    },
-                    {
-                        "tag": "size",
-                        "value": 4
-                    },
-                    {
-                        "tag": "alignment",
-                        "value": 4
-                    }
-                ],
-                "children": []
-            },
-            {
-                "identifier": 60,
-                "tag": "subprogram",
-                "attributes": [
-                    {
-                        "tag": "name",
-                        "value": "__kefir_builtin_ctz"
-                    },
-                    {
-                        "tag": "type",
-                        "value": 6
-                    },
-                    {
-                        "tag": "function_prototyped",
-                        "value": true
-                    },
-                    {
-                        "tag": "external",
-                        "value": true
-                    },
-                    {
-                        "tag": "declaration",
-                        "value": true
-                    },
-                    {
-                        "tag": "source_location",
-                        "value": "<predefined-defs>"
-                    },
-                    {
-                        "tag": "source_location_line",
-                        "value": 632
-                    },
-                    {
-                        "tag": "source_location_column",
-                        "value": 12
-                    }
-                ],
-                "children": [
-                    {
-                        "identifier": 61,
-                        "tag": "function_parameter",
-                        "attributes": [
-                            {
-                                "tag": "type",
-                                "value": 59
-                            }
-                        ],
-                        "children": []
-                    }
-                ]
-            },
-            {
-                "identifier": 62,
-                "tag": "subprogram",
-                "attributes": [
-                    {
-                        "tag": "name",
-                        "value": "__kefir_builtin_ffs"
-                    },
-                    {
-                        "tag": "type",
-                        "value": 6
-                    },
-                    {
-                        "tag": "function_prototyped",
-                        "value": true
-                    },
-                    {
-                        "tag": "external",
-                        "value": true
-                    },
-                    {
-                        "tag": "declaration",
-                        "value": true
-                    },
-                    {
-                        "tag": "source_location",
-                        "value": "<predefined-defs>"
-                    },
-                    {
-                        "tag": "source_location_line",
-                        "value": 630
-                    },
-                    {
-                        "tag": "source_location_column",
-                        "value": 12
-                    }
-                ],
-                "children": [
-                    {
-                        "identifier": 63,
-                        "tag": "function_parameter",
-                        "attributes": [
-                            {
-                                "tag": "type",
-                                "value": 6
-                            }
-                        ],
-                        "children": []
-                    }
-                ]
-            },
-            {
-                "identifier": 64,
-                "tag": "subprogram",
-                "attributes": [
-                    {
-                        "tag": "name",
-                        "value": "__kefir_builtin_copysign"
-                    },
-                    {
-                        "tag": "type",
-                        "value": 3
-                    },
-                    {
-                        "tag": "function_prototyped",
-                        "value": true
-                    },
-                    {
-                        "tag": "external",
-                        "value": true
-                    },
-                    {
-                        "tag": "declaration",
-                        "value": true
-                    },
-                    {
-                        "tag": "source_location",
-                        "value": "<predefined-defs>"
-                    },
-                    {
-                        "tag": "source_location_line",
-                        "value": 674
-                    },
-                    {
-                        "tag": "source_location_column",
-                        "value": 8
-                    }
-                ],
-                "children": [
-                    {
-                        "identifier": 65,
-                        "tag": "function_parameter",
-                        "attributes": [
-                            {
-                                "tag": "type",
-                                "value": 3
-                            }
-                        ],
-                        "children": []
-                    },
-                    {
-                        "identifier": 66,
-                        "tag": "function_parameter",
-                        "attributes": [
-                            {
-                                "tag": "type",
-                                "value": 3
-                            }
-                        ],
-                        "children": []
-                    }
-                ]
-            },
-            {
-                "identifier": 67,
-                "tag": "subprogram",
-                "attributes": [
-                    {
-                        "tag": "name",
-                        "value": "__kefir_builtin_parityll"
-                    },
-                    {
-                        "tag": "type",
-                        "value": 6
-                    },
-                    {
-                        "tag": "function_prototyped",
-                        "value": true
-                    },
-                    {
-                        "tag": "external",
-                        "value": true
-                    },
-                    {
-                        "tag": "declaration",
-                        "value": true
-                    },
-                    {
-                        "tag": "source_location",
-                        "value": "<predefined-defs>"
-                    },
-                    {
-                        "tag": "source_location_line",
-                        "value": 653
-                    },
-                    {
-                        "tag": "source_location_column",
-                        "value": 12
-                    }
-                ],
-                "children": [
-                    {
-                        "identifier": 68,
-                        "tag": "function_parameter",
-                        "attributes": [
-                            {
-                                "tag": "type",
-                                "value": 15
-                            }
-                        ],
-                        "children": []
-                    }
-                ]
-            },
-            {
-                "identifier": 69,
-                "tag": "subprogram",
-                "attributes": [
-                    {
-                        "tag": "name",
-                        "value": "__kefir_builtin_popcount"
-                    },
-                    {
-                        "tag": "type",
-                        "value": 6
-                    },
-                    {
-                        "tag": "function_prototyped",
-                        "value": true
-                    },
-                    {
-                        "tag": "external",
-                        "value": true
-                    },
-                    {
-                        "tag": "declaration",
-                        "value": true
-                    },
-                    {
-                        "tag": "source_location",
-                        "value": "<predefined-defs>"
-                    },
-                    {
-                        "tag": "source_location_line",
-                        "value": 634
-                    },
-                    {
-                        "tag": "source_location_column",
-                        "value": 12
-                    }
-                ],
-                "children": [
-                    {
-                        "identifier": 70,
-                        "tag": "function_parameter",
-                        "attributes": [
-                            {
-                                "tag": "type",
-                                "value": 59
-                            }
-                        ],
-                        "children": []
-                    }
-                ]
-            },
-            {
-                "identifier": 71,
-                "tag": "subprogram",
-                "attributes": [
-                    {
-                        "tag": "name",
-                        "value": "__kefir_builtin_bswap16"
-                    },
-                    {
-                        "tag": "type",
-                        "value": 72
-                    },
-                    {
-                        "tag": "function_prototyped",
-                        "value": true
-                    },
-                    {
-                        "tag": "external",
-                        "value": true
-                    },
-                    {
-                        "tag": "declaration",
-                        "value": true
-                    },
-                    {
-                        "tag": "source_location",
-                        "value": "<predefined-defs>"
-                    },
-                    {
-                        "tag": "source_location_line",
-                        "value": 637
-                    },
-                    {
-                        "tag": "source_location_column",
-                        "value": 23
-                    }
-                ],
-                "children": [
-                    {
-                        "identifier": 73,
-                        "tag": "function_parameter",
-                        "attributes": [
-                            {
-                                "tag": "type",
-                                "value": 72
-                            }
-                        ],
-                        "children": []
-                    }
-                ]
-            },
-            {
-                "identifier": 72,
-                "tag": "type_unsigned_int",
-                "attributes": [
-                    {
-                        "tag": "name",
-                        "value": "unsigned short"
-                    },
-                    {
-                        "tag": "size",
-                        "value": 2
-                    },
-                    {
-                        "tag": "alignment",
-                        "value": 2
-                    }
-                ],
-                "children": []
-            },
-            {
-                "identifier": 74,
-                "tag": "subprogram",
-                "attributes": [
-                    {
-                        "tag": "name",
-                        "value": "__kefir_builtin_bswap32"
-                    },
-                    {
-                        "tag": "type",
-                        "value": 59
-                    },
-                    {
-                        "tag": "function_prototyped",
-                        "value": true
-                    },
-                    {
-                        "tag": "external",
-                        "value": true
-                    },
-                    {
-                        "tag": "declaration",
-                        "value": true
-                    },
-                    {
-                        "tag": "source_location",
-                        "value": "<predefined-defs>"
-                    },
-                    {
-                        "tag": "source_location_line",
-                        "value": 638
-                    },
-                    {
-                        "tag": "source_location_column",
-                        "value": 21
-                    }
-                ],
-                "children": [
-                    {
-                        "identifier": 75,
-                        "tag": "function_parameter",
-                        "attributes": [
-                            {
-                                "tag": "type",
-                                "value": 59
-                            }
-                        ],
-                        "children": []
-                    }
-                ]
-            },
-            {
-                "identifier": 76,
-                "tag": "subprogram",
-                "attributes": [
-                    {
-                        "tag": "name",
-                        "value": "__kefir_builtin_bswap64"
-                    },
-                    {
-                        "tag": "type",
-                        "value": 10
-                    },
-                    {
-                        "tag": "function_prototyped",
-                        "value": true
-                    },
-                    {
-                        "tag": "external",
-                        "value": true
-                    },
-                    {
-                        "tag": "declaration",
-                        "value": true
-                    },
-                    {
-                        "tag": "source_location",
-                        "value": "<predefined-defs>"
-                    },
-                    {
-                        "tag": "source_location_line",
-                        "value": 639
-                    },
-                    {
-                        "tag": "source_location_column",
-                        "value": 22
-                    }
-                ],
-                "children": [
-                    {
-                        "identifier": 77,
-                        "tag": "function_parameter",
-                        "attributes": [
-                            {
-                                "tag": "type",
-                                "value": 10
-                            }
-                        ],
-                        "children": []
-                    }
-                ]
-            },
-            {
-                "identifier": 78,
-                "tag": "subprogram",
-                "attributes": [
-                    {
-                        "tag": "name",
-                        "value": "__kefir_builtin_clrsbll"
-                    },
-                    {
-                        "tag": "type",
-                        "value": 6
-                    },
-                    {
-                        "tag": "function_prototyped",
-                        "value": true
-                    },
-                    {
-                        "tag": "external",
-                        "value": true
-                    },
-                    {
-                        "tag": "declaration",
-                        "value": true
-                    },
-                    {
-                        "tag": "source_location",
-                        "value": "<predefined-defs>"
-                    },
-                    {
-                        "tag": "source_location_line",
-                        "value": 651
-                    },
-                    {
-                        "tag": "source_location_column",
-                        "value": 12
-                    }
-                ],
-                "children": [
-                    {
-                        "identifier": 79,
-                        "tag": "function_parameter",
-                        "attributes": [
-                            {
-                                "tag": "type",
-                                "value": 15
-                            }
-                        ],
-                        "children": []
-                    }
-                ]
-            },
-            {
-                "identifier": 80,
-                "tag": "subprogram",
-                "attributes": [
-                    {
-                        "tag": "name",
-                        "value": "__kefir_builtin_islessf"
-                    },
-                    {
-                        "tag": "type",
-                        "value": 1
-                    },
-                    {
-                        "tag": "function_prototyped",
-                        "value": true
-                    },
-                    {
-                        "tag": "external",
-                        "value": true
-                    },
-                    {
-                        "tag": "declaration",
-                        "value": true
-                    },
-                    {
-                        "tag": "source_location",
-                        "value": "<predefined-defs>"
-                    },
-                    {
-                        "tag": "source_location_line",
-                        "value": 665
-                    },
-                    {
-                        "tag": "source_location_column",
-                        "value": 14
-                    }
-                ],
-                "children": [
-                    {
-                        "identifier": 81,
-                        "tag": "function_parameter",
-                        "attributes": [
-                            {
-                                "tag": "type",
-                                "value": 19
-                            }
-                        ],
-                        "children": []
-                    },
-                    {
-                        "identifier": 82,
-                        "tag": "function_parameter",
-                        "attributes": [
-                            {
-                                "tag": "type",
-                                "value": 19
-                            }
-                        ],
-                        "children": []
-                    }
-                ]
-            },
-            {
-                "identifier": 83,
-                "tag": "subprogram",
-                "attributes": [
-                    {
-                        "tag": "name",
-                        "value": "__kefir_builtin_islessl"
-                    },
-                    {
-                        "tag": "type",
-                        "value": 1
-                    },
-                    {
-                        "tag": "function_prototyped",
-                        "value": true
-                    },
-                    {
-                        "tag": "external",
-                        "value": true
-                    },
-                    {
-                        "tag": "declaration",
-                        "value": true
-                    },
-                    {
-                        "tag": "source_location",
-                        "value": "<predefined-defs>"
-                    },
-                    {
-                        "tag": "source_location_line",
-                        "value": 667
-                    },
-                    {
-                        "tag": "source_location_column",
-                        "value": 14
-                    }
-                ],
-                "children": [
-                    {
-                        "identifier": 84,
-                        "tag": "function_parameter",
-                        "attributes": [
-                            {
-                                "tag": "type",
-                                "value": 23
-                            }
-                        ],
-                        "children": []
-                    },
-                    {
-                        "identifier": 85,
-                        "tag": "function_parameter",
-                        "attributes": [
-                            {
-                                "tag": "type",
-                                "value": 23
-                            }
-                        ],
-                        "children": []
-                    }
-                ]
-            },
-            {
-                "identifier": 86,
-                "tag": "subprogram",
-                "attributes": [
-                    {
-                        "tag": "name",
-                        "value": "__kefir_builtin_parityl"
-                    },
-                    {
-                        "tag": "type",
-                        "value": 6
-                    },
-                    {
-                        "tag": "function_prototyped",
-                        "value": true
-                    },
-                    {
-                        "tag": "external",
-                        "value": true
-                    },
-                    {
-                        "tag": "declaration",
-                        "value": true
-                    },
-                    {
-                        "tag": "source_location",
-                        "value": "<predefined-defs>"
-                    },
-                    {
-                        "tag": "source_location_line",
-                        "value": 646
-                    },
-                    {
-                        "tag": "source_location_column",
-                        "value": 12
-                    }
-                ],
-                "children": [
-                    {
-                        "identifier": 87,
-                        "tag": "function_parameter",
-                        "attributes": [
-                            {
-                                "tag": "type",
-                                "value": 15
-                            }
-                        ],
-                        "children": []
-                    }
-                ]
-            },
-            {
-                "identifier": 88,
                 "tag": "subprogram",
                 "attributes": [
                     {
@@ -3501,12 +2751,12 @@
                 ],
                 "children": [
                     {
-                        "identifier": 89,
+                        "identifier": 54,
                         "tag": "function_parameter",
                         "attributes": [
                             {
                                 "tag": "type",
-                                "value": 15
+                                "value": 27
                             }
                         ],
                         "children": []
@@ -3514,7 +2764,69 @@
                 ]
             },
             {
-                "identifier": 90,
+                "identifier": 55,
+                "tag": "subprogram",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "__kefir_builtin_isgreaterf"
+                    },
+                    {
+                        "tag": "type",
+                        "value": 1
+                    },
+                    {
+                        "tag": "function_prototyped",
+                        "value": true
+                    },
+                    {
+                        "tag": "external",
+                        "value": true
+                    },
+                    {
+                        "tag": "declaration",
+                        "value": true
+                    },
+                    {
+                        "tag": "source_location",
+                        "value": "<predefined-defs>"
+                    },
+                    {
+                        "tag": "source_location_line",
+                        "value": 657
+                    },
+                    {
+                        "tag": "source_location_column",
+                        "value": 14
+                    }
+                ],
+                "children": [
+                    {
+                        "identifier": 56,
+                        "tag": "function_parameter",
+                        "attributes": [
+                            {
+                                "tag": "type",
+                                "value": 18
+                            }
+                        ],
+                        "children": []
+                    },
+                    {
+                        "identifier": 57,
+                        "tag": "function_parameter",
+                        "attributes": [
+                            {
+                                "tag": "type",
+                                "value": 18
+                            }
+                        ],
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "identifier": 58,
                 "tag": "subprogram",
                 "attributes": [
                     {
@@ -3552,7 +2864,7 @@
                 ],
                 "children": [
                     {
-                        "identifier": 91,
+                        "identifier": 59,
                         "tag": "function_parameter",
                         "attributes": [
                             {
@@ -3563,7 +2875,7 @@
                         "children": []
                     },
                     {
-                        "identifier": 92,
+                        "identifier": 60,
                         "tag": "function_parameter",
                         "attributes": [
                             {
@@ -3576,320 +2888,7 @@
                 ]
             },
             {
-                "identifier": 93,
-                "tag": "subprogram",
-                "attributes": [
-                    {
-                        "tag": "name",
-                        "value": "__kefir_builtin_parity"
-                    },
-                    {
-                        "tag": "type",
-                        "value": 6
-                    },
-                    {
-                        "tag": "function_prototyped",
-                        "value": true
-                    },
-                    {
-                        "tag": "external",
-                        "value": true
-                    },
-                    {
-                        "tag": "declaration",
-                        "value": true
-                    },
-                    {
-                        "tag": "source_location",
-                        "value": "<predefined-defs>"
-                    },
-                    {
-                        "tag": "source_location_line",
-                        "value": 635
-                    },
-                    {
-                        "tag": "source_location_column",
-                        "value": 12
-                    }
-                ],
-                "children": [
-                    {
-                        "identifier": 94,
-                        "tag": "function_parameter",
-                        "attributes": [
-                            {
-                                "tag": "type",
-                                "value": 6
-                            }
-                        ],
-                        "children": []
-                    }
-                ]
-            },
-            {
-                "identifier": 95,
-                "tag": "subprogram",
-                "attributes": [
-                    {
-                        "tag": "name",
-                        "value": "__kefir_builtin_frame_address"
-                    },
-                    {
-                        "tag": "type",
-                        "value": 96
-                    },
-                    {
-                        "tag": "function_prototyped",
-                        "value": true
-                    },
-                    {
-                        "tag": "external",
-                        "value": true
-                    },
-                    {
-                        "tag": "declaration",
-                        "value": true
-                    },
-                    {
-                        "tag": "source_location",
-                        "value": "<predefined-defs>"
-                    },
-                    {
-                        "tag": "source_location_line",
-                        "value": 628
-                    },
-                    {
-                        "tag": "source_location_column",
-                        "value": 13
-                    }
-                ],
-                "children": [
-                    {
-                        "identifier": 97,
-                        "tag": "function_parameter",
-                        "attributes": [
-                            {
-                                "tag": "type",
-                                "value": 6
-                            }
-                        ],
-                        "children": []
-                    }
-                ]
-            },
-            {
-                "identifier": 96,
-                "tag": "type_pointer",
-                "attributes": [
-                    {
-                        "tag": "size",
-                        "value": 8
-                    },
-                    {
-                        "tag": "alignment",
-                        "value": 8
-                    },
-                    {
-                        "tag": "type",
-                        "value": 55
-                    }
-                ],
-                "children": []
-            },
-            {
-                "identifier": 98,
-                "tag": "subprogram",
-                "attributes": [
-                    {
-                        "tag": "name",
-                        "value": "__kefir_builtin_clzl"
-                    },
-                    {
-                        "tag": "type",
-                        "value": 6
-                    },
-                    {
-                        "tag": "function_prototyped",
-                        "value": true
-                    },
-                    {
-                        "tag": "external",
-                        "value": true
-                    },
-                    {
-                        "tag": "declaration",
-                        "value": true
-                    },
-                    {
-                        "tag": "source_location",
-                        "value": "<predefined-defs>"
-                    },
-                    {
-                        "tag": "source_location_line",
-                        "value": 642
-                    },
-                    {
-                        "tag": "source_location_column",
-                        "value": 12
-                    }
-                ],
-                "children": [
-                    {
-                        "identifier": 99,
-                        "tag": "function_parameter",
-                        "attributes": [
-                            {
-                                "tag": "type",
-                                "value": 10
-                            }
-                        ],
-                        "children": []
-                    }
-                ]
-            },
-            {
-                "identifier": 100,
-                "tag": "subprogram",
-                "attributes": [
-                    {
-                        "tag": "name",
-                        "value": "__kefir_builtin_ctzl"
-                    },
-                    {
-                        "tag": "type",
-                        "value": 6
-                    },
-                    {
-                        "tag": "function_prototyped",
-                        "value": true
-                    },
-                    {
-                        "tag": "external",
-                        "value": true
-                    },
-                    {
-                        "tag": "declaration",
-                        "value": true
-                    },
-                    {
-                        "tag": "source_location",
-                        "value": "<predefined-defs>"
-                    },
-                    {
-                        "tag": "source_location_line",
-                        "value": 643
-                    },
-                    {
-                        "tag": "source_location_column",
-                        "value": 12
-                    }
-                ],
-                "children": [
-                    {
-                        "identifier": 101,
-                        "tag": "function_parameter",
-                        "attributes": [
-                            {
-                                "tag": "type",
-                                "value": 10
-                            }
-                        ],
-                        "children": []
-                    }
-                ]
-            },
-            {
-                "identifier": 102,
-                "tag": "subprogram",
-                "attributes": [
-                    {
-                        "tag": "name",
-                        "value": "__kefir_builtin_ffsl"
-                    },
-                    {
-                        "tag": "type",
-                        "value": 6
-                    },
-                    {
-                        "tag": "function_prototyped",
-                        "value": true
-                    },
-                    {
-                        "tag": "external",
-                        "value": true
-                    },
-                    {
-                        "tag": "declaration",
-                        "value": true
-                    },
-                    {
-                        "tag": "source_location",
-                        "value": "<predefined-defs>"
-                    },
-                    {
-                        "tag": "source_location_line",
-                        "value": 641
-                    },
-                    {
-                        "tag": "source_location_column",
-                        "value": 12
-                    }
-                ],
-                "children": [
-                    {
-                        "identifier": 103,
-                        "tag": "function_parameter",
-                        "attributes": [
-                            {
-                                "tag": "type",
-                                "value": 15
-                            }
-                        ],
-                        "children": []
-                    }
-                ]
-            },
-            {
-                "identifier": 104,
-                "tag": "subprogram",
-                "attributes": [
-                    {
-                        "tag": "name",
-                        "value": "__kefir_builtin_trap"
-                    },
-                    {
-                        "tag": "type",
-                        "value": 55
-                    },
-                    {
-                        "tag": "function_prototyped",
-                        "value": true
-                    },
-                    {
-                        "tag": "external",
-                        "value": true
-                    },
-                    {
-                        "tag": "declaration",
-                        "value": true
-                    },
-                    {
-                        "tag": "source_location",
-                        "value": "<predefined-defs>"
-                    },
-                    {
-                        "tag": "source_location_line",
-                        "value": 626
-                    },
-                    {
-                        "tag": "source_location_column",
-                        "value": 13
-                    }
-                ],
-                "children": []
-            },
-            {
-                "identifier": 105,
+                "identifier": 61,
                 "tag": "subprogram",
                 "attributes": [
                     {
@@ -3927,23 +2926,23 @@
                 ],
                 "children": [
                     {
-                        "identifier": 106,
+                        "identifier": 62,
                         "tag": "function_parameter",
                         "attributes": [
                             {
                                 "tag": "type",
-                                "value": 19
+                                "value": 18
                             }
                         ],
                         "children": []
                     },
                     {
-                        "identifier": 107,
+                        "identifier": 63,
                         "tag": "function_parameter",
                         "attributes": [
                             {
                                 "tag": "type",
-                                "value": 19
+                                "value": 18
                             }
                         ],
                         "children": []
@@ -3951,7 +2950,303 @@
                 ]
             },
             {
-                "identifier": 108,
+                "identifier": 64,
+                "tag": "subprogram",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "__kefir_builtin_frame_address"
+                    },
+                    {
+                        "tag": "type",
+                        "value": 65
+                    },
+                    {
+                        "tag": "function_prototyped",
+                        "value": true
+                    },
+                    {
+                        "tag": "external",
+                        "value": true
+                    },
+                    {
+                        "tag": "declaration",
+                        "value": true
+                    },
+                    {
+                        "tag": "source_location",
+                        "value": "<predefined-defs>"
+                    },
+                    {
+                        "tag": "source_location_line",
+                        "value": 628
+                    },
+                    {
+                        "tag": "source_location_column",
+                        "value": 13
+                    }
+                ],
+                "children": [
+                    {
+                        "identifier": 66,
+                        "tag": "function_parameter",
+                        "attributes": [
+                            {
+                                "tag": "type",
+                                "value": 6
+                            }
+                        ],
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "identifier": 65,
+                "tag": "type_pointer",
+                "attributes": [
+                    {
+                        "tag": "size",
+                        "value": 8
+                    },
+                    {
+                        "tag": "alignment",
+                        "value": 8
+                    },
+                    {
+                        "tag": "type",
+                        "value": 13
+                    }
+                ],
+                "children": []
+            },
+            {
+                "identifier": 67,
+                "tag": "subprogram",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "__kefir_builtin_ctzl"
+                    },
+                    {
+                        "tag": "type",
+                        "value": 6
+                    },
+                    {
+                        "tag": "function_prototyped",
+                        "value": true
+                    },
+                    {
+                        "tag": "external",
+                        "value": true
+                    },
+                    {
+                        "tag": "declaration",
+                        "value": true
+                    },
+                    {
+                        "tag": "source_location",
+                        "value": "<predefined-defs>"
+                    },
+                    {
+                        "tag": "source_location_line",
+                        "value": 643
+                    },
+                    {
+                        "tag": "source_location_column",
+                        "value": 12
+                    }
+                ],
+                "children": [
+                    {
+                        "identifier": 68,
+                        "tag": "function_parameter",
+                        "attributes": [
+                            {
+                                "tag": "type",
+                                "value": 10
+                            }
+                        ],
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "identifier": 69,
+                "tag": "subprogram",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "__kefir_builtin_copysign"
+                    },
+                    {
+                        "tag": "type",
+                        "value": 3
+                    },
+                    {
+                        "tag": "function_prototyped",
+                        "value": true
+                    },
+                    {
+                        "tag": "external",
+                        "value": true
+                    },
+                    {
+                        "tag": "declaration",
+                        "value": true
+                    },
+                    {
+                        "tag": "source_location",
+                        "value": "<predefined-defs>"
+                    },
+                    {
+                        "tag": "source_location_line",
+                        "value": 674
+                    },
+                    {
+                        "tag": "source_location_column",
+                        "value": 8
+                    }
+                ],
+                "children": [
+                    {
+                        "identifier": 70,
+                        "tag": "function_parameter",
+                        "attributes": [
+                            {
+                                "tag": "type",
+                                "value": 3
+                            }
+                        ],
+                        "children": []
+                    },
+                    {
+                        "identifier": 71,
+                        "tag": "function_parameter",
+                        "attributes": [
+                            {
+                                "tag": "type",
+                                "value": 3
+                            }
+                        ],
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "identifier": 72,
+                "tag": "subprogram",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "__kefir_builtin_isgreaterequal"
+                    },
+                    {
+                        "tag": "type",
+                        "value": 1
+                    },
+                    {
+                        "tag": "function_prototyped",
+                        "value": true
+                    },
+                    {
+                        "tag": "external",
+                        "value": true
+                    },
+                    {
+                        "tag": "declaration",
+                        "value": true
+                    },
+                    {
+                        "tag": "source_location",
+                        "value": "<predefined-defs>"
+                    },
+                    {
+                        "tag": "source_location_line",
+                        "value": 662
+                    },
+                    {
+                        "tag": "source_location_column",
+                        "value": 14
+                    }
+                ],
+                "children": [
+                    {
+                        "identifier": 73,
+                        "tag": "function_parameter",
+                        "attributes": [
+                            {
+                                "tag": "type",
+                                "value": 3
+                            }
+                        ],
+                        "children": []
+                    },
+                    {
+                        "identifier": 74,
+                        "tag": "function_parameter",
+                        "attributes": [
+                            {
+                                "tag": "type",
+                                "value": 3
+                            }
+                        ],
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "identifier": 75,
+                "tag": "subprogram",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "__kefir_builtin_ffsl"
+                    },
+                    {
+                        "tag": "type",
+                        "value": 6
+                    },
+                    {
+                        "tag": "function_prototyped",
+                        "value": true
+                    },
+                    {
+                        "tag": "external",
+                        "value": true
+                    },
+                    {
+                        "tag": "declaration",
+                        "value": true
+                    },
+                    {
+                        "tag": "source_location",
+                        "value": "<predefined-defs>"
+                    },
+                    {
+                        "tag": "source_location_line",
+                        "value": 641
+                    },
+                    {
+                        "tag": "source_location_column",
+                        "value": 12
+                    }
+                ],
+                "children": [
+                    {
+                        "identifier": 76,
+                        "tag": "function_parameter",
+                        "attributes": [
+                            {
+                                "tag": "type",
+                                "value": 27
+                            }
+                        ],
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "identifier": 77,
                 "tag": "subprogram",
                 "attributes": [
                     {
@@ -3989,28 +3284,733 @@
                 ],
                 "children": [
                     {
-                        "identifier": 109,
+                        "identifier": 78,
                         "tag": "function_parameter",
                         "attributes": [
                             {
                                 "tag": "type",
-                                "value": 23
+                                "value": 8
                             }
                         ],
                         "children": []
                     },
+                    {
+                        "identifier": 79,
+                        "tag": "function_parameter",
+                        "attributes": [
+                            {
+                                "tag": "type",
+                                "value": 8
+                            }
+                        ],
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "identifier": 80,
+                "tag": "subprogram",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "__kefir_builtin_clzl"
+                    },
+                    {
+                        "tag": "type",
+                        "value": 6
+                    },
+                    {
+                        "tag": "function_prototyped",
+                        "value": true
+                    },
+                    {
+                        "tag": "external",
+                        "value": true
+                    },
+                    {
+                        "tag": "declaration",
+                        "value": true
+                    },
+                    {
+                        "tag": "source_location",
+                        "value": "<predefined-defs>"
+                    },
+                    {
+                        "tag": "source_location_line",
+                        "value": 642
+                    },
+                    {
+                        "tag": "source_location_column",
+                        "value": 12
+                    }
+                ],
+                "children": [
+                    {
+                        "identifier": 81,
+                        "tag": "function_parameter",
+                        "attributes": [
+                            {
+                                "tag": "type",
+                                "value": 10
+                            }
+                        ],
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "identifier": 82,
+                "tag": "subprogram",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "__kefir_builtin_copysignl"
+                    },
+                    {
+                        "tag": "type",
+                        "value": 8
+                    },
+                    {
+                        "tag": "function_prototyped",
+                        "value": true
+                    },
+                    {
+                        "tag": "external",
+                        "value": true
+                    },
+                    {
+                        "tag": "declaration",
+                        "value": true
+                    },
+                    {
+                        "tag": "source_location",
+                        "value": "<predefined-defs>"
+                    },
+                    {
+                        "tag": "source_location_line",
+                        "value": 675
+                    },
+                    {
+                        "tag": "source_location_column",
+                        "value": 13
+                    }
+                ],
+                "children": [
+                    {
+                        "identifier": 83,
+                        "tag": "function_parameter",
+                        "attributes": [
+                            {
+                                "tag": "type",
+                                "value": 8
+                            }
+                        ],
+                        "children": []
+                    },
+                    {
+                        "identifier": 84,
+                        "tag": "function_parameter",
+                        "attributes": [
+                            {
+                                "tag": "type",
+                                "value": 8
+                            }
+                        ],
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "identifier": 85,
+                "tag": "subprogram",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "__kefir_builtin_isgreaterl"
+                    },
+                    {
+                        "tag": "type",
+                        "value": 1
+                    },
+                    {
+                        "tag": "function_prototyped",
+                        "value": true
+                    },
+                    {
+                        "tag": "external",
+                        "value": true
+                    },
+                    {
+                        "tag": "declaration",
+                        "value": true
+                    },
+                    {
+                        "tag": "source_location",
+                        "value": "<predefined-defs>"
+                    },
+                    {
+                        "tag": "source_location_line",
+                        "value": 659
+                    },
+                    {
+                        "tag": "source_location_column",
+                        "value": 14
+                    }
+                ],
+                "children": [
+                    {
+                        "identifier": 86,
+                        "tag": "function_parameter",
+                        "attributes": [
+                            {
+                                "tag": "type",
+                                "value": 8
+                            }
+                        ],
+                        "children": []
+                    },
+                    {
+                        "identifier": 87,
+                        "tag": "function_parameter",
+                        "attributes": [
+                            {
+                                "tag": "type",
+                                "value": 8
+                            }
+                        ],
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "identifier": 88,
+                "tag": "subprogram",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "__kefir_builtin_bswap16"
+                    },
+                    {
+                        "tag": "type",
+                        "value": 89
+                    },
+                    {
+                        "tag": "function_prototyped",
+                        "value": true
+                    },
+                    {
+                        "tag": "external",
+                        "value": true
+                    },
+                    {
+                        "tag": "declaration",
+                        "value": true
+                    },
+                    {
+                        "tag": "source_location",
+                        "value": "<predefined-defs>"
+                    },
+                    {
+                        "tag": "source_location_line",
+                        "value": 637
+                    },
+                    {
+                        "tag": "source_location_column",
+                        "value": 23
+                    }
+                ],
+                "children": [
+                    {
+                        "identifier": 90,
+                        "tag": "function_parameter",
+                        "attributes": [
+                            {
+                                "tag": "type",
+                                "value": 89
+                            }
+                        ],
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "identifier": 89,
+                "tag": "type_unsigned_int",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "unsigned short"
+                    },
+                    {
+                        "tag": "size",
+                        "value": 2
+                    },
+                    {
+                        "tag": "alignment",
+                        "value": 2
+                    }
+                ],
+                "children": []
+            },
+            {
+                "identifier": 91,
+                "tag": "subprogram",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "__kefir_builtin_clrsbll"
+                    },
+                    {
+                        "tag": "type",
+                        "value": 6
+                    },
+                    {
+                        "tag": "function_prototyped",
+                        "value": true
+                    },
+                    {
+                        "tag": "external",
+                        "value": true
+                    },
+                    {
+                        "tag": "declaration",
+                        "value": true
+                    },
+                    {
+                        "tag": "source_location",
+                        "value": "<predefined-defs>"
+                    },
+                    {
+                        "tag": "source_location_line",
+                        "value": 651
+                    },
+                    {
+                        "tag": "source_location_column",
+                        "value": 12
+                    }
+                ],
+                "children": [
+                    {
+                        "identifier": 92,
+                        "tag": "function_parameter",
+                        "attributes": [
+                            {
+                                "tag": "type",
+                                "value": 27
+                            }
+                        ],
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "identifier": 93,
+                "tag": "subprogram",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "__kefir_builtin_islessf"
+                    },
+                    {
+                        "tag": "type",
+                        "value": 1
+                    },
+                    {
+                        "tag": "function_prototyped",
+                        "value": true
+                    },
+                    {
+                        "tag": "external",
+                        "value": true
+                    },
+                    {
+                        "tag": "declaration",
+                        "value": true
+                    },
+                    {
+                        "tag": "source_location",
+                        "value": "<predefined-defs>"
+                    },
+                    {
+                        "tag": "source_location_line",
+                        "value": 665
+                    },
+                    {
+                        "tag": "source_location_column",
+                        "value": 14
+                    }
+                ],
+                "children": [
+                    {
+                        "identifier": 94,
+                        "tag": "function_parameter",
+                        "attributes": [
+                            {
+                                "tag": "type",
+                                "value": 18
+                            }
+                        ],
+                        "children": []
+                    },
+                    {
+                        "identifier": 95,
+                        "tag": "function_parameter",
+                        "attributes": [
+                            {
+                                "tag": "type",
+                                "value": 18
+                            }
+                        ],
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "identifier": 96,
+                "tag": "subprogram",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "__kefir_builtin_parityl"
+                    },
+                    {
+                        "tag": "type",
+                        "value": 6
+                    },
+                    {
+                        "tag": "function_prototyped",
+                        "value": true
+                    },
+                    {
+                        "tag": "external",
+                        "value": true
+                    },
+                    {
+                        "tag": "declaration",
+                        "value": true
+                    },
+                    {
+                        "tag": "source_location",
+                        "value": "<predefined-defs>"
+                    },
+                    {
+                        "tag": "source_location_line",
+                        "value": 646
+                    },
+                    {
+                        "tag": "source_location_column",
+                        "value": 12
+                    }
+                ],
+                "children": [
+                    {
+                        "identifier": 97,
+                        "tag": "function_parameter",
+                        "attributes": [
+                            {
+                                "tag": "type",
+                                "value": 27
+                            }
+                        ],
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "identifier": 98,
+                "tag": "subprogram",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "__kefir_builtin_parityll"
+                    },
+                    {
+                        "tag": "type",
+                        "value": 6
+                    },
+                    {
+                        "tag": "function_prototyped",
+                        "value": true
+                    },
+                    {
+                        "tag": "external",
+                        "value": true
+                    },
+                    {
+                        "tag": "declaration",
+                        "value": true
+                    },
+                    {
+                        "tag": "source_location",
+                        "value": "<predefined-defs>"
+                    },
+                    {
+                        "tag": "source_location_line",
+                        "value": 653
+                    },
+                    {
+                        "tag": "source_location_column",
+                        "value": 12
+                    }
+                ],
+                "children": [
+                    {
+                        "identifier": 99,
+                        "tag": "function_parameter",
+                        "attributes": [
+                            {
+                                "tag": "type",
+                                "value": 27
+                            }
+                        ],
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "identifier": 100,
+                "tag": "subprogram",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "__kefir_builtin_isgreaterequalf"
+                    },
+                    {
+                        "tag": "type",
+                        "value": 1
+                    },
+                    {
+                        "tag": "function_prototyped",
+                        "value": true
+                    },
+                    {
+                        "tag": "external",
+                        "value": true
+                    },
+                    {
+                        "tag": "declaration",
+                        "value": true
+                    },
+                    {
+                        "tag": "source_location",
+                        "value": "<predefined-defs>"
+                    },
+                    {
+                        "tag": "source_location_line",
+                        "value": 661
+                    },
+                    {
+                        "tag": "source_location_column",
+                        "value": 14
+                    }
+                ],
+                "children": [
+                    {
+                        "identifier": 101,
+                        "tag": "function_parameter",
+                        "attributes": [
+                            {
+                                "tag": "type",
+                                "value": 18
+                            }
+                        ],
+                        "children": []
+                    },
+                    {
+                        "identifier": 102,
+                        "tag": "function_parameter",
+                        "attributes": [
+                            {
+                                "tag": "type",
+                                "value": 18
+                            }
+                        ],
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "identifier": 103,
+                "tag": "subprogram",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "__kefir_builtin_islessequal"
+                    },
+                    {
+                        "tag": "type",
+                        "value": 1
+                    },
+                    {
+                        "tag": "function_prototyped",
+                        "value": true
+                    },
+                    {
+                        "tag": "external",
+                        "value": true
+                    },
+                    {
+                        "tag": "declaration",
+                        "value": true
+                    },
+                    {
+                        "tag": "source_location",
+                        "value": "<predefined-defs>"
+                    },
+                    {
+                        "tag": "source_location_line",
+                        "value": 670
+                    },
+                    {
+                        "tag": "source_location_column",
+                        "value": 14
+                    }
+                ],
+                "children": [
+                    {
+                        "identifier": 104,
+                        "tag": "function_parameter",
+                        "attributes": [
+                            {
+                                "tag": "type",
+                                "value": 3
+                            }
+                        ],
+                        "children": []
+                    },
+                    {
+                        "identifier": 105,
+                        "tag": "function_parameter",
+                        "attributes": [
+                            {
+                                "tag": "type",
+                                "value": 3
+                            }
+                        ],
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "identifier": 106,
+                "tag": "subprogram",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "__kefir_builtin_popcount"
+                    },
+                    {
+                        "tag": "type",
+                        "value": 6
+                    },
+                    {
+                        "tag": "function_prototyped",
+                        "value": true
+                    },
+                    {
+                        "tag": "external",
+                        "value": true
+                    },
+                    {
+                        "tag": "declaration",
+                        "value": true
+                    },
+                    {
+                        "tag": "source_location",
+                        "value": "<predefined-defs>"
+                    },
+                    {
+                        "tag": "source_location_line",
+                        "value": 634
+                    },
+                    {
+                        "tag": "source_location_column",
+                        "value": 12
+                    }
+                ],
+                "children": [
+                    {
+                        "identifier": 107,
+                        "tag": "function_parameter",
+                        "attributes": [
+                            {
+                                "tag": "type",
+                                "value": 32
+                            }
+                        ],
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "identifier": 108,
+                "tag": "subprogram",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "__kefir_builtin_return_address"
+                    },
+                    {
+                        "tag": "type",
+                        "value": 109
+                    },
+                    {
+                        "tag": "function_prototyped",
+                        "value": true
+                    },
+                    {
+                        "tag": "external",
+                        "value": true
+                    },
+                    {
+                        "tag": "declaration",
+                        "value": true
+                    },
+                    {
+                        "tag": "source_location",
+                        "value": "<predefined-defs>"
+                    },
+                    {
+                        "tag": "source_location_line",
+                        "value": 627
+                    },
+                    {
+                        "tag": "source_location_column",
+                        "value": 13
+                    }
+                ],
+                "children": [
                     {
                         "identifier": 110,
                         "tag": "function_parameter",
                         "attributes": [
                             {
                                 "tag": "type",
-                                "value": 23
+                                "value": 6
                             }
                         ],
                         "children": []
                     }
                 ]
+            },
+            {
+                "identifier": 109,
+                "tag": "type_pointer",
+                "attributes": [
+                    {
+                        "tag": "size",
+                        "value": 8
+                    },
+                    {
+                        "tag": "alignment",
+                        "value": 8
+                    },
+                    {
+                        "tag": "type",
+                        "value": 13
+                    }
+                ],
+                "children": []
             },
             {
                 "identifier": 111,
@@ -4414,11 +4414,11 @@
                         "attributes": [
                             {
                                 "tag": "name",
-                                "value": "b"
+                                "value": "__func__"
                             },
                             {
                                 "tag": "type",
-                                "value": 6
+                                "value": 128
                             },
                             {
                                 "tag": "code_begin",
@@ -4429,12 +4429,8 @@
                                 "value": 96
                             },
                             {
-                                "tag": "local_variable",
-                                "value": {
-                                    "variable_id": 188978561025,
-                                    "type_id": 91,
-                                    "type_index": 0
-                                }
+                                "tag": "global_variable",
+                                "value": 63
                             },
                             {
                                 "tag": "external",
@@ -4443,33 +4439,21 @@
                             {
                                 "tag": "declaration",
                                 "value": false
-                            },
-                            {
-                                "tag": "source_location",
-                                "value": "source\/tests\/end2end\/debug_info_ir2\/lib.kefir.asmgen.c"
-                            },
-                            {
-                                "tag": "source_location_line",
-                                "value": 22
-                            },
-                            {
-                                "tag": "source_location_column",
-                                "value": 9
                             }
                         ],
                         "children": []
                     },
                     {
-                        "identifier": 128,
+                        "identifier": 130,
                         "tag": "variable",
                         "attributes": [
                             {
                                 "tag": "name",
-                                "value": "c"
+                                "value": "b"
                             },
                             {
                                 "tag": "type",
-                                "value": 15
+                                "value": 6
                             },
                             {
                                 "tag": "code_begin",
@@ -4501,26 +4485,26 @@
                             },
                             {
                                 "tag": "source_location_line",
-                                "value": 23
+                                "value": 22
                             },
                             {
                                 "tag": "source_location_column",
-                                "value": 10
+                                "value": 9
                             }
                         ],
                         "children": []
                     },
                     {
-                        "identifier": 129,
+                        "identifier": 131,
                         "tag": "variable",
                         "attributes": [
                             {
                                 "tag": "name",
-                                "value": "d"
+                                "value": "c"
                             },
                             {
                                 "tag": "type",
-                                "value": 19
+                                "value": 27
                             },
                             {
                                 "tag": "code_begin",
@@ -4552,26 +4536,26 @@
                             },
                             {
                                 "tag": "source_location_line",
-                                "value": 24
+                                "value": 23
                             },
                             {
                                 "tag": "source_location_column",
-                                "value": 11
+                                "value": 10
                             }
                         ],
                         "children": []
                     },
                     {
-                        "identifier": 130,
+                        "identifier": 132,
                         "tag": "variable",
                         "attributes": [
                             {
                                 "tag": "name",
-                                "value": "__func__"
+                                "value": "d"
                             },
                             {
                                 "tag": "type",
-                                "value": 131
+                                "value": 18
                             },
                             {
                                 "tag": "code_begin",
@@ -4582,8 +4566,12 @@
                                 "value": 96
                             },
                             {
-                                "tag": "global_variable",
-                                "value": 66
+                                "tag": "local_variable",
+                                "value": {
+                                    "variable_id": 188978561028,
+                                    "type_id": 94,
+                                    "type_index": 0
+                                }
                             },
                             {
                                 "tag": "external",
@@ -4592,6 +4580,18 @@
                             {
                                 "tag": "declaration",
                                 "value": false
+                            },
+                            {
+                                "tag": "source_location",
+                                "value": "source\/tests\/end2end\/debug_info_ir2\/lib.kefir.asmgen.c"
+                            },
+                            {
+                                "tag": "source_location_line",
+                                "value": 24
+                            },
+                            {
+                                "tag": "source_location_column",
+                                "value": 11
                             }
                         ],
                         "children": []
@@ -4669,13 +4669,13 @@
                     },
                     {
                         "tag": "type",
-                        "value": 55
+                        "value": 13
                     }
                 ],
                 "children": []
             },
             {
-                "identifier": 131,
+                "identifier": 128,
                 "tag": "type_array",
                 "attributes": [
                     {
@@ -4693,7 +4693,7 @@
                 ],
                 "children": [
                     {
-                        "identifier": 132,
+                        "identifier": 129,
                         "tag": "array_subrange",
                         "attributes": [
                             {

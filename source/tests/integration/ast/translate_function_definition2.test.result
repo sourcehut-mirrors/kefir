@@ -8,7 +8,7 @@
             "alias": null
         },
         {
-            "symbol": "__kefir_function_intat_static___func___2",
+            "symbol": "__kefir_function_intat_static___func___1",
             "type": "global_data",
             "scope": "local",
             "visibility": "default",
@@ -36,7 +36,11 @@
             "identifier": 5,
             "type": [
                 {
-                    "type": "int32"
+                    "type": "array",
+                    "length": 6,
+                    "element_type": {
+                        "type": "int8"
+                    }
                 }
             ]
         },
@@ -48,11 +52,7 @@
             "identifier": 6,
             "type": [
                 {
-                    "type": "array",
-                    "length": 6,
-                    "element_type": {
-                        "type": "int8"
-                    }
+                    "type": "int32"
                 }
             ]
         },
@@ -86,9 +86,9 @@
     ],
     "data": [
         {
-            "identifier": "__kefir_function_intat_static___func___2",
+            "identifier": "__kefir_function_intat_static___func___1",
             "storage": "global",
-            "type": 6,
+            "type": 5,
             "value": [
                 {
                     "class": "string",
@@ -154,8 +154,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 4294967297,
-                    "type": 5,
+                    "id": 4294967298,
+                    "type": 6,
                     "type_index": 0
                 },
                 {
@@ -214,8 +214,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 4294967297,
-                    "type": 5,
+                    "id": 4294967298,
+                    "type": 6,
                     "type_index": 0
                 },
                 {

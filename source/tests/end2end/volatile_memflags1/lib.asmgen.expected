@@ -379,7 +379,7 @@
             "alias": null
         },
         {
-            "symbol": "__kefir_function_setS_static___func___18",
+            "symbol": "__kefir_function_setS_static___func___17",
             "type": "global_data",
             "scope": "local",
             "visibility": "default",
@@ -683,7 +683,7 @@
             ]
         },
         {
-            "identifier": "__kefir_function_setS_static___func___18",
+            "identifier": "__kefir_function_setS_static___func___17",
             "storage": "global",
             "type": 135,
             "value": [
@@ -845,7 +845,7 @@
     "function_declarations": [
         {
             "identifier": 23,
-            "name": "__kefir_builtin_isgreater",
+            "name": "__kefir_builtin_popcount",
             "parameters": 50,
             "vararg": false,
             "returns": 51,
@@ -854,7 +854,7 @@
         },
         {
             "identifier": 37,
-            "name": "__kefir_builtin_bswap16",
+            "name": "__kefir_builtin_bswap32",
             "parameters": 78,
             "vararg": false,
             "returns": 79,
@@ -863,7 +863,7 @@
         },
         {
             "identifier": 15,
-            "name": "__kefir_builtin_ffsll",
+            "name": "setD",
             "parameters": 34,
             "vararg": false,
             "returns": 35,
@@ -881,7 +881,7 @@
         },
         {
             "identifier": 28,
-            "name": "__kefir_builtin_isfinitef64",
+            "name": "sumS",
             "parameters": 60,
             "vararg": false,
             "returns": 61,
@@ -890,7 +890,7 @@
         },
         {
             "identifier": 40,
-            "name": "__kefir_builtin_clrsbll",
+            "name": "__kefir_builtin_isgreaterf",
             "parameters": 84,
             "vararg": false,
             "returns": 85,
@@ -899,7 +899,7 @@
         },
         {
             "identifier": 5,
-            "name": "setB",
+            "name": "__kefir_builtin_clzll",
             "parameters": 14,
             "vararg": false,
             "returns": 15,
@@ -908,7 +908,7 @@
         },
         {
             "identifier": 20,
-            "name": "__kefir_builtin_copysignf",
+            "name": "setS",
             "parameters": 44,
             "vararg": false,
             "returns": 45,
@@ -917,7 +917,7 @@
         },
         {
             "identifier": 44,
-            "name": "__kefir_builtin_clrsbl",
+            "name": "__kefir_builtin_isfinitef32",
             "parameters": 92,
             "vararg": false,
             "returns": 93,
@@ -926,7 +926,7 @@
         },
         {
             "identifier": 39,
-            "name": "__kefir_builtin_bswap64",
+            "name": "__kefir_builtin_clrsbl",
             "parameters": 82,
             "vararg": false,
             "returns": 83,
@@ -935,7 +935,7 @@
         },
         {
             "identifier": 14,
-            "name": "__kefir_builtin_ctzll",
+            "name": "setB",
             "parameters": 32,
             "vararg": false,
             "returns": 33,
@@ -944,7 +944,7 @@
         },
         {
             "identifier": 21,
-            "name": "__kefir_builtin_copysignl",
+            "name": "__kefir_builtin_parityll",
             "parameters": 46,
             "vararg": false,
             "returns": 47,
@@ -962,7 +962,7 @@
         },
         {
             "identifier": 43,
-            "name": "__kefir_builtin_parityl",
+            "name": "__kefir_builtin_frame_address",
             "parameters": 90,
             "vararg": false,
             "returns": 91,
@@ -980,7 +980,7 @@
         },
         {
             "identifier": 51,
-            "name": "__kefir_builtin_trap",
+            "name": "__kefir_builtin_islessl",
             "parameters": 106,
             "vararg": false,
             "returns": 107,
@@ -989,7 +989,7 @@
         },
         {
             "identifier": 35,
-            "name": "__kefir_builtin_parityll",
+            "name": "__kefir_builtin_copysignf",
             "parameters": 74,
             "vararg": false,
             "returns": 75,
@@ -998,7 +998,7 @@
         },
         {
             "identifier": 42,
-            "name": "__kefir_builtin_islessl",
+            "name": "__kefir_builtin_copysignl",
             "parameters": 88,
             "vararg": false,
             "returns": 89,
@@ -1007,7 +1007,7 @@
         },
         {
             "identifier": 32,
-            "name": "__kefir_builtin_ctz",
+            "name": "__kefir_builtin_popcountll",
             "parameters": 68,
             "vararg": false,
             "returns": 69,
@@ -1016,7 +1016,7 @@
         },
         {
             "identifier": 36,
-            "name": "__kefir_builtin_popcount",
+            "name": "__kefir_builtin_clrsb",
             "parameters": 76,
             "vararg": false,
             "returns": 77,
@@ -1025,7 +1025,7 @@
         },
         {
             "identifier": 29,
-            "name": "__kefir_builtin_islessequal",
+            "name": "setA",
             "parameters": 62,
             "vararg": false,
             "returns": 63,
@@ -1034,7 +1034,7 @@
         },
         {
             "identifier": 25,
-            "name": "__kefir_builtin_isgreaterequalf",
+            "name": "__kefir_builtin_trap",
             "parameters": 54,
             "vararg": false,
             "returns": 55,
@@ -1043,7 +1043,7 @@
         },
         {
             "identifier": 34,
-            "name": "__kefir_builtin_copysign",
+            "name": "__kefir_builtin_islessequal",
             "parameters": 72,
             "vararg": false,
             "returns": 73,
@@ -1052,7 +1052,7 @@
         },
         {
             "identifier": 38,
-            "name": "__kefir_builtin_bswap32",
+            "name": "__kefir_builtin_isfinitel",
             "parameters": 80,
             "vararg": false,
             "returns": 81,
@@ -1061,7 +1061,7 @@
         },
         {
             "identifier": 8,
-            "name": "setS",
+            "name": "__kefir_builtin_parity",
             "parameters": 20,
             "vararg": false,
             "returns": 21,
@@ -1070,7 +1070,7 @@
         },
         {
             "identifier": 27,
-            "name": "__kefir_builtin_isfinitef32",
+            "name": "getA",
             "parameters": 58,
             "vararg": false,
             "returns": 59,
@@ -1079,7 +1079,7 @@
         },
         {
             "identifier": 13,
-            "name": "__kefir_builtin_clzll",
+            "name": "__kefir_builtin_islessequalf",
             "parameters": 30,
             "vararg": false,
             "returns": 31,
@@ -1088,7 +1088,7 @@
         },
         {
             "identifier": 0,
-            "name": "getA",
+            "name": "getD",
             "parameters": 4,
             "vararg": false,
             "returns": 5,
@@ -1097,7 +1097,7 @@
         },
         {
             "identifier": 7,
-            "name": "setD",
+            "name": "__kefir_builtin_isgreater",
             "parameters": 18,
             "vararg": false,
             "returns": 19,
@@ -1106,7 +1106,7 @@
         },
         {
             "identifier": 4,
-            "name": "setA",
+            "name": "__kefir_builtin_ctz",
             "parameters": 12,
             "vararg": false,
             "returns": 13,
@@ -1115,7 +1115,7 @@
         },
         {
             "identifier": 10,
-            "name": "vla_test",
+            "name": "__kefir_builtin_flt_rounds",
             "parameters": 24,
             "vararg": false,
             "returns": 25,
@@ -1124,7 +1124,7 @@
         },
         {
             "identifier": 50,
-            "name": "__kefir_builtin_ffsl",
+            "name": "__kefir_builtin_clrsbll",
             "parameters": 104,
             "vararg": false,
             "returns": 105,
@@ -1133,7 +1133,7 @@
         },
         {
             "identifier": 24,
-            "name": "__kefir_builtin_popcountl",
+            "name": "vla_test",
             "parameters": 52,
             "vararg": false,
             "returns": 53,
@@ -1160,7 +1160,7 @@
         },
         {
             "identifier": 52,
-            "name": "__kefir_builtin_islessequalf",
+            "name": "__kefir_builtin_parityl",
             "parameters": 108,
             "vararg": false,
             "returns": 109,
@@ -1187,7 +1187,7 @@
         },
         {
             "identifier": 18,
-            "name": "__kefir_builtin_isgreaterl",
+            "name": "getC",
             "parameters": 40,
             "vararg": false,
             "returns": 41,
@@ -1205,7 +1205,7 @@
         },
         {
             "identifier": 6,
-            "name": "setC",
+            "name": "__kefir_builtin_ffsll",
             "parameters": 16,
             "vararg": false,
             "returns": 17,
@@ -1223,7 +1223,7 @@
         },
         {
             "identifier": 16,
-            "name": "__kefir_builtin_flt_rounds",
+            "name": "__kefir_builtin_clzl",
             "parameters": 36,
             "vararg": false,
             "returns": 37,
@@ -1232,7 +1232,7 @@
         },
         {
             "identifier": 2,
-            "name": "getC",
+            "name": "__kefir_builtin_isgreaterl",
             "parameters": 8,
             "vararg": false,
             "returns": 9,
@@ -1241,7 +1241,7 @@
         },
         {
             "identifier": 47,
-            "name": "__kefir_builtin_frame_address",
+            "name": "__kefir_builtin_islessequall",
             "parameters": 98,
             "vararg": false,
             "returns": 99,
@@ -1250,7 +1250,7 @@
         },
         {
             "identifier": 3,
-            "name": "getD",
+            "name": "__kefir_builtin_ctzll",
             "parameters": 10,
             "vararg": false,
             "returns": 11,
@@ -1259,7 +1259,7 @@
         },
         {
             "identifier": 26,
-            "name": "__kefir_builtin_isgreaterequall",
+            "name": "__kefir_builtin_isfinitef64",
             "parameters": 56,
             "vararg": false,
             "returns": 57,
@@ -1268,7 +1268,7 @@
         },
         {
             "identifier": 1,
-            "name": "getB",
+            "name": "__kefir_builtin_isgreaterequal",
             "parameters": 6,
             "vararg": false,
             "returns": 7,
@@ -1277,7 +1277,7 @@
         },
         {
             "identifier": 33,
-            "name": "__kefir_builtin_ffs",
+            "name": "setC",
             "parameters": 70,
             "vararg": false,
             "returns": 71,
@@ -1286,7 +1286,7 @@
         },
         {
             "identifier": 41,
-            "name": "__kefir_builtin_islessf",
+            "name": "__kefir_builtin_ffsl",
             "parameters": 86,
             "vararg": false,
             "returns": 87,
@@ -1304,7 +1304,7 @@
         },
         {
             "identifier": 17,
-            "name": "__kefir_builtin_isgreaterf",
+            "name": "getB",
             "parameters": 38,
             "vararg": false,
             "returns": 39,
@@ -1313,7 +1313,7 @@
         },
         {
             "identifier": 19,
-            "name": "__kefir_builtin_popcountll",
+            "name": "__kefir_builtin_ctzl",
             "parameters": 42,
             "vararg": false,
             "returns": 43,
@@ -1322,7 +1322,7 @@
         },
         {
             "identifier": 46,
-            "name": "__kefir_builtin_parity",
+            "name": "__kefir_builtin_popcountl",
             "parameters": 96,
             "vararg": false,
             "returns": 97,
@@ -1331,7 +1331,7 @@
         },
         {
             "identifier": 53,
-            "name": "__kefir_builtin_islessequall",
+            "name": "__kefir_builtin_return_address",
             "parameters": 110,
             "vararg": false,
             "returns": 111,
@@ -1349,7 +1349,7 @@
         },
         {
             "identifier": 48,
-            "name": "__kefir_builtin_clzl",
+            "name": "__kefir_builtin_isless",
             "parameters": 100,
             "vararg": false,
             "returns": 101,
@@ -1358,7 +1358,7 @@
         },
         {
             "identifier": 31,
-            "name": "__kefir_builtin_clz",
+            "name": "__kefir_builtin_isgreaterequalf",
             "parameters": 66,
             "vararg": false,
             "returns": 67,
@@ -1367,7 +1367,7 @@
         },
         {
             "identifier": 45,
-            "name": "__kefir_builtin_isless",
+            "name": "__kefir_builtin_copysign",
             "parameters": 94,
             "vararg": false,
             "returns": 95,
@@ -1376,7 +1376,7 @@
         },
         {
             "identifier": 22,
-            "name": "__kefir_builtin_isfinitel",
+            "name": "__kefir_builtin_isgreaterequall",
             "parameters": 48,
             "vararg": false,
             "returns": 49,
@@ -1385,7 +1385,7 @@
         },
         {
             "identifier": 30,
-            "name": "__kefir_builtin_return_address",
+            "name": "__kefir_builtin_islessf",
             "parameters": 64,
             "vararg": false,
             "returns": 65,
@@ -1394,7 +1394,7 @@
         },
         {
             "identifier": 12,
-            "name": "__kefir_builtin_clrsb",
+            "name": "__kefir_builtin_bswap16",
             "parameters": 28,
             "vararg": false,
             "returns": 29,
@@ -1403,7 +1403,7 @@
         },
         {
             "identifier": 11,
-            "name": "__kefir_builtin_isgreaterequal",
+            "name": "__kefir_builtin_ffs",
             "parameters": 26,
             "vararg": false,
             "returns": 27,
@@ -1412,7 +1412,7 @@
         },
         {
             "identifier": 9,
-            "name": "sumS",
+            "name": "__kefir_builtin_clz",
             "parameters": 22,
             "vararg": false,
             "returns": 23,
@@ -1421,7 +1421,7 @@
         },
         {
             "identifier": 49,
-            "name": "__kefir_builtin_ctzl",
+            "name": "__kefir_builtin_bswap64",
             "parameters": 102,
             "vararg": false,
             "returns": 103,
@@ -1900,7 +1900,7 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 304942678033,
+                    "id": 304942678034,
                     "type": 119,
                     "type_index": 0
                 },
@@ -1944,7 +1944,7 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 304942678033,
+                    "id": 304942678034,
                     "type": 119,
                     "type_index": 0
                 },
@@ -2054,7 +2054,7 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 304942678033,
+                    "id": 304942678034,
                     "type": 119,
                     "type_index": 0
                 },
@@ -2164,7 +2164,7 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 304942678033,
+                    "id": 304942678034,
                     "type": 119,
                     "type_index": 0
                 },
@@ -2351,7 +2351,7 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 304942678033,
+                    "id": 304942678034,
                     "type": 119,
                     "type_index": 0
                 },
@@ -2541,7 +2541,7 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 304942678033,
+                    "id": 304942678034,
                     "type": 119,
                     "type_index": 0
                 },

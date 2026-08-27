@@ -23,7 +23,11 @@
         },
         {
             "identifier": 16,
-            "type": []
+            "type": [
+                {
+                    "type": "int8"
+                }
+            ]
         },
         {
             "identifier": 3,
@@ -31,11 +35,7 @@
         },
         {
             "identifier": 15,
-            "type": [
-                {
-                    "type": "int32"
-                }
-            ]
+            "type": []
         },
         {
             "identifier": 10,
@@ -73,7 +73,7 @@
             "identifier": 17,
             "type": [
                 {
-                    "type": "int8"
+                    "type": "int32"
                 }
             ]
         },
@@ -190,9 +190,9 @@
         {
             "identifier": 6,
             "name": "body2",
-            "parameters": 16,
+            "parameters": 15,
             "vararg": false,
-            "returns": 17,
+            "returns": 16,
             "returns_twice": false,
             "no_return": false
         },
@@ -378,7 +378,7 @@
                 {
                     "opcode": "get_local",
                     "id": 21474836482,
-                    "type": 15,
+                    "type": 17,
                     "type_index": 0
                 },
                 {
@@ -408,7 +408,7 @@
                 {
                     "opcode": "get_local",
                     "id": 21474836482,
-                    "type": 15,
+                    "type": 17,
                     "type_index": 0
                 },
                 {
@@ -439,7 +439,7 @@
                 {
                     "opcode": "get_local",
                     "id": 21474836482,
-                    "type": 15,
+                    "type": 17,
                     "type_index": 0
                 },
                 {
@@ -498,7 +498,7 @@
                 {
                     "opcode": "get_local",
                     "id": 21474836482,
-                    "type": 15,
+                    "type": 17,
                     "type_index": 0
                 },
                 {

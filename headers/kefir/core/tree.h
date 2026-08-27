@@ -29,7 +29,8 @@ typedef struct kefir_tree_node {
     struct kefir_tree_node *parent;
     struct kefir_tree_node *prev_sibling;
     struct kefir_tree_node *next_sibling;
-    struct kefir_list children;
+    struct kefir_tree_node *first_child;
+    struct kefir_tree_node *last_child;
 
     kefir_result_t (*removal_callback)(struct kefir_mem *, void *, void *);
     void *removal_payload;
