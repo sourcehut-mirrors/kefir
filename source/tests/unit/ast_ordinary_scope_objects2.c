@@ -30,9 +30,9 @@
         ASSERT_OK(                                                                                                \
             kefir_ast_local_context_resolve_scoped_ordinary_identifier((_context), (_identifier), &__scoped_id)); \
         ASSERT(__scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_OBJECT);                                          \
-        ASSERT(__scoped_id->object.storage == (_storage));                                                        \
-        ASSERT(KEFIR_AST_TYPE_SAME(__scoped_id->object.type, (_type)));                                           \
-        ASSERT(__scoped_id->object.linkage == (_linkage));                                                        \
+        ASSERT(__scoped_id->object->storage == (_storage));                                                        \
+        ASSERT(KEFIR_AST_TYPE_SAME(__scoped_id->object->type, (_type)));                                           \
+        ASSERT(__scoped_id->object->linkage == (_linkage));                                                        \
     } while (0)
 
 DEFINE_CASE(ast_ordinary_scope_objects_init1, "AST Declaration initializers - global externals #1") {

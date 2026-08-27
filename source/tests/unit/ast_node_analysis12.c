@@ -94,13 +94,13 @@ DEFINE_CASE(ast_node_analysis_function_definitions1, "AST node analysis - functi
     ASSERT(strcmp(func->base.properties.function_definition->identifier, "fn1") == 0);
     ASSERT(func->base.properties.function_definition->scoped_id != NULL);
     ASSERT(func->base.properties.function_definition->scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_FUNCTION);
-    ASSERT(!func->base.properties.function_definition->scoped_id->function.external);
-    ASSERT(func->base.properties.function_definition->scoped_id->function.local_context != NULL);
-    ASSERT(func->base.properties.function_definition->scoped_id->function.specifier ==
+    ASSERT(!func->base.properties.function_definition->scoped_id->function->external);
+    ASSERT(func->base.properties.function_definition->scoped_id->function->local_context != NULL);
+    ASSERT(func->base.properties.function_definition->scoped_id->function->specifier ==
            KEFIR_AST_FUNCTION_SPECIFIER_NONE);
-    ASSERT(func->base.properties.function_definition->scoped_id->function.storage ==
+    ASSERT(func->base.properties.function_definition->scoped_id->function->storage ==
            KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN);
-    ASSERT(KEFIR_AST_TYPE_SAME(func->base.properties.function_definition->scoped_id->function.type, type));
+    ASSERT(KEFIR_AST_TYPE_SAME(func->base.properties.function_definition->scoped_id->function->type, type));
 
     ASSERT(param1->base.properties.category == KEFIR_AST_NODE_CATEGORY_DECLARATION);
     ASSIGN_DECL_CAST(struct kefir_ast_declaration *, param1_decl_list, KEFIR_AST_NODE_SELF(KEFIR_AST_NODE_BASE(param1)));
@@ -113,7 +113,7 @@ DEFINE_CASE(ast_node_analysis_function_definitions1, "AST node analysis - functi
     ASSERT(param1_decl->properties.declaration_props->storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_REGISTER);
     ASSERT(param1_decl->properties.declaration_props->scoped_id != NULL);
     ASSERT(param1_decl->properties.declaration_props->scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_OBJECT);
-    ASSERT(KEFIR_AST_TYPE_SAME(param1_decl->properties.declaration_props->scoped_id->object.type,
+    ASSERT(KEFIR_AST_TYPE_SAME(param1_decl->properties.declaration_props->scoped_id->object->type,
                                kefir_ast_type_unsigned_int()));
 
     ASSERT(param2->base.properties.category == KEFIR_AST_NODE_CATEGORY_DECLARATION);
@@ -128,7 +128,7 @@ DEFINE_CASE(ast_node_analysis_function_definitions1, "AST node analysis - functi
     ASSERT(param2_decl->properties.declaration_props->scoped_id != NULL);
     ASSERT(param2_decl->properties.declaration_props->scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_OBJECT);
     ASSERT(KEFIR_AST_TYPE_SAME(
-        param2_decl->properties.declaration_props->scoped_id->object.type,
+        param2_decl->properties.declaration_props->scoped_id->object->type,
         kefir_ast_type_pointer(&kft_mem, global_context.context.type_bundle, kefir_ast_type_signed_int())));
 
     ASSERT(body->base.properties.category == KEFIR_AST_NODE_CATEGORY_STATEMENT);
@@ -191,13 +191,13 @@ DEFINE_CASE(ast_node_analysis_function_definitions2, "AST node analysis - functi
     ASSERT(strcmp(func->base.properties.function_definition->identifier, "pi") == 0);
     ASSERT(func->base.properties.function_definition->scoped_id != NULL);
     ASSERT(func->base.properties.function_definition->scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_FUNCTION);
-    ASSERT(!func->base.properties.function_definition->scoped_id->function.external);
-    ASSERT(func->base.properties.function_definition->scoped_id->function.local_context != NULL);
-    ASSERT(func->base.properties.function_definition->scoped_id->function.specifier ==
+    ASSERT(!func->base.properties.function_definition->scoped_id->function->external);
+    ASSERT(func->base.properties.function_definition->scoped_id->function->local_context != NULL);
+    ASSERT(func->base.properties.function_definition->scoped_id->function->specifier ==
            KEFIR_AST_FUNCTION_SPECIFIER_INLINE);
-    ASSERT(func->base.properties.function_definition->scoped_id->function.storage ==
+    ASSERT(func->base.properties.function_definition->scoped_id->function->storage ==
            KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC);
-    ASSERT(KEFIR_AST_TYPE_SAME(func->base.properties.function_definition->scoped_id->function.type, type));
+    ASSERT(KEFIR_AST_TYPE_SAME(func->base.properties.function_definition->scoped_id->function->type, type));
 
     ASSERT(body->base.properties.category == KEFIR_AST_NODE_CATEGORY_STATEMENT);
     ASSERT(body->base.properties.statement_props->target_flow_control_point == NULL);
@@ -291,13 +291,13 @@ DEFINE_CASE(ast_node_analysis_function_definitions3, "AST node analysis - functi
     ASSERT(strcmp(func->base.properties.function_definition->identifier, "fn1") == 0);
     ASSERT(func->base.properties.function_definition->scoped_id != NULL);
     ASSERT(func->base.properties.function_definition->scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_FUNCTION);
-    ASSERT(!func->base.properties.function_definition->scoped_id->function.external);
-    ASSERT(func->base.properties.function_definition->scoped_id->function.local_context != NULL);
-    ASSERT(func->base.properties.function_definition->scoped_id->function.specifier ==
+    ASSERT(!func->base.properties.function_definition->scoped_id->function->external);
+    ASSERT(func->base.properties.function_definition->scoped_id->function->local_context != NULL);
+    ASSERT(func->base.properties.function_definition->scoped_id->function->specifier ==
            KEFIR_AST_FUNCTION_SPECIFIER_NONE);
-    ASSERT(func->base.properties.function_definition->scoped_id->function.storage ==
+    ASSERT(func->base.properties.function_definition->scoped_id->function->storage ==
            KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN);
-    ASSERT(KEFIR_AST_TYPE_SAME(func->base.properties.function_definition->scoped_id->function.type, type));
+    ASSERT(KEFIR_AST_TYPE_SAME(func->base.properties.function_definition->scoped_id->function->type, type));
 
     ASSERT(param1->properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION);
     ASSERT(param2->properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION);

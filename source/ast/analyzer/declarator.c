@@ -813,9 +813,9 @@ static kefir_result_t resolve_typedef(struct kefir_mem *mem, const struct kefir_
                                    "Referenced identifier is not a type definition"));
     REQUIRE_OK(kefir_ast_check_scoped_identifier_deprecation(context, scoped_identifier, source_location));
 
-    REQUIRE_OK(kefir_ast_type_completion(mem, context, base_type, scoped_identifier->type_definition.type));
-    if (alignment != NULL && scoped_identifier->type_definition.alignment != NULL) {
-        *alignment = MAX(*alignment, scoped_identifier->type_definition.alignment->value);
+    REQUIRE_OK(kefir_ast_type_completion(mem, context, base_type, scoped_identifier->type_definition->type));
+    if (alignment != NULL && scoped_identifier->type_definition->alignment != NULL) {
+        *alignment = MAX(*alignment, scoped_identifier->type_definition->alignment->value);
     }
     return KEFIR_OK;
 }

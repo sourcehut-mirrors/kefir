@@ -65,7 +65,7 @@ kefir_result_t kefir_ast_translator_object_lvalue(struct kefir_mem *mem, struct 
     REQUIRE(scoped_identifier->klass == KEFIR_AST_SCOPE_IDENTIFIER_OBJECT,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected object scoped identifier"));
 
-    switch (scoped_identifier->object.storage) {
+    switch (scoped_identifier->object->storage) {
         case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN: {
             kefir_id_t id;
             REQUIRE(kefir_ir_module_symbol(mem, context->module, identifier, &id) != NULL,
@@ -76,13 +76,13 @@ kefir_result_t kefir_ast_translator_object_lvalue(struct kefir_mem *mem, struct 
         case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC:
         case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_CONSTEXPR_STATIC: {
             kefir_id_t id;
-            if (scoped_identifier->object.defining_function == NULL) {
+            if (scoped_identifier->object->defining_function == NULL) {
                 REQUIRE(kefir_ir_module_symbol(mem, context->module, identifier, &id) != NULL,
                         KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate IR module symbol"));
             } else {
                 ASSIGN_DECL_CAST(struct kefir_ast_translator_scoped_identifier_object *, identifier_data,
                                  scoped_identifier->payload.ptr);
-                REQUIRE_OK(local_static_identifier(mem, context->module, scoped_identifier->object.defining_function,
+                REQUIRE_OK(local_static_identifier(mem, context->module, scoped_identifier->object->defining_function,
                                                    identifier, identifier_data->identifier, &id));
             }
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_GET_GLOBAL, id));
@@ -98,13 +98,13 @@ kefir_result_t kefir_ast_translator_object_lvalue(struct kefir_mem *mem, struct 
 
         case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC_THREAD_LOCAL: {
             kefir_id_t id;
-            if (scoped_identifier->object.defining_function == NULL) {
+            if (scoped_identifier->object->defining_function == NULL) {
                 REQUIRE(kefir_ir_module_symbol(mem, context->module, identifier, &id) != NULL,
                         KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate IR module symbol"));
             } else {
                 ASSIGN_DECL_CAST(struct kefir_ast_translator_scoped_identifier_object *, identifier_data,
                                  scoped_identifier->payload.ptr);
-                REQUIRE_OK(local_static_identifier(mem, context->module, scoped_identifier->object.defining_function,
+                REQUIRE_OK(local_static_identifier(mem, context->module, scoped_identifier->object->defining_function,
                                                    identifier, identifier_data->identifier, &id));
             }
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_GET_THREAD_LOCAL, id));
@@ -115,7 +115,7 @@ kefir_result_t kefir_ast_translator_object_lvalue(struct kefir_mem *mem, struct 
         case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_REGISTER: {
             ASSIGN_DECL_CAST(struct kefir_ast_translator_scoped_identifier_object *, identifier_data,
                              scoped_identifier->payload.ptr);
-            if (KEFIR_AST_TYPE_IS_VL_ARRAY(scoped_identifier->object.type)) {
+            if (KEFIR_AST_TYPE_IS_VL_ARRAY(scoped_identifier->object->type)) {
                 REQUIRE_OK(kefir_ast_translator_resolve_local_type_layout(
                     builder, scoped_identifier->definition_scope->identifier, context->ast_context->context_id,
                     identifier_data->identifier, identifier_data->type_id, identifier_data->layout));
@@ -238,7 +238,7 @@ kefir_result_t kefir_ast_translate_compound_literal_lvalue(struct kefir_mem *mem
     REQUIRE_OK(kefir_ast_translator_fetch_temporary(mem, context, builder,
                                                     node->base.properties.expression_props->temporary_identifier));
     const kefir_ast_scoped_identifier_storage_t storage =
-        node->base.properties.expression_props->temporary_identifier->scoped_id->object.storage;
+        node->base.properties.expression_props->temporary_identifier->scoped_id->object->storage;
     if (storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_AUTO || storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_REGISTER ||
         storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_CONSTEXPR) {
         REQUIRE_OK(kefir_ast_translate_initializer(mem, context, builder, node->base.properties.type,

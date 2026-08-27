@@ -198,9 +198,9 @@ static kefir_result_t mark_flat_scope_objects_lifetime(struct kefir_ast_translat
         for (res = kefir_ast_identifier_flat_scope_iter(scope, &scope_iter); !marked_scope && res == KEFIR_OK;
              res = kefir_ast_identifier_flat_scope_next(scope, &scope_iter)) {
             if (scope_iter.value->klass == KEFIR_AST_SCOPE_IDENTIFIER_OBJECT &&
-                (scope_iter.value->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_AUTO ||
-                 scope_iter.value->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_REGISTER ||
-                 scope_iter.value->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_CONSTEXPR)) {
+                (scope_iter.value->object->storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_AUTO ||
+                 scope_iter.value->object->storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_REGISTER ||
+                 scope_iter.value->object->storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_CONSTEXPR)) {
                 if (context->local_scope_layout != NULL && !marked_scope) {
                     REQUIRE_OK(
                         KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_GET_LOCAL_SCOPE,

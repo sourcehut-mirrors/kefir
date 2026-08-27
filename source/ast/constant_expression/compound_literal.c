@@ -59,8 +59,8 @@ kefir_result_t kefir_ast_evaluate_compound_literal_node(struct kefir_mem *mem, c
         const struct kefir_ast_scoped_identifier *scoped_id =
             node->base.properties.expression_props->temporary_identifier->scoped_id;
         REQUIRE(unqualified_type->tag == KEFIR_AST_TYPE_ARRAY &&
-                    (scoped_id->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN ||
-                     scoped_id->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC),
+                    (scoped_id->object->storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN ||
+                     scoped_id->object->storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC),
                 KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->base.source_location,
                                        "Constant compound literal shall be either scalar, compound, or an array with "
                                        "external/static storage"));

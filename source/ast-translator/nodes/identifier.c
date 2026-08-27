@@ -36,9 +36,9 @@ static kefir_result_t translate_object_identifier(struct kefir_mem *mem, struct 
                                                   const struct kefir_ast_identifier *node,
                                                   const struct kefir_ast_scoped_identifier *scoped_identifier) {
     kefir_bool_t skip_translate_expr = false;
-    if (scoped_identifier->object.constant_expression.present && !node->base.properties.expression_props->atomic) {
+    if (scoped_identifier->object->constant_expression.present && !node->base.properties.expression_props->atomic) {
         REQUIRE_OK(kefir_ast_try_translate_constant(mem, node->base.properties.type,
-                                                    &scoped_identifier->object.constant_expression.value, builder,
+                                                    &scoped_identifier->object->constant_expression.value, builder,
                                                     context, &skip_translate_expr));
     }
     if (!skip_translate_expr) {
@@ -46,14 +46,14 @@ static kefir_result_t translate_object_identifier(struct kefir_mem *mem, struct 
         if (node->base.properties.expression_props->atomic) {
             kefir_bool_t atomic_aggregate;
             REQUIRE_OK(kefir_ast_translator_atomic_load_value(
-                scoped_identifier->object.type, context->ast_context->type_traits, builder, &atomic_aggregate));
+                scoped_identifier->object->type, context->ast_context->type_traits, builder, &atomic_aggregate));
             if (atomic_aggregate) {
                 REQUIRE_OK(kefir_ast_translator_load_atomic_aggregate_value(
                     mem, node->base.properties.type, context, builder,
                     node->base.properties.expression_props->temporary_identifier, &node->base.source_location));
             }
         } else {
-            REQUIRE_OK(kefir_ast_translator_load_value(scoped_identifier->object.type,
+            REQUIRE_OK(kefir_ast_translator_load_value(scoped_identifier->object->type,
                                                        context->ast_context->type_traits, builder));
         }
     }
@@ -63,18 +63,18 @@ static kefir_result_t translate_object_identifier(struct kefir_mem *mem, struct 
 static kefir_result_t translate_enum_constant(struct kefir_irbuilder_block *builder,
                                               const struct kefir_ast_type_traits *type_traits,
                                               const struct kefir_ast_scoped_identifier *scoped_identifier) {
-    REQUIRE(KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(scoped_identifier->enum_constant.type),
+    REQUIRE(KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(scoped_identifier->enum_constant->type),
             KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Enum constant cannot have non-integral type"));
 
     kefir_bool_t signedness;
-    REQUIRE_OK(kefir_ast_type_is_signed(type_traits, scoped_identifier->enum_constant.type, &signedness));
+    REQUIRE_OK(kefir_ast_type_is_signed(type_traits, scoped_identifier->enum_constant->type, &signedness));
 
     if (!signedness) {
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_UINT_CONST,
-                                                   (kefir_uint64_t) scoped_identifier->enum_constant.value.integer));
+                                                   (kefir_uint64_t) scoped_identifier->enum_constant->value.integer));
     } else {
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT_CONST,
-                                                   (kefir_int64_t) scoped_identifier->enum_constant.value.integer));
+                                                   (kefir_int64_t) scoped_identifier->enum_constant->value.integer));
     }
     return KEFIR_OK;
 }

@@ -86,7 +86,7 @@ static kefir_result_t translate_scoped_identifier_type(
     REQUIRE_OK(kefir_ast_translator_scope_layout_complete_object_type(mem, context, identifier, scoped_identifier,
                                                                       &object_type));
 
-    REQUIRE_OK(kefir_ast_translate_object_type(mem, context, object_type, scoped_identifier->object.alignment->value,
+    REQUIRE_OK(kefir_ast_translate_object_type(mem, context, object_type, scoped_identifier->object->alignment->value,
                                                env, &builder, &scoped_identifier_layout->layout, source_location));
     REQUIRE_OK(KEFIR_IRBUILDER_TYPE_FREE(&builder));
 
@@ -149,7 +149,7 @@ static kefir_result_t translate_local_scoped_identifier_object(
     const struct kefir_ast_translator_environment *env, struct kefir_ast_translator_local_scope_layout *local_layout,
     struct kefir_ir_typeentry *wrapper_structure, const struct kefir_source_location *source_location) {
     REQUIRE(scoped_identifier->klass == KEFIR_AST_SCOPE_IDENTIFIER_OBJECT, KEFIR_OK);
-    switch (scoped_identifier->object.storage) {
+    switch (scoped_identifier->object->storage) {
         case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN:
         case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN_THREAD_LOCAL:
             break;
@@ -196,7 +196,7 @@ static kefir_result_t translate_local_scoped_identifier_function(
     if (scoped_identifier_func->declaration == NULL) {
         KEFIR_AST_SCOPE_SET_CLEANUP(scoped_identifier, kefir_ast_translator_scoped_identifer_payload_free, NULL);
         REQUIRE_OK(kefir_ast_translator_function_declaration_init(
-            mem, context, env, type_bundle, type_traits, module, identifier, false, scoped_identifier->function.type,
+            mem, context, env, type_bundle, type_traits, module, identifier, false, scoped_identifier->function->type,
             NULL, 0, &scoped_identifier_func->declaration, source_location));
     }
     return KEFIR_OK;
@@ -227,9 +227,9 @@ static kefir_result_t translate_local_scoped_identifier(
             break;
 
         case KEFIR_AST_SCOPE_IDENTIFIER_LABEL:
-            REQUIRE(scoped_identifier->label.point != NULL && scoped_identifier->label.point->self != NULL,
+            REQUIRE(scoped_identifier->label->point != NULL && scoped_identifier->label->point->self != NULL,
                     KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Cannot translate undefined label"));
-            REQUIRE_OK(kefir_ast_translator_flow_control_point_init(mem, scoped_identifier->label.point, NULL));
+            REQUIRE_OK(kefir_ast_translator_flow_control_point_init(mem, scoped_identifier->label->point, NULL));
             break;
     }
     return KEFIR_OK;
@@ -244,9 +244,9 @@ static kefir_result_t local_scope_empty(struct kefir_mem *mem, const struct kefi
     for (res = kefir_ast_identifier_flat_scope_iter(scope, &iter); res == KEFIR_OK;
          res = kefir_ast_identifier_flat_scope_next(scope, &iter)) {
         if (iter.value->klass == KEFIR_AST_SCOPE_IDENTIFIER_OBJECT) {
-            if (iter.value->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_AUTO ||
-                iter.value->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_REGISTER ||
-                iter.value->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_CONSTEXPR) {
+            if (iter.value->object->storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_AUTO ||
+                iter.value->object->storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_REGISTER ||
+                iter.value->object->storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_CONSTEXPR) {
                 *empty = false;
                 return KEFIR_OK;
             }
@@ -334,9 +334,9 @@ kefir_result_t kefir_ast_translator_build_local_scope_layout(struct kefir_mem *m
 
         REQUIRE(iter.value->klass == KEFIR_AST_SCOPE_IDENTIFIER_LABEL,
                 KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected label scope to contain only labels"));
-        REQUIRE(iter.value->label.point->self != NULL,
+        REQUIRE(iter.value->label->point->self != NULL,
                 KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Cannot translate undefined label"));
-        REQUIRE_OK(kefir_ast_translator_flow_control_point_init(mem, iter.value->label.point, NULL));
+        REQUIRE_OK(kefir_ast_translator_flow_control_point_init(mem, iter.value->label->point, NULL));
     }
     return KEFIR_OK;
 }

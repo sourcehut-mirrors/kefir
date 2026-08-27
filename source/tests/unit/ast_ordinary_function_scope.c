@@ -49,10 +49,10 @@ DEFINE_CASE(ast_ordinary_function_scope1, "AST ordinary scope - functions #1") {
     ASSERT_OK(kefir_ast_local_context_resolve_scoped_ordinary_identifier(&context, "func1", &scoped_id));
     ASSERT(scoped_id != NULL);
     ASSERT(scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_FUNCTION);
-    ASSERT(KEFIR_AST_TYPE_SAME(scoped_id->function.type, type1));
-    ASSERT(scoped_id->function.specifier == KEFIR_AST_FUNCTION_SPECIFIER_NONE);
-    ASSERT(scoped_id->function.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN);
-    ASSERT(scoped_id->function.external);
+    ASSERT(KEFIR_AST_TYPE_SAME(scoped_id->function->type, type1));
+    ASSERT(scoped_id->function->specifier == KEFIR_AST_FUNCTION_SPECIFIER_NONE);
+    ASSERT(scoped_id->function->storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN);
+    ASSERT(scoped_id->function->external);
 
     struct kefir_ast_function_type *function_type2 = NULL;
     const struct kefir_ast_type *type2 =
@@ -75,10 +75,10 @@ DEFINE_CASE(ast_ordinary_function_scope1, "AST ordinary scope - functions #1") {
     ASSERT_OK(kefir_ast_local_context_resolve_scoped_ordinary_identifier(&context, "func1", &scoped_id));
     ASSERT(scoped_id != NULL);
     ASSERT(scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_FUNCTION);
-    ASSERT(KEFIR_AST_TYPE_COMPATIBLE(type_traits, scoped_id->function.type, type2));
-    ASSERT(scoped_id->function.specifier == KEFIR_AST_FUNCTION_SPECIFIER_INLINE);
-    ASSERT(scoped_id->function.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN);
-    ASSERT(!scoped_id->function.external);
+    ASSERT(KEFIR_AST_TYPE_COMPATIBLE(type_traits, scoped_id->function->type, type2));
+    ASSERT(scoped_id->function->specifier == KEFIR_AST_FUNCTION_SPECIFIER_INLINE);
+    ASSERT(scoped_id->function->storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN);
+    ASSERT(!scoped_id->function->external);
 
     ASSERT_NOK(kefir_ast_global_context_define_static_function(
         &kft_mem, &global_context, KEFIR_AST_FUNCTION_SPECIFIER_INLINE, "func1", true, type2, NULL, NULL, NULL));
@@ -129,10 +129,10 @@ DEFINE_CASE(ast_ordinary_function_scope2, "AST ordinary scope - functions #2") {
     ASSERT_OK(kefir_ast_local_context_resolve_scoped_ordinary_identifier(&context, "func1", &scoped_id));
     ASSERT(scoped_id != NULL);
     ASSERT(scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_FUNCTION);
-    ASSERT(KEFIR_AST_TYPE_COMPATIBLE(type_traits, scoped_id->function.type, type1));
-    ASSERT(scoped_id->function.specifier == KEFIR_AST_FUNCTION_SPECIFIER_NONE);
-    ASSERT(scoped_id->function.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC);
-    ASSERT(!scoped_id->function.external);
+    ASSERT(KEFIR_AST_TYPE_COMPATIBLE(type_traits, scoped_id->function->type, type1));
+    ASSERT(scoped_id->function->specifier == KEFIR_AST_FUNCTION_SPECIFIER_NONE);
+    ASSERT(scoped_id->function->storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC);
+    ASSERT(!scoped_id->function->external);
 
     struct kefir_ast_function_type *function_type2 = NULL;
     const struct kefir_ast_type *type2 = kefir_ast_type_function(
@@ -169,11 +169,11 @@ DEFINE_CASE(ast_ordinary_function_scope2, "AST ordinary scope - functions #2") {
     ASSERT_OK(kefir_ast_local_context_resolve_scoped_ordinary_identifier(&context, "func1", &scoped_id));
     ASSERT(scoped_id != NULL);
     ASSERT(scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_FUNCTION);
-    ASSERT(KEFIR_AST_TYPE_COMPATIBLE(type_traits, scoped_id->function.type, type1));
-    ASSERT(KEFIR_AST_TYPE_COMPATIBLE(type_traits, scoped_id->function.type, type2));
-    ASSERT(scoped_id->function.specifier == KEFIR_AST_FUNCTION_SPECIFIER_NORETURN);
-    ASSERT(scoped_id->function.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC);
-    ASSERT(!scoped_id->function.external);
+    ASSERT(KEFIR_AST_TYPE_COMPATIBLE(type_traits, scoped_id->function->type, type1));
+    ASSERT(KEFIR_AST_TYPE_COMPATIBLE(type_traits, scoped_id->function->type, type2));
+    ASSERT(scoped_id->function->specifier == KEFIR_AST_FUNCTION_SPECIFIER_NORETURN);
+    ASSERT(scoped_id->function->storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC);
+    ASSERT(!scoped_id->function->external);
 
     ASSERT_OK(kefir_ast_local_context_free(&kft_mem, &context));
     ASSERT_OK(kefir_ast_global_context_free(&kft_mem, &global_context));
@@ -212,10 +212,10 @@ DEFINE_CASE(ast_ordinary_function_scope3, "AST ordinary scope - block scope func
         ASSERT_OK(kefir_ast_local_context_resolve_scoped_ordinary_identifier(&context, "function1", &scoped_id));
         ASSERT(scoped_id != NULL);
         ASSERT(scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_FUNCTION);
-        ASSERT(KEFIR_AST_TYPE_SAME(scoped_id->function.type, type1));
-        ASSERT(scoped_id->function.specifier == KEFIR_AST_FUNCTION_SPECIFIER_NONE);
-        ASSERT(scoped_id->function.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN);
-        ASSERT(scoped_id->function.external);
+        ASSERT(KEFIR_AST_TYPE_SAME(scoped_id->function->type, type1));
+        ASSERT(scoped_id->function->specifier == KEFIR_AST_FUNCTION_SPECIFIER_NONE);
+        ASSERT(scoped_id->function->storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN);
+        ASSERT(scoped_id->function->external);
         ASSERT_OK(context.context.pop_block(&kft_mem, &context.context));
     } while (0);
 
@@ -224,20 +224,20 @@ DEFINE_CASE(ast_ordinary_function_scope3, "AST ordinary scope - block scope func
     ASSERT_OK(kefir_ast_local_context_resolve_scoped_ordinary_identifier(&context, "function1", &scoped_id));
     ASSERT(scoped_id != NULL);
     ASSERT(scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_FUNCTION);
-    ASSERT(KEFIR_AST_TYPE_SAME(scoped_id->function.type, type1));
-    ASSERT(scoped_id->function.specifier == KEFIR_AST_FUNCTION_SPECIFIER_INLINE);
-    ASSERT(scoped_id->function.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN);
-    ASSERT(scoped_id->function.external);
+    ASSERT(KEFIR_AST_TYPE_SAME(scoped_id->function->type, type1));
+    ASSERT(scoped_id->function->specifier == KEFIR_AST_FUNCTION_SPECIFIER_INLINE);
+    ASSERT(scoped_id->function->storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN);
+    ASSERT(scoped_id->function->external);
 
     ASSERT_OK(kefir_ast_global_context_define_function(&kft_mem, &global_context, KEFIR_AST_FUNCTION_SPECIFIER_NORETURN,
                                                        true, "function1", type2, NULL, NULL, NULL));
     ASSERT_OK(kefir_ast_local_context_resolve_scoped_ordinary_identifier(&context, "function1", &scoped_id));
     ASSERT(scoped_id != NULL);
     ASSERT(scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_FUNCTION);
-    ASSERT(KEFIR_AST_TYPE_SAME(scoped_id->function.type, type1));
-    ASSERT(scoped_id->function.specifier == KEFIR_AST_FUNCTION_SPECIFIER_NORETURN);
-    ASSERT(scoped_id->function.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN);
-    ASSERT(!scoped_id->function.external);
+    ASSERT(KEFIR_AST_TYPE_SAME(scoped_id->function->type, type1));
+    ASSERT(scoped_id->function->specifier == KEFIR_AST_FUNCTION_SPECIFIER_NORETURN);
+    ASSERT(scoped_id->function->storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN);
+    ASSERT(!scoped_id->function->external);
 
     ASSERT_OK(kefir_ast_local_context_free(&kft_mem, &context));
     ASSERT_OK(kefir_ast_global_context_free(&kft_mem, &global_context));
@@ -273,10 +273,10 @@ DEFINE_CASE(ast_ordinary_function_scope4, "AST ordinary scope - block scope func
     ASSERT_OK(kefir_ast_local_context_resolve_scoped_ordinary_identifier(&context, "function1", &scoped_id));
     ASSERT(scoped_id != NULL);
     ASSERT(scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_FUNCTION);
-    ASSERT(KEFIR_AST_TYPE_SAME(scoped_id->function.type, type2));
-    ASSERT(scoped_id->function.specifier == KEFIR_AST_FUNCTION_SPECIFIER_NORETURN);
-    ASSERT(scoped_id->function.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN);
-    ASSERT(!scoped_id->function.external);
+    ASSERT(KEFIR_AST_TYPE_SAME(scoped_id->function->type, type2));
+    ASSERT(scoped_id->function->specifier == KEFIR_AST_FUNCTION_SPECIFIER_NORETURN);
+    ASSERT(scoped_id->function->storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN);
+    ASSERT(!scoped_id->function->external);
 
     do {
         ASSERT_OK(context.context.push_block(&kft_mem, &context.context, NULL, NULL));
@@ -284,10 +284,10 @@ DEFINE_CASE(ast_ordinary_function_scope4, "AST ordinary scope - block scope func
         ASSERT_OK(kefir_ast_local_context_resolve_scoped_ordinary_identifier(&context, "function1", &scoped_id));
         ASSERT(scoped_id != NULL);
         ASSERT(scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_FUNCTION);
-        ASSERT(KEFIR_AST_TYPE_SAME(scoped_id->function.type, type2));
-        ASSERT(scoped_id->function.specifier == KEFIR_AST_FUNCTION_SPECIFIER_NORETURN);
-        ASSERT(scoped_id->function.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN);
-        ASSERT(!scoped_id->function.external);
+        ASSERT(KEFIR_AST_TYPE_SAME(scoped_id->function->type, type2));
+        ASSERT(scoped_id->function->specifier == KEFIR_AST_FUNCTION_SPECIFIER_NORETURN);
+        ASSERT(scoped_id->function->storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN);
+        ASSERT(!scoped_id->function->external);
 
         ASSERT_OK(kefir_ast_local_context_declare_function(&kft_mem, &context, KEFIR_AST_FUNCTION_SPECIFIER_NONE, true,
                                                            "function1", type1, NULL, NULL, NULL));
@@ -295,10 +295,10 @@ DEFINE_CASE(ast_ordinary_function_scope4, "AST ordinary scope - block scope func
         ASSERT_OK(kefir_ast_local_context_resolve_scoped_ordinary_identifier(&context, "function1", &scoped_id));
         ASSERT(scoped_id != NULL);
         ASSERT(scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_FUNCTION);
-        ASSERT(KEFIR_AST_TYPE_SAME(scoped_id->function.type, type1));
-        ASSERT(scoped_id->function.specifier == KEFIR_AST_FUNCTION_SPECIFIER_NORETURN);
-        ASSERT(scoped_id->function.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN);
-        ASSERT(!scoped_id->function.external);
+        ASSERT(KEFIR_AST_TYPE_SAME(scoped_id->function->type, type1));
+        ASSERT(scoped_id->function->specifier == KEFIR_AST_FUNCTION_SPECIFIER_NORETURN);
+        ASSERT(scoped_id->function->storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN);
+        ASSERT(!scoped_id->function->external);
         ASSERT_OK(context.context.pop_block(&kft_mem, &context.context));
     } while (0);
 
@@ -307,10 +307,10 @@ DEFINE_CASE(ast_ordinary_function_scope4, "AST ordinary scope - block scope func
     ASSERT_OK(kefir_ast_local_context_resolve_scoped_ordinary_identifier(&context, "function1", &scoped_id));
     ASSERT(scoped_id != NULL);
     ASSERT(scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_FUNCTION);
-    ASSERT(KEFIR_AST_TYPE_SAME(scoped_id->function.type, type1));
-    ASSERT(scoped_id->function.specifier == KEFIR_AST_FUNCTION_SPECIFIER_INLINE_NORETURN);
-    ASSERT(scoped_id->function.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN);
-    ASSERT(!scoped_id->function.external);
+    ASSERT(KEFIR_AST_TYPE_SAME(scoped_id->function->type, type1));
+    ASSERT(scoped_id->function->specifier == KEFIR_AST_FUNCTION_SPECIFIER_INLINE_NORETURN);
+    ASSERT(scoped_id->function->storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN);
+    ASSERT(!scoped_id->function->external);
 
     ASSERT_OK(kefir_ast_local_context_free(&kft_mem, &context));
     ASSERT_OK(kefir_ast_global_context_free(&kft_mem, &global_context));
@@ -346,10 +346,10 @@ DEFINE_CASE(ast_ordinary_function_scope5, "AST ordinary scope - block scope func
     ASSERT_OK(kefir_ast_local_context_resolve_scoped_ordinary_identifier(&context, "function1", &scoped_id));
     ASSERT(scoped_id != NULL);
     ASSERT(scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_FUNCTION);
-    ASSERT(KEFIR_AST_TYPE_SAME(scoped_id->function.type, type2));
-    ASSERT(scoped_id->function.specifier == KEFIR_AST_FUNCTION_SPECIFIER_NONE);
-    ASSERT(scoped_id->function.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC);
-    ASSERT(!scoped_id->function.external);
+    ASSERT(KEFIR_AST_TYPE_SAME(scoped_id->function->type, type2));
+    ASSERT(scoped_id->function->specifier == KEFIR_AST_FUNCTION_SPECIFIER_NONE);
+    ASSERT(scoped_id->function->storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC);
+    ASSERT(!scoped_id->function->external);
 
     do {
         ASSERT_OK(context.context.push_block(&kft_mem, &context.context, NULL, NULL));
@@ -357,10 +357,10 @@ DEFINE_CASE(ast_ordinary_function_scope5, "AST ordinary scope - block scope func
         ASSERT_OK(kefir_ast_local_context_resolve_scoped_ordinary_identifier(&context, "function1", &scoped_id));
         ASSERT(scoped_id != NULL);
         ASSERT(scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_FUNCTION);
-        ASSERT(KEFIR_AST_TYPE_SAME(scoped_id->function.type, type2));
-        ASSERT(scoped_id->function.specifier == KEFIR_AST_FUNCTION_SPECIFIER_NONE);
-        ASSERT(scoped_id->function.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC);
-        ASSERT(!scoped_id->function.external);
+        ASSERT(KEFIR_AST_TYPE_SAME(scoped_id->function->type, type2));
+        ASSERT(scoped_id->function->specifier == KEFIR_AST_FUNCTION_SPECIFIER_NONE);
+        ASSERT(scoped_id->function->storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC);
+        ASSERT(!scoped_id->function->external);
 
         ASSERT_OK(kefir_ast_local_context_declare_function(&kft_mem, &context, KEFIR_AST_FUNCTION_SPECIFIER_NONE, true,
                                                            "function1", type1, NULL, NULL, NULL));
@@ -368,10 +368,10 @@ DEFINE_CASE(ast_ordinary_function_scope5, "AST ordinary scope - block scope func
         ASSERT_OK(kefir_ast_local_context_resolve_scoped_ordinary_identifier(&context, "function1", &scoped_id));
         ASSERT(scoped_id != NULL);
         ASSERT(scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_FUNCTION);
-        ASSERT(KEFIR_AST_TYPE_SAME(scoped_id->function.type, type1));
-        ASSERT(scoped_id->function.specifier == KEFIR_AST_FUNCTION_SPECIFIER_NONE);
-        ASSERT(scoped_id->function.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC);
-        ASSERT(!scoped_id->function.external);
+        ASSERT(KEFIR_AST_TYPE_SAME(scoped_id->function->type, type1));
+        ASSERT(scoped_id->function->specifier == KEFIR_AST_FUNCTION_SPECIFIER_NONE);
+        ASSERT(scoped_id->function->storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC);
+        ASSERT(!scoped_id->function->external);
         ASSERT_OK(context.context.pop_block(&kft_mem, &context.context));
     } while (0);
 
@@ -380,10 +380,10 @@ DEFINE_CASE(ast_ordinary_function_scope5, "AST ordinary scope - block scope func
     ASSERT_OK(kefir_ast_local_context_resolve_scoped_ordinary_identifier(&context, "function1", &scoped_id));
     ASSERT(scoped_id != NULL);
     ASSERT(scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_FUNCTION);
-    ASSERT(KEFIR_AST_TYPE_SAME(scoped_id->function.type, type1));
-    ASSERT(scoped_id->function.specifier == KEFIR_AST_FUNCTION_SPECIFIER_INLINE);
-    ASSERT(scoped_id->function.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC);
-    ASSERT(!scoped_id->function.external);
+    ASSERT(KEFIR_AST_TYPE_SAME(scoped_id->function->type, type1));
+    ASSERT(scoped_id->function->specifier == KEFIR_AST_FUNCTION_SPECIFIER_INLINE);
+    ASSERT(scoped_id->function->storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC);
+    ASSERT(!scoped_id->function->external);
 
     ASSERT_OK(kefir_ast_local_context_free(&kft_mem, &context));
     ASSERT_OK(kefir_ast_global_context_free(&kft_mem, &global_context));
@@ -410,10 +410,10 @@ DEFINE_CASE(ast_ordinary_inline_functions1, "AST ordinary scope - inline functio
     ASSERT_OK(kefir_ast_local_context_resolve_scoped_ordinary_identifier(&context, "func1", &scoped_id));
     ASSERT(scoped_id != NULL);
     ASSERT(scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_FUNCTION);
-    ASSERT(KEFIR_AST_TYPE_SAME(scoped_id->function.type, type1));
-    ASSERT(scoped_id->function.specifier == KEFIR_AST_FUNCTION_SPECIFIER_INLINE);
-    ASSERT(scoped_id->function.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN);
-    ASSERT(scoped_id->function.inline_definition);
+    ASSERT(KEFIR_AST_TYPE_SAME(scoped_id->function->type, type1));
+    ASSERT(scoped_id->function->specifier == KEFIR_AST_FUNCTION_SPECIFIER_INLINE);
+    ASSERT(scoped_id->function->storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN);
+    ASSERT(scoped_id->function->inline_definition);
 
     ASSERT_OK(kefir_ast_global_context_declare_function(&kft_mem, &global_context,
                                                         KEFIR_AST_FUNCTION_SPECIFIER_INLINE_NORETURN, false, "func1",
@@ -421,20 +421,20 @@ DEFINE_CASE(ast_ordinary_inline_functions1, "AST ordinary scope - inline functio
     ASSERT_OK(kefir_ast_local_context_resolve_scoped_ordinary_identifier(&context, "func1", &scoped_id));
     ASSERT(scoped_id != NULL);
     ASSERT(scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_FUNCTION);
-    ASSERT(KEFIR_AST_TYPE_COMPATIBLE(type_traits, scoped_id->function.type, type1));
-    ASSERT(scoped_id->function.specifier == KEFIR_AST_FUNCTION_SPECIFIER_INLINE_NORETURN);
-    ASSERT(scoped_id->function.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN);
-    ASSERT(scoped_id->function.inline_definition);
+    ASSERT(KEFIR_AST_TYPE_COMPATIBLE(type_traits, scoped_id->function->type, type1));
+    ASSERT(scoped_id->function->specifier == KEFIR_AST_FUNCTION_SPECIFIER_INLINE_NORETURN);
+    ASSERT(scoped_id->function->storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN);
+    ASSERT(scoped_id->function->inline_definition);
 
     ASSERT_OK(kefir_ast_global_context_declare_function(&kft_mem, &global_context, KEFIR_AST_FUNCTION_SPECIFIER_NONE,
                                                         false, "func1", type1, NULL, NULL, NULL));
     ASSERT_OK(kefir_ast_local_context_resolve_scoped_ordinary_identifier(&context, "func1", &scoped_id));
     ASSERT(scoped_id != NULL);
     ASSERT(scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_FUNCTION);
-    ASSERT(KEFIR_AST_TYPE_COMPATIBLE(type_traits, scoped_id->function.type, type1));
-    ASSERT(scoped_id->function.specifier == KEFIR_AST_FUNCTION_SPECIFIER_NORETURN);
-    ASSERT(scoped_id->function.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN);
-    ASSERT(!scoped_id->function.inline_definition);
+    ASSERT(KEFIR_AST_TYPE_COMPATIBLE(type_traits, scoped_id->function->type, type1));
+    ASSERT(scoped_id->function->specifier == KEFIR_AST_FUNCTION_SPECIFIER_NORETURN);
+    ASSERT(scoped_id->function->storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN);
+    ASSERT(!scoped_id->function->inline_definition);
 
     ASSERT_OK(kefir_ast_local_context_free(&kft_mem, &context));
     ASSERT_OK(kefir_ast_global_context_free(&kft_mem, &global_context));
@@ -461,30 +461,30 @@ DEFINE_CASE(ast_ordinary_inline_functions2, "AST ordinary scope - inline functio
     ASSERT_OK(kefir_ast_local_context_resolve_scoped_ordinary_identifier(&context, "func1", &scoped_id));
     ASSERT(scoped_id != NULL);
     ASSERT(scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_FUNCTION);
-    ASSERT(KEFIR_AST_TYPE_SAME(scoped_id->function.type, type1));
-    ASSERT(scoped_id->function.specifier == KEFIR_AST_FUNCTION_SPECIFIER_INLINE);
-    ASSERT(scoped_id->function.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN);
-    ASSERT(scoped_id->function.inline_definition);
+    ASSERT(KEFIR_AST_TYPE_SAME(scoped_id->function->type, type1));
+    ASSERT(scoped_id->function->specifier == KEFIR_AST_FUNCTION_SPECIFIER_INLINE);
+    ASSERT(scoped_id->function->storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN);
+    ASSERT(scoped_id->function->inline_definition);
 
     ASSERT_OK(kefir_ast_global_context_declare_function(&kft_mem, &global_context, KEFIR_AST_FUNCTION_SPECIFIER_INLINE,
                                                         true, "func1", type1, NULL, NULL, NULL));
     ASSERT_OK(kefir_ast_local_context_resolve_scoped_ordinary_identifier(&context, "func1", &scoped_id));
     ASSERT(scoped_id != NULL);
     ASSERT(scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_FUNCTION);
-    ASSERT(KEFIR_AST_TYPE_COMPATIBLE(type_traits, scoped_id->function.type, type1));
-    ASSERT(scoped_id->function.specifier == KEFIR_AST_FUNCTION_SPECIFIER_INLINE);
-    ASSERT(scoped_id->function.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN);
-    ASSERT(!scoped_id->function.inline_definition);
+    ASSERT(KEFIR_AST_TYPE_COMPATIBLE(type_traits, scoped_id->function->type, type1));
+    ASSERT(scoped_id->function->specifier == KEFIR_AST_FUNCTION_SPECIFIER_INLINE);
+    ASSERT(scoped_id->function->storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN);
+    ASSERT(!scoped_id->function->inline_definition);
 
     ASSERT_OK(kefir_ast_global_context_declare_function(&kft_mem, &global_context, KEFIR_AST_FUNCTION_SPECIFIER_INLINE,
                                                         false, "func1", type1, NULL, NULL, NULL));
     ASSERT_OK(kefir_ast_local_context_resolve_scoped_ordinary_identifier(&context, "func1", &scoped_id));
     ASSERT(scoped_id != NULL);
     ASSERT(scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_FUNCTION);
-    ASSERT(KEFIR_AST_TYPE_COMPATIBLE(type_traits, scoped_id->function.type, type1));
-    ASSERT(scoped_id->function.specifier == KEFIR_AST_FUNCTION_SPECIFIER_INLINE);
-    ASSERT(scoped_id->function.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN);
-    ASSERT(!scoped_id->function.inline_definition);
+    ASSERT(KEFIR_AST_TYPE_COMPATIBLE(type_traits, scoped_id->function->type, type1));
+    ASSERT(scoped_id->function->specifier == KEFIR_AST_FUNCTION_SPECIFIER_INLINE);
+    ASSERT(scoped_id->function->storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN);
+    ASSERT(!scoped_id->function->inline_definition);
 
     ASSERT_OK(kefir_ast_local_context_free(&kft_mem, &context));
     ASSERT_OK(kefir_ast_global_context_free(&kft_mem, &global_context));
@@ -511,10 +511,10 @@ DEFINE_CASE(ast_ordinary_inline_functions3, "AST ordinary scope - inline functio
     ASSERT_OK(kefir_ast_local_context_resolve_scoped_ordinary_identifier(&context, "func1", &scoped_id));
     ASSERT(scoped_id != NULL);
     ASSERT(scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_FUNCTION);
-    ASSERT(KEFIR_AST_TYPE_SAME(scoped_id->function.type, type1));
-    ASSERT(scoped_id->function.specifier == KEFIR_AST_FUNCTION_SPECIFIER_INLINE);
-    ASSERT(scoped_id->function.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC);
-    ASSERT(scoped_id->function.inline_definition);
+    ASSERT(KEFIR_AST_TYPE_SAME(scoped_id->function->type, type1));
+    ASSERT(scoped_id->function->specifier == KEFIR_AST_FUNCTION_SPECIFIER_INLINE);
+    ASSERT(scoped_id->function->storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC);
+    ASSERT(scoped_id->function->inline_definition);
 
     ASSERT_OK(kefir_ast_global_context_define_static_function(&kft_mem, &global_context,
                                                               KEFIR_AST_FUNCTION_SPECIFIER_INLINE_NORETURN, "func1",
@@ -522,20 +522,20 @@ DEFINE_CASE(ast_ordinary_inline_functions3, "AST ordinary scope - inline functio
     ASSERT_OK(kefir_ast_local_context_resolve_scoped_ordinary_identifier(&context, "func1", &scoped_id));
     ASSERT(scoped_id != NULL);
     ASSERT(scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_FUNCTION);
-    ASSERT(KEFIR_AST_TYPE_SAME(scoped_id->function.type, type1));
-    ASSERT(scoped_id->function.specifier == KEFIR_AST_FUNCTION_SPECIFIER_INLINE_NORETURN);
-    ASSERT(scoped_id->function.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC);
-    ASSERT(scoped_id->function.inline_definition);
+    ASSERT(KEFIR_AST_TYPE_SAME(scoped_id->function->type, type1));
+    ASSERT(scoped_id->function->specifier == KEFIR_AST_FUNCTION_SPECIFIER_INLINE_NORETURN);
+    ASSERT(scoped_id->function->storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC);
+    ASSERT(scoped_id->function->inline_definition);
 
     ASSERT_OK(kefir_ast_global_context_define_static_function(
         &kft_mem, &global_context, KEFIR_AST_FUNCTION_SPECIFIER_NONE, "func1", true, type1, NULL, NULL, NULL));
     ASSERT_OK(kefir_ast_local_context_resolve_scoped_ordinary_identifier(&context, "func1", &scoped_id));
     ASSERT(scoped_id != NULL);
     ASSERT(scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_FUNCTION);
-    ASSERT(KEFIR_AST_TYPE_SAME(scoped_id->function.type, type1));
-    ASSERT(scoped_id->function.specifier == KEFIR_AST_FUNCTION_SPECIFIER_NORETURN);
-    ASSERT(scoped_id->function.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC);
-    ASSERT(!scoped_id->function.inline_definition);
+    ASSERT(KEFIR_AST_TYPE_SAME(scoped_id->function->type, type1));
+    ASSERT(scoped_id->function->specifier == KEFIR_AST_FUNCTION_SPECIFIER_NORETURN);
+    ASSERT(scoped_id->function->storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC);
+    ASSERT(!scoped_id->function->inline_definition);
 
     ASSERT_OK(kefir_ast_local_context_free(&kft_mem, &context));
     ASSERT_OK(kefir_ast_global_context_free(&kft_mem, &global_context));

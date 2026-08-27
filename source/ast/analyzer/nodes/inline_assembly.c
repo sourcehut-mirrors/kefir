@@ -63,10 +63,10 @@ kefir_result_t kefir_ast_analyze_inline_assembly_node(struct kefir_mem *mem, con
 
             if (param->parameter->properties.expression_props->scoped_id != NULL &&
                 param->parameter->properties.expression_props->scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_OBJECT &&
-                param->parameter->properties.expression_props->scoped_id->object.storage ==
+                param->parameter->properties.expression_props->scoped_id->object->storage ==
                     KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_REGISTER &&
-                param->parameter->properties.expression_props->scoped_id->object.asm_label != NULL) {
-                param->explicit_register = param->parameter->properties.expression_props->scoped_id->object.asm_label;
+                param->parameter->properties.expression_props->scoped_id->object->asm_label != NULL) {
+                param->explicit_register = param->parameter->properties.expression_props->scoped_id->object->asm_label;
             }
         }
 
@@ -80,10 +80,10 @@ kefir_result_t kefir_ast_analyze_inline_assembly_node(struct kefir_mem *mem, con
 
             if (param->parameter->properties.expression_props->scoped_id != NULL &&
                 param->parameter->properties.expression_props->scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_OBJECT &&
-                param->parameter->properties.expression_props->scoped_id->object.storage ==
+                param->parameter->properties.expression_props->scoped_id->object->storage ==
                     KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_REGISTER &&
-                param->parameter->properties.expression_props->scoped_id->object.asm_label != NULL) {
-                param->explicit_register = param->parameter->properties.expression_props->scoped_id->object.asm_label;
+                param->parameter->properties.expression_props->scoped_id->object->asm_label != NULL) {
+                param->explicit_register = param->parameter->properties.expression_props->scoped_id->object->asm_label;
             }
         }
 
@@ -110,7 +110,7 @@ kefir_result_t kefir_ast_analyze_inline_assembly_node(struct kefir_mem *mem, con
             REQUIRE_OK(
                 context->reference_label(mem, context, jump_label, NULL, &node->base.source_location, &scoped_id));
             kefir_result_t res = kefir_ast_flow_control_branching_point_append(
-                mem, base->properties.inline_assembly->branching_point, jump_label, scoped_id->label.point);
+                mem, base->properties.inline_assembly->branching_point, jump_label, scoped_id->label->point);
             if (res != KEFIR_ALREADY_EXISTS) {
                 REQUIRE_OK(res);
             }

@@ -280,9 +280,9 @@ DEFINE_CASE(ast_declarator_analysis18, "AST declarator analysis - enum type tags
         const struct kefir_ast_scoped_identifier *scoped_identifier = NULL;                  \
         ASSERT_OK(context->resolve_ordinary_identifier(context, (_id), &scoped_identifier)); \
         ASSERT(scoped_identifier->klass == KEFIR_AST_SCOPE_IDENTIFIER_ENUM_CONSTANT);        \
-        ASSERT(KEFIR_AST_TYPE_SAME(scoped_identifier->enum_constant.type,                    \
+        ASSERT(KEFIR_AST_TYPE_SAME(scoped_identifier->enum_constant->type,                    \
                                    context->type_traits->underlying_enumeration_type));      \
-        ASSERT(scoped_identifier->enum_constant.value.integer == (_value));                  \
+        ASSERT(scoped_identifier->enum_constant->value.integer == (_value));                  \
     } while (0)
 
     ASSERT_CONSTANT("CONST_A", 100);

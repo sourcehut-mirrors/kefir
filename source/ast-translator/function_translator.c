@@ -48,10 +48,10 @@ static kefir_result_t init_function_declaration(struct kefir_mem *mem, struct ke
 
     char identifier_buf[1024];
     const struct kefir_ast_scoped_identifier *scoped_id = function->base.properties.function_definition->scoped_id;
-    if (scoped_id->function.flags.gnu_inline &&
-        scoped_id->function.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN &&
-        kefir_ast_function_specifier_is_inline(scoped_id->function.specifier) &&
-        !scoped_id->function.inline_definition && scoped_id->function.asm_label == NULL) {
+    if (scoped_id->function->flags.gnu_inline &&
+        scoped_id->function->storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN &&
+        kefir_ast_function_specifier_is_inline(scoped_id->function->specifier) &&
+        !scoped_id->function->inline_definition && scoped_id->function->asm_label == NULL) {
         snprintf(identifier_buf, sizeof(identifier_buf) - 1, KEFIR_AST_TRANSLATOR_GNU_INLINE_FUNCTION_IDENTIFIER,
                  identifier);
         identifier = kefir_string_pool_insert(mem, context->ast_context->symbols, identifier_buf, NULL);
@@ -70,7 +70,7 @@ static kefir_result_t init_function_declaration(struct kefir_mem *mem, struct ke
             REQUIRE_OK(kefir_ast_translator_function_declaration_init(
                 mem, context->ast_context, context->environment, context->ast_context->type_bundle,
                 context->ast_context->type_traits, context->module, identifier, true,
-                function->base.properties.function_definition->scoped_id->function.type, NULL, 0,
+                function->base.properties.function_definition->scoped_id->function->type, NULL, 0,
                 &args->function_declaration, &function->base.source_location));
             break;
 
@@ -175,7 +175,7 @@ kefir_result_t kefir_ast_translator_function_context_init(struct kefir_mem *mem,
 
     ctx->function_definition = function;
     ctx->module = context->module;
-    ctx->local_context = function->base.properties.function_definition->scoped_id->function.local_context;
+    ctx->local_context = function->base.properties.function_definition->scoped_id->function->local_context;
     kefir_result_t res = kefir_ast_translator_context_init_local(mem, &ctx->local_translator_context,
                                                                  &ctx->local_context->context, NULL, context);
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -229,15 +229,15 @@ kefir_result_t kefir_ast_translator_function_context_init(struct kefir_mem *mem,
     ctx->local_translator_context.local_scope_layout = &ctx->local_scope_layout;
     const struct kefir_ast_scoped_identifier *function_scoped_id =
         function->base.properties.function_definition->scoped_id;
-    ctx->ir_func->flags.constructor = function_scoped_id->function.flags.constructor;
-    ctx->ir_func->flags.destructor = function_scoped_id->function.flags.destructor;
-    if (function_scoped_id->function.flags.noinline || function_scoped_id->function.flags.weak) {
+    ctx->ir_func->flags.constructor = function_scoped_id->function->flags.constructor;
+    ctx->ir_func->flags.destructor = function_scoped_id->function->flags.destructor;
+    if (function_scoped_id->function->flags.noinline || function_scoped_id->function->flags.weak) {
         ctx->ir_func->flags.inline_behavior = KEFIR_IR_FUNCTION_NO_INLINE;
-    } else if (function_scoped_id->function.flags.always_inline) {
+    } else if (function_scoped_id->function->flags.always_inline) {
         ctx->ir_func->flags.inline_behavior = KEFIR_IR_FUNCTION_ALWAYS_INLINE;
-    } else if (function_scoped_id->function.specifier == KEFIR_AST_FUNCTION_SPECIFIER_INLINE ||
-         function_scoped_id->function.specifier == KEFIR_AST_FUNCTION_SPECIFIER_INLINE_NORETURN ||
-         function_scoped_id->function.flags.gnu_inline) {
+    } else if (function_scoped_id->function->specifier == KEFIR_AST_FUNCTION_SPECIFIER_INLINE ||
+         function_scoped_id->function->specifier == KEFIR_AST_FUNCTION_SPECIFIER_INLINE_NORETURN ||
+         function_scoped_id->function->flags.gnu_inline) {
         ctx->ir_func->flags.inline_behavior = KEFIR_IR_FUNCTION_INLINE_HINT;
     } else {
         ctx->ir_func->flags.inline_behavior = KEFIR_IR_FUNCTION_INLINE_DEFAULT;
@@ -331,10 +331,10 @@ static kefir_result_t generate_debug_info(struct kefir_mem *mem,
         function_context->function_definition->base.properties.function_definition->scoped_id;
     REQUIRE_OK(kefir_ir_debug_entry_add_attribute(
         mem, &function_context->module->debug_info.entries, &function_context->module->symbols, subprogram_entry_id,
-        &KEFIR_IR_DEBUG_ENTRY_ATTR_EXTERNAL(scoped_id->function.storage != KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC)));
+        &KEFIR_IR_DEBUG_ENTRY_ATTR_EXTERNAL(scoped_id->function->storage != KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC)));
     REQUIRE_OK(kefir_ir_debug_entry_add_attribute(
         mem, &function_context->module->debug_info.entries, &function_context->module->symbols, subprogram_entry_id,
-        &KEFIR_IR_DEBUG_ENTRY_ATTR_DECLARATION(!scoped_id->function.defined)));
+        &KEFIR_IR_DEBUG_ENTRY_ATTR_DECLARATION(!scoped_id->function->defined)));
 
     if (function_context->function_definition->base.source_location.source != NULL) {
         REQUIRE_OK(kefir_ir_debug_entry_add_attribute(
@@ -438,7 +438,7 @@ kefir_result_t kefir_ast_translator_function_context_translate(
                                                                   scoped_id));
                     REQUIRE_OK(xchg_param_address(builder));
                     REQUIRE_OK(
-                        kefir_ast_translator_store_value(mem, scoped_id->object.type, context, builder,
+                        kefir_ast_translator_store_value(mem, scoped_id->object->type, context, builder,
                                                          &function_context->function_definition->base.source_location));
                 } else {
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_VSTACK_POP, 0));
@@ -463,14 +463,14 @@ kefir_result_t kefir_ast_translator_function_context_translate(
 
             const struct kefir_ast_type *default_promotion =
                 kefir_ast_type_function_default_argument_convertion_promotion(
-                    mem, context->ast_context->type_bundle, context->ast_context->type_traits, scoped_id->object.type);
+                    mem, context->ast_context->type_bundle, context->ast_context->type_traits, scoped_id->object->type);
             if (KEFIR_AST_TYPE_IS_SCALAR_TYPE(default_promotion)) {
                 REQUIRE_OK(kefir_ast_translate_typeconv(mem, context->module, builder,
                                                         context->ast_context->type_traits, default_promotion,
-                                                        scoped_id->object.type));
+                                                        scoped_id->object->type));
             }
 
-            REQUIRE_OK(kefir_ast_translator_store_value(mem, scoped_id->object.type, context, builder,
+            REQUIRE_OK(kefir_ast_translator_store_value(mem, scoped_id->object->type, context, builder,
                                                         &function_context->function_definition->base.source_location));
         }
     }
@@ -499,7 +499,7 @@ kefir_result_t kefir_ast_translator_function_context_translate(
                     if (param_identifier != NULL && param_identifier->identifier != NULL) {
                         scoped_id = init_decl->base.properties.declaration_props->scoped_id;
                         REQUIRE_OK(generate_parameter_debug_info(mem, function_context, subprogram_entry_id,
-                                                                 param_identifier->identifier, scoped_id->object.type,
+                                                                 param_identifier->identifier, scoped_id->object->type,
                                                                  parameter_index));
                     } else {
                         REQUIRE_OK(generate_parameter_debug_info(mem, function_context, subprogram_entry_id, NULL,
@@ -519,7 +519,7 @@ kefir_result_t kefir_ast_translator_function_context_translate(
                 scoped_id = param->properties.expression_props->scoped_id;
                 REQUIRE_OK(generate_parameter_debug_info(mem, function_context, subprogram_entry_id,
                                                          identifier->identifier,
-                                                         scoped_id->object.type, parameter_index));
+                                                         scoped_id->object->type, parameter_index));
             }
         }
 

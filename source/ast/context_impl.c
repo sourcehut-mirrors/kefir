@@ -29,33 +29,40 @@ kefir_result_t kefir_ast_context_free_scoped_identifier(struct kefir_mem *mem,
     REQUIRE_OK(kefir_ast_scoped_identifier_run_cleanup(mem, scoped_id));
     switch (scoped_id->klass) {
         case KEFIR_AST_SCOPE_IDENTIFIER_OBJECT:
-            REQUIRE_OK(kefir_ast_alignment_free(mem, scoped_id->object.alignment));
+            REQUIRE_OK(kefir_ast_alignment_free(mem, scoped_id->object->alignment));
+            KEFIR_FREE(mem, scoped_id->object);
             break;
 
         case KEFIR_AST_SCOPE_IDENTIFIER_FUNCTION:
-            if (scoped_id->function.local_context != NULL) {
-                REQUIRE_OK(kefir_ast_local_context_free(mem, scoped_id->function.local_context));
-                KEFIR_FREE(mem, scoped_id->function.local_context);
-                scoped_id->function.local_context = NULL;
+            if (scoped_id->function->local_context != NULL) {
+                REQUIRE_OK(kefir_ast_local_context_free(mem, scoped_id->function->local_context));
+                KEFIR_FREE(mem, scoped_id->function->local_context);
+                scoped_id->function->local_context = NULL;
             }
+            KEFIR_FREE(mem, scoped_id->function);
             break;
 
         case KEFIR_AST_SCOPE_IDENTIFIER_ENUM_CONSTANT:
+            KEFIR_FREE(mem, scoped_id->enum_constant);
+            break;
+
         case KEFIR_AST_SCOPE_IDENTIFIER_TYPE_TAG:
             // Intentionally left blank
             break;
 
         case KEFIR_AST_SCOPE_IDENTIFIER_LABEL:
-            if (scoped_id->label.point != NULL) {
-                scoped_id->label.point = NULL;
+            if (scoped_id->label->point != NULL) {
+                scoped_id->label->point = NULL;
             }
+            KEFIR_FREE(mem, scoped_id->label);
             break;
 
         case KEFIR_AST_SCOPE_IDENTIFIER_TYPE_DEFINITION:
-            if (scoped_id->type_definition.alignment != NULL) {
-                REQUIRE_OK(kefir_ast_alignment_free(mem, scoped_id->type_definition.alignment));
+            if (scoped_id->type_definition->alignment != NULL) {
+                REQUIRE_OK(kefir_ast_alignment_free(mem, scoped_id->type_definition->alignment));
             }
-            scoped_id->type_definition.type = NULL;
+            scoped_id->type_definition->type = NULL;
+            KEFIR_FREE(mem, scoped_id->type_definition);
             break;
     }
     KEFIR_FREE(mem, scoped_id);
@@ -68,30 +75,37 @@ struct kefir_ast_scoped_identifier *kefir_ast_context_allocate_scoped_object_ide
     kefir_ast_scoped_identifier_linkage_t linkage, kefir_bool_t external, struct kefir_ast_initializer *initializer,
     const char *asm_label, const struct kefir_source_location *source_location) {
     struct kefir_ast_scoped_identifier *scoped_id = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_scoped_identifier));
+    REQUIRE(scoped_id != NULL, NULL);
     scoped_id->klass = KEFIR_AST_SCOPE_IDENTIFIER_OBJECT;
     scoped_id->cleanup.callback = NULL;
     scoped_id->cleanup.payload = NULL;
     scoped_id->definition_scope = definition_scope;
-    scoped_id->object.type = type;
-    scoped_id->object.storage = storage;
-    scoped_id->object.external = external;
-    scoped_id->object.linkage = linkage;
-    scoped_id->object.initializer = initializer;
-    scoped_id->object.visibility = KEFIR_AST_DECLARATOR_VISIBILITY_DEFAULT;
-    scoped_id->object.asm_label = asm_label;
-    scoped_id->object.vl_array = KEFIR_ID_NONE;
-    scoped_id->object.alias = NULL;
-    scoped_id->object.flags.weak = false;
-    scoped_id->object.flags.common = false;
-    scoped_id->object.flags.deprecated = false;
-    scoped_id->object.flags.deprecated_message = NULL;
-    scoped_id->object.defining_function = NULL;
-    scoped_id->object.constant_expression.present = false;
+    scoped_id->object = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_scoped_object_identifier));
+    REQUIRE_ELSE(scoped_id->object != NULL, {
+        KEFIR_FREE(mem, scoped_id);
+        return NULL;
+    });
+    scoped_id->object->type = type;
+    scoped_id->object->storage = storage;
+    scoped_id->object->external = external;
+    scoped_id->object->linkage = linkage;
+    scoped_id->object->initializer = initializer;
+    scoped_id->object->visibility = KEFIR_AST_DECLARATOR_VISIBILITY_DEFAULT;
+    scoped_id->object->asm_label = asm_label;
+    scoped_id->object->vl_array = KEFIR_ID_NONE;
+    scoped_id->object->alias = NULL;
+    scoped_id->object->flags.weak = false;
+    scoped_id->object->flags.common = false;
+    scoped_id->object->flags.deprecated = false;
+    scoped_id->object->flags.deprecated_message = NULL;
+    scoped_id->object->defining_function = NULL;
+    scoped_id->object->constant_expression.present = false;
     if (source_location != NULL) {
         scoped_id->source_location = *source_location;
     } else {
         kefir_result_t res = kefir_source_location_empty(&scoped_id->source_location);
         REQUIRE_ELSE(res == KEFIR_OK, {
+            KEFIR_FREE(mem, scoped_id->object);
             KEFIR_FREE(mem, scoped_id);
             return NULL;
         });
@@ -100,10 +114,11 @@ struct kefir_ast_scoped_identifier *kefir_ast_context_allocate_scoped_object_ide
     scoped_id->payload.ptr = scoped_id->payload.content;
     scoped_id->payload.cleanup = &scoped_id->cleanup;
     if (alignment != NULL) {
-        scoped_id->object.alignment = alignment;
+        scoped_id->object->alignment = alignment;
     } else {
-        scoped_id->object.alignment = kefir_ast_alignment_default(mem);
-        REQUIRE_ELSE(scoped_id->object.alignment != NULL, {
+        scoped_id->object->alignment = kefir_ast_alignment_default(mem);
+        REQUIRE_ELSE(scoped_id->object->alignment != NULL, {
+            KEFIR_FREE(mem, scoped_id->object);
             KEFIR_FREE(mem, scoped_id);
             return NULL;
         });
@@ -115,18 +130,25 @@ struct kefir_ast_scoped_identifier *kefir_ast_context_allocate_scoped_constant(
     struct kefir_mem *mem, const struct kefir_ast_constant_expression_value *value, const struct kefir_ast_type *type,
     const struct kefir_source_location *source_location) {
     struct kefir_ast_scoped_identifier *scoped_id = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_scoped_identifier));
+    REQUIRE(scoped_id != NULL, NULL);
     scoped_id->klass = KEFIR_AST_SCOPE_IDENTIFIER_ENUM_CONSTANT;
     scoped_id->cleanup.callback = NULL;
     scoped_id->cleanup.payload = NULL;
-    scoped_id->enum_constant.type = type;
-    scoped_id->enum_constant.value = *value;
-    scoped_id->enum_constant.flags.deprecated = false;
-    scoped_id->enum_constant.flags.deprecated_message = NULL;
+    scoped_id->enum_constant = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_scoped_enum_constant_identifier));
+    REQUIRE_ELSE(scoped_id->enum_constant != NULL, {
+        KEFIR_FREE(mem, scoped_id);
+        return NULL;
+    });
+    scoped_id->enum_constant->type = type;
+    scoped_id->enum_constant->value = *value;
+    scoped_id->enum_constant->flags.deprecated = false;
+    scoped_id->enum_constant->flags.deprecated_message = NULL;
     if (source_location != NULL) {
         scoped_id->source_location = *source_location;
     } else {
         kefir_result_t res = kefir_source_location_empty(&scoped_id->source_location);
         REQUIRE_ELSE(res == KEFIR_OK, {
+            KEFIR_FREE(mem, scoped_id->enum_constant);
             KEFIR_FREE(mem, scoped_id);
             return NULL;
         });
@@ -163,16 +185,23 @@ struct kefir_ast_scoped_identifier *kefir_ast_context_allocate_scoped_type_defin
     struct kefir_mem *mem, const struct kefir_ast_type *type, struct kefir_ast_alignment *alignment,
     const struct kefir_source_location *source_location) {
     struct kefir_ast_scoped_identifier *scoped_id = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_scoped_identifier));
+    REQUIRE(scoped_id != NULL, NULL);
     scoped_id->klass = KEFIR_AST_SCOPE_IDENTIFIER_TYPE_DEFINITION;
     scoped_id->cleanup.callback = NULL;
     scoped_id->cleanup.payload = NULL;
-    scoped_id->type_definition.type = type;
-    scoped_id->type_definition.alignment = alignment;
+    scoped_id->type_definition = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_scoped_typedef_identifier));
+    REQUIRE_ELSE(scoped_id->type_definition != NULL, {
+        KEFIR_FREE(mem, scoped_id);
+        return NULL;
+    });
+    scoped_id->type_definition->type = type;
+    scoped_id->type_definition->alignment = alignment;
     if (source_location != NULL) {
         scoped_id->source_location = *source_location;
     } else {
         kefir_result_t res = kefir_source_location_empty(&scoped_id->source_location);
         REQUIRE_ELSE(res == KEFIR_OK, {
+            KEFIR_FREE(mem, scoped_id->type_definition);
             KEFIR_FREE(mem, scoped_id);
             return NULL;
         });
@@ -185,11 +214,11 @@ struct kefir_ast_scoped_identifier *kefir_ast_context_allocate_scoped_type_defin
 
 kefir_result_t kefir_ast_context_allocate_scoped_type_definition_update_alignment(
     struct kefir_mem *mem, struct kefir_ast_scoped_identifier *scoped_id, struct kefir_ast_alignment *alignment) {
-    if (scoped_id->type_definition.alignment == NULL) {
-        scoped_id->type_definition.alignment = alignment;
-    } else if (alignment != NULL && scoped_id->type_definition.alignment->value < alignment->value) {
-        REQUIRE_OK(kefir_ast_alignment_free(mem, scoped_id->type_definition.alignment));
-        scoped_id->type_definition.alignment = alignment;
+    if (scoped_id->type_definition->alignment == NULL) {
+        scoped_id->type_definition->alignment = alignment;
+    } else if (alignment != NULL && scoped_id->type_definition->alignment->value < alignment->value) {
+        REQUIRE_OK(kefir_ast_alignment_free(mem, scoped_id->type_definition->alignment));
+        scoped_id->type_definition->alignment = alignment;
     } else {
         REQUIRE_OK(kefir_ast_alignment_free(mem, alignment));
     }
@@ -264,33 +293,40 @@ struct kefir_ast_scoped_identifier *kefir_ast_context_allocate_scoped_function_i
     kefir_bool_t inline_definition, const char *alias, const char *asm_label,
     const struct kefir_source_location *source_location) {
     struct kefir_ast_scoped_identifier *scoped_id = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_scoped_identifier));
+    REQUIRE(scoped_id != NULL, NULL);
     scoped_id->klass = KEFIR_AST_SCOPE_IDENTIFIER_FUNCTION;
     scoped_id->cleanup.callback = NULL;
     scoped_id->cleanup.payload = NULL;
-    scoped_id->function.type = type;
-    scoped_id->function.specifier = specifier;
-    scoped_id->function.storage = storage;
-    scoped_id->function.external = external;
-    scoped_id->function.defined = defined;
-    scoped_id->function.inline_definition = inline_definition;
-    scoped_id->object.visibility = KEFIR_AST_DECLARATOR_VISIBILITY_DEFAULT;
-    scoped_id->function.alias = alias;
-    scoped_id->function.flags.weak = false;
-    scoped_id->function.flags.gnu_inline = false;
-    scoped_id->function.flags.always_inline = false;
-    scoped_id->function.flags.noinline = false;
-    scoped_id->function.flags.constructor = false;
-    scoped_id->function.flags.destructor = false;
-    scoped_id->function.flags.deprecated = false;
-    scoped_id->function.flags.deprecated_message = NULL;
-    scoped_id->function.local_context = NULL;
-    scoped_id->function.local_context_ptr = &scoped_id->function.local_context;
-    scoped_id->function.asm_label = asm_label;
+    scoped_id->function = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_scoped_function_identifier));
+    REQUIRE_ELSE(scoped_id->function != NULL, {
+        KEFIR_FREE(mem, scoped_id);
+        return NULL;
+    });
+    scoped_id->function->type = type;
+    scoped_id->function->specifier = specifier;
+    scoped_id->function->storage = storage;
+    scoped_id->function->external = external;
+    scoped_id->function->defined = defined;
+    scoped_id->function->inline_definition = inline_definition;
+    scoped_id->function->visibility = KEFIR_AST_DECLARATOR_VISIBILITY_DEFAULT;
+    scoped_id->function->alias = alias;
+    scoped_id->function->flags.weak = false;
+    scoped_id->function->flags.gnu_inline = false;
+    scoped_id->function->flags.always_inline = false;
+    scoped_id->function->flags.noinline = false;
+    scoped_id->function->flags.constructor = false;
+    scoped_id->function->flags.destructor = false;
+    scoped_id->function->flags.deprecated = false;
+    scoped_id->function->flags.deprecated_message = NULL;
+    scoped_id->function->local_context = NULL;
+    scoped_id->function->local_context_ptr = &scoped_id->function->local_context;
+    scoped_id->function->asm_label = asm_label;
     if (source_location != NULL) {
         scoped_id->source_location = *source_location;
     } else {
         kefir_result_t res = kefir_source_location_empty(&scoped_id->source_location);
         REQUIRE_ELSE(res == KEFIR_OK, {
+            KEFIR_FREE(mem, scoped_id->function);
             KEFIR_FREE(mem, scoped_id);
             return NULL;
         });
@@ -305,6 +341,7 @@ struct kefir_ast_scoped_identifier *kefir_ast_context_allocate_scoped_label(
     struct kefir_mem *mem, struct kefir_ast_flow_control_tree *flow_control_tree,
     struct kefir_ast_flow_control_structure *parent, const struct kefir_source_location *source_location) {
     struct kefir_ast_scoped_identifier *scoped_id = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_scoped_identifier));
+    REQUIRE(scoped_id != NULL, NULL);
     scoped_id->klass = KEFIR_AST_SCOPE_IDENTIFIER_LABEL;
     scoped_id->cleanup.callback = NULL;
     scoped_id->cleanup.payload = NULL;
@@ -320,9 +357,15 @@ struct kefir_ast_scoped_identifier *kefir_ast_context_allocate_scoped_label(
     memset(scoped_id->payload.content, 0, KEFIR_AST_SCOPED_IDENTIFIER_PAYLOAD_SIZE);
     scoped_id->payload.ptr = scoped_id->payload.content;
     scoped_id->payload.cleanup = &scoped_id->cleanup;
-    scoped_id->label.point = kefir_ast_flow_control_point_alloc(mem, flow_control_tree, parent);
-    scoped_id->label.public_label = NULL;
-    REQUIRE_ELSE(scoped_id->label.point != NULL, {
+    scoped_id->label = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_scoped_label_identifier));
+    REQUIRE_ELSE(scoped_id->label != NULL, {
+        KEFIR_FREE(mem, scoped_id);
+        return NULL;
+    });
+    scoped_id->label->point = kefir_ast_flow_control_point_alloc(mem, flow_control_tree, parent);
+    scoped_id->label->public_label = NULL;
+    REQUIRE_ELSE(scoped_id->label->point != NULL, {
+        KEFIR_FREE(mem, scoped_id->label);
         KEFIR_FREE(mem, scoped_id);
         return NULL;
     });

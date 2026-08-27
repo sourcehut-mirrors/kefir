@@ -38,16 +38,16 @@ kefir_result_t kefir_ast_evaluate_identifier_node(struct kefir_mem *mem, const s
     const struct kefir_ast_scoped_identifier *scoped_id = node->base.properties.expression_props->scoped_id;
     switch (scoped_id->klass) {
         case KEFIR_AST_SCOPE_IDENTIFIER_ENUM_CONSTANT:
-            *value = scoped_id->enum_constant.value;
+            *value = scoped_id->enum_constant->value;
             break;
 
         case KEFIR_AST_SCOPE_IDENTIFIER_OBJECT: {
-            if (scoped_id->object.constant_expression.present) {
-                *value = scoped_id->object.constant_expression.value;
+            if (scoped_id->object->constant_expression.present) {
+                *value = scoped_id->object->constant_expression.value;
             } else {
-                REQUIRE(scoped_id->object.type->tag == KEFIR_AST_TYPE_ARRAY &&
-                            (scoped_id->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN ||
-                             scoped_id->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC),
+                REQUIRE(scoped_id->object->type->tag == KEFIR_AST_TYPE_ARRAY &&
+                            (scoped_id->object->storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN ||
+                             scoped_id->object->storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC),
                         KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->base.source_location,
                                                "Identifier in a constant expression shall refer either to an "
                                                "array of static lifetime or to a function"));

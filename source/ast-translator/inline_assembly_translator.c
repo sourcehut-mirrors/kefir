@@ -153,7 +153,7 @@ static kefir_result_t translate_pointer_to_identifier(struct kefir_mem *mem, str
                                                       const char **base, kefir_int64_t *offset,
                                                       const struct kefir_source_location *location) {
     if (value->pointer.scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_OBJECT) {
-        switch (value->pointer.scoped_id->object.storage) {
+        switch (value->pointer.scoped_id->object->storage) {
             case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN:
                 *base = value->pointer.base.literal;
                 *offset = value->pointer.offset;
@@ -163,7 +163,7 @@ static kefir_result_t translate_pointer_to_identifier(struct kefir_mem *mem, str
             case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC: {
                 ASSIGN_DECL_CAST(struct kefir_ast_translator_scoped_identifier_object *, identifier_data,
                                  value->pointer.scoped_id->payload.ptr);
-                REQUIRE_OK(static_identifier(mem, module, value->pointer.scoped_id->object.defining_function,
+                REQUIRE_OK(static_identifier(mem, module, value->pointer.scoped_id->object->defining_function,
                                              value->pointer.base.literal, identifier_data->identifier, base));
                 *offset = resolve_identifier_offset(identifier_data->layout) + value->pointer.offset;
             } break;

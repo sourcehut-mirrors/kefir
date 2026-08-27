@@ -72,11 +72,11 @@ kefir_result_t kefir_ast_context_merge_alignment(struct kefir_mem *, struct kefi
 
 #define KEFIR_AST_CONTEXT_MERGE_FUNCTION_ASM_LABEL(_ordinary_id, _attributes)                           \
     do {                                                                                                \
-        if ((_ordinary_id)->function.asm_label == NULL) {                                               \
-            (_ordinary_id)->function.asm_label = (_attributes)->asm_label;                              \
+        if ((_ordinary_id)->function->asm_label == NULL) {                                               \
+            (_ordinary_id)->function->asm_label = (_attributes)->asm_label;                              \
         } else {                                                                                        \
             REQUIRE((_attributes)->asm_label == NULL ||                                                 \
-                        strcmp((_attributes)->asm_label, (_ordinary_id)->function.asm_label) == 0,      \
+                        strcmp((_attributes)->asm_label, (_ordinary_id)->function->asm_label) == 0,      \
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location,                              \
                                            "Assembly label does not match with previous declaration")); \
         }                                                                                               \
@@ -85,15 +85,15 @@ kefir_result_t kefir_ast_context_merge_alignment(struct kefir_mem *, struct kefi
 #define KEFIR_AST_CONTEXT_MERGE_FUNCTION_ALIAS_ATTR(_ordinary_id, _attributes)                           \
     do {                                                                                                 \
         if ((_attributes)->alias != NULL) {                                                              \
-            REQUIRE((_attributes)->asm_label == NULL && (_ordinary_id)->function.asm_label == NULL,      \
+            REQUIRE((_attributes)->asm_label == NULL && (_ordinary_id)->function->asm_label == NULL,      \
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location,                               \
                                            "Assembly label cannot be attached to an aliased function")); \
-            if ((_ordinary_id)->function.alias != NULL) {                                                \
-                REQUIRE(strcmp((_attributes)->alias, (_ordinary_id)->function.alias) == 0,               \
+            if ((_ordinary_id)->function->alias != NULL) {                                                \
+                REQUIRE(strcmp((_attributes)->alias, (_ordinary_id)->function->alias) == 0,               \
                         KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location,                           \
                                                "Alias mismatch in function redeclaration"));             \
             } else {                                                                                     \
-                (_ordinary_id)->function.alias = (_attributes)->alias;                                   \
+                (_ordinary_id)->function->alias = (_attributes)->alias;                                   \
             }                                                                                            \
         }                                                                                                \
     } while (0)
@@ -101,15 +101,15 @@ kefir_result_t kefir_ast_context_merge_alignment(struct kefir_mem *, struct kefi
 #define KEFIR_AST_CONTEXT_MERGE_OBJECT_ALIAS_ATTR(_ordinary_id, _attributes)                                           \
     do {                                                                                                               \
         if ((_attributes)->alias != NULL) {                                                                            \
-            REQUIRE((_attributes)->asm_label == NULL && (_ordinary_id)->object.asm_label == NULL,                      \
+            REQUIRE((_attributes)->asm_label == NULL && (_ordinary_id)->object->asm_label == NULL,                      \
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location,                                             \
                                            "Assembly label cannot be attached to an aliased object"));                 \
-            if ((_ordinary_id)->object.alias != NULL) {                                                                \
+            if ((_ordinary_id)->object->alias != NULL) {                                                                \
                 REQUIRE(                                                                                               \
-                    strcmp((_attributes)->alias, (_ordinary_id)->object.alias) == 0,                                   \
+                    strcmp((_attributes)->alias, (_ordinary_id)->object->alias) == 0,                                   \
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location, "Alias mismatch in object redeclaration")); \
             } else {                                                                                                   \
-                (_ordinary_id)->object.alias = (_attributes)->alias;                                                   \
+                (_ordinary_id)->object->alias = (_attributes)->alias;                                                   \
             }                                                                                                          \
         }                                                                                                              \
     } while (0)

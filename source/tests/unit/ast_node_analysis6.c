@@ -1076,7 +1076,7 @@ END_CASE
         ASSERT(compound->base.properties.expression_props->temporary_identifier->scoped_id != NULL);          \
         ASSERT(compound->base.properties.expression_props->temporary_identifier->scoped_id->klass ==          \
                KEFIR_AST_SCOPE_IDENTIFIER_OBJECT);                                                          \
-        ASSERT(compound->base.properties.expression_props->temporary_identifier->scoped_id->object.storage == \
+        ASSERT(compound->base.properties.expression_props->temporary_identifier->scoped_id->object->storage == \
                (_storage));                                                                                 \
         ASSERT_OK(KEFIR_AST_NODE_FREE((_mem), KEFIR_AST_NODE_BASE(compound)));                              \
     } while (0)

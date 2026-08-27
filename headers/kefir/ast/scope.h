@@ -43,81 +43,87 @@ typedef struct kefir_ast_scoped_identifier_cleanup {
     void *payload;
 } kefir_ast_scoped_identifier_cleanup_t;
 
+typedef struct kefir_ast_scoped_object_identifier {
+    const struct kefir_ast_type *type;
+    struct kefir_ast_alignment *alignment;
+    kefir_ast_scoped_identifier_storage_t storage;
+    kefir_ast_scoped_identifier_linkage_t linkage;
+    kefir_bool_t external;
+    struct kefir_ast_initializer *UNOWNED(initializer);
+    kefir_id_t vl_array;
+    kefir_ast_declarator_visibility_attr_t visibility;
+    const char *asm_label;
+    const char *alias;
+    const char *defining_function;
+    struct {
+        kefir_bool_t present;
+        struct kefir_ast_constant_expression_value value;
+    } constant_expression;
+    struct {
+        kefir_bool_t weak;
+        kefir_bool_t common;
+        kefir_bool_t deprecated;
+        const char *deprecated_message;
+    } flags;
+} kefir_ast_scoped_object_identifier_t;
+
+typedef struct kefir_ast_scoped_function_identifier {
+    const struct kefir_ast_type *type;
+    kefir_ast_function_specifier_t specifier;
+    kefir_ast_scoped_identifier_storage_t storage;
+    kefir_bool_t external;
+    kefir_bool_t defined;
+    kefir_bool_t inline_definition;
+    kefir_ast_declarator_visibility_attr_t visibility;
+    const char *alias;
+    struct {
+        kefir_bool_t weak;
+        kefir_bool_t gnu_inline;
+        kefir_bool_t always_inline;
+        kefir_bool_t noinline;
+        kefir_bool_t constructor;
+        kefir_bool_t destructor;
+        kefir_bool_t deprecated;
+        const char *deprecated_message;
+    } flags;
+    struct kefir_ast_local_context **local_context_ptr;
+    struct kefir_ast_local_context *local_context;
+    const char *asm_label;
+} kefir_ast_scoped_function_identifier_t;
+
+typedef struct kefir_ast_scoped_enum_constant_identifier {
+    const struct kefir_ast_type *type;
+    struct kefir_ast_constant_expression_value value;
+    struct {
+        kefir_bool_t deprecated;
+        const char *deprecated_message;
+    } flags;
+} kefir_ast_scoped_enum_constant_identifier_t;
+
+typedef struct kefir_ast_scoped_typedef_identifier {
+    const struct kefir_ast_type *type;
+    struct kefir_ast_alignment *alignment;
+    struct {
+        kefir_bool_t deprecated;
+        const char *deprecated_message;
+    } flags;
+} kefir_ast_scoped_typedef_identifier_t;
+
+typedef struct kefir_ast_scoped_label_identifier {
+    struct kefir_ast_flow_control_point *point;
+    const char *public_label;
+} kefir_ast_scoped_label_identifier_t;
+
 typedef struct kefir_ast_scoped_identifier {
     kefir_ast_scoped_identifier_class_t klass;
     struct kefir_ast_scoped_identifier_cleanup cleanup;
     struct kefir_ast_identifier_flat_scope *definition_scope;
     union {
-        struct {
-            const struct kefir_ast_type *type;
-            struct kefir_ast_alignment *alignment;
-            kefir_ast_scoped_identifier_storage_t storage;
-            kefir_ast_scoped_identifier_linkage_t linkage;
-            kefir_bool_t external;
-            struct kefir_ast_initializer *UNOWNED(initializer);
-            kefir_id_t vl_array;
-            kefir_ast_declarator_visibility_attr_t visibility;
-            const char *asm_label;
-            const char *alias;
-            const char *defining_function;
-            struct {
-                kefir_bool_t present;
-                struct kefir_ast_constant_expression_value value;
-            } constant_expression;
-            struct {
-                kefir_bool_t weak;
-                kefir_bool_t common;
-                kefir_bool_t deprecated;
-                const char *deprecated_message;
-            } flags;
-        } object;
-
-        struct {
-            const struct kefir_ast_type *type;
-            kefir_ast_function_specifier_t specifier;
-            kefir_ast_scoped_identifier_storage_t storage;
-            kefir_bool_t external;
-            kefir_bool_t defined;
-            kefir_bool_t inline_definition;
-            kefir_ast_declarator_visibility_attr_t visibility;
-            const char *alias;
-            struct {
-                kefir_bool_t weak;
-                kefir_bool_t gnu_inline;
-                kefir_bool_t always_inline;
-                kefir_bool_t noinline;
-                kefir_bool_t constructor;
-                kefir_bool_t destructor;
-                kefir_bool_t deprecated;
-                const char *deprecated_message;
-            } flags;
-            struct kefir_ast_local_context **local_context_ptr;
-            struct kefir_ast_local_context *local_context;
-            const char *asm_label;
-        } function;
-
-        struct {
-            const struct kefir_ast_type *type;
-            struct kefir_ast_constant_expression_value value;
-            struct {
-                kefir_bool_t deprecated;
-                const char *deprecated_message;
-            } flags;
-        } enum_constant;
-
-        struct {
-            const struct kefir_ast_type *type;
-            struct kefir_ast_alignment *alignment;
-            struct {
-                kefir_bool_t deprecated;
-                const char *deprecated_message;
-            } flags;
-        } type_definition;
-
-        struct {
-            struct kefir_ast_flow_control_point *point;
-            const char *public_label;
-        } label;
+        struct kefir_ast_scoped_object_identifier *object;
+        struct kefir_ast_scoped_function_identifier *function;
+        struct kefir_ast_scoped_enum_constant_identifier *enum_constant;
+        struct kefir_ast_scoped_typedef_identifier *type_definition;
+        struct kefir_ast_scoped_label_identifier *label;
 
         struct {
             const struct kefir_ast_type *type;

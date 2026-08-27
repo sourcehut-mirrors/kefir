@@ -285,12 +285,12 @@ kefir_result_t kefir_ast_analyze_function_definition_node(struct kefir_mem *mem,
         return res;
     });
 
-    base->properties.type = scoped_id->function.type;
+    base->properties.type = scoped_id->function->type;
     base->properties.function_definition->scoped_id = scoped_id;
 
     local_context->context.surrounding_function = scoped_id;
     local_context->context.surrounding_function_name = base->properties.function_definition->identifier;
-    *scoped_id->function.local_context_ptr = local_context;
+    *scoped_id->function->local_context_ptr = local_context;
 
     REQUIRE_OK(local_context->context.update_pragma_state(mem, &local_context->context, &node->body->pragmas));
 

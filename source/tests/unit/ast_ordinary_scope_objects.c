@@ -28,9 +28,9 @@
         ASSERT_OK(                                                                                                \
             kefir_ast_local_context_resolve_scoped_ordinary_identifier((_context), (_identifier), &__scoped_id)); \
         ASSERT(__scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_OBJECT);                                          \
-        ASSERT(__scoped_id->object.storage == (_storage));                                                        \
-        ASSERT(KEFIR_AST_TYPE_COMPATIBLE((_context)->global->type_traits, __scoped_id->object.type, (_type)));    \
-        ASSERT(__scoped_id->object.linkage == (_linkage));                                                        \
+        ASSERT(__scoped_id->object->storage == (_storage));                                                        \
+        ASSERT(KEFIR_AST_TYPE_COMPATIBLE((_context)->global->type_traits, __scoped_id->object->type, (_type)));    \
+        ASSERT(__scoped_id->object->linkage == (_linkage));                                                        \
     } while (0)
 
 DEFINE_CASE(ast_ordinary_scope_objects1, "AST Declaration scoping - global rules for extern") {
@@ -60,10 +60,10 @@ DEFINE_CASE(ast_ordinary_scope_objects1, "AST Declaration scoping - global rules
     const struct kefir_ast_scoped_identifier *scoped_id = NULL;
     ASSERT_OK(kefir_ast_local_context_resolve_scoped_ordinary_identifier(&context, "ext_int1", &scoped_id));
     ASSERT(scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_OBJECT);
-    ASSERT(scoped_id->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN);
-    ASSERT(KEFIR_AST_TYPE_COMPATIBLE(type_traits, scoped_id->object.type, kefir_ast_type_signed_int()));
-    ASSERT(scoped_id->object.linkage == KEFIR_AST_SCOPED_IDENTIFIER_EXTERNAL_LINKAGE);
-    ASSERT(scoped_id->object.external);
+    ASSERT(scoped_id->object->storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN);
+    ASSERT(KEFIR_AST_TYPE_COMPATIBLE(type_traits, scoped_id->object->type, kefir_ast_type_signed_int()));
+    ASSERT(scoped_id->object->linkage == KEFIR_AST_SCOPED_IDENTIFIER_EXTERNAL_LINKAGE);
+    ASSERT(scoped_id->object->external);
 
     ASSERT_OK(kefir_ast_local_context_free(&kft_mem, &context));
     ASSERT_OK(kefir_ast_global_context_free(&kft_mem, &global_context));
@@ -97,10 +97,10 @@ DEFINE_CASE(ast_ordinary_scope_objects2, "AST Declaration scoping - global rules
     const struct kefir_ast_scoped_identifier *scoped_id = NULL;
     ASSERT_OK(kefir_ast_local_context_resolve_scoped_ordinary_identifier(&context, "ext_int1", &scoped_id));
     ASSERT(scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_OBJECT);
-    ASSERT(scoped_id->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN_THREAD_LOCAL);
-    ASSERT(KEFIR_AST_TYPE_COMPATIBLE(type_traits, scoped_id->object.type, kefir_ast_type_signed_int()));
-    ASSERT(scoped_id->object.linkage == KEFIR_AST_SCOPED_IDENTIFIER_EXTERNAL_LINKAGE);
-    ASSERT(scoped_id->object.external);
+    ASSERT(scoped_id->object->storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN_THREAD_LOCAL);
+    ASSERT(KEFIR_AST_TYPE_COMPATIBLE(type_traits, scoped_id->object->type, kefir_ast_type_signed_int()));
+    ASSERT(scoped_id->object->linkage == KEFIR_AST_SCOPED_IDENTIFIER_EXTERNAL_LINKAGE);
+    ASSERT(scoped_id->object->external);
 
     ASSERT_OK(kefir_ast_local_context_free(&kft_mem, &context));
     ASSERT_OK(kefir_ast_global_context_free(&kft_mem, &global_context));
@@ -142,9 +142,9 @@ DEFINE_CASE(ast_ordinary_scope_objects3, "AST Declaration scoping - global rules
     const struct kefir_ast_scoped_identifier *scoped_id = NULL;
     ASSERT_OK(kefir_ast_local_context_resolve_scoped_ordinary_identifier(&context, "ext_int1", &scoped_id));
     ASSERT(scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_OBJECT);
-    ASSERT(scoped_id->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN);
-    ASSERT(KEFIR_AST_TYPE_COMPATIBLE(type_traits, scoped_id->object.type, kefir_ast_type_signed_int()));
-    ASSERT(!scoped_id->object.external);
+    ASSERT(scoped_id->object->storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN);
+    ASSERT(KEFIR_AST_TYPE_COMPATIBLE(type_traits, scoped_id->object->type, kefir_ast_type_signed_int()));
+    ASSERT(!scoped_id->object->external);
 
     ASSERT_OK(kefir_ast_local_context_free(&kft_mem, &context));
     ASSERT_OK(kefir_ast_global_context_free(&kft_mem, &global_context));
@@ -186,10 +186,10 @@ DEFINE_CASE(ast_ordinary_scope_objects4, "AST Declaration scoping - global rules
     const struct kefir_ast_scoped_identifier *scoped_id = NULL;
     ASSERT_OK(kefir_ast_local_context_resolve_scoped_ordinary_identifier(&context, "ext_int1", &scoped_id));
     ASSERT(scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_OBJECT);
-    ASSERT(scoped_id->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN_THREAD_LOCAL);
-    ASSERT(KEFIR_AST_TYPE_COMPATIBLE(type_traits, scoped_id->object.type, kefir_ast_type_signed_int()));
-    ASSERT(scoped_id->object.linkage == KEFIR_AST_SCOPED_IDENTIFIER_EXTERNAL_LINKAGE);
-    ASSERT(!scoped_id->object.external);
+    ASSERT(scoped_id->object->storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN_THREAD_LOCAL);
+    ASSERT(KEFIR_AST_TYPE_COMPATIBLE(type_traits, scoped_id->object->type, kefir_ast_type_signed_int()));
+    ASSERT(scoped_id->object->linkage == KEFIR_AST_SCOPED_IDENTIFIER_EXTERNAL_LINKAGE);
+    ASSERT(!scoped_id->object->external);
 
     ASSERT_OK(kefir_ast_local_context_free(&kft_mem, &context));
     ASSERT_OK(kefir_ast_global_context_free(&kft_mem, &global_context));
@@ -233,10 +233,10 @@ DEFINE_CASE(ast_ordinary_scope_objects5, "AST Declaration scoping - global rules
     const struct kefir_ast_scoped_identifier *scoped_id = NULL;
     ASSERT_OK(kefir_ast_local_context_resolve_scoped_ordinary_identifier(&context, "static_int1", &scoped_id));
     ASSERT(scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_OBJECT);
-    ASSERT(scoped_id->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC);
-    ASSERT(KEFIR_AST_TYPE_COMPATIBLE(type_traits, scoped_id->object.type, kefir_ast_type_signed_int()));
-    ASSERT(scoped_id->object.linkage == KEFIR_AST_SCOPED_IDENTIFIER_INTERNAL_LINKAGE);
-    ASSERT(!scoped_id->object.external);
+    ASSERT(scoped_id->object->storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC);
+    ASSERT(KEFIR_AST_TYPE_COMPATIBLE(type_traits, scoped_id->object->type, kefir_ast_type_signed_int()));
+    ASSERT(scoped_id->object->linkage == KEFIR_AST_SCOPED_IDENTIFIER_INTERNAL_LINKAGE);
+    ASSERT(!scoped_id->object->external);
 
     ASSERT_OK(kefir_ast_global_context_declare_external(&kft_mem, &global_context, "static_int2",
                                                         kefir_ast_type_signed_int(), NULL, NULL, NULL, NULL));
@@ -298,10 +298,10 @@ DEFINE_CASE(ast_ordinary_scope_objects6, "AST Declaration scoping - global rules
     const struct kefir_ast_scoped_identifier *scoped_id = NULL;
     ASSERT_OK(kefir_ast_local_context_resolve_scoped_ordinary_identifier(&context, "static_int1", &scoped_id));
     ASSERT(scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_OBJECT);
-    ASSERT(scoped_id->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC_THREAD_LOCAL);
-    ASSERT(KEFIR_AST_TYPE_COMPATIBLE(type_traits, scoped_id->object.type, kefir_ast_type_signed_int()));
-    ASSERT(scoped_id->object.linkage == KEFIR_AST_SCOPED_IDENTIFIER_INTERNAL_LINKAGE);
-    ASSERT(!scoped_id->object.external);
+    ASSERT(scoped_id->object->storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC_THREAD_LOCAL);
+    ASSERT(KEFIR_AST_TYPE_COMPATIBLE(type_traits, scoped_id->object->type, kefir_ast_type_signed_int()));
+    ASSERT(scoped_id->object->linkage == KEFIR_AST_SCOPED_IDENTIFIER_INTERNAL_LINKAGE);
+    ASSERT(!scoped_id->object->external);
 
     ASSERT_OK(kefir_ast_local_context_free(&kft_mem, &context));
     ASSERT_OK(kefir_ast_global_context_free(&kft_mem, &global_context));
@@ -367,10 +367,10 @@ DEFINE_CASE(ast_ordinary_scope_objects7, "AST Declaration scoping - local extern
     const struct kefir_ast_scoped_identifier *scoped_id = NULL;
     ASSERT_OK(kefir_ast_local_context_resolve_scoped_ordinary_identifier(&context, "ext_int1", &scoped_id));
     ASSERT(scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_OBJECT);
-    ASSERT(scoped_id->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN);
-    ASSERT(KEFIR_AST_TYPE_COMPATIBLE(type_traits, scoped_id->object.type, kefir_ast_type_signed_int()));
-    ASSERT(scoped_id->object.linkage == KEFIR_AST_SCOPED_IDENTIFIER_EXTERNAL_LINKAGE);
-    ASSERT(scoped_id->object.external);
+    ASSERT(scoped_id->object->storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN);
+    ASSERT(KEFIR_AST_TYPE_COMPATIBLE(type_traits, scoped_id->object->type, kefir_ast_type_signed_int()));
+    ASSERT(scoped_id->object->linkage == KEFIR_AST_SCOPED_IDENTIFIER_EXTERNAL_LINKAGE);
+    ASSERT(scoped_id->object->external);
 
     ASSERT_OK(kefir_ast_local_context_free(&kft_mem, &context));
     ASSERT_OK(kefir_ast_global_context_free(&kft_mem, &global_context));
@@ -430,10 +430,10 @@ DEFINE_CASE(ast_ordinary_scope_objects8, "AST Declaration scoping - local extern
     const struct kefir_ast_scoped_identifier *scoped_id = NULL;
     ASSERT_OK(kefir_ast_local_context_resolve_scoped_ordinary_identifier(&context, "ext_int1", &scoped_id));
     ASSERT(scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_OBJECT);
-    ASSERT(scoped_id->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN_THREAD_LOCAL);
-    ASSERT(KEFIR_AST_TYPE_COMPATIBLE(type_traits, scoped_id->object.type, kefir_ast_type_signed_int()));
-    ASSERT(scoped_id->object.linkage == KEFIR_AST_SCOPED_IDENTIFIER_EXTERNAL_LINKAGE);
-    ASSERT(scoped_id->object.external);
+    ASSERT(scoped_id->object->storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN_THREAD_LOCAL);
+    ASSERT(KEFIR_AST_TYPE_COMPATIBLE(type_traits, scoped_id->object->type, kefir_ast_type_signed_int()));
+    ASSERT(scoped_id->object->linkage == KEFIR_AST_SCOPED_IDENTIFIER_EXTERNAL_LINKAGE);
+    ASSERT(scoped_id->object->external);
 
     ASSERT_OK(kefir_ast_local_context_free(&kft_mem, &context));
     ASSERT_OK(kefir_ast_global_context_free(&kft_mem, &global_context));
@@ -475,10 +475,10 @@ DEFINE_CASE(ast_ordinary_scope_objects9, "AST Declaration scoping - local static
     const struct kefir_ast_scoped_identifier *scoped_id = NULL;
     ASSERT_OK(kefir_ast_local_context_resolve_scoped_ordinary_identifier(&context, "static_int1", &scoped_id));
     ASSERT(scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_OBJECT);
-    ASSERT(scoped_id->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC);
-    ASSERT(KEFIR_AST_TYPE_COMPATIBLE(type_traits, scoped_id->object.type, kefir_ast_type_signed_int()));
-    ASSERT(scoped_id->object.linkage == KEFIR_AST_SCOPED_IDENTIFIER_NONE_LINKAGE);
-    ASSERT(!scoped_id->object.external);
+    ASSERT(scoped_id->object->storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC);
+    ASSERT(KEFIR_AST_TYPE_COMPATIBLE(type_traits, scoped_id->object->type, kefir_ast_type_signed_int()));
+    ASSERT(scoped_id->object->linkage == KEFIR_AST_SCOPED_IDENTIFIER_NONE_LINKAGE);
+    ASSERT(!scoped_id->object->external);
 
     ASSERT_OK(kefir_ast_local_context_free(&kft_mem, &context));
     ASSERT_OK(kefir_ast_global_context_free(&kft_mem, &global_context));
@@ -520,10 +520,10 @@ DEFINE_CASE(ast_ordinary_scope_objects10, "AST Declaration scoping - local stati
     const struct kefir_ast_scoped_identifier *scoped_id = NULL;
     ASSERT_OK(kefir_ast_local_context_resolve_scoped_ordinary_identifier(&context, "static_int1", &scoped_id));
     ASSERT(scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_OBJECT);
-    ASSERT(scoped_id->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC_THREAD_LOCAL);
-    ASSERT(KEFIR_AST_TYPE_COMPATIBLE(type_traits, scoped_id->object.type, kefir_ast_type_signed_int()));
-    ASSERT(scoped_id->object.linkage == KEFIR_AST_SCOPED_IDENTIFIER_NONE_LINKAGE);
-    ASSERT(!scoped_id->object.external);
+    ASSERT(scoped_id->object->storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC_THREAD_LOCAL);
+    ASSERT(KEFIR_AST_TYPE_COMPATIBLE(type_traits, scoped_id->object->type, kefir_ast_type_signed_int()));
+    ASSERT(scoped_id->object->linkage == KEFIR_AST_SCOPED_IDENTIFIER_NONE_LINKAGE);
+    ASSERT(!scoped_id->object->external);
 
     ASSERT_OK(kefir_ast_local_context_free(&kft_mem, &context));
     ASSERT_OK(kefir_ast_global_context_free(&kft_mem, &global_context));
@@ -571,10 +571,10 @@ DEFINE_CASE(ast_ordinary_scope_objects11, "AST Declaration scoping - local auto"
     const struct kefir_ast_scoped_identifier *scoped_id = NULL;
     ASSERT_OK(kefir_ast_local_context_resolve_scoped_ordinary_identifier(&context, "auto_int1", &scoped_id));
     ASSERT(scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_OBJECT);
-    ASSERT(scoped_id->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_AUTO);
-    ASSERT(KEFIR_AST_TYPE_COMPATIBLE(type_traits, scoped_id->object.type, kefir_ast_type_signed_int()));
-    ASSERT(scoped_id->object.linkage == KEFIR_AST_SCOPED_IDENTIFIER_NONE_LINKAGE);
-    ASSERT(!scoped_id->object.external);
+    ASSERT(scoped_id->object->storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_AUTO);
+    ASSERT(KEFIR_AST_TYPE_COMPATIBLE(type_traits, scoped_id->object->type, kefir_ast_type_signed_int()));
+    ASSERT(scoped_id->object->linkage == KEFIR_AST_SCOPED_IDENTIFIER_NONE_LINKAGE);
+    ASSERT(!scoped_id->object->external);
 
     ASSERT_OK(kefir_ast_local_context_free(&kft_mem, &context));
     ASSERT_OK(kefir_ast_global_context_free(&kft_mem, &global_context));
@@ -622,10 +622,10 @@ DEFINE_CASE(ast_ordinary_scope_objects12, "AST Declaration scoping - local regis
     const struct kefir_ast_scoped_identifier *scoped_id = NULL;
     ASSERT_OK(kefir_ast_local_context_resolve_scoped_ordinary_identifier(&context, "auto_int1", &scoped_id));
     ASSERT(scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_OBJECT);
-    ASSERT(scoped_id->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_REGISTER);
-    ASSERT(KEFIR_AST_TYPE_COMPATIBLE(type_traits, scoped_id->object.type, kefir_ast_type_signed_int()));
-    ASSERT(scoped_id->object.linkage == KEFIR_AST_SCOPED_IDENTIFIER_NONE_LINKAGE);
-    ASSERT(!scoped_id->object.external);
+    ASSERT(scoped_id->object->storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_REGISTER);
+    ASSERT(KEFIR_AST_TYPE_COMPATIBLE(type_traits, scoped_id->object->type, kefir_ast_type_signed_int()));
+    ASSERT(scoped_id->object->linkage == KEFIR_AST_SCOPED_IDENTIFIER_NONE_LINKAGE);
+    ASSERT(!scoped_id->object->external);
 
     ASSERT_OK(kefir_ast_local_context_free(&kft_mem, &context));
     ASSERT_OK(kefir_ast_global_context_free(&kft_mem, &global_context));
@@ -736,11 +736,11 @@ DEFINE_CASE(ast_ordinary_scope_objects14, "AST Declaration scoping - block exter
 
     const struct kefir_ast_scoped_identifier *scoped_id = NULL;
     ASSERT_OK(kefir_ast_local_context_resolve_scoped_ordinary_identifier(&context, "array1", &scoped_id));
-    ASSERT(scoped_id->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN);
-    ASSERT(scoped_id->object.linkage == KEFIR_AST_SCOPED_IDENTIFIER_EXTERNAL_LINKAGE);
-    ASSERT(scoped_id->object.external);
-    ASSERT(KEFIR_AST_TYPE_SAME(array_type1, scoped_id->object.type));
-    ASSERT(scoped_id->object.alignment->value == 0);
+    ASSERT(scoped_id->object->storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN);
+    ASSERT(scoped_id->object->linkage == KEFIR_AST_SCOPED_IDENTIFIER_EXTERNAL_LINKAGE);
+    ASSERT(scoped_id->object->external);
+    ASSERT(KEFIR_AST_TYPE_SAME(array_type1, scoped_id->object->type));
+    ASSERT(scoped_id->object->alignment->value == 0);
 
     do {
         ASSERT_OK(context.context.push_block(&kft_mem, &context.context, NULL, NULL));
@@ -749,29 +749,29 @@ DEFINE_CASE(ast_ordinary_scope_objects14, "AST Declaration scoping - block exter
                                                            NULL, NULL));
 
         ASSERT_OK(kefir_ast_local_context_resolve_scoped_ordinary_identifier(&context, "array1", &scoped_id));
-        ASSERT(scoped_id->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN);
-        ASSERT(scoped_id->object.linkage == KEFIR_AST_SCOPED_IDENTIFIER_EXTERNAL_LINKAGE);
-        ASSERT(scoped_id->object.external);
-        ASSERT(KEFIR_AST_TYPE_SAME(array_type3, scoped_id->object.type));
-        ASSERT(scoped_id->object.alignment->value == 16);
+        ASSERT(scoped_id->object->storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN);
+        ASSERT(scoped_id->object->linkage == KEFIR_AST_SCOPED_IDENTIFIER_EXTERNAL_LINKAGE);
+        ASSERT(scoped_id->object->external);
+        ASSERT(KEFIR_AST_TYPE_SAME(array_type3, scoped_id->object->type));
+        ASSERT(scoped_id->object->alignment->value == 16);
         ASSERT_OK(context.context.pop_block(&kft_mem, &context.context));
     } while (0);
 
     ASSERT_OK(kefir_ast_local_context_resolve_scoped_ordinary_identifier(&context, "array1", &scoped_id));
-    ASSERT(scoped_id->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN);
-    ASSERT(scoped_id->object.linkage == KEFIR_AST_SCOPED_IDENTIFIER_EXTERNAL_LINKAGE);
-    ASSERT(scoped_id->object.external);
-    ASSERT(KEFIR_AST_TYPE_SAME(array_type3, scoped_id->object.type));
-    ASSERT(scoped_id->object.alignment->value == 16);
+    ASSERT(scoped_id->object->storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN);
+    ASSERT(scoped_id->object->linkage == KEFIR_AST_SCOPED_IDENTIFIER_EXTERNAL_LINKAGE);
+    ASSERT(scoped_id->object->external);
+    ASSERT(KEFIR_AST_TYPE_SAME(array_type3, scoped_id->object->type));
+    ASSERT(scoped_id->object->alignment->value == 16);
 
     ASSERT_OK(kefir_ast_global_context_define_external(&kft_mem, &global_context, "array1", array_type3, NULL, NULL,
                                                        NULL, NULL, NULL));
     ASSERT_OK(kefir_ast_local_context_resolve_scoped_ordinary_identifier(&context, "array1", &scoped_id));
-    ASSERT(scoped_id->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN);
-    ASSERT(scoped_id->object.linkage == KEFIR_AST_SCOPED_IDENTIFIER_EXTERNAL_LINKAGE);
-    ASSERT(!scoped_id->object.external);
-    ASSERT(KEFIR_AST_TYPE_SAME(array_type3, scoped_id->object.type));
-    ASSERT(scoped_id->object.alignment->value == 16);
+    ASSERT(scoped_id->object->storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN);
+    ASSERT(scoped_id->object->linkage == KEFIR_AST_SCOPED_IDENTIFIER_EXTERNAL_LINKAGE);
+    ASSERT(!scoped_id->object->external);
+    ASSERT(KEFIR_AST_TYPE_SAME(array_type3, scoped_id->object->type));
+    ASSERT(scoped_id->object->alignment->value == 16);
 
     ASSERT_OK(kefir_ast_local_context_free(&kft_mem, &context));
     ASSERT_OK(kefir_ast_global_context_free(&kft_mem, &global_context));
@@ -800,11 +800,11 @@ DEFINE_CASE(ast_ordinary_scope_objects15, "AST Declaration scoping - block exter
 
     const struct kefir_ast_scoped_identifier *scoped_id = NULL;
     ASSERT_OK(kefir_ast_local_context_resolve_scoped_ordinary_identifier(&context, "array1", &scoped_id));
-    ASSERT(scoped_id->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN_THREAD_LOCAL);
-    ASSERT(scoped_id->object.linkage == KEFIR_AST_SCOPED_IDENTIFIER_EXTERNAL_LINKAGE);
-    ASSERT(!scoped_id->object.external);
-    ASSERT(KEFIR_AST_TYPE_SAME(array_type1, scoped_id->object.type));
-    ASSERT(scoped_id->object.alignment->value == 8);
+    ASSERT(scoped_id->object->storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN_THREAD_LOCAL);
+    ASSERT(scoped_id->object->linkage == KEFIR_AST_SCOPED_IDENTIFIER_EXTERNAL_LINKAGE);
+    ASSERT(!scoped_id->object->external);
+    ASSERT(KEFIR_AST_TYPE_SAME(array_type1, scoped_id->object->type));
+    ASSERT(scoped_id->object->alignment->value == 8);
 
     do {
         ASSERT_OK(context.context.push_block(&kft_mem, &context.context, NULL, NULL));
@@ -813,20 +813,20 @@ DEFINE_CASE(ast_ordinary_scope_objects15, "AST Declaration scoping - block exter
             NULL));
 
         ASSERT_OK(kefir_ast_local_context_resolve_scoped_ordinary_identifier(&context, "array1", &scoped_id));
-        ASSERT(scoped_id->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN_THREAD_LOCAL);
-        ASSERT(scoped_id->object.linkage == KEFIR_AST_SCOPED_IDENTIFIER_EXTERNAL_LINKAGE);
-        ASSERT(!scoped_id->object.external);
-        ASSERT(KEFIR_AST_TYPE_SAME(array_type3, scoped_id->object.type));
-        ASSERT(scoped_id->object.alignment->value == 8);
+        ASSERT(scoped_id->object->storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN_THREAD_LOCAL);
+        ASSERT(scoped_id->object->linkage == KEFIR_AST_SCOPED_IDENTIFIER_EXTERNAL_LINKAGE);
+        ASSERT(!scoped_id->object->external);
+        ASSERT(KEFIR_AST_TYPE_SAME(array_type3, scoped_id->object->type));
+        ASSERT(scoped_id->object->alignment->value == 8);
         ASSERT_OK(context.context.pop_block(&kft_mem, &context.context));
     } while (0);
 
     ASSERT_OK(kefir_ast_local_context_resolve_scoped_ordinary_identifier(&context, "array1", &scoped_id));
-    ASSERT(scoped_id->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN_THREAD_LOCAL);
-    ASSERT(scoped_id->object.linkage == KEFIR_AST_SCOPED_IDENTIFIER_EXTERNAL_LINKAGE);
-    ASSERT(!scoped_id->object.external);
-    ASSERT(KEFIR_AST_TYPE_SAME(array_type3, scoped_id->object.type));
-    ASSERT(scoped_id->object.alignment->value == 8);
+    ASSERT(scoped_id->object->storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN_THREAD_LOCAL);
+    ASSERT(scoped_id->object->linkage == KEFIR_AST_SCOPED_IDENTIFIER_EXTERNAL_LINKAGE);
+    ASSERT(!scoped_id->object->external);
+    ASSERT(KEFIR_AST_TYPE_SAME(array_type3, scoped_id->object->type));
+    ASSERT(scoped_id->object->alignment->value == 8);
 
     ASSERT_OK(kefir_ast_local_context_free(&kft_mem, &context));
     ASSERT_OK(kefir_ast_global_context_free(&kft_mem, &global_context));

@@ -94,9 +94,9 @@ static kefir_result_t scoped_context_define_identifier(
                 false, NULL, NULL, location);
             REQUIRE(scoped_id != NULL,
                     KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocted AST scoped identifier"));
-            scoped_id->object.defining_function = context->context.surrounding_function_name;
-            scoped_id->object.flags.deprecated = KEFIR_AST_CONTEXT_GET_ATTR(attributes, deprecated, false);
-            scoped_id->object.flags.deprecated_message =
+            scoped_id->object->defining_function = context->context.surrounding_function_name;
+            scoped_id->object->flags.deprecated = KEFIR_AST_CONTEXT_GET_ATTR(attributes, deprecated, false);
+            scoped_id->object->flags.deprecated_message =
                 KEFIR_AST_CONTEXT_GET_ATTR(attributes, deprecated_message, NULL);
 
             const char *id = kefir_string_pool_insert(mem, context->parent->symbols, identifier, NULL);
@@ -130,11 +130,11 @@ static kefir_result_t scoped_context_define_constant(
         if (res == KEFIR_OK) {
             kefir_bool_t equal_values;
             REQUIRE_OK(
-                kefir_ast_constant_expression_value_equal(&scoped_id->enum_constant.value, value, &equal_values));
+                kefir_ast_constant_expression_value_equal(&scoped_id->enum_constant->value, value, &equal_values));
             REQUIRE(equal_values, KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location, "Cannot redefine constant"));
-            scoped_id->enum_constant.type = type;
-            KEFIR_AST_CONTEXT_MERGE_DEPRECATED(&scoped_id->enum_constant.flags.deprecated,
-                                               &scoped_id->enum_constant.flags.deprecated_message, attributes);
+            scoped_id->enum_constant->type = type;
+            KEFIR_AST_CONTEXT_MERGE_DEPRECATED(&scoped_id->enum_constant->flags.deprecated,
+                                               &scoped_id->enum_constant->flags.deprecated_message, attributes);
         } else {
             REQUIRE(res == KEFIR_NOT_FOUND, res);
             scoped_id = kefir_ast_context_allocate_scoped_constant(mem, value, type, location);
@@ -145,8 +145,8 @@ static kefir_result_t scoped_context_define_constant(
             REQUIRE(id != NULL,
                     KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert identifier into symbol table"));
             REQUIRE_OK(kefir_ast_identifier_flat_scope_insert(mem, &context->ordinary_scope, id, scoped_id));
-            scoped_id->enum_constant.flags.deprecated = KEFIR_AST_CONTEXT_GET_ATTR(attributes, deprecated, false);
-            scoped_id->enum_constant.flags.deprecated_message =
+            scoped_id->enum_constant->flags.deprecated = KEFIR_AST_CONTEXT_GET_ATTR(attributes, deprecated, false);
+            scoped_id->enum_constant->flags.deprecated_message =
                 KEFIR_AST_CONTEXT_GET_ATTR(attributes, deprecated_message, NULL);
         }
     }
@@ -172,7 +172,7 @@ static kefir_result_t scoped_context_refine_constant_type(struct kefir_mem *mem,
             res = KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to refine unknown constant type");
         }
         REQUIRE_OK(res);
-        scoped_id->enum_constant.type = type;
+        scoped_id->enum_constant->type = type;
     }
     return KEFIR_OK;
 }

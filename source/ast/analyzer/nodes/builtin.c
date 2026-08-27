@@ -40,7 +40,7 @@ kefir_result_t kefir_ast_analyze_builtin_node(struct kefir_mem *mem, const struc
     switch (node->builtin) {
         case KEFIR_AST_BUILTIN_VA_START: {
             REQUIRE(context->surrounding_function != NULL &&
-                        context->surrounding_function->function.type->function_type.ellipsis,
+                        context->surrounding_function->function->type->function_type.ellipsis,
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &base->source_location,
                                            "va_start builtin cannot be used outside of vararg function"));
             REQUIRE(node->argument_length >= 1,

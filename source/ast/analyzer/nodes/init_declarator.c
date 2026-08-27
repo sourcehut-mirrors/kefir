@@ -89,23 +89,23 @@ kefir_result_t kefir_ast_analyze_init_declarator_node(struct kefir_mem *mem, con
         REQUIRE(scoped_id != NULL, KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Expected valid AST scoped identifier"));
         switch (scoped_id->klass) {
             case KEFIR_AST_SCOPE_IDENTIFIER_OBJECT:
-                base->properties.type = scoped_id->object.type;
-                base->properties.declaration_props->storage = scoped_id->object.storage;
-                if (scoped_id->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_CONSTEXPR) {
+                base->properties.type = scoped_id->object->type;
+                base->properties.declaration_props->storage = scoped_id->object->storage;
+                if (scoped_id->object->storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_CONSTEXPR) {
                     REQUIRE_OK(context->allocate_temporary_value(
-                        mem, context, scoped_id->object.type, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_CONSTEXPR_STATIC,
+                        mem, context, scoped_id->object->type, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_CONSTEXPR_STATIC,
                         node->initializer, &node->base.source_location,
                         &base->properties.declaration_props->temporary_identifier));
                 }
                 break;
 
             case KEFIR_AST_SCOPE_IDENTIFIER_FUNCTION:
-                base->properties.type = scoped_id->function.type;
-                base->properties.declaration_props->storage = scoped_id->function.storage;
+                base->properties.type = scoped_id->function->type;
+                base->properties.declaration_props->storage = scoped_id->function->storage;
                 break;
 
             case KEFIR_AST_SCOPE_IDENTIFIER_TYPE_DEFINITION:
-                base->properties.type = scoped_id->type_definition.type;
+                base->properties.type = scoped_id->type_definition->type;
                 base->properties.declaration_props->storage = storage;
                 break;
 

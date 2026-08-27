@@ -99,23 +99,23 @@ kefir_result_t kefir_ast_check_scoped_identifier_deprecation(const struct kefir_
 
         switch (scoped_id->klass) {
             case KEFIR_AST_SCOPE_IDENTIFIER_OBJECT:
-                deprecated = scoped_id->object.flags.deprecated;
-                deprecated_message = scoped_id->object.flags.deprecated_message;
+                deprecated = scoped_id->object->flags.deprecated;
+                deprecated_message = scoped_id->object->flags.deprecated_message;
                 break;
 
             case KEFIR_AST_SCOPE_IDENTIFIER_FUNCTION:
-                deprecated = scoped_id->function.flags.deprecated;
-                deprecated_message = scoped_id->function.flags.deprecated_message;
+                deprecated = scoped_id->function->flags.deprecated;
+                deprecated_message = scoped_id->function->flags.deprecated_message;
                 break;
 
             case KEFIR_AST_SCOPE_IDENTIFIER_TYPE_DEFINITION:
-                deprecated = scoped_id->type_definition.flags.deprecated;
-                deprecated_message = scoped_id->type_definition.flags.deprecated_message;
+                deprecated = scoped_id->type_definition->flags.deprecated;
+                deprecated_message = scoped_id->type_definition->flags.deprecated_message;
                 break;
 
             case KEFIR_AST_SCOPE_IDENTIFIER_ENUM_CONSTANT:
-                deprecated = scoped_id->enum_constant.flags.deprecated;
-                deprecated_message = scoped_id->enum_constant.flags.deprecated_message;
+                deprecated = scoped_id->enum_constant->flags.deprecated;
+                deprecated_message = scoped_id->enum_constant->flags.deprecated_message;
                 break;
 
             default:

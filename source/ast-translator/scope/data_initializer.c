@@ -64,7 +64,7 @@ static kefir_result_t translate_pointer_to_identifier(struct kefir_mem *mem,
         REQUIRE(literal != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate IR symbol"));
         REQUIRE_OK(kefir_ir_data_set_pointer(mem, data, base_slot, literal, value->pointer.offset));
     } else if (value->pointer.scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_OBJECT) {
-        switch (value->pointer.scoped_id->object.storage) {
+        switch (value->pointer.scoped_id->object->storage) {
             case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN: {
                 const char *literal = kefir_ir_module_symbol(mem, module, value->pointer.base.literal, NULL);
                 REQUIRE(literal != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate IR symbol"));
@@ -76,8 +76,8 @@ static kefir_result_t translate_pointer_to_identifier(struct kefir_mem *mem,
                 ASSIGN_DECL_CAST(struct kefir_ast_translator_scoped_identifier_object *, identifier_data,
                                  value->pointer.scoped_id->payload.ptr);
                 const char *identifier = value->pointer.base.literal;
-                if (value->pointer.scoped_id->object.defining_function != NULL) {
-                    REQUIRE_OK(local_static_identifier(mem, module, value->pointer.scoped_id->object.defining_function,
+                if (value->pointer.scoped_id->object->defining_function != NULL) {
+                    REQUIRE_OK(local_static_identifier(mem, module, value->pointer.scoped_id->object->defining_function,
                                                        identifier, identifier_data->identifier, &identifier));
                 } else {
                     identifier = kefir_ir_module_symbol(mem, module, identifier, NULL);

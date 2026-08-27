@@ -240,15 +240,15 @@ kefir_result_t kefir_ast_translator_scope_layout_complete_object_type(
     REQUIRE(object_type_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to object type"));
 
     const struct kefir_ast_type *object_type = NULL;
-    REQUIRE_OK(kefir_ast_type_completion(mem, context, &object_type, scoped_identifier->object.type));
+    REQUIRE_OK(kefir_ast_type_completion(mem, context, &object_type, scoped_identifier->object->type));
 
     const struct kefir_ast_type *unqualified_object_type = kefir_ast_unqualified_type(object_type);
     if (KEFIR_AST_TYPE_IS_INCOMPLETE(unqualified_object_type) &&
         (unqualified_object_type->tag == KEFIR_AST_TYPE_STRUCTURE ||
          unqualified_object_type->tag == KEFIR_AST_TYPE_UNION)) {
-        REQUIRE((scoped_identifier->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN ||
-                 scoped_identifier->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN_THREAD_LOCAL) &&
-                    scoped_identifier->object.external,
+        REQUIRE((scoped_identifier->object->storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN ||
+                 scoped_identifier->object->storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN_THREAD_LOCAL) &&
+                    scoped_identifier->object->external,
                 KEFIR_SET_ERRORF(KEFIR_ANALYSIS_ERROR, "Global identifier '%s' with incomplete type shall be external",
                                  identifier));
         object_type = context->type_traits->incomplete_type_substitute;
@@ -264,9 +264,9 @@ kefir_result_t kefir_ast_translator_scope_layout_complete_object_type(
 
     if ((unqualified_object_type->tag == KEFIR_AST_TYPE_STRUCTURE ||
          unqualified_object_type->tag == KEFIR_AST_TYPE_UNION) &&
-        scoped_identifier->object.initializer != NULL) {
+        scoped_identifier->object->initializer != NULL) {
         REQUIRE_OK(resolve_flexible_array_member(mem, context, unqualified_object_type, &object_type,
-                                                 scoped_identifier->object.initializer));
+                                                 scoped_identifier->object->initializer));
     }
 
     *object_type_ptr = object_type;
@@ -292,7 +292,7 @@ static kefir_result_t translate_scoped_identifier_type(
     REQUIRE_OK(kefir_ast_translator_scope_layout_complete_object_type(mem, context, identifier, scoped_identifier,
                                                                       &object_type));
 
-    REQUIRE_OK(kefir_ast_translate_object_type(mem, context, object_type, scoped_identifier->object.alignment->value,
+    REQUIRE_OK(kefir_ast_translate_object_type(mem, context, object_type, scoped_identifier->object->alignment->value,
                                                env, &builder, &scoped_identifier_layout->layout, source_location));
     REQUIRE_OK(KEFIR_IRBUILDER_TYPE_FREE(&builder));
 
@@ -380,7 +380,7 @@ static kefir_result_t translate_global_scoped_identifier_object(
     const struct kefir_source_location *source_location) {
     REQUIRE(scoped_identifier->klass == KEFIR_AST_SCOPE_IDENTIFIER_OBJECT, KEFIR_OK);
 
-    switch (scoped_identifier->object.storage) {
+    switch (scoped_identifier->object->storage) {
         case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN:
             REQUIRE_OK(translate_extern_identifier(mem, context, module, env, layout, identifier, scoped_identifier,
                                                    source_location));
@@ -444,7 +444,7 @@ static kefir_result_t generate_object_debug_entry(struct kefir_mem *mem, const s
     kefir_id_t identifier_id;
     REQUIRE(kefir_ir_module_symbol(mem, module, identifier, &identifier_id) != NULL,
             KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert symbol into IR module"));
-    switch (scoped_identifier->object.storage) {
+    switch (scoped_identifier->object->storage) {
         case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN:
             REQUIRE_OK(kefir_ir_debug_entry_add_attribute(mem, &module->debug_info.entries, &module->symbols,
                                                           scoped_identifier_layout->debug_info.variable,
@@ -492,7 +492,7 @@ static kefir_result_t generate_object_debug_entry(struct kefir_mem *mem, const s
     }
     REQUIRE_OK(kefir_ir_debug_entry_add_attribute(
         mem, &module->debug_info.entries, &module->symbols, scoped_identifier_layout->debug_info.variable,
-        &KEFIR_IR_DEBUG_ENTRY_ATTR_DECLARATION(scoped_identifier->object.external)));
+        &KEFIR_IR_DEBUG_ENTRY_ATTR_DECLARATION(scoped_identifier->object->external)));
 
     if (scoped_identifier->source_location.source != NULL) {
         REQUIRE_OK(kefir_ir_debug_entry_add_attribute(
@@ -516,7 +516,7 @@ static kefir_result_t generate_function_debug_entry(struct kefir_mem *mem, const
                                                     const struct kefir_ast_type *type,
                                                     struct kefir_ast_translator_debug_entries *debug_entries,
                                                     const struct kefir_ast_scoped_identifier *scoped_identifier) {
-    REQUIRE(!scoped_identifier->function.defined, KEFIR_OK);
+    REQUIRE(!scoped_identifier->function->defined, KEFIR_OK);
 
     kefir_ir_debug_entry_id_t function_entry_id;
     REQUIRE_OK(kefir_ir_debug_entry_new(mem, &module->debug_info.entries, KEFIR_IR_DEBUG_ENTRY_SUBPROGRAM,
@@ -568,11 +568,11 @@ static kefir_result_t generate_function_debug_entry(struct kefir_mem *mem, const
 
     REQUIRE_OK(kefir_ir_debug_entry_add_attribute(
         mem, &module->debug_info.entries, &module->symbols, function_entry_id,
-        &KEFIR_IR_DEBUG_ENTRY_ATTR_EXTERNAL(scoped_identifier->function.storage !=
+        &KEFIR_IR_DEBUG_ENTRY_ATTR_EXTERNAL(scoped_identifier->function->storage !=
                                             KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC)));
     REQUIRE_OK(kefir_ir_debug_entry_add_attribute(
         mem, &module->debug_info.entries, &module->symbols, function_entry_id,
-        &KEFIR_IR_DEBUG_ENTRY_ATTR_DECLARATION(!scoped_identifier->function.defined)));
+        &KEFIR_IR_DEBUG_ENTRY_ATTR_DECLARATION(!scoped_identifier->function->defined)));
 
     if (scoped_identifier->source_location.source != NULL) {
         REQUIRE_OK(kefir_ir_debug_entry_add_attribute(
@@ -604,12 +604,12 @@ static kefir_result_t translate_global_scoped_identifier_function(
     KEFIR_AST_SCOPE_SET_CLEANUP(scoped_identifier, kefir_ast_translator_scoped_identifer_payload_free, NULL);
 
     const struct kefir_ast_type *function_type = NULL;
-    REQUIRE_OK(kefir_ast_type_completion(mem, context, &function_type, scoped_identifier->function.type));
+    REQUIRE_OK(kefir_ast_type_completion(mem, context, &function_type, scoped_identifier->function->type));
     REQUIRE_OK(kefir_ast_translator_function_declaration_init(
         mem, context, env, type_bundle, type_traits, module, identifier, false, function_type, NULL, 0,
         &scoped_identifier_func->declaration, &scoped_identifier->source_location));
 
-    switch (scoped_identifier->function.storage) {
+    switch (scoped_identifier->function->storage) {
         case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN:
             REQUIRE_OK(kefir_ast_translator_scoped_identifier_insert(mem, identifier, scoped_identifier,
                                                                      &layout->external_objects));
@@ -624,7 +624,7 @@ static kefir_result_t translate_global_scoped_identifier_function(
         default:
             return KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Unexpected function storage specifier");
     }
-    REQUIRE_OK(generate_function_debug_entry(mem, context, env, module, identifier, scoped_identifier->object.type,
+    REQUIRE_OK(generate_function_debug_entry(mem, context, env, module, identifier, scoped_identifier->function->type,
                                              debug_entries, scoped_identifier));
     return KEFIR_OK;
 }
@@ -640,7 +640,7 @@ static kefir_result_t translate_global_scoped_identifier(
             REQUIRE_OK(translate_global_scoped_identifier_object(mem, context, module, identifier, scoped_identifier,
                                                                  layout, env, &scoped_identifier->source_location));
             REQUIRE_OK(generate_object_debug_entry(mem, context, env, module, identifier,
-                                                   scoped_identifier->object.type, debug_entries, scoped_identifier));
+                                                   scoped_identifier->object->type, debug_entries, scoped_identifier));
             break;
 
         case KEFIR_AST_SCOPE_IDENTIFIER_FUNCTION:

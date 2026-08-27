@@ -69,13 +69,13 @@ DEFINE_CASE(ast_node_analysis_init_declarators1, "AST node analysis - declaratio
     const struct kefir_ast_scoped_identifier *scoped_id1 = NULL;
     ASSERT_OK(kefir_ast_local_context_resolve_scoped_ordinary_identifier(&local_context, "some_var1", &scoped_id1));
     ASSERT(scoped_id1->klass == KEFIR_AST_SCOPE_IDENTIFIER_OBJECT);
-    ASSERT(scoped_id1->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN);
-    ASSERT(scoped_id1->object.linkage == KEFIR_AST_SCOPED_IDENTIFIER_EXTERNAL_LINKAGE);
-    ASSERT(KEFIR_AST_TYPE_SAME(scoped_id1->object.type, type1));
-    ASSERT(scoped_id1->object.external);
-    ASSERT(scoped_id1->object.alignment != NULL);
-    ASSERT(scoped_id1->object.alignment->value == 16);
-    ASSERT(scoped_id1->object.initializer == NULL);
+    ASSERT(scoped_id1->object->storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN);
+    ASSERT(scoped_id1->object->linkage == KEFIR_AST_SCOPED_IDENTIFIER_EXTERNAL_LINKAGE);
+    ASSERT(KEFIR_AST_TYPE_SAME(scoped_id1->object->type, type1));
+    ASSERT(scoped_id1->object->external);
+    ASSERT(scoped_id1->object->alignment != NULL);
+    ASSERT(scoped_id1->object->alignment->value == 16);
+    ASSERT(scoped_id1->object->initializer == NULL);
 
     ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(decl1_list)));
     ASSERT_OK(kefir_ast_local_context_free(&kft_mem, &local_context));
@@ -128,16 +128,16 @@ DEFINE_CASE(ast_node_analysis_init_declarators2, "AST node analysis - declaratio
     ASSERT_OK(
         kefir_ast_local_context_resolve_scoped_ordinary_identifier(&local_context, "declaration_one", &scoped_id1));
     ASSERT(scoped_id1->klass == KEFIR_AST_SCOPE_IDENTIFIER_OBJECT);
-    ASSERT(scoped_id1->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_AUTO);
-    ASSERT(scoped_id1->object.linkage == KEFIR_AST_SCOPED_IDENTIFIER_NONE_LINKAGE);
-    ASSERT(KEFIR_AST_TYPE_SAME(scoped_id1->object.type, type1));
-    ASSERT(!scoped_id1->object.external);
-    ASSERT(scoped_id1->object.alignment != NULL);
-    ASSERT(scoped_id1->object.alignment->value == 4);
-    ASSERT(scoped_id1->object.initializer == initializer1);
+    ASSERT(scoped_id1->object->storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_AUTO);
+    ASSERT(scoped_id1->object->linkage == KEFIR_AST_SCOPED_IDENTIFIER_NONE_LINKAGE);
+    ASSERT(KEFIR_AST_TYPE_SAME(scoped_id1->object->type, type1));
+    ASSERT(!scoped_id1->object->external);
+    ASSERT(scoped_id1->object->alignment != NULL);
+    ASSERT(scoped_id1->object->alignment->value == 4);
+    ASSERT(scoped_id1->object->initializer == initializer1);
 
-    ASSERT(scoped_id1->object.initializer->type == KEFIR_AST_INITIALIZER_EXPRESSION);
-    ASSERT(scoped_id1->object.initializer->expression->klass->type == KEFIR_AST_CONSTANT);
+    ASSERT(scoped_id1->object->initializer->type == KEFIR_AST_INITIALIZER_EXPRESSION);
+    ASSERT(scoped_id1->object->initializer->expression->klass->type == KEFIR_AST_CONSTANT);
 
     ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(decl1_list)));
     ASSERT_OK(kefir_ast_local_context_free(&kft_mem, &local_context));
@@ -211,13 +211,13 @@ DEFINE_CASE(ast_node_analysis_init_declarators3, "AST node analysis - declaratio
     const struct kefir_ast_scoped_identifier *scoped_id1 = NULL;
     ASSERT_OK(kefir_ast_local_context_resolve_scoped_ordinary_identifier(&local_context, "VaRiAblE123", &scoped_id1));
     ASSERT(scoped_id1->klass == KEFIR_AST_SCOPE_IDENTIFIER_OBJECT);
-    ASSERT(scoped_id1->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC);
-    ASSERT(scoped_id1->object.linkage == KEFIR_AST_SCOPED_IDENTIFIER_NONE_LINKAGE);
-    ASSERT(KEFIR_AST_TYPE_SAME(scoped_id1->object.type, qualifier_type1));
-    ASSERT(!scoped_id1->object.external);
-    ASSERT(scoped_id1->object.alignment != NULL);
-    ASSERT(scoped_id1->object.alignment->value == 8);
-    ASSERT(scoped_id1->object.initializer == NULL);
+    ASSERT(scoped_id1->object->storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC);
+    ASSERT(scoped_id1->object->linkage == KEFIR_AST_SCOPED_IDENTIFIER_NONE_LINKAGE);
+    ASSERT(KEFIR_AST_TYPE_SAME(scoped_id1->object->type, qualifier_type1));
+    ASSERT(!scoped_id1->object->external);
+    ASSERT(scoped_id1->object->alignment != NULL);
+    ASSERT(scoped_id1->object->alignment->value == 8);
+    ASSERT(scoped_id1->object->initializer == NULL);
 
     const struct kefir_ast_scoped_identifier *scoped_id2 = NULL;
     ASSERT_OK(kefir_ast_local_context_resolve_scoped_tag_identifier(&local_context, "structure1", &scoped_id2));
@@ -267,13 +267,13 @@ DEFINE_CASE(ast_node_analysis_init_declarators4, "AST node analysis - declaratio
     ASSERT_OK(
         kefir_ast_global_context_resolve_scoped_ordinary_identifier(&global_context, "globalVariable", &scoped_id1));
     ASSERT(scoped_id1->klass == KEFIR_AST_SCOPE_IDENTIFIER_OBJECT);
-    ASSERT(scoped_id1->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN_THREAD_LOCAL);
-    ASSERT(scoped_id1->object.linkage == KEFIR_AST_SCOPED_IDENTIFIER_EXTERNAL_LINKAGE);
-    ASSERT(KEFIR_AST_TYPE_SAME(scoped_id1->object.type, type1));
-    ASSERT(!scoped_id1->object.external);
-    ASSERT(scoped_id1->object.alignment != NULL);
-    ASSERT(scoped_id1->object.alignment->value == 0);
-    ASSERT(scoped_id1->object.initializer == NULL);
+    ASSERT(scoped_id1->object->storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN_THREAD_LOCAL);
+    ASSERT(scoped_id1->object->linkage == KEFIR_AST_SCOPED_IDENTIFIER_EXTERNAL_LINKAGE);
+    ASSERT(KEFIR_AST_TYPE_SAME(scoped_id1->object->type, type1));
+    ASSERT(!scoped_id1->object->external);
+    ASSERT(scoped_id1->object->alignment != NULL);
+    ASSERT(scoped_id1->object->alignment->value == 0);
+    ASSERT(scoped_id1->object->initializer == NULL);
 
     ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(decl1_list)));
     ASSERT_OK(kefir_ast_global_context_free(&kft_mem, &global_context));
@@ -327,28 +327,28 @@ DEFINE_CASE(ast_node_analysis_init_declarators5, "AST node analysis - declaratio
     const struct kefir_ast_scoped_identifier *scoped_id1 = NULL;
     ASSERT_OK(kefir_ast_global_context_resolve_scoped_ordinary_identifier(&global_context, "counter", &scoped_id1));
     ASSERT(scoped_id1->klass == KEFIR_AST_SCOPE_IDENTIFIER_OBJECT);
-    ASSERT(scoped_id1->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC_THREAD_LOCAL);
-    ASSERT(scoped_id1->object.linkage == KEFIR_AST_SCOPED_IDENTIFIER_INTERNAL_LINKAGE);
-    ASSERT(KEFIR_AST_TYPE_SAME(scoped_id1->object.type, type1));
-    ASSERT(!scoped_id1->object.external);
-    ASSERT(scoped_id1->object.alignment != NULL);
-    ASSERT(scoped_id1->object.alignment->value == 0);
-    ASSERT(scoped_id1->object.initializer == NULL);
+    ASSERT(scoped_id1->object->storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC_THREAD_LOCAL);
+    ASSERT(scoped_id1->object->linkage == KEFIR_AST_SCOPED_IDENTIFIER_INTERNAL_LINKAGE);
+    ASSERT(KEFIR_AST_TYPE_SAME(scoped_id1->object->type, type1));
+    ASSERT(!scoped_id1->object->external);
+    ASSERT(scoped_id1->object->alignment != NULL);
+    ASSERT(scoped_id1->object->alignment->value == 0);
+    ASSERT(scoped_id1->object->initializer == NULL);
 
     const struct kefir_ast_scoped_identifier *scoped_id2 = NULL;
     ASSERT_OK(kefir_ast_global_context_resolve_scoped_ordinary_identifier(&global_context, "XVAL", &scoped_id2));
     ASSERT(scoped_id2->klass == KEFIR_AST_SCOPE_IDENTIFIER_ENUM_CONSTANT);
-    ASSERT(scoped_id2->enum_constant.value.integer == 1000);
+    ASSERT(scoped_id2->enum_constant->value.integer == 1000);
 
     const struct kefir_ast_scoped_identifier *scoped_id3 = NULL;
     ASSERT_OK(kefir_ast_global_context_resolve_scoped_ordinary_identifier(&global_context, "YVAL", &scoped_id3));
     ASSERT(scoped_id3->klass == KEFIR_AST_SCOPE_IDENTIFIER_ENUM_CONSTANT);
-    ASSERT(scoped_id3->enum_constant.value.integer == 1001);
+    ASSERT(scoped_id3->enum_constant->value.integer == 1001);
 
     const struct kefir_ast_scoped_identifier *scoped_id4 = NULL;
     ASSERT_OK(kefir_ast_global_context_resolve_scoped_ordinary_identifier(&global_context, "AVAL", &scoped_id4));
     ASSERT(scoped_id4->klass == KEFIR_AST_SCOPE_IDENTIFIER_ENUM_CONSTANT);
-    ASSERT(scoped_id4->enum_constant.value.integer == 0);
+    ASSERT(scoped_id4->enum_constant->value.integer == 0);
 
     ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(decl1_list)));
     ASSERT_OK(kefir_ast_global_context_free(&kft_mem, &global_context));
@@ -405,13 +405,13 @@ DEFINE_CASE(ast_node_analysis_init_declarators6, "AST node analysis - declaratio
     const struct kefir_ast_scoped_identifier *scoped_id1 = NULL;
     ASSERT_OK(kefir_ast_global_context_resolve_scoped_ordinary_identifier(&global_context, "arr", &scoped_id1));
     ASSERT(scoped_id1->klass == KEFIR_AST_SCOPE_IDENTIFIER_OBJECT);
-    ASSERT(scoped_id1->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN);
-    ASSERT(scoped_id1->object.linkage == KEFIR_AST_SCOPED_IDENTIFIER_EXTERNAL_LINKAGE);
-    ASSERT(KEFIR_AST_TYPE_SAME(scoped_id1->object.type, type2));
-    ASSERT(!scoped_id1->object.external);
-    ASSERT(scoped_id1->object.alignment != NULL);
-    ASSERT(scoped_id1->object.alignment->value == 0);
-    ASSERT(scoped_id1->object.initializer != NULL);
+    ASSERT(scoped_id1->object->storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN);
+    ASSERT(scoped_id1->object->linkage == KEFIR_AST_SCOPED_IDENTIFIER_EXTERNAL_LINKAGE);
+    ASSERT(KEFIR_AST_TYPE_SAME(scoped_id1->object->type, type2));
+    ASSERT(!scoped_id1->object->external);
+    ASSERT(scoped_id1->object->alignment != NULL);
+    ASSERT(scoped_id1->object->alignment->value == 0);
+    ASSERT(scoped_id1->object->initializer != NULL);
 
     ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(decl1_list)));
     ASSERT_OK(kefir_ast_global_context_free(&kft_mem, &global_context));
@@ -503,13 +503,13 @@ DEFINE_CASE(ast_node_analysis_init_declarators7, "AST node analysis - declaratio
     const struct kefir_ast_scoped_identifier *scoped_id1 = NULL;
     ASSERT_OK(kefir_ast_local_context_resolve_scoped_ordinary_identifier(&local_context, "some_struct", &scoped_id1));
     ASSERT(scoped_id1->klass == KEFIR_AST_SCOPE_IDENTIFIER_OBJECT);
-    ASSERT(scoped_id1->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_AUTO);
-    ASSERT(scoped_id1->object.linkage == KEFIR_AST_SCOPED_IDENTIFIER_NONE_LINKAGE);
-    ASSERT(KEFIR_AST_TYPE_SAME(scoped_id1->object.type, type2));
-    ASSERT(!scoped_id1->object.external);
-    ASSERT(scoped_id1->object.alignment != NULL);
-    ASSERT(scoped_id1->object.alignment->value == 0);
-    ASSERT(scoped_id1->object.initializer == init2);
+    ASSERT(scoped_id1->object->storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_AUTO);
+    ASSERT(scoped_id1->object->linkage == KEFIR_AST_SCOPED_IDENTIFIER_NONE_LINKAGE);
+    ASSERT(KEFIR_AST_TYPE_SAME(scoped_id1->object->type, type2));
+    ASSERT(!scoped_id1->object->external);
+    ASSERT(scoped_id1->object->alignment != NULL);
+    ASSERT(scoped_id1->object->alignment->value == 0);
+    ASSERT(scoped_id1->object->initializer == init2);
 
     ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(decl1)));
     ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(decl2_list)));
@@ -593,7 +593,7 @@ DEFINE_CASE(ast_node_analysis_init_declarators8, "AST node analysis - declaratio
     const struct kefir_ast_scoped_identifier *scoped_id1 = NULL;
     ASSERT_OK(kefir_ast_local_context_resolve_scoped_ordinary_identifier(&local_context, "unionS_t", &scoped_id1));
     ASSERT(scoped_id1->klass == KEFIR_AST_SCOPE_IDENTIFIER_TYPE_DEFINITION);
-    ASSERT(KEFIR_AST_TYPE_SAME(scoped_id1->type_tag.type, type2));
+    ASSERT(KEFIR_AST_TYPE_SAME(scoped_id1->type_definition->type, type2));
 
     struct kefir_ast_init_declarator *decl2 = NULL;
     struct kefir_ast_declaration *decl2_list = kefir_ast_new_single_declaration(
@@ -620,13 +620,13 @@ DEFINE_CASE(ast_node_analysis_init_declarators8, "AST node analysis - declaratio
     const struct kefir_ast_scoped_identifier *scoped_id2 = NULL;
     ASSERT_OK(kefir_ast_local_context_resolve_scoped_ordinary_identifier(&local_context, "Something", &scoped_id2));
     ASSERT(scoped_id2->klass == KEFIR_AST_SCOPE_IDENTIFIER_OBJECT);
-    ASSERT(scoped_id2->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC);
-    ASSERT(scoped_id2->object.linkage == KEFIR_AST_SCOPED_IDENTIFIER_NONE_LINKAGE);
-    ASSERT(KEFIR_AST_TYPE_SAME(scoped_id2->object.type, type3));
-    ASSERT(!scoped_id2->object.external);
-    ASSERT(scoped_id2->object.alignment != NULL);
-    ASSERT(scoped_id2->object.alignment->value == 0);
-    ASSERT(scoped_id2->object.initializer == NULL);
+    ASSERT(scoped_id2->object->storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC);
+    ASSERT(scoped_id2->object->linkage == KEFIR_AST_SCOPED_IDENTIFIER_NONE_LINKAGE);
+    ASSERT(KEFIR_AST_TYPE_SAME(scoped_id2->object->type, type3));
+    ASSERT(!scoped_id2->object->external);
+    ASSERT(scoped_id2->object->alignment != NULL);
+    ASSERT(scoped_id2->object->alignment->value == 0);
+    ASSERT(scoped_id2->object->initializer == NULL);
 
     ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(decl1_list)));
     ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(decl2_list)));
@@ -674,9 +674,9 @@ DEFINE_CASE(ast_node_analysis_init_declarators9, "AST node analysis - declaratio
     const struct kefir_ast_scoped_identifier *scoped_id = NULL;
     ASSERT_OK(context->resolve_ordinary_identifier(context, "func1", &scoped_id));
     ASSERT(scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_FUNCTION);
-    ASSERT(scoped_id->function.specifier == KEFIR_AST_FUNCTION_SPECIFIER_NORETURN);
-    ASSERT(!scoped_id->function.external);
-    ASSERT(scoped_id->function.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC);
+    ASSERT(scoped_id->function->specifier == KEFIR_AST_FUNCTION_SPECIFIER_NORETURN);
+    ASSERT(!scoped_id->function->external);
+    ASSERT(scoped_id->function->storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC);
 
     struct kefir_ast_function_type *func_type1 = NULL;
     const struct kefir_ast_type *type1 =
@@ -689,7 +689,7 @@ DEFINE_CASE(ast_node_analysis_init_declarators9, "AST node analysis - declaratio
         &(kefir_ast_scoped_identifier_storage_t) {KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_UNKNOWN}));
     func_type1->attributes.no_return = true;
 
-    ASSERT(KEFIR_AST_TYPE_SAME(scoped_id->function.type, type1));
+    ASSERT(KEFIR_AST_TYPE_SAME(scoped_id->function->type, type1));
 
     ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(decl)));
     ASSERT_OK(kefir_ast_global_context_free(&kft_mem, &global_context));
@@ -779,10 +779,10 @@ DEFINE_CASE(ast_node_analysis_init_declarators10, "AST node analysis - declarati
         &kft_mem, context->type_bundle, func_type2, kefir_ast_type_pointer(&kft_mem, context->type_bundle, type1),
         &(kefir_ast_scoped_identifier_storage_t) {KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_AUTO}));
 
-    ASSERT(scoped_id1->function.external);
-    ASSERT(scoped_id1->function.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN);
-    ASSERT(scoped_id1->function.specifier == KEFIR_AST_FUNCTION_SPECIFIER_INLINE);
-    ASSERT(KEFIR_AST_TYPE_SAME(scoped_id1->function.type, type2));
+    ASSERT(scoped_id1->function->external);
+    ASSERT(scoped_id1->function->storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN);
+    ASSERT(scoped_id1->function->specifier == KEFIR_AST_FUNCTION_SPECIFIER_INLINE);
+    ASSERT(KEFIR_AST_TYPE_SAME(scoped_id1->function->type, type2));
 
     const struct kefir_ast_scoped_identifier *scoped_id2 = NULL;
     ASSERT(context->resolve_ordinary_identifier(context, "param", &scoped_id2) == KEFIR_NOT_FOUND);
@@ -891,10 +891,10 @@ DEFINE_CASE(ast_node_analysis_init_declarators11, "AST node analysis - declarati
     func_type2->attributes.no_return = true;
     ASSERT_OK(kefir_ast_analyze_type(&kft_mem, context, KEFIR_AST_TYPE_ANALYSIS_DEFAULT, type2, NULL));
 
-    ASSERT(scoped_id1->function.external);
-    ASSERT(scoped_id1->function.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN);
-    ASSERT(scoped_id1->function.specifier == KEFIR_AST_FUNCTION_SPECIFIER_INLINE_NORETURN);
-    ASSERT(KEFIR_AST_TYPE_SAME(scoped_id1->function.type, type2));
+    ASSERT(scoped_id1->function->external);
+    ASSERT(scoped_id1->function->storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN);
+    ASSERT(scoped_id1->function->specifier == KEFIR_AST_FUNCTION_SPECIFIER_INLINE_NORETURN);
+    ASSERT(KEFIR_AST_TYPE_SAME(scoped_id1->function->type, type2));
 
     const struct kefir_ast_scoped_identifier *scoped_id2 = NULL;
     ASSERT(context->resolve_ordinary_identifier(context, "param", &scoped_id2) == KEFIR_NOT_FOUND);
@@ -962,10 +962,10 @@ DEFINE_CASE(ast_node_analysis_init_declarators12, "AST node analysis - declarati
             (struct kefir_ast_type_qualification) {.restricted = true, .volatile_type = true}),
         &(kefir_ast_scoped_identifier_storage_t) {KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_AUTO}));
 
-    ASSERT(KEFIR_AST_TYPE_SAME(scoped_id1->function.type, type1));
-    ASSERT(scoped_id1->function.external);
-    ASSERT(scoped_id1->function.specifier == KEFIR_AST_FUNCTION_SPECIFIER_NONE);
-    ASSERT(scoped_id1->function.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN);
+    ASSERT(KEFIR_AST_TYPE_SAME(scoped_id1->function->type, type1));
+    ASSERT(scoped_id1->function->external);
+    ASSERT(scoped_id1->function->specifier == KEFIR_AST_FUNCTION_SPECIFIER_NONE);
+    ASSERT(scoped_id1->function->storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN);
 
     ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(func1)));
     ASSERT_OK(kefir_ast_local_context_free(&kft_mem, &local_context));
@@ -1041,10 +1041,10 @@ DEFINE_CASE(ast_node_analysis_init_declarators13, "AST node analysis - declarati
             (struct kefir_ast_type_qualification) {.constant = true}),
         &(kefir_ast_scoped_identifier_storage_t) {KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_AUTO}));
 
-    ASSERT(KEFIR_AST_TYPE_SAME(scoped_id1->function.type, type1));
-    ASSERT(scoped_id1->function.external);
-    ASSERT(scoped_id1->function.specifier == KEFIR_AST_FUNCTION_SPECIFIER_INLINE);
-    ASSERT(scoped_id1->function.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN);
+    ASSERT(KEFIR_AST_TYPE_SAME(scoped_id1->function->type, type1));
+    ASSERT(scoped_id1->function->external);
+    ASSERT(scoped_id1->function->specifier == KEFIR_AST_FUNCTION_SPECIFIER_INLINE);
+    ASSERT(scoped_id1->function->storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN);
 
     ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(func1)));
     ASSERT_OK(kefir_ast_local_context_free(&kft_mem, &local_context));

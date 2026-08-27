@@ -1069,7 +1069,7 @@ kefir_result_t kefir_ast_translator_generate_object_scope_debug_information(
 
                 kefir_ir_debug_entry_id_t variable_type_id;
                 REQUIRE_OK(kefir_ast_translate_debug_type(mem, context, translator_env, module, debug_entries,
-                                                          iter.value->object.type, &variable_type_id));
+                                                          iter.value->object->type, &variable_type_id));
                 REQUIRE_OK(kefir_ir_debug_entry_add_attribute(mem, &module->debug_info.entries, &module->symbols,
                                                               variable_entry_id,
                                                               &KEFIR_IR_DEBUG_ENTRY_ATTR_TYPE(variable_type_id)));
@@ -1077,7 +1077,7 @@ kefir_result_t kefir_ast_translator_generate_object_scope_debug_information(
                 ASSIGN_DECL_CAST(struct kefir_ast_translator_scoped_identifier_object *, scoped_identifier_layout,
                                  iter.value->payload.ptr);
 
-                switch (iter.value->object.storage) {
+                switch (iter.value->object->storage) {
                     case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN: {
                         kefir_id_t id;
                         REQUIRE(kefir_ir_module_symbol(mem, module, iter.identifier, &id) != NULL,
@@ -1106,13 +1106,13 @@ kefir_result_t kefir_ast_translator_generate_object_scope_debug_information(
                     case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC:
                     case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_CONSTEXPR_STATIC: {
                         kefir_id_t id;
-                        if (iter.value->object.defining_function == NULL) {
+                        if (iter.value->object->defining_function == NULL) {
                             REQUIRE(kefir_ir_module_symbol(mem, module, iter.identifier, &id) != NULL,
                                     KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate IR module symbol"));
                         } else {
                             ASSIGN_DECL_CAST(struct kefir_ast_translator_scoped_identifier_object *, identifier_data,
                                              iter.value->payload.ptr);
-                            REQUIRE_OK(local_static_identifier(mem, module, iter.value->object.defining_function,
+                            REQUIRE_OK(local_static_identifier(mem, module, iter.value->object->defining_function,
                                                                iter.identifier, identifier_data->identifier, &id));
                         }
                         REQUIRE_OK(kefir_ir_debug_entry_add_attribute(mem, &module->debug_info.entries,
@@ -1125,13 +1125,13 @@ kefir_result_t kefir_ast_translator_generate_object_scope_debug_information(
 
                     case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC_THREAD_LOCAL: {
                         kefir_id_t id;
-                        if (iter.value->object.defining_function == NULL) {
+                        if (iter.value->object->defining_function == NULL) {
                             REQUIRE(kefir_ir_module_symbol(mem, module, iter.identifier, &id) != NULL,
                                     KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate IR module symbol"));
                         } else {
                             ASSIGN_DECL_CAST(struct kefir_ast_translator_scoped_identifier_object *, identifier_data,
                                              iter.value->payload.ptr);
-                            REQUIRE_OK(local_static_identifier(mem, module, iter.value->object.defining_function,
+                            REQUIRE_OK(local_static_identifier(mem, module, iter.value->object->defining_function,
                                                                iter.identifier, identifier_data->identifier, &id));
                         }
                         REQUIRE_OK(kefir_ir_debug_entry_add_attribute(
@@ -1162,7 +1162,7 @@ kefir_result_t kefir_ast_translator_generate_object_scope_debug_information(
                 }
                 REQUIRE_OK(kefir_ir_debug_entry_add_attribute(
                     mem, &module->debug_info.entries, &module->symbols, variable_entry_id,
-                    &KEFIR_IR_DEBUG_ENTRY_ATTR_DECLARATION(iter.value->object.external)));
+                    &KEFIR_IR_DEBUG_ENTRY_ATTR_DECLARATION(iter.value->object->external)));
 
                 if (iter.value->source_location.source != NULL) {
                     REQUIRE_OK(kefir_ir_debug_entry_add_attribute(

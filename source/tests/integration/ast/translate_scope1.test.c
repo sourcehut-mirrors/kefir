@@ -35,7 +35,7 @@ static kefir_result_t format_global_scope(struct kefir_json_output *json,
 
         REQUIRE_OK(kefir_json_output_object_begin(json));
         REQUIRE_OK(kefir_json_output_object_key(json, "class"));
-        if (scoped_identifier->value->object.external) {
+        if (scoped_identifier->value->object->external) {
             REQUIRE_OK(kefir_json_output_string(json, "declaration"));
         } else {
             REQUIRE_OK(kefir_json_output_string(json, "definition"));
@@ -58,7 +58,7 @@ static kefir_result_t format_global_scope(struct kefir_json_output *json,
 
         REQUIRE_OK(kefir_json_output_object_begin(json));
         REQUIRE_OK(kefir_json_output_object_key(json, "class"));
-        if (scoped_identifier->value->object.external) {
+        if (scoped_identifier->value->object->external) {
             REQUIRE_OK(kefir_json_output_string(json, "declaration"));
         } else {
             REQUIRE_OK(kefir_json_output_string(json, "definition"));

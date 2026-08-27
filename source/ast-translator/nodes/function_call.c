@@ -89,9 +89,9 @@ kefir_result_t kefir_ast_translate_function_call_node(struct kefir_mem *mem,
             REQUIRE_OK(res);
             const struct kefir_ast_scoped_identifier *scoped_id = node->function->properties.expression_props->scoped_id;
             function_name = identifier->identifier;
-            if (scoped_id->function.flags.gnu_inline &&
-                kefir_ast_function_specifier_is_inline(scoped_id->function.specifier) &&
-                !scoped_id->function.inline_definition && scoped_id->function.asm_label == NULL) {
+            if (scoped_id->function->flags.gnu_inline &&
+                kefir_ast_function_specifier_is_inline(scoped_id->function->specifier) &&
+                !scoped_id->function->inline_definition && scoped_id->function->asm_label == NULL) {
                 snprintf(identifier_buf, sizeof(identifier_buf) - 1, KEFIR_AST_TRANSLATOR_GNU_INLINE_FUNCTION_IDENTIFIER,
                         function_name);
                 function_name = kefir_string_pool_insert(mem, context->ast_context->symbols, identifier_buf, NULL);

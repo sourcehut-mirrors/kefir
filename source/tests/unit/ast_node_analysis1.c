@@ -347,7 +347,7 @@ END_CASE
                                    (kefir_ast_type_pointer((_mem), (_context)->type_bundle, kefir_ast_type_void())))); \
         ASSERT(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION(KEFIR_AST_NODE_BASE(addr)));                                            \
         ASSERT(!addr->base.properties.expression_props->lvalue);                                                        \
-        ASSERT(addr->base.properties.expression_props->scoped_id->label.point == (_point));                             \
+        ASSERT(addr->base.properties.expression_props->scoped_id->label->point == (_point));                             \
         KEFIR_AST_NODE_FREE((_mem), KEFIR_AST_NODE_BASE(addr));                                                        \
     } while (0)
 
@@ -371,9 +371,9 @@ DEFINE_CASE(ast_node_analysis_label_address, "AST node analysis - label address"
     ASSERT_OK(context->reference_label(&kft_mem, context, "B", flow_control_structure, NULL, &scoped_id_B));
     ASSERT_OK(context->reference_label(&kft_mem, context, "C", flow_control_structure, NULL, &scoped_id_C));
 
-    ASSERT_LABEL_ADDRESS(&kft_mem, context, "A", scoped_id_A->label.point);
-    ASSERT_LABEL_ADDRESS(&kft_mem, context, "B", scoped_id_B->label.point);
-    ASSERT_LABEL_ADDRESS(&kft_mem, context, "C", scoped_id_C->label.point);
+    ASSERT_LABEL_ADDRESS(&kft_mem, context, "A", scoped_id_A->label->point);
+    ASSERT_LABEL_ADDRESS(&kft_mem, context, "B", scoped_id_B->label->point);
+    ASSERT_LABEL_ADDRESS(&kft_mem, context, "C", scoped_id_C->label->point);
 
     ASSERT_OK(kefir_ast_local_context_free(&kft_mem, &local_context));
     ASSERT_OK(kefir_ast_global_context_free(&kft_mem, &global_context));
