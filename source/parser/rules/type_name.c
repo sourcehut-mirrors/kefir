@@ -66,7 +66,7 @@ kefir_result_t KEFIR_PARSER_RULE_FN_PREFIX(type_name)(struct kefir_mem *mem, str
             return res;
         });
     }
-    res = kefir_ast_node_attributes_move(&declarator->attributes, &attributes);
+    res = kefir_ast_node_attributes_move(mem, &declarator->attributes, &attributes);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_ast_node_attributes_free(mem, &attributes);
         kefir_ast_declarator_free(mem, declarator);

@@ -119,7 +119,7 @@ static kefir_result_t scan_components(struct kefir_mem *mem, struct kefir_parser
         kefir_ast_declarator_specifier_list_free(mem, specifiers);
         return res;
     });
-    res = kefir_ast_node_attributes_move(&(*declarator)->attributes, attributes);
+    res = kefir_ast_node_attributes_move(mem, &(*declarator)->attributes, attributes);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_ast_declarator_specifier_list_free(mem, specifiers);
         return res;

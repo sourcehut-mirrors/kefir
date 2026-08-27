@@ -73,7 +73,7 @@ DEFINE_CASE(ast_node_analysis_function_definitions1, "AST node analysis - functi
     ASSERT_OK(kefir_ast_compound_statement_append(&kft_mem, body, stmt1));
 
     struct kefir_ast_function_definition *func = kefir_ast_new_function_definition(&kft_mem, declarator, body);
-    REQUIRE_OK(kefir_ast_declarator_specifier_list_move_all(&func->specifiers, &specifiers));
+    REQUIRE_OK(kefir_ast_declarator_specifier_list_move_all(&kft_mem, &func->specifiers, &specifiers));
 
     ASSERT_OK(kefir_ast_analyze_node(&kft_mem, &global_context.context, KEFIR_AST_NODE_BASE(func)));
 
@@ -178,7 +178,7 @@ DEFINE_CASE(ast_node_analysis_function_definitions2, "AST node analysis - functi
     ASSERT_OK(kefir_ast_compound_statement_append(&kft_mem, body, stmt1));
 
     struct kefir_ast_function_definition *func = kefir_ast_new_function_definition(&kft_mem, declarator, body);
-    REQUIRE_OK(kefir_ast_declarator_specifier_list_move_all(&func->specifiers, &specifiers));
+    REQUIRE_OK(kefir_ast_declarator_specifier_list_move_all(&kft_mem, &func->specifiers, &specifiers));
 
     ASSERT_OK(kefir_ast_analyze_node(&kft_mem, &global_context.context, KEFIR_AST_NODE_BASE(func)));
 
@@ -275,7 +275,7 @@ DEFINE_CASE(ast_node_analysis_function_definitions3, "AST node analysis - functi
     struct kefir_ast_function_definition *func = kefir_ast_new_function_definition(&kft_mem, declarator, body);
     ASSERT_OK(kefir_ast_function_definition_append_declaration(&kft_mem, func, KEFIR_AST_NODE_BASE(decl1)));
     ASSERT_OK(kefir_ast_function_definition_append_declaration(&kft_mem, func, KEFIR_AST_NODE_BASE(decl2)));
-    ASSERT_OK(kefir_ast_declarator_specifier_list_move_all(&func->specifiers, &specifiers));
+    ASSERT_OK(kefir_ast_declarator_specifier_list_move_all(&kft_mem, &func->specifiers, &specifiers));
 
     ASSERT_OK(kefir_ast_analyze_node(&kft_mem, &global_context.context, KEFIR_AST_NODE_BASE(func)));
 

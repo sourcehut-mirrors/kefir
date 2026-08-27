@@ -735,7 +735,7 @@ kefir_result_t kefir_parser_ast_builder_compound_statement(struct kefir_mem *mem
 
     kefir_result_t res = KEFIR_OK;
     if (attributes != NULL) {
-        res = kefir_ast_node_attributes_move(&stmt->attributes, attributes);
+        res = kefir_ast_node_attributes_move(mem, &stmt->attributes, attributes);
     }
 
     REQUIRE_CHAIN(&res, kefir_parser_ast_builder_push(mem, builder, KEFIR_AST_NODE_BASE(stmt)));
@@ -794,7 +794,7 @@ kefir_result_t kefir_parser_ast_builder_empty_labeled_statement(struct kefir_mem
 
     kefir_result_t res = KEFIR_OK;
     if (attributes != NULL) {
-        res = kefir_ast_node_attributes_move(&labeled_stmt->attributes, attributes);
+        res = kefir_ast_node_attributes_move(mem, &labeled_stmt->attributes, attributes);
     }
 
     REQUIRE_CHAIN(&res, kefir_parser_ast_builder_push(mem, builder, KEFIR_AST_NODE_BASE(labeled_stmt)));
@@ -825,7 +825,7 @@ kefir_result_t kefir_parser_ast_builder_labeled_statement(struct kefir_mem *mem,
 
     kefir_result_t res = KEFIR_OK;
     if (attributes != NULL) {
-        res = kefir_ast_node_attributes_move(&labeled_stmt->attributes, attributes);
+        res = kefir_ast_node_attributes_move(mem, &labeled_stmt->attributes, attributes);
     }
 
     REQUIRE_CHAIN(&res, kefir_parser_ast_builder_push(mem, builder, KEFIR_AST_NODE_BASE(labeled_stmt)));
@@ -858,7 +858,7 @@ kefir_result_t kefir_parser_ast_builder_case_statement(struct kefir_mem *mem, st
 
     res = KEFIR_OK;
     if (attributes != NULL) {
-        res = kefir_ast_node_attributes_move(&case_stmt->attributes, attributes);
+        res = kefir_ast_node_attributes_move(mem, &case_stmt->attributes, attributes);
     }
 
     REQUIRE_CHAIN(&res, kefir_parser_ast_builder_push(mem, builder, KEFIR_AST_NODE_BASE(case_stmt)));
@@ -886,7 +886,7 @@ kefir_result_t kefir_parser_ast_builder_empty_case_statement(struct kefir_mem *m
 
     kefir_result_t res = KEFIR_OK;
     if (attributes != NULL) {
-        res = kefir_ast_node_attributes_move(&case_stmt->attributes, attributes);
+        res = kefir_ast_node_attributes_move(mem, &case_stmt->attributes, attributes);
     }
 
     REQUIRE_CHAIN(&res, kefir_parser_ast_builder_push(mem, builder, KEFIR_AST_NODE_BASE(case_stmt)));
@@ -927,7 +927,7 @@ kefir_result_t kefir_parser_ast_builder_range_case_statement(struct kefir_mem *m
 
     res = KEFIR_OK;
     if (attributes != NULL) {
-        res = kefir_ast_node_attributes_move(&case_stmt->attributes, attributes);
+        res = kefir_ast_node_attributes_move(mem, &case_stmt->attributes, attributes);
     }
 
     REQUIRE_CHAIN(&res, kefir_parser_ast_builder_push(mem, builder, KEFIR_AST_NODE_BASE(case_stmt)));
@@ -961,7 +961,7 @@ kefir_result_t kefir_parser_ast_builder_empty_range_case_statement(struct kefir_
 
     res = KEFIR_OK;
     if (attributes != NULL) {
-        res = kefir_ast_node_attributes_move(&case_stmt->attributes, attributes);
+        res = kefir_ast_node_attributes_move(mem, &case_stmt->attributes, attributes);
     }
 
     REQUIRE_CHAIN(&res, kefir_parser_ast_builder_push(mem, builder, KEFIR_AST_NODE_BASE(case_stmt)));
@@ -989,7 +989,7 @@ kefir_result_t kefir_parser_ast_builder_default_statement(struct kefir_mem *mem,
 
     kefir_result_t res = KEFIR_OK;
     if (attributes != NULL) {
-        res = kefir_ast_node_attributes_move(&case_stmt->attributes, attributes);
+        res = kefir_ast_node_attributes_move(mem, &case_stmt->attributes, attributes);
     }
 
     REQUIRE_CHAIN(&res, kefir_parser_ast_builder_push(mem, builder, KEFIR_AST_NODE_BASE(case_stmt)));
@@ -1011,7 +1011,7 @@ kefir_result_t kefir_parser_ast_builder_empty_default_statement(struct kefir_mem
 
     kefir_result_t res = KEFIR_OK;
     if (attributes != NULL) {
-        res = kefir_ast_node_attributes_move(&case_stmt->attributes, attributes);
+        res = kefir_ast_node_attributes_move(mem, &case_stmt->attributes, attributes);
     }
 
     REQUIRE_CHAIN(&res, kefir_parser_ast_builder_push(mem, builder, KEFIR_AST_NODE_BASE(case_stmt)));
@@ -1044,7 +1044,7 @@ kefir_result_t kefir_parser_ast_builder_if_statement(struct kefir_mem *mem, stru
 
     res = KEFIR_OK;
     if (attributes != NULL) {
-        res = kefir_ast_node_attributes_move(&ifCond->attributes, attributes);
+        res = kefir_ast_node_attributes_move(mem, &ifCond->attributes, attributes);
     }
 
     REQUIRE_CHAIN(&res, kefir_parser_ast_builder_push(mem, builder, KEFIR_AST_NODE_BASE(ifCond)));
@@ -1085,7 +1085,7 @@ kefir_result_t kefir_parser_ast_builder_if_else_statement(struct kefir_mem *mem,
 
     res = KEFIR_OK;
     if (attributes != NULL) {
-        res = kefir_ast_node_attributes_move(&ifCond->attributes, attributes);
+        res = kefir_ast_node_attributes_move(mem, &ifCond->attributes, attributes);
     }
 
     REQUIRE_CHAIN(&res, kefir_parser_ast_builder_push(mem, builder, KEFIR_AST_NODE_BASE(ifCond)));
@@ -1119,7 +1119,7 @@ kefir_result_t kefir_parser_ast_builder_switch_statement(struct kefir_mem *mem,
 
     res = KEFIR_OK;
     if (attributes != NULL) {
-        res = kefir_ast_node_attributes_move(&switchStmt->attributes, attributes);
+        res = kefir_ast_node_attributes_move(mem, &switchStmt->attributes, attributes);
     }
 
     REQUIRE_CHAIN(&res, kefir_parser_ast_builder_push(mem, builder, KEFIR_AST_NODE_BASE(switchStmt)));
@@ -1152,7 +1152,7 @@ kefir_result_t kefir_parser_ast_builder_while_statement(struct kefir_mem *mem, s
 
     res = KEFIR_OK;
     if (attributes != NULL) {
-        res = kefir_ast_node_attributes_move(&whileStmt->attributes, attributes);
+        res = kefir_ast_node_attributes_move(mem, &whileStmt->attributes, attributes);
     }
 
     REQUIRE_CHAIN(&res, kefir_parser_ast_builder_push(mem, builder, KEFIR_AST_NODE_BASE(whileStmt)));
@@ -1186,7 +1186,7 @@ kefir_result_t kefir_parser_ast_builder_do_while_statement(struct kefir_mem *mem
 
     res = KEFIR_OK;
     if (attributes != NULL) {
-        res = kefir_ast_node_attributes_move(&doWhileStmt->attributes, attributes);
+        res = kefir_ast_node_attributes_move(mem, &doWhileStmt->attributes, attributes);
     }
 
     REQUIRE_CHAIN(&res, kefir_parser_ast_builder_push(mem, builder, KEFIR_AST_NODE_BASE(doWhileStmt)));
@@ -1247,7 +1247,7 @@ kefir_result_t kefir_parser_ast_builder_for_statement(struct kefir_mem *mem, str
 
     res = KEFIR_OK;
     if (attributes != NULL) {
-        res = kefir_ast_node_attributes_move(&forStmt->attributes, attributes);
+        res = kefir_ast_node_attributes_move(mem, &forStmt->attributes, attributes);
     }
 
     REQUIRE_CHAIN(&res, kefir_parser_ast_builder_push(mem, builder, KEFIR_AST_NODE_BASE(forStmt)));
@@ -1268,7 +1268,7 @@ kefir_result_t kefir_parser_ast_builder_return_statement(struct kefir_mem *mem,
     REQUIRE(returnStmt != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST return statement"));
     kefir_result_t res = KEFIR_OK;
     if (attributes != NULL) {
-        res = kefir_ast_node_attributes_move(&returnStmt->attributes, attributes);
+        res = kefir_ast_node_attributes_move(mem, &returnStmt->attributes, attributes);
     }
     REQUIRE_CHAIN(&res, kefir_parser_ast_builder_push(mem, builder, KEFIR_AST_NODE_BASE(returnStmt)));
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -1294,7 +1294,7 @@ kefir_result_t kefir_parser_ast_builder_return_value_statement(struct kefir_mem 
     });
     kefir_result_t res = KEFIR_OK;
     if (attributes != NULL) {
-        res = kefir_ast_node_attributes_move(&returnStmt->attributes, attributes);
+        res = kefir_ast_node_attributes_move(mem, &returnStmt->attributes, attributes);
     }
     REQUIRE_CHAIN(&res, kefir_parser_ast_builder_push(mem, builder, KEFIR_AST_NODE_BASE(returnStmt)));
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -1316,7 +1316,7 @@ kefir_result_t kefir_parser_ast_builder_goto_statement(struct kefir_mem *mem, st
 
     kefir_result_t res = KEFIR_OK;
     if (attributes != NULL) {
-        res = kefir_ast_node_attributes_move(&gotoStmt->attributes, attributes);
+        res = kefir_ast_node_attributes_move(mem, &gotoStmt->attributes, attributes);
     }
     REQUIRE_CHAIN(&res, kefir_parser_ast_builder_push(mem, builder, KEFIR_AST_NODE_BASE(gotoStmt)));
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -1337,7 +1337,7 @@ kefir_result_t kefir_parser_ast_builder_continue_statement(struct kefir_mem *mem
 
     kefir_result_t res = KEFIR_OK;
     if (attributes != NULL) {
-        res = kefir_ast_node_attributes_move(&continueStmt->attributes, attributes);
+        res = kefir_ast_node_attributes_move(mem, &continueStmt->attributes, attributes);
     }
     REQUIRE_CHAIN(&res, kefir_parser_ast_builder_push(mem, builder, KEFIR_AST_NODE_BASE(continueStmt)));
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -1357,7 +1357,7 @@ kefir_result_t kefir_parser_ast_builder_break_statement(struct kefir_mem *mem, s
 
     kefir_result_t res = KEFIR_OK;
     if (attributes != NULL) {
-        res = kefir_ast_node_attributes_move(&breakStmt->attributes, attributes);
+        res = kefir_ast_node_attributes_move(mem, &breakStmt->attributes, attributes);
     }
     REQUIRE_CHAIN(&res, kefir_parser_ast_builder_push(mem, builder, KEFIR_AST_NODE_BASE(breakStmt)));
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -1501,7 +1501,7 @@ kefir_result_t kefir_parser_ast_builder_goto_address_statement(struct kefir_mem 
 
     kefir_result_t res = KEFIR_OK;
     if (attributes != NULL) {
-        res = kefir_ast_node_attributes_move(&gotoStmt->attributes, attributes);
+        res = kefir_ast_node_attributes_move(mem, &gotoStmt->attributes, attributes);
     }
     REQUIRE_CHAIN(&res, kefir_parser_ast_builder_push(mem, builder, KEFIR_AST_NODE_BASE(gotoStmt)));
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -1522,7 +1522,7 @@ kefir_result_t kefir_parser_ast_builder_statement_expression(struct kefir_mem *m
 
     kefir_result_t res = KEFIR_OK;
     if (attributes != NULL) {
-        res = kefir_ast_node_attributes_move(&expr->attributes, attributes);
+        res = kefir_ast_node_attributes_move(mem, &expr->attributes, attributes);
     }
 
     REQUIRE_CHAIN(&res, kefir_parser_ast_builder_push(mem, builder, KEFIR_AST_NODE_BASE(expr)));

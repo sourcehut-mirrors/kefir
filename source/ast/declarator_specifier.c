@@ -126,15 +126,16 @@ kefir_result_t kefir_ast_declarator_specifier_list_clone(struct kefir_mem *mem,
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_ast_declarator_specifier_list_move_all(struct kefir_ast_declarator_specifier_list *dst,
+kefir_result_t kefir_ast_declarator_specifier_list_move_all(struct kefir_mem *mem, struct kefir_ast_declarator_specifier_list *dst,
                                                             struct kefir_ast_declarator_specifier_list *src) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(dst != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid destination AST declarator specifier list"));
     REQUIRE(src != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid source AST declarator specifier list"));
 
     REQUIRE_OK(kefir_list_move_all(&dst->list, &src->list));
-    REQUIRE_OK(kefir_ast_node_attributes_move(&dst->attributes, &src->attributes));
+    REQUIRE_OK(kefir_ast_node_attributes_move(mem, &dst->attributes, &src->attributes));
     return KEFIR_OK;
 }
 

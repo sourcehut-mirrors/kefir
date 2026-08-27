@@ -502,7 +502,7 @@ static kefir_result_t scan_enum_specifier(struct kefir_mem *mem, struct kefir_pa
         kefir_ast_node_attributes_free(mem, &attributes);
         return KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST declarator specifier");
     });
-    res = kefir_ast_node_attributes_move(&decl_specifier->attributes, &attributes);
+    res = kefir_ast_node_attributes_move(mem, &decl_specifier->attributes, &attributes);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_ast_declarator_specifier_free(mem, decl_specifier);
         kefir_ast_node_attributes_free(mem, &attributes);

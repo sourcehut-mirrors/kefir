@@ -44,8 +44,8 @@ DEFINE_CASE(ast_attribute_declaration1, "AST declarators - attribute declaration
     ASSERT_OK(
         kefir_ast_attribute_list_append(&kft_mem, global_context.context.symbols, "test2", "test3", attr_list, &attr));
     ASSERT_OK(kefir_ast_node_attributes_append(&kft_mem, &decl->attributes, attr_list));
-    ASSERT(kefir_list_length(&decl->attributes.attributes) == 1);
-    ASSERT(((struct kefir_ast_attribute_list *) kefir_list_head(&decl->attributes.attributes)->value) == attr_list);
+    ASSERT(kefir_ast_node_attributes_length(&decl->attributes) == 1);
+    ASSERT((struct kefir_ast_attribute_list *) kefir_ast_node_attributes_at(&decl->attributes, 0) == attr_list);
 
     ASSERT_OK(kefir_ast_analyze_node(&kft_mem, &global_context.context, KEFIR_AST_NODE_BASE(decl)));
     ASSERT(decl->base.properties.category == KEFIR_AST_NODE_CATEGORY_DECLARATION);

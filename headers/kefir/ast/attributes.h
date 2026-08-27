@@ -21,20 +21,27 @@
 #ifndef KEFIR_AST_ATTRIBUTES_H_
 #define KEFIR_AST_ATTRIBUTES_H_
 
-#include "kefir/core/list.h"
+#include "kefir/core/mem.h"
 
 typedef struct kefir_ast_attribute_list kefir_ast_attribute_list_t;  // Forward declaration
 
+typedef struct kefir_ast_node_attributes_content {
+    kefir_size_t attributes_length;
+    struct kefir_ast_attribute_list *attributes[];
+} kefir_ast_node_attributes_content_t;
+
 typedef struct kefir_ast_node_attributes {
-    struct kefir_list attributes;
+    struct kefir_ast_node_attributes_content *content;
 } kefir_ast_node_attributes_t;
 
 kefir_result_t kefir_ast_node_attributes_init(struct kefir_ast_node_attributes *);
 kefir_result_t kefir_ast_node_attributes_free(struct kefir_mem *, struct kefir_ast_node_attributes *);
 kefir_result_t kefir_ast_node_attributes_append(struct kefir_mem *, struct kefir_ast_node_attributes *,
                                                 struct kefir_ast_attribute_list *);
-kefir_result_t kefir_ast_node_attributes_move(struct kefir_ast_node_attributes *, struct kefir_ast_node_attributes *);
+kefir_result_t kefir_ast_node_attributes_move(struct kefir_mem *, struct kefir_ast_node_attributes *, struct kefir_ast_node_attributes *);
 kefir_result_t kefir_ast_node_attributes_clone(struct kefir_mem *, struct kefir_ast_node_attributes *,
                                                const struct kefir_ast_node_attributes *);
+kefir_size_t kefir_ast_node_attributes_length(const struct kefir_ast_node_attributes *);
+struct kefir_ast_attribute_list *kefir_ast_node_attributes_at(const struct kefir_ast_node_attributes *, kefir_size_t);
 
 #endif

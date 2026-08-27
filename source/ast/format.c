@@ -50,11 +50,9 @@ static kefir_result_t format_attributes(struct kefir_json_output *json,
                                         kefir_bool_t display_source_location) {
     REQUIRE_OK(kefir_json_output_object_key(json, "attributes"));
     REQUIRE_OK(kefir_json_output_array_begin(json));
-    for (const struct kefir_list_entry *iter = kefir_list_head(&attributes->attributes); iter != NULL;
-         kefir_list_next(&iter)) {
-
-        ASSIGN_DECL_CAST(struct kefir_ast_attribute_list *, attribute_list, iter->value);
-        REQUIRE_OK(kefir_ast_format(json, KEFIR_AST_NODE_BASE(attribute_list), display_source_location));
+    for (kefir_size_t i = 0; i < kefir_ast_node_attributes_length(attributes); i++) {
+        struct kefir_ast_attribute_list *attr_list = kefir_ast_node_attributes_at(attributes, i);
+        REQUIRE_OK(kefir_ast_format(json, KEFIR_AST_NODE_BASE(attr_list), display_source_location));
     }
     REQUIRE_OK(kefir_json_output_array_end(json));
 

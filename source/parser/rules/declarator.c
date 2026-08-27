@@ -86,7 +86,7 @@ static kefir_result_t scan_pointer(struct kefir_mem *mem, struct kefir_parser *p
     });
     declarator->source_location = source_location;
 
-    res = kefir_ast_node_attributes_move(&declarator->attributes, &attributes);
+    res = kefir_ast_node_attributes_move(mem, &declarator->attributes, &attributes);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_ast_node_attributes_free(mem, &attributes);
         kefir_ast_declarator_free(mem, declarator);
@@ -317,7 +317,7 @@ static kefir_result_t scan_function_parameter(struct kefir_mem *mem, struct kefi
         return res;
     });
 
-    res = kefir_ast_node_attributes_move(&declarator->attributes, &attributes);
+    res = kefir_ast_node_attributes_move(mem, &declarator->attributes, &attributes);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_ast_declarator_free(mem, declarator);
         kefir_ast_declarator_specifier_list_free(mem, &specifiers);
@@ -577,7 +577,7 @@ kefir_result_t kefir_parser_scan_declarator(struct kefir_mem *mem, struct kefir_
         REQUIRE_OK(kefir_ast_node_attributes_free(mem, &forward_attrs));
         REQUIRE_OK(kefir_parser_checkpoint_restore(parser, &checkpoint));
     } else {
-        REQUIRE_CHAIN(&res, kefir_ast_node_attributes_move(&(*declarator_ptr)->attributes, &forward_attrs));
+        REQUIRE_CHAIN(&res, kefir_ast_node_attributes_move(mem, &(*declarator_ptr)->attributes, &forward_attrs));
         REQUIRE_ELSE(res == KEFIR_OK, {
             if (*declarator_ptr != NULL) {
                 kefir_ast_declarator_free(mem, *declarator_ptr);
@@ -691,7 +691,7 @@ kefir_result_t kefir_parser_scan_abstract_declarator(struct kefir_mem *mem, stru
     if (res == KEFIR_NO_MATCH) {
         REQUIRE_OK(kefir_parser_checkpoint_restore(parser, &checkpoint));
     } else {
-        REQUIRE_CHAIN(&res, kefir_ast_node_attributes_move(&(*declarator_ptr)->attributes, &forward_attrs));
+        REQUIRE_CHAIN(&res, kefir_ast_node_attributes_move(mem, &(*declarator_ptr)->attributes, &forward_attrs));
         REQUIRE_ELSE(res == KEFIR_OK, {
             if (*declarator_ptr != NULL) {
                 kefir_ast_declarator_free(mem, *declarator_ptr);

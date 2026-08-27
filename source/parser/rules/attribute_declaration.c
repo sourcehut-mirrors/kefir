@@ -34,7 +34,7 @@ static kefir_result_t builder_callback(struct kefir_mem *mem, struct kefir_parse
 
     kefir_result_t res = KEFIR_OK;
     SCAN_ATTRIBUTES(&res, mem, parser, &attributes);
-    if (res == KEFIR_OK && kefir_list_length(&attributes.attributes) == 0) {
+    if (res == KEFIR_OK && kefir_ast_node_attributes_length(&attributes) == 0) {
         res = KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to match attribute declaration");
     }
     if (res == KEFIR_OK) {
@@ -55,7 +55,7 @@ static kefir_result_t builder_callback(struct kefir_mem *mem, struct kefir_parse
         return KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate AST attribute declaration");
     });
 
-    res = kefir_ast_node_attributes_move(&attr_decl->attributes, &attributes);
+    res = kefir_ast_node_attributes_move(mem, &attr_decl->attributes, &attributes);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_ast_node_attributes_free(mem, &attributes);
         KEFIR_AST_NODE_FREE(mem, KEFIR_AST_NODE_BASE(attr_decl));

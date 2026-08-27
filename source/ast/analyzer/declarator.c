@@ -84,9 +84,8 @@ static kefir_result_t multibyte_string_literal_into(struct kefir_mem *mem, struc
 static kefir_result_t scan_field_attributes(struct kefir_mem *mem, struct kefir_string_pool *symbols,
                                             struct kefir_ast_struct_field *field,
                                             const struct kefir_ast_node_attributes *attributes) {
-    for (const struct kefir_list_entry *iter = kefir_list_head(&attributes->attributes); iter != NULL;
-         kefir_list_next(&iter)) {
-        ASSIGN_DECL_CAST(struct kefir_ast_attribute_list *, attr_list, iter->value);
+    for (kefir_size_t i = 0; i < kefir_ast_node_attributes_length(attributes); i++) {
+        struct kefir_ast_attribute_list *attr_list = kefir_ast_node_attributes_at(attributes, i);
 
         for (const struct kefir_list_entry *iter2 = kefir_list_head(&attr_list->list); iter2 != NULL;
              kefir_list_next(&iter2)) {
@@ -260,9 +259,8 @@ static kefir_result_t scan_struct_attributes(struct kefir_mem *mem, const struct
                                              const struct kefir_ast_type *base_type,
                                              const struct kefir_source_location *source_location) {
     kefir_size_t struct_alignment = 0;
-    for (const struct kefir_list_entry *iter = kefir_list_head(&attributes->attributes); iter != NULL;
-         kefir_list_next(&iter)) {
-        ASSIGN_DECL_CAST(struct kefir_ast_attribute_list *, attr_list, iter->value);
+    for (kefir_size_t i = 0; i < kefir_ast_node_attributes_length(attributes); i++) {
+        struct kefir_ast_attribute_list *attr_list = kefir_ast_node_attributes_at(attributes, i);
 
         for (const struct kefir_list_entry *iter2 = kefir_list_head(&attr_list->list); iter2 != NULL;
              kefir_list_next(&iter2)) {
@@ -493,9 +491,8 @@ static kefir_result_t update_enum_constant_type(const struct kefir_ast_context *
 static kefir_result_t scan_enum_attributes(struct kefir_mem *mem, const struct kefir_ast_context *context,
                                            const struct kefir_ast_node_attributes *attributes, kefir_size_t *alignment,
                                            kefir_bool_t *packed, struct kefir_ast_enum_type *enum_type) {
-    for (const struct kefir_list_entry *iter = kefir_list_head(&attributes->attributes); iter != NULL;
-         kefir_list_next(&iter)) {
-        ASSIGN_DECL_CAST(struct kefir_ast_attribute_list *, attr_list, iter->value);
+    for (kefir_size_t i = 0; i < kefir_ast_node_attributes_length(attributes); i++) {
+        struct kefir_ast_attribute_list *attr_list = kefir_ast_node_attributes_at(attributes, i);
 
         for (const struct kefir_list_entry *iter2 = kefir_list_head(&attr_list->list); iter2 != NULL;
              kefir_list_next(&iter2)) {
@@ -541,9 +538,8 @@ static kefir_result_t scan_enum_attributes(struct kefir_mem *mem, const struct k
 static kefir_result_t scan_enum_constant_attributes(struct kefir_mem *mem, struct kefir_string_pool *symbols,
                                                     const struct kefir_ast_node_attributes *attributes,
                                                     struct kefir_ast_declarator_attributes *decl_attributes) {
-    for (const struct kefir_list_entry *iter = kefir_list_head(&attributes->attributes); iter != NULL;
-         kefir_list_next(&iter)) {
-        ASSIGN_DECL_CAST(struct kefir_ast_attribute_list *, attr_list, iter->value);
+    for (kefir_size_t i = 0; i < kefir_ast_node_attributes_length(attributes); i++) {
+        struct kefir_ast_attribute_list *attr_list = kefir_ast_node_attributes_at(attributes, i);
 
         for (const struct kefir_list_entry *iter2 = kefir_list_head(&attr_list->list); iter2 != NULL;
              kefir_list_next(&iter2)) {
@@ -1784,10 +1780,8 @@ static kefir_result_t resolve_array_declarator(struct kefir_mem *mem, const stru
 static kefir_result_t scan_function_attributes(struct kefir_mem *mem, struct kefir_string_pool *symbols,
                                                const struct kefir_ast_node_attributes *attribute_lists,
                                                struct kefir_ast_function_type *func_type) {
-
-    for (const struct kefir_list_entry *iter = kefir_list_head(&attribute_lists->attributes); iter != NULL;
-         kefir_list_next(&iter)) {
-        ASSIGN_DECL_CAST(struct kefir_ast_attribute_list *, attr_list, iter->value);
+    for (kefir_size_t i = 0; i < kefir_ast_node_attributes_length(attribute_lists); i++) {
+        struct kefir_ast_attribute_list *attr_list = kefir_ast_node_attributes_at(attribute_lists, i);
 
         for (const struct kefir_list_entry *iter2 = kefir_list_head(&attr_list->list); iter2 != NULL;
              kefir_list_next(&iter2)) {
@@ -1985,9 +1979,8 @@ static kefir_result_t analyze_declaration_declarator_attributes(
     struct kefir_mem *mem, const struct kefir_ast_context *context, const struct kefir_ast_declarator *declarator,
     const struct kefir_ast_node_attributes *attribute_lists, const struct kefir_ast_type **base_type,
     kefir_size_t *alignment, kefir_uint64_t flags, struct kefir_ast_declarator_attributes *attributes) {
-    for (const struct kefir_list_entry *iter = kefir_list_head(&attribute_lists->attributes); iter != NULL;
-         kefir_list_next(&iter)) {
-        ASSIGN_DECL_CAST(struct kefir_ast_attribute_list *, attr_list, iter->value);
+    for (kefir_size_t i = 0; i < kefir_ast_node_attributes_length(attribute_lists); i++) {
+        struct kefir_ast_attribute_list *attr_list = kefir_ast_node_attributes_at(attribute_lists, i);
 
         for (const struct kefir_list_entry *iter2 = kefir_list_head(&attr_list->list); iter2 != NULL;
              kefir_list_next(&iter2)) {

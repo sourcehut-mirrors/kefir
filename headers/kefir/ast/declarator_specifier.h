@@ -53,7 +53,7 @@ kefir_result_t kefir_ast_declarator_specifier_list_remove(struct kefir_mem *,
 kefir_result_t kefir_ast_declarator_specifier_list_clone(struct kefir_mem *,
                                                          struct kefir_ast_declarator_specifier_list *,
                                                          const struct kefir_ast_declarator_specifier_list *);
-kefir_result_t kefir_ast_declarator_specifier_list_move_all(struct kefir_ast_declarator_specifier_list *,
+kefir_result_t kefir_ast_declarator_specifier_list_move_all(struct kefir_mem *, struct kefir_ast_declarator_specifier_list *,
                                                             struct kefir_ast_declarator_specifier_list *);
 const struct kefir_source_location *kefir_ast_declarator_specifier_list_source_location(
     const struct kefir_ast_declarator_specifier_list *);

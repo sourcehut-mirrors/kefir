@@ -33,7 +33,7 @@ kefir_result_t KEFIR_PARSER_RULE_FN_PREFIX(expression_statement)(struct kefir_me
 
     if (res == KEFIR_OK && !PARSER_TOKEN_IS_PUNCTUATOR(parser, 0, KEFIR_PUNCTUATOR_SEMICOLON)) {
         REQUIRE_CHAIN(&res, KEFIR_PARSER_NEXT_EXPRESSION(mem, parser, &expression));
-    } else if (res == KEFIR_OK && kefir_list_length(&attributes.attributes) > 0) {
+    } else if (res == KEFIR_OK && kefir_ast_node_attributes_length(&attributes) > 0) {
         res = KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to match expression statement");
     }
 
@@ -58,7 +58,7 @@ kefir_result_t KEFIR_PARSER_RULE_FN_PREFIX(expression_statement)(struct kefir_me
         return KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST expression statement");
     });
 
-    res = kefir_ast_node_attributes_move(&stmt->attributes, &attributes);
+    res = kefir_ast_node_attributes_move(mem, &stmt->attributes, &attributes);
     REQUIRE_ELSE(stmt != NULL, {
         kefir_ast_node_attributes_free(mem, &attributes);
         KEFIR_AST_NODE_FREE(mem, KEFIR_AST_NODE_BASE(stmt));
