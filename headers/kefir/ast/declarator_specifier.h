@@ -161,7 +161,7 @@ typedef struct kefir_ast_type_specifier {
 typedef struct kefir_ast_declarator_specifier {
     kefir_ast_declarator_specifier_class_t klass;
     union {
-        struct kefir_ast_type_specifier type_specifier;
+        const struct kefir_ast_type_specifier *type_specifier;
         kefir_ast_storage_class_specifier_type_t storage_class;
         kefir_ast_type_qualifier_type_t type_qualifier;
         kefir_ast_function_specifier_type_t function_specifier;

@@ -215,7 +215,7 @@ DEFINE_CASE(ast_nodes_function_definitions1, "AST nodes - function definitions #
     struct kefir_ast_declarator_specifier_list_iterator iter;
     ASSERT_OK(kefir_ast_declarator_specifier_list_iter(&func1->specifiers, &iter, &specifier1));
     ASSERT(specifier1->klass == KEFIR_AST_TYPE_SPECIFIER);
-    ASSERT(specifier1->type_specifier.specifier == KEFIR_AST_TYPE_SPECIFIER_INT);
+    ASSERT(specifier1->type_specifier->specifier == KEFIR_AST_TYPE_SPECIFIER_INT);
     ASSERT(kefir_ast_declarator_specifier_list_next(&iter, &specifier1) == KEFIR_ITERATOR_END);
 
     ASSERT(func1->declarator == decl1);
@@ -316,7 +316,7 @@ DEFINE_CASE(ast_nodes_declaration1, "AST nodes - declaration list #1") {
     ASSERT_OK(kefir_ast_declarator_specifier_list_iter(&declaration->specifiers, &iter, &specifier));
     ASSERT(specifier != NULL);
     ASSERT(specifier->klass == KEFIR_AST_TYPE_SPECIFIER);
-    ASSERT(specifier->type_specifier.specifier == KEFIR_AST_TYPE_SPECIFIER_INT);
+    ASSERT(specifier->type_specifier->specifier == KEFIR_AST_TYPE_SPECIFIER_INT);
     ASSERT_OK(kefir_ast_declarator_specifier_list_next(&iter, &specifier));
     ASSERT(specifier != NULL);
     ASSERT(specifier->klass == KEFIR_AST_TYPE_QUALIFIER);

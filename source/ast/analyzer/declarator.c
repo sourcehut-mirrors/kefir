@@ -338,12 +338,12 @@ static kefir_result_t resolve_struct_type(struct kefir_mem *mem, const struct ke
         context = &context->global_context->context;
     }
 
-    const struct kefir_ast_structure_specifier *specifier = decl_specifier->type_specifier.value.structure;
+    const struct kefir_ast_structure_specifier *specifier = decl_specifier->type_specifier->value.structure;
     kefir_bool_t resolved = false;
     const struct kefir_ast_type *type = NULL;
     if (specifier->complete) {
         struct kefir_ast_struct_type *struct_type = NULL;
-        type = decl_specifier->type_specifier.specifier == KEFIR_AST_TYPE_SPECIFIER_STRUCT
+        type = decl_specifier->type_specifier->specifier == KEFIR_AST_TYPE_SPECIFIER_STRUCT
                    ? kefir_ast_type_structure(mem, context->type_bundle, specifier->identifier, &struct_type)
                    : kefir_ast_type_union(mem, context->type_bundle, specifier->identifier, &struct_type);
         REQUIRE(type != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Unable to allocate AST struct/union type"));
@@ -366,9 +366,9 @@ static kefir_result_t resolve_struct_type(struct kefir_mem *mem, const struct ke
             const struct kefir_ast_scoped_identifier *scoped_identifier = NULL;
             kefir_result_t res = context->resolve_tag_identifier(context, specifier->identifier, &scoped_identifier);
             if (res == KEFIR_OK) {
-                REQUIRE((decl_specifier->type_specifier.specifier == KEFIR_AST_TYPE_SPECIFIER_STRUCT &&
+                REQUIRE((decl_specifier->type_specifier->specifier == KEFIR_AST_TYPE_SPECIFIER_STRUCT &&
                          scoped_identifier->type_tag.type->tag == KEFIR_AST_TYPE_STRUCTURE) ||
-                            (decl_specifier->type_specifier.specifier == KEFIR_AST_TYPE_SPECIFIER_UNION &&
+                            (decl_specifier->type_specifier->specifier == KEFIR_AST_TYPE_SPECIFIER_UNION &&
                              scoped_identifier->type_tag.type->tag == KEFIR_AST_TYPE_UNION),
                         KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
                                                "Tagged type declaration mismatch"));
@@ -380,7 +380,7 @@ static kefir_result_t resolve_struct_type(struct kefir_mem *mem, const struct ke
         }
 
         if (!resolved) {
-            type = decl_specifier->type_specifier.specifier == KEFIR_AST_TYPE_SPECIFIER_STRUCT
+            type = decl_specifier->type_specifier->specifier == KEFIR_AST_TYPE_SPECIFIER_STRUCT
                        ? kefir_ast_type_incomplete_structure(mem, context->type_bundle, specifier->identifier)
                        : kefir_ast_type_incomplete_union(mem, context->type_bundle, specifier->identifier);
             REQUIRE(type != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Unable to allocate AST struct/union type"));
@@ -565,7 +565,7 @@ static kefir_result_t resolve_enum_type(struct kefir_mem *mem, const struct kefi
         context = &context->global_context->context;
     }
 
-    const struct kefir_ast_enum_specifier *specifier = decl_specifier->type_specifier.value.enumeration;
+    const struct kefir_ast_enum_specifier *specifier = decl_specifier->type_specifier->value.enumeration;
     kefir_bool_t resolved = false;
     const struct kefir_ast_type *type = NULL;
 
@@ -832,7 +832,7 @@ static kefir_result_t resolve_type(struct kefir_mem *mem, const struct kefir_ast
                                    const struct kefir_ast_type **base_type, kefir_size_t *alignment,
                                    const struct kefir_ast_declarator_specifier *decl_specifier,
                                    const struct kefir_ast_declarator_specifier_list *specifiers, kefir_uint64_t flags) {
-    const struct kefir_ast_type_specifier *specifier = &decl_specifier->type_specifier;
+    const struct kefir_ast_type_specifier *specifier = decl_specifier->type_specifier;
     switch (specifier->specifier) {
         case KEFIR_AST_TYPE_SPECIFIER_VOID:
             REQUIRE(*base_type == NULL, KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
@@ -931,15 +931,15 @@ static kefir_result_t resolve_type(struct kefir_mem *mem, const struct kefir_ast
             REQUIRE((*base_type) == NULL,
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
                                            "_BitInt type specifier can only be combined with unsigned specifier"));
-            REQUIRE_OK(kefir_ast_analyze_node(mem, context, decl_specifier->type_specifier.value.bitprecise.width));
-            REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(decl_specifier->type_specifier.value.bitprecise.width,
+            REQUIRE_OK(kefir_ast_analyze_node(mem, context, decl_specifier->type_specifier->value.bitprecise.width));
+            REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(decl_specifier->type_specifier->value.bitprecise.width,
                                                              KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER),
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR,
-                                           &decl_specifier->type_specifier.value.bitprecise.width->source_location,
+                                           &decl_specifier->type_specifier->value.bitprecise.width->source_location,
                                            "Expected integral constant expression as bit-precise type parameter"));
             *base_type = kefir_ast_type_signed_bitprecise(
                 mem, context->type_bundle,
-                KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(decl_specifier->type_specifier.value.bitprecise.width)
+                KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(decl_specifier->type_specifier->value.bitprecise.width)
                     ->integer);
             *seq_state = TYPE_SPECIFIER_SEQUENCE_SPECIFIERS;
             break;
@@ -1276,7 +1276,7 @@ static kefir_result_t resolve_type(struct kefir_mem *mem, const struct kefir_ast
             REQUIRE(*seq_state == TYPE_SPECIFIER_SEQUENCE_EMPTY,
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
                                            "Atomic type specifier cannot be combined with other type specifiers"));
-            struct kefir_ast_node_base *atomic_type_node = decl_specifier->type_specifier.value.atomic_type;
+            struct kefir_ast_node_base *atomic_type_node = decl_specifier->type_specifier->value.atomic_type;
             REQUIRE_OK(kefir_ast_analyze_node(mem, context, atomic_type_node));
             REQUIRE(
                 atomic_type_node->properties.category == KEFIR_AST_NODE_CATEGORY_TYPE,

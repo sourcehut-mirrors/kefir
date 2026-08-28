@@ -29,7 +29,7 @@ DEFINE_CASE(ast_declarator_specifier_construction1, "AST declarator specifiers -
         struct kefir_ast_declarator_specifier *specifier = kefir_ast_type_specifier_##_id(&kft_mem); \
         ASSERT(specifier != NULL);                                                                   \
         ASSERT(specifier->klass == KEFIR_AST_TYPE_SPECIFIER);                                        \
-        ASSERT(specifier->type_specifier.specifier == (_spec));                                      \
+        ASSERT(specifier->type_specifier->specifier == (_spec));                                      \
         ASSERT_OK(kefir_ast_declarator_specifier_free(&kft_mem, specifier));                         \
     } while (0)
 
@@ -55,12 +55,12 @@ DEFINE_CASE(ast_declarator_specifier_construction2, "AST declarator specifiers -
             kefir_ast_type_specifier_atomic(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, i)));
         ASSERT(specifier != NULL);
         ASSERT(specifier->klass == KEFIR_AST_TYPE_SPECIFIER);
-        ASSERT(specifier->type_specifier.specifier == KEFIR_AST_TYPE_SPECIFIER_ATOMIC);
-        ASSERT(specifier->type_specifier.value.atomic_type->klass->type == KEFIR_AST_CONSTANT);
-        ASSERT(specifier->type_specifier.value.atomic_type != NULL);
-        ASSERT(((struct kefir_ast_constant *) KEFIR_AST_NODE_SELF(specifier->type_specifier.value.atomic_type))->type ==
+        ASSERT(specifier->type_specifier->specifier == KEFIR_AST_TYPE_SPECIFIER_ATOMIC);
+        ASSERT(specifier->type_specifier->value.atomic_type->klass->type == KEFIR_AST_CONSTANT);
+        ASSERT(specifier->type_specifier->value.atomic_type != NULL);
+        ASSERT(((struct kefir_ast_constant *) KEFIR_AST_NODE_SELF(specifier->type_specifier->value.atomic_type))->type ==
                KEFIR_AST_INT_CONSTANT);
-        ASSERT(((struct kefir_ast_constant *) KEFIR_AST_NODE_SELF(specifier->type_specifier.value.atomic_type))->value.integer == i);
+        ASSERT(((struct kefir_ast_constant *) KEFIR_AST_NODE_SELF(specifier->type_specifier->value.atomic_type))->value.integer == i);
         ASSERT_OK(kefir_ast_declarator_specifier_free(&kft_mem, specifier));
     }
 }
@@ -76,8 +76,8 @@ DEFINE_CASE(ast_declarator_specifier_construction3,
     struct kefir_ast_declarator_specifier *specifier = kefir_ast_type_specifier_struct(&kft_mem, structure_specifier);
     ASSERT(specifier != NULL);
     ASSERT(specifier->klass == KEFIR_AST_TYPE_SPECIFIER);
-    ASSERT(specifier->type_specifier.specifier == KEFIR_AST_TYPE_SPECIFIER_STRUCT);
-    ASSERT(specifier->type_specifier.value.structure == structure_specifier);
+    ASSERT(specifier->type_specifier->specifier == KEFIR_AST_TYPE_SPECIFIER_STRUCT);
+    ASSERT(specifier->type_specifier->value.structure == structure_specifier);
     ASSERT_OK(kefir_ast_declarator_specifier_free(&kft_mem, specifier));
 
     ASSERT_OK(kefir_string_pool_free(&kft_mem, &symbols));
@@ -94,8 +94,8 @@ DEFINE_CASE(ast_declarator_specifier_construction4, "AST declarator specifiers -
     struct kefir_ast_declarator_specifier *specifier = kefir_ast_type_specifier_union(&kft_mem, structure_specifier);
     ASSERT(specifier != NULL);
     ASSERT(specifier->klass == KEFIR_AST_TYPE_SPECIFIER);
-    ASSERT(specifier->type_specifier.specifier == KEFIR_AST_TYPE_SPECIFIER_UNION);
-    ASSERT(specifier->type_specifier.value.structure == structure_specifier);
+    ASSERT(specifier->type_specifier->specifier == KEFIR_AST_TYPE_SPECIFIER_UNION);
+    ASSERT(specifier->type_specifier->value.structure == structure_specifier);
     ASSERT_OK(kefir_ast_declarator_specifier_free(&kft_mem, specifier));
 
     ASSERT_OK(kefir_string_pool_free(&kft_mem, &symbols));
@@ -112,8 +112,8 @@ DEFINE_CASE(ast_declarator_specifier_construction5,
     struct kefir_ast_declarator_specifier *specifier = kefir_ast_type_specifier_enum(&kft_mem, enum_specifier);
     ASSERT(specifier != NULL);
     ASSERT(specifier->klass == KEFIR_AST_TYPE_SPECIFIER);
-    ASSERT(specifier->type_specifier.specifier == KEFIR_AST_TYPE_SPECIFIER_ENUM);
-    ASSERT(specifier->type_specifier.value.enumeration == enum_specifier);
+    ASSERT(specifier->type_specifier->specifier == KEFIR_AST_TYPE_SPECIFIER_ENUM);
+    ASSERT(specifier->type_specifier->value.enumeration == enum_specifier);
     ASSERT_OK(kefir_ast_declarator_specifier_free(&kft_mem, specifier));
 
     ASSERT_OK(kefir_string_pool_free(&kft_mem, &symbols));
@@ -131,9 +131,9 @@ DEFINE_CASE(ast_declarator_specifier_construction6,
             kefir_ast_type_specifier_typedef(&kft_mem, NULL, TYPE_NAMES[i]);
         ASSERT(specifier != NULL);
         ASSERT(specifier->klass == KEFIR_AST_TYPE_SPECIFIER);
-        ASSERT(specifier->type_specifier.specifier == KEFIR_AST_TYPE_SPECIFIER_TYPEDEF);
-        ASSERT(specifier->type_specifier.value.type_name == TYPE_NAMES[i]);
-        ASSERT(strcmp(specifier->type_specifier.value.type_name, TYPE_NAMES[i]) == 0);
+        ASSERT(specifier->type_specifier->specifier == KEFIR_AST_TYPE_SPECIFIER_TYPEDEF);
+        ASSERT(specifier->type_specifier->value.type_name == TYPE_NAMES[i]);
+        ASSERT(strcmp(specifier->type_specifier->value.type_name, TYPE_NAMES[i]) == 0);
         ASSERT_OK(kefir_ast_declarator_specifier_free(&kft_mem, specifier));
     }
 }
@@ -152,10 +152,10 @@ DEFINE_CASE(ast_declarator_specifier_construction7,
             kefir_ast_type_specifier_typedef(&kft_mem, &symbols, TYPE_NAMES[i]);
         ASSERT(specifier != NULL);
         ASSERT(specifier->klass == KEFIR_AST_TYPE_SPECIFIER);
-        ASSERT(specifier->type_specifier.specifier == KEFIR_AST_TYPE_SPECIFIER_TYPEDEF);
-        ASSERT(specifier->type_specifier.value.type_name != NULL);
-        ASSERT(specifier->type_specifier.value.type_name != TYPE_NAMES[i]);
-        ASSERT(strcmp(specifier->type_specifier.value.type_name, TYPE_NAMES[i]) == 0);
+        ASSERT(specifier->type_specifier->specifier == KEFIR_AST_TYPE_SPECIFIER_TYPEDEF);
+        ASSERT(specifier->type_specifier->value.type_name != NULL);
+        ASSERT(specifier->type_specifier->value.type_name != TYPE_NAMES[i]);
+        ASSERT(strcmp(specifier->type_specifier->value.type_name, TYPE_NAMES[i]) == 0);
         ASSERT_OK(kefir_ast_declarator_specifier_free(&kft_mem, specifier));
     }
 

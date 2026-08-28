@@ -534,7 +534,7 @@ static kefir_result_t has_type_specifiers(struct kefir_ast_declarator_specifier_
         res = kefir_ast_declarator_specifier_list_next(&iter, &specifier)) {
 
         if (specifier->klass == KEFIR_AST_TYPE_SPECIFIER &&
-            specifier->type_specifier.specifier != KEFIR_AST_TYPE_SPECIFIER_UNSIGNED_OVERRIDE) {
+            specifier->type_specifier->specifier != KEFIR_AST_TYPE_SPECIFIER_UNSIGNED_OVERRIDE) {
             *result = true;
         }
     }

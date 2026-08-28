@@ -47,7 +47,7 @@ DEFINE_CASE(ast_structure_declaration1, "AST Declarations - structure declaratio
     struct kefir_ast_declarator_specifier_list_iterator iter;
     ASSERT_OK(kefir_ast_declarator_specifier_list_iter(&entry1->declaration.specifiers, &iter, &entry1_specifier));
     ASSERT(entry1_specifier->klass == KEFIR_AST_TYPE_SPECIFIER);
-    ASSERT(entry1_specifier->type_specifier.specifier == KEFIR_AST_TYPE_SPECIFIER_INT);
+    ASSERT(entry1_specifier->type_specifier->specifier == KEFIR_AST_TYPE_SPECIFIER_INT);
 
     ASSIGN_DECL_CAST(struct kefir_ast_structure_entry_declarator *, entry1_declarator,
                      kefir_list_head(&entry1->declaration.declarators)->value);
@@ -140,7 +140,7 @@ DEFINE_CASE(ast_structure_declaration2, "AST Declarations - structure declaratio
         struct kefir_ast_declarator_specifier_list_iterator iter;
         ASSERT_OK(kefir_ast_declarator_specifier_list_iter(&entry->declaration.specifiers, &iter, &entry_specifier1));
         ASSERT(entry_specifier1->klass == KEFIR_AST_TYPE_SPECIFIER);
-        ASSERT(entry_specifier1->type_specifier.specifier == KEFIR_AST_TYPE_SPECIFIER_LONG);
+        ASSERT(entry_specifier1->type_specifier->specifier == KEFIR_AST_TYPE_SPECIFIER_LONG);
         ASSERT(kefir_ast_declarator_specifier_list_next(&iter, &entry_specifier1) == KEFIR_ITERATOR_END);
 
         const struct kefir_list_entry *declarator_iter = kefir_list_head(&entry->declaration.declarators);
@@ -164,10 +164,10 @@ DEFINE_CASE(ast_structure_declaration2, "AST Declarations - structure declaratio
         struct kefir_ast_declarator_specifier_list_iterator iter;
         ASSERT_OK(kefir_ast_declarator_specifier_list_iter(&entry->declaration.specifiers, &iter, &entry_specifier1));
         ASSERT(entry_specifier1->klass == KEFIR_AST_TYPE_SPECIFIER);
-        ASSERT(entry_specifier1->type_specifier.specifier == KEFIR_AST_TYPE_SPECIFIER_LONG);
+        ASSERT(entry_specifier1->type_specifier->specifier == KEFIR_AST_TYPE_SPECIFIER_LONG);
         ASSERT_OK(kefir_ast_declarator_specifier_list_next(&iter, &entry_specifier1));
         ASSERT(entry_specifier1->klass == KEFIR_AST_TYPE_SPECIFIER);
-        ASSERT(entry_specifier1->type_specifier.specifier == KEFIR_AST_TYPE_SPECIFIER_LONG);
+        ASSERT(entry_specifier1->type_specifier->specifier == KEFIR_AST_TYPE_SPECIFIER_LONG);
         ASSERT(kefir_ast_declarator_specifier_list_next(&iter, &entry_specifier1) == KEFIR_ITERATOR_END);
 
         const struct kefir_list_entry *declarator_iter = kefir_list_head(&entry->declaration.declarators);
@@ -214,7 +214,7 @@ DEFINE_CASE(ast_structure_declaration2, "AST Declarations - structure declaratio
         struct kefir_ast_declarator_specifier_list_iterator iter;
         ASSERT_OK(kefir_ast_declarator_specifier_list_iter(&entry->declaration.specifiers, &iter, &entry_specifier1));
         ASSERT(entry_specifier1->klass == KEFIR_AST_TYPE_SPECIFIER);
-        ASSERT(entry_specifier1->type_specifier.specifier == KEFIR_AST_TYPE_SPECIFIER_FLOAT);
+        ASSERT(entry_specifier1->type_specifier->specifier == KEFIR_AST_TYPE_SPECIFIER_FLOAT);
         ASSERT(kefir_ast_declarator_specifier_list_next(&iter, &entry_specifier1) == KEFIR_ITERATOR_END);
 
         const struct kefir_list_entry *declarator_iter = kefir_list_head(&entry->declaration.declarators);

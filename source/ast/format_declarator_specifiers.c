@@ -25,21 +25,21 @@
 static kefir_result_t format_struct(struct kefir_json_output *json,
                                     const struct kefir_ast_declarator_specifier *specifier,
                                     kefir_bool_t display_source_location) {
-    if (specifier->type_specifier.specifier == KEFIR_AST_TYPE_SPECIFIER_STRUCT) {
+    if (specifier->type_specifier->specifier == KEFIR_AST_TYPE_SPECIFIER_STRUCT) {
         REQUIRE_OK(kefir_json_output_string(json, "struct"));
     } else {
         REQUIRE_OK(kefir_json_output_string(json, "union"));
     }
     REQUIRE_OK(kefir_json_output_object_key(json, "identifier"));
-    if (specifier->type_specifier.value.structure->identifier != NULL) {
-        REQUIRE_OK(kefir_json_output_string(json, specifier->type_specifier.value.structure->identifier));
+    if (specifier->type_specifier->value.structure->identifier != NULL) {
+        REQUIRE_OK(kefir_json_output_string(json, specifier->type_specifier->value.structure->identifier));
     } else {
         REQUIRE_OK(kefir_json_output_null(json));
     }
     REQUIRE_OK(kefir_json_output_object_key(json, "members"));
-    if (specifier->type_specifier.value.structure->complete) {
+    if (specifier->type_specifier->value.structure->complete) {
         REQUIRE_OK(kefir_json_output_array_begin(json));
-        for (const struct kefir_list_entry *iter = kefir_list_head(&specifier->type_specifier.value.structure->entries);
+        for (const struct kefir_list_entry *iter = kefir_list_head(&specifier->type_specifier->value.structure->entries);
              iter != NULL; kefir_list_next(&iter)) {
             ASSIGN_DECL_CAST(struct kefir_ast_structure_declaration_entry *, entry, iter->value);
 
@@ -87,20 +87,20 @@ static kefir_result_t format_enum(struct kefir_json_output *json,
                                   kefir_bool_t display_source_location) {
     REQUIRE_OK(kefir_json_output_string(json, "enum"));
     REQUIRE_OK(kefir_json_output_object_key(json, "identifier"));
-    if (specifier->type_specifier.value.enumeration->identifier != NULL) {
-        REQUIRE_OK(kefir_json_output_string(json, specifier->type_specifier.value.enumeration->identifier));
+    if (specifier->type_specifier->value.enumeration->identifier != NULL) {
+        REQUIRE_OK(kefir_json_output_string(json, specifier->type_specifier->value.enumeration->identifier));
     } else {
         REQUIRE_OK(kefir_json_output_null(json));
     }
-    if (specifier->type_specifier.value.enumeration->type_spec.present) {
+    if (specifier->type_specifier->value.enumeration->type_spec.present) {
         REQUIRE_OK(kefir_json_output_object_key(json, "type_spec"));
         REQUIRE_OK(kefir_ast_format_declarator_specifier_list(
-            json, &specifier->type_specifier.value.enumeration->type_spec.specifier_list, display_source_location));
+            json, &specifier->type_specifier->value.enumeration->type_spec.specifier_list, display_source_location));
     }
     REQUIRE_OK(kefir_json_output_object_key(json, "members"));
-    if (specifier->type_specifier.value.enumeration->complete) {
+    if (specifier->type_specifier->value.enumeration->complete) {
         REQUIRE_OK(kefir_json_output_array_begin(json));
-        for (const struct kefir_list_entry *iter = kefir_list_head(&specifier->type_specifier.value.structure->entries);
+        for (const struct kefir_list_entry *iter = kefir_list_head(&specifier->type_specifier->value.structure->entries);
              iter != NULL; kefir_list_next(&iter)) {
             ASSIGN_DECL_CAST(struct kefir_ast_enum_specifier_entry *, entry, iter->value);
             REQUIRE_OK(kefir_json_output_object_begin(json));
@@ -140,7 +140,7 @@ kefir_result_t kefir_ast_format_declarator_specifier(struct kefir_json_output *j
         case KEFIR_AST_TYPE_SPECIFIER:
             REQUIRE_OK(kefir_json_output_string(json, "type_specifier"));
             REQUIRE_OK(kefir_json_output_object_key(json, "specifier"));
-            switch (specifier->type_specifier.specifier) {
+            switch (specifier->type_specifier->specifier) {
                 case KEFIR_AST_TYPE_SPECIFIER_VOID:
                     REQUIRE_OK(kefir_json_output_string(json, "void"));
                     break;
@@ -197,7 +197,7 @@ kefir_result_t kefir_ast_format_declarator_specifier(struct kefir_json_output *j
                     REQUIRE_OK(kefir_json_output_string(json, "atomic"));
                     REQUIRE_OK(kefir_json_output_object_key(json, "atomic"));
                     REQUIRE_OK(
-                        kefir_ast_format(json, specifier->type_specifier.value.atomic_type, display_source_location));
+                        kefir_ast_format(json, specifier->type_specifier->value.atomic_type, display_source_location));
                     break;
 
                 case KEFIR_AST_TYPE_SPECIFIER_STRUCT:
@@ -212,16 +212,16 @@ kefir_result_t kefir_ast_format_declarator_specifier(struct kefir_json_output *j
                 case KEFIR_AST_TYPE_SPECIFIER_TYPEDEF:
                     REQUIRE_OK(kefir_json_output_string(json, "typedef"));
                     REQUIRE_OK(kefir_json_output_object_key(json, "identifier"));
-                    REQUIRE_OK(kefir_json_output_string(json, specifier->type_specifier.value.type_name));
+                    REQUIRE_OK(kefir_json_output_string(json, specifier->type_specifier->value.type_name));
                     break;
 
                 case KEFIR_AST_TYPE_SPECIFIER_TYPEOF:
                     REQUIRE_OK(kefir_json_output_string(json, "typeof"));
                     REQUIRE_OK(kefir_json_output_object_key(json, "qualified"));
-                    REQUIRE_OK(kefir_json_output_boolean(json, specifier->type_specifier.value.type_of.qualified));
+                    REQUIRE_OK(kefir_json_output_boolean(json, specifier->type_specifier->value.type_of.qualified));
                     REQUIRE_OK(kefir_json_output_object_key(json, "node"));
                     REQUIRE_OK(
-                        kefir_ast_format(json, specifier->type_specifier.value.type_of.node, display_source_location));
+                        kefir_ast_format(json, specifier->type_specifier->value.type_of.node, display_source_location));
                     break;
 
                 case KEFIR_AST_TYPE_SPECIFIER_AUTO_TYPE:
@@ -231,7 +231,7 @@ kefir_result_t kefir_ast_format_declarator_specifier(struct kefir_json_output *j
                 case KEFIR_AST_TYPE_SPECIFIER_BITINT:
                     REQUIRE_OK(kefir_json_output_string(json, "bitint"));
                     REQUIRE_OK(kefir_json_output_object_key(json, "width"));
-                    REQUIRE_OK(kefir_ast_format(json, specifier->type_specifier.value.bitprecise.width,
+                    REQUIRE_OK(kefir_ast_format(json, specifier->type_specifier->value.bitprecise.width,
                                                 display_source_location));
                     break;
 

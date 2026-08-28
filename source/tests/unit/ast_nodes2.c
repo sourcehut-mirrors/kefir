@@ -484,9 +484,9 @@ DEFINE_CASE(ast_nodes_init_declarators1, "AST nodes - declarations #1") {
     struct kefir_ast_declarator_specifier *specifier = NULL;
     ASSERT_OK(kefir_ast_declarator_specifier_list_iter(&decl1_list->specifiers, &iter, &specifier));
     ASSERT(specifier->klass == KEFIR_AST_TYPE_SPECIFIER);
-    ASSERT(specifier->type_specifier.specifier == KEFIR_AST_TYPE_SPECIFIER_UNSIGNED);
+    ASSERT(specifier->type_specifier->specifier == KEFIR_AST_TYPE_SPECIFIER_UNSIGNED);
     ASSERT_OK(kefir_ast_declarator_specifier_list_next(&iter, &specifier));
-    ASSERT(specifier->type_specifier.specifier == KEFIR_AST_TYPE_SPECIFIER_LONG);
+    ASSERT(specifier->type_specifier->specifier == KEFIR_AST_TYPE_SPECIFIER_LONG);
     ASSERT_OK(kefir_ast_declarator_specifier_list_next(&iter, &specifier));
     ASSERT(specifier->type_qualifier == KEFIR_AST_TYPE_QUALIFIER_CONST);
     ASSERT(kefir_ast_declarator_specifier_list_next(&iter, &specifier) == KEFIR_ITERATOR_END);
