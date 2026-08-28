@@ -44,13 +44,14 @@ static kefir_result_t point_cleanup(struct kefir_mem *mem, struct kefir_ast_flow
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(point != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST flow control point"));
 
-    struct kefir_ast_translator_flow_control_point *ast_translator_point =
-        *((struct kefir_ast_translator_flow_control_point **) point->ptr);
-    if (!ast_translator_point->resolved) {
-        REQUIRE_OK(kefir_list_free(mem, &ast_translator_point->dependents));
+    if (point->payload != NULL) {
+        ASSIGN_DECL_CAST(struct kefir_ast_translator_flow_control_point *, ast_translator_point, point->payload);
+        if (!ast_translator_point->resolved) {
+            REQUIRE_OK(kefir_list_free(mem, &ast_translator_point->dependents));
+        }
+        ast_translator_point->resolved = false;
+        KEFIR_FREE(mem, ast_translator_point);
     }
-    ast_translator_point->resolved = false;
-    KEFIR_FREE(mem, ast_translator_point);
     return KEFIR_OK;
 }
 
@@ -79,10 +80,8 @@ kefir_result_t kefir_ast_translator_flow_control_point_init(
         return res;
     });
 
+    point->payload = ast_translator_point;
     KEFIR_AST_FLOW_CONTROL_SET_CLEANUP(point, point_cleanup, NULL);
-
-    ASSIGN_DECL_CAST(struct kefir_ast_translator_flow_control_point **, translator_point_ptr, point->ptr);
-    *translator_point_ptr = ast_translator_point;
     ASSIGN_PTR(translator_point, ast_translator_point);
     return KEFIR_OK;
 }
@@ -114,8 +113,8 @@ kefir_result_t kefir_ast_translator_flow_control_point_reference(struct kefir_me
     REQUIRE(index < kefir_irblock_length(block),
             KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Expected valid index in the IR block"));
 
-    struct kefir_ast_translator_flow_control_point *ast_translator_point =
-        *((struct kefir_ast_translator_flow_control_point **) point->ptr);
+    ASSIGN_DECL_CAST(struct kefir_ast_translator_flow_control_point *, ast_translator_point,
+        point->payload);
 
     if (ast_translator_point->resolved) {
         REQUIRE_OK(patch_command(block, index, ast_translator_point->address));
@@ -141,8 +140,8 @@ kefir_result_t kefir_ast_translator_flow_control_point_resolve(struct kefir_mem 
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(point != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST flow control point"));
 
-    struct kefir_ast_translator_flow_control_point *ast_translator_point =
-        *((struct kefir_ast_translator_flow_control_point **) point->ptr);
+    ASSIGN_DECL_CAST(struct kefir_ast_translator_flow_control_point *, ast_translator_point,
+        point->payload);
     REQUIRE(!ast_translator_point->resolved,
             KEFIR_SET_ERROR(KEFIR_INVALID_CHANGE, "Cannot resolve already resolved AST translator flow contron point"));
 
@@ -180,16 +179,16 @@ static kefir_result_t flow_control_tree_init(struct kefir_mem *mem, struct kefir
             case KEFIR_AST_FLOW_CONTROL_STRUCTURE_SWITCH: {
                 struct kefir_hashtree_node_iterator iter;
                 for (const struct kefir_hashtree_node *node =
-                         kefir_hashtree_iter(&stmt->value.switchStatement.case_flow_control_points, &iter);
+                         kefir_hashtree_iter(&stmt->value.switchStatement->case_flow_control_points, &iter);
                      node != NULL; node = kefir_hashtree_next(&iter)) {
                     ASSIGN_DECL_CAST(struct kefir_ast_flow_control_point *, point, node->value);
                     REQUIRE_OK(kefir_ast_translator_flow_control_point_init(mem, point, NULL));
                 }
-                if (stmt->value.switchStatement.defaultCase != NULL) {
+                if (stmt->value.switchStatement->defaultCase != NULL) {
                     REQUIRE_OK(kefir_ast_translator_flow_control_point_init(
-                        mem, stmt->value.switchStatement.defaultCase, NULL));
+                        mem, stmt->value.switchStatement->defaultCase, NULL));
                 }
-                REQUIRE_OK(kefir_ast_translator_flow_control_point_init(mem, stmt->value.switchStatement.end, NULL));
+                REQUIRE_OK(kefir_ast_translator_flow_control_point_init(mem, stmt->value.switchStatement->end, NULL));
             } break;
 
             case KEFIR_AST_FLOW_CONTROL_STRUCTURE_FOR:

@@ -52,17 +52,17 @@ kefir_result_t kefir_ast_translate_switch_statement_node(struct kefir_mem *mem,
         node->base.properties.statement_props->flow_control_statement;
     REQUIRE_OK(kefir_ast_translate_typeconv(mem, context->module, builder, context->ast_context->type_traits,
                                             node->expression->properties.type,
-                                            flow_control_stmt->value.switchStatement.controlling_expression_type));
+                                            flow_control_stmt->value.switchStatement->controlling_expression_type));
     struct kefir_hashtree_node_iterator iter;
     for (const struct kefir_hashtree_node *switchCase =
-             kefir_hashtree_iter(&flow_control_stmt->value.switchStatement.case_flow_control_points, &iter);
+             kefir_hashtree_iter(&flow_control_stmt->value.switchStatement->case_flow_control_points, &iter);
          switchCase != NULL; switchCase = kefir_hashtree_next(&iter)) {
 
         ASSIGN_DECL_CAST(kefir_size_t, cast_identifier, iter.node->key);
         ASSIGN_DECL_CAST(struct kefir_ast_flow_control_point *, point, iter.node->value);
 
         struct kefir_hashtree_node *switchCaseLabelNode;
-        REQUIRE_OK(kefir_hashtree_at(&flow_control_stmt->value.switchStatement.case_label_nodes,
+        REQUIRE_OK(kefir_hashtree_at(&flow_control_stmt->value.switchStatement->case_label_nodes,
                                      (kefir_hashtree_key_t) cast_identifier, &switchCaseLabelNode));
         ASSIGN_DECL_CAST(const struct kefir_ast_node_base *, value_node, switchCaseLabelNode->value);
 
@@ -71,7 +71,7 @@ kefir_result_t kefir_ast_translate_switch_statement_node(struct kefir_mem *mem,
 
         const struct kefir_ast_node_base *range_end_node = NULL;
         struct kefir_hashtree_node *range_node;
-        kefir_result_t res = kefir_hashtree_at(&flow_control_stmt->value.switchStatement.case_range_end_nodes,
+        kefir_result_t res = kefir_hashtree_at(&flow_control_stmt->value.switchStatement->case_range_end_nodes,
                                                (kefir_hashtree_key_t) cast_identifier, &range_node);
         if (res != KEFIR_NOT_FOUND) {
             REQUIRE_OK(res);
@@ -87,10 +87,10 @@ kefir_result_t kefir_ast_translate_switch_statement_node(struct kefir_mem *mem,
             REQUIRE_OK(kefir_ast_translate_expression(mem, value_node, builder, context));
             REQUIRE_OK(kefir_ast_translate_typeconv(
                 mem, context->module, builder, context->ast_context->type_traits, value_node->properties.type,
-                flow_control_stmt->value.switchStatement.controlling_expression_type));
+                flow_control_stmt->value.switchStatement->controlling_expression_type));
             kefir_ast_type_data_model_classification_t controlling_expr_type_classification;
             REQUIRE_OK(kefir_ast_type_data_model_classify(
-                context->ast_context->type_traits, flow_control_stmt->value.switchStatement.controlling_expression_type,
+                context->ast_context->type_traits, flow_control_stmt->value.switchStatement->controlling_expression_type,
                 &controlling_expr_type_classification));
             switch (controlling_expr_type_classification) {
                 case KEFIR_AST_TYPE_DATA_MODEL_INT8:
@@ -120,7 +120,7 @@ kefir_result_t kefir_ast_translate_switch_statement_node(struct kefir_mem *mem,
                 case KEFIR_AST_TYPE_DATA_MODEL_BITINT:
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(
                         builder, KEFIR_IR_OPCODE_BITINT_EQUAL,
-                        flow_control_stmt->value.switchStatement.controlling_expression_type->bitprecise.width));
+                        flow_control_stmt->value.switchStatement->controlling_expression_type->bitprecise.width));
                     break;
 
                 default:
@@ -131,17 +131,17 @@ kefir_result_t kefir_ast_translate_switch_statement_node(struct kefir_mem *mem,
             REQUIRE_OK(kefir_ast_translate_expression(mem, value_node, builder, context));
             REQUIRE_OK(kefir_ast_translate_typeconv(
                 mem, context->module, builder, context->ast_context->type_traits, value_node->properties.type,
-                flow_control_stmt->value.switchStatement.controlling_expression_type));
+                flow_control_stmt->value.switchStatement->controlling_expression_type));
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_VSTACK_PICK, 1));
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_VSTACK_PICK, 1));
             kefir_ast_type_data_model_classification_t controlling_expr_type_classification;
             REQUIRE_OK(kefir_ast_type_data_model_classify(
-                context->ast_context->type_traits, flow_control_stmt->value.switchStatement.controlling_expression_type,
+                context->ast_context->type_traits, flow_control_stmt->value.switchStatement->controlling_expression_type,
                 &controlling_expr_type_classification));
 
             kefir_bool_t signed_controlling_expr;
             REQUIRE_OK(kefir_ast_type_is_signed(context->ast_context->type_traits,
-                                                flow_control_stmt->value.switchStatement.controlling_expression_type,
+                                                flow_control_stmt->value.switchStatement->controlling_expression_type,
                                                 &signed_controlling_expr));
 
             switch (controlling_expr_type_classification) {
@@ -159,7 +159,7 @@ kefir_result_t kefir_ast_translate_switch_statement_node(struct kefir_mem *mem,
                     REQUIRE_OK(kefir_ast_translate_typeconv(
                         mem, context->module, builder, context->ast_context->type_traits,
                         range_end_node->properties.type,
-                        flow_control_stmt->value.switchStatement.controlling_expression_type));
+                        flow_control_stmt->value.switchStatement->controlling_expression_type));
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_VSTACK_PICK, 1));
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_VSTACK_PICK, 1));
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(
@@ -184,7 +184,7 @@ kefir_result_t kefir_ast_translate_switch_statement_node(struct kefir_mem *mem,
                     REQUIRE_OK(kefir_ast_translate_typeconv(
                         mem, context->module, builder, context->ast_context->type_traits,
                         range_end_node->properties.type,
-                        flow_control_stmt->value.switchStatement.controlling_expression_type));
+                        flow_control_stmt->value.switchStatement->controlling_expression_type));
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_VSTACK_PICK, 1));
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_VSTACK_PICK, 1));
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(
@@ -209,7 +209,7 @@ kefir_result_t kefir_ast_translate_switch_statement_node(struct kefir_mem *mem,
                     REQUIRE_OK(kefir_ast_translate_typeconv(
                         mem, context->module, builder, context->ast_context->type_traits,
                         range_end_node->properties.type,
-                        flow_control_stmt->value.switchStatement.controlling_expression_type));
+                        flow_control_stmt->value.switchStatement->controlling_expression_type));
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_VSTACK_PICK, 1));
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_VSTACK_PICK, 1));
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(
@@ -234,7 +234,7 @@ kefir_result_t kefir_ast_translate_switch_statement_node(struct kefir_mem *mem,
                     REQUIRE_OK(kefir_ast_translate_typeconv(
                         mem, context->module, builder, context->ast_context->type_traits,
                         range_end_node->properties.type,
-                        flow_control_stmt->value.switchStatement.controlling_expression_type));
+                        flow_control_stmt->value.switchStatement->controlling_expression_type));
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_VSTACK_PICK, 1));
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_VSTACK_PICK, 1));
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(
@@ -258,7 +258,7 @@ kefir_result_t kefir_ast_translate_switch_statement_node(struct kefir_mem *mem,
                     REQUIRE_OK(kefir_ast_translate_typeconv(
                         mem, context->module, builder, context->ast_context->type_traits,
                         range_end_node->properties.type,
-                        flow_control_stmt->value.switchStatement.controlling_expression_type));
+                        flow_control_stmt->value.switchStatement->controlling_expression_type));
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_VSTACK_PICK, 1));
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_VSTACK_PICK, 1));
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(
@@ -272,11 +272,11 @@ kefir_result_t kefir_ast_translate_switch_statement_node(struct kefir_mem *mem,
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(
                         builder,
                         signed_controlling_expr ? KEFIR_IR_OPCODE_BITINT_GREATER : KEFIR_IR_OPCODE_BITINT_ABOVE,
-                        flow_control_stmt->value.switchStatement.controlling_expression_type->bitprecise.width));
+                        flow_control_stmt->value.switchStatement->controlling_expression_type->bitprecise.width));
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_VSTACK_EXCHANGE, 2));
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(
                         builder, KEFIR_IR_OPCODE_BITINT_EQUAL,
-                        flow_control_stmt->value.switchStatement.controlling_expression_type->bitprecise.width));
+                        flow_control_stmt->value.switchStatement->controlling_expression_type->bitprecise.width));
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT8_BOOL_OR, 0));
 
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_VSTACK_PICK, 1));
@@ -284,16 +284,16 @@ kefir_result_t kefir_ast_translate_switch_statement_node(struct kefir_mem *mem,
                     REQUIRE_OK(kefir_ast_translate_typeconv(
                         mem, context->module, builder, context->ast_context->type_traits,
                         range_end_node->properties.type,
-                        flow_control_stmt->value.switchStatement.controlling_expression_type));
+                        flow_control_stmt->value.switchStatement->controlling_expression_type));
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_VSTACK_PICK, 1));
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_VSTACK_PICK, 1));
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(
                         builder, signed_controlling_expr ? KEFIR_IR_OPCODE_BITINT_LESS : KEFIR_IR_OPCODE_BITINT_BELOW,
-                        flow_control_stmt->value.switchStatement.controlling_expression_type->bitprecise.width));
+                        flow_control_stmt->value.switchStatement->controlling_expression_type->bitprecise.width));
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_VSTACK_EXCHANGE, 2));
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(
                         builder, KEFIR_IR_OPCODE_BITINT_EQUAL,
-                        flow_control_stmt->value.switchStatement.controlling_expression_type->bitprecise.width));
+                        flow_control_stmt->value.switchStatement->controlling_expression_type->bitprecise.width));
                     break;
 
                 default:
@@ -314,19 +314,19 @@ kefir_result_t kefir_ast_translate_switch_statement_node(struct kefir_mem *mem,
 
     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_VSTACK_POP, 0));
     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_JUMP, 0));
-    if (flow_control_stmt->value.switchStatement.defaultCase != NULL) {
+    if (flow_control_stmt->value.switchStatement->defaultCase != NULL) {
         REQUIRE_OK(kefir_ast_translator_flow_control_point_reference(
-            mem, flow_control_stmt->value.switchStatement.defaultCase, builder->block,
+            mem, flow_control_stmt->value.switchStatement->defaultCase, builder->block,
             KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder) - 1));
 
     } else {
-        REQUIRE_OK(kefir_ast_translator_flow_control_point_reference(mem, flow_control_stmt->value.switchStatement.end,
+        REQUIRE_OK(kefir_ast_translator_flow_control_point_reference(mem, flow_control_stmt->value.switchStatement->end,
                                                                      builder->block,
                                                                      KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder) - 1));
     }
 
     REQUIRE_OK(kefir_ast_translate_statement(mem, node->statement, builder, context));
-    REQUIRE_OK(kefir_ast_translator_flow_control_point_resolve(mem, flow_control_stmt->value.switchStatement.end,
+    REQUIRE_OK(kefir_ast_translator_flow_control_point_resolve(mem, flow_control_stmt->value.switchStatement->end,
                                                                KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder)));
 
     const kefir_size_t statement_end_index = KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder);

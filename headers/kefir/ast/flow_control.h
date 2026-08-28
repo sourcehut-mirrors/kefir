@@ -31,8 +31,6 @@ typedef struct kefir_ast_flow_control_point kefir_ast_flow_control_point_t;
 typedef struct kefir_ast_flow_control_branching_point kefir_ast_flow_control_branching_point_t;
 typedef struct kefir_ast_flow_control_tree kefir_ast_flow_control_tree_t;
 
-#define KEFIR_AST_FLOW_CONTROL_PAYLOAD_SIZE (sizeof(kefir_uptr_t) * 4)
-
 typedef struct kefir_ast_flow_control_point_cleanup {
     kefir_result_t (*callback)(struct kefir_mem *, struct kefir_ast_flow_control_point *, void *);
     void *payload;
@@ -41,8 +39,7 @@ typedef struct kefir_ast_flow_control_point_cleanup {
 typedef struct kefir_ast_flow_control_point {
     struct kefir_ast_flow_control_structure *self;
 
-    unsigned char content[KEFIR_AST_FLOW_CONTROL_PAYLOAD_SIZE];
-    void *ptr;
+    void *payload;
     struct kefir_ast_flow_control_point_cleanup cleanup;
 } kefir_ast_flow_control_point_t;
 
@@ -66,15 +63,20 @@ typedef enum kefir_ast_flow_control_structure_type {
     KEFIR_AST_FLOW_CONTROL_VL_ARRAY
 } kefir_ast_flow_control_structure_type_t;
 
-typedef struct kefir_ast_flow_control_structure_cleanup {
-    kefir_result_t (*callback)(struct kefir_mem *, struct kefir_ast_flow_control_structure *, void *);
-    void *payload;
-} kefir_ast_flow_control_structure_cleanup_t;
-
 typedef struct kefir_ast_flow_control_structure_associated_scopes {
     const struct kefir_ast_identifier_flat_scope *ordinary_scope;
     const struct kefir_ast_identifier_flat_scope *tag_scope;
 } kefir_ast_flow_control_structure_associated_scopes_t;
+
+typedef struct kefir_ast_flow_control_switch_structure {
+    kefir_size_t num_of_cases;
+    struct kefir_hashtree case_flow_control_points;
+    struct kefir_hashtree case_label_nodes;
+    struct kefir_hashtree case_range_end_nodes;
+    struct kefir_ast_flow_control_point *defaultCase;
+    const struct kefir_ast_type *controlling_expression_type;
+    struct kefir_ast_flow_control_point *end;
+} kefir_ast_flow_control_switch_structure_t;
 
 typedef struct kefir_ast_flow_control_structure {
     struct kefir_tree_node *node;
@@ -88,15 +90,7 @@ typedef struct kefir_ast_flow_control_structure {
             struct kefir_ast_flow_control_point *elseBranchEnd;
         } conditional;
 
-        struct {
-            kefir_size_t num_of_cases;
-            struct kefir_hashtree case_flow_control_points;
-            struct kefir_hashtree case_label_nodes;
-            struct kefir_hashtree case_range_end_nodes;
-            struct kefir_ast_flow_control_point *defaultCase;
-            const struct kefir_ast_type *controlling_expression_type;
-            struct kefir_ast_flow_control_point *end;
-        } switchStatement;
+        struct kefir_ast_flow_control_switch_structure *switchStatement;
 
         struct {
             struct kefir_ast_flow_control_point *continuation;
@@ -107,12 +101,6 @@ typedef struct kefir_ast_flow_control_structure {
         struct kefir_ast_flow_control_branching_point *branching_point;
         kefir_id_t vl_array_id;
     } value;
-
-    struct kefir_ast_flow_control_structure_cleanup cleanup;
-    struct {
-        unsigned char content[KEFIR_AST_FLOW_CONTROL_PAYLOAD_SIZE];
-        void *ptr;
-    } payload;
 } kefir_ast_flow_control_structure_t;
 
 typedef struct kefir_ast_flow_control_tree {
