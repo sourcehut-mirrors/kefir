@@ -106,18 +106,18 @@ kefir_result_t kefir_ast_evaluate_scalar_node(struct kefir_mem *mem, const struc
 
         case KEFIR_AST_BITPRECISE_CONSTANT:
             value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
-            REQUIRE_OK(kefir_bigint_get_signed(&node->value.bitprecise, &value->integer));
+            REQUIRE_OK(kefir_bigint_get_signed(&node->value.large->bitprecise, &value->integer));
 
             REQUIRE_OK(kefir_bigint_pool_alloc(mem, context->bigint_pool, &value->bitprecise));
-            REQUIRE_OK(kefir_bigint_copy_resize(mem, value->bitprecise, &node->value.bitprecise));
+            REQUIRE_OK(kefir_bigint_copy_resize(mem, value->bitprecise, &node->value.large->bitprecise));
             break;
 
         case KEFIR_AST_UNSIGNED_BITPRECISE_CONSTANT:
             value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
-            REQUIRE_OK(kefir_bigint_get_unsigned(&node->value.bitprecise, &value->uinteger));
+            REQUIRE_OK(kefir_bigint_get_unsigned(&node->value.large->bitprecise, &value->uinteger));
 
             REQUIRE_OK(kefir_bigint_pool_alloc(mem, context->bigint_pool, &value->bitprecise));
-            REQUIRE_OK(kefir_bigint_copy_resize(mem, value->bitprecise, &node->value.bitprecise));
+            REQUIRE_OK(kefir_bigint_copy_resize(mem, value->bitprecise, &node->value.large->bitprecise));
             break;
 
         case KEFIR_AST_FLOAT_CONSTANT:
@@ -137,7 +137,7 @@ kefir_result_t kefir_ast_evaluate_scalar_node(struct kefir_mem *mem, const struc
         case KEFIR_AST_FLOAT64X_CONSTANT:
         case KEFIR_AST_FLOAT80_CONSTANT:
             value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT;
-            KEFIR_AST_CONSTANT_EXPRESSION_SET_FLOAT(value, node->value.long_double);
+            KEFIR_AST_CONSTANT_EXPRESSION_SET_FLOAT(value, node->value.large->long_double);
             break;
 
         case KEFIR_AST_DECIMAL32_CONSTANT:
@@ -155,7 +155,7 @@ kefir_result_t kefir_ast_evaluate_scalar_node(struct kefir_mem *mem, const struc
         case KEFIR_AST_DECIMAL128_CONSTANT:
         case KEFIR_AST_DECIMAL64X_CONSTANT:
             value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_DECIMAL;
-            value->decimal = node->value.decimal128;
+            value->decimal = node->value.large->decimal128;
             break;
 
         case KEFIR_AST_COMPLEX_FLOAT_CONSTANT:
@@ -169,16 +169,16 @@ kefir_result_t kefir_ast_evaluate_scalar_node(struct kefir_mem *mem, const struc
         case KEFIR_AST_COMPLEX_FLOAT32X_CONSTANT:
         case KEFIR_AST_COMPLEX_FLOAT64_CONSTANT:
             value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT;
-            KEFIR_AST_CONSTANT_EXPRESSION_SET_COMPLEX_REAL(value, node->value.complex_float64.real);
-            KEFIR_AST_CONSTANT_EXPRESSION_SET_COMPLEX_IMAGINARY(value, node->value.complex_float64.imaginary);
+            KEFIR_AST_CONSTANT_EXPRESSION_SET_COMPLEX_REAL(value, node->value.large->complex_float64.real);
+            KEFIR_AST_CONSTANT_EXPRESSION_SET_COMPLEX_IMAGINARY(value, node->value.large->complex_float64.imaginary);
             break;
 
         case KEFIR_AST_COMPLEX_LONG_DOUBLE_CONSTANT:
         case KEFIR_AST_COMPLEX_FLOAT64X_CONSTANT:
         case KEFIR_AST_COMPLEX_FLOAT80_CONSTANT:
             value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT;
-            KEFIR_AST_CONSTANT_EXPRESSION_SET_COMPLEX_REAL(value, node->value.complex_long_double.real);
-            KEFIR_AST_CONSTANT_EXPRESSION_SET_COMPLEX_IMAGINARY(value, node->value.complex_long_double.imaginary);
+            KEFIR_AST_CONSTANT_EXPRESSION_SET_COMPLEX_REAL(value, node->value.large->complex_long_double.real);
+            KEFIR_AST_CONSTANT_EXPRESSION_SET_COMPLEX_IMAGINARY(value, node->value.large->complex_long_double.imaginary);
             break;
     }
     return KEFIR_OK;

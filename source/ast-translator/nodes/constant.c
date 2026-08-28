@@ -99,13 +99,13 @@ kefir_result_t kefir_ast_translate_constant_node(struct kefir_mem *mem, struct k
 
         case KEFIR_AST_BITPRECISE_CONSTANT: {
             kefir_id_t bigint_id;
-            REQUIRE_OK(kefir_ir_module_new_bigint(mem, context->module, &node->value.bitprecise, &bigint_id));
+            REQUIRE_OK(kefir_ir_module_new_bigint(mem, context->module, &node->value.large->bitprecise, &bigint_id));
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_BITINT_SIGNED_CONST, bigint_id));
         } break;
 
         case KEFIR_AST_UNSIGNED_BITPRECISE_CONSTANT: {
             kefir_id_t bigint_id;
-            REQUIRE_OK(kefir_ir_module_new_bigint(mem, context->module, &node->value.bitprecise, &bigint_id));
+            REQUIRE_OK(kefir_ir_module_new_bigint(mem, context->module, &node->value.large->bitprecise, &bigint_id));
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_BITINT_UNSIGNED_CONST, bigint_id));
         } break;
 
@@ -125,7 +125,7 @@ kefir_result_t kefir_ast_translate_constant_node(struct kefir_mem *mem, struct k
         case KEFIR_AST_FLOAT64X_CONSTANT:
         case KEFIR_AST_FLOAT80_CONSTANT:
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPEND_LONG_DOUBLE(builder, KEFIR_IR_OPCODE_LONG_DOUBLE_CONST,
-                                                                node->value.long_double));
+                                                                node->value.large->long_double));
             break;
 
         case KEFIR_AST_COMPLEX_FLOAT_CONSTANT:
@@ -141,9 +141,9 @@ kefir_result_t kefir_ast_translate_constant_node(struct kefir_mem *mem, struct k
         case KEFIR_AST_COMPLEX_FLOAT32X_CONSTANT:
         case KEFIR_AST_COMPLEX_FLOAT64_CONSTANT:
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDF64(builder, KEFIR_IR_OPCODE_FLOAT64_CONST,
-                                                       node->value.complex_float64.real));
+                                                       node->value.large->complex_float64.real));
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDF64(builder, KEFIR_IR_OPCODE_FLOAT64_CONST,
-                                                       node->value.complex_float64.imaginary));
+                                                       node->value.large->complex_float64.imaginary));
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_COMPLEX_FLOAT64_FROM, 0));
             break;
 
@@ -151,9 +151,9 @@ kefir_result_t kefir_ast_translate_constant_node(struct kefir_mem *mem, struct k
         case KEFIR_AST_COMPLEX_FLOAT64X_CONSTANT:
         case KEFIR_AST_COMPLEX_FLOAT80_CONSTANT:
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPEND_LONG_DOUBLE(builder, KEFIR_IR_OPCODE_LONG_DOUBLE_CONST,
-                                                                node->value.complex_long_double.real));
+                                                                node->value.large->complex_long_double.real));
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPEND_LONG_DOUBLE(builder, KEFIR_IR_OPCODE_LONG_DOUBLE_CONST,
-                                                                node->value.complex_long_double.imaginary));
+                                                                node->value.large->complex_long_double.imaginary));
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_COMPLEX_LONG_DOUBLE_FROM, 0));
             break;
 
@@ -170,8 +170,8 @@ kefir_result_t kefir_ast_translate_constant_node(struct kefir_mem *mem, struct k
         case KEFIR_AST_DECIMAL128_CONSTANT:
         case KEFIR_AST_DECIMAL64X_CONSTANT:
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64_2(builder, KEFIR_IR_OPCODE_DECIMAL128_CONST,
-                                                         node->value.decimal128.uvalue[0],
-                                                         node->value.decimal128.uvalue[1]));
+                                                         node->value.large->decimal128.uvalue[0],
+                                                         node->value.large->decimal128.uvalue[1]));
             break;
 
         default:

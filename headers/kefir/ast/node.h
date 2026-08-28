@@ -31,6 +31,20 @@
 #include "kefir/lexer/allocator.h"
 #include "kefir/util/dfp.h"
 
+typedef struct kefir_ast_large_constant {
+    kefir_long_double_t long_double;
+    kefir_dfp_decimal128_t decimal128;
+    struct {
+        kefir_float64_t real;
+        kefir_float64_t imaginary;
+    } complex_float64;
+    struct {
+        kefir_long_double_t real;
+        kefir_long_double_t imaginary;
+    } complex_long_double;
+    struct kefir_bigint bitprecise;
+} kefir_ast_large_constant_t;
+
 KEFIR_AST_NODE_STRUCT(kefir_ast_constant, {
     kefir_ast_constant_type_t type;
     union {
@@ -47,23 +61,13 @@ KEFIR_AST_NODE_STRUCT(kefir_ast_constant, {
         kefir_uint64_t ulong_long;
         kefir_float32_t float32;
         kefir_float64_t float64;
-        kefir_long_double_t long_double;
         kefir_dfp_decimal32_t decimal32;
         kefir_dfp_decimal64_t decimal64;
-        kefir_dfp_decimal128_t decimal128;
         struct {
             kefir_float32_t real;
             kefir_float32_t imaginary;
         } complex_float32;
-        struct {
-            kefir_float64_t real;
-            kefir_float64_t imaginary;
-        } complex_float64;
-        struct {
-            kefir_long_double_t real;
-            kefir_long_double_t imaginary;
-        } complex_long_double;
-        struct kefir_bigint bitprecise;
+        struct kefir_ast_large_constant *large;
     } value;
 });
 

@@ -138,7 +138,7 @@ DEFINE_CASE(ast_nodes_constants, "AST nodes - constants") {
         ASSERT(ldoublec->type == KEFIR_AST_LONG_DOUBLE_CONSTANT);
         ASSERT(FLOAT_EQUALS(floatc->value.float32, i, FLOAT_EPSILON));
         ASSERT(DOUBLE_EQUALS(doublec->value.float64, (kefir_float64_t) i, DOUBLE_EPSILON));
-        ASSERT(LONG_DOUBLE_EQUALS(ldoublec->value.long_double, (kefir_long_double_t) i, DOUBLE_EPSILON));
+        ASSERT(LONG_DOUBLE_EQUALS(ldoublec->value.large->long_double, (kefir_long_double_t) i, DOUBLE_EPSILON));
         ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(floatc)));
         ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(doublec)));
         ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(ldoublec)));
@@ -163,11 +163,11 @@ DEFINE_CASE(ast_nodes_constants, "AST nodes - constants") {
             ASSERT(ldoublec->type == KEFIR_AST_COMPLEX_LONG_DOUBLE_CONSTANT);
             ASSERT(FLOAT_EQUALS(floatc->value.complex_float32.real, i, FLOAT_EPSILON));
             ASSERT(FLOAT_EQUALS(floatc->value.complex_float32.imaginary, j, FLOAT_EPSILON));
-            ASSERT(DOUBLE_EQUALS(doublec->value.complex_float64.real, (kefir_float64_t) i, DOUBLE_EPSILON));
-            ASSERT(DOUBLE_EQUALS(doublec->value.complex_float64.imaginary, (kefir_float64_t) j, DOUBLE_EPSILON));
-            ASSERT(LONG_DOUBLE_EQUALS(ldoublec->value.complex_long_double.real, (kefir_long_double_t) i,
+            ASSERT(DOUBLE_EQUALS(doublec->value.large->complex_float64.real, (kefir_float64_t) i, DOUBLE_EPSILON));
+            ASSERT(DOUBLE_EQUALS(doublec->value.large->complex_float64.imaginary, (kefir_float64_t) j, DOUBLE_EPSILON));
+            ASSERT(LONG_DOUBLE_EQUALS(ldoublec->value.large->complex_long_double.real, (kefir_long_double_t) i,
                                       LONG_DOUBLE_EPSILON));
-            ASSERT(LONG_DOUBLE_EQUALS(ldoublec->value.complex_long_double.imaginary, (kefir_long_double_t) j,
+            ASSERT(LONG_DOUBLE_EQUALS(ldoublec->value.large->complex_long_double.imaginary, (kefir_long_double_t) j,
                                       LONG_DOUBLE_EPSILON));
             ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(floatc)));
             ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(doublec)));

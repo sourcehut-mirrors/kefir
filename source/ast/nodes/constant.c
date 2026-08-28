@@ -30,7 +30,31 @@ kefir_result_t ast_constant_free(struct kefir_mem *mem, struct kefir_ast_node_ba
     REQUIRE(base != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST node base"));
     ASSIGN_DECL_CAST(struct kefir_ast_constant *, node, KEFIR_AST_NODE_SELF(base));
     if (node->type == KEFIR_AST_BITPRECISE_CONSTANT || node->type == KEFIR_AST_UNSIGNED_BITPRECISE_CONSTANT) {
-        REQUIRE_OK(kefir_bigint_free(mem, &node->value.bitprecise));
+    }
+
+    switch (node->type) {
+        case KEFIR_AST_BITPRECISE_CONSTANT:
+        case KEFIR_AST_UNSIGNED_BITPRECISE_CONSTANT:
+           REQUIRE_OK(kefir_bigint_free(mem, &node->value.large->bitprecise));
+           // Fallthrough
+
+        case KEFIR_AST_FLOAT64X_CONSTANT:
+        case KEFIR_AST_FLOAT80_CONSTANT:
+        case KEFIR_AST_LONG_DOUBLE_CONSTANT:
+        case KEFIR_AST_DECIMAL64X_CONSTANT:
+        case KEFIR_AST_DECIMAL128_CONSTANT:
+        case KEFIR_AST_COMPLEX_DOUBLE_CONSTANT:
+        case KEFIR_AST_COMPLEX_FLOAT32X_CONSTANT:
+        case KEFIR_AST_COMPLEX_FLOAT64_CONSTANT:
+        case KEFIR_AST_COMPLEX_FLOAT64X_CONSTANT:
+        case KEFIR_AST_COMPLEX_FLOAT80_CONSTANT:
+        case KEFIR_AST_COMPLEX_LONG_DOUBLE_CONSTANT:
+            KEFIR_FREE(mem, node->value.large);
+            break;
+
+        default:
+            // Intentionally left blank
+            break;
     }
     KEFIR_FREE(mem, node);
     return KEFIR_OK;
@@ -328,8 +352,14 @@ struct kefir_ast_constant *kefir_ast_new_constant_bitprecise(struct kefir_mem *m
         return NULL;
     });
     constant->type = KEFIR_AST_BITPRECISE_CONSTANT;
-    res = kefir_bigint_move(&constant->value.bitprecise, bitprecise);
+    constant->value.large = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_large_constant));
+    REQUIRE_ELSE(constant->value.large != NULL, {
+        KEFIR_FREE(mem, constant);
+        return NULL;
+    });
+    res = kefir_bigint_move(&constant->value.large->bitprecise, bitprecise);
     REQUIRE_ELSE(res == KEFIR_OK, {
+        KEFIR_FREE(mem, constant->value.large);
         KEFIR_FREE(mem, constant);
         return NULL;
     });
@@ -354,8 +384,14 @@ struct kefir_ast_constant *kefir_ast_new_constant_unsigned_bitprecise(struct kef
         return NULL;
     });
     constant->type = KEFIR_AST_UNSIGNED_BITPRECISE_CONSTANT;
-    res = kefir_bigint_move(&constant->value.bitprecise, bitprecise);
+    constant->value.large = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_large_constant));
+    REQUIRE_ELSE(constant->value.large != NULL, {
+        KEFIR_FREE(mem, constant);
+        return NULL;
+    });
+    res = kefir_bigint_move(&constant->value.large->bitprecise, bitprecise);
     REQUIRE_ELSE(res == KEFIR_OK, {
+        KEFIR_FREE(mem, constant->value.large);
         KEFIR_FREE(mem, constant);
         return NULL;
     });
@@ -484,7 +520,12 @@ struct kefir_ast_constant *kefir_ast_new_constant_float64x(struct kefir_mem *mem
         return NULL;
     });
     constant->type = KEFIR_AST_FLOAT64X_CONSTANT;
-    constant->value.long_double = value;
+    constant->value.large = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_large_constant));
+    REQUIRE_ELSE(constant->value.large != NULL, {
+        KEFIR_FREE(mem, constant);
+        return NULL;
+    });
+    constant->value.large->long_double = value;
     return constant;
 }
 
@@ -505,7 +546,12 @@ struct kefir_ast_constant *kefir_ast_new_constant_long_double(struct kefir_mem *
         return NULL;
     });
     constant->type = KEFIR_AST_LONG_DOUBLE_CONSTANT;
-    constant->value.long_double = value;
+    constant->value.large = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_large_constant));
+    REQUIRE_ELSE(constant->value.large != NULL, {
+        KEFIR_FREE(mem, constant);
+        return NULL;
+    });
+    constant->value.large->long_double = value;
     return constant;
 }
 
@@ -526,7 +572,12 @@ struct kefir_ast_constant *kefir_ast_new_constant_float80(struct kefir_mem *mem,
         return NULL;
     });
     constant->type = KEFIR_AST_FLOAT80_CONSTANT;
-    constant->value.long_double = value;
+    constant->value.large = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_large_constant));
+    REQUIRE_ELSE(constant->value.large != NULL, {
+        KEFIR_FREE(mem, constant);
+        return NULL;
+    });
+    constant->value.large->long_double = value;
     return constant;
 }
 
@@ -589,7 +640,12 @@ struct kefir_ast_constant *kefir_ast_new_constant_decimal128(struct kefir_mem *m
         return NULL;
     });
     constant->type = KEFIR_AST_DECIMAL128_CONSTANT;
-    constant->value.decimal128 = value;
+    constant->value.large = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_large_constant));
+    REQUIRE_ELSE(constant->value.large != NULL, {
+        KEFIR_FREE(mem, constant);
+        return NULL;
+    });
+    constant->value.large->decimal128 = value;
     return constant;
 }
 
@@ -610,7 +666,12 @@ struct kefir_ast_constant *kefir_ast_new_constant_decimal64x(struct kefir_mem *m
         return NULL;
     });
     constant->type = KEFIR_AST_DECIMAL64X_CONSTANT;
-    constant->value.decimal128 = value;
+    constant->value.large = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_large_constant));
+    REQUIRE_ELSE(constant->value.large != NULL, {
+        KEFIR_FREE(mem, constant);
+        return NULL;
+    });
+    constant->value.large->decimal128 = value;
     return constant;
 }
 
@@ -678,8 +739,13 @@ struct kefir_ast_constant *kefir_ast_new_constant_complex_double(struct kefir_me
         return NULL;
     });
     constant->type = KEFIR_AST_COMPLEX_DOUBLE_CONSTANT;
-    constant->value.complex_float64.real = real;
-    constant->value.complex_float64.imaginary = imaginary;
+    constant->value.large = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_large_constant));
+    REQUIRE_ELSE(constant->value.large != NULL, {
+        KEFIR_FREE(mem, constant);
+        return NULL;
+    });
+    constant->value.large->complex_float64.real = real;
+    constant->value.large->complex_float64.imaginary = imaginary;
     return constant;
 }
 
@@ -701,8 +767,13 @@ struct kefir_ast_constant *kefir_ast_new_constant_complex_float32x(struct kefir_
         return NULL;
     });
     constant->type = KEFIR_AST_COMPLEX_FLOAT32X_CONSTANT;
-    constant->value.complex_float64.real = real;
-    constant->value.complex_float64.imaginary = imaginary;
+    constant->value.large = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_large_constant));
+    REQUIRE_ELSE(constant->value.large != NULL, {
+        KEFIR_FREE(mem, constant);
+        return NULL;
+    });
+    constant->value.large->complex_float64.real = real;
+    constant->value.large->complex_float64.imaginary = imaginary;
     return constant;
 }
 
@@ -724,8 +795,13 @@ struct kefir_ast_constant *kefir_ast_new_constant_complex_float64(struct kefir_m
         return NULL;
     });
     constant->type = KEFIR_AST_COMPLEX_FLOAT64_CONSTANT;
-    constant->value.complex_float64.real = real;
-    constant->value.complex_float64.imaginary = imaginary;
+    constant->value.large = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_large_constant));
+    REQUIRE_ELSE(constant->value.large != NULL, {
+        KEFIR_FREE(mem, constant);
+        return NULL;
+    });
+    constant->value.large->complex_float64.real = real;
+    constant->value.large->complex_float64.imaginary = imaginary;
     return constant;
 }
 
@@ -747,8 +823,13 @@ struct kefir_ast_constant *kefir_ast_new_constant_complex_long_double(struct kef
         return NULL;
     });
     constant->type = KEFIR_AST_COMPLEX_LONG_DOUBLE_CONSTANT;
-    constant->value.complex_long_double.real = real;
-    constant->value.complex_long_double.imaginary = imaginary;
+    constant->value.large = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_large_constant));
+    REQUIRE_ELSE(constant->value.large != NULL, {
+        KEFIR_FREE(mem, constant);
+        return NULL;
+    });
+    constant->value.large->complex_long_double.real = real;
+    constant->value.large->complex_long_double.imaginary = imaginary;
     return constant;
 }
 
@@ -770,8 +851,13 @@ struct kefir_ast_constant *kefir_ast_new_constant_complex_float64x(struct kefir_
         return NULL;
     });
     constant->type = KEFIR_AST_COMPLEX_FLOAT64X_CONSTANT;
-    constant->value.complex_long_double.real = real;
-    constant->value.complex_long_double.imaginary = imaginary;
+    constant->value.large = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_large_constant));
+    REQUIRE_ELSE(constant->value.large != NULL, {
+        KEFIR_FREE(mem, constant);
+        return NULL;
+    });
+    constant->value.large->complex_long_double.real = real;
+    constant->value.large->complex_long_double.imaginary = imaginary;
     return constant;
 }
 
@@ -793,7 +879,12 @@ struct kefir_ast_constant *kefir_ast_new_constant_complex_float80(struct kefir_m
         return NULL;
     });
     constant->type = KEFIR_AST_COMPLEX_FLOAT80_CONSTANT;
-    constant->value.complex_long_double.real = real;
-    constant->value.complex_long_double.imaginary = imaginary;
+    constant->value.large = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_large_constant));
+    REQUIRE_ELSE(constant->value.large != NULL, {
+        KEFIR_FREE(mem, constant);
+        return NULL;
+    });
+    constant->value.large->complex_long_double.real = real;
+    constant->value.large->complex_long_double.imaginary = imaginary;
     return constant;
 }
