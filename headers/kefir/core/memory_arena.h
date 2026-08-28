@@ -22,17 +22,29 @@
 #define KEFIR_CORE_MEMORY_ARENA_H_
 
 #include "kefir/core/mem.h"
+#include "kefir/core/platform.h"
+
+#if defined(KEFIR_LINUX_HOST_PLATFORM) || defined(KEFIR_FREEBSD_HOST_PLATFORM) || defined(KEFIR_OPENBSD_HOST_PLATFORM) || defined(KEFIR_NETBSD_HOST_PLATFORM) || defined(KEFIR_DRAGONFLYBSD_HOST_PLATFORM)
+#define KEFIR_MEMORY_ARENA_MMAP_BACKED 1
+#endif
 
 typedef struct kefir_memory_arena_chunk {
+#ifdef KEFIR_MEMORY_ARENA_MMAP_BACKED
+    kefir_size_t size;
+#endif
     kefir_size_t top;
     struct kefir_memory_arena_chunk *prev;
     _Alignas(kefir_max_align_t) char chunk[];
 } kefir_memory_arena_chunk_t;
 
 typedef struct kefir_memory_arena {
-    struct kefir_mem *mem;
     struct kefir_memory_arena_chunk *chunk;
     struct kefir_memory_arena_chunk *special_chunk;
+#ifdef KEFIR_MEMORY_ARENA_MMAP_BACKED
+    kefir_size_t page_size;
+#else
+    struct kefir_mem *mem;
+#endif
 } kefir_memory_arena_t;
 
 kefir_result_t kefir_memory_arena_init(struct kefir_mem *, struct kefir_memory_arena *);
