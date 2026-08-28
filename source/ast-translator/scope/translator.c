@@ -20,6 +20,7 @@
 
 #include "kefir/ast-translator/scope/translator.h"
 #include "kefir/ast-translator/context.h"
+#include "kefir/ast-translator/util.h"
 #include "kefir/ast/runtime.h"
 #include "kefir/ast/target_environment.h"
 #include "kefir/core/util.h"
@@ -98,8 +99,8 @@ static kefir_result_t translate_externals(struct kefir_mem *mem, const struct ke
         ASSIGN_DECL_CAST(const struct kefir_ast_translator_scoped_identifier_entry *, scoped_identifier, iter->value);
         switch (scoped_identifier->value->klass) {
             case KEFIR_AST_SCOPE_IDENTIFIER_OBJECT: {
-                ASSIGN_DECL_CAST(struct kefir_ast_translator_scoped_identifier_object *, identifier_data,
-                                 scoped_identifier->value->payload.ptr);
+                struct kefir_ast_translator_scoped_identifier_object *identifier_data;
+                REQUIRE_OK(kefir_ast_translator_scoped_identifier_allocate_object(context->memory_arena, scoped_identifier->value, &identifier_data));
 
                 struct kefir_ir_identifier ir_identifier = {
                     .symbol = scoped_identifier->value->object->asm_label == NULL
@@ -161,8 +162,8 @@ static kefir_result_t translate_externals(struct kefir_mem *mem, const struct ke
             } break;
 
             case KEFIR_AST_SCOPE_IDENTIFIER_FUNCTION: {
-                ASSIGN_DECL_CAST(struct kefir_ast_translator_scoped_identifier_function *, identifier_data,
-                                 scoped_identifier->value->payload.ptr);
+                struct kefir_ast_translator_scoped_identifier_function *identifier_data;
+                REQUIRE_OK(kefir_ast_translator_scoped_identifier_allocate_function(context->memory_arena, scoped_identifier->value, &identifier_data));
                 struct kefir_ir_identifier ir_identifier = {
                     .symbol = scoped_identifier->identifier,
                     .type = KEFIR_IR_IDENTIFIER_FUNCTION,
@@ -248,8 +249,8 @@ static kefir_result_t translate_static(struct kefir_mem *mem, const struct kefir
 
         switch (scoped_identifier->value->klass) {
             case KEFIR_AST_SCOPE_IDENTIFIER_OBJECT: {
-                ASSIGN_DECL_CAST(struct kefir_ast_translator_scoped_identifier_object *, identifier_data,
-                                 scoped_identifier->value->payload.ptr);
+                struct kefir_ast_translator_scoped_identifier_object *identifier_data;
+                REQUIRE_OK(kefir_ast_translator_scoped_identifier_allocate_object(context->memory_arena, scoped_identifier->value, &identifier_data));
 
                 struct kefir_ir_identifier ir_identifier = {
                     .symbol = scoped_identifier->value->object->asm_label == NULL
@@ -285,8 +286,8 @@ static kefir_result_t translate_static(struct kefir_mem *mem, const struct kefir
             } break;
 
             case KEFIR_AST_SCOPE_IDENTIFIER_FUNCTION: {
-                ASSIGN_DECL_CAST(struct kefir_ast_translator_scoped_identifier_function *, identifier_data,
-                                 scoped_identifier->value->payload.ptr);
+                struct kefir_ast_translator_scoped_identifier_function *identifier_data;
+                REQUIRE_OK(kefir_ast_translator_scoped_identifier_allocate_function(context->memory_arena, scoped_identifier->value, &identifier_data));
                 struct kefir_ir_identifier ir_identifier = {
                     .symbol = scoped_identifier->identifier,
                     .type = KEFIR_IR_IDENTIFIER_FUNCTION,
@@ -313,8 +314,8 @@ static kefir_result_t translate_external_thread_locals(
         ASSIGN_DECL_CAST(const struct kefir_ast_translator_scoped_identifier_entry *, scoped_identifier, iter->value);
         switch (scoped_identifier->value->klass) {
             case KEFIR_AST_SCOPE_IDENTIFIER_OBJECT: {
-                ASSIGN_DECL_CAST(struct kefir_ast_translator_scoped_identifier_object *, identifier_data,
-                                 scoped_identifier->value->payload.ptr);
+                struct kefir_ast_translator_scoped_identifier_object *identifier_data;
+                REQUIRE_OK(kefir_ast_translator_scoped_identifier_allocate_object(context->memory_arena, scoped_identifier->value, &identifier_data));
                 if (scoped_identifier->value->object->external) {
                     struct kefir_ir_identifier ir_identifier = {
                         .symbol = scoped_identifier->identifier,
@@ -380,8 +381,8 @@ static kefir_result_t translate_static_thread_locals(
 
         switch (scoped_identifier->value->klass) {
             case KEFIR_AST_SCOPE_IDENTIFIER_OBJECT: {
-                ASSIGN_DECL_CAST(struct kefir_ast_translator_scoped_identifier_object *, identifier_data,
-                                 scoped_identifier->value->payload.ptr);
+                struct kefir_ast_translator_scoped_identifier_object *identifier_data;
+                REQUIRE_OK(kefir_ast_translator_scoped_identifier_allocate_object(context->memory_arena, scoped_identifier->value, &identifier_data));
 
                 struct kefir_ir_identifier ir_identifier = {
                     .symbol = scoped_identifier->value->object->asm_label == NULL
@@ -463,8 +464,8 @@ static kefir_result_t translate_local_static(struct kefir_mem *mem, const struct
 
         switch (scoped_identifier->value->klass) {
             case KEFIR_AST_SCOPE_IDENTIFIER_OBJECT: {
-                ASSIGN_DECL_CAST(struct kefir_ast_translator_scoped_identifier_object *, identifier_data,
-                                 scoped_identifier->value->payload.ptr);
+                struct kefir_ast_translator_scoped_identifier_object *identifier_data;
+                REQUIRE_OK(kefir_ast_translator_scoped_identifier_allocate_object(context->memory_arena, scoped_identifier->value, &identifier_data));
 
                 const char *identifier;
                 REQUIRE_OK(local_static_identifier(mem, module, scoped_identifier->value->object->defining_function,
@@ -525,8 +526,8 @@ static kefir_result_t translate_local_static_thread_locals(
 
         switch (scoped_identifier->value->klass) {
             case KEFIR_AST_SCOPE_IDENTIFIER_OBJECT: {
-                ASSIGN_DECL_CAST(struct kefir_ast_translator_scoped_identifier_object *, identifier_data,
-                                 scoped_identifier->value->payload.ptr);
+                struct kefir_ast_translator_scoped_identifier_object *identifier_data;
+                REQUIRE_OK(kefir_ast_translator_scoped_identifier_allocate_object(context->memory_arena, scoped_identifier->value, &identifier_data));
 
                 const char *identifier;
                 REQUIRE_OK(local_static_identifier(mem, module, scoped_identifier->value->object->defining_function,

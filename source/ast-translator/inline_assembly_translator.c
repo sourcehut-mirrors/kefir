@@ -20,6 +20,7 @@
 
 #include "kefir/ast-translator/translator.h"
 #include "kefir/ast-translator/jump.h"
+#include "kefir/ast-translator/util.h"
 #include "kefir/ast/runtime.h"
 #include "kefir/ast/downcast.h"
 #include "kefir/ast/flow_control.h"
@@ -148,7 +149,7 @@ static kefir_result_t static_identifier(struct kefir_mem *mem, struct kefir_ir_m
     return KEFIR_OK;
 }
 
-static kefir_result_t translate_pointer_to_identifier(struct kefir_mem *mem, struct kefir_ir_module *module,
+static kefir_result_t translate_pointer_to_identifier(struct kefir_mem *mem, const struct kefir_ast_context *context, struct kefir_ir_module *module,
                                                       struct kefir_ast_constant_expression_value *value,
                                                       const char **base, kefir_int64_t *offset,
                                                       const struct kefir_source_location *location) {
@@ -161,8 +162,8 @@ static kefir_result_t translate_pointer_to_identifier(struct kefir_mem *mem, str
 
             case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_CONSTEXPR_STATIC:
             case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC: {
-                ASSIGN_DECL_CAST(struct kefir_ast_translator_scoped_identifier_object *, identifier_data,
-                                 value->pointer.scoped_id->payload.ptr);
+                struct kefir_ast_translator_scoped_identifier_object *identifier_data;
+                REQUIRE_OK(kefir_ast_translator_scoped_identifier_allocate_object(context->memory_arena, value->pointer.scoped_id, &identifier_data));
                 REQUIRE_OK(static_identifier(mem, module, value->pointer.scoped_id->object->defining_function,
                                              value->pointer.base.literal, identifier_data->identifier, base));
                 *offset = resolve_identifier_offset(identifier_data->layout) + value->pointer.offset;
@@ -287,7 +288,7 @@ static kefir_result_t translate_inputs(struct kefir_mem *mem, const struct kefir
                                 "Value of strict immediate inline assembly parameter shall be known at compile time"));
                         imm_type = KEFIR_IR_INLINE_ASSEMBLY_IMMEDIATE_IDENTIFIER_BASED;
                         REQUIRE_OK(translate_pointer_to_identifier(
-                            mem, context->module, KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(param->parameter),
+                            mem, context->ast_context, context->module, KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(param->parameter),
                             &imm_identifier_base, &param_value, &inline_asm->base.source_location));
                         break;
 

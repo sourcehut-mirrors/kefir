@@ -22,6 +22,7 @@
 #include "kefir/ast-translator/translator.h"
 #include "kefir/ast-translator/typeconv.h"
 #include "kefir/ast-translator/lvalue.h"
+#include "kefir/ast-translator/util.h"
 #include "kefir/ast/runtime.h"
 #include "kefir/ast/type_completion.h"
 #include "kefir/core/util.h"
@@ -163,7 +164,8 @@ kefir_result_t kefir_ast_translator_resolve_vla_element(struct kefir_mem *mem,
     const struct kefir_ast_scoped_identifier *scoped_id = NULL;
     REQUIRE_OK(context->ast_context->resolve_ordinary_identifier(
         context->ast_context, KEFIR_AST_TRANSLATOR_VLA_ELEMENTS_IDENTIFIER, &scoped_id));
-    ASSIGN_DECL_CAST(struct kefir_ast_translator_scoped_identifier_object *, scoped_id_layout, scoped_id->payload.ptr);
+    struct kefir_ast_translator_scoped_identifier_object *scoped_id_layout;
+    REQUIRE_OK(kefir_ast_translator_scoped_identifier_allocate_object(context->ast_context->memory_arena, scoped_id, &scoped_id_layout));
 
     struct kefir_ast_designator vla_element_designator = {
         .type = KEFIR_AST_DESIGNATOR_SUBSCRIPT, .index = vla_id, .next = NULL};

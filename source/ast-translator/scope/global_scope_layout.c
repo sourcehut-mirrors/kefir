@@ -21,6 +21,7 @@
 #include "kefir/ast-translator/scope/global_scope_layout.h"
 #include "kefir/ast-translator/translator.h"
 #include "kefir/ast-translator/layout.h"
+#include "kefir/ast-translator/util.h"
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
 #include "kefir/ast-translator/scope/scope_layout_impl.h"
@@ -278,9 +279,8 @@ static kefir_result_t translate_scoped_identifier_type(
     const struct kefir_ast_translator_environment *env, struct kefir_ast_translator_global_scope_layout *layout,
     const char *identifier, const struct kefir_ast_scoped_identifier *scoped_identifier,
     struct kefir_ir_type **type_ptr, const struct kefir_source_location *source_location) {
-    ASSIGN_DECL_CAST(struct kefir_ast_translator_scoped_identifier_object *, scoped_identifier_layout,
-                     scoped_identifier->payload.ptr);
-    KEFIR_AST_SCOPE_SET_CLEANUP(scoped_identifier, kefir_ast_translator_scoped_identifer_payload_free, NULL);
+    struct kefir_ast_translator_scoped_identifier_object *scoped_identifier_layout;
+    REQUIRE_OK(kefir_ast_translator_scoped_identifier_allocate_object(context->memory_arena, scoped_identifier, &scoped_identifier_layout));
     scoped_identifier_layout->identifier = layout->next_object_identifier++;
     scoped_identifier_layout->type = kefir_ir_module_new_type(mem, module, 0, &scoped_identifier_layout->type_id);
     REQUIRE(scoped_identifier_layout->type != NULL,
@@ -427,8 +427,8 @@ static kefir_result_t generate_object_debug_entry(struct kefir_mem *mem, const s
                                                   const struct kefir_ast_scoped_identifier *scoped_identifier) {
     REQUIRE(debug_entries != NULL, KEFIR_OK);
 
-    ASSIGN_DECL_CAST(struct kefir_ast_translator_scoped_identifier_object *, scoped_identifier_layout,
-                     scoped_identifier->payload.ptr);
+    struct kefir_ast_translator_scoped_identifier_object *scoped_identifier_layout;
+    REQUIRE_OK(kefir_ast_translator_scoped_identifier_allocate_object(context->memory_arena, scoped_identifier, &scoped_identifier_layout));
     kefir_ir_debug_entry_id_t type_entry_id;
     REQUIRE_OK(kefir_ast_translate_debug_type(mem, context, env, module, debug_entries, type, &type_entry_id));
 
@@ -586,8 +586,8 @@ static kefir_result_t generate_function_debug_entry(struct kefir_mem *mem, const
             &KEFIR_IR_DEBUG_ENTRY_ATTR_SOURCE_LOCATION_COLUMN(scoped_identifier->source_location.column)));
     }
 
-    ASSIGN_DECL_CAST(struct kefir_ast_translator_scoped_identifier_function *, scoped_identifier_layout,
-                     scoped_identifier->payload.ptr);
+    struct kefir_ast_translator_scoped_identifier_function *scoped_identifier_layout;
+    REQUIRE_OK(kefir_ast_translator_scoped_identifier_allocate_function(context->memory_arena, scoped_identifier, &scoped_identifier_layout));
     scoped_identifier_layout->debug_info.subprogram = function_entry_id;
     scoped_identifier_layout->debug_info.present = true;
     return KEFIR_OK;
@@ -599,9 +599,8 @@ static kefir_result_t translate_global_scoped_identifier_function(
     const struct kefir_ast_scoped_identifier *scoped_identifier,
     struct kefir_ast_translator_global_scope_layout *layout, const struct kefir_ast_translator_environment *env,
     struct kefir_ast_translator_debug_entries *debug_entries) {
-    ASSIGN_DECL_CAST(struct kefir_ast_translator_scoped_identifier_function *, scoped_identifier_func,
-                     scoped_identifier->payload.ptr);
-    KEFIR_AST_SCOPE_SET_CLEANUP(scoped_identifier, kefir_ast_translator_scoped_identifer_payload_free, NULL);
+    struct kefir_ast_translator_scoped_identifier_function *scoped_identifier_func;
+    REQUIRE_OK(kefir_ast_translator_scoped_identifier_allocate_function(context->memory_arena, scoped_identifier, &scoped_identifier_func));
 
     const struct kefir_ast_type *function_type = NULL;
     REQUIRE_OK(kefir_ast_type_completion(mem, context, &function_type, scoped_identifier->function->type));

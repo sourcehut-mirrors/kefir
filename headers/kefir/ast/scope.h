@@ -130,11 +130,7 @@ typedef struct kefir_ast_scoped_identifier {
         } type_tag;
     };
     struct kefir_source_location source_location;
-    struct {
-        unsigned char content[KEFIR_AST_SCOPED_IDENTIFIER_PAYLOAD_SIZE];
-        void *ptr;
-        struct kefir_ast_scoped_identifier_cleanup *cleanup;
-    } payload;
+    void *payload;
 } kefir_ast_scoped_identifier_t;
 
 typedef struct kefir_ast_identifier_flat_scope_iterator {
@@ -154,8 +150,8 @@ typedef struct kefir_ast_identifier_flat_scope {
 
 #define KEFIR_AST_SCOPE_SET_CLEANUP(_scope, _callback, _payload) \
     do {                                                         \
-        (_scope)->payload.cleanup->callback = (_callback);       \
-        (_scope)->payload.cleanup->payload = (_payload);         \
+        (_scope)->cleanup.callback = (_callback);       \
+        (_scope)->cleanup.payload = (_payload);         \
     } while (0)
 
 kefir_result_t kefir_ast_scoped_identifier_run_cleanup(struct kefir_mem *, struct kefir_ast_scoped_identifier *);

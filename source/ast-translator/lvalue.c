@@ -27,6 +27,7 @@
 #include "kefir/ast-translator/initializer.h"
 #include "kefir/ast-translator/misc.h"
 #include "kefir/ast-translator/type.h"
+#include "kefir/ast-translator/util.h"
 #include "kefir/ast-translator/typeconv.h"
 #include "kefir/ast/type_completion.h"
 #include "kefir/ast/runtime.h"
@@ -80,8 +81,8 @@ kefir_result_t kefir_ast_translator_object_lvalue(struct kefir_mem *mem, struct 
                 REQUIRE(kefir_ir_module_symbol(mem, context->module, identifier, &id) != NULL,
                         KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate IR module symbol"));
             } else {
-                ASSIGN_DECL_CAST(struct kefir_ast_translator_scoped_identifier_object *, identifier_data,
-                                 scoped_identifier->payload.ptr);
+                struct kefir_ast_translator_scoped_identifier_object *identifier_data;
+                REQUIRE_OK(kefir_ast_translator_scoped_identifier_allocate_object(context->ast_context->memory_arena, scoped_identifier, &identifier_data));
                 REQUIRE_OK(local_static_identifier(mem, context->module, scoped_identifier->object->defining_function,
                                                    identifier, identifier_data->identifier, &id));
             }
@@ -102,8 +103,8 @@ kefir_result_t kefir_ast_translator_object_lvalue(struct kefir_mem *mem, struct 
                 REQUIRE(kefir_ir_module_symbol(mem, context->module, identifier, &id) != NULL,
                         KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate IR module symbol"));
             } else {
-                ASSIGN_DECL_CAST(struct kefir_ast_translator_scoped_identifier_object *, identifier_data,
-                                 scoped_identifier->payload.ptr);
+                struct kefir_ast_translator_scoped_identifier_object *identifier_data;
+                REQUIRE_OK(kefir_ast_translator_scoped_identifier_allocate_object(context->ast_context->memory_arena, scoped_identifier, &identifier_data));
                 REQUIRE_OK(local_static_identifier(mem, context->module, scoped_identifier->object->defining_function,
                                                    identifier, identifier_data->identifier, &id));
             }
@@ -113,8 +114,8 @@ kefir_result_t kefir_ast_translator_object_lvalue(struct kefir_mem *mem, struct 
         case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_CONSTEXPR:
         case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_AUTO:
         case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_REGISTER: {
-            ASSIGN_DECL_CAST(struct kefir_ast_translator_scoped_identifier_object *, identifier_data,
-                             scoped_identifier->payload.ptr);
+            struct kefir_ast_translator_scoped_identifier_object *identifier_data;
+            REQUIRE_OK(kefir_ast_translator_scoped_identifier_allocate_object(context->ast_context->memory_arena, scoped_identifier, &identifier_data));
             if (KEFIR_AST_TYPE_IS_VL_ARRAY(scoped_identifier->object->type)) {
                 REQUIRE_OK(kefir_ast_translator_resolve_local_type_layout(
                     builder, scoped_identifier->definition_scope->identifier, context->ast_context->context_id,

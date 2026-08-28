@@ -345,8 +345,8 @@ static kefir_result_t translate_sizeof(struct kefir_mem *mem, struct kefir_ast_t
     if (KEFIR_AST_TYPE_IS_VL_ARRAY(node->arg->properties.type) &&
         node->arg->properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION &&
         node->arg->properties.expression_props->scoped_id != NULL) {
-        ASSIGN_DECL_CAST(struct kefir_ast_translator_scoped_identifier_object *, identifier_data,
-                         node->arg->properties.expression_props->scoped_id->payload.ptr);
+        struct kefir_ast_translator_scoped_identifier_object *identifier_data;
+        REQUIRE_OK(kefir_ast_translator_scoped_identifier_allocate_object(context->ast_context->memory_arena, node->arg->properties.expression_props->scoped_id, &identifier_data));
         REQUIRE_OK(kefir_ast_translator_resolve_local_type_layout(
             builder, node->arg->properties.expression_props->scoped_id->definition_scope->identifier,
             context->ast_context->context_id, identifier_data->identifier, identifier_data->type_id,

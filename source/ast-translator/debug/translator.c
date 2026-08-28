@@ -20,6 +20,7 @@
 
 #include "kefir/ast-translator/debug/translator.h"
 #include "kefir/ast-translator/translator.h"
+#include "kefir/ast-translator/util.h"
 #include "kefir/ast/type_completion.h"
 #include "kefir/ast/runtime.h"
 #include "kefir/core/error.h"
@@ -1074,8 +1075,8 @@ kefir_result_t kefir_ast_translator_generate_object_scope_debug_information(
                                                               variable_entry_id,
                                                               &KEFIR_IR_DEBUG_ENTRY_ATTR_TYPE(variable_type_id)));
 
-                ASSIGN_DECL_CAST(struct kefir_ast_translator_scoped_identifier_object *, scoped_identifier_layout,
-                                 iter.value->payload.ptr);
+                struct kefir_ast_translator_scoped_identifier_object *scoped_identifier_layout;
+                REQUIRE_OK(kefir_ast_translator_scoped_identifier_allocate_object(context->memory_arena, iter.value, &scoped_identifier_layout));
 
                 switch (iter.value->object->storage) {
                     case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN: {
@@ -1110,8 +1111,8 @@ kefir_result_t kefir_ast_translator_generate_object_scope_debug_information(
                             REQUIRE(kefir_ir_module_symbol(mem, module, iter.identifier, &id) != NULL,
                                     KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate IR module symbol"));
                         } else {
-                            ASSIGN_DECL_CAST(struct kefir_ast_translator_scoped_identifier_object *, identifier_data,
-                                             iter.value->payload.ptr);
+                            struct kefir_ast_translator_scoped_identifier_object *identifier_data;
+                            REQUIRE_OK(kefir_ast_translator_scoped_identifier_allocate_object(context->memory_arena, iter.value, &identifier_data));
                             REQUIRE_OK(local_static_identifier(mem, module, iter.value->object->defining_function,
                                                                iter.identifier, identifier_data->identifier, &id));
                         }
@@ -1129,8 +1130,8 @@ kefir_result_t kefir_ast_translator_generate_object_scope_debug_information(
                             REQUIRE(kefir_ir_module_symbol(mem, module, iter.identifier, &id) != NULL,
                                     KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate IR module symbol"));
                         } else {
-                            ASSIGN_DECL_CAST(struct kefir_ast_translator_scoped_identifier_object *, identifier_data,
-                                             iter.value->payload.ptr);
+                            struct kefir_ast_translator_scoped_identifier_object *identifier_data;
+                            REQUIRE_OK(kefir_ast_translator_scoped_identifier_allocate_object(context->memory_arena, iter.value, &identifier_data));
                             REQUIRE_OK(local_static_identifier(mem, module, iter.value->object->defining_function,
                                                                iter.identifier, identifier_data->identifier, &id));
                         }

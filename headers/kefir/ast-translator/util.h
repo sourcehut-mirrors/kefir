@@ -22,8 +22,12 @@
 #define KEFIR_AST_TRANSLATOR_UTIL_H_
 
 #include "kefir/core/basic-types.h"
+#include "kefir/core/memory_arena.h"
 #include "kefir/ast/type.h"
+#include "kefir/ast-translator/scope/scoped_identifier.h"
 
 const struct kefir_ast_type *kefir_ast_translator_normalize_type(const struct kefir_ast_type *);
+kefir_result_t kefir_ast_translator_scoped_identifier_allocate_object(struct kefir_memory_arena *, const struct kefir_ast_scoped_identifier *, struct kefir_ast_translator_scoped_identifier_object **);
+kefir_result_t kefir_ast_translator_scoped_identifier_allocate_function(struct kefir_memory_arena *, const struct kefir_ast_scoped_identifier *, struct kefir_ast_translator_scoped_identifier_function **);
 
 #endif

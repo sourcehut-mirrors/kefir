@@ -68,10 +68,10 @@ kefir_result_t kefir_ast_scoped_identifier_run_cleanup(struct kefir_mem *mem,
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(scoped_id != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST scoped identifier"));
 
-    if (scoped_id->payload.cleanup->callback != NULL) {
-        REQUIRE_OK(scoped_id->payload.cleanup->callback(mem, scoped_id, scoped_id->payload.cleanup->payload));
-        scoped_id->payload.cleanup->callback = NULL;
-        scoped_id->payload.cleanup->payload = NULL;
+    if (scoped_id->cleanup.callback != NULL) {
+        REQUIRE_OK(scoped_id->cleanup.callback(mem, scoped_id, scoped_id->cleanup.payload));
+        scoped_id->cleanup.callback = NULL;
+        scoped_id->cleanup.payload = NULL;
     }
     return KEFIR_OK;
 }

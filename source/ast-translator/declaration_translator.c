@@ -24,6 +24,7 @@
 #include "kefir/ast-translator/misc.h"
 #include "kefir/ast-translator/temporaries.h"
 #include "kefir/ast-translator/type.h"
+#include "kefir/ast-translator/util.h"
 #include "kefir/ast/downcast.h"
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
@@ -43,8 +44,8 @@ static kefir_result_t translate_vla_declaration(struct kefir_mem *mem, const str
     struct kefir_ast_init_declarator *declaration = NULL;
     REQUIRE_MATCH_OK(&res, kefir_ast_downcast_init_declarator(node, &declaration, false),
                      KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected AST init declarator"));
-    ASSIGN_DECL_CAST(struct kefir_ast_translator_scoped_identifier_object *, identifier_data,
-                     declaration->base.properties.declaration_props->scoped_id->payload.ptr);
+    struct kefir_ast_translator_scoped_identifier_object *identifier_data;
+    REQUIRE_OK(kefir_ast_translator_scoped_identifier_allocate_object(context->ast_context->memory_arena, declaration->base.properties.declaration_props->scoped_id, &identifier_data));
 
     REQUIRE_OK(kefir_ast_translator_resolve_vla_element(
         mem, context, builder, declaration->base.properties.declaration_props->scoped_id->object->vl_array));

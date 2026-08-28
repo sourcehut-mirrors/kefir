@@ -20,6 +20,7 @@
 
 #include <stdio.h>
 #include "kefir/ast-translator/scope/translator.h"
+#include "kefir/ast-translator/util.h"
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
 #include "kefir/ir/type_tree.h"
@@ -55,7 +56,7 @@ static kefir_result_t local_static_identifier(struct kefir_mem *mem, struct kefi
     return KEFIR_OK;
 }
 
-static kefir_result_t translate_pointer_to_identifier(struct kefir_mem *mem,
+static kefir_result_t translate_pointer_to_identifier(struct kefir_mem *mem, const struct kefir_ast_context *context,
                                                       struct kefir_ast_constant_expression_value *value,
                                                       struct kefir_ir_module *module, struct kefir_ir_data *data,
                                                       kefir_size_t base_slot) {
@@ -73,8 +74,8 @@ static kefir_result_t translate_pointer_to_identifier(struct kefir_mem *mem,
 
             case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC:
             case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_CONSTEXPR_STATIC: {
-                ASSIGN_DECL_CAST(struct kefir_ast_translator_scoped_identifier_object *, identifier_data,
-                                 value->pointer.scoped_id->payload.ptr);
+            struct kefir_ast_translator_scoped_identifier_object *identifier_data;
+            REQUIRE_OK(kefir_ast_translator_scoped_identifier_allocate_object(context->memory_arena, value->pointer.scoped_id, &identifier_data));
                 const char *identifier = value->pointer.base.literal;
                 if (value->pointer.scoped_id->object->defining_function != NULL) {
                     REQUIRE_OK(local_static_identifier(mem, module, value->pointer.scoped_id->object->defining_function,
@@ -499,7 +500,7 @@ static kefir_result_t visit_value(const struct kefir_ast_designator *designator,
         case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS:
             switch (value.pointer.type) {
                 case KEFIR_AST_CONSTANT_EXPRESSION_POINTER_IDENTIFER:
-                    REQUIRE_OK(translate_pointer_to_identifier(param->mem, &value, param->module, param->data, slot));
+                    REQUIRE_OK(translate_pointer_to_identifier(param->mem, param->context, &value, param->module, param->data, slot));
                     break;
 
                 case KEFIR_AST_CONSTANT_EXPRESSION_POINTER_INTEGER:

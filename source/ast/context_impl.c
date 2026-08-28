@@ -110,9 +110,7 @@ struct kefir_ast_scoped_identifier *kefir_ast_context_allocate_scoped_object_ide
             return NULL;
         });
     }
-    memset(scoped_id->payload.content, 0, KEFIR_AST_SCOPED_IDENTIFIER_PAYLOAD_SIZE);
-    scoped_id->payload.ptr = scoped_id->payload.content;
-    scoped_id->payload.cleanup = &scoped_id->cleanup;
+    scoped_id->payload = NULL;
     if (alignment != NULL) {
         scoped_id->object->alignment = alignment;
     } else {
@@ -153,9 +151,7 @@ struct kefir_ast_scoped_identifier *kefir_ast_context_allocate_scoped_constant(
             return NULL;
         });
     }
-    memset(scoped_id->payload.content, 0, KEFIR_AST_SCOPED_IDENTIFIER_PAYLOAD_SIZE);
-    scoped_id->payload.ptr = scoped_id->payload.content;
-    scoped_id->payload.cleanup = &scoped_id->cleanup;
+    scoped_id->payload = NULL;
     return scoped_id;
 }
 
@@ -175,9 +171,7 @@ struct kefir_ast_scoped_identifier *kefir_ast_context_allocate_scoped_type_tag(
             return NULL;
         });
     }
-    memset(scoped_id->payload.content, 0, KEFIR_AST_SCOPED_IDENTIFIER_PAYLOAD_SIZE);
-    scoped_id->payload.ptr = scoped_id->payload.content;
-    scoped_id->payload.cleanup = &scoped_id->cleanup;
+    scoped_id->payload = NULL;
     return scoped_id;
 }
 
@@ -206,9 +200,7 @@ struct kefir_ast_scoped_identifier *kefir_ast_context_allocate_scoped_type_defin
             return NULL;
         });
     }
-    memset(scoped_id->payload.content, 0, KEFIR_AST_SCOPED_IDENTIFIER_PAYLOAD_SIZE);
-    scoped_id->payload.ptr = scoped_id->payload.content;
-    scoped_id->payload.cleanup = &scoped_id->cleanup;
+    scoped_id->payload = NULL;
     return scoped_id;
 }
 
@@ -331,9 +323,7 @@ struct kefir_ast_scoped_identifier *kefir_ast_context_allocate_scoped_function_i
             return NULL;
         });
     }
-    memset(scoped_id->payload.content, 0, KEFIR_AST_SCOPED_IDENTIFIER_PAYLOAD_SIZE);
-    scoped_id->payload.ptr = scoped_id->payload.content;
-    scoped_id->payload.cleanup = &scoped_id->cleanup;
+    scoped_id->payload = NULL;
     return scoped_id;
 }
 
@@ -354,9 +344,7 @@ struct kefir_ast_scoped_identifier *kefir_ast_context_allocate_scoped_label(
             return NULL;
         });
     }
-    memset(scoped_id->payload.content, 0, KEFIR_AST_SCOPED_IDENTIFIER_PAYLOAD_SIZE);
-    scoped_id->payload.ptr = scoped_id->payload.content;
-    scoped_id->payload.cleanup = &scoped_id->cleanup;
+    scoped_id->payload = NULL;
     scoped_id->label = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_scoped_label_identifier));
     REQUIRE_ELSE(scoped_id->label != NULL, {
         KEFIR_FREE(mem, scoped_id);
