@@ -1251,7 +1251,8 @@ kefir_result_t kefir_ast_declarator_specifier_free(struct kefir_mem *mem,
 kefir_result_t kefir_ast_type_qualifier_list_init(struct kefir_ast_type_qualifier_list *list) {
     REQUIRE(list != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST type qualifier list"));
 
-    REQUIRE_OK(kefir_list_init(&list->list));
+    list->qualifiers = NULL;
+    list->qualifiers_length = 0;
     return KEFIR_OK;
 }
 
@@ -1259,7 +1260,9 @@ kefir_result_t kefir_ast_type_qualifier_list_free(struct kefir_mem *mem, struct 
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(list != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST type qualifier list"));
 
-    REQUIRE_OK(kefir_list_free(mem, &list->list));
+    KEFIR_FREE(mem, list->qualifiers);
+    list->qualifiers = NULL;
+    list->qualifiers_length = 0;
     return KEFIR_OK;
 }
 
@@ -1268,41 +1271,36 @@ kefir_result_t kefir_ast_type_qualifier_list_append(struct kefir_mem *mem, struc
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(list != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST type qualifier list"));
 
-    REQUIRE_OK(
-        kefir_list_insert_after(mem, &list->list, kefir_list_tail(&list->list), (void *) ((kefir_uptr_t) qualifier)));
+    kefir_size_t new_length = list->qualifiers_length + 1;
+    kefir_ast_type_qualifier_type_t *new_qualifiers = KEFIR_REALLOC(mem, list->qualifiers, sizeof(kefir_ast_type_qualifier_type_t) * new_length);
+    REQUIRE(new_qualifiers != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST type qualifier list"));
+    new_qualifiers[list->qualifiers_length] = qualifier;
+
+    list->qualifiers = new_qualifiers;
+    list->qualifiers_length = new_length;
     return KEFIR_OK;
 }
 
-struct kefir_list_entry *kefir_ast_type_qualifier_list_iter(const struct kefir_ast_type_qualifier_list *list,
+kefir_result_t kefir_ast_type_qualifier_list_iter(const struct kefir_ast_type_qualifier_list *list, struct kefir_ast_type_qualifier_list_iterator *iter,
                                                             kefir_ast_type_qualifier_type_t *value) {
-    REQUIRE(list != NULL, NULL);
+    REQUIRE(list != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST type qualifier list"));
+    REQUIRE(iter != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to AST type qualifier list iterator"));
 
-    struct kefir_list_entry *iter = kefir_list_head(&list->list);
-    if (iter != NULL) {
-        ASSIGN_PTR(value, (kefir_ast_type_qualifier_type_t) ((kefir_uptr_t) iter->value));
-    }
-    return iter;
-}
-
-kefir_result_t kefir_ast_type_qualifier_list_next(const struct kefir_list_entry **iter,
-                                                  kefir_ast_type_qualifier_type_t *value) {
-    REQUIRE(iter != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to list entry iterator"));
-    REQUIRE(*iter != NULL, KEFIR_OK);
-
-    *iter = (*iter)->next;
-    if (*iter != NULL) {
-        ASSIGN_PTR(value, (kefir_ast_type_qualifier_type_t) ((kefir_uptr_t) (*iter)->value));
-    }
+    iter->list = list;
+    iter->index = 0;
+    REQUIRE(iter->index < iter->list->qualifiers_length, KEFIR_SET_ERROR(KEFIR_ITERATOR_END, "End of AST type qualifier list iterator"));
+    ASSIGN_PTR(value, (kefir_ast_type_qualifier_type_t) iter->list->qualifiers[iter->index]);
+    iter->index++;
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_ast_type_qualifier_list_remove(struct kefir_mem *mem, struct kefir_ast_type_qualifier_list *list,
-                                                    struct kefir_list_entry *iter) {
-    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
-    REQUIRE(list != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST type qualifier list"));
-    REQUIRE(iter != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid list iterator"));
+kefir_result_t kefir_ast_type_qualifier_list_next(struct kefir_ast_type_qualifier_list_iterator *iter,
+                                                            kefir_ast_type_qualifier_type_t *value) {
+    REQUIRE(iter != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST type qualifier list iterator"));
 
-    REQUIRE_OK(kefir_list_pop(mem, &list->list, iter));
+    REQUIRE(iter->index < iter->list->qualifiers_length, KEFIR_SET_ERROR(KEFIR_ITERATOR_END, "End of AST type qualifier list iterator"));
+    ASSIGN_PTR(value, (kefir_ast_type_qualifier_type_t) iter->list->qualifiers[iter->index]);
+    iter->index++;
     return KEFIR_OK;
 }
 
@@ -1313,10 +1311,15 @@ kefir_result_t kefir_ast_type_qualifier_list_clone(struct kefir_mem *mem, struct
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid destination AST type qualifier list"));
     REQUIRE(src != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid source AST type qualifier list"));
 
+    kefir_result_t res;
+    struct kefir_ast_type_qualifier_list_iterator iter;
     kefir_ast_type_qualifier_type_t value;
-    for (const struct kefir_list_entry *iter = kefir_ast_type_qualifier_list_iter(src, &value); iter != NULL;
-         kefir_ast_type_qualifier_list_next(&iter, &value)) {
+    for (res = kefir_ast_type_qualifier_list_iter(src, &iter, &value); res == KEFIR_OK;
+         res = kefir_ast_type_qualifier_list_next(&iter, &value)) {
         REQUIRE_OK(kefir_ast_type_qualifier_list_append(mem, dst, value));
+    }
+    if (res != KEFIR_ITERATOR_END) {
+        REQUIRE_OK(res);
     }
     return KEFIR_OK;
 }

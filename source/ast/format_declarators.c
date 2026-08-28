@@ -25,9 +25,11 @@
 static kefir_result_t format_type_qualifiers(struct kefir_json_output *json,
                                              const struct kefir_ast_type_qualifier_list *type_qualifiers) {
     REQUIRE_OK(kefir_json_output_array_begin(json));
+    kefir_result_t res;
+    struct kefir_ast_type_qualifier_list_iterator iter;
     kefir_ast_type_qualifier_type_t qualifier;
-    for (const struct kefir_list_entry *iter = kefir_ast_type_qualifier_list_iter(type_qualifiers, &qualifier);
-         iter != NULL; kefir_ast_type_qualifier_list_next(&iter, &qualifier)) {
+    for (res = kefir_ast_type_qualifier_list_iter(type_qualifiers, &iter, &qualifier); res == KEFIR_OK;
+         res = kefir_ast_type_qualifier_list_next(&iter, &qualifier)) {
         switch (qualifier) {
             case KEFIR_AST_TYPE_QUALIFIER_CONST:
                 REQUIRE_OK(kefir_json_output_string(json, "const"));
@@ -48,6 +50,9 @@ static kefir_result_t format_type_qualifiers(struct kefir_json_output *json,
             default:
                 return KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Unexpected type qualifier");
         }
+    }
+    if (res != KEFIR_ITERATOR_END) {
+        REQUIRE_OK(res);
     }
     REQUIRE_OK(kefir_json_output_array_end(json));
     return KEFIR_OK;

@@ -96,7 +96,8 @@ DEFINE_CASE(ast_declarator_construction4, "AST declarators - pointer constructio
     ASSERT(decl->pointer->declarator != NULL);
     ASSERT(decl->pointer->declarator->klass == KEFIR_AST_DECLARATOR_IDENTIFIER);
     ASSERT(strcmp(decl->pointer->declarator->identifier.identifier, "test123") == 0);
-    ASSERT(kefir_ast_type_qualifier_list_iter(&decl->pointer->type_qualifiers, NULL) == NULL);
+    struct kefir_ast_type_qualifier_list_iterator iter;
+    ASSERT(kefir_ast_type_qualifier_list_iter(&decl->pointer->type_qualifiers, &iter, NULL) == KEFIR_ITERATOR_END);
     ASSERT(decl->pointer->declarator->identifier.asm_label == NULL);
 
     kefir_bool_t abstract;
@@ -109,20 +110,15 @@ DEFINE_CASE(ast_declarator_construction4, "AST declarators - pointer constructio
                                                    KEFIR_AST_TYPE_QUALIFIER_VOLATILE));
     ASSERT_OK(kefir_ast_type_qualifier_list_append(&kft_mem, &decl->pointer->type_qualifiers,
                                                    KEFIR_AST_TYPE_QUALIFIER_RESTRICT));
-    ASSERT_OK(
-        kefir_ast_type_qualifier_list_remove(&kft_mem, &decl->pointer->type_qualifiers,
-                                             kefir_ast_type_qualifier_list_iter(&decl->pointer->type_qualifiers, NULL)));
 
     kefir_ast_type_qualifier_type_t type_qualifier;
-    const struct kefir_list_entry *iter =
-        kefir_ast_type_qualifier_list_iter(&decl->pointer->type_qualifiers, &type_qualifier);
-    ASSERT(iter != NULL);
+    ASSERT_OK(kefir_ast_type_qualifier_list_iter(&decl->pointer->type_qualifiers, &iter, &type_qualifier));
+    ASSERT(type_qualifier == KEFIR_AST_TYPE_QUALIFIER_CONST);
+    ASSERT_OK(kefir_ast_type_qualifier_list_next(&iter, &type_qualifier));
     ASSERT(type_qualifier == KEFIR_AST_TYPE_QUALIFIER_VOLATILE);
     ASSERT_OK(kefir_ast_type_qualifier_list_next(&iter, &type_qualifier));
-    ASSERT(iter != NULL);
     ASSERT(type_qualifier == KEFIR_AST_TYPE_QUALIFIER_RESTRICT);
-    ASSERT_OK(kefir_ast_type_qualifier_list_next(&iter, &type_qualifier));
-    ASSERT(iter == NULL);
+    ASSERT(kefir_ast_type_qualifier_list_next(&iter, &type_qualifier) == KEFIR_ITERATOR_END);
 
     ASSERT_OK(kefir_ast_declarator_is_abstract(decl, &abstract));
     ASSERT(!abstract);
@@ -141,8 +137,9 @@ DEFINE_CASE(ast_declarator_construction5, "AST declarators - pointer constructio
     ASSERT(decl->pointer->declarator->pointer->declarator != NULL);
     ASSERT(decl->pointer->declarator->pointer->declarator->klass == KEFIR_AST_DECLARATOR_IDENTIFIER);
     ASSERT(strcmp(decl->pointer->declarator->pointer->declarator->identifier.identifier, "some_test") == 0);
-    ASSERT(kefir_ast_type_qualifier_list_iter(&decl->pointer->type_qualifiers, NULL) == NULL);
-    ASSERT(kefir_ast_type_qualifier_list_iter(&decl->pointer->declarator->pointer->type_qualifiers, NULL) == NULL);
+    struct kefir_ast_type_qualifier_list_iterator iter;
+    ASSERT(kefir_ast_type_qualifier_list_iter(&decl->pointer->type_qualifiers, &iter, NULL) == KEFIR_ITERATOR_END);
+    ASSERT(kefir_ast_type_qualifier_list_iter(&decl->pointer->declarator->pointer->type_qualifiers, &iter, NULL) == KEFIR_ITERATOR_END);
     ASSERT(decl->pointer->declarator->pointer->declarator->identifier.asm_label == NULL);
 
     kefir_bool_t abstract;
@@ -157,18 +154,13 @@ DEFINE_CASE(ast_declarator_construction5, "AST declarators - pointer constructio
                                                    KEFIR_AST_TYPE_QUALIFIER_VOLATILE));
 
     kefir_ast_type_qualifier_type_t type_qualifier;
-    const struct kefir_list_entry *iter =
-        kefir_ast_type_qualifier_list_iter(&decl->pointer->type_qualifiers, &type_qualifier);
-    ASSERT(iter != NULL);
+    ASSERT_OK(kefir_ast_type_qualifier_list_iter(&decl->pointer->type_qualifiers, &iter, &type_qualifier));
     ASSERT(type_qualifier == KEFIR_AST_TYPE_QUALIFIER_CONST);
-    ASSERT_OK(kefir_ast_type_qualifier_list_next(&iter, &type_qualifier));
-    ASSERT(iter == NULL);
+    ASSERT(kefir_ast_type_qualifier_list_next(&iter, &type_qualifier) == KEFIR_ITERATOR_END);
 
-    iter = kefir_ast_type_qualifier_list_iter(&decl->pointer->declarator->pointer->type_qualifiers, &type_qualifier);
-    ASSERT(iter != NULL);
+    ASSERT_OK(kefir_ast_type_qualifier_list_iter(&decl->pointer->declarator->pointer->type_qualifiers, &iter, &type_qualifier));
     ASSERT(type_qualifier == KEFIR_AST_TYPE_QUALIFIER_VOLATILE);
-    ASSERT_OK(kefir_ast_type_qualifier_list_next(&iter, &type_qualifier));
-    ASSERT(iter == NULL);
+    ASSERT(kefir_ast_type_qualifier_list_next(&iter, &type_qualifier) == KEFIR_ITERATOR_END);
 
     ASSERT_OK(kefir_ast_declarator_is_abstract(decl, &abstract));
     ASSERT(!abstract);
@@ -215,7 +207,8 @@ DEFINE_CASE(ast_declarator_construction7, "AST declarators - array construction 
     ASSERT(((struct kefir_ast_constant *) KEFIR_AST_NODE_SELF(decl->array->length))->type == KEFIR_AST_INT_CONSTANT);
     ASSERT(((struct kefir_ast_constant *) KEFIR_AST_NODE_SELF(decl->array->length))->value.integer == 100);
     ASSERT(!decl->array->static_array);
-    ASSERT(kefir_ast_type_qualifier_list_iter(&decl->array->type_qualifiers, NULL) == NULL);
+    struct kefir_ast_type_qualifier_list_iterator iter;
+    ASSERT(kefir_ast_type_qualifier_list_iter(&decl->array->type_qualifiers, &iter, NULL) == KEFIR_ITERATOR_END);
 
     kefir_bool_t abstract;
     ASSERT_OK(kefir_ast_declarator_is_abstract(decl, &abstract));
@@ -227,20 +220,15 @@ DEFINE_CASE(ast_declarator_construction7, "AST declarators - array construction 
         kefir_ast_type_qualifier_list_append(&kft_mem, &decl->array->type_qualifiers, KEFIR_AST_TYPE_QUALIFIER_ATOMIC));
     ASSERT_OK(
         kefir_ast_type_qualifier_list_append(&kft_mem, &decl->array->type_qualifiers, KEFIR_AST_TYPE_QUALIFIER_CONST));
-    ASSERT_OK(
-        kefir_ast_type_qualifier_list_remove(&kft_mem, &decl->array->type_qualifiers,
-                                             kefir_ast_type_qualifier_list_iter(&decl->array->type_qualifiers, NULL)));
 
     kefir_ast_type_qualifier_type_t type_qualifier;
-    const struct kefir_list_entry *iter =
-        kefir_ast_type_qualifier_list_iter(&decl->array->type_qualifiers, &type_qualifier);
-    ASSERT(iter != NULL);
+    ASSERT_OK(kefir_ast_type_qualifier_list_iter(&decl->array->type_qualifiers, &iter, &type_qualifier));
+    ASSERT(type_qualifier == KEFIR_AST_TYPE_QUALIFIER_VOLATILE);
+    ASSERT_OK(kefir_ast_type_qualifier_list_next(&iter, &type_qualifier));
     ASSERT(type_qualifier == KEFIR_AST_TYPE_QUALIFIER_ATOMIC);
     ASSERT_OK(kefir_ast_type_qualifier_list_next(&iter, &type_qualifier));
-    ASSERT(iter != NULL);
     ASSERT(type_qualifier == KEFIR_AST_TYPE_QUALIFIER_CONST);
-    ASSERT_OK(kefir_ast_type_qualifier_list_next(&iter, &type_qualifier));
-    ASSERT(iter == NULL);
+    ASSERT(kefir_ast_type_qualifier_list_next(&iter, &type_qualifier) == KEFIR_ITERATOR_END);
 
     ASSERT_OK(kefir_ast_declarator_free(&kft_mem, decl));
 }
@@ -257,7 +245,8 @@ DEFINE_CASE(ast_declarator_construction8, "AST declarators - array construction 
     ASSERT(decl->array->declarator->klass == KEFIR_AST_DECLARATOR_POINTER);
     ASSERT(decl->array->length == NULL);
     ASSERT(!decl->array->static_array);
-    ASSERT(kefir_ast_type_qualifier_list_iter(&decl->array->type_qualifiers, NULL) == NULL);
+    struct kefir_ast_type_qualifier_list_iterator iter;
+    ASSERT(kefir_ast_type_qualifier_list_iter(&decl->array->type_qualifiers, &iter, NULL) == KEFIR_ITERATOR_END);
 
     kefir_bool_t abstract;
     ASSERT_OK(kefir_ast_declarator_is_abstract(decl, &abstract));
@@ -284,7 +273,8 @@ DEFINE_CASE(ast_declarator_construction9, "AST declarators - array construction 
     ASSERT(((struct kefir_ast_constant *) KEFIR_AST_NODE_SELF(decl->array->length))->type == KEFIR_AST_INT_CONSTANT);
     ASSERT(((struct kefir_ast_constant *) KEFIR_AST_NODE_SELF(decl->array->length))->value.integer == 1);
     ASSERT(!decl->array->static_array);
-    ASSERT(kefir_ast_type_qualifier_list_iter(&decl->array->type_qualifiers, NULL) == NULL);
+    struct kefir_ast_type_qualifier_list_iterator iter;
+    ASSERT(kefir_ast_type_qualifier_list_iter(&decl->array->type_qualifiers, &iter, NULL) == KEFIR_ITERATOR_END);
 
     kefir_bool_t abstract;
     ASSERT_OK(kefir_ast_declarator_is_abstract(decl, &abstract));

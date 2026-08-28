@@ -234,18 +234,23 @@ struct kefir_ast_declarator_specifier *kefir_ast_declarator_specifier_clone(
 kefir_result_t kefir_ast_declarator_specifier_free(struct kefir_mem *, struct kefir_ast_declarator_specifier *);
 
 typedef struct kefir_ast_type_qualifier_list {
-    struct kefir_list list;
+    kefir_ast_type_qualifier_type_t *qualifiers;
+    kefir_size_t qualifiers_length;
 } kefir_ast_type_qualifier_list_t;
 
 kefir_result_t kefir_ast_type_qualifier_list_init(struct kefir_ast_type_qualifier_list *);
 kefir_result_t kefir_ast_type_qualifier_list_free(struct kefir_mem *, struct kefir_ast_type_qualifier_list *);
 kefir_result_t kefir_ast_type_qualifier_list_append(struct kefir_mem *, struct kefir_ast_type_qualifier_list *,
                                                     kefir_ast_type_qualifier_type_t);
-struct kefir_list_entry *kefir_ast_type_qualifier_list_iter(const struct kefir_ast_type_qualifier_list *,
+
+typedef struct kefir_ast_type_qualifier_list_iterator {
+    const struct kefir_ast_type_qualifier_list *list;
+    kefir_size_t index;
+} kefir_ast_type_qualifier_list_iterator_t;
+
+kefir_result_t kefir_ast_type_qualifier_list_iter(const struct kefir_ast_type_qualifier_list *, struct kefir_ast_type_qualifier_list_iterator *,
                                                             kefir_ast_type_qualifier_type_t *);
-kefir_result_t kefir_ast_type_qualifier_list_next(const struct kefir_list_entry **, kefir_ast_type_qualifier_type_t *);
-kefir_result_t kefir_ast_type_qualifier_list_remove(struct kefir_mem *, struct kefir_ast_type_qualifier_list *,
-                                                    struct kefir_list_entry *);
+kefir_result_t kefir_ast_type_qualifier_list_next(struct kefir_ast_type_qualifier_list_iterator *, kefir_ast_type_qualifier_type_t *);
 kefir_result_t kefir_ast_type_qualifier_list_clone(struct kefir_mem *, struct kefir_ast_type_qualifier_list *,
                                                    const struct kefir_ast_type_qualifier_list *);
 

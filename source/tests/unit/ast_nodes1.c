@@ -365,7 +365,8 @@ DEFINE_CASE(ast_nodes_type_name, "AST nodes - type name") {
     ASSERT_NOK(kefir_ast_declarator_specifier_list_next(&iter, &specifier1));
     ASSERT(type1->type_decl.declarator != NULL);
     ASSERT(type1->type_decl.declarator->klass == KEFIR_AST_DECLARATOR_POINTER);
-    ASSERT(kefir_ast_type_qualifier_list_iter(&type1->type_decl.declarator->pointer->type_qualifiers, NULL) == NULL);
+    struct kefir_ast_type_qualifier_list_iterator qual_iter;
+    ASSERT(kefir_ast_type_qualifier_list_iter(&type1->type_decl.declarator->pointer->type_qualifiers, &qual_iter, NULL) == KEFIR_ITERATOR_END);
     ASSERT(type1->type_decl.declarator->pointer->declarator != NULL);
     ASSERT(type1->type_decl.declarator->pointer->declarator->klass == KEFIR_AST_DECLARATOR_IDENTIFIER);
     ASSERT(type1->type_decl.declarator->pointer->declarator->identifier.identifier == NULL);
@@ -377,13 +378,13 @@ DEFINE_CASE(ast_nodes_type_name, "AST nodes - type name") {
     ASSERT_NOK(kefir_ast_declarator_specifier_list_next(&iter, &specifier1));
     ASSERT(type2->type_decl.declarator != NULL);
     ASSERT(type2->type_decl.declarator->klass == KEFIR_AST_DECLARATOR_POINTER);
-    ASSERT(kefir_ast_type_qualifier_list_iter(&type2->type_decl.declarator->pointer->type_qualifiers, NULL) == NULL);
+    ASSERT(kefir_ast_type_qualifier_list_iter(&type2->type_decl.declarator->pointer->type_qualifiers, &qual_iter, NULL) == KEFIR_ITERATOR_END);
     ASSERT(type2->type_decl.declarator->pointer->declarator != NULL);
     ASSERT(type2->type_decl.declarator->pointer->declarator->klass == KEFIR_AST_DECLARATOR_ARRAY);
     ASSERT(type2->type_decl.declarator->pointer->declarator->array->type == KEFIR_AST_DECLARATOR_ARRAY_BOUNDED);
     ASSERT(!type2->type_decl.declarator->pointer->declarator->array->static_array);
-    ASSERT(kefir_ast_type_qualifier_list_iter(&type2->type_decl.declarator->pointer->declarator->array->type_qualifiers,
-                                              NULL) == NULL);
+    ASSERT(kefir_ast_type_qualifier_list_iter(&type2->type_decl.declarator->pointer->declarator->array->type_qualifiers, &qual_iter,
+                                              NULL) == KEFIR_ITERATOR_END);
     ASSERT(type2->type_decl.declarator->pointer->declarator->array->length->klass->type == KEFIR_AST_CONSTANT);
     ASSERT(type2->type_decl.declarator->pointer->declarator->array->declarator != NULL);
     ASSERT(type2->type_decl.declarator->pointer->declarator->array->declarator->klass == KEFIR_AST_DECLARATOR_IDENTIFIER);

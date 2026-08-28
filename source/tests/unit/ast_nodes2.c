@@ -503,10 +503,11 @@ DEFINE_CASE(ast_nodes_init_declarators1, "AST nodes - declarations #1") {
         initializer2, &decl2);
     ASSERT(decl2 != NULL);
     ASSERT(decl2->declarator->klass == KEFIR_AST_DECLARATOR_POINTER);
-    ASSERT(kefir_ast_type_qualifier_list_iter(&decl2->declarator->pointer->type_qualifiers, NULL) == NULL);
+    struct kefir_ast_type_qualifier_list_iterator qual_iter;
+    ASSERT(kefir_ast_type_qualifier_list_iter(&decl2->declarator->pointer->type_qualifiers, &qual_iter, NULL) == KEFIR_ITERATOR_END);
     ASSERT(decl2->declarator->pointer->declarator->klass == KEFIR_AST_DECLARATOR_POINTER);
-    ASSERT(kefir_ast_type_qualifier_list_iter(&decl2->declarator->pointer->declarator->pointer->type_qualifiers, NULL) ==
-           NULL);
+    ASSERT(kefir_ast_type_qualifier_list_iter(&decl2->declarator->pointer->declarator->pointer->type_qualifiers, &qual_iter, NULL) ==
+           KEFIR_ITERATOR_END);
     ASSERT(decl2->declarator->pointer->declarator->pointer->declarator->klass == KEFIR_AST_DECLARATOR_IDENTIFIER);
     ASSERT(decl2->declarator->pointer->declarator->pointer->declarator->identifier.identifier == NULL);
     ASSERT(decl2->declarator->pointer->declarator->pointer->declarator->identifier.asm_label == NULL);

@@ -1689,11 +1689,15 @@ static kefir_result_t resolve_pointer_declarator(struct kefir_mem *mem, const st
     REQUIRE(*base_type != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST pointer type"));
 
     struct kefir_ast_type_qualification qualification = {false};
+    kefir_result_t res;
     kefir_ast_type_qualifier_type_t qualifier;
-    for (const struct kefir_list_entry *iter =
-             kefir_ast_type_qualifier_list_iter(&declarator->pointer->type_qualifiers, &qualifier);
-         iter != NULL; kefir_ast_type_qualifier_list_next(&iter, &qualifier)) {
+    struct kefir_ast_type_qualifier_list_iterator iter;
+    for (res = kefir_ast_type_qualifier_list_iter(&declarator->pointer->type_qualifiers, &iter, &qualifier); res == KEFIR_OK;
+         res = kefir_ast_type_qualifier_list_next(&iter, &qualifier)) {
         REQUIRE_OK(resolve_qualification(qualifier, &qualification));
+    }
+    if (res != KEFIR_ITERATOR_END) {
+        REQUIRE_OK(res);
     }
     if (!KEFIR_AST_TYPE_IS_ZERO_QUALIFICATION(&qualification)) {
         *base_type = kefir_ast_type_qualified(mem, context->type_bundle, *base_type, qualification);
@@ -1708,11 +1712,15 @@ static kefir_result_t resolve_array_declarator(struct kefir_mem *mem, const stru
     REQUIRE_OK(kefir_ast_check_type_deprecation(context, *base_type, &declarator->source_location));
 
     struct kefir_ast_type_qualification qualification = {false};
+    kefir_result_t res;
     kefir_ast_type_qualifier_type_t qualifier;
-    for (const struct kefir_list_entry *iter =
-             kefir_ast_type_qualifier_list_iter(&declarator->array->type_qualifiers, &qualifier);
-         iter != NULL; kefir_ast_type_qualifier_list_next(&iter, &qualifier)) {
+    struct kefir_ast_type_qualifier_list_iterator iter;
+    for (res = kefir_ast_type_qualifier_list_iter(&declarator->array->type_qualifiers, &iter, &qualifier); res == KEFIR_OK;
+         res = kefir_ast_type_qualifier_list_next(&iter, &qualifier)) {
         REQUIRE_OK(resolve_qualification(qualifier, &qualification));
+    }
+    if (res != KEFIR_ITERATOR_END) {
+        REQUIRE_OK(res);
     }
 
     switch (declarator->array->type) {
