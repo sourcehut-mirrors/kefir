@@ -100,7 +100,7 @@ static kefir_result_t scan_pointer(struct kefir_mem *mem, struct kefir_parser *p
         return res;
     });
 
-    res = kefir_ast_type_qualifier_list_clone(mem, &declarator->pointer.type_qualifiers, &type_qualifiers);
+    res = kefir_ast_type_qualifier_list_clone(mem, &declarator->pointer->type_qualifiers, &type_qualifiers);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_ast_declarator_free(mem, declarator);
         kefir_ast_type_qualifier_list_free(mem, &type_qualifiers);
@@ -222,10 +222,10 @@ static kefir_result_t scan_array_impl(struct kefir_mem *mem, struct kefir_parser
 
     declarator->source_location = source_location;
 
-    declarator->array.static_array = static_array;
+    declarator->array->static_array = static_array;
     *declarator_ptr = NULL;
 
-    res = kefir_ast_type_qualifier_list_clone(mem, &declarator->array.type_qualifiers, type_qualifiers);
+    res = kefir_ast_type_qualifier_list_clone(mem, &declarator->array->type_qualifiers, type_qualifiers);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_ast_declarator_free(mem, declarator);
         return res;
@@ -355,8 +355,8 @@ static kefir_result_t scan_function_parameter(struct kefir_mem *mem, struct kefi
         return res;
     });
 
-    res = kefir_list_insert_after(mem, &func_declarator->function.parameters,
-                                  kefir_list_tail(&func_declarator->function.parameters),
+    res = kefir_list_insert_after(mem, &func_declarator->function->parameters,
+                                  kefir_list_tail(&func_declarator->function->parameters),
                                   KEFIR_AST_NODE_BASE(declaration));
     REQUIRE_ELSE(res == KEFIR_OK, {
         KEFIR_AST_NODE_FREE(mem, KEFIR_AST_NODE_BASE(declaration));
@@ -370,7 +370,7 @@ static kefir_result_t scan_function_parameter_list(struct kefir_mem *mem, struct
     kefir_bool_t scan_parameters = true;
     if (PARSER_TOKEN_IS_PUNCTUATOR(parser, 0, KEFIR_PUNCTUATOR_ELLIPSIS)) {
         REQUIRE_OK(PARSER_SHIFT(parser));
-        declarator->function.ellipsis = true;
+        declarator->function->ellipsis = true;
         scan_parameters = false;
     } else {
         REQUIRE_OK(scan_function_parameter(mem, parser, declarator));
@@ -383,7 +383,7 @@ static kefir_result_t scan_function_parameter_list(struct kefir_mem *mem, struct
                     KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(parser, 0),
                                            "Expected either function parameter declaration or ellipsis"));
             REQUIRE_OK(PARSER_SHIFT(parser));
-            declarator->function.ellipsis = true;
+            declarator->function->ellipsis = true;
             scan_parameters = false;
         } else {
             REQUIRE_OK(res);
@@ -402,8 +402,8 @@ static kefir_result_t scan_function_identifier_list(struct kefir_mem *mem, struc
         REQUIRE_MATCH_OK(&res, KEFIR_PARSER_RULE_APPLY(mem, parser, identifier, &param),
                          KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(parser, 0),
                                                 "Expected function parameter identifier"));
-        res = kefir_list_insert_after(mem, &declarator->function.parameters,
-                                      kefir_list_tail(&declarator->function.parameters), param);
+        res = kefir_list_insert_after(mem, &declarator->function->parameters,
+                                      kefir_list_tail(&declarator->function->parameters), param);
         REQUIRE_ELSE(res == KEFIR_OK, {
             KEFIR_AST_NODE_FREE(mem, param);
             return res;

@@ -223,15 +223,15 @@ DEFINE_CASE(ast_structure_declaration2, "AST Declarations - structure declaratio
         ASSERT(entry_declarator->declarator != NULL);
         ASSERT(entry_declarator->bitwidth == NULL);
         ASSERT(entry_declarator->declarator->klass == KEFIR_AST_DECLARATOR_ARRAY);
-        ASSERT(!entry_declarator->declarator->array.static_array);
-        ASSERT(kefir_ast_type_qualifier_list_iter(&entry_declarator->declarator->array.type_qualifiers, NULL) == NULL);
-        ASSERT(entry_declarator->declarator->array.length->klass->type == KEFIR_AST_CONSTANT);
-        ASSERT(((struct kefir_ast_constant *) KEFIR_AST_NODE_SELF(entry_declarator->declarator->array.length))->type ==
+        ASSERT(!entry_declarator->declarator->array->static_array);
+        ASSERT(kefir_ast_type_qualifier_list_iter(&entry_declarator->declarator->array->type_qualifiers, NULL) == NULL);
+        ASSERT(entry_declarator->declarator->array->length->klass->type == KEFIR_AST_CONSTANT);
+        ASSERT(((struct kefir_ast_constant *) KEFIR_AST_NODE_SELF(entry_declarator->declarator->array->length))->type ==
                KEFIR_AST_INT_CONSTANT);
-        ASSERT(((struct kefir_ast_constant *) KEFIR_AST_NODE_SELF(entry_declarator->declarator->array.length))->value.character == 5);
-        ASSERT(entry_declarator->declarator->array.declarator->klass == KEFIR_AST_DECLARATOR_IDENTIFIER);
-        ASSERT(strcmp(entry_declarator->declarator->array.declarator->identifier.identifier, "last") == 0);
-        ASSERT(entry_declarator->declarator->array.declarator->identifier.asm_label == NULL);
+        ASSERT(((struct kefir_ast_constant *) KEFIR_AST_NODE_SELF(entry_declarator->declarator->array->length))->value.character == 5);
+        ASSERT(entry_declarator->declarator->array->declarator->klass == KEFIR_AST_DECLARATOR_IDENTIFIER);
+        ASSERT(strcmp(entry_declarator->declarator->array->declarator->identifier.identifier, "last") == 0);
+        ASSERT(entry_declarator->declarator->array->declarator->identifier.asm_label == NULL);
         kefir_list_next(&declarator_iter);
     } while (0);
 

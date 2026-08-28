@@ -195,8 +195,8 @@ DEFINE_CASE(ast_nodes_function_definitions1, "AST nodes - function definitions #
 
     struct kefir_ast_declarator *decl1 =
         kefir_ast_declarator_function(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, &symbols, "fn1"));
-    ASSERT_OK(kefir_list_insert_after(&kft_mem, &decl1->function.parameters,
-                                      kefir_list_tail(&decl1->function.parameters), param1));
+    ASSERT_OK(kefir_list_insert_after(&kft_mem, &decl1->function->parameters,
+                                      kefir_list_tail(&decl1->function->parameters), param1));
 
     struct kefir_ast_compound_statement *body1 = kefir_ast_new_compound_statement(&kft_mem);
     ASSERT_OK(kefir_ast_compound_statement_append(

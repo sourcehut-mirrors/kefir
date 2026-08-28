@@ -61,9 +61,9 @@ typedef struct kefir_ast_declarator {
     kefir_ast_declarator_class_t klass;
     union {
         struct kefir_ast_declarator_identifier identifier;
-        struct kefir_ast_declarator_pointer pointer;
-        struct kefir_ast_declarator_array array;
-        struct kefir_ast_declarator_function function;
+        struct kefir_ast_declarator_pointer *pointer;
+        struct kefir_ast_declarator_array *array;
+        struct kefir_ast_declarator_function *function;
     };
 
     struct kefir_ast_node_attributes attributes;

@@ -1691,7 +1691,7 @@ static kefir_result_t resolve_pointer_declarator(struct kefir_mem *mem, const st
     struct kefir_ast_type_qualification qualification = {false};
     kefir_ast_type_qualifier_type_t qualifier;
     for (const struct kefir_list_entry *iter =
-             kefir_ast_type_qualifier_list_iter(&declarator->pointer.type_qualifiers, &qualifier);
+             kefir_ast_type_qualifier_list_iter(&declarator->pointer->type_qualifiers, &qualifier);
          iter != NULL; kefir_ast_type_qualifier_list_next(&iter, &qualifier)) {
         REQUIRE_OK(resolve_qualification(qualifier, &qualification));
     }
@@ -1710,12 +1710,12 @@ static kefir_result_t resolve_array_declarator(struct kefir_mem *mem, const stru
     struct kefir_ast_type_qualification qualification = {false};
     kefir_ast_type_qualifier_type_t qualifier;
     for (const struct kefir_list_entry *iter =
-             kefir_ast_type_qualifier_list_iter(&declarator->array.type_qualifiers, &qualifier);
+             kefir_ast_type_qualifier_list_iter(&declarator->array->type_qualifiers, &qualifier);
          iter != NULL; kefir_ast_type_qualifier_list_next(&iter, &qualifier)) {
         REQUIRE_OK(resolve_qualification(qualifier, &qualification));
     }
 
-    switch (declarator->array.type) {
+    switch (declarator->array->type) {
         case KEFIR_AST_DECLARATOR_ARRAY_UNBOUNDED:
             *base_type = kefir_ast_type_unbounded_array(mem, context->type_bundle, *base_type, &qualification);
             REQUIRE(*base_type != NULL,
@@ -1723,7 +1723,7 @@ static kefir_result_t resolve_array_declarator(struct kefir_mem *mem, const stru
             break;
 
         case KEFIR_AST_DECLARATOR_ARRAY_VLA_UNSPECIFIED:
-            if (declarator->array.static_array) {
+            if (declarator->array->static_array) {
                 *base_type =
                     kefir_ast_type_vlen_array_static(mem, context->type_bundle, *base_type, NULL, &qualification);
             } else {
@@ -1734,42 +1734,42 @@ static kefir_result_t resolve_array_declarator(struct kefir_mem *mem, const stru
             break;
 
         case KEFIR_AST_DECLARATOR_ARRAY_BOUNDED: {
-            REQUIRE_OK(kefir_ast_analyze_node(mem, context, declarator->array.length));
-            if (!KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION(declarator->array.length)) {
+            REQUIRE_OK(kefir_ast_analyze_node(mem, context, declarator->array->length));
+            if (!KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION(declarator->array->length)) {
                 kefir_pop_error(KEFIR_NOT_CONSTANT);
                 REQUIRE(KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(
-                            kefir_ast_unqualified_type(declarator->array.length->properties.type)),
-                        KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &declarator->array.length->source_location,
+                            kefir_ast_unqualified_type(declarator->array->length->properties.type)),
+                        KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &declarator->array->length->source_location,
                                                "Variable-length array declaration length shall have integral type"));
-                if (declarator->array.static_array) {
+                if (declarator->array->static_array) {
                     *base_type =
                         kefir_ast_type_vlen_array_static(mem, context->type_bundle, *base_type,
-                                                         KEFIR_AST_NODE_REF(declarator->array.length), &qualification);
+                                                         KEFIR_AST_NODE_REF(declarator->array->length), &qualification);
                 } else {
                     *base_type =
                         kefir_ast_type_vlen_array(mem, context->type_bundle, *base_type,
-                                                  KEFIR_AST_NODE_REF(declarator->array.length), &qualification);
+                                                  KEFIR_AST_NODE_REF(declarator->array->length), &qualification);
                 }
             } else {
-                REQUIRE(KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(declarator->array.length)->klass ==
+                REQUIRE(KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(declarator->array->length)->klass ==
                             KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER,
-                        KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &declarator->array.length->source_location,
+                        KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &declarator->array->length->source_location,
                                                "Constant length of AST array declaration shall have integral type"));
                 kefir_bool_t length_signed;
-                REQUIRE_OK(kefir_ast_type_is_signed(context->type_traits, declarator->array.length->properties.type,
+                REQUIRE_OK(kefir_ast_type_is_signed(context->type_traits, declarator->array->length->properties.type,
                                                     &length_signed));
                 REQUIRE(
-                    !length_signed || KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(declarator->array.length)->integer >= 0,
-                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &declarator->array.length->source_location,
+                    !length_signed || KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(declarator->array->length)->integer >= 0,
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &declarator->array->length->source_location,
                                            "Array length cannot be negative"));
-                if (declarator->array.static_array) {
+                if (declarator->array->static_array) {
                     *base_type = kefir_ast_type_array_static(
                         mem, context->type_bundle, *base_type,
-                        KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(declarator->array.length)->integer, &qualification);
+                        KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(declarator->array->length)->integer, &qualification);
                 } else {
                     *base_type = kefir_ast_type_array(
                         mem, context->type_bundle, *base_type,
-                        KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(declarator->array.length)->integer, &qualification);
+                        KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(declarator->array->length)->integer, &qualification);
                 }
             }
         } break;
@@ -1835,7 +1835,7 @@ static kefir_result_t resolve_function_declarator(struct kefir_mem *mem, const s
     });
 
     res = KEFIR_OK;
-    for (const struct kefir_list_entry *iter = kefir_list_head(&declarator->function.parameters);
+    for (const struct kefir_list_entry *iter = kefir_list_head(&declarator->function->parameters);
          iter != NULL && res == KEFIR_OK; kefir_list_next(&iter)) {
         ASSIGN_DECL_CAST(struct kefir_ast_node_base *, node, iter->value);
 
@@ -1882,18 +1882,18 @@ static kefir_result_t resolve_function_declarator(struct kefir_mem *mem, const s
         }
     }
 
-    if (res == KEFIR_OK && kefir_list_head(&declarator->function.parameters) == NULL &&
-        !declarator->function.ellipsis &&
+    if (res == KEFIR_OK && kefir_list_head(&declarator->function->parameters) == NULL &&
+        !declarator->function->ellipsis &&
         KEFIR_STANDARD_VERSION_AT_LEAST_C23(context->configuration->standard_version)) {
         REQUIRE_CHAIN(
             &res, kefir_ast_type_function_parameter(mem, context->type_bundle, func_type, kefir_ast_type_void(), NULL));
     }
 
-    REQUIRE_CHAIN(&res, kefir_ast_type_function_ellipsis(func_type, declarator->function.ellipsis));
+    REQUIRE_CHAIN(&res, kefir_ast_type_function_ellipsis(func_type, declarator->function->ellipsis));
 
-    if (declarator->function.declarator != NULL &&
-        declarator->function.declarator->klass == KEFIR_AST_DECLARATOR_IDENTIFIER) {
-        const char *func_identifier = declarator->function.declarator->identifier.identifier;
+    if (declarator->function->declarator != NULL &&
+        declarator->function->declarator->klass == KEFIR_AST_DECLARATOR_IDENTIFIER) {
+        const char *func_identifier = declarator->function->declarator->identifier.identifier;
         if (func_identifier != NULL &&
             (strcmp(func_identifier, "setjmp") == 0 || strcmp(func_identifier, "_setjmp") == 0 ||
              strcmp(func_identifier, "sigsetjmp") == 0 || strcmp(func_identifier, "__sigsetjmp") == 0 ||
@@ -2229,25 +2229,25 @@ static kefir_result_t analyze_declaration_declarator_impl(
         case KEFIR_AST_DECLARATOR_POINTER:
             REQUIRE_OK(resolve_pointer_declarator(mem, context, declarator, base_type));
             ASSIGN_PTR(alignment, 0);
-            REQUIRE_OK(analyze_declaration_declarator_impl(mem, context, specifiers, declarator->pointer.declarator,
+            REQUIRE_OK(analyze_declaration_declarator_impl(mem, context, specifiers, declarator->pointer->declarator,
                                                            identifier, base_type, alignment, flags, attributes));
             break;
 
         case KEFIR_AST_DECLARATOR_ARRAY:
             REQUIRE_OK(resolve_array_declarator(mem, context, declarator, base_type));
-            REQUIRE_OK(analyze_declaration_declarator_impl(mem, context, specifiers, declarator->array.declarator,
+            REQUIRE_OK(analyze_declaration_declarator_impl(mem, context, specifiers, declarator->array->declarator,
                                                            identifier, base_type, alignment, flags, attributes));
             break;
 
         case KEFIR_AST_DECLARATOR_FUNCTION: {
             const struct kefir_ast_declarator_function *underlying_function = NULL;
-            REQUIRE_OK(kefir_ast_declarator_unpack_function(declarator->function.declarator, &underlying_function));
+            REQUIRE_OK(kefir_ast_declarator_unpack_function(declarator->function->declarator, &underlying_function));
             REQUIRE_OK(
                 resolve_function_declarator(mem, context, specifiers, declarator,
                                             (flags & KEFIR_AST_DECLARATION_ANALYSIS_FUNCTION_DEFINITION_CONTEXT) != 0 &&
                                                 underlying_function == NULL,
                                             base_type));
-            REQUIRE_OK(analyze_declaration_declarator_impl(mem, context, specifiers, declarator->function.declarator,
+            REQUIRE_OK(analyze_declaration_declarator_impl(mem, context, specifiers, declarator->function->declarator,
                                                            identifier, base_type, alignment, flags, attributes));
         } break;
     }

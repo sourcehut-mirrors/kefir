@@ -45,7 +45,7 @@ DEFINE_CASE(ast_declarator_analysis10, "AST declarator analysis - pointer declar
 
     struct kefir_ast_declarator *declarator = kefir_ast_declarator_pointer(
         &kft_mem, kefir_ast_declarator_identifier(&kft_mem, context->symbols, "pointer_variable1"));
-    ASSERT_OK(kefir_ast_type_qualifier_list_append(&kft_mem, &declarator->pointer.type_qualifiers,
+    ASSERT_OK(kefir_ast_type_qualifier_list_append(&kft_mem, &declarator->pointer->type_qualifiers,
                                                    KEFIR_AST_TYPE_QUALIFIER_VOLATILE));
 
     const struct kefir_ast_type *type = NULL;
@@ -117,9 +117,9 @@ DEFINE_CASE(ast_declarator_analysis11, "AST declarator analysis - pointer declar
 
     struct kefir_ast_declarator *declarator =
         kefir_ast_declarator_pointer(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, context->symbols, NULL));
-    ASSERT_OK(kefir_ast_type_qualifier_list_append(&kft_mem, &declarator->pointer.type_qualifiers,
+    ASSERT_OK(kefir_ast_type_qualifier_list_append(&kft_mem, &declarator->pointer->type_qualifiers,
                                                    KEFIR_AST_TYPE_QUALIFIER_CONST));
-    ASSERT_OK(kefir_ast_type_qualifier_list_append(&kft_mem, &declarator->pointer.type_qualifiers,
+    ASSERT_OK(kefir_ast_type_qualifier_list_append(&kft_mem, &declarator->pointer->type_qualifiers,
                                                    KEFIR_AST_TYPE_QUALIFIER_RESTRICT));
 
     struct kefir_ast_struct_type *struct_type1 = NULL;
@@ -179,7 +179,7 @@ DEFINE_CASE(ast_declarator_analysis12, "AST declarator analysis - array declarat
     struct kefir_ast_declarator *declarator =
         kefir_ast_declarator_array(&kft_mem, KEFIR_AST_DECLARATOR_ARRAY_UNBOUNDED, NULL,
                                    kefir_ast_declarator_identifier(&kft_mem, context->symbols, "array1"));
-    ASSERT_OK(kefir_ast_type_qualifier_list_append(&kft_mem, &declarator->array.type_qualifiers,
+    ASSERT_OK(kefir_ast_type_qualifier_list_append(&kft_mem, &declarator->array->type_qualifiers,
                                                    KEFIR_AST_TYPE_QUALIFIER_VOLATILE));
 
     const struct kefir_ast_type *type = NULL;
@@ -231,16 +231,16 @@ DEFINE_CASE(ast_declarator_analysis13, "AST declarator analysis - array declarat
     struct kefir_ast_declarator *declarator1 =
         kefir_ast_declarator_array(&kft_mem, KEFIR_AST_DECLARATOR_ARRAY_VLA_UNSPECIFIED, NULL,
                                    kefir_ast_declarator_identifier(&kft_mem, context->symbols, "array_one"));
-    ASSERT_OK(kefir_ast_type_qualifier_list_append(&kft_mem, &declarator1->array.type_qualifiers,
+    ASSERT_OK(kefir_ast_type_qualifier_list_append(&kft_mem, &declarator1->array->type_qualifiers,
                                                    KEFIR_AST_TYPE_QUALIFIER_RESTRICT));
 
     struct kefir_ast_declarator *declarator2 =
         kefir_ast_declarator_array(&kft_mem, KEFIR_AST_DECLARATOR_ARRAY_VLA_UNSPECIFIED, NULL,
                                    kefir_ast_declarator_identifier(&kft_mem, context->symbols, NULL));
-    declarator2->array.static_array = true;
-    ASSERT_OK(kefir_ast_type_qualifier_list_append(&kft_mem, &declarator2->array.type_qualifiers,
+    declarator2->array->static_array = true;
+    ASSERT_OK(kefir_ast_type_qualifier_list_append(&kft_mem, &declarator2->array->type_qualifiers,
                                                    KEFIR_AST_TYPE_QUALIFIER_RESTRICT));
-    ASSERT_OK(kefir_ast_type_qualifier_list_append(&kft_mem, &declarator2->array.type_qualifiers,
+    ASSERT_OK(kefir_ast_type_qualifier_list_append(&kft_mem, &declarator2->array->type_qualifiers,
                                                    KEFIR_AST_TYPE_QUALIFIER_CONST));
 
     const struct kefir_ast_type *type = NULL;
@@ -310,16 +310,16 @@ DEFINE_CASE(ast_declarator_analysis14, "AST declarator analysis - array declarat
     struct kefir_ast_declarator *declarator1 = kefir_ast_declarator_array(
         &kft_mem, KEFIR_AST_DECLARATOR_ARRAY_BOUNDED, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 10)),
         kefir_ast_declarator_identifier(&kft_mem, context->symbols, NULL));
-    ASSERT_OK(kefir_ast_type_qualifier_list_append(&kft_mem, &declarator1->array.type_qualifiers,
+    ASSERT_OK(kefir_ast_type_qualifier_list_append(&kft_mem, &declarator1->array->type_qualifiers,
                                                    KEFIR_AST_TYPE_QUALIFIER_CONST));
 
     struct kefir_ast_declarator *declarator2 = kefir_ast_declarator_array(
         &kft_mem, KEFIR_AST_DECLARATOR_ARRAY_BOUNDED, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 20)),
         kefir_ast_declarator_identifier(&kft_mem, context->symbols, "another_array"));
-    declarator2->array.static_array = true;
-    ASSERT_OK(kefir_ast_type_qualifier_list_append(&kft_mem, &declarator2->array.type_qualifiers,
+    declarator2->array->static_array = true;
+    ASSERT_OK(kefir_ast_type_qualifier_list_append(&kft_mem, &declarator2->array->type_qualifiers,
                                                    KEFIR_AST_TYPE_QUALIFIER_VOLATILE));
-    ASSERT_OK(kefir_ast_type_qualifier_list_append(&kft_mem, &declarator2->array.type_qualifiers,
+    ASSERT_OK(kefir_ast_type_qualifier_list_append(&kft_mem, &declarator2->array->type_qualifiers,
                                                    KEFIR_AST_TYPE_QUALIFIER_CONST));
 
     const struct kefir_ast_type *type = NULL;
@@ -376,17 +376,17 @@ DEFINE_CASE(ast_declarator_analysis15, "AST declarator analysis - array declarat
         &kft_mem, KEFIR_AST_DECLARATOR_ARRAY_BOUNDED,
         KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(&kft_mem, context->symbols, "variable")),
         kefir_ast_declarator_identifier(&kft_mem, context->symbols, NULL));
-    ASSERT_OK(kefir_ast_type_qualifier_list_append(&kft_mem, &declarator1->array.type_qualifiers,
+    ASSERT_OK(kefir_ast_type_qualifier_list_append(&kft_mem, &declarator1->array->type_qualifiers,
                                                    KEFIR_AST_TYPE_QUALIFIER_CONST));
 
     struct kefir_ast_declarator *declarator2 = kefir_ast_declarator_array(
         &kft_mem, KEFIR_AST_DECLARATOR_ARRAY_BOUNDED,
         KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(&kft_mem, context->symbols, "variable")),
         kefir_ast_declarator_identifier(&kft_mem, context->symbols, "another_array"));
-    declarator2->array.static_array = true;
-    ASSERT_OK(kefir_ast_type_qualifier_list_append(&kft_mem, &declarator2->array.type_qualifiers,
+    declarator2->array->static_array = true;
+    ASSERT_OK(kefir_ast_type_qualifier_list_append(&kft_mem, &declarator2->array->type_qualifiers,
                                                    KEFIR_AST_TYPE_QUALIFIER_VOLATILE));
-    ASSERT_OK(kefir_ast_type_qualifier_list_append(&kft_mem, &declarator2->array.type_qualifiers,
+    ASSERT_OK(kefir_ast_type_qualifier_list_append(&kft_mem, &declarator2->array->type_qualifiers,
                                                    KEFIR_AST_TYPE_QUALIFIER_CONST));
 
     const struct kefir_ast_type *type = NULL;

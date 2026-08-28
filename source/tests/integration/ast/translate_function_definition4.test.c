@@ -55,7 +55,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
         mem, kefir_ast_declarator_identifier(mem, global_context.context.symbols, "factorial"));
 
     REQUIRE_OK(kefir_list_insert_after(
-        mem, &function1_decl->function.parameters, kefir_list_tail(&function1_decl->function.parameters),
+        mem, &function1_decl->function->parameters, kefir_list_tail(&function1_decl->function->parameters),
         KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, global_context.context.symbols, "i"))));
 
     struct kefir_ast_declaration *function1_param1 = kefir_ast_new_single_declaration(

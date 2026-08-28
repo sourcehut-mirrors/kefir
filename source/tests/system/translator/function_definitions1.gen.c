@@ -47,8 +47,8 @@ static struct kefir_ast_function_definition *define_sum_function(struct kefir_me
                                                        kefir_ast_type_specifier_int(mem)) == KEFIR_OK,
             NULL);
     REQUIRE(
-        kefir_list_insert_after(mem, &function1_decl->function.parameters,
-                                kefir_list_tail(&function1_decl->function.parameters), function1_param1) == KEFIR_OK,
+        kefir_list_insert_after(mem, &function1_decl->function->parameters,
+                                kefir_list_tail(&function1_decl->function->parameters), function1_param1) == KEFIR_OK,
         NULL);
 
     struct kefir_ast_declaration *function1_param2 =
@@ -57,8 +57,8 @@ static struct kefir_ast_function_definition *define_sum_function(struct kefir_me
                                                        kefir_ast_type_specifier_int(mem)) == KEFIR_OK,
             NULL);
     REQUIRE(
-        kefir_list_insert_after(mem, &function1_decl->function.parameters,
-                                kefir_list_tail(&function1_decl->function.parameters), function1_param2) == KEFIR_OK,
+        kefir_list_insert_after(mem, &function1_decl->function->parameters,
+                                kefir_list_tail(&function1_decl->function->parameters), function1_param2) == KEFIR_OK,
         NULL);
 
     struct kefir_ast_compound_statement *function1_body = kefir_ast_new_compound_statement(mem);

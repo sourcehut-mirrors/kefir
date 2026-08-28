@@ -78,15 +78,15 @@ DEFINE_CASE(ast_declarator_analysis21, "AST declarator analysis - function decla
 
     struct kefir_ast_declarator *decl0 = kefir_ast_declarator_function(
         &kft_mem, kefir_ast_declarator_identifier(&kft_mem, context->symbols, "someFunc"));
-    ASSERT_OK(kefir_list_insert_after(&kft_mem, &decl0->function.parameters,
-                                      kefir_list_tail(&decl0->function.parameters), KEFIR_AST_NODE_BASE(param1)));
-    ASSERT_OK(kefir_list_insert_after(&kft_mem, &decl0->function.parameters,
-                                      kefir_list_tail(&decl0->function.parameters), KEFIR_AST_NODE_BASE(param2)));
-    ASSERT_OK(kefir_list_insert_after(&kft_mem, &decl0->function.parameters,
-                                      kefir_list_tail(&decl0->function.parameters), KEFIR_AST_NODE_BASE(param3)));
-    ASSERT_OK(kefir_list_insert_after(&kft_mem, &decl0->function.parameters,
-                                      kefir_list_tail(&decl0->function.parameters), KEFIR_AST_NODE_BASE(param4)));
-    decl0->function.ellipsis = true;
+    ASSERT_OK(kefir_list_insert_after(&kft_mem, &decl0->function->parameters,
+                                      kefir_list_tail(&decl0->function->parameters), KEFIR_AST_NODE_BASE(param1)));
+    ASSERT_OK(kefir_list_insert_after(&kft_mem, &decl0->function->parameters,
+                                      kefir_list_tail(&decl0->function->parameters), KEFIR_AST_NODE_BASE(param2)));
+    ASSERT_OK(kefir_list_insert_after(&kft_mem, &decl0->function->parameters,
+                                      kefir_list_tail(&decl0->function->parameters), KEFIR_AST_NODE_BASE(param3)));
+    ASSERT_OK(kefir_list_insert_after(&kft_mem, &decl0->function->parameters,
+                                      kefir_list_tail(&decl0->function->parameters), KEFIR_AST_NODE_BASE(param4)));
+    decl0->function->ellipsis = true;
 
     struct kefir_ast_declarator *decl = kefir_ast_declarator_pointer(&kft_mem, decl0);
 
@@ -211,8 +211,8 @@ DEFINE_CASE(ast_declarator_analysis22, "AST declarator analysis - function decla
         kefir_ast_declarator_function(&kft_mem,
                                       kefir_ast_declarator_identifier(&kft_mem, context->symbols, "callback")),
         NULL, &param3_declaration);
-    ASSERT_OK(kefir_list_insert_after(&kft_mem, &param3_declaration->declarator->function.parameters,
-                                      kefir_list_tail(&param3_declaration->declarator->function.parameters),
+    ASSERT_OK(kefir_list_insert_after(&kft_mem, &param3_declaration->declarator->function->parameters,
+                                      kefir_list_tail(&param3_declaration->declarator->function->parameters),
                                       KEFIR_AST_NODE_BASE(param3_1)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &param3->specifiers,
                                                          kefir_ast_storage_class_specifier_register(&kft_mem)));
@@ -226,12 +226,12 @@ DEFINE_CASE(ast_declarator_analysis22, "AST declarator analysis - function decla
 
     struct kefir_ast_declarator *decl2 =
         kefir_ast_declarator_function(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, context->symbols, "modify"));
-    ASSERT_OK(kefir_list_insert_after(&kft_mem, &decl2->function.parameters,
-                                      kefir_list_tail(&decl2->function.parameters), KEFIR_AST_NODE_BASE(param1)));
-    ASSERT_OK(kefir_list_insert_after(&kft_mem, &decl2->function.parameters,
-                                      kefir_list_tail(&decl2->function.parameters), KEFIR_AST_NODE_BASE(param2)));
-    ASSERT_OK(kefir_list_insert_after(&kft_mem, &decl2->function.parameters,
-                                      kefir_list_tail(&decl2->function.parameters), KEFIR_AST_NODE_BASE(param3)));
+    ASSERT_OK(kefir_list_insert_after(&kft_mem, &decl2->function->parameters,
+                                      kefir_list_tail(&decl2->function->parameters), KEFIR_AST_NODE_BASE(param1)));
+    ASSERT_OK(kefir_list_insert_after(&kft_mem, &decl2->function->parameters,
+                                      kefir_list_tail(&decl2->function->parameters), KEFIR_AST_NODE_BASE(param2)));
+    ASSERT_OK(kefir_list_insert_after(&kft_mem, &decl2->function->parameters,
+                                      kefir_list_tail(&decl2->function->parameters), KEFIR_AST_NODE_BASE(param3)));
 
     const char *identifier2 = NULL;
     const struct kefir_ast_type *decl_type2 = NULL;
@@ -292,8 +292,8 @@ DEFINE_CASE(ast_declarator_analysis23, "AST declarator analysis - function decla
     struct kefir_ast_declarator *decl1 = kefir_ast_declarator_function(
         &kft_mem, kefir_ast_declarator_pointer(
                       &kft_mem, kefir_ast_declarator_identifier(&kft_mem, context->symbols, "callback")));
-    ASSERT_OK(kefir_list_insert_after(&kft_mem, &decl1->function.parameters,
-                                      kefir_list_tail(&decl1->function.parameters), KEFIR_AST_NODE_BASE(param1)));
+    ASSERT_OK(kefir_list_insert_after(&kft_mem, &decl1->function->parameters,
+                                      kefir_list_tail(&decl1->function->parameters), KEFIR_AST_NODE_BASE(param1)));
 
     struct kefir_ast_structure_specifier *specifier1 =
         kefir_ast_structure_specifier_init(&kft_mem, context->symbols, "callback_S", true);

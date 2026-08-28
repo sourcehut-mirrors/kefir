@@ -1205,7 +1205,7 @@ DEFINE_CASE(ast_node_analysis_unary_operation_alignof, "AST node analysis - unar
                                              kefir_ast_declarator_identifier(&kft_mem, NULL, NULL)));
     ASSERT_OK(
         append_specifiers(&kft_mem, &type_name6->type_decl.specifiers, 1, kefir_ast_type_specifier_char(&kft_mem)));
-    type_name6->type_decl.declarator->array.static_array = true;
+    type_name6->type_decl.declarator->array->static_array = true;
 
     struct kefir_ast_type_name *type_name7 = kefir_ast_new_type_name(
         &kft_mem, kefir_ast_declarator_pointer(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL)));

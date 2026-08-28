@@ -42,11 +42,11 @@ static struct kefir_ast_function_definition *define_sum_function(struct kefir_me
         kefir_ast_declarator_function(mem, kefir_ast_declarator_identifier(mem, context->symbols, "intat"));
 
     REQUIRE(kefir_list_insert_after(
-                mem, &function1_decl->function.parameters, kefir_list_tail(&function1_decl->function.parameters),
+                mem, &function1_decl->function->parameters, kefir_list_tail(&function1_decl->function->parameters),
                 KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "arr"))) == KEFIR_OK,
             NULL);
     REQUIRE(kefir_list_insert_after(
-                mem, &function1_decl->function.parameters, kefir_list_tail(&function1_decl->function.parameters),
+                mem, &function1_decl->function->parameters, kefir_list_tail(&function1_decl->function->parameters),
                 KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "idx"))) == KEFIR_OK,
             NULL);
 
