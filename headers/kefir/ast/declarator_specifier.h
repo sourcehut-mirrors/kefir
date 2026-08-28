@@ -33,7 +33,8 @@ typedef struct kefir_ast_declarator_specifier kefir_ast_declarator_specifier_t;
 typedef struct kefir_ast_declarator kefir_ast_declarator_t;
 
 typedef struct kefir_ast_declarator_specifier_list {
-    struct kefir_list list;
+    struct kefir_ast_declarator_specifier **specifiers;
+    kefir_size_t specifiers_length;
     struct kefir_ast_node_attributes attributes;
 } kefir_ast_declarator_specifier_list_t;
 
@@ -43,13 +44,19 @@ kefir_result_t kefir_ast_declarator_specifier_list_free(struct kefir_mem *,
 kefir_result_t kefir_ast_declarator_specifier_list_append(struct kefir_mem *,
                                                           struct kefir_ast_declarator_specifier_list *,
                                                           struct kefir_ast_declarator_specifier *);
-struct kefir_list_entry *kefir_ast_declarator_specifier_list_iter(const struct kefir_ast_declarator_specifier_list *,
+kefir_bool_t kefir_ast_declarator_specifier_list_empty(const struct kefir_ast_declarator_specifier_list *);
+
+typedef struct kefir_ast_declarator_specifier_list_iterator {
+    const struct kefir_ast_declarator_specifier_list *list;
+    kefir_size_t index;
+} kefir_ast_declarator_specifier_list_iterator_t;
+
+
+kefir_result_t kefir_ast_declarator_specifier_list_iter(const struct kefir_ast_declarator_specifier_list *,
+                                                                struct kefir_ast_declarator_specifier_list_iterator *,
                                                                   struct kefir_ast_declarator_specifier **);
-kefir_result_t kefir_ast_declarator_specifier_list_next(struct kefir_list_entry **,
+kefir_result_t kefir_ast_declarator_specifier_list_next(struct kefir_ast_declarator_specifier_list_iterator *,
                                                         struct kefir_ast_declarator_specifier **);
-kefir_result_t kefir_ast_declarator_specifier_list_remove(struct kefir_mem *,
-                                                          struct kefir_ast_declarator_specifier_list *,
-                                                          struct kefir_list_entry *);
 kefir_result_t kefir_ast_declarator_specifier_list_clone(struct kefir_mem *,
                                                          struct kefir_ast_declarator_specifier_list *,
                                                          const struct kefir_ast_declarator_specifier_list *);

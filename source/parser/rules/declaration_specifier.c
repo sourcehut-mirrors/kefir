@@ -528,17 +528,19 @@ static kefir_result_t has_type_specifiers(struct kefir_ast_declarator_specifier_
                                           kefir_bool_t *result) {
     struct kefir_ast_declarator_specifier *specifier = NULL;
     *result = false;
-    kefir_result_t res = KEFIR_OK;
-    for (struct kefir_list_entry *iter = kefir_ast_declarator_specifier_list_iter(specifiers, &specifier);
-         iter != NULL && res == KEFIR_OK && !*result;
-         res = kefir_ast_declarator_specifier_list_next(&iter, &specifier)) {
+    kefir_result_t res;
+    struct kefir_ast_declarator_specifier_list_iterator iter;
+    for (res = kefir_ast_declarator_specifier_list_iter(specifiers, &iter, &specifier); !*result && res == KEFIR_OK;
+        res = kefir_ast_declarator_specifier_list_next(&iter, &specifier)) {
 
         if (specifier->klass == KEFIR_AST_TYPE_SPECIFIER &&
             specifier->type_specifier.specifier != KEFIR_AST_TYPE_SPECIFIER_UNSIGNED_OVERRIDE) {
             *result = true;
         }
     }
-    REQUIRE_OK(res);
+    if (res != KEFIR_ITERATOR_END) {
+        REQUIRE_OK(res);
+    }
     return KEFIR_OK;
 }
 
@@ -898,7 +900,7 @@ kefir_result_t kefir_parser_scan_declaration_specifier_list(struct kefir_mem *me
             REQUIRE_OK(res);
         }
     }
-    REQUIRE(kefir_list_length(&specifiers->list) > 0,
+    REQUIRE(!kefir_ast_declarator_specifier_list_empty(specifiers),
             KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Declarator specifier list cannot be empty"));
     return KEFIR_OK;
 }

@@ -24,23 +24,11 @@
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
 
-static kefir_result_t remove_declarator_specifier(struct kefir_mem *mem, struct kefir_list *list,
-                                                  struct kefir_list_entry *entry, void *payload) {
-    UNUSED(list);
-    UNUSED(payload);
-    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
-    REQUIRE(entry != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid list entry"));
-
-    ASSIGN_DECL_CAST(struct kefir_ast_declarator_specifier *, specifier, entry->value);
-    REQUIRE_OK(kefir_ast_declarator_specifier_free(mem, specifier));
-    return KEFIR_OK;
-}
-
 kefir_result_t kefir_ast_declarator_specifier_list_init(struct kefir_ast_declarator_specifier_list *list) {
     REQUIRE(list != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST declarator specifier list"));
 
-    REQUIRE_OK(kefir_list_init(&list->list));
-    REQUIRE_OK(kefir_list_on_remove(&list->list, remove_declarator_specifier, NULL));
+    list->specifiers = NULL;
+    list->specifiers_length = 0;
     REQUIRE_OK(kefir_ast_node_attributes_init(&list->attributes));
     return KEFIR_OK;
 }
@@ -51,7 +39,12 @@ kefir_result_t kefir_ast_declarator_specifier_list_free(struct kefir_mem *mem,
     REQUIRE(list != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST declarator specifier list"));
 
     REQUIRE_OK(kefir_ast_node_attributes_free(mem, &list->attributes));
-    REQUIRE_OK(kefir_list_free(mem, &list->list));
+    for (kefir_size_t i = 0; i < list->specifiers_length; i++) {
+        REQUIRE_OK(kefir_ast_declarator_specifier_free(mem, list->specifiers[i]));
+    }
+    KEFIR_FREE(mem, list->specifiers);
+    list->specifiers = NULL;
+    list->specifiers_length = 0;
     return KEFIR_OK;
 }
 
@@ -62,42 +55,40 @@ kefir_result_t kefir_ast_declarator_specifier_list_append(struct kefir_mem *mem,
     REQUIRE(list != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST declarator specifier list"));
     REQUIRE(specifier != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST declarator specifier"));
 
-    REQUIRE_OK(kefir_list_insert_after(mem, &list->list, kefir_list_tail(&list->list), specifier));
+    kefir_size_t new_length = list->specifiers_length + 1;
+    struct kefir_ast_declarator_specifier **new_specifiers = KEFIR_REALLOC(mem, list->specifiers, sizeof(struct kefir_ast_declarator_specifier *) * new_length);
+    REQUIRE(new_specifiers != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST declarator specifier list"));
+    new_specifiers[list->specifiers_length] = specifier;
+    list->specifiers = new_specifiers;
+    list->specifiers_length = new_length;
     return KEFIR_OK;
 }
 
-struct kefir_list_entry *kefir_ast_declarator_specifier_list_iter(
-    const struct kefir_ast_declarator_specifier_list *list, struct kefir_ast_declarator_specifier **specifier_ptr) {
-    REQUIRE(list != NULL, NULL);
-
-    struct kefir_list_entry *iter = kefir_list_head(&list->list);
-    if (iter != NULL) {
-        ASSIGN_PTR(specifier_ptr, (struct kefir_ast_declarator_specifier *) iter->value);
-    }
-    return iter;
+kefir_bool_t kefir_ast_declarator_specifier_list_empty(const struct kefir_ast_declarator_specifier_list *list) {
+    REQUIRE(list != NULL, true);
+    return list->specifiers_length == 0;
 }
 
-kefir_result_t kefir_ast_declarator_specifier_list_next(struct kefir_list_entry **iter,
-                                                        struct kefir_ast_declarator_specifier **specifier_ptr) {
-    REQUIRE(iter != NULL,
-            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST declarator specifier list iterator"));
-    REQUIRE(*iter != NULL, KEFIR_OK);
-
-    *iter = (*iter)->next;
-    if (*iter != NULL) {
-        ASSIGN_PTR(specifier_ptr, (struct kefir_ast_declarator_specifier *) (*iter)->value);
-    }
-    return KEFIR_OK;
-}
-
-kefir_result_t kefir_ast_declarator_specifier_list_remove(struct kefir_mem *mem,
-                                                          struct kefir_ast_declarator_specifier_list *list,
-                                                          struct kefir_list_entry *iter) {
-    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+kefir_result_t kefir_ast_declarator_specifier_list_iter(
+    const struct kefir_ast_declarator_specifier_list *list, struct kefir_ast_declarator_specifier_list_iterator *iter, struct kefir_ast_declarator_specifier **specifier_ptr) {
     REQUIRE(list != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST declarator specifier list"));
-    REQUIRE(iter != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid list iterator"));
+    REQUIRE(iter != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to AST declarator specifier list iterator"));
 
-    REQUIRE_OK(kefir_list_pop(mem, &list->list, iter));
+    iter->list = list;
+    iter->index = 0;
+    REQUIRE(iter->index < iter->list->specifiers_length, KEFIR_SET_ERROR(KEFIR_ITERATOR_END, "End of AST declarator specifier list iterator"));
+    ASSIGN_PTR(specifier_ptr, (struct kefir_ast_declarator_specifier *) iter->list->specifiers[iter->index]);
+    iter->index++;
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_ast_declarator_specifier_list_next(
+    struct kefir_ast_declarator_specifier_list_iterator *iter, struct kefir_ast_declarator_specifier **specifier_ptr) {
+    REQUIRE(iter != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST declarator specifier list iterator"));
+
+    REQUIRE(iter->index < iter->list->specifiers_length, KEFIR_SET_ERROR(KEFIR_ITERATOR_END, "End of AST declarator specifier list iterator"));
+    ASSIGN_PTR(specifier_ptr, (struct kefir_ast_declarator_specifier *) iter->list->specifiers[iter->index]);
+    iter->index++;
     return KEFIR_OK;
 }
 
@@ -111,8 +102,10 @@ kefir_result_t kefir_ast_declarator_specifier_list_clone(struct kefir_mem *mem,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid source AST declarator specifier list"));
 
     struct kefir_ast_declarator_specifier *specifier = NULL;
-    for (struct kefir_list_entry *iter = kefir_ast_declarator_specifier_list_iter(src, &specifier); iter != NULL;
-         kefir_ast_declarator_specifier_list_next(&iter, &specifier)) {
+    struct kefir_ast_declarator_specifier_list_iterator iter;
+    kefir_result_t res;
+    for (res = kefir_ast_declarator_specifier_list_iter(src, &iter, &specifier); res == KEFIR_OK;
+         res = kefir_ast_declarator_specifier_list_next(&iter, &specifier)) {
         struct kefir_ast_declarator_specifier *clone = kefir_ast_declarator_specifier_clone(mem, specifier);
         REQUIRE(clone != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to clone AST declarator specifier"));
 
@@ -121,6 +114,9 @@ kefir_result_t kefir_ast_declarator_specifier_list_clone(struct kefir_mem *mem,
             kefir_ast_declarator_specifier_free(mem, clone);
             return res;
         });
+    }
+    if (res != KEFIR_ITERATOR_END) {
+        REQUIRE_OK(res);
     }
     REQUIRE_OK(kefir_ast_node_attributes_clone(mem, &dst->attributes, &src->attributes));
     return KEFIR_OK;
@@ -133,8 +129,20 @@ kefir_result_t kefir_ast_declarator_specifier_list_move_all(struct kefir_mem *me
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid destination AST declarator specifier list"));
     REQUIRE(src != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid source AST declarator specifier list"));
+    REQUIRE(src->specifiers_length > 0, KEFIR_OK);
 
-    REQUIRE_OK(kefir_list_move_all(&dst->list, &src->list));
+    kefir_size_t new_length = dst->specifiers_length + src->specifiers_length;
+    struct kefir_ast_declarator_specifier **new_specifiers = KEFIR_REALLOC(mem, dst->specifiers, sizeof(struct kefir_ast_declarator_specifier *) * new_length);
+    REQUIRE(new_specifiers != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST declarator specifier list"));
+    memcpy(&new_specifiers[dst->specifiers_length], src->specifiers, sizeof(struct kefir_ast_declarator_specifier *) * src->specifiers_length);
+
+    dst->specifiers_length = new_length;
+    dst->specifiers = new_specifiers;
+    
+    KEFIR_FREE(mem, src->specifiers);
+    src->specifiers = NULL;
+    src->specifiers_length = 0;
+
     REQUIRE_OK(kefir_ast_node_attributes_move(mem, &dst->attributes, &src->attributes));
     return KEFIR_OK;
 }
@@ -142,10 +150,9 @@ kefir_result_t kefir_ast_declarator_specifier_list_move_all(struct kefir_mem *me
 const struct kefir_source_location *kefir_ast_declarator_specifier_list_source_location(
     const struct kefir_ast_declarator_specifier_list *list) {
     REQUIRE(list != NULL, NULL);
-    struct kefir_ast_declarator_specifier *specifier = NULL;
-    const struct kefir_list_entry *iter = kefir_ast_declarator_specifier_list_iter(list, &specifier);
-    REQUIRE(iter != NULL && specifier != NULL, NULL);
-    return &specifier->source_location;
+    REQUIRE(list->specifiers_length > 0, NULL);
+
+    return &list->specifiers[0]->source_location;
 }
 
 static kefir_result_t struct_entry_remove(struct kefir_mem *mem, struct kefir_list *list,
@@ -240,9 +247,9 @@ struct kefir_ast_structure_specifier *kefir_ast_structure_specifier_clone(
                 entry_clone = kefir_ast_structure_declaration_entry_alloc(mem);
 
                 struct kefir_ast_declarator_specifier *entry_specifier = NULL;
-                for (struct kefir_list_entry *iter =
-                         kefir_ast_declarator_specifier_list_iter(&entry->declaration.specifiers, &entry_specifier);
-                     iter != NULL; kefir_ast_declarator_specifier_list_next(&iter, &entry_specifier)) {
+                struct kefir_ast_declarator_specifier_list_iterator iter;
+                for (res = kefir_ast_declarator_specifier_list_iter(&entry->declaration.specifiers, &iter, &entry_specifier); res == KEFIR_OK;
+                    res = kefir_ast_declarator_specifier_list_next(&iter, &entry_specifier)) {
                     struct kefir_ast_declarator_specifier *entry_specifier_clone =
                         kefir_ast_declarator_specifier_clone(mem, entry_specifier);
                     REQUIRE_ELSE(entry_specifier_clone != NULL, {
@@ -254,6 +261,13 @@ struct kefir_ast_structure_specifier *kefir_ast_structure_specifier_clone(
                                                                      entry_specifier_clone);
                     REQUIRE_ELSE(res == KEFIR_OK, {
                         kefir_ast_declarator_specifier_free(mem, entry_specifier_clone);
+                        kefir_ast_structure_declaration_entry_free(mem, entry_clone);
+                        kefir_ast_structure_specifier_free(mem, clone);
+                        return NULL;
+                    });
+                }
+                if (res != KEFIR_ITERATOR_END) {
+                    REQUIRE_ELSE(res == KEFIR_OK, {
                         kefir_ast_structure_declaration_entry_free(mem, entry_clone);
                         kefir_ast_structure_specifier_free(mem, clone);
                         return NULL;

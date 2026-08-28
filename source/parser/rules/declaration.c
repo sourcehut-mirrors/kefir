@@ -34,16 +34,18 @@ static kefir_result_t kefir_parser_update_scope_with_declarator(struct kefir_mem
 
     kefir_bool_t is_typedef = false;
     struct kefir_ast_declarator_specifier *specifier = NULL;
-    kefir_result_t res = KEFIR_OK;
-    for (struct kefir_list_entry *iter = kefir_ast_declarator_specifier_list_iter(&declaration->specifiers, &specifier);
-         !is_typedef && iter != NULL && res == KEFIR_OK;
-         res = kefir_ast_declarator_specifier_list_next(&iter, &specifier)) {
+    kefir_result_t res;
+    struct kefir_ast_declarator_specifier_list_iterator iter;
+    for (res = kefir_ast_declarator_specifier_list_iter(&declaration->specifiers, &iter, &specifier); !is_typedef && res == KEFIR_OK;
+        res = kefir_ast_declarator_specifier_list_next(&iter, &specifier)) {
         if (specifier->klass == KEFIR_AST_STORAGE_CLASS_SPECIFIER &&
             specifier->storage_class == KEFIR_AST_STORAGE_SPECIFIER_TYPEDEF) {
             is_typedef = true;
         }
     }
-    REQUIRE_OK(res);
+    if (res != KEFIR_ITERATOR_END) {
+        REQUIRE_OK(res);
+    }
 
     struct kefir_ast_declarator_identifier *identifier;
     REQUIRE_OK(kefir_ast_declarator_unpack_identifier(declarator, &identifier));

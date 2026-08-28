@@ -1912,14 +1912,18 @@ static kefir_result_t resolve_function_declarator(struct kefir_mem *mem, const s
 
     if (res == KEFIR_OK) {
         struct kefir_ast_declarator_specifier *declatator_specifier;
-        for (struct kefir_list_entry *iter =
-                 kefir_ast_declarator_specifier_list_iter(specifiers, &declatator_specifier);
-             iter != NULL; kefir_ast_declarator_specifier_list_next(&iter, &declatator_specifier)) {
+        kefir_result_t res;
+        struct kefir_ast_declarator_specifier_list_iterator iter;
+        for (res = kefir_ast_declarator_specifier_list_iter(specifiers, &iter, &declatator_specifier); res == KEFIR_OK;
+            res = kefir_ast_declarator_specifier_list_next(&iter, &declatator_specifier)) {
             if (declatator_specifier->klass == KEFIR_AST_FUNCTION_SPECIFIER &&
                 declatator_specifier->function_specifier == KEFIR_AST_FUNCTION_SPECIFIER_TYPE_NORETURN) {
                 func_type->attributes.no_return = true;
                 break;
             }
+        }
+        if (res != KEFIR_ITERATOR_END) {
+            REQUIRE_OK(res);
         }
     }
 
@@ -2287,9 +2291,10 @@ kefir_result_t kefir_ast_analyze_declaration_declarator(struct kefir_mem *mem, c
 
     if ((flags & KEFIR_AST_DECLARATION_ANALYSIS_IGNORE_ALIGNMENT_SPECIFIER) == 0) {
         struct kefir_ast_declarator_specifier *declatator_specifier;
-        for (struct kefir_list_entry *iter =
-                 kefir_ast_declarator_specifier_list_iter(specifiers, &declatator_specifier);
-             iter != NULL; kefir_ast_declarator_specifier_list_next(&iter, &declatator_specifier)) {
+        kefir_result_t res;
+        struct kefir_ast_declarator_specifier_list_iterator iter;
+        for (res = kefir_ast_declarator_specifier_list_iter(specifiers, &iter, &declatator_specifier); res == KEFIR_OK;
+            res = kefir_ast_declarator_specifier_list_next(&iter, &declatator_specifier)) {
             if (declatator_specifier->klass == KEFIR_AST_ALIGNMENT_SPECIFIER) {
                 kefir_size_t alignment_specifier = 0;
                 REQUIRE_OK(
@@ -2298,6 +2303,9 @@ kefir_result_t kefir_ast_analyze_declaration_declarator(struct kefir_mem *mem, c
                     *alignment = MAX(*alignment, alignment_specifier);
                 }
             }
+        }
+        if (res != KEFIR_ITERATOR_END) {
+            REQUIRE_OK(res);
         }
     }
     return KEFIR_OK;
@@ -2321,8 +2329,10 @@ static kefir_result_t analyze_declaration_specifiers_impl(
     kefir_bool_t alignment_specifier_present = false;
 
     struct kefir_ast_declarator_specifier *declatator_specifier;
-    for (struct kefir_list_entry *iter = kefir_ast_declarator_specifier_list_iter(specifiers, &declatator_specifier);
-         iter != NULL; kefir_ast_declarator_specifier_list_next(&iter, &declatator_specifier)) {
+    kefir_result_t res;
+    struct kefir_ast_declarator_specifier_list_iterator iter;
+    for (res = kefir_ast_declarator_specifier_list_iter(specifiers, &iter, &declatator_specifier); res == KEFIR_OK;
+        res = kefir_ast_declarator_specifier_list_next(&iter, &declatator_specifier)) {
         switch (declatator_specifier->klass) {
             case KEFIR_AST_TYPE_SPECIFIER:
                 REQUIRE_OK(resolve_type(mem, context, &signedness, &real_class, &seq_state, &qualification.atomic_type,
@@ -2357,6 +2367,9 @@ static kefir_result_t analyze_declaration_specifiers_impl(
                 }
                 break;
         }
+    }
+    if (res != KEFIR_ITERATOR_END) {
+        REQUIRE_OK(res);
     }
 
     if (c23_auto_inference) {

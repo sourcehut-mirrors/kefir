@@ -408,12 +408,15 @@ kefir_result_t kefir_ast_format_declarator_specifier_list(struct kefir_json_outp
     REQUIRE_OK(kefir_json_output_object_key(json, "list"));
     REQUIRE_OK(kefir_json_output_array_begin(json));
     struct kefir_ast_declarator_specifier *specifier = NULL;
-    struct kefir_list_entry *iter = kefir_ast_declarator_specifier_list_iter(specifiers, &specifier);
-    kefir_result_t res = KEFIR_OK;
-    for (; res == KEFIR_OK && iter != NULL; res = kefir_ast_declarator_specifier_list_next(&iter, &specifier)) {
+    kefir_result_t res;
+    struct kefir_ast_declarator_specifier_list_iterator iter;
+    for (res = kefir_ast_declarator_specifier_list_iter(specifiers, &iter, &specifier); res == KEFIR_OK;
+        res = kefir_ast_declarator_specifier_list_next(&iter, &specifier)) {
         REQUIRE_OK(kefir_ast_format_declarator_specifier(json, specifier, display_source_location));
     }
-    REQUIRE_OK(res);
+    if (res != KEFIR_ITERATOR_END) {
+        REQUIRE_OK(res);
+    }
     REQUIRE_OK(kefir_json_output_array_end(json));
     REQUIRE_OK(kefir_json_output_object_key(json, "attributes"));
     REQUIRE_OK(kefir_json_output_array_begin(json));

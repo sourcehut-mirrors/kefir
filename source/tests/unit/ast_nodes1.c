@@ -358,12 +358,11 @@ DEFINE_CASE(ast_nodes_type_name, "AST nodes - type name") {
     ASSERT(KEFIR_AST_NODE_SELF(KEFIR_AST_NODE_BASE(type2)) == type2);
 
     struct kefir_ast_declarator_specifier *specifier1 = NULL;
-    struct kefir_list_entry *iter = kefir_ast_declarator_specifier_list_iter(&type1->type_decl.specifiers, &specifier1);
-    ASSERT(iter != NULL);
+    struct kefir_ast_declarator_specifier_list_iterator iter;
+    ASSERT_OK(kefir_ast_declarator_specifier_list_iter(&type1->type_decl.specifiers, &iter, &specifier1));
     ASSERT(specifier1->klass == KEFIR_AST_TYPE_SPECIFIER);
     ASSERT(specifier1->type_specifier.specifier == KEFIR_AST_TYPE_SPECIFIER_VOID);
-    ASSERT_OK(kefir_ast_declarator_specifier_list_next(&iter, &specifier1));
-    ASSERT(iter == NULL);
+    ASSERT_NOK(kefir_ast_declarator_specifier_list_next(&iter, &specifier1));
     ASSERT(type1->type_decl.declarator != NULL);
     ASSERT(type1->type_decl.declarator->klass == KEFIR_AST_DECLARATOR_POINTER);
     ASSERT(kefir_ast_type_qualifier_list_iter(&type1->type_decl.declarator->pointer.type_qualifiers, NULL) == NULL);
@@ -372,12 +371,10 @@ DEFINE_CASE(ast_nodes_type_name, "AST nodes - type name") {
     ASSERT(type1->type_decl.declarator->pointer.declarator->identifier.identifier == NULL);
     ASSERT(type1->type_decl.declarator->pointer.declarator->identifier.asm_label == NULL);
 
-    iter = kefir_ast_declarator_specifier_list_iter(&type2->type_decl.specifiers, &specifier1);
-    ASSERT(iter != NULL);
+    ASSERT_OK(kefir_ast_declarator_specifier_list_iter(&type2->type_decl.specifiers, &iter, &specifier1));
     ASSERT(specifier1->klass == KEFIR_AST_TYPE_SPECIFIER);
     ASSERT(specifier1->type_specifier.specifier == KEFIR_AST_TYPE_SPECIFIER_CHAR);
-    ASSERT_OK(kefir_ast_declarator_specifier_list_next(&iter, &specifier1));
-    ASSERT(iter == NULL);
+    ASSERT_NOK(kefir_ast_declarator_specifier_list_next(&iter, &specifier1));
     ASSERT(type2->type_decl.declarator != NULL);
     ASSERT(type2->type_decl.declarator->klass == KEFIR_AST_DECLARATOR_POINTER);
     ASSERT(kefir_ast_type_qualifier_list_iter(&type2->type_decl.declarator->pointer.type_qualifiers, NULL) == NULL);
