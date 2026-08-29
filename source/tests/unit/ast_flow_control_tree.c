@@ -443,10 +443,10 @@ DEFINE_CASE(ast_flow_control_tree6, "AST Flow control tree - flow control value 
                                                KEFIR_AST_FLOW_CONTROL_STRUCTURE_SWITCH, &associated_scopes, &stmt4));
 
     struct kefir_ast_node_base *case_label_values[] = {
-        KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, -1)),
-        KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 0)),
-        KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 1)),
-        KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 0xfff))};
+        KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, -1)),
+        KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 0)),
+        KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 1)),
+        KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 0xfff))};
 
     for (int i = 0; i < 4; i++) {
         ASSERT_OK(kefir_hashtree_insert(

@@ -62,44 +62,44 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
 
 #define muldiv(_id, _oper)                                                                      \
     FUNC((_id), {                                                                               \
-        BINARY_NODE((_oper), KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, -100)),        \
-                    KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, -150)));                \
-        BINARY_NODE((_oper), KEFIR_AST_NODE_BASE(kefir_ast_new_constant_uint(mem, 156)),        \
-                    KEFIR_AST_NODE_BASE(kefir_ast_new_constant_uint(mem, 239)));                \
-        BINARY_NODE((_oper), KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, -76)),         \
-                    KEFIR_AST_NODE_BASE(kefir_ast_new_constant_ulong(mem, 1000)));              \
-        BINARY_NODE((_oper), KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long_long(mem, -1)),    \
-                    KEFIR_AST_NODE_BASE(kefir_ast_new_constant_float(mem, 4.56f)));             \
-        BINARY_NODE((_oper), KEFIR_AST_NODE_BASE(kefir_ast_new_constant_float(mem, 3.098f)),    \
-                    KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char(mem, 'A')));                \
-        BINARY_NODE((_oper), KEFIR_AST_NODE_BASE(kefir_ast_new_constant_float(mem, 73.9f)),     \
-                    KEFIR_AST_NODE_BASE(kefir_ast_new_constant_float(mem, -7366.440f)));        \
-        BINARY_NODE((_oper), KEFIR_AST_NODE_BASE(kefir_ast_new_constant_ulong(mem, 1024)),      \
-                    KEFIR_AST_NODE_BASE(kefir_ast_new_constant_double(mem, 1000.004)));         \
-        BINARY_NODE((_oper), KEFIR_AST_NODE_BASE(kefir_ast_new_constant_double(mem, 0.000056)), \
-                    KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, -7)));                  \
-        BINARY_NODE((_oper), KEFIR_AST_NODE_BASE(kefir_ast_new_constant_double(mem, 1.01)),     \
-                    KEFIR_AST_NODE_BASE(kefir_ast_new_constant_float(mem, 2.05f)));             \
-        BINARY_NODE((_oper), KEFIR_AST_NODE_BASE(kefir_ast_new_constant_float(mem, 90.4f)),     \
-                    KEFIR_AST_NODE_BASE(kefir_ast_new_constant_double(mem, 10.01)));            \
-        BINARY_NODE((_oper), KEFIR_AST_NODE_BASE(kefir_ast_new_constant_double(mem, 0.00005)),  \
-                    KEFIR_AST_NODE_BASE(kefir_ast_new_constant_double(mem, 200000.01)));        \
+        BINARY_NODE((_oper), KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, -100)),        \
+                    KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, -150)));                \
+        BINARY_NODE((_oper), KEFIR_AST_NODE_BASE(kefir_ast_new_constant_uint_noarena(mem, 156)),        \
+                    KEFIR_AST_NODE_BASE(kefir_ast_new_constant_uint_noarena(mem, 239)));                \
+        BINARY_NODE((_oper), KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, -76)),         \
+                    KEFIR_AST_NODE_BASE(kefir_ast_new_constant_ulong_noarena(mem, 1000)));              \
+        BINARY_NODE((_oper), KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long_long_noarena(mem, -1)),    \
+                    KEFIR_AST_NODE_BASE(kefir_ast_new_constant_float_noarena(mem, 4.56f)));             \
+        BINARY_NODE((_oper), KEFIR_AST_NODE_BASE(kefir_ast_new_constant_float_noarena(mem, 3.098f)),    \
+                    KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char_noarena(mem, 'A')));                \
+        BINARY_NODE((_oper), KEFIR_AST_NODE_BASE(kefir_ast_new_constant_float_noarena(mem, 73.9f)),     \
+                    KEFIR_AST_NODE_BASE(kefir_ast_new_constant_float_noarena(mem, -7366.440f)));        \
+        BINARY_NODE((_oper), KEFIR_AST_NODE_BASE(kefir_ast_new_constant_ulong_noarena(mem, 1024)),      \
+                    KEFIR_AST_NODE_BASE(kefir_ast_new_constant_double_noarena(mem, 1000.004)));         \
+        BINARY_NODE((_oper), KEFIR_AST_NODE_BASE(kefir_ast_new_constant_double_noarena(mem, 0.000056)), \
+                    KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, -7)));                  \
+        BINARY_NODE((_oper), KEFIR_AST_NODE_BASE(kefir_ast_new_constant_double_noarena(mem, 1.01)),     \
+                    KEFIR_AST_NODE_BASE(kefir_ast_new_constant_float_noarena(mem, 2.05f)));             \
+        BINARY_NODE((_oper), KEFIR_AST_NODE_BASE(kefir_ast_new_constant_float_noarena(mem, 90.4f)),     \
+                    KEFIR_AST_NODE_BASE(kefir_ast_new_constant_double_noarena(mem, 10.01)));            \
+        BINARY_NODE((_oper), KEFIR_AST_NODE_BASE(kefir_ast_new_constant_double_noarena(mem, 0.00005)),  \
+                    KEFIR_AST_NODE_BASE(kefir_ast_new_constant_double_noarena(mem, 200000.01)));        \
     })
 
     muldiv("multiply", KEFIR_AST_OPERATION_MULTIPLY);
     muldiv("divide", KEFIR_AST_OPERATION_DIVIDE);
 
     FUNC("modulo", {
-        BINARY_NODE(KEFIR_AST_OPERATION_MODULO, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char(mem, 'A')),
-                    KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char(mem, 'b')));
-        BINARY_NODE(KEFIR_AST_OPERATION_MODULO, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 1005)),
-                    KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char(mem, '%')));
-        BINARY_NODE(KEFIR_AST_OPERATION_MODULO, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, -255)),
-                    KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long(mem, 1024)));
-        BINARY_NODE(KEFIR_AST_OPERATION_MODULO, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_ulong(mem, 10001)),
-                    KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 10)));
-        BINARY_NODE(KEFIR_AST_OPERATION_MODULO, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_ulong(mem, 1)),
-                    KEFIR_AST_NODE_BASE(kefir_ast_new_constant_ulong_long(mem, 6000)));
+        BINARY_NODE(KEFIR_AST_OPERATION_MODULO, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char_noarena(mem, 'A')),
+                    KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char_noarena(mem, 'b')));
+        BINARY_NODE(KEFIR_AST_OPERATION_MODULO, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 1005)),
+                    KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char_noarena(mem, '%')));
+        BINARY_NODE(KEFIR_AST_OPERATION_MODULO, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, -255)),
+                    KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long_noarena(mem, 1024)));
+        BINARY_NODE(KEFIR_AST_OPERATION_MODULO, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_ulong_noarena(mem, 10001)),
+                    KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 10)));
+        BINARY_NODE(KEFIR_AST_OPERATION_MODULO, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_ulong_noarena(mem, 1)),
+                    KEFIR_AST_NODE_BASE(kefir_ast_new_constant_ulong_long_noarena(mem, 6000)));
     });
 
     REQUIRE_OK(kefir_ir_format_module(stdout, &module, false));

@@ -63,7 +63,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     REQUIRE_OK(kefir_ast_structure_declaration_entry_append(
         mem, entry3,
         kefir_ast_declarator_array(mem, KEFIR_AST_DECLARATOR_ARRAY_BOUNDED,
-                                   KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 5)),
+                                   KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 5)),
                                    kefir_ast_declarator_identifier(mem, context->symbols, "field3")),
         NULL));
     REQUIRE_OK(kefir_ast_structure_specifier_append_entry(mem, specifier1, entry3));
@@ -102,7 +102,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     REQUIRE_OK(kefir_ast_structure_declaration_entry_append(
         mem, entry7,
         kefir_ast_declarator_array(mem, KEFIR_AST_DECLARATOR_ARRAY_BOUNDED,
-                                   KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 4)),
+                                   KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 4)),
                                    kefir_ast_declarator_identifier(mem, context->symbols, "field3")),
         NULL));
     REQUIRE_OK(kefir_ast_structure_specifier_append_entry(mem, specifier2, entry7));

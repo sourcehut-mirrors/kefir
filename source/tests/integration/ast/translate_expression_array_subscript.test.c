@@ -52,16 +52,16 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
         mem,
         KEFIR_AST_NODE_BASE(kefir_ast_new_array_subscript(
             mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "array1")),
-            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 5)))),
-        KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 10))));
+            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 5)))),
+        KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 10))));
     REQUIRE_OK(kefir_ast_analyze_node(mem, context, node1));
 
     struct kefir_ast_node_base *node2 = KEFIR_AST_NODE_BASE(kefir_ast_new_array_subscript(
         mem,
         KEFIR_AST_NODE_BASE(kefir_ast_new_array_subscript(
-            mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 11)),
+            mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 11)),
             KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "array1")))),
-        KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 12))));
+        KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 12))));
     REQUIRE_OK(kefir_ast_analyze_node(mem, context, node2));
 
     struct kefir_ir_module module;

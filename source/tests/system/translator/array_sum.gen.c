@@ -77,26 +77,26 @@ static kefir_result_t define_array_sum_function(struct kefir_mem *mem, struct fu
         KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation(
             mem, KEFIR_AST_OPERATION_ADD,
             KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "array")),
-            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 1))))));
+            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 1))))));
     REQUIRE_OK(kefir_ast_function_call_append(
         mem, array_sum_cal,
         KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation(
             mem, KEFIR_AST_OPERATION_SUBTRACT,
             KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "index")),
-            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 1))))));
+            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 1))))));
 
     func->body = KEFIR_AST_NODE_BASE(kefir_ast_new_conditional_operator(
         mem,
         KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation(
             mem, KEFIR_AST_OPERATION_EQUAL,
             KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "index")),
-            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 0)))),
-        KEFIR_AST_NODE_BASE(kefir_ast_new_constant_float(mem, 0.0f)),
+            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 0)))),
+        KEFIR_AST_NODE_BASE(kefir_ast_new_constant_float_noarena(mem, 0.0f)),
         KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation(
             mem, KEFIR_AST_OPERATION_ADD,
             KEFIR_AST_NODE_BASE(kefir_ast_new_array_subscript(
                 mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "array")),
-                KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 0)))),
+                KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 0)))),
             KEFIR_AST_NODE_BASE(array_sum_cal)))));
 
     REQUIRE_OK(kefir_ast_context_manager_detach_local(context_manager));

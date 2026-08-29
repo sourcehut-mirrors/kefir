@@ -59,7 +59,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     FUNC2("do_while1", {
         struct kefir_ast_declaration *decl1 = kefir_ast_new_single_declaration(
             mem, kefir_ast_declarator_identifier(mem, context->symbols, "flag"),
-            kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bool(mem, true))),
+            kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bool_noarena(mem, true))),
             NULL);
         REQUIRE_OK(
             kefir_ast_declarator_specifier_list_append(mem, &decl1->specifiers, kefir_ast_type_specifier_boolean(mem)));
@@ -124,7 +124,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
         REQUIRE_OK(
             kefir_ast_compound_statement_append(mem, body, KEFIR_AST_NODE_BASE(kefir_ast_new_break_statement(mem))));
 
-        struct kefir_ast_node_base *condition = KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bool(mem, true));
+        struct kefir_ast_node_base *condition = KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bool_noarena(mem, true));
 
         struct kefir_ast_do_while_statement *do_while1 =
             kefir_ast_new_do_while_statement(mem, condition, KEFIR_AST_NODE_BASE(body));
@@ -146,9 +146,9 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
 
     FUNC2("do_while3", {
         struct kefir_ast_expression_statement *body =
-            kefir_ast_new_expression_statement(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_uint(mem, 0)));
+            kefir_ast_new_expression_statement(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_uint_noarena(mem, 0)));
 
-        struct kefir_ast_node_base *condition = KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long_double(mem, -1.0e13l));
+        struct kefir_ast_node_base *condition = KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long_double_noarena(mem, -1.0e13l));
 
         struct kefir_ast_do_while_statement *do_while1 =
             kefir_ast_new_do_while_statement(mem, condition, KEFIR_AST_NODE_BASE(body));

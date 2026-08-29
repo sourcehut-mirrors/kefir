@@ -25,41 +25,41 @@
 struct kefir_ast_constant *make_constant(struct kefir_mem *mem, const struct kefir_ast_type *type) {
     switch (type->tag) {
         case KEFIR_AST_TYPE_SCALAR_BOOL:
-            return kefir_ast_new_constant_bool(mem, true);
+            return kefir_ast_new_constant_bool_noarena(mem, true);
 
         case KEFIR_AST_TYPE_SCALAR_CHAR:
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_CHAR:
         case KEFIR_AST_TYPE_SCALAR_SIGNED_CHAR:
-            return kefir_ast_new_constant_char(mem, 'A');
+            return kefir_ast_new_constant_char_noarena(mem, 'A');
 
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_SHORT:
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_INT:
-            return kefir_ast_new_constant_uint(mem, 1234);
+            return kefir_ast_new_constant_uint_noarena(mem, 1234);
 
         case KEFIR_AST_TYPE_SCALAR_SIGNED_SHORT:
         case KEFIR_AST_TYPE_SCALAR_SIGNED_INT:
-            return kefir_ast_new_constant_int(mem, -1235);
+            return kefir_ast_new_constant_int_noarena(mem, -1235);
 
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG:
-            return kefir_ast_new_constant_ulong(mem, 100501);
+            return kefir_ast_new_constant_ulong_noarena(mem, 100501);
 
         case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG:
-            return kefir_ast_new_constant_long(mem, -200502);
+            return kefir_ast_new_constant_long_noarena(mem, -200502);
 
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG_LONG:
-            return kefir_ast_new_constant_ulong_long(mem, 300503);
+            return kefir_ast_new_constant_ulong_long_noarena(mem, 300503);
 
         case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG_LONG:
-            return kefir_ast_new_constant_long_long(mem, -400504);
+            return kefir_ast_new_constant_long_long_noarena(mem, -400504);
 
         case KEFIR_AST_TYPE_SCALAR_FLOAT:
-            return kefir_ast_new_constant_float(mem, 3.14f);
+            return kefir_ast_new_constant_float_noarena(mem, 3.14f);
 
         case KEFIR_AST_TYPE_SCALAR_DOUBLE:
-            return kefir_ast_new_constant_double(mem, 2.718281828);
+            return kefir_ast_new_constant_double_noarena(mem, 2.718281828);
 
         case KEFIR_AST_TYPE_SCALAR_LONG_DOUBLE:
-            return kefir_ast_new_constant_long_double(mem, 6.02e23l);
+            return kefir_ast_new_constant_long_double_noarena(mem, 6.02e23l);
 
         default:
             return NULL;
@@ -70,41 +70,41 @@ struct kefir_ast_constant *make_constant2(struct kefir_mem *mem, const struct ke
                                           kefir_int64_t value) {
     switch (type->tag) {
         case KEFIR_AST_TYPE_SCALAR_BOOL:
-            return kefir_ast_new_constant_bool(mem, (kefir_bool_t) value);
+            return kefir_ast_new_constant_bool_noarena(mem, (kefir_bool_t) value);
 
         case KEFIR_AST_TYPE_SCALAR_CHAR:
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_CHAR:
         case KEFIR_AST_TYPE_SCALAR_SIGNED_CHAR:
-            return kefir_ast_new_constant_char(mem, (kefir_int_t) value);
+            return kefir_ast_new_constant_char_noarena(mem, (kefir_int_t) value);
 
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_SHORT:
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_INT:
-            return kefir_ast_new_constant_uint(mem, (kefir_uint64_t) value);
+            return kefir_ast_new_constant_uint_noarena(mem, (kefir_uint64_t) value);
 
         case KEFIR_AST_TYPE_SCALAR_SIGNED_SHORT:
         case KEFIR_AST_TYPE_SCALAR_SIGNED_INT:
-            return kefir_ast_new_constant_int(mem, value);
+            return kefir_ast_new_constant_int_noarena(mem, value);
 
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG:
-            return kefir_ast_new_constant_ulong(mem, (kefir_uint64_t) value);
+            return kefir_ast_new_constant_ulong_noarena(mem, (kefir_uint64_t) value);
 
         case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG:
-            return kefir_ast_new_constant_long(mem, value);
+            return kefir_ast_new_constant_long_noarena(mem, value);
 
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG_LONG:
-            return kefir_ast_new_constant_ulong_long(mem, (kefir_uint64_t) value);
+            return kefir_ast_new_constant_ulong_long_noarena(mem, (kefir_uint64_t) value);
 
         case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG_LONG:
-            return kefir_ast_new_constant_long_long(mem, value);
+            return kefir_ast_new_constant_long_long_noarena(mem, value);
 
         case KEFIR_AST_TYPE_SCALAR_FLOAT:
-            return kefir_ast_new_constant_float(mem, (kefir_float32_t) value);
+            return kefir_ast_new_constant_float_noarena(mem, (kefir_float32_t) value);
 
         case KEFIR_AST_TYPE_SCALAR_DOUBLE:
-            return kefir_ast_new_constant_double(mem, (kefir_float64_t) value);
+            return kefir_ast_new_constant_double_noarena(mem, (kefir_float64_t) value);
 
         case KEFIR_AST_TYPE_SCALAR_LONG_DOUBLE:
-            return kefir_ast_new_constant_long_double(mem, (kefir_long_double_t) value);
+            return kefir_ast_new_constant_long_double_noarena(mem, (kefir_long_double_t) value);
 
         default:
             return NULL;

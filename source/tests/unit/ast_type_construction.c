@@ -524,7 +524,7 @@ DEFINE_CASE(ast_type_construction5, "AST Types - array type") {
     ASSERT(!type4->array_type.qualifications.restricted);
     ASSERT(!type4->array_type.qualifications.volatile_type);
 
-    struct kefir_ast_constant *type5_len = kefir_ast_new_constant_int(&kft_mem, 5);
+    struct kefir_ast_constant *type5_len = kefir_ast_new_constant_int_noarena(&kft_mem, 5);
     const struct kefir_ast_type *type5 = kefir_ast_type_vlen_array_static(
         &kft_mem, &type_bundle, kefir_ast_type_pointer(&kft_mem, &type_bundle, kefir_ast_type_signed_char()),
         KEFIR_AST_NODE_BASE(type5_len),

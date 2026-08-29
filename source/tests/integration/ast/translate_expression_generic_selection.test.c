@@ -70,19 +70,19 @@ static struct kefir_ast_node_base *make_gen_selection(struct kefir_mem *mem, str
 
     struct kefir_ast_generic_selection *generic_selection1 = kefir_ast_new_generic_selection(mem, arg);
     kefir_ast_generic_selection_append(mem, generic_selection1, type_name1,
-                                       KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 1)));
+                                       KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 1)));
     kefir_ast_generic_selection_append(mem, generic_selection1, type_name2,
-                                       KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 2)));
+                                       KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 2)));
     kefir_ast_generic_selection_append(mem, generic_selection1, type_name3,
-                                       KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 3)));
+                                       KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 3)));
     kefir_ast_generic_selection_append(mem, generic_selection1, type_name4,
-                                       KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 4)));
+                                       KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 4)));
     kefir_ast_generic_selection_append(mem, generic_selection1, type_name5,
-                                       KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 5)));
+                                       KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 5)));
     kefir_ast_generic_selection_append(mem, generic_selection1, type_name6,
-                                       KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 6)));
+                                       KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 6)));
     kefir_ast_generic_selection_append(mem, generic_selection1, NULL,
-                                       KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 7)));
+                                       KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 7)));
     return KEFIR_AST_NODE_BASE(generic_selection1);
 }
 
@@ -98,7 +98,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     const struct kefir_ast_context *context = &local_context.context;
 
     struct kefir_ast_node_base *node1 =
-        make_gen_selection(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_float(mem, 3.14)));
+        make_gen_selection(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_float_noarena(mem, 3.14)));
     REQUIRE_OK(kefir_ast_analyze_node(mem, context, node1));
 
     struct kefir_ast_type_name *type_name1 =
@@ -108,7 +108,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
 
     struct kefir_ast_node_base *node2 =
         make_gen_selection(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator(
-                                    mem, type_name1, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char(mem, 'A')))));
+                                    mem, type_name1, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char_noarena(mem, 'A')))));
     REQUIRE_OK(kefir_ast_analyze_node(mem, context, node2));
 
     struct kefir_ast_type_name *type_name2 =
@@ -118,19 +118,19 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
 
     struct kefir_ast_node_base *node3 =
         make_gen_selection(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator(
-                                    mem, type_name2, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 54)))));
+                                    mem, type_name2, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 54)))));
     REQUIRE_OK(kefir_ast_analyze_node(mem, context, node3));
 
     struct kefir_ast_node_base *node4 =
-        make_gen_selection(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_uint(mem, 3)));
+        make_gen_selection(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_uint_noarena(mem, 3)));
     REQUIRE_OK(kefir_ast_analyze_node(mem, context, node4));
 
     struct kefir_ast_node_base *node5 =
-        make_gen_selection(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_double(mem, 2.71)));
+        make_gen_selection(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_double_noarena(mem, 2.71)));
     REQUIRE_OK(kefir_ast_analyze_node(mem, context, node5));
 
     struct kefir_ast_node_base *node6 =
-        make_gen_selection(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char(mem, 'B')));
+        make_gen_selection(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char_noarena(mem, 'B')));
     REQUIRE_OK(kefir_ast_analyze_node(mem, context, node6));
 
     struct kefir_ir_module module;

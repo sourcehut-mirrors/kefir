@@ -110,9 +110,9 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     FUNC("array_subscript", {
         LVALUE(KEFIR_AST_NODE_BASE(kefir_ast_new_array_subscript(
             mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "variable3")),
-            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 2)))));
+            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 2)))));
         LVALUE(KEFIR_AST_NODE_BASE(kefir_ast_new_array_subscript(
-            mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 100)),
+            mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 100)),
             KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "variable4")))));
     });
 
@@ -143,7 +143,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
         LVALUE(KEFIR_AST_NODE_BASE(kefir_ast_new_unary_operation(
             mem, KEFIR_AST_OPERATION_INDIRECTION,
             KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator(
-                mem, type_name1, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 0)))))));
+                mem, type_name1, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 0)))))));
     });
 
     REQUIRE_OK(kefir_ir_format_module(stdout, &module, false));

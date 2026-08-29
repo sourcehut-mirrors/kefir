@@ -55,6 +55,7 @@ typedef struct kefir_parser_extensions {
 
 typedef struct kefir_parser {
     struct kefir_string_pool *symbols;
+    struct kefir_memory_arena *ast_arena;
     struct kefir_parser_token_cursor *cursor;
     struct kefir_parser_ruleset ruleset;
     const struct kefir_parser_configuration *configuration;
@@ -72,7 +73,7 @@ typedef kefir_result_t (*kefir_parser_rule_fn_t)(struct kefir_mem *, struct kefi
                                                  struct kefir_ast_node_base **, void *);
 typedef kefir_result_t (*kefir_parser_invocable_fn_t)(struct kefir_mem *, struct kefir_parser *, void *);
 
-kefir_result_t kefir_parser_init(struct kefir_mem *, struct kefir_parser *, struct kefir_string_pool *,
+kefir_result_t kefir_parser_init(struct kefir_mem *, struct kefir_parser *, struct kefir_string_pool *, struct kefir_memory_arena *,
                                  struct kefir_parser_token_cursor *, const struct kefir_parser_extensions *);
 kefir_result_t kefir_parser_free(struct kefir_mem *, struct kefir_parser *);
 

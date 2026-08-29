@@ -63,20 +63,20 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
         mem, (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(KEFIR_AST_NODE_BASE(type_name1)));
     REQUIRE_OK(kefir_ast_initializer_list_append(
         mem, &literal2->initializer->list, NULL,
-        kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char(mem, 'H')))));
+        kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char_noarena(mem, 'H')))));
     REQUIRE_OK(kefir_ast_initializer_list_append(
         mem, &literal2->initializer->list, NULL,
-        kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char(mem, 'e')))));
+        kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char_noarena(mem, 'e')))));
     REQUIRE_OK(kefir_ast_initializer_list_append(
         mem, &literal2->initializer->list, NULL,
-        kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char(mem, 'l')))));
+        kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char_noarena(mem, 'l')))));
     REQUIRE_OK(kefir_ast_initializer_list_append(
         mem, &literal2->initializer->list, NULL,
-        kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char(mem, 'l')))));
+        kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char_noarena(mem, 'l')))));
     REQUIRE_OK(kefir_ast_initializer_list_append(
         mem, &literal2->initializer->list,
-        kefir_ast_new_initializer_index_designation(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 1)), NULL),
-        kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char(mem, 'o')))));
+        kefir_ast_new_initializer_index_designation(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 1)), NULL),
+        kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char_noarena(mem, 'o')))));
     REQUIRE_OK(kefir_ast_analyze_node(mem, context, KEFIR_AST_NODE_BASE(literal2)));
 
     struct kefir_ast_compound_literal *literal3 = kefir_ast_new_compound_literal(

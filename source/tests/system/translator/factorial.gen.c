@@ -67,15 +67,15 @@ static kefir_result_t define_factorial_function(struct kefir_mem *mem, struct fu
         KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation(
             mem, KEFIR_AST_OPERATION_SUBTRACT,
             KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "x")),
-            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 1))))));
+            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 1))))));
 
     func->body = KEFIR_AST_NODE_BASE(kefir_ast_new_conditional_operator(
         mem,
         KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation(
             mem, KEFIR_AST_OPERATION_LESS_EQUAL,
             KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "x")),
-            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 1)))),
-        KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 1)),
+            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 1)))),
+        KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 1)),
         KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation(
             mem, KEFIR_AST_OPERATION_MULTIPLY,
             KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "x")),

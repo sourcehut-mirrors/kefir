@@ -63,7 +63,7 @@ static kefir_result_t define_sum_vararg_function(struct kefir_mem *mem, struct f
 
     struct kefir_ast_function_call *call1 = kefir_ast_new_function_call(
         mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "sumall")));
-    REQUIRE_OK(kefir_ast_function_call_append(mem, call1, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, count))));
+    REQUIRE_OK(kefir_ast_function_call_append(mem, call1, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, count))));
 
     for (kefir_size_t i = 0; i < count; i++) {
         REQUIRE_OK(kefir_ast_function_call_append(
@@ -71,7 +71,7 @@ static kefir_result_t define_sum_vararg_function(struct kefir_mem *mem, struct f
             KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation(
                 mem, KEFIR_AST_OPERATION_ADD,
                 KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "param")),
-                KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, i))))));
+                KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, i))))));
     }
 
     func->body = KEFIR_AST_NODE_BASE(call1);

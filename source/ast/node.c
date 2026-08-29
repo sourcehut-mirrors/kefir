@@ -31,9 +31,9 @@ struct kefir_ast_node_base *kefir_ast_node_ref(struct kefir_ast_node_base *node)
 kefir_result_t kefir_ast_node_free(struct kefir_mem *mem, struct kefir_ast_node_base *node) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(node != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST node"));
-    REQUIRE(node->refcount > 0, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected reference count of AST node"));
+    REQUIRE((node->refcount & KEFIR_AST_NODE_ARENA_ALLOCATED_MASK) > 0, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected reference count of AST node"));
 
-    if (--node->refcount == 0) {
+    if ((--node->refcount & KEFIR_AST_NODE_ARENA_ALLOCATED_MASK) == 0) {
         REQUIRE_OK(node->klass->free(mem, node));
     }
     return KEFIR_OK;

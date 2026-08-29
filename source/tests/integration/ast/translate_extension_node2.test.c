@@ -143,7 +143,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     struct kefir_ast_extension_node *node1 = kefir_ast_new_extension_node(mem, &ext_node_class, NULL);
     struct kefir_ast_array_subscript *node2 = kefir_ast_new_array_subscript(
         mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, &global_context.symbols, "arr")),
-        KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 10)));
+        KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 10)));
     REQUIRE_OK(kefir_ast_analyze_node(mem, &local_context.context, KEFIR_AST_NODE_BASE(node1)));
     REQUIRE_OK(kefir_ast_analyze_node(mem, &local_context.context, KEFIR_AST_NODE_BASE(node2)));
     REQUIRE_OK(kefir_ast_translate_lvalue(mem, &translator_context, &builder, KEFIR_AST_NODE_BASE(node1)));

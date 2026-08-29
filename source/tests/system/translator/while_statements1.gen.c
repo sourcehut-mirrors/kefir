@@ -73,7 +73,7 @@ static kefir_result_t define_conditional_function(struct kefir_mem *mem, struct 
     struct kefir_ast_compound_statement *compound0 = kefir_ast_new_compound_statement(mem);
     struct kefir_ast_declaration *declarationLength = kefir_ast_new_single_declaration(
         mem, kefir_ast_declarator_identifier(mem, context_manager->current->symbols, "length"),
-        kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 0))), NULL);
+        kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 0))), NULL);
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &declarationLength->specifiers,
                                                           kefir_ast_type_specifier_unsigned(mem)));
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &declarationLength->specifiers,
@@ -85,7 +85,7 @@ static kefir_result_t define_conditional_function(struct kefir_mem *mem, struct 
         KEFIR_AST_NODE_BASE(kefir_ast_new_array_subscript(
             mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "str")),
             KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "length")))),
-        KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char(mem, '\0'))));
+        KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char_noarena(mem, '\0'))));
 
     struct kefir_ast_node_base *body = KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement(
         mem, KEFIR_AST_NODE_BASE(kefir_ast_new_unary_operation(

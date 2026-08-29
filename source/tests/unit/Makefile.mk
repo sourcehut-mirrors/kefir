@@ -19,6 +19,8 @@ else
 KEFIR_UNIT_TEST_LIBS+=$(LIBKEFIR_A)
 endif
 
+$(KEFIR_BIN_DIR)/tests/unit/%.o: CFLAGS += -include "$(HEADERS_DIR)/kefir/test/compat.h"
+
 $(KEFIR_BIN_DIR)/tests/unit.tests: $(LIBKEFIR_DEPENDENCY) $(KEFIR_UNIT_TEST_OBJECT_FILES)
 	@mkdir -p $(@D)
 	@echo "Linking $@"

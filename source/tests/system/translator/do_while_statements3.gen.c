@@ -76,7 +76,7 @@ static kefir_result_t define_conditional_function(struct kefir_mem *mem, struct 
 
     struct kefir_ast_declaration *declarationSum = kefir_ast_new_single_declaration(
         mem, kefir_ast_declarator_identifier(mem, context_manager->current->symbols, "sum"),
-        kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 0))), NULL);
+        kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 0))), NULL);
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &declarationSum->specifiers,
                                                           kefir_ast_type_specifier_long(mem)));
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &declarationSum->specifiers,
@@ -85,7 +85,7 @@ static kefir_result_t define_conditional_function(struct kefir_mem *mem, struct 
 
     struct kefir_ast_declaration *declarationI = kefir_ast_new_single_declaration(
         mem, kefir_ast_declarator_identifier(mem, context_manager->current->symbols, "i"),
-        kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 0))), NULL);
+        kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 0))), NULL);
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &declarationI->specifiers,
                                                           kefir_ast_type_specifier_unsigned(mem)));
     REQUIRE_OK(
@@ -101,7 +101,7 @@ static kefir_result_t define_conditional_function(struct kefir_mem *mem, struct 
 
     struct kefir_ast_declaration *declarationJ = kefir_ast_new_single_declaration(
         mem, kefir_ast_declarator_identifier(mem, context_manager->current->symbols, "j"),
-        kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 0))), NULL);
+        kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 0))), NULL);
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &declarationJ->specifiers,
                                                           kefir_ast_type_specifier_unsigned(mem)));
     REQUIRE_OK(

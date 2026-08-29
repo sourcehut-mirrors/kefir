@@ -30,7 +30,7 @@ DEFINE_CASE(ast_nodes_static_assertions1, "AST nodes - static assertions #1") {
     ASSERT_OK(kefir_ast_type_bundle_init(&type_bundle, &symbols));
 
     struct kefir_ast_static_assertion *assert1 =
-        kefir_ast_new_static_assertion(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 123)),
+        kefir_ast_new_static_assertion(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 123)),
                                        KEFIR_AST_MAKE_STRING_LITERAL_MULTIBYTE(&kft_mem, "Hello, goodbye!"));
 
     ASSERT(assert1 != NULL);
@@ -46,8 +46,8 @@ DEFINE_CASE(ast_nodes_static_assertions1, "AST nodes - static assertions #1") {
     struct kefir_ast_static_assertion *assert2 = kefir_ast_new_static_assertion(
         &kft_mem,
         KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation(
-            &kft_mem, KEFIR_AST_OPERATION_SUBTRACT, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 1)),
-            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 2)))),
+            &kft_mem, KEFIR_AST_OPERATION_SUBTRACT, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 1)),
+            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 2)))),
         KEFIR_AST_MAKE_STRING_LITERAL_MULTIBYTE(&kft_mem, "Something"));
 
     ASSERT(assert2 != NULL);
@@ -73,7 +73,7 @@ DEFINE_CASE(ast_nodes_labeled_statements1, "AST nodes - labeled statements #1") 
     ASSERT_OK(kefir_ast_type_bundle_init(&type_bundle, &symbols));
 
     struct kefir_ast_labeled_statement *stmt1 = kefir_ast_new_labeled_statement(
-        &kft_mem, &symbols, "label1", KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 0)));
+        &kft_mem, &symbols, "label1", KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 0)));
     ASSERT(stmt1 != NULL);
     ASSERT(stmt1->base.klass->type == KEFIR_AST_LABELED_STATEMENT);
     ASSERT(KEFIR_AST_NODE_SELF(KEFIR_AST_NODE_BASE(stmt1)) == stmt1);
@@ -111,7 +111,7 @@ DEFINE_CASE(ast_nodes_case_statements1, "AST nodes - case statements #1") {
     ASSERT_OK(kefir_ast_type_bundle_init(&type_bundle, &symbols));
 
     struct kefir_ast_case_statement *stmt1 =
-        kefir_ast_new_case_statement(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long(&kft_mem, 1)),
+        kefir_ast_new_case_statement(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long_noarena(&kft_mem, 1)),
                                      KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(&kft_mem, &symbols, "case1")));
     ASSERT(stmt1 != NULL);
     ASSERT(stmt1->base.klass->type == KEFIR_AST_CASE_STATEMENT);
@@ -126,7 +126,7 @@ DEFINE_CASE(ast_nodes_case_statements1, "AST nodes - case statements #1") {
     ASSERT(strcmp(((struct kefir_ast_identifier *) KEFIR_AST_NODE_SELF(stmt1->statement))->identifier, "case1") == 0);
 
     struct kefir_ast_case_statement *stmt2 =
-        kefir_ast_new_case_statement(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char(&kft_mem, 'b')),
+        kefir_ast_new_case_statement(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char_noarena(&kft_mem, 'b')),
                                      KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(&kft_mem, &symbols, "case2")));
     ASSERT(stmt2 != NULL);
     ASSERT(stmt2->base.klass->type == KEFIR_AST_CASE_STATEMENT);
@@ -178,7 +178,7 @@ DEFINE_CASE(ast_nodes_expression_statements1, "AST nodes - expression statements
            0);
 
     struct kefir_ast_expression_statement *stmt2 = kefir_ast_new_expression_statement(
-        &kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_float(&kft_mem, 6.1987f)));
+        &kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_float_noarena(&kft_mem, 6.1987f)));
     ASSERT(stmt2 != NULL);
     ASSERT(stmt2->base.klass->type == KEFIR_AST_EXPRESSION_STATEMENT);
     ASSERT(KEFIR_AST_NODE_SELF(KEFIR_AST_NODE_BASE(stmt2)) == stmt2);
@@ -218,15 +218,15 @@ DEFINE_CASE(ast_nodes_compound_statements1, "AST nodes - compound statements #1"
     ASSERT_OK(kefir_ast_compound_statement_append(
         &kft_mem, stmt1,
         KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement(
-            &kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char(&kft_mem, '1'))))));
+            &kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char_noarena(&kft_mem, '1'))))));
     ASSERT_OK(kefir_ast_compound_statement_append(
         &kft_mem, stmt1,
         KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement(
-            &kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char(&kft_mem, '2'))))));
+            &kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char_noarena(&kft_mem, '2'))))));
     ASSERT_OK(kefir_ast_compound_statement_append(
         &kft_mem, stmt1,
         KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement(
-            &kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char(&kft_mem, '3'))))));
+            &kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char_noarena(&kft_mem, '3'))))));
     ASSERT(stmt1->block_length == 3);
 
     struct kefir_ast_compound_statement *stmt2 = kefir_ast_new_compound_statement(&kft_mem);
@@ -250,9 +250,9 @@ DEFINE_CASE(ast_nodes_conditional_statements1, "AST nodes - conditional statemen
     ASSERT_OK(kefir_ast_type_bundle_init(&type_bundle, &symbols));
 
     struct kefir_ast_conditional_statement *stmt1 =
-        kefir_ast_new_conditional_statement(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bool(&kft_mem, true)),
-                                            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 1)),
-                                            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_double(&kft_mem, 1.0)));
+        kefir_ast_new_conditional_statement(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bool_noarena(&kft_mem, true)),
+                                            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 1)),
+                                            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_double_noarena(&kft_mem, 1.0)));
     ASSERT(stmt1 != NULL);
     ASSERT(stmt1->base.klass->type == KEFIR_AST_CONDITIONAL_STATEMENT);
     ASSERT(KEFIR_AST_NODE_SELF(KEFIR_AST_NODE_BASE(stmt1)) == stmt1);
@@ -267,8 +267,8 @@ DEFINE_CASE(ast_nodes_conditional_statements1, "AST nodes - conditional statemen
     ASSERT(((struct kefir_ast_constant *) KEFIR_AST_NODE_SELF(stmt1->elseBranch))->type == KEFIR_AST_DOUBLE_CONSTANT);
 
     struct kefir_ast_conditional_statement *stmt2 =
-        kefir_ast_new_conditional_statement(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_float(&kft_mem, 1.0f)),
-                                            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long(&kft_mem, 10)), NULL);
+        kefir_ast_new_conditional_statement(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_float_noarena(&kft_mem, 1.0f)),
+                                            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long_noarena(&kft_mem, 10)), NULL);
     ASSERT(stmt2 != NULL);
     ASSERT(stmt2->base.klass->type == KEFIR_AST_CONDITIONAL_STATEMENT);
     ASSERT(KEFIR_AST_NODE_SELF(KEFIR_AST_NODE_BASE(stmt2)) == stmt2);
@@ -280,7 +280,7 @@ DEFINE_CASE(ast_nodes_conditional_statements1, "AST nodes - conditional statemen
     ASSERT(((struct kefir_ast_constant *) KEFIR_AST_NODE_SELF(stmt2->thenBranch))->type == KEFIR_AST_LONG_CONSTANT);
     ASSERT(stmt2->elseBranch == NULL);
 
-    struct kefir_ast_node_base *node1 = KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char(&kft_mem, ' '));
+    struct kefir_ast_node_base *node1 = KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char_noarena(&kft_mem, ' '));
     struct kefir_ast_conditional_statement *stmt3 = kefir_ast_new_conditional_statement(&kft_mem, node1, NULL, NULL);
     ASSERT(stmt3 == NULL);
 
@@ -303,7 +303,7 @@ DEFINE_CASE(ast_nodes_switch_statements1, "AST nodes - switch statements #1") {
     ASSERT_OK(kefir_ast_type_bundle_init(&type_bundle, &symbols));
 
     struct kefir_ast_switch_statement *stmt1 =
-        kefir_ast_new_switch_statement(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 1)),
+        kefir_ast_new_switch_statement(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 1)),
                                        KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement(&kft_mem, NULL)));
     ASSERT(stmt1 != NULL);
     ASSERT(stmt1->base.klass->type == KEFIR_AST_SWITCH_STATEMENT);
@@ -316,7 +316,7 @@ DEFINE_CASE(ast_nodes_switch_statements1, "AST nodes - switch statements #1") {
     ASSERT(stmt1->statement->klass->type == KEFIR_AST_EXPRESSION_STATEMENT);
     ASSERT(((struct kefir_ast_expression_statement *) KEFIR_AST_NODE_SELF(stmt1->statement))->expression == NULL);
 
-    struct kefir_ast_node_base *node1 = KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 1));
+    struct kefir_ast_node_base *node1 = KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 1));
     ASSERT(node1 != NULL);
     struct kefir_ast_node_base *node2 = KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement(&kft_mem, NULL));
     ASSERT(node2 != NULL);
@@ -343,7 +343,7 @@ DEFINE_CASE(ast_nodes_while_statements1, "AST nodes - while statements #1") {
     ASSERT_OK(kefir_ast_type_bundle_init(&type_bundle, &symbols));
 
     struct kefir_ast_while_statement *stmt1 =
-        kefir_ast_new_while_statement(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bool(&kft_mem, true)),
+        kefir_ast_new_while_statement(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bool_noarena(&kft_mem, true)),
                                       KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement(&kft_mem, NULL)));
     ASSERT(stmt1 != NULL);
     ASSERT(stmt1->base.klass->type == KEFIR_AST_WHILE_STATEMENT);
@@ -369,7 +369,7 @@ DEFINE_CASE(ast_nodes_while_statements2, "AST nodes - while statements #2") {
     ASSERT_OK(kefir_string_pool_init(&symbols));
     ASSERT_OK(kefir_ast_type_bundle_init(&type_bundle, &symbols));
 
-    struct kefir_ast_node_base *node1 = KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bool(&kft_mem, false));
+    struct kefir_ast_node_base *node1 = KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bool_noarena(&kft_mem, false));
     struct kefir_ast_while_statement *stmt1 = kefir_ast_new_while_statement(&kft_mem, node1, NULL);
     ASSERT(stmt1 == NULL);
 
@@ -392,7 +392,7 @@ DEFINE_CASE(ast_nodes_do_while_statements1, "AST nodes - do while statements #1"
     ASSERT_OK(kefir_ast_type_bundle_init(&type_bundle, &symbols));
 
     struct kefir_ast_do_while_statement *stmt1 =
-        kefir_ast_new_do_while_statement(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bool(&kft_mem, true)),
+        kefir_ast_new_do_while_statement(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bool_noarena(&kft_mem, true)),
                                          KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement(&kft_mem, NULL)));
     ASSERT(stmt1 != NULL);
     ASSERT(stmt1->base.klass->type == KEFIR_AST_DO_WHILE_STATEMENT);
@@ -418,7 +418,7 @@ DEFINE_CASE(ast_nodes_do_while_statements2, "AST nodes - do while statements #2"
     ASSERT_OK(kefir_string_pool_init(&symbols));
     ASSERT_OK(kefir_ast_type_bundle_init(&type_bundle, &symbols));
 
-    struct kefir_ast_node_base *node1 = KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bool(&kft_mem, false));
+    struct kefir_ast_node_base *node1 = KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bool_noarena(&kft_mem, false));
     struct kefir_ast_do_while_statement *stmt1 = kefir_ast_new_do_while_statement(&kft_mem, node1, NULL);
     ASSERT(stmt1 == NULL);
 
@@ -441,9 +441,9 @@ DEFINE_CASE(ast_nodes_for_statements1, "AST nodes - for statements #1") {
     ASSERT_OK(kefir_ast_type_bundle_init(&type_bundle, &symbols));
 
     struct kefir_ast_for_statement *stmt1 =
-        kefir_ast_new_for_statement(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 0)),
-                                    KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 1)),
-                                    KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 2)),
+        kefir_ast_new_for_statement(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 0)),
+                                    KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 1)),
+                                    KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 2)),
                                     KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement(&kft_mem, NULL)));
     ASSERT(stmt1 != NULL);
     ASSERT(stmt1->base.klass->type == KEFIR_AST_FOR_STATEMENT);
@@ -478,8 +478,8 @@ DEFINE_CASE(ast_nodes_for_statements2, "AST nodes - for statements #2") {
     ASSERT_OK(kefir_ast_type_bundle_init(&type_bundle, &symbols));
 
     struct kefir_ast_for_statement *stmt1 =
-        kefir_ast_new_for_statement(&kft_mem, NULL, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 1)),
-                                    KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 2)),
+        kefir_ast_new_for_statement(&kft_mem, NULL, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 1)),
+                                    KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 2)),
                                     KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement(&kft_mem, NULL)));
     ASSERT(stmt1 != NULL);
     ASSERT(stmt1->base.klass->type == KEFIR_AST_FOR_STATEMENT);
@@ -511,8 +511,8 @@ DEFINE_CASE(ast_nodes_for_statements3, "AST nodes - for statements #3") {
     ASSERT_OK(kefir_ast_type_bundle_init(&type_bundle, &symbols));
 
     struct kefir_ast_for_statement *stmt1 =
-        kefir_ast_new_for_statement(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 0)), NULL,
-                                    KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 2)),
+        kefir_ast_new_for_statement(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 0)), NULL,
+                                    KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 2)),
                                     KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement(&kft_mem, NULL)));
     ASSERT(stmt1 != NULL);
     ASSERT(stmt1->base.klass->type == KEFIR_AST_FOR_STATEMENT);
@@ -544,8 +544,8 @@ DEFINE_CASE(ast_nodes_for_statements4, "AST nodes - for statements #4") {
     ASSERT_OK(kefir_ast_type_bundle_init(&type_bundle, &symbols));
 
     struct kefir_ast_for_statement *stmt1 =
-        kefir_ast_new_for_statement(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 0)),
-                                    KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 1)), NULL,
+        kefir_ast_new_for_statement(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 0)),
+                                    KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 1)), NULL,
                                     KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement(&kft_mem, NULL)));
     ASSERT(stmt1 != NULL);
     ASSERT(stmt1->base.klass->type == KEFIR_AST_FOR_STATEMENT);
@@ -576,9 +576,9 @@ DEFINE_CASE(ast_nodes_for_statements5, "AST nodes - for statements #5") {
     ASSERT_OK(kefir_string_pool_init(&symbols));
     ASSERT_OK(kefir_ast_type_bundle_init(&type_bundle, &symbols));
 
-    struct kefir_ast_node_base *node1 = KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 0));
-    struct kefir_ast_node_base *node2 = KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 1));
-    struct kefir_ast_node_base *node3 = KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 2));
+    struct kefir_ast_node_base *node1 = KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 0));
+    struct kefir_ast_node_base *node2 = KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 1));
+    struct kefir_ast_node_base *node3 = KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 2));
 
     struct kefir_ast_for_statement *stmt1 = kefir_ast_new_for_statement(&kft_mem, node1, node2, node3, NULL);
     ASSERT(stmt1 == NULL);

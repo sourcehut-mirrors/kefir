@@ -28,17 +28,17 @@ kefir_result_t KEFIR_PARSER_RULE_FN_PREFIX(constant)(struct kefir_mem *mem, stru
 
     if (PARSER_TOKEN_IS_KEYWORD(parser, 0, KEFIR_KEYWORD_TRUE)) {
         REQUIRE_OK(PARSER_SHIFT(parser));
-        REQUIRE_ALLOC(result, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bool(mem, true)),
+        REQUIRE_ALLOC(result, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bool(mem, parser->ast_arena, true)),
                       "Failed to allocate AST constant");
         return KEFIR_OK;
     } else if (PARSER_TOKEN_IS_KEYWORD(parser, 0, KEFIR_KEYWORD_FALSE)) {
         REQUIRE_OK(PARSER_SHIFT(parser));
-        REQUIRE_ALLOC(result, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bool(mem, false)),
+        REQUIRE_ALLOC(result, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bool(mem, parser->ast_arena, false)),
                       "Failed to allocate AST constant");
         return KEFIR_OK;
     } else if (PARSER_TOKEN_IS_KEYWORD(parser, 0, KEFIR_KEYWORD_NULLPTR)) {
         REQUIRE_OK(PARSER_SHIFT(parser));
-        REQUIRE_ALLOC(result, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_nullptr(mem)),
+        REQUIRE_ALLOC(result, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_nullptr(mem, parser->ast_arena)),
                       "Failed to allocate AST constant");
         return KEFIR_OK;
     }
@@ -48,33 +48,33 @@ kefir_result_t KEFIR_PARSER_RULE_FN_PREFIX(constant)(struct kefir_mem *mem, stru
     const struct kefir_token *token = PARSER_CURSOR(parser, 0);
     switch (token->constant.type) {
         case KEFIR_CONSTANT_TOKEN_INTEGER:
-            REQUIRE_ALLOC(result, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, token->constant.integer)),
+            REQUIRE_ALLOC(result, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, parser->ast_arena, token->constant.integer)),
                           "Failed to allocate AST constant");
             break;
 
         case KEFIR_CONSTANT_TOKEN_LONG_INTEGER:
-            REQUIRE_ALLOC(result, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long(mem, token->constant.integer)),
+            REQUIRE_ALLOC(result, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long(mem, parser->ast_arena, token->constant.integer)),
                           "Failed to allocate AST constant");
             break;
 
         case KEFIR_CONSTANT_TOKEN_LONG_LONG_INTEGER:
-            REQUIRE_ALLOC(result, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long_long(mem, token->constant.integer)),
+            REQUIRE_ALLOC(result, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long_long(mem, parser->ast_arena, token->constant.integer)),
                           "Failed to allocate AST constant");
             break;
 
         case KEFIR_CONSTANT_TOKEN_UNSIGNED_INTEGER:
-            REQUIRE_ALLOC(result, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_uint(mem, token->constant.uinteger)),
+            REQUIRE_ALLOC(result, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_uint(mem, parser->ast_arena, token->constant.uinteger)),
                           "Failed to allocate AST constant");
             break;
 
         case KEFIR_CONSTANT_TOKEN_UNSIGNED_LONG_INTEGER:
-            REQUIRE_ALLOC(result, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_ulong(mem, token->constant.uinteger)),
+            REQUIRE_ALLOC(result, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_ulong(mem, parser->ast_arena, token->constant.uinteger)),
                           "Failed to allocate AST constant");
             break;
 
         case KEFIR_CONSTANT_TOKEN_UNSIGNED_LONG_LONG_INTEGER:
             REQUIRE_ALLOC(result,
-                          KEFIR_AST_NODE_BASE(kefir_ast_new_constant_ulong_long(mem, token->constant.uinteger)),
+                          KEFIR_AST_NODE_BASE(kefir_ast_new_constant_ulong_long(mem, parser->ast_arena, token->constant.uinteger)),
                           "Failed to allocate AST constant");
             break;
 
@@ -83,7 +83,7 @@ kefir_result_t KEFIR_PARSER_RULE_FN_PREFIX(constant)(struct kefir_mem *mem, stru
             REQUIRE_OK(kefir_bigint_init(&copy));
             kefir_result_t res = kefir_bigint_copy_resize(mem, &copy, &token->constant.large->bitprecise);
             if (res == KEFIR_OK) {
-                *result = KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bitprecise(mem, &copy));
+                *result = KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bitprecise(mem, parser->ast_arena, &copy));
                 if (*result == NULL) {
                     res = KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST constant");
                 }
@@ -100,7 +100,7 @@ kefir_result_t KEFIR_PARSER_RULE_FN_PREFIX(constant)(struct kefir_mem *mem, stru
             REQUIRE_OK(kefir_bigint_init(&copy));
             kefir_result_t res = kefir_bigint_copy_resize(mem, &copy, &token->constant.large->bitprecise);
             if (res == KEFIR_OK) {
-                *result = KEFIR_AST_NODE_BASE(kefir_ast_new_constant_unsigned_bitprecise(mem, &copy));
+                *result = KEFIR_AST_NODE_BASE(kefir_ast_new_constant_unsigned_bitprecise(mem, parser->ast_arena, &copy));
                 if (*result == NULL) {
                     res = KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST constant");
                 }
@@ -113,73 +113,73 @@ kefir_result_t KEFIR_PARSER_RULE_FN_PREFIX(constant)(struct kefir_mem *mem, stru
         } break;
 
         case KEFIR_CONSTANT_TOKEN_FLOAT:
-            REQUIRE_ALLOC(result, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_float(mem, token->constant.float32)),
+            REQUIRE_ALLOC(result, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_float(mem, parser->ast_arena, token->constant.float32)),
                           "Failed to allocate AST constant");
             break;
 
         case KEFIR_CONSTANT_TOKEN_FLOAT32:
-            REQUIRE_ALLOC(result, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_float32(mem, token->constant.float32)),
+            REQUIRE_ALLOC(result, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_float32(mem, parser->ast_arena, token->constant.float32)),
                           "Failed to allocate AST constant");
             break;
 
         case KEFIR_CONSTANT_TOKEN_FLOAT32X:
-            REQUIRE_ALLOC(result, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_float32x(mem, token->constant.float64)),
+            REQUIRE_ALLOC(result, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_float32x(mem, parser->ast_arena, token->constant.float64)),
                           "Failed to allocate AST constant");
             break;
 
         case KEFIR_CONSTANT_TOKEN_DOUBLE:
-            REQUIRE_ALLOC(result, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_double(mem, token->constant.float64)),
+            REQUIRE_ALLOC(result, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_double(mem, parser->ast_arena, token->constant.float64)),
                           "Failed to allocate AST constant");
             break;
 
         case KEFIR_CONSTANT_TOKEN_FLOAT64:
-            REQUIRE_ALLOC(result, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_float64(mem, token->constant.float64)),
+            REQUIRE_ALLOC(result, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_float64(mem, parser->ast_arena, token->constant.float64)),
                           "Failed to allocate AST constant");
             break;
 
         case KEFIR_CONSTANT_TOKEN_FLOAT64X:
             REQUIRE_ALLOC(result,
-                          KEFIR_AST_NODE_BASE(kefir_ast_new_constant_float64x(mem, token->constant.large->long_double)),
+                          KEFIR_AST_NODE_BASE(kefir_ast_new_constant_float64x(mem, parser->ast_arena, token->constant.large->long_double)),
                           "Failed to allocate AST constant");
             break;
 
         case KEFIR_CONSTANT_TOKEN_LONG_DOUBLE:
             REQUIRE_ALLOC(result,
-                          KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long_double(mem, token->constant.large->long_double)),
+                          KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long_double(mem, parser->ast_arena, token->constant.large->long_double)),
                           "Failed to allocate AST constant");
             break;
 
         case KEFIR_CONSTANT_TOKEN_FLOAT80:
             REQUIRE_ALLOC(result,
-                          KEFIR_AST_NODE_BASE(kefir_ast_new_constant_float80(mem, token->constant.large->long_double)),
+                          KEFIR_AST_NODE_BASE(kefir_ast_new_constant_float80(mem, parser->ast_arena, token->constant.large->long_double)),
                           "Failed to allocate AST constant");
             break;
 
         case KEFIR_CONSTANT_TOKEN_COMPLEX_FLOAT:
             REQUIRE_ALLOC(result,
                           KEFIR_AST_NODE_BASE(kefir_ast_new_constant_complex_float(
-                              mem, token->constant.complex_float32.real, token->constant.complex_float32.imaginary)),
+                              mem, parser->ast_arena, token->constant.complex_float32.real, token->constant.complex_float32.imaginary)),
                           "Failed to allocate AST constant");
             break;
 
         case KEFIR_CONSTANT_TOKEN_COMPLEX_FLOAT32:
             REQUIRE_ALLOC(result,
                           KEFIR_AST_NODE_BASE(kefir_ast_new_constant_complex_float32(
-                              mem, token->constant.complex_float32.real, token->constant.complex_float32.imaginary)),
+                              mem, parser->ast_arena, token->constant.complex_float32.real, token->constant.complex_float32.imaginary)),
                           "Failed to allocate AST constant");
             break;
 
         case KEFIR_CONSTANT_TOKEN_COMPLEX_FLOAT32X:
             REQUIRE_ALLOC(result,
                           KEFIR_AST_NODE_BASE(kefir_ast_new_constant_complex_float32x(
-                              mem, token->constant.large->complex_float64.real, token->constant.large->complex_float64.imaginary)),
+                              mem, parser->ast_arena, token->constant.large->complex_float64.real, token->constant.large->complex_float64.imaginary)),
                           "Failed to allocate AST constant");
             break;
 
         case KEFIR_CONSTANT_TOKEN_COMPLEX_FLOAT64:
             REQUIRE_ALLOC(result,
                           KEFIR_AST_NODE_BASE(kefir_ast_new_constant_complex_float64(
-                              mem, token->constant.large->complex_float64.real, token->constant.large->complex_float64.imaginary)),
+                              mem, parser->ast_arena, token->constant.large->complex_float64.real, token->constant.large->complex_float64.imaginary)),
                           "Failed to allocate AST constant");
             break;
 
@@ -187,7 +187,7 @@ kefir_result_t KEFIR_PARSER_RULE_FN_PREFIX(constant)(struct kefir_mem *mem, stru
             REQUIRE_ALLOC(
                 result,
                 KEFIR_AST_NODE_BASE(kefir_ast_new_constant_complex_float64x(
-                    mem, token->constant.large->complex_long_double.real, token->constant.large->complex_long_double.imaginary)),
+                    mem, parser->ast_arena, token->constant.large->complex_long_double.real, token->constant.large->complex_long_double.imaginary)),
                 "Failed to allocate AST constant");
             break;
 
@@ -195,14 +195,14 @@ kefir_result_t KEFIR_PARSER_RULE_FN_PREFIX(constant)(struct kefir_mem *mem, stru
             REQUIRE_ALLOC(
                 result,
                 KEFIR_AST_NODE_BASE(kefir_ast_new_constant_complex_float80(
-                    mem, token->constant.large->complex_long_double.real, token->constant.large->complex_long_double.imaginary)),
+                    mem, parser->ast_arena, token->constant.large->complex_long_double.real, token->constant.large->complex_long_double.imaginary)),
                 "Failed to allocate AST constant");
             break;
 
         case KEFIR_CONSTANT_TOKEN_COMPLEX_DOUBLE:
             REQUIRE_ALLOC(result,
                           KEFIR_AST_NODE_BASE(kefir_ast_new_constant_complex_double(
-                              mem, token->constant.large->complex_float64.real, token->constant.large->complex_float64.imaginary)),
+                              mem, parser->ast_arena, token->constant.large->complex_float64.real, token->constant.large->complex_float64.imaginary)),
                           "Failed to allocate AST constant");
             break;
 
@@ -210,62 +210,62 @@ kefir_result_t KEFIR_PARSER_RULE_FN_PREFIX(constant)(struct kefir_mem *mem, stru
             REQUIRE_ALLOC(
                 result,
                 KEFIR_AST_NODE_BASE(kefir_ast_new_constant_complex_long_double(
-                    mem, token->constant.large->complex_long_double.real, token->constant.large->complex_long_double.imaginary)),
+                    mem, parser->ast_arena, token->constant.large->complex_long_double.real, token->constant.large->complex_long_double.imaginary)),
                 "Failed to allocate AST constant");
             break;
 
         case KEFIR_CONSTANT_TOKEN_CHAR:
-            REQUIRE_ALLOC(result, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char(mem, token->constant.character)),
+            REQUIRE_ALLOC(result, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char(mem, parser->ast_arena, token->constant.character)),
                           "Failed to allocate AST constant");
             break;
 
         case KEFIR_CONSTANT_TOKEN_UNICODE8_CHAR:
             REQUIRE_ALLOC(result,
-                          KEFIR_AST_NODE_BASE(kefir_ast_new_constant_unicode8_char(mem, token->constant.character)),
+                          KEFIR_AST_NODE_BASE(kefir_ast_new_constant_unicode8_char(mem, parser->ast_arena, token->constant.character)),
                           "Failed to allocate AST constant");
             break;
 
         case KEFIR_CONSTANT_TOKEN_WIDE_CHAR:
             REQUIRE_ALLOC(result,
-                          KEFIR_AST_NODE_BASE(kefir_ast_new_constant_wide_char(mem, token->constant.wide_char)),
+                          KEFIR_AST_NODE_BASE(kefir_ast_new_constant_wide_char(mem, parser->ast_arena, token->constant.wide_char)),
                           "Failed to allocate AST constant");
             break;
 
         case KEFIR_CONSTANT_TOKEN_UNICODE16_CHAR:
             REQUIRE_ALLOC(
                 result,
-                KEFIR_AST_NODE_BASE(kefir_ast_new_constant_unicode16_char(mem, token->constant.unicode16_char)),
+                KEFIR_AST_NODE_BASE(kefir_ast_new_constant_unicode16_char(mem, parser->ast_arena, token->constant.unicode16_char)),
                 "Failed to allocate AST constant");
             break;
 
         case KEFIR_CONSTANT_TOKEN_UNICODE32_CHAR:
             REQUIRE_ALLOC(
                 result,
-                KEFIR_AST_NODE_BASE(kefir_ast_new_constant_unicode32_char(mem, token->constant.unicode32_char)),
+                KEFIR_AST_NODE_BASE(kefir_ast_new_constant_unicode32_char(mem, parser->ast_arena, token->constant.unicode32_char)),
                 "Failed to allocate AST constant");
             break;
 
         case KEFIR_CONSTANT_TOKEN_DECIMAL32:
             REQUIRE_ALLOC(result,
-                          KEFIR_AST_NODE_BASE(kefir_ast_new_constant_decimal32(mem, token->constant.decimal32)),
+                          KEFIR_AST_NODE_BASE(kefir_ast_new_constant_decimal32(mem, parser->ast_arena, token->constant.decimal32)),
                           "Failed to allocate AST constant");
             break;
 
         case KEFIR_CONSTANT_TOKEN_DECIMAL64:
             REQUIRE_ALLOC(result,
-                          KEFIR_AST_NODE_BASE(kefir_ast_new_constant_decimal64(mem, token->constant.decimal64)),
+                          KEFIR_AST_NODE_BASE(kefir_ast_new_constant_decimal64(mem, parser->ast_arena, token->constant.decimal64)),
                           "Failed to allocate AST constant");
             break;
 
         case KEFIR_CONSTANT_TOKEN_DECIMAL128:
             REQUIRE_ALLOC(result,
-                          KEFIR_AST_NODE_BASE(kefir_ast_new_constant_decimal128(mem, token->constant.large->decimal128)),
+                          KEFIR_AST_NODE_BASE(kefir_ast_new_constant_decimal128(mem, parser->ast_arena, token->constant.large->decimal128)),
                           "Failed to allocate AST constant");
             break;
 
         case KEFIR_CONSTANT_TOKEN_DECIMAL64X:
             REQUIRE_ALLOC(result,
-                          KEFIR_AST_NODE_BASE(kefir_ast_new_constant_decimal64x(mem, token->constant.large->decimal128)),
+                          KEFIR_AST_NODE_BASE(kefir_ast_new_constant_decimal64x(mem, parser->ast_arena, token->constant.large->decimal128)),
                           "Failed to allocate AST constant");
             break;
     }

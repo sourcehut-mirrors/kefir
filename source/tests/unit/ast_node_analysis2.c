@@ -49,13 +49,13 @@
             (_mem), selection1, type_name1,                                                                            \
             KEFIR_AST_NODE_BASE(kefir_ast_new_identifier((_mem), (_context)->symbols, "bool"))));                      \
         ASSERT_OK(kefir_ast_generic_selection_append(                                                                  \
-            (_mem), selection1, type_name2, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_float((_mem), 3.14f))));        \
+            (_mem), selection1, type_name2, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_float_noarena((_mem), 3.14f))));        \
         ASSERT_OK(kefir_ast_generic_selection_append((_mem), selection1, type_name3,                                   \
-                                                     KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char((_mem), 'H'))));  \
+                                                     KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char_noarena((_mem), 'H'))));  \
         ASSERT_OK(kefir_ast_generic_selection_append((_mem), selection1, type_name4,                                   \
-                                                     KEFIR_AST_NODE_BASE(kefir_ast_new_constant_uint((_mem), 1556)))); \
+                                                     KEFIR_AST_NODE_BASE(kefir_ast_new_constant_uint_noarena((_mem), 1556)))); \
         ASSERT_OK(kefir_ast_generic_selection_append(                                                                  \
-            (_mem), selection1, NULL, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_double((_mem), 2.71))));              \
+            (_mem), selection1, NULL, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_double_noarena((_mem), 2.71))));              \
         ASSERT_OK(kefir_ast_analyze_node((_mem), (_context), KEFIR_AST_NODE_BASE(selection1)));                        \
         ASSERT(KEFIR_AST_TYPE_SAME(selection1->base.properties.type, (_type)));                                        \
         ASSERT(selection1->base.properties.expression_props->lvalue == (_lvalue));                                      \
@@ -143,14 +143,14 @@ DEFINE_CASE(ast_node_analysis_cast_operators, "AST node analysis - cast operator
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &type_name1->type_decl.specifiers,
                                                          kefir_ast_type_specifier_int(&kft_mem)));
     ASSERT_CAST(&kft_mem, context, kefir_ast_type_signed_int(), type_name1,
-                KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char(&kft_mem, 'a')), true);
+                KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char_noarena(&kft_mem, 'a')), true);
 
     struct kefir_ast_type_name *type_name2 =
         kefir_ast_new_type_name(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &type_name2->type_decl.specifiers,
                                                          kefir_ast_type_specifier_float(&kft_mem)));
     ASSERT_CAST(&kft_mem, context, kefir_ast_type_float(), type_name2,
-                KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bool(&kft_mem, false)), true);
+                KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bool_noarena(&kft_mem, false)), true);
 
     struct kefir_ast_type_name *type_name3 =
         kefir_ast_new_type_name(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL));
@@ -159,14 +159,14 @@ DEFINE_CASE(ast_node_analysis_cast_operators, "AST node analysis - cast operator
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &type_name3->type_decl.specifiers,
                                                          kefir_ast_type_specifier_long(&kft_mem)));
     ASSERT_CAST(&kft_mem, context, kefir_ast_type_signed_long_long(), type_name3,
-                KEFIR_AST_NODE_BASE(kefir_ast_new_constant_double(&kft_mem, 3.14)), true);
+                KEFIR_AST_NODE_BASE(kefir_ast_new_constant_double_noarena(&kft_mem, 3.14)), true);
 
     struct kefir_ast_type_name *type_name4 = kefir_ast_new_type_name(
         &kft_mem, kefir_ast_declarator_pointer(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &type_name4->type_decl.specifiers,
                                                          kefir_ast_type_specifier_char(&kft_mem)));
     ASSERT_CAST(&kft_mem, context, kefir_ast_type_pointer(&kft_mem, context->type_bundle, kefir_ast_type_char()),
-                type_name4, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 0)), true);
+                type_name4, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 0)), true);
 
     struct kefir_ast_type_name *type_name5 =
         kefir_ast_new_type_name(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL));
@@ -205,7 +205,7 @@ DEFINE_CASE(ast_node_analysis_cast_operators, "AST node analysis - cast operator
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &type_name8->type_decl.specifiers,
                                                          kefir_ast_type_specifier_char(&kft_mem)));
     oper = kefir_ast_new_cast_operator(&kft_mem, type_name8,
-                                       KEFIR_AST_NODE_BASE(kefir_ast_new_constant_double(&kft_mem, 3.14)));
+                                       KEFIR_AST_NODE_BASE(kefir_ast_new_constant_double_noarena(&kft_mem, 3.14)));
     ASSERT_NOK(kefir_ast_analyze_node(&kft_mem, context, KEFIR_AST_NODE_BASE(oper)));
     ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(oper)));
 
@@ -238,7 +238,7 @@ DEFINE_CASE(ast_node_analysis_cast_operator_qualified_rvalue, "AST node analysis
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &type_name1->type_decl.specifiers,
                                                          kefir_ast_type_specifier_int(&kft_mem)));
     ASSERT_CAST(&kft_mem, context, kefir_ast_type_signed_int(), type_name1,
-                KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 0)), true);
+                KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 0)), true);
 
     struct kefir_ast_type_name *type_name2 =
         kefir_ast_new_type_name(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL));
@@ -247,7 +247,7 @@ DEFINE_CASE(ast_node_analysis_cast_operator_qualified_rvalue, "AST node analysis
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &type_name2->type_decl.specifiers,
                                                          kefir_ast_type_qualifier_const(&kft_mem)));
     ASSERT_CAST(&kft_mem, context, kefir_ast_type_signed_int(), type_name2,
-                KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 0)), true);
+                KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 0)), true);
 
     struct kefir_ast_type_name *type_name3 =
         kefir_ast_new_type_name(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL));
@@ -258,7 +258,7 @@ DEFINE_CASE(ast_node_analysis_cast_operator_qualified_rvalue, "AST node analysis
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &type_name3->type_decl.specifiers,
                                                          kefir_ast_type_qualifier_volatile(&kft_mem)));
     ASSERT_CAST(&kft_mem, context, kefir_ast_type_signed_int(), type_name3,
-                KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 0)), true);
+                KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 0)), true);
 
     struct kefir_ast_type_name *type_name4 = kefir_ast_new_type_name(
         &kft_mem, kefir_ast_declarator_pointer(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL)));
@@ -274,7 +274,7 @@ DEFINE_CASE(ast_node_analysis_cast_operator_qualified_rvalue, "AST node analysis
             &kft_mem, context->type_bundle,
             kefir_ast_type_qualified(&kft_mem, context->type_bundle, kefir_ast_type_signed_int(),
                                      (struct kefir_ast_type_qualification) {.constant = true, .volatile_type = true})),
-        type_name4, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 0)), true);
+        type_name4, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 0)), true);
 
     ASSERT_OK(kefir_ast_local_context_free(&kft_mem, &local_context));
     ASSERT_OK(kefir_ast_global_context_free(&kft_mem, &global_context));
@@ -318,17 +318,17 @@ DEFINE_CASE(ast_node_analysis_multiplicative_operators, "AST node analysis - mul
 #define MULDIV(_oper)                                                                                                \
     ASSERT_BINARY(&kft_mem, context, (_oper),                                                                        \
                   KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(&kft_mem, context->symbols, "x")),                    \
-                  KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 2)), kefir_ast_type_signed_int(), false); \
+                  KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 2)), kefir_ast_type_signed_int(), false); \
                                                                                                                      \
-    ASSERT_BINARY(&kft_mem, context, (_oper), KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long(&kft_mem, 3)),         \
+    ASSERT_BINARY(&kft_mem, context, (_oper), KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long_noarena(&kft_mem, 3)),         \
                   KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(&kft_mem, context->symbols, "x")),                    \
                   kefir_ast_type_signed_long(), false);                                                              \
                                                                                                                      \
     ASSERT_BINARY(&kft_mem, context, (_oper),                                                                        \
                   KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(&kft_mem, context->symbols, "y")),                    \
-                  KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 4)), kefir_ast_type_signed_int(), true);  \
+                  KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 4)), kefir_ast_type_signed_int(), true);  \
                                                                                                                      \
-    ASSERT_BINARY(&kft_mem, context, (_oper), KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long(&kft_mem, 5)),         \
+    ASSERT_BINARY(&kft_mem, context, (_oper), KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long_noarena(&kft_mem, 5)),         \
                   KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(&kft_mem, context->symbols, "y")),                    \
                   kefir_ast_type_signed_long(), true);
 
@@ -372,31 +372,31 @@ DEFINE_CASE(ast_node_analysis_multiplicative_operators, "AST node analysis - mul
 
     ASSERT_BINARY(&kft_mem, context, KEFIR_AST_OPERATION_MODULO,
                   KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(&kft_mem, context->symbols, "x")),
-                  KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char(&kft_mem, 11)), kefir_ast_type_signed_int(), false);
+                  KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char_noarena(&kft_mem, 11)), kefir_ast_type_signed_int(), false);
 
     ASSERT_BINARY(&kft_mem, context, KEFIR_AST_OPERATION_MODULO,
-                  KEFIR_AST_NODE_BASE(kefir_ast_new_constant_ulong(&kft_mem, 12)),
+                  KEFIR_AST_NODE_BASE(kefir_ast_new_constant_ulong_noarena(&kft_mem, 12)),
                   KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(&kft_mem, context->symbols, "x")),
                   kefir_ast_type_unsigned_long(), false);
 
     ASSERT_BINARY(&kft_mem, context, KEFIR_AST_OPERATION_MODULO,
                   KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(&kft_mem, context->symbols, "y")),
-                  KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char(&kft_mem, 11)), kefir_ast_type_signed_int(), true);
+                  KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char_noarena(&kft_mem, 11)), kefir_ast_type_signed_int(), true);
 
     ASSERT_BINARY(&kft_mem, context, KEFIR_AST_OPERATION_MODULO,
-                  KEFIR_AST_NODE_BASE(kefir_ast_new_constant_ulong(&kft_mem, 12)),
+                  KEFIR_AST_NODE_BASE(kefir_ast_new_constant_ulong_noarena(&kft_mem, 12)),
                   KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(&kft_mem, context->symbols, "y")),
                   kefir_ast_type_unsigned_long(), true);
 
     struct kefir_ast_binary_operation *oper = kefir_ast_new_binary_operation(
-        &kft_mem, KEFIR_AST_OPERATION_MODULO, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 105)),
-        KEFIR_AST_NODE_BASE(kefir_ast_new_constant_float(&kft_mem, 11.0f)));
+        &kft_mem, KEFIR_AST_OPERATION_MODULO, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 105)),
+        KEFIR_AST_NODE_BASE(kefir_ast_new_constant_float_noarena(&kft_mem, 11.0f)));
     ASSERT_NOK(kefir_ast_analyze_node(&kft_mem, context, KEFIR_AST_NODE_BASE(oper)));
     ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(oper)));
 
     oper = kefir_ast_new_binary_operation(&kft_mem, KEFIR_AST_OPERATION_MODULO,
-                                          KEFIR_AST_NODE_BASE(kefir_ast_new_constant_double(&kft_mem, 106.0f)),
-                                          KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long_long(&kft_mem, 12)));
+                                          KEFIR_AST_NODE_BASE(kefir_ast_new_constant_double_noarena(&kft_mem, 106.0f)),
+                                          KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long_long_noarena(&kft_mem, 12)));
     ASSERT_NOK(kefir_ast_analyze_node(&kft_mem, context, KEFIR_AST_NODE_BASE(oper)));
     ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(oper)));
 

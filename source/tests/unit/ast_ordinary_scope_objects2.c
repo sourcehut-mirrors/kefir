@@ -55,14 +55,14 @@ DEFINE_CASE(ast_ordinary_scope_objects_init1, "AST Declaration initializers - gl
                                KEFIR_AST_SCOPED_IDENTIFIER_EXTERNAL_LINKAGE);
 
     struct kefir_ast_initializer *init1 =
-        kefir_ast_new_expression_initializer(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 101)));
+        kefir_ast_new_expression_initializer(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 101)));
     ASSERT_OK(kefir_ast_global_context_define_external(&kft_mem, &global_context, "var1", kefir_ast_type_signed_int(),
                                                        NULL, init1, NULL, NULL, NULL));
     ASSERT_RESOLVED_IDENTIFIER(&context, "var1", KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN, kefir_ast_type_signed_int(),
                                KEFIR_AST_SCOPED_IDENTIFIER_EXTERNAL_LINKAGE);
 
     struct kefir_ast_initializer *init2 =
-        kefir_ast_new_expression_initializer(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 101)));
+        kefir_ast_new_expression_initializer(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 101)));
     ASSERT_NOK(kefir_ast_global_context_define_external(&kft_mem, &global_context, "var1", kefir_ast_type_signed_int(),
                                                         NULL, init2, NULL, NULL, NULL));
     ASSERT_OK(kefir_ast_initializer_free(&kft_mem, init2));
@@ -110,7 +110,7 @@ DEFINE_CASE(ast_ordinary_scope_objects_init2, "AST Declaration initializers - gl
                                KEFIR_AST_SCOPED_IDENTIFIER_EXTERNAL_LINKAGE);
 
     struct kefir_ast_initializer *init0 =
-        kefir_ast_new_expression_initializer(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 10)));
+        kefir_ast_new_expression_initializer(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 10)));
     ASSERT_NOK(kefir_ast_global_context_define_external(&kft_mem, &global_context, "var1", type1, NULL, init0, NULL,
                                                         NULL, NULL));
     ASSERT_RESOLVED_IDENTIFIER(&context, "var1", KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN, type1,
@@ -168,14 +168,14 @@ DEFINE_CASE(ast_ordinary_scope_objects_init3, "AST Declaration initializers - gl
                                kefir_ast_type_signed_long(), KEFIR_AST_SCOPED_IDENTIFIER_INTERNAL_LINKAGE);
 
     struct kefir_ast_initializer *init0 =
-        kefir_ast_new_expression_initializer(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long(&kft_mem, 10)));
+        kefir_ast_new_expression_initializer(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long_noarena(&kft_mem, 10)));
     ASSERT_OK(kefir_ast_global_context_define_static(&kft_mem, &global_context, "var1", kefir_ast_type_signed_long(),
                                                      NULL, init0, NULL, NULL, NULL));
     ASSERT_RESOLVED_IDENTIFIER(&context, "var1", KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC,
                                kefir_ast_type_signed_long(), KEFIR_AST_SCOPED_IDENTIFIER_INTERNAL_LINKAGE);
 
     struct kefir_ast_initializer *init1 =
-        kefir_ast_new_expression_initializer(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long(&kft_mem, 15)));
+        kefir_ast_new_expression_initializer(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long_noarena(&kft_mem, 15)));
     ASSERT_NOK(kefir_ast_global_context_define_static(&kft_mem, &global_context, "var1", kefir_ast_type_signed_long(),
                                                       NULL, init1, NULL, NULL, NULL));
     ASSERT_OK(kefir_ast_initializer_free(&kft_mem, init1));
@@ -253,14 +253,14 @@ DEFINE_CASE(ast_ordinary_scope_objects_init5, "AST Declaration initializers - gl
                                kefir_ast_type_signed_int(), KEFIR_AST_SCOPED_IDENTIFIER_EXTERNAL_LINKAGE);
 
     struct kefir_ast_initializer *init1 =
-        kefir_ast_new_expression_initializer(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 101)));
+        kefir_ast_new_expression_initializer(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 101)));
     ASSERT_OK(kefir_ast_global_context_define_external_thread_local(
         &kft_mem, &global_context, "var1", kefir_ast_type_signed_int(), NULL, init1, NULL, NULL, NULL));
     ASSERT_RESOLVED_IDENTIFIER(&context, "var1", KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN_THREAD_LOCAL,
                                kefir_ast_type_signed_int(), KEFIR_AST_SCOPED_IDENTIFIER_EXTERNAL_LINKAGE);
 
     struct kefir_ast_initializer *init2 =
-        kefir_ast_new_expression_initializer(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 101)));
+        kefir_ast_new_expression_initializer(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 101)));
     ASSERT_NOK(kefir_ast_global_context_define_external_thread_local(
         &kft_mem, &global_context, "var1", kefir_ast_type_signed_int(), NULL, init2, NULL, NULL, NULL));
     ASSERT_OK(kefir_ast_initializer_free(&kft_mem, init2));
@@ -308,7 +308,7 @@ DEFINE_CASE(ast_ordinary_scope_objects_init6, "AST Declaration initializers - gl
                                KEFIR_AST_SCOPED_IDENTIFIER_EXTERNAL_LINKAGE);
 
     struct kefir_ast_initializer *init0 =
-        kefir_ast_new_expression_initializer(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 10)));
+        kefir_ast_new_expression_initializer(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 10)));
     ASSERT_NOK(kefir_ast_global_context_define_external_thread_local(&kft_mem, &global_context, "var1", type1, NULL,
                                                                      init0, NULL, NULL, NULL));
     ASSERT_OK(kefir_ast_initializer_free(&kft_mem, init0));
@@ -366,14 +366,14 @@ DEFINE_CASE(ast_ordinary_scope_objects_init7, "AST Declaration initializers - gl
                                kefir_ast_type_signed_long(), KEFIR_AST_SCOPED_IDENTIFIER_INTERNAL_LINKAGE);
 
     struct kefir_ast_initializer *init0 =
-        kefir_ast_new_expression_initializer(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long(&kft_mem, 10)));
+        kefir_ast_new_expression_initializer(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long_noarena(&kft_mem, 10)));
     ASSERT_OK(kefir_ast_global_context_define_static_thread_local(
         &kft_mem, &global_context, "var1", kefir_ast_type_signed_long(), NULL, init0, NULL, NULL, NULL));
     ASSERT_RESOLVED_IDENTIFIER(&context, "var1", KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC_THREAD_LOCAL,
                                kefir_ast_type_signed_long(), KEFIR_AST_SCOPED_IDENTIFIER_INTERNAL_LINKAGE);
 
     struct kefir_ast_initializer *init1 =
-        kefir_ast_new_expression_initializer(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long(&kft_mem, 15)));
+        kefir_ast_new_expression_initializer(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long_noarena(&kft_mem, 15)));
     ASSERT_NOK(kefir_ast_global_context_define_static_thread_local(
         &kft_mem, &global_context, "var1", kefir_ast_type_signed_long(), NULL, init1, NULL, NULL, NULL));
     ASSERT_OK(kefir_ast_initializer_free(&kft_mem, init1));

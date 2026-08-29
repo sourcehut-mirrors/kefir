@@ -25,6 +25,8 @@ else
 KEFIR_INTEGRATION_TEST_LIBS+=$(LIBKEFIR_A)
 endif
 
+$(KEFIR_BIN_DIR)/tests/integration/%.o: CFLAGS += -include "$(HEADERS_DIR)/kefir/test/compat.h"
+
 $(KEFIR_BIN_DIR)/tests/integration/%: $(KEFIR_BIN_DIR)/tests/integration/%.o $(LIBKEFIR_DEPENDENCY) \
                                      $(KEFIR_BIN_DIR)/tests/int_test.o \
 									 $(KEFIR_BIN_DIR)/tests/util/codegen.o \

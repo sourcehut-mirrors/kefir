@@ -193,7 +193,7 @@ END_CASE
 
 DEFINE_CASE(ast_declarator_construction7, "AST declarators - array construction #1") {
     struct kefir_ast_declarator *decl = kefir_ast_declarator_array(
-        &kft_mem, KEFIR_AST_DECLARATOR_ARRAY_BOUNDED, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 100)),
+        &kft_mem, KEFIR_AST_DECLARATOR_ARRAY_BOUNDED, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 100)),
         kefir_ast_declarator_identifier(&kft_mem, NULL, "array"));
 
     ASSERT(decl != NULL);
@@ -261,7 +261,7 @@ DEFINE_CASE(ast_declarator_construction9, "AST declarators - array construction 
     ASSERT(kefir_ast_declarator_array(NULL, KEFIR_AST_DECLARATOR_ARRAY_UNBOUNDED, NULL, NULL) == NULL);
 
     struct kefir_ast_declarator *decl = kefir_ast_declarator_array(
-        &kft_mem, KEFIR_AST_DECLARATOR_ARRAY_BOUNDED, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 1)),
+        &kft_mem, KEFIR_AST_DECLARATOR_ARRAY_BOUNDED, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 1)),
         kefir_ast_declarator_pointer(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL)));
 
     ASSERT(decl != NULL);

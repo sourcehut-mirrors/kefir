@@ -89,7 +89,7 @@ static kefir_result_t define_assign_function(struct kefir_mem *mem, struct funct
             KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation(
                 mem, KEFIR_AST_OPERATION_ADD,
                 KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "value")),
-                KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long(mem, 1))))))));
+                KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long_noarena(mem, 1))))))));
 
     REQUIRE_OK(kefir_ast_comma_append(
         mem, comma,
@@ -101,7 +101,7 @@ static kefir_result_t define_assign_function(struct kefir_mem *mem, struct funct
             KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation(
                 mem, KEFIR_AST_OPERATION_ADD,
                 KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "value")),
-                KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long(mem, 2))))))));
+                KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long_noarena(mem, 2))))))));
 
     REQUIRE_OK(kefir_ast_comma_append(
         mem, comma,
@@ -113,7 +113,7 @@ static kefir_result_t define_assign_function(struct kefir_mem *mem, struct funct
             KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation(
                 mem, KEFIR_AST_OPERATION_ADD,
                 KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "value")),
-                KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long(mem, 3))))))));
+                KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long_noarena(mem, 3))))))));
 
     REQUIRE_OK(kefir_ast_comma_append(
         mem, comma,
@@ -125,7 +125,7 @@ static kefir_result_t define_assign_function(struct kefir_mem *mem, struct funct
             KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation(
                 mem, KEFIR_AST_OPERATION_ADD,
                 KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "value")),
-                KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long(mem, 4))))))));
+                KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long_noarena(mem, 4))))))));
 
     func->body = KEFIR_AST_NODE_BASE(comma);
 

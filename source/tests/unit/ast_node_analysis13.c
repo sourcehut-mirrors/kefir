@@ -102,7 +102,7 @@ DEFINE_CASE(ast_node_analysis_inline_assembly2, "AST node analysis - inline asse
         &kft_mem, &global_context.symbols, inline_asm2, NULL, "constraint3",
         KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(&kft_mem, &global_context.symbols, "a1"))));
     ASSERT_OK(kefir_ast_inline_assembly_add_input(&kft_mem, &global_context.symbols, inline_asm2, NULL, "constraint3",
-                                                  KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 1020))));
+                                                  KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 1020))));
     ASSERT_OK(kefir_ast_inline_assembly_add_clobber(&kft_mem, &global_context.symbols, inline_asm2, "mem"));
     ASSERT_OK(kefir_ast_inline_assembly_add_clobber(&kft_mem, &global_context.symbols, inline_asm2, "cc"));
     ASSERT_OK(kefir_ast_inline_assembly_add_jump_label(&kft_mem, &global_context.symbols, inline_asm2, "label1"));

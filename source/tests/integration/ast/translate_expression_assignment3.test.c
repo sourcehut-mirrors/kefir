@@ -81,61 +81,61 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     FUNC("assign_multiply_int", {
         COMPOUND_ASSIGNMENT(KEFIR_AST_ASSIGNMENT_MULTIPLY,
                             KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "int")),
-                            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, -1)));
+                            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, -1)));
     });
 
     FUNC("assign_multiply_ullong", {
         COMPOUND_ASSIGNMENT(KEFIR_AST_ASSIGNMENT_MULTIPLY,
                             KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "ullong")),
-                            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 100)));
+                            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 100)));
     });
 
     FUNC("assign_multiply_float", {
         COMPOUND_ASSIGNMENT(KEFIR_AST_ASSIGNMENT_MULTIPLY,
                             KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "float")),
-                            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, -5)));
+                            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, -5)));
     });
 
     FUNC("assign_multiply_double", {
         COMPOUND_ASSIGNMENT(KEFIR_AST_ASSIGNMENT_MULTIPLY,
                             KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "double")),
-                            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_float(mem, 5.003f)));
+                            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_float_noarena(mem, 5.003f)));
     });
 
     FUNC("assign_multiply_int_double", {
         COMPOUND_ASSIGNMENT(KEFIR_AST_ASSIGNMENT_MULTIPLY,
                             KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "int")),
-                            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_double(mem, 0.00527)));
+                            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_double_noarena(mem, 0.00527)));
     });
 
     FUNC("assign_divide_int", {
         COMPOUND_ASSIGNMENT(KEFIR_AST_ASSIGNMENT_DIVIDE,
                             KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "int")),
-                            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, -6)));
+                            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, -6)));
     });
 
     FUNC("assign_divide_ullong", {
         COMPOUND_ASSIGNMENT(KEFIR_AST_ASSIGNMENT_DIVIDE,
                             KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "ullong")),
-                            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 1006)));
+                            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 1006)));
     });
 
     FUNC("assign_divide_float", {
         COMPOUND_ASSIGNMENT(KEFIR_AST_ASSIGNMENT_DIVIDE,
                             KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "float")),
-                            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char(mem, '*')));
+                            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char_noarena(mem, '*')));
     });
 
     FUNC("assign_divide_double", {
         COMPOUND_ASSIGNMENT(KEFIR_AST_ASSIGNMENT_DIVIDE,
                             KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "double")),
-                            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_float(mem, 7.5f)));
+                            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_float_noarena(mem, 7.5f)));
     });
 
     FUNC("assign_divide_ullong_double", {
         COMPOUND_ASSIGNMENT(KEFIR_AST_ASSIGNMENT_DIVIDE,
                             KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "ullong")),
-                            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_double(mem, 6.66)));
+                            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_double_noarena(mem, 6.66)));
     });
 
     REQUIRE_OK(kefir_ir_format_module(stdout, &module, false));

@@ -328,44 +328,44 @@ KEFIR_AST_NODE_STRUCT(kefir_ast_inline_assembly, {
     struct kefir_list jump_labels;
 });
 
-struct kefir_ast_constant *kefir_ast_new_constant_nullptr(struct kefir_mem *);
-struct kefir_ast_constant *kefir_ast_new_constant_bool(struct kefir_mem *, kefir_bool_t);
-struct kefir_ast_constant *kefir_ast_new_constant_char(struct kefir_mem *, kefir_int_t);
-struct kefir_ast_constant *kefir_ast_new_constant_wide_char(struct kefir_mem *, kefir_wchar_t);
-struct kefir_ast_constant *kefir_ast_new_constant_unicode8_char(struct kefir_mem *, kefir_int_t);
-struct kefir_ast_constant *kefir_ast_new_constant_unicode16_char(struct kefir_mem *, kefir_char16_t);
-struct kefir_ast_constant *kefir_ast_new_constant_unicode32_char(struct kefir_mem *, kefir_char32_t);
-struct kefir_ast_constant *kefir_ast_new_constant_int(struct kefir_mem *, kefir_int64_t);
-struct kefir_ast_constant *kefir_ast_new_constant_uint(struct kefir_mem *, kefir_uint64_t);
-struct kefir_ast_constant *kefir_ast_new_constant_long(struct kefir_mem *, kefir_int64_t);
-struct kefir_ast_constant *kefir_ast_new_constant_ulong(struct kefir_mem *, kefir_uint64_t);
-struct kefir_ast_constant *kefir_ast_new_constant_long_long(struct kefir_mem *, kefir_int64_t);
-struct kefir_ast_constant *kefir_ast_new_constant_ulong_long(struct kefir_mem *, kefir_uint64_t);
-struct kefir_ast_constant *kefir_ast_new_constant_bitprecise(struct kefir_mem *, struct kefir_bigint *);
-struct kefir_ast_constant *kefir_ast_new_constant_unsigned_bitprecise(struct kefir_mem *, struct kefir_bigint *);
-struct kefir_ast_constant *kefir_ast_new_constant_float(struct kefir_mem *, kefir_float32_t);
-struct kefir_ast_constant *kefir_ast_new_constant_float32(struct kefir_mem *, kefir_float32_t);
-struct kefir_ast_constant *kefir_ast_new_constant_float32x(struct kefir_mem *, kefir_float64_t);
-struct kefir_ast_constant *kefir_ast_new_constant_double(struct kefir_mem *, kefir_float64_t);
-struct kefir_ast_constant *kefir_ast_new_constant_float64(struct kefir_mem *, kefir_float64_t);
-struct kefir_ast_constant *kefir_ast_new_constant_float64x(struct kefir_mem *, kefir_long_double_t);
-struct kefir_ast_constant *kefir_ast_new_constant_long_double(struct kefir_mem *, kefir_long_double_t);
-struct kefir_ast_constant *kefir_ast_new_constant_float80(struct kefir_mem *, kefir_long_double_t);
-struct kefir_ast_constant *kefir_ast_new_constant_decimal32(struct kefir_mem *, kefir_dfp_decimal32_t);
-struct kefir_ast_constant *kefir_ast_new_constant_decimal64(struct kefir_mem *, kefir_dfp_decimal64_t);
-struct kefir_ast_constant *kefir_ast_new_constant_decimal128(struct kefir_mem *, kefir_dfp_decimal128_t);
-struct kefir_ast_constant *kefir_ast_new_constant_decimal64x(struct kefir_mem *, kefir_dfp_decimal128_t);
-struct kefir_ast_constant *kefir_ast_new_constant_complex_float(struct kefir_mem *, kefir_float32_t, kefir_float32_t);
-struct kefir_ast_constant *kefir_ast_new_constant_complex_float32(struct kefir_mem *, kefir_float32_t, kefir_float32_t);
-struct kefir_ast_constant *kefir_ast_new_constant_complex_double(struct kefir_mem *, kefir_float64_t, kefir_float64_t);
-struct kefir_ast_constant *kefir_ast_new_constant_complex_float32x(struct kefir_mem *, kefir_float64_t,
+struct kefir_ast_constant *kefir_ast_new_constant_nullptr(struct kefir_mem *, struct kefir_memory_arena *);
+struct kefir_ast_constant *kefir_ast_new_constant_bool(struct kefir_mem *, struct kefir_memory_arena *, kefir_bool_t);
+struct kefir_ast_constant *kefir_ast_new_constant_char(struct kefir_mem *, struct kefir_memory_arena *, kefir_int_t);
+struct kefir_ast_constant *kefir_ast_new_constant_wide_char(struct kefir_mem *, struct kefir_memory_arena *, kefir_wchar_t);
+struct kefir_ast_constant *kefir_ast_new_constant_unicode8_char(struct kefir_mem *, struct kefir_memory_arena *arena, kefir_int_t);
+struct kefir_ast_constant *kefir_ast_new_constant_unicode16_char(struct kefir_mem *, struct kefir_memory_arena *, kefir_char16_t);
+struct kefir_ast_constant *kefir_ast_new_constant_unicode32_char(struct kefir_mem *, struct kefir_memory_arena *, kefir_char32_t);
+struct kefir_ast_constant *kefir_ast_new_constant_int(struct kefir_mem *, struct kefir_memory_arena *, kefir_int64_t);
+struct kefir_ast_constant *kefir_ast_new_constant_uint(struct kefir_mem *, struct kefir_memory_arena *, kefir_uint64_t);
+struct kefir_ast_constant *kefir_ast_new_constant_long(struct kefir_mem *, struct kefir_memory_arena *, kefir_int64_t);
+struct kefir_ast_constant *kefir_ast_new_constant_ulong(struct kefir_mem *, struct kefir_memory_arena *, kefir_uint64_t);
+struct kefir_ast_constant *kefir_ast_new_constant_long_long(struct kefir_mem *, struct kefir_memory_arena *, kefir_int64_t);
+struct kefir_ast_constant *kefir_ast_new_constant_ulong_long(struct kefir_mem *, struct kefir_memory_arena *, kefir_uint64_t);
+struct kefir_ast_constant *kefir_ast_new_constant_bitprecise(struct kefir_mem *, struct kefir_memory_arena *, struct kefir_bigint *);
+struct kefir_ast_constant *kefir_ast_new_constant_unsigned_bitprecise(struct kefir_mem *, struct kefir_memory_arena *, struct kefir_bigint *);
+struct kefir_ast_constant *kefir_ast_new_constant_float(struct kefir_mem *, struct kefir_memory_arena *, kefir_float32_t);
+struct kefir_ast_constant *kefir_ast_new_constant_float32(struct kefir_mem *, struct kefir_memory_arena *, kefir_float32_t);
+struct kefir_ast_constant *kefir_ast_new_constant_float32x(struct kefir_mem *, struct kefir_memory_arena *, kefir_float64_t);
+struct kefir_ast_constant *kefir_ast_new_constant_double(struct kefir_mem *, struct kefir_memory_arena *, kefir_float64_t);
+struct kefir_ast_constant *kefir_ast_new_constant_float64(struct kefir_mem *, struct kefir_memory_arena *, kefir_float64_t);
+struct kefir_ast_constant *kefir_ast_new_constant_float64x(struct kefir_mem *, struct kefir_memory_arena *, kefir_long_double_t);
+struct kefir_ast_constant *kefir_ast_new_constant_long_double(struct kefir_mem *, struct kefir_memory_arena *, kefir_long_double_t);
+struct kefir_ast_constant *kefir_ast_new_constant_float80(struct kefir_mem *, struct kefir_memory_arena *, kefir_long_double_t);
+struct kefir_ast_constant *kefir_ast_new_constant_decimal32(struct kefir_mem *, struct kefir_memory_arena *, kefir_dfp_decimal32_t);
+struct kefir_ast_constant *kefir_ast_new_constant_decimal64(struct kefir_mem *, struct kefir_memory_arena *, kefir_dfp_decimal64_t);
+struct kefir_ast_constant *kefir_ast_new_constant_decimal128(struct kefir_mem *, struct kefir_memory_arena *, kefir_dfp_decimal128_t);
+struct kefir_ast_constant *kefir_ast_new_constant_decimal64x(struct kefir_mem *, struct kefir_memory_arena *, kefir_dfp_decimal128_t);
+struct kefir_ast_constant *kefir_ast_new_constant_complex_float(struct kefir_mem *, struct kefir_memory_arena *, kefir_float32_t, kefir_float32_t);
+struct kefir_ast_constant *kefir_ast_new_constant_complex_float32(struct kefir_mem *, struct kefir_memory_arena *, kefir_float32_t, kefir_float32_t);
+struct kefir_ast_constant *kefir_ast_new_constant_complex_double(struct kefir_mem *, struct kefir_memory_arena *, kefir_float64_t, kefir_float64_t);
+struct kefir_ast_constant *kefir_ast_new_constant_complex_float32x(struct kefir_mem *, struct kefir_memory_arena *, kefir_float64_t,
                                                                    kefir_float64_t);
-struct kefir_ast_constant *kefir_ast_new_constant_complex_float64(struct kefir_mem *, kefir_float64_t, kefir_float64_t);
-struct kefir_ast_constant *kefir_ast_new_constant_complex_long_double(struct kefir_mem *, kefir_long_double_t,
+struct kefir_ast_constant *kefir_ast_new_constant_complex_float64(struct kefir_mem *, struct kefir_memory_arena *, kefir_float64_t, kefir_float64_t);
+struct kefir_ast_constant *kefir_ast_new_constant_complex_long_double(struct kefir_mem *, struct kefir_memory_arena *, kefir_long_double_t,
                                                                       kefir_long_double_t);
-struct kefir_ast_constant *kefir_ast_new_constant_complex_float64x(struct kefir_mem *, kefir_long_double_t,
+struct kefir_ast_constant *kefir_ast_new_constant_complex_float64x(struct kefir_mem *, struct kefir_memory_arena *, kefir_long_double_t,
                                                                    kefir_long_double_t);
-struct kefir_ast_constant *kefir_ast_new_constant_complex_float80(struct kefir_mem *, kefir_long_double_t,
+struct kefir_ast_constant *kefir_ast_new_constant_complex_float80(struct kefir_mem *, struct kefir_memory_arena *, kefir_long_double_t,
                                                                   kefir_long_double_t);
 struct kefir_ast_identifier *kefir_ast_new_identifier(struct kefir_mem *, struct kefir_string_pool *, const char *);
 

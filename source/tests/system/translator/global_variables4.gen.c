@@ -108,7 +108,7 @@ static kefir_result_t define_unit2(struct kefir_mem *mem, const struct kefir_ast
         kefir_ast_new_initializer_member_designation(
             mem, context->symbols, "float64",
             kefir_ast_new_initializer_member_designation(mem, context->symbols, "value", NULL)),
-        kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_float(mem, 8.163f)))));
+        kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_float_noarena(mem, 8.163f)))));
 
     struct kefir_ast_declaration *decl1 = kefir_ast_new_single_declaration(
         mem, kefir_ast_declarator_identifier(mem, context->symbols, "multi1"), init1, NULL);
@@ -134,7 +134,7 @@ static kefir_result_t define_unit3(struct kefir_mem *mem, const struct kefir_ast
         kefir_ast_new_initializer_member_designation(
             mem, context->symbols, "int64",
             kefir_ast_new_initializer_member_designation(mem, context->symbols, "value", NULL)),
-        kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 0xffe)))));
+        kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 0xffe)))));
     REQUIRE_OK(kefir_ast_initializer_list_append(mem, &init1->list, NULL, init1_1));
 
     struct kefir_ast_initializer *init1_2 = kefir_ast_new_list_initializer(mem);
@@ -163,7 +163,7 @@ static kefir_result_t define_unit3(struct kefir_mem *mem, const struct kefir_ast
         kefir_ast_new_initializer_member_designation(
             mem, context->symbols, "float64",
             kefir_ast_new_initializer_member_designation(mem, context->symbols, "value", NULL)),
-        kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_float(mem, 6.67f)))));
+        kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_float_noarena(mem, 6.67f)))));
     REQUIRE_OK(kefir_ast_initializer_list_append(mem, &init1->list, NULL, init1_3));
 
     struct kefir_ast_initializer *init1_4 = kefir_ast_new_list_initializer(mem);
@@ -182,7 +182,7 @@ static kefir_result_t define_unit3(struct kefir_mem *mem, const struct kefir_ast
                      KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "multi2")))))));
     REQUIRE_OK(kefir_ast_initializer_list_append(
         mem, &init1->list,
-        kefir_ast_new_initializer_index_designation(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 5)), NULL),
+        kefir_ast_new_initializer_index_designation(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 5)), NULL),
         init1_4));
 
     struct kefir_ast_declaration *decl1 = kefir_ast_new_single_declaration(

@@ -95,7 +95,7 @@ kefir_result_t make_unit(struct kefir_mem *mem, const struct kefir_ast_context *
     REQUIRE_OK(kefir_token_buffer_cursor_handle(&tokens, &tokens_handle));
 
     REQUIRE_OK(kefir_parser_token_cursor_init(&cursor, &tokens_handle));
-    REQUIRE_OK(kefir_parser_init(mem, &parser, context->symbols, &cursor, NULL));
+    REQUIRE_OK(kefir_parser_init(mem, &parser, context->symbols, NULL, &cursor, NULL));
     struct kefir_ast_node_base *node = NULL;
     REQUIRE_OK(KEFIR_PARSER_NEXT_TRANSLATION_UNIT(mem, &parser, &node));
     *result = KEFIR_AST_NODE_SELF(node);

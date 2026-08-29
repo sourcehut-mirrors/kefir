@@ -29,8 +29,6 @@ kefir_result_t ast_constant_free(struct kefir_mem *mem, struct kefir_ast_node_ba
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(base != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST node base"));
     ASSIGN_DECL_CAST(struct kefir_ast_constant *, node, KEFIR_AST_NODE_SELF(base));
-    if (node->type == KEFIR_AST_BITPRECISE_CONSTANT || node->type == KEFIR_AST_UNSIGNED_BITPRECISE_CONSTANT) {
-    }
 
     switch (node->type) {
         case KEFIR_AST_BITPRECISE_CONSTANT:
@@ -49,25 +47,27 @@ kefir_result_t ast_constant_free(struct kefir_mem *mem, struct kefir_ast_node_ba
         case KEFIR_AST_COMPLEX_FLOAT64X_CONSTANT:
         case KEFIR_AST_COMPLEX_FLOAT80_CONSTANT:
         case KEFIR_AST_COMPLEX_LONG_DOUBLE_CONSTANT:
-            KEFIR_FREE(mem, node->value.large);
+            if (!KEFIR_AST_NODE_IS_ARENA_ALLOCATED(node)) {
+                KEFIR_FREE(mem, node->value.large);
+            }
             break;
 
         default:
             // Intentionally left blank
             break;
     }
-    KEFIR_FREE(mem, node);
+    KEFIR_AST_NODE_ARENA_FREE(mem, node);
     return KEFIR_OK;
 }
 
 const struct kefir_ast_node_class AST_CONSTANT_CLASS = {
     .type = KEFIR_AST_CONSTANT, .visit = ast_constant_visit, .free = ast_constant_free};
 
-struct kefir_ast_constant *kefir_ast_new_constant_bool(struct kefir_mem *mem, kefir_bool_t value) {
-    REQUIRE(mem != NULL, NULL);
-    struct kefir_ast_constant *constant = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_constant));
+struct kefir_ast_constant *kefir_ast_new_constant_bool(struct kefir_mem *mem, struct kefir_memory_arena *arena, kefir_bool_t value) {
+    REQUIRE(mem != NULL || arena != NULL, NULL);
+    struct kefir_ast_constant *constant = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_constant);
     REQUIRE(constant != NULL, NULL);
-    constant->base.refcount = 1;
+    constant->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
     constant->base.klass = &AST_CONSTANT_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&constant->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -84,11 +84,11 @@ struct kefir_ast_constant *kefir_ast_new_constant_bool(struct kefir_mem *mem, ke
     return constant;
 }
 
-struct kefir_ast_constant *kefir_ast_new_constant_nullptr(struct kefir_mem *mem) {
-    REQUIRE(mem != NULL, NULL);
-    struct kefir_ast_constant *constant = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_constant));
+struct kefir_ast_constant *kefir_ast_new_constant_nullptr(struct kefir_mem *mem, struct kefir_memory_arena *arena) {
+    REQUIRE(mem != NULL || arena != NULL, NULL);
+    struct kefir_ast_constant *constant = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_constant);
     REQUIRE(constant != NULL, NULL);
-    constant->base.refcount = 1;
+    constant->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
     constant->base.klass = &AST_CONSTANT_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&constant->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -104,11 +104,11 @@ struct kefir_ast_constant *kefir_ast_new_constant_nullptr(struct kefir_mem *mem)
     return constant;
 }
 
-struct kefir_ast_constant *kefir_ast_new_constant_char(struct kefir_mem *mem, kefir_int_t value) {
-    REQUIRE(mem != NULL, NULL);
-    struct kefir_ast_constant *constant = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_constant));
+struct kefir_ast_constant *kefir_ast_new_constant_char(struct kefir_mem *mem, struct kefir_memory_arena *arena, kefir_int_t value) {
+    REQUIRE(mem != NULL || arena != NULL, NULL);
+    struct kefir_ast_constant *constant = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_constant);
     REQUIRE(constant != NULL, NULL);
-    constant->base.refcount = 1;
+    constant->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
     constant->base.klass = &AST_CONSTANT_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&constant->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -125,11 +125,11 @@ struct kefir_ast_constant *kefir_ast_new_constant_char(struct kefir_mem *mem, ke
     return constant;
 }
 
-struct kefir_ast_constant *kefir_ast_new_constant_unicode8_char(struct kefir_mem *mem, kefir_int_t value) {
-    REQUIRE(mem != NULL, NULL);
-    struct kefir_ast_constant *constant = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_constant));
+struct kefir_ast_constant *kefir_ast_new_constant_unicode8_char(struct kefir_mem *mem, struct kefir_memory_arena *arena, kefir_int_t value) {
+    REQUIRE(mem != NULL || arena != NULL, NULL);
+    struct kefir_ast_constant *constant = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_constant);
     REQUIRE(constant != NULL, NULL);
-    constant->base.refcount = 1;
+    constant->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
     constant->base.klass = &AST_CONSTANT_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&constant->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -146,11 +146,11 @@ struct kefir_ast_constant *kefir_ast_new_constant_unicode8_char(struct kefir_mem
     return constant;
 }
 
-struct kefir_ast_constant *kefir_ast_new_constant_wide_char(struct kefir_mem *mem, kefir_wchar_t value) {
-    REQUIRE(mem != NULL, NULL);
-    struct kefir_ast_constant *constant = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_constant));
+struct kefir_ast_constant *kefir_ast_new_constant_wide_char(struct kefir_mem *mem, struct kefir_memory_arena *arena, kefir_wchar_t value) {
+    REQUIRE(mem != NULL || arena != NULL, NULL);
+    struct kefir_ast_constant *constant = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_constant);
     REQUIRE(constant != NULL, NULL);
-    constant->base.refcount = 1;
+    constant->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
     constant->base.klass = &AST_CONSTANT_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&constant->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -167,11 +167,11 @@ struct kefir_ast_constant *kefir_ast_new_constant_wide_char(struct kefir_mem *me
     return constant;
 }
 
-struct kefir_ast_constant *kefir_ast_new_constant_unicode16_char(struct kefir_mem *mem, kefir_char16_t value) {
-    REQUIRE(mem != NULL, NULL);
-    struct kefir_ast_constant *constant = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_constant));
+struct kefir_ast_constant *kefir_ast_new_constant_unicode16_char(struct kefir_mem *mem, struct kefir_memory_arena *arena, kefir_char16_t value) {
+    REQUIRE(mem != NULL || arena != NULL, NULL);
+    struct kefir_ast_constant *constant = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_constant);
     REQUIRE(constant != NULL, NULL);
-    constant->base.refcount = 1;
+    constant->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
     constant->base.klass = &AST_CONSTANT_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&constant->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -188,11 +188,11 @@ struct kefir_ast_constant *kefir_ast_new_constant_unicode16_char(struct kefir_me
     return constant;
 }
 
-struct kefir_ast_constant *kefir_ast_new_constant_unicode32_char(struct kefir_mem *mem, kefir_char32_t value) {
-    REQUIRE(mem != NULL, NULL);
-    struct kefir_ast_constant *constant = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_constant));
+struct kefir_ast_constant *kefir_ast_new_constant_unicode32_char(struct kefir_mem *mem, struct kefir_memory_arena *arena, kefir_char32_t value) {
+    REQUIRE(mem != NULL || arena != NULL, NULL);
+    struct kefir_ast_constant *constant = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_constant);
     REQUIRE(constant != NULL, NULL);
-    constant->base.refcount = 1;
+    constant->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
     constant->base.klass = &AST_CONSTANT_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&constant->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -209,11 +209,11 @@ struct kefir_ast_constant *kefir_ast_new_constant_unicode32_char(struct kefir_me
     return constant;
 }
 
-struct kefir_ast_constant *kefir_ast_new_constant_int(struct kefir_mem *mem, kefir_int64_t value) {
-    REQUIRE(mem != NULL, NULL);
-    struct kefir_ast_constant *constant = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_constant));
+struct kefir_ast_constant *kefir_ast_new_constant_int(struct kefir_mem *mem, struct kefir_memory_arena *arena, kefir_int64_t value) {
+    REQUIRE(mem != NULL || arena != NULL, NULL);
+    struct kefir_ast_constant *constant = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_constant);
     REQUIRE(constant != NULL, NULL);
-    constant->base.refcount = 1;
+    constant->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
     constant->base.klass = &AST_CONSTANT_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&constant->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -230,11 +230,11 @@ struct kefir_ast_constant *kefir_ast_new_constant_int(struct kefir_mem *mem, kef
     return constant;
 }
 
-struct kefir_ast_constant *kefir_ast_new_constant_uint(struct kefir_mem *mem, kefir_uint64_t value) {
-    REQUIRE(mem != NULL, NULL);
-    struct kefir_ast_constant *constant = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_constant));
+struct kefir_ast_constant *kefir_ast_new_constant_uint(struct kefir_mem *mem, struct kefir_memory_arena *arena, kefir_uint64_t value) {
+    REQUIRE(mem != NULL || arena != NULL, NULL);
+    struct kefir_ast_constant *constant = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_constant);
     REQUIRE(constant != NULL, NULL);
-    constant->base.refcount = 1;
+    constant->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
     constant->base.klass = &AST_CONSTANT_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&constant->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -251,11 +251,11 @@ struct kefir_ast_constant *kefir_ast_new_constant_uint(struct kefir_mem *mem, ke
     return constant;
 }
 
-struct kefir_ast_constant *kefir_ast_new_constant_long(struct kefir_mem *mem, kefir_int64_t value) {
-    REQUIRE(mem != NULL, NULL);
-    struct kefir_ast_constant *constant = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_constant));
+struct kefir_ast_constant *kefir_ast_new_constant_long(struct kefir_mem *mem, struct kefir_memory_arena *arena, kefir_int64_t value) {
+    REQUIRE(mem != NULL || arena != NULL, NULL);
+    struct kefir_ast_constant *constant = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_constant);
     REQUIRE(constant != NULL, NULL);
-    constant->base.refcount = 1;
+    constant->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
     constant->base.klass = &AST_CONSTANT_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&constant->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -272,11 +272,11 @@ struct kefir_ast_constant *kefir_ast_new_constant_long(struct kefir_mem *mem, ke
     return constant;
 }
 
-struct kefir_ast_constant *kefir_ast_new_constant_ulong(struct kefir_mem *mem, kefir_uint64_t value) {
-    REQUIRE(mem != NULL, NULL);
-    struct kefir_ast_constant *constant = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_constant));
+struct kefir_ast_constant *kefir_ast_new_constant_ulong(struct kefir_mem *mem, struct kefir_memory_arena *arena, kefir_uint64_t value) {
+    REQUIRE(mem != NULL || arena != NULL, NULL);
+    struct kefir_ast_constant *constant = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_constant);
     REQUIRE(constant != NULL, NULL);
-    constant->base.refcount = 1;
+    constant->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
     constant->base.klass = &AST_CONSTANT_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&constant->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -293,11 +293,11 @@ struct kefir_ast_constant *kefir_ast_new_constant_ulong(struct kefir_mem *mem, k
     return constant;
 }
 
-struct kefir_ast_constant *kefir_ast_new_constant_long_long(struct kefir_mem *mem, kefir_int64_t value) {
-    REQUIRE(mem != NULL, NULL);
-    struct kefir_ast_constant *constant = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_constant));
+struct kefir_ast_constant *kefir_ast_new_constant_long_long(struct kefir_mem *mem, struct kefir_memory_arena *arena, kefir_int64_t value) {
+    REQUIRE(mem != NULL || arena != NULL, NULL);
+    struct kefir_ast_constant *constant = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_constant);
     REQUIRE(constant != NULL, NULL);
-    constant->base.refcount = 1;
+    constant->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
     constant->base.klass = &AST_CONSTANT_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&constant->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -314,11 +314,11 @@ struct kefir_ast_constant *kefir_ast_new_constant_long_long(struct kefir_mem *me
     return constant;
 }
 
-struct kefir_ast_constant *kefir_ast_new_constant_ulong_long(struct kefir_mem *mem, kefir_uint64_t value) {
-    REQUIRE(mem != NULL, NULL);
-    struct kefir_ast_constant *constant = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_constant));
+struct kefir_ast_constant *kefir_ast_new_constant_ulong_long(struct kefir_mem *mem, struct kefir_memory_arena *arena, kefir_uint64_t value) {
+    REQUIRE(mem != NULL || arena != NULL, NULL);
+    struct kefir_ast_constant *constant = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_constant);
     REQUIRE(constant != NULL, NULL);
-    constant->base.refcount = 1;
+    constant->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
     constant->base.klass = &AST_CONSTANT_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&constant->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -335,11 +335,11 @@ struct kefir_ast_constant *kefir_ast_new_constant_ulong_long(struct kefir_mem *m
     return constant;
 }
 
-struct kefir_ast_constant *kefir_ast_new_constant_bitprecise(struct kefir_mem *mem, struct kefir_bigint *bitprecise) {
-    REQUIRE(mem != NULL, NULL);
-    struct kefir_ast_constant *constant = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_constant));
+struct kefir_ast_constant *kefir_ast_new_constant_bitprecise(struct kefir_mem *mem, struct kefir_memory_arena *arena, struct kefir_bigint *bitprecise) {
+    REQUIRE(mem != NULL || arena != NULL, NULL);
+    struct kefir_ast_constant *constant = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_constant);
     REQUIRE(constant != NULL, NULL);
-    constant->base.refcount = 1;
+    constant->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
     constant->base.klass = &AST_CONSTANT_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&constant->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -352,7 +352,7 @@ struct kefir_ast_constant *kefir_ast_new_constant_bitprecise(struct kefir_mem *m
         return NULL;
     });
     constant->type = KEFIR_AST_BITPRECISE_CONSTANT;
-    constant->value.large = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_large_constant));
+    constant->value.large = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_large_constant);
     REQUIRE_ELSE(constant->value.large != NULL, {
         KEFIR_FREE(mem, constant);
         return NULL;
@@ -366,12 +366,12 @@ struct kefir_ast_constant *kefir_ast_new_constant_bitprecise(struct kefir_mem *m
     return constant;
 }
 
-struct kefir_ast_constant *kefir_ast_new_constant_unsigned_bitprecise(struct kefir_mem *mem,
+struct kefir_ast_constant *kefir_ast_new_constant_unsigned_bitprecise(struct kefir_mem *mem, struct kefir_memory_arena *arena,
                                                                       struct kefir_bigint *bitprecise) {
-    REQUIRE(mem != NULL, NULL);
-    struct kefir_ast_constant *constant = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_constant));
+    REQUIRE(mem != NULL || arena != NULL, NULL);
+    struct kefir_ast_constant *constant = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_constant);
     REQUIRE(constant != NULL, NULL);
-    constant->base.refcount = 1;
+    constant->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
     constant->base.klass = &AST_CONSTANT_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&constant->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -384,7 +384,7 @@ struct kefir_ast_constant *kefir_ast_new_constant_unsigned_bitprecise(struct kef
         return NULL;
     });
     constant->type = KEFIR_AST_UNSIGNED_BITPRECISE_CONSTANT;
-    constant->value.large = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_large_constant));
+    constant->value.large = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_large_constant);
     REQUIRE_ELSE(constant->value.large != NULL, {
         KEFIR_FREE(mem, constant);
         return NULL;
@@ -398,11 +398,11 @@ struct kefir_ast_constant *kefir_ast_new_constant_unsigned_bitprecise(struct kef
     return constant;
 }
 
-struct kefir_ast_constant *kefir_ast_new_constant_float(struct kefir_mem *mem, kefir_float32_t value) {
-    REQUIRE(mem != NULL, NULL);
-    struct kefir_ast_constant *constant = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_constant));
+struct kefir_ast_constant *kefir_ast_new_constant_float(struct kefir_mem *mem, struct kefir_memory_arena *arena, kefir_float32_t value) {
+    REQUIRE(mem != NULL || arena != NULL, NULL);
+    struct kefir_ast_constant *constant = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_constant);
     REQUIRE(constant != NULL, NULL);
-    constant->base.refcount = 1;
+    constant->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
     constant->base.klass = &AST_CONSTANT_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&constant->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -419,11 +419,11 @@ struct kefir_ast_constant *kefir_ast_new_constant_float(struct kefir_mem *mem, k
     return constant;
 }
 
-struct kefir_ast_constant *kefir_ast_new_constant_float32(struct kefir_mem *mem, kefir_float32_t value) {
-    REQUIRE(mem != NULL, NULL);
-    struct kefir_ast_constant *constant = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_constant));
+struct kefir_ast_constant *kefir_ast_new_constant_float32(struct kefir_mem *mem, struct kefir_memory_arena *arena, kefir_float32_t value) {
+    REQUIRE(mem != NULL || arena != NULL, NULL);
+    struct kefir_ast_constant *constant = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_constant);
     REQUIRE(constant != NULL, NULL);
-    constant->base.refcount = 1;
+    constant->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
     constant->base.klass = &AST_CONSTANT_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&constant->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -440,11 +440,11 @@ struct kefir_ast_constant *kefir_ast_new_constant_float32(struct kefir_mem *mem,
     return constant;
 }
 
-struct kefir_ast_constant *kefir_ast_new_constant_float32x(struct kefir_mem *mem, kefir_float64_t value) {
-    REQUIRE(mem != NULL, NULL);
-    struct kefir_ast_constant *constant = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_constant));
+struct kefir_ast_constant *kefir_ast_new_constant_float32x(struct kefir_mem *mem, struct kefir_memory_arena *arena, kefir_float64_t value) {
+    REQUIRE(mem != NULL || arena != NULL, NULL);
+    struct kefir_ast_constant *constant = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_constant);
     REQUIRE(constant != NULL, NULL);
-    constant->base.refcount = 1;
+    constant->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
     constant->base.klass = &AST_CONSTANT_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&constant->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -461,11 +461,11 @@ struct kefir_ast_constant *kefir_ast_new_constant_float32x(struct kefir_mem *mem
     return constant;
 }
 
-struct kefir_ast_constant *kefir_ast_new_constant_double(struct kefir_mem *mem, kefir_float64_t value) {
-    REQUIRE(mem != NULL, NULL);
-    struct kefir_ast_constant *constant = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_constant));
+struct kefir_ast_constant *kefir_ast_new_constant_double(struct kefir_mem *mem, struct kefir_memory_arena *arena, kefir_float64_t value) {
+    REQUIRE(mem != NULL || arena != NULL, NULL);
+    struct kefir_ast_constant *constant = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_constant);
     REQUIRE(constant != NULL, NULL);
-    constant->base.refcount = 1;
+    constant->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
     constant->base.klass = &AST_CONSTANT_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&constant->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -482,11 +482,11 @@ struct kefir_ast_constant *kefir_ast_new_constant_double(struct kefir_mem *mem, 
     return constant;
 }
 
-struct kefir_ast_constant *kefir_ast_new_constant_float64(struct kefir_mem *mem, kefir_float64_t value) {
-    REQUIRE(mem != NULL, NULL);
-    struct kefir_ast_constant *constant = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_constant));
+struct kefir_ast_constant *kefir_ast_new_constant_float64(struct kefir_mem *mem, struct kefir_memory_arena *arena, kefir_float64_t value) {
+    REQUIRE(mem != NULL || arena != NULL, NULL);
+    struct kefir_ast_constant *constant = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_constant);
     REQUIRE(constant != NULL, NULL);
-    constant->base.refcount = 1;
+    constant->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
     constant->base.klass = &AST_CONSTANT_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&constant->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -503,11 +503,11 @@ struct kefir_ast_constant *kefir_ast_new_constant_float64(struct kefir_mem *mem,
     return constant;
 }
 
-struct kefir_ast_constant *kefir_ast_new_constant_float64x(struct kefir_mem *mem, kefir_long_double_t value) {
-    REQUIRE(mem != NULL, NULL);
-    struct kefir_ast_constant *constant = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_constant));
+struct kefir_ast_constant *kefir_ast_new_constant_float64x(struct kefir_mem *mem, struct kefir_memory_arena *arena, kefir_long_double_t value) {
+    REQUIRE(mem != NULL || arena != NULL, NULL);
+    struct kefir_ast_constant *constant = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_constant);
     REQUIRE(constant != NULL, NULL);
-    constant->base.refcount = 1;
+    constant->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
     constant->base.klass = &AST_CONSTANT_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&constant->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -520,7 +520,7 @@ struct kefir_ast_constant *kefir_ast_new_constant_float64x(struct kefir_mem *mem
         return NULL;
     });
     constant->type = KEFIR_AST_FLOAT64X_CONSTANT;
-    constant->value.large = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_large_constant));
+    constant->value.large = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_large_constant);
     REQUIRE_ELSE(constant->value.large != NULL, {
         KEFIR_FREE(mem, constant);
         return NULL;
@@ -529,11 +529,11 @@ struct kefir_ast_constant *kefir_ast_new_constant_float64x(struct kefir_mem *mem
     return constant;
 }
 
-struct kefir_ast_constant *kefir_ast_new_constant_long_double(struct kefir_mem *mem, kefir_long_double_t value) {
-    REQUIRE(mem != NULL, NULL);
-    struct kefir_ast_constant *constant = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_constant));
+struct kefir_ast_constant *kefir_ast_new_constant_long_double(struct kefir_mem *mem, struct kefir_memory_arena *arena, kefir_long_double_t value) {
+    REQUIRE(mem != NULL || arena != NULL, NULL);
+    struct kefir_ast_constant *constant = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_constant);
     REQUIRE(constant != NULL, NULL);
-    constant->base.refcount = 1;
+    constant->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
     constant->base.klass = &AST_CONSTANT_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&constant->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -546,7 +546,7 @@ struct kefir_ast_constant *kefir_ast_new_constant_long_double(struct kefir_mem *
         return NULL;
     });
     constant->type = KEFIR_AST_LONG_DOUBLE_CONSTANT;
-    constant->value.large = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_large_constant));
+    constant->value.large = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_large_constant);
     REQUIRE_ELSE(constant->value.large != NULL, {
         KEFIR_FREE(mem, constant);
         return NULL;
@@ -555,11 +555,11 @@ struct kefir_ast_constant *kefir_ast_new_constant_long_double(struct kefir_mem *
     return constant;
 }
 
-struct kefir_ast_constant *kefir_ast_new_constant_float80(struct kefir_mem *mem, kefir_long_double_t value) {
-    REQUIRE(mem != NULL, NULL);
-    struct kefir_ast_constant *constant = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_constant));
+struct kefir_ast_constant *kefir_ast_new_constant_float80(struct kefir_mem *mem, struct kefir_memory_arena *arena, kefir_long_double_t value) {
+    REQUIRE(mem != NULL || arena != NULL, NULL);
+    struct kefir_ast_constant *constant = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_constant);
     REQUIRE(constant != NULL, NULL);
-    constant->base.refcount = 1;
+    constant->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
     constant->base.klass = &AST_CONSTANT_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&constant->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -572,7 +572,7 @@ struct kefir_ast_constant *kefir_ast_new_constant_float80(struct kefir_mem *mem,
         return NULL;
     });
     constant->type = KEFIR_AST_FLOAT80_CONSTANT;
-    constant->value.large = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_large_constant));
+    constant->value.large = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_large_constant);
     REQUIRE_ELSE(constant->value.large != NULL, {
         KEFIR_FREE(mem, constant);
         return NULL;
@@ -581,11 +581,11 @@ struct kefir_ast_constant *kefir_ast_new_constant_float80(struct kefir_mem *mem,
     return constant;
 }
 
-struct kefir_ast_constant *kefir_ast_new_constant_decimal32(struct kefir_mem *mem, kefir_dfp_decimal32_t value) {
-    REQUIRE(mem != NULL, NULL);
-    struct kefir_ast_constant *constant = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_constant));
+struct kefir_ast_constant *kefir_ast_new_constant_decimal32(struct kefir_mem *mem, struct kefir_memory_arena *arena, kefir_dfp_decimal32_t value) {
+    REQUIRE(mem != NULL || arena != NULL, NULL);
+    struct kefir_ast_constant *constant = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_constant);
     REQUIRE(constant != NULL, NULL);
-    constant->base.refcount = 1;
+    constant->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
     constant->base.klass = &AST_CONSTANT_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&constant->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -602,11 +602,11 @@ struct kefir_ast_constant *kefir_ast_new_constant_decimal32(struct kefir_mem *me
     return constant;
 }
 
-struct kefir_ast_constant *kefir_ast_new_constant_decimal64(struct kefir_mem *mem, kefir_dfp_decimal64_t value) {
-    REQUIRE(mem != NULL, NULL);
-    struct kefir_ast_constant *constant = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_constant));
+struct kefir_ast_constant *kefir_ast_new_constant_decimal64(struct kefir_mem *mem, struct kefir_memory_arena *arena, kefir_dfp_decimal64_t value) {
+    REQUIRE(mem != NULL || arena != NULL, NULL);
+    struct kefir_ast_constant *constant = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_constant);
     REQUIRE(constant != NULL, NULL);
-    constant->base.refcount = 1;
+    constant->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
     constant->base.klass = &AST_CONSTANT_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&constant->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -623,11 +623,11 @@ struct kefir_ast_constant *kefir_ast_new_constant_decimal64(struct kefir_mem *me
     return constant;
 }
 
-struct kefir_ast_constant *kefir_ast_new_constant_decimal128(struct kefir_mem *mem, kefir_dfp_decimal128_t value) {
-    REQUIRE(mem != NULL, NULL);
-    struct kefir_ast_constant *constant = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_constant));
+struct kefir_ast_constant *kefir_ast_new_constant_decimal128(struct kefir_mem *mem, struct kefir_memory_arena *arena, kefir_dfp_decimal128_t value) {
+    REQUIRE(mem != NULL || arena != NULL, NULL);
+    struct kefir_ast_constant *constant = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_constant);
     REQUIRE(constant != NULL, NULL);
-    constant->base.refcount = 1;
+    constant->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
     constant->base.klass = &AST_CONSTANT_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&constant->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -640,7 +640,7 @@ struct kefir_ast_constant *kefir_ast_new_constant_decimal128(struct kefir_mem *m
         return NULL;
     });
     constant->type = KEFIR_AST_DECIMAL128_CONSTANT;
-    constant->value.large = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_large_constant));
+    constant->value.large = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_large_constant);
     REQUIRE_ELSE(constant->value.large != NULL, {
         KEFIR_FREE(mem, constant);
         return NULL;
@@ -649,11 +649,11 @@ struct kefir_ast_constant *kefir_ast_new_constant_decimal128(struct kefir_mem *m
     return constant;
 }
 
-struct kefir_ast_constant *kefir_ast_new_constant_decimal64x(struct kefir_mem *mem, kefir_dfp_decimal128_t value) {
-    REQUIRE(mem != NULL, NULL);
-    struct kefir_ast_constant *constant = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_constant));
+struct kefir_ast_constant *kefir_ast_new_constant_decimal64x(struct kefir_mem *mem, struct kefir_memory_arena *arena, kefir_dfp_decimal128_t value) {
+    REQUIRE(mem != NULL || arena != NULL, NULL);
+    struct kefir_ast_constant *constant = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_constant);
     REQUIRE(constant != NULL, NULL);
-    constant->base.refcount = 1;
+    constant->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
     constant->base.klass = &AST_CONSTANT_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&constant->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -666,7 +666,7 @@ struct kefir_ast_constant *kefir_ast_new_constant_decimal64x(struct kefir_mem *m
         return NULL;
     });
     constant->type = KEFIR_AST_DECIMAL64X_CONSTANT;
-    constant->value.large = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_large_constant));
+    constant->value.large = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_large_constant);
     REQUIRE_ELSE(constant->value.large != NULL, {
         KEFIR_FREE(mem, constant);
         return NULL;
@@ -675,12 +675,12 @@ struct kefir_ast_constant *kefir_ast_new_constant_decimal64x(struct kefir_mem *m
     return constant;
 }
 
-struct kefir_ast_constant *kefir_ast_new_constant_complex_float(struct kefir_mem *mem, kefir_float32_t real,
+struct kefir_ast_constant *kefir_ast_new_constant_complex_float(struct kefir_mem *mem, struct kefir_memory_arena *arena, kefir_float32_t real,
                                                                 kefir_float32_t imaginary) {
-    REQUIRE(mem != NULL, NULL);
-    struct kefir_ast_constant *constant = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_constant));
+    REQUIRE(mem != NULL || arena != NULL, NULL);
+    struct kefir_ast_constant *constant = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_constant);
     REQUIRE(constant != NULL, NULL);
-    constant->base.refcount = 1;
+    constant->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
     constant->base.klass = &AST_CONSTANT_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&constant->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -698,12 +698,12 @@ struct kefir_ast_constant *kefir_ast_new_constant_complex_float(struct kefir_mem
     return constant;
 }
 
-struct kefir_ast_constant *kefir_ast_new_constant_complex_float32(struct kefir_mem *mem, kefir_float32_t real,
+struct kefir_ast_constant *kefir_ast_new_constant_complex_float32(struct kefir_mem *mem, struct kefir_memory_arena *arena, kefir_float32_t real,
                                                                   kefir_float32_t imaginary) {
-    REQUIRE(mem != NULL, NULL);
-    struct kefir_ast_constant *constant = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_constant));
+    REQUIRE(mem != NULL || arena != NULL, NULL);
+    struct kefir_ast_constant *constant = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_constant);
     REQUIRE(constant != NULL, NULL);
-    constant->base.refcount = 1;
+    constant->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
     constant->base.klass = &AST_CONSTANT_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&constant->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -721,12 +721,12 @@ struct kefir_ast_constant *kefir_ast_new_constant_complex_float32(struct kefir_m
     return constant;
 }
 
-struct kefir_ast_constant *kefir_ast_new_constant_complex_double(struct kefir_mem *mem, kefir_float64_t real,
+struct kefir_ast_constant *kefir_ast_new_constant_complex_double(struct kefir_mem *mem, struct kefir_memory_arena *arena, kefir_float64_t real,
                                                                  kefir_float64_t imaginary) {
-    REQUIRE(mem != NULL, NULL);
-    struct kefir_ast_constant *constant = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_constant));
+    REQUIRE(mem != NULL || arena != NULL, NULL);
+    struct kefir_ast_constant *constant = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_constant);
     REQUIRE(constant != NULL, NULL);
-    constant->base.refcount = 1;
+    constant->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
     constant->base.klass = &AST_CONSTANT_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&constant->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -739,7 +739,7 @@ struct kefir_ast_constant *kefir_ast_new_constant_complex_double(struct kefir_me
         return NULL;
     });
     constant->type = KEFIR_AST_COMPLEX_DOUBLE_CONSTANT;
-    constant->value.large = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_large_constant));
+    constant->value.large = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_large_constant);
     REQUIRE_ELSE(constant->value.large != NULL, {
         KEFIR_FREE(mem, constant);
         return NULL;
@@ -749,12 +749,12 @@ struct kefir_ast_constant *kefir_ast_new_constant_complex_double(struct kefir_me
     return constant;
 }
 
-struct kefir_ast_constant *kefir_ast_new_constant_complex_float32x(struct kefir_mem *mem, kefir_float64_t real,
+struct kefir_ast_constant *kefir_ast_new_constant_complex_float32x(struct kefir_mem *mem, struct kefir_memory_arena *arena, kefir_float64_t real,
                                                                    kefir_float64_t imaginary) {
-    REQUIRE(mem != NULL, NULL);
-    struct kefir_ast_constant *constant = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_constant));
+    REQUIRE(mem != NULL || arena != NULL, NULL);
+    struct kefir_ast_constant *constant = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_constant);
     REQUIRE(constant != NULL, NULL);
-    constant->base.refcount = 1;
+    constant->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
     constant->base.klass = &AST_CONSTANT_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&constant->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -767,7 +767,7 @@ struct kefir_ast_constant *kefir_ast_new_constant_complex_float32x(struct kefir_
         return NULL;
     });
     constant->type = KEFIR_AST_COMPLEX_FLOAT32X_CONSTANT;
-    constant->value.large = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_large_constant));
+    constant->value.large = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_large_constant);
     REQUIRE_ELSE(constant->value.large != NULL, {
         KEFIR_FREE(mem, constant);
         return NULL;
@@ -777,12 +777,12 @@ struct kefir_ast_constant *kefir_ast_new_constant_complex_float32x(struct kefir_
     return constant;
 }
 
-struct kefir_ast_constant *kefir_ast_new_constant_complex_float64(struct kefir_mem *mem, kefir_float64_t real,
+struct kefir_ast_constant *kefir_ast_new_constant_complex_float64(struct kefir_mem *mem, struct kefir_memory_arena *arena, kefir_float64_t real,
                                                                   kefir_float64_t imaginary) {
-    REQUIRE(mem != NULL, NULL);
-    struct kefir_ast_constant *constant = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_constant));
+    REQUIRE(mem != NULL || arena != NULL, NULL);
+    struct kefir_ast_constant *constant = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_constant);
     REQUIRE(constant != NULL, NULL);
-    constant->base.refcount = 1;
+    constant->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
     constant->base.klass = &AST_CONSTANT_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&constant->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -795,7 +795,7 @@ struct kefir_ast_constant *kefir_ast_new_constant_complex_float64(struct kefir_m
         return NULL;
     });
     constant->type = KEFIR_AST_COMPLEX_FLOAT64_CONSTANT;
-    constant->value.large = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_large_constant));
+    constant->value.large = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_large_constant);
     REQUIRE_ELSE(constant->value.large != NULL, {
         KEFIR_FREE(mem, constant);
         return NULL;
@@ -805,12 +805,12 @@ struct kefir_ast_constant *kefir_ast_new_constant_complex_float64(struct kefir_m
     return constant;
 }
 
-struct kefir_ast_constant *kefir_ast_new_constant_complex_long_double(struct kefir_mem *mem, kefir_long_double_t real,
+struct kefir_ast_constant *kefir_ast_new_constant_complex_long_double(struct kefir_mem *mem, struct kefir_memory_arena *arena, kefir_long_double_t real,
                                                                       kefir_long_double_t imaginary) {
-    REQUIRE(mem != NULL, NULL);
-    struct kefir_ast_constant *constant = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_constant));
+    REQUIRE(mem != NULL || arena != NULL, NULL);
+    struct kefir_ast_constant *constant = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_constant);
     REQUIRE(constant != NULL, NULL);
-    constant->base.refcount = 1;
+    constant->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
     constant->base.klass = &AST_CONSTANT_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&constant->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -823,7 +823,7 @@ struct kefir_ast_constant *kefir_ast_new_constant_complex_long_double(struct kef
         return NULL;
     });
     constant->type = KEFIR_AST_COMPLEX_LONG_DOUBLE_CONSTANT;
-    constant->value.large = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_large_constant));
+    constant->value.large = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_large_constant);
     REQUIRE_ELSE(constant->value.large != NULL, {
         KEFIR_FREE(mem, constant);
         return NULL;
@@ -833,12 +833,12 @@ struct kefir_ast_constant *kefir_ast_new_constant_complex_long_double(struct kef
     return constant;
 }
 
-struct kefir_ast_constant *kefir_ast_new_constant_complex_float64x(struct kefir_mem *mem, kefir_long_double_t real,
+struct kefir_ast_constant *kefir_ast_new_constant_complex_float64x(struct kefir_mem *mem, struct kefir_memory_arena *arena, kefir_long_double_t real,
                                                                    kefir_long_double_t imaginary) {
-    REQUIRE(mem != NULL, NULL);
-    struct kefir_ast_constant *constant = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_constant));
+    REQUIRE(mem != NULL || arena != NULL, NULL);
+    struct kefir_ast_constant *constant = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_constant);
     REQUIRE(constant != NULL, NULL);
-    constant->base.refcount = 1;
+    constant->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
     constant->base.klass = &AST_CONSTANT_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&constant->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -851,7 +851,7 @@ struct kefir_ast_constant *kefir_ast_new_constant_complex_float64x(struct kefir_
         return NULL;
     });
     constant->type = KEFIR_AST_COMPLEX_FLOAT64X_CONSTANT;
-    constant->value.large = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_large_constant));
+    constant->value.large = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_large_constant);
     REQUIRE_ELSE(constant->value.large != NULL, {
         KEFIR_FREE(mem, constant);
         return NULL;
@@ -861,12 +861,12 @@ struct kefir_ast_constant *kefir_ast_new_constant_complex_float64x(struct kefir_
     return constant;
 }
 
-struct kefir_ast_constant *kefir_ast_new_constant_complex_float80(struct kefir_mem *mem, kefir_long_double_t real,
+struct kefir_ast_constant *kefir_ast_new_constant_complex_float80(struct kefir_mem *mem, struct kefir_memory_arena *arena, kefir_long_double_t real,
                                                                   kefir_long_double_t imaginary) {
-    REQUIRE(mem != NULL, NULL);
-    struct kefir_ast_constant *constant = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_constant));
+    REQUIRE(mem != NULL || arena != NULL, NULL);
+    struct kefir_ast_constant *constant = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_constant);
     REQUIRE(constant != NULL, NULL);
-    constant->base.refcount = 1;
+    constant->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
     constant->base.klass = &AST_CONSTANT_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&constant->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -879,7 +879,7 @@ struct kefir_ast_constant *kefir_ast_new_constant_complex_float80(struct kefir_m
         return NULL;
     });
     constant->type = KEFIR_AST_COMPLEX_FLOAT80_CONSTANT;
-    constant->value.large = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_large_constant));
+    constant->value.large = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_large_constant);
     REQUIRE_ELSE(constant->value.large != NULL, {
         KEFIR_FREE(mem, constant);
         return NULL;

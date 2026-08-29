@@ -29,6 +29,8 @@ KEFIR_SYSTEM_TEST_GEN_COMMON_OBJECT_FILES := $(KEFIR_BIN_DIR)/tests/int_test.o \
 	                             			 $(KEFIR_BIN_DIR)/tests/util/module_shim.o \
 							                 $(KEFIR_BIN_DIR)/tests/util/codegen.o
 
+$(KEFIR_BIN_DIR)/tests/system/%.o: CFLAGS += -include "$(HEADERS_DIR)/kefir/test/compat.h"
+
 $(KEFIR_BIN_DIR)/tests/system/%.gen: $(KEFIR_BIN_DIR)/tests/system/%.gen.o \
 							   $(LIBKEFIR_DEPENDENCY) \
 							   $(KEFIR_SYSTEM_TEST_GEN_COMMON_OBJECT_FILES)

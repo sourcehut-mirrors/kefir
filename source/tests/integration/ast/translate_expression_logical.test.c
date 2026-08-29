@@ -69,13 +69,13 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     struct kefir_irbuilder_block builder;
 
     FUNC2("logical_and1", {
-        BINARY_NODE(KEFIR_AST_OPERATION_LOGICAL_AND, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bool(mem, false)),
-                    KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bool(mem, false)));
+        BINARY_NODE(KEFIR_AST_OPERATION_LOGICAL_AND, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bool_noarena(mem, false)),
+                    KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bool_noarena(mem, false)));
     });
 
     FUNC2("logical_and2", {
-        BINARY_NODE(KEFIR_AST_OPERATION_LOGICAL_AND, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_float(mem, 0.067f)),
-                    KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char(mem, 'C')));
+        BINARY_NODE(KEFIR_AST_OPERATION_LOGICAL_AND, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_float_noarena(mem, 0.067f)),
+                    KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char_noarena(mem, 'C')));
     });
 
     struct kefir_ast_type_name *type_name1 = kefir_ast_new_type_name(
@@ -84,28 +84,28 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
                                                           kefir_ast_type_specifier_void(mem)));
 
     FUNC2("logical_and3", {
-        BINARY_NODE(KEFIR_AST_OPERATION_LOGICAL_AND, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long(mem, 4096)),
+        BINARY_NODE(KEFIR_AST_OPERATION_LOGICAL_AND, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long_noarena(mem, 4096)),
                     KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator(
-                        mem, type_name1, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 1)))));
+                        mem, type_name1, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 1)))));
     });
 
     FUNC2("logical_and4", {
-        BINARY_NODE(KEFIR_AST_OPERATION_LOGICAL_AND, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long_double(mem, 1.0l)),
-                    KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 100)));
+        BINARY_NODE(KEFIR_AST_OPERATION_LOGICAL_AND, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long_double_noarena(mem, 1.0l)),
+                    KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 100)));
     });
     FUNC2("logical_and5", {
-        BINARY_NODE(KEFIR_AST_OPERATION_LOGICAL_AND, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long_double(mem, 2.0l)),
-                    KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long_double(mem, 3.0l)));
+        BINARY_NODE(KEFIR_AST_OPERATION_LOGICAL_AND, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long_double_noarena(mem, 2.0l)),
+                    KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long_double_noarena(mem, 3.0l)));
     });
 
     FUNC2("logical_or1", {
-        BINARY_NODE(KEFIR_AST_OPERATION_LOGICAL_OR, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bool(mem, false)),
-                    KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bool(mem, false)));
+        BINARY_NODE(KEFIR_AST_OPERATION_LOGICAL_OR, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bool_noarena(mem, false)),
+                    KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bool_noarena(mem, false)));
     });
 
     FUNC2("logical_or2", {
-        BINARY_NODE(KEFIR_AST_OPERATION_LOGICAL_OR, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_float(mem, 0.4f)),
-                    KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char(mem, '7')));
+        BINARY_NODE(KEFIR_AST_OPERATION_LOGICAL_OR, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_float_noarena(mem, 0.4f)),
+                    KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char_noarena(mem, '7')));
     });
 
     struct kefir_ast_type_name *type_name2 = kefir_ast_new_type_name(
@@ -114,19 +114,19 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
                                                           kefir_ast_type_specifier_void(mem)));
 
     FUNC2("logical_or3", {
-        BINARY_NODE(KEFIR_AST_OPERATION_LOGICAL_OR, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long(mem, 8192)),
+        BINARY_NODE(KEFIR_AST_OPERATION_LOGICAL_OR, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long_noarena(mem, 8192)),
                     KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator(
-                        mem, type_name2, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 0)))));
+                        mem, type_name2, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 0)))));
     });
 
     FUNC2("logical_or4", {
-        BINARY_NODE(KEFIR_AST_OPERATION_LOGICAL_OR, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long_double(mem, -1.0l)),
-                    KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 200)));
+        BINARY_NODE(KEFIR_AST_OPERATION_LOGICAL_OR, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long_double_noarena(mem, -1.0l)),
+                    KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 200)));
     });
     FUNC2("logical_or5", {
         BINARY_NODE(KEFIR_AST_OPERATION_LOGICAL_OR,
-                    KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long_double(mem, 2.0e10l)),
-                    KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long_double(mem, 3.0e-20l)));
+                    KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long_double_noarena(mem, 2.0e10l)),
+                    KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long_double_noarena(mem, 3.0e-20l)));
     });
 
     REQUIRE_OK(kefir_ir_format_module(stdout, &module, false));

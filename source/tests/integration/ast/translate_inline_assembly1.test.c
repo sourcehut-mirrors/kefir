@@ -105,7 +105,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
             KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, &global_context.symbols, "abc"))));
         REQUIRE_OK(
             kefir_ast_inline_assembly_add_input(mem, &global_context.symbols, inline_asm2, NULL, "m",
-                                                KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long_double(mem, 4.15L))));
+                                                KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long_double_noarena(mem, 4.15L))));
         REQUIRE_OK(kefir_ast_inline_assembly_add_clobber(mem, &global_context.symbols, inline_asm2, "rax"));
 
         REQUIRE_OK(kefir_ast_analyze_node(mem, &local_context.context, KEFIR_AST_NODE_BASE(inline_asm2)));
@@ -152,7 +152,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
             KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, &global_context.symbols, "lde"))));
         REQUIRE_OK(
             kefir_ast_inline_assembly_add_input(mem, &global_context.symbols, inline_asm2, NULL, "m",
-                                                KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long_double(mem, 4.15L))));
+                                                KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long_double_noarena(mem, 4.15L))));
         REQUIRE_OK(kefir_ast_inline_assembly_add_clobber(mem, &global_context.symbols, inline_asm2, "rax"));
         REQUIRE_OK(kefir_ast_inline_assembly_add_clobber(mem, &global_context.symbols, inline_asm2, "rbx"));
         REQUIRE_OK(kefir_ast_inline_assembly_add_clobber(mem, &global_context.symbols, inline_asm2, "rcx"));

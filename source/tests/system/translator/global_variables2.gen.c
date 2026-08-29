@@ -40,7 +40,7 @@ static kefir_result_t define_unit1(struct kefir_mem *mem, const struct kefir_ast
                                    struct kefir_ast_translation_unit *unit) {
     struct kefir_ast_declaration *decl1 = kefir_ast_new_single_declaration(
         mem, kefir_ast_declarator_identifier(mem, context->symbols, "character1"),
-        kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char(mem, 'C'))), NULL);
+        kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char_noarena(mem, 'C'))), NULL);
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &decl1->specifiers,
                                                           kefir_ast_storage_class_specifier_static(mem)));
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &decl1->specifiers, kefir_ast_type_specifier_char(mem)));
@@ -68,7 +68,7 @@ static kefir_result_t define_unit2(struct kefir_mem *mem, const struct kefir_ast
                                    struct kefir_ast_translation_unit *unit) {
     struct kefir_ast_declaration *decl2 = kefir_ast_new_single_declaration(
         mem, kefir_ast_declarator_identifier(mem, context->symbols, "integer1"),
-        kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 0xfefea6))),
+        kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 0xfefea6))),
         NULL);
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &decl2->specifiers,
                                                           kefir_ast_storage_class_specifier_static(mem)));
@@ -99,7 +99,7 @@ static kefir_result_t define_unit3(struct kefir_mem *mem, const struct kefir_ast
                                    struct kefir_ast_translation_unit *unit) {
     struct kefir_ast_declaration *decl3 = kefir_ast_new_single_declaration(
         mem, kefir_ast_declarator_identifier(mem, context->symbols, "long1"),
-        kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long(mem, -1234543))),
+        kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long_noarena(mem, -1234543))),
         NULL);
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &decl3->specifiers,
                                                           kefir_ast_storage_class_specifier_static(mem)));
@@ -127,7 +127,7 @@ static kefir_result_t define_unit4(struct kefir_mem *mem, const struct kefir_ast
                                    struct kefir_ast_translation_unit *unit) {
     struct kefir_ast_declaration *decl4 = kefir_ast_new_single_declaration(
         mem, kefir_ast_declarator_identifier(mem, context->symbols, "float1"),
-        kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_float(mem, 9.57463f))),
+        kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_float_noarena(mem, 9.57463f))),
         NULL);
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &decl4->specifiers,
                                                           kefir_ast_storage_class_specifier_static(mem)));
@@ -157,7 +157,7 @@ static kefir_result_t define_unit5(struct kefir_mem *mem, const struct kefir_ast
                                    struct kefir_ast_translation_unit *unit) {
     struct kefir_ast_declaration *decl5 = kefir_ast_new_single_declaration(
         mem, kefir_ast_declarator_identifier(mem, context->symbols, "double1"),
-        kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_double(mem, 1.564e14))),
+        kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_double_noarena(mem, 1.564e14))),
         NULL);
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &decl5->specifiers,
                                                           kefir_ast_storage_class_specifier_static(mem)));
@@ -344,7 +344,7 @@ static kefir_result_t define_unit11(struct kefir_mem *mem, const struct kefir_as
                                     struct kefir_ast_translation_unit *unit) {
     struct kefir_ast_declaration *decl11 = kefir_ast_new_single_declaration(
         mem, kefir_ast_declarator_pointer(mem, kefir_ast_declarator_identifier(mem, context->symbols, "null_ptr")),
-        kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 0))), NULL);
+        kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 0))), NULL);
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &decl11->specifiers,
                                                           kefir_ast_storage_class_specifier_static(mem)));
     REQUIRE_OK(

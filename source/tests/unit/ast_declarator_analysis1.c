@@ -432,23 +432,23 @@ DEFINE_CASE(ast_declarator_analysis5, "AST declarator analysis - declarator alig
     ASSERT_IDENTIFIER_TYPE(
         &kft_mem, context, kefir_ast_type_char(), KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_UNKNOWN,
         KEFIR_AST_FUNCTION_SPECIFIER_NONE, 1, 2,
-        kefir_ast_alignment_specifier(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 1))),
+        kefir_ast_alignment_specifier(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 1))),
         kefir_ast_type_specifier_char(&kft_mem));
 
     ASSERT_IDENTIFIER_TYPE(
         &kft_mem, context, kefir_ast_type_char(), KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_AUTO,
         KEFIR_AST_FUNCTION_SPECIFIER_NONE, 2, 3,
-        kefir_ast_alignment_specifier(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 2))),
+        kefir_ast_alignment_specifier(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 2))),
         kefir_ast_type_specifier_char(&kft_mem), kefir_ast_storage_class_specifier_auto(&kft_mem));
 
     ASSERT_IDENTIFIER_TYPE(
         &kft_mem, context, kefir_ast_type_unsigned_short(), KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN,
         KEFIR_AST_FUNCTION_SPECIFIER_NONE, 4, 6, kefir_ast_type_specifier_unsigned(&kft_mem),
-        kefir_ast_alignment_specifier(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 1))),
+        kefir_ast_alignment_specifier(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 1))),
         kefir_ast_storage_class_specifier_extern(&kft_mem),
-        kefir_ast_alignment_specifier(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 4))),
+        kefir_ast_alignment_specifier(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 4))),
         kefir_ast_type_specifier_short(&kft_mem),
-        kefir_ast_alignment_specifier(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 2))));
+        kefir_ast_alignment_specifier(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 2))));
 
     ASSERT_IDENTIFIER_TYPE(
         &kft_mem, context,
@@ -456,21 +456,21 @@ DEFINE_CASE(ast_declarator_analysis5, "AST declarator analysis - declarator alig
                                  (struct kefir_ast_type_qualification) {.volatile_type = true}),
         KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC_THREAD_LOCAL, KEFIR_AST_FUNCTION_SPECIFIER_NONE, 4, 6,
         kefir_ast_type_qualifier_volatile(&kft_mem),
-        kefir_ast_alignment_specifier(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 4))),
+        kefir_ast_alignment_specifier(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 4))),
         kefir_ast_storage_class_specifier_thread_local(&kft_mem),
-        kefir_ast_alignment_specifier(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 4))),
+        kefir_ast_alignment_specifier(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 4))),
         kefir_ast_storage_class_specifier_static(&kft_mem),
-        kefir_ast_alignment_specifier(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 1))));
+        kefir_ast_alignment_specifier(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 1))));
 
     ASSERT_IDENTIFIER_TYPE(
         &kft_mem, context, kefir_ast_type_unsigned_long_long(), KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_REGISTER,
         KEFIR_AST_FUNCTION_SPECIFIER_NONE, 8, 8, kefir_ast_type_specifier_unsigned(&kft_mem),
-        kefir_ast_alignment_specifier(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 1))),
+        kefir_ast_alignment_specifier(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 1))),
         kefir_ast_type_specifier_long(&kft_mem), kefir_ast_storage_class_specifier_register(&kft_mem),
-        kefir_ast_alignment_specifier(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 1))),
+        kefir_ast_alignment_specifier(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 1))),
         kefir_ast_type_specifier_long(&kft_mem),
-        kefir_ast_alignment_specifier(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 4))),
-        kefir_ast_alignment_specifier(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 8))));
+        kefir_ast_alignment_specifier(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 4))),
+        kefir_ast_alignment_specifier(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 8))));
 
     ASSERT_OK(kefir_ast_local_context_free(&kft_mem, &local_context));
     ASSERT_OK(kefir_ast_global_context_free(&kft_mem, &global_context));
@@ -540,11 +540,11 @@ DEFINE_CASE(ast_declarator_analysis6, "AST declarator analysis - declarator alig
     ASSERT_IDENTIFIER_TYPE(
         &kft_mem, context, kefir_ast_type_unsigned_long_long(), KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_REGISTER,
         KEFIR_AST_FUNCTION_SPECIFIER_NONE, 8, 8, kefir_ast_type_specifier_unsigned(&kft_mem),
-        kefir_ast_alignment_specifier(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 1))),
+        kefir_ast_alignment_specifier(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 1))),
         kefir_ast_type_specifier_long(&kft_mem), kefir_ast_storage_class_specifier_register(&kft_mem),
         kefir_ast_alignment_specifier(&kft_mem, KEFIR_AST_NODE_BASE(type_name9)),
         kefir_ast_type_specifier_long(&kft_mem),
-        kefir_ast_alignment_specifier(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 4))),
+        kefir_ast_alignment_specifier(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 4))),
         kefir_ast_alignment_specifier(&kft_mem, KEFIR_AST_NODE_BASE(type_name10)));
 
     ASSERT_OK(kefir_ast_local_context_free(&kft_mem, &local_context));

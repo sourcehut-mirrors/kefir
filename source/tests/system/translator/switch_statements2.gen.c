@@ -65,7 +65,7 @@ static kefir_result_t define_conditional_function(struct kefir_mem *mem, struct 
     struct kefir_ast_compound_statement *compound0 = kefir_ast_new_compound_statement(mem);
     struct kefir_ast_declaration *declarationResult = kefir_ast_new_single_declaration(
         mem, kefir_ast_declarator_identifier(mem, context_manager->current->symbols, "result"),
-        kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char(mem, '\0'))), NULL);
+        kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char_noarena(mem, '\0'))), NULL);
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &declarationResult->specifiers,
                                                           kefir_ast_type_specifier_char(mem)));
     REQUIRE_OK(kefir_ast_compound_statement_append(mem, compound0, KEFIR_AST_NODE_BASE(declarationResult)));
@@ -76,7 +76,7 @@ static kefir_result_t define_conditional_function(struct kefir_mem *mem, struct 
         KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation(
             mem, KEFIR_AST_OPERATION_BITWISE_AND,
             KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "i")),
-            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_uint(mem, 12)))),
+            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_uint_noarena(mem, 12)))),
         KEFIR_AST_NODE_BASE(compound1));
     REQUIRE_OK(kefir_ast_compound_statement_append(mem, compound0, KEFIR_AST_NODE_BASE(switch1)));
 
@@ -86,7 +86,7 @@ static kefir_result_t define_conditional_function(struct kefir_mem *mem, struct 
         KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation(
             mem, KEFIR_AST_OPERATION_BITWISE_AND,
             KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "i")),
-            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_uint(mem, 3)))),
+            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_uint_noarena(mem, 3)))),
         KEFIR_AST_NODE_BASE(compound2));
 
     struct kefir_ast_compound_statement *compound3 = kefir_ast_new_compound_statement(mem);
@@ -95,7 +95,7 @@ static kefir_result_t define_conditional_function(struct kefir_mem *mem, struct 
         KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation(
             mem, KEFIR_AST_OPERATION_BITWISE_AND,
             KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "i")),
-            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_uint(mem, 3)))),
+            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_uint_noarena(mem, 3)))),
         KEFIR_AST_NODE_BASE(compound3));
 
     struct kefir_ast_compound_statement *compound4 = kefir_ast_new_compound_statement(mem);
@@ -104,7 +104,7 @@ static kefir_result_t define_conditional_function(struct kefir_mem *mem, struct 
         KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation(
             mem, KEFIR_AST_OPERATION_BITWISE_AND,
             KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "i")),
-            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_uint(mem, 3)))),
+            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_uint_noarena(mem, 3)))),
         KEFIR_AST_NODE_BASE(compound4));
 
     struct kefir_ast_compound_statement *compound5 = kefir_ast_new_compound_statement(mem);
@@ -113,19 +113,19 @@ static kefir_result_t define_conditional_function(struct kefir_mem *mem, struct 
         KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation(
             mem, KEFIR_AST_OPERATION_BITWISE_AND,
             KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "i")),
-            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_uint(mem, 3)))),
+            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_uint_noarena(mem, 3)))),
         KEFIR_AST_NODE_BASE(compound5));
 
 #define SWITCH_CASE(_compound, _case, _value)                                                                        \
     do {                                                                                                             \
         struct kefir_ast_node_base *case0 = KEFIR_AST_NODE_BASE(kefir_ast_new_case_statement(                        \
-            mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_uint(mem, (_case))),                                     \
+            mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_uint_noarena(mem, (_case))),                                     \
             KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement(                                                  \
                 mem,                                                                                                 \
                 KEFIR_AST_NODE_BASE(kefir_ast_new_simple_assignment(                                                 \
                     mem,                                                                                             \
                     KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "result")), \
-                    KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char(mem, (_value)))))))));                           \
+                    KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char_noarena(mem, (_value)))))))));                           \
         struct kefir_ast_node_base *break0 = KEFIR_AST_NODE_BASE(kefir_ast_new_break_statement(mem));                \
         REQUIRE_OK(kefir_ast_compound_statement_append(mem, (_compound), case0));                                    \
         REQUIRE_OK(kefir_ast_compound_statement_append(mem, (_compound), break0));                                   \
@@ -153,7 +153,7 @@ static kefir_result_t define_conditional_function(struct kefir_mem *mem, struct 
 #define SWITCH_CASE(_compound, _case, _stmt)                                                          \
     do {                                                                                              \
         struct kefir_ast_node_base *case0 = KEFIR_AST_NODE_BASE(kefir_ast_new_case_statement(         \
-            mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_uint(mem, (_case))), (_stmt)));           \
+            mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_uint_noarena(mem, (_case))), (_stmt)));           \
         struct kefir_ast_node_base *break0 = KEFIR_AST_NODE_BASE(kefir_ast_new_break_statement(mem)); \
         REQUIRE_OK(kefir_ast_compound_statement_append(mem, (_compound), case0));                     \
         REQUIRE_OK(kefir_ast_compound_statement_append(mem, (_compound), break0));                    \

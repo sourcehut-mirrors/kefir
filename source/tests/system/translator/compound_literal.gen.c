@@ -56,7 +56,7 @@ static kefir_result_t define_compound_literal_function(struct kefir_mem *mem, st
     REQUIRE_OK(kefir_ast_structure_declaration_entry_append(
         mem, entryU2,
         kefir_ast_declarator_array(mem, KEFIR_AST_DECLARATOR_ARRAY_BOUNDED,
-                                   KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 2)),
+                                   KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 2)),
                                    kefir_ast_declarator_identifier(mem, context_manager->current->symbols, "fp32")),
         NULL));
     REQUIRE_OK(kefir_ast_structure_specifier_append_entry(mem, specifier0, entryU2));
@@ -70,7 +70,7 @@ static kefir_result_t define_compound_literal_function(struct kefir_mem *mem, st
     REQUIRE_OK(kefir_ast_structure_declaration_entry_append(
         mem, entry1,
         kefir_ast_declarator_array(mem, KEFIR_AST_DECLARATOR_ARRAY_BOUNDED,
-                                   KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 32)),
+                                   KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 32)),
                                    kefir_ast_declarator_identifier(mem, context_manager->current->symbols, "string")),
         NULL));
     REQUIRE_OK(kefir_ast_structure_specifier_append_entry(mem, specifier1, entry1));
@@ -93,7 +93,7 @@ static kefir_result_t define_compound_literal_function(struct kefir_mem *mem, st
                                                           kefir_ast_type_specifier_long(mem)));
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(
         mem, &entry3->declaration.specifiers,
-        kefir_ast_alignment_specifier(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 16)))));
+        kefir_ast_alignment_specifier(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 16)))));
     REQUIRE_OK(kefir_ast_structure_declaration_entry_append(
         mem, entry3, kefir_ast_declarator_identifier(mem, context_manager->current->symbols, "padding"), NULL));
     REQUIRE_OK(kefir_ast_structure_specifier_append_entry(mem, specifier1, entry3));
@@ -114,7 +114,7 @@ static kefir_result_t define_compound_literal_function(struct kefir_mem *mem, st
     REQUIRE_OK(kefir_ast_structure_declaration_entry_append(
         mem, entry5,
         kefir_ast_declarator_array(mem, KEFIR_AST_DECLARATOR_ARRAY_BOUNDED,
-                                   KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 4)),
+                                   KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 4)),
                                    kefir_ast_declarator_identifier(mem, context_manager->current->symbols, "floats")),
         NULL));
     REQUIRE_OK(kefir_ast_structure_specifier_append_entry(mem, specifier1, entry5));
@@ -145,7 +145,7 @@ static kefir_result_t define_compound_literal_function(struct kefir_mem *mem, st
     REQUIRE_OK(kefir_ast_initializer_list_append(
         mem, &compound->initializer->list,
         kefir_ast_new_initializer_member_designation(mem, context_manager->current->symbols, "padding", NULL),
-        kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 1010)))));
+        kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 1010)))));
     REQUIRE_OK(kefir_ast_initializer_list_append(
         mem, &compound->initializer->list, NULL,
         kefir_ast_new_expression_initializer(
@@ -154,30 +154,30 @@ static kefir_result_t define_compound_literal_function(struct kefir_mem *mem, st
         mem, &compound->initializer->list,
         kefir_ast_new_initializer_member_designation(mem, context_manager->current->symbols, "length", NULL),
         kefir_ast_new_expression_initializer(mem,
-                                             KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, strlen(STRING))))));
+                                             KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, strlen(STRING))))));
 
     struct kefir_ast_initializer *list1 = kefir_ast_new_list_initializer(mem);
     REQUIRE_OK(kefir_ast_initializer_list_append(
         mem, &list1->list, NULL,
-        kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_double(mem, 4.0013)))));
+        kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_double_noarena(mem, 4.0013)))));
     REQUIRE_OK(kefir_ast_initializer_list_append(
         mem, &list1->list, NULL,
-        kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_double(mem, 19.88263)))));
+        kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_double_noarena(mem, 19.88263)))));
     REQUIRE_OK(kefir_ast_initializer_list_append(
         mem, &list1->list,
         kefir_ast_new_initializer_index_designation(
-            mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 0)),
+            mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 0)),
             kefir_ast_new_initializer_member_designation(
                 mem, context_manager->current->symbols, "fp32",
                 kefir_ast_new_initializer_index_designation(
-                    mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 2)), NULL))),
-        kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_float(mem, 1.02f)))));
+                    mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 2)), NULL))),
+        kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_float_noarena(mem, 1.02f)))));
     REQUIRE_OK(kefir_ast_initializer_list_append(
         mem, &list1->list, NULL,
-        kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_float(mem, 2.04f)))));
+        kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_float_noarena(mem, 2.04f)))));
     REQUIRE_OK(kefir_ast_initializer_list_append(
         mem, &list1->list, NULL,
-        kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_double(mem, 1e5)))));
+        kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_double_noarena(mem, 1e5)))));
     REQUIRE_OK(kefir_ast_initializer_list_append(
         mem, &compound->initializer->list,
         kefir_ast_new_initializer_member_designation(mem, context_manager->current->symbols, "floats", NULL), list1));

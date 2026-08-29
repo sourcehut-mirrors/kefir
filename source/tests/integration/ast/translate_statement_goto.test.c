@@ -59,7 +59,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     FUNC2("goto1", {
         struct kefir_ast_declaration *decl1 = kefir_ast_new_single_declaration(
             mem, kefir_ast_declarator_identifier(mem, context->symbols, "i"),
-            kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 0))), NULL);
+            kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 0))), NULL);
         REQUIRE_OK(
             kefir_ast_declarator_specifier_list_append(mem, &decl1->specifiers, kefir_ast_type_specifier_short(mem)));
 
@@ -75,7 +75,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
             KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation(
                 mem, KEFIR_AST_OPERATION_EQUAL,
                 KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "i")),
-                KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 1000)))),
+                KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 1000)))),
             KEFIR_AST_NODE_BASE(kefir_ast_new_goto_statement(mem, context->symbols, "end")), NULL);
 
         struct kefir_ast_goto_statement *goto1 = kefir_ast_new_goto_statement(mem, context->symbols, "begin");
@@ -86,7 +86,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
                 mem, KEFIR_AST_NODE_BASE(kefir_ast_new_compound_assignment(
                          mem, KEFIR_AST_ASSIGNMENT_MODULO,
                          KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "i")),
-                         KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 7)))))));
+                         KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 7)))))));
 
         struct kefir_ast_compound_statement *compound1 = kefir_ast_new_compound_statement(mem);
         REQUIRE_OK(kefir_ast_compound_statement_append(mem, compound1, KEFIR_AST_NODE_BASE(decl1)));
@@ -116,7 +116,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
             KEFIR_AST_NODE_BASE(kefir_ast_new_goto_statement(mem, context->symbols, "end")));
 
         struct kefir_ast_while_statement *while1 = kefir_ast_new_while_statement(
-            mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 0)), KEFIR_AST_NODE_BASE(label2));
+            mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 0)), KEFIR_AST_NODE_BASE(label2));
 
         struct kefir_ast_labeled_statement *label3 = kefir_ast_new_labeled_statement(
             mem, context->symbols, "end",

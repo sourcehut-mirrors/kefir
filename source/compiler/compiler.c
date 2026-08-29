@@ -145,6 +145,14 @@ kefir_result_t kefir_compiler_context_init(struct kefir_mem *mem, struct kefir_c
         kefir_ast_global_context_free(mem, &context->ast_global_context);
         return res;
     });
+    res = kefir_memory_arena_init(mem, &context->ast_arena);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_optimizer_configuration_free(mem, &context->optimizer_configuration);
+        kefir_preprocessor_context_free(mem, &context->preprocessor_context);
+        kefir_preprocessor_ast_context_free(mem, &context->preprocessor_ast_context);
+        kefir_ast_global_context_free(mem, &context->ast_global_context);
+        return res;
+    });
     context->preprocessor_context.parser_scope = &context->parser_scope;
     context->preprocessor_context.preprocessor_config = &context->preprocessor_configuration;
     context->codegen_configuration = KefirCodegenDefaultConfiguration;
@@ -158,6 +166,7 @@ kefir_result_t kefir_compiler_context_init(struct kefir_mem *mem, struct kefir_c
         REQUIRE_CHAIN(&res, context->extensions->on_init(mem, context));
     }
     REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_memory_arena_free(&context->ast_arena);
         kefir_optimizer_configuration_free(mem, &context->optimizer_configuration);
         kefir_preprocessor_context_free(mem, &context->preprocessor_context);
         kefir_preprocessor_ast_context_free(mem, &context->preprocessor_ast_context);
@@ -182,6 +191,7 @@ kefir_result_t kefir_compiler_context_free(struct kefir_mem *mem, struct kefir_c
     REQUIRE_OK(kefir_preprocessor_context_free(mem, &context->preprocessor_context));
     REQUIRE_OK(kefir_preprocessor_ast_context_free(mem, &context->preprocessor_ast_context));
     REQUIRE_OK(kefir_ast_global_context_free(mem, &context->ast_global_context));
+    REQUIRE_OK(kefir_memory_arena_free(&context->ast_arena));
     context->profile = NULL;
     context->source_locator = NULL;
     return KEFIR_OK;
@@ -402,7 +412,7 @@ kefir_result_t kefir_compiler_parse(struct kefir_mem *mem, struct kefir_compiler
     struct kefir_parser parser;
 
     REQUIRE_OK(kefir_parser_token_cursor_init(&cursor, tokens_handle));
-    REQUIRE_OK(kefir_parser_init(mem, &parser, &context->ast_global_context.symbols, &cursor,
+    REQUIRE_OK(kefir_parser_init(mem, &parser, &context->ast_global_context.symbols, &context->ast_arena, &cursor,
                                  context->extensions != NULL ? context->extensions->parser : NULL));
     parser.configuration = &context->parser_configuration;
     struct kefir_ast_node_base *node = NULL;

@@ -108,7 +108,7 @@ static kefir_result_t define_get_alignof_function(struct kefir_mem *mem, struct 
 
     struct kefir_ast_type_name *type_name17 = kefir_ast_new_type_name(
         mem, kefir_ast_declarator_array(mem, KEFIR_AST_DECLARATOR_ARRAY_BOUNDED,
-                                        KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 128)),
+                                        KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 128)),
                                         kefir_ast_declarator_identifier(mem, NULL, NULL)));
     REQUIRE_OK(append_specifiers(mem, &type_name17->type_decl.specifiers, 1, kefir_ast_type_specifier_int(mem)));
 

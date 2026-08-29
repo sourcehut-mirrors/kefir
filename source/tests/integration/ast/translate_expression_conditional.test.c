@@ -68,9 +68,9 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
 
     FUNC("conditional1", {
         struct kefir_ast_node_base *node = KEFIR_AST_NODE_BASE(
-            kefir_ast_new_conditional_operator(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bool(mem, true)),
-                                               KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 1)),
-                                               KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 2))));
+            kefir_ast_new_conditional_operator(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bool_noarena(mem, true)),
+                                               KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 1)),
+                                               KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 2))));
         REQUIRE_OK(kefir_ast_analyze_node(mem, context, node));
         REQUIRE_OK(kefir_ast_translate_expression(mem, node, &builder, &translator_context));
         REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, node));
@@ -83,12 +83,12 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
 
     FUNC("conditional2", {
         struct kefir_ast_node_base *node = KEFIR_AST_NODE_BASE(kefir_ast_new_conditional_operator(
-            mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_float(mem, 7.45)),
+            mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_float_noarena(mem, 7.45)),
             KEFIR_AST_NODE_BASE(kefir_ast_new_unary_operation(
                 mem, KEFIR_AST_OPERATION_ADDRESS,
                 KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "var1")))),
             KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator(mem, type_name1,
-                                                            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 0))))));
+                                                            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 0))))));
         REQUIRE_OK(kefir_ast_analyze_node(mem, context, node));
         REQUIRE_OK(kefir_ast_translate_expression(mem, node, &builder, &translator_context));
         REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, node));
@@ -101,10 +101,10 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
                 mem, KEFIR_AST_OPERATION_ADDRESS,
                 KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "var1")))),
             KEFIR_AST_NODE_BASE(
-                kefir_ast_new_conditional_operator(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char(mem, 'a')),
-                                                   KEFIR_AST_NODE_BASE(kefir_ast_new_constant_float(mem, 4.51f)),
-                                                   KEFIR_AST_NODE_BASE(kefir_ast_new_constant_double(mem, 0.1)))),
-            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 0))));
+                kefir_ast_new_conditional_operator(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char_noarena(mem, 'a')),
+                                                   KEFIR_AST_NODE_BASE(kefir_ast_new_constant_float_noarena(mem, 4.51f)),
+                                                   KEFIR_AST_NODE_BASE(kefir_ast_new_constant_double_noarena(mem, 0.1)))),
+            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 0))));
         REQUIRE_OK(kefir_ast_analyze_node(mem, context, node));
         REQUIRE_OK(kefir_ast_translate_expression(mem, node, &builder, &translator_context));
         REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, node));
@@ -112,8 +112,8 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
 
     FUNC("conditional4", {
         struct kefir_ast_node_base *node = KEFIR_AST_NODE_BASE(
-            kefir_ast_new_conditional_operator(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 0)), NULL,
-                                               KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 10))));
+            kefir_ast_new_conditional_operator(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 0)), NULL,
+                                               KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 10))));
         REQUIRE_OK(kefir_ast_analyze_node(mem, context, node));
         REQUIRE_OK(kefir_ast_translate_expression(mem, node, &builder, &translator_context));
         REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, node));

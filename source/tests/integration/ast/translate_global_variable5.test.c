@@ -73,7 +73,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     REQUIRE_OK(kefir_ast_structure_declaration_entry_append(
         mem, entry3,
         kefir_ast_declarator_array(mem, KEFIR_AST_DECLARATOR_ARRAY_BOUNDED,
-                                   KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 10)),
+                                   KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 10)),
                                    kefir_ast_declarator_identifier(mem, global_context.context.symbols, "c")),
         NULL));
     REQUIRE_OK(kefir_ast_structure_specifier_append_entry(mem, specifier1, entry3));
@@ -82,66 +82,66 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     struct kefir_ast_initializer *init1_1 = kefir_ast_new_list_initializer(mem);
     REQUIRE_OK(kefir_ast_initializer_list_append(
         mem, &init1_1->list, NULL,
-        kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 1)))));
+        kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 1)))));
     REQUIRE_OK(kefir_ast_initializer_list_append(
         mem, &init1_1->list, NULL,
-        kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_float(mem, 0.1f)))));
+        kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_float_noarena(mem, 0.1f)))));
     REQUIRE_OK(kefir_ast_initializer_list_append(
         mem, &init1_1->list, NULL,
         kefir_ast_new_expression_initializer(
             mem, KEFIR_AST_NODE_BASE(KEFIR_AST_MAKE_STRING_LITERAL_MULTIBYTE(mem, "hey ho")))));
     REQUIRE_OK(kefir_ast_initializer_list_append(
         mem, &init1->list,
-        kefir_ast_new_initializer_index_designation(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 2)), NULL),
+        kefir_ast_new_initializer_index_designation(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 2)), NULL),
         init1_1));
 
     struct kefir_ast_initializer *init1_2 = kefir_ast_new_list_initializer(mem);
     REQUIRE_OK(kefir_ast_initializer_list_append(
         mem, &init1_2->list, NULL,
-        kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 0)))));
+        kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 0)))));
     REQUIRE_OK(kefir_ast_initializer_list_append(mem, &init1->list, NULL, init1_2));
 
     struct kefir_ast_initializer *init1_3 = kefir_ast_new_list_initializer(mem);
     REQUIRE_OK(kefir_ast_initializer_list_append(
         mem, &init1_3->list,
         kefir_ast_new_initializer_member_designation(mem, global_context.context.symbols, "b", NULL),
-        kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 10)))));
+        kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 10)))));
     REQUIRE_OK(kefir_ast_initializer_list_append(mem, &init1->list, NULL, init1_3));
 
     struct kefir_ast_initializer *init1_4 = kefir_ast_new_list_initializer(mem);
     struct kefir_ast_initializer *init1_4_1 = kefir_ast_new_list_initializer(mem);
     REQUIRE_OK(kefir_ast_initializer_list_append(
         mem, &init1_4_1->list,
-        kefir_ast_new_initializer_index_designation(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 1)), NULL),
-        kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char(mem, 'a')))));
+        kefir_ast_new_initializer_index_designation(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 1)), NULL),
+        kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char_noarena(mem, 'a')))));
     REQUIRE_OK(kefir_ast_initializer_list_append(
         mem, &init1_4_1->list, NULL,
-        kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char(mem, 'b')))));
+        kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char_noarena(mem, 'b')))));
     REQUIRE_OK(kefir_ast_initializer_list_append(
         mem, &init1_4_1->list, NULL,
-        kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char(mem, 'c')))));
+        kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char_noarena(mem, 'c')))));
     REQUIRE_OK(kefir_ast_initializer_list_append(
         mem, &init1_4->list,
         kefir_ast_new_initializer_member_designation(mem, global_context.context.symbols, "c", NULL), init1_4_1));
     REQUIRE_OK(kefir_ast_initializer_list_append(
         mem, &init1_4->list,
         kefir_ast_new_initializer_index_designation(
-            mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 0)),
+            mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 0)),
             kefir_ast_new_initializer_member_designation(mem, global_context.context.symbols, "c", NULL)),
-        kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char(mem, '0')))));
+        kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char_noarena(mem, '0')))));
     REQUIRE_OK(kefir_ast_initializer_list_append(
         mem, &init1->list,
-        kefir_ast_new_initializer_index_designation(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 0)), NULL),
+        kefir_ast_new_initializer_index_designation(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 0)), NULL),
         init1_4));
     REQUIRE_OK(kefir_ast_initializer_list_append(
         mem, &init1->list,
         kefir_ast_new_initializer_index_designation(
-            mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 7)),
+            mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 7)),
             kefir_ast_new_initializer_member_designation(
                 mem, global_context.context.symbols, "c",
                 kefir_ast_new_initializer_index_designation(
-                    mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 0)), NULL))),
-        kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char(mem, 'X')))));
+                    mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 0)), NULL))),
+        kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char_noarena(mem, 'X')))));
 
     struct kefir_ast_declaration *decl1 = kefir_ast_new_single_declaration(
         mem,

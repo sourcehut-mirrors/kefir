@@ -52,7 +52,7 @@ END_CASE
 DEFINE_CASE(ast_declarator_specifier_construction2, "AST declarator specifiers - atomic type specifier construction") {
     for (int i = -100; i < 100; i++) {
         struct kefir_ast_declarator_specifier *specifier =
-            kefir_ast_type_specifier_atomic(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, i)));
+            kefir_ast_type_specifier_atomic(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, i)));
         ASSERT(specifier != NULL);
         ASSERT(specifier->klass == KEFIR_AST_TYPE_SPECIFIER);
         ASSERT(specifier->type_specifier->specifier == KEFIR_AST_TYPE_SPECIFIER_ATOMIC);
@@ -224,7 +224,7 @@ END_CASE
 DEFINE_CASE(ast_declarator_specifier_construction11, "AST declarator specifiers - alignment specifier construction") {
     for (int i = 0; i < 100; i++) {
         struct kefir_ast_declarator_specifier *specifier =
-            kefir_ast_alignment_specifier(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, i)));
+            kefir_ast_alignment_specifier(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, i)));
         ASSERT(specifier != NULL);
         ASSERT(specifier->klass == KEFIR_AST_ALIGNMENT_SPECIFIER);
         ASSERT(specifier->alignment_specifier != NULL);

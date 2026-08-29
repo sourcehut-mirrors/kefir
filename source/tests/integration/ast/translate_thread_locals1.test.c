@@ -54,14 +54,14 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
 
     struct kefir_ast_declaration *decl1 = kefir_ast_new_single_declaration(
         mem, kefir_ast_declarator_identifier(mem, global_context.context.symbols, "integer"),
-        kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 10))), NULL);
+        kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 10))), NULL);
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &decl1->specifiers,
                                                           kefir_ast_storage_class_specifier_thread_local(mem)));
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &decl1->specifiers, kefir_ast_type_specifier_int(mem)));
 
     struct kefir_ast_declaration *decl2 = kefir_ast_new_single_declaration(
         mem, kefir_ast_declarator_identifier(mem, global_context.context.symbols, "floatingPoint"),
-        kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_double(mem, 1.64))), NULL);
+        kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_double_noarena(mem, 1.64))), NULL);
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &decl2->specifiers,
                                                           kefir_ast_storage_class_specifier_thread_local(mem)));
     REQUIRE_OK(
@@ -109,7 +109,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     struct kefir_ast_initializer *init1 = kefir_ast_new_list_initializer(mem);
     REQUIRE_OK(kefir_ast_initializer_list_append(
         mem, &init1->list, kefir_ast_new_initializer_member_designation(mem, global_context.context.symbols, "b", NULL),
-        kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_float(mem, 20.7197f)))));
+        kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_float_noarena(mem, 20.7197f)))));
 
     struct kefir_ast_declaration *decl5 = kefir_ast_new_single_declaration(
         mem, kefir_ast_declarator_identifier(mem, global_context.context.symbols, "struct1"), init1, NULL);

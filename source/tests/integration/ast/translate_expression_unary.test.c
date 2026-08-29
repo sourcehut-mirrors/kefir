@@ -62,7 +62,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
 
     struct kefir_ast_type_name *type_name_B = kefir_ast_new_type_name(
         mem, kefir_ast_declarator_array(
-                 mem, KEFIR_AST_DECLARATOR_ARRAY_BOUNDED, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 16)),
+                 mem, KEFIR_AST_DECLARATOR_ARRAY_BOUNDED, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 16)),
                  kefir_ast_declarator_pointer(mem, kefir_ast_declarator_identifier(mem, NULL, NULL))));
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &type_name_B->type_decl.specifiers,
                                                           kefir_ast_type_specifier_short(mem)));
@@ -132,38 +132,38 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     struct kefir_irbuilder_block builder;
 
     FUNC("plus", {
-        UNARY_NODE(KEFIR_AST_OPERATION_PLUS, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, -100)));
-        UNARY_NODE(KEFIR_AST_OPERATION_PLUS, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_ulong(mem, 100)));
-        UNARY_NODE(KEFIR_AST_OPERATION_PLUS, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_float(mem, 3.14f)));
-        UNARY_NODE(KEFIR_AST_OPERATION_PLUS, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_double(mem, 3.14159)));
+        UNARY_NODE(KEFIR_AST_OPERATION_PLUS, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, -100)));
+        UNARY_NODE(KEFIR_AST_OPERATION_PLUS, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_ulong_noarena(mem, 100)));
+        UNARY_NODE(KEFIR_AST_OPERATION_PLUS, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_float_noarena(mem, 3.14f)));
+        UNARY_NODE(KEFIR_AST_OPERATION_PLUS, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_double_noarena(mem, 3.14159)));
         UNARY_NODE(KEFIR_AST_OPERATION_PLUS, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "X")));
     });
 
     FUNC("minus", {
-        UNARY_NODE(KEFIR_AST_OPERATION_NEGATE, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, -512)));
-        UNARY_NODE(KEFIR_AST_OPERATION_NEGATE, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_ulong(mem, 128)));
-        UNARY_NODE(KEFIR_AST_OPERATION_NEGATE, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_float(mem, 2.71f)));
-        UNARY_NODE(KEFIR_AST_OPERATION_NEGATE, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_double(mem, 2.71828)));
+        UNARY_NODE(KEFIR_AST_OPERATION_NEGATE, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, -512)));
+        UNARY_NODE(KEFIR_AST_OPERATION_NEGATE, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_ulong_noarena(mem, 128)));
+        UNARY_NODE(KEFIR_AST_OPERATION_NEGATE, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_float_noarena(mem, 2.71f)));
+        UNARY_NODE(KEFIR_AST_OPERATION_NEGATE, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_double_noarena(mem, 2.71828)));
         UNARY_NODE(KEFIR_AST_OPERATION_NEGATE,
                    KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "X")));
     });
 
     FUNC("invert", {
-        UNARY_NODE(KEFIR_AST_OPERATION_INVERT, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char(mem, 'A')));
-        UNARY_NODE(KEFIR_AST_OPERATION_INVERT, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long(mem, -100500)));
-        UNARY_NODE(KEFIR_AST_OPERATION_INVERT, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_ulong(mem, 45)));
+        UNARY_NODE(KEFIR_AST_OPERATION_INVERT, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char_noarena(mem, 'A')));
+        UNARY_NODE(KEFIR_AST_OPERATION_INVERT, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long_noarena(mem, -100500)));
+        UNARY_NODE(KEFIR_AST_OPERATION_INVERT, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_ulong_noarena(mem, 45)));
         UNARY_NODE(KEFIR_AST_OPERATION_INVERT,
                    KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "X")));
     });
 
     FUNC("logical_negate", {
-        UNARY_NODE(KEFIR_AST_OPERATION_LOGICAL_NEGATE, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, -1)));
-        UNARY_NODE(KEFIR_AST_OPERATION_LOGICAL_NEGATE, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_uint(mem, 0)));
-        UNARY_NODE(KEFIR_AST_OPERATION_LOGICAL_NEGATE, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_float(mem, 1.76f)));
+        UNARY_NODE(KEFIR_AST_OPERATION_LOGICAL_NEGATE, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, -1)));
+        UNARY_NODE(KEFIR_AST_OPERATION_LOGICAL_NEGATE, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_uint_noarena(mem, 0)));
+        UNARY_NODE(KEFIR_AST_OPERATION_LOGICAL_NEGATE, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_float_noarena(mem, 1.76f)));
         UNARY_NODE(KEFIR_AST_OPERATION_LOGICAL_NEGATE,
-                   KEFIR_AST_NODE_BASE(kefir_ast_new_constant_double(mem, 1.23456)));
+                   KEFIR_AST_NODE_BASE(kefir_ast_new_constant_double_noarena(mem, 1.23456)));
         UNARY_NODE(KEFIR_AST_OPERATION_LOGICAL_NEGATE,
-                   KEFIR_AST_NODE_BASE(kefir_ast_new_constant_double(mem, 9876.54321e1)));
+                   KEFIR_AST_NODE_BASE(kefir_ast_new_constant_double_noarena(mem, 9876.54321e1)));
         UNARY_NODE(KEFIR_AST_OPERATION_LOGICAL_NEGATE,
                    KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "X")));
     });
@@ -171,7 +171,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     FUNC2("logical_negate2", {
         struct kefir_ast_node_base *node = KEFIR_AST_NODE_BASE(
             kefir_ast_new_unary_operation(mem, KEFIR_AST_OPERATION_LOGICAL_NEGATE,
-                                          KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long_double(mem, 9876.54321e1))));
+                                          KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long_double_noarena(mem, 9876.54321e1))));
         REQUIRE_OK(kefir_ast_analyze_node(mem, context, node));
         REQUIRE_OK(kefir_ast_translator_build_local_scope_layout(
             mem, &local_context, &env, &module, &translator_local_scope, translator_context.debug_entries));
@@ -200,7 +200,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
         kefir_ast_new_type_name(mem, kefir_ast_declarator_identifier(mem, NULL, NULL)),
         kefir_ast_new_type_name(mem,
                                 kefir_ast_declarator_array(mem, KEFIR_AST_DECLARATOR_ARRAY_BOUNDED,
-                                                           KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 16)),
+                                                           KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 16)),
                                                            kefir_ast_declarator_identifier(mem, NULL, NULL))),
         kefir_ast_new_type_name(mem, kefir_ast_declarator_identifier(mem, NULL, NULL)),
         kefir_ast_new_type_name(mem, kefir_ast_declarator_identifier(mem, NULL, NULL))};
@@ -271,15 +271,15 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     });
 
     FUNC("sizeof2", {
-        UNARY_NODE(KEFIR_AST_OPERATION_SIZEOF, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char(mem, 'A')));
-        UNARY_NODE(KEFIR_AST_OPERATION_SIZEOF, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, -100)));
-        UNARY_NODE(KEFIR_AST_OPERATION_SIZEOF, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_uint(mem, 100)));
-        UNARY_NODE(KEFIR_AST_OPERATION_SIZEOF, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long(mem, 100200)));
-        UNARY_NODE(KEFIR_AST_OPERATION_SIZEOF, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_ulong(mem, 110200)));
-        UNARY_NODE(KEFIR_AST_OPERATION_SIZEOF, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long_long(mem, 110)));
-        UNARY_NODE(KEFIR_AST_OPERATION_SIZEOF, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_ulong_long(mem, 5110)));
-        UNARY_NODE(KEFIR_AST_OPERATION_SIZEOF, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_float(mem, 5.67f)));
-        UNARY_NODE(KEFIR_AST_OPERATION_SIZEOF, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_double(mem, 8562.8483)));
+        UNARY_NODE(KEFIR_AST_OPERATION_SIZEOF, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char_noarena(mem, 'A')));
+        UNARY_NODE(KEFIR_AST_OPERATION_SIZEOF, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, -100)));
+        UNARY_NODE(KEFIR_AST_OPERATION_SIZEOF, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_uint_noarena(mem, 100)));
+        UNARY_NODE(KEFIR_AST_OPERATION_SIZEOF, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long_noarena(mem, 100200)));
+        UNARY_NODE(KEFIR_AST_OPERATION_SIZEOF, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_ulong_noarena(mem, 110200)));
+        UNARY_NODE(KEFIR_AST_OPERATION_SIZEOF, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long_long_noarena(mem, 110)));
+        UNARY_NODE(KEFIR_AST_OPERATION_SIZEOF, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_ulong_long_noarena(mem, 5110)));
+        UNARY_NODE(KEFIR_AST_OPERATION_SIZEOF, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_float_noarena(mem, 5.67f)));
+        UNARY_NODE(KEFIR_AST_OPERATION_SIZEOF, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_double_noarena(mem, 8562.8483)));
 
         struct kefir_ast_type_name *type_name1 = kefir_ast_new_type_name(
             mem, kefir_ast_declarator_pointer(mem, kefir_ast_declarator_identifier(mem, NULL, NULL)));
@@ -288,7 +288,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
 
         UNARY_NODE(KEFIR_AST_OPERATION_SIZEOF,
                    KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator(
-                       mem, type_name1, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 0)))));
+                       mem, type_name1, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 0)))));
         UNARY_NODE(KEFIR_AST_OPERATION_SIZEOF,
                    KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "X")));
         UNARY_NODE(KEFIR_AST_OPERATION_SIZEOF,
@@ -314,7 +314,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
 
         UNARY_NODE(KEFIR_AST_OPERATION_INDIRECTION,
                    KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator(
-                       mem, type_name1, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 0)))));
+                       mem, type_name1, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 0)))));
 
         struct kefir_ast_type_name *type_name2 = kefir_ast_new_type_name(
             mem, kefir_ast_declarator_pointer(mem, kefir_ast_declarator_identifier(mem, NULL, NULL)));
@@ -323,7 +323,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
 
         UNARY_NODE(KEFIR_AST_OPERATION_INDIRECTION,
                    KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator(
-                       mem, type_name2, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 1)))));
+                       mem, type_name2, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 1)))));
 
         struct kefir_ast_type_name *type_name3 = kefir_ast_new_type_name(
             mem, kefir_ast_declarator_pointer(mem, kefir_ast_declarator_identifier(mem, NULL, NULL)));
@@ -332,7 +332,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
 
         UNARY_NODE(KEFIR_AST_OPERATION_INDIRECTION,
                    KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator(
-                       mem, type_name3, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 2)))));
+                       mem, type_name3, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 2)))));
 
         struct kefir_ast_type_name *type_name4 = kefir_ast_new_type_name(
             mem, kefir_ast_declarator_pointer(mem, kefir_ast_declarator_identifier(mem, NULL, NULL)));
@@ -341,7 +341,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
 
         UNARY_NODE(KEFIR_AST_OPERATION_INDIRECTION,
                    KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator(
-                       mem, type_name4, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 3)))));
+                       mem, type_name4, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 3)))));
 
         struct kefir_ast_type_name *type_name5 = kefir_ast_new_type_name(
             mem, kefir_ast_declarator_pointer(
@@ -353,20 +353,20 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
                    KEFIR_AST_NODE_BASE(kefir_ast_new_unary_operation(
                        mem, KEFIR_AST_OPERATION_INDIRECTION,
                        KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator(
-                           mem, type_name5, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 4)))))));
+                           mem, type_name5, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 4)))))));
 
         UNARY_NODE(KEFIR_AST_OPERATION_INDIRECTION,
                    KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator(
-                       mem, type_name_A, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 5)))));
+                       mem, type_name_A, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 5)))));
         UNARY_NODE(KEFIR_AST_OPERATION_INDIRECTION,
                    KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator(
-                       mem, type_name_B, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 6)))));
+                       mem, type_name_B, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 6)))));
         UNARY_NODE(KEFIR_AST_OPERATION_INDIRECTION,
                    KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator(
-                       mem, type_name_C, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 7)))));
+                       mem, type_name_C, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 7)))));
         UNARY_NODE(KEFIR_AST_OPERATION_INDIRECTION,
                    KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator(
-                       mem, type_name_D, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 8)))));
+                       mem, type_name_D, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 8)))));
     });
 
     REQUIRE_OK(kefir_ir_format_module(stdout, &module, false));

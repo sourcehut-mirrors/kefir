@@ -23,8 +23,8 @@
 #include "kefir/ast/node.h"
 
 DEFINE_CASE(ast_nodes_constants, "AST nodes - constants") {
-    struct kefir_ast_constant *bool1 = kefir_ast_new_constant_bool(&kft_mem, true);
-    struct kefir_ast_constant *bool2 = kefir_ast_new_constant_bool(&kft_mem, false);
+    struct kefir_ast_constant *bool1 = kefir_ast_new_constant_bool_noarena(&kft_mem, true);
+    struct kefir_ast_constant *bool2 = kefir_ast_new_constant_bool_noarena(&kft_mem, false);
     ASSERT(bool1 != NULL);
     ASSERT(bool2 != NULL);
     ASSERT(bool1->base.klass->type == KEFIR_AST_CONSTANT);
@@ -39,7 +39,7 @@ DEFINE_CASE(ast_nodes_constants, "AST nodes - constants") {
     ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(bool2)));
 
     for (kefir_char_t chr = KEFIR_CHAR_MIN; chr < KEFIR_CHAR_MAX; chr++) {
-        struct kefir_ast_constant *chrc = kefir_ast_new_constant_char(&kft_mem, chr);
+        struct kefir_ast_constant *chrc = kefir_ast_new_constant_char_noarena(&kft_mem, chr);
         ASSERT(chrc != NULL);
         ASSERT(chrc->base.klass->type == KEFIR_AST_CONSTANT);
         ASSERT(KEFIR_AST_NODE_SELF(KEFIR_AST_NODE_BASE(chrc)) == chrc);
@@ -49,9 +49,9 @@ DEFINE_CASE(ast_nodes_constants, "AST nodes - constants") {
     }
 
     for (kefir_char32_t chr = KEFIR_CHAR32_MIN; chr < 4096; chr++) {
-        struct kefir_ast_constant *wchrc = kefir_ast_new_constant_wide_char(&kft_mem, chr);
-        struct kefir_ast_constant *u16chrc = kefir_ast_new_constant_unicode16_char(&kft_mem, chr);
-        struct kefir_ast_constant *u32chrc = kefir_ast_new_constant_unicode32_char(&kft_mem, chr);
+        struct kefir_ast_constant *wchrc = kefir_ast_new_constant_wide_char_noarena(&kft_mem, chr);
+        struct kefir_ast_constant *u16chrc = kefir_ast_new_constant_unicode16_char_noarena(&kft_mem, chr);
+        struct kefir_ast_constant *u32chrc = kefir_ast_new_constant_unicode32_char_noarena(&kft_mem, chr);
         ASSERT(wchrc != NULL);
         ASSERT(u16chrc != NULL);
         ASSERT(u32chrc != NULL);
@@ -73,9 +73,9 @@ DEFINE_CASE(ast_nodes_constants, "AST nodes - constants") {
     }
 
     for (kefir_int_t i = -1000; i < 1000; i++) {
-        struct kefir_ast_constant *intc = kefir_ast_new_constant_int(&kft_mem, i);
-        struct kefir_ast_constant *longc = kefir_ast_new_constant_long(&kft_mem, i);
-        struct kefir_ast_constant *llongc = kefir_ast_new_constant_long_long(&kft_mem, i);
+        struct kefir_ast_constant *intc = kefir_ast_new_constant_int_noarena(&kft_mem, i);
+        struct kefir_ast_constant *longc = kefir_ast_new_constant_long_noarena(&kft_mem, i);
+        struct kefir_ast_constant *llongc = kefir_ast_new_constant_long_long_noarena(&kft_mem, i);
         ASSERT(intc != NULL);
         ASSERT(longc != NULL);
         ASSERT(llongc != NULL);
@@ -97,9 +97,9 @@ DEFINE_CASE(ast_nodes_constants, "AST nodes - constants") {
     }
 
     for (kefir_uint_t i = 0; i < 2000; i++) {
-        struct kefir_ast_constant *intc = kefir_ast_new_constant_uint(&kft_mem, i);
-        struct kefir_ast_constant *longc = kefir_ast_new_constant_ulong(&kft_mem, i);
-        struct kefir_ast_constant *llongc = kefir_ast_new_constant_ulong_long(&kft_mem, i);
+        struct kefir_ast_constant *intc = kefir_ast_new_constant_uint_noarena(&kft_mem, i);
+        struct kefir_ast_constant *longc = kefir_ast_new_constant_ulong_noarena(&kft_mem, i);
+        struct kefir_ast_constant *llongc = kefir_ast_new_constant_ulong_long_noarena(&kft_mem, i);
         ASSERT(intc != NULL);
         ASSERT(longc != NULL);
         ASSERT(llongc != NULL);
@@ -121,9 +121,9 @@ DEFINE_CASE(ast_nodes_constants, "AST nodes - constants") {
     }
 
     for (kefir_float32_t i = -1000.0f; i < 1000.0f; i += 0.05f) {
-        struct kefir_ast_constant *floatc = kefir_ast_new_constant_float(&kft_mem, i);
-        struct kefir_ast_constant *doublec = kefir_ast_new_constant_double(&kft_mem, (kefir_float64_t) i);
-        struct kefir_ast_constant *ldoublec = kefir_ast_new_constant_long_double(&kft_mem, (kefir_long_double_t) i);
+        struct kefir_ast_constant *floatc = kefir_ast_new_constant_float_noarena(&kft_mem, i);
+        struct kefir_ast_constant *doublec = kefir_ast_new_constant_double_noarena(&kft_mem, (kefir_float64_t) i);
+        struct kefir_ast_constant *ldoublec = kefir_ast_new_constant_long_double_noarena(&kft_mem, (kefir_long_double_t) i);
         ASSERT(floatc != NULL);
         ASSERT(doublec != NULL);
         ASSERT(ldoublec != NULL);
@@ -144,11 +144,11 @@ DEFINE_CASE(ast_nodes_constants, "AST nodes - constants") {
         ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(ldoublec)));
 
         for (kefir_float32_t j = -10.0f; j < 10.0f; j += 0.1f) {
-            struct kefir_ast_constant *floatc = kefir_ast_new_constant_complex_float(&kft_mem, i, j);
+            struct kefir_ast_constant *floatc = kefir_ast_new_constant_complex_float(&kft_mem, NULL, i, j);
             struct kefir_ast_constant *doublec =
-                kefir_ast_new_constant_complex_double(&kft_mem, (kefir_float64_t) i, (kefir_float64_t) j);
+                kefir_ast_new_constant_complex_double(&kft_mem, NULL, (kefir_float64_t) i, (kefir_float64_t) j);
             struct kefir_ast_constant *ldoublec =
-                kefir_ast_new_constant_complex_long_double(&kft_mem, (kefir_long_double_t) i, (kefir_long_double_t) j);
+                kefir_ast_new_constant_complex_long_double(&kft_mem, NULL, (kefir_long_double_t) i, (kefir_long_double_t) j);
             ASSERT(floatc != NULL);
             ASSERT(doublec != NULL);
             ASSERT(ldoublec != NULL);
@@ -345,7 +345,7 @@ DEFINE_CASE(ast_nodes_type_name, "AST nodes - type name") {
         &kft_mem,
         kefir_ast_declarator_pointer(
             &kft_mem, kefir_ast_declarator_array(&kft_mem, KEFIR_AST_DECLARATOR_ARRAY_BOUNDED,
-                                                 KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 256)),
+                                                 KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 256)),
                                                  kefir_ast_declarator_identifier(&kft_mem, NULL, NULL))));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &type2->type_decl.specifiers,
                                                          kefir_ast_type_specifier_char(&kft_mem)));
@@ -403,7 +403,7 @@ DEFINE_CASE(ast_nodes_array_subscripts, "AST nodes - array sybscripts") {
     ASSERT_OK(kefir_string_pool_init(&symbols));
     struct kefir_ast_identifier *array = kefir_ast_new_identifier(&kft_mem, &symbols, "array1");
     ASSERT(array != NULL);
-    struct kefir_ast_constant *index = kefir_ast_new_constant_int(&kft_mem, 100);
+    struct kefir_ast_constant *index = kefir_ast_new_constant_int_noarena(&kft_mem, 100);
     ASSERT(index != NULL);
     struct kefir_ast_array_subscript *subscript =
         kefir_ast_new_array_subscript(&kft_mem, KEFIR_AST_NODE_BASE(array), KEFIR_AST_NODE_BASE(index));
@@ -425,12 +425,12 @@ DEFINE_CASE(ast_nodes_function_calls, "AST nodes - function calls") {
     ASSERT_OK(kefir_ast_function_call_append(
         &kft_mem, call, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(&kft_mem, &symbols, "variable1"))));
     ASSERT_OK(kefir_ast_function_call_append(&kft_mem, call,
-                                             KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bool(&kft_mem, true))));
+                                             KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bool_noarena(&kft_mem, true))));
     ASSERT_OK(kefir_ast_function_call_append(
         &kft_mem, call,
         KEFIR_AST_NODE_BASE(kefir_ast_new_array_subscript(
             &kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(&kft_mem, &symbols, "array1")),
-            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_uint(&kft_mem, 5))))));
+            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_uint_noarena(&kft_mem, 5))))));
     ASSERT(call->function->klass->type == KEFIR_AST_IDENTIFIER);
     ASSERT(call->argument_length == 3);
     ASSERT(call->arguments[0]->klass->type == KEFIR_AST_IDENTIFIER);
@@ -448,12 +448,12 @@ DEFINE_CASE(ast_nodes_builtins, "AST nodes - builtins") {
     ASSERT_OK(kefir_ast_builtin_append(&kft_mem, builtin,
                                        KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(&kft_mem, &symbols, "list"))));
     ASSERT_OK(
-        kefir_ast_builtin_append(&kft_mem, builtin, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bool(&kft_mem, true))));
+        kefir_ast_builtin_append(&kft_mem, builtin, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bool_noarena(&kft_mem, true))));
     ASSERT_OK(kefir_ast_builtin_append(
         &kft_mem, builtin,
         KEFIR_AST_NODE_BASE(kefir_ast_new_array_subscript(
             &kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(&kft_mem, &symbols, "array1")),
-            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_uint(&kft_mem, 5))))));
+            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_uint_noarena(&kft_mem, 5))))));
     ASSERT(builtin->builtin == KEFIR_AST_BUILTIN_VA_ARG);
     ASSERT(builtin->argument_length == 3);
     ASSERT(builtin->arguments[0]->klass->type == KEFIR_AST_IDENTIFIER);
@@ -473,7 +473,7 @@ DEFINE_CASE(ast_nodes_struct_members, "AST nodes - struct members") {
             &kft_mem, &symbols,
             KEFIR_AST_NODE_BASE(kefir_ast_new_array_subscript(
                 &kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(&kft_mem, &symbols, "array1")),
-                KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long(&kft_mem, 13456)))),
+                KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long_noarena(&kft_mem, 13456)))),
             "field1")),
         "field2");
     ASSERT(member != NULL);
@@ -503,7 +503,7 @@ DEFINE_CASE(ast_nodes_unary_operations, "AST nodes - unary operations") {
     const kefir_size_t UNARY_OPERATOR_LENGTH = sizeof(UNARY_OPERATORS) / sizeof(UNARY_OPERATORS[0]);
     for (kefir_size_t i = 0; i < UNARY_OPERATOR_LENGTH; i++) {
         struct kefir_ast_unary_operation *unary_op = kefir_ast_new_unary_operation(
-            &kft_mem, UNARY_OPERATORS[i], KEFIR_AST_NODE_BASE(kefir_ast_new_constant_uint(&kft_mem, i)));
+            &kft_mem, UNARY_OPERATORS[i], KEFIR_AST_NODE_BASE(kefir_ast_new_constant_uint_noarena(&kft_mem, i)));
         ASSERT(unary_op != NULL);
         ASSERT(unary_op->base.klass->type == KEFIR_AST_UNARY_OPERATION);
         ASSERT(KEFIR_AST_NODE_SELF(KEFIR_AST_NODE_BASE(unary_op)) == unary_op);
@@ -533,7 +533,7 @@ DEFINE_CASE(ast_nodes_binary_operations, "AST nodes - binary operations") {
         struct kefir_ast_binary_operation *binary_op = kefir_ast_new_binary_operation(
             &kft_mem, BINARY_OPERATORS[i],
             KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(&kft_mem, &symbols, "helloWorld")),
-            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_uint(&kft_mem, i)));
+            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_uint_noarena(&kft_mem, i)));
         ASSERT(binary_op != NULL);
         ASSERT(binary_op->base.klass->type == KEFIR_AST_BINARY_OPERATION);
         ASSERT(KEFIR_AST_NODE_SELF(KEFIR_AST_NODE_BASE(binary_op)) == binary_op);

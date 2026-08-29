@@ -67,7 +67,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
 
     struct kefir_ast_declaration *stmt1 = kefir_ast_new_single_declaration(
         mem, kefir_ast_declarator_identifier(mem, global_context.context.symbols, "res"),
-        kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 1))), NULL);
+        kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 1))), NULL);
     REQUIRE_OK(kefir_ast_compound_statement_append(mem, function1_body, KEFIR_AST_NODE_BASE(stmt1)));
 
     struct kefir_ast_node_base *loop_body = KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement(
@@ -81,7 +81,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
         KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation(
             mem, KEFIR_AST_OPERATION_GREATER,
             KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, global_context.context.symbols, "i")),
-            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 1)))),
+            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 1)))),
         KEFIR_AST_NODE_BASE(kefir_ast_new_unary_operation(
             mem, KEFIR_AST_OPERATION_PREFIX_DECREMENT,
             KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, global_context.context.symbols, "i")))),

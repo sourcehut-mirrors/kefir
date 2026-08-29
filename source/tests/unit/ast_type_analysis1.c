@@ -265,12 +265,12 @@ DEFINE_CASE(ast_type_analysis_arrays, "AST type analysis - arrays") {
 
     const struct kefir_ast_type *type9 =
         kefir_ast_type_vlen_array(&kft_mem, context->type_bundle, kefir_ast_type_signed_short(),
-                                  KEFIR_AST_NODE_BASE(kefir_ast_new_constant_float(&kft_mem, 1.27)), NULL);
+                                  KEFIR_AST_NODE_BASE(kefir_ast_new_constant_float_noarena(&kft_mem, 1.27)), NULL);
     ASSERT_NOK(kefir_ast_analyze_type(&kft_mem, context, KEFIR_AST_TYPE_ANALYSIS_DEFAULT, type9, NULL));
 
     const struct kefir_ast_type *type10 =
         kefir_ast_type_vlen_array(&kft_mem, context->type_bundle, kefir_ast_type_signed_short(),
-                                  KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long(&kft_mem, 31)), NULL);
+                                  KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long_noarena(&kft_mem, 31)), NULL);
     ASSERT_OK(kefir_ast_analyze_type(&kft_mem, context, KEFIR_AST_TYPE_ANALYSIS_DEFAULT, type10, NULL));
     ASSERT(KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(type10->array_type.vla_length->properties.type));
 
@@ -379,7 +379,7 @@ DEFINE_CASE(ast_type_analysis_structs, "AST type analysis - structures/unions") 
     ASSERT_OK(kefir_ast_struct_type_field(
         &kft_mem, context->symbols, struct_type7, "ABC",
         kefir_ast_type_vlen_array(&kft_mem, context->type_bundle, kefir_ast_type_float(),
-                                  KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 10)), NULL),
+                                  KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 10)), NULL),
         NULL));
     ASSERT_NOK(kefir_ast_analyze_type(&kft_mem, context, KEFIR_AST_TYPE_ANALYSIS_DEFAULT, type7, NULL));
 

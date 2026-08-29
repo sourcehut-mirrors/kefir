@@ -76,7 +76,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
             KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement(
                 mem, KEFIR_AST_NODE_BASE(kefir_ast_new_simple_assignment(
                          mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "result")),
-                         KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, -1)))))),
+                         KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, -1)))))),
             NULL);
 
         struct kefir_ast_compound_statement *compound1 = kefir_ast_new_compound_statement(mem);
@@ -115,11 +115,11 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
             KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement(
                 mem, KEFIR_AST_NODE_BASE(kefir_ast_new_simple_assignment(
                          mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "result")),
-                         KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 1)))))),
+                         KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 1)))))),
             KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement(
                 mem, KEFIR_AST_NODE_BASE(kefir_ast_new_simple_assignment(
                          mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "result")),
-                         KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 2)))))));
+                         KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 2)))))));
 
         struct kefir_ast_compound_statement *compound1 = kefir_ast_new_compound_statement(mem);
         REQUIRE_OK(kefir_ast_compound_statement_append(mem, compound1, KEFIR_AST_NODE_BASE(decl1)));
@@ -157,26 +157,26 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
             KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation(
                 mem, KEFIR_AST_OPERATION_EQUAL,
                 KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "condition")),
-                KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 0)))),
+                KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 0)))),
             KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement(
                 mem, KEFIR_AST_NODE_BASE(kefir_ast_new_simple_assignment(
                          mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "result")),
-                         KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 1)))))),
+                         KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 1)))))),
             KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement(
                 mem, KEFIR_AST_NODE_BASE(kefir_ast_new_simple_assignment(
                          mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "result")),
-                         KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 2)))))));
+                         KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 2)))))));
 
         struct kefir_ast_conditional_statement *stmt2 = kefir_ast_new_conditional_statement(
             mem,
             KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation(
                 mem, KEFIR_AST_OPERATION_EQUAL,
                 KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "condition")),
-                KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, -1)))),
+                KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, -1)))),
             KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement(
                 mem, KEFIR_AST_NODE_BASE(kefir_ast_new_simple_assignment(
                          mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "result")),
-                         KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 0)))))),
+                         KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 0)))))),
             KEFIR_AST_NODE_BASE(stmt1));
 
         struct kefir_ast_compound_statement *compound1 = kefir_ast_new_compound_statement(mem);
@@ -197,11 +197,11 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
 
     FUNC2("conditional4", {
         struct kefir_ast_conditional_statement *stmt1 = kefir_ast_new_conditional_statement(
-            mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long_double(mem, -19.0072l)),
+            mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long_double_noarena(mem, -19.0072l)),
             KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement(
-                mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long_double(mem, 1.0l)))),
+                mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long_double_noarena(mem, 1.0l)))),
             KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement(
-                mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long_double(mem, -1.0l)))));
+                mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long_double_noarena(mem, -1.0l)))));
 
         struct kefir_ast_compound_statement *compound1 = kefir_ast_new_compound_statement(mem);
         REQUIRE_OK(kefir_ast_compound_statement_append(mem, compound1, KEFIR_AST_NODE_BASE(stmt1)));

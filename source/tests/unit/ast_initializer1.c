@@ -36,7 +36,7 @@ DEFINE_CASE(ast_initializer_construction1, "AST initializer - construction #1") 
     struct kefir_ast_context *context = &local_context.context;
 
     struct kefir_ast_initializer *init1 =
-        kefir_ast_new_expression_initializer(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 100)));
+        kefir_ast_new_expression_initializer(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 100)));
     ASSERT(init1 != NULL);
     ASSERT(init1->type == KEFIR_AST_INITIALIZER_EXPRESSION);
     ASSERT(init1->expression != NULL);
@@ -46,7 +46,7 @@ DEFINE_CASE(ast_initializer_construction1, "AST initializer - construction #1") 
     ASSERT_OK(kefir_ast_initializer_free(&kft_mem, init1));
 
     struct kefir_ast_initializer *init2 = kefir_ast_new_expression_initializer(
-        &kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_double(&kft_mem, 3.14)));
+        &kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_double_noarena(&kft_mem, 3.14)));
     ASSERT(init2 != NULL);
     ASSERT(init2->type == KEFIR_AST_INITIALIZER_EXPRESSION);
     ASSERT(init2->expression != NULL);
@@ -86,7 +86,7 @@ DEFINE_CASE(ast_initializer_construction2, "AST initializer - construction #2") 
     ASSERT_OK(kefir_ast_initializer_list_append(
         &kft_mem, &init1->list, NULL,
         kefir_ast_new_expression_initializer(&kft_mem,
-                                             KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bool(&kft_mem, true)))));
+                                             KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bool_noarena(&kft_mem, true)))));
     ASSERT(init1->list.entries_length == 1);
 
     ASSERT_OK(kefir_ast_initializer_list_append(

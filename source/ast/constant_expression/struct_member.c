@@ -156,7 +156,7 @@ static kefir_result_t derive_desgination_with_base(struct kefir_mem *mem, struct
             break;
 
         case KEFIR_AST_DESIGNATOR_SUBSCRIPT: {
-            struct kefir_ast_constant *subscript = kefir_ast_new_constant_ulong_long(mem, designator->index);
+            struct kefir_ast_constant *subscript = kefir_ast_new_constant_ulong_long(mem, NULL, designator->index);
             REQUIRE(subscript != NULL,
                     KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate AST designation subscript"));
 
@@ -169,11 +169,11 @@ static kefir_result_t derive_desgination_with_base(struct kefir_mem *mem, struct
 
         case KEFIR_AST_DESIGNATOR_SUBSCRIPT_RANGE: {
             struct kefir_ast_constant *subscript_begin =
-                kefir_ast_new_constant_ulong_long(mem, designator->range.begin);
+                kefir_ast_new_constant_ulong_long(mem, NULL, designator->range.begin);
             REQUIRE(subscript_begin != NULL,
                     KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate AST designation subscript"));
 
-            struct kefir_ast_constant *subscript_end = kefir_ast_new_constant_ulong_long(mem, designator->range.end);
+            struct kefir_ast_constant *subscript_end = kefir_ast_new_constant_ulong_long(mem, NULL, designator->range.end);
             REQUIRE_ELSE(subscript_end != NULL, {
                 KEFIR_AST_NODE_FREE(mem, KEFIR_AST_NODE_BASE(subscript_begin));
                 return KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate AST designation subscript");

@@ -869,7 +869,7 @@ static kefir_result_t parse_pp_tokens(struct kefir_mem *mem, struct kefir_prepro
     REQUIRE_CHAIN_SET(&res, kefir_token_buffer_length(&tokens) > 0,
                       KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, source_location, "Expected non-empty if condition"));
     REQUIRE_CHAIN(&res, kefir_parser_token_cursor_init(&cursor, &tokens_handle));
-    REQUIRE_CHAIN(&res, kefir_parser_init(mem, &parser, preprocessor->lexer.symbols, &cursor,
+    REQUIRE_CHAIN(&res, kefir_parser_init(mem, &parser, preprocessor->lexer.symbols, NULL, &cursor,
                                           preprocessor->extensions != NULL ? preprocessor->extensions->parser : NULL));
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_token_buffer_free(mem, &tokens);

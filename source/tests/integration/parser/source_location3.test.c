@@ -57,7 +57,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     REQUIRE_OK(kefir_token_buffer_cursor_handle(&tokens, &tokens_handle));
 
     REQUIRE_OK(kefir_parser_token_cursor_init(&cursor, &tokens_handle));
-    REQUIRE_OK(kefir_parser_init(mem, &parser, &symbols, &cursor, NULL));
+    REQUIRE_OK(kefir_parser_init(mem, &parser, &symbols, NULL, &cursor, NULL));
 
     struct kefir_json_output json;
     REQUIRE_OK(kefir_json_output_init(&json, stdout, 4));

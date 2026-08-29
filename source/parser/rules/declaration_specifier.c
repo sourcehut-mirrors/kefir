@@ -340,7 +340,7 @@ static kefir_result_t scan_struct_specifier(struct kefir_mem *mem, struct kefir_
             return res;
         });
 
-        struct kefir_ast_constant *value = kefir_ast_new_constant_uint(mem, pragma_state.pack.value);
+        struct kefir_ast_constant *value = kefir_ast_new_constant_uint(mem, parser->ast_arena, pragma_state.pack.value);
         REQUIRE(value != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate AST constant"));
         res = kefir_list_insert_after(mem, &attr->parameters, kefir_list_tail(&attr->parameters),
                                       KEFIR_AST_NODE_BASE(value));

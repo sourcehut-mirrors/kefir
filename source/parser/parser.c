@@ -42,7 +42,7 @@ kefir_result_t kefir_parser_configuration_default(struct kefir_parser_configurat
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_parser_init(struct kefir_mem *mem, struct kefir_parser *parser, struct kefir_string_pool *symbols,
+kefir_result_t kefir_parser_init(struct kefir_mem *mem, struct kefir_parser *parser, struct kefir_string_pool *symbols, struct kefir_memory_arena *ast_arena,
                                  struct kefir_parser_token_cursor *cursor,
                                  const struct kefir_parser_extensions *extensions) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
@@ -52,6 +52,7 @@ kefir_result_t kefir_parser_init(struct kefir_mem *mem, struct kefir_parser *par
     REQUIRE_OK(kefir_parser_ruleset_init(&parser->ruleset));
     REQUIRE_OK(kefir_parser_scope_init(mem, &parser->local_scope, symbols));
     parser->symbols = symbols;
+    parser->ast_arena = ast_arena;
     parser->cursor = cursor;
     parser->scope = &parser->local_scope;
     parser->extensions = extensions;
