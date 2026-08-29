@@ -311,7 +311,7 @@ DEFINE_CASE(ast_declarator_construction10, "AST declarators - function construct
     for (kefir_size_t i = 0; i < PARAM_COUNT; i++) {
         ASSERT_OK(
             kefir_list_insert_after(&kft_mem, &decl->function->parameters, kefir_list_tail(&decl->function->parameters),
-                                    KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(&kft_mem, &symbols, PARAMS[i]))));
+                                    KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(&kft_mem, &symbols, PARAMS[i]))));
     }
 
     ASSERT(kefir_list_length(&decl->function->parameters) == PARAM_COUNT);

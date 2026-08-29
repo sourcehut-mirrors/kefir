@@ -44,7 +44,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
 #define LVALUE(_node)                                                                                      \
     do {                                                                                                   \
         struct kefir_ast_node_base *node =                                                                 \
-            KEFIR_AST_NODE_BASE(kefir_ast_new_unary_operation(mem, KEFIR_AST_OPERATION_ADDRESS, (_node))); \
+            KEFIR_AST_NODE_BASE(kefir_ast_new_unary_operation_noarena(mem, KEFIR_AST_OPERATION_ADDRESS, (_node))); \
         REQUIRE_OK(kefir_ast_analyze_node(mem, context, node));                                            \
         REQUIRE_OK(kefir_ast_translate_expression(mem, node, &builder, &translator_context));              \
         REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, node));                                                        \
@@ -99,50 +99,50 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     struct kefir_irbuilder_block builder;
 
     FUNC("identifier", {
-        LVALUE(KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "variable1")));
-        LVALUE(KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "variable2")));
-        LVALUE(KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "variable3")));
-        LVALUE(KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "variable4")));
-        LVALUE(KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "variable5")));
-        LVALUE(KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "variable6")));
+        LVALUE(KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "variable1")));
+        LVALUE(KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "variable2")));
+        LVALUE(KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "variable3")));
+        LVALUE(KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "variable4")));
+        LVALUE(KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "variable5")));
+        LVALUE(KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "variable6")));
     });
 
     FUNC("array_subscript", {
-        LVALUE(KEFIR_AST_NODE_BASE(kefir_ast_new_array_subscript(
-            mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "variable3")),
+        LVALUE(KEFIR_AST_NODE_BASE(kefir_ast_new_array_subscript_noarena(
+            mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "variable3")),
             KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 2)))));
-        LVALUE(KEFIR_AST_NODE_BASE(kefir_ast_new_array_subscript(
+        LVALUE(KEFIR_AST_NODE_BASE(kefir_ast_new_array_subscript_noarena(
             mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 100)),
-            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "variable4")))));
+            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "variable4")))));
     });
 
     FUNC("struct_field", {
-        LVALUE(KEFIR_AST_NODE_BASE(kefir_ast_new_struct_member(
-            mem, context->symbols, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "variable5")),
+        LVALUE(KEFIR_AST_NODE_BASE(kefir_ast_new_struct_member_noarena(
+            mem, context->symbols, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "variable5")),
             "fiel1")));
-        LVALUE(KEFIR_AST_NODE_BASE(kefir_ast_new_struct_member(
-            mem, context->symbols, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "variable5")),
+        LVALUE(KEFIR_AST_NODE_BASE(kefir_ast_new_struct_member_noarena(
+            mem, context->symbols, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "variable5")),
             "fiel2")));
     });
 
     FUNC("struct_field_indirect", {
-        LVALUE(KEFIR_AST_NODE_BASE(kefir_ast_new_struct_indirect_member(
+        LVALUE(KEFIR_AST_NODE_BASE(kefir_ast_new_struct_indirect_member_noarena(
             mem, context->symbols,
-            KEFIR_AST_NODE_BASE(kefir_ast_new_struct_indirect_member(
+            KEFIR_AST_NODE_BASE(kefir_ast_new_struct_indirect_member_noarena(
                 mem, context->symbols,
-                KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "variable6")), "ptr")),
+                KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "variable6")), "ptr")),
             "fiel2")));
     });
 
-    struct kefir_ast_type_name *type_name1 = kefir_ast_new_type_name(
+    struct kefir_ast_type_name *type_name1 = kefir_ast_new_type_name_noarena(
         mem, kefir_ast_declarator_pointer(mem, kefir_ast_declarator_identifier(mem, NULL, NULL)));
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &type_name1->type_decl.specifiers,
                                                           kefir_ast_type_specifier_int(mem)));
 
     FUNC("indirection", {
-        LVALUE(KEFIR_AST_NODE_BASE(kefir_ast_new_unary_operation(
+        LVALUE(KEFIR_AST_NODE_BASE(kefir_ast_new_unary_operation_noarena(
             mem, KEFIR_AST_OPERATION_INDIRECTION,
-            KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator(
+            KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator_noarena(
                 mem, type_name1, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 0)))))));
     });
 

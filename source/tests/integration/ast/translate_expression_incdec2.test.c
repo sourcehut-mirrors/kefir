@@ -78,62 +78,62 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
 
     FUNC("increment_int1", {
         UNARY_NODE(KEFIR_AST_OPERATION_PREFIX_INCREMENT,
-                   KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "int")));
+                   KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "int")));
     });
 
     FUNC("increment_int2", {
         UNARY_NODE(KEFIR_AST_OPERATION_PREFIX_INCREMENT,
-                   KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "short")));
+                   KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "short")));
     });
 
     FUNC("decrement_int1", {
         UNARY_NODE(KEFIR_AST_OPERATION_PREFIX_DECREMENT,
-                   KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "int")));
+                   KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "int")));
     });
 
     FUNC("decrement_int2", {
         UNARY_NODE(KEFIR_AST_OPERATION_PREFIX_DECREMENT,
-                   KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "short")));
+                   KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "short")));
     });
 
     FUNC("increment_float", {
         UNARY_NODE(KEFIR_AST_OPERATION_PREFIX_INCREMENT,
-                   KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "float")));
+                   KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "float")));
     });
 
     FUNC("increment_double", {
         UNARY_NODE(KEFIR_AST_OPERATION_PREFIX_INCREMENT,
-                   KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "double")));
+                   KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "double")));
     });
 
     FUNC("decrement_float", {
         UNARY_NODE(KEFIR_AST_OPERATION_PREFIX_DECREMENT,
-                   KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "float")));
+                   KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "float")));
     });
 
     FUNC("decrement_double", {
         UNARY_NODE(KEFIR_AST_OPERATION_PREFIX_DECREMENT,
-                   KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "double")));
+                   KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "double")));
     });
 
     FUNC("increment_pointer1", {
         UNARY_NODE(KEFIR_AST_OPERATION_PREFIX_INCREMENT,
-                   KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "ptr1")));
+                   KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "ptr1")));
     });
 
     FUNC("increment_pointer2", {
         UNARY_NODE(KEFIR_AST_OPERATION_PREFIX_INCREMENT,
-                   KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "ptr2")));
+                   KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "ptr2")));
     });
 
     FUNC("decrement_pointer1", {
         UNARY_NODE(KEFIR_AST_OPERATION_PREFIX_DECREMENT,
-                   KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "ptr1")));
+                   KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "ptr1")));
     });
 
     FUNC("decrement_pointer2", {
         UNARY_NODE(KEFIR_AST_OPERATION_PREFIX_DECREMENT,
-                   KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "ptr2")));
+                   KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "ptr2")));
     });
 
     REQUIRE_OK(kefir_ir_format_module(stdout, &module, false));

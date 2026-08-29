@@ -109,11 +109,11 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
         mem, &init1->list, NULL,
         kefir_ast_new_expression_initializer(
             mem,
-            KEFIR_AST_NODE_BASE(kefir_ast_new_unary_operation(
+            KEFIR_AST_NODE_BASE(kefir_ast_new_unary_operation_noarena(
                 mem, KEFIR_AST_OPERATION_ADDRESS,
-                KEFIR_AST_NODE_BASE(kefir_ast_new_struct_member(
+                KEFIR_AST_NODE_BASE(kefir_ast_new_struct_member_noarena(
                     mem, global_context.context.symbols,
-                    KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, global_context.context.symbols, "structure")),
+                    KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, global_context.context.symbols, "structure")),
                     "b")))))));
     REQUIRE_OK(kefir_ast_initializer_list_append(
         mem, &init1->list,
@@ -135,18 +135,18 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
         kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char_noarena(mem, '0')))));
     REQUIRE_OK(kefir_ast_initializer_list_append(
         mem, &init1->list, kefir_ast_new_initializer_member_designation(mem, global_context.context.symbols, "e", NULL),
-        kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_unary_operation(
+        kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_unary_operation_noarena(
                                                       mem, KEFIR_AST_OPERATION_SIZEOF,
-                                                      KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(
+                                                      KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(
                                                           mem, global_context.context.symbols, "structure")))))));
 
-    struct kefir_ast_declaration *decl1 = kefir_ast_new_single_declaration(
+    struct kefir_ast_declaration *decl1 = kefir_ast_new_single_declaration_noarena(
         mem, kefir_ast_declarator_identifier(mem, global_context.context.symbols, "structure"), init1, NULL);
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &decl1->specifiers,
                                                           kefir_ast_type_specifier_struct(mem, specifier1)));
 
     struct kefir_ast_type_name *type_name1 =
-        kefir_ast_new_type_name(mem, kefir_ast_declarator_identifier(mem, NULL, NULL));
+        kefir_ast_new_type_name_noarena(mem, kefir_ast_declarator_identifier(mem, NULL, NULL));
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &type_name1->type_decl.specifiers,
                                                           kefir_ast_type_specifier_long(mem)));
 
@@ -158,13 +158,13 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
         mem, &init2->list, NULL,
         kefir_ast_new_expression_initializer(
             mem,
-            KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator(
+            KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator_noarena(
                 mem, type_name1,
-                KEFIR_AST_NODE_BASE(kefir_ast_new_unary_operation(
+                KEFIR_AST_NODE_BASE(kefir_ast_new_unary_operation_noarena(
                     mem, KEFIR_AST_OPERATION_ADDRESS,
-                    KEFIR_AST_NODE_BASE(kefir_ast_new_array_subscript(
+                    KEFIR_AST_NODE_BASE(kefir_ast_new_array_subscript_noarena(
                         mem,
-                        KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, global_context.context.symbols, "array1")),
+                        KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, global_context.context.symbols, "array1")),
                         KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 1)))))))))));
     REQUIRE_OK(kefir_ast_initializer_list_append(
         mem, &init2->list, NULL,
@@ -174,7 +174,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
         kefir_ast_new_initializer_index_designation(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 7)), NULL),
         kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, -1)))));
 
-    struct kefir_ast_declaration *decl2 = kefir_ast_new_single_declaration(
+    struct kefir_ast_declaration *decl2 = kefir_ast_new_single_declaration_noarena(
         mem,
         kefir_ast_declarator_array(mem, KEFIR_AST_DECLARATOR_ARRAY_UNBOUNDED, NULL,
                                    kefir_ast_declarator_identifier(mem, global_context.context.symbols, "array1")),
@@ -193,7 +193,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
         mem, &init3->list, NULL,
         kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_double_noarena(mem, 20.02)))));
 
-    struct kefir_ast_declaration *decl3 = kefir_ast_new_single_declaration(
+    struct kefir_ast_declaration *decl3 = kefir_ast_new_single_declaration_noarena(
         mem,
         kefir_ast_declarator_array(mem, KEFIR_AST_DECLARATOR_ARRAY_BOUNDED,
                                    KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 6)),

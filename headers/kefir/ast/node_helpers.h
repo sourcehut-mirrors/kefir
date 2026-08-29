@@ -51,7 +51,7 @@ kefir_result_t kefir_ast_statement_expression_append(struct kefir_mem *, struct 
 
 kefir_result_t kefir_ast_compound_literal_set_initializer(struct kefir_mem *, struct kefir_ast_compound_literal *,
                                                           struct kefir_ast_initializer *);
-struct kefir_ast_declaration *kefir_ast_new_single_declaration(struct kefir_mem *, struct kefir_ast_declarator *,
+struct kefir_ast_declaration *kefir_ast_new_single_declaration(struct kefir_mem *, struct kefir_memory_arena *, struct kefir_ast_declarator *,
                                                                struct kefir_ast_initializer *,
                                                                struct kefir_ast_init_declarator **);
 kefir_result_t kefir_ast_declaration_add_declarator(struct kefir_mem *, struct kefir_ast_declaration *,

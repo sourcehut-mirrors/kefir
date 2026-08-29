@@ -47,43 +47,55 @@ kefir_result_t ast_string_literal_free(struct kefir_mem *mem, struct kefir_ast_n
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(base != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST node base"));
     ASSIGN_DECL_CAST(struct kefir_ast_string_literal *, node, KEFIR_AST_NODE_SELF(base));
-    KEFIR_FREE(mem, node->data.literal);
-    KEFIR_FREE(mem, node);
+    if (!KEFIR_AST_NODE_IS_ARENA_ALLOCATED(node)) {
+        KEFIR_FREE(mem, node->data.literal);
+    }
+    KEFIR_AST_NODE_ARENA_FREE(mem, node);
     return KEFIR_OK;
 }
 
 const struct kefir_ast_node_class AST_STRING_LITERAL_CLASS = {
     .type = KEFIR_AST_STRING_LITERAL, .visit = ast_string_literal_visit, .free = ast_string_literal_free};
 
-struct kefir_ast_string_literal *kefir_ast_new_string_literal(struct kefir_mem *mem, const void *literal,
+static struct kefir_ast_string_literal *kefir_ast_new_string_literal(struct kefir_mem *mem, struct kefir_memory_arena *arena, const void *literal,
                                                               kefir_size_t length,
                                                               kefir_ast_string_literal_type_t type) {
-    REQUIRE(mem != NULL, NULL);
+    REQUIRE(mem != NULL || arena != NULL, NULL);
     REQUIRE(literal != NULL, NULL);
 
     kefir_size_t sz = literal_size(type, length);
     REQUIRE(sz != 0 || length == 0, NULL);
-    void *literal_copy = KEFIR_MALLOC(mem, sz);
+    void *literal_copy = NULL;
+    if (arena != NULL) {
+        literal_copy = kefir_memory_arena_alloc(arena, sz, _Alignof(kefir_char32_t));
+    } else {
+        literal_copy = KEFIR_MALLOC(mem, sz);
+    }
     REQUIRE(literal_copy != NULL, NULL);
 
-    struct kefir_ast_string_literal *string_literal = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_string_literal));
+    struct kefir_ast_string_literal *string_literal = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_string_literal);
     REQUIRE_ELSE(string_literal != NULL, {
-        KEFIR_FREE(mem, literal_copy);
+        if (arena == NULL) {
+            KEFIR_FREE(mem, literal_copy);
+        }
         return NULL;
     });
 
-    string_literal->base.refcount = 1;
+    string_literal->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
     string_literal->base.klass = &AST_STRING_LITERAL_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&string_literal->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, literal_copy);
-        KEFIR_FREE(mem, string_literal);
+        if (arena == NULL) {
+            KEFIR_FREE(mem, literal_copy);
+        }
         return NULL;
     });
     res = kefir_source_location_empty(&string_literal->base.source_location);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, literal_copy);
-        KEFIR_FREE(mem, string_literal);
+        if (arena == NULL) {
+            KEFIR_FREE(mem, literal_copy);
+        }
+        KEFIR_AST_NODE_ARENA_FREE(mem, string_literal);
         return NULL;
     });
 
@@ -94,29 +106,29 @@ struct kefir_ast_string_literal *kefir_ast_new_string_literal(struct kefir_mem *
     return string_literal;
 }
 
-struct kefir_ast_string_literal *kefir_ast_new_string_literal_multibyte(struct kefir_mem *mem, const char *literal,
+struct kefir_ast_string_literal *kefir_ast_new_string_literal_multibyte(struct kefir_mem *mem, struct kefir_memory_arena *arena, const char *literal,
                                                                         kefir_size_t length) {
-    return kefir_ast_new_string_literal(mem, literal, length, KEFIR_AST_STRING_LITERAL_MULTIBYTE);
+    return kefir_ast_new_string_literal(mem, arena, literal, length, KEFIR_AST_STRING_LITERAL_MULTIBYTE);
 }
 
-struct kefir_ast_string_literal *kefir_ast_new_string_literal_unicode8(struct kefir_mem *mem, const char *literal,
+struct kefir_ast_string_literal *kefir_ast_new_string_literal_unicode8(struct kefir_mem *mem, struct kefir_memory_arena *arena, const char *literal,
                                                                        kefir_size_t length) {
-    return kefir_ast_new_string_literal(mem, literal, length, KEFIR_AST_STRING_LITERAL_UNICODE8);
+    return kefir_ast_new_string_literal(mem, arena, literal, length, KEFIR_AST_STRING_LITERAL_UNICODE8);
 }
 
-struct kefir_ast_string_literal *kefir_ast_new_string_literal_unicode16(struct kefir_mem *mem,
+struct kefir_ast_string_literal *kefir_ast_new_string_literal_unicode16(struct kefir_mem *mem, struct kefir_memory_arena *arena,
                                                                         const kefir_char16_t *literal,
                                                                         kefir_size_t length) {
-    return kefir_ast_new_string_literal(mem, literal, length, KEFIR_AST_STRING_LITERAL_UNICODE16);
+    return kefir_ast_new_string_literal(mem, arena, literal, length, KEFIR_AST_STRING_LITERAL_UNICODE16);
 }
 
-struct kefir_ast_string_literal *kefir_ast_new_string_literal_unicode32(struct kefir_mem *mem,
+struct kefir_ast_string_literal *kefir_ast_new_string_literal_unicode32(struct kefir_mem *mem, struct kefir_memory_arena *arena,
                                                                         const kefir_char32_t *literal,
                                                                         kefir_size_t length) {
-    return kefir_ast_new_string_literal(mem, literal, length, KEFIR_AST_STRING_LITERAL_UNICODE32);
+    return kefir_ast_new_string_literal(mem, arena, literal, length, KEFIR_AST_STRING_LITERAL_UNICODE32);
 }
 
-struct kefir_ast_string_literal *kefir_ast_new_string_literal_wide(struct kefir_mem *mem, const kefir_wchar_t *literal,
+struct kefir_ast_string_literal *kefir_ast_new_string_literal_wide(struct kefir_mem *mem, struct kefir_memory_arena *arena, const kefir_wchar_t *literal,
                                                                    kefir_size_t length) {
-    return kefir_ast_new_string_literal(mem, literal, length, KEFIR_AST_STRING_LITERAL_WIDE);
+    return kefir_ast_new_string_literal(mem, arena, literal, length, KEFIR_AST_STRING_LITERAL_WIDE);
 }

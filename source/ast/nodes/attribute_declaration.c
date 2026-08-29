@@ -30,7 +30,7 @@ kefir_result_t ast_attribute_declaration_free(struct kefir_mem *mem, struct kefi
     REQUIRE(base != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST node base"));
     ASSIGN_DECL_CAST(struct kefir_ast_attribute_declaration *, node, KEFIR_AST_NODE_SELF(base));
     REQUIRE_OK(kefir_ast_node_attributes_free(mem, &node->attributes));
-    KEFIR_FREE(mem, node);
+    KEFIR_AST_NODE_ARENA_FREE(mem, node);
     return KEFIR_OK;
 }
 
@@ -38,13 +38,13 @@ const struct kefir_ast_node_class AST_ATTRIBUTE_DECLARATION_LIST_CLASS = {.type 
                                                                           .visit = ast_attribute_declaration_visit,
                                                                           .free = ast_attribute_declaration_free};
 
-struct kefir_ast_attribute_declaration *kefir_ast_new_attribute_declaration(struct kefir_mem *mem) {
-    REQUIRE(mem != NULL, NULL);
+struct kefir_ast_attribute_declaration *kefir_ast_new_attribute_declaration(struct kefir_mem *mem, struct kefir_memory_arena *arena) {
+    REQUIRE(mem != NULL || arena != NULL, NULL);
 
     struct kefir_ast_attribute_declaration *attribute_declaration =
-        KEFIR_MALLOC(mem, sizeof(struct kefir_ast_attribute_declaration));
+        KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_attribute_declaration);
     REQUIRE(attribute_declaration != NULL, NULL);
-    attribute_declaration->base.refcount = 1;
+    attribute_declaration->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
     attribute_declaration->base.klass = &AST_ATTRIBUTE_DECLARATION_LIST_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&attribute_declaration->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -53,13 +53,13 @@ struct kefir_ast_attribute_declaration *kefir_ast_new_attribute_declaration(stru
     });
     res = kefir_source_location_empty(&attribute_declaration->base.source_location);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, attribute_declaration);
+        KEFIR_AST_NODE_ARENA_FREE(mem, attribute_declaration);
         return NULL;
     });
 
     res = kefir_ast_node_attributes_init(&attribute_declaration->attributes);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, attribute_declaration);
+        KEFIR_AST_NODE_ARENA_FREE(mem, attribute_declaration);
         return NULL;
     });
     return attribute_declaration;

@@ -68,7 +68,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
 #define COMPOUND_ASSIGNMENT(_oper, _node1, _node2)                                                    \
     do {                                                                                              \
         struct kefir_ast_node_base *node =                                                            \
-            KEFIR_AST_NODE_BASE(kefir_ast_new_compound_assignment(mem, (_oper), (_node1), (_node2))); \
+            KEFIR_AST_NODE_BASE(kefir_ast_new_compound_assignment_noarena(mem, (_oper), (_node1), (_node2))); \
         REQUIRE_OK(kefir_ast_analyze_node(mem, context, node));                                       \
         REQUIRE_OK(kefir_ast_translate_expression(mem, node, &builder, &translator_context));         \
         REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, node));                                                   \
@@ -76,73 +76,73 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
 
     FUNC("assign_modulo_int", {
         COMPOUND_ASSIGNMENT(KEFIR_AST_ASSIGNMENT_MODULO,
-                            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "int")),
+                            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "int")),
                             KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 4)));
     });
 
     FUNC("assign_modulo_ullong", {
         COMPOUND_ASSIGNMENT(KEFIR_AST_ASSIGNMENT_MODULO,
-                            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "ullong")),
+                            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "ullong")),
                             KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long_long_noarena(mem, -8000)));
     });
 
     FUNC("assign_shl_int", {
         COMPOUND_ASSIGNMENT(KEFIR_AST_ASSIGNMENT_SHIFT_LEFT,
-                            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "int")),
+                            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "int")),
                             KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, -1)));
     });
 
     FUNC("assign_shl_ullong", {
         COMPOUND_ASSIGNMENT(KEFIR_AST_ASSIGNMENT_SHIFT_LEFT,
-                            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "ullong")),
+                            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "ullong")),
                             KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long_long_noarena(mem, 11223344ll)));
     });
 
     FUNC("assign_shr_int", {
         COMPOUND_ASSIGNMENT(KEFIR_AST_ASSIGNMENT_SHIFT_RIGHT,
-                            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "int")),
+                            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "int")),
                             KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 90)));
     });
 
     FUNC("assign_shr_ullong", {
         COMPOUND_ASSIGNMENT(KEFIR_AST_ASSIGNMENT_SHIFT_RIGHT,
-                            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "ullong")),
+                            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "ullong")),
                             KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long_long_noarena(mem, -99000)));
     });
 
     FUNC("assign_bitwise_and_int", {
         COMPOUND_ASSIGNMENT(KEFIR_AST_ASSIGNMENT_BITWISE_AND,
-                            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "int")),
+                            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "int")),
                             KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 10101)));
     });
 
     FUNC("assign_biwise_and_ullong", {
         COMPOUND_ASSIGNMENT(KEFIR_AST_ASSIGNMENT_BITWISE_AND,
-                            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "ullong")),
+                            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "ullong")),
                             KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long_long_noarena(mem, -11001100)));
     });
 
     FUNC("assign_bitwise_or_int", {
         COMPOUND_ASSIGNMENT(KEFIR_AST_ASSIGNMENT_BITWISE_OR,
-                            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "int")),
+                            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "int")),
                             KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char_noarena(mem, 'h')));
     });
 
     FUNC("assign_biwise_or_ullong", {
         COMPOUND_ASSIGNMENT(KEFIR_AST_ASSIGNMENT_BITWISE_OR,
-                            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "ullong")),
+                            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "ullong")),
                             KEFIR_AST_NODE_BASE(kefir_ast_new_constant_uint_noarena(mem, 1)));
     });
 
     FUNC("assign_bitwise_xor_int", {
         COMPOUND_ASSIGNMENT(KEFIR_AST_ASSIGNMENT_BITWISE_XOR,
-                            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "int")),
+                            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "int")),
                             KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long_long_noarena(mem, 19857)));
     });
 
     FUNC("assign_biwise_xor_ullong", {
         COMPOUND_ASSIGNMENT(KEFIR_AST_ASSIGNMENT_BITWISE_XOR,
-                            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "ullong")),
+                            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "ullong")),
                             KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char_noarena(mem, '8')));
     });
 

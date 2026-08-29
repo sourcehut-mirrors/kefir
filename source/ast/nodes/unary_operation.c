@@ -30,30 +30,30 @@ kefir_result_t ast_unary_operation_free(struct kefir_mem *mem, struct kefir_ast_
     REQUIRE(base != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST node base"));
     ASSIGN_DECL_CAST(struct kefir_ast_unary_operation *, node, KEFIR_AST_NODE_SELF(base));
     REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, node->arg));
-    KEFIR_FREE(mem, node);
+    KEFIR_AST_NODE_ARENA_FREE(mem, node);
     return KEFIR_OK;
 }
 
 const struct kefir_ast_node_class AST_UNARY_OPERATION_CLASS = {
     .type = KEFIR_AST_UNARY_OPERATION, .visit = ast_unary_operation_visit, .free = ast_unary_operation_free};
 
-struct kefir_ast_unary_operation *kefir_ast_new_unary_operation(struct kefir_mem *mem,
+struct kefir_ast_unary_operation *kefir_ast_new_unary_operation(struct kefir_mem *mem, struct kefir_memory_arena *arena,
                                                                 kefir_ast_unary_operation_type_t type,
                                                                 struct kefir_ast_node_base *arg) {
-    REQUIRE(mem != NULL, NULL);
+    REQUIRE(mem != NULL || arena != NULL, NULL);
     REQUIRE(arg != NULL, NULL);
-    struct kefir_ast_unary_operation *oper = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_unary_operation));
+    struct kefir_ast_unary_operation *oper = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_unary_operation);
     REQUIRE(oper != NULL, NULL);
-    oper->base.refcount = 1;
+    oper->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
     oper->base.klass = &AST_UNARY_OPERATION_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&oper->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, oper);
+        KEFIR_AST_NODE_ARENA_FREE(mem, oper);
         return NULL;
     });
     res = kefir_source_location_empty(&oper->base.source_location);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, oper);
+        KEFIR_AST_NODE_ARENA_FREE(mem, oper);
         return NULL;
     });
     oper->type = type;

@@ -333,7 +333,7 @@ static kefir_result_t scan_function_parameter(struct kefir_mem *mem, struct kefi
 
     struct kefir_ast_init_declarator *init_declarator = NULL;
     struct kefir_ast_declaration *declaration =
-        kefir_ast_new_single_declaration(mem, declarator, NULL, &init_declarator);
+        kefir_ast_new_single_declaration(mem, parser->ast_arena, declarator, NULL, &init_declarator);
     REQUIRE_ELSE(declaration != NULL, {
         kefir_ast_declarator_free(mem, declarator);
         kefir_ast_declarator_specifier_list_free(mem, &specifiers);

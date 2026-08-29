@@ -174,7 +174,7 @@ DEFINE_CASE(ast_declarator_analysis8, "AST declarator analysis - struct declarat
                                                          kefir_ast_type_specifier_unsigned(&kft_mem)));
     ASSERT_OK(kefir_ast_structure_declaration_entry_append(
         &kft_mem, entry2, kefir_ast_declarator_identifier(&kft_mem, context->symbols, "field2"),
-        KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation(
+        KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation_noarena(
             &kft_mem, KEFIR_AST_OPERATION_ADD, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 1)),
             KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 2))))));
     ASSERT_OK(kefir_ast_structure_specifier_append_entry(&kft_mem, specifier1, entry2));
@@ -286,7 +286,7 @@ DEFINE_CASE(ast_declarator_analysis9, "AST declarator analysis - enum declarator
         kefir_ast_enum_specifier_init(&kft_mem, context->symbols, NULL, true, NULL);
     ASSERT_OK(kefir_ast_enum_specifier_append(
         &kft_mem, specifier3, context->symbols, "ONE",
-        KEFIR_AST_NODE_BASE(kefir_ast_new_unary_operation(
+        KEFIR_AST_NODE_BASE(kefir_ast_new_unary_operation_noarena(
             &kft_mem, KEFIR_AST_OPERATION_NEGATE, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, -1)))),
         NULL));
     ASSERT_OK(kefir_ast_enum_specifier_append(&kft_mem, specifier3, context->symbols, "TWO", NULL, NULL));

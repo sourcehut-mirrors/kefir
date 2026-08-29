@@ -56,7 +56,7 @@ static kefir_result_t define_get_sizeof_function(struct kefir_mem *mem, struct f
     REQUIRE_OK(kefir_list_init(&func->args));
 
     struct kefir_ast_type_name *type_name16 =
-        kefir_ast_new_type_name(mem, kefir_ast_declarator_identifier(mem, context_manager->current->symbols, NULL));
+        kefir_ast_new_type_name_noarena(mem, kefir_ast_declarator_identifier(mem, context_manager->current->symbols, NULL));
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &type_name16->type_decl.specifiers, specifier));
     REQUIRE_OK(kefir_ast_analyze_node(mem, context_manager->current, KEFIR_AST_NODE_BASE(type_name16)));
 
@@ -71,17 +71,17 @@ static kefir_result_t define_get_sizeof_function(struct kefir_mem *mem, struct f
     REQUIRE_OK(kefir_ast_local_context_init(mem, context_manager->global, &func->local_context));
     REQUIRE_OK(kefir_ast_context_manager_attach_local(&func->local_context, context_manager));
 
-    struct kefir_ast_compound_literal *compound_literal = kefir_ast_new_compound_literal(
+    struct kefir_ast_compound_literal *compound_literal = kefir_ast_new_compound_literal_noarena(
         mem, (struct kefir_ast_type_name *) KEFIR_AST_NODE_SELF(KEFIR_AST_NODE_REF(KEFIR_AST_NODE_BASE(type_name16))));
 #define APPEND(_type_name)                                                                          \
     REQUIRE_OK(kefir_ast_initializer_list_append(                                                   \
         mem, &compound_literal->initializer->list, NULL,                                            \
         kefir_ast_new_expression_initializer(                                                       \
-            mem, KEFIR_AST_NODE_BASE(kefir_ast_new_unary_operation(mem, KEFIR_AST_OPERATION_SIZEOF, \
+            mem, KEFIR_AST_NODE_BASE(kefir_ast_new_unary_operation_noarena(mem, KEFIR_AST_OPERATION_SIZEOF, \
                                                                    KEFIR_AST_NODE_BASE(_type_name))))))
 
 #define MAKE_TYPENAME(_id, _spec_count, ...)                                                                          \
-    struct kefir_ast_type_name *_id = kefir_ast_new_type_name(mem, kefir_ast_declarator_identifier(mem, NULL, NULL)); \
+    struct kefir_ast_type_name *_id = kefir_ast_new_type_name_noarena(mem, kefir_ast_declarator_identifier(mem, NULL, NULL)); \
     REQUIRE_OK(append_specifiers(mem, &_id->type_decl.specifiers, (_spec_count), __VA_ARGS__));
 
     MAKE_TYPENAME(type_name1, 1, kefir_ast_type_specifier_boolean(mem))
@@ -102,11 +102,11 @@ static kefir_result_t define_get_sizeof_function(struct kefir_mem *mem, struct f
     MAKE_TYPENAME(type_name14, 1, kefir_ast_type_specifier_double(mem))
 #undef MAKE_TYPENAME
 
-    struct kefir_ast_type_name *type_name15 = kefir_ast_new_type_name(
+    struct kefir_ast_type_name *type_name15 = kefir_ast_new_type_name_noarena(
         mem, kefir_ast_declarator_pointer(mem, kefir_ast_declarator_identifier(mem, NULL, NULL)));
     REQUIRE_OK(append_specifiers(mem, &type_name15->type_decl.specifiers, 1, kefir_ast_type_specifier_void(mem)));
 
-    struct kefir_ast_type_name *type_name17 = kefir_ast_new_type_name(
+    struct kefir_ast_type_name *type_name17 = kefir_ast_new_type_name_noarena(
         mem, kefir_ast_declarator_array(mem, KEFIR_AST_DECLARATOR_ARRAY_BOUNDED,
                                         KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 128)),
                                         kefir_ast_declarator_identifier(mem, NULL, NULL)));
@@ -133,7 +133,7 @@ static kefir_result_t define_get_sizeof_function(struct kefir_mem *mem, struct f
     REQUIRE_OK(kefir_ast_initializer_list_append(
         mem, &compound_literal->initializer->list, NULL,
         kefir_ast_new_expression_initializer(
-            mem, KEFIR_AST_NODE_BASE(kefir_ast_new_unary_operation(
+            mem, KEFIR_AST_NODE_BASE(kefir_ast_new_unary_operation_noarena(
                      mem, KEFIR_AST_OPERATION_SIZEOF,
                      KEFIR_AST_NODE_BASE(KEFIR_AST_MAKE_STRING_LITERAL_MULTIBYTE(mem, "Hello, world!!!")))))));
 

@@ -131,7 +131,7 @@ DEFINE_CASE(ast_declarator_analysis1, "AST declarator analysis - declarator type
                            KEFIR_AST_FUNCTION_SPECIFIER_NONE, 0, 1, kefir_ast_type_specifier_boolean(&kft_mem));
 
     struct kefir_ast_type_name *type_name1 =
-        kefir_ast_new_type_name(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL));
+        kefir_ast_new_type_name_noarena(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &type_name1->type_decl.specifiers,
                                                          kefir_ast_type_specifier_int(&kft_mem)));
     ASSERT_IDENTIFIER_TYPE(
@@ -141,7 +141,7 @@ DEFINE_CASE(ast_declarator_analysis1, "AST declarator analysis - declarator type
         KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_UNKNOWN, KEFIR_AST_FUNCTION_SPECIFIER_NONE, 0, 1,
         kefir_ast_type_specifier_atomic(&kft_mem, KEFIR_AST_NODE_BASE(type_name1)));
 
-    struct kefir_ast_type_name *type_name2 = kefir_ast_new_type_name(
+    struct kefir_ast_type_name *type_name2 = kefir_ast_new_type_name_noarena(
         &kft_mem, kefir_ast_declarator_pointer(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &type_name2->type_decl.specifiers,
                                                          kefir_ast_type_specifier_float(&kft_mem)));
@@ -489,7 +489,7 @@ DEFINE_CASE(ast_declarator_analysis6, "AST declarator analysis - declarator alig
 
 #define MAKE_TYPENAME(_id, _spec_count, ...)                                                      \
     struct kefir_ast_type_name *_id =                                                             \
-        kefir_ast_new_type_name(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL)); \
+        kefir_ast_new_type_name_noarena(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL)); \
     ASSERT_OK(append_specifiers(&kft_mem, &_id->type_decl.specifiers, (_spec_count), __VA_ARGS__));
 
     MAKE_TYPENAME(type_name1, 1, kefir_ast_type_specifier_char(&kft_mem));

@@ -31,31 +31,31 @@ kefir_result_t ast_cast_operator_free(struct kefir_mem *mem, struct kefir_ast_no
     ASSIGN_DECL_CAST(struct kefir_ast_cast_operator *, node, KEFIR_AST_NODE_SELF(base));
     REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, KEFIR_AST_NODE_BASE(node->type_name)));
     REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, node->expr));
-    KEFIR_FREE(mem, node);
+    KEFIR_AST_NODE_ARENA_FREE(mem, node);
     return KEFIR_OK;
 }
 
 const struct kefir_ast_node_class AST_CAST_OPERATOR_CLASS = {
     .type = KEFIR_AST_CAST_OPERATOR, .visit = ast_cast_operator_visit, .free = ast_cast_operator_free};
 
-struct kefir_ast_cast_operator *kefir_ast_new_cast_operator(struct kefir_mem *mem,
+struct kefir_ast_cast_operator *kefir_ast_new_cast_operator(struct kefir_mem *mem, struct kefir_memory_arena *arena,
                                                             struct kefir_ast_type_name *type_name,
                                                             struct kefir_ast_node_base *expr) {
-    REQUIRE(mem != NULL, NULL);
+    REQUIRE(mem != NULL || arena != NULL, NULL);
     REQUIRE(type_name != NULL, NULL);
     REQUIRE(expr != NULL, NULL);
-    struct kefir_ast_cast_operator *cast = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_cast_operator));
+    struct kefir_ast_cast_operator *cast = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_cast_operator);
     REQUIRE(cast != NULL, NULL);
-    cast->base.refcount = 1;
+    cast->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
     cast->base.klass = &AST_CAST_OPERATOR_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&cast->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, cast);
+        KEFIR_AST_NODE_ARENA_FREE(mem, cast);
         return NULL;
     });
     res = kefir_source_location_empty(&cast->base.source_location);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, cast);
+        KEFIR_AST_NODE_ARENA_FREE(mem, cast);
         return NULL;
     });
     cast->type_name = type_name;

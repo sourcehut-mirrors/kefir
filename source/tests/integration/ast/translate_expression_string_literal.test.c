@@ -63,7 +63,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     FUNC("string_literal1", {
         const char *str = "Hello, cruel world!";
         struct kefir_ast_node_base *node =
-            KEFIR_AST_NODE_BASE(kefir_ast_new_string_literal_multibyte(mem, str, strlen(str) + 1));
+            KEFIR_AST_NODE_BASE(kefir_ast_new_string_literal_multibyte_noarena(mem, str, strlen(str) + 1));
         REQUIRE_OK(kefir_ast_analyze_node(mem, context, node));
         REQUIRE_OK(kefir_ast_translate_expression(mem, node, &builder, &translator_context));
         REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, node));
@@ -72,7 +72,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     FUNC("string_literal2", {
         const char *str = "\n\n\t\n\\\'\"```T   E\nST";
         struct kefir_ast_node_base *node =
-            KEFIR_AST_NODE_BASE(kefir_ast_new_string_literal_multibyte(mem, str, strlen(str) + 1));
+            KEFIR_AST_NODE_BASE(kefir_ast_new_string_literal_multibyte_noarena(mem, str, strlen(str) + 1));
         REQUIRE_OK(kefir_ast_analyze_node(mem, context, node));
         REQUIRE_OK(kefir_ast_translate_expression(mem, node, &builder, &translator_context));
         REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, node));
@@ -81,7 +81,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     FUNC("string_literal3", {
         const char *str = "";
         struct kefir_ast_node_base *node =
-            KEFIR_AST_NODE_BASE(kefir_ast_new_string_literal_multibyte(mem, str, strlen(str) + 1));
+            KEFIR_AST_NODE_BASE(kefir_ast_new_string_literal_multibyte_noarena(mem, str, strlen(str) + 1));
         REQUIRE_OK(kefir_ast_analyze_node(mem, context, node));
         REQUIRE_OK(kefir_ast_translate_expression(mem, node, &builder, &translator_context));
         REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, node));

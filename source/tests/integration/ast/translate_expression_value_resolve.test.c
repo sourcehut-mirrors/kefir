@@ -132,13 +132,13 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
 
     for (kefir_size_t i = 0; i < VAR_LENGTH; i++) {
         struct kefir_ast_node_base *node1 =
-            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, VARS[i].identifier));
+            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, VARS[i].identifier));
         REQUIRE_OK(kefir_ast_analyze_node(mem, context, node1));
         REQUIRE_OK(kefir_ast_translate_expression(mem, node1, &builder, &translator_context));
         REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, node1));
     }
 
-    struct kefir_ast_node_base *node2 = KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "func1"));
+    struct kefir_ast_node_base *node2 = KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "func1"));
     REQUIRE_OK(kefir_ast_analyze_node(mem, context, node2));
     REQUIRE_OK(kefir_ast_translate_expression(mem, node2, &builder, &translator_context));
     REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, node2));

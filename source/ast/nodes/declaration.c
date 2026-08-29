@@ -35,58 +35,58 @@ kefir_result_t ast_declaration_free(struct kefir_mem *mem, struct kefir_ast_node
         REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, KEFIR_AST_NODE_BASE(node->init_declarators[i])));
     }
     KEFIR_FREE(mem, node->init_declarators);
-    KEFIR_FREE(mem, node);
+    KEFIR_AST_NODE_ARENA_FREE(mem, node);
     return KEFIR_OK;
 }
 
 const struct kefir_ast_node_class AST_DECLARATION_LIST_CLASS = {
     .type = KEFIR_AST_DECLARATION, .visit = ast_declaration_visit, .free = ast_declaration_free};
 
-struct kefir_ast_declaration *kefir_ast_new_declaration(struct kefir_mem *mem) {
-    REQUIRE(mem != NULL, NULL);
+struct kefir_ast_declaration *kefir_ast_new_declaration(struct kefir_mem *mem, struct kefir_memory_arena *arena) {
+    REQUIRE(mem != NULL || arena != NULL, NULL);
 
-    struct kefir_ast_declaration *declaration = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_declaration));
+    struct kefir_ast_declaration *declaration = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_declaration);
     REQUIRE(declaration != NULL, NULL);
-    declaration->base.refcount = 1;
+    declaration->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
     declaration->base.klass = &AST_DECLARATION_LIST_CLASS;
     declaration->init_declarators = NULL;
     declaration->init_declarators_capacity = 0;
     declaration->init_declarators_length = 0;
     kefir_result_t res = kefir_ast_node_properties_init(&declaration->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, declaration);
+        KEFIR_AST_NODE_ARENA_FREE(mem, declaration);
         return NULL;
     });
     res = kefir_source_location_empty(&declaration->base.source_location);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, declaration);
+        KEFIR_AST_NODE_ARENA_FREE(mem, declaration);
         return NULL;
     });
 
     res = kefir_ast_declarator_specifier_list_init(&declaration->specifiers);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, declaration);
+        KEFIR_AST_NODE_ARENA_FREE(mem, declaration);
         return NULL;
     });
 
     REQUIRE_CHAIN(&res, kefir_ast_pragma_state_init(&declaration->pragmas));
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_ast_declarator_specifier_list_free(mem, &declaration->specifiers);
-        KEFIR_FREE(mem, declaration);
+        KEFIR_AST_NODE_ARENA_FREE(mem, declaration);
         return NULL;
     });
     return declaration;
 }
 
-struct kefir_ast_declaration *kefir_ast_new_single_declaration(struct kefir_mem *mem,
+struct kefir_ast_declaration *kefir_ast_new_single_declaration(struct kefir_mem *mem, struct kefir_memory_arena *arena,
                                                                struct kefir_ast_declarator *declarator,
                                                                struct kefir_ast_initializer *initializer,
                                                                struct kefir_ast_init_declarator **declaration_ptr) {
-    REQUIRE(mem != NULL, NULL);
+    REQUIRE(mem != NULL || arena != NULL, NULL);
 
-    struct kefir_ast_declaration *decl_list = kefir_ast_new_declaration(mem);
+    struct kefir_ast_declaration *decl_list = kefir_ast_new_declaration(mem, arena);
     REQUIRE(decl_list != NULL, NULL);
-    struct kefir_ast_init_declarator *declaration = kefir_ast_new_init_declarator(mem, declarator, initializer);
+    struct kefir_ast_init_declarator *declaration = kefir_ast_new_init_declarator(mem, arena, declarator, initializer);
     REQUIRE_ELSE(declaration != NULL, {
         KEFIR_AST_NODE_FREE(mem, KEFIR_AST_NODE_BASE(decl_list));
         return NULL;

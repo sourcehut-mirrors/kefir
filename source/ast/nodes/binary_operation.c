@@ -31,32 +31,32 @@ kefir_result_t ast_binary_operation_free(struct kefir_mem *mem, struct kefir_ast
     ASSIGN_DECL_CAST(struct kefir_ast_binary_operation *, node, KEFIR_AST_NODE_SELF(base));
     REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, node->arg1));
     REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, node->arg2));
-    KEFIR_FREE(mem, node);
+    KEFIR_AST_NODE_ARENA_FREE(mem, node);
     return KEFIR_OK;
 }
 
 const struct kefir_ast_node_class AST_BINARY_OPERATION_CLASS = {
     .type = KEFIR_AST_BINARY_OPERATION, .visit = ast_binary_operation_visit, .free = ast_binary_operation_free};
 
-struct kefir_ast_binary_operation *kefir_ast_new_binary_operation(struct kefir_mem *mem,
+struct kefir_ast_binary_operation *kefir_ast_new_binary_operation(struct kefir_mem *mem, struct kefir_memory_arena *arena,
                                                                   kefir_ast_binary_operation_type_t type,
                                                                   struct kefir_ast_node_base *arg1,
                                                                   struct kefir_ast_node_base *arg2) {
-    REQUIRE(mem != NULL, NULL);
+    REQUIRE(mem != NULL || arena != NULL, NULL);
     REQUIRE(arg1 != NULL, NULL);
     REQUIRE(arg2 != NULL, NULL);
-    struct kefir_ast_binary_operation *oper = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_binary_operation));
+    struct kefir_ast_binary_operation *oper = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_binary_operation);
     REQUIRE(oper != NULL, NULL);
-    oper->base.refcount = 1;
+    oper->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
     oper->base.klass = &AST_BINARY_OPERATION_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&oper->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, oper);
+        KEFIR_AST_NODE_ARENA_FREE(mem, oper);
         return NULL;
     });
     res = kefir_source_location_empty(&oper->base.source_location);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, oper);
+        KEFIR_AST_NODE_ARENA_FREE(mem, oper);
         return NULL;
     });
     oper->type = type;

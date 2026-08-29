@@ -49,7 +49,7 @@ kefir_result_t KEFIR_PARSER_RULE_FN_PREFIX(expression_statement)(struct kefir_me
         }
         return res;
     });
-    struct kefir_ast_expression_statement *stmt = kefir_ast_new_expression_statement(mem, expression);
+    struct kefir_ast_expression_statement *stmt = kefir_ast_new_expression_statement(mem, parser->ast_arena, expression);
     REQUIRE_ELSE(stmt != NULL, {
         kefir_ast_node_attributes_free(mem, &attributes);
         if (expression != NULL) {

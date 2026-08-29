@@ -66,7 +66,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
             KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL, &scoped_id));
         local_context.context.surrounding_function = scoped_id;
 
-        struct kefir_ast_return_statement *return1 = kefir_ast_new_return_statement(mem, NULL);
+        struct kefir_ast_return_statement *return1 = kefir_ast_new_return_statement_noarena(mem, NULL);
 
         struct kefir_ast_node_base *node = KEFIR_AST_NODE_BASE(return1);
         REQUIRE_OK(kefir_ast_analyze_node(mem, &local_context.context, node));
@@ -90,12 +90,12 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
         local_context.context.surrounding_function = scoped_id;
 
         struct kefir_ast_return_statement *return1 =
-            kefir_ast_new_return_statement(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 10)));
+            kefir_ast_new_return_statement_noarena(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 10)));
 
         struct kefir_ast_return_statement *return2 =
-            kefir_ast_new_return_statement(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_double_noarena(mem, 3.14)));
+            kefir_ast_new_return_statement_noarena(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_double_noarena(mem, 3.14)));
 
-        struct kefir_ast_compound_statement *compound1 = kefir_ast_new_compound_statement(mem);
+        struct kefir_ast_compound_statement *compound1 = kefir_ast_new_compound_statement_noarena(mem);
         REQUIRE_OK(kefir_ast_compound_statement_append(mem, compound1, KEFIR_AST_NODE_BASE(return1)));
         REQUIRE_OK(kefir_ast_compound_statement_append(mem, compound1, KEFIR_AST_NODE_BASE(return2)));
 
@@ -121,12 +121,12 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
         local_context.context.surrounding_function = scoped_id;
 
         struct kefir_ast_return_statement *return1 =
-            kefir_ast_new_return_statement(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 10)));
+            kefir_ast_new_return_statement_noarena(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 10)));
 
         struct kefir_ast_return_statement *return2 =
-            kefir_ast_new_return_statement(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_double_noarena(mem, 3.14)));
+            kefir_ast_new_return_statement_noarena(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_double_noarena(mem, 3.14)));
 
-        struct kefir_ast_compound_statement *compound1 = kefir_ast_new_compound_statement(mem);
+        struct kefir_ast_compound_statement *compound1 = kefir_ast_new_compound_statement_noarena(mem);
         REQUIRE_OK(kefir_ast_compound_statement_append(mem, compound1, KEFIR_AST_NODE_BASE(return1)));
         REQUIRE_OK(kefir_ast_compound_statement_append(mem, compound1, KEFIR_AST_NODE_BASE(return2)));
 
@@ -143,7 +143,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
 
     FUNC2("return3", {
         struct kefir_ast_type_name *type_name1 =
-            kefir_ast_new_type_name(mem, kefir_ast_declarator_identifier(mem, NULL, NULL));
+            kefir_ast_new_type_name_noarena(mem, kefir_ast_declarator_identifier(mem, NULL, NULL));
         struct kefir_ast_structure_specifier *specifier1 = kefir_ast_structure_specifier_init(mem, NULL, NULL, true);
         struct kefir_ast_structure_declaration_entry *entry1 = kefir_ast_structure_declaration_entry_alloc(mem);
         REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &entry1->declaration.specifiers,
@@ -168,13 +168,13 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
             KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL, &scoped_id));
         local_context.context.surrounding_function = scoped_id;
 
-        struct kefir_ast_compound_literal *literal1 = kefir_ast_new_compound_literal(mem, type_name1);
+        struct kefir_ast_compound_literal *literal1 = kefir_ast_new_compound_literal_noarena(mem, type_name1);
         REQUIRE_OK(kefir_ast_initializer_list_append(
             mem, &literal1->initializer->list, NULL,
             kefir_ast_new_expression_initializer(
                 mem, KEFIR_AST_NODE_BASE(KEFIR_AST_MAKE_STRING_LITERAL_MULTIBYTE(mem, "Hey ho!")))));
 
-        struct kefir_ast_return_statement *return1 = kefir_ast_new_return_statement(mem, KEFIR_AST_NODE_BASE(literal1));
+        struct kefir_ast_return_statement *return1 = kefir_ast_new_return_statement_noarena(mem, KEFIR_AST_NODE_BASE(literal1));
 
         struct kefir_ast_node_base *node = KEFIR_AST_NODE_BASE(return1);
         REQUIRE_OK(kefir_ast_analyze_node(mem, context, node));
@@ -198,16 +198,16 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
         local_context.context.surrounding_function = scoped_id;
 
         struct kefir_ast_return_statement *return1 =
-            kefir_ast_new_return_statement(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_float_noarena(mem, 6.1f)));
+            kefir_ast_new_return_statement_noarena(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_float_noarena(mem, 6.1f)));
 
         struct kefir_ast_return_statement *return2 =
-            kefir_ast_new_return_statement(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 10)));
+            kefir_ast_new_return_statement_noarena(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 10)));
 
         struct kefir_ast_conditional_statement *conditional1 =
-            kefir_ast_new_conditional_statement(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bool_noarena(mem, true)),
+            kefir_ast_new_conditional_statement_noarena(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bool_noarena(mem, true)),
                                                 KEFIR_AST_NODE_BASE(return1), KEFIR_AST_NODE_BASE(return2));
 
-        struct kefir_ast_do_while_statement *do_while1 = kefir_ast_new_do_while_statement(
+        struct kefir_ast_do_while_statement *do_while1 = kefir_ast_new_do_while_statement_noarena(
             mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bool_noarena(mem, false)), KEFIR_AST_NODE_BASE(conditional1));
 
         struct kefir_ast_node_base *node = KEFIR_AST_NODE_BASE(do_while1);

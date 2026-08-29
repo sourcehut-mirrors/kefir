@@ -106,7 +106,7 @@ DEFINE_CASE(ast_structure_declaration2, "AST Declarations - structure declaratio
     do {
         struct kefir_ast_structure_declaration_entry *entry3 = kefir_ast_structure_declaration_entry_alloc_assert(
             &kft_mem,
-            kefir_ast_new_static_assertion(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bool_noarena(&kft_mem, true)),
+            kefir_ast_new_static_assertion_noarena(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bool_noarena(&kft_mem, true)),
                                            KEFIR_AST_MAKE_STRING_LITERAL_MULTIBYTE(&kft_mem, "Not going to happend")));
         ASSERT(entry3 != NULL);
         ASSERT(entry3->is_static_assertion);

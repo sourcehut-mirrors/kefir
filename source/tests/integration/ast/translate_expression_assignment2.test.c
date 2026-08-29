@@ -77,7 +77,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     REQUIRE_OK(kefir_ast_structure_specifier_append_entry(mem, specifier1, entry4));
 
     struct kefir_ast_type_name *type_name1 =
-        kefir_ast_new_type_name(mem, kefir_ast_declarator_identifier(mem, NULL, NULL));
+        kefir_ast_new_type_name_noarena(mem, kefir_ast_declarator_identifier(mem, NULL, NULL));
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &type_name1->type_decl.specifiers,
                                                           kefir_ast_type_specifier_struct(mem, specifier1)));
 
@@ -108,7 +108,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     REQUIRE_OK(kefir_ast_structure_specifier_append_entry(mem, specifier2, entry7));
 
     struct kefir_ast_type_name *type_name2 =
-        kefir_ast_new_type_name(mem, kefir_ast_declarator_identifier(mem, NULL, NULL));
+        kefir_ast_new_type_name_noarena(mem, kefir_ast_declarator_identifier(mem, NULL, NULL));
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &type_name2->type_decl.specifiers,
                                                           kefir_ast_type_specifier_union(mem, specifier2)));
 
@@ -120,14 +120,14 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     REQUIRE_OK(kefir_ast_local_context_declare_external(mem, &local_context, "union1", type_name2->base.properties.type,
                                                         NULL, NULL, NULL, NULL));
 
-    struct kefir_ast_node_base *node1 = KEFIR_AST_NODE_BASE(kefir_ast_new_simple_assignment(
-        mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "struct1")),
-        KEFIR_AST_NODE_BASE(kefir_ast_new_compound_literal(mem, type_name1))));
+    struct kefir_ast_node_base *node1 = KEFIR_AST_NODE_BASE(kefir_ast_new_simple_assignment_noarena(
+        mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "struct1")),
+        KEFIR_AST_NODE_BASE(kefir_ast_new_compound_literal_noarena(mem, type_name1))));
     REQUIRE_OK(kefir_ast_analyze_node(mem, context, node1));
 
-    struct kefir_ast_node_base *node2 = KEFIR_AST_NODE_BASE(kefir_ast_new_simple_assignment(
-        mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "union1")),
-        KEFIR_AST_NODE_BASE(kefir_ast_new_compound_literal(mem, type_name2))));
+    struct kefir_ast_node_base *node2 = KEFIR_AST_NODE_BASE(kefir_ast_new_simple_assignment_noarena(
+        mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "union1")),
+        KEFIR_AST_NODE_BASE(kefir_ast_new_compound_literal_noarena(mem, type_name2))));
     REQUIRE_OK(kefir_ast_analyze_node(mem, context, node2));
 
     struct kefir_ir_module module;

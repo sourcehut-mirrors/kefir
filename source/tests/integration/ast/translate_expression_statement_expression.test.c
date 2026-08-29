@@ -45,46 +45,46 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     struct kefir_ir_module module;
     REQUIRE_OK(kefir_ir_module_alloc(mem, &module, false));
 
-    struct kefir_ast_statement_expression *expr1 = kefir_ast_new_statement_expression(mem);
+    struct kefir_ast_statement_expression *expr1 = kefir_ast_new_statement_expression_noarena(mem);
     REQUIRE_OK(kefir_ast_analyze_node(mem, context, KEFIR_AST_NODE_BASE(expr1)));
 
-    struct kefir_ast_statement_expression *expr2 = kefir_ast_new_statement_expression(mem);
+    struct kefir_ast_statement_expression *expr2 = kefir_ast_new_statement_expression_noarena(mem);
     REQUIRE_OK(
         kefir_ast_statement_expression_append(mem, expr2,
-                                              KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement(
+                                              KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement_noarena(
                                                   mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char_noarena(mem, 'A'))))));
     REQUIRE_OK(kefir_ast_analyze_node(mem, context, KEFIR_AST_NODE_BASE(expr2)));
 
-    struct kefir_ast_statement_expression *expr3 = kefir_ast_new_statement_expression(mem);
+    struct kefir_ast_statement_expression *expr3 = kefir_ast_new_statement_expression_noarena(mem);
     REQUIRE_OK(
         kefir_ast_statement_expression_append(mem, expr3,
-                                              KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement(
+                                              KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement_noarena(
                                                   mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char_noarena(mem, 'B'))))));
     REQUIRE_OK(
         kefir_ast_statement_expression_append(mem, expr3,
-                                              KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement(
+                                              KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement_noarena(
                                                   mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char_noarena(mem, 'C'))))));
     REQUIRE_OK(
         kefir_ast_statement_expression_append(mem, expr3,
-                                              KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement(
+                                              KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement_noarena(
                                                   mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char_noarena(mem, 'D'))))));
     REQUIRE_OK(kefir_ast_analyze_node(mem, context, KEFIR_AST_NODE_BASE(expr3)));
 
-    struct kefir_ast_statement_expression *expr4 = kefir_ast_new_statement_expression(mem);
+    struct kefir_ast_statement_expression *expr4 = kefir_ast_new_statement_expression_noarena(mem);
     REQUIRE_OK(
         kefir_ast_statement_expression_append(mem, expr4,
-                                              KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement(
+                                              KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement_noarena(
                                                   mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char_noarena(mem, 'E'))))));
     REQUIRE_OK(
         kefir_ast_statement_expression_append(mem, expr4,
-                                              KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement(
+                                              KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement_noarena(
                                                   mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char_noarena(mem, 'F'))))));
     REQUIRE_OK(
         kefir_ast_statement_expression_append(mem, expr4,
-                                              KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement(
+                                              KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement_noarena(
                                                   mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char_noarena(mem, 'G'))))));
     expr4->result = KEFIR_AST_NODE_BASE(
-        kefir_ast_new_expression_statement(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char_noarena(mem, 'H'))));
+        kefir_ast_new_expression_statement_noarena(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char_noarena(mem, 'H'))));
     REQUIRE_OK(kefir_ast_analyze_node(mem, context, KEFIR_AST_NODE_BASE(expr4)));
 
     struct kefir_ast_translator_global_scope_layout translator_global_scope;

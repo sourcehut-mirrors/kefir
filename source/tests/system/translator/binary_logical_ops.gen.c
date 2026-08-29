@@ -79,27 +79,27 @@
                                                                                                                        \
         REQUIRE_OK(kefir_list_insert_after(                                                                            \
             mem, &func->args, kefir_list_tail(&func->args),                                                            \
-            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "fn1"))));            \
+            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context_manager->current->symbols, "fn1"))));            \
         REQUIRE_OK(kefir_list_insert_after(                                                                            \
             mem, &func->args, kefir_list_tail(&func->args),                                                            \
-            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "fn2"))));            \
+            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context_manager->current->symbols, "fn2"))));            \
         REQUIRE_OK(kefir_list_insert_after(                                                                            \
             mem, &func->args, kefir_list_tail(&func->args),                                                            \
-            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "payload"))));        \
+            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context_manager->current->symbols, "payload"))));        \
                                                                                                                        \
-        struct kefir_ast_function_call *fn1_call = kefir_ast_new_function_call(                                        \
-            mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "fn1")));        \
+        struct kefir_ast_function_call *fn1_call = kefir_ast_new_function_call_noarena(                                        \
+            mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context_manager->current->symbols, "fn1")));        \
         REQUIRE_OK(kefir_ast_function_call_append(                                                                     \
             mem, fn1_call,                                                                                             \
-            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "payload"))));        \
+            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context_manager->current->symbols, "payload"))));        \
                                                                                                                        \
-        struct kefir_ast_function_call *fn2_call = kefir_ast_new_function_call(                                        \
-            mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "fn2")));        \
+        struct kefir_ast_function_call *fn2_call = kefir_ast_new_function_call_noarena(                                        \
+            mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context_manager->current->symbols, "fn2")));        \
         REQUIRE_OK(kefir_ast_function_call_append(                                                                     \
             mem, fn2_call,                                                                                             \
-            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "payload"))));        \
+            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context_manager->current->symbols, "payload"))));        \
                                                                                                                        \
-        func->body = KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation(mem, (_oper), KEFIR_AST_NODE_BASE(fn1_call),   \
+        func->body = KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation_noarena(mem, (_oper), KEFIR_AST_NODE_BASE(fn1_call),   \
                                                                         KEFIR_AST_NODE_BASE(fn2_call)));               \
                                                                                                                        \
         REQUIRE_OK(kefir_ast_context_manager_detach_local(context_manager));                                           \

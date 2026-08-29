@@ -32,38 +32,38 @@ kefir_result_t ast_type_name_free(struct kefir_mem *mem, struct kefir_ast_node_b
     REQUIRE_OK(kefir_ast_declarator_specifier_list_free(mem, &node->type_decl.specifiers));
     REQUIRE_OK(kefir_ast_declarator_free(mem, node->type_decl.declarator));
     node->type_decl.declarator = NULL;
-    KEFIR_FREE(mem, node);
+    KEFIR_AST_NODE_ARENA_FREE(mem, node);
     return KEFIR_OK;
 }
 
 const struct kefir_ast_node_class AST_TYPE_NAME_CLASS = {
     .type = KEFIR_AST_TYPE_NAME, .visit = ast_type_name_visit, .free = ast_type_name_free};
 
-struct kefir_ast_type_name *kefir_ast_new_type_name(struct kefir_mem *mem, struct kefir_ast_declarator *decl) {
-    REQUIRE(mem != NULL, NULL);
+struct kefir_ast_type_name *kefir_ast_new_type_name(struct kefir_mem *mem, struct kefir_memory_arena *arena, struct kefir_ast_declarator *decl) {
+    REQUIRE(mem != NULL || arena != NULL, NULL);
     REQUIRE(decl != NULL, NULL);
 
     kefir_bool_t abstract = false;
     REQUIRE(kefir_ast_declarator_is_abstract(decl, &abstract) == KEFIR_OK && abstract, NULL);
 
-    struct kefir_ast_type_name *type_name = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_type_name));
+    struct kefir_ast_type_name *type_name = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_type_name);
     REQUIRE(type_name != NULL, NULL);
-    type_name->base.refcount = 1;
+    type_name->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
     type_name->base.klass = &AST_TYPE_NAME_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&type_name->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, type_name);
+        KEFIR_AST_NODE_ARENA_FREE(mem, type_name);
         return NULL;
     });
     res = kefir_source_location_empty(&type_name->base.source_location);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, type_name);
+        KEFIR_AST_NODE_ARENA_FREE(mem, type_name);
         return NULL;
     });
 
     res = kefir_ast_declarator_specifier_list_init(&type_name->type_decl.specifiers);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, type_name);
+        KEFIR_AST_NODE_ARENA_FREE(mem, type_name);
         return NULL;
     });
     type_name->type_decl.declarator = decl;

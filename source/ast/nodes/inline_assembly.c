@@ -34,7 +34,7 @@ kefir_result_t ast_inline_assembly_free(struct kefir_mem *mem, struct kefir_ast_
     REQUIRE_OK(kefir_list_free(mem, &node->clobbers));
     REQUIRE_OK(kefir_list_free(mem, &node->jump_labels));
     node->asm_template = NULL;
-    KEFIR_FREE(mem, node);
+    KEFIR_AST_NODE_ARENA_FREE(mem, node);
     return KEFIR_OK;
 }
 
@@ -56,15 +56,15 @@ static kefir_result_t inline_asm_param_free(struct kefir_mem *mem, struct kefir_
     return KEFIR_OK;
 }
 
-struct kefir_ast_inline_assembly *kefir_ast_new_inline_assembly(struct kefir_mem *mem,
+struct kefir_ast_inline_assembly *kefir_ast_new_inline_assembly(struct kefir_mem *mem, struct kefir_memory_arena *arena,
                                                                 struct kefir_ast_inline_assembly_qualifiers qualifiers,
                                                                 const char *asm_template) {
-    REQUIRE(mem != NULL, NULL);
+    REQUIRE(mem != NULL || arena != NULL, NULL);
     REQUIRE(asm_template != NULL, NULL);
 
-    struct kefir_ast_inline_assembly *inline_assembly = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_inline_assembly));
+    struct kefir_ast_inline_assembly *inline_assembly = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_inline_assembly);
     REQUIRE(inline_assembly != NULL, NULL);
-    inline_assembly->base.refcount = 1;
+    inline_assembly->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
     inline_assembly->base.klass = &AST_INLINE_ASSEMBLY_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&inline_assembly->base.properties);
     REQUIRE_CHAIN(&res, kefir_source_location_empty(&inline_assembly->base.source_location));
@@ -75,7 +75,7 @@ struct kefir_ast_inline_assembly *kefir_ast_new_inline_assembly(struct kefir_mem
     REQUIRE_CHAIN(&res, kefir_list_init(&inline_assembly->clobbers));
     REQUIRE_CHAIN(&res, kefir_list_init(&inline_assembly->jump_labels));
     REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, inline_assembly);
+        KEFIR_AST_NODE_ARENA_FREE(mem, inline_assembly);
         return NULL;
     });
     inline_assembly->qualifiers = qualifiers;

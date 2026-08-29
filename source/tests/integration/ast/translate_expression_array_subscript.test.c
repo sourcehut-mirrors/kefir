@@ -48,19 +48,19 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
                                        kefir_ast_type_pointer(mem, context->type_bundle, kefir_ast_type_char()), NULL),
         NULL, NULL, NULL, NULL));
 
-    struct kefir_ast_node_base *node1 = KEFIR_AST_NODE_BASE(kefir_ast_new_array_subscript(
+    struct kefir_ast_node_base *node1 = KEFIR_AST_NODE_BASE(kefir_ast_new_array_subscript_noarena(
         mem,
-        KEFIR_AST_NODE_BASE(kefir_ast_new_array_subscript(
-            mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "array1")),
+        KEFIR_AST_NODE_BASE(kefir_ast_new_array_subscript_noarena(
+            mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "array1")),
             KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 5)))),
         KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 10))));
     REQUIRE_OK(kefir_ast_analyze_node(mem, context, node1));
 
-    struct kefir_ast_node_base *node2 = KEFIR_AST_NODE_BASE(kefir_ast_new_array_subscript(
+    struct kefir_ast_node_base *node2 = KEFIR_AST_NODE_BASE(kefir_ast_new_array_subscript_noarena(
         mem,
-        KEFIR_AST_NODE_BASE(kefir_ast_new_array_subscript(
+        KEFIR_AST_NODE_BASE(kefir_ast_new_array_subscript_noarena(
             mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 11)),
-            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "array1")))),
+            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "array1")))),
         KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 12))));
     REQUIRE_OK(kefir_ast_analyze_node(mem, context, node2));
 

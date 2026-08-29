@@ -139,10 +139,10 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
 
     struct kefir_ast_extension_node_class ext_node_class = {0};
 
-    struct kefir_ast_extension_node *node1 = kefir_ast_new_extension_node(mem, &ext_node_class, NULL);
-    struct kefir_ast_identifier *node2 = kefir_ast_new_identifier(mem, &global_context.symbols, "X");
-    struct kefir_ast_function_call *ast = kefir_ast_new_function_call(
-        mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, &global_context.symbols, "fn")));
+    struct kefir_ast_extension_node *node1 = kefir_ast_new_extension_node_noarena(mem, &ext_node_class, NULL);
+    struct kefir_ast_identifier *node2 = kefir_ast_new_identifier_noarena(mem, &global_context.symbols, "X");
+    struct kefir_ast_function_call *ast = kefir_ast_new_function_call_noarena(
+        mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, &global_context.symbols, "fn")));
     REQUIRE_OK(kefir_ast_function_call_append(mem, ast, KEFIR_AST_NODE_BASE(node1)));
     REQUIRE_OK(kefir_ast_function_call_append(mem, ast, KEFIR_AST_NODE_BASE(node2)));
 

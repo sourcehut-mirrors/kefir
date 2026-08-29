@@ -37,20 +37,20 @@ DEFINE_CASE(ast_constant_expression_cast_operator1, "AST constant expressions - 
     struct kefir_ast_context *context = &local_context.context;
 
     struct kefir_ast_type_name *TYPES[] = {
-        kefir_ast_new_type_name(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL)),
-        kefir_ast_new_type_name(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL)),
-        kefir_ast_new_type_name(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL)),
-        kefir_ast_new_type_name(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL)),
-        kefir_ast_new_type_name(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL)),
-        kefir_ast_new_type_name(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL)),
-        kefir_ast_new_type_name(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL)),
-        kefir_ast_new_type_name(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL)),
-        kefir_ast_new_type_name(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL)),
-        kefir_ast_new_type_name(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL)),
-        kefir_ast_new_type_name(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL)),
-        kefir_ast_new_type_name(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL)),
-        kefir_ast_new_type_name(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL)),
-        kefir_ast_new_type_name(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL)),
+        kefir_ast_new_type_name_noarena(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL)),
+        kefir_ast_new_type_name_noarena(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL)),
+        kefir_ast_new_type_name_noarena(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL)),
+        kefir_ast_new_type_name_noarena(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL)),
+        kefir_ast_new_type_name_noarena(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL)),
+        kefir_ast_new_type_name_noarena(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL)),
+        kefir_ast_new_type_name_noarena(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL)),
+        kefir_ast_new_type_name_noarena(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL)),
+        kefir_ast_new_type_name_noarena(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL)),
+        kefir_ast_new_type_name_noarena(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL)),
+        kefir_ast_new_type_name_noarena(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL)),
+        kefir_ast_new_type_name_noarena(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL)),
+        kefir_ast_new_type_name_noarena(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL)),
+        kefir_ast_new_type_name_noarena(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL)),
     };
     const kefir_size_t TYPES_LEN = sizeof(TYPES) / sizeof(TYPES[0]);
 
@@ -107,7 +107,7 @@ DEFINE_CASE(ast_constant_expression_cast_operator1, "AST constant expressions - 
         ASSERT_OK(kefir_ast_analyze_node(&kft_mem, context, KEFIR_AST_NODE_BASE(type_name)));           \
         ASSERT_INTEGER_CONST_EXPR(                                                                      \
             &kft_mem, context,                                                                          \
-            kefir_ast_new_cast_operator(&kft_mem, type_name,                                            \
+            kefir_ast_new_cast_operator_noarena(&kft_mem, type_name,                                            \
                                         KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char_noarena(&kft_mem, j))), \
             (_type) j);                                                                                 \
     } while (0)
@@ -118,7 +118,7 @@ DEFINE_CASE(ast_constant_expression_cast_operator1, "AST constant expressions - 
         ASSERT_OK(kefir_ast_analyze_node(&kft_mem, context, KEFIR_AST_NODE_BASE(type_name)));           \
         ASSERT_UINTEGER_CONST_EXPR(                                                                     \
             &kft_mem, context,                                                                          \
-            kefir_ast_new_cast_operator(&kft_mem, type_name,                                            \
+            kefir_ast_new_cast_operator_noarena(&kft_mem, type_name,                                            \
                                         KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char_noarena(&kft_mem, j))), \
             (_type) j);                                                                                 \
     } while (0)
@@ -143,14 +143,14 @@ DEFINE_CASE(ast_constant_expression_cast_operator1, "AST constant expressions - 
             (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(KEFIR_AST_NODE_BASE(TYPES[12]));
         ASSERT_OK(kefir_ast_analyze_node(&kft_mem, context, KEFIR_AST_NODE_BASE(type_name)));
         ASSERT_FLOAT_CONST_EXPR(&kft_mem, context,
-                                kefir_ast_new_cast_operator(
+                                kefir_ast_new_cast_operator_noarena(
                                     &kft_mem, type_name, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char_noarena(&kft_mem, j))),
                                 (double) j);
 
         type_name = (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(KEFIR_AST_NODE_BASE(TYPES[13]));
         ASSERT_OK(kefir_ast_analyze_node(&kft_mem, context, KEFIR_AST_NODE_BASE(type_name)));
         ASSERT_FLOAT_CONST_EXPR(&kft_mem, context,
-                                kefir_ast_new_cast_operator(
+                                kefir_ast_new_cast_operator_noarena(
                                     &kft_mem, type_name, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char_noarena(&kft_mem, j))),
                                 (double) j);
     }
@@ -163,7 +163,7 @@ DEFINE_CASE(ast_constant_expression_cast_operator1, "AST constant expressions - 
         ASSERT_OK(kefir_ast_analyze_node(&kft_mem, context, KEFIR_AST_NODE_BASE(type_name)));             \
         ASSERT_INTEGER_CONST_EXPR(                                                                        \
             &kft_mem, context,                                                                            \
-            kefir_ast_new_cast_operator(&kft_mem, type_name,                                              \
+            kefir_ast_new_cast_operator_noarena(&kft_mem, type_name,                                              \
                                         KEFIR_AST_NODE_BASE(kefir_ast_new_constant_double_noarena(&kft_mem, f))), \
             (_type) f);                                                                                   \
     } while (0)
@@ -174,7 +174,7 @@ DEFINE_CASE(ast_constant_expression_cast_operator1, "AST constant expressions - 
         ASSERT_OK(kefir_ast_analyze_node(&kft_mem, context, KEFIR_AST_NODE_BASE(type_name)));             \
         ASSERT_UINTEGER_CONST_EXPR(                                                                       \
             &kft_mem, context,                                                                            \
-            kefir_ast_new_cast_operator(&kft_mem, type_name,                                              \
+            kefir_ast_new_cast_operator_noarena(&kft_mem, type_name,                                              \
                                         KEFIR_AST_NODE_BASE(kefir_ast_new_constant_double_noarena(&kft_mem, f))), \
             (_type) f);                                                                                   \
     } while (0)
@@ -203,7 +203,7 @@ DEFINE_CASE(ast_constant_expression_cast_operator1, "AST constant expressions - 
         ASSERT_OK(kefir_ast_analyze_node(&kft_mem, context, KEFIR_AST_NODE_BASE(type_name)));
         ASSERT_FLOAT_CONST_EXPR(
             &kft_mem, context,
-            kefir_ast_new_cast_operator(&kft_mem, type_name,
+            kefir_ast_new_cast_operator_noarena(&kft_mem, type_name,
                                         KEFIR_AST_NODE_BASE(kefir_ast_new_constant_double_noarena(&kft_mem, f))),
             f);
 
@@ -211,7 +211,7 @@ DEFINE_CASE(ast_constant_expression_cast_operator1, "AST constant expressions - 
         ASSERT_OK(kefir_ast_analyze_node(&kft_mem, context, KEFIR_AST_NODE_BASE(type_name)));
         ASSERT_FLOAT_CONST_EXPR(
             &kft_mem, context,
-            kefir_ast_new_cast_operator(&kft_mem, type_name,
+            kefir_ast_new_cast_operator_noarena(&kft_mem, type_name,
                                         KEFIR_AST_NODE_BASE(kefir_ast_new_constant_double_noarena(&kft_mem, f))),
             f);
     }
@@ -236,37 +236,37 @@ DEFINE_CASE(ast_constant_expression_cast_operator2, "AST constant expressions - 
     struct kefir_ast_context *context = &local_context.context;
 
     for (kefir_size_t i = 0; i < 100; i++) {
-        struct kefir_ast_type_name *type_name1 = kefir_ast_new_type_name(
+        struct kefir_ast_type_name *type_name1 = kefir_ast_new_type_name_noarena(
             &kft_mem, kefir_ast_declarator_pointer(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL)));
         ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &type_name1->type_decl.specifiers,
                                                              kefir_ast_type_specifier_void(&kft_mem)));
         ASSERT_INTPTR_CONST_EXPR(
             &kft_mem, context,
-            kefir_ast_new_cast_operator(&kft_mem, type_name1,
+            kefir_ast_new_cast_operator_noarena(&kft_mem, type_name1,
                                         KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, i))),
             i, 0);
 
-        struct kefir_ast_type_name *type_name2 = kefir_ast_new_type_name(
+        struct kefir_ast_type_name *type_name2 = kefir_ast_new_type_name_noarena(
             &kft_mem, kefir_ast_declarator_pointer(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL)));
         ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &type_name2->type_decl.specifiers,
                                                              kefir_ast_type_specifier_long(&kft_mem)));
         ASSERT_INTPTR_CONST_EXPR(
             &kft_mem, context,
-            kefir_ast_new_cast_operator(&kft_mem, type_name2,
+            kefir_ast_new_cast_operator_noarena(&kft_mem, type_name2,
                                         KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, i))),
             i, 0);
 
-        struct kefir_ast_type_name *type_name3 = kefir_ast_new_type_name(
+        struct kefir_ast_type_name *type_name3 = kefir_ast_new_type_name_noarena(
             &kft_mem, kefir_ast_declarator_pointer(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL)));
         ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &type_name3->type_decl.specifiers,
                                                              kefir_ast_type_specifier_double(&kft_mem)));
         ASSERT_INTPTR_CONST_EXPR(
             &kft_mem, context,
-            kefir_ast_new_cast_operator(&kft_mem, type_name3,
+            kefir_ast_new_cast_operator_noarena(&kft_mem, type_name3,
                                         KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, i))),
             i, 0);
 
-        struct kefir_ast_type_name *type_name4 = kefir_ast_new_type_name(
+        struct kefir_ast_type_name *type_name4 = kefir_ast_new_type_name_noarena(
             &kft_mem, kefir_ast_declarator_pointer(
                           &kft_mem, kefir_ast_declarator_pointer(
                                         &kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL))));
@@ -274,7 +274,7 @@ DEFINE_CASE(ast_constant_expression_cast_operator2, "AST constant expressions - 
                                                              kefir_ast_type_specifier_int(&kft_mem)));
         ASSERT_INTPTR_CONST_EXPR(
             &kft_mem, context,
-            kefir_ast_new_cast_operator(&kft_mem, type_name4,
+            kefir_ast_new_cast_operator_noarena(&kft_mem, type_name4,
                                         KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, i))),
             i, 0);
     }
@@ -296,56 +296,56 @@ DEFINE_CASE(ast_constant_expression_conditional_operator1, "AST constant express
 
     ASSERT_INTEGER_CONST_EXPR(
         &kft_mem, context,
-        kefir_ast_new_conditional_operator(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bool_noarena(&kft_mem, true)),
+        kefir_ast_new_conditional_operator_noarena(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bool_noarena(&kft_mem, true)),
                                            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 1)),
                                            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 2))),
         1);
 
     ASSERT_INTEGER_CONST_EXPR(
         &kft_mem, context,
-        kefir_ast_new_conditional_operator(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bool_noarena(&kft_mem, false)),
+        kefir_ast_new_conditional_operator_noarena(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bool_noarena(&kft_mem, false)),
                                            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 2)),
                                            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 3))),
         3);
 
     ASSERT_FLOAT_CONST_EXPR(
         &kft_mem, context,
-        kefir_ast_new_conditional_operator(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bool_noarena(&kft_mem, true)),
+        kefir_ast_new_conditional_operator_noarena(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bool_noarena(&kft_mem, true)),
                                            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_double_noarena(&kft_mem, 3.14)),
                                            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 25))),
         3.14);
 
     ASSERT_FLOAT_CONST_EXPR(
         &kft_mem, context,
-        kefir_ast_new_conditional_operator(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bool_noarena(&kft_mem, false)),
+        kefir_ast_new_conditional_operator_noarena(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bool_noarena(&kft_mem, false)),
                                            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 10)),
                                            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_double_noarena(&kft_mem, 2.71))),
         2.71);
 
     ASSERT_FLOAT_CONST_EXPR(
         &kft_mem, context,
-        kefir_ast_new_conditional_operator(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bool_noarena(&kft_mem, true)),
+        kefir_ast_new_conditional_operator_noarena(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bool_noarena(&kft_mem, true)),
                                            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_double_noarena(&kft_mem, 100.5)),
                                            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_double_noarena(&kft_mem, -1))),
         100.5);
 
     ASSERT_FLOAT_CONST_EXPR(
         &kft_mem, context,
-        kefir_ast_new_conditional_operator(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bool_noarena(&kft_mem, false)),
+        kefir_ast_new_conditional_operator_noarena(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bool_noarena(&kft_mem, false)),
                                            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_double_noarena(&kft_mem, -27.5)),
                                            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long_double_noarena(&kft_mem, 19.01))),
         19.01);
 
     ASSERT_INTEGER_CONST_EXPR(
         &kft_mem, context,
-        kefir_ast_new_conditional_operator(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_double_noarena(&kft_mem, 3)),
+        kefir_ast_new_conditional_operator_noarena(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_double_noarena(&kft_mem, 3)),
                                            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, -1)),
                                            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, -2))),
         -1);
 
     ASSERT_INTEGER_CONST_EXPR(
         &kft_mem, context,
-        kefir_ast_new_conditional_operator(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_double_noarena(&kft_mem, 0.0)),
+        kefir_ast_new_conditional_operator_noarena(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_double_noarena(&kft_mem, 0.0)),
                                            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 16)),
                                            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 14))),
         14);
@@ -370,32 +370,32 @@ DEFINE_CASE(ast_constant_expression_conditional_operator2, "AST constant express
 
     ASSERT_INTEGER_CONST_EXPR(
         &kft_mem, context,
-        kefir_ast_new_conditional_operator(
+        kefir_ast_new_conditional_operator_noarena(
             &kft_mem,
-            KEFIR_AST_NODE_BASE(kefir_ast_new_unary_operation(
+            KEFIR_AST_NODE_BASE(kefir_ast_new_unary_operation_noarena(
                 &kft_mem, KEFIR_AST_OPERATION_ADDRESS,
-                KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(&kft_mem, context->symbols, "variableX")))),
+                KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(&kft_mem, context->symbols, "variableX")))),
             KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 1)),
             KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 2))),
         1);
 
     ASSERT_INTEGER_CONST_EXPR(
         &kft_mem, context,
-        kefir_ast_new_conditional_operator(
+        kefir_ast_new_conditional_operator_noarena(
             &kft_mem, KEFIR_AST_NODE_BASE(KEFIR_AST_MAKE_STRING_LITERAL_MULTIBYTE(&kft_mem, "Hello, world!")),
             KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 10)),
             KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 200))),
         10);
 
-    struct kefir_ast_type_name *type_name1 = kefir_ast_new_type_name(
+    struct kefir_ast_type_name *type_name1 = kefir_ast_new_type_name_noarena(
         &kft_mem, kefir_ast_declarator_pointer(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &type_name1->type_decl.specifiers,
                                                          kefir_ast_type_specifier_char(&kft_mem)));
     ASSERT_INTEGER_CONST_EXPR(
         &kft_mem, context,
-        kefir_ast_new_conditional_operator(
+        kefir_ast_new_conditional_operator_noarena(
             &kft_mem,
-            KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator(
+            KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator_noarena(
                 &kft_mem, (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(KEFIR_AST_NODE_BASE(type_name1)),
                 KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 0)))),
             KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 5)),
@@ -404,9 +404,9 @@ DEFINE_CASE(ast_constant_expression_conditional_operator2, "AST constant express
 
     ASSERT_INTEGER_CONST_EXPR(
         &kft_mem, context,
-        kefir_ast_new_conditional_operator(
+        kefir_ast_new_conditional_operator_noarena(
             &kft_mem,
-            KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator(
+            KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator_noarena(
                 &kft_mem, (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(KEFIR_AST_NODE_BASE(type_name1)),
                 KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 1)))),
             KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 6)),
@@ -415,28 +415,28 @@ DEFINE_CASE(ast_constant_expression_conditional_operator2, "AST constant express
 
     ASSERT_INTEGER_CONST_EXPR(
         &kft_mem, context,
-        kefir_ast_new_conditional_operator(
+        kefir_ast_new_conditional_operator_noarena(
             &kft_mem,
-            KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation(
+            KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation_noarena(
                 &kft_mem, KEFIR_AST_OPERATION_ADD,
-                KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator(
+                KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator_noarena(
                     &kft_mem, type_name1, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 0)))),
                 KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 1)))),
             KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 101)),
             KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 202))),
         101);
 
-    struct kefir_ast_type_name *type_name2 = kefir_ast_new_type_name(
+    struct kefir_ast_type_name *type_name2 = kefir_ast_new_type_name_noarena(
         &kft_mem, kefir_ast_declarator_pointer(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &type_name2->type_decl.specifiers,
                                                          kefir_ast_type_specifier_int(&kft_mem)));
     ASSERT_INTEGER_CONST_EXPR(
         &kft_mem, context,
-        kefir_ast_new_conditional_operator(
+        kefir_ast_new_conditional_operator_noarena(
             &kft_mem,
-            KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation(
+            KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation_noarena(
                 &kft_mem, KEFIR_AST_OPERATION_SUBTRACT,
-                KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator(
+                KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator_noarena(
                     &kft_mem, type_name2, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 4)))),
                 KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 1)))),
             KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 101)),
@@ -460,50 +460,50 @@ DEFINE_CASE(ast_constant_expression_conditional_operator3, "AST constant express
 
     ASSERT_INTEGER_CONST_EXPR(
         &kft_mem, context,
-        kefir_ast_new_conditional_operator(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 1)), NULL,
+        kefir_ast_new_conditional_operator_noarena(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 1)), NULL,
                                            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 2))),
         1);
 
     ASSERT_INTEGER_CONST_EXPR(
         &kft_mem, context,
-        kefir_ast_new_conditional_operator(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bool_noarena(&kft_mem, false)),
+        kefir_ast_new_conditional_operator_noarena(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bool_noarena(&kft_mem, false)),
                                            NULL, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 3))),
         3);
 
     ASSERT_FLOAT_CONST_EXPR(
         &kft_mem, context,
-        kefir_ast_new_conditional_operator(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_double_noarena(&kft_mem, 3.14)),
+        kefir_ast_new_conditional_operator_noarena(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_double_noarena(&kft_mem, 3.14)),
                                            NULL, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 25))),
         3.14);
 
     ASSERT_FLOAT_CONST_EXPR(
         &kft_mem, context,
-        kefir_ast_new_conditional_operator(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bool_noarena(&kft_mem, false)),
+        kefir_ast_new_conditional_operator_noarena(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bool_noarena(&kft_mem, false)),
                                            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 10)),
                                            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_double_noarena(&kft_mem, 2.71))),
         2.71);
 
     ASSERT_FLOAT_CONST_EXPR(&kft_mem, context,
-                            kefir_ast_new_conditional_operator(
+                            kefir_ast_new_conditional_operator_noarena(
                                 &kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_double_noarena(&kft_mem, 100.5)), NULL,
                                 KEFIR_AST_NODE_BASE(kefir_ast_new_constant_double_noarena(&kft_mem, -1))),
                             100.5);
 
     ASSERT_FLOAT_CONST_EXPR(&kft_mem, context,
-                            kefir_ast_new_conditional_operator(
+                            kefir_ast_new_conditional_operator_noarena(
                                 &kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_double_noarena(&kft_mem, 0)), NULL,
                                 KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long_double_noarena(&kft_mem, 19.01))),
                             19.01);
 
     ASSERT_INTEGER_CONST_EXPR(
         &kft_mem, context,
-        kefir_ast_new_conditional_operator(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, -1)),
+        kefir_ast_new_conditional_operator_noarena(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, -1)),
                                            NULL, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, -2))),
         -1);
 
     ASSERT_INTEGER_CONST_EXPR(
         &kft_mem, context,
-        kefir_ast_new_conditional_operator(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_double_noarena(&kft_mem, 0.0)),
+        kefir_ast_new_conditional_operator_noarena(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_double_noarena(&kft_mem, 0.0)),
                                            NULL, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 14))),
         14);
 

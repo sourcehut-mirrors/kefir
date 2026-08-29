@@ -45,7 +45,7 @@ static kefir_result_t parser_identifier_rule(struct kefir_mem *mem, struct kefir
 
     if (PARSER_TOKEN_IS_IDENTIFIER(parser, 0) && strcmp(PARSER_CURSOR(parser, 0)->identifier, "__extension_pi") == 0) {
         REQUIRE_OK(PARSER_SHIFT(parser));
-        *result = KEFIR_AST_NODE_BASE(kefir_ast_new_extension_node(mem, &pi_ext_node_class, NULL));
+        *result = KEFIR_AST_NODE_BASE(kefir_ast_new_extension_node(mem, NULL, &pi_ext_node_class, NULL));
     } else {
         REQUIRE_OK(extension_payload->original_ruleset.rules[KEFIR_PARSER_RULESET_IDENTIFIER(identifier)](
             mem, parser, result, payload));

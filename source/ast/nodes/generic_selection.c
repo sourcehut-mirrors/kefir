@@ -39,30 +39,30 @@ kefir_result_t ast_generic_selection_free(struct kefir_mem *mem, struct kefir_as
     if (node->default_assoc != NULL) {
         REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, node->default_assoc));
     }
-    KEFIR_FREE(mem, node);
+    KEFIR_AST_NODE_ARENA_FREE(mem, node);
     return KEFIR_OK;
 }
 
 const struct kefir_ast_node_class AST_GENERIC_SELECTION_CLASS = {
     .type = KEFIR_AST_GENERIC_SELECTION, .visit = ast_generic_selection_visit, .free = ast_generic_selection_free};
 
-struct kefir_ast_generic_selection *kefir_ast_new_generic_selection(struct kefir_mem *mem,
+struct kefir_ast_generic_selection *kefir_ast_new_generic_selection(struct kefir_mem *mem, struct kefir_memory_arena *arena,
                                                                     struct kefir_ast_node_base *control) {
-    REQUIRE(mem != NULL, NULL);
+    REQUIRE(mem != NULL || arena != NULL, NULL);
     REQUIRE(control != NULL, NULL);
 
-    struct kefir_ast_generic_selection *selection = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_generic_selection));
+    struct kefir_ast_generic_selection *selection = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_generic_selection);
     REQUIRE(selection != NULL, NULL);
-    selection->base.refcount = 1;
+    selection->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
     selection->base.klass = &AST_GENERIC_SELECTION_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&selection->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, selection);
+        KEFIR_AST_NODE_ARENA_FREE(mem, selection);
         return NULL;
     });
     res = kefir_source_location_empty(&selection->base.source_location);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, selection);
+        KEFIR_AST_NODE_ARENA_FREE(mem, selection);
         return NULL;
     });
     selection->control = control;

@@ -39,35 +39,35 @@ kefir_result_t ast_case_statement_free(struct kefir_mem *mem, struct kefir_ast_n
         KEFIR_AST_NODE_FREE(mem, node->statement);
     }
     REQUIRE_OK(kefir_ast_node_attributes_free(mem, &node->attributes));
-    KEFIR_FREE(mem, node);
+    KEFIR_AST_NODE_ARENA_FREE(mem, node);
     return KEFIR_OK;
 }
 
 const struct kefir_ast_node_class AST_CASE_STATEMENT_CLASS = {
     .type = KEFIR_AST_CASE_STATEMENT, .visit = ast_case_statement_visit, .free = ast_case_statement_free};
 
-struct kefir_ast_case_statement *kefir_ast_new_case_statement(struct kefir_mem *mem,
+struct kefir_ast_case_statement *kefir_ast_new_case_statement(struct kefir_mem *mem, struct kefir_memory_arena *arena,
                                                               struct kefir_ast_node_base *expression,
                                                               struct kefir_ast_node_base *statement) {
-    REQUIRE(mem != NULL, NULL);
+    REQUIRE(mem != NULL || arena != NULL, NULL);
 
-    struct kefir_ast_case_statement *case_stmt = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_case_statement));
+    struct kefir_ast_case_statement *case_stmt = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_case_statement);
     REQUIRE(case_stmt != NULL, NULL);
-    case_stmt->base.refcount = 1;
+    case_stmt->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
     case_stmt->base.klass = &AST_CASE_STATEMENT_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&case_stmt->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, case_stmt);
+        KEFIR_AST_NODE_ARENA_FREE(mem, case_stmt);
         return NULL;
     });
     res = kefir_source_location_empty(&case_stmt->base.source_location);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, case_stmt);
+        KEFIR_AST_NODE_ARENA_FREE(mem, case_stmt);
         return NULL;
     });
     res = kefir_ast_node_attributes_init(&case_stmt->attributes);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, case_stmt);
+        KEFIR_AST_NODE_ARENA_FREE(mem, case_stmt);
         return NULL;
     });
     case_stmt->expression = expression;
@@ -76,31 +76,31 @@ struct kefir_ast_case_statement *kefir_ast_new_case_statement(struct kefir_mem *
     return case_stmt;
 }
 
-struct kefir_ast_case_statement *kefir_ast_new_range_case_statement(struct kefir_mem *mem,
+struct kefir_ast_case_statement *kefir_ast_new_range_case_statement(struct kefir_mem *mem, struct kefir_memory_arena *arena,
                                                                     struct kefir_ast_node_base *expression,
                                                                     struct kefir_ast_node_base *range_end_expression,
                                                                     struct kefir_ast_node_base *statement) {
-    REQUIRE(mem != NULL, NULL);
+    REQUIRE(mem != NULL || arena != NULL, NULL);
     REQUIRE(expression != NULL, NULL);
     REQUIRE(range_end_expression != NULL, NULL);
 
-    struct kefir_ast_case_statement *case_stmt = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_case_statement));
+    struct kefir_ast_case_statement *case_stmt = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_case_statement);
     REQUIRE(case_stmt != NULL, NULL);
-    case_stmt->base.refcount = 1;
+    case_stmt->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
     case_stmt->base.klass = &AST_CASE_STATEMENT_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&case_stmt->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, case_stmt);
+        KEFIR_AST_NODE_ARENA_FREE(mem, case_stmt);
         return NULL;
     });
     res = kefir_source_location_empty(&case_stmt->base.source_location);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, case_stmt);
+        KEFIR_AST_NODE_ARENA_FREE(mem, case_stmt);
         return NULL;
     });
     res = kefir_ast_node_attributes_init(&case_stmt->attributes);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, case_stmt);
+        KEFIR_AST_NODE_ARENA_FREE(mem, case_stmt);
         return NULL;
     });
     case_stmt->expression = expression;

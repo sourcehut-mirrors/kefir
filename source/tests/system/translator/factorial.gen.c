@@ -58,27 +58,27 @@ static kefir_result_t define_factorial_function(struct kefir_mem *mem, struct fu
 
     REQUIRE_OK(kefir_list_insert_after(
         mem, &func->args, kefir_list_tail(&func->args),
-        KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "x"))));
+        KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context_manager->current->symbols, "x"))));
 
-    struct kefir_ast_function_call *factorial_call = kefir_ast_new_function_call(
-        mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "factorial")));
+    struct kefir_ast_function_call *factorial_call = kefir_ast_new_function_call_noarena(
+        mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context_manager->current->symbols, "factorial")));
     REQUIRE_OK(kefir_ast_function_call_append(
         mem, factorial_call,
-        KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation(
+        KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation_noarena(
             mem, KEFIR_AST_OPERATION_SUBTRACT,
-            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "x")),
+            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context_manager->current->symbols, "x")),
             KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 1))))));
 
-    func->body = KEFIR_AST_NODE_BASE(kefir_ast_new_conditional_operator(
+    func->body = KEFIR_AST_NODE_BASE(kefir_ast_new_conditional_operator_noarena(
         mem,
-        KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation(
+        KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation_noarena(
             mem, KEFIR_AST_OPERATION_LESS_EQUAL,
-            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "x")),
+            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context_manager->current->symbols, "x")),
             KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 1)))),
         KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 1)),
-        KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation(
+        KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation_noarena(
             mem, KEFIR_AST_OPERATION_MULTIPLY,
-            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "x")),
+            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context_manager->current->symbols, "x")),
             KEFIR_AST_NODE_BASE(factorial_call)))));
 
     REQUIRE_OK(kefir_ast_context_manager_detach_local(context_manager));

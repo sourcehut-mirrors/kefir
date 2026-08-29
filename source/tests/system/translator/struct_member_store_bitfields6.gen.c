@@ -64,84 +64,84 @@ static kefir_result_t define_modify_function(struct kefir_mem *mem, struct funct
 
     REQUIRE_OK(kefir_list_insert_after(
         mem, &func->args, kefir_list_tail(&func->args),
-        KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "param"))));
+        KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context_manager->current->symbols, "param"))));
     REQUIRE_OK(kefir_list_insert_after(
         mem, &func->args, kefir_list_tail(&func->args),
-        KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "value"))));
+        KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context_manager->current->symbols, "value"))));
 
-    struct kefir_ast_comma_operator *comma = kefir_ast_new_comma_operator(mem);
-
-    REQUIRE_OK(kefir_ast_comma_append(
-        mem, comma,
-        KEFIR_AST_NODE_BASE(kefir_ast_new_compound_assignment(
-            mem, KEFIR_AST_ASSIGNMENT_SUBTRACT,
-            KEFIR_AST_NODE_BASE(kefir_ast_new_struct_indirect_member(
-                mem, context_manager->current->symbols,
-                KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "param")), "a")),
-            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "value"))))));
+    struct kefir_ast_comma_operator *comma = kefir_ast_new_comma_operator_noarena(mem);
 
     REQUIRE_OK(kefir_ast_comma_append(
         mem, comma,
-        KEFIR_AST_NODE_BASE(kefir_ast_new_compound_assignment(
+        KEFIR_AST_NODE_BASE(kefir_ast_new_compound_assignment_noarena(
             mem, KEFIR_AST_ASSIGNMENT_SUBTRACT,
-            KEFIR_AST_NODE_BASE(kefir_ast_new_struct_indirect_member(
+            KEFIR_AST_NODE_BASE(kefir_ast_new_struct_indirect_member_noarena(
                 mem, context_manager->current->symbols,
-                KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "param")), "b")),
-            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "value"))))));
+                KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context_manager->current->symbols, "param")), "a")),
+            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context_manager->current->symbols, "value"))))));
 
     REQUIRE_OK(kefir_ast_comma_append(
         mem, comma,
-        KEFIR_AST_NODE_BASE(kefir_ast_new_compound_assignment(
+        KEFIR_AST_NODE_BASE(kefir_ast_new_compound_assignment_noarena(
             mem, KEFIR_AST_ASSIGNMENT_SUBTRACT,
-            KEFIR_AST_NODE_BASE(kefir_ast_new_struct_indirect_member(
+            KEFIR_AST_NODE_BASE(kefir_ast_new_struct_indirect_member_noarena(
                 mem, context_manager->current->symbols,
-                KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "param")), "c")),
-            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "value"))))));
+                KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context_manager->current->symbols, "param")), "b")),
+            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context_manager->current->symbols, "value"))))));
 
     REQUIRE_OK(kefir_ast_comma_append(
         mem, comma,
-        KEFIR_AST_NODE_BASE(kefir_ast_new_compound_assignment(
+        KEFIR_AST_NODE_BASE(kefir_ast_new_compound_assignment_noarena(
             mem, KEFIR_AST_ASSIGNMENT_SUBTRACT,
-            KEFIR_AST_NODE_BASE(kefir_ast_new_struct_indirect_member(
+            KEFIR_AST_NODE_BASE(kefir_ast_new_struct_indirect_member_noarena(
                 mem, context_manager->current->symbols,
-                KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "param")), "d")),
-            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "value"))))));
+                KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context_manager->current->symbols, "param")), "c")),
+            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context_manager->current->symbols, "value"))))));
 
     REQUIRE_OK(kefir_ast_comma_append(
         mem, comma,
-        KEFIR_AST_NODE_BASE(kefir_ast_new_compound_assignment(
+        KEFIR_AST_NODE_BASE(kefir_ast_new_compound_assignment_noarena(
             mem, KEFIR_AST_ASSIGNMENT_SUBTRACT,
-            KEFIR_AST_NODE_BASE(kefir_ast_new_struct_indirect_member(
+            KEFIR_AST_NODE_BASE(kefir_ast_new_struct_indirect_member_noarena(
                 mem, context_manager->current->symbols,
-                KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "param")), "e")),
-            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "value"))))));
+                KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context_manager->current->symbols, "param")), "d")),
+            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context_manager->current->symbols, "value"))))));
 
     REQUIRE_OK(kefir_ast_comma_append(
         mem, comma,
-        KEFIR_AST_NODE_BASE(kefir_ast_new_compound_assignment(
+        KEFIR_AST_NODE_BASE(kefir_ast_new_compound_assignment_noarena(
             mem, KEFIR_AST_ASSIGNMENT_SUBTRACT,
-            KEFIR_AST_NODE_BASE(kefir_ast_new_struct_indirect_member(
+            KEFIR_AST_NODE_BASE(kefir_ast_new_struct_indirect_member_noarena(
                 mem, context_manager->current->symbols,
-                KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "param")), "f")),
-            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "value"))))));
+                KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context_manager->current->symbols, "param")), "e")),
+            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context_manager->current->symbols, "value"))))));
 
     REQUIRE_OK(kefir_ast_comma_append(
         mem, comma,
-        KEFIR_AST_NODE_BASE(kefir_ast_new_compound_assignment(
+        KEFIR_AST_NODE_BASE(kefir_ast_new_compound_assignment_noarena(
             mem, KEFIR_AST_ASSIGNMENT_SUBTRACT,
-            KEFIR_AST_NODE_BASE(kefir_ast_new_struct_indirect_member(
+            KEFIR_AST_NODE_BASE(kefir_ast_new_struct_indirect_member_noarena(
                 mem, context_manager->current->symbols,
-                KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "param")), "g")),
-            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "value"))))));
+                KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context_manager->current->symbols, "param")), "f")),
+            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context_manager->current->symbols, "value"))))));
 
     REQUIRE_OK(kefir_ast_comma_append(
         mem, comma,
-        KEFIR_AST_NODE_BASE(kefir_ast_new_compound_assignment(
+        KEFIR_AST_NODE_BASE(kefir_ast_new_compound_assignment_noarena(
             mem, KEFIR_AST_ASSIGNMENT_SUBTRACT,
-            KEFIR_AST_NODE_BASE(kefir_ast_new_struct_indirect_member(
+            KEFIR_AST_NODE_BASE(kefir_ast_new_struct_indirect_member_noarena(
                 mem, context_manager->current->symbols,
-                KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "param")), "h")),
-            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "value"))))));
+                KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context_manager->current->symbols, "param")), "g")),
+            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context_manager->current->symbols, "value"))))));
+
+    REQUIRE_OK(kefir_ast_comma_append(
+        mem, comma,
+        KEFIR_AST_NODE_BASE(kefir_ast_new_compound_assignment_noarena(
+            mem, KEFIR_AST_ASSIGNMENT_SUBTRACT,
+            KEFIR_AST_NODE_BASE(kefir_ast_new_struct_indirect_member_noarena(
+                mem, context_manager->current->symbols,
+                KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context_manager->current->symbols, "param")), "h")),
+            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context_manager->current->symbols, "value"))))));
 
     func->body = KEFIR_AST_NODE_BASE(comma);
 

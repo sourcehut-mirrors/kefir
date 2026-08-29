@@ -33,31 +33,31 @@ kefir_result_t ast_comma_operator_free(struct kefir_mem *mem, struct kefir_ast_n
         REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, node->expressions[i]));
     }
     KEFIR_FREE(mem, node->expressions);
-    KEFIR_FREE(mem, node);
+    KEFIR_AST_NODE_ARENA_FREE(mem, node);
     return KEFIR_OK;
 }
 
 const struct kefir_ast_node_class AST_COMMA_OPERATOR_CLASS = {
     .type = KEFIR_AST_COMMA_OPERATOR, .visit = ast_comma_operator_visit, .free = ast_comma_operator_free};
 
-struct kefir_ast_comma_operator *kefir_ast_new_comma_operator(struct kefir_mem *mem) {
-    REQUIRE(mem != NULL, NULL);
+struct kefir_ast_comma_operator *kefir_ast_new_comma_operator(struct kefir_mem *mem, struct kefir_memory_arena *arena) {
+    REQUIRE(mem != NULL || arena != NULL, NULL);
 
-    struct kefir_ast_comma_operator *comma = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_comma_operator));
+    struct kefir_ast_comma_operator *comma = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_comma_operator);
     REQUIRE(comma != NULL, NULL);
-    comma->base.refcount = 1;
+    comma->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
     comma->base.klass = &AST_COMMA_OPERATOR_CLASS;
     comma->expressions = NULL;
     comma->expressions_capacity = 0;
     comma->expressions_length = 0;
     kefir_result_t res = kefir_ast_node_properties_init(&comma->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, comma);
+        KEFIR_AST_NODE_ARENA_FREE(mem, comma);
         return NULL;
     });
     res = kefir_source_location_empty(&comma->base.source_location);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, comma);
+        KEFIR_AST_NODE_ARENA_FREE(mem, comma);
         return NULL;
     });
     return comma;

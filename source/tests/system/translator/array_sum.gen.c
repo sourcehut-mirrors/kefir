@@ -65,37 +65,37 @@ static kefir_result_t define_array_sum_function(struct kefir_mem *mem, struct fu
 
     REQUIRE_OK(kefir_list_insert_after(
         mem, &func->args, kefir_list_tail(&func->args),
-        KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "array"))));
+        KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context_manager->current->symbols, "array"))));
     REQUIRE_OK(kefir_list_insert_after(
         mem, &func->args, kefir_list_tail(&func->args),
-        KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "index"))));
+        KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context_manager->current->symbols, "index"))));
 
-    struct kefir_ast_function_call *array_sum_cal = kefir_ast_new_function_call(
-        mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "array_sum")));
+    struct kefir_ast_function_call *array_sum_cal = kefir_ast_new_function_call_noarena(
+        mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context_manager->current->symbols, "array_sum")));
     REQUIRE_OK(kefir_ast_function_call_append(
         mem, array_sum_cal,
-        KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation(
+        KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation_noarena(
             mem, KEFIR_AST_OPERATION_ADD,
-            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "array")),
+            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context_manager->current->symbols, "array")),
             KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 1))))));
     REQUIRE_OK(kefir_ast_function_call_append(
         mem, array_sum_cal,
-        KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation(
+        KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation_noarena(
             mem, KEFIR_AST_OPERATION_SUBTRACT,
-            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "index")),
+            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context_manager->current->symbols, "index")),
             KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 1))))));
 
-    func->body = KEFIR_AST_NODE_BASE(kefir_ast_new_conditional_operator(
+    func->body = KEFIR_AST_NODE_BASE(kefir_ast_new_conditional_operator_noarena(
         mem,
-        KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation(
+        KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation_noarena(
             mem, KEFIR_AST_OPERATION_EQUAL,
-            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "index")),
+            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context_manager->current->symbols, "index")),
             KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 0)))),
         KEFIR_AST_NODE_BASE(kefir_ast_new_constant_float_noarena(mem, 0.0f)),
-        KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation(
+        KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation_noarena(
             mem, KEFIR_AST_OPERATION_ADD,
-            KEFIR_AST_NODE_BASE(kefir_ast_new_array_subscript(
-                mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "array")),
+            KEFIR_AST_NODE_BASE(kefir_ast_new_array_subscript_noarena(
+                mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context_manager->current->symbols, "array")),
                 KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 0)))),
             KEFIR_AST_NODE_BASE(array_sum_cal)))));
 

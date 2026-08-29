@@ -61,50 +61,50 @@ static kefir_result_t define_factorial_function(struct kefir_mem *mem, struct fu
 
     REQUIRE_OK(kefir_list_insert_after(
         mem, &func->args, kefir_list_tail(&func->args),
-        KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "x"))));
+        KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context_manager->current->symbols, "x"))));
 
-    struct kefir_ast_compound_statement *compound1 = kefir_ast_new_compound_statement(mem);
+    struct kefir_ast_compound_statement *compound1 = kefir_ast_new_compound_statement_noarena(mem);
 
-    struct kefir_ast_node_base *condition = KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation(
+    struct kefir_ast_node_base *condition = KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation_noarena(
         mem, KEFIR_AST_OPERATION_LESS,
-        KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "x")),
+        KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context_manager->current->symbols, "x")),
         KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 2))));
 
     struct kefir_ast_node_base *conditionThen = KEFIR_AST_NODE_BASE(
-        kefir_ast_new_return_statement(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 1))));
+        kefir_ast_new_return_statement_noarena(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 1))));
 
     struct kefir_ast_node_base *conditionStatement =
-        KEFIR_AST_NODE_BASE(kefir_ast_new_conditional_statement(mem, condition, conditionThen, NULL));
+        KEFIR_AST_NODE_BASE(kefir_ast_new_conditional_statement_noarena(mem, condition, conditionThen, NULL));
     REQUIRE_OK(kefir_ast_compound_statement_append(mem, compound1, conditionStatement));
 
-    struct kefir_ast_declaration *declarationResult = kefir_ast_new_single_declaration(
+    struct kefir_ast_declaration *declarationResult = kefir_ast_new_single_declaration_noarena(
         mem, kefir_ast_declarator_identifier(mem, context_manager->current->symbols, "result"),
         kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 1))), NULL);
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &declarationResult->specifiers,
                                                           kefir_ast_type_specifier_int(mem)));
     REQUIRE_OK(kefir_ast_compound_statement_append(mem, compound1, KEFIR_AST_NODE_BASE(declarationResult)));
 
-    struct kefir_ast_node_base *loopCondition = KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation(
+    struct kefir_ast_node_base *loopCondition = KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation_noarena(
         mem, KEFIR_AST_OPERATION_GREATER,
-        KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "x")),
+        KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context_manager->current->symbols, "x")),
         KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 1))));
 
-    struct kefir_ast_node_base *loopTail = KEFIR_AST_NODE_BASE(kefir_ast_new_unary_operation(
+    struct kefir_ast_node_base *loopTail = KEFIR_AST_NODE_BASE(kefir_ast_new_unary_operation_noarena(
         mem, KEFIR_AST_OPERATION_PREFIX_DECREMENT,
-        KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "x"))));
+        KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context_manager->current->symbols, "x"))));
 
-    struct kefir_ast_node_base *loopBody = KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement(
-        mem, KEFIR_AST_NODE_BASE(kefir_ast_new_compound_assignment(
+    struct kefir_ast_node_base *loopBody = KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement_noarena(
+        mem, KEFIR_AST_NODE_BASE(kefir_ast_new_compound_assignment_noarena(
                  mem, KEFIR_AST_ASSIGNMENT_MULTIPLY,
-                 KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "result")),
-                 KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "x"))))));
+                 KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context_manager->current->symbols, "result")),
+                 KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context_manager->current->symbols, "x"))))));
 
     struct kefir_ast_node_base *loop =
-        KEFIR_AST_NODE_BASE(kefir_ast_new_for_statement(mem, NULL, loopCondition, loopTail, loopBody));
+        KEFIR_AST_NODE_BASE(kefir_ast_new_for_statement_noarena(mem, NULL, loopCondition, loopTail, loopBody));
     REQUIRE_OK(kefir_ast_compound_statement_append(mem, compound1, loop));
 
-    struct kefir_ast_node_base *returnResult = KEFIR_AST_NODE_BASE(kefir_ast_new_return_statement(
-        mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "result"))));
+    struct kefir_ast_node_base *returnResult = KEFIR_AST_NODE_BASE(kefir_ast_new_return_statement_noarena(
+        mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context_manager->current->symbols, "result"))));
     REQUIRE_OK(kefir_ast_compound_statement_append(mem, compound1, returnResult));
 
     func->body = KEFIR_AST_NODE_BASE(compound1);

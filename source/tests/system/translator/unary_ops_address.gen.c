@@ -61,13 +61,13 @@
                                                                                                                       \
         REQUIRE_OK(kefir_list_insert_after(                                                                           \
             mem, &func->args, kefir_list_tail(&func->args),                                                           \
-            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "x"))));             \
+            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context_manager->current->symbols, "x"))));             \
                                                                                                                       \
-        func->body = KEFIR_AST_NODE_BASE(kefir_ast_new_unary_operation(                                               \
+        func->body = KEFIR_AST_NODE_BASE(kefir_ast_new_unary_operation_noarena(                                               \
             mem, KEFIR_AST_OPERATION_ADDRESS,                                                                         \
-            KEFIR_AST_NODE_BASE(kefir_ast_new_array_subscript(                                                        \
-                mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, (_var))),   \
-                KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "x"))))));       \
+            KEFIR_AST_NODE_BASE(kefir_ast_new_array_subscript_noarena(                                                        \
+                mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context_manager->current->symbols, (_var))),   \
+                KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context_manager->current->symbols, "x"))))));       \
                                                                                                                       \
         REQUIRE_OK(kefir_ast_context_manager_detach_local(context_manager));                                          \
         return KEFIR_OK;                                                                                              \

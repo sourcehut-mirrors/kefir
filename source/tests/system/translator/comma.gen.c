@@ -74,19 +74,19 @@ static kefir_result_t define_comma_function(struct kefir_mem *mem, struct functi
 
     REQUIRE_OK(kefir_list_insert_after(
         mem, &func->args, kefir_list_tail(&func->args),
-        KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "callback"))));
+        KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context_manager->current->symbols, "callback"))));
     REQUIRE_OK(kefir_list_insert_after(
         mem, &func->args, kefir_list_tail(&func->args),
-        KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "payload"))));
+        KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context_manager->current->symbols, "payload"))));
 
-    struct kefir_ast_comma_operator *comma = kefir_ast_new_comma_operator(mem);
+    struct kefir_ast_comma_operator *comma = kefir_ast_new_comma_operator_noarena(mem);
 
     while (count--) {
-        struct kefir_ast_function_call *call = kefir_ast_new_function_call(
-            mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "callback")));
+        struct kefir_ast_function_call *call = kefir_ast_new_function_call_noarena(
+            mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context_manager->current->symbols, "callback")));
         REQUIRE_OK(kefir_ast_function_call_append(
             mem, call,
-            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "payload"))));
+            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context_manager->current->symbols, "payload"))));
 
         REQUIRE_OK(kefir_ast_comma_append(mem, comma, KEFIR_AST_NODE_BASE(call)));
     }

@@ -139,7 +139,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
         mem, &init1->list, NULL,
         kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 20)))));
 
-    struct kefir_ast_declaration *decl1 = kefir_ast_new_single_declaration(
+    struct kefir_ast_declaration *decl1 = kefir_ast_new_single_declaration_noarena(
         mem,
         kefir_ast_declarator_array(mem, KEFIR_AST_DECLARATOR_ARRAY_UNBOUNDED, NULL,
                                    kefir_ast_declarator_identifier(mem, global_context.context.symbols, "array")),
@@ -185,7 +185,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
         mem, &init2->list, NULL,
         kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 9)))));
 
-    struct kefir_ast_declaration *decl2 = kefir_ast_new_single_declaration(
+    struct kefir_ast_declaration *decl2 = kefir_ast_new_single_declaration_noarena(
         mem,
         kefir_ast_declarator_array(mem, KEFIR_AST_DECLARATOR_ARRAY_UNBOUNDED, NULL,
                                    kefir_ast_declarator_identifier(mem, global_context.context.symbols, "array2")),

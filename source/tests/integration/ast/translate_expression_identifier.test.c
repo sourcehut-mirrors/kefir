@@ -56,18 +56,18 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
                                                 context->type_traits->underlying_enumeration_type, NULL, NULL, NULL));
 
     struct kefir_ast_node_base *node1 =
-        KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "extern_variable1"));
+        KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "extern_variable1"));
     REQUIRE_OK(kefir_ast_analyze_node(mem, context, node1));
     struct kefir_ast_node_base *node2 =
-        KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "extern_variable2"));
+        KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "extern_variable2"));
     REQUIRE_OK(kefir_ast_analyze_node(mem, context, node2));
     struct kefir_ast_node_base *node3 =
-        KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "static_variable1"));
+        KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "static_variable1"));
     REQUIRE_OK(kefir_ast_analyze_node(mem, context, node3));
     struct kefir_ast_node_base *node4 =
-        KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "local_var1"));
+        KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "local_var1"));
     REQUIRE_OK(kefir_ast_analyze_node(mem, context, node4));
-    struct kefir_ast_node_base *node5 = KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "X"));
+    struct kefir_ast_node_base *node5 = KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "X"));
     REQUIRE_OK(kefir_ast_analyze_node(mem, context, node5));
 
     struct kefir_ir_module module;

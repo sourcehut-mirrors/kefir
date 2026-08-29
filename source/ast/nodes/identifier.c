@@ -29,32 +29,32 @@ kefir_result_t ast_identifier_free(struct kefir_mem *mem, struct kefir_ast_node_
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(base != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST node base"));
     ASSIGN_DECL_CAST(struct kefir_ast_identifier *, node, KEFIR_AST_NODE_SELF(base));
-    KEFIR_FREE(mem, node);
+    KEFIR_AST_NODE_ARENA_FREE(mem, node);
     return KEFIR_OK;
 }
 
 const struct kefir_ast_node_class AST_IDENTIFIER_CLASS = {
     .type = KEFIR_AST_IDENTIFIER, .visit = ast_identifier_visit, .free = ast_identifier_free};
 
-struct kefir_ast_identifier *kefir_ast_new_identifier(struct kefir_mem *mem, struct kefir_string_pool *symbols,
+struct kefir_ast_identifier *kefir_ast_new_identifier(struct kefir_mem *mem, struct kefir_memory_arena *arena, struct kefir_string_pool *symbols,
                                                       const char *identifier) {
-    REQUIRE(mem != NULL, NULL);
+    REQUIRE(mem != NULL || arena != NULL, NULL);
     REQUIRE(symbols != NULL, NULL);
     REQUIRE(identifier != NULL, NULL);
     const char *id_copy = kefir_string_pool_insert(mem, symbols, identifier, NULL);
     REQUIRE(id_copy != NULL, NULL);
-    struct kefir_ast_identifier *id = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_identifier));
+    struct kefir_ast_identifier *id = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_identifier);
     REQUIRE(id != NULL, NULL);
-    id->base.refcount = 1;
+    id->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
     id->base.klass = &AST_IDENTIFIER_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&id->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, id);
+        KEFIR_AST_NODE_ARENA_FREE(mem, id);
         return NULL;
     });
     res = kefir_source_location_empty(&id->base.source_location);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, id);
+        KEFIR_AST_NODE_ARENA_FREE(mem, id);
         return NULL;
     });
     id->identifier = id_copy;

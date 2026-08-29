@@ -65,17 +65,17 @@
                                                                                                                       \
         REQUIRE_OK(kefir_list_insert_after(                                                                           \
             mem, &func->args, kefir_list_tail(&func->args),                                                           \
-            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "x"))));             \
+            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context_manager->current->symbols, "x"))));             \
         REQUIRE_OK(kefir_list_insert_after(                                                                           \
             mem, &func->args, kefir_list_tail(&func->args),                                                           \
-            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "y"))));             \
+            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context_manager->current->symbols, "y"))));             \
                                                                                                                       \
-        func->body = KEFIR_AST_NODE_BASE(kefir_ast_new_unary_operation(                                               \
+        func->body = KEFIR_AST_NODE_BASE(kefir_ast_new_unary_operation_noarena(                                               \
             mem, KEFIR_AST_OPERATION_INDIRECTION,                                                                     \
-            KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation(                                                       \
+            KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation_noarena(                                                       \
                 mem, KEFIR_AST_OPERATION_ADD,                                                                         \
-                KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "x")),           \
-                KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "y"))))));       \
+                KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context_manager->current->symbols, "x")),           \
+                KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context_manager->current->symbols, "y"))))));       \
                                                                                                                       \
         REQUIRE_OK(kefir_ast_context_manager_detach_local(context_manager));                                          \
         return KEFIR_OK;                                                                                              \

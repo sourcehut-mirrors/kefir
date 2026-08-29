@@ -57,7 +57,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     struct kefir_irbuilder_block builder;
 
     FUNC2("while1", {
-        struct kefir_ast_declaration *decl1 = kefir_ast_new_single_declaration(
+        struct kefir_ast_declaration *decl1 = kefir_ast_new_single_declaration_noarena(
             mem,
             kefir_ast_declarator_array(mem, KEFIR_AST_DECLARATOR_ARRAY_UNBOUNDED, NULL,
                                        kefir_ast_declarator_identifier(mem, context->symbols, "str")),
@@ -69,28 +69,28 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
         REQUIRE_OK(
             kefir_ast_declarator_specifier_list_append(mem, &decl1->specifiers, kefir_ast_type_specifier_char(mem)));
 
-        struct kefir_ast_declaration *decl2 = kefir_ast_new_single_declaration(
+        struct kefir_ast_declaration *decl2 = kefir_ast_new_single_declaration_noarena(
             mem, kefir_ast_declarator_identifier(mem, context->symbols, "length"),
             kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 0))), NULL);
         REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &decl2->specifiers,
                                                               kefir_ast_type_specifier_unsigned(mem)));
 
-        struct kefir_ast_expression_statement *body = kefir_ast_new_expression_statement(
-            mem, KEFIR_AST_NODE_BASE(kefir_ast_new_unary_operation(
+        struct kefir_ast_expression_statement *body = kefir_ast_new_expression_statement_noarena(
+            mem, KEFIR_AST_NODE_BASE(kefir_ast_new_unary_operation_noarena(
                      mem, KEFIR_AST_OPERATION_POSTFIX_INCREMENT,
-                     KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "length")))));
+                     KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "length")))));
 
-        struct kefir_ast_node_base *condition = KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation(
+        struct kefir_ast_node_base *condition = KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation_noarena(
             mem, KEFIR_AST_OPERATION_NOT_EQUAL,
-            KEFIR_AST_NODE_BASE(kefir_ast_new_array_subscript(
-                mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "str")),
-                KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "length")))),
+            KEFIR_AST_NODE_BASE(kefir_ast_new_array_subscript_noarena(
+                mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "str")),
+                KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "length")))),
             KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char_noarena(mem, '\0'))));
 
         struct kefir_ast_while_statement *while1 =
-            kefir_ast_new_while_statement(mem, condition, KEFIR_AST_NODE_BASE(body));
+            kefir_ast_new_while_statement_noarena(mem, condition, KEFIR_AST_NODE_BASE(body));
 
-        struct kefir_ast_compound_statement *compound1 = kefir_ast_new_compound_statement(mem);
+        struct kefir_ast_compound_statement *compound1 = kefir_ast_new_compound_statement_noarena(mem);
         REQUIRE_OK(kefir_ast_compound_statement_append(mem, compound1, KEFIR_AST_NODE_BASE(decl1)));
         REQUIRE_OK(kefir_ast_compound_statement_append(mem, compound1, KEFIR_AST_NODE_BASE(decl2)));
         REQUIRE_OK(kefir_ast_compound_statement_append(mem, compound1, KEFIR_AST_NODE_BASE(while1)));
@@ -107,7 +107,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     });
 
     FUNC2("while2", {
-        struct kefir_ast_declaration *decl1 = kefir_ast_new_single_declaration(
+        struct kefir_ast_declaration *decl1 = kefir_ast_new_single_declaration_noarena(
             mem, kefir_ast_declarator_pointer(mem, kefir_ast_declarator_identifier(mem, context->symbols, "flag")),
             NULL, NULL);
         REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &decl1->specifiers,
@@ -117,24 +117,24 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
         REQUIRE_OK(
             kefir_ast_declarator_specifier_list_append(mem, &decl1->specifiers, kefir_ast_type_specifier_boolean(mem)));
 
-        struct kefir_ast_compound_statement *body = kefir_ast_new_compound_statement(mem);
+        struct kefir_ast_compound_statement *body = kefir_ast_new_compound_statement_noarena(mem);
         REQUIRE_OK(kefir_ast_compound_statement_append(
             mem, body,
-            KEFIR_AST_NODE_BASE(kefir_ast_new_conditional_statement(
+            KEFIR_AST_NODE_BASE(kefir_ast_new_conditional_statement_noarena(
                 mem,
-                KEFIR_AST_NODE_BASE(kefir_ast_new_unary_operation(
+                KEFIR_AST_NODE_BASE(kefir_ast_new_unary_operation_noarena(
                     mem, KEFIR_AST_OPERATION_INDIRECTION,
-                    KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "flag")))),
-                KEFIR_AST_NODE_BASE(kefir_ast_new_continue_statement(mem)), NULL))));
+                    KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "flag")))),
+                KEFIR_AST_NODE_BASE(kefir_ast_new_continue_statement_noarena(mem)), NULL))));
         REQUIRE_OK(
-            kefir_ast_compound_statement_append(mem, body, KEFIR_AST_NODE_BASE(kefir_ast_new_break_statement(mem))));
+            kefir_ast_compound_statement_append(mem, body, KEFIR_AST_NODE_BASE(kefir_ast_new_break_statement_noarena(mem))));
 
         struct kefir_ast_node_base *condition = KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bool_noarena(mem, true));
 
         struct kefir_ast_while_statement *while1 =
-            kefir_ast_new_while_statement(mem, condition, KEFIR_AST_NODE_BASE(body));
+            kefir_ast_new_while_statement_noarena(mem, condition, KEFIR_AST_NODE_BASE(body));
 
-        struct kefir_ast_compound_statement *compound1 = kefir_ast_new_compound_statement(mem);
+        struct kefir_ast_compound_statement *compound1 = kefir_ast_new_compound_statement_noarena(mem);
         REQUIRE_OK(kefir_ast_compound_statement_append(mem, compound1, KEFIR_AST_NODE_BASE(decl1)));
         REQUIRE_OK(kefir_ast_compound_statement_append(mem, compound1, KEFIR_AST_NODE_BASE(while1)));
 
@@ -151,15 +151,15 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
 
     FUNC2("while3", {
         struct kefir_ast_expression_statement *body =
-            kefir_ast_new_expression_statement(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_uint_noarena(mem, 1)));
+            kefir_ast_new_expression_statement_noarena(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_uint_noarena(mem, 1)));
 
         struct kefir_ast_node_base *condition =
             KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long_double_noarena(mem, 100.1283e1l));
 
         struct kefir_ast_while_statement *while1 =
-            kefir_ast_new_while_statement(mem, condition, KEFIR_AST_NODE_BASE(body));
+            kefir_ast_new_while_statement_noarena(mem, condition, KEFIR_AST_NODE_BASE(body));
 
-        struct kefir_ast_compound_statement *compound1 = kefir_ast_new_compound_statement(mem);
+        struct kefir_ast_compound_statement *compound1 = kefir_ast_new_compound_statement_noarena(mem);
         REQUIRE_OK(kefir_ast_compound_statement_append(mem, compound1, KEFIR_AST_NODE_BASE(while1)));
 
         struct kefir_ast_node_base *node = KEFIR_AST_NODE_BASE(compound1);

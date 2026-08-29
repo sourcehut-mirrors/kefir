@@ -52,10 +52,10 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     REQUIRE_OK(
         kefir_ast_global_context_declare_external(mem, &global_context, "structure", type1, NULL, NULL, NULL, NULL));
 
-    struct kefir_ast_node_base *node1 = KEFIR_AST_NODE_BASE(kefir_ast_new_struct_indirect_member(
+    struct kefir_ast_node_base *node1 = KEFIR_AST_NODE_BASE(kefir_ast_new_struct_indirect_member_noarena(
         mem, context->symbols,
-        KEFIR_AST_NODE_BASE(kefir_ast_new_struct_member(
-            mem, context->symbols, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "structure")),
+        KEFIR_AST_NODE_BASE(kefir_ast_new_struct_member_noarena(
+            mem, context->symbols, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "structure")),
             "self")),
         "value"));
     REQUIRE_OK(kefir_ast_analyze_node(mem, context, node1));

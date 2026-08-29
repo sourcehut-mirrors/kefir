@@ -82,14 +82,14 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
 
     struct kefir_ast_initializer *init1 = kefir_ast_new_expression_initializer(
         mem,
-        KEFIR_AST_NODE_BASE(kefir_ast_new_unary_operation(
+        KEFIR_AST_NODE_BASE(kefir_ast_new_unary_operation_noarena(
             mem, KEFIR_AST_OPERATION_ADDRESS,
-            KEFIR_AST_NODE_BASE(kefir_ast_new_extension_node(mem, &ext_node_class, (void *) (kefir_uptr_t) 100)))));
+            KEFIR_AST_NODE_BASE(kefir_ast_new_extension_node_noarena(mem, &ext_node_class, (void *) (kefir_uptr_t) 100)))));
     struct kefir_ast_initializer *init2 = kefir_ast_new_expression_initializer(
         mem,
-        KEFIR_AST_NODE_BASE(kefir_ast_new_unary_operation(
+        KEFIR_AST_NODE_BASE(kefir_ast_new_unary_operation_noarena(
             mem, KEFIR_AST_OPERATION_ADDRESS,
-            KEFIR_AST_NODE_BASE(kefir_ast_new_extension_node(mem, &ext_node_class, (void *) (kefir_uptr_t) 200)))));
+            KEFIR_AST_NODE_BASE(kefir_ast_new_extension_node_noarena(mem, &ext_node_class, (void *) (kefir_uptr_t) 200)))));
     REQUIRE_OK(kefir_ast_global_context_define_external(
         mem, &global_context, "x1",
         kefir_ast_type_pointer(mem, global_context.context.type_bundle, kefir_ast_type_signed_int()), NULL, init1, NULL,

@@ -31,7 +31,7 @@ kefir_result_t ast_assignment_operator_free(struct kefir_mem *mem, struct kefir_
     ASSIGN_DECL_CAST(struct kefir_ast_assignment_operator *, node, KEFIR_AST_NODE_SELF(base));
     REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, node->target));
     REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, node->value));
-    KEFIR_FREE(mem, node);
+    KEFIR_AST_NODE_ARENA_FREE(mem, node);
     return KEFIR_OK;
 }
 
@@ -39,32 +39,32 @@ const struct kefir_ast_node_class AST_ASSIGNMENT_OPERATOR_CLASS = {.type = KEFIR
                                                                    .visit = ast_assignment_operator_visit,
                                                                    .free = ast_assignment_operator_free};
 
-struct kefir_ast_assignment_operator *kefir_ast_new_simple_assignment(struct kefir_mem *mem,
+struct kefir_ast_assignment_operator *kefir_ast_new_simple_assignment(struct kefir_mem *mem, struct kefir_memory_arena *arena,
                                                                       struct kefir_ast_node_base *target,
                                                                       struct kefir_ast_node_base *value) {
-    return kefir_ast_new_compound_assignment(mem, KEFIR_AST_ASSIGNMENT_SIMPLE, target, value);
+    return kefir_ast_new_compound_assignment(mem, arena, KEFIR_AST_ASSIGNMENT_SIMPLE, target, value);
 }
 
-struct kefir_ast_assignment_operator *kefir_ast_new_compound_assignment(struct kefir_mem *mem,
+struct kefir_ast_assignment_operator *kefir_ast_new_compound_assignment(struct kefir_mem *mem, struct kefir_memory_arena *arena,
                                                                         kefir_ast_assignment_operation_t oper,
                                                                         struct kefir_ast_node_base *target,
                                                                         struct kefir_ast_node_base *value) {
-    REQUIRE(mem != NULL, NULL);
+    REQUIRE(mem != NULL || arena != NULL, NULL);
     REQUIRE(target != NULL, NULL);
     REQUIRE(value != NULL, NULL);
 
-    struct kefir_ast_assignment_operator *assignment = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_assignment_operator));
+    struct kefir_ast_assignment_operator *assignment = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_assignment_operator);
     REQUIRE(assignment != NULL, NULL);
-    assignment->base.refcount = 1;
+    assignment->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
     assignment->base.klass = &AST_ASSIGNMENT_OPERATOR_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&assignment->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, assignment);
+        KEFIR_AST_NODE_ARENA_FREE(mem, assignment);
         return NULL;
     });
     res = kefir_source_location_empty(&assignment->base.source_location);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, assignment);
+        KEFIR_AST_NODE_ARENA_FREE(mem, assignment);
         return NULL;
     });
     assignment->operation = oper;

@@ -482,7 +482,7 @@ DEFINE_CASE(ast_initializer_analysis_unicode8, "AST initializer - unicode8 strin
 
     const char LITERAL1[] = "Hello, world!";
     struct kefir_ast_initializer *init2 = kefir_ast_new_expression_initializer(
-        &kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_string_literal_unicode8(&kft_mem, LITERAL1, sizeof(LITERAL1))));
+        &kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_string_literal_unicode8_noarena(&kft_mem, LITERAL1, sizeof(LITERAL1))));
     ASSERT_OK(kefir_ast_analyze_initializer(&kft_mem, context, type1, init2, &traversal_props));
     ASSERT(traversal_props.constant);
     ASSERT(KEFIR_AST_TYPE_SAME(
@@ -493,7 +493,7 @@ DEFINE_CASE(ast_initializer_analysis_unicode8, "AST initializer - unicode8 strin
     struct kefir_ast_initializer *init3 = kefir_ast_new_list_initializer(&kft_mem);
     ASSERT_OK(kefir_ast_initializer_list_append(
         &kft_mem, &init3->list, NULL,
-        kefir_ast_new_expression_initializer(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_string_literal_unicode8(
+        kefir_ast_new_expression_initializer(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_string_literal_unicode8_noarena(
                                                            &kft_mem, LITERAL1, sizeof(LITERAL1))))));
     ASSERT_OK(kefir_ast_analyze_initializer(&kft_mem, context, type1, init3, &traversal_props));
     ASSERT(traversal_props.constant);
@@ -505,7 +505,7 @@ DEFINE_CASE(ast_initializer_analysis_unicode8, "AST initializer - unicode8 strin
     struct kefir_ast_initializer *init4 = kefir_ast_new_list_initializer(&kft_mem);
     ASSERT_OK(kefir_ast_initializer_list_append(
         &kft_mem, &init4->list, NULL,
-        kefir_ast_new_expression_initializer(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_string_literal_unicode8(
+        kefir_ast_new_expression_initializer(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_string_literal_unicode8_noarena(
                                                            &kft_mem, LITERAL1, sizeof(LITERAL1))))));
     ASSERT_OK(kefir_ast_initializer_list_append(
         &kft_mem, &init4->list, NULL,
@@ -521,7 +521,7 @@ DEFINE_CASE(ast_initializer_analysis_unicode8, "AST initializer - unicode8 strin
     struct kefir_ast_initializer *init5_1 = kefir_ast_new_list_initializer(&kft_mem);
     ASSERT_OK(kefir_ast_initializer_list_append(
         &kft_mem, &init5_1->list, NULL,
-        kefir_ast_new_expression_initializer(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_string_literal_unicode8(
+        kefir_ast_new_expression_initializer(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_string_literal_unicode8_noarena(
                                                            &kft_mem, LITERAL1, sizeof(LITERAL1))))));
     struct kefir_ast_initializer *init5 = kefir_ast_new_list_initializer(&kft_mem);
     ASSERT_OK(kefir_ast_initializer_list_append(&kft_mem, &init5->list, NULL, init5_1));
@@ -585,7 +585,7 @@ DEFINE_CASE(ast_initializer_analysis_unicode16, "AST initializer - unicode16 str
 
     const kefir_char16_t LITERAL1[] = u"Hello, world!";
     struct kefir_ast_initializer *init2 = kefir_ast_new_expression_initializer(
-        &kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_string_literal_unicode16(&kft_mem, LITERAL1, sizeof(LITERAL1))));
+        &kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_string_literal_unicode16_noarena(&kft_mem, LITERAL1, sizeof(LITERAL1))));
     ASSERT_OK(kefir_ast_analyze_initializer(&kft_mem, context, type1, init2, &traversal_props));
     ASSERT(traversal_props.constant);
     ASSERT(KEFIR_AST_TYPE_SAME(
@@ -596,7 +596,7 @@ DEFINE_CASE(ast_initializer_analysis_unicode16, "AST initializer - unicode16 str
     struct kefir_ast_initializer *init3 = kefir_ast_new_list_initializer(&kft_mem);
     ASSERT_OK(kefir_ast_initializer_list_append(
         &kft_mem, &init3->list, NULL,
-        kefir_ast_new_expression_initializer(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_string_literal_unicode16(
+        kefir_ast_new_expression_initializer(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_string_literal_unicode16_noarena(
                                                            &kft_mem, LITERAL1, sizeof(LITERAL1))))));
     ASSERT_OK(kefir_ast_analyze_initializer(&kft_mem, context, type1, init3, &traversal_props));
     ASSERT(traversal_props.constant);
@@ -608,7 +608,7 @@ DEFINE_CASE(ast_initializer_analysis_unicode16, "AST initializer - unicode16 str
     struct kefir_ast_initializer *init4 = kefir_ast_new_list_initializer(&kft_mem);
     ASSERT_OK(kefir_ast_initializer_list_append(
         &kft_mem, &init4->list, NULL,
-        kefir_ast_new_expression_initializer(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_string_literal_unicode16(
+        kefir_ast_new_expression_initializer(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_string_literal_unicode16_noarena(
                                                            &kft_mem, LITERAL1, sizeof(LITERAL1))))));
     ASSERT_OK(kefir_ast_initializer_list_append(
         &kft_mem, &init4->list, NULL,
@@ -624,7 +624,7 @@ DEFINE_CASE(ast_initializer_analysis_unicode16, "AST initializer - unicode16 str
     struct kefir_ast_initializer *init5_1 = kefir_ast_new_list_initializer(&kft_mem);
     ASSERT_OK(kefir_ast_initializer_list_append(
         &kft_mem, &init5_1->list, NULL,
-        kefir_ast_new_expression_initializer(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_string_literal_unicode16(
+        kefir_ast_new_expression_initializer(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_string_literal_unicode16_noarena(
                                                            &kft_mem, LITERAL1, sizeof(LITERAL1))))));
     struct kefir_ast_initializer *init5 = kefir_ast_new_list_initializer(&kft_mem);
     ASSERT_OK(kefir_ast_initializer_list_append(&kft_mem, &init5->list, NULL, init5_1));
@@ -688,7 +688,7 @@ DEFINE_CASE(ast_initializer_analysis_unicode32, "AST initializer - unicode32 str
 
     const kefir_char32_t LITERAL1[] = U"Hello, world!";
     struct kefir_ast_initializer *init2 = kefir_ast_new_expression_initializer(
-        &kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_string_literal_unicode32(&kft_mem, LITERAL1, sizeof(LITERAL1))));
+        &kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_string_literal_unicode32_noarena(&kft_mem, LITERAL1, sizeof(LITERAL1))));
     ASSERT_OK(kefir_ast_analyze_initializer(&kft_mem, context, type1, init2, &traversal_props));
     ASSERT(traversal_props.constant);
     ASSERT(KEFIR_AST_TYPE_SAME(
@@ -699,7 +699,7 @@ DEFINE_CASE(ast_initializer_analysis_unicode32, "AST initializer - unicode32 str
     struct kefir_ast_initializer *init3 = kefir_ast_new_list_initializer(&kft_mem);
     ASSERT_OK(kefir_ast_initializer_list_append(
         &kft_mem, &init3->list, NULL,
-        kefir_ast_new_expression_initializer(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_string_literal_unicode32(
+        kefir_ast_new_expression_initializer(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_string_literal_unicode32_noarena(
                                                            &kft_mem, LITERAL1, sizeof(LITERAL1))))));
     ASSERT_OK(kefir_ast_analyze_initializer(&kft_mem, context, type1, init3, &traversal_props));
     ASSERT(traversal_props.constant);
@@ -711,7 +711,7 @@ DEFINE_CASE(ast_initializer_analysis_unicode32, "AST initializer - unicode32 str
     struct kefir_ast_initializer *init4 = kefir_ast_new_list_initializer(&kft_mem);
     ASSERT_OK(kefir_ast_initializer_list_append(
         &kft_mem, &init4->list, NULL,
-        kefir_ast_new_expression_initializer(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_string_literal_unicode32(
+        kefir_ast_new_expression_initializer(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_string_literal_unicode32_noarena(
                                                            &kft_mem, LITERAL1, sizeof(LITERAL1))))));
     ASSERT_OK(kefir_ast_initializer_list_append(
         &kft_mem, &init4->list, NULL,
@@ -727,7 +727,7 @@ DEFINE_CASE(ast_initializer_analysis_unicode32, "AST initializer - unicode32 str
     struct kefir_ast_initializer *init5_1 = kefir_ast_new_list_initializer(&kft_mem);
     ASSERT_OK(kefir_ast_initializer_list_append(
         &kft_mem, &init5_1->list, NULL,
-        kefir_ast_new_expression_initializer(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_string_literal_unicode32(
+        kefir_ast_new_expression_initializer(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_string_literal_unicode32_noarena(
                                                            &kft_mem, LITERAL1, sizeof(LITERAL1))))));
     struct kefir_ast_initializer *init5 = kefir_ast_new_list_initializer(&kft_mem);
     ASSERT_OK(kefir_ast_initializer_list_append(&kft_mem, &init5->list, NULL, init5_1));
@@ -791,7 +791,7 @@ DEFINE_CASE(ast_initializer_analysis_wide, "AST initializer - wide string analys
 
     const kefir_wchar_t LITERAL1[] = L"Hello, world!";
     struct kefir_ast_initializer *init2 = kefir_ast_new_expression_initializer(
-        &kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_string_literal_wide(&kft_mem, LITERAL1, sizeof(LITERAL1))));
+        &kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_string_literal_wide_noarena(&kft_mem, LITERAL1, sizeof(LITERAL1))));
     ASSERT_OK(kefir_ast_analyze_initializer(&kft_mem, context, type1, init2, &traversal_props));
     ASSERT(traversal_props.constant);
     ASSERT(KEFIR_AST_TYPE_SAME(
@@ -803,7 +803,7 @@ DEFINE_CASE(ast_initializer_analysis_wide, "AST initializer - wide string analys
     ASSERT_OK(kefir_ast_initializer_list_append(
         &kft_mem, &init3->list, NULL,
         kefir_ast_new_expression_initializer(
-            &kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_string_literal_wide(&kft_mem, LITERAL1, sizeof(LITERAL1))))));
+            &kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_string_literal_wide_noarena(&kft_mem, LITERAL1, sizeof(LITERAL1))))));
     ASSERT_OK(kefir_ast_analyze_initializer(&kft_mem, context, type1, init3, &traversal_props));
     ASSERT(traversal_props.constant);
     ASSERT(KEFIR_AST_TYPE_SAME(
@@ -815,7 +815,7 @@ DEFINE_CASE(ast_initializer_analysis_wide, "AST initializer - wide string analys
     ASSERT_OK(kefir_ast_initializer_list_append(
         &kft_mem, &init4->list, NULL,
         kefir_ast_new_expression_initializer(
-            &kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_string_literal_wide(&kft_mem, LITERAL1, sizeof(LITERAL1))))));
+            &kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_string_literal_wide_noarena(&kft_mem, LITERAL1, sizeof(LITERAL1))))));
     ASSERT_OK(kefir_ast_initializer_list_append(
         &kft_mem, &init4->list, NULL,
         kefir_ast_new_expression_initializer(&kft_mem,
@@ -831,7 +831,7 @@ DEFINE_CASE(ast_initializer_analysis_wide, "AST initializer - wide string analys
     ASSERT_OK(kefir_ast_initializer_list_append(
         &kft_mem, &init5_1->list, NULL,
         kefir_ast_new_expression_initializer(
-            &kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_string_literal_wide(&kft_mem, LITERAL1, sizeof(LITERAL1))))));
+            &kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_string_literal_wide_noarena(&kft_mem, LITERAL1, sizeof(LITERAL1))))));
     struct kefir_ast_initializer *init5 = kefir_ast_new_list_initializer(&kft_mem);
     ASSERT_OK(kefir_ast_initializer_list_append(&kft_mem, &init5->list, NULL, init5_1));
     ASSERT_OK(kefir_ast_analyze_initializer(&kft_mem, context, type1, init5, &traversal_props));
@@ -914,24 +914,24 @@ DEFINE_CASE(ast_initializer_analysis_mixed_strings, "AST initializer - mixed str
     struct kefir_ast_initializer *init2 = kefir_ast_new_list_initializer(&kft_mem);
     ASSERT_OK(kefir_ast_initializer_list_append(
         &kft_mem, &init2->list, NULL,
-        kefir_ast_new_expression_initializer(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_string_literal_multibyte(
+        kefir_ast_new_expression_initializer(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_string_literal_multibyte_noarena(
                                                            &kft_mem, LITERAL1, sizeof(LITERAL1))))));
     ASSERT_OK(kefir_ast_initializer_list_append(
         &kft_mem, &init2->list, NULL,
-        kefir_ast_new_expression_initializer(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_string_literal_unicode8(
+        kefir_ast_new_expression_initializer(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_string_literal_unicode8_noarena(
                                                            &kft_mem, LITERAL2, sizeof(LITERAL2))))));
     ASSERT_OK(kefir_ast_initializer_list_append(
         &kft_mem, &init2->list, NULL,
-        kefir_ast_new_expression_initializer(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_string_literal_unicode16(
+        kefir_ast_new_expression_initializer(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_string_literal_unicode16_noarena(
                                                            &kft_mem, LITERAL3, sizeof(LITERAL3))))));
     ASSERT_OK(kefir_ast_initializer_list_append(
         &kft_mem, &init2->list, NULL,
-        kefir_ast_new_expression_initializer(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_string_literal_unicode32(
+        kefir_ast_new_expression_initializer(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_string_literal_unicode32_noarena(
                                                            &kft_mem, LITERAL4, sizeof(LITERAL4))))));
     ASSERT_OK(kefir_ast_initializer_list_append(
         &kft_mem, &init2->list, NULL,
         kefir_ast_new_expression_initializer(
-            &kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_string_literal_wide(&kft_mem, LITERAL5, sizeof(LITERAL5))))));
+            &kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_string_literal_wide_noarena(&kft_mem, LITERAL5, sizeof(LITERAL5))))));
     ASSERT_OK(kefir_ast_initializer_list_append(
         &kft_mem, &init2->list,
         kefir_ast_new_initializer_index_designation(

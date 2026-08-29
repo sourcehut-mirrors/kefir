@@ -83,12 +83,12 @@ DEFINE_CASE(ast_type_variably_modified2, "AST types - variably modified types #2
 
     const struct kefir_ast_type *type1 =
         kefir_ast_type_vlen_array(&kft_mem, &type_bundle, kefir_ast_type_unsigned_short(),
-                                  KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(&kft_mem, &symbols, "x")), NULL);
+                                  KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(&kft_mem, &symbols, "x")), NULL);
     ASSERT(kefir_ast_type_is_variably_modified(type1));
 
     const struct kefir_ast_type *type2 =
         kefir_ast_type_vlen_array_static(&kft_mem, &type_bundle, kefir_ast_type_unsigned_char(),
-                                         KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(&kft_mem, &symbols, "y")), NULL);
+                                         KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(&kft_mem, &symbols, "y")), NULL);
     ASSERT(kefir_ast_type_is_variably_modified(type2));
 
     const struct kefir_ast_type *type3 = kefir_ast_type_pointer(&kft_mem, &type_bundle, type1);
@@ -132,7 +132,7 @@ DEFINE_CASE(ast_type_variably_modified_analysis1, "AST types - variably modified
 
     const struct kefir_ast_type *type1 = kefir_ast_type_vlen_array(
         &kft_mem, &global_context.type_bundle, kefir_ast_type_unsigned_short(),
-        KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(&kft_mem, &global_context.symbols, "x")), NULL);
+        KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(&kft_mem, &global_context.symbols, "x")), NULL);
     ASSERT(kefir_ast_type_is_variably_modified(type1));
 
     struct kefir_ast_struct_type *struct_type2 = NULL;

@@ -33,28 +33,28 @@ kefir_result_t ast_builtin_free(struct kefir_mem *mem, struct kefir_ast_node_bas
         REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, node->arguments[i]));
     }
     KEFIR_FREE(mem, node->arguments);
-    KEFIR_FREE(mem, node);
+    KEFIR_AST_NODE_ARENA_FREE(mem, node);
     return KEFIR_OK;
 }
 
 const struct kefir_ast_node_class AST_BUILTIN_CLASS = {
     .type = KEFIR_AST_BUILTIN, .visit = ast_builtin_visit, .free = ast_builtin_free};
 
-struct kefir_ast_builtin *kefir_ast_new_builtin(struct kefir_mem *mem, kefir_ast_builtin_operator_t builtin_op) {
-    REQUIRE(mem != NULL, NULL);
+struct kefir_ast_builtin *kefir_ast_new_builtin(struct kefir_mem *mem, struct kefir_memory_arena *arena, kefir_ast_builtin_operator_t builtin_op) {
+    REQUIRE(mem != NULL || arena != NULL, NULL);
 
-    struct kefir_ast_builtin *builtin = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_builtin));
+    struct kefir_ast_builtin *builtin = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_builtin);
     REQUIRE(builtin != NULL, NULL);
-    builtin->base.refcount = 1;
+    builtin->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
     builtin->base.klass = &AST_BUILTIN_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&builtin->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, builtin);
+        KEFIR_AST_NODE_ARENA_FREE(mem, builtin);
         return NULL;
     });
     res = kefir_source_location_empty(&builtin->base.source_location);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, builtin);
+        KEFIR_AST_NODE_ARENA_FREE(mem, builtin);
         return NULL;
     });
     builtin->builtin = builtin_op;

@@ -367,132 +367,127 @@ struct kefir_ast_constant *kefir_ast_new_constant_complex_float64x(struct kefir_
                                                                    kefir_long_double_t);
 struct kefir_ast_constant *kefir_ast_new_constant_complex_float80(struct kefir_mem *, struct kefir_memory_arena *, kefir_long_double_t,
                                                                   kefir_long_double_t);
-struct kefir_ast_identifier *kefir_ast_new_identifier(struct kefir_mem *, struct kefir_string_pool *, const char *);
+struct kefir_ast_identifier *kefir_ast_new_identifier(struct kefir_mem *, struct kefir_memory_arena *, struct kefir_string_pool *, const char *);
 
-struct kefir_ast_string_literal *kefir_ast_new_string_literal_multibyte(struct kefir_mem *, const char *, kefir_size_t);
-struct kefir_ast_string_literal *kefir_ast_new_string_literal_unicode8(struct kefir_mem *, const char *, kefir_size_t);
-struct kefir_ast_string_literal *kefir_ast_new_string_literal_unicode16(struct kefir_mem *, const kefir_char16_t *,
+struct kefir_ast_string_literal *kefir_ast_new_string_literal_multibyte(struct kefir_mem *, struct kefir_memory_arena *, const char *, kefir_size_t);
+struct kefir_ast_string_literal *kefir_ast_new_string_literal_unicode8(struct kefir_mem *, struct kefir_memory_arena *, const char *, kefir_size_t);
+struct kefir_ast_string_literal *kefir_ast_new_string_literal_unicode16(struct kefir_mem *, struct kefir_memory_arena *, const kefir_char16_t *,
                                                                         kefir_size_t);
-struct kefir_ast_string_literal *kefir_ast_new_string_literal_unicode32(struct kefir_mem *, const kefir_char32_t *,
+struct kefir_ast_string_literal *kefir_ast_new_string_literal_unicode32(struct kefir_mem *, struct kefir_memory_arena *, const kefir_char32_t *,
                                                                         kefir_size_t);
-struct kefir_ast_string_literal *kefir_ast_new_string_literal_wide(struct kefir_mem *, const kefir_wchar_t *,
+struct kefir_ast_string_literal *kefir_ast_new_string_literal_wide(struct kefir_mem *, struct kefir_memory_arena *, const kefir_wchar_t *,
                                                                    kefir_size_t);
-struct kefir_ast_string_literal *kefir_ast_new_string_literal(struct kefir_mem *, const void *, kefir_size_t,
-                                                              kefir_ast_string_literal_type_t);
 
-#define KEFIR_AST_MAKE_STRING_LITERAL_MULTIBYTE(_mem, _string) \
-    (kefir_ast_new_string_literal_multibyte((_mem), (_string), strlen((_string)) + 1))
+struct kefir_ast_generic_selection *kefir_ast_new_generic_selection(struct kefir_mem *, struct kefir_memory_arena *, struct kefir_ast_node_base *);
 
-struct kefir_ast_generic_selection *kefir_ast_new_generic_selection(struct kefir_mem *, struct kefir_ast_node_base *);
+struct kefir_ast_declaration *kefir_ast_new_declaration(struct kefir_mem *, struct kefir_memory_arena *);
+struct kefir_ast_attribute_declaration *kefir_ast_new_attribute_declaration(struct kefir_mem *, struct kefir_memory_arena *);
 
-struct kefir_ast_declaration *kefir_ast_new_declaration(struct kefir_mem *);
-struct kefir_ast_attribute_declaration *kefir_ast_new_attribute_declaration(struct kefir_mem *);
-
-struct kefir_ast_init_declarator *kefir_ast_new_init_declarator(struct kefir_mem *, struct kefir_ast_declarator *,
+struct kefir_ast_init_declarator *kefir_ast_new_init_declarator(struct kefir_mem *, struct kefir_memory_arena *, struct kefir_ast_declarator *,
                                                                 struct kefir_ast_initializer *);
 
-struct kefir_ast_type_name *kefir_ast_new_type_name(struct kefir_mem *, struct kefir_ast_declarator *);
+struct kefir_ast_type_name *kefir_ast_new_type_name(struct kefir_mem *, struct kefir_memory_arena *, struct kefir_ast_declarator *);
 
-struct kefir_ast_compound_literal *kefir_ast_new_compound_literal(struct kefir_mem *, struct kefir_ast_type_name *);
+struct kefir_ast_compound_literal *kefir_ast_new_compound_literal(struct kefir_mem *, struct kefir_memory_arena *, struct kefir_ast_type_name *);
 
-struct kefir_ast_cast_operator *kefir_ast_new_cast_operator(struct kefir_mem *, struct kefir_ast_type_name *,
+struct kefir_ast_cast_operator *kefir_ast_new_cast_operator(struct kefir_mem *, struct kefir_memory_arena *, struct kefir_ast_type_name *,
                                                             struct kefir_ast_node_base *);
 
-struct kefir_ast_array_subscript *kefir_ast_new_array_subscript(struct kefir_mem *, struct kefir_ast_node_base *,
+struct kefir_ast_array_subscript *kefir_ast_new_array_subscript(struct kefir_mem *, struct kefir_memory_arena *, struct kefir_ast_node_base *,
                                                                 struct kefir_ast_node_base *);
 
-struct kefir_ast_function_call *kefir_ast_new_function_call(struct kefir_mem *, struct kefir_ast_node_base *);
+struct kefir_ast_function_call *kefir_ast_new_function_call(struct kefir_mem *, struct kefir_memory_arena *, struct kefir_ast_node_base *);
 
-struct kefir_ast_struct_member *kefir_ast_new_struct_member(struct kefir_mem *, struct kefir_string_pool *,
+struct kefir_ast_struct_member *kefir_ast_new_struct_member(struct kefir_mem *, struct kefir_memory_arena *, struct kefir_string_pool *,
                                                             struct kefir_ast_node_base *, const char *);
-struct kefir_ast_struct_member *kefir_ast_new_struct_indirect_member(struct kefir_mem *, struct kefir_string_pool *,
+struct kefir_ast_struct_member *kefir_ast_new_struct_indirect_member(struct kefir_mem *, struct kefir_memory_arena *, struct kefir_string_pool *,
                                                                      struct kefir_ast_node_base *, const char *);
-struct kefir_ast_unary_operation *kefir_ast_new_unary_operation(struct kefir_mem *, kefir_ast_unary_operation_type_t,
+struct kefir_ast_unary_operation *kefir_ast_new_unary_operation(struct kefir_mem *, struct kefir_memory_arena *, kefir_ast_unary_operation_type_t,
                                                                 struct kefir_ast_node_base *);
-struct kefir_ast_binary_operation *kefir_ast_new_binary_operation(struct kefir_mem *, kefir_ast_binary_operation_type_t,
+struct kefir_ast_binary_operation *kefir_ast_new_binary_operation(struct kefir_mem *, struct kefir_memory_arena *, kefir_ast_binary_operation_type_t,
                                                                   struct kefir_ast_node_base *,
                                                                   struct kefir_ast_node_base *);
 
-struct kefir_ast_conditional_operator *kefir_ast_new_conditional_operator(struct kefir_mem *,
+struct kefir_ast_conditional_operator *kefir_ast_new_conditional_operator(struct kefir_mem *, struct kefir_memory_arena *,
                                                                           struct kefir_ast_node_base *,
                                                                           struct kefir_ast_node_base *,
                                                                           struct kefir_ast_node_base *);
 
-struct kefir_ast_assignment_operator *kefir_ast_new_simple_assignment(struct kefir_mem *, struct kefir_ast_node_base *,
+struct kefir_ast_assignment_operator *kefir_ast_new_simple_assignment(struct kefir_mem *, struct kefir_memory_arena *, struct kefir_ast_node_base *,
                                                                       struct kefir_ast_node_base *);
 
-struct kefir_ast_assignment_operator *kefir_ast_new_compound_assignment(struct kefir_mem *,
+struct kefir_ast_assignment_operator *kefir_ast_new_compound_assignment(struct kefir_mem *, struct kefir_memory_arena *,
                                                                         kefir_ast_assignment_operation_t,
                                                                         struct kefir_ast_node_base *,
                                                                         struct kefir_ast_node_base *);
 
-struct kefir_ast_comma_operator *kefir_ast_new_comma_operator(struct kefir_mem *);
+struct kefir_ast_comma_operator *kefir_ast_new_comma_operator(struct kefir_mem *, struct kefir_memory_arena *);
 
-struct kefir_ast_static_assertion *kefir_ast_new_static_assertion(struct kefir_mem *, struct kefir_ast_node_base *,
+struct kefir_ast_static_assertion *kefir_ast_new_static_assertion(struct kefir_mem *, struct kefir_memory_arena *, struct kefir_ast_node_base *,
                                                                   struct kefir_ast_string_literal *);
 
-struct kefir_ast_labeled_statement *kefir_ast_new_labeled_statement(struct kefir_mem *, struct kefir_string_pool *,
+struct kefir_ast_labeled_statement *kefir_ast_new_labeled_statement(struct kefir_mem *, struct kefir_memory_arena *, struct kefir_string_pool *,
                                                                     const char *, struct kefir_ast_node_base *);
 
-struct kefir_ast_case_statement *kefir_ast_new_case_statement(struct kefir_mem *, struct kefir_ast_node_base *,
+struct kefir_ast_case_statement *kefir_ast_new_case_statement(struct kefir_mem *, struct kefir_memory_arena *, struct kefir_ast_node_base *,
                                                               struct kefir_ast_node_base *);
-struct kefir_ast_case_statement *kefir_ast_new_range_case_statement(struct kefir_mem *, struct kefir_ast_node_base *,
+struct kefir_ast_case_statement *kefir_ast_new_range_case_statement(struct kefir_mem *, struct kefir_memory_arena *, struct kefir_ast_node_base *,
                                                                     struct kefir_ast_node_base *,
                                                                     struct kefir_ast_node_base *);
 
-struct kefir_ast_expression_statement *kefir_ast_new_expression_statement(struct kefir_mem *,
+struct kefir_ast_expression_statement *kefir_ast_new_expression_statement(struct kefir_mem *, struct kefir_memory_arena *,
                                                                           struct kefir_ast_node_base *);
 
-struct kefir_ast_compound_statement *kefir_ast_new_compound_statement(struct kefir_mem *);
+struct kefir_ast_compound_statement *kefir_ast_new_compound_statement(struct kefir_mem *, struct kefir_memory_arena *);
 
-struct kefir_ast_conditional_statement *kefir_ast_new_conditional_statement(struct kefir_mem *,
+struct kefir_ast_conditional_statement *kefir_ast_new_conditional_statement(struct kefir_mem *, struct kefir_memory_arena *,
                                                                             struct kefir_ast_node_base *,
                                                                             struct kefir_ast_node_base *,
                                                                             struct kefir_ast_node_base *);
 
-struct kefir_ast_switch_statement *kefir_ast_new_switch_statement(struct kefir_mem *, struct kefir_ast_node_base *,
+struct kefir_ast_switch_statement *kefir_ast_new_switch_statement(struct kefir_mem *, struct kefir_memory_arena *, struct kefir_ast_node_base *,
                                                                   struct kefir_ast_node_base *);
 
-struct kefir_ast_while_statement *kefir_ast_new_while_statement(struct kefir_mem *, struct kefir_ast_node_base *,
+struct kefir_ast_while_statement *kefir_ast_new_while_statement(struct kefir_mem *, struct kefir_memory_arena *, struct kefir_ast_node_base *,
                                                                 struct kefir_ast_node_base *);
 
-struct kefir_ast_do_while_statement *kefir_ast_new_do_while_statement(struct kefir_mem *, struct kefir_ast_node_base *,
+struct kefir_ast_do_while_statement *kefir_ast_new_do_while_statement(struct kefir_mem *, struct kefir_memory_arena *, struct kefir_ast_node_base *,
                                                                       struct kefir_ast_node_base *);
 
-struct kefir_ast_for_statement *kefir_ast_new_for_statement(struct kefir_mem *, struct kefir_ast_node_base *,
+struct kefir_ast_for_statement *kefir_ast_new_for_statement(struct kefir_mem *, struct kefir_memory_arena *, struct kefir_ast_node_base *,
                                                             struct kefir_ast_node_base *, struct kefir_ast_node_base *,
                                                             struct kefir_ast_node_base *);
 
-struct kefir_ast_goto_statement *kefir_ast_new_goto_statement(struct kefir_mem *, struct kefir_string_pool *,
+struct kefir_ast_goto_statement *kefir_ast_new_goto_statement(struct kefir_mem *, struct kefir_memory_arena *, struct kefir_string_pool *,
                                                               const char *);
 
-struct kefir_ast_goto_statement *kefir_ast_new_goto_address_statement(struct kefir_mem *, struct kefir_ast_node_base *);
+struct kefir_ast_goto_statement *kefir_ast_new_goto_address_statement(struct kefir_mem *, struct kefir_memory_arena *, struct kefir_ast_node_base *);
 
-struct kefir_ast_continue_statement *kefir_ast_new_continue_statement(struct kefir_mem *);
+struct kefir_ast_continue_statement *kefir_ast_new_continue_statement(struct kefir_mem *, struct kefir_memory_arena *);
 
-struct kefir_ast_break_statement *kefir_ast_new_break_statement(struct kefir_mem *);
+struct kefir_ast_break_statement *kefir_ast_new_break_statement(struct kefir_mem *, struct kefir_memory_arena *);
 
-struct kefir_ast_return_statement *kefir_ast_new_return_statement(struct kefir_mem *, struct kefir_ast_node_base *);
+struct kefir_ast_return_statement *kefir_ast_new_return_statement(struct kefir_mem *, struct kefir_memory_arena *, struct kefir_ast_node_base *);
 
-struct kefir_ast_function_definition *kefir_ast_new_function_definition(struct kefir_mem *,
+struct kefir_ast_function_definition *kefir_ast_new_function_definition(struct kefir_mem *, struct kefir_memory_arena *,
                                                                         struct kefir_ast_declarator *,
                                                                         struct kefir_ast_compound_statement *);
 
-struct kefir_ast_translation_unit *kefir_ast_new_translation_unit(struct kefir_mem *);
+struct kefir_ast_translation_unit *kefir_ast_new_translation_unit(struct kefir_mem *, struct kefir_memory_arena *);
 
-struct kefir_ast_builtin *kefir_ast_new_builtin(struct kefir_mem *, kefir_ast_builtin_operator_t);
+struct kefir_ast_builtin *kefir_ast_new_builtin(struct kefir_mem *, struct kefir_memory_arena *, kefir_ast_builtin_operator_t);
 
-struct kefir_ast_extension_node *kefir_ast_new_extension_node(struct kefir_mem *,
+struct kefir_ast_extension_node *kefir_ast_new_extension_node(struct kefir_mem *, struct kefir_memory_arena *,
                                                               const struct kefir_ast_extension_node_class *, void *);
 
-struct kefir_ast_label_address *kefir_ast_new_label_address(struct kefir_mem *, struct kefir_string_pool *,
+struct kefir_ast_label_address *kefir_ast_new_label_address(struct kefir_mem *, struct kefir_memory_arena *, struct kefir_string_pool *,
                                                             const char *);
 
-struct kefir_ast_statement_expression *kefir_ast_new_statement_expression(struct kefir_mem *);
+struct kefir_ast_statement_expression *kefir_ast_new_statement_expression(struct kefir_mem *, struct kefir_memory_arena *);
 
-struct kefir_ast_attribute_list *kefir_ast_new_attribute_list(struct kefir_mem *);
+struct kefir_ast_attribute_list *kefir_ast_new_attribute_list(struct kefir_mem *, struct kefir_memory_arena *);
 
-struct kefir_ast_inline_assembly *kefir_ast_new_inline_assembly(struct kefir_mem *,
+struct kefir_ast_inline_assembly *kefir_ast_new_inline_assembly(struct kefir_mem *, struct kefir_memory_arena *,
                                                                 struct kefir_ast_inline_assembly_qualifiers,
                                                                 const char *);
 

@@ -60,7 +60,7 @@ static kefir_result_t define_unit1(struct kefir_mem *mem, const struct kefir_ast
         mem, entry2, kefir_ast_declarator_identifier(mem, context->symbols, "dim"), NULL));
     REQUIRE_OK(kefir_ast_structure_specifier_append_entry(mem, specifier1, entry2));
 
-    struct kefir_ast_declaration *decl1 = kefir_ast_new_single_declaration(
+    struct kefir_ast_declaration *decl1 = kefir_ast_new_single_declaration_noarena(
         mem, kefir_ast_declarator_identifier(mem, context->symbols, "matrix_t"), NULL, NULL);
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &decl1->specifiers,
                                                           kefir_ast_storage_class_specifier_typedef(mem)));
@@ -171,7 +171,7 @@ static kefir_result_t define_unit2(struct kefir_mem *mem, const struct kefir_ast
     struct kefir_ast_initializer *init1 = NULL;
     REQUIRE_OK(make_init(mem, context, 0, &init1));
 
-    struct kefir_ast_declaration *decl1 = kefir_ast_new_single_declaration(
+    struct kefir_ast_declaration *decl1 = kefir_ast_new_single_declaration_noarena(
         mem, kefir_ast_declarator_identifier(mem, context->symbols, "matrix1"), init1, NULL);
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(
         mem, &decl1->specifiers, kefir_ast_type_specifier_typedef(mem, context->symbols, "matrix_t")));
@@ -184,7 +184,7 @@ static kefir_result_t define_unit3(struct kefir_mem *mem, const struct kefir_ast
     struct kefir_ast_initializer *init1 = NULL;
     REQUIRE_OK(make_init(mem, context, 10, &init1));
 
-    struct kefir_ast_declaration *decl1 = kefir_ast_new_single_declaration(
+    struct kefir_ast_declaration *decl1 = kefir_ast_new_single_declaration_noarena(
         mem, kefir_ast_declarator_identifier(mem, context->symbols, "matrix2"), init1, NULL);
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &decl1->specifiers,
                                                           kefir_ast_storage_class_specifier_static(mem)));
@@ -192,8 +192,8 @@ static kefir_result_t define_unit3(struct kefir_mem *mem, const struct kefir_ast
         mem, &decl1->specifiers, kefir_ast_type_specifier_typedef(mem, context->symbols, "matrix_t")));
     REQUIRE_OK(kefir_ast_translation_unit_append(mem, unit, KEFIR_AST_NODE_BASE(decl1)));
 
-    struct kefir_ast_compound_statement *body1 = kefir_ast_new_compound_statement(mem);
-    struct kefir_ast_function_definition *func1 = kefir_ast_new_function_definition(
+    struct kefir_ast_compound_statement *body1 = kefir_ast_new_compound_statement_noarena(mem);
+    struct kefir_ast_function_definition *func1 = kefir_ast_new_function_definition_noarena(
         mem,
         kefir_ast_declarator_pointer(
             mem,
@@ -207,10 +207,10 @@ static kefir_result_t define_unit3(struct kefir_mem *mem, const struct kefir_ast
                                         kefir_ast_structure_specifier_init(mem, context->symbols, "matrix", false))));
     REQUIRE_OK(kefir_ast_compound_statement_append(
         mem, body1,
-        KEFIR_AST_NODE_BASE(kefir_ast_new_return_statement(
-            mem, KEFIR_AST_NODE_BASE(kefir_ast_new_unary_operation(
+        KEFIR_AST_NODE_BASE(kefir_ast_new_return_statement_noarena(
+            mem, KEFIR_AST_NODE_BASE(kefir_ast_new_unary_operation_noarena(
                      mem, KEFIR_AST_OPERATION_ADDRESS,
-                     KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "matrix2"))))))));
+                     KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "matrix2"))))))));
     REQUIRE_OK(kefir_ast_translation_unit_append(mem, unit, KEFIR_AST_NODE_BASE(func1)));
     return KEFIR_OK;
 }
@@ -220,7 +220,7 @@ static kefir_result_t define_unit4(struct kefir_mem *mem, const struct kefir_ast
     struct kefir_ast_initializer *init1 = NULL;
     REQUIRE_OK(make_init(mem, context, 100, &init1));
 
-    struct kefir_ast_declaration *decl1 = kefir_ast_new_single_declaration(
+    struct kefir_ast_declaration *decl1 = kefir_ast_new_single_declaration_noarena(
         mem, kefir_ast_declarator_identifier(mem, context->symbols, "matrix3"), init1, NULL);
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &decl1->specifiers,
                                                           kefir_ast_storage_class_specifier_static(mem)));
@@ -228,8 +228,8 @@ static kefir_result_t define_unit4(struct kefir_mem *mem, const struct kefir_ast
         mem, &decl1->specifiers, kefir_ast_type_specifier_typedef(mem, context->symbols, "matrix_t")));
     REQUIRE_OK(kefir_ast_translation_unit_append(mem, unit, KEFIR_AST_NODE_BASE(decl1)));
 
-    struct kefir_ast_compound_statement *body1 = kefir_ast_new_compound_statement(mem);
-    struct kefir_ast_function_definition *func1 = kefir_ast_new_function_definition(
+    struct kefir_ast_compound_statement *body1 = kefir_ast_new_compound_statement_noarena(mem);
+    struct kefir_ast_function_definition *func1 = kefir_ast_new_function_definition_noarena(
         mem,
         kefir_ast_declarator_pointer(
             mem,
@@ -243,10 +243,10 @@ static kefir_result_t define_unit4(struct kefir_mem *mem, const struct kefir_ast
                                         kefir_ast_structure_specifier_init(mem, context->symbols, "matrix", false))));
     REQUIRE_OK(kefir_ast_compound_statement_append(
         mem, body1,
-        KEFIR_AST_NODE_BASE(kefir_ast_new_return_statement(
-            mem, KEFIR_AST_NODE_BASE(kefir_ast_new_unary_operation(
+        KEFIR_AST_NODE_BASE(kefir_ast_new_return_statement_noarena(
+            mem, KEFIR_AST_NODE_BASE(kefir_ast_new_unary_operation_noarena(
                      mem, KEFIR_AST_OPERATION_ADDRESS,
-                     KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "matrix3"))))))));
+                     KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "matrix3"))))))));
     REQUIRE_OK(kefir_ast_translation_unit_append(mem, unit, KEFIR_AST_NODE_BASE(func1)));
     return KEFIR_OK;
 }
@@ -256,7 +256,7 @@ static kefir_result_t define_unit5(struct kefir_mem *mem, const struct kefir_ast
     struct kefir_ast_initializer *init1 = NULL;
     REQUIRE_OK(make_init(mem, context, -1, &init1));
 
-    struct kefir_ast_declaration *decl1 = kefir_ast_new_single_declaration(
+    struct kefir_ast_declaration *decl1 = kefir_ast_new_single_declaration_noarena(
         mem, kefir_ast_declarator_identifier(mem, context->symbols, "matrix4"), init1, NULL);
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &decl1->specifiers,
                                                           kefir_ast_storage_class_specifier_static(mem)));
@@ -264,8 +264,8 @@ static kefir_result_t define_unit5(struct kefir_mem *mem, const struct kefir_ast
         mem, &decl1->specifiers, kefir_ast_type_specifier_typedef(mem, context->symbols, "matrix_t")));
     REQUIRE_OK(kefir_ast_translation_unit_append(mem, unit, KEFIR_AST_NODE_BASE(decl1)));
 
-    struct kefir_ast_compound_statement *body1 = kefir_ast_new_compound_statement(mem);
-    struct kefir_ast_function_definition *func1 = kefir_ast_new_function_definition(
+    struct kefir_ast_compound_statement *body1 = kefir_ast_new_compound_statement_noarena(mem);
+    struct kefir_ast_function_definition *func1 = kefir_ast_new_function_definition_noarena(
         mem,
         kefir_ast_declarator_pointer(
             mem,
@@ -279,10 +279,10 @@ static kefir_result_t define_unit5(struct kefir_mem *mem, const struct kefir_ast
                                         kefir_ast_structure_specifier_init(mem, context->symbols, "matrix", false))));
     REQUIRE_OK(kefir_ast_compound_statement_append(
         mem, body1,
-        KEFIR_AST_NODE_BASE(kefir_ast_new_return_statement(
-            mem, KEFIR_AST_NODE_BASE(kefir_ast_new_unary_operation(
+        KEFIR_AST_NODE_BASE(kefir_ast_new_return_statement_noarena(
+            mem, KEFIR_AST_NODE_BASE(kefir_ast_new_unary_operation_noarena(
                      mem, KEFIR_AST_OPERATION_ADDRESS,
-                     KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "matrix4"))))))));
+                     KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "matrix4"))))))));
     REQUIRE_OK(kefir_ast_translation_unit_append(mem, unit, KEFIR_AST_NODE_BASE(func1)));
     return KEFIR_OK;
 }
@@ -293,17 +293,17 @@ static kefir_result_t define_unit6(struct kefir_mem *mem, const struct kefir_ast
     REQUIRE_OK(kefir_ast_initializer_list_append(
         mem, &init1->list, NULL,
         kefir_ast_new_expression_initializer(
-            mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "get_matrix2")))));
+            mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "get_matrix2")))));
     REQUIRE_OK(kefir_ast_initializer_list_append(
         mem, &init1->list, NULL,
         kefir_ast_new_expression_initializer(
-            mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "get_matrix3")))));
+            mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "get_matrix3")))));
     REQUIRE_OK(kefir_ast_initializer_list_append(
         mem, &init1->list, NULL,
         kefir_ast_new_expression_initializer(
-            mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "get_matrix4")))));
+            mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "get_matrix4")))));
 
-    struct kefir_ast_declaration *decl1 = kefir_ast_new_single_declaration(
+    struct kefir_ast_declaration *decl1 = kefir_ast_new_single_declaration_noarena(
         mem,
         kefir_ast_declarator_pointer(
             mem, kefir_ast_declarator_function(
@@ -338,7 +338,7 @@ static kefir_result_t generate_ir(struct kefir_mem *mem, struct kefir_ir_module 
     REQUIRE_OK(
         kefir_ast_global_context_init(mem, kefir_util_default_type_traits(), &env.target_env, &global_context, NULL));
 
-    struct kefir_ast_translation_unit *unit_node = kefir_ast_new_translation_unit(mem);
+    struct kefir_ast_translation_unit *unit_node = kefir_ast_new_translation_unit_noarena(mem);
 
     REQUIRE_OK(define_unit(mem, &global_context.context, unit_node));
 

@@ -31,7 +31,7 @@ kefir_result_t ast_attribute_list_free(struct kefir_mem *mem, struct kefir_ast_n
     ASSIGN_DECL_CAST(struct kefir_ast_attribute_list *, node, KEFIR_AST_NODE_SELF(base));
     REQUIRE_OK(kefir_list_free(mem, &node->list));
     REQUIRE_OK(kefir_token_allocator_free(mem, &node->unstructured_parameter_token_allocator));
-    KEFIR_FREE(mem, node);
+    KEFIR_AST_NODE_ARENA_FREE(mem, node);
     return KEFIR_OK;
 }
 
@@ -65,12 +65,12 @@ static kefir_result_t attribute_free(struct kefir_mem *mem, struct kefir_list *l
     return KEFIR_OK;
 }
 
-struct kefir_ast_attribute_list *kefir_ast_new_attribute_list(struct kefir_mem *mem) {
-    REQUIRE(mem != NULL, NULL);
+struct kefir_ast_attribute_list *kefir_ast_new_attribute_list(struct kefir_mem *mem, struct kefir_memory_arena *arena) {
+    REQUIRE(mem != NULL || arena != NULL, NULL);
 
-    struct kefir_ast_attribute_list *attribute_list = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_attribute_list));
+    struct kefir_ast_attribute_list *attribute_list = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_attribute_list);
     REQUIRE(attribute_list != NULL, NULL);
-    attribute_list->base.refcount = 1;
+    attribute_list->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
     attribute_list->base.klass = &AST_ATTRIBUTE_LIST_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&attribute_list->base.properties);
     REQUIRE_CHAIN(&res, kefir_source_location_empty(&attribute_list->base.source_location));
@@ -78,7 +78,7 @@ struct kefir_ast_attribute_list *kefir_ast_new_attribute_list(struct kefir_mem *
     REQUIRE_CHAIN(&res, kefir_list_on_remove(&attribute_list->list, attribute_free, NULL));
     REQUIRE_CHAIN(&res, kefir_token_allocator_init(&attribute_list->unstructured_parameter_token_allocator));
     REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, attribute_list);
+        KEFIR_AST_NODE_ARENA_FREE(mem, attribute_list);
         return NULL;
     });
     return attribute_list;

@@ -141,7 +141,7 @@ kefir_result_t kefir_parser_ast_builder_array_subscript(struct kefir_mem *mem,
         return KEFIR_OK;
     });
 
-    struct kefir_ast_array_subscript *result = kefir_ast_new_array_subscript(mem, array, subscript);
+    struct kefir_ast_array_subscript *result = kefir_ast_new_array_subscript(mem, builder->parser->ast_arena, array, subscript);
     REQUIRE_ELSE(result != NULL, {
         KEFIR_AST_NODE_FREE(mem, array);
         KEFIR_AST_NODE_FREE(mem, subscript);
@@ -163,7 +163,7 @@ kefir_result_t kefir_parser_ast_builder_function_call(struct kefir_mem *mem, str
     struct kefir_ast_node_base *function = NULL;
     REQUIRE_OK(kefir_parser_ast_builder_pop(mem, builder, &function));
 
-    struct kefir_ast_function_call *call = kefir_ast_new_function_call(mem, function);
+    struct kefir_ast_function_call *call = kefir_ast_new_function_call(mem, builder->parser->ast_arena, function);
     REQUIRE_ELSE(call != NULL, {
         KEFIR_AST_NODE_FREE(mem, function);
         return KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST function call");
@@ -221,9 +221,9 @@ kefir_result_t kefir_parser_ast_builder_struct_member(struct kefir_mem *mem, str
 
     struct kefir_ast_struct_member *member = NULL;
     if (direct) {
-        member = kefir_ast_new_struct_member(mem, builder->parser->symbols, base, identifier);
+        member = kefir_ast_new_struct_member(mem, builder->parser->ast_arena, builder->parser->symbols, base, identifier);
     } else {
-        member = kefir_ast_new_struct_indirect_member(mem, builder->parser->symbols, base, identifier);
+        member = kefir_ast_new_struct_indirect_member(mem, builder->parser->ast_arena, builder->parser->symbols, base, identifier);
     }
     REQUIRE_ELSE(member != NULL, {
         KEFIR_AST_NODE_FREE(mem, base);
@@ -246,7 +246,7 @@ kefir_result_t kefir_parser_ast_builder_unary_operation(struct kefir_mem *mem, s
     struct kefir_ast_node_base *base = NULL;
     REQUIRE_OK(kefir_parser_ast_builder_pop(mem, builder, &base));
 
-    struct kefir_ast_unary_operation *oper = kefir_ast_new_unary_operation(mem, operation, base);
+    struct kefir_ast_unary_operation *oper = kefir_ast_new_unary_operation(mem, builder->parser->ast_arena, operation, base);
     REQUIRE_ELSE(oper != NULL, {
         KEFIR_AST_NODE_FREE(mem, base);
         return KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST unary operation");
@@ -274,7 +274,7 @@ kefir_result_t kefir_parser_ast_builder_binary_operation(struct kefir_mem *mem,
         return res;
     });
 
-    struct kefir_ast_binary_operation *binary = kefir_ast_new_binary_operation(mem, operation, left, right);
+    struct kefir_ast_binary_operation *binary = kefir_ast_new_binary_operation(mem, builder->parser->ast_arena, operation, left, right);
     REQUIRE_ELSE(binary != NULL, {
         KEFIR_AST_NODE_FREE(mem, left);
         KEFIR_AST_NODE_FREE(mem, right);
@@ -307,7 +307,7 @@ kefir_result_t kefir_parser_ast_builder_cast(struct kefir_mem *mem, struct kefir
     });
 
     struct kefir_ast_cast_operator *cast =
-        kefir_ast_new_cast_operator(mem, (struct kefir_ast_type_name *) KEFIR_AST_NODE_SELF(type_name), expression);
+        kefir_ast_new_cast_operator(mem, builder->parser->ast_arena, (struct kefir_ast_type_name *) KEFIR_AST_NODE_SELF(type_name), expression);
     REQUIRE_ELSE(cast != NULL, {
         KEFIR_AST_NODE_FREE(mem, type_name);
         KEFIR_AST_NODE_FREE(mem, expression);
@@ -336,7 +336,7 @@ kefir_result_t kefir_parser_ast_builder_conditional_operator_ommited1(struct kef
     });
 
     struct kefir_ast_conditional_operator *operator=
-        kefir_ast_new_conditional_operator(mem, condition, NULL, elseBranch);
+        kefir_ast_new_conditional_operator(mem, builder->parser->ast_arena, condition, NULL, elseBranch);
     REQUIRE_ELSE(operator!= NULL, {
         KEFIR_AST_NODE_FREE(mem, condition);
         KEFIR_AST_NODE_FREE(mem, elseBranch);
@@ -371,7 +371,7 @@ kefir_result_t kefir_parser_ast_builder_conditional_operator(struct kefir_mem *m
     });
 
     struct kefir_ast_conditional_operator *operator=
-        kefir_ast_new_conditional_operator(mem, condition, thenBranch, elseBranch);
+        kefir_ast_new_conditional_operator(mem, builder->parser->ast_arena, condition, thenBranch, elseBranch);
     REQUIRE_ELSE(operator!= NULL, {
         KEFIR_AST_NODE_FREE(mem, condition);
         KEFIR_AST_NODE_FREE(mem, thenBranch);
@@ -401,7 +401,7 @@ kefir_result_t kefir_parser_ast_builder_assignment_operator(struct kefir_mem *me
         return res;
     });
 
-    struct kefir_ast_assignment_operator *assignment = kefir_ast_new_compound_assignment(mem, oper, lvalue, expression);
+    struct kefir_ast_assignment_operator *assignment = kefir_ast_new_compound_assignment(mem, builder->parser->ast_arena, oper, lvalue, expression);
     REQUIRE_ELSE(assignment != NULL, {
         KEFIR_AST_NODE_FREE(mem, lvalue);
         KEFIR_AST_NODE_FREE(mem, expression);
@@ -444,7 +444,7 @@ kefir_result_t kefir_parser_ast_builder_comma_operator(struct kefir_mem *mem,
             return res;
         });
     } else {
-        struct kefir_ast_comma_operator *comma = kefir_ast_new_comma_operator(mem);
+        struct kefir_ast_comma_operator *comma = kefir_ast_new_comma_operator(mem, builder->parser->ast_arena);
         REQUIRE_ELSE(comma != NULL, {
             KEFIR_AST_NODE_FREE(mem, expr1);
             KEFIR_AST_NODE_FREE(mem, expr2);
@@ -502,7 +502,7 @@ kefir_result_t kefir_parser_ast_builder_static_assertion(struct kefir_mem *mem,
     });
 
     struct kefir_ast_static_assertion *static_assertion =
-        kefir_ast_new_static_assertion(mem, assertion, string_literal != NULL ? KEFIR_AST_NODE_SELF(string_literal) : NULL);
+        kefir_ast_new_static_assertion(mem, builder->parser->ast_arena, assertion, string_literal != NULL ? KEFIR_AST_NODE_SELF(string_literal) : NULL);
     REQUIRE_ELSE(static_assertion != NULL, {
         if (string_literal != NULL) {
             KEFIR_AST_NODE_FREE(mem, string_literal);
@@ -528,7 +528,7 @@ kefir_result_t kefir_parser_ast_builder_generic_selection(struct kefir_mem *mem,
     struct kefir_ast_node_base *expr = NULL;
     REQUIRE_OK(kefir_parser_ast_builder_pop(mem, builder, &expr));
 
-    struct kefir_ast_generic_selection *generic_selection = kefir_ast_new_generic_selection(mem, expr);
+    struct kefir_ast_generic_selection *generic_selection = kefir_ast_new_generic_selection(mem, builder->parser->ast_arena, expr);
     REQUIRE_ELSE(generic_selection != NULL, {
         KEFIR_AST_NODE_FREE(mem, expr);
         return KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST generic selection");
@@ -639,7 +639,7 @@ kefir_result_t kefir_parser_ast_builder_compound_literal(struct kefir_mem *mem,
         return KEFIR_SET_ERROR(KEFIR_INVALID_CHANGE, "Expected AST type name");
     });
 
-    struct kefir_ast_compound_literal *compound = kefir_ast_new_compound_literal(mem, KEFIR_AST_NODE_SELF(type_name));
+    struct kefir_ast_compound_literal *compound = kefir_ast_new_compound_literal(mem, builder->parser->ast_arena, KEFIR_AST_NODE_SELF(type_name));
     REQUIRE_ELSE(compound != NULL, {
         KEFIR_AST_NODE_FREE(mem, type_name);
         return KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST compound literal");
@@ -665,7 +665,7 @@ kefir_result_t kefir_parser_ast_builder_declaration(struct kefir_mem *mem, struc
     REQUIRE(builder != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST builder"));
     REQUIRE(list != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST declarator specifier list"));
 
-    struct kefir_ast_declaration *declaration = kefir_ast_new_declaration(mem);
+    struct kefir_ast_declaration *declaration = kefir_ast_new_declaration(mem, builder->parser->ast_arena);
     REQUIRE(declaration != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST declaration list"));
 
     kefir_result_t res = kefir_ast_declarator_specifier_list_clone(mem, &declaration->specifiers, list);
@@ -697,7 +697,7 @@ kefir_result_t kefir_parser_ast_builder_init_declarator(struct kefir_mem *mem, s
     });
     ASSIGN_DECL_CAST(struct kefir_ast_declaration *, decl_list, KEFIR_AST_NODE_SELF(declaration));
 
-    struct kefir_ast_init_declarator *init_declarator = kefir_ast_new_init_declarator(mem, declarator, initializer);
+    struct kefir_ast_init_declarator *init_declarator = kefir_ast_new_init_declarator(mem, builder->parser->ast_arena, declarator, initializer);
     REQUIRE_ELSE(init_declarator != NULL, {
         KEFIR_AST_NODE_FREE(mem, declaration);
         return KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST init declarator");
@@ -726,7 +726,7 @@ kefir_result_t kefir_parser_ast_builder_compound_statement(struct kefir_mem *mem
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(builder != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST builder"));
 
-    struct kefir_ast_compound_statement *stmt = kefir_ast_new_compound_statement(mem);
+    struct kefir_ast_compound_statement *stmt = kefir_ast_new_compound_statement(mem, builder->parser->ast_arena);
     REQUIRE(stmt != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST compound statement"));
 
     if (pragmas != NULL) {
@@ -789,7 +789,7 @@ kefir_result_t kefir_parser_ast_builder_empty_labeled_statement(struct kefir_mem
     REQUIRE(identifier != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid identifier"));
 
     struct kefir_ast_labeled_statement *labeled_stmt =
-        kefir_ast_new_labeled_statement(mem, builder->parser->symbols, identifier, NULL);
+        kefir_ast_new_labeled_statement(mem, builder->parser->ast_arena, builder->parser->symbols, identifier, NULL);
     REQUIRE(labeled_stmt != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST labeled statement"));
 
     kefir_result_t res = KEFIR_OK;
@@ -817,7 +817,7 @@ kefir_result_t kefir_parser_ast_builder_labeled_statement(struct kefir_mem *mem,
     REQUIRE_OK(kefir_parser_ast_builder_pop(mem, builder, &stmt));
 
     struct kefir_ast_labeled_statement *labeled_stmt =
-        kefir_ast_new_labeled_statement(mem, builder->parser->symbols, identifier, stmt);
+        kefir_ast_new_labeled_statement(mem, builder->parser->ast_arena, builder->parser->symbols, identifier, stmt);
     REQUIRE_ELSE(labeled_stmt != NULL, {
         KEFIR_AST_NODE_FREE(mem, stmt);
         return KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST labeled statement");
@@ -849,7 +849,7 @@ kefir_result_t kefir_parser_ast_builder_case_statement(struct kefir_mem *mem, st
         return res;
     });
 
-    struct kefir_ast_case_statement *case_stmt = kefir_ast_new_case_statement(mem, expr, stmt);
+    struct kefir_ast_case_statement *case_stmt = kefir_ast_new_case_statement(mem, builder->parser->ast_arena, expr, stmt);
     REQUIRE_ELSE(case_stmt != NULL, {
         KEFIR_AST_NODE_FREE(mem, expr);
         KEFIR_AST_NODE_FREE(mem, stmt);
@@ -878,7 +878,7 @@ kefir_result_t kefir_parser_ast_builder_empty_case_statement(struct kefir_mem *m
     struct kefir_ast_node_base *expr = NULL;
     REQUIRE_OK(kefir_parser_ast_builder_pop(mem, builder, &expr));
 
-    struct kefir_ast_case_statement *case_stmt = kefir_ast_new_case_statement(mem, expr, NULL);
+    struct kefir_ast_case_statement *case_stmt = kefir_ast_new_case_statement(mem, builder->parser->ast_arena, expr, NULL);
     REQUIRE_ELSE(case_stmt != NULL, {
         KEFIR_AST_NODE_FREE(mem, expr);
         return KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST case statement");
@@ -917,7 +917,7 @@ kefir_result_t kefir_parser_ast_builder_range_case_statement(struct kefir_mem *m
         return res;
     });
 
-    struct kefir_ast_case_statement *case_stmt = kefir_ast_new_range_case_statement(mem, expr, range_end_expr, stmt);
+    struct kefir_ast_case_statement *case_stmt = kefir_ast_new_range_case_statement(mem, builder->parser->ast_arena, expr, range_end_expr, stmt);
     REQUIRE_ELSE(case_stmt != NULL, {
         KEFIR_AST_NODE_FREE(mem, range_end_expr);
         KEFIR_AST_NODE_FREE(mem, expr);
@@ -952,7 +952,7 @@ kefir_result_t kefir_parser_ast_builder_empty_range_case_statement(struct kefir_
         return res;
     });
 
-    struct kefir_ast_case_statement *case_stmt = kefir_ast_new_range_case_statement(mem, expr, range_end_expr, NULL);
+    struct kefir_ast_case_statement *case_stmt = kefir_ast_new_range_case_statement(mem, builder->parser->ast_arena, expr, range_end_expr, NULL);
     REQUIRE_ELSE(case_stmt != NULL, {
         KEFIR_AST_NODE_FREE(mem, range_end_expr);
         KEFIR_AST_NODE_FREE(mem, expr);
@@ -981,7 +981,7 @@ kefir_result_t kefir_parser_ast_builder_default_statement(struct kefir_mem *mem,
     struct kefir_ast_node_base *stmt = NULL;
     REQUIRE_OK(kefir_parser_ast_builder_pop(mem, builder, &stmt));
 
-    struct kefir_ast_case_statement *case_stmt = kefir_ast_new_case_statement(mem, NULL, stmt);
+    struct kefir_ast_case_statement *case_stmt = kefir_ast_new_case_statement(mem, builder->parser->ast_arena, NULL, stmt);
     REQUIRE_ELSE(case_stmt != NULL, {
         KEFIR_AST_NODE_FREE(mem, stmt);
         return KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST labeled statement");
@@ -1005,7 +1005,7 @@ kefir_result_t kefir_parser_ast_builder_empty_default_statement(struct kefir_mem
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(builder != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST builder"));
 
-    struct kefir_ast_case_statement *case_stmt = kefir_ast_new_case_statement(mem, NULL, NULL);
+    struct kefir_ast_case_statement *case_stmt = kefir_ast_new_case_statement(mem, builder->parser->ast_arena, NULL, NULL);
     REQUIRE_ELSE(case_stmt != NULL,
                  { return KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST labeled statement"); });
 
@@ -1035,7 +1035,7 @@ kefir_result_t kefir_parser_ast_builder_if_statement(struct kefir_mem *mem, stru
         return res;
     });
 
-    struct kefir_ast_conditional_statement *ifCond = kefir_ast_new_conditional_statement(mem, expr, stmt, NULL);
+    struct kefir_ast_conditional_statement *ifCond = kefir_ast_new_conditional_statement(mem, builder->parser->ast_arena, expr, stmt, NULL);
     REQUIRE_ELSE(ifCond != NULL, {
         KEFIR_AST_NODE_FREE(mem, expr);
         KEFIR_AST_NODE_FREE(mem, stmt);
@@ -1075,7 +1075,7 @@ kefir_result_t kefir_parser_ast_builder_if_else_statement(struct kefir_mem *mem,
         return res;
     });
 
-    struct kefir_ast_conditional_statement *ifCond = kefir_ast_new_conditional_statement(mem, expr, thenStmt, elseStmt);
+    struct kefir_ast_conditional_statement *ifCond = kefir_ast_new_conditional_statement(mem, builder->parser->ast_arena, expr, thenStmt, elseStmt);
     REQUIRE_ELSE(ifCond != NULL, {
         KEFIR_AST_NODE_FREE(mem, expr);
         KEFIR_AST_NODE_FREE(mem, thenStmt);
@@ -1110,7 +1110,7 @@ kefir_result_t kefir_parser_ast_builder_switch_statement(struct kefir_mem *mem,
         return res;
     });
 
-    struct kefir_ast_switch_statement *switchStmt = kefir_ast_new_switch_statement(mem, expr, stmt);
+    struct kefir_ast_switch_statement *switchStmt = kefir_ast_new_switch_statement(mem, builder->parser->ast_arena, expr, stmt);
     REQUIRE_ELSE(switchStmt != NULL, {
         KEFIR_AST_NODE_FREE(mem, expr);
         KEFIR_AST_NODE_FREE(mem, stmt);
@@ -1143,7 +1143,7 @@ kefir_result_t kefir_parser_ast_builder_while_statement(struct kefir_mem *mem, s
         return res;
     });
 
-    struct kefir_ast_while_statement *whileStmt = kefir_ast_new_while_statement(mem, expr, stmt);
+    struct kefir_ast_while_statement *whileStmt = kefir_ast_new_while_statement(mem, builder->parser->ast_arena, expr, stmt);
     REQUIRE_ELSE(whileStmt != NULL, {
         KEFIR_AST_NODE_FREE(mem, expr);
         KEFIR_AST_NODE_FREE(mem, stmt);
@@ -1177,7 +1177,7 @@ kefir_result_t kefir_parser_ast_builder_do_while_statement(struct kefir_mem *mem
         return res;
     });
 
-    struct kefir_ast_do_while_statement *doWhileStmt = kefir_ast_new_do_while_statement(mem, expr, stmt);
+    struct kefir_ast_do_while_statement *doWhileStmt = kefir_ast_new_do_while_statement(mem, builder->parser->ast_arena, expr, stmt);
     REQUIRE_ELSE(doWhileStmt != NULL, {
         KEFIR_AST_NODE_FREE(mem, expr);
         KEFIR_AST_NODE_FREE(mem, stmt);
@@ -1238,7 +1238,7 @@ kefir_result_t kefir_parser_ast_builder_for_statement(struct kefir_mem *mem, str
         return res;
     });
 
-    struct kefir_ast_for_statement *forStmt = kefir_ast_new_for_statement(mem, clause1, clause2, clause3, stmt);
+    struct kefir_ast_for_statement *forStmt = kefir_ast_new_for_statement(mem, builder->parser->ast_arena, clause1, clause2, clause3, stmt);
     REQUIRE_ELSE(forStmt != NULL, {
         CLEANUP;
         return KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST for statement");
@@ -1264,7 +1264,7 @@ kefir_result_t kefir_parser_ast_builder_return_statement(struct kefir_mem *mem,
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(builder != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST builder"));
 
-    struct kefir_ast_return_statement *returnStmt = kefir_ast_new_return_statement(mem, NULL);
+    struct kefir_ast_return_statement *returnStmt = kefir_ast_new_return_statement(mem, builder->parser->ast_arena, NULL);
     REQUIRE(returnStmt != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST return statement"));
     kefir_result_t res = KEFIR_OK;
     if (attributes != NULL) {
@@ -1287,7 +1287,7 @@ kefir_result_t kefir_parser_ast_builder_return_value_statement(struct kefir_mem 
     struct kefir_ast_node_base *expr = NULL;
     REQUIRE_OK(kefir_parser_ast_builder_pop(mem, builder, &expr));
 
-    struct kefir_ast_return_statement *returnStmt = kefir_ast_new_return_statement(mem, expr);
+    struct kefir_ast_return_statement *returnStmt = kefir_ast_new_return_statement(mem, builder->parser->ast_arena, expr);
     REQUIRE_ELSE(returnStmt != NULL, {
         KEFIR_AST_NODE_FREE(mem, expr);
         return KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST return statement");
@@ -1311,7 +1311,7 @@ kefir_result_t kefir_parser_ast_builder_goto_statement(struct kefir_mem *mem, st
     REQUIRE(builder != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST builder"));
     REQUIRE(identifier != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid identifier"));
 
-    struct kefir_ast_goto_statement *gotoStmt = kefir_ast_new_goto_statement(mem, builder->parser->symbols, identifier);
+    struct kefir_ast_goto_statement *gotoStmt = kefir_ast_new_goto_statement(mem, builder->parser->ast_arena, builder->parser->symbols, identifier);
     REQUIRE(gotoStmt != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST goto statement"));
 
     kefir_result_t res = KEFIR_OK;
@@ -1332,7 +1332,7 @@ kefir_result_t kefir_parser_ast_builder_continue_statement(struct kefir_mem *mem
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(builder != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST builder"));
 
-    struct kefir_ast_continue_statement *continueStmt = kefir_ast_new_continue_statement(mem);
+    struct kefir_ast_continue_statement *continueStmt = kefir_ast_new_continue_statement(mem, builder->parser->ast_arena);
     REQUIRE(continueStmt != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST continue statement"));
 
     kefir_result_t res = KEFIR_OK;
@@ -1352,7 +1352,7 @@ kefir_result_t kefir_parser_ast_builder_break_statement(struct kefir_mem *mem, s
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(builder != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST builder"));
 
-    struct kefir_ast_break_statement *breakStmt = kefir_ast_new_break_statement(mem);
+    struct kefir_ast_break_statement *breakStmt = kefir_ast_new_break_statement(mem, builder->parser->ast_arena);
     REQUIRE(breakStmt != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST break statement"));
 
     kefir_result_t res = KEFIR_OK;
@@ -1372,7 +1372,7 @@ kefir_result_t kefir_parser_ast_builder_translation_unit(struct kefir_mem *mem,
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(builder != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST builder"));
 
-    struct kefir_ast_translation_unit *unit = kefir_ast_new_translation_unit(mem);
+    struct kefir_ast_translation_unit *unit = kefir_ast_new_translation_unit(mem, builder->parser->ast_arena);
     REQUIRE(unit != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST translation unit"));
 
     kefir_result_t res = kefir_parser_ast_builder_push(mem, builder, KEFIR_AST_NODE_BASE(unit));
@@ -1422,7 +1422,7 @@ kefir_result_t kefir_parser_ast_builder_builtin(struct kefir_mem *mem, struct ke
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(builder != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST builder"));
 
-    struct kefir_ast_builtin *builtin = kefir_ast_new_builtin(mem, builtin_op);
+    struct kefir_ast_builtin *builtin = kefir_ast_new_builtin(mem, builder->parser->ast_arena, builtin_op);
     REQUIRE_ELSE(builtin != NULL,
                  { return KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST builtin"); });
 
@@ -1473,7 +1473,7 @@ kefir_result_t kefir_parser_ast_builder_label_address(struct kefir_mem *mem, str
     REQUIRE(builder != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST builder"));
     REQUIRE(label != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid label"));
 
-    struct kefir_ast_label_address *label_address = kefir_ast_new_label_address(mem, builder->parser->symbols, label);
+    struct kefir_ast_label_address *label_address = kefir_ast_new_label_address(mem, builder->parser->ast_arena, builder->parser->symbols, label);
     REQUIRE(label_address != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST label address"));
 
     kefir_result_t res = kefir_parser_ast_builder_push(mem, builder, KEFIR_AST_NODE_BASE(label_address));
@@ -1493,7 +1493,7 @@ kefir_result_t kefir_parser_ast_builder_goto_address_statement(struct kefir_mem 
     struct kefir_ast_node_base *target = NULL;
     REQUIRE_OK(kefir_parser_ast_builder_pop(mem, builder, &target));
 
-    struct kefir_ast_goto_statement *gotoStmt = kefir_ast_new_goto_address_statement(mem, target);
+    struct kefir_ast_goto_statement *gotoStmt = kefir_ast_new_goto_address_statement(mem, builder->parser->ast_arena, target);
     REQUIRE_ELSE(gotoStmt != NULL, {
         KEFIR_AST_NODE_FREE(mem, target);
         return KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST goto statement");
@@ -1517,7 +1517,7 @@ kefir_result_t kefir_parser_ast_builder_statement_expression(struct kefir_mem *m
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(builder != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST builder"));
 
-    struct kefir_ast_statement_expression *expr = kefir_ast_new_statement_expression(mem);
+    struct kefir_ast_statement_expression *expr = kefir_ast_new_statement_expression(mem, builder->parser->ast_arena);
     REQUIRE(expr != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST statement expression"));
 
     kefir_result_t res = KEFIR_OK;
@@ -1576,7 +1576,7 @@ kefir_result_t kefir_parser_ast_builder_attribute_list(struct kefir_mem *mem,
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(builder != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST builder"));
 
-    struct kefir_ast_attribute_list *list = kefir_ast_new_attribute_list(mem);
+    struct kefir_ast_attribute_list *list = kefir_ast_new_attribute_list(mem, builder->parser->ast_arena);
     REQUIRE(list != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST attribute list"));
 
     kefir_result_t res = kefir_parser_ast_builder_push(mem, builder, KEFIR_AST_NODE_BASE(list));
@@ -1704,7 +1704,7 @@ kefir_result_t kefir_parser_ast_builder_inline_assembly(struct kefir_mem *mem, s
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(builder != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST builder"));
 
-    struct kefir_ast_inline_assembly *inline_asm = kefir_ast_new_inline_assembly(mem, qualifiers, asm_template);
+    struct kefir_ast_inline_assembly *inline_asm = kefir_ast_new_inline_assembly(mem, builder->parser->ast_arena, qualifiers, asm_template);
     REQUIRE(inline_asm != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate AST inline assembly"));
 
     kefir_result_t res = kefir_parser_ast_builder_push(mem, builder, KEFIR_AST_NODE_BASE(inline_asm));

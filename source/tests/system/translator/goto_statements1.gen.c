@@ -67,16 +67,16 @@ static kefir_result_t define_conditional_function(struct kefir_mem *mem, struct 
         NULL, NULL));
     REQUIRE_OK(kefir_list_insert_after(
         mem, &func->args, kefir_list_tail(&func->args),
-        KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "array"))));
+        KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context_manager->current->symbols, "array"))));
 
     REQUIRE_OK(kefir_ast_local_context_define_auto(mem, context_manager->local, "length", kefir_ast_type_unsigned_int(),
                                                    NULL, NULL, NULL, NULL, NULL));
     REQUIRE_OK(kefir_list_insert_after(
         mem, &func->args, kefir_list_tail(&func->args),
-        KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "length"))));
+        KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context_manager->current->symbols, "length"))));
 
-    struct kefir_ast_compound_statement *compound0 = kefir_ast_new_compound_statement(mem);
-    struct kefir_ast_declaration *declarationIndex = kefir_ast_new_single_declaration(
+    struct kefir_ast_compound_statement *compound0 = kefir_ast_new_compound_statement_noarena(mem);
+    struct kefir_ast_declaration *declarationIndex = kefir_ast_new_single_declaration_noarena(
         mem, kefir_ast_declarator_identifier(mem, context_manager->current->symbols, "index"),
         kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 0))), NULL);
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &declarationIndex->specifiers,
@@ -85,46 +85,46 @@ static kefir_result_t define_conditional_function(struct kefir_mem *mem, struct 
                                                           kefir_ast_type_specifier_int(mem)));
     REQUIRE_OK(kefir_ast_compound_statement_append(mem, compound0, KEFIR_AST_NODE_BASE(declarationIndex)));
 
-    struct kefir_ast_declaration *declarationSum = kefir_ast_new_single_declaration(
+    struct kefir_ast_declaration *declarationSum = kefir_ast_new_single_declaration_noarena(
         mem, kefir_ast_declarator_identifier(mem, context_manager->current->symbols, "sum"),
         kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 0))), NULL);
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &declarationSum->specifiers,
                                                           kefir_ast_type_specifier_double(mem)));
     REQUIRE_OK(kefir_ast_compound_statement_append(mem, compound0, KEFIR_AST_NODE_BASE(declarationSum)));
 
-    struct kefir_ast_node_base *loop_condition = KEFIR_AST_NODE_BASE(kefir_ast_new_labeled_statement(
+    struct kefir_ast_node_base *loop_condition = KEFIR_AST_NODE_BASE(kefir_ast_new_labeled_statement_noarena(
         mem, context_manager->current->symbols, "loop_condition",
-        KEFIR_AST_NODE_BASE(kefir_ast_new_conditional_statement(
+        KEFIR_AST_NODE_BASE(kefir_ast_new_conditional_statement_noarena(
             mem,
-            KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation(
+            KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation_noarena(
                 mem, KEFIR_AST_OPERATION_GREATER_EQUAL,
-                KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "index")),
-                KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "length")))),
-            KEFIR_AST_NODE_BASE(kefir_ast_new_goto_statement(mem, context_manager->current->symbols, "loop_end")),
+                KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context_manager->current->symbols, "index")),
+                KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context_manager->current->symbols, "length")))),
+            KEFIR_AST_NODE_BASE(kefir_ast_new_goto_statement_noarena(mem, context_manager->current->symbols, "loop_end")),
             NULL))));
     REQUIRE_OK(kefir_ast_compound_statement_append(mem, compound0, loop_condition));
 
-    struct kefir_ast_node_base *loop_body = KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement(
+    struct kefir_ast_node_base *loop_body = KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement_noarena(
         mem,
-        KEFIR_AST_NODE_BASE(kefir_ast_new_compound_assignment(
+        KEFIR_AST_NODE_BASE(kefir_ast_new_compound_assignment_noarena(
             mem, KEFIR_AST_ASSIGNMENT_ADD,
-            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "sum")),
-            KEFIR_AST_NODE_BASE(kefir_ast_new_array_subscript(
-                mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "array")),
+            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context_manager->current->symbols, "sum")),
+            KEFIR_AST_NODE_BASE(kefir_ast_new_array_subscript_noarena(
+                mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context_manager->current->symbols, "array")),
                 KEFIR_AST_NODE_BASE(
-                    kefir_ast_new_unary_operation(mem, KEFIR_AST_OPERATION_POSTFIX_INCREMENT,
-                                                  KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(
+                    kefir_ast_new_unary_operation_noarena(mem, KEFIR_AST_OPERATION_POSTFIX_INCREMENT,
+                                                  KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(
                                                       mem, context_manager->current->symbols, "index"))))))))));
     REQUIRE_OK(kefir_ast_compound_statement_append(mem, compound0, loop_body));
 
     struct kefir_ast_node_base *loop_jump =
-        KEFIR_AST_NODE_BASE(kefir_ast_new_goto_statement(mem, context_manager->current->symbols, "loop_condition"));
+        KEFIR_AST_NODE_BASE(kefir_ast_new_goto_statement_noarena(mem, context_manager->current->symbols, "loop_condition"));
     REQUIRE_OK(kefir_ast_compound_statement_append(mem, compound0, loop_jump));
 
-    struct kefir_ast_node_base *returnStatement = KEFIR_AST_NODE_BASE(kefir_ast_new_labeled_statement(
+    struct kefir_ast_node_base *returnStatement = KEFIR_AST_NODE_BASE(kefir_ast_new_labeled_statement_noarena(
         mem, context_manager->current->symbols, "loop_end",
-        KEFIR_AST_NODE_BASE(kefir_ast_new_return_statement(
-            mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "sum"))))));
+        KEFIR_AST_NODE_BASE(kefir_ast_new_return_statement_noarena(
+            mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context_manager->current->symbols, "sum"))))));
     REQUIRE_OK(kefir_ast_compound_statement_append(mem, compound0, returnStatement));
 
     func->body = KEFIR_AST_NODE_BASE(compound0);

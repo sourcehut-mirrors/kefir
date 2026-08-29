@@ -42,7 +42,7 @@ static struct kefir_ast_function_definition *define_sum_function(struct kefir_me
         kefir_ast_declarator_function(mem, kefir_ast_declarator_identifier(mem, context->symbols, "sum"));
 
     struct kefir_ast_declaration *function1_param1 =
-        kefir_ast_new_single_declaration(mem, kefir_ast_declarator_identifier(mem, context->symbols, "a"), NULL, NULL);
+        kefir_ast_new_single_declaration_noarena(mem, kefir_ast_declarator_identifier(mem, context->symbols, "a"), NULL, NULL);
     REQUIRE(kefir_ast_declarator_specifier_list_append(mem, &function1_param1->specifiers,
                                                        kefir_ast_type_specifier_int(mem)) == KEFIR_OK,
             NULL);
@@ -52,7 +52,7 @@ static struct kefir_ast_function_definition *define_sum_function(struct kefir_me
         NULL);
 
     struct kefir_ast_declaration *function1_param2 =
-        kefir_ast_new_single_declaration(mem, kefir_ast_declarator_identifier(mem, context->symbols, "b"), NULL, NULL);
+        kefir_ast_new_single_declaration_noarena(mem, kefir_ast_declarator_identifier(mem, context->symbols, "b"), NULL, NULL);
     REQUIRE(kefir_ast_declarator_specifier_list_append(mem, &function1_param2->specifiers,
                                                        kefir_ast_type_specifier_int(mem)) == KEFIR_OK,
             NULL);
@@ -61,18 +61,18 @@ static struct kefir_ast_function_definition *define_sum_function(struct kefir_me
                                 kefir_list_tail(&function1_decl->function->parameters), function1_param2) == KEFIR_OK,
         NULL);
 
-    struct kefir_ast_compound_statement *function1_body = kefir_ast_new_compound_statement(mem);
+    struct kefir_ast_compound_statement *function1_body = kefir_ast_new_compound_statement_noarena(mem);
     REQUIRE(kefir_ast_compound_statement_append(
                 mem, function1_body,
-                KEFIR_AST_NODE_BASE(kefir_ast_new_return_statement(
-                    mem, KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation(
+                KEFIR_AST_NODE_BASE(kefir_ast_new_return_statement_noarena(
+                    mem, KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation_noarena(
                              mem, KEFIR_AST_OPERATION_ADD,
-                             KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "a")),
-                             KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "b"))))))) == KEFIR_OK,
+                             KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "a")),
+                             KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "b"))))))) == KEFIR_OK,
             NULL);
 
     struct kefir_ast_function_definition *function1 =
-        kefir_ast_new_function_definition(mem, function1_decl, function1_body);
+        kefir_ast_new_function_definition_noarena(mem, function1_decl, function1_body);
     REQUIRE(kefir_ast_declarator_specifier_list_append(mem, &function1->specifiers,
                                                        kefir_ast_type_specifier_int(mem)) == KEFIR_OK,
             NULL);

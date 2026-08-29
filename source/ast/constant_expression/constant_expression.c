@@ -228,7 +228,7 @@ kefir_result_t kefir_ast_evaluate_comparison(struct kefir_mem *mem, const struct
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to comparison result"));
 
     struct kefir_ast_node_base *lt_comparison = KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation(
-        mem, KEFIR_AST_OPERATION_LESS, KEFIR_AST_NODE_REF(lhs_node), KEFIR_AST_NODE_REF(rhs_node)));
+        mem, NULL, KEFIR_AST_OPERATION_LESS, KEFIR_AST_NODE_REF(lhs_node), KEFIR_AST_NODE_REF(rhs_node)));
     REQUIRE(lt_comparison != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed toa allocate AST node"));
 
     lt_comparison->properties.category = KEFIR_AST_NODE_CATEGORY_EXPRESSION;
@@ -244,7 +244,7 @@ kefir_result_t kefir_ast_evaluate_comparison(struct kefir_mem *mem, const struct
     REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, lt_comparison));
 
     struct kefir_ast_node_base *eq_comparison = KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation(
-        mem, KEFIR_AST_OPERATION_EQUAL, KEFIR_AST_NODE_REF(lhs_node), KEFIR_AST_NODE_REF(rhs_node)));
+        mem, NULL, KEFIR_AST_OPERATION_EQUAL, KEFIR_AST_NODE_REF(lhs_node), KEFIR_AST_NODE_REF(rhs_node)));
     REQUIRE(eq_comparison != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed toa allocate AST node"));
 
     eq_comparison->properties.category = KEFIR_AST_NODE_CATEGORY_EXPRESSION;

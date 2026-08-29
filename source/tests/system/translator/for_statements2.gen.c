@@ -64,59 +64,59 @@ static kefir_result_t define_conditional_function(struct kefir_mem *mem, struct 
         NULL, NULL));
     REQUIRE_OK(kefir_list_insert_after(
         mem, &func->args, kefir_list_tail(&func->args),
-        KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "matrix"))));
+        KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context_manager->current->symbols, "matrix"))));
 
     REQUIRE_OK(kefir_ast_local_context_define_auto(mem, context_manager->local, "dim", kefir_ast_type_unsigned_long(),
                                                    NULL, NULL, NULL, NULL, NULL));
     REQUIRE_OK(kefir_list_insert_after(
         mem, &func->args, kefir_list_tail(&func->args),
-        KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "dim"))));
+        KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context_manager->current->symbols, "dim"))));
 
-    struct kefir_ast_declaration *outer_loop_init = kefir_ast_new_single_declaration(
+    struct kefir_ast_declaration *outer_loop_init = kefir_ast_new_single_declaration_noarena(
         mem, kefir_ast_declarator_identifier(mem, context_manager->current->symbols, "i"),
         kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 0))), NULL);
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &outer_loop_init->specifiers,
                                                           kefir_ast_type_specifier_int(mem)));
 
-    struct kefir_ast_node_base *outer_loop_condition = KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation(
+    struct kefir_ast_node_base *outer_loop_condition = KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation_noarena(
         mem, KEFIR_AST_OPERATION_LESS,
-        KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "i")),
-        KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "dim"))));
+        KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context_manager->current->symbols, "i")),
+        KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context_manager->current->symbols, "dim"))));
 
-    struct kefir_ast_node_base *outer_loop_tail = KEFIR_AST_NODE_BASE(kefir_ast_new_unary_operation(
+    struct kefir_ast_node_base *outer_loop_tail = KEFIR_AST_NODE_BASE(kefir_ast_new_unary_operation_noarena(
         mem, KEFIR_AST_OPERATION_POSTFIX_INCREMENT,
-        KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "i"))));
+        KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context_manager->current->symbols, "i"))));
 
-    struct kefir_ast_declaration *inner_loop_init = kefir_ast_new_single_declaration(
+    struct kefir_ast_declaration *inner_loop_init = kefir_ast_new_single_declaration_noarena(
         mem, kefir_ast_declarator_identifier(mem, context_manager->current->symbols, "j"),
         kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 0))), NULL);
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &inner_loop_init->specifiers,
                                                           kefir_ast_type_specifier_int(mem)));
 
-    struct kefir_ast_node_base *inner_loop_condition = KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation(
+    struct kefir_ast_node_base *inner_loop_condition = KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation_noarena(
         mem, KEFIR_AST_OPERATION_LESS,
-        KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "j")),
-        KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "i"))));
+        KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context_manager->current->symbols, "j")),
+        KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context_manager->current->symbols, "i"))));
 
-    struct kefir_ast_node_base *inner_loop_tail = KEFIR_AST_NODE_BASE(kefir_ast_new_unary_operation(
+    struct kefir_ast_node_base *inner_loop_tail = KEFIR_AST_NODE_BASE(kefir_ast_new_unary_operation_noarena(
         mem, KEFIR_AST_OPERATION_POSTFIX_INCREMENT,
-        KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "j"))));
+        KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context_manager->current->symbols, "j"))));
 
-    struct kefir_ast_compound_statement *inner_body = kefir_ast_new_compound_statement(mem);
+    struct kefir_ast_compound_statement *inner_body = kefir_ast_new_compound_statement_noarena(mem);
 
-    struct kefir_ast_declaration *temp_variable = kefir_ast_new_single_declaration(
+    struct kefir_ast_declaration *temp_variable = kefir_ast_new_single_declaration_noarena(
         mem, kefir_ast_declarator_identifier(mem, context_manager->current->symbols, "tmp"),
         kefir_ast_new_expression_initializer(
             mem,
-            KEFIR_AST_NODE_BASE(kefir_ast_new_array_subscript(
-                mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "matrix")),
-                KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation(
+            KEFIR_AST_NODE_BASE(kefir_ast_new_array_subscript_noarena(
+                mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context_manager->current->symbols, "matrix")),
+                KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation_noarena(
                     mem, KEFIR_AST_OPERATION_ADD,
-                    KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation(
+                    KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation_noarena(
                         mem, KEFIR_AST_OPERATION_MULTIPLY,
-                        KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "i")),
-                        KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "dim")))),
-                    KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "j"))))))),
+                        KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context_manager->current->symbols, "i")),
+                        KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context_manager->current->symbols, "dim")))),
+                    KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context_manager->current->symbols, "j"))))))),
         NULL);
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &temp_variable->specifiers,
                                                           kefir_ast_type_specifier_long(mem)));
@@ -124,49 +124,49 @@ static kefir_result_t define_conditional_function(struct kefir_mem *mem, struct 
                                                           kefir_ast_type_specifier_long(mem)));
     REQUIRE_OK(kefir_ast_compound_statement_append(mem, inner_body, KEFIR_AST_NODE_BASE(temp_variable)));
 
-    struct kefir_ast_node_base *inner_body_stmt1 = KEFIR_AST_NODE_BASE(kefir_ast_new_simple_assignment(
+    struct kefir_ast_node_base *inner_body_stmt1 = KEFIR_AST_NODE_BASE(kefir_ast_new_simple_assignment_noarena(
         mem,
-        KEFIR_AST_NODE_BASE(kefir_ast_new_array_subscript(
-            mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "matrix")),
-            KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation(
+        KEFIR_AST_NODE_BASE(kefir_ast_new_array_subscript_noarena(
+            mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context_manager->current->symbols, "matrix")),
+            KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation_noarena(
                 mem, KEFIR_AST_OPERATION_ADD,
-                KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation(
+                KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation_noarena(
                     mem, KEFIR_AST_OPERATION_MULTIPLY,
-                    KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "i")),
-                    KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "dim")))),
-                KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "j")))))),
-        KEFIR_AST_NODE_BASE(kefir_ast_new_array_subscript(
-            mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "matrix")),
-            KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation(
+                    KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context_manager->current->symbols, "i")),
+                    KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context_manager->current->symbols, "dim")))),
+                KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context_manager->current->symbols, "j")))))),
+        KEFIR_AST_NODE_BASE(kefir_ast_new_array_subscript_noarena(
+            mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context_manager->current->symbols, "matrix")),
+            KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation_noarena(
                 mem, KEFIR_AST_OPERATION_ADD,
-                KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation(
+                KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation_noarena(
                     mem, KEFIR_AST_OPERATION_MULTIPLY,
-                    KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "j")),
-                    KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "dim")))),
-                KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "i"))))))));
+                    KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context_manager->current->symbols, "j")),
+                    KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context_manager->current->symbols, "dim")))),
+                KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context_manager->current->symbols, "i"))))))));
     REQUIRE_OK(kefir_ast_compound_statement_append(
-        mem, inner_body, KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement(mem, inner_body_stmt1))));
+        mem, inner_body, KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement_noarena(mem, inner_body_stmt1))));
 
-    struct kefir_ast_node_base *inner_body_stmt2 = KEFIR_AST_NODE_BASE(kefir_ast_new_simple_assignment(
+    struct kefir_ast_node_base *inner_body_stmt2 = KEFIR_AST_NODE_BASE(kefir_ast_new_simple_assignment_noarena(
         mem,
-        KEFIR_AST_NODE_BASE(kefir_ast_new_array_subscript(
-            mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "matrix")),
-            KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation(
+        KEFIR_AST_NODE_BASE(kefir_ast_new_array_subscript_noarena(
+            mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context_manager->current->symbols, "matrix")),
+            KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation_noarena(
                 mem, KEFIR_AST_OPERATION_ADD,
-                KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation(
+                KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation_noarena(
                     mem, KEFIR_AST_OPERATION_MULTIPLY,
-                    KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "j")),
-                    KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "dim")))),
-                KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "i")))))),
-        KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "tmp"))));
+                    KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context_manager->current->symbols, "j")),
+                    KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context_manager->current->symbols, "dim")))),
+                KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context_manager->current->symbols, "i")))))),
+        KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context_manager->current->symbols, "tmp"))));
     REQUIRE_OK(kefir_ast_compound_statement_append(
-        mem, inner_body, KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement(mem, inner_body_stmt2))));
+        mem, inner_body, KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement_noarena(mem, inner_body_stmt2))));
 
     struct kefir_ast_node_base *inner_loop =
-        KEFIR_AST_NODE_BASE(kefir_ast_new_for_statement(mem, KEFIR_AST_NODE_BASE(inner_loop_init), inner_loop_condition,
+        KEFIR_AST_NODE_BASE(kefir_ast_new_for_statement_noarena(mem, KEFIR_AST_NODE_BASE(inner_loop_init), inner_loop_condition,
                                                         inner_loop_tail, KEFIR_AST_NODE_BASE(inner_body)));
 
-    struct kefir_ast_node_base *outer_loop = KEFIR_AST_NODE_BASE(kefir_ast_new_for_statement(
+    struct kefir_ast_node_base *outer_loop = KEFIR_AST_NODE_BASE(kefir_ast_new_for_statement_noarena(
         mem, KEFIR_AST_NODE_BASE(outer_loop_init), outer_loop_condition, outer_loop_tail, inner_loop));
 
     func->body = outer_loop;

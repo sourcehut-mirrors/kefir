@@ -63,10 +63,10 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
         mem, &global_context.context, true, "lde", kefir_ast_type_double(), KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN,
         KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL, NULL));
 
-    struct kefir_ast_inline_assembly *inline_asm0 = kefir_ast_new_inline_assembly(
+    struct kefir_ast_inline_assembly *inline_asm0 = kefir_ast_new_inline_assembly_noarena(
         mem, (struct kefir_ast_inline_assembly_qualifiers) {0}, "inline assembly code here.\ntest...test...test...");
     struct kefir_ast_inline_assembly *inline_asm1 =
-        kefir_ast_new_inline_assembly(mem, (struct kefir_ast_inline_assembly_qualifiers) {.inline_qualifier = true},
+        kefir_ast_new_inline_assembly_noarena(mem, (struct kefir_ast_inline_assembly_qualifiers) {.inline_qualifier = true},
                                       "some assembly code here.\n"
                                       "no outputs or inputs are permitted in global context");
     REQUIRE_OK(kefir_ast_analyze_node(mem, &global_context.context, KEFIR_AST_NODE_BASE(inline_asm0)));
@@ -89,20 +89,20 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
             KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_AUTO, KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL, NULL));
 
         struct kefir_ast_inline_assembly *inline_asm2 =
-            kefir_ast_new_inline_assembly(mem, (struct kefir_ast_inline_assembly_qualifiers) {0},
+            kefir_ast_new_inline_assembly_noarena(mem, (struct kefir_ast_inline_assembly_qualifiers) {0},
                                           "some assembly code here.\n"
                                           "register %0 is an output\n"
                                           "register %1 is an input\n"
                                           "rax is clobber");
         REQUIRE_OK(kefir_ast_inline_assembly_add_output(
             mem, &global_context.symbols, inline_asm2, NULL, "=rm",
-            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, &global_context.symbols, "abc"))));
+            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, &global_context.symbols, "abc"))));
         REQUIRE_OK(kefir_ast_inline_assembly_add_output(
             mem, &global_context.symbols, inline_asm2, NULL, "+rm",
-            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, &global_context.symbols, "ld1"))));
+            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, &global_context.symbols, "ld1"))));
         REQUIRE_OK(kefir_ast_inline_assembly_add_input(
             mem, &global_context.symbols, inline_asm2, NULL, "m",
-            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, &global_context.symbols, "abc"))));
+            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, &global_context.symbols, "abc"))));
         REQUIRE_OK(
             kefir_ast_inline_assembly_add_input(mem, &global_context.symbols, inline_asm2, NULL, "m",
                                                 KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long_double_noarena(mem, 4.15L))));
@@ -133,23 +133,23 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
             KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL, NULL));
 
         struct kefir_ast_inline_assembly *inline_asm2 =
-            kefir_ast_new_inline_assembly(mem, (struct kefir_ast_inline_assembly_qualifiers) {0},
+            kefir_ast_new_inline_assembly_noarena(mem, (struct kefir_ast_inline_assembly_qualifiers) {0},
                                           "some assembly code here.\n"
                                           "register %0 is an output\n"
                                           "register %1 is an input\n"
                                           "rax, rbx, rcx are clobbers");
         REQUIRE_OK(kefir_ast_inline_assembly_add_output(
             mem, &global_context.symbols, inline_asm2, "null", "=r",
-            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, &global_context.symbols, "abc"))));
+            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, &global_context.symbols, "abc"))));
         REQUIRE_OK(kefir_ast_inline_assembly_add_output(
             mem, &global_context.symbols, inline_asm2, NULL, "+m",
-            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, &global_context.symbols, "chr"))));
+            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, &global_context.symbols, "chr"))));
         REQUIRE_OK(kefir_ast_inline_assembly_add_output(
             mem, &global_context.symbols, inline_asm2, "alternativeId", "=r",
-            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, &global_context.symbols, "chr2"))));
+            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, &global_context.symbols, "chr2"))));
         REQUIRE_OK(kefir_ast_inline_assembly_add_input(
             mem, &global_context.symbols, inline_asm2, NULL, "r",
-            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, &global_context.symbols, "lde"))));
+            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, &global_context.symbols, "lde"))));
         REQUIRE_OK(
             kefir_ast_inline_assembly_add_input(mem, &global_context.symbols, inline_asm2, NULL, "m",
                                                 KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long_double_noarena(mem, 4.15L))));
@@ -157,7 +157,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
         REQUIRE_OK(kefir_ast_inline_assembly_add_clobber(mem, &global_context.symbols, inline_asm2, "rbx"));
         REQUIRE_OK(kefir_ast_inline_assembly_add_clobber(mem, &global_context.symbols, inline_asm2, "rcx"));
 
-        struct kefir_ast_inline_assembly *inline_asm3 = kefir_ast_new_inline_assembly(
+        struct kefir_ast_inline_assembly *inline_asm3 = kefir_ast_new_inline_assembly_noarena(
             mem, (struct kefir_ast_inline_assembly_qualifiers) {.volatile_qualifier = true}, "another assembly");
 
         REQUIRE_OK(kefir_ast_analyze_node(mem, &local_context.context, KEFIR_AST_NODE_BASE(inline_asm2)));

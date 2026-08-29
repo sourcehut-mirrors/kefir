@@ -33,40 +33,40 @@ kefir_result_t ast_labeled_statement_free(struct kefir_mem *mem, struct kefir_as
         KEFIR_AST_NODE_FREE(mem, node->statement);
     }
     REQUIRE_OK(kefir_ast_node_attributes_free(mem, &node->attributes));
-    KEFIR_FREE(mem, node);
+    KEFIR_AST_NODE_ARENA_FREE(mem, node);
     return KEFIR_OK;
 }
 
 const struct kefir_ast_node_class AST_LABELED_STATEMENT_CLASS = {
     .type = KEFIR_AST_LABELED_STATEMENT, .visit = ast_labeled_statement_visit, .free = ast_labeled_statement_free};
 
-struct kefir_ast_labeled_statement *kefir_ast_new_labeled_statement(struct kefir_mem *mem,
+struct kefir_ast_labeled_statement *kefir_ast_new_labeled_statement(struct kefir_mem *mem, struct kefir_memory_arena *arena,
                                                                     struct kefir_string_pool *symbols,
                                                                     const char *label,
                                                                     struct kefir_ast_node_base *statement) {
-    REQUIRE(mem != NULL, NULL);
+    REQUIRE(mem != NULL || arena != NULL, NULL);
     REQUIRE(symbols != NULL, NULL);
     REQUIRE(label != NULL, NULL);
     const char *label_copy = kefir_string_pool_insert(mem, symbols, label, NULL);
     REQUIRE(label_copy != NULL, NULL);
 
-    struct kefir_ast_labeled_statement *labeled_stmt = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_labeled_statement));
+    struct kefir_ast_labeled_statement *labeled_stmt = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_labeled_statement);
     REQUIRE(labeled_stmt != NULL, NULL);
-    labeled_stmt->base.refcount = 1;
+    labeled_stmt->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
     labeled_stmt->base.klass = &AST_LABELED_STATEMENT_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&labeled_stmt->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, labeled_stmt);
+        KEFIR_AST_NODE_ARENA_FREE(mem, labeled_stmt);
         return NULL;
     });
     res = kefir_source_location_empty(&labeled_stmt->base.source_location);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, labeled_stmt);
+        KEFIR_AST_NODE_ARENA_FREE(mem, labeled_stmt);
         return NULL;
     });
     res = kefir_ast_node_attributes_init(&labeled_stmt->attributes);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, labeled_stmt);
+        KEFIR_AST_NODE_ARENA_FREE(mem, labeled_stmt);
         return NULL;
     });
     labeled_stmt->label = label_copy;

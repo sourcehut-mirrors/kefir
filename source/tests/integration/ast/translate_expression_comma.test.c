@@ -55,7 +55,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     struct kefir_irbuilder_block builder;
 
     FUNC2("comma1", {
-        struct kefir_ast_comma_operator *comma = kefir_ast_new_comma_operator(mem);
+        struct kefir_ast_comma_operator *comma = kefir_ast_new_comma_operator_noarena(mem);
         REQUIRE_OK(kefir_ast_comma_append(mem, comma, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bool_noarena(mem, true))));
 
         struct kefir_ast_node_base *node = KEFIR_AST_NODE_BASE(comma);
@@ -68,7 +68,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     });
 
     FUNC2("comma2", {
-        struct kefir_ast_comma_operator *comma = kefir_ast_new_comma_operator(mem);
+        struct kefir_ast_comma_operator *comma = kefir_ast_new_comma_operator_noarena(mem);
         REQUIRE_OK(kefir_ast_comma_append(mem, comma, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bool_noarena(mem, true))));
         REQUIRE_OK(
             kefir_ast_comma_append(mem, comma, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long_double_noarena(mem, 1e10l))));
@@ -84,7 +84,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     });
 
     FUNC2("comma3", {
-        struct kefir_ast_comma_operator *comma = kefir_ast_new_comma_operator(mem);
+        struct kefir_ast_comma_operator *comma = kefir_ast_new_comma_operator_noarena(mem);
         REQUIRE_OK(kefir_ast_comma_append(mem, comma, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bool_noarena(mem, true))));
         REQUIRE_OK(kefir_ast_comma_append(mem, comma, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_float_noarena(mem, 21e4))));
         REQUIRE_OK(kefir_ast_comma_append(mem, comma, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long_noarena(mem, 66536))));
@@ -99,15 +99,15 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     });
 
     struct kefir_ast_type_name *type_name1 =
-        kefir_ast_new_type_name(mem, kefir_ast_declarator_identifier(mem, NULL, NULL));
+        kefir_ast_new_type_name_noarena(mem, kefir_ast_declarator_identifier(mem, NULL, NULL));
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &type_name1->type_decl.specifiers,
                                                           kefir_ast_type_specifier_void(mem)));
 
     FUNC2("comma4", {
-        struct kefir_ast_comma_operator *comma = kefir_ast_new_comma_operator(mem);
+        struct kefir_ast_comma_operator *comma = kefir_ast_new_comma_operator_noarena(mem);
         REQUIRE_OK(kefir_ast_comma_append(
             mem, comma,
-            KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator(
+            KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator_noarena(
                 mem, (struct kefir_ast_type_name *) KEFIR_AST_NODE_SELF(KEFIR_AST_NODE_REF(KEFIR_AST_NODE_BASE(type_name1))),
                 KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bool_noarena(mem, true))))));
         REQUIRE_OK(kefir_ast_comma_append(mem, comma, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_float_noarena(mem, 21e4))));
@@ -125,11 +125,11 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     });
 
     FUNC2("comma5", {
-        struct kefir_ast_comma_operator *comma = kefir_ast_new_comma_operator(mem);
+        struct kefir_ast_comma_operator *comma = kefir_ast_new_comma_operator_noarena(mem);
         REQUIRE_OK(kefir_ast_comma_append(mem, comma, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char_noarena(mem, 'x'))));
         REQUIRE_OK(kefir_ast_comma_append(
             mem, comma,
-            KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator(
+            KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator_noarena(
                 mem, (struct kefir_ast_type_name *) KEFIR_AST_NODE_SELF(KEFIR_AST_NODE_REF(KEFIR_AST_NODE_BASE(type_name1))),
                 KEFIR_AST_NODE_BASE(kefir_ast_new_constant_float_noarena(mem, 3e-1))))));
         REQUIRE_OK(kefir_ast_comma_append(mem, comma, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 1 << 4))));
@@ -144,13 +144,13 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     });
 
     FUNC2("comma6", {
-        struct kefir_ast_comma_operator *comma = kefir_ast_new_comma_operator(mem);
+        struct kefir_ast_comma_operator *comma = kefir_ast_new_comma_operator_noarena(mem);
         REQUIRE_OK(kefir_ast_comma_append(mem, comma, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char_noarena(mem, 'x'))));
         REQUIRE_OK(
             kefir_ast_comma_append(mem, comma, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_double_noarena(mem, 0.00056))));
         REQUIRE_OK(kefir_ast_comma_append(
             mem, comma,
-            KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator(
+            KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator_noarena(
                 mem, type_name1, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_uint_noarena(mem, 0xfffe))))));
 
         struct kefir_ast_node_base *node = KEFIR_AST_NODE_BASE(comma);

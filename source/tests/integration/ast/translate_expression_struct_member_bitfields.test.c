@@ -65,33 +65,33 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
                                                          kefir_ast_type_pointer(mem, context->type_bundle, type1), NULL,
                                                          NULL, NULL, NULL));
 
-    struct kefir_ast_node_base *node1 = KEFIR_AST_NODE_BASE(kefir_ast_new_struct_member(
-        mem, context->symbols, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "structure1")),
+    struct kefir_ast_node_base *node1 = KEFIR_AST_NODE_BASE(kefir_ast_new_struct_member_noarena(
+        mem, context->symbols, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "structure1")),
         "value1"));
     REQUIRE_OK(kefir_ast_analyze_node(mem, context, node1));
 
-    struct kefir_ast_node_base *node2 = KEFIR_AST_NODE_BASE(kefir_ast_new_struct_member(
-        mem, context->symbols, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "structure1")),
+    struct kefir_ast_node_base *node2 = KEFIR_AST_NODE_BASE(kefir_ast_new_struct_member_noarena(
+        mem, context->symbols, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "structure1")),
         "value2"));
     REQUIRE_OK(kefir_ast_analyze_node(mem, context, node2));
 
-    struct kefir_ast_node_base *node3 = KEFIR_AST_NODE_BASE(kefir_ast_new_struct_member(
-        mem, context->symbols, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "structure1")),
+    struct kefir_ast_node_base *node3 = KEFIR_AST_NODE_BASE(kefir_ast_new_struct_member_noarena(
+        mem, context->symbols, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "structure1")),
         "value3"));
     REQUIRE_OK(kefir_ast_analyze_node(mem, context, node3));
 
-    struct kefir_ast_node_base *node4 = KEFIR_AST_NODE_BASE(kefir_ast_new_struct_indirect_member(
-        mem, context->symbols, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "structure2")),
+    struct kefir_ast_node_base *node4 = KEFIR_AST_NODE_BASE(kefir_ast_new_struct_indirect_member_noarena(
+        mem, context->symbols, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "structure2")),
         "value4"));
     REQUIRE_OK(kefir_ast_analyze_node(mem, context, node4));
 
-    struct kefir_ast_node_base *node5 = KEFIR_AST_NODE_BASE(kefir_ast_new_struct_indirect_member(
-        mem, context->symbols, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "structure2")),
+    struct kefir_ast_node_base *node5 = KEFIR_AST_NODE_BASE(kefir_ast_new_struct_indirect_member_noarena(
+        mem, context->symbols, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "structure2")),
         "value5"));
     REQUIRE_OK(kefir_ast_analyze_node(mem, context, node5));
 
-    struct kefir_ast_node_base *node6 = KEFIR_AST_NODE_BASE(kefir_ast_new_struct_indirect_member(
-        mem, context->symbols, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "structure2")),
+    struct kefir_ast_node_base *node6 = KEFIR_AST_NODE_BASE(kefir_ast_new_struct_indirect_member_noarena(
+        mem, context->symbols, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "structure2")),
         "value6"));
     REQUIRE_OK(kefir_ast_analyze_node(mem, context, node6));
 

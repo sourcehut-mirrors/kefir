@@ -60,24 +60,24 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
 
     struct kefir_irbuilder_block builder;
     REQUIRE_OK(kefir_irbuilder_block_init(mem, &builder, &func->body));
-    struct kefir_ast_binary_operation *ast = kefir_ast_new_binary_operation(
+    struct kefir_ast_binary_operation *ast = kefir_ast_new_binary_operation_noarena(
         mem, KEFIR_AST_OPERATION_ADD,
-        KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation(
+        KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation_noarena(
             mem, KEFIR_AST_OPERATION_MULTIPLY,
-            KEFIR_AST_NODE_BASE(kefir_ast_new_unary_operation(
+            KEFIR_AST_NODE_BASE(kefir_ast_new_unary_operation_noarena(
                 mem, KEFIR_AST_OPERATION_INVERT, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long_noarena(mem, 2)))),
             KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long_noarena(mem, 3)))),
-        KEFIR_AST_NODE_BASE(kefir_ast_new_unary_operation(mem, KEFIR_AST_OPERATION_NEGATE,
+        KEFIR_AST_NODE_BASE(kefir_ast_new_unary_operation_noarena(mem, KEFIR_AST_OPERATION_NEGATE,
                                                           KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long_noarena(mem, 1)))));
     REQUIRE_OK(kefir_ast_analyze_node(mem, &local_context.context, KEFIR_AST_NODE_BASE(ast)));
     REQUIRE_OK(kefir_ast_translate_expression(mem, KEFIR_AST_NODE_BASE(ast), &builder, &translator_context));
     REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, KEFIR_AST_NODE_BASE(ast)));
 
-    ast = kefir_ast_new_binary_operation(
+    ast = kefir_ast_new_binary_operation_noarena(
         mem, KEFIR_AST_OPERATION_ADD,
-        KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation(
+        KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation_noarena(
             mem, KEFIR_AST_OPERATION_MULTIPLY,
-            KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation(
+            KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation_noarena(
                 mem, KEFIR_AST_OPERATION_SHIFT_LEFT, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long_noarena(mem, 2)),
                 KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long_noarena(mem, 1)))),
             KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 3)))),

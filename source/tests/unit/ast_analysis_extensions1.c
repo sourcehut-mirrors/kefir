@@ -47,7 +47,7 @@ DEFINE_CASE(ast_analysis_extension_node1, "AST analysis - extension node #1") {
     ASSERT_OK(kefir_ast_translator_environment_init(&env, kft_util_get_ir_target_platform()));
     ASSERT_OK(kefir_ast_global_context_init(&kft_mem, type_traits, &env.target_env, &context, &ext));
 
-    struct kefir_ast_extension_node *node1 = kefir_ast_new_extension_node(&kft_mem, &ext_node_class, NULL);
+    struct kefir_ast_extension_node *node1 = kefir_ast_new_extension_node_noarena(&kft_mem, &ext_node_class, NULL);
     ASSERT_OK(kefir_ast_analyze_node(&kft_mem, &context.context, KEFIR_AST_NODE_BASE(node1)));
 
     ASSERT(node1->base.properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION);
@@ -109,7 +109,7 @@ DEFINE_CASE(ast_analysis_before_after_extensions, "AST analysis - before & after
     ASSERT_OK(kefir_ast_translator_environment_init(&env, kft_util_get_ir_target_platform()));
     ASSERT_OK(kefir_ast_global_context_init(&kft_mem, type_traits, &env.target_env, &context, &ext));
 
-    struct kefir_ast_identifier *node1 = kefir_ast_new_identifier(&kft_mem, &context.symbols, "X");
+    struct kefir_ast_identifier *node1 = kefir_ast_new_identifier_noarena(&kft_mem, &context.symbols, "X");
     ASSERT_OK(kefir_ast_analyze_node(&kft_mem, &context.context, KEFIR_AST_NODE_BASE(node1)));
     ASSERT(node1->base.properties.category == KEFIR_AST_NODE_CATEGORY_STATEMENT);
 

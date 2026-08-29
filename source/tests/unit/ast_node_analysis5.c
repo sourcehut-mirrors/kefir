@@ -30,7 +30,7 @@ struct kefir_ast_constant *make_constant(struct kefir_mem *, const struct kefir_
 #define ASSERT_COMPOUND_ASSIGNMENT(_mem, _context, _oper, _target, _value, _type)         \
     do {                                                                                  \
         struct kefir_ast_assignment_operator *oper =                                      \
-            kefir_ast_new_compound_assignment((_mem), (_oper), (_target), (_value));      \
+            kefir_ast_new_compound_assignment_noarena((_mem), (_oper), (_target), (_value));      \
         ASSERT(oper != NULL);                                                             \
         ASSERT_OK(kefir_ast_analyze_node((_mem), (_context), KEFIR_AST_NODE_BASE(oper))); \
         ASSERT(oper->base.properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION);     \
@@ -45,7 +45,7 @@ struct kefir_ast_constant *make_constant(struct kefir_mem *, const struct kefir_
 #define ASSERT_COMPOUND_ASSIGNMENT_NOK(_mem, _context, _oper, _target, _value)             \
     do {                                                                                   \
         struct kefir_ast_assignment_operator *oper =                                       \
-            kefir_ast_new_compound_assignment((_mem), (_oper), (_target), (_value));       \
+            kefir_ast_new_compound_assignment_noarena((_mem), (_oper), (_target), (_value));       \
         ASSERT(oper != NULL);                                                              \
         ASSERT_NOK(kefir_ast_analyze_node((_mem), (_context), KEFIR_AST_NODE_BASE(oper))); \
         ASSERT_OK(KEFIR_AST_NODE_FREE((_mem), KEFIR_AST_NODE_BASE(oper)));                 \
@@ -69,29 +69,29 @@ DEFINE_CASE(ast_node_analysis_compound_assignment_operator1, "AST node analysis 
     const kefir_size_t TYPES_LEN = sizeof(TYPES) / sizeof(TYPES[0]);
 
     struct kefir_ast_type_name *TYPES2[] = {
-        kefir_ast_new_type_name(
+        kefir_ast_new_type_name_noarena(
             &kft_mem, kefir_ast_declarator_pointer(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL))),
-        kefir_ast_new_type_name(
+        kefir_ast_new_type_name_noarena(
             &kft_mem, kefir_ast_declarator_pointer(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL))),
-        kefir_ast_new_type_name(
+        kefir_ast_new_type_name_noarena(
             &kft_mem, kefir_ast_declarator_pointer(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL))),
-        kefir_ast_new_type_name(
+        kefir_ast_new_type_name_noarena(
             &kft_mem, kefir_ast_declarator_pointer(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL))),
-        kefir_ast_new_type_name(
+        kefir_ast_new_type_name_noarena(
             &kft_mem, kefir_ast_declarator_pointer(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL))),
-        kefir_ast_new_type_name(
+        kefir_ast_new_type_name_noarena(
             &kft_mem, kefir_ast_declarator_pointer(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL))),
-        kefir_ast_new_type_name(
+        kefir_ast_new_type_name_noarena(
             &kft_mem, kefir_ast_declarator_pointer(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL))),
-        kefir_ast_new_type_name(
+        kefir_ast_new_type_name_noarena(
             &kft_mem, kefir_ast_declarator_pointer(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL))),
-        kefir_ast_new_type_name(
+        kefir_ast_new_type_name_noarena(
             &kft_mem, kefir_ast_declarator_pointer(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL))),
-        kefir_ast_new_type_name(
+        kefir_ast_new_type_name_noarena(
             &kft_mem, kefir_ast_declarator_pointer(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL))),
-        kefir_ast_new_type_name(
+        kefir_ast_new_type_name_noarena(
             &kft_mem, kefir_ast_declarator_pointer(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL))),
-        kefir_ast_new_type_name(
+        kefir_ast_new_type_name_noarena(
             &kft_mem, kefir_ast_declarator_pointer(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL))),
     };
 
@@ -151,59 +151,59 @@ DEFINE_CASE(ast_node_analysis_compound_assignment_operator1, "AST node analysis 
     for (kefir_size_t i = 0; i < TYPES_LEN; i++) {
         ASSERT_COMPOUND_ASSIGNMENT(
             &kft_mem, context, KEFIR_AST_ASSIGNMENT_ADD,
-            KEFIR_AST_NODE_BASE(kefir_ast_new_unary_operation(
+            KEFIR_AST_NODE_BASE(kefir_ast_new_unary_operation_noarena(
                 &kft_mem, KEFIR_AST_OPERATION_INDIRECTION,
-                KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator(
+                KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator_noarena(
                     &kft_mem, (struct kefir_ast_type_name *) KEFIR_AST_NODE_SELF(KEFIR_AST_NODE_REF(KEFIR_AST_NODE_BASE(TYPES2[i]))),
                     KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 0)))))),
             KEFIR_AST_NODE_BASE(make_constant(&kft_mem, TYPES[i])), TYPES[i]);
 
         ASSERT_COMPOUND_ASSIGNMENT(&kft_mem, context, KEFIR_AST_ASSIGNMENT_ADD,
-                                   KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(&kft_mem, context->symbols, "x")),
+                                   KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(&kft_mem, context->symbols, "x")),
                                    KEFIR_AST_NODE_BASE(make_constant(&kft_mem, TYPES[i])), kefir_ast_type_signed_int());
 
         if (KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(TYPES[i])) {
             ASSERT_COMPOUND_ASSIGNMENT(&kft_mem, context, KEFIR_AST_ASSIGNMENT_ADD,
-                                       KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(&kft_mem, context->symbols, "y")),
+                                       KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(&kft_mem, context->symbols, "y")),
                                        KEFIR_AST_NODE_BASE(make_constant(&kft_mem, TYPES[i])),
                                        kefir_ast_type_pointer(&kft_mem, context->type_bundle, kefir_ast_type_char()));
             ASSERT_COMPOUND_ASSIGNMENT(&kft_mem, context, KEFIR_AST_ASSIGNMENT_ADD,
-                                       KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(&kft_mem, context->symbols, "z")),
+                                       KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(&kft_mem, context->symbols, "z")),
                                        KEFIR_AST_NODE_BASE(make_constant(&kft_mem, TYPES[i])),
                                        kefir_ast_type_pointer(&kft_mem, context->type_bundle, kefir_ast_type_void()));
         } else {
             ASSERT_COMPOUND_ASSIGNMENT_NOK(
                 &kft_mem, context, KEFIR_AST_ASSIGNMENT_ADD,
-                KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(&kft_mem, context->symbols, "y")),
+                KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(&kft_mem, context->symbols, "y")),
                 KEFIR_AST_NODE_BASE(make_constant(&kft_mem, TYPES[i])));
         }
 
         ASSERT_COMPOUND_ASSIGNMENT(
             &kft_mem, context, KEFIR_AST_ASSIGNMENT_SUBTRACT,
-            KEFIR_AST_NODE_BASE(kefir_ast_new_unary_operation(
+            KEFIR_AST_NODE_BASE(kefir_ast_new_unary_operation_noarena(
                 &kft_mem, KEFIR_AST_OPERATION_INDIRECTION,
-                KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator(
+                KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator_noarena(
                     &kft_mem, TYPES2[i], KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 0)))))),
             KEFIR_AST_NODE_BASE(make_constant(&kft_mem, TYPES[i])), TYPES[i]);
 
         ASSERT_COMPOUND_ASSIGNMENT(&kft_mem, context, KEFIR_AST_ASSIGNMENT_SUBTRACT,
-                                   KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(&kft_mem, context->symbols, "x")),
+                                   KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(&kft_mem, context->symbols, "x")),
                                    KEFIR_AST_NODE_BASE(make_constant(&kft_mem, TYPES[i])), kefir_ast_type_signed_int());
 
         if (KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(TYPES[i])) {
             ASSERT_COMPOUND_ASSIGNMENT(&kft_mem, context, KEFIR_AST_ASSIGNMENT_SUBTRACT,
-                                       KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(&kft_mem, context->symbols, "y")),
+                                       KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(&kft_mem, context->symbols, "y")),
                                        KEFIR_AST_NODE_BASE(make_constant(&kft_mem, TYPES[i])),
                                        kefir_ast_type_pointer(&kft_mem, context->type_bundle, kefir_ast_type_char()));
 
             ASSERT_COMPOUND_ASSIGNMENT(&kft_mem, context, KEFIR_AST_ASSIGNMENT_SUBTRACT,
-                                       KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(&kft_mem, context->symbols, "z")),
+                                       KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(&kft_mem, context->symbols, "z")),
                                        KEFIR_AST_NODE_BASE(make_constant(&kft_mem, TYPES[i])),
                                        kefir_ast_type_pointer(&kft_mem, context->type_bundle, kefir_ast_type_void()));
         } else {
             ASSERT_COMPOUND_ASSIGNMENT_NOK(
                 &kft_mem, context, KEFIR_AST_ASSIGNMENT_SUBTRACT,
-                KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(&kft_mem, context->symbols, "y")),
+                KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(&kft_mem, context->symbols, "y")),
                 KEFIR_AST_NODE_BASE(make_constant(&kft_mem, TYPES[i])));
         }
     }
@@ -235,29 +235,29 @@ DEFINE_CASE(ast_node_analysis_compound_assignment_operator2, "AST node analysis 
     const kefir_size_t TYPES_LEN = sizeof(TYPES) / sizeof(TYPES[0]);
 
     struct kefir_ast_type_name *TYPES2[] = {
-        kefir_ast_new_type_name(
+        kefir_ast_new_type_name_noarena(
             &kft_mem, kefir_ast_declarator_pointer(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL))),
-        kefir_ast_new_type_name(
+        kefir_ast_new_type_name_noarena(
             &kft_mem, kefir_ast_declarator_pointer(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL))),
-        kefir_ast_new_type_name(
+        kefir_ast_new_type_name_noarena(
             &kft_mem, kefir_ast_declarator_pointer(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL))),
-        kefir_ast_new_type_name(
+        kefir_ast_new_type_name_noarena(
             &kft_mem, kefir_ast_declarator_pointer(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL))),
-        kefir_ast_new_type_name(
+        kefir_ast_new_type_name_noarena(
             &kft_mem, kefir_ast_declarator_pointer(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL))),
-        kefir_ast_new_type_name(
+        kefir_ast_new_type_name_noarena(
             &kft_mem, kefir_ast_declarator_pointer(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL))),
-        kefir_ast_new_type_name(
+        kefir_ast_new_type_name_noarena(
             &kft_mem, kefir_ast_declarator_pointer(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL))),
-        kefir_ast_new_type_name(
+        kefir_ast_new_type_name_noarena(
             &kft_mem, kefir_ast_declarator_pointer(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL))),
-        kefir_ast_new_type_name(
+        kefir_ast_new_type_name_noarena(
             &kft_mem, kefir_ast_declarator_pointer(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL))),
-        kefir_ast_new_type_name(
+        kefir_ast_new_type_name_noarena(
             &kft_mem, kefir_ast_declarator_pointer(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL))),
-        kefir_ast_new_type_name(
+        kefir_ast_new_type_name_noarena(
             &kft_mem, kefir_ast_declarator_pointer(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL))),
-        kefir_ast_new_type_name(
+        kefir_ast_new_type_name_noarena(
             &kft_mem, kefir_ast_declarator_pointer(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL))),
     };
 
@@ -314,9 +314,9 @@ DEFINE_CASE(ast_node_analysis_compound_assignment_operator2, "AST node analysis 
                 if (KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(TYPES[i]) && KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(TYPES[j])) {
                     ASSERT_COMPOUND_ASSIGNMENT(
                         &kft_mem, context, OPERATORS[k],
-                        KEFIR_AST_NODE_BASE(kefir_ast_new_unary_operation(
+                        KEFIR_AST_NODE_BASE(kefir_ast_new_unary_operation_noarena(
                             &kft_mem, KEFIR_AST_OPERATION_INDIRECTION,
-                            KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator(
+                            KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator_noarena(
                                 &kft_mem,
                                 (struct kefir_ast_type_name *) KEFIR_AST_NODE_SELF(KEFIR_AST_NODE_REF(KEFIR_AST_NODE_BASE(TYPES2[i]))),
                                 KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 0)))))),
@@ -324,9 +324,9 @@ DEFINE_CASE(ast_node_analysis_compound_assignment_operator2, "AST node analysis 
                 } else {
                     ASSERT_COMPOUND_ASSIGNMENT_NOK(
                         &kft_mem, context, OPERATORS[k],
-                        KEFIR_AST_NODE_BASE(kefir_ast_new_unary_operation(
+                        KEFIR_AST_NODE_BASE(kefir_ast_new_unary_operation_noarena(
                             &kft_mem, KEFIR_AST_OPERATION_INDIRECTION,
-                            KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator(
+                            KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator_noarena(
                                 &kft_mem,
                                 (struct kefir_ast_type_name *) KEFIR_AST_NODE_SELF(KEFIR_AST_NODE_REF(KEFIR_AST_NODE_BASE(TYPES2[i]))),
                                 KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 0)))))),
@@ -335,7 +335,7 @@ DEFINE_CASE(ast_node_analysis_compound_assignment_operator2, "AST node analysis 
             }
             ASSERT_COMPOUND_ASSIGNMENT_NOK(
                 &kft_mem, context, OPERATORS[k],
-                KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(&kft_mem, context->symbols, "x")),
+                KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(&kft_mem, context->symbols, "x")),
                 KEFIR_AST_NODE_BASE(make_constant(&kft_mem, TYPES[i])));
         }
     }
@@ -371,29 +371,29 @@ DEFINE_CASE(ast_node_analysis_compound_assignment_operator3, "AST node analysis 
     const kefir_size_t TYPES_LEN = sizeof(TYPES) / sizeof(TYPES[0]);
 
     struct kefir_ast_type_name *TYPES2[] = {
-        kefir_ast_new_type_name(
+        kefir_ast_new_type_name_noarena(
             &kft_mem, kefir_ast_declarator_pointer(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL))),
-        kefir_ast_new_type_name(
+        kefir_ast_new_type_name_noarena(
             &kft_mem, kefir_ast_declarator_pointer(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL))),
-        kefir_ast_new_type_name(
+        kefir_ast_new_type_name_noarena(
             &kft_mem, kefir_ast_declarator_pointer(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL))),
-        kefir_ast_new_type_name(
+        kefir_ast_new_type_name_noarena(
             &kft_mem, kefir_ast_declarator_pointer(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL))),
-        kefir_ast_new_type_name(
+        kefir_ast_new_type_name_noarena(
             &kft_mem, kefir_ast_declarator_pointer(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL))),
-        kefir_ast_new_type_name(
+        kefir_ast_new_type_name_noarena(
             &kft_mem, kefir_ast_declarator_pointer(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL))),
-        kefir_ast_new_type_name(
+        kefir_ast_new_type_name_noarena(
             &kft_mem, kefir_ast_declarator_pointer(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL))),
-        kefir_ast_new_type_name(
+        kefir_ast_new_type_name_noarena(
             &kft_mem, kefir_ast_declarator_pointer(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL))),
-        kefir_ast_new_type_name(
+        kefir_ast_new_type_name_noarena(
             &kft_mem, kefir_ast_declarator_pointer(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL))),
-        kefir_ast_new_type_name(
+        kefir_ast_new_type_name_noarena(
             &kft_mem, kefir_ast_declarator_pointer(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL))),
-        kefir_ast_new_type_name(
+        kefir_ast_new_type_name_noarena(
             &kft_mem, kefir_ast_declarator_pointer(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL))),
-        kefir_ast_new_type_name(
+        kefir_ast_new_type_name_noarena(
             &kft_mem, kefir_ast_declarator_pointer(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL))),
     };
 
@@ -447,9 +447,9 @@ DEFINE_CASE(ast_node_analysis_compound_assignment_operator3, "AST node analysis 
             for (kefir_size_t j = 0; j < TYPES_LEN; j++) {
                 ASSERT_COMPOUND_ASSIGNMENT(
                     &kft_mem, context, OPERATORS[k],
-                    KEFIR_AST_NODE_BASE(kefir_ast_new_unary_operation(
+                    KEFIR_AST_NODE_BASE(kefir_ast_new_unary_operation_noarena(
                         &kft_mem, KEFIR_AST_OPERATION_INDIRECTION,
-                        KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator(
+                        KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator_noarena(
                             &kft_mem,
                             (struct kefir_ast_type_name *) KEFIR_AST_NODE_SELF(KEFIR_AST_NODE_REF(KEFIR_AST_NODE_BASE(TYPES2[i]))),
                             KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 0)))))),
@@ -457,7 +457,7 @@ DEFINE_CASE(ast_node_analysis_compound_assignment_operator3, "AST node analysis 
             }
             ASSERT_COMPOUND_ASSIGNMENT_NOK(
                 &kft_mem, context, OPERATORS[k],
-                KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(&kft_mem, context->symbols, "x")),
+                KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(&kft_mem, context->symbols, "x")),
                 KEFIR_AST_NODE_BASE(make_constant(&kft_mem, TYPES[i])));
         }
     }
@@ -487,21 +487,21 @@ DEFINE_CASE(ast_node_analysis_comma_operator, "AST node analysis - comma operato
                                                       &KEFIR_AST_CONSTANT_EXPRESSION_INT_VALUE(100),
                                                       type_traits->underlying_enumeration_type, NULL, NULL, NULL));
 
-    struct kefir_ast_type_name *type_name1 = kefir_ast_new_type_name(
+    struct kefir_ast_type_name *type_name1 = kefir_ast_new_type_name_noarena(
         &kft_mem, kefir_ast_declarator_pointer(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &type_name1->type_decl.specifiers,
                                                          kefir_ast_type_specifier_void(&kft_mem)));
 
-    struct kefir_ast_comma_operator *comma = kefir_ast_new_comma_operator(&kft_mem);
+    struct kefir_ast_comma_operator *comma = kefir_ast_new_comma_operator_noarena(&kft_mem);
     ASSERT(comma != NULL);
     ASSERT_OK(
         kefir_ast_comma_append(&kft_mem, comma, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bool_noarena(&kft_mem, true))));
     ASSERT_OK(kefir_ast_comma_append(
         &kft_mem, comma,
-        KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator(
+        KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator_noarena(
             &kft_mem, type_name1, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_uint_noarena(&kft_mem, 0))))));
     ASSERT_OK(kefir_ast_comma_append(&kft_mem, comma,
-                                     KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(&kft_mem, context->symbols, "x"))));
+                                     KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(&kft_mem, context->symbols, "x"))));
 
     ASSERT_OK(kefir_ast_analyze_node(&kft_mem, context, KEFIR_AST_NODE_BASE(comma)));
     ASSERT(comma->base.properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION);
@@ -512,20 +512,20 @@ DEFINE_CASE(ast_node_analysis_comma_operator, "AST node analysis - comma operato
     ASSERT(KEFIR_AST_TYPE_SAME(comma->base.properties.type, kefir_ast_type_float()));
     ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(comma)));
 
-    struct kefir_ast_type_name *type_name2 = kefir_ast_new_type_name(
+    struct kefir_ast_type_name *type_name2 = kefir_ast_new_type_name_noarena(
         &kft_mem, kefir_ast_declarator_pointer(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &type_name2->type_decl.specifiers,
                                                          kefir_ast_type_specifier_char(&kft_mem)));
 
-    comma = kefir_ast_new_comma_operator(&kft_mem);
+    comma = kefir_ast_new_comma_operator_noarena(&kft_mem);
     ASSERT(comma != NULL);
     ASSERT_OK(kefir_ast_comma_append(&kft_mem, comma,
-                                     KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(&kft_mem, context->symbols, "y"))));
+                                     KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(&kft_mem, context->symbols, "y"))));
     ASSERT_OK(
         kefir_ast_comma_append(&kft_mem, comma, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bool_noarena(&kft_mem, true))));
     ASSERT_OK(kefir_ast_comma_append(
         &kft_mem, comma,
-        KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator(
+        KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator_noarena(
             &kft_mem, type_name2, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_uint_noarena(&kft_mem, 0))))));
 
     ASSERT_OK(kefir_ast_analyze_node(&kft_mem, context, KEFIR_AST_NODE_BASE(comma)));

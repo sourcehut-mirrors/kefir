@@ -80,7 +80,7 @@ kefir_result_t KEFIR_PARSER_RULE_FN_PREFIX(type_name)(struct kefir_mem *mem, str
         return res;
     });
 
-    struct kefir_ast_type_name *type_name = kefir_ast_new_type_name(mem, declarator);
+    struct kefir_ast_type_name *type_name = kefir_ast_new_type_name(mem, parser->ast_arena, declarator);
     REQUIRE_ELSE(type_name != NULL, {
         kefir_ast_declarator_free(mem, declarator);
         kefir_ast_declarator_specifier_list_free(mem, &specifiers);

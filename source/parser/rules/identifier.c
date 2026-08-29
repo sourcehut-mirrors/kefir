@@ -35,7 +35,7 @@ kefir_result_t KEFIR_PARSER_RULE_FN_PREFIX(identifier)(struct kefir_mem *mem, st
     REQUIRE(!is_typedef, KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to match identifier"));
     REQUIRE_ALLOC(
         result,
-        KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, parser->symbols, PARSER_CURSOR(parser, 0)->identifier)),
+        KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, parser->ast_arena, parser->symbols, PARSER_CURSOR(parser, 0)->identifier)),
         "Failed to allocate AST identifier");
     REQUIRE_OK(PARSER_SHIFT(parser));
     return KEFIR_OK;

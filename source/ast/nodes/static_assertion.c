@@ -33,31 +33,31 @@ kefir_result_t ast_static_assertion_free(struct kefir_mem *mem, struct kefir_ast
     if (node->string != NULL) {
         REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, KEFIR_AST_NODE_BASE(node->string)));
     }
-    KEFIR_FREE(mem, node);
+    KEFIR_AST_NODE_ARENA_FREE(mem, node);
     return KEFIR_OK;
 }
 
 const struct kefir_ast_node_class AST_STATIC_ASSERTION_CLASS = {
     .type = KEFIR_AST_STATIC_ASSERTION, .visit = ast_static_assertion_visit, .free = ast_static_assertion_free};
 
-struct kefir_ast_static_assertion *kefir_ast_new_static_assertion(struct kefir_mem *mem,
+struct kefir_ast_static_assertion *kefir_ast_new_static_assertion(struct kefir_mem *mem, struct kefir_memory_arena *arena,
                                                                   struct kefir_ast_node_base *condition,
                                                                   struct kefir_ast_string_literal *string) {
-    REQUIRE(mem != NULL, NULL);
+    REQUIRE(mem != NULL || arena != NULL, NULL);
     REQUIRE(condition != NULL, NULL);
 
-    struct kefir_ast_static_assertion *static_assertion = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_static_assertion));
+    struct kefir_ast_static_assertion *static_assertion = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_static_assertion);
     REQUIRE(static_assertion != NULL, NULL);
-    static_assertion->base.refcount = 1;
+    static_assertion->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
     static_assertion->base.klass = &AST_STATIC_ASSERTION_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&static_assertion->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, static_assertion);
+        KEFIR_AST_NODE_ARENA_FREE(mem, static_assertion);
         return NULL;
     });
     res = kefir_source_location_empty(&static_assertion->base.source_location);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, static_assertion);
+        KEFIR_AST_NODE_ARENA_FREE(mem, static_assertion);
         return NULL;
     });
 

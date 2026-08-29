@@ -36,31 +36,31 @@ kefir_result_t ast_translation_unit_free(struct kefir_mem *mem, struct kefir_ast
         }
     }
     KEFIR_FREE(mem, node->external_definitions);
-    KEFIR_FREE(mem, node);
+    KEFIR_AST_NODE_ARENA_FREE(mem, node);
     return KEFIR_OK;
 }
 
 const struct kefir_ast_node_class AST_TRANSLATION_UNIT_CLASS = {
     .type = KEFIR_AST_TRANSLATION_UNIT, .visit = ast_translation_unit_visit, .free = ast_translation_unit_free};
 
-struct kefir_ast_translation_unit *kefir_ast_new_translation_unit(struct kefir_mem *mem) {
-    REQUIRE(mem != NULL, NULL);
+struct kefir_ast_translation_unit *kefir_ast_new_translation_unit(struct kefir_mem *mem, struct kefir_memory_arena *arena) {
+    REQUIRE(mem != NULL || arena != NULL, NULL);
 
-    struct kefir_ast_translation_unit *unit = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_translation_unit));
+    struct kefir_ast_translation_unit *unit = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_translation_unit);
     REQUIRE(unit != NULL, NULL);
-    unit->base.refcount = 1;
+    unit->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
     unit->base.klass = &AST_TRANSLATION_UNIT_CLASS;
     unit->external_definitions = NULL;
     unit->external_definitions_capacity = 0;
     unit->external_definitions_length = 0;
     kefir_result_t res = kefir_ast_node_properties_init(&unit->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, unit);
+        KEFIR_AST_NODE_ARENA_FREE(mem, unit);
         return NULL;
     });
     res = kefir_source_location_empty(&unit->base.source_location);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, unit);
+        KEFIR_AST_NODE_ARENA_FREE(mem, unit);
         return NULL;
     });
 

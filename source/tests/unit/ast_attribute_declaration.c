@@ -32,12 +32,12 @@ DEFINE_CASE(ast_attribute_declaration1, "AST declarators - attribute declaration
     ASSERT_OK(kefir_ast_global_context_init(&kft_mem, type_traits, &kft_util_get_translator_environment()->target_env,
                                             &global_context, NULL));
 
-    struct kefir_ast_attribute_declaration *decl = kefir_ast_new_attribute_declaration(&kft_mem);
+    struct kefir_ast_attribute_declaration *decl = kefir_ast_new_attribute_declaration(&kft_mem, NULL);
     ASSERT(decl != NULL);
     ASSERT(decl->base.klass->type == KEFIR_AST_ATTRIBUTE_DECLARATION);
     ASSERT(KEFIR_AST_NODE_SELF(KEFIR_AST_NODE_BASE(decl)) == decl);
 
-    struct kefir_ast_attribute_list *attr_list = kefir_ast_new_attribute_list(&kft_mem);
+    struct kefir_ast_attribute_list *attr_list = kefir_ast_new_attribute_list(&kft_mem, NULL);
     struct kefir_ast_attribute *attr;
     ASSERT_OK(
         kefir_ast_attribute_list_append(&kft_mem, global_context.context.symbols, "test", "test2", attr_list, &attr));

@@ -32,36 +32,36 @@ kefir_result_t ast_compound_literal_free(struct kefir_mem *mem, struct kefir_ast
     ASSIGN_DECL_CAST(struct kefir_ast_compound_literal *, node, KEFIR_AST_NODE_SELF(base));
     REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, KEFIR_AST_NODE_BASE(node->type_name)));
     REQUIRE_OK(kefir_ast_initializer_free(mem, node->initializer));
-    KEFIR_FREE(mem, node);
+    KEFIR_AST_NODE_ARENA_FREE(mem, node);
     return KEFIR_OK;
 }
 
 const struct kefir_ast_node_class AST_COMPOUND_LITERAL_CLASS = {
     .type = KEFIR_AST_COMPOUND_LITERAL, .visit = ast_compound_literal_visit, .free = ast_compound_literal_free};
 
-struct kefir_ast_compound_literal *kefir_ast_new_compound_literal(struct kefir_mem *mem,
+struct kefir_ast_compound_literal *kefir_ast_new_compound_literal(struct kefir_mem *mem, struct kefir_memory_arena *arena,
                                                                   struct kefir_ast_type_name *type_name) {
-    REQUIRE(mem != NULL, NULL);
+    REQUIRE(mem != NULL || arena != NULL, NULL);
     REQUIRE(type_name != NULL, NULL);
 
-    struct kefir_ast_compound_literal *literal = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_compound_literal));
+    struct kefir_ast_compound_literal *literal = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_compound_literal);
     REQUIRE(literal != NULL, NULL);
-    literal->base.refcount = 1;
+    literal->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
     literal->base.klass = &AST_COMPOUND_LITERAL_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&literal->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, literal);
+        KEFIR_AST_NODE_ARENA_FREE(mem, literal);
         return NULL;
     });
     res = kefir_source_location_empty(&literal->base.source_location);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, literal);
+        KEFIR_AST_NODE_ARENA_FREE(mem, literal);
         return NULL;
     });
     literal->type_name = type_name;
     literal->initializer = kefir_ast_new_list_initializer(mem);
     REQUIRE_ELSE(literal->initializer != NULL, {
-        KEFIR_FREE(mem, literal);
+        KEFIR_AST_NODE_ARENA_FREE(mem, literal);
         return NULL;
     });
     return literal;

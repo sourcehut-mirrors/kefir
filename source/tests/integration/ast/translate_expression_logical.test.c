@@ -37,7 +37,7 @@
 #define BINARY_NODE(_oper, _node1, _node2)                                                                   \
     do {                                                                                                     \
         struct kefir_ast_node_base *node =                                                                   \
-            KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation(mem, (_oper), (_node1), (_node2)));           \
+            KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation_noarena(mem, (_oper), (_node1), (_node2)));           \
         REQUIRE_OK(kefir_ast_analyze_node(mem, context, node));                                              \
         REQUIRE_OK(kefir_ast_translator_build_local_scope_layout(                                            \
             mem, &local_context, &env, &module, &translator_local_scope, translator_context.debug_entries)); \
@@ -78,14 +78,14 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
                     KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char_noarena(mem, 'C')));
     });
 
-    struct kefir_ast_type_name *type_name1 = kefir_ast_new_type_name(
+    struct kefir_ast_type_name *type_name1 = kefir_ast_new_type_name_noarena(
         mem, kefir_ast_declarator_pointer(mem, kefir_ast_declarator_identifier(mem, NULL, NULL)));
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &type_name1->type_decl.specifiers,
                                                           kefir_ast_type_specifier_void(mem)));
 
     FUNC2("logical_and3", {
         BINARY_NODE(KEFIR_AST_OPERATION_LOGICAL_AND, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long_noarena(mem, 4096)),
-                    KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator(
+                    KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator_noarena(
                         mem, type_name1, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 1)))));
     });
 
@@ -108,14 +108,14 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
                     KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char_noarena(mem, '7')));
     });
 
-    struct kefir_ast_type_name *type_name2 = kefir_ast_new_type_name(
+    struct kefir_ast_type_name *type_name2 = kefir_ast_new_type_name_noarena(
         mem, kefir_ast_declarator_pointer(mem, kefir_ast_declarator_identifier(mem, NULL, NULL)));
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &type_name2->type_decl.specifiers,
                                                           kefir_ast_type_specifier_void(mem)));
 
     FUNC2("logical_or3", {
         BINARY_NODE(KEFIR_AST_OPERATION_LOGICAL_OR, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long_noarena(mem, 8192)),
-                    KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator(
+                    KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator_noarena(
                         mem, type_name2, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 0)))));
     });
 

@@ -88,14 +88,14 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
 
     FUNC("equality_pointer", {
         BINARY_NODE(KEFIR_AST_OPERATION_EQUAL,
-                    KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "ptr1")),
-                    KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "ptr1")));
+                    KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "ptr1")),
+                    KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "ptr1")));
         BINARY_NODE(KEFIR_AST_OPERATION_EQUAL,
-                    KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "ptr1")),
-                    KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "ptr2")));
+                    KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "ptr1")),
+                    KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "ptr2")));
         BINARY_NODE(KEFIR_AST_OPERATION_EQUAL,
-                    KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "ptr2")),
-                    KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "ptr2")));
+                    KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "ptr2")),
+                    KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "ptr2")));
     });
 
     FUNC("non_equality_arithemtical", {
@@ -115,14 +115,14 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
 
     FUNC("non_equality_pointer", {
         BINARY_NODE(KEFIR_AST_OPERATION_NOT_EQUAL,
-                    KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "ptr1")),
-                    KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "ptr1")));
+                    KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "ptr1")),
+                    KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "ptr1")));
         BINARY_NODE(KEFIR_AST_OPERATION_NOT_EQUAL,
-                    KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "ptr1")),
-                    KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "ptr2")));
+                    KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "ptr1")),
+                    KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "ptr2")));
         BINARY_NODE(KEFIR_AST_OPERATION_NOT_EQUAL,
-                    KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "ptr2")),
-                    KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "ptr2")));
+                    KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "ptr2")),
+                    KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "ptr2")));
     });
 
     FUNC("less_than", {
@@ -212,32 +212,32 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
 
     FUNC("ptr_relational", {
         BINARY_NODE(KEFIR_AST_OPERATION_LESS,
-                    KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "ptr1")),
-                    KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "ptr1")));
+                    KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "ptr1")),
+                    KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "ptr1")));
         BINARY_NODE(KEFIR_AST_OPERATION_LESS,
-                    KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "ptr2")),
-                    KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "ptr2")));
+                    KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "ptr2")),
+                    KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "ptr2")));
 
         BINARY_NODE(KEFIR_AST_OPERATION_LESS_EQUAL,
-                    KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "ptr1")),
-                    KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "ptr1")));
+                    KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "ptr1")),
+                    KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "ptr1")));
         BINARY_NODE(KEFIR_AST_OPERATION_LESS_EQUAL,
-                    KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "ptr2")),
-                    KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "ptr2")));
+                    KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "ptr2")),
+                    KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "ptr2")));
 
         BINARY_NODE(KEFIR_AST_OPERATION_GREATER,
-                    KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "ptr1")),
-                    KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "ptr1")));
+                    KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "ptr1")),
+                    KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "ptr1")));
         BINARY_NODE(KEFIR_AST_OPERATION_GREATER,
-                    KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "ptr2")),
-                    KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "ptr2")));
+                    KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "ptr2")),
+                    KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "ptr2")));
 
         BINARY_NODE(KEFIR_AST_OPERATION_GREATER_EQUAL,
-                    KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "ptr1")),
-                    KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "ptr1")));
+                    KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "ptr1")),
+                    KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "ptr1")));
         BINARY_NODE(KEFIR_AST_OPERATION_GREATER_EQUAL,
-                    KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "ptr2")),
-                    KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "ptr2")));
+                    KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "ptr2")),
+                    KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "ptr2")));
     });
 
     REQUIRE_OK(kefir_ir_format_module(stdout, &module, false));

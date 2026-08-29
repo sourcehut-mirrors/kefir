@@ -35,7 +35,7 @@ kefir_result_t ast_conditional_statement_free(struct kefir_mem *mem, struct kefi
         REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, node->elseBranch));
     }
     REQUIRE_OK(kefir_ast_node_attributes_free(mem, &node->attributes));
-    KEFIR_FREE(mem, node);
+    KEFIR_AST_NODE_ARENA_FREE(mem, node);
     return KEFIR_OK;
 }
 
@@ -43,31 +43,31 @@ const struct kefir_ast_node_class AST_CONDITIONAL_STATEMENT_CLASS = {.type = KEF
                                                                      .visit = ast_conditional_statement_visit,
                                                                      .free = ast_conditional_statement_free};
 
-struct kefir_ast_conditional_statement *kefir_ast_new_conditional_statement(struct kefir_mem *mem,
+struct kefir_ast_conditional_statement *kefir_ast_new_conditional_statement(struct kefir_mem *mem, struct kefir_memory_arena *arena,
                                                                             struct kefir_ast_node_base *condition,
                                                                             struct kefir_ast_node_base *thenBranch,
                                                                             struct kefir_ast_node_base *elseBranch) {
-    REQUIRE(mem != NULL, NULL);
+    REQUIRE(mem != NULL || arena != NULL, NULL);
     REQUIRE(condition != NULL, NULL);
     REQUIRE(thenBranch != NULL, NULL);
 
-    struct kefir_ast_conditional_statement *stmt = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_conditional_statement));
+    struct kefir_ast_conditional_statement *stmt = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_conditional_statement);
     REQUIRE(stmt != NULL, NULL);
-    stmt->base.refcount = 1;
+    stmt->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
     stmt->base.klass = &AST_CONDITIONAL_STATEMENT_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&stmt->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, stmt);
+        KEFIR_AST_NODE_ARENA_FREE(mem, stmt);
         return NULL;
     });
     res = kefir_source_location_empty(&stmt->base.source_location);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, stmt);
+        KEFIR_AST_NODE_ARENA_FREE(mem, stmt);
         return NULL;
     });
     res = kefir_ast_node_attributes_init(&stmt->attributes);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, stmt);
+        KEFIR_AST_NODE_ARENA_FREE(mem, stmt);
         return NULL;
     });
 

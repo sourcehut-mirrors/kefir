@@ -137,7 +137,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
 
     struct kefir_ast_extension_node_class ext_node_class = {0};
 
-    struct kefir_ast_extension_node *ast = kefir_ast_new_extension_node(mem, &ext_node_class, NULL);
+    struct kefir_ast_extension_node *ast = kefir_ast_new_extension_node_noarena(mem, &ext_node_class, NULL);
     REQUIRE_OK(kefir_ast_analyze_node(mem, &local_context.context, KEFIR_AST_NODE_BASE(ast)));
     REQUIRE_OK(kefir_ast_translate_declaration(mem, KEFIR_AST_NODE_BASE(ast), &builder, &translator_context));
     REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, KEFIR_AST_NODE_BASE(ast)));

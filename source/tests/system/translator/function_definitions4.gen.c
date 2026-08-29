@@ -44,45 +44,45 @@ static struct kefir_ast_function_definition *define_sum_function(struct kefir_me
 
     REQUIRE(kefir_list_insert_after(
                 mem, &function1_decl->function->parameters, kefir_list_tail(&function1_decl->function->parameters),
-                KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "i"))) == KEFIR_OK,
+                KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "i"))) == KEFIR_OK,
             NULL);
 
     struct kefir_ast_declaration *function1_param1 =
-        kefir_ast_new_single_declaration(mem, kefir_ast_declarator_identifier(mem, context->symbols, "i"), NULL, NULL);
+        kefir_ast_new_single_declaration_noarena(mem, kefir_ast_declarator_identifier(mem, context->symbols, "i"), NULL, NULL);
     REQUIRE(kefir_ast_declarator_specifier_list_append(mem, &function1_param1->specifiers,
                                                        kefir_ast_type_specifier_int(mem)) == KEFIR_OK,
             NULL);
 
-    struct kefir_ast_compound_statement *function1_body = kefir_ast_new_compound_statement(mem);
+    struct kefir_ast_compound_statement *function1_body = kefir_ast_new_compound_statement_noarena(mem);
 
-    struct kefir_ast_declaration *stmt1 = kefir_ast_new_single_declaration(
+    struct kefir_ast_declaration *stmt1 = kefir_ast_new_single_declaration_noarena(
         mem, kefir_ast_declarator_identifier(mem, context->symbols, "res"),
         kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 1))), NULL);
     REQUIRE(kefir_ast_compound_statement_append(mem, function1_body, KEFIR_AST_NODE_BASE(stmt1)) == KEFIR_OK, NULL);
 
-    struct kefir_ast_node_base *loop_body = KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement(
-        mem, KEFIR_AST_NODE_BASE(kefir_ast_new_compound_assignment(
+    struct kefir_ast_node_base *loop_body = KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement_noarena(
+        mem, KEFIR_AST_NODE_BASE(kefir_ast_new_compound_assignment_noarena(
                  mem, KEFIR_AST_ASSIGNMENT_MULTIPLY,
-                 KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "res")),
-                 KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "i"))))));
+                 KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "res")),
+                 KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "i"))))));
 
-    struct kefir_ast_node_base *loop = KEFIR_AST_NODE_BASE(kefir_ast_new_for_statement(
+    struct kefir_ast_node_base *loop = KEFIR_AST_NODE_BASE(kefir_ast_new_for_statement_noarena(
         mem, NULL,
-        KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation(
-            mem, KEFIR_AST_OPERATION_GREATER, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "i")),
+        KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation_noarena(
+            mem, KEFIR_AST_OPERATION_GREATER, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "i")),
             KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 1)))),
         KEFIR_AST_NODE_BASE(
-            kefir_ast_new_unary_operation(mem, KEFIR_AST_OPERATION_PREFIX_DECREMENT,
-                                          KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "i")))),
+            kefir_ast_new_unary_operation_noarena(mem, KEFIR_AST_OPERATION_PREFIX_DECREMENT,
+                                          KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "i")))),
         loop_body));
     REQUIRE(kefir_ast_compound_statement_append(mem, function1_body, loop) == KEFIR_OK, NULL);
 
-    struct kefir_ast_node_base *stmt2 = KEFIR_AST_NODE_BASE(kefir_ast_new_return_statement(
-        mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "res"))));
+    struct kefir_ast_node_base *stmt2 = KEFIR_AST_NODE_BASE(kefir_ast_new_return_statement_noarena(
+        mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "res"))));
     REQUIRE(kefir_ast_compound_statement_append(mem, function1_body, stmt2) == KEFIR_OK, NULL);
 
     struct kefir_ast_function_definition *function1 =
-        kefir_ast_new_function_definition(mem, function1_decl, function1_body);
+        kefir_ast_new_function_definition_noarena(mem, function1_decl, function1_body);
     REQUIRE(kefir_ast_declarator_specifier_list_append(mem, &function1->specifiers,
                                                        kefir_ast_type_specifier_int(mem)) == KEFIR_OK,
             NULL);

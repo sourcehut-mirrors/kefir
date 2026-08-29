@@ -80,7 +80,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
 #define COMPOUND_ASSIGNMENT(_oper, _node1, _node2)                                                    \
     do {                                                                                              \
         struct kefir_ast_node_base *node =                                                            \
-            KEFIR_AST_NODE_BASE(kefir_ast_new_compound_assignment(mem, (_oper), (_node1), (_node2))); \
+            KEFIR_AST_NODE_BASE(kefir_ast_new_compound_assignment_noarena(mem, (_oper), (_node1), (_node2))); \
         REQUIRE_OK(kefir_ast_analyze_node(mem, context, node));                                       \
         REQUIRE_OK(kefir_ast_translate_expression(mem, node, &builder, &translator_context));         \
         REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, node));                                                   \
@@ -88,43 +88,43 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
 
     FUNC("assign_sub_int", {
         COMPOUND_ASSIGNMENT(KEFIR_AST_ASSIGNMENT_SUBTRACT,
-                            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "int")),
+                            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "int")),
                             KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, -89)));
     });
 
     FUNC("assign_sub_ullong", {
         COMPOUND_ASSIGNMENT(KEFIR_AST_ASSIGNMENT_SUBTRACT,
-                            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "ullong")),
+                            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "ullong")),
                             KEFIR_AST_NODE_BASE(kefir_ast_new_constant_ulong_long_noarena(mem, 0xcafebabell)));
     });
 
     FUNC("assign_sub_float", {
         COMPOUND_ASSIGNMENT(KEFIR_AST_ASSIGNMENT_SUBTRACT,
-                            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "float")),
+                            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "float")),
                             KEFIR_AST_NODE_BASE(kefir_ast_new_constant_float_noarena(mem, 3.71f)));
     });
 
     FUNC("assign_sub_double", {
         COMPOUND_ASSIGNMENT(KEFIR_AST_ASSIGNMENT_SUBTRACT,
-                            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "double")),
+                            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "double")),
                             KEFIR_AST_NODE_BASE(kefir_ast_new_constant_float_noarena(mem, 9.5e-1)));
     });
 
     FUNC("assign_sub_double_int", {
         COMPOUND_ASSIGNMENT(KEFIR_AST_ASSIGNMENT_SUBTRACT,
-                            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "int")),
+                            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "int")),
                             KEFIR_AST_NODE_BASE(kefir_ast_new_constant_double_noarena(mem, 2.0)));
     });
 
     FUNC("assign_sub_ptr_int", {
         COMPOUND_ASSIGNMENT(KEFIR_AST_ASSIGNMENT_SUBTRACT,
-                            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "ptr")),
+                            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "ptr")),
                             KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 7)));
     });
 
     FUNC("assign_sub_ptr2_int", {
         COMPOUND_ASSIGNMENT(KEFIR_AST_ASSIGNMENT_SUBTRACT,
-                            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "ptr2")),
+                            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "ptr2")),
                             KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, -1)));
     });
 

@@ -31,31 +31,31 @@ kefir_result_t ast_array_subscript_free(struct kefir_mem *mem, struct kefir_ast_
     ASSIGN_DECL_CAST(struct kefir_ast_array_subscript *, node, KEFIR_AST_NODE_SELF(base));
     REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, node->array));
     REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, node->subscript));
-    KEFIR_FREE(mem, node);
+    KEFIR_AST_NODE_ARENA_FREE(mem, node);
     return KEFIR_OK;
 }
 
 const struct kefir_ast_node_class AST_ARRAY_SUBSCRIPT_CLASS = {
     .type = KEFIR_AST_ARRAY_SUBSCRIPT, .visit = ast_array_subscript_visit, .free = ast_array_subscript_free};
 
-struct kefir_ast_array_subscript *kefir_ast_new_array_subscript(struct kefir_mem *mem,
+struct kefir_ast_array_subscript *kefir_ast_new_array_subscript(struct kefir_mem *mem, struct kefir_memory_arena *arena,
                                                                 struct kefir_ast_node_base *array,
                                                                 struct kefir_ast_node_base *subscript) {
-    REQUIRE(mem != NULL, NULL);
+    REQUIRE(mem != NULL || arena != NULL, NULL);
     REQUIRE(array != NULL, NULL);
     REQUIRE(subscript != NULL, NULL);
-    struct kefir_ast_array_subscript *array_subscript = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_array_subscript));
+    struct kefir_ast_array_subscript *array_subscript = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_array_subscript);
     REQUIRE(array_subscript != NULL, NULL);
-    array_subscript->base.refcount = 1;
+    array_subscript->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
     array_subscript->base.klass = &AST_ARRAY_SUBSCRIPT_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&array_subscript->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, array_subscript);
+        KEFIR_AST_NODE_ARENA_FREE(mem, array_subscript);
         return NULL;
     });
     res = kefir_source_location_empty(&array_subscript->base.source_location);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, array_subscript);
+        KEFIR_AST_NODE_ARENA_FREE(mem, array_subscript);
         return NULL;
     });
     array_subscript->array = array;

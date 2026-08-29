@@ -34,7 +34,7 @@ kefir_result_t ast_conditional_operator_free(struct kefir_mem *mem, struct kefir
         REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, node->expr1));
     }
     REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, node->condition));
-    KEFIR_FREE(mem, node);
+    KEFIR_AST_NODE_ARENA_FREE(mem, node);
     return KEFIR_OK;
 }
 
@@ -42,26 +42,26 @@ const struct kefir_ast_node_class AST_CONDITIONAL_OPERATION_CLASS = {.type = KEF
                                                                      .visit = ast_conditional_operator_visit,
                                                                      .free = ast_conditional_operator_free};
 
-struct kefir_ast_conditional_operator *kefir_ast_new_conditional_operator(struct kefir_mem *mem,
+struct kefir_ast_conditional_operator *kefir_ast_new_conditional_operator(struct kefir_mem *mem, struct kefir_memory_arena *arena,
                                                                           struct kefir_ast_node_base *condition,
                                                                           struct kefir_ast_node_base *expr1,
                                                                           struct kefir_ast_node_base *expr2) {
-    REQUIRE(mem != NULL, NULL);
+    REQUIRE(mem != NULL || arena != NULL, NULL);
     REQUIRE(condition != NULL, NULL);
     REQUIRE(expr2 != NULL, NULL);
 
-    struct kefir_ast_conditional_operator *oper = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_conditional_operator));
+    struct kefir_ast_conditional_operator *oper = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_conditional_operator);
     REQUIRE(oper != NULL, NULL);
-    oper->base.refcount = 1;
+    oper->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
     oper->base.klass = &AST_CONDITIONAL_OPERATION_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&oper->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, oper);
+        KEFIR_AST_NODE_ARENA_FREE(mem, oper);
         return NULL;
     });
     res = kefir_source_location_empty(&oper->base.source_location);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, oper);
+        KEFIR_AST_NODE_ARENA_FREE(mem, oper);
         return NULL;
     });
     oper->condition = condition;

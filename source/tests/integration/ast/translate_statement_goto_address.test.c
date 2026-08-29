@@ -57,41 +57,41 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     struct kefir_irbuilder_block builder;
 
     FUNC2("goto1", {
-        struct kefir_ast_declaration *decl1 = kefir_ast_new_single_declaration(
+        struct kefir_ast_declaration *decl1 = kefir_ast_new_single_declaration_noarena(
             mem, kefir_ast_declarator_identifier(mem, context->symbols, "i"),
             kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 0))), NULL);
         REQUIRE_OK(
             kefir_ast_declarator_specifier_list_append(mem, &decl1->specifiers, kefir_ast_type_specifier_short(mem)));
 
-        struct kefir_ast_labeled_statement *label1 = kefir_ast_new_labeled_statement(
+        struct kefir_ast_labeled_statement *label1 = kefir_ast_new_labeled_statement_noarena(
             mem, context->symbols, "begin",
-            KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement(
-                mem, KEFIR_AST_NODE_BASE(kefir_ast_new_unary_operation(
+            KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement_noarena(
+                mem, KEFIR_AST_NODE_BASE(kefir_ast_new_unary_operation_noarena(
                          mem, KEFIR_AST_OPERATION_POSTFIX_INCREMENT,
-                         KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "i")))))));
+                         KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "i")))))));
 
-        struct kefir_ast_conditional_statement *cond1 = kefir_ast_new_conditional_statement(
+        struct kefir_ast_conditional_statement *cond1 = kefir_ast_new_conditional_statement_noarena(
             mem,
-            KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation(
+            KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation_noarena(
                 mem, KEFIR_AST_OPERATION_EQUAL,
-                KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "i")),
+                KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "i")),
                 KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 1000)))),
-            KEFIR_AST_NODE_BASE(kefir_ast_new_goto_address_statement(
-                mem, KEFIR_AST_NODE_BASE(kefir_ast_new_label_address(mem, &global_context.symbols, "end")))),
+            KEFIR_AST_NODE_BASE(kefir_ast_new_goto_address_statement_noarena(
+                mem, KEFIR_AST_NODE_BASE(kefir_ast_new_label_address_noarena(mem, &global_context.symbols, "end")))),
             NULL);
 
-        struct kefir_ast_goto_statement *goto1 = kefir_ast_new_goto_address_statement(
-            mem, KEFIR_AST_NODE_BASE(kefir_ast_new_label_address(mem, &global_context.symbols, "begin")));
+        struct kefir_ast_goto_statement *goto1 = kefir_ast_new_goto_address_statement_noarena(
+            mem, KEFIR_AST_NODE_BASE(kefir_ast_new_label_address_noarena(mem, &global_context.symbols, "begin")));
 
-        struct kefir_ast_labeled_statement *label2 = kefir_ast_new_labeled_statement(
+        struct kefir_ast_labeled_statement *label2 = kefir_ast_new_labeled_statement_noarena(
             mem, context->symbols, "end",
-            KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement(
-                mem, KEFIR_AST_NODE_BASE(kefir_ast_new_compound_assignment(
+            KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement_noarena(
+                mem, KEFIR_AST_NODE_BASE(kefir_ast_new_compound_assignment_noarena(
                          mem, KEFIR_AST_ASSIGNMENT_MODULO,
-                         KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "i")),
+                         KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "i")),
                          KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 7)))))));
 
-        struct kefir_ast_compound_statement *compound1 = kefir_ast_new_compound_statement(mem);
+        struct kefir_ast_compound_statement *compound1 = kefir_ast_new_compound_statement_noarena(mem);
         REQUIRE_OK(kefir_ast_compound_statement_append(mem, compound1, KEFIR_AST_NODE_BASE(decl1)));
         REQUIRE_OK(kefir_ast_compound_statement_append(mem, compound1, KEFIR_AST_NODE_BASE(label1)));
         REQUIRE_OK(kefir_ast_compound_statement_append(mem, compound1, KEFIR_AST_NODE_BASE(cond1)));
@@ -110,25 +110,25 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     });
 
     FUNC2("goto2", {
-        struct kefir_ast_labeled_statement *label1 = kefir_ast_new_labeled_statement(
+        struct kefir_ast_labeled_statement *label1 = kefir_ast_new_labeled_statement_noarena(
             mem, context->symbols, "begin",
-            KEFIR_AST_NODE_BASE(kefir_ast_new_goto_address_statement(
-                mem, KEFIR_AST_NODE_BASE(kefir_ast_new_label_address(mem, &global_context.symbols, "loop")))));
+            KEFIR_AST_NODE_BASE(kefir_ast_new_goto_address_statement_noarena(
+                mem, KEFIR_AST_NODE_BASE(kefir_ast_new_label_address_noarena(mem, &global_context.symbols, "loop")))));
 
-        struct kefir_ast_labeled_statement *label2 = kefir_ast_new_labeled_statement(
+        struct kefir_ast_labeled_statement *label2 = kefir_ast_new_labeled_statement_noarena(
             mem, context->symbols, "loop",
-            KEFIR_AST_NODE_BASE(kefir_ast_new_goto_address_statement(
-                mem, KEFIR_AST_NODE_BASE(kefir_ast_new_label_address(mem, &global_context.symbols, "end")))));
+            KEFIR_AST_NODE_BASE(kefir_ast_new_goto_address_statement_noarena(
+                mem, KEFIR_AST_NODE_BASE(kefir_ast_new_label_address_noarena(mem, &global_context.symbols, "end")))));
 
-        struct kefir_ast_while_statement *while1 = kefir_ast_new_while_statement(
+        struct kefir_ast_while_statement *while1 = kefir_ast_new_while_statement_noarena(
             mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 0)), KEFIR_AST_NODE_BASE(label2));
 
-        struct kefir_ast_labeled_statement *label3 = kefir_ast_new_labeled_statement(
+        struct kefir_ast_labeled_statement *label3 = kefir_ast_new_labeled_statement_noarena(
             mem, context->symbols, "end",
-            KEFIR_AST_NODE_BASE(kefir_ast_new_goto_address_statement(
-                mem, KEFIR_AST_NODE_BASE(kefir_ast_new_label_address(mem, &global_context.symbols, "begin")))));
+            KEFIR_AST_NODE_BASE(kefir_ast_new_goto_address_statement_noarena(
+                mem, KEFIR_AST_NODE_BASE(kefir_ast_new_label_address_noarena(mem, &global_context.symbols, "begin")))));
 
-        struct kefir_ast_compound_statement *compound1 = kefir_ast_new_compound_statement(mem);
+        struct kefir_ast_compound_statement *compound1 = kefir_ast_new_compound_statement_noarena(mem);
         REQUIRE_OK(kefir_ast_compound_statement_append(mem, compound1, KEFIR_AST_NODE_BASE(label1)));
         REQUIRE_OK(kefir_ast_compound_statement_append(mem, compound1, KEFIR_AST_NODE_BASE(while1)));
         REQUIRE_OK(kefir_ast_compound_statement_append(mem, compound1, KEFIR_AST_NODE_BASE(label3)));

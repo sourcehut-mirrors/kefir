@@ -69,16 +69,16 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
             KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_AUTO, KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL, NULL));
 
         struct kefir_ast_inline_assembly *inline_asm1 =
-            kefir_ast_new_inline_assembly(mem, (struct kefir_ast_inline_assembly_qualifiers) {0}, "some assembly code");
+            kefir_ast_new_inline_assembly_noarena(mem, (struct kefir_ast_inline_assembly_qualifiers) {0}, "some assembly code");
         REQUIRE_OK(kefir_ast_inline_assembly_add_jump_label(mem, &global_context.symbols, inline_asm1, "label_begin"));
         REQUIRE_OK(kefir_ast_inline_assembly_add_jump_label(mem, &global_context.symbols, inline_asm1, "label_end"));
 
-        struct kefir_ast_node_base *label_begin = KEFIR_AST_NODE_BASE(kefir_ast_new_labeled_statement(
-            mem, &global_context.symbols, "label_begin", KEFIR_AST_NODE_BASE(kefir_ast_new_compound_statement(mem))));
-        struct kefir_ast_node_base *label_end = KEFIR_AST_NODE_BASE(kefir_ast_new_labeled_statement(
-            mem, &global_context.symbols, "label_end", KEFIR_AST_NODE_BASE(kefir_ast_new_compound_statement(mem))));
+        struct kefir_ast_node_base *label_begin = KEFIR_AST_NODE_BASE(kefir_ast_new_labeled_statement_noarena(
+            mem, &global_context.symbols, "label_begin", KEFIR_AST_NODE_BASE(kefir_ast_new_compound_statement_noarena(mem))));
+        struct kefir_ast_node_base *label_end = KEFIR_AST_NODE_BASE(kefir_ast_new_labeled_statement_noarena(
+            mem, &global_context.symbols, "label_end", KEFIR_AST_NODE_BASE(kefir_ast_new_compound_statement_noarena(mem))));
 
-        struct kefir_ast_compound_statement *compound1 = kefir_ast_new_compound_statement(mem);
+        struct kefir_ast_compound_statement *compound1 = kefir_ast_new_compound_statement_noarena(mem);
         REQUIRE_OK(kefir_ast_compound_statement_append(mem, compound1, label_begin));
         REQUIRE_OK(kefir_ast_compound_statement_append(mem, compound1, KEFIR_AST_NODE_BASE(inline_asm1)));
         REQUIRE_OK(kefir_ast_compound_statement_append(mem, compound1, label_end));

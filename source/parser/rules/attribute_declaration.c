@@ -49,7 +49,7 @@ static kefir_result_t builder_callback(struct kefir_mem *mem, struct kefir_parse
         return res;
     });
 
-    struct kefir_ast_attribute_declaration *attr_decl = kefir_ast_new_attribute_declaration(mem);
+    struct kefir_ast_attribute_declaration *attr_decl = kefir_ast_new_attribute_declaration(mem, parser->ast_arena);
     REQUIRE_ELSE(attr_decl != NULL, {
         kefir_ast_node_attributes_free(mem, &attributes);
         return KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate AST attribute declaration");

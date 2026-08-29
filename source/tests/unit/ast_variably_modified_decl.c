@@ -36,7 +36,7 @@ DEFINE_CASE(ast_declaration_variably_modified1, "AST declarations - variably mod
 
     const struct kefir_ast_type *type1 = kefir_ast_type_vlen_array(
         &kft_mem, &global_context.type_bundle, kefir_ast_type_unsigned_short(),
-        KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(&kft_mem, &global_context.symbols, "x")), NULL);
+        KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(&kft_mem, &global_context.symbols, "x")), NULL);
     ASSERT(kefir_ast_type_is_variably_modified(type1));
 
     const struct kefir_ast_type *type2 = kefir_ast_type_pointer(&kft_mem, &global_context.type_bundle, type1);
@@ -106,7 +106,7 @@ DEFINE_CASE(ast_declaration_variably_modified2, "AST declarations - variably mod
 
     const struct kefir_ast_type *type1 = kefir_ast_type_vlen_array(
         &kft_mem, &global_context.type_bundle, kefir_ast_type_unsigned_short(),
-        KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(&kft_mem, &global_context.symbols, "x")), NULL);
+        KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(&kft_mem, &global_context.symbols, "x")), NULL);
     ASSERT(kefir_ast_type_is_variably_modified(type1));
 
     const struct kefir_ast_type *type2 = kefir_ast_type_pointer(&kft_mem, &global_context.type_bundle, type1);
@@ -179,7 +179,7 @@ DEFINE_CASE(ast_declaration_variably_modified3,
 
     const struct kefir_ast_type *type1 = kefir_ast_type_vlen_array(
         &kft_mem, &global_context.type_bundle, kefir_ast_type_unsigned_short(),
-        KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(&kft_mem, &global_context.symbols, "x")), NULL);
+        KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(&kft_mem, &global_context.symbols, "x")), NULL);
     ASSERT(kefir_ast_type_is_variably_modified(type1));
 
     const struct kefir_ast_type *type2 = kefir_ast_type_pointer(&kft_mem, &global_context.type_bundle, type1);
@@ -252,7 +252,7 @@ DEFINE_CASE(ast_declaration_variably_modified4, "AST declarations - variably mod
 
     const struct kefir_ast_type *type1 = kefir_ast_type_vlen_array(
         &kft_mem, &global_context.type_bundle, kefir_ast_type_unsigned_short(),
-        KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(&kft_mem, &global_context.symbols, "x")), NULL);
+        KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(&kft_mem, &global_context.symbols, "x")), NULL);
     ASSERT(kefir_ast_type_is_variably_modified(type1));
 
     const struct kefir_ast_type *type2 = kefir_ast_type_pointer(&kft_mem, &global_context.type_bundle, type1);
@@ -329,7 +329,7 @@ DEFINE_CASE(ast_declaration_variably_modified_structure_field, "AST declarations
         &kft_mem, entry1,
         kefir_ast_declarator_array(
             &kft_mem, KEFIR_AST_DECLARATOR_ARRAY_BOUNDED,
-            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(&kft_mem, &global_context.symbols, "x")),
+            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(&kft_mem, &global_context.symbols, "x")),
             kefir_ast_declarator_identifier(&kft_mem, &global_context.symbols, "field1")),
         NULL));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &entry1->declaration.specifiers,
@@ -337,7 +337,7 @@ DEFINE_CASE(ast_declaration_variably_modified_structure_field, "AST declarations
     ASSERT_OK(kefir_ast_structure_specifier_append_entry(&kft_mem, struct_specifier1, entry1));
 
     struct kefir_ast_init_declarator *init_decl = NULL;
-    struct kefir_ast_declaration *decl = kefir_ast_new_single_declaration(
+    struct kefir_ast_declaration *decl = kefir_ast_new_single_declaration_noarena(
         &kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL), NULL, &init_decl);
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &decl->specifiers,
                                                          kefir_ast_type_specifier_struct(&kft_mem, struct_specifier1)));

@@ -115,21 +115,21 @@ DEFINE_CASE(ast_node_analysis_string_literals_multibyte, "AST node analysis - mu
     ASSERT_OK(kefir_ast_local_context_init(&kft_mem, &global_context, &local_context));
     struct kefir_ast_context *context = &local_context.context;
 
-    ASSERT_STRING_LITERAL(&kft_mem, context, char, kefir_ast_new_string_literal_multibyte, "", kefir_ast_type_char(),
+    ASSERT_STRING_LITERAL(&kft_mem, context, char, kefir_ast_new_string_literal_multibyte_noarena, "", kefir_ast_type_char(),
                           KEFIR_AST_STRING_LITERAL_MULTIBYTE);
-    ASSERT_STRING_LITERAL(&kft_mem, context, char, kefir_ast_new_string_literal_multibyte, "1", kefir_ast_type_char(),
+    ASSERT_STRING_LITERAL(&kft_mem, context, char, kefir_ast_new_string_literal_multibyte_noarena, "1", kefir_ast_type_char(),
                           KEFIR_AST_STRING_LITERAL_MULTIBYTE);
-    ASSERT_STRING_LITERAL(&kft_mem, context, char, kefir_ast_new_string_literal_multibyte, "abc", kefir_ast_type_char(),
+    ASSERT_STRING_LITERAL(&kft_mem, context, char, kefir_ast_new_string_literal_multibyte_noarena, "abc", kefir_ast_type_char(),
                           KEFIR_AST_STRING_LITERAL_MULTIBYTE);
-    ASSERT_STRING_LITERAL(&kft_mem, context, char, kefir_ast_new_string_literal_multibyte, "Hello, world!",
+    ASSERT_STRING_LITERAL(&kft_mem, context, char, kefir_ast_new_string_literal_multibyte_noarena, "Hello, world!",
                           kefir_ast_type_char(), KEFIR_AST_STRING_LITERAL_MULTIBYTE);
-    ASSERT_STRING_LITERAL(&kft_mem, context, char, kefir_ast_new_string_literal_multibyte, "\0", kefir_ast_type_char(),
+    ASSERT_STRING_LITERAL(&kft_mem, context, char, kefir_ast_new_string_literal_multibyte_noarena, "\0", kefir_ast_type_char(),
                           KEFIR_AST_STRING_LITERAL_MULTIBYTE);
-    ASSERT_STRING_LITERAL(&kft_mem, context, char, kefir_ast_new_string_literal_multibyte, "\0\0\0\t",
+    ASSERT_STRING_LITERAL(&kft_mem, context, char, kefir_ast_new_string_literal_multibyte_noarena, "\0\0\0\t",
                           kefir_ast_type_char(), KEFIR_AST_STRING_LITERAL_MULTIBYTE);
-    ASSERT_STRING_LITERAL(&kft_mem, context, char, kefir_ast_new_string_literal_multibyte, "\n\n\n\taaa",
+    ASSERT_STRING_LITERAL(&kft_mem, context, char, kefir_ast_new_string_literal_multibyte_noarena, "\n\n\n\taaa",
                           kefir_ast_type_char(), KEFIR_AST_STRING_LITERAL_MULTIBYTE);
-    ASSERT_STRING_LITERAL(&kft_mem, context, char, kefir_ast_new_string_literal_multibyte,
+    ASSERT_STRING_LITERAL(&kft_mem, context, char, kefir_ast_new_string_literal_multibyte_noarena,
                           "    Hello,\n\tcruel\n\n\n  \t world\n!", kefir_ast_type_char(),
                           KEFIR_AST_STRING_LITERAL_MULTIBYTE);
 
@@ -148,21 +148,21 @@ DEFINE_CASE(ast_node_analysis_string_literals_unicode8, "AST node analysis - uni
     ASSERT_OK(kefir_ast_local_context_init(&kft_mem, &global_context, &local_context));
     struct kefir_ast_context *context = &local_context.context;
 
-    ASSERT_STRING_LITERAL(&kft_mem, context, char, kefir_ast_new_string_literal_unicode8, u8"", kefir_ast_type_char(),
+    ASSERT_STRING_LITERAL(&kft_mem, context, char, kefir_ast_new_string_literal_unicode8_noarena, u8"", kefir_ast_type_char(),
                           KEFIR_AST_STRING_LITERAL_UNICODE8);
-    ASSERT_STRING_LITERAL(&kft_mem, context, char, kefir_ast_new_string_literal_unicode8, u8"1", kefir_ast_type_char(),
+    ASSERT_STRING_LITERAL(&kft_mem, context, char, kefir_ast_new_string_literal_unicode8_noarena, u8"1", kefir_ast_type_char(),
                           KEFIR_AST_STRING_LITERAL_UNICODE8);
-    ASSERT_STRING_LITERAL(&kft_mem, context, char, kefir_ast_new_string_literal_unicode8, u8"abc",
+    ASSERT_STRING_LITERAL(&kft_mem, context, char, kefir_ast_new_string_literal_unicode8_noarena, u8"abc",
                           kefir_ast_type_char(), KEFIR_AST_STRING_LITERAL_UNICODE8);
-    ASSERT_STRING_LITERAL(&kft_mem, context, char, kefir_ast_new_string_literal_unicode8, u8"Hello, world!",
+    ASSERT_STRING_LITERAL(&kft_mem, context, char, kefir_ast_new_string_literal_unicode8_noarena, u8"Hello, world!",
                           kefir_ast_type_char(), KEFIR_AST_STRING_LITERAL_UNICODE8);
-    ASSERT_STRING_LITERAL(&kft_mem, context, char, kefir_ast_new_string_literal_unicode8, u8"\0", kefir_ast_type_char(),
+    ASSERT_STRING_LITERAL(&kft_mem, context, char, kefir_ast_new_string_literal_unicode8_noarena, u8"\0", kefir_ast_type_char(),
                           KEFIR_AST_STRING_LITERAL_UNICODE8);
-    ASSERT_STRING_LITERAL(&kft_mem, context, char, kefir_ast_new_string_literal_unicode8, u8"\0\0\0\t",
+    ASSERT_STRING_LITERAL(&kft_mem, context, char, kefir_ast_new_string_literal_unicode8_noarena, u8"\0\0\0\t",
                           kefir_ast_type_char(), KEFIR_AST_STRING_LITERAL_UNICODE8);
-    ASSERT_STRING_LITERAL(&kft_mem, context, char, kefir_ast_new_string_literal_unicode8, u8"\n\n\n\taaa",
+    ASSERT_STRING_LITERAL(&kft_mem, context, char, kefir_ast_new_string_literal_unicode8_noarena, u8"\n\n\n\taaa",
                           kefir_ast_type_char(), KEFIR_AST_STRING_LITERAL_UNICODE8);
-    ASSERT_STRING_LITERAL(&kft_mem, context, char, kefir_ast_new_string_literal_unicode8,
+    ASSERT_STRING_LITERAL(&kft_mem, context, char, kefir_ast_new_string_literal_unicode8_noarena,
                           u8"    Hello,\n\tcruel\n\n\n  \t world\n!", kefir_ast_type_char(),
                           KEFIR_AST_STRING_LITERAL_UNICODE8);
 
@@ -181,21 +181,21 @@ DEFINE_CASE(ast_node_analysis_string_literals_unicode16, "AST node analysis - un
     ASSERT_OK(kefir_ast_local_context_init(&kft_mem, &global_context, &local_context));
     struct kefir_ast_context *context = &local_context.context;
 
-    ASSERT_STRING_LITERAL(&kft_mem, context, kefir_char16_t, kefir_ast_new_string_literal_unicode16, u"",
+    ASSERT_STRING_LITERAL(&kft_mem, context, kefir_char16_t, kefir_ast_new_string_literal_unicode16_noarena, u"",
                           type_traits->unicode16_char_type, KEFIR_AST_STRING_LITERAL_UNICODE16);
-    ASSERT_STRING_LITERAL(&kft_mem, context, kefir_char16_t, kefir_ast_new_string_literal_unicode16, u"1",
+    ASSERT_STRING_LITERAL(&kft_mem, context, kefir_char16_t, kefir_ast_new_string_literal_unicode16_noarena, u"1",
                           type_traits->unicode16_char_type, KEFIR_AST_STRING_LITERAL_UNICODE16);
-    ASSERT_STRING_LITERAL(&kft_mem, context, kefir_char16_t, kefir_ast_new_string_literal_unicode16, u"abc",
+    ASSERT_STRING_LITERAL(&kft_mem, context, kefir_char16_t, kefir_ast_new_string_literal_unicode16_noarena, u"abc",
                           type_traits->unicode16_char_type, KEFIR_AST_STRING_LITERAL_UNICODE16);
-    ASSERT_STRING_LITERAL(&kft_mem, context, kefir_char16_t, kefir_ast_new_string_literal_unicode16, u"Hello, world!",
+    ASSERT_STRING_LITERAL(&kft_mem, context, kefir_char16_t, kefir_ast_new_string_literal_unicode16_noarena, u"Hello, world!",
                           type_traits->unicode16_char_type, KEFIR_AST_STRING_LITERAL_UNICODE16);
-    ASSERT_STRING_LITERAL(&kft_mem, context, kefir_char16_t, kefir_ast_new_string_literal_unicode16, u"\0",
+    ASSERT_STRING_LITERAL(&kft_mem, context, kefir_char16_t, kefir_ast_new_string_literal_unicode16_noarena, u"\0",
                           type_traits->unicode16_char_type, KEFIR_AST_STRING_LITERAL_UNICODE16);
-    ASSERT_STRING_LITERAL(&kft_mem, context, kefir_char16_t, kefir_ast_new_string_literal_unicode16, u"\0\0\0\t",
+    ASSERT_STRING_LITERAL(&kft_mem, context, kefir_char16_t, kefir_ast_new_string_literal_unicode16_noarena, u"\0\0\0\t",
                           type_traits->unicode16_char_type, KEFIR_AST_STRING_LITERAL_UNICODE16);
-    ASSERT_STRING_LITERAL(&kft_mem, context, kefir_char16_t, kefir_ast_new_string_literal_unicode16, u"\n\n\n\taaa",
+    ASSERT_STRING_LITERAL(&kft_mem, context, kefir_char16_t, kefir_ast_new_string_literal_unicode16_noarena, u"\n\n\n\taaa",
                           type_traits->unicode16_char_type, KEFIR_AST_STRING_LITERAL_UNICODE16);
-    ASSERT_STRING_LITERAL(&kft_mem, context, kefir_char16_t, kefir_ast_new_string_literal_unicode16,
+    ASSERT_STRING_LITERAL(&kft_mem, context, kefir_char16_t, kefir_ast_new_string_literal_unicode16_noarena,
                           u"    Hello,\n\tcruel\n\n\n  \t world\n!", type_traits->unicode16_char_type,
                           KEFIR_AST_STRING_LITERAL_UNICODE16);
 
@@ -214,21 +214,21 @@ DEFINE_CASE(ast_node_analysis_string_literals_unicode32, "AST node analysis - un
     ASSERT_OK(kefir_ast_local_context_init(&kft_mem, &global_context, &local_context));
     struct kefir_ast_context *context = &local_context.context;
 
-    ASSERT_STRING_LITERAL(&kft_mem, context, kefir_char32_t, kefir_ast_new_string_literal_unicode32, U"",
+    ASSERT_STRING_LITERAL(&kft_mem, context, kefir_char32_t, kefir_ast_new_string_literal_unicode32_noarena, U"",
                           type_traits->unicode32_char_type, KEFIR_AST_STRING_LITERAL_UNICODE32);
-    ASSERT_STRING_LITERAL(&kft_mem, context, kefir_char32_t, kefir_ast_new_string_literal_unicode32, U"1",
+    ASSERT_STRING_LITERAL(&kft_mem, context, kefir_char32_t, kefir_ast_new_string_literal_unicode32_noarena, U"1",
                           type_traits->unicode32_char_type, KEFIR_AST_STRING_LITERAL_UNICODE32);
-    ASSERT_STRING_LITERAL(&kft_mem, context, kefir_char32_t, kefir_ast_new_string_literal_unicode32, U"abc",
+    ASSERT_STRING_LITERAL(&kft_mem, context, kefir_char32_t, kefir_ast_new_string_literal_unicode32_noarena, U"abc",
                           type_traits->unicode32_char_type, KEFIR_AST_STRING_LITERAL_UNICODE32);
-    ASSERT_STRING_LITERAL(&kft_mem, context, kefir_char32_t, kefir_ast_new_string_literal_unicode32, U"Hello, world!",
+    ASSERT_STRING_LITERAL(&kft_mem, context, kefir_char32_t, kefir_ast_new_string_literal_unicode32_noarena, U"Hello, world!",
                           type_traits->unicode32_char_type, KEFIR_AST_STRING_LITERAL_UNICODE32);
-    ASSERT_STRING_LITERAL(&kft_mem, context, kefir_char32_t, kefir_ast_new_string_literal_unicode32, U"\0",
+    ASSERT_STRING_LITERAL(&kft_mem, context, kefir_char32_t, kefir_ast_new_string_literal_unicode32_noarena, U"\0",
                           type_traits->unicode32_char_type, KEFIR_AST_STRING_LITERAL_UNICODE32);
-    ASSERT_STRING_LITERAL(&kft_mem, context, kefir_char32_t, kefir_ast_new_string_literal_unicode32, U"\0\0\0\t",
+    ASSERT_STRING_LITERAL(&kft_mem, context, kefir_char32_t, kefir_ast_new_string_literal_unicode32_noarena, U"\0\0\0\t",
                           type_traits->unicode32_char_type, KEFIR_AST_STRING_LITERAL_UNICODE32);
-    ASSERT_STRING_LITERAL(&kft_mem, context, kefir_char32_t, kefir_ast_new_string_literal_unicode32, U"\n\n\n\taaa",
+    ASSERT_STRING_LITERAL(&kft_mem, context, kefir_char32_t, kefir_ast_new_string_literal_unicode32_noarena, U"\n\n\n\taaa",
                           type_traits->unicode32_char_type, KEFIR_AST_STRING_LITERAL_UNICODE32);
-    ASSERT_STRING_LITERAL(&kft_mem, context, kefir_char32_t, kefir_ast_new_string_literal_unicode32,
+    ASSERT_STRING_LITERAL(&kft_mem, context, kefir_char32_t, kefir_ast_new_string_literal_unicode32_noarena,
                           U"    Hello,\n\tcruel\n\n\n  \t world\n!", type_traits->unicode32_char_type,
                           KEFIR_AST_STRING_LITERAL_UNICODE32);
 
@@ -247,21 +247,21 @@ DEFINE_CASE(ast_node_analysis_string_literals_wide, "AST node analysis - wide st
     ASSERT_OK(kefir_ast_local_context_init(&kft_mem, &global_context, &local_context));
     struct kefir_ast_context *context = &local_context.context;
 
-    ASSERT_STRING_LITERAL(&kft_mem, context, kefir_wchar_t, kefir_ast_new_string_literal_wide, L"",
+    ASSERT_STRING_LITERAL(&kft_mem, context, kefir_wchar_t, kefir_ast_new_string_literal_wide_noarena, L"",
                           type_traits->wide_char_type, KEFIR_AST_STRING_LITERAL_WIDE);
-    ASSERT_STRING_LITERAL(&kft_mem, context, kefir_wchar_t, kefir_ast_new_string_literal_wide, L"1",
+    ASSERT_STRING_LITERAL(&kft_mem, context, kefir_wchar_t, kefir_ast_new_string_literal_wide_noarena, L"1",
                           type_traits->wide_char_type, KEFIR_AST_STRING_LITERAL_WIDE);
-    ASSERT_STRING_LITERAL(&kft_mem, context, kefir_wchar_t, kefir_ast_new_string_literal_wide, L"abc",
+    ASSERT_STRING_LITERAL(&kft_mem, context, kefir_wchar_t, kefir_ast_new_string_literal_wide_noarena, L"abc",
                           type_traits->wide_char_type, KEFIR_AST_STRING_LITERAL_WIDE);
-    ASSERT_STRING_LITERAL(&kft_mem, context, kefir_wchar_t, kefir_ast_new_string_literal_wide, L"Hello, world!",
+    ASSERT_STRING_LITERAL(&kft_mem, context, kefir_wchar_t, kefir_ast_new_string_literal_wide_noarena, L"Hello, world!",
                           type_traits->wide_char_type, KEFIR_AST_STRING_LITERAL_WIDE);
-    ASSERT_STRING_LITERAL(&kft_mem, context, kefir_wchar_t, kefir_ast_new_string_literal_wide, L"\0",
+    ASSERT_STRING_LITERAL(&kft_mem, context, kefir_wchar_t, kefir_ast_new_string_literal_wide_noarena, L"\0",
                           type_traits->wide_char_type, KEFIR_AST_STRING_LITERAL_WIDE);
-    ASSERT_STRING_LITERAL(&kft_mem, context, kefir_wchar_t, kefir_ast_new_string_literal_wide, L"\0\0\0\t",
+    ASSERT_STRING_LITERAL(&kft_mem, context, kefir_wchar_t, kefir_ast_new_string_literal_wide_noarena, L"\0\0\0\t",
                           type_traits->wide_char_type, KEFIR_AST_STRING_LITERAL_WIDE);
-    ASSERT_STRING_LITERAL(&kft_mem, context, kefir_wchar_t, kefir_ast_new_string_literal_wide, L"\n\n\n\taaa",
+    ASSERT_STRING_LITERAL(&kft_mem, context, kefir_wchar_t, kefir_ast_new_string_literal_wide_noarena, L"\n\n\n\taaa",
                           type_traits->wide_char_type, KEFIR_AST_STRING_LITERAL_WIDE);
-    ASSERT_STRING_LITERAL(&kft_mem, context, kefir_wchar_t, kefir_ast_new_string_literal_wide,
+    ASSERT_STRING_LITERAL(&kft_mem, context, kefir_wchar_t, kefir_ast_new_string_literal_wide_noarena,
                           L"    Hello,\n\tcruel\n\n\n  \t world\n!", type_traits->wide_char_type,
                           KEFIR_AST_STRING_LITERAL_WIDE);
 
@@ -275,7 +275,7 @@ END_CASE
 #define ASSERT_IDENTIFIER_LITERAL(_mem, _context, _identifier, _type, _constant, _lvalue)                         \
     do {                                                                                                          \
         struct kefir_ast_identifier *identifier =                                                                 \
-            kefir_ast_new_identifier((_mem), (_context)->symbols, (_identifier));                                 \
+            kefir_ast_new_identifier_noarena((_mem), (_context)->symbols, (_identifier));                                 \
         ASSERT_OK(kefir_ast_analyze_node((_mem), (_context), KEFIR_AST_NODE_BASE(identifier)));                   \
         ASSERT(identifier->base.properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION);                       \
         ASSERT(KEFIR_AST_TYPE_SAME(kefir_ast_type_lvalue_conversion(identifier->base.properties.type), (_type))); \
@@ -340,7 +340,7 @@ END_CASE
 
 #define ASSERT_LABEL_ADDRESS(_mem, _context, _label, _point)                                                           \
     do {                                                                                                               \
-        struct kefir_ast_label_address *addr = kefir_ast_new_label_address((_mem), (_context)->symbols, (_label));     \
+        struct kefir_ast_label_address *addr = kefir_ast_new_label_address_noarena((_mem), (_context)->symbols, (_label));     \
         ASSERT_OK(kefir_ast_analyze_node((_mem), (_context), KEFIR_AST_NODE_BASE(addr)));                              \
         ASSERT(addr->base.properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION);                                  \
         ASSERT(KEFIR_AST_TYPE_SAME(kefir_ast_type_lvalue_conversion(addr->base.properties.type),                       \
@@ -384,8 +384,8 @@ END_CASE
 
 #define ASSERT_ARRAY_SUBSCRIPT(_mem, _context, _identifier, _index, _type, _const)                             \
     do {                                                                                                       \
-        struct kefir_ast_array_subscript *subscript = kefir_ast_new_array_subscript(                           \
-            (_mem), KEFIR_AST_NODE_BASE(kefir_ast_new_identifier((_mem), (_context)->symbols, (_identifier))), \
+        struct kefir_ast_array_subscript *subscript = kefir_ast_new_array_subscript_noarena(                           \
+            (_mem), KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena((_mem), (_context)->symbols, (_identifier))), \
             KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena((_mem), (_index))));                                \
         ASSERT_OK(kefir_ast_analyze_node((_mem), (_context), KEFIR_AST_NODE_BASE(subscript)));                 \
         ASSERT(subscript->base.properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION);                     \
@@ -394,9 +394,9 @@ END_CASE
         ASSERT(subscript->base.properties.expression_props->lvalue);                                            \
         KEFIR_AST_NODE_FREE((_mem), KEFIR_AST_NODE_BASE(subscript));                                           \
                                                                                                                \
-        struct kefir_ast_array_subscript *subscript2 = kefir_ast_new_array_subscript(                          \
+        struct kefir_ast_array_subscript *subscript2 = kefir_ast_new_array_subscript_noarena(                          \
             (_mem), KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena((_mem), (_index))),                         \
-            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier((_mem), (_context)->symbols, (_identifier))));        \
+            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena((_mem), (_context)->symbols, (_identifier))));        \
         ASSERT_OK(kefir_ast_analyze_node((_mem), (_context), KEFIR_AST_NODE_BASE(subscript2)));                \
         ASSERT(subscript2->base.properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION);                    \
         ASSERT(KEFIR_AST_TYPE_SAME(subscript2->base.properties.type, (_type)));                                \
@@ -407,8 +407,8 @@ END_CASE
 
 #define ASSERT_ARRAY_SUBSCRIPT3(_mem, _context, _identifier, _index, _type, _cnst_expr)                        \
     do {                                                                                                       \
-        struct kefir_ast_array_subscript *subscript = kefir_ast_new_array_subscript(                           \
-            (_mem), KEFIR_AST_NODE_BASE(kefir_ast_new_identifier((_mem), (_context)->symbols, (_identifier))), \
+        struct kefir_ast_array_subscript *subscript = kefir_ast_new_array_subscript_noarena(                           \
+            (_mem), KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena((_mem), (_context)->symbols, (_identifier))), \
             KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena((_mem), (_index))));                                \
         ASSERT_OK(kefir_ast_analyze_node((_mem), (_context), KEFIR_AST_NODE_BASE(subscript)));                 \
         ASSERT(subscript->base.properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION);                     \
@@ -417,9 +417,9 @@ END_CASE
         ASSERT(subscript->base.properties.expression_props->lvalue);                                            \
         KEFIR_AST_NODE_FREE((_mem), KEFIR_AST_NODE_BASE(subscript));                                           \
                                                                                                                \
-        struct kefir_ast_array_subscript *subscript2 = kefir_ast_new_array_subscript(                          \
+        struct kefir_ast_array_subscript *subscript2 = kefir_ast_new_array_subscript_noarena(                          \
             (_mem), KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena((_mem), (_index))),                         \
-            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier((_mem), (_context)->symbols, (_identifier))));        \
+            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena((_mem), (_context)->symbols, (_identifier))));        \
         ASSERT_OK(kefir_ast_analyze_node((_mem), (_context), KEFIR_AST_NODE_BASE(subscript2)));                \
         ASSERT(subscript2->base.properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION);                    \
         ASSERT(KEFIR_AST_TYPE_SAME(subscript2->base.properties.type, (_type)));                                \
@@ -430,10 +430,10 @@ END_CASE
 
 #define ASSERT_ARRAY_SUBSCRIPT2(_mem, _context, _identifier, _index1, _index2, _type, _const)                      \
     do {                                                                                                           \
-        struct kefir_ast_array_subscript *subscript = kefir_ast_new_array_subscript(                               \
+        struct kefir_ast_array_subscript *subscript = kefir_ast_new_array_subscript_noarena(                               \
             (_mem),                                                                                                \
-            KEFIR_AST_NODE_BASE(kefir_ast_new_array_subscript(                                                     \
-                (_mem), KEFIR_AST_NODE_BASE(kefir_ast_new_identifier((_mem), (_context)->symbols, (_identifier))), \
+            KEFIR_AST_NODE_BASE(kefir_ast_new_array_subscript_noarena(                                                     \
+                (_mem), KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena((_mem), (_context)->symbols, (_identifier))), \
                 KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena((_mem), (_index1))))),                              \
             KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena((_mem), (_index2))));                                   \
         ASSERT_OK(kefir_ast_analyze_node((_mem), (_context), KEFIR_AST_NODE_BASE(subscript)));                     \
@@ -513,9 +513,9 @@ END_CASE
 
 #define ASSERT_STRUCT_MEMBER(_mem, _context, _identifier, _field, _type, _constant)                               \
     do {                                                                                                          \
-        struct kefir_ast_struct_member *member = kefir_ast_new_struct_member(                                     \
+        struct kefir_ast_struct_member *member = kefir_ast_new_struct_member_noarena(                                     \
             (_mem), (_context)->symbols,                                                                          \
-            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier((_mem), (_context)->symbols, (_identifier))), (_field)); \
+            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena((_mem), (_context)->symbols, (_identifier))), (_field)); \
         ASSERT_OK(kefir_ast_analyze_node((_mem), (_context), KEFIR_AST_NODE_BASE(member)));                       \
         ASSERT(member->base.properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION);                           \
         ASSERT(KEFIR_AST_TYPE_SAME(member->base.properties.type, (_type)));                                       \
@@ -604,9 +604,9 @@ END_CASE
 
 #define ASSERT_INDIRECT_STRUCT_MEMBER(_mem, _context, _identifier, _field, _type, _constant)                      \
     do {                                                                                                          \
-        struct kefir_ast_struct_member *member = kefir_ast_new_struct_indirect_member(                            \
+        struct kefir_ast_struct_member *member = kefir_ast_new_struct_indirect_member_noarena(                            \
             (_mem), (_context)->symbols,                                                                          \
-            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier((_mem), (_context)->symbols, (_identifier))), (_field)); \
+            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena((_mem), (_context)->symbols, (_identifier))), (_field)); \
         ASSERT_OK(kefir_ast_analyze_node((_mem), (_context), KEFIR_AST_NODE_BASE(member)));                       \
         ASSERT(member->base.properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION);                           \
         ASSERT(KEFIR_AST_TYPE_SAME(member->base.properties.type, (_type)));                                       \
@@ -698,8 +698,8 @@ END_CASE
 
 #define ASSERT_FUNCTION_CALL(_mem, _context, _id, _type)                                                       \
     do {                                                                                                       \
-        struct kefir_ast_function_call *call1 = kefir_ast_new_function_call(                                   \
-            (_mem), KEFIR_AST_NODE_BASE(kefir_ast_new_identifier((_mem), (_context)->symbols, (_id))));        \
+        struct kefir_ast_function_call *call1 = kefir_ast_new_function_call_noarena(                                   \
+            (_mem), KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena((_mem), (_context)->symbols, (_id))));        \
         ASSERT_OK(kefir_ast_function_call_append((_mem), call1,                                                \
                                                  KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena((_mem), 0)))); \
         ASSERT_OK(kefir_ast_analyze_node((_mem), (_context), KEFIR_AST_NODE_BASE(call1)));                     \
@@ -713,8 +713,8 @@ END_CASE
 
 #define ASSERT_FUNCTION_CALL_NOK(_mem, _context, _id)                                                          \
     do {                                                                                                       \
-        struct kefir_ast_function_call *call1 = kefir_ast_new_function_call(                                   \
-            (_mem), KEFIR_AST_NODE_BASE(kefir_ast_new_identifier((_mem), (_context)->symbols, (_id))));        \
+        struct kefir_ast_function_call *call1 = kefir_ast_new_function_call_noarena(                                   \
+            (_mem), KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena((_mem), (_context)->symbols, (_id))));        \
         ASSERT_OK(kefir_ast_function_call_append((_mem), call1,                                                \
                                                  KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena((_mem), 0)))); \
         ASSERT_NOK(kefir_ast_analyze_node((_mem), (_context), KEFIR_AST_NODE_BASE(call1)));                    \
@@ -840,7 +840,7 @@ END_CASE
 #define ASSERT_UNARY_OPERATION(_mem, _context, _oper, _arg, _type, _constant, _lvalue, _addresable) \
     do {                                                                                            \
         struct kefir_ast_unary_operation *oper =                                                    \
-            kefir_ast_new_unary_operation((_mem), (_oper), KEFIR_AST_NODE_BASE((_arg)));            \
+            kefir_ast_new_unary_operation_noarena((_mem), (_oper), KEFIR_AST_NODE_BASE((_arg)));            \
         ASSERT_OK(kefir_ast_analyze_node((_mem), (_context), KEFIR_AST_NODE_BASE(oper)));           \
         ASSERT(oper->base.properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION);               \
         ASSERT(KEFIR_AST_TYPE_SAME(oper->base.properties.type, (_type)));                           \
@@ -964,22 +964,22 @@ DEFINE_CASE(ast_node_analysis_unary_operation_address, "AST node analysis - unar
                                                        true, "func1", function_type3, NULL, NULL, NULL));
 
     ASSERT_UNARY_OPERATION(
-        &kft_mem, context, KEFIR_AST_OPERATION_ADDRESS, kefir_ast_new_identifier(&kft_mem, context->symbols, "var0"),
+        &kft_mem, context, KEFIR_AST_OPERATION_ADDRESS, kefir_ast_new_identifier_noarena(&kft_mem, context->symbols, "var0"),
         kefir_ast_type_pointer(&kft_mem, context->type_bundle,
                                kefir_ast_type_qualified(&kft_mem, context->type_bundle, kefir_ast_type_signed_long(),
                                                         (struct kefir_ast_type_qualification) {.constant = true})),
         true, false, false);
     ASSERT_UNARY_OPERATION(
-        &kft_mem, context, KEFIR_AST_OPERATION_ADDRESS, kefir_ast_new_identifier(&kft_mem, context->symbols, "var1"),
+        &kft_mem, context, KEFIR_AST_OPERATION_ADDRESS, kefir_ast_new_identifier_noarena(&kft_mem, context->symbols, "var1"),
         kefir_ast_type_pointer(&kft_mem, context->type_bundle, kefir_ast_type_signed_int()), true, false, false);
     ASSERT_UNARY_OPERATION(&kft_mem, context, KEFIR_AST_OPERATION_ADDRESS,
-                           kefir_ast_new_identifier(&kft_mem, context->symbols, "var2"),
+                           kefir_ast_new_identifier_noarena(&kft_mem, context->symbols, "var2"),
                            kefir_ast_type_pointer(&kft_mem, context->type_bundle, type1), true, false, false);
     ASSERT_UNARY_OPERATION(&kft_mem, context, KEFIR_AST_OPERATION_ADDRESS,
-                           kefir_ast_new_identifier(&kft_mem, context->symbols, "var3"),
+                           kefir_ast_new_identifier_noarena(&kft_mem, context->symbols, "var3"),
                            kefir_ast_type_pointer(&kft_mem, context->type_bundle, type2), false, false, false);
     ASSERT_UNARY_OPERATION(&kft_mem, context, KEFIR_AST_OPERATION_ADDRESS,
-                           kefir_ast_new_identifier(&kft_mem, context->symbols, "func1"),
+                           kefir_ast_new_identifier_noarena(&kft_mem, context->symbols, "func1"),
                            kefir_ast_type_pointer(&kft_mem, context->type_bundle, function_type3), true, false, false);
 
     ASSERT_OK(kefir_ast_local_context_free(&kft_mem, &local_context));
@@ -1022,17 +1022,17 @@ DEFINE_CASE(ast_node_analysis_unary_operation_indirect, "AST node analysis - una
         NULL, NULL, NULL));
 
     ASSERT_UNARY_OPERATION(&kft_mem, context, KEFIR_AST_OPERATION_INDIRECTION,
-                           kefir_ast_new_identifier(&kft_mem, context->symbols, "var1"), kefir_ast_type_signed_int(),
+                           kefir_ast_new_identifier_noarena(&kft_mem, context->symbols, "var1"), kefir_ast_type_signed_int(),
                            false, true, true);
     ASSERT_UNARY_OPERATION(&kft_mem, context, KEFIR_AST_OPERATION_INDIRECTION,
-                           kefir_ast_new_identifier(&kft_mem, context->symbols, "var2"), type1, false, true, true);
+                           kefir_ast_new_identifier_noarena(&kft_mem, context->symbols, "var2"), type1, false, true, true);
     ASSERT_UNARY_OPERATION(&kft_mem, context, KEFIR_AST_OPERATION_INDIRECTION,
-                           kefir_ast_new_identifier(&kft_mem, context->symbols, "var3"), type2, false, true, true);
+                           kefir_ast_new_identifier_noarena(&kft_mem, context->symbols, "var3"), type2, false, true, true);
     ASSERT_UNARY_OPERATION(&kft_mem, context, KEFIR_AST_OPERATION_INDIRECTION,
-                           kefir_ast_new_identifier(&kft_mem, context->symbols, "var4"), kefir_ast_type_float(), false,
+                           kefir_ast_new_identifier_noarena(&kft_mem, context->symbols, "var4"), kefir_ast_type_float(), false,
                            true, true);
     ASSERT_UNARY_OPERATION(&kft_mem, context, KEFIR_AST_OPERATION_INDIRECTION,
-                           kefir_ast_new_identifier(&kft_mem, context->symbols, "var5"), function_type3, false, false,
+                           kefir_ast_new_identifier_noarena(&kft_mem, context->symbols, "var5"), function_type3, false, false,
                            true);
 
     ASSERT_OK(kefir_ast_local_context_free(&kft_mem, &local_context));
@@ -1063,70 +1063,70 @@ DEFINE_CASE(ast_node_analysis_unary_operation_incdec, "AST node analysis - unary
         kefir_ast_type_pointer(&kft_mem, context->type_bundle, kefir_ast_type_float()), NULL, NULL, NULL, NULL));
 
     ASSERT_UNARY_OPERATION(&kft_mem, context, KEFIR_AST_OPERATION_POSTFIX_DECREMENT,
-                           kefir_ast_new_identifier(&kft_mem, context->symbols, "var1"), kefir_ast_type_boolean(),
+                           kefir_ast_new_identifier_noarena(&kft_mem, context->symbols, "var1"), kefir_ast_type_boolean(),
                            false, false, false);
     ASSERT_UNARY_OPERATION(&kft_mem, context, KEFIR_AST_OPERATION_POSTFIX_DECREMENT,
-                           kefir_ast_new_identifier(&kft_mem, context->symbols, "var2"), kefir_ast_type_signed_int(),
+                           kefir_ast_new_identifier_noarena(&kft_mem, context->symbols, "var2"), kefir_ast_type_signed_int(),
                            false, false, false);
     ASSERT_UNARY_OPERATION(&kft_mem, context, KEFIR_AST_OPERATION_POSTFIX_DECREMENT,
-                           kefir_ast_new_identifier(&kft_mem, context->symbols, "var3"),
+                           kefir_ast_new_identifier_noarena(&kft_mem, context->symbols, "var3"),
                            kefir_ast_type_unsigned_long_long(), false, false, false);
     ASSERT_UNARY_OPERATION(&kft_mem, context, KEFIR_AST_OPERATION_POSTFIX_DECREMENT,
-                           kefir_ast_new_identifier(&kft_mem, context->symbols, "var4"), kefir_ast_type_float(), false,
+                           kefir_ast_new_identifier_noarena(&kft_mem, context->symbols, "var4"), kefir_ast_type_float(), false,
                            false, false);
     ASSERT_UNARY_OPERATION(&kft_mem, context, KEFIR_AST_OPERATION_POSTFIX_DECREMENT,
-                           kefir_ast_new_identifier(&kft_mem, context->symbols, "var5"),
+                           kefir_ast_new_identifier_noarena(&kft_mem, context->symbols, "var5"),
                            kefir_ast_type_pointer(&kft_mem, context->type_bundle, kefir_ast_type_float()), false, false,
                            false);
 
     ASSERT_UNARY_OPERATION(&kft_mem, context, KEFIR_AST_OPERATION_POSTFIX_INCREMENT,
-                           kefir_ast_new_identifier(&kft_mem, context->symbols, "var1"), kefir_ast_type_boolean(),
+                           kefir_ast_new_identifier_noarena(&kft_mem, context->symbols, "var1"), kefir_ast_type_boolean(),
                            false, false, false);
     ASSERT_UNARY_OPERATION(&kft_mem, context, KEFIR_AST_OPERATION_POSTFIX_INCREMENT,
-                           kefir_ast_new_identifier(&kft_mem, context->symbols, "var2"), kefir_ast_type_signed_int(),
+                           kefir_ast_new_identifier_noarena(&kft_mem, context->symbols, "var2"), kefir_ast_type_signed_int(),
                            false, false, false);
     ASSERT_UNARY_OPERATION(&kft_mem, context, KEFIR_AST_OPERATION_POSTFIX_INCREMENT,
-                           kefir_ast_new_identifier(&kft_mem, context->symbols, "var3"),
+                           kefir_ast_new_identifier_noarena(&kft_mem, context->symbols, "var3"),
                            kefir_ast_type_unsigned_long_long(), false, false, false);
     ASSERT_UNARY_OPERATION(&kft_mem, context, KEFIR_AST_OPERATION_POSTFIX_INCREMENT,
-                           kefir_ast_new_identifier(&kft_mem, context->symbols, "var4"), kefir_ast_type_float(), false,
+                           kefir_ast_new_identifier_noarena(&kft_mem, context->symbols, "var4"), kefir_ast_type_float(), false,
                            false, false);
     ASSERT_UNARY_OPERATION(&kft_mem, context, KEFIR_AST_OPERATION_POSTFIX_INCREMENT,
-                           kefir_ast_new_identifier(&kft_mem, context->symbols, "var5"),
+                           kefir_ast_new_identifier_noarena(&kft_mem, context->symbols, "var5"),
                            kefir_ast_type_pointer(&kft_mem, context->type_bundle, kefir_ast_type_float()), false, false,
                            false);
 
     ASSERT_UNARY_OPERATION(&kft_mem, context, KEFIR_AST_OPERATION_PREFIX_DECREMENT,
-                           kefir_ast_new_identifier(&kft_mem, context->symbols, "var1"), kefir_ast_type_boolean(),
+                           kefir_ast_new_identifier_noarena(&kft_mem, context->symbols, "var1"), kefir_ast_type_boolean(),
                            false, false, false);
     ASSERT_UNARY_OPERATION(&kft_mem, context, KEFIR_AST_OPERATION_PREFIX_DECREMENT,
-                           kefir_ast_new_identifier(&kft_mem, context->symbols, "var2"), kefir_ast_type_signed_int(),
+                           kefir_ast_new_identifier_noarena(&kft_mem, context->symbols, "var2"), kefir_ast_type_signed_int(),
                            false, false, false);
     ASSERT_UNARY_OPERATION(&kft_mem, context, KEFIR_AST_OPERATION_PREFIX_DECREMENT,
-                           kefir_ast_new_identifier(&kft_mem, context->symbols, "var3"),
+                           kefir_ast_new_identifier_noarena(&kft_mem, context->symbols, "var3"),
                            kefir_ast_type_unsigned_long_long(), false, false, false);
     ASSERT_UNARY_OPERATION(&kft_mem, context, KEFIR_AST_OPERATION_PREFIX_DECREMENT,
-                           kefir_ast_new_identifier(&kft_mem, context->symbols, "var4"), kefir_ast_type_float(), false,
+                           kefir_ast_new_identifier_noarena(&kft_mem, context->symbols, "var4"), kefir_ast_type_float(), false,
                            false, false);
     ASSERT_UNARY_OPERATION(&kft_mem, context, KEFIR_AST_OPERATION_PREFIX_DECREMENT,
-                           kefir_ast_new_identifier(&kft_mem, context->symbols, "var5"),
+                           kefir_ast_new_identifier_noarena(&kft_mem, context->symbols, "var5"),
                            kefir_ast_type_pointer(&kft_mem, context->type_bundle, kefir_ast_type_float()), false, false,
                            false);
 
     ASSERT_UNARY_OPERATION(&kft_mem, context, KEFIR_AST_OPERATION_PREFIX_INCREMENT,
-                           kefir_ast_new_identifier(&kft_mem, context->symbols, "var1"), kefir_ast_type_boolean(),
+                           kefir_ast_new_identifier_noarena(&kft_mem, context->symbols, "var1"), kefir_ast_type_boolean(),
                            false, false, false);
     ASSERT_UNARY_OPERATION(&kft_mem, context, KEFIR_AST_OPERATION_PREFIX_INCREMENT,
-                           kefir_ast_new_identifier(&kft_mem, context->symbols, "var2"), kefir_ast_type_signed_int(),
+                           kefir_ast_new_identifier_noarena(&kft_mem, context->symbols, "var2"), kefir_ast_type_signed_int(),
                            false, false, false);
     ASSERT_UNARY_OPERATION(&kft_mem, context, KEFIR_AST_OPERATION_PREFIX_INCREMENT,
-                           kefir_ast_new_identifier(&kft_mem, context->symbols, "var3"),
+                           kefir_ast_new_identifier_noarena(&kft_mem, context->symbols, "var3"),
                            kefir_ast_type_unsigned_long_long(), false, false, false);
     ASSERT_UNARY_OPERATION(&kft_mem, context, KEFIR_AST_OPERATION_PREFIX_INCREMENT,
-                           kefir_ast_new_identifier(&kft_mem, context->symbols, "var4"), kefir_ast_type_float(), false,
+                           kefir_ast_new_identifier_noarena(&kft_mem, context->symbols, "var4"), kefir_ast_type_float(), false,
                            false, false);
     ASSERT_UNARY_OPERATION(&kft_mem, context, KEFIR_AST_OPERATION_PREFIX_INCREMENT,
-                           kefir_ast_new_identifier(&kft_mem, context->symbols, "var5"),
+                           kefir_ast_new_identifier_noarena(&kft_mem, context->symbols, "var5"),
                            kefir_ast_type_pointer(&kft_mem, context->type_bundle, kefir_ast_type_float()), false, false,
                            false);
 
@@ -1159,16 +1159,16 @@ DEFINE_CASE(ast_node_analysis_unary_operation_sizeof, "AST node analysis - unary
     ASSERT_UNARY_OPERATION(&kft_mem, context, KEFIR_AST_OPERATION_SIZEOF, kefir_ast_new_constant_bool_noarena(&kft_mem, false),
                            type_traits->size_type, true, false, false);
     ASSERT_UNARY_OPERATION(&kft_mem, context, KEFIR_AST_OPERATION_SIZEOF,
-                           kefir_ast_new_identifier(&kft_mem, context->symbols, "x"), type_traits->size_type, true,
+                           kefir_ast_new_identifier_noarena(&kft_mem, context->symbols, "x"), type_traits->size_type, true,
                            false, false);
     ASSERT_UNARY_OPERATION(&kft_mem, context, KEFIR_AST_OPERATION_SIZEOF,
                            KEFIR_AST_MAKE_STRING_LITERAL_MULTIBYTE(&kft_mem, "Hello, world!"), type_traits->size_type,
                            true, false, false);
     ASSERT_UNARY_OPERATION(&kft_mem, context, KEFIR_AST_OPERATION_SIZEOF,
-                           kefir_ast_new_identifier(&kft_mem, context->symbols, "y"), type_traits->size_type, true,
+                           kefir_ast_new_identifier_noarena(&kft_mem, context->symbols, "y"), type_traits->size_type, true,
                            false, false);
     ASSERT_UNARY_OPERATION(&kft_mem, context, KEFIR_AST_OPERATION_SIZEOF,
-                           kefir_ast_new_identifier(&kft_mem, context->symbols, "z"), type_traits->size_type, false,
+                           kefir_ast_new_identifier_noarena(&kft_mem, context->symbols, "z"), type_traits->size_type, false,
                            false, false);
 
     ASSERT_OK(kefir_ast_local_context_free(&kft_mem, &local_context));
@@ -1188,7 +1188,7 @@ DEFINE_CASE(ast_node_analysis_unary_operation_alignof, "AST node analysis - unar
 
 #define MAKE_TYPENAME(_id, _spec_count, ...)                                                      \
     struct kefir_ast_type_name *_id =                                                             \
-        kefir_ast_new_type_name(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL)); \
+        kefir_ast_new_type_name_noarena(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL)); \
     ASSERT_OK(append_specifiers(&kft_mem, &_id->type_decl.specifiers, (_spec_count), __VA_ARGS__));
 
     MAKE_TYPENAME(type_name1, 1, kefir_ast_type_specifier_boolean(&kft_mem));
@@ -1199,7 +1199,7 @@ DEFINE_CASE(ast_node_analysis_unary_operation_alignof, "AST node analysis - unar
     MAKE_TYPENAME(type_name5, 1, kefir_ast_type_specifier_float(&kft_mem));
 #undef MAKE_TYPENAME
 
-    struct kefir_ast_type_name *type_name6 = kefir_ast_new_type_name(
+    struct kefir_ast_type_name *type_name6 = kefir_ast_new_type_name_noarena(
         &kft_mem, kefir_ast_declarator_array(&kft_mem, KEFIR_AST_DECLARATOR_ARRAY_BOUNDED,
                                              KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 150)),
                                              kefir_ast_declarator_identifier(&kft_mem, NULL, NULL)));
@@ -1207,7 +1207,7 @@ DEFINE_CASE(ast_node_analysis_unary_operation_alignof, "AST node analysis - unar
         append_specifiers(&kft_mem, &type_name6->type_decl.specifiers, 1, kefir_ast_type_specifier_char(&kft_mem)));
     type_name6->type_decl.declarator->array->static_array = true;
 
-    struct kefir_ast_type_name *type_name7 = kefir_ast_new_type_name(
+    struct kefir_ast_type_name *type_name7 = kefir_ast_new_type_name_noarena(
         &kft_mem, kefir_ast_declarator_pointer(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL)));
     ASSERT_OK(append_specifiers(&kft_mem, &type_name7->type_decl.specifiers, 2, kefir_ast_type_specifier_char(&kft_mem),
                                 kefir_ast_type_qualifier_const(&kft_mem)));
@@ -1258,7 +1258,7 @@ DEFINE_CASE(ast_node_analysis_type_name, "AST node analysis - type names") {
 
 #define MAKE_TYPENAME(_id, _spec_count, ...)                                                      \
     struct kefir_ast_type_name *_id =                                                             \
-        kefir_ast_new_type_name(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL)); \
+        kefir_ast_new_type_name_noarena(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL)); \
     ASSERT_OK(append_specifiers(&kft_mem, &_id->type_decl.specifiers, (_spec_count), __VA_ARGS__));
 
     MAKE_TYPENAME(type_name1, 1, kefir_ast_type_specifier_boolean(&kft_mem));
@@ -1270,12 +1270,12 @@ DEFINE_CASE(ast_node_analysis_type_name, "AST node analysis - type names") {
     MAKE_TYPENAME(type_name6, 1, kefir_ast_type_specifier_double(&kft_mem));
 #undef MAKE_TYPENAME
 
-    struct kefir_ast_type_name *type_name7 = kefir_ast_new_type_name(
+    struct kefir_ast_type_name *type_name7 = kefir_ast_new_type_name_noarena(
         &kft_mem, kefir_ast_declarator_pointer(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL)));
     ASSERT_OK(
         append_specifiers(&kft_mem, &type_name7->type_decl.specifiers, 1, kefir_ast_type_specifier_void(&kft_mem)));
 
-    struct kefir_ast_type_name *type_name8 = kefir_ast_new_type_name(
+    struct kefir_ast_type_name *type_name8 = kefir_ast_new_type_name_noarena(
         &kft_mem,
         kefir_ast_declarator_pointer(
             &kft_mem, kefir_ast_declarator_array(&kft_mem, KEFIR_AST_DECLARATOR_ARRAY_BOUNDED,

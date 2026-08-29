@@ -103,80 +103,80 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
 #define SIMPLE_ASSIGN_NODE(_node1, _node2)                                                    \
     do {                                                                                      \
         struct kefir_ast_node_base *node =                                                    \
-            KEFIR_AST_NODE_BASE(kefir_ast_new_simple_assignment(mem, (_node1), (_node2)));    \
+            KEFIR_AST_NODE_BASE(kefir_ast_new_simple_assignment_noarena(mem, (_node1), (_node2)));    \
         REQUIRE_OK(kefir_ast_analyze_node(mem, context, node));                               \
         REQUIRE_OK(kefir_ast_translate_expression(mem, node, &builder, &translator_context)); \
         REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, node));                                           \
     } while (0)
 
     FUNC("assign_bool", {
-        SIMPLE_ASSIGN_NODE(KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "bool")),
+        SIMPLE_ASSIGN_NODE(KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "bool")),
                            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bool_noarena(mem, true)));
-        SIMPLE_ASSIGN_NODE(KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "bool")),
+        SIMPLE_ASSIGN_NODE(KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "bool")),
                            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_float_noarena(mem, 1.0f)));
     });
 
     FUNC("assign_char", {
-        SIMPLE_ASSIGN_NODE(KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "char")),
+        SIMPLE_ASSIGN_NODE(KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "char")),
                            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char_noarena(mem, 'A')));
-        SIMPLE_ASSIGN_NODE(KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "uchar")),
+        SIMPLE_ASSIGN_NODE(KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "uchar")),
                            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char_noarena(mem, 'B')));
-        SIMPLE_ASSIGN_NODE(KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "schar")),
+        SIMPLE_ASSIGN_NODE(KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "schar")),
                            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char_noarena(mem, 'C')));
-        SIMPLE_ASSIGN_NODE(KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "schar")),
+        SIMPLE_ASSIGN_NODE(KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "schar")),
                            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_double_noarena(mem, 0.0)));
     });
 
     FUNC("assign_short", {
-        SIMPLE_ASSIGN_NODE(KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "ushort")),
+        SIMPLE_ASSIGN_NODE(KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "ushort")),
                            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 0xfe)));
-        SIMPLE_ASSIGN_NODE(KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "sshort")),
+        SIMPLE_ASSIGN_NODE(KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "sshort")),
                            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, -0x4a)));
     });
 
     FUNC("assign_int", {
-        SIMPLE_ASSIGN_NODE(KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "uint")),
+        SIMPLE_ASSIGN_NODE(KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "uint")),
                            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 0x1ffff)));
-        SIMPLE_ASSIGN_NODE(KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "sint")),
+        SIMPLE_ASSIGN_NODE(KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "sint")),
                            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, -0x5544ef)));
-        SIMPLE_ASSIGN_NODE(KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "uint")),
+        SIMPLE_ASSIGN_NODE(KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "uint")),
                            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_double_noarena(mem, 1e4)));
     });
 
     FUNC("assign_long", {
-        SIMPLE_ASSIGN_NODE(KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "ulong")),
+        SIMPLE_ASSIGN_NODE(KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "ulong")),
                            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long_noarena(mem, -(~0l))));
-        SIMPLE_ASSIGN_NODE(KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "slong")),
+        SIMPLE_ASSIGN_NODE(KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "slong")),
                            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, ~0l)));
-        SIMPLE_ASSIGN_NODE(KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "slong")),
+        SIMPLE_ASSIGN_NODE(KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "slong")),
                            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_float_noarena(mem, 1.0006f)));
     });
 
     FUNC("assign_long_long", {
-        SIMPLE_ASSIGN_NODE(KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "ullong")),
+        SIMPLE_ASSIGN_NODE(KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "ullong")),
                            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long_noarena(mem, 1990)));
-        SIMPLE_ASSIGN_NODE(KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "sllong")),
+        SIMPLE_ASSIGN_NODE(KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "sllong")),
                            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, -65196362)));
     });
 
     FUNC("assign_float_double", {
-        SIMPLE_ASSIGN_NODE(KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "float")),
+        SIMPLE_ASSIGN_NODE(KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "float")),
                            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_float_noarena(mem, 0.514)));
-        SIMPLE_ASSIGN_NODE(KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "double")),
+        SIMPLE_ASSIGN_NODE(KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "double")),
                            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_float_noarena(mem, -1e4)));
-        SIMPLE_ASSIGN_NODE(KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "float")),
+        SIMPLE_ASSIGN_NODE(KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "float")),
                            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char_noarena(mem, 'A')));
-        SIMPLE_ASSIGN_NODE(KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "double")),
+        SIMPLE_ASSIGN_NODE(KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "double")),
                            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long_noarena(mem, -15)));
     });
 
     FUNC("enum", {
-        SIMPLE_ASSIGN_NODE(KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "enum")),
+        SIMPLE_ASSIGN_NODE(KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "enum")),
                            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 1)));
     });
 
     FUNC("pointer", {
-        SIMPLE_ASSIGN_NODE(KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "ptr")),
+        SIMPLE_ASSIGN_NODE(KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "ptr")),
                            KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 0)));
     });
 

@@ -76,7 +76,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     REQUIRE_OK(kefir_ast_structure_specifier_append_entry(mem, specifier1, entry3));
 
     struct kefir_ast_type_name *type_name2 =
-        kefir_ast_new_type_name(mem, kefir_ast_declarator_identifier(mem, NULL, NULL));
+        kefir_ast_new_type_name_noarena(mem, kefir_ast_declarator_identifier(mem, NULL, NULL));
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &type_name2->type_decl.specifiers,
                                                           kefir_ast_type_specifier_struct(mem, specifier1)));
 
@@ -84,10 +84,10 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
                                                          "sum", type1, NULL, NULL, NULL));
 
     struct kefir_ast_function_call *call4 =
-        kefir_ast_new_function_call(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "sum")));
+        kefir_ast_new_function_call_noarena(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "sum")));
     REQUIRE_OK(kefir_ast_function_call_append(mem, call4, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 100))));
     REQUIRE_OK(kefir_ast_function_call_append(mem, call4,
-                                              KEFIR_AST_NODE_BASE(kefir_ast_new_compound_literal(mem, type_name2))));
+                                              KEFIR_AST_NODE_BASE(kefir_ast_new_compound_literal_noarena(mem, type_name2))));
 
     struct kefir_ast_node_base *node4 = KEFIR_AST_NODE_BASE(call4);
     REQUIRE_OK(kefir_ast_analyze_node(mem, context, node4));
@@ -111,8 +111,8 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     struct kefir_irbuilder_block builder;
 
     FUNC("call1", {
-        struct kefir_ast_function_call *call = kefir_ast_new_function_call(
-            mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "sum")));
+        struct kefir_ast_function_call *call = kefir_ast_new_function_call_noarena(
+            mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "sum")));
         REQUIRE_OK(kefir_ast_function_call_append(mem, call, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 1))));
         REQUIRE_OK(kefir_ast_function_call_append(mem, call, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 2))));
         REQUIRE_OK(kefir_ast_function_call_append(mem, call, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 3))));
@@ -125,8 +125,8 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     });
 
     FUNC("call2", {
-        struct kefir_ast_function_call *call = kefir_ast_new_function_call(
-            mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "sum")));
+        struct kefir_ast_function_call *call = kefir_ast_new_function_call_noarena(
+            mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "sum")));
         REQUIRE_OK(
             kefir_ast_function_call_append(mem, call, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 100))));
 
@@ -137,8 +137,8 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     });
 
     FUNC("call3", {
-        struct kefir_ast_function_call *call = kefir_ast_new_function_call(
-            mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "sum")));
+        struct kefir_ast_function_call *call = kefir_ast_new_function_call_noarena(
+            mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "sum")));
         REQUIRE_OK(
             kefir_ast_function_call_append(mem, call, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 100))));
         REQUIRE_OK(

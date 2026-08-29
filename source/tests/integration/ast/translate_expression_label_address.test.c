@@ -42,19 +42,19 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     REQUIRE_OK(kefir_ast_local_context_init(mem, &global_context, &local_context));
     const struct kefir_ast_context *context = &local_context.context;
 
-    struct kefir_ast_compound_statement *compound1 = kefir_ast_new_compound_statement(mem);
-    struct kefir_ast_labeled_statement *label1 = kefir_ast_new_labeled_statement(
+    struct kefir_ast_compound_statement *compound1 = kefir_ast_new_compound_statement_noarena(mem);
+    struct kefir_ast_labeled_statement *label1 = kefir_ast_new_labeled_statement_noarena(
         mem, context->symbols, "A",
-        KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement(
-            mem, KEFIR_AST_NODE_BASE(kefir_ast_new_label_address(mem, context->symbols, "C")))));
-    struct kefir_ast_labeled_statement *label2 = kefir_ast_new_labeled_statement(
+        KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement_noarena(
+            mem, KEFIR_AST_NODE_BASE(kefir_ast_new_label_address_noarena(mem, context->symbols, "C")))));
+    struct kefir_ast_labeled_statement *label2 = kefir_ast_new_labeled_statement_noarena(
         mem, context->symbols, "B",
-        KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement(
-            mem, KEFIR_AST_NODE_BASE(kefir_ast_new_label_address(mem, context->symbols, "B")))));
-    struct kefir_ast_labeled_statement *label3 = kefir_ast_new_labeled_statement(
+        KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement_noarena(
+            mem, KEFIR_AST_NODE_BASE(kefir_ast_new_label_address_noarena(mem, context->symbols, "B")))));
+    struct kefir_ast_labeled_statement *label3 = kefir_ast_new_labeled_statement_noarena(
         mem, context->symbols, "C",
-        KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement(
-            mem, KEFIR_AST_NODE_BASE(kefir_ast_new_label_address(mem, context->symbols, "A")))));
+        KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement_noarena(
+            mem, KEFIR_AST_NODE_BASE(kefir_ast_new_label_address_noarena(mem, context->symbols, "A")))));
     REQUIRE_OK(kefir_ast_compound_statement_append(mem, compound1, KEFIR_AST_NODE_BASE(label1)));
     REQUIRE_OK(kefir_ast_compound_statement_append(mem, compound1, KEFIR_AST_NODE_BASE(label2)));
     REQUIRE_OK(kefir_ast_compound_statement_append(mem, compound1, KEFIR_AST_NODE_BASE(label3)));

@@ -31,10 +31,10 @@ static kefir_result_t next_identifier(struct kefir_mem *mem, struct kefir_parser
         token = kefir_parser_token_cursor_at(parser->cursor, 0, true);
         if (token != NULL && token->klass == KEFIR_TOKEN_PUNCTUATOR &&
             token->punctuator == KEFIR_PUNCTUATOR_LEFT_PARENTHESE) {
-            *result = KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, parser->symbols, "__runtime_entry_point"));
+            *result = KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, parser->symbols, "__runtime_entry_point"));
         } else {
-            *result = KEFIR_AST_NODE_BASE(kefir_ast_new_function_call(
-                mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, parser->symbols, "__runtime_entry_point"))));
+            *result = KEFIR_AST_NODE_BASE(kefir_ast_new_function_call_noarena(
+                mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, parser->symbols, "__runtime_entry_point"))));
         }
     } else {
         REQUIRE_OK(parser->ruleset.rules[KEFIR_PARSER_RULESET_EXTRA_SLOT_OFFSET](mem, parser, result, payload));

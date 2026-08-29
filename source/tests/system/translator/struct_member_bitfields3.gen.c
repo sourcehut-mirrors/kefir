@@ -43,7 +43,7 @@ static kefir_result_t define_sum_function(struct kefir_mem *mem, struct function
     REQUIRE_OK(kefir_list_init(&func->args));
 
     struct kefir_ast_type_name *type_name1 =
-        kefir_ast_new_type_name(mem, kefir_ast_declarator_identifier(mem, context_manager->current->symbols, NULL));
+        kefir_ast_new_type_name_noarena(mem, kefir_ast_declarator_identifier(mem, context_manager->current->symbols, NULL));
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &type_name1->type_decl.specifiers, specifier));
     REQUIRE_OK(kefir_ast_analyze_node(mem, context_manager->current, KEFIR_AST_NODE_BASE(type_name1)));
 
@@ -67,40 +67,40 @@ static kefir_result_t define_sum_function(struct kefir_mem *mem, struct function
 
     REQUIRE_OK(kefir_list_insert_after(
         mem, &func->args, kefir_list_tail(&func->args),
-        KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "param"))));
+        KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context_manager->current->symbols, "param"))));
 
-    struct kefir_ast_node_base *add3 = KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation(
+    struct kefir_ast_node_base *add3 = KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation_noarena(
         mem, KEFIR_AST_OPERATION_ADD,
-        KEFIR_AST_NODE_BASE(kefir_ast_new_struct_indirect_member(
+        KEFIR_AST_NODE_BASE(kefir_ast_new_struct_indirect_member_noarena(
             mem, context_manager->current->symbols,
-            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "param")), "f3")),
-        KEFIR_AST_NODE_BASE(kefir_ast_new_struct_indirect_member(
+            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context_manager->current->symbols, "param")), "f3")),
+        KEFIR_AST_NODE_BASE(kefir_ast_new_struct_indirect_member_noarena(
             mem, context_manager->current->symbols,
-            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "param")), "f4"))));
+            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context_manager->current->symbols, "param")), "f4"))));
 
-    struct kefir_ast_node_base *add2 = KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation(
+    struct kefir_ast_node_base *add2 = KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation_noarena(
         mem, KEFIR_AST_OPERATION_ADD,
-        KEFIR_AST_NODE_BASE(kefir_ast_new_struct_indirect_member(
+        KEFIR_AST_NODE_BASE(kefir_ast_new_struct_indirect_member_noarena(
             mem, context_manager->current->symbols,
-            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "param")), "f2")),
+            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context_manager->current->symbols, "param")), "f2")),
         add3));
 
-    struct kefir_ast_node_base *add1 = KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation(
+    struct kefir_ast_node_base *add1 = KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation_noarena(
         mem, KEFIR_AST_OPERATION_ADD,
-        KEFIR_AST_NODE_BASE(kefir_ast_new_struct_indirect_member(
+        KEFIR_AST_NODE_BASE(kefir_ast_new_struct_indirect_member_noarena(
             mem, context_manager->current->symbols,
-            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "param")), "f1")),
+            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context_manager->current->symbols, "param")), "f1")),
         add2));
 
-    struct kefir_ast_node_base *adds = KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation(
+    struct kefir_ast_node_base *adds = KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation_noarena(
         mem, KEFIR_AST_OPERATION_ADD,
-        KEFIR_AST_NODE_BASE(kefir_ast_new_unary_operation(mem, KEFIR_AST_OPERATION_SIZEOF,
+        KEFIR_AST_NODE_BASE(kefir_ast_new_unary_operation_noarena(mem, KEFIR_AST_OPERATION_SIZEOF,
                                                           KEFIR_AST_NODE_REF(KEFIR_AST_NODE_BASE(type_name1)))),
         add1));
 
     struct kefir_ast_node_base *adda = KEFIR_AST_NODE_BASE(
-        kefir_ast_new_binary_operation(mem, KEFIR_AST_OPERATION_ADD,
-                                       KEFIR_AST_NODE_BASE(kefir_ast_new_unary_operation(
+        kefir_ast_new_binary_operation_noarena(mem, KEFIR_AST_OPERATION_ADD,
+                                       KEFIR_AST_NODE_BASE(kefir_ast_new_unary_operation_noarena(
                                            mem, KEFIR_AST_OPERATION_ALIGNOF, KEFIR_AST_NODE_BASE(type_name1))),
                                        adds));
 

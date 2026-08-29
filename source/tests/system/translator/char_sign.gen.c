@@ -59,22 +59,22 @@ static kefir_result_t define_sum_function(struct kefir_mem *mem, struct function
 
     REQUIRE_OK(kefir_list_insert_after(
         mem, &func->args, kefir_list_tail(&func->args),
-        KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "param"))));
+        KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context_manager->current->symbols, "param"))));
 
-    func->body = KEFIR_AST_NODE_BASE(kefir_ast_new_simple_assignment(
+    func->body = KEFIR_AST_NODE_BASE(kefir_ast_new_simple_assignment_noarena(
         mem,
-        KEFIR_AST_NODE_BASE(kefir_ast_new_struct_indirect_member(
+        KEFIR_AST_NODE_BASE(kefir_ast_new_struct_indirect_member_noarena(
             mem, context_manager->current->symbols,
-            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "param")), "result")),
-        KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation(
+            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context_manager->current->symbols, "param")), "result")),
+        KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation_noarena(
             mem, KEFIR_AST_OPERATION_ADD,
-            KEFIR_AST_NODE_BASE(kefir_ast_new_struct_indirect_member(
+            KEFIR_AST_NODE_BASE(kefir_ast_new_struct_indirect_member_noarena(
                 mem, context_manager->current->symbols,
-                KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "param")),
+                KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context_manager->current->symbols, "param")),
                 "arg1")),
-            KEFIR_AST_NODE_BASE(kefir_ast_new_struct_indirect_member(
+            KEFIR_AST_NODE_BASE(kefir_ast_new_struct_indirect_member_noarena(
                 mem, context_manager->current->symbols,
-                KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "param")),
+                KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context_manager->current->symbols, "param")),
                 "arg2"))))));
 
     REQUIRE_OK(kefir_ast_context_manager_detach_local(context_manager));

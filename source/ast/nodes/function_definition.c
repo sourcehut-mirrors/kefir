@@ -38,7 +38,7 @@ kefir_result_t ast_function_definition_free(struct kefir_mem *mem, struct kefir_
     }
     KEFIR_FREE(mem, node->declarations);
     REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, KEFIR_AST_NODE_BASE(node->body)));
-    KEFIR_FREE(mem, node);
+    KEFIR_AST_NODE_ARENA_FREE(mem, node);
     return KEFIR_OK;
 }
 
@@ -46,7 +46,7 @@ const struct kefir_ast_node_class AST_FUNCTION_DEFINITION_CLASS = {.type = KEFIR
                                                                    .visit = ast_function_definition_visit,
                                                                    .free = ast_function_definition_free};
 
-static kefir_result_t insert_function_name_builtin(struct kefir_mem *mem, struct kefir_ast_declarator *declarator,
+static kefir_result_t insert_function_name_builtin(struct kefir_mem *mem, struct kefir_memory_arena *arena, struct kefir_ast_declarator *declarator,
                                                    struct kefir_ast_compound_statement *body) {
     struct kefir_ast_declarator_identifier *function_identifier = NULL;
     REQUIRE_OK(kefir_ast_declarator_unpack_identifier(declarator, &function_identifier));
@@ -62,7 +62,7 @@ static kefir_result_t insert_function_name_builtin(struct kefir_mem *mem, struct
     });
 
     struct kefir_ast_string_literal *func_name_value = kefir_ast_new_string_literal_multibyte(
-        mem, function_identifier->identifier, strlen(function_identifier->identifier) + 1);
+        mem, arena, function_identifier->identifier, strlen(function_identifier->identifier) + 1);
     REQUIRE_ELSE(func_name_value != NULL, {
         kefir_ast_declarator_free(mem, func_name_declarator);
         return KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate __func__ string literal");
@@ -77,7 +77,7 @@ static kefir_result_t insert_function_name_builtin(struct kefir_mem *mem, struct
     });
 
     struct kefir_ast_declaration *func_name_declaration =
-        kefir_ast_new_single_declaration(mem, func_name_declarator, func_name_initializer, NULL);
+        kefir_ast_new_single_declaration(mem, arena, func_name_declarator, func_name_initializer, NULL);
     REQUIRE_ELSE(func_name_declaration != NULL, {
         kefir_ast_initializer_free(mem, func_name_initializer);
         kefir_ast_declarator_free(mem, func_name_declarator);
@@ -113,31 +113,31 @@ static kefir_result_t insert_function_name_builtin(struct kefir_mem *mem, struct
     return KEFIR_OK;
 }
 
-struct kefir_ast_function_definition *kefir_ast_new_function_definition(struct kefir_mem *mem,
+struct kefir_ast_function_definition *kefir_ast_new_function_definition(struct kefir_mem *mem, struct kefir_memory_arena *arena,
                                                                         struct kefir_ast_declarator *declarator,
                                                                         struct kefir_ast_compound_statement *body) {
-    REQUIRE(mem != NULL, NULL);
+    REQUIRE(mem != NULL || arena != NULL, NULL);
     REQUIRE(declarator != NULL, NULL);
     REQUIRE(body != NULL, NULL);
 
-    kefir_result_t res = insert_function_name_builtin(mem, declarator, body);
+    kefir_result_t res = insert_function_name_builtin(mem, arena, declarator, body);
     REQUIRE(res == KEFIR_OK, NULL);
 
-    struct kefir_ast_function_definition *func = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_function_definition));
+    struct kefir_ast_function_definition *func = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_function_definition);
     REQUIRE(func != NULL, NULL);
-    func->base.refcount = 1;
+    func->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
     func->base.klass = &AST_FUNCTION_DEFINITION_CLASS;
     func->declarations = NULL;
     func->declarations_capacity = 0;
     func->declarations_length = 0;
     res = kefir_ast_node_properties_init(&func->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, func);
+        KEFIR_AST_NODE_ARENA_FREE(mem, func);
         return NULL;
     });
     res = kefir_source_location_empty(&func->base.source_location);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, func);
+        KEFIR_AST_NODE_ARENA_FREE(mem, func);
         return NULL;
     });
 
@@ -146,12 +146,12 @@ struct kefir_ast_function_definition *kefir_ast_new_function_definition(struct k
 
     res = kefir_ast_declarator_specifier_list_init(&func->specifiers);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, func);
+        KEFIR_AST_NODE_ARENA_FREE(mem, func);
         return NULL;
     });
     res = kefir_ast_pragma_state_init(&func->pragmas);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, func);
+        KEFIR_AST_NODE_ARENA_FREE(mem, func);
         return NULL;
     });
     return func;

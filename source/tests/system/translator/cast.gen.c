@@ -75,11 +75,11 @@ static kefir_result_t define_cast_function(struct kefir_mem *mem, struct functio
 
     REQUIRE_OK(kefir_list_insert_after(
         mem, &func->args, kefir_list_tail(&func->args),
-        KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "value"))));
+        KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context_manager->current->symbols, "value"))));
 
-    func->body = KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator(
+    func->body = KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator_noarena(
         mem, return_type_name,
-        KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context_manager->current->symbols, "value"))));
+        KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context_manager->current->symbols, "value"))));
 
     REQUIRE_OK(kefir_ast_context_manager_detach_local(context_manager));
     return KEFIR_OK;
@@ -104,7 +104,7 @@ static kefir_result_t generate_ir(struct kefir_mem *mem, struct kefir_ir_module 
         kefir_ast_type_array(mem, context_manager.current->type_bundle, kefir_ast_type_signed_char(), 32, NULL), NULL));
 
 #define MAKE_TYPENAME(_id, _spec_count, ...)                                                                          \
-    struct kefir_ast_type_name *_id = kefir_ast_new_type_name(mem, kefir_ast_declarator_identifier(mem, NULL, NULL)); \
+    struct kefir_ast_type_name *_id = kefir_ast_new_type_name_noarena(mem, kefir_ast_declarator_identifier(mem, NULL, NULL)); \
     REQUIRE_OK(append_specifiers(mem, &_id->type_decl.specifiers, (_spec_count), __VA_ARGS__));
 
     MAKE_TYPENAME(type_name1, 1, kefir_ast_type_specifier_int(mem));
@@ -131,7 +131,7 @@ static kefir_result_t generate_ir(struct kefir_mem *mem, struct kefir_ir_module 
     MAKE_TYPENAME(type_name21, 1, kefir_ast_type_specifier_void(mem));
 #undef MAKE_TYPENAME
 
-    struct kefir_ast_type_name *type_name22 = kefir_ast_new_type_name(
+    struct kefir_ast_type_name *type_name22 = kefir_ast_new_type_name_noarena(
         mem, kefir_ast_declarator_pointer(mem, kefir_ast_declarator_identifier(mem, NULL, NULL)));
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &type_name22->type_decl.specifiers,
                                                           kefir_ast_type_specifier_void(mem)));

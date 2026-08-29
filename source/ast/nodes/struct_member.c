@@ -31,7 +31,7 @@ kefir_result_t ast_struct_member_free(struct kefir_mem *mem, struct kefir_ast_no
     REQUIRE(base != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST node base"));
     ASSIGN_DECL_CAST(struct kefir_ast_struct_member *, node, KEFIR_AST_NODE_SELF(base));
     REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, node->structure));
-    KEFIR_FREE(mem, node);
+    KEFIR_AST_NODE_ARENA_FREE(mem, node);
     return KEFIR_OK;
 }
 
@@ -42,26 +42,26 @@ const struct kefir_ast_node_class AST_STRUCT_INDIRECT_MEMBER_CLASS = {.type = KE
                                                                       .visit = ast_struct_indirect_member_visit,
                                                                       .free = ast_struct_member_free};
 
-struct kefir_ast_struct_member *kefir_ast_new_struct_member(struct kefir_mem *mem, struct kefir_string_pool *symbols,
+struct kefir_ast_struct_member *kefir_ast_new_struct_member(struct kefir_mem *mem, struct kefir_memory_arena *arena, struct kefir_string_pool *symbols,
                                                             struct kefir_ast_node_base *structure, const char *member) {
-    REQUIRE(mem != NULL, NULL);
+    REQUIRE(mem != NULL || arena != NULL, NULL);
     REQUIRE(symbols != NULL, NULL);
     REQUIRE(structure != NULL, NULL);
     REQUIRE(member != NULL, NULL);
     const char *member_copy = kefir_string_pool_insert(mem, symbols, member, NULL);
     REQUIRE(member != NULL, NULL);
-    struct kefir_ast_struct_member *struct_member = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_struct_member));
+    struct kefir_ast_struct_member *struct_member = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_struct_member);
     REQUIRE(struct_member != NULL, NULL);
-    struct_member->base.refcount = 1;
+    struct_member->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
     struct_member->base.klass = &AST_STRUCT_MEMBER_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&struct_member->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, struct_member);
+        KEFIR_AST_NODE_ARENA_FREE(mem, struct_member);
         return NULL;
     });
     res = kefir_source_location_empty(&struct_member->base.source_location);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, struct_member);
+        KEFIR_AST_NODE_ARENA_FREE(mem, struct_member);
         return NULL;
     });
     struct_member->structure = structure;
@@ -70,27 +70,27 @@ struct kefir_ast_struct_member *kefir_ast_new_struct_member(struct kefir_mem *me
 }
 
 struct kefir_ast_struct_member *kefir_ast_new_struct_indirect_member(struct kefir_mem *mem,
-                                                                     struct kefir_string_pool *symbols,
+                                                                     struct kefir_memory_arena *arena, struct kefir_string_pool *symbols,
                                                                      struct kefir_ast_node_base *structure,
                                                                      const char *member) {
-    REQUIRE(mem != NULL, NULL);
+    REQUIRE(mem != NULL || arena != NULL, NULL);
     REQUIRE(symbols != NULL, NULL);
     REQUIRE(structure != NULL, NULL);
     REQUIRE(member != NULL, NULL);
     const char *member_copy = kefir_string_pool_insert(mem, symbols, member, NULL);
     REQUIRE(member != NULL, NULL);
-    struct kefir_ast_struct_member *struct_member = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_struct_member));
+    struct kefir_ast_struct_member *struct_member = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_struct_member);
     REQUIRE(struct_member != NULL, NULL);
-    struct_member->base.refcount = 1;
+    struct_member->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
     struct_member->base.klass = &AST_STRUCT_INDIRECT_MEMBER_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&struct_member->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, struct_member);
+        KEFIR_AST_NODE_ARENA_FREE(mem, struct_member);
         return NULL;
     });
     res = kefir_source_location_empty(&struct_member->base.source_location);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, struct_member);
+        KEFIR_AST_NODE_ARENA_FREE(mem, struct_member);
         return NULL;
     });
     struct_member->structure = structure;

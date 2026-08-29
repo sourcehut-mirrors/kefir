@@ -205,7 +205,7 @@ kefir_result_t KEFIR_PARSER_RULE_FN_PREFIX(function_definition)(struct kefir_mem
     });
 
     struct kefir_ast_function_definition *func_definition =
-        kefir_ast_new_function_definition(mem, declarator, compound_statement);
+        kefir_ast_new_function_definition(mem, parser->ast_arena, declarator, compound_statement);
     REQUIRE_ELSE(func_definition != NULL, {
         KEFIR_AST_NODE_FREE(mem, compound_statement_node);
         kefir_list_free(mem, &declaration_list);

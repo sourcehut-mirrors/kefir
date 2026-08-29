@@ -374,14 +374,14 @@ DEFINE_CASE(ast_declarator_analysis15, "AST declarator analysis - array declarat
 
     struct kefir_ast_declarator *declarator1 = kefir_ast_declarator_array(
         &kft_mem, KEFIR_AST_DECLARATOR_ARRAY_BOUNDED,
-        KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(&kft_mem, context->symbols, "variable")),
+        KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(&kft_mem, context->symbols, "variable")),
         kefir_ast_declarator_identifier(&kft_mem, context->symbols, NULL));
     ASSERT_OK(kefir_ast_type_qualifier_list_append(&kft_mem, &declarator1->array->type_qualifiers,
                                                    KEFIR_AST_TYPE_QUALIFIER_CONST));
 
     struct kefir_ast_declarator *declarator2 = kefir_ast_declarator_array(
         &kft_mem, KEFIR_AST_DECLARATOR_ARRAY_BOUNDED,
-        KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(&kft_mem, context->symbols, "variable")),
+        KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(&kft_mem, context->symbols, "variable")),
         kefir_ast_declarator_identifier(&kft_mem, context->symbols, "another_array"));
     declarator2->array->static_array = true;
     ASSERT_OK(kefir_ast_type_qualifier_list_append(&kft_mem, &declarator2->array->type_qualifiers,
@@ -402,7 +402,7 @@ DEFINE_CASE(ast_declarator_analysis15, "AST declarator analysis - array declarat
         kefir_ast_type_vlen_array(&kft_mem, context->type_bundle,
                                   kefir_ast_type_qualified(&kft_mem, context->type_bundle, kefir_ast_type_signed_int(),
                                                            (struct kefir_ast_type_qualification) {.constant = true}),
-                                  KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(&kft_mem, context->symbols, "variable")),
+                                  KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(&kft_mem, context->symbols, "variable")),
                                   &(struct kefir_ast_type_qualification) {.restricted = true});
 
     ASSERT(identifier == NULL);
@@ -419,7 +419,7 @@ DEFINE_CASE(ast_declarator_analysis15, "AST declarator analysis - array declarat
         &kft_mem, context->type_bundle,
         kefir_ast_type_qualified(&kft_mem, context->type_bundle, kefir_ast_type_signed_int(),
                                  (struct kefir_ast_type_qualification) {.constant = true}),
-        KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(&kft_mem, context->symbols, "variable")),
+        KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(&kft_mem, context->symbols, "variable")),
         &(struct kefir_ast_type_qualification) {.volatile_type = true, .constant = true});
 
     ASSERT(strcmp(identifier, "another_array") == 0);

@@ -34,34 +34,34 @@ kefir_result_t ast_return_statement_free(struct kefir_mem *mem, struct kefir_ast
         node->expression = NULL;
     }
     REQUIRE_OK(kefir_ast_node_attributes_free(mem, &node->attributes));
-    KEFIR_FREE(mem, node);
+    KEFIR_AST_NODE_ARENA_FREE(mem, node);
     return KEFIR_OK;
 }
 
 const struct kefir_ast_node_class AST_RETURN_STATEMENT_CLASS = {
     .type = KEFIR_AST_RETURN_STATEMENT, .visit = ast_return_statement_visit, .free = ast_return_statement_free};
 
-struct kefir_ast_return_statement *kefir_ast_new_return_statement(struct kefir_mem *mem,
+struct kefir_ast_return_statement *kefir_ast_new_return_statement(struct kefir_mem *mem, struct kefir_memory_arena *arena,
                                                                   struct kefir_ast_node_base *expression) {
-    REQUIRE(mem != NULL, NULL);
+    REQUIRE(mem != NULL || arena != NULL, NULL);
 
-    struct kefir_ast_return_statement *stmt = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_return_statement));
+    struct kefir_ast_return_statement *stmt = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_return_statement);
     REQUIRE(stmt != NULL, NULL);
-    stmt->base.refcount = 1;
+    stmt->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
     stmt->base.klass = &AST_RETURN_STATEMENT_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&stmt->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, stmt);
+        KEFIR_AST_NODE_ARENA_FREE(mem, stmt);
         return NULL;
     });
     res = kefir_source_location_empty(&stmt->base.source_location);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, stmt);
+        KEFIR_AST_NODE_ARENA_FREE(mem, stmt);
         return NULL;
     });
     res = kefir_ast_node_attributes_init(&stmt->attributes);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, stmt);
+        KEFIR_AST_NODE_ARENA_FREE(mem, stmt);
         return NULL;
     });
 

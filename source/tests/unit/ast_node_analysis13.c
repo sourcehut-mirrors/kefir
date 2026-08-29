@@ -34,7 +34,7 @@ DEFINE_CASE(ast_node_analysis_inline_assembly1, "AST node analysis - inline asse
     ASSERT_OK(kefir_ast_global_context_init(&kft_mem, type_traits, &kft_util_get_translator_environment()->target_env,
                                             &global_context, NULL));
 
-    struct kefir_ast_inline_assembly *inline_asm1 = kefir_ast_new_inline_assembly(
+    struct kefir_ast_inline_assembly *inline_asm1 = kefir_ast_new_inline_assembly_noarena(
         &kft_mem, (struct kefir_ast_inline_assembly_qualifiers) {.goto_qualifier = true}, "Some assembly code");
 
     ASSERT_OK(kefir_ast_analyze_node(&kft_mem, &global_context.context, KEFIR_AST_NODE_BASE(inline_asm1)));
@@ -42,11 +42,11 @@ DEFINE_CASE(ast_node_analysis_inline_assembly1, "AST node analysis - inline asse
     ASSERT(inline_asm1->base.properties.inline_assembly->origin_flow_control_point == NULL);
     ASSERT(inline_asm1->base.properties.inline_assembly->branching_point == NULL);
 
-    struct kefir_ast_inline_assembly *inline_asm2 = kefir_ast_new_inline_assembly(
+    struct kefir_ast_inline_assembly *inline_asm2 = kefir_ast_new_inline_assembly_noarena(
         &kft_mem, (struct kefir_ast_inline_assembly_qualifiers) {.inline_qualifier = true}, "Some other assembly code");
     ASSERT_OK(kefir_ast_inline_assembly_add_output(
         &kft_mem, &global_context.symbols, inline_asm2, NULL, "constraint",
-        KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(&kft_mem, &global_context.symbols, "abc"))));
+        KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(&kft_mem, &global_context.symbols, "abc"))));
     ASSERT_NOK(kefir_ast_analyze_node(&kft_mem, &global_context.context, KEFIR_AST_NODE_BASE(inline_asm2)));
 
     ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(inline_asm1)));
@@ -73,7 +73,7 @@ DEFINE_CASE(ast_node_analysis_inline_assembly2, "AST node analysis - inline asse
                                                KEFIR_AST_FLOW_CONTROL_STRUCTURE_BLOCK, &associated_scopes,
                                                &flow_control));
 
-    struct kefir_ast_inline_assembly *inline_asm1 = kefir_ast_new_inline_assembly(
+    struct kefir_ast_inline_assembly *inline_asm1 = kefir_ast_new_inline_assembly_noarena(
         &kft_mem, (struct kefir_ast_inline_assembly_qualifiers) {.goto_qualifier = true}, "Some assembly code");
 
     ASSERT_OK(kefir_ast_analyze_node(&kft_mem, &local_context.context, KEFIR_AST_NODE_BASE(inline_asm1)));
@@ -90,17 +90,17 @@ DEFINE_CASE(ast_node_analysis_inline_assembly2, "AST node analysis - inline asse
         &kft_mem, &local_context.context, true, "a2", kefir_ast_type_signed_int(),
         KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_AUTO, KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL, NULL));
 
-    struct kefir_ast_inline_assembly *inline_asm2 = kefir_ast_new_inline_assembly(
+    struct kefir_ast_inline_assembly *inline_asm2 = kefir_ast_new_inline_assembly_noarena(
         &kft_mem, (struct kefir_ast_inline_assembly_qualifiers) {.inline_qualifier = true}, "Some other assembly code");
     ASSERT_OK(kefir_ast_inline_assembly_add_output(
         &kft_mem, &global_context.symbols, inline_asm2, "output1", "constraint1",
-        KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(&kft_mem, &global_context.symbols, "a1"))));
+        KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(&kft_mem, &global_context.symbols, "a1"))));
     ASSERT_OK(kefir_ast_inline_assembly_add_output(
         &kft_mem, &global_context.symbols, inline_asm2, NULL, "constraint1",
-        KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(&kft_mem, &global_context.symbols, "a2"))));
+        KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(&kft_mem, &global_context.symbols, "a2"))));
     ASSERT_OK(kefir_ast_inline_assembly_add_input(
         &kft_mem, &global_context.symbols, inline_asm2, NULL, "constraint3",
-        KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(&kft_mem, &global_context.symbols, "a1"))));
+        KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(&kft_mem, &global_context.symbols, "a1"))));
     ASSERT_OK(kefir_ast_inline_assembly_add_input(&kft_mem, &global_context.symbols, inline_asm2, NULL, "constraint3",
                                                   KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 1020))));
     ASSERT_OK(kefir_ast_inline_assembly_add_clobber(&kft_mem, &global_context.symbols, inline_asm2, "mem"));
@@ -136,11 +136,11 @@ DEFINE_CASE(ast_node_analysis_inline_assembly2, "AST node analysis - inline asse
         local_context.context.reference_label(&kft_mem, &local_context.context, "label3", NULL, NULL, &scoped_id));
     ASSERT(scoped_id->label->point == (void *) label_node->value);
 
-    struct kefir_ast_inline_assembly *inline_asm3 = kefir_ast_new_inline_assembly(
+    struct kefir_ast_inline_assembly *inline_asm3 = kefir_ast_new_inline_assembly_noarena(
         &kft_mem, (struct kefir_ast_inline_assembly_qualifiers) {.inline_qualifier = true}, "Some other assembly code");
     ASSERT_OK(kefir_ast_inline_assembly_add_output(
         &kft_mem, &global_context.symbols, inline_asm3, "output1", "constraint1",
-        KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(&kft_mem, &global_context.symbols, "a4"))));
+        KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(&kft_mem, &global_context.symbols, "a4"))));
     ASSERT_NOK(kefir_ast_analyze_node(&kft_mem, &local_context.context, KEFIR_AST_NODE_BASE(inline_asm3)));
 
     ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(inline_asm1)));

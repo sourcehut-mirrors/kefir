@@ -329,7 +329,7 @@ static kefir_result_t scan_struct_specifier(struct kefir_mem *mem, struct kefir_
     }
 
     if (pragma_state.pack.present) {
-        struct kefir_ast_attribute_list *attr_list = kefir_ast_new_attribute_list(mem);
+        struct kefir_ast_attribute_list *attr_list = kefir_ast_new_attribute_list(mem, parser->ast_arena);
         REQUIRE(attr_list != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate AST attribute list"));
 
         struct kefir_ast_attribute *attr;

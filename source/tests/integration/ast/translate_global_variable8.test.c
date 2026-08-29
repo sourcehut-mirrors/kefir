@@ -54,9 +54,9 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
 
     const char LITERAL1[] = u8"Global UTF-8 string literal\n\r";
     struct kefir_ast_initializer *init1 = kefir_ast_new_expression_initializer(
-        mem, KEFIR_AST_NODE_BASE(kefir_ast_new_string_literal_unicode8(mem, LITERAL1, sizeof(LITERAL1))));
+        mem, KEFIR_AST_NODE_BASE(kefir_ast_new_string_literal_unicode8_noarena(mem, LITERAL1, sizeof(LITERAL1))));
 
-    struct kefir_ast_declaration *decl1 = kefir_ast_new_single_declaration(
+    struct kefir_ast_declaration *decl1 = kefir_ast_new_single_declaration_noarena(
         mem,
         kefir_ast_declarator_array(mem, KEFIR_AST_DECLARATOR_ARRAY_UNBOUNDED, NULL,
                                    kefir_ast_declarator_identifier(mem, global_context.context.symbols, "string1")),
@@ -65,10 +65,10 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
 
     const kefir_char16_t LITERAL2[] = u"Global UTF-16 string literal\n\r";
     struct kefir_ast_initializer *init2 =
-        kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_string_literal_unicode16(
+        kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_string_literal_unicode16_noarena(
                                                       mem, LITERAL2, sizeof(LITERAL2) / sizeof(LITERAL2[0]))));
 
-    struct kefir_ast_declaration *decl2 = kefir_ast_new_single_declaration(
+    struct kefir_ast_declaration *decl2 = kefir_ast_new_single_declaration_noarena(
         mem,
         kefir_ast_declarator_array(mem, KEFIR_AST_DECLARATOR_ARRAY_UNBOUNDED, NULL,
                                    kefir_ast_declarator_identifier(mem, global_context.context.symbols, "string2")),
@@ -80,10 +80,10 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
 
     const kefir_char32_t LITERAL3[] = U"Global UTF-32 string literal\n\r";
     struct kefir_ast_initializer *init3 =
-        kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_string_literal_unicode32(
+        kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_string_literal_unicode32_noarena(
                                                       mem, LITERAL3, sizeof(LITERAL3) / sizeof(LITERAL3[0]))));
 
-    struct kefir_ast_declaration *decl3 = kefir_ast_new_single_declaration(
+    struct kefir_ast_declaration *decl3 = kefir_ast_new_single_declaration_noarena(
         mem,
         kefir_ast_declarator_array(mem, KEFIR_AST_DECLARATOR_ARRAY_UNBOUNDED, NULL,
                                    kefir_ast_declarator_identifier(mem, global_context.context.symbols, "string3")),
@@ -95,9 +95,9 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     const kefir_wchar_t LITERAL4[] = L"Global Wide string literal\n\r";
     struct kefir_ast_initializer *init4 = kefir_ast_new_expression_initializer(
         mem,
-        KEFIR_AST_NODE_BASE(kefir_ast_new_string_literal_wide(mem, LITERAL4, sizeof(LITERAL4) / sizeof(LITERAL4[0]))));
+        KEFIR_AST_NODE_BASE(kefir_ast_new_string_literal_wide_noarena(mem, LITERAL4, sizeof(LITERAL4) / sizeof(LITERAL4[0]))));
 
-    struct kefir_ast_declaration *decl4 = kefir_ast_new_single_declaration(
+    struct kefir_ast_declaration *decl4 = kefir_ast_new_single_declaration_noarena(
         mem,
         kefir_ast_declarator_array(mem, KEFIR_AST_DECLARATOR_ARRAY_UNBOUNDED, NULL,
                                    kefir_ast_declarator_identifier(mem, global_context.context.symbols, "string4")),
