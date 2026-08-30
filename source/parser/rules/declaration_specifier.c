@@ -105,7 +105,7 @@ static kefir_result_t scan_struct_field_declaration(struct kefir_mem *mem, struc
         if (res == KEFIR_NO_MATCH) {
             if (PARSER_TOKEN_IS_PUNCTUATOR(parser, 0, KEFIR_PUNCTUATOR_COLON)) {
                 res = KEFIR_OK;
-                declarator = kefir_ast_declarator_identifier(mem, NULL, NULL);
+                declarator = kefir_ast_declarator_identifier(mem, parser->ast_arena, NULL, NULL);
                 REQUIRE_CHAIN_SET(
                     &res, declarator != NULL,
                     KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate empty AST declarator identifier"));

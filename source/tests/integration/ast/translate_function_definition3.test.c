@@ -59,20 +59,20 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &entry1->declaration.specifiers,
                                                           kefir_ast_type_specifier_double(mem)));
     REQUIRE_OK(kefir_ast_structure_declaration_entry_append(
-        mem, entry1, kefir_ast_declarator_identifier(mem, global_context.context.symbols, "x"), NULL));
+        mem, entry1, kefir_ast_declarator_identifier_noarena(mem, global_context.context.symbols, "x"), NULL));
     REQUIRE_OK(kefir_ast_structure_declaration_entry_append(
-        mem, entry1, kefir_ast_declarator_identifier(mem, global_context.context.symbols, "y"), NULL));
+        mem, entry1, kefir_ast_declarator_identifier_noarena(mem, global_context.context.symbols, "y"), NULL));
     REQUIRE_OK(kefir_ast_structure_declaration_entry_append(
-        mem, entry1, kefir_ast_declarator_identifier(mem, global_context.context.symbols, "z"), NULL));
+        mem, entry1, kefir_ast_declarator_identifier_noarena(mem, global_context.context.symbols, "z"), NULL));
     REQUIRE_OK(kefir_ast_structure_specifier_append_entry(mem, specifier1, entry1));
 
     struct kefir_ast_declarator *function1_decl =
-        kefir_ast_declarator_function(mem, kefir_ast_declarator_identifier(mem, global_context.context.symbols, "sum"));
+        kefir_ast_declarator_function_noarena(mem, kefir_ast_declarator_identifier_noarena(mem, global_context.context.symbols, "sum"));
 
     struct kefir_ast_declaration *function1_param1 = kefir_ast_new_single_declaration_noarena(
         mem,
-        kefir_ast_declarator_pointer(mem,
-                                     kefir_ast_declarator_identifier(mem, global_context.context.symbols, "value")),
+        kefir_ast_declarator_pointer_noarena(mem,
+                                     kefir_ast_declarator_identifier_noarena(mem, global_context.context.symbols, "value")),
         NULL, NULL);
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &function1_param1->specifiers,
                                                           kefir_ast_type_specifier_struct(mem, specifier1)));

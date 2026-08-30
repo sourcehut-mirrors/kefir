@@ -51,11 +51,11 @@ static kefir_result_t insert_function_name_builtin(struct kefir_mem *mem, struct
     struct kefir_ast_declarator_identifier *function_identifier = NULL;
     REQUIRE_OK(kefir_ast_declarator_unpack_identifier(declarator, &function_identifier));
 
-    struct kefir_ast_declarator *func_name_id_declarator = kefir_ast_declarator_identifier(mem, NULL, "__func__");
+    struct kefir_ast_declarator *func_name_id_declarator = kefir_ast_declarator_identifier(mem, arena, NULL, "__func__");
     REQUIRE(func_name_id_declarator != NULL,
             KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate __func__ declarator"));
     struct kefir_ast_declarator *func_name_declarator =
-        kefir_ast_declarator_array(mem, KEFIR_AST_DECLARATOR_ARRAY_UNBOUNDED, NULL, func_name_id_declarator);
+        kefir_ast_declarator_array(mem, arena, KEFIR_AST_DECLARATOR_ARRAY_UNBOUNDED, NULL, func_name_id_declarator);
     REQUIRE_ELSE(func_name_declarator != NULL, {
         kefir_ast_declarator_free(mem, func_name_id_declarator);
         return KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate __func__ declarator");

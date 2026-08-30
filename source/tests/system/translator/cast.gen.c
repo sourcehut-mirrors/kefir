@@ -104,7 +104,7 @@ static kefir_result_t generate_ir(struct kefir_mem *mem, struct kefir_ir_module 
         kefir_ast_type_array(mem, context_manager.current->type_bundle, kefir_ast_type_signed_char(), 32, NULL), NULL));
 
 #define MAKE_TYPENAME(_id, _spec_count, ...)                                                                          \
-    struct kefir_ast_type_name *_id = kefir_ast_new_type_name_noarena(mem, kefir_ast_declarator_identifier(mem, NULL, NULL)); \
+    struct kefir_ast_type_name *_id = kefir_ast_new_type_name_noarena(mem, kefir_ast_declarator_identifier_noarena(mem, NULL, NULL)); \
     REQUIRE_OK(append_specifiers(mem, &_id->type_decl.specifiers, (_spec_count), __VA_ARGS__));
 
     MAKE_TYPENAME(type_name1, 1, kefir_ast_type_specifier_int(mem));
@@ -132,7 +132,7 @@ static kefir_result_t generate_ir(struct kefir_mem *mem, struct kefir_ir_module 
 #undef MAKE_TYPENAME
 
     struct kefir_ast_type_name *type_name22 = kefir_ast_new_type_name_noarena(
-        mem, kefir_ast_declarator_pointer(mem, kefir_ast_declarator_identifier(mem, NULL, NULL)));
+        mem, kefir_ast_declarator_pointer_noarena(mem, kefir_ast_declarator_identifier_noarena(mem, NULL, NULL)));
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &type_name22->type_decl.specifiers,
                                                           kefir_ast_type_specifier_void(mem)));
 

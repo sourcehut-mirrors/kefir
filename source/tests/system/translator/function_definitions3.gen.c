@@ -45,21 +45,21 @@ static struct kefir_ast_function_definition *define_sum_function(struct kefir_me
                                                        kefir_ast_type_specifier_double(mem)) == KEFIR_OK,
             NULL);
     REQUIRE(kefir_ast_structure_declaration_entry_append(
-                mem, entry1, kefir_ast_declarator_identifier(mem, context->symbols, "x"), NULL) == KEFIR_OK,
+                mem, entry1, kefir_ast_declarator_identifier_noarena(mem, context->symbols, "x"), NULL) == KEFIR_OK,
             NULL);
     REQUIRE(kefir_ast_structure_declaration_entry_append(
-                mem, entry1, kefir_ast_declarator_identifier(mem, context->symbols, "y"), NULL) == KEFIR_OK,
+                mem, entry1, kefir_ast_declarator_identifier_noarena(mem, context->symbols, "y"), NULL) == KEFIR_OK,
             NULL);
     REQUIRE(kefir_ast_structure_declaration_entry_append(
-                mem, entry1, kefir_ast_declarator_identifier(mem, context->symbols, "z"), NULL) == KEFIR_OK,
+                mem, entry1, kefir_ast_declarator_identifier_noarena(mem, context->symbols, "z"), NULL) == KEFIR_OK,
             NULL);
     REQUIRE(kefir_ast_structure_specifier_append_entry(mem, specifier1, entry1) == KEFIR_OK, NULL);
 
     struct kefir_ast_declarator *function1_decl =
-        kefir_ast_declarator_function(mem, kefir_ast_declarator_identifier(mem, context->symbols, "sum"));
+        kefir_ast_declarator_function_noarena(mem, kefir_ast_declarator_identifier_noarena(mem, context->symbols, "sum"));
 
     struct kefir_ast_declaration *function1_param1 = kefir_ast_new_single_declaration_noarena(
-        mem, kefir_ast_declarator_pointer(mem, kefir_ast_declarator_identifier(mem, context->symbols, "value")), NULL,
+        mem, kefir_ast_declarator_pointer_noarena(mem, kefir_ast_declarator_identifier_noarena(mem, context->symbols, "value")), NULL,
         NULL);
     REQUIRE(kefir_ast_declarator_specifier_list_append(mem, &function1_param1->specifiers,
                                                        kefir_ast_type_specifier_struct(mem, specifier1)) == KEFIR_OK,

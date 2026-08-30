@@ -73,7 +73,7 @@ static kefir_result_t define_conditional_function(struct kefir_mem *mem, struct 
         KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context_manager->current->symbols, "dim"))));
 
     struct kefir_ast_declaration *outer_loop_init = kefir_ast_new_single_declaration_noarena(
-        mem, kefir_ast_declarator_identifier(mem, context_manager->current->symbols, "i"),
+        mem, kefir_ast_declarator_identifier_noarena(mem, context_manager->current->symbols, "i"),
         kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 0))), NULL);
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &outer_loop_init->specifiers,
                                                           kefir_ast_type_specifier_int(mem)));
@@ -88,7 +88,7 @@ static kefir_result_t define_conditional_function(struct kefir_mem *mem, struct 
         KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context_manager->current->symbols, "i"))));
 
     struct kefir_ast_declaration *inner_loop_init = kefir_ast_new_single_declaration_noarena(
-        mem, kefir_ast_declarator_identifier(mem, context_manager->current->symbols, "j"),
+        mem, kefir_ast_declarator_identifier_noarena(mem, context_manager->current->symbols, "j"),
         kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 0))), NULL);
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &inner_loop_init->specifiers,
                                                           kefir_ast_type_specifier_int(mem)));
@@ -105,7 +105,7 @@ static kefir_result_t define_conditional_function(struct kefir_mem *mem, struct 
     struct kefir_ast_compound_statement *inner_body = kefir_ast_new_compound_statement_noarena(mem);
 
     struct kefir_ast_declaration *temp_variable = kefir_ast_new_single_declaration_noarena(
-        mem, kefir_ast_declarator_identifier(mem, context_manager->current->symbols, "tmp"),
+        mem, kefir_ast_declarator_identifier_noarena(mem, context_manager->current->symbols, "tmp"),
         kefir_ast_new_expression_initializer(
             mem,
             KEFIR_AST_NODE_BASE(kefir_ast_new_array_subscript_noarena(

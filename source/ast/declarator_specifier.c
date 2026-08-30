@@ -278,7 +278,7 @@ struct kefir_ast_structure_specifier *kefir_ast_structure_specifier_clone(
                      iter != NULL; kefir_list_next(&iter)) {
                     ASSIGN_DECL_CAST(struct kefir_ast_structure_entry_declarator *, entry_declarator, iter->value);
                     struct kefir_ast_declarator *declarator_clone =
-                        kefir_ast_declarator_clone(mem, entry_declarator->declarator);
+                        kefir_ast_declarator_clone(mem, NULL, entry_declarator->declarator);
                     struct kefir_ast_node_base *bitwidth_clone = KEFIR_AST_NODE_REF(entry_declarator->bitwidth);
                     REQUIRE_ELSE(entry_declarator->bitwidth == NULL || bitwidth_clone != NULL, {
                         kefir_ast_declarator_free(mem, declarator_clone);

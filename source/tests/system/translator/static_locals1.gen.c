@@ -39,10 +39,10 @@
 static struct kefir_ast_function_definition *define_sum_function(struct kefir_mem *mem,
                                                                  const struct kefir_ast_context *context) {
     struct kefir_ast_declarator *function1_decl =
-        kefir_ast_declarator_function(mem, kefir_ast_declarator_identifier(mem, context->symbols, "fn"));
+        kefir_ast_declarator_function_noarena(mem, kefir_ast_declarator_identifier_noarena(mem, context->symbols, "fn"));
 
     struct kefir_ast_declaration *decl1 = kefir_ast_new_single_declaration_noarena(
-        mem, kefir_ast_declarator_identifier(mem, context->symbols, "value"),
+        mem, kefir_ast_declarator_identifier_noarena(mem, context->symbols, "value"),
         kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 10))), NULL);
     REQUIRE(kefir_ast_declarator_specifier_list_append(mem, &decl1->specifiers,
                                                        kefir_ast_storage_class_specifier_static(mem)) == KEFIR_OK,
@@ -52,7 +52,7 @@ static struct kefir_ast_function_definition *define_sum_function(struct kefir_me
             NULL);
 
     struct kefir_ast_declaration *decl2 = kefir_ast_new_single_declaration_noarena(
-        mem, kefir_ast_declarator_identifier(mem, context->symbols, "increment"),
+        mem, kefir_ast_declarator_identifier_noarena(mem, context->symbols, "increment"),
         kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 1))), NULL);
     REQUIRE(kefir_ast_declarator_specifier_list_append(mem, &decl2->specifiers, kefir_ast_type_specifier_int(mem)) ==
                 KEFIR_OK,

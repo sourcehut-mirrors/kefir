@@ -85,4 +85,9 @@
 #define kefir_ast_new_statement_expression_noarena(_mem) (kefir_ast_new_statement_expression((_mem), NULL))
 #define kefir_ast_new_inline_assembly_noarena(_mem, _qual, _templ) (kefir_ast_new_inline_assembly((_mem), NULL, (_qual), (_templ)))
 
+#define kefir_ast_declarator_identifier_noarena(_mem, _strings, _id) (kefir_ast_declarator_identifier((_mem), NULL, (_strings), (_id)))
+#define kefir_ast_declarator_pointer_noarena(_mem, _decl) (kefir_ast_declarator_pointer((_mem), NULL, (_decl)))
+#define kefir_ast_declarator_array_noarena(_mem, _type, _len, _decl) (kefir_ast_declarator_array((_mem), NULL, (_type), (_len), (_decl)))
+#define kefir_ast_declarator_function_noarena(_mem, _decl) (kefir_ast_declarator_function((_mem), NULL, (_decl)))
+
 #endif

@@ -37,20 +37,20 @@ DEFINE_CASE(ast_constant_expression_cast_operator1, "AST constant expressions - 
     struct kefir_ast_context *context = &local_context.context;
 
     struct kefir_ast_type_name *TYPES[] = {
-        kefir_ast_new_type_name_noarena(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL)),
-        kefir_ast_new_type_name_noarena(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL)),
-        kefir_ast_new_type_name_noarena(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL)),
-        kefir_ast_new_type_name_noarena(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL)),
-        kefir_ast_new_type_name_noarena(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL)),
-        kefir_ast_new_type_name_noarena(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL)),
-        kefir_ast_new_type_name_noarena(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL)),
-        kefir_ast_new_type_name_noarena(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL)),
-        kefir_ast_new_type_name_noarena(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL)),
-        kefir_ast_new_type_name_noarena(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL)),
-        kefir_ast_new_type_name_noarena(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL)),
-        kefir_ast_new_type_name_noarena(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL)),
-        kefir_ast_new_type_name_noarena(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL)),
-        kefir_ast_new_type_name_noarena(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL)),
+        kefir_ast_new_type_name_noarena(&kft_mem, kefir_ast_declarator_identifier_noarena(&kft_mem, NULL, NULL)),
+        kefir_ast_new_type_name_noarena(&kft_mem, kefir_ast_declarator_identifier_noarena(&kft_mem, NULL, NULL)),
+        kefir_ast_new_type_name_noarena(&kft_mem, kefir_ast_declarator_identifier_noarena(&kft_mem, NULL, NULL)),
+        kefir_ast_new_type_name_noarena(&kft_mem, kefir_ast_declarator_identifier_noarena(&kft_mem, NULL, NULL)),
+        kefir_ast_new_type_name_noarena(&kft_mem, kefir_ast_declarator_identifier_noarena(&kft_mem, NULL, NULL)),
+        kefir_ast_new_type_name_noarena(&kft_mem, kefir_ast_declarator_identifier_noarena(&kft_mem, NULL, NULL)),
+        kefir_ast_new_type_name_noarena(&kft_mem, kefir_ast_declarator_identifier_noarena(&kft_mem, NULL, NULL)),
+        kefir_ast_new_type_name_noarena(&kft_mem, kefir_ast_declarator_identifier_noarena(&kft_mem, NULL, NULL)),
+        kefir_ast_new_type_name_noarena(&kft_mem, kefir_ast_declarator_identifier_noarena(&kft_mem, NULL, NULL)),
+        kefir_ast_new_type_name_noarena(&kft_mem, kefir_ast_declarator_identifier_noarena(&kft_mem, NULL, NULL)),
+        kefir_ast_new_type_name_noarena(&kft_mem, kefir_ast_declarator_identifier_noarena(&kft_mem, NULL, NULL)),
+        kefir_ast_new_type_name_noarena(&kft_mem, kefir_ast_declarator_identifier_noarena(&kft_mem, NULL, NULL)),
+        kefir_ast_new_type_name_noarena(&kft_mem, kefir_ast_declarator_identifier_noarena(&kft_mem, NULL, NULL)),
+        kefir_ast_new_type_name_noarena(&kft_mem, kefir_ast_declarator_identifier_noarena(&kft_mem, NULL, NULL)),
     };
     const kefir_size_t TYPES_LEN = sizeof(TYPES) / sizeof(TYPES[0]);
 
@@ -237,7 +237,7 @@ DEFINE_CASE(ast_constant_expression_cast_operator2, "AST constant expressions - 
 
     for (kefir_size_t i = 0; i < 100; i++) {
         struct kefir_ast_type_name *type_name1 = kefir_ast_new_type_name_noarena(
-            &kft_mem, kefir_ast_declarator_pointer(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL)));
+            &kft_mem, kefir_ast_declarator_pointer_noarena(&kft_mem, kefir_ast_declarator_identifier_noarena(&kft_mem, NULL, NULL)));
         ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &type_name1->type_decl.specifiers,
                                                              kefir_ast_type_specifier_void(&kft_mem)));
         ASSERT_INTPTR_CONST_EXPR(
@@ -247,7 +247,7 @@ DEFINE_CASE(ast_constant_expression_cast_operator2, "AST constant expressions - 
             i, 0);
 
         struct kefir_ast_type_name *type_name2 = kefir_ast_new_type_name_noarena(
-            &kft_mem, kefir_ast_declarator_pointer(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL)));
+            &kft_mem, kefir_ast_declarator_pointer_noarena(&kft_mem, kefir_ast_declarator_identifier_noarena(&kft_mem, NULL, NULL)));
         ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &type_name2->type_decl.specifiers,
                                                              kefir_ast_type_specifier_long(&kft_mem)));
         ASSERT_INTPTR_CONST_EXPR(
@@ -257,7 +257,7 @@ DEFINE_CASE(ast_constant_expression_cast_operator2, "AST constant expressions - 
             i, 0);
 
         struct kefir_ast_type_name *type_name3 = kefir_ast_new_type_name_noarena(
-            &kft_mem, kefir_ast_declarator_pointer(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL)));
+            &kft_mem, kefir_ast_declarator_pointer_noarena(&kft_mem, kefir_ast_declarator_identifier_noarena(&kft_mem, NULL, NULL)));
         ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &type_name3->type_decl.specifiers,
                                                              kefir_ast_type_specifier_double(&kft_mem)));
         ASSERT_INTPTR_CONST_EXPR(
@@ -267,9 +267,9 @@ DEFINE_CASE(ast_constant_expression_cast_operator2, "AST constant expressions - 
             i, 0);
 
         struct kefir_ast_type_name *type_name4 = kefir_ast_new_type_name_noarena(
-            &kft_mem, kefir_ast_declarator_pointer(
-                          &kft_mem, kefir_ast_declarator_pointer(
-                                        &kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL))));
+            &kft_mem, kefir_ast_declarator_pointer_noarena(
+                          &kft_mem, kefir_ast_declarator_pointer_noarena(
+                                        &kft_mem, kefir_ast_declarator_identifier_noarena(&kft_mem, NULL, NULL))));
         ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &type_name4->type_decl.specifiers,
                                                              kefir_ast_type_specifier_int(&kft_mem)));
         ASSERT_INTPTR_CONST_EXPR(
@@ -388,7 +388,7 @@ DEFINE_CASE(ast_constant_expression_conditional_operator2, "AST constant express
         10);
 
     struct kefir_ast_type_name *type_name1 = kefir_ast_new_type_name_noarena(
-        &kft_mem, kefir_ast_declarator_pointer(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL)));
+        &kft_mem, kefir_ast_declarator_pointer_noarena(&kft_mem, kefir_ast_declarator_identifier_noarena(&kft_mem, NULL, NULL)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &type_name1->type_decl.specifiers,
                                                          kefir_ast_type_specifier_char(&kft_mem)));
     ASSERT_INTEGER_CONST_EXPR(
@@ -427,7 +427,7 @@ DEFINE_CASE(ast_constant_expression_conditional_operator2, "AST constant express
         101);
 
     struct kefir_ast_type_name *type_name2 = kefir_ast_new_type_name_noarena(
-        &kft_mem, kefir_ast_declarator_pointer(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL)));
+        &kft_mem, kefir_ast_declarator_pointer_noarena(&kft_mem, kefir_ast_declarator_identifier_noarena(&kft_mem, NULL, NULL)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &type_name2->type_decl.specifiers,
                                                          kefir_ast_type_specifier_int(&kft_mem)));
     ASSERT_INTEGER_CONST_EXPR(

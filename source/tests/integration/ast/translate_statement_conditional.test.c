@@ -58,14 +58,14 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
 
     FUNC2("conditional1", {
         struct kefir_ast_declaration *decl1 = kefir_ast_new_single_declaration_noarena(
-            mem, kefir_ast_declarator_identifier(mem, context->symbols, "condition"), NULL, NULL);
+            mem, kefir_ast_declarator_identifier_noarena(mem, context->symbols, "condition"), NULL, NULL);
         REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &decl1->specifiers,
                                                               kefir_ast_storage_class_specifier_extern(mem)));
         REQUIRE_OK(
             kefir_ast_declarator_specifier_list_append(mem, &decl1->specifiers, kefir_ast_type_specifier_int(mem)));
 
         struct kefir_ast_declaration *decl2 = kefir_ast_new_single_declaration_noarena(
-            mem, kefir_ast_declarator_identifier(mem, context->symbols, "result"), NULL, NULL);
+            mem, kefir_ast_declarator_identifier_noarena(mem, context->symbols, "result"), NULL, NULL);
         REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &decl2->specifiers,
                                                               kefir_ast_storage_class_specifier_extern(mem)));
         REQUIRE_OK(
@@ -97,14 +97,14 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
 
     FUNC2("conditional2", {
         struct kefir_ast_declaration *decl1 = kefir_ast_new_single_declaration_noarena(
-            mem, kefir_ast_declarator_identifier(mem, context->symbols, "condition"), NULL, NULL);
+            mem, kefir_ast_declarator_identifier_noarena(mem, context->symbols, "condition"), NULL, NULL);
         REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &decl1->specifiers,
                                                               kefir_ast_storage_class_specifier_extern(mem)));
         REQUIRE_OK(
             kefir_ast_declarator_specifier_list_append(mem, &decl1->specifiers, kefir_ast_type_specifier_int(mem)));
 
         struct kefir_ast_declaration *decl2 = kefir_ast_new_single_declaration_noarena(
-            mem, kefir_ast_declarator_identifier(mem, context->symbols, "result"), NULL, NULL);
+            mem, kefir_ast_declarator_identifier_noarena(mem, context->symbols, "result"), NULL, NULL);
         REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &decl2->specifiers,
                                                               kefir_ast_storage_class_specifier_extern(mem)));
         REQUIRE_OK(
@@ -139,14 +139,14 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
 
     FUNC2("conditional3", {
         struct kefir_ast_declaration *decl1 = kefir_ast_new_single_declaration_noarena(
-            mem, kefir_ast_declarator_identifier(mem, context->symbols, "condition"), NULL, NULL);
+            mem, kefir_ast_declarator_identifier_noarena(mem, context->symbols, "condition"), NULL, NULL);
         REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &decl1->specifiers,
                                                               kefir_ast_storage_class_specifier_extern(mem)));
         REQUIRE_OK(
             kefir_ast_declarator_specifier_list_append(mem, &decl1->specifiers, kefir_ast_type_specifier_int(mem)));
 
         struct kefir_ast_declaration *decl2 = kefir_ast_new_single_declaration_noarena(
-            mem, kefir_ast_declarator_identifier(mem, context->symbols, "result"), NULL, NULL);
+            mem, kefir_ast_declarator_identifier_noarena(mem, context->symbols, "result"), NULL, NULL);
         REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &decl2->specifiers,
                                                               kefir_ast_storage_class_specifier_extern(mem)));
         REQUIRE_OK(

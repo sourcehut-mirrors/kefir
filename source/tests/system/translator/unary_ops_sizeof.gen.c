@@ -56,7 +56,7 @@ static kefir_result_t define_get_sizeof_function(struct kefir_mem *mem, struct f
     REQUIRE_OK(kefir_list_init(&func->args));
 
     struct kefir_ast_type_name *type_name16 =
-        kefir_ast_new_type_name_noarena(mem, kefir_ast_declarator_identifier(mem, context_manager->current->symbols, NULL));
+        kefir_ast_new_type_name_noarena(mem, kefir_ast_declarator_identifier_noarena(mem, context_manager->current->symbols, NULL));
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &type_name16->type_decl.specifiers, specifier));
     REQUIRE_OK(kefir_ast_analyze_node(mem, context_manager->current, KEFIR_AST_NODE_BASE(type_name16)));
 
@@ -81,7 +81,7 @@ static kefir_result_t define_get_sizeof_function(struct kefir_mem *mem, struct f
                                                                    KEFIR_AST_NODE_BASE(_type_name))))))
 
 #define MAKE_TYPENAME(_id, _spec_count, ...)                                                                          \
-    struct kefir_ast_type_name *_id = kefir_ast_new_type_name_noarena(mem, kefir_ast_declarator_identifier(mem, NULL, NULL)); \
+    struct kefir_ast_type_name *_id = kefir_ast_new_type_name_noarena(mem, kefir_ast_declarator_identifier_noarena(mem, NULL, NULL)); \
     REQUIRE_OK(append_specifiers(mem, &_id->type_decl.specifiers, (_spec_count), __VA_ARGS__));
 
     MAKE_TYPENAME(type_name1, 1, kefir_ast_type_specifier_boolean(mem))
@@ -103,13 +103,13 @@ static kefir_result_t define_get_sizeof_function(struct kefir_mem *mem, struct f
 #undef MAKE_TYPENAME
 
     struct kefir_ast_type_name *type_name15 = kefir_ast_new_type_name_noarena(
-        mem, kefir_ast_declarator_pointer(mem, kefir_ast_declarator_identifier(mem, NULL, NULL)));
+        mem, kefir_ast_declarator_pointer_noarena(mem, kefir_ast_declarator_identifier_noarena(mem, NULL, NULL)));
     REQUIRE_OK(append_specifiers(mem, &type_name15->type_decl.specifiers, 1, kefir_ast_type_specifier_void(mem)));
 
     struct kefir_ast_type_name *type_name17 = kefir_ast_new_type_name_noarena(
-        mem, kefir_ast_declarator_array(mem, KEFIR_AST_DECLARATOR_ARRAY_BOUNDED,
+        mem, kefir_ast_declarator_array_noarena(mem, KEFIR_AST_DECLARATOR_ARRAY_BOUNDED,
                                         KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 128)),
-                                        kefir_ast_declarator_identifier(mem, NULL, NULL)));
+                                        kefir_ast_declarator_identifier_noarena(mem, NULL, NULL)));
     REQUIRE_OK(append_specifiers(mem, &type_name17->type_decl.specifiers, 1, kefir_ast_type_specifier_int(mem)));
 
     APPEND(type_name1);
@@ -160,41 +160,41 @@ static kefir_result_t generate_ir(struct kefir_mem *mem, struct kefir_ir_module 
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &entry1->declaration.specifiers,
                                                           kefir_ast_type_specifier_int(mem)));
     REQUIRE_OK(kefir_ast_structure_declaration_entry_append(
-        mem, entry1, kefir_ast_declarator_identifier(mem, context_manager.current->symbols, "tboolean"), NULL));
+        mem, entry1, kefir_ast_declarator_identifier_noarena(mem, context_manager.current->symbols, "tboolean"), NULL));
     REQUIRE_OK(kefir_ast_structure_declaration_entry_append(
-        mem, entry1, kefir_ast_declarator_identifier(mem, context_manager.current->symbols, "tchar"), NULL));
+        mem, entry1, kefir_ast_declarator_identifier_noarena(mem, context_manager.current->symbols, "tchar"), NULL));
     REQUIRE_OK(kefir_ast_structure_declaration_entry_append(
-        mem, entry1, kefir_ast_declarator_identifier(mem, context_manager.current->symbols, "tuchar"), NULL));
+        mem, entry1, kefir_ast_declarator_identifier_noarena(mem, context_manager.current->symbols, "tuchar"), NULL));
     REQUIRE_OK(kefir_ast_structure_declaration_entry_append(
-        mem, entry1, kefir_ast_declarator_identifier(mem, context_manager.current->symbols, "tschar"), NULL));
+        mem, entry1, kefir_ast_declarator_identifier_noarena(mem, context_manager.current->symbols, "tschar"), NULL));
     REQUIRE_OK(kefir_ast_structure_declaration_entry_append(
-        mem, entry1, kefir_ast_declarator_identifier(mem, context_manager.current->symbols, "tushort"), NULL));
+        mem, entry1, kefir_ast_declarator_identifier_noarena(mem, context_manager.current->symbols, "tushort"), NULL));
     REQUIRE_OK(kefir_ast_structure_declaration_entry_append(
-        mem, entry1, kefir_ast_declarator_identifier(mem, context_manager.current->symbols, "tsshort"), NULL));
+        mem, entry1, kefir_ast_declarator_identifier_noarena(mem, context_manager.current->symbols, "tsshort"), NULL));
     REQUIRE_OK(kefir_ast_structure_declaration_entry_append(
-        mem, entry1, kefir_ast_declarator_identifier(mem, context_manager.current->symbols, "tuint"), NULL));
+        mem, entry1, kefir_ast_declarator_identifier_noarena(mem, context_manager.current->symbols, "tuint"), NULL));
     REQUIRE_OK(kefir_ast_structure_declaration_entry_append(
-        mem, entry1, kefir_ast_declarator_identifier(mem, context_manager.current->symbols, "tsint"), NULL));
+        mem, entry1, kefir_ast_declarator_identifier_noarena(mem, context_manager.current->symbols, "tsint"), NULL));
     REQUIRE_OK(kefir_ast_structure_declaration_entry_append(
-        mem, entry1, kefir_ast_declarator_identifier(mem, context_manager.current->symbols, "tulong"), NULL));
+        mem, entry1, kefir_ast_declarator_identifier_noarena(mem, context_manager.current->symbols, "tulong"), NULL));
     REQUIRE_OK(kefir_ast_structure_declaration_entry_append(
-        mem, entry1, kefir_ast_declarator_identifier(mem, context_manager.current->symbols, "tslong"), NULL));
+        mem, entry1, kefir_ast_declarator_identifier_noarena(mem, context_manager.current->symbols, "tslong"), NULL));
     REQUIRE_OK(kefir_ast_structure_declaration_entry_append(
-        mem, entry1, kefir_ast_declarator_identifier(mem, context_manager.current->symbols, "tullong"), NULL));
+        mem, entry1, kefir_ast_declarator_identifier_noarena(mem, context_manager.current->symbols, "tullong"), NULL));
     REQUIRE_OK(kefir_ast_structure_declaration_entry_append(
-        mem, entry1, kefir_ast_declarator_identifier(mem, context_manager.current->symbols, "tsllong"), NULL));
+        mem, entry1, kefir_ast_declarator_identifier_noarena(mem, context_manager.current->symbols, "tsllong"), NULL));
     REQUIRE_OK(kefir_ast_structure_declaration_entry_append(
-        mem, entry1, kefir_ast_declarator_identifier(mem, context_manager.current->symbols, "tfloat"), NULL));
+        mem, entry1, kefir_ast_declarator_identifier_noarena(mem, context_manager.current->symbols, "tfloat"), NULL));
     REQUIRE_OK(kefir_ast_structure_declaration_entry_append(
-        mem, entry1, kefir_ast_declarator_identifier(mem, context_manager.current->symbols, "tdouble"), NULL));
+        mem, entry1, kefir_ast_declarator_identifier_noarena(mem, context_manager.current->symbols, "tdouble"), NULL));
     REQUIRE_OK(kefir_ast_structure_declaration_entry_append(
-        mem, entry1, kefir_ast_declarator_identifier(mem, context_manager.current->symbols, "tpvoid"), NULL));
+        mem, entry1, kefir_ast_declarator_identifier_noarena(mem, context_manager.current->symbols, "tpvoid"), NULL));
     REQUIRE_OK(kefir_ast_structure_declaration_entry_append(
-        mem, entry1, kefir_ast_declarator_identifier(mem, context_manager.current->symbols, "tstruct"), NULL));
+        mem, entry1, kefir_ast_declarator_identifier_noarena(mem, context_manager.current->symbols, "tstruct"), NULL));
     REQUIRE_OK(kefir_ast_structure_declaration_entry_append(
-        mem, entry1, kefir_ast_declarator_identifier(mem, context_manager.current->symbols, "tarray"), NULL));
+        mem, entry1, kefir_ast_declarator_identifier_noarena(mem, context_manager.current->symbols, "tarray"), NULL));
     REQUIRE_OK(kefir_ast_structure_declaration_entry_append(
-        mem, entry1, kefir_ast_declarator_identifier(mem, context_manager.current->symbols, "tstring"), NULL));
+        mem, entry1, kefir_ast_declarator_identifier_noarena(mem, context_manager.current->symbols, "tstring"), NULL));
     REQUIRE_OK(kefir_ast_structure_specifier_append_entry(mem, specifier1, entry1));
 
     struct function get_sizeof;

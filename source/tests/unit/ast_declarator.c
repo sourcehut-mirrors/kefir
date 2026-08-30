@@ -24,9 +24,9 @@
 #include <string.h>
 
 DEFINE_CASE(ast_declarator_construction1, "AST declarators - identifier construction #1") {
-    ASSERT(kefir_ast_declarator_identifier(NULL, NULL, NULL) == NULL);
+    ASSERT(kefir_ast_declarator_identifier_noarena(NULL, NULL, NULL) == NULL);
 
-    struct kefir_ast_declarator *decl = kefir_ast_declarator_identifier(&kft_mem, NULL, NULL);
+    struct kefir_ast_declarator *decl = kefir_ast_declarator_identifier_noarena(&kft_mem, NULL, NULL);
     ASSERT(decl != NULL);
     ASSERT(decl->klass == KEFIR_AST_DECLARATOR_IDENTIFIER);
     ASSERT(decl->identifier.identifier == NULL);
@@ -45,8 +45,8 @@ DEFINE_CASE(ast_declarator_construction2, "AST declarators - identifier construc
     const kefir_size_t IDENT_COUNT = sizeof(IDENTS) / sizeof(IDENTS[0]);
 
     for (kefir_size_t i = 0; i < IDENT_COUNT; i++) {
-        ASSERT(kefir_ast_declarator_identifier(NULL, NULL, IDENTS[i]) == NULL);
-        struct kefir_ast_declarator *decl = kefir_ast_declarator_identifier(&kft_mem, NULL, IDENTS[i]);
+        ASSERT(kefir_ast_declarator_identifier_noarena(NULL, NULL, IDENTS[i]) == NULL);
+        struct kefir_ast_declarator *decl = kefir_ast_declarator_identifier_noarena(&kft_mem, NULL, IDENTS[i]);
         ASSERT(decl != NULL);
         ASSERT(decl->klass == KEFIR_AST_DECLARATOR_IDENTIFIER);
         ASSERT(decl->identifier.identifier == IDENTS[i]);
@@ -67,11 +67,11 @@ DEFINE_CASE(ast_declarator_construction3, "AST declarators - identifier construc
     const kefir_size_t IDENT_COUNT = sizeof(IDENTS) / sizeof(IDENTS[0]);
     struct kefir_string_pool symbols;
     ASSERT_OK(kefir_string_pool_init(&symbols));
-    ASSERT(kefir_ast_declarator_identifier(NULL, &symbols, NULL) == NULL);
+    ASSERT(kefir_ast_declarator_identifier_noarena(NULL, &symbols, NULL) == NULL);
 
     for (kefir_size_t i = 0; i < IDENT_COUNT; i++) {
-        ASSERT(kefir_ast_declarator_identifier(NULL, &symbols, IDENTS[i]) == NULL);
-        struct kefir_ast_declarator *decl = kefir_ast_declarator_identifier(&kft_mem, &symbols, IDENTS[i]);
+        ASSERT(kefir_ast_declarator_identifier_noarena(NULL, &symbols, IDENTS[i]) == NULL);
+        struct kefir_ast_declarator *decl = kefir_ast_declarator_identifier_noarena(&kft_mem, &symbols, IDENTS[i]);
         ASSERT(decl != NULL);
         ASSERT(decl->klass == KEFIR_AST_DECLARATOR_IDENTIFIER);
         ASSERT(decl->identifier.identifier != IDENTS[i]);
@@ -90,7 +90,7 @@ END_CASE
 
 DEFINE_CASE(ast_declarator_construction4, "AST declarators - pointer construction #1") {
     struct kefir_ast_declarator *decl =
-        kefir_ast_declarator_pointer(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, "test123"));
+        kefir_ast_declarator_pointer_noarena(&kft_mem, kefir_ast_declarator_identifier_noarena(&kft_mem, NULL, "test123"));
     ASSERT(decl != NULL);
     ASSERT(decl->klass = KEFIR_AST_DECLARATOR_POINTER);
     ASSERT(decl->pointer->declarator != NULL);
@@ -128,8 +128,8 @@ DEFINE_CASE(ast_declarator_construction4, "AST declarators - pointer constructio
 END_CASE
 
 DEFINE_CASE(ast_declarator_construction5, "AST declarators - pointer construction #2") {
-    struct kefir_ast_declarator *decl = kefir_ast_declarator_pointer(
-        &kft_mem, kefir_ast_declarator_pointer(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, "some_test")));
+    struct kefir_ast_declarator *decl = kefir_ast_declarator_pointer_noarena(
+        &kft_mem, kefir_ast_declarator_pointer_noarena(&kft_mem, kefir_ast_declarator_identifier_noarena(&kft_mem, NULL, "some_test")));
     ASSERT(decl != NULL);
     ASSERT(decl->klass = KEFIR_AST_DECLARATOR_POINTER);
     ASSERT(decl->pointer->declarator != NULL);
@@ -172,13 +172,13 @@ DEFINE_CASE(ast_declarator_construction5, "AST declarators - pointer constructio
 END_CASE
 
 DEFINE_CASE(ast_declarator_construction6, "AST declarators - pointer construction #3") {
-    ASSERT(kefir_ast_declarator_pointer(&kft_mem, NULL) == NULL);
-    ASSERT(kefir_ast_declarator_pointer(NULL, NULL) == NULL);
+    ASSERT(kefir_ast_declarator_pointer_noarena(&kft_mem, NULL) == NULL);
+    ASSERT(kefir_ast_declarator_pointer_noarena(NULL, NULL) == NULL);
 
     struct kefir_ast_declarator *decl1 =
-        kefir_ast_declarator_pointer(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL));
-    struct kefir_ast_declarator *decl2 = kefir_ast_declarator_pointer(
-        &kft_mem, kefir_ast_declarator_pointer(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL)));
+        kefir_ast_declarator_pointer_noarena(&kft_mem, kefir_ast_declarator_identifier_noarena(&kft_mem, NULL, NULL));
+    struct kefir_ast_declarator *decl2 = kefir_ast_declarator_pointer_noarena(
+        &kft_mem, kefir_ast_declarator_pointer_noarena(&kft_mem, kefir_ast_declarator_identifier_noarena(&kft_mem, NULL, NULL)));
 
     kefir_bool_t abstract;
     ASSERT_OK(kefir_ast_declarator_is_abstract(decl1, &abstract));
@@ -192,9 +192,9 @@ DEFINE_CASE(ast_declarator_construction6, "AST declarators - pointer constructio
 END_CASE
 
 DEFINE_CASE(ast_declarator_construction7, "AST declarators - array construction #1") {
-    struct kefir_ast_declarator *decl = kefir_ast_declarator_array(
+    struct kefir_ast_declarator *decl = kefir_ast_declarator_array_noarena(
         &kft_mem, KEFIR_AST_DECLARATOR_ARRAY_BOUNDED, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 100)),
-        kefir_ast_declarator_identifier(&kft_mem, NULL, "array"));
+        kefir_ast_declarator_identifier_noarena(&kft_mem, NULL, "array"));
 
     ASSERT(decl != NULL);
     ASSERT(decl->klass == KEFIR_AST_DECLARATOR_ARRAY);
@@ -235,9 +235,9 @@ DEFINE_CASE(ast_declarator_construction7, "AST declarators - array construction 
 END_CASE
 
 DEFINE_CASE(ast_declarator_construction8, "AST declarators - array construction #2") {
-    struct kefir_ast_declarator *decl = kefir_ast_declarator_array(
+    struct kefir_ast_declarator *decl = kefir_ast_declarator_array_noarena(
         &kft_mem, KEFIR_AST_DECLARATOR_ARRAY_UNBOUNDED, NULL,
-        kefir_ast_declarator_pointer(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, "array2")));
+        kefir_ast_declarator_pointer_noarena(&kft_mem, kefir_ast_declarator_identifier_noarena(&kft_mem, NULL, "array2")));
 
     ASSERT(decl != NULL);
     ASSERT(decl->klass == KEFIR_AST_DECLARATOR_ARRAY);
@@ -257,12 +257,12 @@ DEFINE_CASE(ast_declarator_construction8, "AST declarators - array construction 
 END_CASE
 
 DEFINE_CASE(ast_declarator_construction9, "AST declarators - array construction #3") {
-    ASSERT(kefir_ast_declarator_array(&kft_mem, KEFIR_AST_DECLARATOR_ARRAY_UNBOUNDED, NULL, NULL) == NULL);
-    ASSERT(kefir_ast_declarator_array(NULL, KEFIR_AST_DECLARATOR_ARRAY_UNBOUNDED, NULL, NULL) == NULL);
+    ASSERT(kefir_ast_declarator_array_noarena(&kft_mem, KEFIR_AST_DECLARATOR_ARRAY_UNBOUNDED, NULL, NULL) == NULL);
+    ASSERT(kefir_ast_declarator_array_noarena(NULL, KEFIR_AST_DECLARATOR_ARRAY_UNBOUNDED, NULL, NULL) == NULL);
 
-    struct kefir_ast_declarator *decl = kefir_ast_declarator_array(
+    struct kefir_ast_declarator *decl = kefir_ast_declarator_array_noarena(
         &kft_mem, KEFIR_AST_DECLARATOR_ARRAY_BOUNDED, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 1)),
-        kefir_ast_declarator_pointer(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL)));
+        kefir_ast_declarator_pointer_noarena(&kft_mem, kefir_ast_declarator_identifier_noarena(&kft_mem, NULL, NULL)));
 
     ASSERT(decl != NULL);
     ASSERT(decl->klass == KEFIR_AST_DECLARATOR_ARRAY);
@@ -289,7 +289,7 @@ DEFINE_CASE(ast_declarator_construction10, "AST declarators - function construct
     ASSERT_OK(kefir_string_pool_init(&symbols));
 
     struct kefir_ast_declarator *decl =
-        kefir_ast_declarator_function(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, "func1"));
+        kefir_ast_declarator_function_noarena(&kft_mem, kefir_ast_declarator_identifier_noarena(&kft_mem, NULL, "func1"));
 
     ASSERT(decl != NULL);
     ASSERT(decl->klass == KEFIR_AST_DECLARATOR_FUNCTION);
@@ -334,11 +334,11 @@ DEFINE_CASE(ast_declarator_construction10, "AST declarators - function construct
 END_CASE
 
 DEFINE_CASE(ast_declarator_construction11, "AST declarators - function construction #2") {
-    ASSERT(kefir_ast_declarator_function(&kft_mem, NULL) == NULL);
-    ASSERT(kefir_ast_declarator_function(NULL, NULL) == NULL);
+    ASSERT(kefir_ast_declarator_function_noarena(&kft_mem, NULL) == NULL);
+    ASSERT(kefir_ast_declarator_function_noarena(NULL, NULL) == NULL);
 
-    struct kefir_ast_declarator *decl = kefir_ast_declarator_function(
-        &kft_mem, kefir_ast_declarator_pointer(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL)));
+    struct kefir_ast_declarator *decl = kefir_ast_declarator_function_noarena(
+        &kft_mem, kefir_ast_declarator_pointer_noarena(&kft_mem, kefir_ast_declarator_identifier_noarena(&kft_mem, NULL, NULL)));
 
     ASSERT(decl != NULL);
     ASSERT(decl->klass == KEFIR_AST_DECLARATOR_FUNCTION);

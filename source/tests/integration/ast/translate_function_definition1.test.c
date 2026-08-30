@@ -54,10 +54,10 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     global_translator_context.global_scope_layout = &translator_global_scope;
 
     struct kefir_ast_declarator *function1_decl =
-        kefir_ast_declarator_function(mem, kefir_ast_declarator_identifier(mem, global_context.context.symbols, "sum"));
+        kefir_ast_declarator_function_noarena(mem, kefir_ast_declarator_identifier_noarena(mem, global_context.context.symbols, "sum"));
 
     struct kefir_ast_declaration *function1_param1_list = kefir_ast_new_single_declaration_noarena(
-        mem, kefir_ast_declarator_identifier(mem, global_context.context.symbols, "a"), NULL, NULL);
+        mem, kefir_ast_declarator_identifier_noarena(mem, global_context.context.symbols, "a"), NULL, NULL);
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &function1_param1_list->specifiers,
                                                           kefir_ast_type_specifier_int(mem)));
     REQUIRE_OK(kefir_list_insert_after(mem, &function1_decl->function->parameters,
@@ -65,7 +65,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
                                        KEFIR_AST_NODE_BASE(function1_param1_list)));
 
     struct kefir_ast_declaration *function1_param2_list = kefir_ast_new_single_declaration_noarena(
-        mem, kefir_ast_declarator_identifier(mem, global_context.context.symbols, "b"), NULL, NULL);
+        mem, kefir_ast_declarator_identifier_noarena(mem, global_context.context.symbols, "b"), NULL, NULL);
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &function1_param2_list->specifiers,
                                                           kefir_ast_type_specifier_int(mem)));
     REQUIRE_OK(kefir_list_insert_after(mem, &function1_decl->function->parameters,

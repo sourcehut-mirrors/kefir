@@ -58,14 +58,14 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
 
     FUNC2("do_while1", {
         struct kefir_ast_declaration *decl1 = kefir_ast_new_single_declaration_noarena(
-            mem, kefir_ast_declarator_identifier(mem, context->symbols, "flag"),
+            mem, kefir_ast_declarator_identifier_noarena(mem, context->symbols, "flag"),
             kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bool_noarena(mem, true))),
             NULL);
         REQUIRE_OK(
             kefir_ast_declarator_specifier_list_append(mem, &decl1->specifiers, kefir_ast_type_specifier_boolean(mem)));
 
         struct kefir_ast_declaration *decl2 = kefir_ast_new_single_declaration_noarena(
-            mem, kefir_ast_declarator_function(mem, kefir_ast_declarator_identifier(mem, context->symbols, "eval")),
+            mem, kefir_ast_declarator_function_noarena(mem, kefir_ast_declarator_identifier_noarena(mem, context->symbols, "eval")),
             NULL, NULL);
         REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &decl2->specifiers,
                                                               kefir_ast_storage_class_specifier_extern(mem)));
@@ -103,7 +103,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
 
     FUNC2("do_while2", {
         struct kefir_ast_declaration *decl1 = kefir_ast_new_single_declaration_noarena(
-            mem, kefir_ast_declarator_pointer(mem, kefir_ast_declarator_identifier(mem, context->symbols, "flag")),
+            mem, kefir_ast_declarator_pointer_noarena(mem, kefir_ast_declarator_identifier_noarena(mem, context->symbols, "flag")),
             NULL, NULL);
         REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &decl1->specifiers,
                                                               kefir_ast_storage_class_specifier_extern(mem)));

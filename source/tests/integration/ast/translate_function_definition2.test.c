@@ -51,8 +51,8 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
                                                  &module, NULL));
     global_translator_context.global_scope_layout = &translator_global_scope;
 
-    struct kefir_ast_declarator *function1_decl = kefir_ast_declarator_function(
-        mem, kefir_ast_declarator_identifier(mem, global_context.context.symbols, "intat"));
+    struct kefir_ast_declarator *function1_decl = kefir_ast_declarator_function_noarena(
+        mem, kefir_ast_declarator_identifier_noarena(mem, global_context.context.symbols, "intat"));
 
     REQUIRE_OK(kefir_list_insert_after(
         mem, &function1_decl->function->parameters, kefir_list_tail(&function1_decl->function->parameters),
@@ -63,14 +63,14 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
 
     struct kefir_ast_declaration *function1_param1 = kefir_ast_new_single_declaration_noarena(
         mem,
-        kefir_ast_declarator_array(mem, KEFIR_AST_DECLARATOR_ARRAY_UNBOUNDED, NULL,
-                                   kefir_ast_declarator_identifier(mem, global_context.context.symbols, "arr")),
+        kefir_ast_declarator_array_noarena(mem, KEFIR_AST_DECLARATOR_ARRAY_UNBOUNDED, NULL,
+                                   kefir_ast_declarator_identifier_noarena(mem, global_context.context.symbols, "arr")),
         NULL, NULL);
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &function1_param1->specifiers,
                                                           kefir_ast_type_specifier_int(mem)));
 
     struct kefir_ast_declaration *function1_param2 = kefir_ast_new_single_declaration_noarena(
-        mem, kefir_ast_declarator_identifier(mem, global_context.context.symbols, "idx"), NULL, NULL);
+        mem, kefir_ast_declarator_identifier_noarena(mem, global_context.context.symbols, "idx"), NULL, NULL);
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &function1_param2->specifiers,
                                                           kefir_ast_type_specifier_int(mem)));
 

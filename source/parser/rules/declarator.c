@@ -77,7 +77,7 @@ static kefir_result_t scan_pointer(struct kefir_mem *mem, struct kefir_parser *p
         return res;
     });
 
-    struct kefir_ast_declarator *declarator = kefir_ast_declarator_pointer(mem, subdeclarator);
+    struct kefir_ast_declarator *declarator = kefir_ast_declarator_pointer(mem, parser->ast_arena, subdeclarator);
     REQUIRE_ELSE(declarator != NULL, {
         kefir_ast_declarator_free(mem, subdeclarator);
         kefir_ast_type_qualifier_list_free(mem, &type_qualifiers);
@@ -134,7 +134,7 @@ static kefir_result_t scan_direct_declarator_base(struct kefir_mem *mem, struct 
                           KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Expected identifier"));
         if (res == KEFIR_OK) {
             base_declarator =
-                kefir_ast_declarator_identifier(mem, parser->symbols, PARSER_CURSOR(parser, 0)->identifier);
+                kefir_ast_declarator_identifier(mem, parser->ast_arena, parser->symbols, PARSER_CURSOR(parser, 0)->identifier);
             REQUIRE_CHAIN_SET(&res, base_declarator != NULL,
                               KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST identifier declarator"));
             if (base_declarator != NULL) {
@@ -212,7 +212,7 @@ static kefir_result_t scan_array_impl(struct kefir_mem *mem, struct kefir_parser
         return res;
     });
 
-    struct kefir_ast_declarator *declarator = kefir_ast_declarator_array(mem, array_type, length, *declarator_ptr);
+    struct kefir_ast_declarator *declarator = kefir_ast_declarator_array(mem, parser->ast_arena, array_type, length, *declarator_ptr);
     REQUIRE_ELSE(declarator != NULL, {
         if (length != NULL) {
             KEFIR_AST_NODE_FREE(mem, length);
@@ -269,7 +269,7 @@ static kefir_result_t scan_function_parameter_declarator(struct kefir_mem *mem, 
         res = parser->ruleset.abstract_declarator(mem, parser, &declarator);
         if (res == KEFIR_NO_MATCH) {
             REQUIRE_OK(kefir_parser_checkpoint_restore(parser, &checkpoint));
-            declarator = kefir_ast_declarator_identifier(mem, NULL, NULL);
+            declarator = kefir_ast_declarator_identifier(mem, parser->ast_arena, NULL, NULL);
             REQUIRE(declarator != NULL,
                     KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate abstract AST identifier declarator"));
             declarator->source_location = *PARSER_TOKEN_LOCATION(parser, 0);
@@ -453,7 +453,7 @@ static kefir_result_t scan_function_impl(struct kefir_mem *mem, struct kefir_par
 static kefir_result_t scan_function(struct kefir_mem *mem, struct kefir_parser *parser, kefir_bool_t abstract,
                                     struct kefir_ast_declarator **declarator_ptr) {
     struct kefir_source_location source_location = *PARSER_TOKEN_LOCATION(parser, 0);
-    struct kefir_ast_declarator *declarator = kefir_ast_declarator_function(mem, *declarator_ptr);
+    struct kefir_ast_declarator *declarator = kefir_ast_declarator_function(mem, parser->ast_arena, *declarator_ptr);
     kefir_result_t res = scan_function_impl(mem, parser, abstract, declarator);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_ast_declarator_free(mem, declarator);
@@ -614,7 +614,7 @@ static kefir_result_t scan_direct_abstract_declarator_base(struct kefir_mem *mem
     if (res == KEFIR_NO_MATCH) {
         res = kefir_parser_checkpoint_restore(parser, &checkpoint);
         if (res == KEFIR_OK) {
-            base_declarator = kefir_ast_declarator_identifier(mem, NULL, NULL);
+            base_declarator = kefir_ast_declarator_identifier(mem, parser->ast_arena, NULL, NULL);
             REQUIRE_CHAIN_SET(
                 &res, base_declarator != NULL,
                 KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate empty AST abstract declarator"));

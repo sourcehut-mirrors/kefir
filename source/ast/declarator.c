@@ -23,17 +23,23 @@
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
 
-struct kefir_ast_declarator *kefir_ast_declarator_identifier(struct kefir_mem *mem, struct kefir_string_pool *symbols,
+struct kefir_ast_declarator *kefir_ast_declarator_identifier(struct kefir_mem *mem, struct kefir_memory_arena *arena, struct kefir_string_pool *symbols,
                                                              const char *identifier) {
-    REQUIRE(mem != NULL, NULL);
+    REQUIRE(mem != NULL || arena != NULL, NULL);
 
     if (symbols != NULL && identifier != NULL) {
         identifier = kefir_string_pool_insert(mem, symbols, identifier, NULL);
         REQUIRE(identifier != NULL, NULL);
     }
 
-    struct kefir_ast_declarator *decl = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_declarator));
+    struct kefir_ast_declarator *decl = NULL;
+    if (arena != NULL) {
+        decl = kefir_memory_arena_alloc(arena, sizeof(struct kefir_ast_declarator), _Alignof(struct kefir_ast_declarator));
+    } else {
+        decl = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_declarator));
+    }
     REQUIRE(decl != NULL, NULL);
+    decl->arena_allocated = arena != NULL;
     decl->klass = KEFIR_AST_DECLARATOR_IDENTIFIER;
     decl->identifier.identifier = identifier;
     decl->identifier.asm_label = NULL;
@@ -41,30 +47,46 @@ struct kefir_ast_declarator *kefir_ast_declarator_identifier(struct kefir_mem *m
     kefir_result_t res = kefir_ast_node_attributes_init(&decl->attributes);
     REQUIRE_CHAIN(&res, kefir_source_location_empty(&decl->source_location));
     REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, decl);
+        if (arena == NULL) {
+            KEFIR_FREE(mem, decl);
+        }
         return NULL;
     });
     return decl;
 }
 
-struct kefir_ast_declarator *kefir_ast_declarator_pointer(struct kefir_mem *mem, struct kefir_ast_declarator *direct) {
-    REQUIRE(mem != NULL, NULL);
+struct kefir_ast_declarator *kefir_ast_declarator_pointer(struct kefir_mem *mem, struct kefir_memory_arena *arena, struct kefir_ast_declarator *direct) {
+    REQUIRE(mem != NULL || arena != NULL, NULL);
     REQUIRE(direct != NULL, NULL);
 
-    struct kefir_ast_declarator *decl = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_declarator));
+    struct kefir_ast_declarator *decl = NULL;
+    if (arena != NULL) {
+        decl = kefir_memory_arena_alloc(arena, sizeof(struct kefir_ast_declarator), _Alignof(struct kefir_ast_declarator));
+    } else {
+        decl = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_declarator));
+    }
     REQUIRE(decl != NULL, NULL);
+    decl->arena_allocated = arena != NULL;
     decl->klass = KEFIR_AST_DECLARATOR_POINTER;
 
-    decl->pointer = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_declarator_pointer));
+    if (arena != NULL) {
+        decl->pointer = kefir_memory_arena_alloc(arena, sizeof(struct kefir_ast_declarator_pointer), _Alignof(struct kefir_ast_declarator_pointer));
+    } else {
+        decl->pointer = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_declarator_pointer));
+    }
     REQUIRE_ELSE(decl->pointer != NULL, {
-        KEFIR_FREE(mem, decl);
+        if (arena == NULL) {
+            KEFIR_FREE(mem, decl);
+        }
         return NULL;
     });
 
     kefir_result_t res = kefir_ast_type_qualifier_list_init(&decl->pointer->type_qualifiers);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, decl->pointer);
-        KEFIR_FREE(mem, decl);
+        if (arena == NULL) {
+            KEFIR_FREE(mem, decl->pointer);
+            KEFIR_FREE(mem, decl);
+        }
         return NULL;
     });
 
@@ -74,17 +96,19 @@ struct kefir_ast_declarator *kefir_ast_declarator_pointer(struct kefir_mem *mem,
     REQUIRE_CHAIN(&res, kefir_source_location_empty(&decl->source_location));
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_ast_type_qualifier_list_free(mem, &decl->pointer->type_qualifiers);
-        KEFIR_FREE(mem, decl->pointer);
-        KEFIR_FREE(mem, decl);
+        if (arena == NULL) {
+            KEFIR_FREE(mem, decl->pointer);
+            KEFIR_FREE(mem, decl);
+        }
         return NULL;
     });
     return decl;
 }
 
-struct kefir_ast_declarator *kefir_ast_declarator_array(struct kefir_mem *mem, kefir_ast_declarator_array_type_t type,
+struct kefir_ast_declarator *kefir_ast_declarator_array(struct kefir_mem *mem, struct kefir_memory_arena *arena, kefir_ast_declarator_array_type_t type,
                                                         struct kefir_ast_node_base *length,
                                                         struct kefir_ast_declarator *direct) {
-    REQUIRE(mem != NULL, NULL);
+    REQUIRE(mem != NULL || arena != NULL, NULL);
     REQUIRE(direct != NULL, NULL);
     if (type == KEFIR_AST_DECLARATOR_ARRAY_BOUNDED) {
         REQUIRE(length != NULL, NULL);
@@ -92,20 +116,34 @@ struct kefir_ast_declarator *kefir_ast_declarator_array(struct kefir_mem *mem, k
         REQUIRE(length == NULL, NULL);
     }
 
-    struct kefir_ast_declarator *decl = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_declarator));
+    struct kefir_ast_declarator *decl = NULL;
+    if (arena != NULL) {
+        decl = kefir_memory_arena_alloc(arena, sizeof(struct kefir_ast_declarator), _Alignof(struct kefir_ast_declarator));
+    } else {
+        decl = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_declarator));
+    }
     REQUIRE(decl != NULL, NULL);
+    decl->arena_allocated = arena != NULL;
     decl->klass = KEFIR_AST_DECLARATOR_ARRAY;
 
-    decl->array = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_declarator_array));
+    if (arena != NULL) {
+        decl->array = kefir_memory_arena_alloc(arena, sizeof(struct kefir_ast_declarator_array), _Alignof(struct kefir_ast_declarator_array));
+    } else {
+        decl->array = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_declarator_array));
+    }
     REQUIRE_ELSE(decl->array != NULL, {
-        KEFIR_FREE(mem, decl);
+        if (arena == NULL) {
+            KEFIR_FREE(mem, decl);
+        }
         return NULL;
     });
 
     kefir_result_t res = kefir_ast_type_qualifier_list_init(&decl->array->type_qualifiers);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, decl->array);
-        KEFIR_FREE(mem, decl);
+        if (arena == NULL) {
+            KEFIR_FREE(mem, decl->array);
+            KEFIR_FREE(mem, decl);
+        }
         return NULL;
     });
 
@@ -118,8 +156,10 @@ struct kefir_ast_declarator *kefir_ast_declarator_array(struct kefir_mem *mem, k
     REQUIRE_CHAIN(&res, kefir_source_location_empty(&decl->source_location));
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_ast_type_qualifier_list_free(mem, &decl->array->type_qualifiers);
-        KEFIR_FREE(mem, decl->array);
-        KEFIR_FREE(mem, decl);
+        if (arena == NULL) {
+            KEFIR_FREE(mem, decl->array);
+            KEFIR_FREE(mem, decl);
+        }
         return NULL;
     });
     return decl;
@@ -136,32 +176,48 @@ static kefir_result_t free_function_param(struct kefir_mem *mem, struct kefir_li
     return KEFIR_OK;
 }
 
-struct kefir_ast_declarator *kefir_ast_declarator_function(struct kefir_mem *mem, struct kefir_ast_declarator *direct) {
-    REQUIRE(mem != NULL, NULL);
+struct kefir_ast_declarator *kefir_ast_declarator_function(struct kefir_mem *mem, struct kefir_memory_arena *arena, struct kefir_ast_declarator *direct) {
+    REQUIRE(mem != NULL || arena != NULL, NULL);
     REQUIRE(direct != NULL, NULL);
 
-    struct kefir_ast_declarator *decl = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_declarator));
+    struct kefir_ast_declarator *decl = NULL;
+    if (arena != NULL) {
+        decl = kefir_memory_arena_alloc(arena, sizeof(struct kefir_ast_declarator), _Alignof(struct kefir_ast_declarator));
+    } else {
+        decl = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_declarator));
+    }
     REQUIRE(decl != NULL, NULL);
+    decl->arena_allocated = arena != NULL;
     decl->klass = KEFIR_AST_DECLARATOR_FUNCTION;
 
-    decl->function = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_declarator_function));
+    if (arena != NULL) {
+        decl->function = kefir_memory_arena_alloc(arena, sizeof(struct kefir_ast_declarator_function), _Alignof(struct kefir_ast_declarator_function));
+    } else {
+        decl->function = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_declarator_function));
+    }
     REQUIRE_ELSE(decl->function != NULL, {
-        KEFIR_FREE(mem, decl);
+        if (arena != NULL) {
+            KEFIR_FREE(mem, decl);
+        }
         return NULL;
     });
 
     kefir_result_t res = kefir_list_init(&decl->function->parameters);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, decl->function);
-        KEFIR_FREE(mem, decl);
+        if (arena != NULL) {
+            KEFIR_FREE(mem, decl->function);
+            KEFIR_FREE(mem, decl);
+        }
         return NULL;
     });
 
     res = kefir_list_on_remove(&decl->function->parameters, free_function_param, NULL);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_list_free(mem, &decl->function->parameters);
-        KEFIR_FREE(mem, decl->function);
-        KEFIR_FREE(mem, decl);
+        if (arena != NULL) {
+            KEFIR_FREE(mem, decl->function);
+            KEFIR_FREE(mem, decl);
+        }
         return NULL;
     });
 
@@ -172,14 +228,16 @@ struct kefir_ast_declarator *kefir_ast_declarator_function(struct kefir_mem *mem
     REQUIRE_CHAIN(&res, kefir_source_location_empty(&decl->source_location));
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_list_free(mem, &decl->function->parameters);
-        KEFIR_FREE(mem, decl->function);
-        KEFIR_FREE(mem, decl);
+        if (arena != NULL) {
+            KEFIR_FREE(mem, decl->function);
+            KEFIR_FREE(mem, decl);
+        }
         return NULL;
     });
     return decl;
 }
 
-struct kefir_ast_declarator *kefir_ast_declarator_clone(struct kefir_mem *mem,
+struct kefir_ast_declarator *kefir_ast_declarator_clone(struct kefir_mem *mem, struct kefir_memory_arena *arena,
                                                         const struct kefir_ast_declarator *declarator) {
     REQUIRE(mem != NULL, NULL);
     REQUIRE(declarator != NULL, NULL);
@@ -187,14 +245,14 @@ struct kefir_ast_declarator *kefir_ast_declarator_clone(struct kefir_mem *mem,
     struct kefir_ast_declarator *clone = NULL;
     switch (declarator->klass) {
         case KEFIR_AST_DECLARATOR_IDENTIFIER:
-            clone = kefir_ast_declarator_identifier(mem, NULL, declarator->identifier.identifier);
+            clone = kefir_ast_declarator_identifier(mem, arena, NULL, declarator->identifier.identifier);
             REQUIRE(clone != NULL, NULL);
             clone->identifier.asm_label = declarator->identifier.asm_label;
             break;
 
         case KEFIR_AST_DECLARATOR_POINTER: {
             struct kefir_ast_declarator *decl =
-                kefir_ast_declarator_pointer(mem, kefir_ast_declarator_clone(mem, declarator->pointer->declarator));
+                kefir_ast_declarator_pointer(mem, arena, kefir_ast_declarator_clone(mem, arena, declarator->pointer->declarator));
             REQUIRE(decl != NULL, NULL);
 
             kefir_result_t res = kefir_ast_type_qualifier_list_clone(mem, &decl->pointer->type_qualifiers,
@@ -208,8 +266,8 @@ struct kefir_ast_declarator *kefir_ast_declarator_clone(struct kefir_mem *mem,
 
         case KEFIR_AST_DECLARATOR_ARRAY: {
             struct kefir_ast_declarator *decl =
-                kefir_ast_declarator_array(mem, declarator->array->type, KEFIR_AST_NODE_REF(declarator->array->length),
-                                           kefir_ast_declarator_clone(mem, declarator->array->declarator));
+                kefir_ast_declarator_array(mem, arena, declarator->array->type, KEFIR_AST_NODE_REF(declarator->array->length),
+                                           kefir_ast_declarator_clone(mem, arena, declarator->array->declarator));
             REQUIRE(decl != NULL, NULL);
 
             decl->array->static_array = declarator->array->static_array;
@@ -224,7 +282,7 @@ struct kefir_ast_declarator *kefir_ast_declarator_clone(struct kefir_mem *mem,
 
         case KEFIR_AST_DECLARATOR_FUNCTION: {
             struct kefir_ast_declarator *decl =
-                kefir_ast_declarator_function(mem, kefir_ast_declarator_clone(mem, declarator->function->declarator));
+                kefir_ast_declarator_function(mem, arena, kefir_ast_declarator_clone(mem, arena, declarator->function->declarator));
             REQUIRE(decl != NULL, NULL);
 
             decl->function->ellipsis = declarator->function->ellipsis;
@@ -276,7 +334,9 @@ kefir_result_t kefir_ast_declarator_free(struct kefir_mem *mem, struct kefir_ast
             REQUIRE_OK(kefir_ast_type_qualifier_list_free(mem, &decl->pointer->type_qualifiers));
             REQUIRE_OK(kefir_ast_declarator_free(mem, decl->pointer->declarator));
             decl->pointer->declarator = NULL;
-            KEFIR_FREE(mem, decl->pointer);
+            if (!decl->arena_allocated) {
+                KEFIR_FREE(mem, decl->pointer);
+            }
             break;
 
         case KEFIR_AST_DECLARATOR_ARRAY:
@@ -288,18 +348,24 @@ kefir_result_t kefir_ast_declarator_free(struct kefir_mem *mem, struct kefir_ast
             decl->array->static_array = false;
             REQUIRE_OK(kefir_ast_declarator_free(mem, decl->array->declarator));
             decl->array->declarator = NULL;
-            KEFIR_FREE(mem, decl->array);
+            if (!decl->arena_allocated) {
+                KEFIR_FREE(mem, decl->array);
+            }
             break;
 
         case KEFIR_AST_DECLARATOR_FUNCTION:
             REQUIRE_OK(kefir_list_free(mem, &decl->function->parameters));
             REQUIRE_OK(kefir_ast_declarator_free(mem, decl->function->declarator));
             decl->function->declarator = NULL;
-            KEFIR_FREE(mem, decl->function);
+            if (!decl->arena_allocated) {
+                KEFIR_FREE(mem, decl->function);
+            }
             break;
     }
     REQUIRE_OK(kefir_ast_node_attributes_free(mem, &decl->attributes));
-    KEFIR_FREE(mem, decl);
+    if (!decl->arena_allocated) {
+        KEFIR_FREE(mem, decl);
+    }
     return KEFIR_OK;
 }
 

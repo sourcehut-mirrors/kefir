@@ -47,7 +47,7 @@ static kefir_result_t define_compound_literal_function(struct kefir_mem *mem, st
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &entryU1->declaration.specifiers,
                                                           kefir_ast_type_specifier_double(mem)));
     REQUIRE_OK(kefir_ast_structure_declaration_entry_append(
-        mem, entryU1, kefir_ast_declarator_identifier(mem, context_manager->current->symbols, "fp64"), NULL));
+        mem, entryU1, kefir_ast_declarator_identifier_noarena(mem, context_manager->current->symbols, "fp64"), NULL));
     REQUIRE_OK(kefir_ast_structure_specifier_append_entry(mem, specifier0, entryU1));
 
     struct kefir_ast_structure_declaration_entry *entryU2 = kefir_ast_structure_declaration_entry_alloc(mem);
@@ -55,9 +55,9 @@ static kefir_result_t define_compound_literal_function(struct kefir_mem *mem, st
                                                           kefir_ast_type_specifier_float(mem)));
     REQUIRE_OK(kefir_ast_structure_declaration_entry_append(
         mem, entryU2,
-        kefir_ast_declarator_array(mem, KEFIR_AST_DECLARATOR_ARRAY_BOUNDED,
+        kefir_ast_declarator_array_noarena(mem, KEFIR_AST_DECLARATOR_ARRAY_BOUNDED,
                                    KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 2)),
-                                   kefir_ast_declarator_identifier(mem, context_manager->current->symbols, "fp32")),
+                                   kefir_ast_declarator_identifier_noarena(mem, context_manager->current->symbols, "fp32")),
         NULL));
     REQUIRE_OK(kefir_ast_structure_specifier_append_entry(mem, specifier0, entryU2));
 
@@ -69,9 +69,9 @@ static kefir_result_t define_compound_literal_function(struct kefir_mem *mem, st
                                                           kefir_ast_type_qualifier_const(mem)));
     REQUIRE_OK(kefir_ast_structure_declaration_entry_append(
         mem, entry1,
-        kefir_ast_declarator_array(mem, KEFIR_AST_DECLARATOR_ARRAY_BOUNDED,
+        kefir_ast_declarator_array_noarena(mem, KEFIR_AST_DECLARATOR_ARRAY_BOUNDED,
                                    KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 32)),
-                                   kefir_ast_declarator_identifier(mem, context_manager->current->symbols, "string")),
+                                   kefir_ast_declarator_identifier_noarena(mem, context_manager->current->symbols, "string")),
         NULL));
     REQUIRE_OK(kefir_ast_structure_specifier_append_entry(mem, specifier1, entry1));
 
@@ -81,7 +81,7 @@ static kefir_result_t define_compound_literal_function(struct kefir_mem *mem, st
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &entry2->declaration.specifiers,
                                                           kefir_ast_type_specifier_int(mem)));
     REQUIRE_OK(kefir_ast_structure_declaration_entry_append(
-        mem, entry2, kefir_ast_declarator_identifier(mem, context_manager->current->symbols, "length"), NULL));
+        mem, entry2, kefir_ast_declarator_identifier_noarena(mem, context_manager->current->symbols, "length"), NULL));
     REQUIRE_OK(kefir_ast_structure_specifier_append_entry(mem, specifier1, entry2));
 
     struct kefir_ast_structure_declaration_entry *entry3 = kefir_ast_structure_declaration_entry_alloc(mem);
@@ -95,7 +95,7 @@ static kefir_result_t define_compound_literal_function(struct kefir_mem *mem, st
         mem, &entry3->declaration.specifiers,
         kefir_ast_alignment_specifier(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 16)))));
     REQUIRE_OK(kefir_ast_structure_declaration_entry_append(
-        mem, entry3, kefir_ast_declarator_identifier(mem, context_manager->current->symbols, "padding"), NULL));
+        mem, entry3, kefir_ast_declarator_identifier_noarena(mem, context_manager->current->symbols, "padding"), NULL));
     REQUIRE_OK(kefir_ast_structure_specifier_append_entry(mem, specifier1, entry3));
 
     struct kefir_ast_structure_declaration_entry *entry4 = kefir_ast_structure_declaration_entry_alloc(mem);
@@ -103,8 +103,8 @@ static kefir_result_t define_compound_literal_function(struct kefir_mem *mem, st
                                                           kefir_ast_type_specifier_void(mem)));
     REQUIRE_OK(kefir_ast_structure_declaration_entry_append(
         mem, entry4,
-        kefir_ast_declarator_pointer(mem,
-                                     kefir_ast_declarator_identifier(mem, context_manager->current->symbols, "ptr")),
+        kefir_ast_declarator_pointer_noarena(mem,
+                                     kefir_ast_declarator_identifier_noarena(mem, context_manager->current->symbols, "ptr")),
         NULL));
     REQUIRE_OK(kefir_ast_structure_specifier_append_entry(mem, specifier1, entry4));
 
@@ -113,14 +113,14 @@ static kefir_result_t define_compound_literal_function(struct kefir_mem *mem, st
                                                           kefir_ast_type_specifier_union(mem, specifier0)));
     REQUIRE_OK(kefir_ast_structure_declaration_entry_append(
         mem, entry5,
-        kefir_ast_declarator_array(mem, KEFIR_AST_DECLARATOR_ARRAY_BOUNDED,
+        kefir_ast_declarator_array_noarena(mem, KEFIR_AST_DECLARATOR_ARRAY_BOUNDED,
                                    KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 4)),
-                                   kefir_ast_declarator_identifier(mem, context_manager->current->symbols, "floats")),
+                                   kefir_ast_declarator_identifier_noarena(mem, context_manager->current->symbols, "floats")),
         NULL));
     REQUIRE_OK(kefir_ast_structure_specifier_append_entry(mem, specifier1, entry5));
 
     struct kefir_ast_type_name *type_name1 =
-        kefir_ast_new_type_name_noarena(mem, kefir_ast_declarator_identifier(mem, NULL, NULL));
+        kefir_ast_new_type_name_noarena(mem, kefir_ast_declarator_identifier_noarena(mem, NULL, NULL));
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &type_name1->type_decl.specifiers,
                                                           kefir_ast_type_specifier_struct(mem, specifier1)));
 

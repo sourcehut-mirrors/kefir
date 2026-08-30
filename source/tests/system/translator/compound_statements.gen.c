@@ -94,7 +94,7 @@ static kefir_result_t define_compound_function(struct kefir_mem *mem, struct fun
     struct kefir_ast_compound_statement *compound1 = kefir_ast_new_compound_statement_noarena(mem);
 
     struct kefir_ast_declaration *declarationResult = kefir_ast_new_single_declaration_noarena(
-        mem, kefir_ast_declarator_identifier(mem, context_manager->current->symbols, "result"),
+        mem, kefir_ast_declarator_identifier_noarena(mem, context_manager->current->symbols, "result"),
         kefir_ast_new_expression_initializer(
             mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context_manager->current->symbols, "base"))),
         NULL);

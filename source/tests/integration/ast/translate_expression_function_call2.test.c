@@ -54,14 +54,14 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &entry1->declaration.specifiers,
                                                           kefir_ast_type_specifier_int(mem)));
     REQUIRE_OK(kefir_ast_structure_declaration_entry_append(
-        mem, entry1, kefir_ast_declarator_identifier(mem, context->symbols, "x"), NULL));
+        mem, entry1, kefir_ast_declarator_identifier_noarena(mem, context->symbols, "x"), NULL));
     REQUIRE_OK(kefir_ast_structure_specifier_append_entry(mem, specifier1, entry1));
 
     struct kefir_ast_structure_declaration_entry *entry2 = kefir_ast_structure_declaration_entry_alloc(mem);
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &entry2->declaration.specifiers,
                                                           kefir_ast_type_specifier_double(mem)));
     REQUIRE_OK(kefir_ast_structure_declaration_entry_append(
-        mem, entry2, kefir_ast_declarator_identifier(mem, context->symbols, "y"), NULL));
+        mem, entry2, kefir_ast_declarator_identifier_noarena(mem, context->symbols, "y"), NULL));
     REQUIRE_OK(kefir_ast_structure_specifier_append_entry(mem, specifier1, entry2));
 
     struct kefir_ast_structure_declaration_entry *entry3 = kefir_ast_structure_declaration_entry_alloc(mem);
@@ -69,14 +69,14 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
                                                           kefir_ast_type_specifier_char(mem)));
     REQUIRE_OK(kefir_ast_structure_declaration_entry_append(
         mem, entry3,
-        kefir_ast_declarator_array(mem, KEFIR_AST_DECLARATOR_ARRAY_BOUNDED,
+        kefir_ast_declarator_array_noarena(mem, KEFIR_AST_DECLARATOR_ARRAY_BOUNDED,
                                    KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 16)),
-                                   kefir_ast_declarator_identifier(mem, context->symbols, "z")),
+                                   kefir_ast_declarator_identifier_noarena(mem, context->symbols, "z")),
         NULL));
     REQUIRE_OK(kefir_ast_structure_specifier_append_entry(mem, specifier1, entry3));
 
     struct kefir_ast_type_name *type_name2 =
-        kefir_ast_new_type_name_noarena(mem, kefir_ast_declarator_identifier(mem, NULL, NULL));
+        kefir_ast_new_type_name_noarena(mem, kefir_ast_declarator_identifier_noarena(mem, NULL, NULL));
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &type_name2->type_decl.specifiers,
                                                           kefir_ast_type_specifier_struct(mem, specifier1)));
 

@@ -72,7 +72,7 @@ static kefir_result_t define_conditional_function(struct kefir_mem *mem, struct 
 
     struct kefir_ast_compound_statement *compound0 = kefir_ast_new_compound_statement_noarena(mem);
     struct kefir_ast_declaration *declarationValue = kefir_ast_new_single_declaration_noarena(
-        mem, kefir_ast_declarator_identifier(mem, context_manager->current->symbols, "value"),
+        mem, kefir_ast_declarator_identifier_noarena(mem, context_manager->current->symbols, "value"),
         kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 0))), NULL);
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &declarationValue->specifiers,
                                                           kefir_ast_type_specifier_long(mem)));
@@ -81,7 +81,7 @@ static kefir_result_t define_conditional_function(struct kefir_mem *mem, struct 
     REQUIRE_OK(kefir_ast_compound_statement_append(mem, compound0, KEFIR_AST_NODE_BASE(declarationValue)));
 
     struct kefir_ast_declaration *declarationSign = kefir_ast_new_single_declaration_noarena(
-        mem, kefir_ast_declarator_identifier(mem, context_manager->current->symbols, "sign"),
+        mem, kefir_ast_declarator_identifier_noarena(mem, context_manager->current->symbols, "sign"),
         kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 0))), NULL);
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &declarationSign->specifiers,
                                                           kefir_ast_type_specifier_int(mem)));
@@ -105,7 +105,7 @@ static kefir_result_t define_conditional_function(struct kefir_mem *mem, struct 
     struct kefir_ast_compound_statement *body = kefir_ast_new_compound_statement_noarena(mem);
 
     struct kefir_ast_declaration *declarationChar = kefir_ast_new_single_declaration_noarena(
-        mem, kefir_ast_declarator_identifier(mem, context_manager->current->symbols, "chr"),
+        mem, kefir_ast_declarator_identifier_noarena(mem, context_manager->current->symbols, "chr"),
         kefir_ast_new_expression_initializer(
             mem,
             KEFIR_AST_NODE_BASE(kefir_ast_new_unary_operation_noarena(

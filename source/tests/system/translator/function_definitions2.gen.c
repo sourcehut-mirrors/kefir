@@ -39,7 +39,7 @@
 static struct kefir_ast_function_definition *define_sum_function(struct kefir_mem *mem,
                                                                  const struct kefir_ast_context *context) {
     struct kefir_ast_declarator *function1_decl =
-        kefir_ast_declarator_function(mem, kefir_ast_declarator_identifier(mem, context->symbols, "intat"));
+        kefir_ast_declarator_function_noarena(mem, kefir_ast_declarator_identifier_noarena(mem, context->symbols, "intat"));
 
     REQUIRE(kefir_list_insert_after(
                 mem, &function1_decl->function->parameters, kefir_list_tail(&function1_decl->function->parameters),
@@ -52,15 +52,15 @@ static struct kefir_ast_function_definition *define_sum_function(struct kefir_me
 
     struct kefir_ast_declaration *function1_param1 = kefir_ast_new_single_declaration_noarena(
         mem,
-        kefir_ast_declarator_array(mem, KEFIR_AST_DECLARATOR_ARRAY_UNBOUNDED, NULL,
-                                   kefir_ast_declarator_identifier(mem, context->symbols, "arr")),
+        kefir_ast_declarator_array_noarena(mem, KEFIR_AST_DECLARATOR_ARRAY_UNBOUNDED, NULL,
+                                   kefir_ast_declarator_identifier_noarena(mem, context->symbols, "arr")),
         NULL, NULL);
     REQUIRE(kefir_ast_declarator_specifier_list_append(mem, &function1_param1->specifiers,
                                                        kefir_ast_type_specifier_int(mem)) == KEFIR_OK,
             NULL);
 
     struct kefir_ast_declaration *function1_param2 = kefir_ast_new_single_declaration_noarena(
-        mem, kefir_ast_declarator_identifier(mem, context->symbols, "idx"), NULL, NULL);
+        mem, kefir_ast_declarator_identifier_noarena(mem, context->symbols, "idx"), NULL, NULL);
     REQUIRE(kefir_ast_declarator_specifier_list_append(mem, &function1_param2->specifiers,
                                                        kefir_ast_type_specifier_int(mem)) == KEFIR_OK,
             NULL);

@@ -59,8 +59,8 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     FUNC2("while1", {
         struct kefir_ast_declaration *decl1 = kefir_ast_new_single_declaration_noarena(
             mem,
-            kefir_ast_declarator_array(mem, KEFIR_AST_DECLARATOR_ARRAY_UNBOUNDED, NULL,
-                                       kefir_ast_declarator_identifier(mem, context->symbols, "str")),
+            kefir_ast_declarator_array_noarena(mem, KEFIR_AST_DECLARATOR_ARRAY_UNBOUNDED, NULL,
+                                       kefir_ast_declarator_identifier_noarena(mem, context->symbols, "str")),
             NULL, NULL);
         REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &decl1->specifiers,
                                                               kefir_ast_storage_class_specifier_extern(mem)));
@@ -70,7 +70,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
             kefir_ast_declarator_specifier_list_append(mem, &decl1->specifiers, kefir_ast_type_specifier_char(mem)));
 
         struct kefir_ast_declaration *decl2 = kefir_ast_new_single_declaration_noarena(
-            mem, kefir_ast_declarator_identifier(mem, context->symbols, "length"),
+            mem, kefir_ast_declarator_identifier_noarena(mem, context->symbols, "length"),
             kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 0))), NULL);
         REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &decl2->specifiers,
                                                               kefir_ast_type_specifier_unsigned(mem)));
@@ -108,7 +108,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
 
     FUNC2("while2", {
         struct kefir_ast_declaration *decl1 = kefir_ast_new_single_declaration_noarena(
-            mem, kefir_ast_declarator_pointer(mem, kefir_ast_declarator_identifier(mem, context->symbols, "flag")),
+            mem, kefir_ast_declarator_pointer_noarena(mem, kefir_ast_declarator_identifier_noarena(mem, context->symbols, "flag")),
             NULL, NULL);
         REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &decl1->specifiers,
                                                               kefir_ast_storage_class_specifier_extern(mem)));

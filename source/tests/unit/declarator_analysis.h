@@ -49,7 +49,7 @@ kefir_result_t append_specifiers(struct kefir_mem *, struct kefir_ast_declarator
         ASSERT_OK(kefir_ast_declarator_specifier_list_init(&specifiers));                                              \
         ASSERT_OK(append_specifiers((_mem), &specifiers, (_spec_count), __VA_ARGS__));                                 \
                                                                                                                        \
-        struct kefir_ast_declarator *declarator = kefir_ast_declarator_identifier((_mem), (_context)->symbols, "var"); \
+        struct kefir_ast_declarator *declarator = kefir_ast_declarator_identifier_noarena((_mem), (_context)->symbols, "var"); \
                                                                                                                        \
         const struct kefir_ast_type *type = NULL;                                                                      \
         kefir_ast_scoped_identifier_storage_t storage;                                                                 \
@@ -78,8 +78,8 @@ kefir_result_t append_specifiers(struct kefir_mem *, struct kefir_ast_declarator
         ASSERT_OK(kefir_ast_declarator_specifier_list_init(&specifiers));                                           \
         ASSERT_OK(append_specifiers((_mem), &specifiers, (_spec_count), __VA_ARGS__));                              \
                                                                                                                     \
-        struct kefir_ast_declarator *declarator = kefir_ast_declarator_function(                                    \
-            (_mem), kefir_ast_declarator_identifier((_mem), (_context)->symbols, "func"));                          \
+        struct kefir_ast_declarator *declarator = kefir_ast_declarator_function_noarena(                                    \
+            (_mem), kefir_ast_declarator_identifier_noarena((_mem), (_context)->symbols, "func"));                          \
                                                                                                                     \
         const struct kefir_ast_type *type = NULL;                                                                   \
         kefir_ast_scoped_identifier_storage_t storage;                                                              \
