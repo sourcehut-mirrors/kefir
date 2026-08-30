@@ -277,19 +277,19 @@ struct kefir_ast_structure_specifier *kefir_ast_structure_specifier_clone(
                 for (const struct kefir_list_entry *iter = kefir_list_head(&entry->declaration.declarators);
                      iter != NULL; kefir_list_next(&iter)) {
                     ASSIGN_DECL_CAST(struct kefir_ast_structure_entry_declarator *, entry_declarator, iter->value);
-                    struct kefir_ast_declarator *declarator_clone =
-                        kefir_ast_declarator_clone(mem, NULL, entry_declarator->declarator);
+                    struct kefir_ast_declarator *declarator_ref =
+                        kefir_ast_declarator_ref(entry_declarator->declarator);
                     struct kefir_ast_node_base *bitwidth_clone = KEFIR_AST_NODE_REF(entry_declarator->bitwidth);
                     REQUIRE_ELSE(entry_declarator->bitwidth == NULL || bitwidth_clone != NULL, {
-                        kefir_ast_declarator_free(mem, declarator_clone);
+                        kefir_ast_declarator_free(mem, declarator_ref);
                         kefir_ast_structure_declaration_entry_free(mem, entry_clone);
                         kefir_ast_structure_specifier_free(mem, clone);
                         return NULL;
                     });
-                    res = kefir_ast_structure_declaration_entry_append(mem, entry_clone, declarator_clone,
+                    res = kefir_ast_structure_declaration_entry_append(mem, entry_clone, declarator_ref,
                                                                        bitwidth_clone);
                     REQUIRE_ELSE(res == KEFIR_OK, {
-                        kefir_ast_declarator_free(mem, declarator_clone);
+                        kefir_ast_declarator_free(mem, declarator_ref);
                         KEFIR_AST_NODE_FREE(mem, bitwidth_clone);
                         kefir_ast_structure_declaration_entry_free(mem, entry_clone);
                         kefir_ast_structure_specifier_free(mem, clone);

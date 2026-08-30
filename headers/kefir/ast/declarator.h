@@ -59,7 +59,8 @@ typedef struct kefir_ast_declarator_identifier {
 } kefir_ast_declarator_identifier_t;
 
 typedef struct kefir_ast_declarator {
-    kefir_bool_t arena_allocated;
+    kefir_uint32_t arena_allocated : 1,
+                   refcount : 31;
     kefir_ast_declarator_class_t klass;
     union {
         struct kefir_ast_declarator_identifier identifier;
@@ -95,7 +96,7 @@ struct kefir_ast_declarator *kefir_ast_declarator_pointer(struct kefir_mem *, st
 struct kefir_ast_declarator *kefir_ast_declarator_array(struct kefir_mem *, struct kefir_memory_arena *, kefir_ast_declarator_array_type_t,
                                                         struct kefir_ast_node_base *, struct kefir_ast_declarator *);
 struct kefir_ast_declarator *kefir_ast_declarator_function(struct kefir_mem *, struct kefir_memory_arena *, struct kefir_ast_declarator *);
-struct kefir_ast_declarator *kefir_ast_declarator_clone(struct kefir_mem *, struct kefir_memory_arena *, const struct kefir_ast_declarator *);
+struct kefir_ast_declarator *kefir_ast_declarator_ref(struct kefir_ast_declarator *);
 kefir_result_t kefir_ast_declarator_free(struct kefir_mem *, struct kefir_ast_declarator *);
 
 kefir_result_t kefir_ast_declarator_is_abstract(struct kefir_ast_declarator *, kefir_bool_t *);
