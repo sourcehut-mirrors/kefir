@@ -61,7 +61,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
             mem, kefir_ast_declarator_identifier_noarena(mem, context->symbols, "i"),
             kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 0))), NULL);
         REQUIRE_OK(
-            kefir_ast_declarator_specifier_list_append(mem, &decl1->specifiers, kefir_ast_type_specifier_short(mem)));
+            kefir_ast_declarator_specifier_list_append(mem, &decl1->specifiers, kefir_ast_type_specifier_short(mem, NULL)));
 
         struct kefir_ast_labeled_statement *label1 = kefir_ast_new_labeled_statement_noarena(
             mem, context->symbols, "begin",

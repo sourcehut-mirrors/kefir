@@ -41,18 +41,18 @@ DEFINE_CASE(ast_node_analysis_init_declarators1, "AST node analysis - declaratio
         &kft_mem, kefir_ast_declarator_identifier_noarena(&kft_mem, context->symbols, "some_var1"), NULL, &decl1);
     ASSERT(decl1 != NULL);
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &decl1_list->specifiers,
-                                                         kefir_ast_type_qualifier_const(&kft_mem)));
+                                                         kefir_ast_type_qualifier_const(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &decl1_list->specifiers,
-                                                         kefir_ast_type_specifier_int(&kft_mem)));
+                                                         kefir_ast_type_specifier_int(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &decl1_list->specifiers,
-                                                         kefir_ast_type_specifier_unsigned(&kft_mem)));
+                                                         kefir_ast_type_specifier_unsigned(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &decl1_list->specifiers,
-                                                         kefir_ast_type_specifier_long(&kft_mem)));
+                                                         kefir_ast_type_specifier_long(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(
         &kft_mem, &decl1_list->specifiers,
-        kefir_ast_alignment_specifier(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 16)))));
+        kefir_ast_alignment_specifier(&kft_mem, NULL, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 16)))));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &decl1_list->specifiers,
-                                                         kefir_ast_storage_class_specifier_extern(&kft_mem)));
+                                                         kefir_ast_storage_class_specifier_extern(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_analyze_node(&kft_mem, context, KEFIR_AST_NODE_BASE(decl1_list)));
 
     const struct kefir_ast_type *type1 =
@@ -101,16 +101,16 @@ DEFINE_CASE(ast_node_analysis_init_declarators2, "AST node analysis - declaratio
         &kft_mem, kefir_ast_declarator_identifier_noarena(&kft_mem, context->symbols, "declaration_one"), initializer1, &decl1);
     ASSERT(decl1 != NULL);
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &decl1_list->specifiers,
-                                                         kefir_ast_type_qualifier_restrict(&kft_mem)));
+                                                         kefir_ast_type_qualifier_restrict(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &decl1_list->specifiers,
-                                                         kefir_ast_type_specifier_float(&kft_mem)));
+                                                         kefir_ast_type_specifier_float(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(
         &kft_mem, &decl1_list->specifiers,
-        kefir_ast_alignment_specifier(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 4)))));
+        kefir_ast_alignment_specifier(&kft_mem, NULL, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 4)))));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &decl1_list->specifiers,
-                                                         kefir_ast_storage_class_specifier_auto(&kft_mem)));
+                                                         kefir_ast_storage_class_specifier_auto(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &decl1_list->specifiers,
-                                                         kefir_ast_type_qualifier_volatile(&kft_mem)));
+                                                         kefir_ast_type_qualifier_volatile(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_analyze_node(&kft_mem, context, KEFIR_AST_NODE_BASE(decl1_list)));
 
     const struct kefir_ast_type *type1 =
@@ -156,18 +156,18 @@ DEFINE_CASE(ast_node_analysis_init_declarators3, "AST node analysis - declaratio
     struct kefir_ast_context *context = &local_context.context;
 
     struct kefir_ast_structure_specifier *specifier1 =
-        kefir_ast_structure_specifier_init(&kft_mem, context->symbols, "structure1", true);
-    struct kefir_ast_structure_declaration_entry *entry1 = kefir_ast_structure_declaration_entry_alloc(&kft_mem);
+        kefir_ast_structure_specifier_init_noarena(&kft_mem, context->symbols, "structure1", true);
+    struct kefir_ast_structure_declaration_entry *entry1 = kefir_ast_structure_declaration_entry_alloc_noarena(&kft_mem);
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &entry1->declaration.specifiers,
-                                                         kefir_ast_type_specifier_unsigned(&kft_mem)));
+                                                         kefir_ast_type_specifier_unsigned(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_structure_declaration_entry_append(
         &kft_mem, entry1,
         kefir_ast_declarator_pointer_noarena(&kft_mem, kefir_ast_declarator_identifier_noarena(&kft_mem, context->symbols, "field1")),
         NULL));
     ASSERT_OK(kefir_ast_structure_specifier_append_entry(&kft_mem, specifier1, entry1));
-    struct kefir_ast_structure_declaration_entry *entry2 = kefir_ast_structure_declaration_entry_alloc(&kft_mem);
+    struct kefir_ast_structure_declaration_entry *entry2 = kefir_ast_structure_declaration_entry_alloc_noarena(&kft_mem);
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &entry2->declaration.specifiers,
-                                                         kefir_ast_type_specifier_double(&kft_mem)));
+                                                         kefir_ast_type_specifier_double(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_structure_declaration_entry_append(
         &kft_mem, entry2,
         kefir_ast_declarator_pointer_noarena(&kft_mem, kefir_ast_declarator_identifier_noarena(&kft_mem, context->symbols, "field2")),
@@ -179,14 +179,14 @@ DEFINE_CASE(ast_node_analysis_init_declarators3, "AST node analysis - declaratio
         &kft_mem, kefir_ast_declarator_identifier_noarena(&kft_mem, context->symbols, "VaRiAblE123"), NULL, &decl1);
     ASSERT(decl1_list != NULL);
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &decl1_list->specifiers,
-                                                         kefir_ast_type_specifier_struct(&kft_mem, specifier1)));
+                                                         kefir_ast_type_specifier_struct(&kft_mem, NULL, specifier1)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(
         &kft_mem, &decl1_list->specifiers,
-        kefir_ast_alignment_specifier(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 8)))));
+        kefir_ast_alignment_specifier(&kft_mem, NULL, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 8)))));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &decl1_list->specifiers,
-                                                         kefir_ast_storage_class_specifier_static(&kft_mem)));
+                                                         kefir_ast_storage_class_specifier_static(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &decl1_list->specifiers,
-                                                         kefir_ast_type_qualifier_const(&kft_mem)));
+                                                         kefir_ast_type_qualifier_const(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_analyze_node(&kft_mem, context, KEFIR_AST_NODE_BASE(decl1_list)));
 
     struct kefir_ast_struct_type *struct_type1 = NULL;
@@ -243,15 +243,15 @@ DEFINE_CASE(ast_node_analysis_init_declarators4, "AST node analysis - declaratio
         &kft_mem, kefir_ast_declarator_identifier_noarena(&kft_mem, context->symbols, "globalVariable"), NULL, &decl1);
     ASSERT(decl1 != NULL);
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &decl1_list->specifiers,
-                                                         kefir_ast_type_specifier_int(&kft_mem)));
+                                                         kefir_ast_type_specifier_int(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &decl1_list->specifiers,
-                                                         kefir_ast_type_specifier_unsigned(&kft_mem)));
+                                                         kefir_ast_type_specifier_unsigned(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &decl1_list->specifiers,
-                                                         kefir_ast_type_specifier_long(&kft_mem)));
+                                                         kefir_ast_type_specifier_long(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &decl1_list->specifiers,
-                                                         kefir_ast_type_specifier_long(&kft_mem)));
+                                                         kefir_ast_type_specifier_long(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &decl1_list->specifiers,
-                                                         kefir_ast_storage_class_specifier_thread_local(&kft_mem)));
+                                                         kefir_ast_storage_class_specifier_thread_local(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_analyze_node(&kft_mem, context, KEFIR_AST_NODE_BASE(decl1_list)));
 
     const struct kefir_ast_type *type1 = kefir_ast_type_unsigned_long_long();
@@ -289,7 +289,7 @@ DEFINE_CASE(ast_node_analysis_init_declarators5, "AST node analysis - declaratio
     struct kefir_ast_context *context = &global_context.context;
 
     struct kefir_ast_enum_specifier *specifier1 =
-        kefir_ast_enum_specifier_init(&kft_mem, context->symbols, "enumeration1", true, NULL);
+        kefir_ast_enum_specifier_init_noarena(&kft_mem, context->symbols, "enumeration1", true, NULL);
     ASSERT_OK(kefir_ast_enum_specifier_append(&kft_mem, specifier1, context->symbols, "XVAL",
                                               KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long_noarena(&kft_mem, 1000)), NULL));
     ASSERT_OK(kefir_ast_enum_specifier_append(&kft_mem, specifier1, context->symbols, "YVAL", NULL, NULL));
@@ -301,11 +301,11 @@ DEFINE_CASE(ast_node_analysis_init_declarators5, "AST node analysis - declaratio
         &kft_mem, kefir_ast_declarator_identifier_noarena(&kft_mem, context->symbols, "counter"), NULL, &decl1);
     ASSERT(decl1_list != NULL);
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &decl1_list->specifiers,
-                                                         kefir_ast_storage_class_specifier_thread_local(&kft_mem)));
+                                                         kefir_ast_storage_class_specifier_thread_local(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &decl1_list->specifiers,
-                                                         kefir_ast_type_specifier_enum(&kft_mem, specifier1)));
+                                                         kefir_ast_type_specifier_enum(&kft_mem, NULL, specifier1)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &decl1_list->specifiers,
-                                                         kefir_ast_storage_class_specifier_static(&kft_mem)));
+                                                         kefir_ast_storage_class_specifier_static(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_analyze_node(&kft_mem, context, KEFIR_AST_NODE_BASE(decl1_list)));
 
     struct kefir_ast_enum_type *enum_type1 = NULL;
@@ -376,9 +376,9 @@ DEFINE_CASE(ast_node_analysis_init_declarators6, "AST node analysis - declaratio
                                    kefir_ast_declarator_identifier_noarena(&kft_mem, context->symbols, "arr")),
         init1, &decl1);
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &decl1_list->specifiers,
-                                                         kefir_ast_type_qualifier_const(&kft_mem)));
+                                                         kefir_ast_type_qualifier_const(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &decl1_list->specifiers,
-                                                         kefir_ast_type_specifier_char(&kft_mem)));
+                                                         kefir_ast_type_specifier_char(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_analyze_node(&kft_mem, context, KEFIR_AST_NODE_BASE(decl1_list)));
 
     const struct kefir_ast_type *type1 = kefir_ast_type_unbounded_array(
@@ -429,37 +429,37 @@ DEFINE_CASE(ast_node_analysis_init_declarators7, "AST node analysis - declaratio
     struct kefir_ast_context *context = &local_context.context;
 
     struct kefir_ast_structure_specifier *specifier1 =
-        kefir_ast_structure_specifier_init(&kft_mem, context->symbols, "structureOne", true);
-    struct kefir_ast_structure_declaration_entry *entry1 = kefir_ast_structure_declaration_entry_alloc(&kft_mem);
+        kefir_ast_structure_specifier_init_noarena(&kft_mem, context->symbols, "structureOne", true);
+    struct kefir_ast_structure_declaration_entry *entry1 = kefir_ast_structure_declaration_entry_alloc_noarena(&kft_mem);
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &entry1->declaration.specifiers,
-                                                         kefir_ast_type_specifier_int(&kft_mem)));
+                                                         kefir_ast_type_specifier_int(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_structure_declaration_entry_append(
         &kft_mem, entry1, kefir_ast_declarator_identifier_noarena(&kft_mem, context->symbols, "x"), NULL));
     ASSERT_OK(kefir_ast_structure_specifier_append_entry(&kft_mem, specifier1, entry1));
 
-    struct kefir_ast_structure_declaration_entry *entry2 = kefir_ast_structure_declaration_entry_alloc(&kft_mem);
+    struct kefir_ast_structure_declaration_entry *entry2 = kefir_ast_structure_declaration_entry_alloc_noarena(&kft_mem);
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &entry2->declaration.specifiers,
-                                                         kefir_ast_type_specifier_float(&kft_mem)));
+                                                         kefir_ast_type_specifier_float(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_structure_declaration_entry_append(
         &kft_mem, entry2,
         kefir_ast_declarator_pointer_noarena(&kft_mem, kefir_ast_declarator_identifier_noarena(&kft_mem, context->symbols, "y")),
         NULL));
     ASSERT_OK(kefir_ast_structure_specifier_append_entry(&kft_mem, specifier1, entry2));
 
-    struct kefir_ast_structure_declaration_entry *entry3 = kefir_ast_structure_declaration_entry_alloc(&kft_mem);
+    struct kefir_ast_structure_declaration_entry *entry3 = kefir_ast_structure_declaration_entry_alloc_noarena(&kft_mem);
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &entry3->declaration.specifiers,
-                                                         kefir_ast_type_specifier_long(&kft_mem)));
+                                                         kefir_ast_type_specifier_long(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &entry3->declaration.specifiers,
-                                                         kefir_ast_type_specifier_int(&kft_mem)));
+                                                         kefir_ast_type_specifier_int(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &entry3->declaration.specifiers,
-                                                         kefir_ast_type_specifier_unsigned(&kft_mem)));
+                                                         kefir_ast_type_specifier_unsigned(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_structure_declaration_entry_append(
         &kft_mem, entry3, kefir_ast_declarator_identifier_noarena(&kft_mem, context->symbols, "z"), NULL));
     ASSERT_OK(kefir_ast_structure_specifier_append_entry(&kft_mem, specifier1, entry3));
 
     struct kefir_ast_declaration *decl1 = kefir_ast_new_single_declaration_noarena(&kft_mem, NULL, NULL, NULL);
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &decl1->specifiers,
-                                                         kefir_ast_type_specifier_struct(&kft_mem, specifier1)));
+                                                         kefir_ast_type_specifier_struct(&kft_mem, NULL, specifier1)));
     ASSERT_OK(kefir_ast_analyze_node(&kft_mem, context, KEFIR_AST_NODE_BASE(decl1)));
 
     struct kefir_ast_initializer *init2 = kefir_ast_new_list_initializer(&kft_mem);
@@ -473,9 +473,9 @@ DEFINE_CASE(ast_node_analysis_init_declarators7, "AST node analysis - declaratio
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(
         &kft_mem, &decl2_list->specifiers,
         kefir_ast_type_specifier_struct(
-            &kft_mem, kefir_ast_structure_specifier_init(&kft_mem, context->symbols, "structureOne", false))));
+            &kft_mem, NULL, kefir_ast_structure_specifier_init_noarena(&kft_mem, context->symbols, "structureOne", false))));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &decl2_list->specifiers,
-                                                         kefir_ast_type_qualifier_volatile(&kft_mem)));
+                                                         kefir_ast_type_qualifier_volatile(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_analyze_node(&kft_mem, context, KEFIR_AST_NODE_BASE(decl2_list)));
 
     struct kefir_ast_struct_type *struct_type1 = NULL;
@@ -529,30 +529,30 @@ DEFINE_CASE(ast_node_analysis_init_declarators8, "AST node analysis - declaratio
     struct kefir_ast_context *context = &local_context.context;
 
     struct kefir_ast_structure_specifier *specifier1 =
-        kefir_ast_structure_specifier_init(&kft_mem, context->symbols, "unionS", true);
-    struct kefir_ast_structure_declaration_entry *entry1 = kefir_ast_structure_declaration_entry_alloc(&kft_mem);
+        kefir_ast_structure_specifier_init_noarena(&kft_mem, context->symbols, "unionS", true);
+    struct kefir_ast_structure_declaration_entry *entry1 = kefir_ast_structure_declaration_entry_alloc_noarena(&kft_mem);
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &entry1->declaration.specifiers,
-                                                         kefir_ast_type_specifier_unsigned(&kft_mem)));
+                                                         kefir_ast_type_specifier_unsigned(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_structure_declaration_entry_append(
         &kft_mem, entry1, kefir_ast_declarator_identifier_noarena(&kft_mem, context->symbols, "option1"), NULL));
     ASSERT_OK(kefir_ast_structure_specifier_append_entry(&kft_mem, specifier1, entry1));
 
-    struct kefir_ast_structure_declaration_entry *entry2 = kefir_ast_structure_declaration_entry_alloc(&kft_mem);
+    struct kefir_ast_structure_declaration_entry *entry2 = kefir_ast_structure_declaration_entry_alloc_noarena(&kft_mem);
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &entry2->declaration.specifiers,
-                                                         kefir_ast_type_specifier_double(&kft_mem)));
+                                                         kefir_ast_type_specifier_double(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_structure_declaration_entry_append(
         &kft_mem, entry2,
         kefir_ast_declarator_pointer_noarena(&kft_mem, kefir_ast_declarator_identifier_noarena(&kft_mem, context->symbols, "option2")),
         NULL));
     ASSERT_OK(kefir_ast_structure_specifier_append_entry(&kft_mem, specifier1, entry2));
 
-    struct kefir_ast_structure_declaration_entry *entry3 = kefir_ast_structure_declaration_entry_alloc(&kft_mem);
+    struct kefir_ast_structure_declaration_entry *entry3 = kefir_ast_structure_declaration_entry_alloc_noarena(&kft_mem);
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &entry3->declaration.specifiers,
-                                                         kefir_ast_type_specifier_short(&kft_mem)));
+                                                         kefir_ast_type_specifier_short(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &entry3->declaration.specifiers,
-                                                         kefir_ast_type_specifier_int(&kft_mem)));
+                                                         kefir_ast_type_specifier_int(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &entry3->declaration.specifiers,
-                                                         kefir_ast_type_specifier_signed(&kft_mem)));
+                                                         kefir_ast_type_specifier_signed(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_structure_declaration_entry_append(
         &kft_mem, entry3, kefir_ast_declarator_identifier_noarena(&kft_mem, context->symbols, "option3"), NULL));
     ASSERT_OK(kefir_ast_structure_specifier_append_entry(&kft_mem, specifier1, entry3));
@@ -565,9 +565,9 @@ DEFINE_CASE(ast_node_analysis_init_declarators8, "AST node analysis - declaratio
                                    kefir_ast_declarator_identifier_noarena(&kft_mem, context->symbols, "unionS_t")),
         NULL, &decl1);
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &decl1_list->specifiers,
-                                                         kefir_ast_type_specifier_union(&kft_mem, specifier1)));
+                                                         kefir_ast_type_specifier_union(&kft_mem, NULL, specifier1)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &decl1_list->specifiers,
-                                                         kefir_ast_storage_class_specifier_typedef(&kft_mem)));
+                                                         kefir_ast_storage_class_specifier_typedef(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_analyze_node(&kft_mem, context, KEFIR_AST_NODE_BASE(decl1_list)));
 
     struct kefir_ast_struct_type *union_type1 = NULL;
@@ -602,9 +602,9 @@ DEFINE_CASE(ast_node_analysis_init_declarators8, "AST node analysis - declaratio
                                      kefir_ast_declarator_identifier_noarena(&kft_mem, context->symbols, "Something")),
         NULL, &decl2);
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(
-        &kft_mem, &decl2_list->specifiers, kefir_ast_type_specifier_typedef(&kft_mem, context->symbols, "unionS_t")));
+        &kft_mem, &decl2_list->specifiers, kefir_ast_type_specifier_typedef(&kft_mem, NULL, context->symbols, "unionS_t")));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &decl2_list->specifiers,
-                                                         kefir_ast_storage_class_specifier_static(&kft_mem)));
+                                                         kefir_ast_storage_class_specifier_static(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_analyze_node(&kft_mem, context, KEFIR_AST_NODE_BASE(decl2_list)));
 
     const struct kefir_ast_type *type3 = kefir_ast_type_pointer(&kft_mem, context->type_bundle, type2);
@@ -646,7 +646,7 @@ DEFINE_CASE(ast_node_analysis_init_declarators9, "AST node analysis - declaratio
     struct kefir_ast_declaration *param1 =
         kefir_ast_new_single_declaration_noarena(&kft_mem, kefir_ast_declarator_identifier_noarena(&kft_mem, NULL, NULL), NULL, NULL);
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &param1->specifiers,
-                                                         kefir_ast_type_specifier_float(&kft_mem)));
+                                                         kefir_ast_type_specifier_float(&kft_mem, NULL)));
 
     ASSIGN_DECL_CAST(struct kefir_ast_init_declarator *, param2, KEFIR_AST_NODE_SELF(KEFIR_AST_NODE_REF(KEFIR_AST_NODE_BASE(param1))));
 
@@ -656,13 +656,13 @@ DEFINE_CASE(ast_node_analysis_init_declarators9, "AST node analysis - declaratio
         kefir_ast_declarator_function_noarena(&kft_mem, kefir_ast_declarator_identifier_noarena(&kft_mem, context->symbols, "func1")),
         NULL, &decl_declaration);
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &decl->specifiers,
-                                                         kefir_ast_function_specifier_noreturn(&kft_mem)));
+                                                         kefir_ast_function_specifier_noreturn(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &decl->specifiers,
-                                                         kefir_ast_storage_class_specifier_static(&kft_mem)));
+                                                         kefir_ast_storage_class_specifier_static(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &decl->specifiers,
-                                                         kefir_ast_function_specifier_noreturn(&kft_mem)));
+                                                         kefir_ast_function_specifier_noreturn(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &decl->specifiers,
-                                                         kefir_ast_type_specifier_float(&kft_mem)));
+                                                         kefir_ast_type_specifier_float(&kft_mem, NULL)));
 
     ASSERT_OK(kefir_list_insert_after(&kft_mem, &decl_declaration->declarator->function->parameters,
                                       kefir_list_tail(&decl_declaration->declarator->function->parameters), param1));
@@ -705,12 +705,12 @@ DEFINE_CASE(ast_node_analysis_init_declarators10, "AST node analysis - declarati
     struct kefir_ast_context *context = &global_context.context;
 
     struct kefir_ast_structure_specifier *specifier1 =
-        kefir_ast_structure_specifier_init(&kft_mem, context->symbols, "param", true);
-    struct kefir_ast_structure_declaration_entry *entry1 = kefir_ast_structure_declaration_entry_alloc(&kft_mem);
+        kefir_ast_structure_specifier_init_noarena(&kft_mem, context->symbols, "param", true);
+    struct kefir_ast_structure_declaration_entry *entry1 = kefir_ast_structure_declaration_entry_alloc_noarena(&kft_mem);
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &entry1->declaration.specifiers,
-                                                         kefir_ast_type_specifier_long(&kft_mem)));
+                                                         kefir_ast_type_specifier_long(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &entry1->declaration.specifiers,
-                                                         kefir_ast_type_specifier_long(&kft_mem)));
+                                                         kefir_ast_type_specifier_long(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_structure_declaration_entry_append(
         &kft_mem, entry1, kefir_ast_declarator_identifier_noarena(&kft_mem, context->symbols, "field"),
         KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 6))));
@@ -719,9 +719,9 @@ DEFINE_CASE(ast_node_analysis_init_declarators10, "AST node analysis - declarati
         KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 2))));
     ASSERT_OK(kefir_ast_structure_specifier_append_entry(&kft_mem, specifier1, entry1));
 
-    struct kefir_ast_structure_declaration_entry *entry2 = kefir_ast_structure_declaration_entry_alloc(&kft_mem);
+    struct kefir_ast_structure_declaration_entry *entry2 = kefir_ast_structure_declaration_entry_alloc_noarena(&kft_mem);
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &entry2->declaration.specifiers,
-                                                         kefir_ast_type_specifier_boolean(&kft_mem)));
+                                                         kefir_ast_type_specifier_boolean(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_structure_declaration_entry_append(
         &kft_mem, entry2, kefir_ast_declarator_identifier_noarena(&kft_mem, context->symbols, "payload"), NULL));
     ASSERT_OK(kefir_ast_structure_specifier_append_entry(&kft_mem, specifier1, entry2));
@@ -729,7 +729,7 @@ DEFINE_CASE(ast_node_analysis_init_declarators10, "AST node analysis - declarati
     struct kefir_ast_declaration *param1 =
         kefir_ast_new_single_declaration_noarena(&kft_mem, kefir_ast_declarator_identifier_noarena(&kft_mem, NULL, NULL), NULL, NULL);
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &param1->specifiers,
-                                                         kefir_ast_type_specifier_float(&kft_mem)));
+                                                         kefir_ast_type_specifier_float(&kft_mem, NULL)));
 
     struct kefir_ast_declaration *param2 = kefir_ast_new_single_declaration_noarena(
         &kft_mem,
@@ -737,7 +737,7 @@ DEFINE_CASE(ast_node_analysis_init_declarators10, "AST node analysis - declarati
                                      kefir_ast_declarator_identifier_noarena(&kft_mem, context->symbols, "the_param")),
         NULL, NULL);
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &param2->specifiers,
-                                                         kefir_ast_type_specifier_struct(&kft_mem, specifier1)));
+                                                         kefir_ast_type_specifier_struct(&kft_mem, NULL, specifier1)));
 
     struct kefir_ast_declarator *decl1 = kefir_ast_declarator_function_noarena(
         &kft_mem, kefir_ast_declarator_identifier_noarena(&kft_mem, context->symbols, "function"));
@@ -748,11 +748,11 @@ DEFINE_CASE(ast_node_analysis_init_declarators10, "AST node analysis - declarati
 
     struct kefir_ast_declaration *func1 = kefir_ast_new_single_declaration_noarena(&kft_mem, decl1, NULL, NULL);
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &func1->specifiers,
-                                                         kefir_ast_storage_class_specifier_extern(&kft_mem)));
+                                                         kefir_ast_storage_class_specifier_extern(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &func1->specifiers,
-                                                         kefir_ast_function_specifier_inline(&kft_mem)));
+                                                         kefir_ast_function_specifier_inline(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &func1->specifiers,
-                                                         kefir_ast_type_specifier_void(&kft_mem)));
+                                                         kefir_ast_type_specifier_void(&kft_mem, NULL)));
 
     ASSERT_OK(kefir_ast_analyze_node(&kft_mem, context, KEFIR_AST_NODE_BASE(func1)));
 
@@ -803,7 +803,7 @@ DEFINE_CASE(ast_node_analysis_init_declarators11, "AST node analysis - declarati
     struct kefir_ast_context *context = &local_context.context;
 
     struct kefir_ast_enum_specifier *specifier1 =
-        kefir_ast_enum_specifier_init(&kft_mem, context->symbols, "enum1", true, NULL);
+        kefir_ast_enum_specifier_init_noarena(&kft_mem, context->symbols, "enum1", true, NULL);
     ASSERT_OK(kefir_ast_enum_specifier_append(&kft_mem, specifier1, context->symbols, "A", NULL, NULL));
     ASSERT_OK(kefir_ast_enum_specifier_append(&kft_mem, specifier1, context->symbols, "B", NULL, NULL));
     ASSERT_OK(kefir_ast_enum_specifier_append(&kft_mem, specifier1, context->symbols, "C", NULL, NULL));
@@ -811,9 +811,9 @@ DEFINE_CASE(ast_node_analysis_init_declarators11, "AST node analysis - declarati
     struct kefir_ast_declaration *param1 = kefir_ast_new_single_declaration_noarena(
         &kft_mem, kefir_ast_declarator_identifier_noarena(&kft_mem, context->symbols, "p1"), NULL, NULL);
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &param1->specifiers,
-                                                         kefir_ast_type_qualifier_const(&kft_mem)));
+                                                         kefir_ast_type_qualifier_const(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &param1->specifiers,
-                                                         kefir_ast_type_specifier_enum(&kft_mem, specifier1)));
+                                                         kefir_ast_type_specifier_enum(&kft_mem, NULL, specifier1)));
 
     struct kefir_ast_declaration *param2 = kefir_ast_new_single_declaration_noarena(
         &kft_mem,
@@ -824,7 +824,7 @@ DEFINE_CASE(ast_node_analysis_init_declarators11, "AST node analysis - declarati
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(
         &kft_mem, &param2->specifiers,
         kefir_ast_type_specifier_enum(
-            &kft_mem, kefir_ast_enum_specifier_init(&kft_mem, context->symbols, "enum1", false, NULL))));
+            &kft_mem, NULL, kefir_ast_enum_specifier_init_noarena(&kft_mem, context->symbols, "enum1", false, NULL))));
 
     struct kefir_ast_declaration *param3 = kefir_ast_new_single_declaration_noarena(
         &kft_mem, kefir_ast_declarator_pointer_noarena(&kft_mem, kefir_ast_declarator_identifier_noarena(&kft_mem, NULL, NULL)), NULL,
@@ -832,7 +832,7 @@ DEFINE_CASE(ast_node_analysis_init_declarators11, "AST node analysis - declarati
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(
         &kft_mem, &param3->specifiers,
         kefir_ast_type_specifier_union(
-            &kft_mem, kefir_ast_structure_specifier_init(&kft_mem, context->symbols, "UniOn", false))));
+            &kft_mem, NULL, kefir_ast_structure_specifier_init_noarena(&kft_mem, context->symbols, "UniOn", false))));
 
     struct kefir_ast_declarator *decl1 =
         kefir_ast_declarator_function_noarena(&kft_mem, kefir_ast_declarator_identifier_noarena(&kft_mem, context->symbols, "fun"));
@@ -847,13 +847,13 @@ DEFINE_CASE(ast_node_analysis_init_declarators11, "AST node analysis - declarati
     struct kefir_ast_declaration *func1 =
         kefir_ast_new_single_declaration_noarena(&kft_mem, kefir_ast_declarator_pointer_noarena(&kft_mem, decl1), NULL, NULL);
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &func1->specifiers,
-                                                         kefir_ast_function_specifier_inline(&kft_mem)));
+                                                         kefir_ast_function_specifier_inline(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &func1->specifiers,
-                                                         kefir_ast_function_specifier_noreturn(&kft_mem)));
+                                                         kefir_ast_function_specifier_noreturn(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &func1->specifiers,
-                                                         kefir_ast_type_qualifier_const(&kft_mem)));
+                                                         kefir_ast_type_qualifier_const(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &func1->specifiers,
-                                                         kefir_ast_type_specifier_char(&kft_mem)));
+                                                         kefir_ast_type_specifier_char(&kft_mem, NULL)));
 
     ASSERT_OK(kefir_ast_analyze_node(&kft_mem, context, KEFIR_AST_NODE_BASE(func1)));
 
@@ -923,9 +923,9 @@ DEFINE_CASE(ast_node_analysis_init_declarators12, "AST node analysis - declarati
                                    kefir_ast_declarator_identifier_noarena(&kft_mem, context->symbols, "array")),
         NULL, &param1_declaration);
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &param1->specifiers,
-                                                         kefir_ast_type_qualifier_const(&kft_mem)));
+                                                         kefir_ast_type_qualifier_const(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &param1->specifiers,
-                                                         kefir_ast_type_specifier_int(&kft_mem)));
+                                                         kefir_ast_type_specifier_int(&kft_mem, NULL)));
 
     ASSERT_OK(kefir_ast_type_qualifier_list_append(&kft_mem, &param1_declaration->declarator->array->type_qualifiers,
                                                    KEFIR_AST_TYPE_QUALIFIER_VOLATILE));
@@ -941,7 +941,7 @@ DEFINE_CASE(ast_node_analysis_init_declarators12, "AST node analysis - declarati
     struct kefir_ast_declaration *func1 =
         kefir_ast_new_single_declaration_noarena(&kft_mem, kefir_ast_declarator_pointer_noarena(&kft_mem, decl1), NULL, NULL);
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &func1->specifiers,
-                                                         kefir_ast_type_specifier_void(&kft_mem)));
+                                                         kefir_ast_type_specifier_void(&kft_mem, NULL)));
 
     ASSERT_OK(kefir_ast_analyze_node(&kft_mem, context, KEFIR_AST_NODE_BASE(func1)));
 
@@ -986,7 +986,7 @@ DEFINE_CASE(ast_node_analysis_init_declarators13, "AST node analysis - declarati
     struct kefir_ast_declaration *param1 = kefir_ast_new_single_declaration_noarena(
         &kft_mem, kefir_ast_declarator_identifier_noarena(&kft_mem, context->symbols, "length"), NULL, NULL);
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &param1->specifiers,
-                                                         kefir_ast_type_specifier_long(&kft_mem)));
+                                                         kefir_ast_type_specifier_long(&kft_mem, NULL)));
 
     struct kefir_ast_init_declarator *param2_declaration = NULL;
     struct kefir_ast_declaration *param2 = kefir_ast_new_single_declaration_noarena(
@@ -996,9 +996,9 @@ DEFINE_CASE(ast_node_analysis_init_declarators13, "AST node analysis - declarati
                                    kefir_ast_declarator_identifier_noarena(&kft_mem, context->symbols, "array")),
         NULL, &param2_declaration);
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &param2->specifiers,
-                                                         kefir_ast_type_qualifier_volatile(&kft_mem)));
+                                                         kefir_ast_type_qualifier_volatile(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &param2->specifiers,
-                                                         kefir_ast_type_specifier_float(&kft_mem)));
+                                                         kefir_ast_type_specifier_float(&kft_mem, NULL)));
 
     ASSERT_OK(kefir_ast_type_qualifier_list_append(&kft_mem, &param2_declaration->declarator->array->type_qualifiers,
                                                    KEFIR_AST_TYPE_QUALIFIER_CONST));
@@ -1014,9 +1014,9 @@ DEFINE_CASE(ast_node_analysis_init_declarators13, "AST node analysis - declarati
     struct kefir_ast_declaration *func1 =
         kefir_ast_new_single_declaration_noarena(&kft_mem, kefir_ast_declarator_pointer_noarena(&kft_mem, decl1), NULL, NULL);
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &func1->specifiers,
-                                                         kefir_ast_function_specifier_inline(&kft_mem)));
+                                                         kefir_ast_function_specifier_inline(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &func1->specifiers,
-                                                         kefir_ast_type_specifier_float(&kft_mem)));
+                                                         kefir_ast_type_specifier_float(&kft_mem, NULL)));
 
     ASSERT_OK(kefir_ast_analyze_node(&kft_mem, context, KEFIR_AST_NODE_BASE(func1)));
 

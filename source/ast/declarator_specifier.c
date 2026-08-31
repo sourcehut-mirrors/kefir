@@ -137,18 +137,23 @@ static kefir_result_t struct_entry_remove(struct kefir_mem *mem, struct kefir_li
     return KEFIR_OK;
 }
 
-struct kefir_ast_structure_specifier *kefir_ast_structure_specifier_init(struct kefir_mem *mem,
+struct kefir_ast_structure_specifier *kefir_ast_structure_specifier_init(struct kefir_mem *mem, struct kefir_memory_arena *arena,
                                                                          struct kefir_string_pool *symbols,
                                                                          const char *identifier,
                                                                          kefir_bool_t complete) {
-    REQUIRE(mem != NULL, NULL);
+    REQUIRE(mem != NULL || arena != NULL, NULL);
 
     if (symbols != NULL && identifier != NULL) {
         identifier = kefir_string_pool_insert(mem, symbols, identifier, NULL);
         REQUIRE(identifier != NULL, NULL);
     }
 
-    struct kefir_ast_structure_specifier *specifier = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_structure_specifier));
+    struct kefir_ast_structure_specifier *specifier = NULL;
+    if (arena != NULL) {
+        specifier = kefir_memory_arena_alloc(arena, sizeof(struct kefir_ast_structure_specifier), _Alignof(struct kefir_ast_structure_specifier));
+    } else {
+        specifier = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_structure_specifier));
+    }
     REQUIRE(specifier != NULL, NULL);
 
     if (complete) {
@@ -158,6 +163,7 @@ struct kefir_ast_structure_specifier *kefir_ast_structure_specifier_init(struct 
 
     specifier->identifier = identifier;
     specifier->complete = complete;
+    specifier->arena_allocated = arena != NULL;
     return specifier;
 }
 
@@ -171,7 +177,9 @@ kefir_result_t kefir_ast_structure_specifier_free(struct kefir_mem *mem,
     }
     specifier->complete = false;
     specifier->identifier = NULL;
-    KEFIR_FREE(mem, specifier);
+    if (!specifier->arena_allocated) {
+        KEFIR_FREE(mem, specifier);
+    }
     return KEFIR_OK;
 }
 
@@ -206,24 +214,33 @@ static kefir_result_t declaration_declarator_remove(struct kefir_mem *mem, struc
     return KEFIR_OK;
 }
 
-struct kefir_ast_structure_declaration_entry *kefir_ast_structure_declaration_entry_alloc(struct kefir_mem *mem) {
-    REQUIRE(mem != NULL, NULL);
+struct kefir_ast_structure_declaration_entry *kefir_ast_structure_declaration_entry_alloc(struct kefir_mem *mem, struct kefir_memory_arena *arena) {
+    REQUIRE(mem != NULL || arena != NULL, NULL);
 
-    struct kefir_ast_structure_declaration_entry *entry =
-        KEFIR_MALLOC(mem, sizeof(struct kefir_ast_structure_declaration_entry));
+    struct kefir_ast_structure_declaration_entry *entry = NULL;
+    if (arena != NULL) {
+        entry = kefir_memory_arena_alloc(arena, sizeof(struct kefir_ast_structure_declaration_entry), _Alignof(struct kefir_ast_structure_declaration_entry));
+    } else {
+        entry = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_structure_declaration_entry));
+    }
     REQUIRE(entry != NULL, NULL);
 
     entry->is_static_assertion = false;
+    entry->arena_allocated = arena != NULL;
     kefir_result_t res = kefir_ast_declarator_specifier_list_init(&entry->declaration.specifiers);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, entry);
+        if (arena == NULL) {
+            KEFIR_FREE(mem, entry);
+        }
         return NULL;
     });
 
     res = kefir_list_init(&entry->declaration.declarators);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_ast_declarator_specifier_list_free(mem, &entry->declaration.specifiers);
-        KEFIR_FREE(mem, entry);
+        if (arena == NULL) {
+            KEFIR_FREE(mem, entry);
+        }
         return NULL;
     });
 
@@ -231,7 +248,9 @@ struct kefir_ast_structure_declaration_entry *kefir_ast_structure_declaration_en
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_list_free(mem, &entry->declaration.declarators);
         kefir_ast_declarator_specifier_list_free(mem, &entry->declaration.specifiers);
-        KEFIR_FREE(mem, entry);
+        if (arena == NULL) {
+            KEFIR_FREE(mem, entry);
+        }
         return NULL;
     });
 
@@ -239,15 +258,20 @@ struct kefir_ast_structure_declaration_entry *kefir_ast_structure_declaration_en
 }
 
 struct kefir_ast_structure_declaration_entry *kefir_ast_structure_declaration_entry_alloc_assert(
-    struct kefir_mem *mem, struct kefir_ast_static_assertion *static_assertion) {
-    REQUIRE(mem != NULL, NULL);
+    struct kefir_mem *mem, struct kefir_memory_arena *arena, struct kefir_ast_static_assertion *static_assertion) {
+    REQUIRE(mem != NULL || arena != NULL, NULL);
     REQUIRE(static_assertion != NULL, NULL);
 
-    struct kefir_ast_structure_declaration_entry *entry =
-        KEFIR_MALLOC(mem, sizeof(struct kefir_ast_structure_declaration_entry));
+    struct kefir_ast_structure_declaration_entry *entry = NULL;
+    if (arena != NULL) {
+        entry = kefir_memory_arena_alloc(arena, sizeof(struct kefir_ast_structure_declaration_entry), _Alignof(struct kefir_ast_structure_declaration_entry));
+    } else {
+        entry = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_structure_declaration_entry));
+    }
     REQUIRE(entry != NULL, NULL);
 
     entry->is_static_assertion = true;
+    entry->arena_allocated = arena != NULL;
     entry->static_assertion = static_assertion;
     return entry;
 }
@@ -265,7 +289,9 @@ kefir_result_t kefir_ast_structure_declaration_entry_free(struct kefir_mem *mem,
         REQUIRE_OK(kefir_ast_declarator_specifier_list_free(mem, &entry->declaration.specifiers));
         REQUIRE_OK(kefir_list_free(mem, &entry->declaration.declarators));
     }
-    KEFIR_FREE(mem, entry);
+    if (!entry->arena_allocated) {
+        KEFIR_FREE(mem, entry);
+    }
     return KEFIR_OK;
 }
 
@@ -315,20 +341,26 @@ static kefir_result_t remove_enum_entry(struct kefir_mem *mem, struct kefir_list
 }
 
 struct kefir_ast_enum_specifier *kefir_ast_enum_specifier_init(
-    struct kefir_mem *mem, struct kefir_string_pool *symbols, const char *identifier, kefir_bool_t complete,
+    struct kefir_mem *mem, struct kefir_memory_arena *arena, struct kefir_string_pool *symbols, const char *identifier, kefir_bool_t complete,
     struct kefir_ast_declarator_specifier_list *enum_type_spec) {
-    REQUIRE(mem != NULL, NULL);
+    REQUIRE(mem != NULL || arena != NULL, NULL);
 
     if (symbols != NULL && identifier != NULL) {
         identifier = kefir_string_pool_insert(mem, symbols, identifier, NULL);
         REQUIRE(identifier != NULL, NULL);
     }
 
-    struct kefir_ast_enum_specifier *specifier = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_enum_specifier));
+    struct kefir_ast_enum_specifier *specifier = NULL;
+    if (arena != NULL) {
+        specifier = kefir_memory_arena_alloc(arena, sizeof(struct kefir_ast_enum_specifier), _Alignof(struct kefir_ast_enum_specifier));
+    } else {
+        specifier = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_enum_specifier));
+    }
     REQUIRE(specifier != NULL, NULL);
 
     specifier->identifier = identifier;
     specifier->complete = complete;
+    specifier->arena_allocated = arena != NULL;
     if (complete) {
         REQUIRE(kefir_list_init(&specifier->entries) == KEFIR_OK, NULL);
         REQUIRE(kefir_list_on_remove(&specifier->entries, remove_enum_entry, NULL) == KEFIR_OK, NULL);
@@ -339,13 +371,17 @@ struct kefir_ast_enum_specifier *kefir_ast_enum_specifier_init(
     if (specifier->type_spec.present) {
         res = kefir_ast_declarator_specifier_list_init(&specifier->type_spec.specifier_list);
         REQUIRE_ELSE(res == KEFIR_OK, {
-            KEFIR_FREE(mem, specifier);
+            if (arena == NULL) {
+                KEFIR_FREE(mem, specifier);
+            }
             return NULL;
         });
         res = kefir_ast_declarator_specifier_list_move_all(mem, &specifier->type_spec.specifier_list, enum_type_spec);
         REQUIRE_ELSE(res == KEFIR_OK, {
             kefir_ast_declarator_specifier_list_free(mem, &specifier->type_spec.specifier_list);
-            KEFIR_FREE(mem, specifier);
+            if (arena == NULL) {
+                KEFIR_FREE(mem, specifier);
+            }
             return NULL;
         });
     }
@@ -365,7 +401,9 @@ kefir_result_t kefir_ast_enum_specifier_free(struct kefir_mem *mem, struct kefir
     }
     specifier->complete = false;
     specifier->identifier = NULL;
-    KEFIR_FREE(mem, specifier);
+    if (!specifier->arena_allocated) {
+        KEFIR_FREE(mem, specifier);
+    }
     return KEFIR_OK;
 }
 
@@ -414,12 +452,17 @@ kefir_result_t kefir_ast_enum_specifier_append(struct kefir_mem *mem, struct kef
 }
 
 #define TYPE_SPECIFIER(_id, _spec)                                                                 \
-    struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_##_id(struct kefir_mem *mem) { \
-        REQUIRE(mem != NULL, NULL);                                                                \
-        struct kefir_ast_declarator_specifier *specifier =                                         \
-            KEFIR_MALLOC(mem, sizeof(struct kefir_ast_declarator_specifier));                      \
+    struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_##_id(struct kefir_mem *mem, struct kefir_memory_arena *arena) { \
+        REQUIRE(mem != NULL || arena != NULL, NULL);                                                                \
+        struct kefir_ast_declarator_specifier *specifier = NULL;                                         \
+        if (arena != NULL) { \
+            specifier = kefir_memory_arena_alloc(arena, sizeof(struct kefir_ast_declarator_specifier), _Alignof(struct kefir_ast_declarator_specifier));                      \
+        } else { \
+            specifier = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_declarator_specifier));                      \
+        } \
         REQUIRE(specifier != NULL, NULL);                                                          \
                                                                                                    \
+        specifier->arena_allocated = arena != NULL;                                               \
         specifier->refcount = 1;                                               \
         specifier->klass = KEFIR_AST_TYPE_SPECIFIER;                                               \
         static const struct kefir_ast_type_specifier SPECIFIER = { .specifier = (_spec) }; \
@@ -427,7 +470,9 @@ kefir_result_t kefir_ast_enum_specifier_append(struct kefir_mem *mem, struct kef
         kefir_result_t res = kefir_source_location_empty(&specifier->source_location);             \
         REQUIRE_CHAIN(&res, kefir_ast_node_attributes_init(&specifier->attributes));               \
         REQUIRE_ELSE(res == KEFIR_OK, {                                                            \
-            KEFIR_FREE(mem, specifier);                                                            \
+            if (arena == NULL) { \
+                KEFIR_FREE(mem, specifier);                                                            \
+            } \
             return NULL;                                                                           \
         });                                                                                        \
         return specifier;                                                                          \
@@ -460,20 +505,33 @@ TYPE_SPECIFIER(auto_type, KEFIR_AST_TYPE_SPECIFIER_AUTO_TYPE)
 
 #undef TYPE_SPECIFIER
 
-struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_atomic(struct kefir_mem *mem,
+struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_atomic(struct kefir_mem *mem, struct kefir_memory_arena *arena,
                                                                        struct kefir_ast_node_base *type) {
-    REQUIRE(mem != NULL, NULL);
+    REQUIRE(mem != NULL || arena != NULL, NULL);
     REQUIRE(type != NULL, NULL);
 
-    struct kefir_ast_declarator_specifier *specifier = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_declarator_specifier));
+    struct kefir_ast_declarator_specifier *specifier = NULL;
+    if (arena != NULL) {
+        specifier = kefir_memory_arena_alloc(arena, sizeof(struct kefir_ast_declarator_specifier), _Alignof(struct kefir_ast_declarator_specifier));
+    } else {
+        specifier = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_declarator_specifier));
+    }
     REQUIRE(specifier != NULL, NULL);
 
-    struct kefir_ast_type_specifier *spec = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_type_specifier));
+    struct kefir_ast_type_specifier *spec = NULL;
+    if (arena != NULL) {
+        spec = kefir_memory_arena_alloc(arena, sizeof(struct kefir_ast_type_specifier), _Alignof(struct kefir_ast_type_specifier));
+    } else {
+        spec = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_type_specifier));
+    }
     REQUIRE_ELSE(spec != NULL, {
-        KEFIR_FREE(mem, specifier);
+        if (arena == NULL) {
+            KEFIR_FREE(mem, specifier);
+        }
         return NULL;
     });
 
+    specifier->arena_allocated = arena != NULL;
     specifier->refcount = 1;
     specifier->klass = KEFIR_AST_TYPE_SPECIFIER;
     specifier->type_specifier = spec;
@@ -482,27 +540,42 @@ struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_atomic(struct ke
     kefir_result_t res = kefir_source_location_empty(&specifier->source_location);
     REQUIRE_CHAIN(&res, kefir_ast_node_attributes_init(&specifier->attributes));
     REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, spec);
-        KEFIR_FREE(mem, specifier);
+        if (arena == NULL) {
+            KEFIR_FREE(mem, spec);
+            KEFIR_FREE(mem, specifier);
+        }
         return NULL;
     });
     return specifier;
 }
 
 struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_struct(
-    struct kefir_mem *mem, struct kefir_ast_structure_specifier *structure) {
-    REQUIRE(mem != NULL, NULL);
+    struct kefir_mem *mem, struct kefir_memory_arena *arena, struct kefir_ast_structure_specifier *structure) {
+    REQUIRE(mem != NULL || arena != NULL, NULL);
     REQUIRE(structure != NULL, NULL);
 
-    struct kefir_ast_declarator_specifier *specifier = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_declarator_specifier));
+    struct kefir_ast_declarator_specifier *specifier = NULL;
+    if (arena != NULL) {
+        specifier = kefir_memory_arena_alloc(arena, sizeof(struct kefir_ast_declarator_specifier), _Alignof(struct kefir_ast_declarator_specifier));
+    } else {
+        specifier = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_declarator_specifier));
+    }
     REQUIRE(specifier != NULL, NULL);
 
-    struct kefir_ast_type_specifier *spec = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_type_specifier));
+    struct kefir_ast_type_specifier *spec = NULL;
+    if (arena != NULL) {
+        spec = kefir_memory_arena_alloc(arena, sizeof(struct kefir_ast_type_specifier), _Alignof(struct kefir_ast_type_specifier));
+    } else {
+        spec = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_type_specifier));
+    }
     REQUIRE_ELSE(spec != NULL, {
-        KEFIR_FREE(mem, specifier);
+        if (arena == NULL) {
+            KEFIR_FREE(mem, specifier);
+        }
         return NULL;
     });
 
+    specifier->arena_allocated = arena != NULL;
     specifier->refcount = 1;
     specifier->klass = KEFIR_AST_TYPE_SPECIFIER;
     specifier->type_specifier = spec;
@@ -511,27 +584,42 @@ struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_struct(
     kefir_result_t res = kefir_source_location_empty(&specifier->source_location);
     REQUIRE_CHAIN(&res, kefir_ast_node_attributes_init(&specifier->attributes));
     REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, spec);
-        KEFIR_FREE(mem, specifier);
+        if (arena == NULL) {
+            KEFIR_FREE(mem, spec);
+            KEFIR_FREE(mem, specifier);
+        }
         return NULL;
     });
     return specifier;
 }
 
-struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_union(struct kefir_mem *mem,
+struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_union(struct kefir_mem *mem, struct kefir_memory_arena *arena,
                                                                       struct kefir_ast_structure_specifier *structure) {
-    REQUIRE(mem != NULL, NULL);
+    REQUIRE(mem != NULL || arena != NULL, NULL);
     REQUIRE(structure != NULL, NULL);
 
-    struct kefir_ast_declarator_specifier *specifier = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_declarator_specifier));
+    struct kefir_ast_declarator_specifier *specifier = NULL;
+    if (arena != NULL) {
+        specifier = kefir_memory_arena_alloc(arena, sizeof(struct kefir_ast_declarator_specifier), _Alignof(struct kefir_ast_declarator_specifier));
+    } else {
+        specifier = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_declarator_specifier));
+    }
     REQUIRE(specifier != NULL, NULL);
 
-    struct kefir_ast_type_specifier *spec = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_type_specifier));
+    struct kefir_ast_type_specifier *spec = NULL;
+    if (arena != NULL) {
+        spec = kefir_memory_arena_alloc(arena, sizeof(struct kefir_ast_type_specifier), _Alignof(struct kefir_ast_type_specifier));
+    } else {
+        spec = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_type_specifier));
+    }
     REQUIRE_ELSE(spec != NULL, {
-        KEFIR_FREE(mem, specifier);
+        if (arena == NULL) {
+            KEFIR_FREE(mem, specifier);
+        }
         return NULL;
     });
 
+    specifier->arena_allocated = arena != NULL;
     specifier->refcount = 1;
     specifier->klass = KEFIR_AST_TYPE_SPECIFIER;
     specifier->type_specifier = spec;
@@ -540,27 +628,42 @@ struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_union(struct kef
     kefir_result_t res = kefir_source_location_empty(&specifier->source_location);
     REQUIRE_CHAIN(&res, kefir_ast_node_attributes_init(&specifier->attributes));
     REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, spec);
-        KEFIR_FREE(mem, specifier);
+        if (arena == NULL) {
+            KEFIR_FREE(mem, spec);
+            KEFIR_FREE(mem, specifier);
+        }
         return NULL;
     });
     return specifier;
 }
 
-struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_enum(struct kefir_mem *mem,
+struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_enum(struct kefir_mem *mem, struct kefir_memory_arena *arena,
                                                                      struct kefir_ast_enum_specifier *enumeration) {
-    REQUIRE(mem != NULL, NULL);
+    REQUIRE(mem != NULL || arena != NULL, NULL);
     REQUIRE(enumeration != NULL, NULL);
 
-    struct kefir_ast_declarator_specifier *specifier = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_declarator_specifier));
+    struct kefir_ast_declarator_specifier *specifier = NULL;
+    if (arena != NULL) {
+        specifier = kefir_memory_arena_alloc(arena, sizeof(struct kefir_ast_declarator_specifier), _Alignof(struct kefir_ast_declarator_specifier));
+    } else {
+        specifier = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_declarator_specifier));
+    }
     REQUIRE(specifier != NULL, NULL);
 
-    struct kefir_ast_type_specifier *spec = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_type_specifier));
+    struct kefir_ast_type_specifier *spec = NULL;
+    if (arena != NULL) {
+        spec = kefir_memory_arena_alloc(arena, sizeof(struct kefir_ast_type_specifier), _Alignof(struct kefir_ast_type_specifier));
+    } else {
+        spec = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_type_specifier));
+    }
     REQUIRE_ELSE(spec != NULL, {
-        KEFIR_FREE(mem, specifier);
+        if (arena == NULL) {
+            KEFIR_FREE(mem, specifier);
+        }
         return NULL;
     });
 
+    specifier->arena_allocated = arena != NULL;
     specifier->refcount = 1;
     specifier->klass = KEFIR_AST_TYPE_SPECIFIER;
     specifier->type_specifier = spec;
@@ -569,17 +672,19 @@ struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_enum(struct kefi
     kefir_result_t res = kefir_source_location_empty(&specifier->source_location);
     REQUIRE_CHAIN(&res, kefir_ast_node_attributes_init(&specifier->attributes));
     REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, spec);
-        KEFIR_FREE(mem, specifier);
+        if (arena == NULL) {
+            KEFIR_FREE(mem, spec);
+            KEFIR_FREE(mem, specifier);
+        }
         return NULL;
     });
     return specifier;
 }
 
-struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_typedef(struct kefir_mem *mem,
+struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_typedef(struct kefir_mem *mem, struct kefir_memory_arena *arena,
                                                                         struct kefir_string_pool *symbols,
                                                                         const char *literal) {
-    REQUIRE(mem != NULL, NULL);
+    REQUIRE(mem != NULL || arena != NULL, NULL);
     REQUIRE(literal != NULL, NULL);
 
     if (symbols != NULL) {
@@ -587,15 +692,28 @@ struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_typedef(struct k
         REQUIRE(literal != NULL, NULL);
     }
 
-    struct kefir_ast_declarator_specifier *specifier = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_declarator_specifier));
+    struct kefir_ast_declarator_specifier *specifier = NULL;
+    if (arena != NULL) {
+        specifier = kefir_memory_arena_alloc(arena, sizeof(struct kefir_ast_declarator_specifier), _Alignof(struct kefir_ast_declarator_specifier));
+    } else {
+        specifier = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_declarator_specifier));
+    }
     REQUIRE(specifier != NULL, NULL);
 
-    struct kefir_ast_type_specifier *spec = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_type_specifier));
+    struct kefir_ast_type_specifier *spec = NULL;
+    if (arena != NULL) {
+        spec = kefir_memory_arena_alloc(arena, sizeof(struct kefir_ast_type_specifier), _Alignof(struct kefir_ast_type_specifier));
+    } else {
+        spec = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_type_specifier));
+    }
     REQUIRE_ELSE(spec != NULL, {
-        KEFIR_FREE(mem, specifier);
+        if (arena == NULL) {
+            KEFIR_FREE(mem, specifier);
+        }
         return NULL;
     });
 
+    specifier->arena_allocated = arena != NULL;
     specifier->refcount = 1;
     specifier->klass = KEFIR_AST_TYPE_SPECIFIER;
     specifier->type_specifier = spec;
@@ -604,27 +722,42 @@ struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_typedef(struct k
     kefir_result_t res = kefir_source_location_empty(&specifier->source_location);
     REQUIRE_CHAIN(&res, kefir_ast_node_attributes_init(&specifier->attributes));
     REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, spec);
-        KEFIR_FREE(mem, specifier);
+        if (arena == NULL) {
+            KEFIR_FREE(mem, spec);
+            KEFIR_FREE(mem, specifier);
+        }
         return NULL;
     });
     return specifier;
 }
 
-struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_typeof(struct kefir_mem *mem, kefir_bool_t qualified,
+struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_typeof(struct kefir_mem *mem, struct kefir_memory_arena *arena, kefir_bool_t qualified,
                                                                        struct kefir_ast_node_base *node) {
-    REQUIRE(mem != NULL, NULL);
+    REQUIRE(mem != NULL || arena != NULL, NULL);
     REQUIRE(node != NULL, NULL);
 
-    struct kefir_ast_declarator_specifier *specifier = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_declarator_specifier));
+    struct kefir_ast_declarator_specifier *specifier = NULL;
+    if (arena != NULL) {
+        specifier = kefir_memory_arena_alloc(arena, sizeof(struct kefir_ast_declarator_specifier), _Alignof(struct kefir_ast_declarator_specifier));
+    } else {
+        specifier = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_declarator_specifier));
+    }
     REQUIRE(specifier != NULL, NULL);
-    
-    struct kefir_ast_type_specifier *spec = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_type_specifier));
+
+    struct kefir_ast_type_specifier *spec = NULL;
+    if (arena != NULL) {
+        spec = kefir_memory_arena_alloc(arena, sizeof(struct kefir_ast_type_specifier), _Alignof(struct kefir_ast_type_specifier));
+    } else {
+        spec = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_type_specifier));
+    }
     REQUIRE_ELSE(spec != NULL, {
-        KEFIR_FREE(mem, specifier);
+        if (arena == NULL) {
+            KEFIR_FREE(mem, specifier);
+        }
         return NULL;
     });
 
+    specifier->arena_allocated = arena != NULL;
     specifier->refcount = 1;
     specifier->klass = KEFIR_AST_TYPE_SPECIFIER;
     specifier->type_specifier = spec;
@@ -634,27 +767,43 @@ struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_typeof(struct ke
     kefir_result_t res = kefir_source_location_empty(&specifier->source_location);
     REQUIRE_CHAIN(&res, kefir_ast_node_attributes_init(&specifier->attributes));
     REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, spec);
-        KEFIR_FREE(mem, specifier);
+        if (arena == NULL) {
+            KEFIR_FREE(mem, spec);
+            KEFIR_FREE(mem, specifier);
+        }
         return NULL;
     });
     return specifier;
 }
 
-struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_bitint(struct kefir_mem *mem,
+struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_bitint(struct kefir_mem *mem, struct kefir_memory_arena *arena,
                                                                        struct kefir_ast_node_base *width) {
-    REQUIRE(mem != NULL, NULL);
+    REQUIRE(mem != NULL || arena != NULL, NULL);
     REQUIRE(width != NULL, NULL);
 
-    struct kefir_ast_declarator_specifier *specifier = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_declarator_specifier));
+    struct kefir_ast_declarator_specifier *specifier = NULL;
+    if (arena != NULL) {
+        specifier = kefir_memory_arena_alloc(arena, sizeof(struct kefir_ast_declarator_specifier), _Alignof(struct kefir_ast_declarator_specifier));
+    } else {
+        specifier = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_declarator_specifier));
+    }
     REQUIRE(specifier != NULL, NULL);
-    
-    struct kefir_ast_type_specifier *spec = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_type_specifier));
+
+    struct kefir_ast_type_specifier *spec = NULL;
+    if (arena != NULL) {
+        spec = kefir_memory_arena_alloc(arena, sizeof(struct kefir_ast_type_specifier), _Alignof(struct kefir_ast_type_specifier));
+    } else {
+        spec = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_type_specifier));
+    }
     REQUIRE_ELSE(spec != NULL, {
-        KEFIR_FREE(mem, specifier);
+        if (arena == NULL) {
+            KEFIR_FREE(mem, specifier);
+        }
         return NULL;
     });
 
+
+    specifier->arena_allocated = arena != NULL;
     specifier->refcount = 1;
     specifier->klass = KEFIR_AST_TYPE_SPECIFIER;
     specifier->type_specifier = spec;
@@ -663,27 +812,36 @@ struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_bitint(struct ke
     kefir_result_t res = kefir_source_location_empty(&specifier->source_location);
     REQUIRE_CHAIN(&res, kefir_ast_node_attributes_init(&specifier->attributes));
     REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, spec);
-        KEFIR_FREE(mem, specifier);
+        if (arena != NULL) {
+            KEFIR_FREE(mem, spec);
+            KEFIR_FREE(mem, specifier);
+        }
         return NULL;
     });
     return specifier;
 }
 
 #define STORAGE_CLASS_SPECIFIER(_id, _spec)                                                                 \
-    struct kefir_ast_declarator_specifier *kefir_ast_storage_class_specifier_##_id(struct kefir_mem *mem) { \
-        REQUIRE(mem != NULL, NULL);                                                                         \
-        struct kefir_ast_declarator_specifier *specifier =                                                  \
-            KEFIR_MALLOC(mem, sizeof(struct kefir_ast_declarator_specifier));                               \
-        REQUIRE(specifier != NULL, NULL);                                                                   \
+    struct kefir_ast_declarator_specifier *kefir_ast_storage_class_specifier_##_id(struct kefir_mem *mem, struct kefir_memory_arena *arena) { \
+        REQUIRE(mem != NULL || arena != NULL, NULL); \
+        struct kefir_ast_declarator_specifier *specifier = NULL; \
+        if (arena != NULL) { \
+            specifier = kefir_memory_arena_alloc(arena, sizeof(struct kefir_ast_declarator_specifier), _Alignof(struct kefir_ast_declarator_specifier)); \
+        } else { \
+            specifier = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_declarator_specifier)); \
+        } \
+        REQUIRE(specifier != NULL, NULL); \
                                                                                                             \
+        specifier->arena_allocated = arena != NULL; \
         specifier->refcount = 1; \
         specifier->klass = KEFIR_AST_STORAGE_CLASS_SPECIFIER;                                               \
         specifier->storage_class = (_spec);                                                                 \
         kefir_result_t res = kefir_source_location_empty(&specifier->source_location);                      \
         REQUIRE_CHAIN(&res, kefir_ast_node_attributes_init(&specifier->attributes));                        \
         REQUIRE_ELSE(res == KEFIR_OK, {                                                                     \
-            KEFIR_FREE(mem, specifier);                                                                     \
+            if (arena == NULL) { \
+                KEFIR_FREE(mem, specifier);                                                                     \
+            } \
             return NULL;                                                                                    \
         });                                                                                                 \
         return specifier;                                                                                   \
@@ -700,19 +858,26 @@ STORAGE_CLASS_SPECIFIER(register, KEFIR_AST_STORAGE_SPECIFIER_REGISTER)
 #undef STORAGE_CLASS_SPECIFIER
 
 #define TYPE_QUALIFIER(_id, _spec)                                                                 \
-    struct kefir_ast_declarator_specifier *kefir_ast_type_qualifier_##_id(struct kefir_mem *mem) { \
-        REQUIRE(mem != NULL, NULL);                                                                \
-        struct kefir_ast_declarator_specifier *specifier =                                         \
-            KEFIR_MALLOC(mem, sizeof(struct kefir_ast_declarator_specifier));                      \
-        REQUIRE(specifier != NULL, NULL);                                                          \
-                                                                                                   \
+    struct kefir_ast_declarator_specifier *kefir_ast_type_qualifier_##_id(struct kefir_mem *mem, struct kefir_memory_arena *arena) { \
+        REQUIRE(mem != NULL || arena != NULL, NULL); \
+        struct kefir_ast_declarator_specifier *specifier = NULL; \
+        if (arena != NULL) { \
+            specifier = kefir_memory_arena_alloc(arena, sizeof(struct kefir_ast_declarator_specifier), _Alignof(struct kefir_ast_declarator_specifier)); \
+        } else { \
+            specifier = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_declarator_specifier)); \
+        } \
+        REQUIRE(specifier != NULL, NULL); \
+        \
+        specifier->arena_allocated = arena != NULL; \
         specifier->refcount = 1; \
         specifier->klass = KEFIR_AST_TYPE_QUALIFIER;                                               \
         specifier->type_qualifier = (_spec);                                                       \
         kefir_result_t res = kefir_source_location_empty(&specifier->source_location);             \
         REQUIRE_CHAIN(&res, kefir_ast_node_attributes_init(&specifier->attributes));               \
         REQUIRE_ELSE(res == KEFIR_OK, {                                                            \
-            KEFIR_FREE(mem, specifier);                                                            \
+            if (arena == NULL) { \
+                KEFIR_FREE(mem, specifier);                                                                     \
+            } \
             return NULL;                                                                           \
         });                                                                                        \
         return specifier;                                                                          \
@@ -726,19 +891,26 @@ TYPE_QUALIFIER(atomic, KEFIR_AST_TYPE_QUALIFIER_ATOMIC)
 #undef TYPE_QUALIFIER
 
 #define FUNCTION_SPECIFIER(_id, _spec)                                                                 \
-    struct kefir_ast_declarator_specifier *kefir_ast_function_specifier_##_id(struct kefir_mem *mem) { \
-        REQUIRE(mem != NULL, NULL);                                                                    \
-        struct kefir_ast_declarator_specifier *specifier =                                             \
-            KEFIR_MALLOC(mem, sizeof(struct kefir_ast_declarator_specifier));                          \
-        REQUIRE(specifier != NULL, NULL);                                                              \
-                                                                                                       \
+    struct kefir_ast_declarator_specifier *kefir_ast_function_specifier_##_id(struct kefir_mem *mem, struct kefir_memory_arena *arena) { \
+        REQUIRE(mem != NULL || arena != NULL, NULL); \
+        struct kefir_ast_declarator_specifier *specifier = NULL; \
+        if (arena != NULL) { \
+            specifier = kefir_memory_arena_alloc(arena, sizeof(struct kefir_ast_declarator_specifier), _Alignof(struct kefir_ast_declarator_specifier)); \
+        } else { \
+            specifier = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_declarator_specifier)); \
+        } \
+        REQUIRE(specifier != NULL, NULL); \
+        \
+        specifier->arena_allocated = arena != NULL; \
         specifier->refcount = 1; \
         specifier->klass = KEFIR_AST_FUNCTION_SPECIFIER;                                               \
         specifier->function_specifier = (_spec);                                                       \
         kefir_result_t res = kefir_source_location_empty(&specifier->source_location);                 \
         REQUIRE_CHAIN(&res, kefir_ast_node_attributes_init(&specifier->attributes));                   \
         REQUIRE_ELSE(res == KEFIR_OK, {                                                                \
-            KEFIR_FREE(mem, specifier);                                                                \
+            if (arena == NULL) { \
+                KEFIR_FREE(mem, specifier);                                                                \
+            } \
             return NULL;                                                                               \
         });                                                                                            \
         return specifier;                                                                              \
@@ -749,21 +921,29 @@ FUNCTION_SPECIFIER(noreturn, KEFIR_AST_FUNCTION_SPECIFIER_TYPE_NORETURN)
 
 #undef FUNCTION_SPECIFIER
 
-struct kefir_ast_declarator_specifier *kefir_ast_alignment_specifier(struct kefir_mem *mem,
+struct kefir_ast_declarator_specifier *kefir_ast_alignment_specifier(struct kefir_mem *mem, struct kefir_memory_arena *arena,
                                                                      struct kefir_ast_node_base *alignment) {
-    REQUIRE(mem != NULL, NULL);
+    REQUIRE(mem != NULL || arena != NULL, NULL);
     REQUIRE(alignment != NULL, NULL);
 
-    struct kefir_ast_declarator_specifier *specifier = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_declarator_specifier));
+    struct kefir_ast_declarator_specifier *specifier = NULL;
+    if (arena != NULL) {
+        specifier = kefir_memory_arena_alloc(arena, sizeof(struct kefir_ast_declarator_specifier), _Alignof(struct kefir_ast_declarator_specifier));
+    } else {
+        specifier = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_declarator_specifier));
+    }
     REQUIRE(specifier != NULL, NULL);
 
+    specifier->arena_allocated = arena != NULL;
     specifier->refcount = 1;
     specifier->klass = KEFIR_AST_ALIGNMENT_SPECIFIER;
     specifier->alignment_specifier = alignment;
     kefir_result_t res = kefir_source_location_empty(&specifier->source_location);
     REQUIRE_CHAIN(&res, kefir_ast_node_attributes_init(&specifier->attributes));
     REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, specifier);
+        if (arena == NULL) {
+            KEFIR_FREE(mem, specifier);
+        }
         return NULL;
     });
     return specifier;
@@ -842,7 +1022,9 @@ kefir_result_t kefir_ast_declarator_specifier_free(struct kefir_mem *mem,
                     break;
 
                 default:
-                    KEFIR_FREE(mem, (void *) specifier->type_specifier);
+                    if (!specifier->arena_allocated) {
+                        KEFIR_FREE(mem, (void *) specifier->type_specifier);
+                    }
                     break;
             }
             break;
@@ -859,7 +1041,9 @@ kefir_result_t kefir_ast_declarator_specifier_free(struct kefir_mem *mem,
             break;
     }
 
-    KEFIR_FREE(mem, specifier);
+    if (!specifier->arena_allocated) {
+        KEFIR_FREE(mem, specifier);
+    }
     return KEFIR_OK;
 }
 

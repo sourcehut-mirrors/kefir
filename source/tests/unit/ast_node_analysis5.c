@@ -96,43 +96,43 @@ DEFINE_CASE(ast_node_analysis_compound_assignment_operator1, "AST node analysis 
     };
 
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &TYPES2[0]->type_decl.specifiers,
-                                                         kefir_ast_type_specifier_boolean(&kft_mem)));
+                                                         kefir_ast_type_specifier_boolean(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &TYPES2[1]->type_decl.specifiers,
-                                                         kefir_ast_type_specifier_char(&kft_mem)));
+                                                         kefir_ast_type_specifier_char(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &TYPES2[2]->type_decl.specifiers,
-                                                         kefir_ast_type_specifier_unsigned(&kft_mem)));
+                                                         kefir_ast_type_specifier_unsigned(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &TYPES2[2]->type_decl.specifiers,
-                                                         kefir_ast_type_specifier_char(&kft_mem)));
+                                                         kefir_ast_type_specifier_char(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &TYPES2[3]->type_decl.specifiers,
-                                                         kefir_ast_type_specifier_signed(&kft_mem)));
+                                                         kefir_ast_type_specifier_signed(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &TYPES2[3]->type_decl.specifiers,
-                                                         kefir_ast_type_specifier_char(&kft_mem)));
+                                                         kefir_ast_type_specifier_char(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &TYPES2[4]->type_decl.specifiers,
-                                                         kefir_ast_type_specifier_unsigned(&kft_mem)));
+                                                         kefir_ast_type_specifier_unsigned(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &TYPES2[4]->type_decl.specifiers,
-                                                         kefir_ast_type_specifier_int(&kft_mem)));
+                                                         kefir_ast_type_specifier_int(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &TYPES2[5]->type_decl.specifiers,
-                                                         kefir_ast_type_specifier_int(&kft_mem)));
+                                                         kefir_ast_type_specifier_int(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &TYPES2[6]->type_decl.specifiers,
-                                                         kefir_ast_type_specifier_unsigned(&kft_mem)));
+                                                         kefir_ast_type_specifier_unsigned(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &TYPES2[6]->type_decl.specifiers,
-                                                         kefir_ast_type_specifier_long(&kft_mem)));
+                                                         kefir_ast_type_specifier_long(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &TYPES2[7]->type_decl.specifiers,
-                                                         kefir_ast_type_specifier_long(&kft_mem)));
+                                                         kefir_ast_type_specifier_long(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &TYPES2[8]->type_decl.specifiers,
-                                                         kefir_ast_type_specifier_unsigned(&kft_mem)));
+                                                         kefir_ast_type_specifier_unsigned(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &TYPES2[8]->type_decl.specifiers,
-                                                         kefir_ast_type_specifier_long(&kft_mem)));
+                                                         kefir_ast_type_specifier_long(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &TYPES2[8]->type_decl.specifiers,
-                                                         kefir_ast_type_specifier_long(&kft_mem)));
+                                                         kefir_ast_type_specifier_long(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &TYPES2[9]->type_decl.specifiers,
-                                                         kefir_ast_type_specifier_long(&kft_mem)));
+                                                         kefir_ast_type_specifier_long(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &TYPES2[9]->type_decl.specifiers,
-                                                         kefir_ast_type_specifier_long(&kft_mem)));
+                                                         kefir_ast_type_specifier_long(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &TYPES2[10]->type_decl.specifiers,
-                                                         kefir_ast_type_specifier_float(&kft_mem)));
+                                                         kefir_ast_type_specifier_float(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &TYPES2[11]->type_decl.specifiers,
-                                                         kefir_ast_type_specifier_double(&kft_mem)));
+                                                         kefir_ast_type_specifier_double(&kft_mem, NULL)));
 
     _Static_assert(sizeof(TYPES) / sizeof(TYPES[0]) == sizeof(TYPES2) / sizeof(TYPES2[0]),
                    "Type array length mismatch");
@@ -262,43 +262,43 @@ DEFINE_CASE(ast_node_analysis_compound_assignment_operator2, "AST node analysis 
     };
 
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &TYPES2[0]->type_decl.specifiers,
-                                                         kefir_ast_type_specifier_boolean(&kft_mem)));
+                                                         kefir_ast_type_specifier_boolean(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &TYPES2[1]->type_decl.specifiers,
-                                                         kefir_ast_type_specifier_char(&kft_mem)));
+                                                         kefir_ast_type_specifier_char(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &TYPES2[2]->type_decl.specifiers,
-                                                         kefir_ast_type_specifier_unsigned(&kft_mem)));
+                                                         kefir_ast_type_specifier_unsigned(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &TYPES2[2]->type_decl.specifiers,
-                                                         kefir_ast_type_specifier_char(&kft_mem)));
+                                                         kefir_ast_type_specifier_char(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &TYPES2[3]->type_decl.specifiers,
-                                                         kefir_ast_type_specifier_signed(&kft_mem)));
+                                                         kefir_ast_type_specifier_signed(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &TYPES2[3]->type_decl.specifiers,
-                                                         kefir_ast_type_specifier_char(&kft_mem)));
+                                                         kefir_ast_type_specifier_char(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &TYPES2[4]->type_decl.specifiers,
-                                                         kefir_ast_type_specifier_unsigned(&kft_mem)));
+                                                         kefir_ast_type_specifier_unsigned(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &TYPES2[4]->type_decl.specifiers,
-                                                         kefir_ast_type_specifier_int(&kft_mem)));
+                                                         kefir_ast_type_specifier_int(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &TYPES2[5]->type_decl.specifiers,
-                                                         kefir_ast_type_specifier_int(&kft_mem)));
+                                                         kefir_ast_type_specifier_int(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &TYPES2[6]->type_decl.specifiers,
-                                                         kefir_ast_type_specifier_unsigned(&kft_mem)));
+                                                         kefir_ast_type_specifier_unsigned(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &TYPES2[6]->type_decl.specifiers,
-                                                         kefir_ast_type_specifier_long(&kft_mem)));
+                                                         kefir_ast_type_specifier_long(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &TYPES2[7]->type_decl.specifiers,
-                                                         kefir_ast_type_specifier_long(&kft_mem)));
+                                                         kefir_ast_type_specifier_long(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &TYPES2[8]->type_decl.specifiers,
-                                                         kefir_ast_type_specifier_unsigned(&kft_mem)));
+                                                         kefir_ast_type_specifier_unsigned(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &TYPES2[8]->type_decl.specifiers,
-                                                         kefir_ast_type_specifier_long(&kft_mem)));
+                                                         kefir_ast_type_specifier_long(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &TYPES2[8]->type_decl.specifiers,
-                                                         kefir_ast_type_specifier_long(&kft_mem)));
+                                                         kefir_ast_type_specifier_long(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &TYPES2[9]->type_decl.specifiers,
-                                                         kefir_ast_type_specifier_long(&kft_mem)));
+                                                         kefir_ast_type_specifier_long(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &TYPES2[9]->type_decl.specifiers,
-                                                         kefir_ast_type_specifier_long(&kft_mem)));
+                                                         kefir_ast_type_specifier_long(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &TYPES2[10]->type_decl.specifiers,
-                                                         kefir_ast_type_specifier_float(&kft_mem)));
+                                                         kefir_ast_type_specifier_float(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &TYPES2[11]->type_decl.specifiers,
-                                                         kefir_ast_type_specifier_double(&kft_mem)));
+                                                         kefir_ast_type_specifier_double(&kft_mem, NULL)));
 
     _Static_assert(sizeof(TYPES) / sizeof(TYPES[0]) == sizeof(TYPES2) / sizeof(TYPES2[0]),
                    "Type array length mismatch");
@@ -398,43 +398,43 @@ DEFINE_CASE(ast_node_analysis_compound_assignment_operator3, "AST node analysis 
     };
 
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &TYPES2[0]->type_decl.specifiers,
-                                                         kefir_ast_type_specifier_boolean(&kft_mem)));
+                                                         kefir_ast_type_specifier_boolean(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &TYPES2[1]->type_decl.specifiers,
-                                                         kefir_ast_type_specifier_char(&kft_mem)));
+                                                         kefir_ast_type_specifier_char(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &TYPES2[2]->type_decl.specifiers,
-                                                         kefir_ast_type_specifier_unsigned(&kft_mem)));
+                                                         kefir_ast_type_specifier_unsigned(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &TYPES2[2]->type_decl.specifiers,
-                                                         kefir_ast_type_specifier_char(&kft_mem)));
+                                                         kefir_ast_type_specifier_char(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &TYPES2[3]->type_decl.specifiers,
-                                                         kefir_ast_type_specifier_signed(&kft_mem)));
+                                                         kefir_ast_type_specifier_signed(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &TYPES2[3]->type_decl.specifiers,
-                                                         kefir_ast_type_specifier_char(&kft_mem)));
+                                                         kefir_ast_type_specifier_char(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &TYPES2[4]->type_decl.specifiers,
-                                                         kefir_ast_type_specifier_unsigned(&kft_mem)));
+                                                         kefir_ast_type_specifier_unsigned(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &TYPES2[4]->type_decl.specifiers,
-                                                         kefir_ast_type_specifier_int(&kft_mem)));
+                                                         kefir_ast_type_specifier_int(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &TYPES2[5]->type_decl.specifiers,
-                                                         kefir_ast_type_specifier_int(&kft_mem)));
+                                                         kefir_ast_type_specifier_int(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &TYPES2[6]->type_decl.specifiers,
-                                                         kefir_ast_type_specifier_unsigned(&kft_mem)));
+                                                         kefir_ast_type_specifier_unsigned(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &TYPES2[6]->type_decl.specifiers,
-                                                         kefir_ast_type_specifier_long(&kft_mem)));
+                                                         kefir_ast_type_specifier_long(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &TYPES2[7]->type_decl.specifiers,
-                                                         kefir_ast_type_specifier_long(&kft_mem)));
+                                                         kefir_ast_type_specifier_long(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &TYPES2[8]->type_decl.specifiers,
-                                                         kefir_ast_type_specifier_unsigned(&kft_mem)));
+                                                         kefir_ast_type_specifier_unsigned(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &TYPES2[8]->type_decl.specifiers,
-                                                         kefir_ast_type_specifier_long(&kft_mem)));
+                                                         kefir_ast_type_specifier_long(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &TYPES2[8]->type_decl.specifiers,
-                                                         kefir_ast_type_specifier_long(&kft_mem)));
+                                                         kefir_ast_type_specifier_long(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &TYPES2[9]->type_decl.specifiers,
-                                                         kefir_ast_type_specifier_long(&kft_mem)));
+                                                         kefir_ast_type_specifier_long(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &TYPES2[9]->type_decl.specifiers,
-                                                         kefir_ast_type_specifier_long(&kft_mem)));
+                                                         kefir_ast_type_specifier_long(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &TYPES2[10]->type_decl.specifiers,
-                                                         kefir_ast_type_specifier_float(&kft_mem)));
+                                                         kefir_ast_type_specifier_float(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &TYPES2[11]->type_decl.specifiers,
-                                                         kefir_ast_type_specifier_double(&kft_mem)));
+                                                         kefir_ast_type_specifier_double(&kft_mem, NULL)));
 
     _Static_assert(sizeof(TYPES) / sizeof(TYPES[0]) == sizeof(TYPES2) / sizeof(TYPES2[0]),
                    "Type array length mismatch");
@@ -490,7 +490,7 @@ DEFINE_CASE(ast_node_analysis_comma_operator, "AST node analysis - comma operato
     struct kefir_ast_type_name *type_name1 = kefir_ast_new_type_name_noarena(
         &kft_mem, kefir_ast_declarator_pointer_noarena(&kft_mem, kefir_ast_declarator_identifier_noarena(&kft_mem, NULL, NULL)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &type_name1->type_decl.specifiers,
-                                                         kefir_ast_type_specifier_void(&kft_mem)));
+                                                         kefir_ast_type_specifier_void(&kft_mem, NULL)));
 
     struct kefir_ast_comma_operator *comma = kefir_ast_new_comma_operator_noarena(&kft_mem);
     ASSERT(comma != NULL);
@@ -515,7 +515,7 @@ DEFINE_CASE(ast_node_analysis_comma_operator, "AST node analysis - comma operato
     struct kefir_ast_type_name *type_name2 = kefir_ast_new_type_name_noarena(
         &kft_mem, kefir_ast_declarator_pointer_noarena(&kft_mem, kefir_ast_declarator_identifier_noarena(&kft_mem, NULL, NULL)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &type_name2->type_decl.specifiers,
-                                                         kefir_ast_type_specifier_char(&kft_mem)));
+                                                         kefir_ast_type_specifier_char(&kft_mem, NULL)));
 
     comma = kefir_ast_new_comma_operator_noarena(&kft_mem);
     ASSERT(comma != NULL);

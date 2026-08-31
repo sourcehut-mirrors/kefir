@@ -147,19 +147,19 @@ DEFINE_CASE(ast_constant_expression_generic_selection1, "AST constant expression
     struct kefir_ast_type_name *type_name1 =
         kefir_ast_new_type_name_noarena(&kft_mem, kefir_ast_declarator_identifier_noarena(&kft_mem, NULL, NULL));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &type_name1->type_decl.specifiers,
-                                                         kefir_ast_type_specifier_unsigned(&kft_mem)));
+                                                         kefir_ast_type_specifier_unsigned(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &type_name1->type_decl.specifiers,
-                                                         kefir_ast_type_specifier_char(&kft_mem)));
+                                                         kefir_ast_type_specifier_char(&kft_mem, NULL)));
 
     struct kefir_ast_type_name *type_name2 =
         kefir_ast_new_type_name_noarena(&kft_mem, kefir_ast_declarator_identifier_noarena(&kft_mem, NULL, NULL));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &type_name2->type_decl.specifiers,
-                                                         kefir_ast_type_specifier_int(&kft_mem)));
+                                                         kefir_ast_type_specifier_int(&kft_mem, NULL)));
 
     struct kefir_ast_type_name *type_name3 =
         kefir_ast_new_type_name_noarena(&kft_mem, kefir_ast_declarator_identifier_noarena(&kft_mem, NULL, NULL));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &type_name3->type_decl.specifiers,
-                                                         kefir_ast_type_specifier_float(&kft_mem)));
+                                                         kefir_ast_type_specifier_float(&kft_mem, NULL)));
 
     struct kefir_ast_generic_selection *selection1 =
         kefir_ast_new_generic_selection(&kft_mem, NULL, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 0)));

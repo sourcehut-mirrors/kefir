@@ -100,9 +100,9 @@ static kefir_result_t insert_function_name_builtin(struct kefir_mem *mem, struct
         });                                                                                                    \
     } while (0)
 
-    APPEND_SPECIFIER(kefir_ast_storage_class_specifier_static(mem));
-    APPEND_SPECIFIER(kefir_ast_type_qualifier_const(mem));
-    APPEND_SPECIFIER(kefir_ast_type_specifier_char(mem));
+    APPEND_SPECIFIER(kefir_ast_storage_class_specifier_static(mem, arena));
+    APPEND_SPECIFIER(kefir_ast_type_qualifier_const(mem, arena));
+    APPEND_SPECIFIER(kefir_ast_type_specifier_char(mem, NULL));
 #undef APPEND_SPECIFIER
 
     kefir_result_t res = kefir_ast_compound_statement_prepend(mem, body, KEFIR_AST_NODE_BASE(func_name_declaration));

@@ -45,7 +45,7 @@ kefir_result_t make_unit(struct kefir_mem *mem, const struct kefir_ast_context *
     struct kefir_ast_declaration *func1_param1 = kefir_ast_new_single_declaration_noarena(
         mem, kefir_ast_declarator_identifier_noarena(mem, context->symbols, "value"), NULL, NULL);
     REQUIRE_OK(
-        kefir_ast_declarator_specifier_list_append(mem, &func1_param1->specifiers, kefir_ast_type_specifier_int(mem)));
+        kefir_ast_declarator_specifier_list_append(mem, &func1_param1->specifiers, kefir_ast_type_specifier_int(mem, NULL)));
     REQUIRE_OK(kefir_list_insert_after(mem, &func1_decl->function->parameters,
                                        kefir_list_tail(&func1_decl->function->parameters),
                                        KEFIR_AST_NODE_BASE(func1_param1)));
@@ -55,7 +55,7 @@ kefir_result_t make_unit(struct kefir_mem *mem, const struct kefir_ast_context *
             mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "value"))))));
     struct kefir_ast_function_definition *func1 = kefir_ast_new_function_definition_noarena(mem, func1_decl, func1_body);
     REQUIRE_OK(
-        kefir_ast_declarator_specifier_list_append(mem, &func1->specifiers, kefir_ast_type_specifier_float(mem)));
+        kefir_ast_declarator_specifier_list_append(mem, &func1->specifiers, kefir_ast_type_specifier_float(mem, NULL)));
     REQUIRE_OK(kefir_ast_translation_unit_append(mem, unit, KEFIR_AST_NODE_BASE(func1)));
 
     struct kefir_ast_compound_statement *func2_body = kefir_ast_new_compound_statement_noarena(mem);
@@ -64,7 +64,7 @@ kefir_result_t make_unit(struct kefir_mem *mem, const struct kefir_ast_context *
     struct kefir_ast_declaration *func2_param1 = kefir_ast_new_single_declaration_noarena(
         mem, kefir_ast_declarator_identifier_noarena(mem, context->symbols, "value"), NULL, NULL);
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &func2_param1->specifiers,
-                                                          kefir_ast_type_specifier_float(mem)));
+                                                          kefir_ast_type_specifier_float(mem, NULL)));
     REQUIRE_OK(kefir_list_insert_after(mem, &func2_decl->function->parameters,
                                        kefir_list_tail(&func2_decl->function->parameters),
                                        KEFIR_AST_NODE_BASE(func2_param1)));
@@ -73,7 +73,7 @@ kefir_result_t make_unit(struct kefir_mem *mem, const struct kefir_ast_context *
         KEFIR_AST_NODE_BASE(kefir_ast_new_return_statement_noarena(
             mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context->symbols, "value"))))));
     struct kefir_ast_function_definition *func2 = kefir_ast_new_function_definition_noarena(mem, func2_decl, func2_body);
-    REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &func2->specifiers, kefir_ast_type_specifier_int(mem)));
+    REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &func2->specifiers, kefir_ast_type_specifier_int(mem, NULL)));
     REQUIRE_OK(kefir_ast_translation_unit_append(mem, unit, KEFIR_AST_NODE_BASE(func2)));
 
     *result = unit;

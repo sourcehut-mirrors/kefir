@@ -1191,12 +1191,12 @@ DEFINE_CASE(ast_node_analysis_unary_operation_alignof, "AST node analysis - unar
         kefir_ast_new_type_name_noarena(&kft_mem, kefir_ast_declarator_identifier_noarena(&kft_mem, NULL, NULL)); \
     ASSERT_OK(append_specifiers(&kft_mem, &_id->type_decl.specifiers, (_spec_count), __VA_ARGS__));
 
-    MAKE_TYPENAME(type_name1, 1, kefir_ast_type_specifier_boolean(&kft_mem));
-    MAKE_TYPENAME(type_name2, 2, kefir_ast_type_specifier_unsigned(&kft_mem), kefir_ast_type_specifier_short(&kft_mem));
-    MAKE_TYPENAME(type_name3, 2, kefir_ast_type_specifier_signed(&kft_mem), kefir_ast_type_specifier_int(&kft_mem));
-    MAKE_TYPENAME(type_name4, 3, kefir_ast_type_specifier_unsigned(&kft_mem), kefir_ast_type_specifier_long(&kft_mem),
-                  kefir_ast_type_specifier_long(&kft_mem));
-    MAKE_TYPENAME(type_name5, 1, kefir_ast_type_specifier_float(&kft_mem));
+    MAKE_TYPENAME(type_name1, 1, kefir_ast_type_specifier_boolean(&kft_mem, NULL));
+    MAKE_TYPENAME(type_name2, 2, kefir_ast_type_specifier_unsigned(&kft_mem, NULL), kefir_ast_type_specifier_short(&kft_mem, NULL));
+    MAKE_TYPENAME(type_name3, 2, kefir_ast_type_specifier_signed(&kft_mem, NULL), kefir_ast_type_specifier_int(&kft_mem, NULL));
+    MAKE_TYPENAME(type_name4, 3, kefir_ast_type_specifier_unsigned(&kft_mem, NULL), kefir_ast_type_specifier_long(&kft_mem, NULL),
+                  kefir_ast_type_specifier_long(&kft_mem, NULL));
+    MAKE_TYPENAME(type_name5, 1, kefir_ast_type_specifier_float(&kft_mem, NULL));
 #undef MAKE_TYPENAME
 
     struct kefir_ast_type_name *type_name6 = kefir_ast_new_type_name_noarena(
@@ -1204,13 +1204,13 @@ DEFINE_CASE(ast_node_analysis_unary_operation_alignof, "AST node analysis - unar
                                              KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 150)),
                                              kefir_ast_declarator_identifier_noarena(&kft_mem, NULL, NULL)));
     ASSERT_OK(
-        append_specifiers(&kft_mem, &type_name6->type_decl.specifiers, 1, kefir_ast_type_specifier_char(&kft_mem)));
+        append_specifiers(&kft_mem, &type_name6->type_decl.specifiers, 1, kefir_ast_type_specifier_char(&kft_mem, NULL)));
     type_name6->type_decl.declarator->array->static_array = true;
 
     struct kefir_ast_type_name *type_name7 = kefir_ast_new_type_name_noarena(
         &kft_mem, kefir_ast_declarator_pointer_noarena(&kft_mem, kefir_ast_declarator_identifier_noarena(&kft_mem, NULL, NULL)));
-    ASSERT_OK(append_specifiers(&kft_mem, &type_name7->type_decl.specifiers, 2, kefir_ast_type_specifier_char(&kft_mem),
-                                kefir_ast_type_qualifier_const(&kft_mem)));
+    ASSERT_OK(append_specifiers(&kft_mem, &type_name7->type_decl.specifiers, 2, kefir_ast_type_specifier_char(&kft_mem, NULL),
+                                kefir_ast_type_qualifier_const(&kft_mem, NULL)));
 
     ASSERT_UNARY_OPERATION(&kft_mem, context, KEFIR_AST_OPERATION_ALIGNOF, type_name1, type_traits->size_type, true,
                            false, false);
@@ -1261,19 +1261,19 @@ DEFINE_CASE(ast_node_analysis_type_name, "AST node analysis - type names") {
         kefir_ast_new_type_name_noarena(&kft_mem, kefir_ast_declarator_identifier_noarena(&kft_mem, NULL, NULL)); \
     ASSERT_OK(append_specifiers(&kft_mem, &_id->type_decl.specifiers, (_spec_count), __VA_ARGS__));
 
-    MAKE_TYPENAME(type_name1, 1, kefir_ast_type_specifier_boolean(&kft_mem));
-    MAKE_TYPENAME(type_name2, 2, kefir_ast_type_specifier_signed(&kft_mem), kefir_ast_type_specifier_char(&kft_mem));
-    MAKE_TYPENAME(type_name3, 2, kefir_ast_type_specifier_signed(&kft_mem), kefir_ast_type_specifier_int(&kft_mem));
-    MAKE_TYPENAME(type_name4, 3, kefir_ast_type_specifier_unsigned(&kft_mem), kefir_ast_type_specifier_long(&kft_mem),
-                  kefir_ast_type_specifier_long(&kft_mem));
-    MAKE_TYPENAME(type_name5, 1, kefir_ast_type_specifier_float(&kft_mem));
-    MAKE_TYPENAME(type_name6, 1, kefir_ast_type_specifier_double(&kft_mem));
+    MAKE_TYPENAME(type_name1, 1, kefir_ast_type_specifier_boolean(&kft_mem, NULL));
+    MAKE_TYPENAME(type_name2, 2, kefir_ast_type_specifier_signed(&kft_mem, NULL), kefir_ast_type_specifier_char(&kft_mem, NULL));
+    MAKE_TYPENAME(type_name3, 2, kefir_ast_type_specifier_signed(&kft_mem, NULL), kefir_ast_type_specifier_int(&kft_mem, NULL));
+    MAKE_TYPENAME(type_name4, 3, kefir_ast_type_specifier_unsigned(&kft_mem, NULL), kefir_ast_type_specifier_long(&kft_mem, NULL),
+                  kefir_ast_type_specifier_long(&kft_mem, NULL));
+    MAKE_TYPENAME(type_name5, 1, kefir_ast_type_specifier_float(&kft_mem, NULL));
+    MAKE_TYPENAME(type_name6, 1, kefir_ast_type_specifier_double(&kft_mem, NULL));
 #undef MAKE_TYPENAME
 
     struct kefir_ast_type_name *type_name7 = kefir_ast_new_type_name_noarena(
         &kft_mem, kefir_ast_declarator_pointer_noarena(&kft_mem, kefir_ast_declarator_identifier_noarena(&kft_mem, NULL, NULL)));
     ASSERT_OK(
-        append_specifiers(&kft_mem, &type_name7->type_decl.specifiers, 1, kefir_ast_type_specifier_void(&kft_mem)));
+        append_specifiers(&kft_mem, &type_name7->type_decl.specifiers, 1, kefir_ast_type_specifier_void(&kft_mem, NULL)));
 
     struct kefir_ast_type_name *type_name8 = kefir_ast_new_type_name_noarena(
         &kft_mem,
@@ -1282,7 +1282,7 @@ DEFINE_CASE(ast_node_analysis_type_name, "AST node analysis - type names") {
                                                  KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 256)),
                                                  kefir_ast_declarator_identifier_noarena(&kft_mem, NULL, NULL))));
     ASSERT_OK(
-        append_specifiers(&kft_mem, &type_name8->type_decl.specifiers, 1, kefir_ast_type_specifier_void(&kft_mem)));
+        append_specifiers(&kft_mem, &type_name8->type_decl.specifiers, 1, kefir_ast_type_specifier_void(&kft_mem, NULL)));
 
     ASSERT_TYPE_NAME(&kft_mem, context, type_name1, kefir_ast_type_boolean());
     ASSERT_TYPE_NAME(&kft_mem, context, type_name2, kefir_ast_type_signed_char());

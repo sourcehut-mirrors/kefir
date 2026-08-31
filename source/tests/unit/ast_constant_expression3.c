@@ -113,34 +113,34 @@ DEFINE_CASE(ast_constant_expression_unary_operations2, "AST constant expressions
         kefir_ast_new_type_name_noarena(&kft_mem, kefir_ast_declarator_identifier_noarena(&kft_mem, NULL, NULL)); \
     ASSERT_OK(append_specifiers(&kft_mem, &_id->type_decl.specifiers, (_spec_count), __VA_ARGS__));
 
-    MAKE_TYPENAME(type_name1, 1, kefir_ast_type_specifier_boolean(&kft_mem));
-    MAKE_TYPENAME(type_name2, 1, kefir_ast_type_specifier_char(&kft_mem));
-    MAKE_TYPENAME(type_name3, 2, kefir_ast_type_specifier_signed(&kft_mem), kefir_ast_type_specifier_char(&kft_mem));
-    MAKE_TYPENAME(type_name4, 2, kefir_ast_type_specifier_unsigned(&kft_mem), kefir_ast_type_specifier_char(&kft_mem));
-    MAKE_TYPENAME(type_name5, 1, kefir_ast_type_specifier_short(&kft_mem));
-    MAKE_TYPENAME(type_name6, 2, kefir_ast_type_specifier_unsigned(&kft_mem), kefir_ast_type_specifier_short(&kft_mem));
-    MAKE_TYPENAME(type_name7, 1, kefir_ast_type_specifier_signed(&kft_mem));
-    MAKE_TYPENAME(type_name8, 1, kefir_ast_type_specifier_unsigned(&kft_mem));
-    MAKE_TYPENAME(type_name9, 1, kefir_ast_type_specifier_long(&kft_mem));
-    MAKE_TYPENAME(type_name10, 2, kefir_ast_type_specifier_unsigned(&kft_mem), kefir_ast_type_specifier_long(&kft_mem));
-    MAKE_TYPENAME(type_name11, 2, kefir_ast_type_specifier_long(&kft_mem), kefir_ast_type_specifier_long(&kft_mem));
-    MAKE_TYPENAME(type_name12, 3, kefir_ast_type_specifier_unsigned(&kft_mem), kefir_ast_type_specifier_long(&kft_mem),
-                  kefir_ast_type_specifier_long(&kft_mem));
-    MAKE_TYPENAME(type_name13, 1, kefir_ast_type_specifier_float(&kft_mem));
-    MAKE_TYPENAME(type_name14, 1, kefir_ast_type_specifier_double(&kft_mem));
+    MAKE_TYPENAME(type_name1, 1, kefir_ast_type_specifier_boolean(&kft_mem, NULL));
+    MAKE_TYPENAME(type_name2, 1, kefir_ast_type_specifier_char(&kft_mem, NULL));
+    MAKE_TYPENAME(type_name3, 2, kefir_ast_type_specifier_signed(&kft_mem, NULL), kefir_ast_type_specifier_char(&kft_mem, NULL));
+    MAKE_TYPENAME(type_name4, 2, kefir_ast_type_specifier_unsigned(&kft_mem, NULL), kefir_ast_type_specifier_char(&kft_mem, NULL));
+    MAKE_TYPENAME(type_name5, 1, kefir_ast_type_specifier_short(&kft_mem, NULL));
+    MAKE_TYPENAME(type_name6, 2, kefir_ast_type_specifier_unsigned(&kft_mem, NULL), kefir_ast_type_specifier_short(&kft_mem, NULL));
+    MAKE_TYPENAME(type_name7, 1, kefir_ast_type_specifier_signed(&kft_mem, NULL));
+    MAKE_TYPENAME(type_name8, 1, kefir_ast_type_specifier_unsigned(&kft_mem, NULL));
+    MAKE_TYPENAME(type_name9, 1, kefir_ast_type_specifier_long(&kft_mem, NULL));
+    MAKE_TYPENAME(type_name10, 2, kefir_ast_type_specifier_unsigned(&kft_mem, NULL), kefir_ast_type_specifier_long(&kft_mem, NULL));
+    MAKE_TYPENAME(type_name11, 2, kefir_ast_type_specifier_long(&kft_mem, NULL), kefir_ast_type_specifier_long(&kft_mem, NULL));
+    MAKE_TYPENAME(type_name12, 3, kefir_ast_type_specifier_unsigned(&kft_mem, NULL), kefir_ast_type_specifier_long(&kft_mem, NULL),
+                  kefir_ast_type_specifier_long(&kft_mem, NULL));
+    MAKE_TYPENAME(type_name13, 1, kefir_ast_type_specifier_float(&kft_mem, NULL));
+    MAKE_TYPENAME(type_name14, 1, kefir_ast_type_specifier_double(&kft_mem, NULL));
 #undef MAKE_TYPENAME
 
     struct kefir_ast_type_name *type_name15 = kefir_ast_new_type_name_noarena(
         &kft_mem, kefir_ast_declarator_pointer_noarena(&kft_mem, kefir_ast_declarator_identifier_noarena(&kft_mem, NULL, NULL)));
     ASSERT_OK(
-        append_specifiers(&kft_mem, &type_name15->type_decl.specifiers, 1, kefir_ast_type_specifier_void(&kft_mem)));
+        append_specifiers(&kft_mem, &type_name15->type_decl.specifiers, 1, kefir_ast_type_specifier_void(&kft_mem, NULL)));
 
     struct kefir_ast_type_name *type_name16 = kefir_ast_new_type_name_noarena(
         &kft_mem, kefir_ast_declarator_array_noarena(&kft_mem, KEFIR_AST_DECLARATOR_ARRAY_BOUNDED,
                                              KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 8)),
                                              kefir_ast_declarator_identifier_noarena(&kft_mem, NULL, NULL)));
     ASSERT_OK(
-        append_specifiers(&kft_mem, &type_name16->type_decl.specifiers, 1, kefir_ast_type_specifier_char(&kft_mem)));
+        append_specifiers(&kft_mem, &type_name16->type_decl.specifiers, 1, kefir_ast_type_specifier_char(&kft_mem, NULL)));
 
     ASSERT_INTEGER_CONST_EXPR(
         &kft_mem, context,
@@ -303,9 +303,9 @@ DEFINE_CASE(ast_constant_expression_unary_operations3, "AST constant expressions
         &kft_mem, kefir_ast_declarator_array_noarena(&kft_mem, KEFIR_AST_DECLARATOR_ARRAY_UNBOUNDED, NULL,
                                              kefir_ast_declarator_identifier_noarena(&kft_mem, NULL, NULL)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &type_name1->type_decl.specifiers,
-                                                         kefir_ast_type_specifier_unsigned(&kft_mem)));
+                                                         kefir_ast_type_specifier_unsigned(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &type_name1->type_decl.specifiers,
-                                                         kefir_ast_type_specifier_int(&kft_mem)));
+                                                         kefir_ast_type_specifier_int(&kft_mem, NULL)));
 
     struct kefir_ast_compound_literal *compound1 = kefir_ast_new_compound_literal_noarena(&kft_mem, type_name1);
     ASSERT_OK(kefir_ast_initializer_list_append(
@@ -339,34 +339,34 @@ DEFINE_CASE(ast_constant_expression_unary_operations4, "AST constant expressions
         kefir_ast_new_type_name_noarena(&kft_mem, kefir_ast_declarator_identifier_noarena(&kft_mem, NULL, NULL)); \
     ASSERT_OK(append_specifiers(&kft_mem, &_id->type_decl.specifiers, (_spec_count), __VA_ARGS__));
 
-    MAKE_TYPENAME(type_name1, 1, kefir_ast_type_specifier_boolean(&kft_mem));
-    MAKE_TYPENAME(type_name2, 1, kefir_ast_type_specifier_char(&kft_mem));
-    MAKE_TYPENAME(type_name3, 2, kefir_ast_type_specifier_unsigned(&kft_mem), kefir_ast_type_specifier_char(&kft_mem));
-    MAKE_TYPENAME(type_name4, 2, kefir_ast_type_specifier_signed(&kft_mem), kefir_ast_type_specifier_char(&kft_mem));
-    MAKE_TYPENAME(type_name5, 2, kefir_ast_type_specifier_unsigned(&kft_mem), kefir_ast_type_specifier_short(&kft_mem));
-    MAKE_TYPENAME(type_name6, 1, kefir_ast_type_specifier_short(&kft_mem));
-    MAKE_TYPENAME(type_name7, 1, kefir_ast_type_specifier_unsigned(&kft_mem));
-    MAKE_TYPENAME(type_name8, 1, kefir_ast_type_specifier_signed(&kft_mem));
-    MAKE_TYPENAME(type_name9, 2, kefir_ast_type_specifier_unsigned(&kft_mem), kefir_ast_type_specifier_long(&kft_mem));
-    MAKE_TYPENAME(type_name10, 1, kefir_ast_type_specifier_long(&kft_mem));
-    MAKE_TYPENAME(type_name11, 3, kefir_ast_type_specifier_unsigned(&kft_mem), kefir_ast_type_specifier_long(&kft_mem),
-                  kefir_ast_type_specifier_long(&kft_mem));
-    MAKE_TYPENAME(type_name12, 2, kefir_ast_type_specifier_long(&kft_mem), kefir_ast_type_specifier_long(&kft_mem));
-    MAKE_TYPENAME(type_name13, 1, kefir_ast_type_specifier_float(&kft_mem));
-    MAKE_TYPENAME(type_name14, 1, kefir_ast_type_specifier_double(&kft_mem));
+    MAKE_TYPENAME(type_name1, 1, kefir_ast_type_specifier_boolean(&kft_mem, NULL));
+    MAKE_TYPENAME(type_name2, 1, kefir_ast_type_specifier_char(&kft_mem, NULL));
+    MAKE_TYPENAME(type_name3, 2, kefir_ast_type_specifier_unsigned(&kft_mem, NULL), kefir_ast_type_specifier_char(&kft_mem, NULL));
+    MAKE_TYPENAME(type_name4, 2, kefir_ast_type_specifier_signed(&kft_mem, NULL), kefir_ast_type_specifier_char(&kft_mem, NULL));
+    MAKE_TYPENAME(type_name5, 2, kefir_ast_type_specifier_unsigned(&kft_mem, NULL), kefir_ast_type_specifier_short(&kft_mem, NULL));
+    MAKE_TYPENAME(type_name6, 1, kefir_ast_type_specifier_short(&kft_mem, NULL));
+    MAKE_TYPENAME(type_name7, 1, kefir_ast_type_specifier_unsigned(&kft_mem, NULL));
+    MAKE_TYPENAME(type_name8, 1, kefir_ast_type_specifier_signed(&kft_mem, NULL));
+    MAKE_TYPENAME(type_name9, 2, kefir_ast_type_specifier_unsigned(&kft_mem, NULL), kefir_ast_type_specifier_long(&kft_mem, NULL));
+    MAKE_TYPENAME(type_name10, 1, kefir_ast_type_specifier_long(&kft_mem, NULL));
+    MAKE_TYPENAME(type_name11, 3, kefir_ast_type_specifier_unsigned(&kft_mem, NULL), kefir_ast_type_specifier_long(&kft_mem, NULL),
+                  kefir_ast_type_specifier_long(&kft_mem, NULL));
+    MAKE_TYPENAME(type_name12, 2, kefir_ast_type_specifier_long(&kft_mem, NULL), kefir_ast_type_specifier_long(&kft_mem, NULL));
+    MAKE_TYPENAME(type_name13, 1, kefir_ast_type_specifier_float(&kft_mem, NULL));
+    MAKE_TYPENAME(type_name14, 1, kefir_ast_type_specifier_double(&kft_mem, NULL));
 #undef MAKE_TYPENAME
 
     struct kefir_ast_type_name *type_name15 = kefir_ast_new_type_name_noarena(
         &kft_mem, kefir_ast_declarator_pointer_noarena(&kft_mem, kefir_ast_declarator_identifier_noarena(&kft_mem, NULL, NULL)));
     ASSERT_OK(
-        append_specifiers(&kft_mem, &type_name15->type_decl.specifiers, 1, kefir_ast_type_specifier_short(&kft_mem)));
+        append_specifiers(&kft_mem, &type_name15->type_decl.specifiers, 1, kefir_ast_type_specifier_short(&kft_mem, NULL)));
 
     struct kefir_ast_type_name *type_name16 = kefir_ast_new_type_name_noarena(
         &kft_mem, kefir_ast_declarator_array_noarena(&kft_mem, KEFIR_AST_DECLARATOR_ARRAY_BOUNDED,
                                              KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 5)),
                                              kefir_ast_declarator_identifier_noarena(&kft_mem, NULL, NULL)));
     ASSERT_OK(
-        append_specifiers(&kft_mem, &type_name16->type_decl.specifiers, 1, kefir_ast_type_specifier_signed(&kft_mem)));
+        append_specifiers(&kft_mem, &type_name16->type_decl.specifiers, 1, kefir_ast_type_specifier_signed(&kft_mem, NULL)));
 
     ASSERT_INTEGER_CONST_EXPR(
         &kft_mem, context,
@@ -666,7 +666,7 @@ DEFINE_CASE(ast_constant_expression_unary_operations7, "AST constant expressions
     struct kefir_ast_type_name *type_name1 = kefir_ast_new_type_name_noarena(
         &kft_mem, kefir_ast_declarator_pointer_noarena(&kft_mem, kefir_ast_declarator_identifier_noarena(&kft_mem, NULL, NULL)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &type_name1->type_decl.specifiers,
-                                                         kefir_ast_type_specifier_char(&kft_mem)));
+                                                         kefir_ast_type_specifier_char(&kft_mem, NULL)));
     ASSERT_INTEGER_CONST_EXPR(
         &kft_mem, context,
         kefir_ast_new_unary_operation_noarena(
@@ -687,7 +687,7 @@ DEFINE_CASE(ast_constant_expression_unary_operations7, "AST constant expressions
     struct kefir_ast_type_name *type_name2 = kefir_ast_new_type_name_noarena(
         &kft_mem, kefir_ast_declarator_pointer_noarena(&kft_mem, kefir_ast_declarator_identifier_noarena(&kft_mem, NULL, NULL)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &type_name2->type_decl.specifiers,
-                                                         kefir_ast_type_specifier_int(&kft_mem)));
+                                                         kefir_ast_type_specifier_int(&kft_mem, NULL)));
     ASSERT_INTEGER_CONST_EXPR(
         &kft_mem, context,
         kefir_ast_new_unary_operation_noarena(

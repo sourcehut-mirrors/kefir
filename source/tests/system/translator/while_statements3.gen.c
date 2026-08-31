@@ -78,18 +78,18 @@ static kefir_result_t define_conditional_function(struct kefir_mem *mem, struct 
         mem, kefir_ast_declarator_identifier_noarena(mem, context_manager->current->symbols, "sum"),
         kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 0))), NULL);
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &declarationSum->specifiers,
-                                                          kefir_ast_type_specifier_long(mem)));
+                                                          kefir_ast_type_specifier_long(mem, NULL)));
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &declarationSum->specifiers,
-                                                          kefir_ast_type_specifier_long(mem)));
+                                                          kefir_ast_type_specifier_long(mem, NULL)));
     REQUIRE_OK(kefir_ast_compound_statement_append(mem, compound0, KEFIR_AST_NODE_BASE(declarationSum)));
 
     struct kefir_ast_declaration *declarationI = kefir_ast_new_single_declaration_noarena(
         mem, kefir_ast_declarator_identifier_noarena(mem, context_manager->current->symbols, "i"),
         kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 0))), NULL);
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &declarationI->specifiers,
-                                                          kefir_ast_type_specifier_unsigned(mem)));
+                                                          kefir_ast_type_specifier_unsigned(mem, NULL)));
     REQUIRE_OK(
-        kefir_ast_declarator_specifier_list_append(mem, &declarationI->specifiers, kefir_ast_type_specifier_int(mem)));
+        kefir_ast_declarator_specifier_list_append(mem, &declarationI->specifiers, kefir_ast_type_specifier_int(mem, NULL)));
     REQUIRE_OK(kefir_ast_compound_statement_append(mem, compound0, KEFIR_AST_NODE_BASE(declarationI)));
 
     struct kefir_ast_node_base *outer_condition = KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation_noarena(
@@ -103,9 +103,9 @@ static kefir_result_t define_conditional_function(struct kefir_mem *mem, struct 
         mem, kefir_ast_declarator_identifier_noarena(mem, context_manager->current->symbols, "j"),
         kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 0))), NULL);
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &declarationJ->specifiers,
-                                                          kefir_ast_type_specifier_unsigned(mem)));
+                                                          kefir_ast_type_specifier_unsigned(mem, NULL)));
     REQUIRE_OK(
-        kefir_ast_declarator_specifier_list_append(mem, &declarationJ->specifiers, kefir_ast_type_specifier_int(mem)));
+        kefir_ast_declarator_specifier_list_append(mem, &declarationJ->specifiers, kefir_ast_type_specifier_int(mem, NULL)));
     REQUIRE_OK(kefir_ast_compound_statement_append(mem, outer_body, KEFIR_AST_NODE_BASE(declarationJ)));
 
     struct kefir_ast_node_base *inner_condition = KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation_noarena(

@@ -63,17 +63,17 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
                                        kefir_ast_declarator_identifier_noarena(mem, context->symbols, "str")),
             NULL, NULL);
         REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &decl1->specifiers,
-                                                              kefir_ast_storage_class_specifier_extern(mem)));
+                                                              kefir_ast_storage_class_specifier_extern(mem, NULL)));
         REQUIRE_OK(
-            kefir_ast_declarator_specifier_list_append(mem, &decl1->specifiers, kefir_ast_type_qualifier_const(mem)));
+            kefir_ast_declarator_specifier_list_append(mem, &decl1->specifiers, kefir_ast_type_qualifier_const(mem, NULL)));
         REQUIRE_OK(
-            kefir_ast_declarator_specifier_list_append(mem, &decl1->specifiers, kefir_ast_type_specifier_char(mem)));
+            kefir_ast_declarator_specifier_list_append(mem, &decl1->specifiers, kefir_ast_type_specifier_char(mem, NULL)));
 
         struct kefir_ast_declaration *decl2 = kefir_ast_new_single_declaration_noarena(
             mem, kefir_ast_declarator_identifier_noarena(mem, context->symbols, "length"),
             kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 0))), NULL);
         REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &decl2->specifiers,
-                                                              kefir_ast_type_specifier_unsigned(mem)));
+                                                              kefir_ast_type_specifier_unsigned(mem, NULL)));
 
         struct kefir_ast_expression_statement *body = kefir_ast_new_expression_statement_noarena(
             mem, KEFIR_AST_NODE_BASE(kefir_ast_new_unary_operation_noarena(
@@ -111,11 +111,11 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
             mem, kefir_ast_declarator_pointer_noarena(mem, kefir_ast_declarator_identifier_noarena(mem, context->symbols, "flag")),
             NULL, NULL);
         REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &decl1->specifiers,
-                                                              kefir_ast_storage_class_specifier_extern(mem)));
+                                                              kefir_ast_storage_class_specifier_extern(mem, NULL)));
         REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &decl1->specifiers,
-                                                              kefir_ast_type_qualifier_volatile(mem)));
+                                                              kefir_ast_type_qualifier_volatile(mem, NULL)));
         REQUIRE_OK(
-            kefir_ast_declarator_specifier_list_append(mem, &decl1->specifiers, kefir_ast_type_specifier_boolean(mem)));
+            kefir_ast_declarator_specifier_list_append(mem, &decl1->specifiers, kefir_ast_type_specifier_boolean(mem, NULL)));
 
         struct kefir_ast_compound_statement *body = kefir_ast_new_compound_statement_noarena(mem);
         REQUIRE_OK(kefir_ast_compound_statement_append(

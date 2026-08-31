@@ -144,10 +144,10 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     FUNC2("return3", {
         struct kefir_ast_type_name *type_name1 =
             kefir_ast_new_type_name_noarena(mem, kefir_ast_declarator_identifier_noarena(mem, NULL, NULL));
-        struct kefir_ast_structure_specifier *specifier1 = kefir_ast_structure_specifier_init(mem, NULL, NULL, true);
-        struct kefir_ast_structure_declaration_entry *entry1 = kefir_ast_structure_declaration_entry_alloc(mem);
+        struct kefir_ast_structure_specifier *specifier1 = kefir_ast_structure_specifier_init_noarena(mem, NULL, NULL, true);
+        struct kefir_ast_structure_declaration_entry *entry1 = kefir_ast_structure_declaration_entry_alloc_noarena(mem);
         REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &entry1->declaration.specifiers,
-                                                              kefir_ast_type_specifier_char(mem)));
+                                                              kefir_ast_type_specifier_char(mem, NULL)));
         REQUIRE_OK(kefir_ast_structure_declaration_entry_append(
             mem, entry1,
             kefir_ast_declarator_array_noarena(mem, KEFIR_AST_DECLARATOR_ARRAY_BOUNDED,
@@ -156,7 +156,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
             NULL));
         REQUIRE_OK(kefir_ast_structure_specifier_append_entry(mem, specifier1, entry1));
         REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &type_name1->type_decl.specifiers,
-                                                              kefir_ast_type_specifier_struct(mem, specifier1)));
+                                                              kefir_ast_type_specifier_struct(mem, NULL, specifier1)));
         REQUIRE_OK(kefir_ast_analyze_node(mem, &global_context.context, KEFIR_AST_NODE_BASE(type_name1)));
 
         struct kefir_ast_function_type *function_type = NULL;

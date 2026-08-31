@@ -128,7 +128,7 @@ DEFINE_CASE(ast_node_analysis_goto_address_statements1, "AST node analysis - got
     struct kefir_ast_type_name *type_name1 = kefir_ast_new_type_name_noarena(
         &kft_mem, kefir_ast_declarator_pointer_noarena(&kft_mem, kefir_ast_declarator_identifier_noarena(&kft_mem, NULL, NULL)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &type_name1->type_decl.specifiers,
-                                                         kefir_ast_type_specifier_void(&kft_mem)));
+                                                         kefir_ast_type_specifier_void(&kft_mem, NULL)));
 
     struct kefir_ast_goto_statement *goto1 = kefir_ast_new_goto_address_statement_noarena(
         &kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator_noarena(
@@ -761,7 +761,7 @@ DEFINE_CASE(ast_node_analysis_return_statements1, "AST node analysis - return st
     struct kefir_ast_type_name *type_name1 =
         kefir_ast_new_type_name_noarena(&kft_mem, kefir_ast_declarator_identifier_noarena(&kft_mem, NULL, NULL));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &type_name1->type_decl.specifiers,
-                                                         kefir_ast_type_specifier_float(&kft_mem)));
+                                                         kefir_ast_type_specifier_float(&kft_mem, NULL)));
 
     struct kefir_ast_return_statement *return4 =
         kefir_ast_new_return_statement_noarena(&kft_mem, KEFIR_AST_NODE_BASE(type_name1));
@@ -772,7 +772,7 @@ DEFINE_CASE(ast_node_analysis_return_statements1, "AST node analysis - return st
         kefir_ast_declarator_pointer_noarena(&kft_mem, kefir_ast_declarator_identifier_noarena(&kft_mem, context->symbols, "voidptr")),
         NULL, NULL);
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &decl1->specifiers,
-                                                         kefir_ast_type_specifier_void(&kft_mem)));
+                                                         kefir_ast_type_specifier_void(&kft_mem, NULL)));
 
     struct kefir_ast_return_statement *return5 = kefir_ast_new_return_statement_noarena(&kft_mem, KEFIR_AST_NODE_BASE(decl1));
     ASSERT_NOK(kefir_ast_analyze_node(&kft_mem, context, KEFIR_AST_NODE_BASE(return5)));

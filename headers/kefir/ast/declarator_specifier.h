@@ -24,6 +24,7 @@
 #include "kefir/core/mem.h"
 #include "kefir/core/string_pool.h"
 #include "kefir/core/list.h"
+#include "kefir/core/memory_arena.h"
 #include "kefir/ast/constants.h"
 #include "kefir/ast/base.h"
 #include "kefir/ast/attributes.h"
@@ -69,6 +70,7 @@ typedef struct kefir_ast_structure_entry_declarator {
 
 typedef struct kefir_ast_structure_declaration_entry {
     kefir_bool_t is_static_assertion;
+    kefir_bool_t arena_allocated;
     union {
         struct kefir_ast_static_assertion *static_assertion;
         struct {
@@ -81,10 +83,11 @@ typedef struct kefir_ast_structure_declaration_entry {
 typedef struct kefir_ast_structure_specifier {
     const char *identifier;
     kefir_bool_t complete;
+    kefir_bool_t arena_allocated;
     struct kefir_list entries;
 } kefir_ast_structure_specifier_t;
 
-struct kefir_ast_structure_specifier *kefir_ast_structure_specifier_init(struct kefir_mem *, struct kefir_string_pool *,
+struct kefir_ast_structure_specifier *kefir_ast_structure_specifier_init(struct kefir_mem *, struct kefir_memory_arena *, struct kefir_string_pool *,
                                                                          const char *, kefir_bool_t);
 
 kefir_result_t kefir_ast_structure_specifier_free(struct kefir_mem *, struct kefir_ast_structure_specifier *);
@@ -92,10 +95,10 @@ kefir_result_t kefir_ast_structure_specifier_free(struct kefir_mem *, struct kef
 kefir_result_t kefir_ast_structure_specifier_append_entry(struct kefir_mem *, struct kefir_ast_structure_specifier *,
                                                           struct kefir_ast_structure_declaration_entry *);
 
-struct kefir_ast_structure_declaration_entry *kefir_ast_structure_declaration_entry_alloc(struct kefir_mem *);
+struct kefir_ast_structure_declaration_entry *kefir_ast_structure_declaration_entry_alloc(struct kefir_mem *, struct kefir_memory_arena *);
 
 struct kefir_ast_structure_declaration_entry *kefir_ast_structure_declaration_entry_alloc_assert(
-    struct kefir_mem *, struct kefir_ast_static_assertion *);
+    struct kefir_mem *, struct kefir_memory_arena *, struct kefir_ast_static_assertion *);
 
 kefir_result_t kefir_ast_structure_declaration_entry_free(struct kefir_mem *,
                                                           struct kefir_ast_structure_declaration_entry *);
@@ -114,6 +117,7 @@ typedef struct kefir_ast_enum_specifier_entry {
 typedef struct kefir_ast_enum_specifier {
     const char *identifier;
     kefir_bool_t complete;
+    kefir_bool_t arena_allocated;
     struct kefir_list entries;
 
     struct {
@@ -122,7 +126,7 @@ typedef struct kefir_ast_enum_specifier {
     } type_spec;
 } kefir_ast_enum_specifier_t;
 
-struct kefir_ast_enum_specifier *kefir_ast_enum_specifier_init(struct kefir_mem *, struct kefir_string_pool *,
+struct kefir_ast_enum_specifier *kefir_ast_enum_specifier_init(struct kefir_mem *, struct kefir_memory_arena *, struct kefir_string_pool *,
                                                                const char *, kefir_bool_t,
                                                                struct kefir_ast_declarator_specifier_list *);
 
@@ -150,7 +154,8 @@ typedef struct kefir_ast_type_specifier {
 } kefir_ast_type_specifier_t;
 
 typedef struct kefir_ast_declarator_specifier {
-    kefir_uint32_t refcount;
+    kefir_uint32_t arena_allocated : 1,
+                   refcount : 31;
     kefir_ast_declarator_specifier_class_t klass;
     union {
         const struct kefir_ast_type_specifier *type_specifier;
@@ -163,63 +168,63 @@ typedef struct kefir_ast_declarator_specifier {
     struct kefir_source_location source_location;
 } kefir_ast_declarator_specifier_t;
 
-struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_void(struct kefir_mem *);
-struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_char(struct kefir_mem *);
-struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_short(struct kefir_mem *);
-struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_int(struct kefir_mem *);
-struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_long(struct kefir_mem *);
-struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_float(struct kefir_mem *);
-struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_double(struct kefir_mem *);
-struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_signed(struct kefir_mem *);
-struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_unsigned(struct kefir_mem *);
-struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_unsigned_override(struct kefir_mem *);
-struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_boolean(struct kefir_mem *);
-struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_complex(struct kefir_mem *);
-struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_imaginary(struct kefir_mem *);
-struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_decimal32(struct kefir_mem *);
-struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_decimal64(struct kefir_mem *);
-struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_decimal128(struct kefir_mem *);
-struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_float32(struct kefir_mem *);
-struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_float64(struct kefir_mem *);
-struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_float80(struct kefir_mem *);
-struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_float32x(struct kefir_mem *);
-struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_float64x(struct kefir_mem *);
-struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_decimal64x(struct kefir_mem *);
-struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_int128(struct kefir_mem *);
-struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_atomic(struct kefir_mem *,
+struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_void(struct kefir_mem *, struct kefir_memory_arena *);
+struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_char(struct kefir_mem *, struct kefir_memory_arena *);
+struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_short(struct kefir_mem *, struct kefir_memory_arena *);
+struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_int(struct kefir_mem *, struct kefir_memory_arena *);
+struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_long(struct kefir_mem *, struct kefir_memory_arena *);
+struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_float(struct kefir_mem *, struct kefir_memory_arena *);
+struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_double(struct kefir_mem *, struct kefir_memory_arena *);
+struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_signed(struct kefir_mem *, struct kefir_memory_arena *);
+struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_unsigned(struct kefir_mem *, struct kefir_memory_arena *);
+struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_unsigned_override(struct kefir_mem *, struct kefir_memory_arena *);
+struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_boolean(struct kefir_mem *, struct kefir_memory_arena *);
+struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_complex(struct kefir_mem *, struct kefir_memory_arena *);
+struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_imaginary(struct kefir_mem *, struct kefir_memory_arena *);
+struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_decimal32(struct kefir_mem *, struct kefir_memory_arena *);
+struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_decimal64(struct kefir_mem *, struct kefir_memory_arena *);
+struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_decimal128(struct kefir_mem *, struct kefir_memory_arena *);
+struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_float32(struct kefir_mem *, struct kefir_memory_arena *);
+struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_float64(struct kefir_mem *, struct kefir_memory_arena *);
+struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_float80(struct kefir_mem *, struct kefir_memory_arena *);
+struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_float32x(struct kefir_mem *, struct kefir_memory_arena *);
+struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_float64x(struct kefir_mem *, struct kefir_memory_arena *);
+struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_decimal64x(struct kefir_mem *, struct kefir_memory_arena *);
+struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_int128(struct kefir_mem *, struct kefir_memory_arena *);
+struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_atomic(struct kefir_mem *, struct kefir_memory_arena *,
                                                                        struct kefir_ast_node_base *);
-struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_struct(struct kefir_mem *,
+struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_struct(struct kefir_mem *, struct kefir_memory_arena *,
                                                                        struct kefir_ast_structure_specifier *);
-struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_union(struct kefir_mem *,
+struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_union(struct kefir_mem *, struct kefir_memory_arena *,
                                                                       struct kefir_ast_structure_specifier *);
-struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_enum(struct kefir_mem *,
+struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_enum(struct kefir_mem *, struct kefir_memory_arena *,
                                                                      struct kefir_ast_enum_specifier *);
-struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_typedef(struct kefir_mem *, struct kefir_string_pool *,
+struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_typedef(struct kefir_mem *, struct kefir_memory_arena *, struct kefir_string_pool *,
                                                                         const char *);
 
-struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_typeof(struct kefir_mem *, kefir_bool_t,
+struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_typeof(struct kefir_mem *, struct kefir_memory_arena *, kefir_bool_t,
                                                                        struct kefir_ast_node_base *);
-struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_auto_type(struct kefir_mem *);
-struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_bitint(struct kefir_mem *,
+struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_auto_type(struct kefir_mem *, struct kefir_memory_arena *);
+struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_bitint(struct kefir_mem *, struct kefir_memory_arena *,
                                                                        struct kefir_ast_node_base *);
 
-struct kefir_ast_declarator_specifier *kefir_ast_storage_class_specifier_typedef(struct kefir_mem *);
-struct kefir_ast_declarator_specifier *kefir_ast_storage_class_specifier_extern(struct kefir_mem *);
-struct kefir_ast_declarator_specifier *kefir_ast_storage_class_specifier_static(struct kefir_mem *);
-struct kefir_ast_declarator_specifier *kefir_ast_storage_class_specifier_constexpr(struct kefir_mem *);
-struct kefir_ast_declarator_specifier *kefir_ast_storage_class_specifier_thread_local(struct kefir_mem *);
-struct kefir_ast_declarator_specifier *kefir_ast_storage_class_specifier_auto(struct kefir_mem *);
-struct kefir_ast_declarator_specifier *kefir_ast_storage_class_specifier_register(struct kefir_mem *);
+struct kefir_ast_declarator_specifier *kefir_ast_storage_class_specifier_typedef(struct kefir_mem *, struct kefir_memory_arena *);
+struct kefir_ast_declarator_specifier *kefir_ast_storage_class_specifier_extern(struct kefir_mem *, struct kefir_memory_arena *);
+struct kefir_ast_declarator_specifier *kefir_ast_storage_class_specifier_static(struct kefir_mem *, struct kefir_memory_arena *);
+struct kefir_ast_declarator_specifier *kefir_ast_storage_class_specifier_constexpr(struct kefir_mem *, struct kefir_memory_arena *);
+struct kefir_ast_declarator_specifier *kefir_ast_storage_class_specifier_thread_local(struct kefir_mem *, struct kefir_memory_arena *);
+struct kefir_ast_declarator_specifier *kefir_ast_storage_class_specifier_auto(struct kefir_mem *, struct kefir_memory_arena *);
+struct kefir_ast_declarator_specifier *kefir_ast_storage_class_specifier_register(struct kefir_mem *, struct kefir_memory_arena *);
 
-struct kefir_ast_declarator_specifier *kefir_ast_type_qualifier_const(struct kefir_mem *);
-struct kefir_ast_declarator_specifier *kefir_ast_type_qualifier_restrict(struct kefir_mem *);
-struct kefir_ast_declarator_specifier *kefir_ast_type_qualifier_volatile(struct kefir_mem *);
-struct kefir_ast_declarator_specifier *kefir_ast_type_qualifier_atomic(struct kefir_mem *);
+struct kefir_ast_declarator_specifier *kefir_ast_type_qualifier_const(struct kefir_mem *, struct kefir_memory_arena *);
+struct kefir_ast_declarator_specifier *kefir_ast_type_qualifier_restrict(struct kefir_mem *, struct kefir_memory_arena *);
+struct kefir_ast_declarator_specifier *kefir_ast_type_qualifier_volatile(struct kefir_mem *, struct kefir_memory_arena *);
+struct kefir_ast_declarator_specifier *kefir_ast_type_qualifier_atomic(struct kefir_mem *, struct kefir_memory_arena *);
 
-struct kefir_ast_declarator_specifier *kefir_ast_function_specifier_inline(struct kefir_mem *);
-struct kefir_ast_declarator_specifier *kefir_ast_function_specifier_noreturn(struct kefir_mem *);
+struct kefir_ast_declarator_specifier *kefir_ast_function_specifier_inline(struct kefir_mem *, struct kefir_memory_arena *);
+struct kefir_ast_declarator_specifier *kefir_ast_function_specifier_noreturn(struct kefir_mem *, struct kefir_memory_arena *);
 
-struct kefir_ast_declarator_specifier *kefir_ast_alignment_specifier(struct kefir_mem *, struct kefir_ast_node_base *);
+struct kefir_ast_declarator_specifier *kefir_ast_alignment_specifier(struct kefir_mem *, struct kefir_memory_arena *, struct kefir_ast_node_base *);
 
 struct kefir_ast_declarator_specifier *kefir_ast_declarator_specifier_ref(
     struct kefir_ast_declarator_specifier *);

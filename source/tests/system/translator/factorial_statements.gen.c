@@ -81,7 +81,7 @@ static kefir_result_t define_factorial_function(struct kefir_mem *mem, struct fu
         mem, kefir_ast_declarator_identifier_noarena(mem, context_manager->current->symbols, "result"),
         kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 1))), NULL);
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &declarationResult->specifiers,
-                                                          kefir_ast_type_specifier_int(mem)));
+                                                          kefir_ast_type_specifier_int(mem, NULL)));
     REQUIRE_OK(kefir_ast_compound_statement_append(mem, compound1, KEFIR_AST_NODE_BASE(declarationResult)));
 
     struct kefir_ast_node_base *loopCondition = KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation_noarena(

@@ -80,16 +80,16 @@ static kefir_result_t define_conditional_function(struct kefir_mem *mem, struct 
         mem, kefir_ast_declarator_identifier_noarena(mem, context_manager->current->symbols, "index"),
         kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 0))), NULL);
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &declarationIndex->specifiers,
-                                                          kefir_ast_type_specifier_unsigned(mem)));
+                                                          kefir_ast_type_specifier_unsigned(mem, NULL)));
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &declarationIndex->specifiers,
-                                                          kefir_ast_type_specifier_int(mem)));
+                                                          kefir_ast_type_specifier_int(mem, NULL)));
     REQUIRE_OK(kefir_ast_compound_statement_append(mem, compound0, KEFIR_AST_NODE_BASE(declarationIndex)));
 
     struct kefir_ast_declaration *declarationSum = kefir_ast_new_single_declaration_noarena(
         mem, kefir_ast_declarator_identifier_noarena(mem, context_manager->current->symbols, "sum"),
         kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 0))), NULL);
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &declarationSum->specifiers,
-                                                          kefir_ast_type_specifier_double(mem)));
+                                                          kefir_ast_type_specifier_double(mem, NULL)));
     REQUIRE_OK(kefir_ast_compound_statement_append(mem, compound0, KEFIR_AST_NODE_BASE(declarationSum)));
 
     struct kefir_ast_node_base *loop_condition = KEFIR_AST_NODE_BASE(kefir_ast_new_labeled_statement_noarena(

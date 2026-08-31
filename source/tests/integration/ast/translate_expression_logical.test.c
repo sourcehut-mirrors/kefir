@@ -81,7 +81,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     struct kefir_ast_type_name *type_name1 = kefir_ast_new_type_name_noarena(
         mem, kefir_ast_declarator_pointer_noarena(mem, kefir_ast_declarator_identifier_noarena(mem, NULL, NULL)));
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &type_name1->type_decl.specifiers,
-                                                          kefir_ast_type_specifier_void(mem)));
+                                                          kefir_ast_type_specifier_void(mem, NULL)));
 
     FUNC2("logical_and3", {
         BINARY_NODE(KEFIR_AST_OPERATION_LOGICAL_AND, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long_noarena(mem, 4096)),
@@ -111,7 +111,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     struct kefir_ast_type_name *type_name2 = kefir_ast_new_type_name_noarena(
         mem, kefir_ast_declarator_pointer_noarena(mem, kefir_ast_declarator_identifier_noarena(mem, NULL, NULL)));
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &type_name2->type_decl.specifiers,
-                                                          kefir_ast_type_specifier_void(mem)));
+                                                          kefir_ast_type_specifier_void(mem, NULL)));
 
     FUNC2("logical_or3", {
         BINARY_NODE(KEFIR_AST_OPERATION_LOGICAL_OR, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long_noarena(mem, 8192)),

@@ -79,7 +79,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     struct kefir_ast_type_name *type_name1 = kefir_ast_new_type_name_noarena(
         mem, kefir_ast_declarator_pointer_noarena(mem, kefir_ast_declarator_identifier_noarena(mem, NULL, NULL)));
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &type_name1->type_decl.specifiers,
-                                                          kefir_ast_type_specifier_void(mem)));
+                                                          kefir_ast_type_specifier_void(mem, NULL)));
 
     FUNC("conditional2", {
         struct kefir_ast_node_base *node = KEFIR_AST_NODE_BASE(kefir_ast_new_conditional_operator_noarena(

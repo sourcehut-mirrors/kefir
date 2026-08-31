@@ -28,7 +28,7 @@ static kefir_result_t scan_specifiers(struct kefir_mem *mem, struct kefir_parser
     kefir_result_t res = parser->ruleset.declaration_specifier_list(mem, parser, specifiers, attributes);
     if (res == KEFIR_NO_MATCH && parser->configuration->implicit_function_definition_int) {
         res = KEFIR_OK;
-        struct kefir_ast_declarator_specifier *specifier = kefir_ast_type_specifier_int(mem);
+        struct kefir_ast_declarator_specifier *specifier = kefir_ast_type_specifier_int(mem, parser->ast_arena);
         REQUIRE_CHAIN_SET(&res, specifier != NULL,
                           KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate AST int type specifier"));
         REQUIRE_CHAIN(&res, kefir_ast_declarator_specifier_list_append(mem, specifiers, specifier));

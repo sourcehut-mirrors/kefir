@@ -39,10 +39,10 @@
 static struct kefir_ast_function_definition *define_sum_function(struct kefir_mem *mem,
                                                                  const struct kefir_ast_context *context) {
     struct kefir_ast_structure_specifier *specifier1 =
-        kefir_ast_structure_specifier_init(mem, context->symbols, NULL, true);
-    struct kefir_ast_structure_declaration_entry *entry1 = kefir_ast_structure_declaration_entry_alloc(mem);
+        kefir_ast_structure_specifier_init_noarena(mem, context->symbols, NULL, true);
+    struct kefir_ast_structure_declaration_entry *entry1 = kefir_ast_structure_declaration_entry_alloc_noarena(mem);
     REQUIRE(kefir_ast_declarator_specifier_list_append(mem, &entry1->declaration.specifiers,
-                                                       kefir_ast_type_specifier_double(mem)) == KEFIR_OK,
+                                                       kefir_ast_type_specifier_double(mem, NULL)) == KEFIR_OK,
             NULL);
     REQUIRE(kefir_ast_structure_declaration_entry_append(
                 mem, entry1, kefir_ast_declarator_identifier_noarena(mem, context->symbols, "x"), NULL) == KEFIR_OK,
@@ -62,7 +62,7 @@ static struct kefir_ast_function_definition *define_sum_function(struct kefir_me
         mem, kefir_ast_declarator_pointer_noarena(mem, kefir_ast_declarator_identifier_noarena(mem, context->symbols, "value")), NULL,
         NULL);
     REQUIRE(kefir_ast_declarator_specifier_list_append(mem, &function1_param1->specifiers,
-                                                       kefir_ast_type_specifier_struct(mem, specifier1)) == KEFIR_OK,
+                                                       kefir_ast_type_specifier_struct(mem, NULL, specifier1)) == KEFIR_OK,
             NULL);
     REQUIRE(
         kefir_list_insert_after(mem, &function1_decl->function->parameters,
@@ -93,7 +93,7 @@ static struct kefir_ast_function_definition *define_sum_function(struct kefir_me
     struct kefir_ast_function_definition *function1 =
         kefir_ast_new_function_definition_noarena(mem, function1_decl, function1_body);
     REQUIRE(kefir_ast_declarator_specifier_list_append(mem, &function1->specifiers,
-                                                       kefir_ast_type_specifier_void(mem)) == KEFIR_OK,
+                                                       kefir_ast_type_specifier_void(mem, NULL)) == KEFIR_OK,
             NULL);
 
     return function1;

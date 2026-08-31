@@ -61,7 +61,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     struct kefir_ast_declaration *function1_param1 = kefir_ast_new_single_declaration_noarena(
         mem, kefir_ast_declarator_identifier_noarena(mem, global_context.context.symbols, "i"), NULL, NULL);
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &function1_param1->specifiers,
-                                                          kefir_ast_type_specifier_int(mem)));
+                                                          kefir_ast_type_specifier_int(mem, NULL)));
 
     struct kefir_ast_compound_statement *function1_body = kefir_ast_new_compound_statement_noarena(mem);
 
@@ -95,7 +95,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     struct kefir_ast_function_definition *function1 =
         kefir_ast_new_function_definition_noarena(mem, function1_decl, function1_body);
     REQUIRE_OK(
-        kefir_ast_declarator_specifier_list_append(mem, &function1->specifiers, kefir_ast_type_specifier_int(mem)));
+        kefir_ast_declarator_specifier_list_append(mem, &function1->specifiers, kefir_ast_type_specifier_int(mem, NULL)));
     REQUIRE_OK(kefir_ast_function_definition_append_declaration(mem, function1, KEFIR_AST_NODE_BASE(function1_param1)));
 
     REQUIRE_OK(kefir_ast_analyze_node(mem, &global_context.context, KEFIR_AST_NODE_BASE(function1)));

@@ -67,7 +67,7 @@ static kefir_result_t define_conditional_function(struct kefir_mem *mem, struct 
         mem, kefir_ast_declarator_identifier_noarena(mem, context_manager->current->symbols, "result"),
         kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char_noarena(mem, '\0'))), NULL);
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &declarationResult->specifiers,
-                                                          kefir_ast_type_specifier_char(mem)));
+                                                          kefir_ast_type_specifier_char(mem, NULL)));
     REQUIRE_OK(kefir_ast_compound_statement_append(mem, compound0, KEFIR_AST_NODE_BASE(declarationResult)));
 
     struct kefir_ast_compound_statement *compound1 = kefir_ast_new_compound_statement_noarena(mem);

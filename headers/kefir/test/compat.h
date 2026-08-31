@@ -90,4 +90,8 @@
 #define kefir_ast_declarator_array_noarena(_mem, _type, _len, _decl) (kefir_ast_declarator_array((_mem), NULL, (_type), (_len), (_decl)))
 #define kefir_ast_declarator_function_noarena(_mem, _decl) (kefir_ast_declarator_function((_mem), NULL, (_decl)))
 
+#define kefir_ast_enum_specifier_init_noarena(_mem, _strings, _id, _complete, _type_spec) (kefir_ast_enum_specifier_init((_mem), NULL, (_strings), (_id), (_complete), (_type_spec)))
+#define kefir_ast_structure_specifier_init_noarena(_mem, _strings, _id, _complete) (kefir_ast_structure_specifier_init((_mem), NULL, (_strings), (_id), (_complete)))
+#define kefir_ast_structure_declaration_entry_alloc_noarena(_mem) (kefir_ast_structure_declaration_entry_alloc((_mem), NULL))
+
 #endif

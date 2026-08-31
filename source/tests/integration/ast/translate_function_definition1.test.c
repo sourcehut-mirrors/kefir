@@ -59,7 +59,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     struct kefir_ast_declaration *function1_param1_list = kefir_ast_new_single_declaration_noarena(
         mem, kefir_ast_declarator_identifier_noarena(mem, global_context.context.symbols, "a"), NULL, NULL);
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &function1_param1_list->specifiers,
-                                                          kefir_ast_type_specifier_int(mem)));
+                                                          kefir_ast_type_specifier_int(mem, NULL)));
     REQUIRE_OK(kefir_list_insert_after(mem, &function1_decl->function->parameters,
                                        kefir_list_tail(&function1_decl->function->parameters),
                                        KEFIR_AST_NODE_BASE(function1_param1_list)));
@@ -67,7 +67,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     struct kefir_ast_declaration *function1_param2_list = kefir_ast_new_single_declaration_noarena(
         mem, kefir_ast_declarator_identifier_noarena(mem, global_context.context.symbols, "b"), NULL, NULL);
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &function1_param2_list->specifiers,
-                                                          kefir_ast_type_specifier_int(mem)));
+                                                          kefir_ast_type_specifier_int(mem, NULL)));
     REQUIRE_OK(kefir_list_insert_after(mem, &function1_decl->function->parameters,
                                        kefir_list_tail(&function1_decl->function->parameters),
                                        KEFIR_AST_NODE_BASE(function1_param2_list)));
@@ -84,7 +84,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     struct kefir_ast_function_definition *function1 =
         kefir_ast_new_function_definition_noarena(mem, function1_decl, function1_body);
     REQUIRE_OK(
-        kefir_ast_declarator_specifier_list_append(mem, &function1->specifiers, kefir_ast_type_specifier_int(mem)));
+        kefir_ast_declarator_specifier_list_append(mem, &function1->specifiers, kefir_ast_type_specifier_int(mem, NULL)));
 
     REQUIRE_OK(kefir_ast_analyze_node(mem, &global_context.context, KEFIR_AST_NODE_BASE(function1)));
 

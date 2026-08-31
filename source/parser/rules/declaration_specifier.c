@@ -38,25 +38,25 @@ static kefir_result_t scan_storage_class(struct kefir_mem *mem, struct kefir_par
     struct kefir_ast_declarator_specifier *specifier = NULL;
     if (PARSER_TOKEN_IS_KEYWORD(parser, 0, KEFIR_KEYWORD_TYPEDEF)) {
         REQUIRE_OK(PARSER_SHIFT(parser));
-        specifier = kefir_ast_storage_class_specifier_typedef(mem);
+        specifier = kefir_ast_storage_class_specifier_typedef(mem, parser->ast_arena);
     } else if (PARSER_TOKEN_IS_KEYWORD(parser, 0, KEFIR_KEYWORD_EXTERN)) {
         REQUIRE_OK(PARSER_SHIFT(parser));
-        specifier = kefir_ast_storage_class_specifier_extern(mem);
+        specifier = kefir_ast_storage_class_specifier_extern(mem, parser->ast_arena);
     } else if (PARSER_TOKEN_IS_KEYWORD(parser, 0, KEFIR_KEYWORD_STATIC)) {
         REQUIRE_OK(PARSER_SHIFT(parser));
-        specifier = kefir_ast_storage_class_specifier_static(mem);
+        specifier = kefir_ast_storage_class_specifier_static(mem, parser->ast_arena);
     } else if (PARSER_TOKEN_IS_KEYWORD(parser, 0, KEFIR_KEYWORD_CONSTEXPR)) {
         REQUIRE_OK(PARSER_SHIFT(parser));
-        specifier = kefir_ast_storage_class_specifier_constexpr(mem);
+        specifier = kefir_ast_storage_class_specifier_constexpr(mem, parser->ast_arena);
     } else if (PARSER_TOKEN_IS_KEYWORD(parser, 0, KEFIR_KEYWORD_THREAD_LOCAL)) {
         REQUIRE_OK(PARSER_SHIFT(parser));
-        specifier = kefir_ast_storage_class_specifier_thread_local(mem);
+        specifier = kefir_ast_storage_class_specifier_thread_local(mem, parser->ast_arena);
     } else if (PARSER_TOKEN_IS_KEYWORD(parser, 0, KEFIR_KEYWORD_AUTO)) {
         REQUIRE_OK(PARSER_SHIFT(parser));
-        specifier = kefir_ast_storage_class_specifier_auto(mem);
+        specifier = kefir_ast_storage_class_specifier_auto(mem, parser->ast_arena);
     } else if (PARSER_TOKEN_IS_KEYWORD(parser, 0, KEFIR_KEYWORD_REGISTER)) {
         REQUIRE_OK(PARSER_SHIFT(parser));
-        specifier = kefir_ast_storage_class_specifier_register(mem);
+        specifier = kefir_ast_storage_class_specifier_register(mem, parser->ast_arena);
     } else {
         return KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to match storage class specifier");
     }
@@ -86,7 +86,7 @@ static kefir_result_t scan_struct_field_declaration(struct kefir_mem *mem, struc
     kefir_result_t res = KEFIR_OK;
     SCAN_ATTRIBUTES(&res, mem, parser, &attributes);
 
-    struct kefir_ast_structure_declaration_entry *entry = kefir_ast_structure_declaration_entry_alloc(mem);
+    struct kefir_ast_structure_declaration_entry *entry = kefir_ast_structure_declaration_entry_alloc(mem, parser->ast_arena);
     REQUIRE_ELSE(entry != NULL, {
         kefir_ast_node_attributes_free(mem, &attributes);
         return KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST structure declaration entry");
@@ -202,7 +202,7 @@ static kefir_result_t scan_struct_static_assert(struct kefir_mem *mem, struct ke
         return res;
     });
 
-    *entry = kefir_ast_structure_declaration_entry_alloc_assert(mem, static_assertion);
+    *entry = kefir_ast_structure_declaration_entry_alloc_assert(mem, parser->ast_arena, static_assertion);
     REQUIRE_ELSE(*entry != NULL, {
         KEFIR_AST_NODE_FREE(mem, static_assertion_node);
         return KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST declaration static assertion entry");
@@ -288,7 +288,7 @@ static kefir_result_t scan_struct_specifier(struct kefir_mem *mem, struct kefir_
     });
 
     struct kefir_ast_structure_specifier *specifier =
-        kefir_ast_structure_specifier_init(mem, parser->symbols, identifier, complete);
+        kefir_ast_structure_specifier_init(mem, parser->ast_arena, parser->symbols, identifier, complete);
     REQUIRE_ELSE(specifier != NULL, {
         kefir_ast_node_attributes_free(mem, &attributes);
         return KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST structure specifier");
@@ -304,9 +304,9 @@ static kefir_result_t scan_struct_specifier(struct kefir_mem *mem, struct kefir_
 
     struct kefir_ast_declarator_specifier *decl_specifier = NULL;
     if (structure) {
-        decl_specifier = kefir_ast_type_specifier_struct(mem, specifier);
+        decl_specifier = kefir_ast_type_specifier_struct(mem, parser->ast_arena, specifier);
     } else {
-        decl_specifier = kefir_ast_type_specifier_union(mem, specifier);
+        decl_specifier = kefir_ast_type_specifier_union(mem, parser->ast_arena, specifier);
     }
     REQUIRE_ELSE(decl_specifier != NULL, {
         kefir_ast_structure_specifier_free(mem, specifier);
@@ -470,7 +470,7 @@ static kefir_result_t scan_enum_specifier(struct kefir_mem *mem, struct kefir_pa
     }
 
     struct kefir_ast_enum_specifier *specifier = kefir_ast_enum_specifier_init(
-        mem, parser->symbols, identifier, complete, enum_type_spec_present ? &enum_type_spec : NULL);
+        mem, parser->ast_arena, parser->symbols, identifier, complete, enum_type_spec_present ? &enum_type_spec : NULL);
     REQUIRE_ELSE(specifier != NULL, {
         if (enum_type_spec_present) {
             kefir_ast_declarator_specifier_list_free(mem, &enum_type_spec);
@@ -496,7 +496,7 @@ static kefir_result_t scan_enum_specifier(struct kefir_mem *mem, struct kefir_pa
         });
     }
 
-    struct kefir_ast_declarator_specifier *decl_specifier = kefir_ast_type_specifier_enum(mem, specifier);
+    struct kefir_ast_declarator_specifier *decl_specifier = kefir_ast_type_specifier_enum(mem, parser->ast_arena, specifier);
     REQUIRE_ELSE(decl_specifier != NULL, {
         kefir_ast_enum_specifier_free(mem, specifier);
         kefir_ast_node_attributes_free(mem, &attributes);
@@ -554,73 +554,73 @@ static kefir_result_t scan_type_specifier(struct kefir_mem *mem, struct kefir_pa
     struct kefir_ast_declarator_specifier *specifier = NULL;
     if (PARSER_TOKEN_IS_KEYWORD(parser, 0, KEFIR_KEYWORD_VOID)) {
         REQUIRE_OK(PARSER_SHIFT(parser));
-        specifier = kefir_ast_type_specifier_void(mem);
+        specifier = kefir_ast_type_specifier_void(mem, parser->ast_arena);
     } else if (PARSER_TOKEN_IS_KEYWORD(parser, 0, KEFIR_KEYWORD_CHAR)) {
         REQUIRE_OK(PARSER_SHIFT(parser));
-        specifier = kefir_ast_type_specifier_char(mem);
+        specifier = kefir_ast_type_specifier_char(mem, parser->ast_arena);
     } else if (PARSER_TOKEN_IS_KEYWORD(parser, 0, KEFIR_KEYWORD_SHORT)) {
         REQUIRE_OK(PARSER_SHIFT(parser));
-        specifier = kefir_ast_type_specifier_short(mem);
+        specifier = kefir_ast_type_specifier_short(mem, parser->ast_arena);
     } else if (PARSER_TOKEN_IS_KEYWORD(parser, 0, KEFIR_KEYWORD_INT)) {
         REQUIRE_OK(PARSER_SHIFT(parser));
-        specifier = kefir_ast_type_specifier_int(mem);
+        specifier = kefir_ast_type_specifier_int(mem, parser->ast_arena);
     } else if (PARSER_TOKEN_IS_KEYWORD(parser, 0, KEFIR_KEYWORD_LONG)) {
         REQUIRE_OK(PARSER_SHIFT(parser));
-        specifier = kefir_ast_type_specifier_long(mem);
+        specifier = kefir_ast_type_specifier_long(mem, parser->ast_arena);
     } else if (PARSER_TOKEN_IS_KEYWORD(parser, 0, KEFIR_KEYWORD_FLOAT)) {
         REQUIRE_OK(PARSER_SHIFT(parser));
-        specifier = kefir_ast_type_specifier_float(mem);
+        specifier = kefir_ast_type_specifier_float(mem, parser->ast_arena);
     } else if (PARSER_TOKEN_IS_KEYWORD(parser, 0, KEFIR_KEYWORD_DOUBLE)) {
         REQUIRE_OK(PARSER_SHIFT(parser));
-        specifier = kefir_ast_type_specifier_double(mem);
+        specifier = kefir_ast_type_specifier_double(mem, parser->ast_arena);
     } else if (PARSER_TOKEN_IS_KEYWORD(parser, 0, KEFIR_KEYWORD_SIGNED)) {
         REQUIRE_OK(PARSER_SHIFT(parser));
-        specifier = kefir_ast_type_specifier_signed(mem);
+        specifier = kefir_ast_type_specifier_signed(mem, parser->ast_arena);
     } else if (PARSER_TOKEN_IS_KEYWORD(parser, 0, KEFIR_KEYWORD_UNSIGNED)) {
         REQUIRE_OK(PARSER_SHIFT(parser));
-        specifier = kefir_ast_type_specifier_unsigned(mem);
+        specifier = kefir_ast_type_specifier_unsigned(mem, parser->ast_arena);
     } else if (PARSER_TOKEN_IS_KEYWORD(parser, 0, KEFIR_KEYWORD_UNSIGNED_OVERRIDE)) {
         REQUIRE_OK(PARSER_SHIFT(parser));
-        specifier = kefir_ast_type_specifier_unsigned_override(mem);
+        specifier = kefir_ast_type_specifier_unsigned_override(mem, parser->ast_arena);
     } else if (PARSER_TOKEN_IS_KEYWORD(parser, 0, KEFIR_KEYWORD_BOOL)) {
         REQUIRE_OK(PARSER_SHIFT(parser));
-        specifier = kefir_ast_type_specifier_boolean(mem);
+        specifier = kefir_ast_type_specifier_boolean(mem, parser->ast_arena);
     } else if (PARSER_TOKEN_IS_KEYWORD(parser, 0, KEFIR_KEYWORD_COMPLEX)) {
         REQUIRE_OK(PARSER_SHIFT(parser));
-        specifier = kefir_ast_type_specifier_complex(mem);
+        specifier = kefir_ast_type_specifier_complex(mem, parser->ast_arena);
     } else if (PARSER_TOKEN_IS_KEYWORD(parser, 0, KEFIR_KEYWORD_IMAGINARY)) {
         REQUIRE_OK(PARSER_SHIFT(parser));
-        specifier = kefir_ast_type_specifier_imaginary(mem);
+        specifier = kefir_ast_type_specifier_imaginary(mem, parser->ast_arena);
     } else if (PARSER_TOKEN_IS_KEYWORD(parser, 0, KEFIR_KEYWORD_DECIMAL32)) {
         REQUIRE_OK(PARSER_SHIFT(parser));
-        specifier = kefir_ast_type_specifier_decimal32(mem);
+        specifier = kefir_ast_type_specifier_decimal32(mem, parser->ast_arena);
     } else if (PARSER_TOKEN_IS_KEYWORD(parser, 0, KEFIR_KEYWORD_DECIMAL64)) {
         REQUIRE_OK(PARSER_SHIFT(parser));
-        specifier = kefir_ast_type_specifier_decimal64(mem);
+        specifier = kefir_ast_type_specifier_decimal64(mem, parser->ast_arena);
     } else if (PARSER_TOKEN_IS_KEYWORD(parser, 0, KEFIR_KEYWORD_DECIMAL128)) {
         REQUIRE_OK(PARSER_SHIFT(parser));
-        specifier = kefir_ast_type_specifier_decimal128(mem);
+        specifier = kefir_ast_type_specifier_decimal128(mem, parser->ast_arena);
     } else if (PARSER_TOKEN_IS_KEYWORD(parser, 0, KEFIR_KEYWORD_FLOAT32)) {
         REQUIRE_OK(PARSER_SHIFT(parser));
-        specifier = kefir_ast_type_specifier_float32(mem);
+        specifier = kefir_ast_type_specifier_float32(mem, parser->ast_arena);
     } else if (PARSER_TOKEN_IS_KEYWORD(parser, 0, KEFIR_KEYWORD_FLOAT64)) {
         REQUIRE_OK(PARSER_SHIFT(parser));
-        specifier = kefir_ast_type_specifier_float64(mem);
+        specifier = kefir_ast_type_specifier_float64(mem, parser->ast_arena);
     } else if (PARSER_TOKEN_IS_KEYWORD(parser, 0, KEFIR_KEYWORD_FLOAT80)) {
         REQUIRE_OK(PARSER_SHIFT(parser));
-        specifier = kefir_ast_type_specifier_float80(mem);
+        specifier = kefir_ast_type_specifier_float80(mem, parser->ast_arena);
     } else if (PARSER_TOKEN_IS_KEYWORD(parser, 0, KEFIR_KEYWORD_FLOAT32X)) {
         REQUIRE_OK(PARSER_SHIFT(parser));
-        specifier = kefir_ast_type_specifier_float32x(mem);
+        specifier = kefir_ast_type_specifier_float32x(mem, parser->ast_arena);
     } else if (PARSER_TOKEN_IS_KEYWORD(parser, 0, KEFIR_KEYWORD_FLOAT64X)) {
         REQUIRE_OK(PARSER_SHIFT(parser));
-        specifier = kefir_ast_type_specifier_float64x(mem);
+        specifier = kefir_ast_type_specifier_float64x(mem, parser->ast_arena);
     } else if (PARSER_TOKEN_IS_KEYWORD(parser, 0, KEFIR_KEYWORD_DECIMAL64X)) {
         REQUIRE_OK(PARSER_SHIFT(parser));
-        specifier = kefir_ast_type_specifier_decimal64x(mem);
+        specifier = kefir_ast_type_specifier_decimal64x(mem, parser->ast_arena);
     } else if (PARSER_TOKEN_IS_KEYWORD(parser, 0, KEFIR_KEYWORD_INT128)) {
         REQUIRE_OK(PARSER_SHIFT(parser));
-        specifier = kefir_ast_type_specifier_int128(mem);
+        specifier = kefir_ast_type_specifier_int128(mem, parser->ast_arena);
     } else if (PARSER_TOKEN_IS_KEYWORD(parser, 0, KEFIR_KEYWORD_ATOMIC) &&
                PARSER_TOKEN_IS_PUNCTUATOR(parser, 1, KEFIR_PUNCTUATOR_LEFT_PARENTHESE)) {
         REQUIRE_OK(PARSER_SHIFT(parser));
@@ -630,7 +630,7 @@ static kefir_result_t scan_type_specifier(struct kefir_mem *mem, struct kefir_pa
         REQUIRE_MATCH_OK(
             &res, KEFIR_PARSER_RULE_APPLY(mem, parser, type_name, &type_name),
             KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(parser, 0), "Expected type name"));
-        specifier = kefir_ast_type_specifier_atomic(mem, type_name);
+        specifier = kefir_ast_type_specifier_atomic(mem, parser->ast_arena, type_name);
         REQUIRE_ELSE(specifier != NULL, {
             KEFIR_AST_NODE_FREE(mem, type_name);
             return KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST declarator specifier");
@@ -663,7 +663,7 @@ static kefir_result_t scan_type_specifier(struct kefir_mem *mem, struct kefir_pa
                                          "Expected an expression or a type name");
         }
         REQUIRE_OK(res);
-        specifier = kefir_ast_type_specifier_typeof(mem, qualified, node);
+        specifier = kefir_ast_type_specifier_typeof(mem, parser->ast_arena, qualified, node);
         REQUIRE_ELSE(specifier != NULL, {
             KEFIR_AST_NODE_FREE(mem, node);
             return KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST declarator specifier");
@@ -674,7 +674,7 @@ static kefir_result_t scan_type_specifier(struct kefir_mem *mem, struct kefir_pa
         REQUIRE_OK(PARSER_SHIFT(parser));
     } else if (PARSER_TOKEN_IS_KEYWORD(parser, 0, KEFIR_KEYWORD_AUTO_TYPE)) {
         REQUIRE_OK(PARSER_SHIFT(parser));
-        specifier = kefir_ast_type_specifier_auto_type(mem);
+        specifier = kefir_ast_type_specifier_auto_type(mem, parser->ast_arena);
     } else if (PARSER_TOKEN_IS_KEYWORD(parser, 0, KEFIR_KEYWORD_BITINT)) {
         REQUIRE(
             PARSER_TOKEN_IS_PUNCTUATOR(parser, 1, KEFIR_PUNCTUATOR_LEFT_PARENTHESE),
@@ -686,7 +686,7 @@ static kefir_result_t scan_type_specifier(struct kefir_mem *mem, struct kefir_pa
         REQUIRE_MATCH_OK(
             &res, KEFIR_PARSER_RULE_APPLY(mem, parser, expression, &width),
             KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(parser, 0), "Expected an expression"));
-        specifier = kefir_ast_type_specifier_bitint(mem, width);
+        specifier = kefir_ast_type_specifier_bitint(mem, parser->ast_arena, width);
         REQUIRE_ELSE(specifier != NULL, {
             KEFIR_AST_NODE_FREE(mem, width);
             return KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST declarator specifier");
@@ -710,7 +710,7 @@ static kefir_result_t scan_type_specifier(struct kefir_mem *mem, struct kefir_pa
         }
         REQUIRE(is_typedef, KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to match type specifier"));
         REQUIRE_OK(PARSER_SHIFT(parser));
-        specifier = kefir_ast_type_specifier_typedef(mem, parser->symbols, identifier);
+        specifier = kefir_ast_type_specifier_typedef(mem, parser->ast_arena, parser->symbols, identifier);
         REQUIRE(specifier != NULL,
                 KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST declarator specifier"));
     }
@@ -736,16 +736,16 @@ static kefir_result_t scan_type_qualifier(struct kefir_mem *mem, struct kefir_pa
     struct kefir_ast_declarator_specifier *specifier = NULL;
     if (PARSER_TOKEN_IS_KEYWORD(parser, 0, KEFIR_KEYWORD_CONST)) {
         REQUIRE_OK(PARSER_SHIFT(parser));
-        specifier = kefir_ast_type_qualifier_const(mem);
+        specifier = kefir_ast_type_qualifier_const(mem, parser->ast_arena);
     } else if (PARSER_TOKEN_IS_KEYWORD(parser, 0, KEFIR_KEYWORD_RESTRICT)) {
         REQUIRE_OK(PARSER_SHIFT(parser));
-        specifier = kefir_ast_type_qualifier_restrict(mem);
+        specifier = kefir_ast_type_qualifier_restrict(mem, parser->ast_arena);
     } else if (PARSER_TOKEN_IS_KEYWORD(parser, 0, KEFIR_KEYWORD_VOLATILE)) {
         REQUIRE_OK(PARSER_SHIFT(parser));
-        specifier = kefir_ast_type_qualifier_volatile(mem);
+        specifier = kefir_ast_type_qualifier_volatile(mem, parser->ast_arena);
     } else if (PARSER_TOKEN_IS_KEYWORD(parser, 0, KEFIR_KEYWORD_ATOMIC)) {
         REQUIRE_OK(PARSER_SHIFT(parser));
-        specifier = kefir_ast_type_qualifier_atomic(mem);
+        specifier = kefir_ast_type_qualifier_atomic(mem, parser->ast_arena);
     } else {
         return KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to match type qualifier");
     }
@@ -771,10 +771,10 @@ static kefir_result_t scan_function_specifier(struct kefir_mem *mem, struct kefi
     struct kefir_ast_declarator_specifier *specifier = NULL;
     if (PARSER_TOKEN_IS_KEYWORD(parser, 0, KEFIR_KEYWORD_INLINE)) {
         REQUIRE_OK(PARSER_SHIFT(parser));
-        specifier = kefir_ast_function_specifier_inline(mem);
+        specifier = kefir_ast_function_specifier_inline(mem, parser->ast_arena);
     } else if (PARSER_TOKEN_IS_KEYWORD(parser, 0, KEFIR_KEYWORD_NORETURN)) {
         REQUIRE_OK(PARSER_SHIFT(parser));
-        specifier = kefir_ast_function_specifier_noreturn(mem);
+        specifier = kefir_ast_function_specifier_noreturn(mem, parser->ast_arena);
     } else {
         return KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to match function specifier");
     }
@@ -827,7 +827,7 @@ static kefir_result_t scan_alignment_specifier(struct kefir_mem *mem, struct kef
         return res;
     });
 
-    struct kefir_ast_declarator_specifier *specifier = kefir_ast_alignment_specifier(mem, alignment);
+    struct kefir_ast_declarator_specifier *specifier = kefir_ast_alignment_specifier(mem, parser->ast_arena, alignment);
     REQUIRE_ELSE(specifier != NULL, {
         KEFIR_AST_NODE_FREE(mem, alignment);
         return KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST declarator specifier");

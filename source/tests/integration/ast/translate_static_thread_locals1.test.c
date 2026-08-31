@@ -56,20 +56,20 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
         mem, kefir_ast_declarator_identifier_noarena(mem, global_context.context.symbols, "integer"),
         kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 10))), NULL);
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &decl1->specifiers,
-                                                          kefir_ast_storage_class_specifier_static(mem)));
+                                                          kefir_ast_storage_class_specifier_static(mem, NULL)));
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &decl1->specifiers,
-                                                          kefir_ast_storage_class_specifier_thread_local(mem)));
-    REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &decl1->specifiers, kefir_ast_type_specifier_int(mem)));
+                                                          kefir_ast_storage_class_specifier_thread_local(mem, NULL)));
+    REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &decl1->specifiers, kefir_ast_type_specifier_int(mem, NULL)));
 
     struct kefir_ast_declaration *decl2 = kefir_ast_new_single_declaration_noarena(
         mem, kefir_ast_declarator_identifier_noarena(mem, global_context.context.symbols, "floatingPoint"),
         kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_double_noarena(mem, 1.64))), NULL);
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &decl2->specifiers,
-                                                          kefir_ast_storage_class_specifier_static(mem)));
+                                                          kefir_ast_storage_class_specifier_static(mem, NULL)));
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &decl2->specifiers,
-                                                          kefir_ast_storage_class_specifier_thread_local(mem)));
+                                                          kefir_ast_storage_class_specifier_thread_local(mem, NULL)));
     REQUIRE_OK(
-        kefir_ast_declarator_specifier_list_append(mem, &decl2->specifiers, kefir_ast_type_specifier_double(mem)));
+        kefir_ast_declarator_specifier_list_append(mem, &decl2->specifiers, kefir_ast_type_specifier_double(mem, NULL)));
 
     struct kefir_ast_declaration *decl3 = kefir_ast_new_single_declaration_noarena(
         mem,
@@ -79,10 +79,10 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
             mem, KEFIR_AST_NODE_BASE(KEFIR_AST_MAKE_STRING_LITERAL_MULTIBYTE(mem, "Hello, world!"))),
         NULL);
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &decl3->specifiers,
-                                                          kefir_ast_storage_class_specifier_static(mem)));
+                                                          kefir_ast_storage_class_specifier_static(mem, NULL)));
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &decl3->specifiers,
-                                                          kefir_ast_storage_class_specifier_thread_local(mem)));
-    REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &decl3->specifiers, kefir_ast_type_specifier_char(mem)));
+                                                          kefir_ast_storage_class_specifier_thread_local(mem, NULL)));
+    REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &decl3->specifiers, kefir_ast_type_specifier_char(mem, NULL)));
 
     struct kefir_ast_declaration *decl4 = kefir_ast_new_single_declaration_noarena(
         mem,
@@ -92,24 +92,24 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
             mem, KEFIR_AST_NODE_BASE(KEFIR_AST_MAKE_STRING_LITERAL_MULTIBYTE(mem, "Goodbye, world!"))),
         NULL);
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &decl4->specifiers,
-                                                          kefir_ast_storage_class_specifier_thread_local(mem)));
+                                                          kefir_ast_storage_class_specifier_thread_local(mem, NULL)));
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &decl4->specifiers,
-                                                          kefir_ast_storage_class_specifier_static(mem)));
+                                                          kefir_ast_storage_class_specifier_static(mem, NULL)));
     REQUIRE_OK(
-        kefir_ast_declarator_specifier_list_append(mem, &decl4->specifiers, kefir_ast_type_qualifier_const(mem)));
-    REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &decl4->specifiers, kefir_ast_type_specifier_char(mem)));
+        kefir_ast_declarator_specifier_list_append(mem, &decl4->specifiers, kefir_ast_type_qualifier_const(mem, NULL)));
+    REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &decl4->specifiers, kefir_ast_type_specifier_char(mem, NULL)));
 
-    struct kefir_ast_structure_specifier *specifier1 = kefir_ast_structure_specifier_init(mem, NULL, NULL, true);
-    struct kefir_ast_structure_declaration_entry *entry1 = kefir_ast_structure_declaration_entry_alloc(mem);
+    struct kefir_ast_structure_specifier *specifier1 = kefir_ast_structure_specifier_init_noarena(mem, NULL, NULL, true);
+    struct kefir_ast_structure_declaration_entry *entry1 = kefir_ast_structure_declaration_entry_alloc_noarena(mem);
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &entry1->declaration.specifiers,
-                                                          kefir_ast_type_specifier_int(mem)));
+                                                          kefir_ast_type_specifier_int(mem, NULL)));
     REQUIRE_OK(kefir_ast_structure_declaration_entry_append(
         mem, entry1, kefir_ast_declarator_identifier_noarena(mem, global_context.context.symbols, "a"), NULL));
     REQUIRE_OK(kefir_ast_structure_specifier_append_entry(mem, specifier1, entry1));
 
-    struct kefir_ast_structure_declaration_entry *entry2 = kefir_ast_structure_declaration_entry_alloc(mem);
+    struct kefir_ast_structure_declaration_entry *entry2 = kefir_ast_structure_declaration_entry_alloc_noarena(mem);
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &entry2->declaration.specifiers,
-                                                          kefir_ast_type_specifier_float(mem)));
+                                                          kefir_ast_type_specifier_float(mem, NULL)));
     REQUIRE_OK(kefir_ast_structure_declaration_entry_append(
         mem, entry2, kefir_ast_declarator_identifier_noarena(mem, global_context.context.symbols, "b"), NULL));
     REQUIRE_OK(kefir_ast_structure_specifier_append_entry(mem, specifier1, entry2));
@@ -122,11 +122,11 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     struct kefir_ast_declaration *decl5 = kefir_ast_new_single_declaration_noarena(
         mem, kefir_ast_declarator_identifier_noarena(mem, global_context.context.symbols, "struct1"), init1, NULL);
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &decl5->specifiers,
-                                                          kefir_ast_storage_class_specifier_thread_local(mem)));
+                                                          kefir_ast_storage_class_specifier_thread_local(mem, NULL)));
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &decl5->specifiers,
-                                                          kefir_ast_storage_class_specifier_static(mem)));
+                                                          kefir_ast_storage_class_specifier_static(mem, NULL)));
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &decl5->specifiers,
-                                                          kefir_ast_type_specifier_struct(mem, specifier1)));
+                                                          kefir_ast_type_specifier_struct(mem, NULL, specifier1)));
 
     REQUIRE_OK(kefir_ast_analyze_node(mem, &global_context.context, KEFIR_AST_NODE_BASE(decl1)));
     REQUIRE_OK(kefir_ast_analyze_node(mem, &global_context.context, KEFIR_AST_NODE_BASE(decl2)));

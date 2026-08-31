@@ -56,13 +56,13 @@ DEFINE_CASE(ast_node_analysis_while_statements1, "AST node analysis - while stat
     struct kefir_ast_declaration *decl1 = kefir_ast_new_single_declaration_noarena(
         &kft_mem, kefir_ast_declarator_identifier_noarena(&kft_mem, context->symbols, "x"), NULL, NULL);
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &decl1->specifiers,
-                                                         kefir_ast_type_specifier_double(&kft_mem)));
+                                                         kefir_ast_type_specifier_double(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_analyze_node(&kft_mem, context, KEFIR_AST_NODE_BASE(decl1)));
 
     struct kefir_ast_declaration *decl2 = kefir_ast_new_single_declaration_noarena(
         &kft_mem, kefir_ast_declarator_identifier_noarena(&kft_mem, context->symbols, "y"), NULL, NULL);
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &decl2->specifiers,
-                                                         kefir_ast_type_specifier_int(&kft_mem)));
+                                                         kefir_ast_type_specifier_int(&kft_mem, NULL)));
 
     struct kefir_ast_compound_statement *compound1 = kefir_ast_new_compound_statement_noarena(&kft_mem);
     ASSERT_OK(kefir_ast_compound_statement_append(&kft_mem, compound1, KEFIR_AST_NODE_BASE(decl2)));
@@ -114,7 +114,7 @@ DEFINE_CASE(ast_node_analysis_while_statements2, "AST node analysis - while stat
     struct kefir_ast_type_name *type_name1 =
         kefir_ast_new_type_name_noarena(&kft_mem, kefir_ast_declarator_identifier_noarena(&kft_mem, NULL, NULL));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &type_name1->type_decl.specifiers,
-                                                         kefir_ast_type_specifier_void(&kft_mem)));
+                                                         kefir_ast_type_specifier_void(&kft_mem, NULL)));
 
     struct kefir_ast_while_statement *stmt1 =
         kefir_ast_new_while_statement_noarena(&kft_mem, KEFIR_AST_NODE_REF(node1), KEFIR_AST_NODE_REF(node1));
@@ -177,13 +177,13 @@ DEFINE_CASE(ast_node_analysis_do_while_statements1, "AST node analysis - do whil
     struct kefir_ast_declaration *decl1 = kefir_ast_new_single_declaration_noarena(
         &kft_mem, kefir_ast_declarator_identifier_noarena(&kft_mem, context->symbols, "x"), NULL, NULL);
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &decl1->specifiers,
-                                                         kefir_ast_type_specifier_double(&kft_mem)));
+                                                         kefir_ast_type_specifier_double(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_analyze_node(&kft_mem, context, KEFIR_AST_NODE_BASE(decl1)));
 
     struct kefir_ast_declaration *decl2 = kefir_ast_new_single_declaration_noarena(
         &kft_mem, kefir_ast_declarator_identifier_noarena(&kft_mem, context->symbols, "y"), NULL, NULL);
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &decl2->specifiers,
-                                                         kefir_ast_type_specifier_int(&kft_mem)));
+                                                         kefir_ast_type_specifier_int(&kft_mem, NULL)));
 
     struct kefir_ast_compound_statement *compound1 = kefir_ast_new_compound_statement_noarena(&kft_mem);
     ASSERT_OK(kefir_ast_compound_statement_append(&kft_mem, compound1, KEFIR_AST_NODE_BASE(decl2)));
@@ -238,7 +238,7 @@ DEFINE_CASE(ast_node_analysis_do_while_statements2, "AST node analysis - do whil
     struct kefir_ast_type_name *type_name1 =
         kefir_ast_new_type_name_noarena(&kft_mem, kefir_ast_declarator_identifier_noarena(&kft_mem, NULL, NULL));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &type_name1->type_decl.specifiers,
-                                                         kefir_ast_type_specifier_void(&kft_mem)));
+                                                         kefir_ast_type_specifier_void(&kft_mem, NULL)));
 
     struct kefir_ast_do_while_statement *stmt1 =
         kefir_ast_new_do_while_statement_noarena(&kft_mem, KEFIR_AST_NODE_REF(node1), KEFIR_AST_NODE_REF(node1));
@@ -302,7 +302,7 @@ DEFINE_CASE(ast_node_analysis_for_statements1, "AST node analysis - for statemen
     struct kefir_ast_declaration *decl1 = kefir_ast_new_single_declaration_noarena(
         &kft_mem, kefir_ast_declarator_identifier_noarena(&kft_mem, context->symbols, "x"), NULL, NULL);
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &decl1->specifiers,
-                                                         kefir_ast_type_specifier_double(&kft_mem)));
+                                                         kefir_ast_type_specifier_double(&kft_mem, NULL)));
 
     struct kefir_ast_compound_statement *compound1 = kefir_ast_new_compound_statement_noarena(&kft_mem);
     ASSERT_OK(kefir_ast_compound_statement_append(&kft_mem, compound1, KEFIR_AST_NODE_BASE(decl1)));
@@ -353,7 +353,7 @@ DEFINE_CASE(ast_node_analysis_for_statements2, "AST node analysis - for statemen
     struct kefir_ast_declaration *decl1 = kefir_ast_new_single_declaration_noarena(
         &kft_mem, kefir_ast_declarator_identifier_noarena(&kft_mem, context->symbols, "x"), NULL, NULL);
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &decl1->specifiers,
-                                                         kefir_ast_type_specifier_int(&kft_mem)));
+                                                         kefir_ast_type_specifier_int(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_analyze_node(&kft_mem, context, KEFIR_AST_NODE_BASE(decl1)));
 
     struct kefir_ast_declaration *decl2 = kefir_ast_new_single_declaration_noarena(
@@ -362,7 +362,7 @@ DEFINE_CASE(ast_node_analysis_for_statements2, "AST node analysis - for statemen
             &kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(&kft_mem, context->symbols, "x"))),
         NULL);
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &decl2->specifiers,
-                                                         kefir_ast_type_specifier_signed(&kft_mem)));
+                                                         kefir_ast_type_specifier_signed(&kft_mem, NULL)));
 
     struct kefir_ast_declaration *decl3 = kefir_ast_new_single_declaration_noarena(
         &kft_mem, kefir_ast_declarator_identifier_noarena(&kft_mem, context->symbols, "y"),
@@ -370,7 +370,7 @@ DEFINE_CASE(ast_node_analysis_for_statements2, "AST node analysis - for statemen
             &kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(&kft_mem, context->symbols, "i"))),
         NULL);
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &decl3->specifiers,
-                                                         kefir_ast_type_specifier_long(&kft_mem)));
+                                                         kefir_ast_type_specifier_long(&kft_mem, NULL)));
 
     struct kefir_ast_compound_statement *compound1 = kefir_ast_new_compound_statement_noarena(&kft_mem);
     ASSERT_OK(kefir_ast_compound_statement_append(&kft_mem, compound1, KEFIR_AST_NODE_BASE(decl3)));
@@ -432,9 +432,9 @@ DEFINE_CASE(ast_node_analysis_for_statements3, "AST node analysis - for statemen
     struct kefir_ast_declaration *decl1 = kefir_ast_new_single_declaration_noarena(
         &kft_mem, kefir_ast_declarator_identifier_noarena(&kft_mem, context->symbols, "i"), NULL, NULL);
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &decl1->specifiers,
-                                                         kefir_ast_type_specifier_long(&kft_mem)));
+                                                         kefir_ast_type_specifier_long(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &decl1->specifiers,
-                                                         kefir_ast_storage_class_specifier_register(&kft_mem)));
+                                                         kefir_ast_storage_class_specifier_register(&kft_mem, NULL)));
 
     struct kefir_ast_compound_statement *compound1 = kefir_ast_new_compound_statement_noarena(&kft_mem);
     ASSERT_OK(kefir_ast_compound_statement_append(&kft_mem, compound1, KEFIR_AST_NODE_REF(KEFIR_AST_NODE_BASE(decl1))));
@@ -479,7 +479,7 @@ DEFINE_CASE(ast_node_analysis_for_statements3, "AST node analysis - for statemen
     struct kefir_ast_declaration *decl3 = kefir_ast_new_single_declaration_noarena(
         &kft_mem, kefir_ast_declarator_identifier_noarena(&kft_mem, context->symbols, "j"), NULL, NULL);
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &decl3->specifiers,
-                                                         kefir_ast_storage_class_specifier_extern(&kft_mem)));
+                                                         kefir_ast_storage_class_specifier_extern(&kft_mem, NULL)));
 
     struct kefir_ast_compound_statement *compound3 = kefir_ast_new_compound_statement_noarena(&kft_mem);
 

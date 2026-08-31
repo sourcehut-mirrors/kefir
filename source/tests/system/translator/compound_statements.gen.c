@@ -99,7 +99,7 @@ static kefir_result_t define_compound_function(struct kefir_mem *mem, struct fun
             mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context_manager->current->symbols, "base"))),
         NULL);
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &declarationResult->specifiers,
-                                                          kefir_ast_type_specifier_double(mem)));
+                                                          kefir_ast_type_specifier_double(mem, NULL)));
     REQUIRE_OK(kefir_ast_compound_statement_append(mem, compound1, KEFIR_AST_NODE_BASE(declarationResult)));
 
     struct kefir_ast_node_base *add = KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement_noarena(

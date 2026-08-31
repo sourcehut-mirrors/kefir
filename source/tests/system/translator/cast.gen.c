@@ -107,34 +107,34 @@ static kefir_result_t generate_ir(struct kefir_mem *mem, struct kefir_ir_module 
     struct kefir_ast_type_name *_id = kefir_ast_new_type_name_noarena(mem, kefir_ast_declarator_identifier_noarena(mem, NULL, NULL)); \
     REQUIRE_OK(append_specifiers(mem, &_id->type_decl.specifiers, (_spec_count), __VA_ARGS__));
 
-    MAKE_TYPENAME(type_name1, 1, kefir_ast_type_specifier_int(mem));
-    MAKE_TYPENAME(type_name2, 1, kefir_ast_type_specifier_char(mem));
-    MAKE_TYPENAME(type_name3, 1, kefir_ast_type_specifier_int(mem));
-    MAKE_TYPENAME(type_name4, 2, kefir_ast_type_specifier_unsigned(mem), kefir_ast_type_specifier_char(mem));
-    MAKE_TYPENAME(type_name5, 2, kefir_ast_type_specifier_unsigned(mem), kefir_ast_type_specifier_int(mem));
-    MAKE_TYPENAME(type_name6, 2, kefir_ast_type_specifier_unsigned(mem), kefir_ast_type_specifier_char(mem));
-    MAKE_TYPENAME(type_name7, 2, kefir_ast_type_specifier_unsigned(mem), kefir_ast_type_specifier_int(mem));
-    MAKE_TYPENAME(type_name8, 2, kefir_ast_type_specifier_unsigned(mem), kefir_ast_type_specifier_char(mem));
-    MAKE_TYPENAME(type_name9, 1, kefir_ast_type_specifier_float(mem));
-    MAKE_TYPENAME(type_name10, 2, kefir_ast_type_specifier_long(mem), kefir_ast_type_specifier_long(mem));
-    MAKE_TYPENAME(type_name11, 1, kefir_ast_type_specifier_double(mem));
-    MAKE_TYPENAME(type_name12, 1, kefir_ast_type_specifier_short(mem));
-    MAKE_TYPENAME(type_name13, 1, kefir_ast_type_specifier_double(mem));
-    MAKE_TYPENAME(type_name14, 2, kefir_ast_type_specifier_unsigned(mem), kefir_ast_type_specifier_int(mem));
-    MAKE_TYPENAME(type_name15, 1, kefir_ast_type_specifier_double(mem));
-    MAKE_TYPENAME(type_name16, 1, kefir_ast_type_specifier_float(mem));
-    MAKE_TYPENAME(type_name17, 3, kefir_ast_type_specifier_unsigned(mem), kefir_ast_type_specifier_long(mem),
-                  kefir_ast_type_specifier_long(mem));
-    MAKE_TYPENAME(type_name18, 1, kefir_ast_type_specifier_void(mem));
-    MAKE_TYPENAME(type_name19, 1, kefir_ast_type_specifier_void(mem));
-    MAKE_TYPENAME(type_name20, 1, kefir_ast_type_specifier_void(mem));
-    MAKE_TYPENAME(type_name21, 1, kefir_ast_type_specifier_void(mem));
+    MAKE_TYPENAME(type_name1, 1, kefir_ast_type_specifier_int(mem, NULL));
+    MAKE_TYPENAME(type_name2, 1, kefir_ast_type_specifier_char(mem, NULL));
+    MAKE_TYPENAME(type_name3, 1, kefir_ast_type_specifier_int(mem, NULL));
+    MAKE_TYPENAME(type_name4, 2, kefir_ast_type_specifier_unsigned(mem, NULL), kefir_ast_type_specifier_char(mem, NULL));
+    MAKE_TYPENAME(type_name5, 2, kefir_ast_type_specifier_unsigned(mem, NULL), kefir_ast_type_specifier_int(mem, NULL));
+    MAKE_TYPENAME(type_name6, 2, kefir_ast_type_specifier_unsigned(mem, NULL), kefir_ast_type_specifier_char(mem, NULL));
+    MAKE_TYPENAME(type_name7, 2, kefir_ast_type_specifier_unsigned(mem, NULL), kefir_ast_type_specifier_int(mem, NULL));
+    MAKE_TYPENAME(type_name8, 2, kefir_ast_type_specifier_unsigned(mem, NULL), kefir_ast_type_specifier_char(mem, NULL));
+    MAKE_TYPENAME(type_name9, 1, kefir_ast_type_specifier_float(mem, NULL));
+    MAKE_TYPENAME(type_name10, 2, kefir_ast_type_specifier_long(mem, NULL), kefir_ast_type_specifier_long(mem, NULL));
+    MAKE_TYPENAME(type_name11, 1, kefir_ast_type_specifier_double(mem, NULL));
+    MAKE_TYPENAME(type_name12, 1, kefir_ast_type_specifier_short(mem, NULL));
+    MAKE_TYPENAME(type_name13, 1, kefir_ast_type_specifier_double(mem, NULL));
+    MAKE_TYPENAME(type_name14, 2, kefir_ast_type_specifier_unsigned(mem, NULL), kefir_ast_type_specifier_int(mem, NULL));
+    MAKE_TYPENAME(type_name15, 1, kefir_ast_type_specifier_double(mem, NULL));
+    MAKE_TYPENAME(type_name16, 1, kefir_ast_type_specifier_float(mem, NULL));
+    MAKE_TYPENAME(type_name17, 3, kefir_ast_type_specifier_unsigned(mem, NULL), kefir_ast_type_specifier_long(mem, NULL),
+                  kefir_ast_type_specifier_long(mem, NULL));
+    MAKE_TYPENAME(type_name18, 1, kefir_ast_type_specifier_void(mem, NULL));
+    MAKE_TYPENAME(type_name19, 1, kefir_ast_type_specifier_void(mem, NULL));
+    MAKE_TYPENAME(type_name20, 1, kefir_ast_type_specifier_void(mem, NULL));
+    MAKE_TYPENAME(type_name21, 1, kefir_ast_type_specifier_void(mem, NULL));
 #undef MAKE_TYPENAME
 
     struct kefir_ast_type_name *type_name22 = kefir_ast_new_type_name_noarena(
         mem, kefir_ast_declarator_pointer_noarena(mem, kefir_ast_declarator_identifier_noarena(mem, NULL, NULL)));
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &type_name22->type_decl.specifiers,
-                                                          kefir_ast_type_specifier_void(mem)));
+                                                          kefir_ast_type_specifier_void(mem, NULL)));
 
     struct function char_int_cast, int_char_cast, uchar_int_cast, int_uchar_cast, char_uint_cast, uint_char_cast,
         uchar_uint_cast, uint_uchar_cast, long_float_cast, float_long_cast, short_double_cast, double_short_cast,

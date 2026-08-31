@@ -26,7 +26,7 @@
 DEFINE_CASE(ast_declarator_specifier_construction1, "AST declarator specifiers - type specifier construction #1") {
 #define ASSERT_TYPE_SPECIFIER(_id, _spec)                                                            \
     do {                                                                                             \
-        struct kefir_ast_declarator_specifier *specifier = kefir_ast_type_specifier_##_id(&kft_mem); \
+        struct kefir_ast_declarator_specifier *specifier = kefir_ast_type_specifier_##_id(&kft_mem, NULL); \
         ASSERT(specifier != NULL);                                                                   \
         ASSERT(specifier->klass == KEFIR_AST_TYPE_SPECIFIER);                                        \
         ASSERT(specifier->type_specifier->specifier == (_spec));                                      \
@@ -52,7 +52,7 @@ END_CASE
 DEFINE_CASE(ast_declarator_specifier_construction2, "AST declarator specifiers - atomic type specifier construction") {
     for (int i = -100; i < 100; i++) {
         struct kefir_ast_declarator_specifier *specifier =
-            kefir_ast_type_specifier_atomic(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, i)));
+            kefir_ast_type_specifier_atomic(&kft_mem, NULL, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, i)));
         ASSERT(specifier != NULL);
         ASSERT(specifier->klass == KEFIR_AST_TYPE_SPECIFIER);
         ASSERT(specifier->type_specifier->specifier == KEFIR_AST_TYPE_SPECIFIER_ATOMIC);
@@ -72,8 +72,8 @@ DEFINE_CASE(ast_declarator_specifier_construction3,
     ASSERT_OK(kefir_string_pool_init(&symbols));
 
     struct kefir_ast_structure_specifier *structure_specifier =
-        kefir_ast_structure_specifier_init(&kft_mem, &symbols, "struct1", false);
-    struct kefir_ast_declarator_specifier *specifier = kefir_ast_type_specifier_struct(&kft_mem, structure_specifier);
+        kefir_ast_structure_specifier_init_noarena(&kft_mem, &symbols, "struct1", false);
+    struct kefir_ast_declarator_specifier *specifier = kefir_ast_type_specifier_struct(&kft_mem, NULL, structure_specifier);
     ASSERT(specifier != NULL);
     ASSERT(specifier->klass == KEFIR_AST_TYPE_SPECIFIER);
     ASSERT(specifier->type_specifier->specifier == KEFIR_AST_TYPE_SPECIFIER_STRUCT);
@@ -89,9 +89,9 @@ DEFINE_CASE(ast_declarator_specifier_construction4, "AST declarator specifiers -
     ASSERT_OK(kefir_string_pool_init(&symbols));
 
     struct kefir_ast_structure_specifier *structure_specifier =
-        kefir_ast_structure_specifier_init(&kft_mem, &symbols, "union1", false);
+        kefir_ast_structure_specifier_init_noarena(&kft_mem, &symbols, "union1", false);
 
-    struct kefir_ast_declarator_specifier *specifier = kefir_ast_type_specifier_union(&kft_mem, structure_specifier);
+    struct kefir_ast_declarator_specifier *specifier = kefir_ast_type_specifier_union(&kft_mem, NULL, structure_specifier);
     ASSERT(specifier != NULL);
     ASSERT(specifier->klass == KEFIR_AST_TYPE_SPECIFIER);
     ASSERT(specifier->type_specifier->specifier == KEFIR_AST_TYPE_SPECIFIER_UNION);
@@ -108,8 +108,8 @@ DEFINE_CASE(ast_declarator_specifier_construction5,
     ASSERT_OK(kefir_string_pool_init(&symbols));
 
     struct kefir_ast_enum_specifier *enum_specifier =
-        kefir_ast_enum_specifier_init(&kft_mem, &symbols, "enum1", false, NULL);
-    struct kefir_ast_declarator_specifier *specifier = kefir_ast_type_specifier_enum(&kft_mem, enum_specifier);
+        kefir_ast_enum_specifier_init_noarena(&kft_mem, &symbols, "enum1", false, NULL);
+    struct kefir_ast_declarator_specifier *specifier = kefir_ast_type_specifier_enum(&kft_mem, NULL, enum_specifier);
     ASSERT(specifier != NULL);
     ASSERT(specifier->klass == KEFIR_AST_TYPE_SPECIFIER);
     ASSERT(specifier->type_specifier->specifier == KEFIR_AST_TYPE_SPECIFIER_ENUM);
@@ -128,7 +128,7 @@ DEFINE_CASE(ast_declarator_specifier_construction6,
 
     for (kefir_size_t i = 0; i < TYPE_NAME_COUNT; i++) {
         struct kefir_ast_declarator_specifier *specifier =
-            kefir_ast_type_specifier_typedef(&kft_mem, NULL, TYPE_NAMES[i]);
+            kefir_ast_type_specifier_typedef(&kft_mem, NULL, NULL, TYPE_NAMES[i]);
         ASSERT(specifier != NULL);
         ASSERT(specifier->klass == KEFIR_AST_TYPE_SPECIFIER);
         ASSERT(specifier->type_specifier->specifier == KEFIR_AST_TYPE_SPECIFIER_TYPEDEF);
@@ -149,7 +149,7 @@ DEFINE_CASE(ast_declarator_specifier_construction7,
 
     for (kefir_size_t i = 0; i < TYPE_NAME_COUNT; i++) {
         struct kefir_ast_declarator_specifier *specifier =
-            kefir_ast_type_specifier_typedef(&kft_mem, &symbols, TYPE_NAMES[i]);
+            kefir_ast_type_specifier_typedef(&kft_mem, NULL, &symbols, TYPE_NAMES[i]);
         ASSERT(specifier != NULL);
         ASSERT(specifier->klass == KEFIR_AST_TYPE_SPECIFIER);
         ASSERT(specifier->type_specifier->specifier == KEFIR_AST_TYPE_SPECIFIER_TYPEDEF);
@@ -167,7 +167,7 @@ DEFINE_CASE(ast_declarator_specifier_construction8,
             "AST declarator specifiers - storage class specifier construction") {
 #define ASSERT_STORAGE_CLASS(_id, _spec)                                                                      \
     do {                                                                                                      \
-        struct kefir_ast_declarator_specifier *specifier = kefir_ast_storage_class_specifier_##_id(&kft_mem); \
+        struct kefir_ast_declarator_specifier *specifier = kefir_ast_storage_class_specifier_##_id(&kft_mem, NULL); \
         ASSERT(specifier != NULL);                                                                            \
         ASSERT(specifier->klass == KEFIR_AST_STORAGE_CLASS_SPECIFIER);                                        \
         ASSERT(specifier->storage_class == (_spec));                                                          \
@@ -188,7 +188,7 @@ END_CASE
 DEFINE_CASE(ast_declarator_specifier_construction9, "AST declarator specifiers - type qualifier construction") {
 #define ASSERT_TYPE_QUALIFIER(_id, _spec)                                                            \
     do {                                                                                             \
-        struct kefir_ast_declarator_specifier *specifier = kefir_ast_type_qualifier_##_id(&kft_mem); \
+        struct kefir_ast_declarator_specifier *specifier = kefir_ast_type_qualifier_##_id(&kft_mem, NULL); \
         ASSERT(specifier != NULL);                                                                   \
         ASSERT(specifier->klass == KEFIR_AST_TYPE_QUALIFIER);                                        \
         ASSERT(specifier->type_qualifier == (_spec));                                                \
@@ -207,7 +207,7 @@ END_CASE
 DEFINE_CASE(ast_declarator_specifier_construction10, "AST declarator specifiers - function specifier construction") {
 #define ASSERT_FUNCTION_SPECIFIER(_id, _spec)                                                            \
     do {                                                                                                 \
-        struct kefir_ast_declarator_specifier *specifier = kefir_ast_function_specifier_##_id(&kft_mem); \
+        struct kefir_ast_declarator_specifier *specifier = kefir_ast_function_specifier_##_id(&kft_mem, NULL); \
         ASSERT(specifier != NULL);                                                                       \
         ASSERT(specifier->klass == KEFIR_AST_FUNCTION_SPECIFIER);                                        \
         ASSERT(specifier->function_specifier == (_spec));                                                \
@@ -224,7 +224,7 @@ END_CASE
 DEFINE_CASE(ast_declarator_specifier_construction11, "AST declarator specifiers - alignment specifier construction") {
     for (int i = 0; i < 100; i++) {
         struct kefir_ast_declarator_specifier *specifier =
-            kefir_ast_alignment_specifier(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, i)));
+            kefir_ast_alignment_specifier(&kft_mem, NULL, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, i)));
         ASSERT(specifier != NULL);
         ASSERT(specifier->klass == KEFIR_AST_ALIGNMENT_SPECIFIER);
         ASSERT(specifier->alignment_specifier != NULL);

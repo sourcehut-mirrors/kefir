@@ -339,7 +339,7 @@ DEFINE_CASE(ast_nodes_type_name, "AST nodes - type name") {
     struct kefir_ast_type_name *type1 = kefir_ast_new_type_name_noarena(
         &kft_mem, kefir_ast_declarator_pointer_noarena(&kft_mem, kefir_ast_declarator_identifier_noarena(&kft_mem, NULL, NULL)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &type1->type_decl.specifiers,
-                                                         kefir_ast_type_specifier_void(&kft_mem)));
+                                                         kefir_ast_type_specifier_void(&kft_mem, NULL)));
 
     struct kefir_ast_type_name *type2 = kefir_ast_new_type_name_noarena(
         &kft_mem,
@@ -348,7 +348,7 @@ DEFINE_CASE(ast_nodes_type_name, "AST nodes - type name") {
                                                  KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 256)),
                                                  kefir_ast_declarator_identifier_noarena(&kft_mem, NULL, NULL))));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &type2->type_decl.specifiers,
-                                                         kefir_ast_type_specifier_char(&kft_mem)));
+                                                         kefir_ast_type_specifier_char(&kft_mem, NULL)));
 
     ASSERT(type1 != NULL);
     ASSERT(type2 != NULL);

@@ -75,9 +75,9 @@ static kefir_result_t define_conditional_function(struct kefir_mem *mem, struct 
         mem, kefir_ast_declarator_identifier_noarena(mem, context_manager->current->symbols, "length"),
         kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 0))), NULL);
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &declarationLength->specifiers,
-                                                          kefir_ast_type_specifier_unsigned(mem)));
+                                                          kefir_ast_type_specifier_unsigned(mem, NULL)));
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &declarationLength->specifiers,
-                                                          kefir_ast_type_specifier_long(mem)));
+                                                          kefir_ast_type_specifier_long(mem, NULL)));
     REQUIRE_OK(kefir_ast_compound_statement_append(mem, compound0, KEFIR_AST_NODE_BASE(declarationLength)));
 
     struct kefir_ast_node_base *condition = KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation_noarena(

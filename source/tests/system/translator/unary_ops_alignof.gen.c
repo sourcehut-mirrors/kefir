@@ -84,33 +84,33 @@ static kefir_result_t define_get_alignof_function(struct kefir_mem *mem, struct 
     struct kefir_ast_type_name *_id = kefir_ast_new_type_name_noarena(mem, kefir_ast_declarator_identifier_noarena(mem, NULL, NULL)); \
     REQUIRE_OK(append_specifiers(mem, &_id->type_decl.specifiers, (_spec_count), __VA_ARGS__));
 
-    MAKE_TYPENAME(type_name1, 1, kefir_ast_type_specifier_boolean(mem))
-    MAKE_TYPENAME(type_name2, 1, kefir_ast_type_specifier_char(mem))
-    MAKE_TYPENAME(type_name3, 2, kefir_ast_type_specifier_unsigned(mem), kefir_ast_type_specifier_char(mem))
-    MAKE_TYPENAME(type_name4, 2, kefir_ast_type_specifier_signed(mem), kefir_ast_type_specifier_char(mem))
-    MAKE_TYPENAME(type_name5, 2, kefir_ast_type_specifier_unsigned(mem), kefir_ast_type_specifier_short(mem))
-    MAKE_TYPENAME(type_name6, 2, kefir_ast_type_specifier_signed(mem), kefir_ast_type_specifier_short(mem))
-    MAKE_TYPENAME(type_name7, 2, kefir_ast_type_specifier_unsigned(mem), kefir_ast_type_specifier_int(mem))
-    MAKE_TYPENAME(type_name8, 2, kefir_ast_type_specifier_signed(mem), kefir_ast_type_specifier_int(mem))
-    MAKE_TYPENAME(type_name9, 2, kefir_ast_type_specifier_unsigned(mem), kefir_ast_type_specifier_long(mem))
-    MAKE_TYPENAME(type_name10, 2, kefir_ast_type_specifier_signed(mem), kefir_ast_type_specifier_long(mem))
-    MAKE_TYPENAME(type_name11, 3, kefir_ast_type_specifier_unsigned(mem), kefir_ast_type_specifier_long(mem),
-                  kefir_ast_type_specifier_long(mem))
-    MAKE_TYPENAME(type_name12, 3, kefir_ast_type_specifier_signed(mem), kefir_ast_type_specifier_long(mem),
-                  kefir_ast_type_specifier_long(mem))
-    MAKE_TYPENAME(type_name13, 1, kefir_ast_type_specifier_float(mem))
-    MAKE_TYPENAME(type_name14, 1, kefir_ast_type_specifier_double(mem))
+    MAKE_TYPENAME(type_name1, 1, kefir_ast_type_specifier_boolean(mem, NULL))
+    MAKE_TYPENAME(type_name2, 1, kefir_ast_type_specifier_char(mem, NULL))
+    MAKE_TYPENAME(type_name3, 2, kefir_ast_type_specifier_unsigned(mem, NULL), kefir_ast_type_specifier_char(mem, NULL))
+    MAKE_TYPENAME(type_name4, 2, kefir_ast_type_specifier_signed(mem, NULL), kefir_ast_type_specifier_char(mem, NULL))
+    MAKE_TYPENAME(type_name5, 2, kefir_ast_type_specifier_unsigned(mem, NULL), kefir_ast_type_specifier_short(mem, NULL))
+    MAKE_TYPENAME(type_name6, 2, kefir_ast_type_specifier_signed(mem, NULL), kefir_ast_type_specifier_short(mem, NULL))
+    MAKE_TYPENAME(type_name7, 2, kefir_ast_type_specifier_unsigned(mem, NULL), kefir_ast_type_specifier_int(mem, NULL))
+    MAKE_TYPENAME(type_name8, 2, kefir_ast_type_specifier_signed(mem, NULL), kefir_ast_type_specifier_int(mem, NULL))
+    MAKE_TYPENAME(type_name9, 2, kefir_ast_type_specifier_unsigned(mem, NULL), kefir_ast_type_specifier_long(mem, NULL))
+    MAKE_TYPENAME(type_name10, 2, kefir_ast_type_specifier_signed(mem, NULL), kefir_ast_type_specifier_long(mem, NULL))
+    MAKE_TYPENAME(type_name11, 3, kefir_ast_type_specifier_unsigned(mem, NULL), kefir_ast_type_specifier_long(mem, NULL),
+                  kefir_ast_type_specifier_long(mem, NULL))
+    MAKE_TYPENAME(type_name12, 3, kefir_ast_type_specifier_signed(mem, NULL), kefir_ast_type_specifier_long(mem, NULL),
+                  kefir_ast_type_specifier_long(mem, NULL))
+    MAKE_TYPENAME(type_name13, 1, kefir_ast_type_specifier_float(mem, NULL))
+    MAKE_TYPENAME(type_name14, 1, kefir_ast_type_specifier_double(mem, NULL))
 #undef MAKE_TYPENAME
 
     struct kefir_ast_type_name *type_name15 = kefir_ast_new_type_name_noarena(
         mem, kefir_ast_declarator_pointer_noarena(mem, kefir_ast_declarator_identifier_noarena(mem, NULL, NULL)));
-    REQUIRE_OK(append_specifiers(mem, &type_name15->type_decl.specifiers, 1, kefir_ast_type_specifier_void(mem)));
+    REQUIRE_OK(append_specifiers(mem, &type_name15->type_decl.specifiers, 1, kefir_ast_type_specifier_void(mem, NULL)));
 
     struct kefir_ast_type_name *type_name17 = kefir_ast_new_type_name_noarena(
         mem, kefir_ast_declarator_array_noarena(mem, KEFIR_AST_DECLARATOR_ARRAY_BOUNDED,
                                         KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 128)),
                                         kefir_ast_declarator_identifier_noarena(mem, NULL, NULL)));
-    REQUIRE_OK(append_specifiers(mem, &type_name17->type_decl.specifiers, 1, kefir_ast_type_specifier_int(mem)));
+    REQUIRE_OK(append_specifiers(mem, &type_name17->type_decl.specifiers, 1, kefir_ast_type_specifier_int(mem, NULL)));
 
     APPEND(type_name1);
     APPEND(type_name2);
@@ -148,10 +148,10 @@ static kefir_result_t generate_ir(struct kefir_mem *mem, struct kefir_ir_module 
     REQUIRE_OK(kefir_ast_context_manager_init(&global_context, &context_manager));
 
     struct kefir_ast_structure_specifier *specifier1 =
-        kefir_ast_structure_specifier_init(mem, context_manager.current->symbols, NULL, true);
-    struct kefir_ast_structure_declaration_entry *entry1 = kefir_ast_structure_declaration_entry_alloc(mem);
+        kefir_ast_structure_specifier_init_noarena(mem, context_manager.current->symbols, NULL, true);
+    struct kefir_ast_structure_declaration_entry *entry1 = kefir_ast_structure_declaration_entry_alloc_noarena(mem);
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &entry1->declaration.specifiers,
-                                                          kefir_ast_type_specifier_int(mem)));
+                                                          kefir_ast_type_specifier_int(mem, NULL)));
     REQUIRE_OK(kefir_ast_structure_declaration_entry_append(
         mem, entry1, kefir_ast_declarator_identifier_noarena(mem, context_manager.current->symbols, "tboolean"), NULL));
     REQUIRE_OK(kefir_ast_structure_declaration_entry_append(
@@ -190,7 +190,7 @@ static kefir_result_t generate_ir(struct kefir_mem *mem, struct kefir_ir_module 
 
     struct function get_alignof;
     REQUIRE_OK(define_get_alignof_function(mem, &get_alignof, &context_manager,
-                                           kefir_ast_type_specifier_struct(mem, specifier1)));
+                                           kefir_ast_type_specifier_struct(mem, NULL, specifier1)));
 
     REQUIRE_OK(analyze_function(mem, &get_alignof, &context_manager));
 

@@ -323,8 +323,8 @@ DEFINE_CASE(ast_declaration_variably_modified_structure_field, "AST declarations
                                                         NULL, NULL, NULL, NULL));
 
     struct kefir_ast_structure_specifier *struct_specifier1 =
-        kefir_ast_structure_specifier_init(&kft_mem, &global_context.symbols, "struct1", true);
-    struct kefir_ast_structure_declaration_entry *entry1 = kefir_ast_structure_declaration_entry_alloc(&kft_mem);
+        kefir_ast_structure_specifier_init_noarena(&kft_mem, &global_context.symbols, "struct1", true);
+    struct kefir_ast_structure_declaration_entry *entry1 = kefir_ast_structure_declaration_entry_alloc_noarena(&kft_mem);
     ASSERT_OK(kefir_ast_structure_declaration_entry_append(
         &kft_mem, entry1,
         kefir_ast_declarator_array_noarena(
@@ -333,14 +333,14 @@ DEFINE_CASE(ast_declaration_variably_modified_structure_field, "AST declarations
             kefir_ast_declarator_identifier_noarena(&kft_mem, &global_context.symbols, "field1")),
         NULL));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &entry1->declaration.specifiers,
-                                                         kefir_ast_type_specifier_int(&kft_mem)));
+                                                         kefir_ast_type_specifier_int(&kft_mem, NULL)));
     ASSERT_OK(kefir_ast_structure_specifier_append_entry(&kft_mem, struct_specifier1, entry1));
 
     struct kefir_ast_init_declarator *init_decl = NULL;
     struct kefir_ast_declaration *decl = kefir_ast_new_single_declaration_noarena(
         &kft_mem, kefir_ast_declarator_identifier_noarena(&kft_mem, NULL, NULL), NULL, &init_decl);
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &decl->specifiers,
-                                                         kefir_ast_type_specifier_struct(&kft_mem, struct_specifier1)));
+                                                         kefir_ast_type_specifier_struct(&kft_mem, NULL, struct_specifier1)));
 
     ASSERT_NOK(kefir_ast_analyze_declaration(&kft_mem, &global_context.context, &decl->specifiers,
                                              init_decl->declarator, NULL, NULL, NULL, NULL, NULL,

@@ -75,16 +75,16 @@ static kefir_result_t define_conditional_function(struct kefir_mem *mem, struct 
         mem, kefir_ast_declarator_identifier_noarena(mem, context_manager->current->symbols, "value"),
         kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 0))), NULL);
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &declarationValue->specifiers,
-                                                          kefir_ast_type_specifier_long(mem)));
+                                                          kefir_ast_type_specifier_long(mem, NULL)));
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &declarationValue->specifiers,
-                                                          kefir_ast_type_specifier_long(mem)));
+                                                          kefir_ast_type_specifier_long(mem, NULL)));
     REQUIRE_OK(kefir_ast_compound_statement_append(mem, compound0, KEFIR_AST_NODE_BASE(declarationValue)));
 
     struct kefir_ast_declaration *declarationSign = kefir_ast_new_single_declaration_noarena(
         mem, kefir_ast_declarator_identifier_noarena(mem, context_manager->current->symbols, "sign"),
         kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 0))), NULL);
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &declarationSign->specifiers,
-                                                          kefir_ast_type_specifier_int(mem)));
+                                                          kefir_ast_type_specifier_int(mem, NULL)));
     REQUIRE_OK(kefir_ast_compound_statement_append(mem, compound0, KEFIR_AST_NODE_BASE(declarationSign)));
 
     struct kefir_ast_node_base *condition1 = KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation_noarena(
@@ -115,7 +115,7 @@ static kefir_result_t define_conditional_function(struct kefir_mem *mem, struct 
                     KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context_manager->current->symbols, "str"))))))),
         NULL);
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &declarationChar->specifiers,
-                                                          kefir_ast_type_specifier_char(mem)));
+                                                          kefir_ast_type_specifier_char(mem, NULL)));
     REQUIRE_OK(kefir_ast_compound_statement_append(mem, body, KEFIR_AST_NODE_BASE(declarationChar)));
 
     struct kefir_ast_compound_statement *loop_cond1_body = kefir_ast_new_compound_statement_noarena(mem);

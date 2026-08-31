@@ -61,7 +61,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
         kefir_ast_declarator_array_noarena(mem, KEFIR_AST_DECLARATOR_ARRAY_UNBOUNDED, NULL,
                                    kefir_ast_declarator_identifier_noarena(mem, global_context.context.symbols, "string1")),
         init1, NULL);
-    REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &decl1->specifiers, kefir_ast_type_specifier_char(mem)));
+    REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &decl1->specifiers, kefir_ast_type_specifier_char(mem, NULL)));
 
     const kefir_char16_t LITERAL2[] = u"Global UTF-16 string literal\n\r";
     struct kefir_ast_initializer *init2 =
@@ -74,9 +74,9 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
                                    kefir_ast_declarator_identifier_noarena(mem, global_context.context.symbols, "string2")),
         init2, NULL);
     REQUIRE_OK(
-        kefir_ast_declarator_specifier_list_append(mem, &decl2->specifiers, kefir_ast_type_specifier_unsigned(mem)));
+        kefir_ast_declarator_specifier_list_append(mem, &decl2->specifiers, kefir_ast_type_specifier_unsigned(mem, NULL)));
     REQUIRE_OK(
-        kefir_ast_declarator_specifier_list_append(mem, &decl2->specifiers, kefir_ast_type_specifier_short(mem)));
+        kefir_ast_declarator_specifier_list_append(mem, &decl2->specifiers, kefir_ast_type_specifier_short(mem, NULL)));
 
     const kefir_char32_t LITERAL3[] = U"Global UTF-32 string literal\n\r";
     struct kefir_ast_initializer *init3 =
@@ -89,8 +89,8 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
                                    kefir_ast_declarator_identifier_noarena(mem, global_context.context.symbols, "string3")),
         init3, NULL);
     REQUIRE_OK(
-        kefir_ast_declarator_specifier_list_append(mem, &decl3->specifiers, kefir_ast_type_specifier_unsigned(mem)));
-    REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &decl3->specifiers, kefir_ast_type_specifier_int(mem)));
+        kefir_ast_declarator_specifier_list_append(mem, &decl3->specifiers, kefir_ast_type_specifier_unsigned(mem, NULL)));
+    REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &decl3->specifiers, kefir_ast_type_specifier_int(mem, NULL)));
 
     const kefir_wchar_t LITERAL4[] = L"Global Wide string literal\n\r";
     struct kefir_ast_initializer *init4 = kefir_ast_new_expression_initializer(
@@ -102,7 +102,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
         kefir_ast_declarator_array_noarena(mem, KEFIR_AST_DECLARATOR_ARRAY_UNBOUNDED, NULL,
                                    kefir_ast_declarator_identifier_noarena(mem, global_context.context.symbols, "string4")),
         init4, NULL);
-    REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &decl4->specifiers, kefir_ast_type_specifier_int(mem)));
+    REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &decl4->specifiers, kefir_ast_type_specifier_int(mem, NULL)));
 
     REQUIRE_OK(kefir_ast_analyze_node(mem, &global_context.context, KEFIR_AST_NODE_BASE(decl1)));
     REQUIRE_OK(kefir_ast_analyze_node(mem, &global_context.context, KEFIR_AST_NODE_BASE(decl2)));

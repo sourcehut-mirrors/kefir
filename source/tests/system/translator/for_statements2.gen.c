@@ -76,7 +76,7 @@ static kefir_result_t define_conditional_function(struct kefir_mem *mem, struct 
         mem, kefir_ast_declarator_identifier_noarena(mem, context_manager->current->symbols, "i"),
         kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 0))), NULL);
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &outer_loop_init->specifiers,
-                                                          kefir_ast_type_specifier_int(mem)));
+                                                          kefir_ast_type_specifier_int(mem, NULL)));
 
     struct kefir_ast_node_base *outer_loop_condition = KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation_noarena(
         mem, KEFIR_AST_OPERATION_LESS,
@@ -91,7 +91,7 @@ static kefir_result_t define_conditional_function(struct kefir_mem *mem, struct 
         mem, kefir_ast_declarator_identifier_noarena(mem, context_manager->current->symbols, "j"),
         kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 0))), NULL);
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &inner_loop_init->specifiers,
-                                                          kefir_ast_type_specifier_int(mem)));
+                                                          kefir_ast_type_specifier_int(mem, NULL)));
 
     struct kefir_ast_node_base *inner_loop_condition = KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation_noarena(
         mem, KEFIR_AST_OPERATION_LESS,
@@ -119,9 +119,9 @@ static kefir_result_t define_conditional_function(struct kefir_mem *mem, struct 
                     KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(mem, context_manager->current->symbols, "j"))))))),
         NULL);
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &temp_variable->specifiers,
-                                                          kefir_ast_type_specifier_long(mem)));
+                                                          kefir_ast_type_specifier_long(mem, NULL)));
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &temp_variable->specifiers,
-                                                          kefir_ast_type_specifier_long(mem)));
+                                                          kefir_ast_type_specifier_long(mem, NULL)));
     REQUIRE_OK(kefir_ast_compound_statement_append(mem, inner_body, KEFIR_AST_NODE_BASE(temp_variable)));
 
     struct kefir_ast_node_base *inner_body_stmt1 = KEFIR_AST_NODE_BASE(kefir_ast_new_simple_assignment_noarena(
