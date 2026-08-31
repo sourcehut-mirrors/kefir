@@ -57,9 +57,6 @@ kefir_result_t kefir_ast_declarator_specifier_list_iter(const struct kefir_ast_d
                                                                   struct kefir_ast_declarator_specifier **);
 kefir_result_t kefir_ast_declarator_specifier_list_next(struct kefir_ast_declarator_specifier_list_iterator *,
                                                         struct kefir_ast_declarator_specifier **);
-kefir_result_t kefir_ast_declarator_specifier_list_clone(struct kefir_mem *,
-                                                         struct kefir_ast_declarator_specifier_list *,
-                                                         const struct kefir_ast_declarator_specifier_list *);
 kefir_result_t kefir_ast_declarator_specifier_list_move_all(struct kefir_mem *, struct kefir_ast_declarator_specifier_list *,
                                                             struct kefir_ast_declarator_specifier_list *);
 const struct kefir_source_location *kefir_ast_declarator_specifier_list_source_location(
@@ -91,9 +88,6 @@ struct kefir_ast_structure_specifier *kefir_ast_structure_specifier_init(struct 
                                                                          const char *, kefir_bool_t);
 
 kefir_result_t kefir_ast_structure_specifier_free(struct kefir_mem *, struct kefir_ast_structure_specifier *);
-
-struct kefir_ast_structure_specifier *kefir_ast_structure_specifier_clone(struct kefir_mem *,
-                                                                          const struct kefir_ast_structure_specifier *);
 
 kefir_result_t kefir_ast_structure_specifier_append_entry(struct kefir_mem *, struct kefir_ast_structure_specifier *,
                                                           struct kefir_ast_structure_declaration_entry *);
@@ -130,12 +124,9 @@ typedef struct kefir_ast_enum_specifier {
 
 struct kefir_ast_enum_specifier *kefir_ast_enum_specifier_init(struct kefir_mem *, struct kefir_string_pool *,
                                                                const char *, kefir_bool_t,
-                                                               const struct kefir_ast_declarator_specifier_list *);
+                                                               struct kefir_ast_declarator_specifier_list *);
 
 kefir_result_t kefir_ast_enum_specifier_free(struct kefir_mem *, struct kefir_ast_enum_specifier *);
-
-struct kefir_ast_enum_specifier *kefir_ast_enum_specifier_clone(struct kefir_mem *,
-                                                                const struct kefir_ast_enum_specifier *);
 
 kefir_result_t kefir_ast_enum_specifier_append(struct kefir_mem *, struct kefir_ast_enum_specifier *,
                                                struct kefir_string_pool *, const char *, struct kefir_ast_node_base *,
@@ -159,6 +150,7 @@ typedef struct kefir_ast_type_specifier {
 } kefir_ast_type_specifier_t;
 
 typedef struct kefir_ast_declarator_specifier {
+    kefir_uint32_t refcount;
     kefir_ast_declarator_specifier_class_t klass;
     union {
         const struct kefir_ast_type_specifier *type_specifier;
@@ -229,8 +221,8 @@ struct kefir_ast_declarator_specifier *kefir_ast_function_specifier_noreturn(str
 
 struct kefir_ast_declarator_specifier *kefir_ast_alignment_specifier(struct kefir_mem *, struct kefir_ast_node_base *);
 
-struct kefir_ast_declarator_specifier *kefir_ast_declarator_specifier_clone(
-    struct kefir_mem *, const struct kefir_ast_declarator_specifier *);
+struct kefir_ast_declarator_specifier *kefir_ast_declarator_specifier_ref(
+    struct kefir_ast_declarator_specifier *);
 kefir_result_t kefir_ast_declarator_specifier_free(struct kefir_mem *, struct kefir_ast_declarator_specifier *);
 
 typedef struct kefir_ast_type_qualifier_list {
@@ -251,7 +243,7 @@ typedef struct kefir_ast_type_qualifier_list_iterator {
 kefir_result_t kefir_ast_type_qualifier_list_iter(const struct kefir_ast_type_qualifier_list *, struct kefir_ast_type_qualifier_list_iterator *,
                                                             kefir_ast_type_qualifier_type_t *);
 kefir_result_t kefir_ast_type_qualifier_list_next(struct kefir_ast_type_qualifier_list_iterator *, kefir_ast_type_qualifier_type_t *);
-kefir_result_t kefir_ast_type_qualifier_list_clone(struct kefir_mem *, struct kefir_ast_type_qualifier_list *,
-                                                   const struct kefir_ast_type_qualifier_list *);
+kefir_result_t kefir_ast_type_qualifier_list_move(struct kefir_mem *, struct kefir_ast_type_qualifier_list *,
+                                                   struct kefir_ast_type_qualifier_list *);
 
 #endif

@@ -146,9 +146,10 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
         init1, NULL);
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &decl1->specifiers,
                                                           kefir_ast_storage_class_specifier_static(mem)));
+    struct kefir_ast_declarator_specifier *struct_spec1 = kefir_ast_type_specifier_struct(mem, specifier1);
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(
         mem, &decl1->specifiers,
-        kefir_ast_type_specifier_struct(mem, kefir_ast_structure_specifier_clone(mem, specifier1))));
+        kefir_ast_declarator_specifier_ref(struct_spec1)));
 
     struct kefir_ast_initializer *init2 = kefir_ast_new_list_initializer(mem);
     REQUIRE_OK(kefir_ast_initializer_list_append(
@@ -193,7 +194,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &decl2->specifiers,
                                                           kefir_ast_storage_class_specifier_static(mem)));
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &decl2->specifiers,
-                                                          kefir_ast_type_specifier_struct(mem, specifier1)));
+                                                          struct_spec1));
 
     REQUIRE_OK(kefir_ast_analyze_node(mem, &global_context.context, KEFIR_AST_NODE_BASE(decl1)));
     REQUIRE_OK(kefir_ast_analyze_node(mem, &global_context.context, KEFIR_AST_NODE_BASE(decl2)));

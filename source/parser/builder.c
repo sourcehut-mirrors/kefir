@@ -668,7 +668,7 @@ kefir_result_t kefir_parser_ast_builder_declaration(struct kefir_mem *mem, struc
     struct kefir_ast_declaration *declaration = kefir_ast_new_declaration(mem, builder->parser->ast_arena);
     REQUIRE(declaration != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST declaration list"));
 
-    kefir_result_t res = kefir_ast_declarator_specifier_list_clone(mem, &declaration->specifiers, list);
+    kefir_result_t res = kefir_ast_declarator_specifier_list_move_all(mem, &declaration->specifiers, list);
     REQUIRE_ELSE(res == KEFIR_OK, {
         KEFIR_AST_NODE_FREE(mem, KEFIR_AST_NODE_BASE(declaration));
         return res;

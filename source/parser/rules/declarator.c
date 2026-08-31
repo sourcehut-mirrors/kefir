@@ -100,7 +100,7 @@ static kefir_result_t scan_pointer(struct kefir_mem *mem, struct kefir_parser *p
         return res;
     });
 
-    res = kefir_ast_type_qualifier_list_clone(mem, &declarator->pointer->type_qualifiers, &type_qualifiers);
+    res = kefir_ast_type_qualifier_list_move(mem, &declarator->pointer->type_qualifiers, &type_qualifiers);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_ast_declarator_free(mem, declarator);
         kefir_ast_type_qualifier_list_free(mem, &type_qualifiers);
@@ -225,7 +225,7 @@ static kefir_result_t scan_array_impl(struct kefir_mem *mem, struct kefir_parser
     declarator->array->static_array = static_array;
     *declarator_ptr = NULL;
 
-    res = kefir_ast_type_qualifier_list_clone(mem, &declarator->array->type_qualifiers, type_qualifiers);
+    res = kefir_ast_type_qualifier_list_move(mem, &declarator->array->type_qualifiers, type_qualifiers);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_ast_declarator_free(mem, declarator);
         return res;
@@ -342,7 +342,7 @@ static kefir_result_t scan_function_parameter(struct kefir_mem *mem, struct kefi
     init_declarator->base.source_location = source_location;
     declaration->base.source_location = source_location;
 
-    res = kefir_ast_declarator_specifier_list_clone(mem, &declaration->specifiers, &specifiers);
+    res = kefir_ast_declarator_specifier_list_move_all(mem, &declaration->specifiers, &specifiers);
     REQUIRE_ELSE(res == KEFIR_OK, {
         KEFIR_AST_NODE_FREE(mem, KEFIR_AST_NODE_BASE(declaration));
         kefir_ast_declarator_specifier_list_free(mem, &specifiers);

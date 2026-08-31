@@ -87,7 +87,7 @@ kefir_result_t KEFIR_PARSER_RULE_FN_PREFIX(type_name)(struct kefir_mem *mem, str
         return KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST type name");
     });
 
-    res = kefir_ast_declarator_specifier_list_clone(mem, &type_name->type_decl.specifiers, &specifiers);
+    res = kefir_ast_declarator_specifier_list_move_all(mem, &type_name->type_decl.specifiers, &specifiers);
     REQUIRE_ELSE(res == KEFIR_OK, {
         KEFIR_AST_NODE_FREE(mem, KEFIR_AST_NODE_BASE(type_name));
         kefir_ast_declarator_specifier_list_free(mem, &specifiers);

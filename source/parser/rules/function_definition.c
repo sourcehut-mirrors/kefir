@@ -216,7 +216,7 @@ kefir_result_t KEFIR_PARSER_RULE_FN_PREFIX(function_definition)(struct kefir_mem
 
     func_definition->pragmas = pragmas;
 
-    res = kefir_ast_declarator_specifier_list_clone(mem, &func_definition->specifiers, &specifiers);
+    res = kefir_ast_declarator_specifier_list_move_all(mem, &func_definition->specifiers, &specifiers);
     REQUIRE_ELSE(res == KEFIR_OK, {
         KEFIR_AST_NODE_FREE(mem, KEFIR_AST_NODE_BASE(func_definition));
         kefir_list_free(mem, &declaration_list);

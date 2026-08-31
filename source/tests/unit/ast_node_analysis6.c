@@ -649,15 +649,16 @@ DEFINE_CASE(ast_node_analysis_compound_literal3, "AST node analysis - compound l
 
     struct kefir_ast_type_name *type_name1 =
         kefir_ast_new_type_name_noarena(&kft_mem, kefir_ast_declarator_identifier_noarena(&kft_mem, NULL, NULL));
+    struct kefir_ast_declarator_specifier *struct_spec2 = kefir_ast_type_specifier_struct(&kft_mem, specifier2);
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(
         &kft_mem, &type_name1->type_decl.specifiers,
-        kefir_ast_type_specifier_struct(&kft_mem, kefir_ast_structure_specifier_clone(&kft_mem, specifier2))));
+        kefir_ast_declarator_specifier_ref(struct_spec2)));
 
     struct kefir_ast_type_name *type_name2 = kefir_ast_new_type_name_noarena(
         &kft_mem, kefir_ast_declarator_array_noarena(&kft_mem, KEFIR_AST_DECLARATOR_ARRAY_UNBOUNDED, NULL,
                                              kefir_ast_declarator_identifier_noarena(&kft_mem, NULL, NULL)));
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &type_name2->type_decl.specifiers,
-                                                         kefir_ast_type_specifier_struct(&kft_mem, specifier2)));
+                                                         struct_spec2));
 
     ASSERT_OK(kefir_ast_analyze_node(&kft_mem, context, KEFIR_AST_NODE_BASE(type_name1)));
     ASSERT_OK(kefir_ast_analyze_node(&kft_mem, context, KEFIR_AST_NODE_BASE(type_name2)));
