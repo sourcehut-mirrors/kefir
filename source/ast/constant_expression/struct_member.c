@@ -202,17 +202,17 @@ static kefir_result_t copy_subobject_initializer(struct kefir_mem *mem,
 
         struct kefir_ast_initializer_designation *designation_clone = NULL;
         if (entry->designation != NULL) {
-            designation_clone = kefir_ast_initializer_designation_clone(mem, entry->designation);
+            designation_clone = kefir_ast_initializer_designation_ref(entry->designation);
             REQUIRE(designation_clone != NULL,
                     KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to clone AST initializer designation"));
         }
 
-        struct kefir_ast_initializer *initializer_clone = kefir_ast_initializer_clone(mem, entry->value);
+        struct kefir_ast_initializer *initializer_clone = kefir_ast_initializer_ref(entry->value);
         REQUIRE_ELSE(initializer_clone != NULL, {
             if (designation_clone != NULL) {
                 kefir_ast_initializer_designation_free(mem, designation_clone);
             }
-            return KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to clone AST initializer");
+            return KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to reference AST initializer");
         });
 
         kefir_result_t res =
@@ -328,7 +328,7 @@ static kefir_result_t retrieve_subobject_initializer_visit_initializer_list(
         REQUIRE_OK(derive_desgination_with_base(param->mem, param->context->symbols, designator, &designation));
 
         if (designation != NULL) {
-            struct kefir_ast_initializer *init = kefir_ast_initializer_clone(param->mem, initializer);
+            struct kefir_ast_initializer *init = kefir_ast_initializer_ref((struct kefir_ast_initializer *) initializer);
             REQUIRE_ELSE(init != NULL, {
                 kefir_ast_initializer_designation_free(param->mem, designation);
                 return KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate expression initializer");

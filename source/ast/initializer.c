@@ -40,6 +40,7 @@ struct kefir_ast_initializer_designation *kefir_ast_new_initializer_member_desig
         KEFIR_MALLOC(mem, sizeof(struct kefir_ast_initializer_designation));
     REQUIRE(designation != NULL, NULL);
 
+    designation->refcount = 1;
     designation->type = KEFIR_AST_INIITIALIZER_DESIGNATION_MEMBER;
     designation->identifier = identifier;
     designation->next = next;
@@ -61,6 +62,7 @@ struct kefir_ast_initializer_designation *kefir_ast_new_initializer_index_design
         KEFIR_MALLOC(mem, sizeof(struct kefir_ast_initializer_designation));
     REQUIRE(designation != NULL, NULL);
 
+    designation->refcount = 1;
     designation->type = KEFIR_AST_INIITIALIZER_DESIGNATION_SUBSCRIPT;
     designation->index = index;
     designation->next = next;
@@ -84,6 +86,7 @@ struct kefir_ast_initializer_designation *kefir_ast_new_initializer_range_design
         KEFIR_MALLOC(mem, sizeof(struct kefir_ast_initializer_designation));
     REQUIRE(designation != NULL, NULL);
 
+    designation->refcount = 1;
     designation->type = KEFIR_AST_INIITIALIZER_DESIGNATION_SUBSCRIPT_RANGE;
     designation->range.begin = begin;
     designation->range.end = end;
@@ -97,57 +100,12 @@ struct kefir_ast_initializer_designation *kefir_ast_new_initializer_range_design
     return designation;
 }
 
-struct kefir_ast_initializer_designation *kefir_ast_initializer_designation_clone(
-    struct kefir_mem *mem, struct kefir_ast_initializer_designation *designation) {
-    REQUIRE(mem != NULL, NULL);
+struct kefir_ast_initializer_designation *kefir_ast_initializer_designation_ref(
+    struct kefir_ast_initializer_designation *designation) {
     REQUIRE(designation != NULL, NULL);
 
-    struct kefir_ast_initializer_designation *next_clone = NULL;
-    if (designation->next != NULL) {
-        next_clone = kefir_ast_initializer_designation_clone(mem, designation->next);
-        REQUIRE(next_clone != NULL, NULL);
-    }
-
-    struct kefir_ast_initializer_designation *clone =
-        KEFIR_MALLOC(mem, sizeof(struct kefir_ast_initializer_designation));
-    REQUIRE_ELSE(clone != NULL, {
-        kefir_ast_initializer_designation_free(mem, next_clone);
-        return NULL;
-    });
-    clone->type = designation->type;
-    clone->next = next_clone;
-
-    switch (designation->type) {
-        case KEFIR_AST_INIITIALIZER_DESIGNATION_MEMBER:
-            clone->identifier = designation->identifier;
-            break;
-
-        case KEFIR_AST_INIITIALIZER_DESIGNATION_SUBSCRIPT:
-            clone->index = KEFIR_AST_NODE_REF(designation->index);
-            REQUIRE_ELSE(clone->index != NULL, {
-                kefir_ast_initializer_designation_free(mem, clone->next);
-                KEFIR_FREE(mem, clone);
-                return NULL;
-            });
-            break;
-
-        case KEFIR_AST_INIITIALIZER_DESIGNATION_SUBSCRIPT_RANGE:
-            clone->range.begin = KEFIR_AST_NODE_REF(designation->range.begin);
-            REQUIRE_ELSE(clone->index != NULL, {
-                kefir_ast_initializer_designation_free(mem, clone->next);
-                KEFIR_FREE(mem, clone);
-                return NULL;
-            });
-            clone->range.end = KEFIR_AST_NODE_REF(designation->range.end);
-            REQUIRE_ELSE(clone->index != NULL, {
-                kefir_ast_initializer_designation_free(mem, clone->next);
-                KEFIR_FREE(mem, clone);
-                return NULL;
-            });
-            break;
-    }
-    clone->source_location = designation->source_location;
-    return clone;
+    designation->refcount++;
+    return designation;
 }
 
 kefir_result_t kefir_ast_initializer_designation_free(struct kefir_mem *mem,
@@ -155,6 +113,8 @@ kefir_result_t kefir_ast_initializer_designation_free(struct kefir_mem *mem,
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(designation != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST initializer designation"));
+    REQUIRE(designation->refcount > 0, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected AST initializer reference count"));
+    REQUIRE(--designation->refcount == 0, KEFIR_OK);
 
     if (designation->next != NULL) {
         REQUIRE_OK(kefir_ast_initializer_designation_free(mem, designation->next));
@@ -287,6 +247,7 @@ struct kefir_ast_initializer *kefir_ast_new_expression_initializer(struct kefir_
 
     struct kefir_ast_initializer *initializer = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_initializer));
     REQUIRE(initializer != NULL, NULL);
+    initializer->refcount = 1;
     initializer->type = KEFIR_AST_INITIALIZER_EXPRESSION;
     initializer->expression = expr;
 
@@ -303,6 +264,7 @@ struct kefir_ast_initializer *kefir_ast_new_list_initializer(struct kefir_mem *m
 
     struct kefir_ast_initializer *initializer = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_initializer));
     REQUIRE(initializer != NULL, NULL);
+    initializer->refcount = 1;
     initializer->type = KEFIR_AST_INITIALIZER_LIST;
     kefir_result_t res = kefir_ast_initializer_list_init(&initializer->list);
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -322,6 +284,8 @@ struct kefir_ast_initializer *kefir_ast_new_list_initializer(struct kefir_mem *m
 kefir_result_t kefir_ast_initializer_free(struct kefir_mem *mem, struct kefir_ast_initializer *initializer) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(initializer != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST initializer"));
+    REQUIRE(initializer->refcount > 0, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected AST initializer reference count"));
+    REQUIRE(--initializer->refcount == 0, KEFIR_OK);
 
     switch (initializer->type) {
         case KEFIR_AST_INITIALIZER_EXPRESSION:
@@ -347,32 +311,11 @@ struct kefir_ast_node_base *kefir_ast_initializer_head(const struct kefir_ast_in
     }
 }
 
-struct kefir_ast_initializer *kefir_ast_initializer_clone(struct kefir_mem *mem,
-                                                          const struct kefir_ast_initializer *src) {
-    REQUIRE(mem != NULL, NULL);
-    REQUIRE(src != NULL, NULL);
+struct kefir_ast_initializer *kefir_ast_initializer_ref(struct kefir_ast_initializer *initializer) {
+    REQUIRE(initializer != NULL, NULL);
 
-    struct kefir_ast_initializer *dst = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_initializer));
-    REQUIRE(dst != NULL, NULL);
-    dst->type = src->type;
-    switch (src->type) {
-        case KEFIR_AST_INITIALIZER_EXPRESSION:
-            dst->expression = KEFIR_AST_NODE_REF(src->expression);
-            REQUIRE_ELSE(dst->expression != NULL, {
-                KEFIR_FREE(mem, dst);
-                return NULL;
-            });
-            break;
-
-        case KEFIR_AST_INITIALIZER_LIST: {
-            kefir_result_t res = kefir_ast_initializer_list_clone(mem, &dst->list, &src->list);
-            REQUIRE_ELSE(res == KEFIR_OK, {
-                KEFIR_FREE(mem, dst);
-                return NULL;
-            });
-        } break;
-    }
-    return dst;
+    initializer->refcount++;
+    return initializer;;
 }
 
 kefir_result_t kefir_ast_initializer_list_init(struct kefir_ast_initializer_list *list) {
@@ -436,59 +379,5 @@ kefir_result_t kefir_ast_initializer_list_append(struct kefir_mem *mem, struct k
     REQUIRE(initializer != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST initializer"));
 
     REQUIRE_OK(kefir_ast_initializer_list_append_impl(mem, list, NULL, designation, initializer));
-    return KEFIR_OK;
-}
-
-kefir_result_t kefir_ast_initializer_list_clone(struct kefir_mem *mem, struct kefir_ast_initializer_list *dst,
-                                                const struct kefir_ast_initializer_list *src) {
-    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
-    REQUIRE(src != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid source AST initializer list"));
-    REQUIRE(dst != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid destination AST initializer list"));
-
-    REQUIRE_OK(kefir_ast_initializer_list_init(dst));
-    for (kefir_size_t i = 0; i < src->entries_length; i++) {
-        struct kefir_ast_initializer_list_entry *entry = &src->entries[i];
-        struct kefir_ast_designator *designator = kefir_ast_designator_clone(mem, entry->designator);
-        if (entry->designator != NULL) {
-            REQUIRE_ELSE(designator != NULL, {
-                kefir_ast_initializer_list_free(mem, dst);
-                return KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to clone AST designator");
-            });
-        }
-        struct kefir_ast_initializer_designation *designation =
-            kefir_ast_initializer_designation_clone(mem, entry->designation);
-        if (entry->designation != NULL) {
-            REQUIRE_ELSE(designation != NULL, {
-                if (designator != NULL) {
-                    kefir_ast_designator_free(mem, designator);
-                }
-                kefir_ast_initializer_list_free(mem, dst);
-                return KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to clone AST designator");
-            });
-        }
-        struct kefir_ast_initializer *value = kefir_ast_initializer_clone(mem, entry->value);
-        REQUIRE_ELSE(value != NULL, {
-            if (designation != NULL) {
-                kefir_ast_initializer_designation_free(mem, designation);
-            }
-            if (designator != NULL) {
-                kefir_ast_designator_free(mem, designator);
-            }
-            kefir_ast_initializer_list_free(mem, dst);
-            return KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to clone AST initializer");
-        });
-        kefir_result_t res = kefir_ast_initializer_list_append_impl(mem, dst, designator, designation, value);
-        REQUIRE_ELSE(res == KEFIR_OK, {
-            kefir_ast_initializer_free(mem, value);
-            if (designation != NULL) {
-                kefir_ast_initializer_designation_free(mem, designation);
-            }
-            if (designator != NULL) {
-                kefir_ast_designator_free(mem, designator);
-            }
-            kefir_ast_initializer_list_free(mem, dst);
-            return KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to clone AST initializer");
-        });
-    }
     return KEFIR_OK;
 }

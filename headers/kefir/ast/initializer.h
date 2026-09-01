@@ -33,6 +33,7 @@ typedef enum kefir_ast_initializer_designation_type {
 } kefir_ast_initializer_designation_type_t;
 
 typedef struct kefir_ast_initializer_designation {
+    kefir_uint32_t refcount;
     kefir_ast_initializer_designation_type_t type;
     union {
         const char *identifier;
@@ -59,6 +60,7 @@ typedef struct kefir_ast_initializer_list {
 } kefir_ast_initializer_list_t;
 
 typedef struct kefir_ast_initializer {
+    kefir_uint32_t refcount;
     kefir_ast_initializer_type_t type;
     union {
         struct kefir_ast_node_base *expression;
@@ -80,8 +82,8 @@ struct kefir_ast_initializer_designation *kefir_ast_new_initializer_index_design
 struct kefir_ast_initializer_designation *kefir_ast_new_initializer_range_designation(
     struct kefir_mem *, struct kefir_ast_node_base *, struct kefir_ast_node_base *,
     struct kefir_ast_initializer_designation *);
-struct kefir_ast_initializer_designation *kefir_ast_initializer_designation_clone(
-    struct kefir_mem *, struct kefir_ast_initializer_designation *);
+struct kefir_ast_initializer_designation *kefir_ast_initializer_designation_ref(
+    struct kefir_ast_initializer_designation *);
 kefir_result_t kefir_ast_initializer_designation_free(struct kefir_mem *, struct kefir_ast_initializer_designation *);
 kefir_result_t kefir_ast_evaluate_initializer_designation(struct kefir_mem *, const struct kefir_ast_context *,
                                                           const struct kefir_ast_initializer_designation *,
@@ -91,14 +93,12 @@ struct kefir_ast_initializer *kefir_ast_new_expression_initializer(struct kefir_
 struct kefir_ast_initializer *kefir_ast_new_list_initializer(struct kefir_mem *);
 kefir_result_t kefir_ast_initializer_free(struct kefir_mem *, struct kefir_ast_initializer *);
 struct kefir_ast_node_base *kefir_ast_initializer_head(const struct kefir_ast_initializer *);
-struct kefir_ast_initializer *kefir_ast_initializer_clone(struct kefir_mem *, const struct kefir_ast_initializer *);
+struct kefir_ast_initializer *kefir_ast_initializer_ref(struct kefir_ast_initializer *);
 
 kefir_result_t kefir_ast_initializer_list_init(struct kefir_ast_initializer_list *);
 kefir_result_t kefir_ast_initializer_list_free(struct kefir_mem *, struct kefir_ast_initializer_list *);
 kefir_result_t kefir_ast_initializer_list_append(struct kefir_mem *, struct kefir_ast_initializer_list *,
                                                  struct kefir_ast_initializer_designation *,
                                                  struct kefir_ast_initializer *);
-kefir_result_t kefir_ast_initializer_list_clone(struct kefir_mem *, struct kefir_ast_initializer_list *,
-                                                const struct kefir_ast_initializer_list *);
 
 #endif
