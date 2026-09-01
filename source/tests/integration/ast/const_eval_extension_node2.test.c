@@ -80,12 +80,12 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
 
     struct kefir_ast_extension_node_class ext_node_class = {0};
 
-    struct kefir_ast_initializer *init1 = kefir_ast_new_expression_initializer(
+    struct kefir_ast_initializer *init1 = kefir_ast_new_expression_initializer_noarena(
         mem,
         KEFIR_AST_NODE_BASE(kefir_ast_new_unary_operation_noarena(
             mem, KEFIR_AST_OPERATION_ADDRESS,
             KEFIR_AST_NODE_BASE(kefir_ast_new_extension_node_noarena(mem, &ext_node_class, (void *) (kefir_uptr_t) 100)))));
-    struct kefir_ast_initializer *init2 = kefir_ast_new_expression_initializer(
+    struct kefir_ast_initializer *init2 = kefir_ast_new_expression_initializer_noarena(
         mem,
         KEFIR_AST_NODE_BASE(kefir_ast_new_unary_operation_noarena(
             mem, KEFIR_AST_OPERATION_ADDRESS,

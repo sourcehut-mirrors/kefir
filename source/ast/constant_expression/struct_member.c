@@ -139,7 +139,7 @@ static kefir_bool_t is_designator_base(const struct kefir_ast_designator *design
     }
 }
 
-static kefir_result_t derive_desgination_with_base(struct kefir_mem *mem, struct kefir_string_pool *symbols,
+static kefir_result_t derive_desgination_with_base(struct kefir_mem *mem, const struct kefir_ast_context *context, struct kefir_string_pool *symbols,
                                                    const struct kefir_ast_designator *designator,
                                                    struct kefir_ast_initializer_designation **designation_ptr) {
     if (designator->next == NULL) {
@@ -148,10 +148,10 @@ static kefir_result_t derive_desgination_with_base(struct kefir_mem *mem, struct
     }
 
     struct kefir_ast_initializer_designation *designation = NULL, *base = NULL;
-    REQUIRE_OK(derive_desgination_with_base(mem, symbols, designator->next, &base));
+    REQUIRE_OK(derive_desgination_with_base(mem, context, symbols, designator->next, &base));
     switch (designator->type) {
         case KEFIR_AST_DESIGNATOR_MEMBER:
-            designation = kefir_ast_new_initializer_member_designation(mem, symbols, designator->member, base);
+            designation = kefir_ast_new_initializer_member_designation(mem, context->memory_arena, symbols, designator->member, base);
             REQUIRE(designation != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate AST designation"));
             break;
 
@@ -160,7 +160,7 @@ static kefir_result_t derive_desgination_with_base(struct kefir_mem *mem, struct
             REQUIRE(subscript != NULL,
                     KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate AST designation subscript"));
 
-            designation = kefir_ast_new_initializer_index_designation(mem, KEFIR_AST_NODE_BASE(subscript), base);
+            designation = kefir_ast_new_initializer_index_designation(mem, context->memory_arena, KEFIR_AST_NODE_BASE(subscript), base);
             REQUIRE_ELSE(designation != NULL, {
                 KEFIR_AST_NODE_FREE(mem, KEFIR_AST_NODE_BASE(subscript));
                 return KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate AST designation");
@@ -179,7 +179,7 @@ static kefir_result_t derive_desgination_with_base(struct kefir_mem *mem, struct
                 return KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate AST designation subscript");
             });
 
-            designation = kefir_ast_new_initializer_range_designation(mem, KEFIR_AST_NODE_BASE(subscript_begin),
+            designation = kefir_ast_new_initializer_range_designation(mem, context->memory_arena, KEFIR_AST_NODE_BASE(subscript_begin),
                                                                       KEFIR_AST_NODE_BASE(subscript_end), base);
             REQUIRE_ELSE(designation != NULL, {
                 KEFIR_AST_NODE_FREE(mem, KEFIR_AST_NODE_BASE(subscript_begin));
@@ -239,11 +239,11 @@ static kefir_result_t retrieve_subobject_initializer_visit_value(const struct ke
 
     if (is_designator_base(designator, param->member_name)) {
         struct kefir_ast_initializer_designation *designation;
-        REQUIRE_OK(derive_desgination_with_base(param->mem, param->context->symbols, designator, &designation));
+        REQUIRE_OK(derive_desgination_with_base(param->mem, param->context, param->context->symbols, designator, &designation));
 
         if (designation != NULL) {
             struct kefir_ast_initializer *expr_init =
-                kefir_ast_new_expression_initializer(param->mem, KEFIR_AST_NODE_REF(expression));
+                kefir_ast_new_expression_initializer(param->mem, param->context->memory_arena, KEFIR_AST_NODE_REF(expression));
             REQUIRE_ELSE(expr_init != NULL, {
                 KEFIR_AST_NODE_FREE(param->mem, expression);
                 kefir_ast_initializer_designation_free(param->mem, designation);
@@ -296,10 +296,10 @@ static kefir_result_t retrieve_subobject_initializer_visit_string_literal(const 
 
     if (is_designator_base(designator, param->member_name)) {
         struct kefir_ast_initializer_designation *designation;
-        REQUIRE_OK(derive_desgination_with_base(param->mem, param->context->symbols, designator, &designation));
+        REQUIRE_OK(derive_desgination_with_base(param->mem, param->context, param->context->symbols, designator, &designation));
 
         struct kefir_ast_initializer *expr_init =
-            kefir_ast_new_expression_initializer(param->mem, KEFIR_AST_NODE_REF(expression));
+            kefir_ast_new_expression_initializer(param->mem, param->context->memory_arena, KEFIR_AST_NODE_REF(expression));
         REQUIRE_ELSE(expr_init != NULL, {
             KEFIR_AST_NODE_FREE(param->mem, expression);
             kefir_ast_initializer_designation_free(param->mem, designation);
@@ -325,7 +325,7 @@ static kefir_result_t retrieve_subobject_initializer_visit_initializer_list(
 
     if (is_designator_base(designator, param->member_name)) {
         struct kefir_ast_initializer_designation *designation;
-        REQUIRE_OK(derive_desgination_with_base(param->mem, param->context->symbols, designator, &designation));
+        REQUIRE_OK(derive_desgination_with_base(param->mem, param->context, param->context->symbols, designator, &designation));
 
         if (designation != NULL) {
             struct kefir_ast_initializer *init = kefir_ast_initializer_ref((struct kefir_ast_initializer *) initializer);
@@ -415,7 +415,7 @@ kefir_result_t kefir_ast_evaluate_struct_member_node(struct kefir_mem *mem, cons
                 KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->structure->source_location,
                                        "Expected compound constant expression"));
 
-        struct kefir_ast_initializer *subobject_initializer = kefir_ast_new_list_initializer(mem);
+        struct kefir_ast_initializer *subobject_initializer = kefir_ast_new_list_initializer(mem, context->memory_arena);
         kefir_result_t res = kefir_ast_global_context_add_owned_object(mem, context->global_context,
                                                                        subobject_initializer, free_subobj_initializer);
         REQUIRE_ELSE(res == KEFIR_OK, {

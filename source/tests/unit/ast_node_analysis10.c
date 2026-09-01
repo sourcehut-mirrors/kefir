@@ -358,7 +358,7 @@ DEFINE_CASE(ast_node_analysis_for_statements2, "AST node analysis - for statemen
 
     struct kefir_ast_declaration *decl2 = kefir_ast_new_single_declaration_noarena(
         &kft_mem, kefir_ast_declarator_identifier_noarena(&kft_mem, context->symbols, "i"),
-        kefir_ast_new_expression_initializer(
+        kefir_ast_new_expression_initializer_noarena(
             &kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(&kft_mem, context->symbols, "x"))),
         NULL);
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &decl2->specifiers,
@@ -366,7 +366,7 @@ DEFINE_CASE(ast_node_analysis_for_statements2, "AST node analysis - for statemen
 
     struct kefir_ast_declaration *decl3 = kefir_ast_new_single_declaration_noarena(
         &kft_mem, kefir_ast_declarator_identifier_noarena(&kft_mem, context->symbols, "y"),
-        kefir_ast_new_expression_initializer(
+        kefir_ast_new_expression_initializer_noarena(
             &kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(&kft_mem, context->symbols, "i"))),
         NULL);
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &decl3->specifiers,

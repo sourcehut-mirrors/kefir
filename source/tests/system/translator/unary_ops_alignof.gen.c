@@ -76,7 +76,7 @@ static kefir_result_t define_get_alignof_function(struct kefir_mem *mem, struct 
 #define APPEND(_type_name)                                                                           \
     REQUIRE_OK(kefir_ast_initializer_list_append(                                                    \
         mem, &compound_literal->initializer->list, NULL,                                             \
-        kefir_ast_new_expression_initializer(                                                        \
+        kefir_ast_new_expression_initializer_noarena(                                                        \
             mem, KEFIR_AST_NODE_BASE(kefir_ast_new_unary_operation_noarena(mem, KEFIR_AST_OPERATION_ALIGNOF, \
                                                                    KEFIR_AST_NODE_BASE(_type_name))))))
 

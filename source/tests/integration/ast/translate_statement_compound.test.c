@@ -71,13 +71,13 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     FUNC2("compound2", {
         struct kefir_ast_declaration *decl1 = kefir_ast_new_single_declaration_noarena(
             mem, kefir_ast_declarator_identifier_noarena(mem, context->symbols, "x"),
-            kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 1))), NULL);
+            kefir_ast_new_expression_initializer_noarena(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 1))), NULL);
         REQUIRE_OK(
             kefir_ast_declarator_specifier_list_append(mem, &decl1->specifiers, kefir_ast_type_specifier_int(mem, NULL)));
 
         struct kefir_ast_declaration *decl2 = kefir_ast_new_single_declaration_noarena(
             mem, kefir_ast_declarator_identifier_noarena(mem, context->symbols, "y"),
-            kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 2))), NULL);
+            kefir_ast_new_expression_initializer_noarena(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 2))), NULL);
         REQUIRE_OK(
             kefir_ast_declarator_specifier_list_append(mem, &decl2->specifiers, kefir_ast_type_specifier_long(mem, NULL)));
 

@@ -117,7 +117,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
         struct kefir_ast_compound_literal *compound1 = kefir_ast_new_compound_literal_noarena(mem, type_name1);
         REQUIRE_OK(kefir_ast_initializer_list_append(
             mem, &compound1->initializer->list, NULL,
-            kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 100)))));
+            kefir_ast_new_expression_initializer_noarena(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 100)))));
 
         struct kefir_ast_type_name *type_name2 =
             kefir_ast_new_type_name_noarena(mem, kefir_ast_declarator_identifier_noarena(mem, NULL, NULL));

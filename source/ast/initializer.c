@@ -26,9 +26,9 @@
 #include "kefir/core/source_error.h"
 
 struct kefir_ast_initializer_designation *kefir_ast_new_initializer_member_designation(
-    struct kefir_mem *mem, struct kefir_string_pool *symbols, const char *identifier,
+    struct kefir_mem *mem, struct kefir_memory_arena *arena, struct kefir_string_pool *symbols, const char *identifier,
     struct kefir_ast_initializer_designation *next) {
-    REQUIRE(mem != NULL, NULL);
+    REQUIRE(mem != NULL || arena != NULL, NULL);
     REQUIRE(identifier != NULL, NULL);
 
     if (symbols != NULL) {
@@ -36,10 +36,15 @@ struct kefir_ast_initializer_designation *kefir_ast_new_initializer_member_desig
         REQUIRE(identifier != NULL, NULL);
     }
 
-    struct kefir_ast_initializer_designation *designation =
-        KEFIR_MALLOC(mem, sizeof(struct kefir_ast_initializer_designation));
+    struct kefir_ast_initializer_designation *designation = NULL;
+    if (arena != NULL) {
+        designation = kefir_memory_arena_alloc(arena, sizeof(struct kefir_ast_initializer_designation), _Alignof(struct kefir_ast_initializer_designation));
+    } else {
+        designation = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_initializer_designation));
+    }
     REQUIRE(designation != NULL, NULL);
 
+    designation->arena_allocated = arena != NULL;
     designation->refcount = 1;
     designation->type = KEFIR_AST_INIITIALIZER_DESIGNATION_MEMBER;
     designation->identifier = identifier;
@@ -47,21 +52,28 @@ struct kefir_ast_initializer_designation *kefir_ast_new_initializer_member_desig
 
     kefir_result_t res = kefir_source_location_empty(&designation->source_location);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, designation);
+        if (arena == NULL) {
+            KEFIR_FREE(mem, designation);
+        }
         return NULL;
     });
     return designation;
 }
 
 struct kefir_ast_initializer_designation *kefir_ast_new_initializer_index_designation(
-    struct kefir_mem *mem, struct kefir_ast_node_base *index, struct kefir_ast_initializer_designation *next) {
-    REQUIRE(mem != NULL, NULL);
+    struct kefir_mem *mem, struct kefir_memory_arena *arena, struct kefir_ast_node_base *index, struct kefir_ast_initializer_designation *next) {
+    REQUIRE(mem != NULL || arena != NULL, NULL);
     REQUIRE(index != NULL, NULL);
 
-    struct kefir_ast_initializer_designation *designation =
-        KEFIR_MALLOC(mem, sizeof(struct kefir_ast_initializer_designation));
+    struct kefir_ast_initializer_designation *designation = NULL;
+    if (arena != NULL) {
+        designation = kefir_memory_arena_alloc(arena, sizeof(struct kefir_ast_initializer_designation), _Alignof(struct kefir_ast_initializer_designation));
+    } else {
+        designation = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_initializer_designation));
+    }
     REQUIRE(designation != NULL, NULL);
 
+    designation->arena_allocated = arena != NULL;
     designation->refcount = 1;
     designation->type = KEFIR_AST_INIITIALIZER_DESIGNATION_SUBSCRIPT;
     designation->index = index;
@@ -69,23 +81,30 @@ struct kefir_ast_initializer_designation *kefir_ast_new_initializer_index_design
 
     kefir_result_t res = kefir_source_location_empty(&designation->source_location);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, designation);
+        if (arena == NULL) {
+            KEFIR_FREE(mem, designation);
+        }
         return NULL;
     });
     return designation;
 }
 
 struct kefir_ast_initializer_designation *kefir_ast_new_initializer_range_designation(
-    struct kefir_mem *mem, struct kefir_ast_node_base *begin, struct kefir_ast_node_base *end,
+    struct kefir_mem *mem, struct kefir_memory_arena *arena, struct kefir_ast_node_base *begin, struct kefir_ast_node_base *end,
     struct kefir_ast_initializer_designation *next) {
-    REQUIRE(mem != NULL, NULL);
+    REQUIRE(mem != NULL || arena != NULL, NULL);
     REQUIRE(begin != NULL, NULL);
     REQUIRE(end != NULL, NULL);
 
-    struct kefir_ast_initializer_designation *designation =
-        KEFIR_MALLOC(mem, sizeof(struct kefir_ast_initializer_designation));
+    struct kefir_ast_initializer_designation *designation = NULL;
+    if (arena != NULL) {
+        designation = kefir_memory_arena_alloc(arena, sizeof(struct kefir_ast_initializer_designation), _Alignof(struct kefir_ast_initializer_designation));
+    } else {
+        designation = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_initializer_designation));
+    }
     REQUIRE(designation != NULL, NULL);
 
+    designation->arena_allocated = arena != NULL;
     designation->refcount = 1;
     designation->type = KEFIR_AST_INIITIALIZER_DESIGNATION_SUBSCRIPT_RANGE;
     designation->range.begin = begin;
@@ -94,7 +113,9 @@ struct kefir_ast_initializer_designation *kefir_ast_new_initializer_range_design
 
     kefir_result_t res = kefir_source_location_empty(&designation->source_location);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, designation);
+        if (arena == NULL) {
+            KEFIR_FREE(mem, designation);
+        }
         return NULL;
     });
     return designation;
@@ -138,7 +159,9 @@ kefir_result_t kefir_ast_initializer_designation_free(struct kefir_mem *mem,
             designation->range.end = NULL;
             break;
     }
-    KEFIR_FREE(mem, designation);
+    if (!designation->arena_allocated) {
+        KEFIR_FREE(mem, designation);
+    }
     return KEFIR_OK;
 }
 
@@ -240,30 +263,44 @@ kefir_result_t kefir_ast_evaluate_initializer_designation(struct kefir_mem *mem,
     return KEFIR_OK;
 }
 
-struct kefir_ast_initializer *kefir_ast_new_expression_initializer(struct kefir_mem *mem,
+struct kefir_ast_initializer *kefir_ast_new_expression_initializer(struct kefir_mem *mem, struct kefir_memory_arena *arena,
                                                                    struct kefir_ast_node_base *expr) {
-    REQUIRE(mem != NULL, NULL);
+    REQUIRE(mem != NULL || arena != NULL, NULL);
     REQUIRE(expr != NULL, NULL);
 
-    struct kefir_ast_initializer *initializer = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_initializer));
+    struct kefir_ast_initializer *initializer = NULL;
+    if (arena != NULL) {
+        initializer = kefir_memory_arena_alloc(arena, sizeof(struct kefir_ast_initializer), _Alignof(struct kefir_ast_initializer));
+    } else {
+        initializer = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_initializer));
+    }
     REQUIRE(initializer != NULL, NULL);
+    initializer->arena_allocated = arena != NULL;
     initializer->refcount = 1;
     initializer->type = KEFIR_AST_INITIALIZER_EXPRESSION;
     initializer->expression = expr;
 
     kefir_result_t res = kefir_source_location_empty(&initializer->source_location);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, initializer);
+        if (arena == NULL) {
+            KEFIR_FREE(mem, initializer);
+        }
         return NULL;
     });
     return initializer;
 }
 
-struct kefir_ast_initializer *kefir_ast_new_list_initializer(struct kefir_mem *mem) {
-    REQUIRE(mem != NULL, NULL);
+struct kefir_ast_initializer *kefir_ast_new_list_initializer(struct kefir_mem *mem, struct kefir_memory_arena *arena) {
+    REQUIRE(mem != NULL || arena != NULL, NULL);
 
-    struct kefir_ast_initializer *initializer = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_initializer));
+    struct kefir_ast_initializer *initializer = NULL;
+    if (arena != NULL) {
+        initializer = kefir_memory_arena_alloc(arena, sizeof(struct kefir_ast_initializer), _Alignof(struct kefir_ast_initializer));
+    } else {
+        initializer = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_initializer));
+    }
     REQUIRE(initializer != NULL, NULL);
+    initializer->arena_allocated = arena != NULL;
     initializer->refcount = 1;
     initializer->type = KEFIR_AST_INITIALIZER_LIST;
     kefir_result_t res = kefir_ast_initializer_list_init(&initializer->list);
@@ -275,7 +312,9 @@ struct kefir_ast_initializer *kefir_ast_new_list_initializer(struct kefir_mem *m
     res = kefir_source_location_empty(&initializer->source_location);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_ast_initializer_list_free(mem, &initializer->list);
-        KEFIR_FREE(mem, initializer);
+        if (arena == NULL) {
+            KEFIR_FREE(mem, initializer);
+        }
         return NULL;
     });
     return initializer;
@@ -296,7 +335,9 @@ kefir_result_t kefir_ast_initializer_free(struct kefir_mem *mem, struct kefir_as
             REQUIRE_OK(kefir_ast_initializer_list_free(mem, &initializer->list));
             break;
     }
-    KEFIR_FREE(mem, initializer);
+    if (!initializer->arena_allocated) {
+        KEFIR_FREE(mem, initializer);
+    }
     return KEFIR_OK;
 }
 

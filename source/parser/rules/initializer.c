@@ -33,7 +33,7 @@ static kefir_result_t scan_initializer(struct kefir_mem *mem, struct kefir_parse
         REQUIRE_MATCH_OK(&res, KEFIR_PARSER_RULE_APPLY(mem, parser, assignment_expression, &node),
                          KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(parser, 0),
                                                 "Expected either initializer list, or assignment expression"));
-        *initializer = kefir_ast_new_expression_initializer(mem, node);
+        *initializer = kefir_ast_new_expression_initializer(mem, parser->ast_arena, node);
         REQUIRE_ELSE(*initializer != NULL, {
             KEFIR_AST_NODE_FREE(mem, node);
             return KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST expression initializer");

@@ -94,4 +94,10 @@
 #define kefir_ast_structure_specifier_init_noarena(_mem, _strings, _id, _complete) (kefir_ast_structure_specifier_init((_mem), NULL, (_strings), (_id), (_complete)))
 #define kefir_ast_structure_declaration_entry_alloc_noarena(_mem) (kefir_ast_structure_declaration_entry_alloc((_mem), NULL))
 
+#define kefir_ast_new_initializer_member_designation_noarena(_mem, _strings, _label, _designation) (kefir_ast_new_initializer_member_designation((_mem), NULL, (_strings), (_label), (_designation)))
+#define kefir_ast_new_initializer_index_designation_noarena(_mem, _index, _designation) (kefir_ast_new_initializer_index_designation((_mem), NULL, (_index), (_designation)))
+
+#define kefir_ast_new_expression_initializer_noarena(_mem, _expr) (kefir_ast_new_expression_initializer((_mem), NULL, (_expr)))
+#define kefir_ast_new_list_initializer_noarena(_mem) (kefir_ast_new_list_initializer((_mem), NULL))
+
 #endif

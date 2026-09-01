@@ -257,12 +257,12 @@ DEFINE_CASE(ast_declaration_variably_modified4, "AST declarations - variably mod
 
     const struct kefir_ast_type *type2 = kefir_ast_type_pointer(&kft_mem, &global_context.type_bundle, type1);
 
-    struct kefir_ast_initializer *init1 = kefir_ast_new_list_initializer(&kft_mem);
+    struct kefir_ast_initializer *init1 = kefir_ast_new_list_initializer_noarena(&kft_mem);
     ASSERT_OK(kefir_ast_initializer_list_append(
         &kft_mem, &init1->list, NULL,
-        kefir_ast_new_expression_initializer(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 0)))));
+        kefir_ast_new_expression_initializer_noarena(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 0)))));
     struct kefir_ast_initializer *init2 =
-        kefir_ast_new_expression_initializer(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 0)));
+        kefir_ast_new_expression_initializer_noarena(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 0)));
 
     ASSERT_NOK(func_context.context.define_identifier(
         &kft_mem, &func_context.context, true, "test1", type1, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_UNKNOWN,

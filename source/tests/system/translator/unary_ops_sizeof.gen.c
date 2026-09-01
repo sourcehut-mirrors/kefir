@@ -76,7 +76,7 @@ static kefir_result_t define_get_sizeof_function(struct kefir_mem *mem, struct f
 #define APPEND(_type_name)                                                                          \
     REQUIRE_OK(kefir_ast_initializer_list_append(                                                   \
         mem, &compound_literal->initializer->list, NULL,                                            \
-        kefir_ast_new_expression_initializer(                                                       \
+        kefir_ast_new_expression_initializer_noarena(                                                       \
             mem, KEFIR_AST_NODE_BASE(kefir_ast_new_unary_operation_noarena(mem, KEFIR_AST_OPERATION_SIZEOF, \
                                                                    KEFIR_AST_NODE_BASE(_type_name))))))
 
@@ -132,7 +132,7 @@ static kefir_result_t define_get_sizeof_function(struct kefir_mem *mem, struct f
 
     REQUIRE_OK(kefir_ast_initializer_list_append(
         mem, &compound_literal->initializer->list, NULL,
-        kefir_ast_new_expression_initializer(
+        kefir_ast_new_expression_initializer_noarena(
             mem, KEFIR_AST_NODE_BASE(kefir_ast_new_unary_operation_noarena(
                      mem, KEFIR_AST_OPERATION_SIZEOF,
                      KEFIR_AST_NODE_BASE(KEFIR_AST_MAKE_STRING_LITERAL_MULTIBYTE(mem, "Hello, world!!!")))))));

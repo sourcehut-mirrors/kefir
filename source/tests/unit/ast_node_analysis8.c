@@ -589,7 +589,7 @@ DEFINE_CASE(ast_node_analysis_compound_statements3, "AST node analysis - compoun
 
     struct kefir_ast_declaration *decl1 = kefir_ast_new_single_declaration_noarena(
         &kft_mem, kefir_ast_declarator_identifier_noarena(&kft_mem, context->symbols, "var1"),
-        kefir_ast_new_expression_initializer(&kft_mem,
+        kefir_ast_new_expression_initializer_noarena(&kft_mem,
                                              KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char_noarena(&kft_mem, '\t'))),
         NULL);
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &decl1->specifiers,

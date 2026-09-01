@@ -59,7 +59,7 @@ struct kefir_ast_compound_literal *kefir_ast_new_compound_literal(struct kefir_m
         return NULL;
     });
     literal->type_name = type_name;
-    literal->initializer = kefir_ast_new_list_initializer(mem);
+    literal->initializer = kefir_ast_new_list_initializer(mem, arena);
     REQUIRE_ELSE(literal->initializer != NULL, {
         KEFIR_AST_NODE_ARENA_FREE(mem, literal);
         return NULL;

@@ -69,7 +69,7 @@ static kefir_result_t insert_function_name_builtin(struct kefir_mem *mem, struct
     });
 
     struct kefir_ast_initializer *func_name_initializer =
-        kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(func_name_value));
+        kefir_ast_new_expression_initializer(mem, arena, KEFIR_AST_NODE_BASE(func_name_value));
     REQUIRE_ELSE(func_name_initializer != NULL, {
         KEFIR_AST_NODE_FREE(mem, KEFIR_AST_NODE_BASE(func_name_value));
         kefir_ast_declarator_free(mem, func_name_declarator);

@@ -171,7 +171,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
         struct kefir_ast_compound_literal *literal1 = kefir_ast_new_compound_literal_noarena(mem, type_name1);
         REQUIRE_OK(kefir_ast_initializer_list_append(
             mem, &literal1->initializer->list, NULL,
-            kefir_ast_new_expression_initializer(
+            kefir_ast_new_expression_initializer_noarena(
                 mem, KEFIR_AST_NODE_BASE(KEFIR_AST_MAKE_STRING_LITERAL_MULTIBYTE(mem, "Hey ho!")))));
 
         struct kefir_ast_return_statement *return1 = kefir_ast_new_return_statement_noarena(mem, KEFIR_AST_NODE_BASE(literal1));

@@ -140,47 +140,47 @@ static kefir_result_t define_compound_literal_function(struct kefir_mem *mem, st
     struct kefir_ast_compound_literal *compound = kefir_ast_new_compound_literal_noarena(mem, type_name1);
     REQUIRE_OK(kefir_ast_initializer_list_append(
         mem, &compound->initializer->list, NULL,
-        kefir_ast_new_expression_initializer(
+        kefir_ast_new_expression_initializer_noarena(
             mem, KEFIR_AST_NODE_BASE(KEFIR_AST_MAKE_STRING_LITERAL_MULTIBYTE(mem, STRING)))));
     REQUIRE_OK(kefir_ast_initializer_list_append(
         mem, &compound->initializer->list,
-        kefir_ast_new_initializer_member_designation(mem, context_manager->current->symbols, "padding", NULL),
-        kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 1010)))));
+        kefir_ast_new_initializer_member_designation_noarena(mem, context_manager->current->symbols, "padding", NULL),
+        kefir_ast_new_expression_initializer_noarena(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 1010)))));
     REQUIRE_OK(kefir_ast_initializer_list_append(
         mem, &compound->initializer->list, NULL,
-        kefir_ast_new_expression_initializer(
+        kefir_ast_new_expression_initializer_noarena(
             mem, KEFIR_AST_NODE_BASE(KEFIR_AST_MAKE_STRING_LITERAL_MULTIBYTE(mem, STRING)))));
     REQUIRE_OK(kefir_ast_initializer_list_append(
         mem, &compound->initializer->list,
-        kefir_ast_new_initializer_member_designation(mem, context_manager->current->symbols, "length", NULL),
-        kefir_ast_new_expression_initializer(mem,
+        kefir_ast_new_initializer_member_designation_noarena(mem, context_manager->current->symbols, "length", NULL),
+        kefir_ast_new_expression_initializer_noarena(mem,
                                              KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, strlen(STRING))))));
 
-    struct kefir_ast_initializer *list1 = kefir_ast_new_list_initializer(mem);
+    struct kefir_ast_initializer *list1 = kefir_ast_new_list_initializer_noarena(mem);
     REQUIRE_OK(kefir_ast_initializer_list_append(
         mem, &list1->list, NULL,
-        kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_double_noarena(mem, 4.0013)))));
+        kefir_ast_new_expression_initializer_noarena(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_double_noarena(mem, 4.0013)))));
     REQUIRE_OK(kefir_ast_initializer_list_append(
         mem, &list1->list, NULL,
-        kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_double_noarena(mem, 19.88263)))));
+        kefir_ast_new_expression_initializer_noarena(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_double_noarena(mem, 19.88263)))));
     REQUIRE_OK(kefir_ast_initializer_list_append(
         mem, &list1->list,
-        kefir_ast_new_initializer_index_designation(
+        kefir_ast_new_initializer_index_designation_noarena(
             mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 0)),
-            kefir_ast_new_initializer_member_designation(
+            kefir_ast_new_initializer_member_designation_noarena(
                 mem, context_manager->current->symbols, "fp32",
-                kefir_ast_new_initializer_index_designation(
+                kefir_ast_new_initializer_index_designation_noarena(
                     mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 2)), NULL))),
-        kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_float_noarena(mem, 1.02f)))));
+        kefir_ast_new_expression_initializer_noarena(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_float_noarena(mem, 1.02f)))));
     REQUIRE_OK(kefir_ast_initializer_list_append(
         mem, &list1->list, NULL,
-        kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_float_noarena(mem, 2.04f)))));
+        kefir_ast_new_expression_initializer_noarena(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_float_noarena(mem, 2.04f)))));
     REQUIRE_OK(kefir_ast_initializer_list_append(
         mem, &list1->list, NULL,
-        kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_double_noarena(mem, 1e5)))));
+        kefir_ast_new_expression_initializer_noarena(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_double_noarena(mem, 1e5)))));
     REQUIRE_OK(kefir_ast_initializer_list_append(
         mem, &compound->initializer->list,
-        kefir_ast_new_initializer_member_designation(mem, context_manager->current->symbols, "floats", NULL), list1));
+        kefir_ast_new_initializer_member_designation_noarena(mem, context_manager->current->symbols, "floats", NULL), list1));
 
     func->body = KEFIR_AST_NODE_BASE(compound);
 

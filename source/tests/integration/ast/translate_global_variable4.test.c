@@ -52,7 +52,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
                                                  &module, NULL));
     global_translator_context.global_scope_layout = &translator_global_scope;
 
-    struct kefir_ast_initializer *init1 = kefir_ast_new_expression_initializer(
+    struct kefir_ast_initializer *init1 = kefir_ast_new_expression_initializer_noarena(
         mem, KEFIR_AST_NODE_BASE(KEFIR_AST_MAKE_STRING_LITERAL_MULTIBYTE(mem, "Hello, world!")));
 
     struct kefir_ast_declaration *decl1 = kefir_ast_new_single_declaration_noarena(
@@ -64,10 +64,10 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
         kefir_ast_declarator_specifier_list_append(mem, &decl1->specifiers, kefir_ast_type_qualifier_const(mem, NULL)));
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &decl1->specifiers, kefir_ast_type_specifier_char(mem, NULL)));
 
-    struct kefir_ast_initializer *init2 = kefir_ast_new_list_initializer(mem);
+    struct kefir_ast_initializer *init2 = kefir_ast_new_list_initializer_noarena(mem);
     REQUIRE_OK(kefir_ast_initializer_list_append(
         mem, &init2->list, NULL,
-        kefir_ast_new_expression_initializer(
+        kefir_ast_new_expression_initializer_noarena(
             mem, KEFIR_AST_NODE_BASE(KEFIR_AST_MAKE_STRING_LITERAL_MULTIBYTE(mem, "Goodbye, world!")))));
 
     struct kefir_ast_declaration *decl2 = kefir_ast_new_single_declaration_noarena(
@@ -81,10 +81,10 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
         kefir_ast_declarator_specifier_list_append(mem, &decl2->specifiers, kefir_ast_type_qualifier_const(mem, NULL)));
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &decl2->specifiers, kefir_ast_type_specifier_char(mem, NULL)));
 
-    struct kefir_ast_initializer *init3 = kefir_ast_new_list_initializer(mem);
+    struct kefir_ast_initializer *init3 = kefir_ast_new_list_initializer_noarena(mem);
     REQUIRE_OK(kefir_ast_initializer_list_append(
         mem, &init3->list, NULL,
-        kefir_ast_new_expression_initializer(
+        kefir_ast_new_expression_initializer_noarena(
             mem, KEFIR_AST_NODE_BASE(KEFIR_AST_MAKE_STRING_LITERAL_MULTIBYTE(mem, "WTF world?")))));
 
     struct kefir_ast_declaration *decl3 = kefir_ast_new_single_declaration_noarena(

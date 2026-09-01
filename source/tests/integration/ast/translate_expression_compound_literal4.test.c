@@ -108,19 +108,19 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     struct kefir_ast_compound_literal *literal1 = kefir_ast_new_compound_literal_noarena(mem, type_name3);
     REQUIRE_OK(kefir_ast_initializer_list_append(
         mem, &literal1->initializer->list, NULL,
-        kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_string_literal_unicode8_noarena(
+        kefir_ast_new_expression_initializer_noarena(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_string_literal_unicode8_noarena(
                                                       mem, LITERAL0, sizeof(LITERAL0) / sizeof(LITERAL0[0]))))));
     REQUIRE_OK(kefir_ast_initializer_list_append(
         mem, &literal1->initializer->list, NULL,
-        kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_string_literal_unicode16_noarena(
+        kefir_ast_new_expression_initializer_noarena(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_string_literal_unicode16_noarena(
                                                       mem, LITERAL1, sizeof(LITERAL1) / sizeof(LITERAL1[0]))))));
     REQUIRE_OK(kefir_ast_initializer_list_append(
         mem, &literal1->initializer->list, NULL,
-        kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_string_literal_unicode32_noarena(
+        kefir_ast_new_expression_initializer_noarena(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_string_literal_unicode32_noarena(
                                                       mem, LITERAL2, sizeof(LITERAL2) / sizeof(LITERAL2[0]))))));
     REQUIRE_OK(kefir_ast_initializer_list_append(
         mem, &literal1->initializer->list, NULL,
-        kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_string_literal_wide_noarena(
+        kefir_ast_new_expression_initializer_noarena(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_string_literal_wide_noarena(
                                                       mem, LITERAL3, sizeof(LITERAL3) / sizeof(LITERAL3[0]))))));
 
     REQUIRE_OK(kefir_ast_analyze_node(mem, context, KEFIR_AST_NODE_BASE(literal1)));

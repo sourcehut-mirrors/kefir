@@ -35,8 +35,8 @@ static kefir_result_t scan_index(struct kefir_mem *mem, struct kefir_parser *par
 
     struct kefir_ast_initializer_designation *new_designation =
         range_end_index == NULL
-            ? kefir_ast_new_initializer_index_designation(mem, index, *designation)
-            : kefir_ast_new_initializer_range_designation(mem, index, range_end_index, *designation);
+            ? kefir_ast_new_initializer_index_designation(mem, parser->ast_arena, index, *designation)
+            : kefir_ast_new_initializer_range_designation(mem, parser->ast_arena, index, range_end_index, *designation);
     REQUIRE_ELSE(new_designation != NULL, {
         if (range_end_index != NULL) {
             KEFIR_AST_NODE_FREE(mem, range_end_index);
@@ -59,7 +59,7 @@ static kefir_result_t scan_member(struct kefir_mem *mem, struct kefir_parser *pa
     const char *identifier = PARSER_CURSOR(parser, 0)->identifier;
     REQUIRE_OK(PARSER_SHIFT(parser));
     struct kefir_ast_initializer_designation *new_designation =
-        kefir_ast_new_initializer_member_designation(mem, parser->symbols, identifier, *designation);
+        kefir_ast_new_initializer_member_designation(mem, parser->ast_arena, parser->symbols, identifier, *designation);
     REQUIRE(new_designation != NULL,
             KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST initializer index designation"));
     new_designation->source_location = location;
@@ -74,7 +74,7 @@ static kefir_result_t scan_field_colon(struct kefir_mem *mem, struct kefir_parse
     REQUIRE_OK(PARSER_SHIFT(parser));
     REQUIRE_OK(PARSER_SHIFT(parser));
     struct kefir_ast_initializer_designation *new_designation =
-        kefir_ast_new_initializer_member_designation(mem, parser->symbols, identifier, *designation);
+        kefir_ast_new_initializer_member_designation(mem, parser->ast_arena, parser->symbols, identifier, *designation);
     REQUIRE(new_designation != NULL,
             KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST initializer index designation"));
     new_designation->source_location = location;

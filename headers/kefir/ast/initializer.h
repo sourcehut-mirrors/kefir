@@ -23,6 +23,7 @@
 
 #include "kefir/ast/base.h"
 #include "kefir/core/list.h"
+#include "kefir/core/memory_arena.h"
 #include "kefir/ast/designator.h"
 #include "kefir/core/source_location.h"
 
@@ -33,7 +34,8 @@ typedef enum kefir_ast_initializer_designation_type {
 } kefir_ast_initializer_designation_type_t;
 
 typedef struct kefir_ast_initializer_designation {
-    kefir_uint32_t refcount;
+    kefir_uint32_t arena_allocated : 1,
+                   refcount : 31;
     kefir_ast_initializer_designation_type_t type;
     union {
         const char *identifier;
@@ -60,7 +62,8 @@ typedef struct kefir_ast_initializer_list {
 } kefir_ast_initializer_list_t;
 
 typedef struct kefir_ast_initializer {
-    kefir_uint32_t refcount;
+    kefir_uint32_t arena_allocated : 1,
+                   refcount : 31;
     kefir_ast_initializer_type_t type;
     union {
         struct kefir_ast_node_base *expression;
@@ -76,11 +79,11 @@ typedef struct kefir_ast_initializer_list_entry {
 } kefir_ast_initializer_list_entry_t;
 
 struct kefir_ast_initializer_designation *kefir_ast_new_initializer_member_designation(
-    struct kefir_mem *, struct kefir_string_pool *, const char *, struct kefir_ast_initializer_designation *);
+    struct kefir_mem *, struct kefir_memory_arena *, struct kefir_string_pool *, const char *, struct kefir_ast_initializer_designation *);
 struct kefir_ast_initializer_designation *kefir_ast_new_initializer_index_designation(
-    struct kefir_mem *, struct kefir_ast_node_base *, struct kefir_ast_initializer_designation *);
+    struct kefir_mem *, struct kefir_memory_arena *, struct kefir_ast_node_base *, struct kefir_ast_initializer_designation *);
 struct kefir_ast_initializer_designation *kefir_ast_new_initializer_range_designation(
-    struct kefir_mem *, struct kefir_ast_node_base *, struct kefir_ast_node_base *,
+    struct kefir_mem *, struct kefir_memory_arena *, struct kefir_ast_node_base *, struct kefir_ast_node_base *,
     struct kefir_ast_initializer_designation *);
 struct kefir_ast_initializer_designation *kefir_ast_initializer_designation_ref(
     struct kefir_ast_initializer_designation *);
@@ -89,8 +92,8 @@ kefir_result_t kefir_ast_evaluate_initializer_designation(struct kefir_mem *, co
                                                           const struct kefir_ast_initializer_designation *,
                                                           struct kefir_ast_designator **);
 
-struct kefir_ast_initializer *kefir_ast_new_expression_initializer(struct kefir_mem *, struct kefir_ast_node_base *);
-struct kefir_ast_initializer *kefir_ast_new_list_initializer(struct kefir_mem *);
+struct kefir_ast_initializer *kefir_ast_new_expression_initializer(struct kefir_mem *, struct kefir_memory_arena *, struct kefir_ast_node_base *);
+struct kefir_ast_initializer *kefir_ast_new_list_initializer(struct kefir_mem *, struct kefir_memory_arena *);
 kefir_result_t kefir_ast_initializer_free(struct kefir_mem *, struct kefir_ast_initializer *);
 struct kefir_ast_node_base *kefir_ast_initializer_head(const struct kefir_ast_initializer *);
 struct kefir_ast_initializer *kefir_ast_initializer_ref(struct kefir_ast_initializer *);

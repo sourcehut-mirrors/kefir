@@ -57,7 +57,7 @@ static struct kefir_ast_function_definition *define_sum_function(struct kefir_me
 
     struct kefir_ast_declaration *stmt1 = kefir_ast_new_single_declaration_noarena(
         mem, kefir_ast_declarator_identifier_noarena(mem, context->symbols, "res"),
-        kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 1))), NULL);
+        kefir_ast_new_expression_initializer_noarena(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(mem, 1))), NULL);
     REQUIRE(kefir_ast_compound_statement_append(mem, function1_body, KEFIR_AST_NODE_BASE(stmt1)) == KEFIR_OK, NULL);
 
     struct kefir_ast_node_base *loop_body = KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement_noarena(

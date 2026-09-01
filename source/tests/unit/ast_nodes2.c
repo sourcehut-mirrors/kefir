@@ -380,19 +380,19 @@ DEFINE_CASE(ast_nodes_compound_literals, "AST nodes - compound literals") {
 
     ASSERT_OK(kefir_ast_initializer_list_append(
         &kft_mem, &compound->initializer->list,
-        kefir_ast_new_initializer_member_designation(
+        kefir_ast_new_initializer_member_designation_noarena(
             &kft_mem, &symbols, "hello",
-            kefir_ast_new_initializer_index_designation(
+            kefir_ast_new_initializer_index_designation_noarena(
                 &kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long_long_noarena(&kft_mem, 100)),
-                kefir_ast_new_initializer_member_designation(&kft_mem, &symbols, "world", NULL))),
-        kefir_ast_new_expression_initializer(&kft_mem,
+                kefir_ast_new_initializer_member_designation_noarena(&kft_mem, &symbols, "world", NULL))),
+        kefir_ast_new_expression_initializer_noarena(&kft_mem,
                                              KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bool_noarena(&kft_mem, true)))));
     ASSERT(compound->initializer->list.entries_length == 1);
 
-    struct kefir_ast_initializer *initializer1 = kefir_ast_new_list_initializer(&kft_mem);
+    struct kefir_ast_initializer *initializer1 = kefir_ast_new_list_initializer_noarena(&kft_mem);
     ASSERT_OK(kefir_ast_initializer_list_append(
         &kft_mem, &initializer1->list, NULL,
-        kefir_ast_new_expression_initializer(&kft_mem,
+        kefir_ast_new_expression_initializer_noarena(&kft_mem,
                                              KEFIR_AST_NODE_BASE(kefir_ast_new_identifier_noarena(&kft_mem, &symbols, "x")))));
     ASSERT_OK(kefir_ast_initializer_list_append(&kft_mem, &compound->initializer->list, NULL, initializer1));
     ASSERT(compound->initializer->list.entries_length == 2);
@@ -433,22 +433,22 @@ DEFINE_CASE(ast_nodes_compound_literals, "AST nodes - compound literals") {
 
     ASSERT_OK(kefir_ast_initializer_list_append(
         &kft_mem, &compound->initializer->list, NULL,
-        kefir_ast_new_expression_initializer(&kft_mem,
+        kefir_ast_new_expression_initializer_noarena(&kft_mem,
                                              KEFIR_AST_NODE_BASE(kefir_ast_new_constant_double_noarena(&kft_mem, 3.14)))));
     ASSERT(compound->initializer->list.entries_length == 1);
     ASSERT_OK(kefir_ast_initializer_list_append(
         &kft_mem, &compound->initializer->list, NULL,
-        kefir_ast_new_expression_initializer(&kft_mem,
+        kefir_ast_new_expression_initializer_noarena(&kft_mem,
                                              KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char_noarena(&kft_mem, 'a')))));
     ASSERT(compound->initializer->list.entries_length == 2);
     ASSERT_OK(kefir_ast_initializer_list_append(
         &kft_mem, &compound->initializer->list, NULL,
-        kefir_ast_new_expression_initializer(&kft_mem,
+        kefir_ast_new_expression_initializer_noarena(&kft_mem,
                                              KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bool_noarena(&kft_mem, true)))));
     ASSERT(compound->initializer->list.entries_length == 3);
     ASSERT_OK(kefir_ast_initializer_list_append(
         &kft_mem, &compound->initializer->list, NULL,
-        kefir_ast_new_expression_initializer(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 5)))));
+        kefir_ast_new_expression_initializer_noarena(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 5)))));
     ASSERT(compound->initializer->list.entries_length == 4);
     ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(compound)));
 
@@ -493,7 +493,7 @@ DEFINE_CASE(ast_nodes_init_declarators1, "AST nodes - declarations #1") {
     ASSERT(decl1->initializer == NULL);
 
     struct kefir_ast_initializer *initializer2 =
-        kefir_ast_new_expression_initializer(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 0)));
+        kefir_ast_new_expression_initializer_noarena(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int_noarena(&kft_mem, 0)));
 
     struct kefir_ast_init_declarator *decl2 = NULL;
     struct kefir_ast_declaration *decl2_list = kefir_ast_new_single_declaration_noarena(
