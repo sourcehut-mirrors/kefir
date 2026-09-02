@@ -1069,7 +1069,7 @@ static kefir_result_t format_operation_immediate(struct kefir_json_output *json,
             break;
 
         case KEFIR_OPT_OPCODE_LONG_DOUBLE_CONST:
-            REQUIRE_OK(kefir_json_output_long_double(json, oper->parameters.imm.long_double));
+            REQUIRE_OK(kefir_json_output_long_double(json, KEFIR_OPT_PARAMETERS_IMM_GET_LONG_DOUBLE(&oper->parameters)));
             break;
 
         case KEFIR_OPT_OPCODE_DECIMAL32_CONST: {

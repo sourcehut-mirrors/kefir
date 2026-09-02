@@ -25,6 +25,7 @@
 #include "kefir/core/basic-types.h"
 #include "kefir/core/hashtree.h"
 #include "kefir/core/hashtreeset.h"
+#include "kefir/core/hashset.h"
 #include "kefir/util/dfp.h"
 
 typedef struct kefir_opt_code_container kefir_opt_code_container_t;  // Forward declaration
@@ -192,10 +193,6 @@ typedef enum kefir_opt_branch_condition_variant {
 
 typedef struct kefir_opt_operation_parameters {
     kefir_opt_instruction_ref_t refs[4];
-    struct {
-        kefir_id_t type_id;
-        kefir_size_t type_index;
-    } type;
     union {
         kefir_opt_phi_id_t phi_ref;
         kefir_opt_inline_assembly_id_t inline_asm_ref;
@@ -248,7 +245,7 @@ typedef struct kefir_opt_operation_parameters {
             kefir_id_t bitint_ref;
             kefir_float32_t float32;
             kefir_float64_t float64;
-            kefir_long_double_t long_double;
+            kefir_uint64_t long_double[2];
             kefir_id_t string_ref;
             kefir_opt_block_id_t block_ref;
             kefir_dfp_decimal32_t decimal32;
@@ -273,16 +270,32 @@ typedef struct kefir_opt_operation_parameters {
             kefir_opt_call_id_t call_ref;
             kefir_opt_instruction_ref_t indirect_ref;
         } function_call;
-
+        
         struct {
-            kefir_opt_memory_order_t model;
-        } atomic_op;
+            union {
+                struct {
+                    kefir_opt_memory_order_t model;
+                } atomic_op;
 
-        struct {
-            kefir_uint8_t signedness;
-        } overflow_arith;
+                struct {
+                    kefir_uint8_t signedness;
+                } overflow_arith;
+            };
+            struct {
+                kefir_id_t type_id;
+                kefir_size_t type_index;
+            } type;
+        };
     };
 } kefir_opt_operation_parameters_t;
+
+#define KEFIR_OPT_PARAMETERS_IMM_GET_LONG_DOUBLE(_params) \
+    (kefir_ir_long_double_construct((_params)->imm.long_double[0], (_params)->imm.long_double[1]))
+#define KEFIR_OPT_PARAMETERS_IMM_SET_LONG_DOUBLE(_params, _value) \
+    do { \
+        (_params)->imm.long_double[0] = kefir_ir_long_double_upper_half((_value)); \
+        (_params)->imm.long_double[1] = kefir_ir_long_double_lower_half((_value)); \
+    } while (0)
 
 typedef struct kefir_opt_operation {
     kefir_opt_opcode_t opcode;
@@ -303,10 +316,8 @@ typedef struct kefir_opt_instruction {
     struct kefir_opt_instruction_link control_flow;
 
     struct {
-        struct kefir_hashtreeset instruction;
+        struct kefir_hashset instruction;
     } uses;
-
-    kefir_uint8_t generation;
 } kefir_opt_instruction_t;
 
 typedef struct kefir_opt_code_instruction_list {
@@ -610,7 +621,7 @@ kefir_result_t kefir_opt_phi_node_link_next(struct kefir_opt_phi_node_link_itera
                                             kefir_opt_instruction_ref_t *);
 
 typedef struct kefir_opt_instruction_use_iterator {
-    struct kefir_hashtreeset_iterator iter;
+    struct kefir_hashset_iterator iter;
     kefir_opt_instruction_ref_t use_instr_ref;
 } kefir_opt_instruction_use_iterator_t;
 

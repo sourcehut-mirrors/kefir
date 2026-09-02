@@ -21,6 +21,7 @@
 #include "kefir/optimizer/builder.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
+#include "kefir/ir/instr.h"
 
 static kefir_result_t block_exists(const struct kefir_opt_code_container *code, kefir_opt_block_id_t block_id) {
     const struct kefir_opt_code_block *block = NULL;
@@ -342,10 +343,13 @@ kefir_result_t kefir_opt_code_builder_long_double_constant(struct kefir_mem *mem
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code container"));
 
+    struct kefir_opt_operation oper = {
+        .opcode = KEFIR_OPT_OPCODE_LONG_DOUBLE_CONST
+    };
+    KEFIR_OPT_PARAMETERS_IMM_SET_LONG_DOUBLE(&oper.parameters, value);
     REQUIRE_OK(kefir_opt_code_builder_add_instruction(
         mem, code, block_id,
-        &(struct kefir_opt_operation) {.opcode = KEFIR_OPT_OPCODE_LONG_DOUBLE_CONST,
-                                       .parameters.imm.long_double = value},
+        &oper,
         false, instr_id_ptr));
     return KEFIR_OK;
 }

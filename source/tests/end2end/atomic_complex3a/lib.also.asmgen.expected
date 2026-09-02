@@ -241,8 +241,8 @@ divide_ld:
     fnstenv -176(%rbp)
     stmxcsr -148(%rbp)
     fnclex
-    fldt 32(%rbp)
     fldt 16(%rbp)
+    fldt 32(%rbp)
     fstpt -144(%rbp)
     fstpt -128(%rbp)
 .L__kefir_func_divide_ld_label2:
@@ -260,9 +260,9 @@ divide_ld:
     fstpt (%rsp)
     fldt -80(%rbp)
     fstpt 16(%rsp)
-    fldt -144(%rbp)
-    fstpt 32(%rsp)
     fldt -128(%rbp)
+    fstpt 32(%rsp)
+    fldt -144(%rbp)
     fstpt 48(%rsp)
     call __kefir_softfloat_complex_long_double_div
     fstpt -48(%rbp)
@@ -456,8 +456,8 @@ multiply_ld:
     fnstenv -176(%rbp)
     stmxcsr -148(%rbp)
     fnclex
-    fldt 32(%rbp)
     fldt 16(%rbp)
+    fldt 32(%rbp)
     fstpt -144(%rbp)
     fstpt -128(%rbp)
 .L__kefir_func_multiply_ld_label2:
@@ -475,9 +475,9 @@ multiply_ld:
     fstpt (%rsp)
     fldt -80(%rbp)
     fstpt 16(%rsp)
-    fldt -144(%rbp)
-    fstpt 32(%rsp)
     fldt -128(%rbp)
+    fstpt 32(%rsp)
+    fldt -144(%rbp)
     fstpt 48(%rsp)
     call __kefir_softfloat_complex_long_double_mul
     fstpt -48(%rbp)

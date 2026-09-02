@@ -80,7 +80,7 @@ kefir_result_t kefir_codegen_amd64_generate_local_constants(const struct kefir_c
                     kefir_long_double_t long_double;
                 } value = {.u64 = {0, 0}};
 
-                value.long_double = instr->operation.parameters.imm.long_double;
+                value.long_double = KEFIR_OPT_PARAMETERS_IMM_GET_LONG_DOUBLE(&instr->operation.parameters);
 
                 REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
                     &codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 1,
