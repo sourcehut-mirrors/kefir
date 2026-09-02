@@ -3017,16 +3017,16 @@ static kefir_result_t translate_block(struct destructor_state *state, kefir_code
         REQUIRE_OK(kefir_codegen_target_ir_liveness_build_update_alive_set(state->mem, state->liveness, instr_ref,
                                                                            liveness_ranges, &state->alive_values));
 
-        if (instr->metadata.source_location.source != NULL) {
+        if (instr->metadata.source_location != NULL && instr->metadata.source_location->source != NULL) {
             if (current_source_location != NULL && current_source_location->source != NULL &&
-                (instr->metadata.source_location.source == NULL ||
-                 strcmp(instr->metadata.source_location.source, current_source_location->source) != 0 ||
-                 instr->metadata.source_location.line != current_source_location->line ||
-                 instr->metadata.source_location.column != current_source_location->column)) {
+                (instr->metadata.source_location->source == NULL ||
+                 strcmp(instr->metadata.source_location->source, current_source_location->source) != 0 ||
+                 instr->metadata.source_location->line != current_source_location->line ||
+                 instr->metadata.source_location->column != current_source_location->column)) {
                 WRITE_SOURCE_LOCATION;
             }
             if (current_source_location == NULL) {
-                current_source_location = &instr->metadata.source_location;
+                current_source_location = instr->metadata.source_location;
                 current_source_location_start = kefir_asmcmp_context_instr_length(&state->asmcmp_ctx->context);
             }
         } else if (current_source_location != NULL) {

@@ -80,6 +80,7 @@ kefir_result_t kefir_codegen_target_ir_code_init(struct kefir_codegen_target_ir_
     REQUIRE_OK(kefir_hashtable_init(&code->attributes, &kefir_hashtable_uint_ops));
     REQUIRE_OK(kefir_hashtable_on_removal(&code->attributes, free_attributes, NULL));
     REQUIRE_OK(kefir_hashset_init(&code->gate_blocks, &kefir_hashtable_uint_ops));
+    REQUIRE_OK(kefir_parser_source_location_index_init(&code->source_locations));
     return KEFIR_OK;
 }
 
@@ -111,6 +112,7 @@ kefir_result_t kefir_codegen_target_ir_code_free(struct kefir_mem *mem, struct k
     REQUIRE_OK(kefir_hashset_free(mem, &code->gate_blocks));
     REQUIRE_OK(kefir_hashtable_free(mem, &code->attributes));
     REQUIRE_OK(kefir_string_pool_free(mem, &code->strings));
+    REQUIRE_OK(kefir_parser_source_location_index_free(mem, &code->source_locations));
     KEFIR_FREE(mem, code->use_entries);
     KEFIR_FREE(mem, code->value_types);
     KEFIR_FREE(mem, code->blocks);
@@ -150,6 +152,7 @@ kefir_result_t kefir_codegen_target_ir_code_reset(struct kefir_mem *mem, struct 
     REQUIRE_OK(kefir_hashset_free(mem, &code->gate_blocks));
     REQUIRE_OK(kefir_hashtable_free(mem, &code->attributes));
     REQUIRE_OK(kefir_string_pool_free(mem, &code->strings));
+    REQUIRE_OK(kefir_parser_source_location_index_reset(mem, &code->source_locations));
     KEFIR_FREE(mem, code->use_entries);
     KEFIR_FREE(mem, code->value_types);
     KEFIR_FREE(mem, code->blocks);
@@ -624,16 +627,25 @@ kefir_result_t kefir_codegen_target_ir_code_new_instruction_inplace(
     if (metadata != NULL) {
         instr->metadata = *metadata;
     } else {
-        instr->metadata.source_location.source = NULL;
-        instr->metadata.source_location.line = 0;
-        instr->metadata.source_location.column = 0;
+        instr->metadata.source_location = NULL;
         instr->metadata.code_ref = KEFIR_CODEGEN_TARGET_IR_METADATA_CODE_REF_NONE;
     }
-    if (instr->metadata.source_location.source != NULL) {
-        instr->metadata.source_location.source =
-            kefir_string_pool_insert(mem, &code->strings, instr->metadata.source_location.source, NULL);
-        REQUIRE(instr->metadata.source_location.source != NULL,
-                KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Unable to insert source location into string pool"));
+    if (instr->metadata.source_location != NULL) {
+        if (instr->metadata.source_location->source != NULL) {
+            const char *source =
+                kefir_string_pool_insert(mem, &code->strings, instr->metadata.source_location->source, NULL);
+            REQUIRE(source != NULL,
+                    KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Unable to insert source location into string pool"));
+            
+            struct kefir_source_location source_location = {
+                .source = source,
+                .line = instr->metadata.source_location->line,
+                .column = instr->metadata.source_location->column
+            };
+            REQUIRE_OK(kefir_parser_source_location_index_find(mem, &code->source_locations, &source_location, &instr->metadata.source_location));
+        } else {
+            instr->metadata.source_location = NULL;
+        }
     }
 
     instr->use_entry_top = (kefir_size_t) ~0ull;

@@ -620,14 +620,14 @@ static kefir_result_t code_format_impl(struct kefir_mem *mem, const struct kefir
             REQUIRE_OK(kefir_json_output_object_key(json, "metadata"));
             REQUIRE_OK(kefir_json_output_object_begin(json));
             REQUIRE_OK(kefir_json_output_object_key(json, "source_location"));
-            if (instr->metadata.source_location.source != NULL) {
+            if (instr->metadata.source_location != NULL && instr->metadata.source_location->source != NULL) {
                 REQUIRE_OK(kefir_json_output_object_begin(json));
                 REQUIRE_OK(kefir_json_output_object_key(json, "source"));
-                REQUIRE_OK(kefir_json_output_string(json, instr->metadata.source_location.source));
+                REQUIRE_OK(kefir_json_output_string(json, instr->metadata.source_location->source));
                 REQUIRE_OK(kefir_json_output_object_key(json, "line"));
-                REQUIRE_OK(kefir_json_output_uinteger(json, instr->metadata.source_location.line));
+                REQUIRE_OK(kefir_json_output_uinteger(json, instr->metadata.source_location->line));
                 REQUIRE_OK(kefir_json_output_object_key(json, "column"));
-                REQUIRE_OK(kefir_json_output_uinteger(json, instr->metadata.source_location.column));
+                REQUIRE_OK(kefir_json_output_uinteger(json, instr->metadata.source_location->column));
                 REQUIRE_OK(kefir_json_output_object_end(json));
             } else {
                 REQUIRE_OK(kefir_json_output_null(json));

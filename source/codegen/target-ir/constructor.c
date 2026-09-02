@@ -974,7 +974,7 @@ static kefir_result_t scan_instructions(struct constructor_state *state) {
         REQUIRE_OK(state->ops->klass->classify_instruction(asmcmp_instr, &classification, state->ops->klass->payload));
 
         struct kefir_codegen_target_ir_instruction_metadata metadata = {
-            .source_location = {.source = NULL, .line = 0, .column = 0},
+            .source_location = NULL,
             .code_ref = KEFIR_CODEGEN_TARGET_IR_METADATA_CODE_REF_NONE};
 
         const struct kefir_source_location *source_location = NULL;
@@ -982,7 +982,7 @@ static kefir_result_t scan_instructions(struct constructor_state *state) {
                                                     &source_location);
         if (res != KEFIR_NOT_FOUND) {
             REQUIRE_OK(res);
-            metadata.source_location = *source_location;
+            metadata.source_location = source_location;
         }
 
         res = kefir_codegen_target_ir_code_constructor_metadata_get_code_ref(state->constructor_metadata, instr_idx,

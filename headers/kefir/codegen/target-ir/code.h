@@ -30,6 +30,7 @@
 #include "kefir/core/string_pool.h"
 #include "kefir/core/source_location.h"
 #include "kefir/codegen/asmcmp/context.h"
+#include "kefir/core/source_location_index.h"
 
 #define KEFIR_CODEGEN_TARGET_IR_OPERATION_MAX_OPERANDS 7
 #define KEFIR_CODEGEN_TARGET_IR_OPERATION_DIRECT_OUTPUT_ASPECT_CACHE 4
@@ -304,7 +305,7 @@ typedef struct kefir_codegen_target_ir_operation {
 } kefir_codegen_target_ir_operation_t;
 
 typedef struct kefir_codegen_target_ir_instruction_metadata {
-    struct kefir_source_location source_location;
+    const struct kefir_source_location *source_location;
     kefir_codegen_target_ir_metadata_code_ref_t code_ref;
 } kefir_codegen_target_ir_instruction_metadata_t;
 
@@ -444,6 +445,8 @@ typedef struct kefir_codegen_target_ir_code {
     kefir_codegen_target_ir_block_ref_t entry_block;
     kefir_codegen_target_ir_block_ref_t indirect_jump_gate_block;
     struct kefir_hashset gate_blocks;
+
+    struct kefir_parser_source_location_index source_locations;
 
     const struct kefir_codegen_target_ir_code_class *klass;
 } kefir_codegen_target_ir_code_t;
