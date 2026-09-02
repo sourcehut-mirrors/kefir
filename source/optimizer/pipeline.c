@@ -131,6 +131,7 @@ static kefir_result_t kefir_optimizer_pipeline_apply_function(struct kefir_mem *
             REQUIRE_OK(pass->apply(mem, module, func, pass, config));
         }
     }
+    REQUIRE_OK(kefir_opt_code_container_truncate(mem, &func->code));
     return KEFIR_OK;
 }
 

@@ -1831,5 +1831,7 @@ kefir_result_t kefir_opt_construct_function_code(struct kefir_mem *mem, const st
     });
 
     REQUIRE_OK(kefir_opt_constructor_free(mem, &state));
+
+    REQUIRE_OK(kefir_opt_code_container_truncate(mem, &function->code));
     return KEFIR_OK;
 }

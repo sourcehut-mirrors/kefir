@@ -590,6 +590,34 @@ kefir_result_t kefir_opt_code_container_clear(struct kefir_mem *mem, struct kefi
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_opt_code_container_truncate(struct kefir_mem *mem, struct kefir_opt_code_container *code) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code container"));
+
+    if (code->code != NULL) {
+        struct kefir_opt_instruction *instructions = KEFIR_REALLOC(mem, code->code, sizeof(struct kefir_opt_instruction) * code->length);
+        REQUIRE(instructions != NULL || code->length == 0, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate optimizer code container instructions"));
+        code->code = instructions;
+        code->capacity = code->length;
+    }
+
+    if (code->blocks != NULL) {
+        struct kefir_opt_code_block *blocks = KEFIR_REALLOC(mem, code->blocks, sizeof(struct kefir_opt_code_block) * code->blocks_length);
+        REQUIRE(blocks != NULL || code->blocks_length == 0, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate optimizer code container blocks"));
+        code->blocks = blocks;
+        code->blocks_capacity = code->blocks_length;
+    }
+
+    if (code->phi_nodes != NULL) {
+        struct kefir_opt_phi_node *phis = KEFIR_REALLOC(mem, code->phi_nodes, sizeof(struct kefir_opt_phi_node) * code->phi_nodes_length);
+        REQUIRE(phis != NULL || code->phi_nodes_length == 0, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate optimizer code container phis"));
+        code->phi_nodes = phis;
+        code->phi_nodes_capacity = code->phi_nodes_length;
+    }
+
+    return KEFIR_OK;
+}
+
 kefir_bool_t kefir_opt_code_container_is_empty(const struct kefir_opt_code_container *code) {
     REQUIRE(code != NULL, true);
     return code->blocks_length == 0 && code->length == 0 && code->entry_point == KEFIR_ID_NONE;
