@@ -12,7 +12,7 @@ static kefir_result_t translate_impl(struct kefir_mem *mem, struct kefir_codegen
     ASSIGN_DECL_CAST(struct kefir_test_codegen *, codegen, cg->data);
 
     codegen->new_codegen.config = codegen->config;
-    REQUIRE_OK(kefir_opt_module_construct(mem, kft_util_get_ir_target_platform(), module, true));
+    REQUIRE_OK(kefir_opt_module_construct(mem, kft_util_get_ir_target_platform(), module, true, true));
     REQUIRE_OK(KEFIR_CODEGEN_TRANSLATE_OPTIMIZED(mem, &codegen->new_codegen.codegen, module, no_prologue));
     return KEFIR_OK;
 }

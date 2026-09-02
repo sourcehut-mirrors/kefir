@@ -69,6 +69,7 @@ static kefir_result_t on_new_instruction(struct kefir_mem *mem, const struct kef
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer instruction reference"));
     ASSIGN_DECL_CAST(struct kefir_opt_code_debug_info *, debug_info, payload);
     REQUIRE(debug_info != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer debug information"));
+    REQUIRE(debug_info->record_debug_info, KEFIR_OK);
 
     if (debug_info->next_instruction_code_ref != KEFIR_OPT_CODE_DEBUG_INSTRUCTION_CODE_REF_NONE) {
         REQUIRE_OK(kefir_hashtable_insert(mem, &debug_info->instruction_code_refs, (kefir_hashtable_key_t) instr_ref,
