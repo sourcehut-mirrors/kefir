@@ -245,6 +245,20 @@ kefir_result_t kefir_ast_identifier_block_scope_free(struct kefir_mem *mem,
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_ast_identifier_block_scope_reset(struct kefir_mem *mem,
+                                                     struct kefir_ast_identifier_block_scope *scope) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(scope != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid multi scope"));
+   
+    kefir_result_t (*remove_callback)(struct kefir_mem *, struct kefir_ast_scoped_identifier *, void *) = scope->remove_callback;
+    void *remove_payload = scope->remove_payload;
+    REQUIRE_OK(kefir_ast_identifier_block_scope_free(mem, scope));
+    REQUIRE_OK(kefir_ast_identifier_block_scope_init(mem, scope));
+    scope->remove_callback = remove_callback;
+    scope->remove_payload = remove_payload;
+    return KEFIR_OK;
+}
+
 static kefir_result_t invoke_cleanup_callbacks(struct kefir_mem *mem, const struct kefir_tree_node *root) {
     REQUIRE(root != NULL, KEFIR_OK);
     ASSIGN_DECL_CAST(struct kefir_ast_identifier_flat_scope *, flat_scope, root->value);

@@ -160,6 +160,18 @@ kefir_result_t kefir_ast_flow_control_tree_free(struct kefir_mem *mem, struct ke
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_ast_flow_control_tree_reset(struct kefir_mem *mem, struct kefir_ast_flow_control_tree *tree) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(tree != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST flow control tree"));
+
+    REQUIRE_OK(kefir_hashtree_clean(mem, &tree->unbound_control_points));
+    REQUIRE_OK(kefir_tree_free(mem, &tree->root));
+    REQUIRE_OK(kefir_tree_init(&tree->root, NULL));
+    REQUIRE_OK(kefir_tree_on_removal(&tree->root, flow_control_statement_free, NULL));
+    tree->current = NULL;
+    return KEFIR_OK;
+}
+
 static struct kefir_ast_flow_control_point *control_point_alloc(struct kefir_mem *mem) {
     struct kefir_ast_flow_control_point *control_point = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_flow_control_point));
     REQUIRE(control_point != NULL, NULL);

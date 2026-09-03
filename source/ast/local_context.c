@@ -755,6 +755,21 @@ kefir_result_t kefir_ast_local_context_free(struct kefir_mem *mem, struct kefir_
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_ast_local_context_reset(struct kefir_mem *mem, struct kefir_ast_local_context *context) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST translatation context"));
+
+    REQUIRE_OK(kefir_hashtree_clean(mem, &context->owned_objects));
+    REQUIRE_OK(kefir_ast_flow_control_tree_reset(mem, &context->flow_control_tree));
+    REQUIRE_OK(kefir_ast_identifier_flat_scope_reset(mem, &context->label_scope));
+    REQUIRE_OK(kefir_ast_identifier_block_scope_reset(mem, &context->tag_scope));
+    REQUIRE_OK(kefir_ast_identifier_block_scope_reset(mem, &context->ordinary_scope));
+    REQUIRE_OK(kefir_list_clear(mem, &context->identifiers));
+    REQUIRE_OK(kefir_list_clear(mem, &context->flow_control_points));
+    REQUIRE_OK(kefir_memory_arena_reset(&context->memory_arena));
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_ast_local_context_resolve_scoped_ordinary_identifier(
     const struct kefir_ast_local_context *context, const char *identifier,
     const struct kefir_ast_scoped_identifier **scoped_identifier) {

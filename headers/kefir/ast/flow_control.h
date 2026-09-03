@@ -117,6 +117,7 @@ typedef struct kefir_ast_flow_control_tree {
 
 kefir_result_t kefir_ast_flow_control_tree_init(struct kefir_ast_flow_control_tree *);
 kefir_result_t kefir_ast_flow_control_tree_free(struct kefir_mem *, struct kefir_ast_flow_control_tree *);
+kefir_result_t kefir_ast_flow_control_tree_reset(struct kefir_mem *, struct kefir_ast_flow_control_tree *);
 kefir_result_t kefir_ast_flow_control_tree_push(struct kefir_mem *, struct kefir_ast_flow_control_tree *,
                                                 kefir_ast_flow_control_structure_type_t,
                                                 const struct kefir_ast_flow_control_structure_associated_scopes *,

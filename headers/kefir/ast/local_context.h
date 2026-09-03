@@ -63,6 +63,7 @@ typedef struct kefir_ast_local_context {
 kefir_result_t kefir_ast_local_context_init(struct kefir_mem *, struct kefir_ast_global_context *,
                                             struct kefir_ast_local_context *);
 kefir_result_t kefir_ast_local_context_free(struct kefir_mem *, struct kefir_ast_local_context *);
+kefir_result_t kefir_ast_local_context_reset(struct kefir_mem *, struct kefir_ast_local_context *);
 
 kefir_result_t kefir_ast_local_context_resolve_scoped_ordinary_identifier(const struct kefir_ast_local_context *,
                                                                           const char *,

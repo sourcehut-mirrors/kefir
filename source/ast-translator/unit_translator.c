@@ -63,6 +63,7 @@ static kefir_result_t translate_unit_impl(struct kefir_mem *mem, struct kefir_as
                 REQUIRE_OK(kefir_ast_translator_function_context_free(mem, &func_ctx));
 
                 if (consume) {
+                    REQUIRE_OK(kefir_ast_local_context_reset(mem, func_ctx.local_context));
                     REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, external_definition));
                     unit->external_definitions[i] = NULL;
                 }
