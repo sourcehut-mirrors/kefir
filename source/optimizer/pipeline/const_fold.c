@@ -1841,34 +1841,43 @@ static kefir_result_t const_fold_complex_unary(struct kefir_mem *mem, struct kef
         arg1_instr->operation.opcode == KEFIR_OPT_OPCODE_COMPLEX_FLOAT32_FROM &&
         real_instr->operation.opcode == KEFIR_OPT_OPCODE_FLOAT32_CONST &&
         imag_instr->operation.opcode == KEFIR_OPT_OPCODE_FLOAT32_CONST) {
+        const kefir_float32_t real = real_instr->operation.parameters.imm.float32;
+        const kefir_float32_t imag = imag_instr->operation.parameters.imm.float32;
+
         kefir_opt_instruction_ref_t replacement_real_ref, replacement_imag_ref;
         REQUIRE_OK(kefir_opt_code_builder_float32_constant(
-            mem, &func->code, instr->block_id, -real_instr->operation.parameters.imm.float32, &replacement_real_ref));
+            mem, &func->code, block_id, -real, &replacement_real_ref));
         REQUIRE_OK(kefir_opt_code_builder_float32_constant(
-            mem, &func->code, instr->block_id, -imag_instr->operation.parameters.imm.float32, &replacement_imag_ref));
+            mem, &func->code, block_id, -imag, &replacement_imag_ref));
         REQUIRE_OK(kefir_opt_code_builder_complex_float32_from(mem, &func->code, block_id, replacement_real_ref,
                                                                replacement_imag_ref, replacement_ref));
     } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_COMPLEX_FLOAT64_NEG &&
                arg1_instr->operation.opcode == KEFIR_OPT_OPCODE_COMPLEX_FLOAT64_FROM &&
                real_instr->operation.opcode == KEFIR_OPT_OPCODE_FLOAT64_CONST &&
                imag_instr->operation.opcode == KEFIR_OPT_OPCODE_FLOAT64_CONST) {
+        const kefir_float64_t real = real_instr->operation.parameters.imm.float64;
+        const kefir_float64_t imag = imag_instr->operation.parameters.imm.float64;
+
         kefir_opt_instruction_ref_t replacement_real_ref, replacement_imag_ref;
         REQUIRE_OK(kefir_opt_code_builder_float64_constant(
-            mem, &func->code, instr->block_id, -real_instr->operation.parameters.imm.float64, &replacement_real_ref));
+            mem, &func->code, block_id, -real, &replacement_real_ref));
         REQUIRE_OK(kefir_opt_code_builder_float64_constant(
-            mem, &func->code, instr->block_id, -imag_instr->operation.parameters.imm.float64, &replacement_imag_ref));
+            mem, &func->code, block_id, -imag, &replacement_imag_ref));
         REQUIRE_OK(kefir_opt_code_builder_complex_float64_from(mem, &func->code, block_id, replacement_real_ref,
                                                                replacement_imag_ref, replacement_ref));
     } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_COMPLEX_LONG_DOUBLE_NEG &&
                arg1_instr->operation.opcode == KEFIR_OPT_OPCODE_COMPLEX_LONG_DOUBLE_FROM &&
                real_instr->operation.opcode == KEFIR_OPT_OPCODE_LONG_DOUBLE_CONST &&
                imag_instr->operation.opcode == KEFIR_OPT_OPCODE_LONG_DOUBLE_CONST) {
+        const kefir_long_double_t real = KEFIR_OPT_PARAMETERS_IMM_GET_LONG_DOUBLE(&real_instr->operation.parameters);
+        const kefir_long_double_t imag = KEFIR_OPT_PARAMETERS_IMM_GET_LONG_DOUBLE(&imag_instr->operation.parameters);
+
         kefir_opt_instruction_ref_t replacement_real_ref, replacement_imag_ref;
-        REQUIRE_OK(kefir_opt_code_builder_long_double_constant(mem, &func->code, instr->block_id,
-                                                               -KEFIR_OPT_PARAMETERS_IMM_GET_LONG_DOUBLE(&real_instr->operation.parameters),
+        REQUIRE_OK(kefir_opt_code_builder_long_double_constant(mem, &func->code, block_id,
+                                                               -real,
                                                                &replacement_real_ref));
-        REQUIRE_OK(kefir_opt_code_builder_long_double_constant(mem, &func->code, instr->block_id,
-                                                               -KEFIR_OPT_PARAMETERS_IMM_GET_LONG_DOUBLE(&imag_instr->operation.parameters),
+        REQUIRE_OK(kefir_opt_code_builder_long_double_constant(mem, &func->code, block_id,
+                                                               -imag,
                                                                &replacement_imag_ref));
         REQUIRE_OK(kefir_opt_code_builder_complex_long_double_from(mem, &func->code, block_id, replacement_real_ref,
                                                                    replacement_imag_ref, replacement_ref));
