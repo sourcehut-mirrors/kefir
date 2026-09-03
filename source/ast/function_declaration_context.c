@@ -486,6 +486,16 @@ static kefir_result_t type_analyze_success(struct kefir_mem *mem, const struct k
     return KEFIR_OK;
 }
 
+static kefir_result_t add_owned_object(struct kefir_mem *mem, const struct kefir_ast_context *context,
+                                           void *object, kefir_result_t (*destructor)(struct kefir_mem *, void *)) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST context"));
+
+    ASSIGN_DECL_CAST(struct kefir_ast_function_declaration_context *, fn_ctx, context->payload);
+    REQUIRE_OK(fn_ctx->parent->add_owned_object(mem, fn_ctx->parent, object, destructor));
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_ast_function_declaration_context_init(struct kefir_mem *mem,
                                                            const struct kefir_ast_context *parent,
                                                            kefir_bool_t function_definition_context,
@@ -524,6 +534,7 @@ kefir_result_t kefir_ast_function_declaration_context_init(struct kefir_mem *mem
     context->context.reset_pragma_state = context_reset_pragma_state;
     context->context.before_type_analyze = before_type_analyze;
     context->context.type_analyze_success = type_analyze_success;
+    context->context.add_owned_object = add_owned_object;
     context->context.symbols = parent->symbols;
     context->context.type_bundle = parent->type_bundle;
     context->context.cache = parent->cache;

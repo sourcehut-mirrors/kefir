@@ -192,7 +192,7 @@ static kefir_result_t translate_local_scoped_identifier_function(
     struct kefir_ast_type_bundle *type_bundle, const struct kefir_ast_type_traits *type_traits,
     struct kefir_ir_module *module, const struct kefir_source_location *source_location) {
     struct kefir_ast_translator_scoped_identifier_function *scoped_identifier_func;
-    REQUIRE_OK(kefir_ast_translator_scoped_identifier_allocate_function(context->memory_arena, scoped_identifier, &scoped_identifier_func));
+    REQUIRE_OK(kefir_ast_translator_scoped_identifier_allocate_function(context->global_context->context.memory_arena, scoped_identifier, &scoped_identifier_func));
     if (scoped_identifier_func->declaration == NULL) {
         REQUIRE_OK(kefir_ast_translator_function_declaration_init(
             mem, context, env, type_bundle, type_traits, module, identifier, false, scoped_identifier->function->type,

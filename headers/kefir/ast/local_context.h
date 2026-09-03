@@ -56,6 +56,8 @@ typedef struct kefir_ast_local_context {
 
     struct kefir_ast_flow_control_tree flow_control_tree;
     struct kefir_list flow_control_points;
+    struct kefir_memory_arena memory_arena;
+    struct kefir_hashtree owned_objects;
 } kefir_ast_local_context_t;
 
 kefir_result_t kefir_ast_local_context_init(struct kefir_mem *, struct kefir_ast_global_context *,

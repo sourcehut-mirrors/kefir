@@ -144,6 +144,8 @@ typedef struct kefir_ast_context {
                                           const struct kefir_ast_type *, kefir_bool_t *);
     kefir_result_t (*type_analyze_success)(struct kefir_mem *, const struct kefir_ast_context *,
                                            const struct kefir_ast_type *);
+    kefir_result_t (*add_owned_object)(struct kefir_mem *, const struct kefir_ast_context *,
+                                           void *, kefir_result_t (*)(struct kefir_mem *, void *));
 
     struct kefir_string_pool *symbols;
     const struct kefir_ast_type_traits *type_traits;

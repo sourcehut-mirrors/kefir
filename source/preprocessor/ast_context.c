@@ -207,16 +207,48 @@ static kefir_result_t context_reset_pragma_state(struct kefir_mem *mem, const st
 
 static kefir_result_t before_type_analyze(struct kefir_mem *mem, const struct kefir_ast_context *context,
                                           const struct kefir_ast_type *type, kefir_bool_t *analyze_ptr) {
-    REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST context"));
-    REQUIRE_OK(context->global_context->context.before_type_analyze(mem, &context->global_context->context, type,
-                                                                    analyze_ptr));
-    return KEFIR_OK;
+    UNUSED(mem);
+    UNUSED(context);
+    UNUSED(type);
+    UNUSED(analyze_ptr);
+    return KEFIR_SET_ERROR(KEFIR_INVALID_CHANGE, "Type analysis is not supported in a preprocessor AST context");
 }
 
 static kefir_result_t type_analyze_success(struct kefir_mem *mem, const struct kefir_ast_context *context,
                                            const struct kefir_ast_type *type) {
+    UNUSED(mem);
+    UNUSED(context);
+    UNUSED(type);
+    return KEFIR_SET_ERROR(KEFIR_INVALID_CHANGE, "Type analysis is not supported in a preprocessor AST context");
+}
+
+static kefir_result_t add_owned_object(struct kefir_mem *mem, const struct kefir_ast_context *context,
+                                           void *object, kefir_result_t (*destructor)(struct kefir_mem *, void *)) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST context"));
-    REQUIRE_OK(context->global_context->context.type_analyze_success(mem, &context->global_context->context, type));
+    REQUIRE(object != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid owned object"));
+    REQUIRE(destructor != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid owned object destructor"));
+
+    ASSIGN_DECL_CAST(struct kefir_preprocessor_ast_context *, ast_context, context->payload);
+    REQUIRE_OK(kefir_hashtree_insert(mem, &ast_context->owned_objects, (kefir_hashtree_key_t) object, (kefir_hashtree_value_t) destructor));
+    return KEFIR_OK;
+}
+
+static kefir_result_t free_owned_object(struct kefir_mem *mem, struct kefir_hashtree *tree, kefir_hashtree_key_t key, kefir_hashtree_value_t value, void *payload) {
+    UNUSED(tree);
+    UNUSED(payload);
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    ASSIGN_DECL_CAST(void *, object, key);
+    union {
+        kefir_result_t (*fn)(struct kefir_mem *, void *);
+        void *ptr;
+    } destructor = {
+        .ptr = (void *) value
+    };
+    REQUIRE(object != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid owned object"));
+    REQUIRE(destructor.fn != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid owned object destructor"));
+
+    REQUIRE_OK(destructor.fn(mem, object));
     return KEFIR_OK;
 }
 
@@ -252,6 +284,7 @@ kefir_result_t kefir_preprocessor_ast_context_init(struct kefir_mem *mem,
     context->context.reset_pragma_state = context_reset_pragma_state;
     context->context.before_type_analyze = before_type_analyze;
     context->context.type_analyze_success = type_analyze_success;
+    context->context.add_owned_object = add_owned_object;
 
     context->context.symbols = symbols;
     context->context.type_traits = type_traits;
@@ -261,6 +294,8 @@ kefir_result_t kefir_preprocessor_ast_context_init(struct kefir_mem *mem,
     REQUIRE_OK(kefir_ast_context_type_cache_init(&context->cache, &context->context));
     REQUIRE_OK(kefir_ast_pragma_state_init(&context->pragma_state));
     REQUIRE_OK(kefir_memory_arena_init(mem, &context->memory_arena));
+    REQUIRE_OK(kefir_hashtree_init(&context->owned_objects, &kefir_hashtree_uint_ops));
+    REQUIRE_OK(kefir_hashtree_on_removal(&context->owned_objects, free_owned_object, NULL));
     context->context.type_bundle = &context->type_bundle;
     context->context.cache = &context->cache;
     context->context.bigint_pool = &context->bigint_pool;
@@ -295,6 +330,7 @@ kefir_result_t kefir_preprocessor_ast_context_free(struct kefir_mem *mem,
     context->context.extensions = NULL;
     context->context.extensions_payload = NULL;
 
+    REQUIRE_OK(kefir_hashtree_free(mem, &context->owned_objects));
     REQUIRE_OK(kefir_ast_context_type_cache_free(mem, &context->cache));
     REQUIRE_OK(kefir_bigint_pool_free(mem, &context->bigint_pool));
     REQUIRE_OK(kefir_ast_type_bundle_free(mem, &context->type_bundle));

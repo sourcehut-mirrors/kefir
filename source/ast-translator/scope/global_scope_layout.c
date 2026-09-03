@@ -587,7 +587,7 @@ static kefir_result_t generate_function_debug_entry(struct kefir_mem *mem, const
     }
 
     struct kefir_ast_translator_scoped_identifier_function *scoped_identifier_layout;
-    REQUIRE_OK(kefir_ast_translator_scoped_identifier_allocate_function(context->memory_arena, scoped_identifier, &scoped_identifier_layout));
+    REQUIRE_OK(kefir_ast_translator_scoped_identifier_allocate_function(context->global_context->context.memory_arena, scoped_identifier, &scoped_identifier_layout));
     scoped_identifier_layout->debug_info.subprogram = function_entry_id;
     scoped_identifier_layout->debug_info.present = true;
     return KEFIR_OK;
@@ -600,7 +600,7 @@ static kefir_result_t translate_global_scoped_identifier_function(
     struct kefir_ast_translator_global_scope_layout *layout, const struct kefir_ast_translator_environment *env,
     struct kefir_ast_translator_debug_entries *debug_entries) {
     struct kefir_ast_translator_scoped_identifier_function *scoped_identifier_func;
-    REQUIRE_OK(kefir_ast_translator_scoped_identifier_allocate_function(context->memory_arena, scoped_identifier, &scoped_identifier_func));
+    REQUIRE_OK(kefir_ast_translator_scoped_identifier_allocate_function(context->global_context->context.memory_arena, scoped_identifier, &scoped_identifier_func));
 
     const struct kefir_ast_type *function_type = NULL;
     REQUIRE_OK(kefir_ast_type_completion(mem, context, &function_type, scoped_identifier->function->type));

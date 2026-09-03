@@ -630,6 +630,36 @@ static kefir_result_t type_analyze_success(struct kefir_mem *mem, const struct k
     return KEFIR_OK;
 }
 
+static kefir_result_t add_owned_object(struct kefir_mem *mem, const struct kefir_ast_context *context,
+                                           void *object, kefir_result_t (*destructor)(struct kefir_mem *, void *)) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST context"));
+    REQUIRE(object != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid owned object"));
+    REQUIRE(destructor != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid owned object destructor"));
+
+    ASSIGN_DECL_CAST(struct kefir_ast_local_context *, local_ctx, context->payload);
+    REQUIRE_OK(kefir_hashtree_insert(mem, &local_ctx->owned_objects, (kefir_hashtree_key_t) object, (kefir_hashtree_value_t) destructor));
+    return KEFIR_OK;
+}
+
+static kefir_result_t free_owned_object(struct kefir_mem *mem, struct kefir_hashtree *tree, kefir_hashtree_key_t key, kefir_hashtree_value_t value, void *payload) {
+    UNUSED(tree);
+    UNUSED(payload);
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    ASSIGN_DECL_CAST(void *, object, key);
+    union {
+        kefir_result_t (*fn)(struct kefir_mem *, void *);
+        void *ptr;
+    } destructor = {
+        .ptr = (void *) value
+    };
+    REQUIRE(object != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid owned object"));
+    REQUIRE(destructor.fn != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid owned object destructor"));
+
+    REQUIRE_OK(destructor.fn(mem, object));
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_ast_local_context_init(struct kefir_mem *mem, struct kefir_ast_global_context *global,
                                             struct kefir_ast_local_context *context) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
@@ -651,6 +681,9 @@ kefir_result_t kefir_ast_local_context_init(struct kefir_mem *mem, struct kefir_
     REQUIRE_OK(kefir_list_init(&context->flow_control_points));
 
     REQUIRE_OK(kefir_ast_pragma_state_init(&context->pragmas));
+    REQUIRE_OK(kefir_memory_arena_init(mem, &context->memory_arena));
+    REQUIRE_OK(kefir_hashtree_init(&context->owned_objects, &kefir_hashtree_uint_ops));
+    REQUIRE_OK(kefir_hashtree_on_removal(&context->owned_objects, free_owned_object, NULL));
     context->pragma_stats.enable_fenv_access = false;
     context->pragma_stats.disallow_fp_contract = false;
     context->pragma_stats.cx_limited_range = KEFIR_AST_PRAGMA_VALUE_DEFAULT;
@@ -675,6 +708,7 @@ kefir_result_t kefir_ast_local_context_init(struct kefir_mem *mem, struct kefir_
     context->context.reset_pragma_state = context_reset_pragma_state;
     context->context.before_type_analyze = before_type_analyze;
     context->context.type_analyze_success = type_analyze_success;
+    context->context.add_owned_object = add_owned_object;
     context->context.symbols = &context->global->symbols;
     context->context.type_bundle = &context->global->type_bundle;
     context->context.cache = &context->global->cache;
@@ -689,7 +723,7 @@ kefir_result_t kefir_ast_local_context_init(struct kefir_mem *mem, struct kefir_
     context->context.surrounding_function_name = NULL;
     context->context.context_id = global->next_context_id++;
     context->context.configuration = global->context.configuration;
-    context->context.memory_arena = global->context.memory_arena;
+    context->context.memory_arena = &context->memory_arena;
     context->context.payload = context;
 
     context->context.extensions = global->context.extensions;
@@ -710,12 +744,14 @@ kefir_result_t kefir_ast_local_context_free(struct kefir_mem *mem, struct kefir_
     context->context.extensions = NULL;
     context->context.extensions_payload = NULL;
 
+    REQUIRE_OK(kefir_hashtree_free(mem, &context->owned_objects));
     REQUIRE_OK(kefir_ast_flow_control_tree_free(mem, &context->flow_control_tree));
     REQUIRE_OK(kefir_ast_identifier_flat_scope_free(mem, &context->label_scope));
     REQUIRE_OK(kefir_ast_identifier_block_scope_free(mem, &context->tag_scope));
     REQUIRE_OK(kefir_ast_identifier_block_scope_free(mem, &context->ordinary_scope));
     REQUIRE_OK(kefir_list_free(mem, &context->identifiers));
     REQUIRE_OK(kefir_list_free(mem, &context->flow_control_points));
+    REQUIRE_OK(kefir_memory_arena_free(&context->memory_arena));
     return KEFIR_OK;
 }
 

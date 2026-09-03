@@ -416,8 +416,7 @@ kefir_result_t kefir_ast_evaluate_struct_member_node(struct kefir_mem *mem, cons
                                        "Expected compound constant expression"));
 
         struct kefir_ast_initializer *subobject_initializer = kefir_ast_new_list_initializer(mem, context->memory_arena);
-        kefir_result_t res = kefir_ast_global_context_add_owned_object(mem, context->global_context,
-                                                                       subobject_initializer, free_subobj_initializer);
+        kefir_result_t res = context->add_owned_object(mem, context, subobject_initializer, free_subobj_initializer);
         REQUIRE_ELSE(res == KEFIR_OK, {
             kefir_ast_initializer_free(mem, subobject_initializer);
             return res;

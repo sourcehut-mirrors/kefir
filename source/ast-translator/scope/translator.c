@@ -163,7 +163,7 @@ static kefir_result_t translate_externals(struct kefir_mem *mem, const struct ke
 
             case KEFIR_AST_SCOPE_IDENTIFIER_FUNCTION: {
                 struct kefir_ast_translator_scoped_identifier_function *identifier_data;
-                REQUIRE_OK(kefir_ast_translator_scoped_identifier_allocate_function(context->memory_arena, scoped_identifier->value, &identifier_data));
+                REQUIRE_OK(kefir_ast_translator_scoped_identifier_allocate_function(context->global_context->context.memory_arena, scoped_identifier->value, &identifier_data));
                 struct kefir_ir_identifier ir_identifier = {
                     .symbol = scoped_identifier->identifier,
                     .type = KEFIR_IR_IDENTIFIER_FUNCTION,
@@ -287,7 +287,7 @@ static kefir_result_t translate_static(struct kefir_mem *mem, const struct kefir
 
             case KEFIR_AST_SCOPE_IDENTIFIER_FUNCTION: {
                 struct kefir_ast_translator_scoped_identifier_function *identifier_data;
-                REQUIRE_OK(kefir_ast_translator_scoped_identifier_allocate_function(context->memory_arena, scoped_identifier->value, &identifier_data));
+                REQUIRE_OK(kefir_ast_translator_scoped_identifier_allocate_function(context->global_context->context.memory_arena, scoped_identifier->value, &identifier_data));
                 struct kefir_ir_identifier ir_identifier = {
                     .symbol = scoped_identifier->identifier,
                     .type = KEFIR_IR_IDENTIFIER_FUNCTION,

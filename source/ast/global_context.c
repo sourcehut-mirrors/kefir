@@ -524,6 +524,18 @@ static kefir_result_t type_analyze_success(struct kefir_mem *mem, const struct k
     return KEFIR_OK;
 }
 
+static kefir_result_t add_owned_object(struct kefir_mem *mem, const struct kefir_ast_context *context,
+                                           void *object, kefir_result_t (*destructor)(struct kefir_mem *, void *)) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST context"));
+    REQUIRE(object != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid owned object"));
+    REQUIRE(destructor != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid owned object destructor"));
+
+    ASSIGN_DECL_CAST(struct kefir_ast_global_context *, global_ctx, context->payload);
+    REQUIRE_OK(kefir_ast_global_context_add_owned_object(mem, global_ctx, object, destructor));
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_ast_global_context_init(struct kefir_mem *mem, const struct kefir_ast_type_traits *type_traits,
                                              const struct kefir_ast_target_environment *target_env,
                                              struct kefir_ast_global_context *context,
@@ -587,6 +599,7 @@ kefir_result_t kefir_ast_global_context_init(struct kefir_mem *mem, const struct
     context->context.reset_pragma_state = context_reset_pragma_state;
     context->context.before_type_analyze = before_type_analyze;
     context->context.type_analyze_success = type_analyze_success;
+    context->context.add_owned_object = add_owned_object;
     context->context.symbols = &context->symbols;
     context->context.type_bundle = &context->type_bundle;
     context->context.cache = &context->cache;
