@@ -29,6 +29,12 @@
 #define REF_FROM(_generation, _index) \
     ((((kefir_uint32_t) (_index)) << KEFIR_OPT_INSTR_REF_GENERATION_WIDTH) | GENERATION_OF((_generation)))
 
+#define CHUNK_INDEX(_idx) ((_idx) >> KEFIR_OPT_CODE_CHUNK_CAPACITY_LOG2)
+#define CHUNK_OFFSET(_idx) ((_idx) & ((1ull << KEFIR_OPT_CODE_CHUNK_CAPACITY_LOG2) - 1))
+#define CHUNK_COUNT(_idx) (CHUNK_INDEX(_idx) + (CHUNK_OFFSET(_idx) != 0))
+
+#define INSTR_AT_UNSAFE(_code, _idx) (&(_code)->code_chunks[CHUNK_INDEX((_idx))]->content[CHUNK_OFFSET((_idx))])
+
 kefir_result_t kefir_opt_comparison_operation_inverse(kefir_opt_comparison_operation_t original_comparison,
                                                       kefir_opt_comparison_operation_t *comparison_ptr) {
     kefir_opt_comparison_operation_t comparison;
@@ -510,9 +516,9 @@ kefir_result_t kefir_opt_code_container_init(struct kefir_opt_code_container *co
     REQUIRE(code != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to optimizer code container"));
 
-    code->code = NULL;
-    code->capacity = 0;
-    code->length = 0;
+    code->code_chunks = NULL;
+    code->code_length = 0;
+    code->chunks_capacity = 0;
     code->recycle_instr_idx = KEFIR_ID_NONE;
     code->blocks = NULL;
     code->blocks_length = 0;
@@ -539,8 +545,8 @@ kefir_result_t kefir_opt_code_container_free(struct kefir_mem *mem, struct kefir
     for (kefir_size_t i = 0; i < code->phi_nodes_length; i++) {
         REQUIRE_OK(kefir_hashtree_free(mem, &code->phi_nodes[i].links));
     }
-    for (kefir_size_t i = 0; i < code->length; i++) {
-        REQUIRE_OK(kefir_hashset_free(mem, &code->code[i].uses.instruction));
+    for (kefir_size_t i = 0; i < code->code_length; i++) {
+        REQUIRE_OK(kefir_hashset_free(mem, &INSTR_AT_UNSAFE(code, i)->uses.instruction));
     }
     for (kefir_size_t i = 0; i < code->blocks_length; i++) {
         REQUIRE_OK(kefir_hashtreeset_free(mem, &code->blocks[i].public_labels));
@@ -549,7 +555,10 @@ kefir_result_t kefir_opt_code_container_free(struct kefir_mem *mem, struct kefir
     REQUIRE_OK(kefir_hashtree_free(mem, &code->call_nodes));
     REQUIRE_OK(kefir_hashtree_free(mem, &code->inline_assembly));
     KEFIR_FREE(mem, code->phi_nodes);
-    KEFIR_FREE(mem, code->code);
+    for (kefir_size_t i = 0; i < code->chunks_capacity; i++) {
+        KEFIR_FREE(mem, code->code_chunks[i]);
+    }
+    KEFIR_FREE(mem, code->code_chunks);
     memset(code, 0, sizeof(struct kefir_opt_code_container));
     return KEFIR_OK;
 }
@@ -561,8 +570,8 @@ kefir_result_t kefir_opt_code_container_clear(struct kefir_mem *mem, struct kefi
     for (kefir_size_t i = 0; i < code->phi_nodes_length; i++) {
         REQUIRE_OK(kefir_hashtree_free(mem, &code->phi_nodes[i].links));
     }
-    for (kefir_size_t i = 0; i < code->length; i++) {
-        REQUIRE_OK(kefir_hashset_free(mem, &code->code[i].uses.instruction));
+    for (kefir_size_t i = 0; i < code->code_length; i++) {
+        REQUIRE_OK(kefir_hashset_free(mem, &INSTR_AT_UNSAFE(code, i)->uses.instruction));
     }
     for (kefir_size_t i = 0; i < code->blocks_length; i++) {
         REQUIRE_OK(kefir_hashtreeset_free(mem, &code->blocks[i].public_labels));
@@ -571,11 +580,14 @@ kefir_result_t kefir_opt_code_container_clear(struct kefir_mem *mem, struct kefi
     REQUIRE_OK(kefir_hashtree_clean(mem, &code->call_nodes));
     REQUIRE_OK(kefir_hashtree_clean(mem, &code->inline_assembly));
     KEFIR_FREE(mem, code->phi_nodes);
-    KEFIR_FREE(mem, code->code);
+    for (kefir_size_t i = 0; i < code->chunks_capacity; i++) {
+        KEFIR_FREE(mem, code->code_chunks[i]);
+    }
+    KEFIR_FREE(mem, code->code_chunks);
 
-    code->code = NULL;
-    code->capacity = 0;
-    code->length = 0;
+    code->code_chunks = NULL;
+    code->code_length = 0;
+    code->chunks_capacity = 0;
     code->recycle_instr_idx = KEFIR_ID_NONE;
     code->blocks = NULL;
     code->blocks_length = 0;
@@ -594,11 +606,15 @@ kefir_result_t kefir_opt_code_container_truncate(struct kefir_mem *mem, struct k
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code container"));
 
-    if (code->code != NULL) {
-        struct kefir_opt_instruction *instructions = KEFIR_REALLOC(mem, code->code, sizeof(struct kefir_opt_instruction) * code->length);
-        REQUIRE(instructions != NULL || code->length == 0, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate optimizer code container instructions"));
-        code->code = instructions;
-        code->capacity = code->length;
+    if (code->code_chunks != NULL && code->code_length != 0) {
+        const kefir_size_t capacity = CHUNK_INDEX(code->code_length - 1) + 1;
+        for (kefir_size_t i = capacity; i < code->chunks_capacity; i++) {
+            KEFIR_FREE(mem, code->code_chunks[i]);
+        }
+        struct kefir_opt_code_container_chunk **chunks = KEFIR_REALLOC(mem, code->code_chunks, sizeof(struct kefir_opt_code_container_chunk *) * capacity);
+        REQUIRE(chunks != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate optimizer code container instructions"));
+        code->code_chunks = chunks;
+        code->chunks_capacity = capacity;
     }
 
     if (code->blocks != NULL) {
@@ -620,12 +636,12 @@ kefir_result_t kefir_opt_code_container_truncate(struct kefir_mem *mem, struct k
 
 kefir_bool_t kefir_opt_code_container_is_empty(const struct kefir_opt_code_container *code) {
     REQUIRE(code != NULL, true);
-    return code->blocks_length == 0 && code->length == 0 && code->entry_point == KEFIR_ID_NONE;
+    return code->blocks_length == 0 && code->code_length == 0 && code->entry_point == KEFIR_ID_NONE;
 }
 
 kefir_size_t kefir_opt_code_container_length(const struct kefir_opt_code_container *code) {
     REQUIRE(code != NULL, 0);
-    return code->length;
+    return code->code_length;
 }
 
 kefir_result_t kefir_opt_code_container_new_block(struct kefir_mem *mem, struct kefir_opt_code_container *code,
@@ -720,7 +736,7 @@ static kefir_result_t code_container_instr_mutable(const struct kefir_opt_code_c
                                                    kefir_opt_instruction_ref_t instr_id,
                                                    struct kefir_opt_instruction **instr_ptr) {
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code container"));
-    REQUIRE(instr_id != KEFIR_ID_NONE && KEFIR_OPT_INSTR_REF_INDEX_OF(instr_id) < code->length,
+    REQUIRE(instr_id != KEFIR_ID_NONE && KEFIR_OPT_INSTR_REF_INDEX_OF(instr_id) < code->code_length,
             KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS,
                             "Requested optimizer instruction identifier is out of bounds of the code container"));
     REQUIRE(instr_ptr != NULL,
@@ -728,7 +744,7 @@ static kefir_result_t code_container_instr_mutable(const struct kefir_opt_code_c
 
     kefir_size_t index = KEFIR_OPT_INSTR_REF_INDEX_OF(instr_id);
 
-    struct kefir_opt_instruction *instr = &code->code[index];
+    struct kefir_opt_instruction *instr = INSTR_AT_UNSAFE(code, index);
     REQUIRE(instr->id == instr_id && instr->block_id != KEFIR_ID_NONE,
             KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Requested optimizer instruction was previously dropped"));
     *instr_ptr = instr;
@@ -830,14 +846,26 @@ kefir_result_t kefir_opt_code_container_block_public_labels_next(
 }
 
 static kefir_result_t ensure_code_container_capacity(struct kefir_mem *mem, struct kefir_opt_code_container *code) {
-    if (code->length == code->capacity) {
-        const kefir_size_t new_capacity = (code->capacity * 9 / 8) + 512;
-        struct kefir_opt_instruction *new_code =
-            KEFIR_REALLOC(mem, code->code, sizeof(struct kefir_opt_instruction) * new_capacity);
+    if (CHUNK_OFFSET(code->code_length) == 0 && CHUNK_COUNT(code->code_length) + 1 > code->chunks_capacity) {
+        // code->chunk_preallocation = MAX(1, code->chunk_preallocation * 2);
+        const kefir_size_t new_allocated_chunks = CHUNK_COUNT(code->code_length) + 1;
+        struct kefir_opt_code_container_chunk **new_code = KEFIR_REALLOC(
+            mem, code->code_chunks, sizeof(struct kefir_opt_code_container_chunk *) * new_allocated_chunks);
         REQUIRE(new_code != NULL,
-                KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to reallocate optimizer code container"));
-        code->code = new_code;
-        code->capacity = new_capacity;
+                KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate target IR code chunk"));
+
+        memset(
+            &new_code[code->chunks_capacity], 0,
+            sizeof(struct kefir_opt_code_container_chunk *) * (new_allocated_chunks - code->chunks_capacity));
+        code->code_chunks = new_code;
+
+        kefir_size_t prev_allocated_chunks = code->chunks_capacity;
+        code->chunks_capacity = new_allocated_chunks;
+        for (kefir_size_t i = prev_allocated_chunks; i < new_allocated_chunks; i++) {
+            code->code_chunks[i] = KEFIR_MALLOC(mem, sizeof(struct kefir_opt_code_container_chunk));
+            REQUIRE(new_code[i] != NULL,
+                    KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate target IR code chunk"));
+        }
     }
     return KEFIR_OK;
 }
@@ -914,14 +942,14 @@ kefir_result_t kefir_opt_code_container_new_instruction(struct kefir_mem *mem, s
     struct kefir_opt_instruction *instr;
     kefir_bool_t allocated_new = false;
     if (code->recycle_instr_idx != KEFIR_ID_NONE) {
-        instr = &code->code[code->recycle_instr_idx];
+        instr = INSTR_AT_UNSAFE(code, code->recycle_instr_idx);
         instr->id = REF_FROM(GENERATION_OF(instr->id) + 1, code->recycle_instr_idx);
-        code->recycle_instr_idx = code->code[code->recycle_instr_idx].siblings.next;
+        code->recycle_instr_idx = INSTR_AT_UNSAFE(code, code->recycle_instr_idx)->siblings.next;
         REQUIRE_OK(kefir_hashset_clear(mem, &instr->uses.instruction));
     } else {
         REQUIRE_OK(ensure_code_container_capacity(mem, code));
-        instr = &code->code[code->length];
-        instr->id = REF_FROM(0, code->length);
+        instr = INSTR_AT_UNSAFE(code, code->code_length);
+        instr->id = REF_FROM(0, code->code_length);
         allocated_new = true;
         REQUIRE_OK(kefir_hashset_init(&instr->uses.instruction, &kefir_hashtable_uint_ops));
     }
@@ -931,7 +959,7 @@ kefir_result_t kefir_opt_code_container_new_instruction(struct kefir_mem *mem, s
     REQUIRE_OK(add_instr_to_block(code, block, instr));
 
     if (allocated_new) {
-        code->length++;
+        code->code_length++;
     }
     *instr_id = instr->id;
 
@@ -1908,7 +1936,7 @@ kefir_result_t kefir_opt_code_container_new_call(struct kefir_mem *mem, struct k
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code container"));
     REQUIRE(instr_ref_ptr != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to optimizer call instruction reference"));
-    REQUIRE(function_ref == KEFIR_ID_NONE || KEFIR_OPT_INSTR_REF_INDEX_OF(function_ref) < code->length,
+    REQUIRE(function_ref == KEFIR_ID_NONE || KEFIR_OPT_INSTR_REF_INDEX_OF(function_ref) < code->code_length,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid function instruction reference"));
 
     REQUIRE_OK(new_call_impl(mem, code, block_id, func_decl_id, argc, function_ref,
@@ -1925,7 +1953,7 @@ kefir_result_t kefir_opt_code_container_new_tail_call(struct kefir_mem *mem, str
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code container"));
     REQUIRE(instr_ref_ptr != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to optimizer call instruction reference"));
-    REQUIRE(function_ref == KEFIR_ID_NONE || KEFIR_OPT_INSTR_REF_INDEX_OF(function_ref) < code->length,
+    REQUIRE(function_ref == KEFIR_ID_NONE || KEFIR_OPT_INSTR_REF_INDEX_OF(function_ref) < code->code_length,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid function instruction reference"));
 
     REQUIRE_OK(new_call_impl(
@@ -2790,8 +2818,8 @@ kefir_result_t kefir_opt_code_container_drop_dead_code(struct kefir_mem *mem, st
         }
     }
 
-    for (kefir_opt_instruction_ref_t i = 0; i < code->length; i++) {
-        struct kefir_opt_instruction *instr = &code->code[i];
+    for (kefir_opt_instruction_ref_t i = 0; i < code->code_length; i++) {
+        struct kefir_opt_instruction *instr = INSTR_AT_UNSAFE(code, i);
         if (instr->block_id == KEFIR_ID_NONE) {
             continue;
         }
@@ -3356,33 +3384,45 @@ kefir_result_t kefir_opt_code_container_clone(struct kefir_mem *mem, struct kefi
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid destinaton optimizer code container"));
     REQUIRE(src_code != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid source optimizer code container"));
-    REQUIRE(dst_code->code == NULL && dst_code->blocks == NULL && dst_code->phi_nodes == NULL,
+    REQUIRE(dst_code->code_chunks == NULL && dst_code->blocks == NULL && dst_code->phi_nodes == NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected empty destination optimizer code container"));
 
-    if (src_code->length != 0) {
-        dst_code->code = KEFIR_MALLOC(mem, sizeof(struct kefir_opt_instruction) * src_code->capacity);
-        REQUIRE(dst_code->code != NULL,
+    if (src_code->code_length != 0) {
+        dst_code->code_chunks = KEFIR_MALLOC(mem, sizeof(struct kefir_opt_code_container_chunk *) * src_code->chunks_capacity);
+        REQUIRE(dst_code->code_chunks != NULL,
                 KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate optimizer code container copy"));
-        dst_code->length = 0;
-        dst_code->capacity = src_code->capacity;
+        for (kefir_size_t i = 0; i < src_code->chunks_capacity; i++) {
+            dst_code->code_chunks[i] = KEFIR_MALLOC(mem, sizeof(struct kefir_opt_code_container_chunk));
+            REQUIRE_ELSE(dst_code->code_chunks[i] != NULL, {
+                for (kefir_size_t j = 0; j < i; j++) {
+                    KEFIR_FREE(mem, dst_code->code_chunks[j]);
+                }
+                KEFIR_FREE(mem, dst_code->code_chunks);
+                dst_code->code_chunks = NULL;
+                return KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate optimizer code container copy");
+            });
+
+            memcpy(dst_code->code_chunks[i], src_code->code_chunks[i], sizeof(struct kefir_opt_code_container_chunk));
+        }
+        dst_code->code_length = src_code->code_length;
+        dst_code->chunks_capacity = src_code->chunks_capacity;
 
         dst_code->recycle_instr_idx = src_code->recycle_instr_idx;
         dst_code->entry_point = src_code->entry_point;
         dst_code->gate_block = src_code->gate_block;
 
-        memcpy(dst_code->code, src_code->code, sizeof(struct kefir_opt_instruction) * src_code->length);
 
-        for (kefir_size_t i = 0; i < src_code->length; i++) {
-            REQUIRE_OK(kefir_hashset_init(&dst_code->code[i].uses.instruction, &kefir_hashtable_uint_ops));
-            dst_code->length++;
+        for (kefir_size_t i = 0; i < src_code->code_length; i++) {
+            struct kefir_opt_instruction *instr = INSTR_AT_UNSAFE(dst_code, i);
+            REQUIRE_OK(kefir_hashset_init(&instr->uses.instruction, &kefir_hashtable_uint_ops));
 
-            REQUIRE_OK(kefir_hashset_merge(mem, &dst_code->code[i].uses.instruction,
-                                               &src_code->code[i].uses.instruction));
+            REQUIRE_OK(kefir_hashset_merge(mem, &instr->uses.instruction,
+                                               &instr->uses.instruction));
         }
     } else {
-        dst_code->code = NULL;
-        dst_code->length = 0;
-        dst_code->capacity = 0;
+        dst_code->code_chunks = NULL;
+        dst_code->code_length = 0;
+        dst_code->chunks_capacity = 0;
         dst_code->recycle_instr_idx = KEFIR_ID_NONE;
         dst_code->entry_point = KEFIR_ID_NONE;
     }

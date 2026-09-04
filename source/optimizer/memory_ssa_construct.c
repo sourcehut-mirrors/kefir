@@ -509,7 +509,7 @@ static kefir_result_t simplify(struct kefir_mem *mem, struct construct_state *st
 static kefir_result_t construct_impl(struct kefir_mem *mem, struct construct_state *state) {
     REQUIRE_OK(kefir_opt_code_liveness_collect_global(mem, state->code, &state->liveness));
     REQUIRE_OK(kefir_opt_code_memssa_provision(mem, state->memssa, kefir_opt_code_container_length(state->code)));
-    memset(state->processed_instr, 0, sizeof(kefir_bool_t) * state->code->length);
+    memset(state->processed_instr, 0, sizeof(kefir_bool_t) * kefir_opt_code_container_length(state->code));
     memset(state->visited_blocks, 0, sizeof(kefir_bool_t) * kefir_opt_code_container_block_count(state->code));
     REQUIRE_OK(collect_def_blocks(mem, state));
     REQUIRE_OK(insert_phis(mem, state));
@@ -534,7 +534,7 @@ kefir_result_t kefir_opt_code_memssa_construct(struct kefir_mem *mem, struct kef
     REQUIRE_OK(kefir_hashset_init(&state.instr_queue_index, &kefir_hashtable_uint_ops));
     REQUIRE_OK(kefir_hashset_init(&state.liveness, &kefir_hashtable_uint_ops));
 
-    state.processed_instr = KEFIR_MALLOC(mem, sizeof(kefir_bool_t) * code->length);
+    state.processed_instr = KEFIR_MALLOC(mem, sizeof(kefir_bool_t) * kefir_opt_code_container_length(code));
     REQUIRE(state.processed_instr != NULL,
             KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate memory ssa constructor state"));
     state.visited_blocks = KEFIR_MALLOC(mem, sizeof(kefir_bool_t) * kefir_opt_code_container_block_count(code));

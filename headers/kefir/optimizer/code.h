@@ -411,10 +411,16 @@ typedef struct kefir_opt_code_event_listener {
     void *payload;
 } kefir_opt_code_event_listener_t;
 
+#define KEFIR_OPT_CODE_CHUNK_CAPACITY_LOG2 12
+
+typedef struct kefir_opt_code_container_chunk {
+    struct kefir_opt_instruction content[1ull << KEFIR_OPT_CODE_CHUNK_CAPACITY_LOG2];
+} kefir_opt_code_container_chunk_t;
+
 typedef struct kefir_opt_code_container {
-    struct kefir_opt_instruction *code;
-    kefir_size_t length;
-    kefir_size_t capacity;
+    struct kefir_opt_code_container_chunk **code_chunks;
+    kefir_size_t code_length;
+    kefir_size_t chunks_capacity;
 
     kefir_size_t recycle_instr_idx;
 
