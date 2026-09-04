@@ -93,7 +93,8 @@ static kefir_result_t insert_entry(struct kefir_mem *mem, struct kefir_hashtable
     REQUIRE_OK(
         find_position_for_insert(hashtable->ops, entries, entry_states, capacity, key, &index, &found_collisions));
     if (do_rehash && entry_states[index] != KEFIR_HASHTABLE_ENTRY_OCCUPIED &&
-        found_collisions >= KEFIR_REHASH_COLLISION_THRESHOLD) {
+        found_collisions >= KEFIR_REHASH_COLLISION_THRESHOLD &&
+        hashtable->occupied > hashtable->capacity * KEFIR_REHASH_TRIM_THRESHOLD_PCT / 100) {
         REQUIRE_OK(rehash(mem, hashtable, KEFIR_HASHTABLE_CAPACITY_GROW(hashtable->capacity)));
         return insert_entry(mem, hashtable, hashtable->entries, hashtable->entry_states, hashtable->capacity,
                             &hashtable->occupied, key, value, false);
