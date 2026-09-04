@@ -1116,7 +1116,7 @@ static kefir_result_t build_current_instr_state(
         instr->operation.opcode == state->code->klass->inline_asm_opcode) {
         // Intentionally left blank
     } else {
-        for (kefir_size_t i = 0; i < KEFIR_CODEGEN_TARGET_IR_OPERATION_NUM_OF_PARAMETERS; i++) {
+        for (kefir_size_t i = 0; i < instr->operation.parameters_length; i++) {
             kefir_codegen_target_ir_value_ref_t value_ref[2] = {{.instr_ref = KEFIR_ID_NONE, .aspect = 0},
                                                                 {.instr_ref = KEFIR_ID_NONE, .aspect = 0}};
             switch (instr->operation.parameters[i].type) {
@@ -2335,6 +2335,7 @@ static kefir_result_t translate_instruction(struct destructor_state *state,
             // Intentionally left blank
         } else {
             struct kefir_asmcmp_value value;
+            REQUIRE(instr->operation.parameters_length > 0, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected target IR instruction shape"));
             REQUIRE_OK(resolve_operand(state, &instr->operation.parameters[0], &value));
             REQUIRE_OK(kefir_asmcmp_amd64_jmp(state->mem, state->asmcmp_ctx,
                                               kefir_asmcmp_context_instr_tail(&state->asmcmp_ctx->context), &value,

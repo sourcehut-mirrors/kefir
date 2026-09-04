@@ -40,7 +40,12 @@ static kefir_result_t do_jump_propagation(struct kefir_mem *mem, struct kefir_co
 
     kefir_bool_t do_replace = false;
     struct kefir_codegen_target_ir_operation replacement = tail_instr->operation;
-    for (kefir_size_t i = 0; i < KEFIR_CODEGEN_TARGET_IR_OPERATION_NUM_OF_PARAMETERS; i++) {
+    struct kefir_codegen_target_ir_operand operands[KEFIR_CODEGEN_TARGET_IR_OPERATION_MAX_OPERANDS];
+    if (replacement.parameters_length > 0) {
+        memcpy(operands, replacement.parameters, sizeof(struct kefir_codegen_target_ir_operand) * replacement.parameters_length);
+    }
+    replacement.parameters = operands;
+    for (kefir_size_t i = 0; i < tail_instr->operation.parameters_length; i++) {
         if (tail_instr->operation.parameters[i].type != KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_BLOCK_REF) {
             continue;
         }
@@ -97,7 +102,7 @@ static kefir_result_t do_jump_propagation(struct kefir_mem *mem, struct kefir_co
             continue;
         }
 
-        replacement.parameters[i].block_ref = propagated_ref;
+        operands[i].block_ref = propagated_ref;
         do_replace = true;
 
         for (res = kefir_codegen_target_ir_code_phi_node_iter(code, &phi_node_iter,

@@ -48,7 +48,7 @@ static kefir_result_t collect_local_hot_uses(struct kefir_mem *mem, struct kefir
         } else if (instr->operation.opcode == code->klass->inline_asm_opcode) {
             // Intentionally left blank
         } else {
-            for (kefir_size_t i = 0; i < KEFIR_CODEGEN_TARGET_IR_OPERATION_NUM_OF_PARAMETERS; i++) {
+            for (kefir_size_t i = 0; i < instr->operation.parameters_length; i++) {
                 switch (instr->operation.parameters[i].type) {
                     case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_NONE:
                     case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INTEGER:
@@ -129,13 +129,16 @@ static kefir_result_t insert_cold_copy(struct kefir_mem *mem, struct kefir_codeg
             REQUIRE_OK(kefir_codegen_target_ir_code_value_props(code, value_ref, &value_type));
             struct kefir_codegen_target_ir_value_type copy_value_type = *value_type;
 
+            struct kefir_codegen_target_ir_operand operands[] = {
+            {.type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF,
+                                                .direct.value_ref = value_ref,
+                                                .direct.variant = KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT}
+            };
             REQUIRE_OK(kefir_codegen_target_ir_code_new_instruction(
                 mem, code, block_ref, instr_ref,
                 &(struct kefir_codegen_target_ir_operation) {
                     .opcode = code->klass->assign_opcode,
-                    .parameters[0] = {.type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF,
-                                      .direct.value_ref = value_ref,
-                                      .direct.variant = KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT}},
+                    .parameters = operands, .parameters_length = 1 },
                 NULL, &copy_value_ref.instr_ref));
             REQUIRE_OK(kefir_codegen_target_ir_code_add_aspect(mem, code, copy_value_ref, &copy_value_type));
         }
@@ -159,13 +162,16 @@ static kefir_result_t insert_local_hot_copy(struct kefir_mem *mem, struct kefir_
     REQUIRE_OK(kefir_codegen_target_ir_code_value_props(code, value_ref, &value_type));
     struct kefir_codegen_target_ir_value_type copy_value_type = *value_type;
 
+    struct kefir_codegen_target_ir_operand operands[] = {
+    {.type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF,
+                                .direct.value_ref = value_ref,
+                                .direct.variant = KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT}
+    };
     REQUIRE_OK(kefir_codegen_target_ir_code_new_instruction(
         mem, code, block_ref, kefir_codegen_target_ir_code_control_prev(code, head_use_instr_ref),
         &(struct kefir_codegen_target_ir_operation) {
             .opcode = code->klass->assign_opcode,
-            .parameters[0] = {.type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF,
-                              .direct.value_ref = value_ref,
-                              .direct.variant = KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT}},
+            .parameters = operands, .parameters_length = 1},
         NULL, &copy_value_ref.instr_ref));
     REQUIRE_OK(kefir_codegen_target_ir_code_add_aspect(mem, code, copy_value_ref, &copy_value_type));
 

@@ -128,13 +128,16 @@ static kefir_result_t preserve_virtual_regs(struct kefir_mem *mem, struct kefir_
         for (res = kefir_hashset_iter(preserve, &iter, &key); res == KEFIR_OK; res = kefir_hashset_next(&iter, &key)) {
             kefir_codegen_target_ir_value_ref_t value_ref = KEFIR_CODEGEN_TARGET_IR_VALUE_REF_FROM(key);
 
+            struct kefir_codegen_target_ir_operand operands[] = {
+                {.type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF,
+                                      .direct = {.value_ref = value_ref,
+                                                 .variant = KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT}}
+            };
             REQUIRE_OK(kefir_codegen_target_ir_code_new_instruction(
                 mem, code, block_ref, kefir_codegen_target_ir_code_control_prev(code, tail_instr_ref),
                 &(struct kefir_codegen_target_ir_operation) {
                     .opcode = code->klass->touch_opcode,
-                    .parameters[0] = {.type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF,
-                                      .direct = {.value_ref = value_ref,
-                                                 .variant = KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT}}},
+                    .parameters = operands, .parameters_length = 1},
                 NULL, NULL));
         }
         if (res != KEFIR_ITERATOR_END) {

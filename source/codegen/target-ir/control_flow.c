@@ -469,8 +469,8 @@ kefir_result_t kefir_codegen_target_ir_control_flow_build(struct kefir_mem *mem,
                         REQUIRE_OK(res);
                     }
                 }
-            } else {
-                for (kefir_size_t i = 0; i < KEFIR_CODEGEN_TARGET_IR_OPERATION_NUM_OF_PARAMETERS; i++) {
+            } else if (instr->operation.opcode != control_flow->code->klass->inline_asm_opcode) {
+                for (kefir_size_t i = 0; i < instr->operation.parameters_length; i++) {
                     REQUIRE_OK(scan_operand(mem, control_flow, &instr->operation.parameters[i], KEFIR_ID_NONE,
                                             &instr_terminator_props));
                 }

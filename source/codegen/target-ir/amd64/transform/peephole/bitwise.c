@@ -72,15 +72,18 @@
                         if (_cond(lhs, rhs)) {                                                                         \
                             result = _op(lhs, rhs);                                                                    \
                             result = kefir_codegen_target_ir_sign_extend(result, value_type->variant);                 \
+                            struct kefir_codegen_target_ir_operand operands[] = { \
+                                {.type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INTEGER,            \
+                                                .immediate.int_immediate = kefir_codegen_target_ir_zero_extend(  \
+                                                    result, value_type->variant),                                \
+                                                .immediate.variant =                                             \
+                                                    KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT}           \
+                            }; \
                             REQUIRE_OK(kefir_codegen_target_ir_code_replace_operation(                                 \
                                 mem, code, instr_ref,                                                                  \
                                 &(struct kefir_codegen_target_ir_operation) {                                          \
                                     .opcode = code->klass->assign_opcode,                                              \
-                                    .parameters[0] = {.type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INTEGER,            \
-                                                      .immediate.int_immediate = kefir_codegen_target_ir_zero_extend(  \
-                                                          result, value_type->variant),                                \
-                                                      .immediate.variant =                                             \
-                                                          KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT}},           \
+                                    .parameters = operands, .parameters_length = 1},           \
                                 NULL));                                                                                \
                             *replaced = true;                                                                          \
                             return KEFIR_OK;                                                                           \
@@ -140,13 +143,17 @@ kefir_result_t kefir_codegen_target_ir_amd64_peephole_xor(struct kefir_mem *mem,
     kefir_codegen_target_ir_value_ref_t zero_ref = {.aspect = KEFIR_CODEGEN_TARGET_IR_VALUE_DIRECT_OUTPUT(0)};
 
     struct kefir_codegen_target_ir_instruction_metadata metadata = instr->metadata;
+    struct kefir_codegen_target_ir_operand operands[] = {
+    {.type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INTEGER,
+        .immediate.int_immediate = 0,
+        .immediate.variant = KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT}
+    };
+
     REQUIRE_OK(kefir_codegen_target_ir_code_new_instruction(
         mem, code, instr->block_ref, instr_ref,
         &(struct kefir_codegen_target_ir_operation) {
             .opcode = KEFIR_TARGET_IR_AMD64_OPCODE(mov),
-            .parameters[0] = {.type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INTEGER,
-                              .immediate.int_immediate = 0,
-                              .immediate.variant = KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT}},
+            .parameters = operands, .parameters_length = 1},
         &metadata, &zero_ref.instr_ref));
 
     const struct kefir_codegen_target_ir_value_type *output_value_type;
@@ -200,11 +207,14 @@ kefir_result_t kefir_codegen_target_ir_amd64_peephole_and(struct kefir_mem *mem,
             KEFIR_OK);
 
     if (instr->operation.parameters[classification.operands[1].read_index].immediate.uint_immediate == 0) {
+        struct kefir_codegen_target_ir_operand operands[] = {
+            {.type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INTEGER, .immediate.int_immediate = 0}
+        };
         REQUIRE_OK(kefir_codegen_target_ir_code_replace_operation(
             mem, code, instr_ref,
             &(struct kefir_codegen_target_ir_operation) {
                 .opcode = KEFIR_TARGET_IR_AMD64_OPCODE(mov),
-                .parameters[0] = {.type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INTEGER, .immediate.int_immediate = 0}},
+                .parameters = operands, .parameters_length = 1},
             NULL));
         *replaced = true;
     } else if (instr->operation.parameters[classification.operands[1].read_index].immediate.uint_immediate < (1 << 7)) {
@@ -294,7 +304,12 @@ kefir_result_t peephole_const_operand_nonneg(struct kefir_mem *mem, struct kefir
                 rhs_value, instr->operation.parameters[classification.operands[1].read_index].direct.variant);
             if (rhs_value_trunc >= 0 && rhs_value_trunc <= KEFIR_INT32_MAX) {
                 struct kefir_codegen_target_ir_operation oper = instr->operation;
-                oper.parameters[classification.operands[1].read_index] = (struct kefir_codegen_target_ir_operand) {
+                struct kefir_codegen_target_ir_operand operands[KEFIR_CODEGEN_TARGET_IR_OPERATION_MAX_OPERANDS];
+                if (oper.parameters_length > 0) {
+                    memcpy(operands, oper.parameters, sizeof(struct kefir_codegen_target_ir_operand) * oper.parameters_length);
+                }
+                oper.parameters = operands;
+                operands[classification.operands[1].read_index] = (struct kefir_codegen_target_ir_operand) {
                     .type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INTEGER,
                     .immediate = {.uint_immediate = rhs_value,
                                   .variant = oper.parameters[classification.operands[1].read_index].direct.variant}};
@@ -413,7 +428,12 @@ kefir_result_t kefir_codegen_target_ir_amd64_peephole_shxd(struct kefir_mem *mem
             REQUIRE_OK(res);
             if (rhs_value >= 0) {
                 struct kefir_codegen_target_ir_operation oper = instr->operation;
-                oper.parameters[classification.operands[2].read_index] = (struct kefir_codegen_target_ir_operand) {
+                struct kefir_codegen_target_ir_operand operands[KEFIR_CODEGEN_TARGET_IR_OPERATION_MAX_OPERANDS];
+                if (oper.parameters_length > 0) {
+                    memcpy(operands, oper.parameters, sizeof(struct kefir_codegen_target_ir_operand) * oper.parameters_length);
+                }
+                oper.parameters = operands;
+                operands[classification.operands[2].read_index] = (struct kefir_codegen_target_ir_operand) {
                     .type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INTEGER,
                     .immediate = {.uint_immediate = rhs_value,
                                   .variant = oper.parameters[classification.operands[2].read_index].direct.variant}};

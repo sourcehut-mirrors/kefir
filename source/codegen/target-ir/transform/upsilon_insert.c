@@ -51,15 +51,18 @@ static kefir_result_t do_patch_value(struct kefir_mem *mem, struct kefir_codegen
                                      kefir_codegen_target_ir_value_ref_t patch_value_ref) {
     if (copy_value_ref->instr_ref == KEFIR_ID_NONE) {
         kefir_codegen_target_ir_instruction_ref_t copy_instr_ref;
+        struct kefir_codegen_target_ir_operand operands[] = {
+            {.type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF,
+                .direct.value_ref = patch_value_ref,
+                .direct.variant = KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT}
+        };
         REQUIRE_OK(kefir_codegen_target_ir_code_new_instruction(
             mem, code, block_ref,
             kefir_codegen_target_ir_code_control_prev(code,
                                                       kefir_codegen_target_ir_code_block_control_tail(code, block_ref)),
             &(struct kefir_codegen_target_ir_operation) {
                 .opcode = code->klass->assign_opcode,
-                .parameters[0].type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF,
-                .parameters[0].direct.value_ref = patch_value_ref,
-                .parameters[0].direct.variant = KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT},
+                .parameters = operands, .parameters_length = 1},
             NULL, &copy_instr_ref));
         copy_value_ref->instr_ref = copy_instr_ref;
         copy_value_ref->aspect = patch_value_ref.aspect;
@@ -132,7 +135,7 @@ static kefir_result_t patch_terminator_instruction(struct kefir_mem *mem, struct
             REQUIRE_OK(res);
         }
     } else {
-        for (kefir_size_t i = 0; i < KEFIR_CODEGEN_TARGET_IR_OPERATION_NUM_OF_PARAMETERS; i++) {
+        for (kefir_size_t i = 0; i < tail_instr->operation.parameters_length; i++) {
             REQUIRE_OK(patch_operand_value(mem, code, phi_value_ref, &copy_value_ref, block_ref,
                                            &tail_instr->operation.parameters[i]));
         }
@@ -201,16 +204,19 @@ static kefir_result_t insert_upsilons_step(struct kefir_mem *mem, struct kefir_c
 
         REQUIRE_OK(patch_terminator_instruction(
             mem, code, phi_value_ref, (kefir_codegen_target_ir_value_ref_t) {.instr_ref = KEFIR_ID_NONE}, block_ref));
+        struct kefir_codegen_target_ir_operand operands[] = {
+            {.type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_UPSILON, .upsilon_ref = phi_value_ref},
+            {.type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF,
+                                  .direct.value_ref = linked_value_ref,
+                                  .direct.variant = KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT}
+        };
         REQUIRE_OK(kefir_codegen_target_ir_code_new_instruction(
             mem, code, block_ref,
             kefir_codegen_target_ir_code_control_prev(code,
                                                       kefir_codegen_target_ir_code_block_control_tail(code, block_ref)),
             &(struct kefir_codegen_target_ir_operation) {
                 .opcode = code->klass->upsilon_opcode,
-                .parameters[0] = {.type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_UPSILON, .upsilon_ref = phi_value_ref},
-                .parameters[1] = {.type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF,
-                                  .direct.value_ref = linked_value_ref,
-                                  .direct.variant = KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT}},
+                .parameters = operands, .parameters_length = 2},
             NULL, NULL));
         REQUIRE_OK(kefir_hashtable_delete(mem, phis, phis_key));
     }
@@ -224,15 +230,18 @@ static kefir_result_t insert_upsilons_step(struct kefir_mem *mem, struct kefir_c
     kefir_codegen_target_ir_value_ref_t linked_value_ref = KEFIR_CODEGEN_TARGET_IR_VALUE_REF_FROM(phis_value);
 
     kefir_codegen_target_ir_instruction_ref_t copy_instr_ref;
+    struct kefir_codegen_target_ir_operand operands[] = {
+        {.type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF,
+            .direct.value_ref = phi_value_ref,
+            .direct.variant = KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT}
+    };
     REQUIRE_OK(kefir_codegen_target_ir_code_new_instruction(
         mem, code, block_ref,
         kefir_codegen_target_ir_code_control_prev(code,
                                                   kefir_codegen_target_ir_code_block_control_tail(code, block_ref)),
         &(struct kefir_codegen_target_ir_operation) {
             .opcode = code->klass->assign_opcode,
-            .parameters[0].type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF,
-            .parameters[0].direct.value_ref = phi_value_ref,
-            .parameters[0].direct.variant = KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT},
+            .parameters = operands, .parameters_length = 1},
         NULL, &copy_instr_ref));
     kefir_codegen_target_ir_value_ref_t copy_value_ref = {.instr_ref = copy_instr_ref, .aspect = phi_value_ref.aspect};
 
@@ -243,16 +252,19 @@ static kefir_result_t insert_upsilons_step(struct kefir_mem *mem, struct kefir_c
     REQUIRE_OK(kefir_codegen_target_ir_code_add_aspect(mem, code, copy_value_ref, &copy_value_type));
 
     REQUIRE_OK(patch_terminator_instruction(mem, code, phi_value_ref, copy_value_ref, block_ref));
+    struct kefir_codegen_target_ir_operand operands2[] = {
+        {.type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_UPSILON, .upsilon_ref = phi_value_ref},
+        {.type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF,
+                            .direct.value_ref = linked_value_ref,
+                            .direct.variant = KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT}
+    };
     REQUIRE_OK(kefir_codegen_target_ir_code_new_instruction(
         mem, code, block_ref,
         kefir_codegen_target_ir_code_control_prev(code,
                                                   kefir_codegen_target_ir_code_block_control_tail(code, block_ref)),
         &(struct kefir_codegen_target_ir_operation) {
             .opcode = code->klass->upsilon_opcode,
-            .parameters[0] = {.type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_UPSILON, .upsilon_ref = phi_value_ref},
-            .parameters[1] = {.type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF,
-                              .direct.value_ref = linked_value_ref,
-                              .direct.variant = KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT}},
+            .parameters = operands2, .parameters_length = 2},
         NULL, NULL));
     REQUIRE_OK(kefir_hashtable_delete(mem, phis, phis_key));
 
@@ -340,15 +352,18 @@ static kefir_result_t insert_upsilons(struct kefir_mem *mem, struct kefir_codege
                 struct kefir_codegen_target_ir_value_type copy_type = *value_type;
                 copy_type.constraint.type = KEFIR_CODEGEN_TARGET_IR_ALLOCATION_NO_CONSTRAINT;
                 kefir_codegen_target_ir_instruction_ref_t copy_instr_ref;
+                struct kefir_codegen_target_ir_operand operands[] = {
+                    {.type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF,
+                        .direct.value_ref = link_value_ref,
+                        .direct.variant = KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT}
+                };
                 REQUIRE_OK(kefir_codegen_target_ir_code_new_instruction(
                     mem, code, block_ref,
                     kefir_codegen_target_ir_code_control_prev(
                         code, kefir_codegen_target_ir_code_block_control_tail(code, block_ref)),
                     &(struct kefir_codegen_target_ir_operation) {
                         .opcode = code->klass->assign_opcode,
-                        .parameters[0].type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF,
-                        .parameters[0].direct.value_ref = link_value_ref,
-                        .parameters[0].direct.variant = KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT},
+                        .parameters = operands, .parameters_length = 1},
                     NULL, &copy_instr_ref));
                 kefir_codegen_target_ir_value_ref_t copy_value_ref = {.instr_ref = copy_instr_ref,
                                                                       .aspect = link_value_ref.aspect};

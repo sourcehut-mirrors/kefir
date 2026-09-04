@@ -82,12 +82,16 @@ static kefir_result_t do_late_split_epilogue(struct kefir_mem *mem, struct kefir
             REQUIRE_OK(kefir_codegen_target_ir_code_drop_instruction(mem, code, iter_ref));
             iter_ref = next_iter_ref;
         }
+        struct kefir_codegen_target_ir_operand operands[KEFIR_CODEGEN_TARGET_IR_OPERATION_MAX_OPERANDS] = {
+            {.type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_BLOCK_REF,
+                                .block_ref = *epilogue_block_ref}
+        };
         REQUIRE_OK(kefir_codegen_target_ir_code_new_instruction(
             mem, code, block_ref, kefir_codegen_target_ir_code_block_control_tail(code, block_ref),
             &(struct kefir_codegen_target_ir_operation) {
                 .opcode = KEFIR_TARGET_IR_AMD64_OPCODE(jmp),
-                .parameters[0] = {.type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_BLOCK_REF,
-                                  .block_ref = *epilogue_block_ref}},
+                .parameters = operands,
+                .parameters_length = 1},
             NULL, NULL));
         break;
     }

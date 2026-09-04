@@ -59,6 +59,7 @@ kefir_result_t kefir_codegen_target_ir_amd64_peephole_jmp(struct kefir_mem *mem,
         &arg_instr));
 
     REQUIRE(arg_instr->operation.opcode == KEFIR_TARGET_IR_AMD64_OPCODE(mov), KEFIR_OK);
+    REQUIRE(arg_instr->operation.parameters_length > 0, KEFIR_OK);
     const struct kefir_codegen_target_ir_value_type *arg_value_type;
     REQUIRE_OK(kefir_codegen_target_ir_code_value_props(
         code, instr->operation.parameters[classification.operands[0].read_index].direct.value_ref, &arg_value_type));
@@ -67,7 +68,12 @@ kefir_result_t kefir_codegen_target_ir_amd64_peephole_jmp(struct kefir_mem *mem,
             KEFIR_OK);
 
     struct kefir_codegen_target_ir_operation oper = instr->operation;
-    oper.parameters[classification.operands[0].read_index] = arg_instr->operation.parameters[0];
+    struct kefir_codegen_target_ir_operand operands[KEFIR_CODEGEN_TARGET_IR_OPERATION_MAX_OPERANDS];
+    if (oper.parameters_length > 0) {
+        memcpy(operands, oper.parameters, sizeof(struct kefir_codegen_target_ir_operand) * oper.parameters_length);
+    }
+    oper.parameters = operands;
+    operands[classification.operands[0].read_index] = arg_instr->operation.parameters[0];
 
     REQUIRE_OK(kefir_codegen_target_ir_code_replace_operation(mem, code, instr_ref, &oper, NULL));
     *replaced = true;
@@ -92,10 +98,13 @@ kefir_result_t kefir_codegen_target_ir_amd64_peephole_jcc(struct kefir_mem *mem,
 
     REQUIRE(terminator_props.target_block_refs[0] == terminator_props.target_block_refs[1], KEFIR_OK);
 
+    struct kefir_codegen_target_ir_operand operands[] = {
+    {.type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_BLOCK_REF,
+                            .block_ref = terminator_props.target_block_refs[0]}
+    };
     struct kefir_codegen_target_ir_operation oper = {
         .opcode = KEFIR_TARGET_IR_AMD64_OPCODE(jmp),
-        .parameters[0] = {.type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_BLOCK_REF,
-                          .block_ref = terminator_props.target_block_refs[0]}};
+        .parameters = operands, .parameters_length = 1};
 
     REQUIRE_OK(kefir_codegen_target_ir_code_replace_operation(mem, code, instr->instr_ref, &oper, NULL));
     *replaced = true;

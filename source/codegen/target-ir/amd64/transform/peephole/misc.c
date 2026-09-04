@@ -53,7 +53,7 @@ kefir_result_t kefir_codegen_target_ir_amd64_peephole_match_max_use_variant(
             break;
         }
 
-        for (kefir_size_t i = 0; i < KEFIR_CODEGEN_TARGET_IR_OPERATION_NUM_OF_PARAMETERS; i++) {
+        for (kefir_size_t i = 0; i < use_instr->operation.parameters_length; i++) {
             if (use_instr->operation.parameters[i].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF &&
                 use_instr->operation.parameters[i].direct.value_ref.instr_ref == instr_ref &&
                 !use_instr->operation.parameters[i].direct.tied &&
@@ -123,17 +123,22 @@ kefir_result_t kefir_codegen_target_ir_amd64_peephole_reduce_variant(
         REQUIRE_OK(kefir_codegen_target_ir_tie_operands(code, instr->instr_ref, &classification));
 
         struct kefir_codegen_target_ir_operation oper = instr->operation;
-        for (kefir_size_t i = 0; i < KEFIR_CODEGEN_TARGET_IR_OPERATION_NUM_OF_PARAMETERS; i++) {
+        struct kefir_codegen_target_ir_operand operands[KEFIR_CODEGEN_TARGET_IR_OPERATION_MAX_OPERANDS];
+        if (oper.parameters_length > 0) {
+            memcpy(operands, oper.parameters, sizeof(struct kefir_codegen_target_ir_operand) * oper.parameters_length);
+        }
+        oper.parameters = operands;
+        for (kefir_size_t i = 0; i < oper.parameters_length; i++) {
             if (oper.parameters[i].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF) {
-                oper.parameters[i].direct.variant = max_use_variant;
+                operands[i].direct.variant = max_use_variant;
             } else if (oper.parameters[i].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INDIRECT) {
-                oper.parameters[i].indirect.variant = max_use_variant;
+                operands[i].indirect.variant = max_use_variant;
             } else if (oper.parameters[i].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_RIP_INDIRECT_EXTERNAL ||
                        oper.parameters[i].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_RIP_INDIRECT_NATIVE ||
                        oper.parameters[i].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_RIP_INDIRECT_BLOCK_REF) {
-                oper.parameters[i].rip_indirection.variant = max_use_variant;
+                operands[i].rip_indirection.variant = max_use_variant;
             } else if (oper.parameters[i].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INTEGER) {
-                oper.parameters[i].immediate.variant = max_use_variant;
+                operands[i].immediate.variant = max_use_variant;
             }
         }
         kefir_codegen_target_ir_instruction_ref_t replacement_ref;

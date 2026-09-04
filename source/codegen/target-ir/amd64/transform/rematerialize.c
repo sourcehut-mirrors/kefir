@@ -181,7 +181,7 @@ kefir_result_t kefir_codegen_target_ir_amd64_is_rematerializable(
         kefir_codegen_target_ir_numbering_instruction_seq_index(&liveness->numbering, value_ref.instr_ref, &seq_idx));
 
     kefir_bool_t all_parameters_alive = true;
-    for (kefir_size_t i = 0; all_parameters_alive && i < KEFIR_ASMCMP_INSTRUCTION_NUM_OF_OPERANDS; i++) {
+    for (kefir_size_t i = 0; all_parameters_alive && i < instr->operation.parameters_length; i++) {
         switch (instr->operation.parameters[i].type) {
             case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF:
                 REQUIRE_OK(liveness_interval_includes(liveness, instr->operation.parameters[i].direct.value_ref,
@@ -272,7 +272,7 @@ static kefir_result_t try_rematerialize(
     const struct kefir_codegen_target_ir_instruction *original_instr;
     REQUIRE_OK(kefir_codegen_target_ir_code_instruction(code, value_ref.instr_ref, &original_instr));
 
-    for (kefir_size_t i = 0; i < KEFIR_ASMCMP_INSTRUCTION_NUM_OF_OPERANDS; i++) {
+    for (kefir_size_t i = 0; i < original_instr->operation.parameters_length; i++) {
         switch (original_instr->operation.parameters[i].type) {
             case KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF:
                 REQUIRE(kefir_hashset_has(alive_values, KEFIR_CODEGEN_TARGET_IR_VALUE_REF_INTO(
@@ -412,11 +412,16 @@ static kefir_result_t rematerialize_block(struct kefir_mem *mem, struct kefir_co
         } else {
             kefir_bool_t do_replace = false;
             struct kefir_codegen_target_ir_operation oper = instr->operation;
-            for (kefir_size_t i = 0; i < KEFIR_CODEGEN_TARGET_IR_OPERATION_NUM_OF_PARAMETERS; i++) {
+            struct kefir_codegen_target_ir_operand operands[KEFIR_CODEGEN_TARGET_IR_OPERATION_MAX_OPERANDS];
+            if (oper.parameters_length > 0) {
+                memcpy(operands, oper.parameters, sizeof(struct kefir_codegen_target_ir_operand) * oper.parameters_length);
+            }
+            oper.parameters = operands;
+            for (kefir_size_t i = 0; i < instr->operation.parameters_length; i++) {
                 if (instr->operation.parameters[i].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_VALUE_REF) {
                     REQUIRE_OK(try_rematerialize(mem, code, regalloc, block_ref, no_alive_flags_ref, instr_ref,
                                                  instr->operation.parameters[i].direct.value_ref,
-                                                 &oper.parameters[i].direct.value_ref, alive_values,
+                                                 &operands[i].direct.value_ref, alive_values,
                                                  local_rematerializations, &do_replace));
                     REQUIRE_OK(kefir_codegen_target_ir_code_instruction(code, instr_ref, &instr));
                 } else if (instr->operation.parameters[i].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INDIRECT) {
@@ -424,14 +429,14 @@ static kefir_result_t rematerialize_block(struct kefir_mem *mem, struct kefir_co
                         KEFIR_CODEGEN_TARGET_IR_INDIRECT_VALUE_REF_BASIS) {
                         REQUIRE_OK(try_rematerialize(mem, code, regalloc, block_ref, no_alive_flags_ref, instr_ref,
                                                      instr->operation.parameters[i].indirect.base.value_ref,
-                                                     &oper.parameters[i].indirect.base.value_ref, alive_values,
+                                                     &operands[i].indirect.base.value_ref, alive_values,
                                                      local_rematerializations, &do_replace));
                         REQUIRE_OK(kefir_codegen_target_ir_code_instruction(code, instr_ref, &instr));
                     } else if (instr->operation.parameters[i].indirect.index_type ==
                                KEFIR_CODEGEN_TARGET_IR_INDIRECT_INDEX_VALUE_REF) {
                         REQUIRE_OK(try_rematerialize(mem, code, regalloc, block_ref, no_alive_flags_ref, instr_ref,
                                                      instr->operation.parameters[i].indirect.index.value_ref,
-                                                     &oper.parameters[i].indirect.index.value_ref, alive_values,
+                                                     &operands[i].indirect.index.value_ref, alive_values,
                                                      local_rematerializations, &do_replace));
                         REQUIRE_OK(kefir_codegen_target_ir_code_instruction(code, instr_ref, &instr));
                     }

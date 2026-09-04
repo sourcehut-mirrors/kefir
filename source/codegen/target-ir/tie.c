@@ -48,6 +48,7 @@ kefir_result_t kefir_codegen_target_ir_tie_operands(const struct kefir_codegen_t
 
             case KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_READ:
                 classification->operands[i].read_index = parameter_idx++;
+                REQUIRE(classification->operands[i].read_index < instr->operation.parameters_length, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected target IR instruction shape"));
                 break;
 
             case KEFIR_CODEGEN_TARGET_IR_ASMCMP_OPERAND_WRITE:
@@ -58,6 +59,7 @@ kefir_result_t kefir_codegen_target_ir_tie_operands(const struct kefir_codegen_t
                         code, instr_ref, output_index++, &classification->operands[i].output, NULL));
                     if (KEFIR_CODEGEN_TARGET_IR_VALUE_IS_INDIRECT_OUTPUT(classification->operands[i].output.aspect)) {
                         classification->operands[i].read_index = parameter_idx++;
+                        REQUIRE(classification->operands[i].read_index < instr->operation.parameters_length, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected target IR instruction shape"));
                     }
                 }
                 break;
@@ -66,6 +68,7 @@ kefir_result_t kefir_codegen_target_ir_tie_operands(const struct kefir_codegen_t
                 REQUIRE_OK(kefir_codegen_target_ir_code_instruction_output(code, instr_ref, output_index++,
                                                                            &classification->operands[i].output, NULL));
                 classification->operands[i].read_index = parameter_idx++;
+                REQUIRE(classification->operands[i].read_index < instr->operation.parameters_length, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected target IR instruction shape"));
                 break;
         }
     }

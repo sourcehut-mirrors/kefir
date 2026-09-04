@@ -206,9 +206,14 @@ kefir_result_t kefir_codegen_target_ir_amd64_peephole_test(struct kefir_mem *mem
                 case KEFIR_TARGET_IR_AMD64_OPCODE(setc):
                 case KEFIR_TARGET_IR_AMD64_OPCODE(setnc): {
                     struct kefir_codegen_target_ir_operation oper = instr->operation;
-                    oper.parameters[classification.operands[0].read_index].direct =
+                    struct kefir_codegen_target_ir_operand operands[KEFIR_CODEGEN_TARGET_IR_OPERATION_MAX_OPERANDS];
+                    if (oper.parameters_length > 0) {
+                        memcpy(operands, oper.parameters, sizeof(struct kefir_codegen_target_ir_operand) * oper.parameters_length);
+                    }
+                    oper.parameters = operands;
+                    operands[classification.operands[0].read_index].direct =
                         producer_instr->operation.parameters[producer_classification.operands[1].read_index].direct;
-                    oper.parameters[classification.operands[1].read_index].direct =
+                    operands[classification.operands[1].read_index].direct =
                         producer_instr->operation.parameters[producer_classification.operands[1].read_index].direct;
 
                     REQUIRE_OK(kefir_codegen_target_ir_code_replace_operation(mem, code, instr_ref, &oper, NULL));
@@ -271,12 +276,19 @@ kefir_result_t kefir_codegen_target_ir_amd64_peephole_test(struct kefir_mem *mem
                     KEFIR_OK);
             REQUIRE(base_producer_instr->operation.parameters[0].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INTEGER,
                     KEFIR_OK);
+            REQUIRE(base_producer_instr->operation.parameters_length > 0,
+                    KEFIR_OK);
             REQUIRE(base_producer_instr->operation.parameters[0].immediate.int_immediate == 0, KEFIR_OK);
 
             struct kefir_codegen_target_ir_operation oper = instr->operation;
-            oper.parameters[classification.operands[0].read_index].direct.variant =
+            struct kefir_codegen_target_ir_operand operands[KEFIR_CODEGEN_TARGET_IR_OPERATION_MAX_OPERANDS];
+            if (oper.parameters_length > 0) {
+                memcpy(operands, oper.parameters, sizeof(struct kefir_codegen_target_ir_operand) * oper.parameters_length);
+            }
+            oper.parameters = operands;
+            operands[classification.operands[0].read_index].direct.variant =
                 KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_8BIT;
-            oper.parameters[classification.operands[1].read_index].direct.variant =
+            operands[classification.operands[1].read_index].direct.variant =
                 KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_8BIT;
 
             REQUIRE_OK(kefir_codegen_target_ir_code_replace_operation(mem, code, instr_ref, &oper, NULL));

@@ -58,11 +58,11 @@
                     arg_value_type->kind == KEFIR_CODEGEN_TARGET_IR_VALUE_TYPE_FLOATING_POINT,                      \
                 KEFIR_OK);                                                                                          \
         REQUIRE(                                                                                                    \
-            (arg_instr->operation.parameters[0].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_RIP_INDIRECT_NATIVE && \
+            (arg_instr->operation.parameters_length > 0 && arg_instr->operation.parameters[0].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_RIP_INDIRECT_NATIVE && \
              (arg_instr->operation.parameters[0].rip_indirection.variant ==                                         \
                   KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_DEFAULT ||                                                \
               arg_instr->operation.parameters[0].rip_indirection.variant == (_variant))) ||                         \
-                (arg_instr->operation.parameters[0].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INDIRECT &&        \
+                (arg_instr->operation.parameters_length > 0 && arg_instr->operation.parameters[0].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INDIRECT &&        \
                  arg_instr->operation.parameters[0].indirect.type ==                                                \
                      KEFIR_CODEGEN_TARGET_IR_INDIRECT_NATIVE_LABEL_BASIS &&                                         \
                  (arg_instr->operation.parameters[0].indirect.variant ==                                            \
@@ -71,7 +71,12 @@
             KEFIR_OK);                                                                                              \
                                                                                                                     \
         struct kefir_codegen_target_ir_operation oper = instr->operation;                                           \
-        oper.parameters[classification.operands[1].read_index] = arg_instr->operation.parameters[0];                \
+        struct kefir_codegen_target_ir_operand operands[KEFIR_CODEGEN_TARGET_IR_OPERATION_MAX_OPERANDS]; \
+        if (oper.parameters_length > 0) { \
+            memcpy(operands, oper.parameters, sizeof(struct kefir_codegen_target_ir_operand) * oper.parameters_length); \
+        } \
+        oper.parameters = operands; \
+        operands[classification.operands[1].read_index] = arg_instr->operation.parameters[0];                \
                                                                                                                     \
         REQUIRE_OK(kefir_codegen_target_ir_code_replace_operation(mem, code, instr_ref, &oper, NULL));              \
         *replaced = true;                                                                                           \

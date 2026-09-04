@@ -191,10 +191,11 @@ static kefir_result_t is_block_terminator(const struct kefir_codegen_target_ir_c
             props->fallthrough = true;                                                                             \
             props->fallthrough =                                                                                   \
                 ((_flags) & KEFIR_AMD64_INSTRDB_CONTROL_FLOW_JUMP_FALLTHROUGH) != 0 &&                             \
-                instruction->operation.parameters[1].type != KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_BLOCK_REF;       \
-            if (instruction->operation.parameters[0].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_BLOCK_REF) {     \
+                (instruction->operation.parameters_length <= 1 || \
+                instruction->operation.parameters[1].type != KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_BLOCK_REF);       \
+            if (instruction->operation.parameters_length > 0 && instruction->operation.parameters[0].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_BLOCK_REF) {     \
                 props->target_block_refs[0] = instruction->operation.parameters[0].block_ref;                      \
-                if (instruction->operation.parameters[1].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_BLOCK_REF) { \
+                if (instruction->operation.parameters_length > 1 && instruction->operation.parameters[1].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_BLOCK_REF) { \
                     props->target_block_refs[1] = instruction->operation.parameters[1].block_ref;                  \
                 }                                                                                                  \
             } else {                                                                                               \
@@ -219,33 +220,45 @@ static kefir_result_t is_block_terminator(const struct kefir_codegen_target_ir_c
 }
 
 static kefir_result_t make_unconditional_jump(kefir_codegen_target_ir_block_ref_t block_ref,
-                                              struct kefir_codegen_target_ir_operation *operation_ptr, void *payload) {
+                                              struct kefir_codegen_target_ir_operation *operation_ptr, struct kefir_codegen_target_ir_operand operands[static KEFIR_CODEGEN_TARGET_IR_OPERATION_MAX_OPERANDS], void *payload) {
     UNUSED(payload);
     REQUIRE(operation_ptr != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to target IR operation"));
 
     operation_ptr->opcode = KEFIR_TARGET_IR_AMD64_OPCODE(jmp);
-    operation_ptr->parameters[0].type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_BLOCK_REF;
-    operation_ptr->parameters[0].block_ref = block_ref;
-    operation_ptr->parameters[1].type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_NONE;
-    operation_ptr->parameters[2].type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_NONE;
-    operation_ptr->parameters[3].type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_NONE;
+    for (kefir_size_t i = 0; i < KEFIR_CODEGEN_TARGET_IR_OPERATION_MAX_OPERANDS; i++) {
+        operands[i].type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_NONE;
+    }
+    operands[0].type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_BLOCK_REF;
+    operands[0].block_ref = block_ref;
+    operation_ptr->parameters = operands;
+    operation_ptr->parameters_length = KEFIR_CODEGEN_TARGET_IR_OPERATION_MAX_OPERANDS;
     return KEFIR_OK;
 }
 
 static kefir_result_t finalize_conditional_jump(const struct kefir_codegen_target_ir_operation *operation,
                                                 kefir_codegen_target_ir_block_ref_t block_ref,
-                                                struct kefir_codegen_target_ir_operation *operation_ptr,
+                                                struct kefir_codegen_target_ir_operation *operation_ptr, struct kefir_codegen_target_ir_operand operands[static KEFIR_CODEGEN_TARGET_IR_OPERATION_MAX_OPERANDS],
                                                 void *payload) {
     UNUSED(payload);
     REQUIRE(operation != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR operation"));
     REQUIRE(operation_ptr != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to target IR operation"));
+    REQUIRE(operation->parameters_length >= 2, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Unxpected target IR operation shape"));
 
     *operation_ptr = *operation;
-    operation_ptr->parameters[2] = operation_ptr->parameters[1];
-    operation_ptr->parameters[1].type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_BLOCK_REF;
-    operation_ptr->parameters[1].block_ref = block_ref;
+    if (operation->parameters_length > 0) {
+        memcpy(operands, operation->parameters, sizeof(struct kefir_codegen_target_ir_operand) * operation->parameters_length);
+    }
+    for (kefir_size_t i = operation->parameters_length; i < KEFIR_CODEGEN_TARGET_IR_OPERATION_MAX_OPERANDS; i++) {
+        operands[i].type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_NONE;
+    }
+    operands[0] = operation_ptr->parameters[0];
+    operands[2] = operation_ptr->parameters[1];
+    operands[1].type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_BLOCK_REF;
+    operands[1].block_ref = block_ref;
+    operation_ptr->parameters = operands;
+    operation_ptr->parameters_length = KEFIR_CODEGEN_TARGET_IR_OPERATION_MAX_OPERANDS;
     return KEFIR_OK;
 }
 

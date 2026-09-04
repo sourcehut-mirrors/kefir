@@ -137,11 +137,7 @@ static kefir_result_t do_replace(struct replace_state *state) {
 
             kefir_codegen_target_ir_instruction_ref_t frontier_phi_instr_ref;
             struct kefir_codegen_target_ir_operation operation = {
-                .opcode = state->code->klass->phi_opcode,
-                .parameters[0].type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_NONE,
-                .parameters[1].type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_NONE,
-                .parameters[2].type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_NONE,
-                .parameters[3].type = KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_NONE};
+                .opcode = state->code->klass->phi_opcode};
             REQUIRE_OK(kefir_codegen_target_ir_code_new_instruction(state->mem, state->code, frontier_block_ref,
                                                                     KEFIR_ID_NONE, &operation, &old_instr_metadata,
                                                                     &frontier_phi_instr_ref));

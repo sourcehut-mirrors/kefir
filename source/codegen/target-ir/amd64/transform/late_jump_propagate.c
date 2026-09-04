@@ -41,8 +41,9 @@ static kefir_result_t do_jump_propagation(struct kefir_mem *mem, struct kefir_co
 
     if (terminator_props.branch && terminator_props.target_block_refs[0] == terminator_props.target_block_refs[1]) {
         struct kefir_codegen_target_ir_operation oper = {0};
+        struct kefir_codegen_target_ir_operand operands[KEFIR_CODEGEN_TARGET_IR_OPERATION_MAX_OPERANDS];
         REQUIRE_OK(
-            code->klass->make_unconditional_jump(terminator_props.target_block_refs[0], &oper, code->klass->payload));
+            code->klass->make_unconditional_jump(terminator_props.target_block_refs[0], &oper, operands, code->klass->payload));
 
         REQUIRE_OK(kefir_codegen_target_ir_code_replace_operation(mem, code, tail_ref, &oper, NULL));
         *fixpoint = false;
@@ -51,7 +52,12 @@ static kefir_result_t do_jump_propagation(struct kefir_mem *mem, struct kefir_co
 
     kefir_bool_t do_replace = false;
     struct kefir_codegen_target_ir_operation replacement = tail_instr->operation;
-    for (kefir_size_t i = 0; i < KEFIR_CODEGEN_TARGET_IR_OPERATION_NUM_OF_PARAMETERS; i++) {
+    struct kefir_codegen_target_ir_operand operands[KEFIR_CODEGEN_TARGET_IR_OPERATION_MAX_OPERANDS];
+    if (tail_instr->operation.parameters_length > 0) {
+        memcpy(operands, tail_instr->operation.parameters, sizeof(struct kefir_codegen_target_ir_operand) * tail_instr->operation.parameters_length);
+    }
+    replacement.parameters = operands;
+    for (kefir_size_t i = 0; i < tail_instr->operation.parameters_length; i++) {
         if (tail_instr->operation.parameters[i].type != KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_BLOCK_REF) {
             continue;
         }
@@ -142,7 +148,7 @@ static kefir_result_t do_jump_propagation(struct kefir_mem *mem, struct kefir_co
             continue;
         }
 
-        replacement.parameters[i].block_ref = target_terminator_props.target_block_refs[0];
+        operands[i].block_ref = target_terminator_props.target_block_refs[0];
         do_replace = true;
     }
 

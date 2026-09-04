@@ -120,8 +120,13 @@ static kefir_result_t split_edge(struct kefir_mem *mem, struct kefir_codegen_tar
         }
     } else {
         struct kefir_codegen_target_ir_operation new_tail = source_block_tail->operation;
-        for (kefir_size_t i = 0; i < KEFIR_CODEGEN_TARGET_IR_OPERATION_NUM_OF_PARAMETERS; i++) {
-            REQUIRE_OK(update_operand(&new_tail.parameters[i], target_block_ref, split_block_ref));
+        struct kefir_codegen_target_ir_operand operands[KEFIR_CODEGEN_TARGET_IR_OPERATION_MAX_OPERANDS];
+        if (new_tail.parameters_length > 0) {
+            memcpy(operands, new_tail.parameters, sizeof(struct kefir_codegen_target_ir_operand) * new_tail.parameters_length);
+        }
+        new_tail.parameters = operands;
+        for (kefir_size_t i = 0; i < new_tail.parameters_length; i++) {
+            REQUIRE_OK(update_operand(&operands[i], target_block_ref, split_block_ref));
         }
         struct kefir_codegen_target_ir_instruction_metadata metadata = source_block_tail->metadata;
         REQUIRE_OK(kefir_codegen_target_ir_code_new_instruction(mem, code, source_block_ref, source_block_tail_ref,
@@ -150,7 +155,8 @@ static kefir_result_t split_edge(struct kefir_mem *mem, struct kefir_codegen_tar
     }
 
     struct kefir_codegen_target_ir_operation jump_operation = {0};
-    REQUIRE_OK(code->klass->make_unconditional_jump(target_block_ref, &jump_operation, code->klass->payload));
+    struct kefir_codegen_target_ir_operand operands[KEFIR_CODEGEN_TARGET_IR_OPERATION_MAX_OPERANDS];
+    REQUIRE_OK(code->klass->make_unconditional_jump(target_block_ref, &jump_operation, operands, code->klass->payload));
     REQUIRE_OK(kefir_codegen_target_ir_code_new_instruction(mem, code, split_block_ref, KEFIR_ID_NONE, &jump_operation,
                                                             NULL, NULL));
     return KEFIR_OK;

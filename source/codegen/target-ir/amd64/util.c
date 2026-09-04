@@ -42,6 +42,7 @@ kefir_result_t kefir_codegen_target_ir_amd64_match_immediate(const struct kefir_
 
     REQUIRE((instr->operation.opcode == code->klass->assign_opcode ||
              instr->operation.opcode == KEFIR_TARGET_IR_AMD64_OPCODE(mov)) &&
+                instr->operation.parameters_length > 0 &&
                 instr->operation.parameters[0].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_INTEGER,
             KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to match target IR integral assign instruction"));
 

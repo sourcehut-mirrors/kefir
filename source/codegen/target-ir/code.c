@@ -88,11 +88,13 @@ kefir_result_t kefir_codegen_target_ir_code_free(struct kefir_mem *mem, struct k
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR code"));
 
     for (kefir_size_t i = 0; i < code->code_length; i++) {
-        if (INSTR_AT_UNSAFE(code, i)->block_ref != KEFIR_ID_NONE) {
+        if (INSTR_AT_UNSAFE(code, i)->finalized && INSTR_AT_UNSAFE(code, i)->block_ref != KEFIR_ID_NONE) {
             if (INSTR_AT_UNSAFE(code, i)->operation.opcode == code->klass->phi_opcode) {
                 KEFIR_FREE(mem, INSTR_AT_UNSAFE(code, i)->operation.phi_node.links);
             } else if (INSTR_AT_UNSAFE(code, i)->operation.opcode == code->klass->inline_asm_opcode) {
                 REQUIRE_OK(kefir_list_free(mem, &INSTR_AT_UNSAFE(code, i)->operation.inline_asm_node.fragments));
+            } else {
+                KEFIR_FREE(mem, (void *) INSTR_AT_UNSAFE(code, i)->operation.parameters);
             }
         }
         REQUIRE_OK(kefir_hashtable_free(mem, &INSTR_AT_UNSAFE(code, i)->aspects.all));
@@ -120,11 +122,13 @@ kefir_result_t kefir_codegen_target_ir_code_reset(struct kefir_mem *mem, struct 
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target IR code"));
 
     for (kefir_size_t i = 0; i < code->code_length; i++) {
-        if (INSTR_AT_UNSAFE(code, i)->block_ref != KEFIR_ID_NONE) {
+        if (INSTR_AT_UNSAFE(code, i)->finalized && INSTR_AT_UNSAFE(code, i)->block_ref != KEFIR_ID_NONE) {
             if (INSTR_AT_UNSAFE(code, i)->operation.opcode == code->klass->phi_opcode) {
                 KEFIR_FREE(mem, INSTR_AT_UNSAFE(code, i)->operation.phi_node.links);
             } else if (INSTR_AT_UNSAFE(code, i)->operation.opcode == code->klass->inline_asm_opcode) {
                 REQUIRE_OK(kefir_list_free(mem, &INSTR_AT_UNSAFE(code, i)->operation.inline_asm_node.fragments));
+            } else {
+                KEFIR_FREE(mem, (void *) INSTR_AT_UNSAFE(code, i)->operation.parameters);
             }
         }
         REQUIRE_OK(kefir_hashtable_free(mem, &INSTR_AT_UNSAFE(code, i)->aspects.all));
@@ -492,7 +496,7 @@ static kefir_result_t record_uses(struct kefir_mem *mem, struct kefir_codegen_ta
             }
         }
     } else {
-        for (kefir_size_t i = 0; i < KEFIR_CODEGEN_TARGET_IR_OPERATION_NUM_OF_PARAMETERS; i++) {
+        for (kefir_size_t i = 0; i < user_instr->operation.parameters_length; i++) {
             REQUIRE_OK(operand_record_uses(mem, code, user_instr_ref, &user_instr->operation.parameters[i], add_use));
         }
     }
@@ -627,6 +631,7 @@ kefir_result_t kefir_codegen_target_ir_code_new_instruction_inplace(
         instr->aspects.indirect_output[i] = ~0ull;
     }
     instr->use_entry_top = (kefir_size_t) ~0ull;
+    instr->finalized = false;
 
     if (allocated_new) {
         code->code_length++;
@@ -659,6 +664,7 @@ kefir_result_t kefir_codegen_target_ir_code_finalize_instruction_inplace(
         instr->operation.phi_node.links_length = 0;
         instr->operation.phi_node.links_capacity = 0;
         REQUIRE_OK(kefir_hashset_add(mem, &block->phi_refs, (kefir_hashset_key_t) instr->instr_ref));
+        instr->finalized = true;
     } else if (instr->operation.opcode == code->klass->inline_asm_opcode) {
         REQUIRE_OK(kefir_list_init(&instr->operation.inline_asm_node.fragments));
         REQUIRE_OK(kefir_list_on_remove(&instr->operation.inline_asm_node.fragments, free_inline_asm_node, NULL));
@@ -671,17 +677,31 @@ kefir_result_t kefir_codegen_target_ir_code_finalize_instruction_inplace(
         } else {
             instr->operation.inline_asm_node.gate_block_ref = KEFIR_ID_NONE;
         }
+        instr->finalized = true;
     } else {
         if (instr->operation.opcode == code->klass->upsilon_opcode) {
-            REQUIRE(instr->operation.parameters[0].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_UPSILON,
+            REQUIRE(instr->operation.parameters_length > 0 && instr->operation.parameters[0].type == KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_UPSILON,
                     KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected upsilon instruction to have upsilon type operand"));
+        } else if (instr->operation.opcode == code->klass->assign_opcode) {
+            REQUIRE(instr->operation.parameters_length > 0,
+                    KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected shape of target IR assign instruction"));
         }
-        for (kefir_size_t i = 0; i < KEFIR_CODEGEN_TARGET_IR_OPERATION_NUM_OF_PARAMETERS; i++) {
+        struct kefir_codegen_target_ir_operand *operands = NULL;
+        REQUIRE(instr->operation.parameters_length <= KEFIR_CODEGEN_TARGET_IR_OPERATION_MAX_OPERANDS, KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Provided target IR instruction parameters exceed maximum operand count"));
+        if (instr->operation.parameters_length > 0) {
+            operands = KEFIR_MALLOC(mem, sizeof(struct kefir_codegen_target_ir_operand) * instr->operation.parameters_length);
+            REQUIRE(operands != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate target IR instruction operands"));
+            memcpy(operands, instr->operation.parameters, sizeof(struct kefir_codegen_target_ir_operand) * instr->operation.parameters_length);
+        }
+        instr->operation.parameters = operands;
+        instr->finalized = true;
+
+        for (kefir_size_t i = 0; i < instr->operation.parameters_length; i++) {
             REQUIRE(instr->operation.parameters[i].type != KEFIR_CODEGEN_TARGET_IR_OPERAND_TYPE_UPSILON ||
                         instr->operation.opcode == code->klass->upsilon_opcode,
                     KEFIR_SET_ERROR(KEFIR_INVALID_STATE,
                                     "Upsilon type parameters may only be used in upsilon instructions"));
-            REQUIRE_OK(store_strings_in_operand(mem, code, &instr->operation.parameters[i]));
+            REQUIRE_OK(store_strings_in_operand(mem, code, &operands[i]));
         }
     }
 
@@ -804,7 +824,10 @@ static kefir_result_t drop_instruction(struct kefir_mem *mem, struct kefir_codeg
         KEFIR_FREE(mem, instr->operation.phi_node.links);
     } else if (instr->operation.opcode == code->klass->inline_asm_opcode) {
         REQUIRE_OK(kefir_list_free(mem, &instr->operation.inline_asm_node.fragments));
+    } else {
+        KEFIR_FREE(mem, (void *) instr->operation.parameters);
     }
+    instr->finalized = false;
     REQUIRE_OK(kefir_hashtable_clear(mem, &instr->aspects.all));
     kefir_result_t res = kefir_hashtable_delete(mem, &code->attributes, (kefir_hashtable_key_t) instr_ref);
     if (res != KEFIR_NOT_FOUND) {
@@ -1467,8 +1490,8 @@ static kefir_result_t replace_uses(struct kefir_mem *mem, struct kefir_codegen_t
             }
         }
     } else {
-        for (kefir_size_t i = 0; i < KEFIR_CODEGEN_TARGET_IR_OPERATION_NUM_OF_PARAMETERS; i++) {
-            REQUIRE_OK(operand_replace_uses(mem, code, user_instr_ref, &user_instr->operation.parameters[i],
+        for (kefir_size_t i = 0; i < user_instr->operation.parameters_length; i++) {
+            REQUIRE_OK(operand_replace_uses(mem, code, user_instr_ref, (struct kefir_codegen_target_ir_operand *) &user_instr->operation.parameters[i],
                                             to_instr_ref, from_instr_ref));
         }
     }
@@ -1685,8 +1708,8 @@ static kefir_result_t replace_value_uses(struct kefir_mem *mem, struct kefir_cod
             }
         }
     } else {
-        for (kefir_size_t i = 0; i < KEFIR_CODEGEN_TARGET_IR_OPERATION_NUM_OF_PARAMETERS; i++) {
-            REQUIRE_OK(operand_replace_value_uses(mem, code, user_instr_ref, &user_instr->operation.parameters[i],
+        for (kefir_size_t i = 0; i < user_instr->operation.parameters_length; i++) {
+            REQUIRE_OK(operand_replace_value_uses(mem, code, user_instr_ref, (struct kefir_codegen_target_ir_operand *) &user_instr->operation.parameters[i],
                                                   to_value_ref, from_value_ref));
         }
     }

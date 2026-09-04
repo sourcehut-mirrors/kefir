@@ -31,7 +31,7 @@
 #include "kefir/core/source_location.h"
 #include "kefir/codegen/asmcmp/context.h"
 
-#define KEFIR_CODEGEN_TARGET_IR_OPERATION_NUM_OF_PARAMETERS 7
+#define KEFIR_CODEGEN_TARGET_IR_OPERATION_MAX_OPERANDS 7
 #define KEFIR_CODEGEN_TARGET_IR_OPERATION_DIRECT_OUTPUT_ASPECT_CACHE 4
 #define KEFIR_CODEGEN_TARGET_IR_OPERATION_INDIRECT_OUTPUT_ASPECT_CACHE 2
 
@@ -294,7 +294,10 @@ typedef struct kefir_codegen_target_ir_inline_assembly_node {
 typedef struct kefir_codegen_target_ir_operation {
     kefir_codegen_target_ir_opcode_t opcode;
     union {
-        struct kefir_codegen_target_ir_operand parameters[KEFIR_CODEGEN_TARGET_IR_OPERATION_NUM_OF_PARAMETERS];
+        struct {
+            const struct kefir_codegen_target_ir_operand *parameters;
+            kefir_size_t parameters_length;
+        };
         struct kefir_codegen_target_ir_phi_node phi_node;
         struct kefir_codegen_target_ir_inline_assembly_node inline_asm_node;
     };
@@ -326,6 +329,7 @@ typedef struct kefir_codegen_target_ir_instruction {
     struct kefir_codegen_target_ir_instruction_metadata metadata;
 
     kefir_uint8_t generation;
+    kefir_bool_t finalized;
 } kefir_codegen_target_ir_instruction_t;
 
 typedef struct kefir_codegen_target_ir_block {
@@ -388,10 +392,10 @@ typedef struct kefir_codegen_target_ir_code_class {
                                           const struct kefir_codegen_target_ir_instruction *,
                                           struct kefir_codegen_target_ir_block_terminator_props *, void *);
     kefir_result_t (*make_unconditional_jump)(kefir_codegen_target_ir_block_ref_t,
-                                              struct kefir_codegen_target_ir_operation *, void *);
+                                              struct kefir_codegen_target_ir_operation *, struct kefir_codegen_target_ir_operand[static KEFIR_CODEGEN_TARGET_IR_OPERATION_MAX_OPERANDS], void *);
     kefir_result_t (*finalize_conditional_jump)(const struct kefir_codegen_target_ir_operation *,
                                                 kefir_codegen_target_ir_block_ref_t,
-                                                struct kefir_codegen_target_ir_operation *, void *);
+                                                struct kefir_codegen_target_ir_operation *, struct kefir_codegen_target_ir_operand[static KEFIR_CODEGEN_TARGET_IR_OPERATION_MAX_OPERANDS], void *);
     kefir_result_t (*classify_instruction)(const struct kefir_codegen_target_ir_code *,
                                            kefir_codegen_target_ir_instruction_ref_t,
                                            struct kefir_codegen_target_ir_instruction_destruction_classification *,

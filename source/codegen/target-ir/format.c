@@ -469,7 +469,7 @@ static kefir_result_t code_format_impl(struct kefir_mem *mem, const struct kefir
             } else {
                 REQUIRE_OK(kefir_json_output_object_key(json, "parameters"));
                 REQUIRE_OK(kefir_json_output_array_begin(json));
-                for (kefir_size_t j = 0; j < KEFIR_CODEGEN_TARGET_IR_OPERATION_NUM_OF_PARAMETERS; j++) {
+                for (kefir_size_t j = 0; j < instr->operation.parameters_length; j++) {
                     REQUIRE_OK(operand_format(json, code, &instr->operation.parameters[j]));
                 }
                 REQUIRE_OK(kefir_json_output_array_end(json));
