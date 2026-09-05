@@ -24,10 +24,13 @@
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 
+#define MAX_MERGE_CHAIN 64
+
 struct merge_state {
     struct kefir_opt_code_control_flow control_flow;
     struct kefir_list merge_order;
     struct kefir_list stack;
+    kefir_uint8_t *block_merges;
 };
 
 static kefir_result_t collect_merge_order(struct kefir_mem *mem, struct kefir_opt_function *func,
@@ -251,6 +254,9 @@ static kefir_result_t do_merge(struct kefir_mem *mem, struct kefir_opt_function 
 
 static kefir_result_t block_merge_impl(struct kefir_mem *mem, struct kefir_opt_function *func,
                                        struct merge_state *state) {
+    state->block_merges = KEFIR_MALLOC(mem, sizeof(kefir_uint8_t) * kefir_opt_code_container_block_count(&func->code));
+    REQUIRE(state->block_merges != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate optimizer block merge counters"));
+    memset(state->block_merges, 0, sizeof(kefir_uint8_t) * kefir_opt_code_container_block_count(&func->code));
 
     kefir_bool_t merged_blocks = true;
     for (; merged_blocks;) {
@@ -263,7 +269,11 @@ static kefir_result_t block_merge_impl(struct kefir_mem *mem, struct kefir_opt_f
             kefir_list_next(&iter)) {
             ASSIGN_DECL_CAST(kefir_uint64_t, key, (kefir_uptr_t) iter->value);
             kefir_opt_block_id_t block_id = (kefir_uint32_t) key, successor_block_id = key >> 32;
+            if (state->block_merges[block_id] + state->block_merges[successor_block_id] + 1 > MAX_MERGE_CHAIN) {
+                continue;
+            }
             REQUIRE_OK(do_merge(mem, func, block_id, successor_block_id, &merged_blocks));
+            state->block_merges[block_id] += state->block_merges[successor_block_id] + 1;
         }
         REQUIRE_OK(kefir_list_clear(mem, &state->merge_order));
     }
@@ -279,11 +289,14 @@ static kefir_result_t merge_blocks_apply(struct kefir_mem *mem, struct kefir_opt
     REQUIRE(module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer module"));
     REQUIRE(func != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer function"));
 
-    struct merge_state state;
+    struct merge_state state = {
+        .block_merges = NULL
+    };
     REQUIRE_OK(kefir_opt_code_control_flow_init(&state.control_flow));
     REQUIRE_OK(kefir_list_init(&state.merge_order));
     REQUIRE_OK(kefir_list_init(&state.stack));
     kefir_result_t res = block_merge_impl(mem, func, &state);
+    KEFIR_FREE(mem, state.block_merges);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_list_free(mem, &state.stack);
         kefir_list_free(mem, &state.merge_order);
