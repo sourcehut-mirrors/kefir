@@ -2347,7 +2347,7 @@ static kefir_result_t translate_instruction(struct destructor_state *state,
     if (instr->operation.opcode == state->code->klass->inline_asm_opcode) {
         kefir_asmcmp_inline_assembly_index_t inline_asm;
         REQUIRE_OK(kefir_asmcmp_inline_assembly_new(state->mem, &state->asmcmp_ctx->context, "", &inline_asm));
-        for (const struct kefir_list_entry *iter = kefir_list_head(&instr->operation.inline_asm_node.fragments);
+        for (const struct kefir_list_entry *iter = kefir_list_head(&instr->operation.inline_asm_node->fragments);
              iter != NULL; kefir_list_next(&iter)) {
             ASSIGN_DECL_CAST(const struct kefir_codegen_target_ir_inline_assembly_fragment *, fragment, iter->value);
             switch (fragment->type) {
@@ -2369,9 +2369,9 @@ static kefir_result_t translate_instruction(struct destructor_state *state,
                                                          kefir_asmcmp_context_instr_tail(&state->asmcmp_ctx->context),
                                                          inline_asm, NULL, state->destructor_ops->payload));
 
-        if (instr->operation.inline_asm_node.target_block_ref != KEFIR_ID_NONE) {
+        if (instr->operation.inline_asm_node->target_block_ref != KEFIR_ID_NONE) {
             struct block_state *block_state;
-            REQUIRE_OK(resolve_block_label(state, instr->operation.inline_asm_node.target_block_ref, &block_state));
+            REQUIRE_OK(resolve_block_label(state, instr->operation.inline_asm_node->target_block_ref, &block_state));
 
             REQUIRE_OK(kefir_asmcmp_amd64_jmp(state->mem, state->asmcmp_ctx,
                                               kefir_asmcmp_context_instr_tail(&state->asmcmp_ctx->context),

@@ -439,12 +439,12 @@ kefir_result_t kefir_codegen_target_ir_control_flow_build(struct kefir_mem *mem,
                 // Intentionally left blank
             } else if (instr_terminator_props.block_terminator &&
                        instr->operation.opcode == control_flow->code->klass->inline_asm_opcode) {
-                if (instr->operation.inline_asm_node.target_block_ref != KEFIR_ID_NONE) {
+                if (instr->operation.inline_asm_node->target_block_ref != KEFIR_ID_NONE) {
                     REQUIRE_OK(store_terminator_target(mem, control_flow, block_ref,
-                                                       instr->operation.inline_asm_node.gate_block_ref));
+                                                       instr->operation.inline_asm_node->gate_block_ref));
                     REQUIRE_OK(store_terminator_target(mem, control_flow,
-                                                       instr->operation.inline_asm_node.gate_block_ref,
-                                                       instr->operation.inline_asm_node.target_block_ref));
+                                                       instr->operation.inline_asm_node->gate_block_ref,
+                                                       instr->operation.inline_asm_node->target_block_ref));
 
                     struct kefir_codegen_target_ir_code_inline_assembly_fragment_iterator iter;
                     const struct kefir_codegen_target_ir_inline_assembly_fragment *fragment;
@@ -460,7 +460,7 @@ kefir_result_t kefir_codegen_target_ir_control_flow_build(struct kefir_mem *mem,
 
                             case KEFIR_CODEGEN_TARGET_IR_INLINE_ASSEMBLY_FRAGMENT_OPERAND:
                                 REQUIRE_OK(scan_operand(mem, control_flow, &fragment->operand,
-                                                        instr->operation.inline_asm_node.gate_block_ref,
+                                                        instr->operation.inline_asm_node->gate_block_ref,
                                                         &instr_terminator_props));
                                 break;
                         }

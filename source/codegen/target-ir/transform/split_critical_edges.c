@@ -89,11 +89,14 @@ static kefir_result_t split_edge(struct kefir_mem *mem, struct kefir_codegen_tar
     kefir_result_t res;
     kefir_codegen_target_ir_instruction_ref_t new_tail_ref;
     if (source_block_tail->operation.opcode == code->klass->inline_asm_opcode) {
+        struct kefir_codegen_target_ir_inline_assembly_node inline_asm = {
+            .target_block_ref = source_block_tail->operation.inline_asm_node->target_block_ref
+        };
         REQUIRE_OK(kefir_codegen_target_ir_code_new_instruction(
             mem, code, source_block_ref, source_block_tail_ref,
             &(struct kefir_codegen_target_ir_operation) {
                 .opcode = source_block_tail->operation.opcode,
-                .inline_asm_node.target_block_ref = source_block_tail->operation.inline_asm_node.target_block_ref},
+                .inline_asm_node = &inline_asm},
             &source_block_tail->metadata, &new_tail_ref));
 
         struct kefir_codegen_target_ir_code_inline_assembly_fragment_iterator iter;

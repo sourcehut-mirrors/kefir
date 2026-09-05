@@ -299,8 +299,8 @@ typedef struct kefir_codegen_target_ir_operation {
             const struct kefir_codegen_target_ir_operand *parameters;
             kefir_size_t parameters_length;
         };
-        struct kefir_codegen_target_ir_phi_node phi_node;
-        struct kefir_codegen_target_ir_inline_assembly_node inline_asm_node;
+        struct kefir_codegen_target_ir_phi_node *phi_node;
+        struct kefir_codegen_target_ir_inline_assembly_node *inline_asm_node;
     };
 } kefir_codegen_target_ir_operation_t;
 

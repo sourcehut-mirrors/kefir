@@ -162,7 +162,7 @@ static kefir_result_t is_block_terminator(const struct kefir_codegen_target_ir_c
                          fragment->operand.indirect.type == KEFIR_CODEGEN_TARGET_IR_INDIRECT_BLOCK_REF_BASIS)) {
                         props->block_terminator = true;
                         props->undefined_target = true;
-                        props->fallthrough = instruction->operation.inline_asm_node.target_block_ref == KEFIR_ID_NONE;
+                        props->fallthrough = instruction->operation.inline_asm_node->target_block_ref == KEFIR_ID_NONE;
                         return KEFIR_OK;
                     }
                     break;
