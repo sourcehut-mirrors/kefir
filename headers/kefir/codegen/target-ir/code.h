@@ -320,9 +320,9 @@ typedef struct kefir_codegen_target_ir_instruction {
     } control_flow;
 
     struct {
-        kefir_size_t direct_output[KEFIR_CODEGEN_TARGET_IR_OPERATION_DIRECT_OUTPUT_ASPECT_CACHE];
-        kefir_size_t indirect_output[KEFIR_CODEGEN_TARGET_IR_OPERATION_INDIRECT_OUTPUT_ASPECT_CACHE];
-        struct kefir_hashtable all;
+        kefir_size_t *direct_output;
+        kefir_size_t *indirect_output;
+        struct kefir_hashtable *extra;
     } aspects;
     kefir_size_t use_entry_top;
 
@@ -615,9 +615,19 @@ kefir_result_t kefir_codegen_target_ir_code_inline_assembly_operand_fragment(
     struct kefir_mem *, struct kefir_codegen_target_ir_code *, kefir_codegen_target_ir_instruction_ref_t,
     const struct kefir_codegen_target_ir_operand *);
 
+typedef enum kefir_codegen_target_ir_value_iterator_stage {
+    KEFIR_CODEGEN_TARGET_IR_VALUE_ITERATOR_DIRECT,
+    KEFIR_CODEGEN_TARGET_IR_VALUE_ITERATOR_INDIRECT,
+    KEFIR_CODEGEN_TARGET_IR_VALUE_ITERATOR_EXTRA
+} kefir_codegen_target_ir_value_iterator_stage_t;
+
 typedef struct kefir_codegen_target_ir_value_iterator {
     const struct kefir_codegen_target_ir_code *code;
-    struct kefir_hashtable_iterator iter;
+    kefir_codegen_target_ir_value_iterator_stage_t stage;
+    union {
+        kefir_size_t index;
+        struct kefir_hashtable_iterator iter;
+    };
     kefir_codegen_target_ir_instruction_ref_t instr_ref;
 } kefir_codegen_target_ir_code_value_iterator_t;
 

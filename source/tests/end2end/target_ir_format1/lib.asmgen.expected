@@ -827,6 +827,20 @@ factorial:
 #                        {
 #                            "aspect": {
 #                                "type": "resource",
+#                                "resource": "flag_sf"
+#                            },
+#                            "type": {
+#                                "variant": "default",
+#                                "kind": "resource",
+#                                "resource": "flag_sf"
+#                            },
+#                            "metadata": {
+#                                "value_ref": null
+#                            }
+#                        },
+#                        {
+#                            "aspect": {
+#                                "type": "resource",
 #                                "resource": "flag_of"
 #                            },
 #                            "type": {
@@ -847,20 +861,6 @@ factorial:
 #                                "variant": "default",
 #                                "kind": "resource",
 #                                "resource": "flag_pf"
-#                            },
-#                            "metadata": {
-#                                "value_ref": null
-#                            }
-#                        },
-#                        {
-#                            "aspect": {
-#                                "type": "resource",
-#                                "resource": "flag_sf"
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "resource",
-#                                "resource": "flag_sf"
 #                            },
 #                            "metadata": {
 #                                "value_ref": null
@@ -1497,6 +1497,20 @@ factorial:
 #                        {
 #                            "aspect": {
 #                                "type": "resource",
+#                                "resource": "flag_sf"
+#                            },
+#                            "type": {
+#                                "variant": "default",
+#                                "kind": "resource",
+#                                "resource": "flag_sf"
+#                            },
+#                            "metadata": {
+#                                "value_ref": null
+#                            }
+#                        },
+#                        {
+#                            "aspect": {
+#                                "type": "resource",
 #                                "resource": "flag_of"
 #                            },
 #                            "type": {
@@ -1517,20 +1531,6 @@ factorial:
 #                                "variant": "default",
 #                                "kind": "resource",
 #                                "resource": "flag_pf"
-#                            },
-#                            "metadata": {
-#                                "value_ref": null
-#                            }
-#                        },
-#                        {
-#                            "aspect": {
-#                                "type": "resource",
-#                                "resource": "flag_sf"
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "resource",
-#                                "resource": "flag_sf"
 #                            },
 #                            "metadata": {
 #                                "value_ref": null

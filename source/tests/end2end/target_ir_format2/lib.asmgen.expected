@@ -719,48 +719,6 @@ test1:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "resource",
-#                                "resource": "flag_of"
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "resource",
-#                                "resource": "flag_of"
-#                            },
-#                            "metadata": {
-#                                "value_ref": null
-#                            }
-#                        },
-#                        {
-#                            "aspect": {
-#                                "type": "resource",
-#                                "resource": "flag_sf"
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "resource",
-#                                "resource": "flag_sf"
-#                            },
-#                            "metadata": {
-#                                "value_ref": null
-#                            }
-#                        },
-#                        {
-#                            "aspect": {
-#                                "type": "resource",
-#                                "resource": "flag_zf"
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "resource",
-#                                "resource": "flag_zf"
-#                            },
-#                            "metadata": {
-#                                "value_ref": null
-#                            }
-#                        },
-#                        {
-#                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 0
 #                            },
@@ -782,20 +740,6 @@ test1:
 #                        },
 #                        {
 #                            "aspect": {
-#                                "type": "resource",
-#                                "resource": "flag_pf"
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "resource",
-#                                "resource": "flag_pf"
-#                            },
-#                            "metadata": {
-#                                "value_ref": null
-#                            }
-#                        },
-#                        {
-#                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 1
 #                            },
@@ -813,6 +757,62 @@ test1:
 #                            },
 #                            "metadata": {
 #                                "value_ref": 10
+#                            }
+#                        },
+#                        {
+#                            "aspect": {
+#                                "type": "resource",
+#                                "resource": "flag_sf"
+#                            },
+#                            "type": {
+#                                "variant": "default",
+#                                "kind": "resource",
+#                                "resource": "flag_sf"
+#                            },
+#                            "metadata": {
+#                                "value_ref": null
+#                            }
+#                        },
+#                        {
+#                            "aspect": {
+#                                "type": "resource",
+#                                "resource": "flag_of"
+#                            },
+#                            "type": {
+#                                "variant": "default",
+#                                "kind": "resource",
+#                                "resource": "flag_of"
+#                            },
+#                            "metadata": {
+#                                "value_ref": null
+#                            }
+#                        },
+#                        {
+#                            "aspect": {
+#                                "type": "resource",
+#                                "resource": "flag_pf"
+#                            },
+#                            "type": {
+#                                "variant": "default",
+#                                "kind": "resource",
+#                                "resource": "flag_pf"
+#                            },
+#                            "metadata": {
+#                                "value_ref": null
+#                            }
+#                        },
+#                        {
+#                            "aspect": {
+#                                "type": "resource",
+#                                "resource": "flag_zf"
+#                            },
+#                            "type": {
+#                                "variant": "default",
+#                                "kind": "resource",
+#                                "resource": "flag_zf"
+#                            },
+#                            "metadata": {
+#                                "value_ref": null
 #                            }
 #                        },
 #                        {
@@ -1619,6 +1619,20 @@ test2:
 #                        {
 #                            "aspect": {
 #                                "type": "resource",
+#                                "resource": "flag_sf"
+#                            },
+#                            "type": {
+#                                "variant": "default",
+#                                "kind": "resource",
+#                                "resource": "flag_sf"
+#                            },
+#                            "metadata": {
+#                                "value_ref": null
+#                            }
+#                        },
+#                        {
+#                            "aspect": {
+#                                "type": "resource",
 #                                "resource": "flag_of"
 #                            },
 #                            "type": {
@@ -1639,20 +1653,6 @@ test2:
 #                                "variant": "default",
 #                                "kind": "resource",
 #                                "resource": "flag_pf"
-#                            },
-#                            "metadata": {
-#                                "value_ref": null
-#                            }
-#                        },
-#                        {
-#                            "aspect": {
-#                                "type": "resource",
-#                                "resource": "flag_sf"
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "resource",
-#                                "resource": "flag_sf"
 #                            },
 #                            "metadata": {
 #                                "value_ref": null
@@ -1860,75 +1860,6 @@ test2:
 #                    "values": [
 #                        {
 #                            "aspect": {
-#                                "type": "resource",
-#                                "resource": "flag_of"
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "resource",
-#                                "resource": "flag_of"
-#                            },
-#                            "metadata": {
-#                                "value_ref": null
-#                            }
-#                        },
-#                        {
-#                            "aspect": {
-#                                "type": "resource",
-#                                "resource": "flag_zf"
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "resource",
-#                                "resource": "flag_zf"
-#                            },
-#                            "metadata": {
-#                                "value_ref": null
-#                            }
-#                        },
-#                        {
-#                            "aspect": {
-#                                "type": "resource",
-#                                "resource": "flag_sf"
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "resource",
-#                                "resource": "flag_sf"
-#                            },
-#                            "metadata": {
-#                                "value_ref": null
-#                            }
-#                        },
-#                        {
-#                            "aspect": {
-#                                "type": "indirect_ouput",
-#                                "index": 0
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "indirect"
-#                            },
-#                            "metadata": {
-#                                "value_ref": null
-#                            }
-#                        },
-#                        {
-#                            "aspect": {
-#                                "type": "resource",
-#                                "resource": "flag_pf"
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "resource",
-#                                "resource": "flag_pf"
-#                            },
-#                            "metadata": {
-#                                "value_ref": null
-#                            }
-#                        },
-#                        {
-#                            "aspect": {
 #                                "type": "direct_output",
 #                                "index": 1
 #                            },
@@ -1950,6 +1881,61 @@ test2:
 #                        },
 #                        {
 #                            "aspect": {
+#                                "type": "indirect_ouput",
+#                                "index": 0
+#                            },
+#                            "type": {
+#                                "variant": "default",
+#                                "kind": "indirect"
+#                            },
+#                            "metadata": {
+#                                "value_ref": null
+#                            }
+#                        },
+#                        {
+#                            "aspect": {
+#                                "type": "resource",
+#                                "resource": "flag_sf"
+#                            },
+#                            "type": {
+#                                "variant": "default",
+#                                "kind": "resource",
+#                                "resource": "flag_sf"
+#                            },
+#                            "metadata": {
+#                                "value_ref": null
+#                            }
+#                        },
+#                        {
+#                            "aspect": {
+#                                "type": "resource",
+#                                "resource": "flag_of"
+#                            },
+#                            "type": {
+#                                "variant": "default",
+#                                "kind": "resource",
+#                                "resource": "flag_of"
+#                            },
+#                            "metadata": {
+#                                "value_ref": null
+#                            }
+#                        },
+#                        {
+#                            "aspect": {
+#                                "type": "resource",
+#                                "resource": "flag_pf"
+#                            },
+#                            "type": {
+#                                "variant": "default",
+#                                "kind": "resource",
+#                                "resource": "flag_pf"
+#                            },
+#                            "metadata": {
+#                                "value_ref": null
+#                            }
+#                        },
+#                        {
+#                            "aspect": {
 #                                "type": "resource",
 #                                "resource": "flag_cf"
 #                            },
@@ -1957,6 +1943,20 @@ test2:
 #                                "variant": "default",
 #                                "kind": "resource",
 #                                "resource": "flag_cf"
+#                            },
+#                            "metadata": {
+#                                "value_ref": null
+#                            }
+#                        },
+#                        {
+#                            "aspect": {
+#                                "type": "resource",
+#                                "resource": "flag_zf"
+#                            },
+#                            "type": {
+#                                "variant": "default",
+#                                "kind": "resource",
+#                                "resource": "flag_zf"
 #                            },
 #                            "metadata": {
 #                                "value_ref": null
@@ -3074,6 +3074,20 @@ test3:
 #                        {
 #                            "aspect": {
 #                                "type": "resource",
+#                                "resource": "flag_sf"
+#                            },
+#                            "type": {
+#                                "variant": "default",
+#                                "kind": "resource",
+#                                "resource": "flag_sf"
+#                            },
+#                            "metadata": {
+#                                "value_ref": null
+#                            }
+#                        },
+#                        {
+#                            "aspect": {
+#                                "type": "resource",
 #                                "resource": "flag_of"
 #                            },
 #                            "type": {
@@ -3102,20 +3116,6 @@ test3:
 #                        {
 #                            "aspect": {
 #                                "type": "resource",
-#                                "resource": "flag_cf"
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "resource",
-#                                "resource": "flag_cf"
-#                            },
-#                            "metadata": {
-#                                "value_ref": null
-#                            }
-#                        },
-#                        {
-#                            "aspect": {
-#                                "type": "resource",
 #                                "resource": "flag_zf"
 #                            },
 #                            "type": {
@@ -3130,12 +3130,12 @@ test3:
 #                        {
 #                            "aspect": {
 #                                "type": "resource",
-#                                "resource": "flag_sf"
+#                                "resource": "flag_cf"
 #                            },
 #                            "type": {
 #                                "variant": "default",
 #                                "kind": "resource",
-#                                "resource": "flag_sf"
+#                                "resource": "flag_cf"
 #                            },
 #                            "metadata": {
 #                                "value_ref": null
@@ -3203,6 +3203,20 @@ test3:
 #                        {
 #                            "aspect": {
 #                                "type": "resource",
+#                                "resource": "flag_sf"
+#                            },
+#                            "type": {
+#                                "variant": "default",
+#                                "kind": "resource",
+#                                "resource": "flag_sf"
+#                            },
+#                            "metadata": {
+#                                "value_ref": null
+#                            }
+#                        },
+#                        {
+#                            "aspect": {
+#                                "type": "resource",
 #                                "resource": "flag_of"
 #                            },
 #                            "type": {
@@ -3231,20 +3245,6 @@ test3:
 #                        {
 #                            "aspect": {
 #                                "type": "resource",
-#                                "resource": "flag_cf"
-#                            },
-#                            "type": {
-#                                "variant": "default",
-#                                "kind": "resource",
-#                                "resource": "flag_cf"
-#                            },
-#                            "metadata": {
-#                                "value_ref": null
-#                            }
-#                        },
-#                        {
-#                            "aspect": {
-#                                "type": "resource",
 #                                "resource": "flag_zf"
 #                            },
 #                            "type": {
@@ -3259,12 +3259,12 @@ test3:
 #                        {
 #                            "aspect": {
 #                                "type": "resource",
-#                                "resource": "flag_sf"
+#                                "resource": "flag_cf"
 #                            },
 #                            "type": {
 #                                "variant": "default",
 #                                "kind": "resource",
-#                                "resource": "flag_sf"
+#                                "resource": "flag_cf"
 #                            },
 #                            "metadata": {
 #                                "value_ref": null
