@@ -329,7 +329,6 @@ typedef struct kefir_codegen_target_ir_instruction {
 
     struct kefir_codegen_target_ir_instruction_metadata metadata;
 
-    kefir_uint8_t generation;
     kefir_bool_t finalized;
 } kefir_codegen_target_ir_instruction_t;
 

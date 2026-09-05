@@ -296,7 +296,7 @@ static kefir_result_t instr_mut_at(const struct kefir_codegen_target_ir_code *co
 
     struct kefir_codegen_target_ir_instruction *instr =
         INSTR_AT_UNSAFE(code, KEFIR_TARGET_IR_INSTR_REF_INDEX_OF(instr_ref));
-    REQUIRE(GENERATION_OF(instr_ref) == instr->generation && instr->block_ref != KEFIR_ID_NONE,
+    REQUIRE(GENERATION_OF(instr_ref) == GENERATION_OF(instr->instr_ref) && instr->block_ref != KEFIR_ID_NONE,
             KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Requested instruction has previously been dropped"));
 
     ASSIGN_PTR(instr_ptr, instr);
@@ -311,7 +311,7 @@ static kefir_result_t instr_mut_at_nocheck(const struct kefir_codegen_target_ir_
 
     struct kefir_codegen_target_ir_instruction *instr =
         INSTR_AT_UNSAFE(code, KEFIR_TARGET_IR_INSTR_REF_INDEX_OF(instr_ref));
-    REQUIRE(GENERATION_OF(instr_ref) == instr->generation,
+    REQUIRE(GENERATION_OF(instr_ref) == GENERATION_OF(instr->instr_ref),
             KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Requested instruction has previously been dropped"));
 
     ASSIGN_PTR(instr_ptr, instr);
@@ -587,8 +587,7 @@ kefir_result_t kefir_codegen_target_ir_code_new_instruction_inplace(
     kefir_bool_t allocated_new = false;
     if (code->recycle_instr_idx != KEFIR_ID_NONE) {
         instr = INSTR_AT_UNSAFE(code, code->recycle_instr_idx);
-        instr->generation++;
-        instr->instr_ref = REF_FROM(instr->generation, code->recycle_instr_idx);
+        instr->instr_ref = REF_FROM(GENERATION_OF(instr->instr_ref) + 1, code->recycle_instr_idx);
         code->recycle_instr_idx = instr->control_flow.next;
     } else {
         if (CHUNK_OFFSET(code->code_length) == 0 && CHUNK_COUNT(code->code_length) + 1 > code->allocated_chunks) {
@@ -615,8 +614,7 @@ kefir_result_t kefir_codegen_target_ir_code_new_instruction_inplace(
         }
 
         instr = INSTR_AT_UNSAFE(code, code->code_length);
-        instr->generation = 0;
-        instr->instr_ref = REF_FROM(instr->generation, code->code_length);
+        instr->instr_ref = REF_FROM(0, code->code_length);
         instr->aspects.extra = NULL;
         instr->aspects.direct_output = NULL;
         instr->aspects.indirect_output = NULL;
@@ -860,7 +858,7 @@ static kefir_result_t drop_instruction(struct kefir_mem *mem, struct kefir_codeg
         REQUIRE_OK(res);
     }
 
-    if (instr->generation < MAX_GENERATION) {
+    if (GENERATION_OF(instr->instr_ref) < MAX_GENERATION) {
         instr->control_flow.next = code->recycle_instr_idx;
         code->recycle_instr_idx = KEFIR_TARGET_IR_INSTR_REF_INDEX_OF(instr_ref);
     }
