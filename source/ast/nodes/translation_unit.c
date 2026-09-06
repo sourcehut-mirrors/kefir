@@ -48,7 +48,8 @@ struct kefir_ast_translation_unit *kefir_ast_new_translation_unit(struct kefir_m
 
     struct kefir_ast_translation_unit *unit = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_translation_unit);
     REQUIRE(unit != NULL, NULL);
-    unit->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
+    unit->base.refcount = 1;
+    unit->base.arena_allocated = arena != NULL;
     unit->base.klass = &AST_TRANSLATION_UNIT_CLASS;
     unit->external_definitions = NULL;
     unit->external_definitions_capacity = 0;

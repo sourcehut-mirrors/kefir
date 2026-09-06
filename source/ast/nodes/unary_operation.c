@@ -44,7 +44,8 @@ struct kefir_ast_unary_operation *kefir_ast_new_unary_operation(struct kefir_mem
     REQUIRE(arg != NULL, NULL);
     struct kefir_ast_unary_operation *oper = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_unary_operation);
     REQUIRE(oper != NULL, NULL);
-    oper->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
+    oper->base.refcount = 1;
+    oper->base.arena_allocated = arena != NULL;
     oper->base.klass = &AST_UNARY_OPERATION_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&oper->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {

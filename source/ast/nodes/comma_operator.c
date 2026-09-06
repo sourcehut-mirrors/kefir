@@ -45,7 +45,8 @@ struct kefir_ast_comma_operator *kefir_ast_new_comma_operator(struct kefir_mem *
 
     struct kefir_ast_comma_operator *comma = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_comma_operator);
     REQUIRE(comma != NULL, NULL);
-    comma->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
+    comma->base.refcount = 1;
+    comma->base.arena_allocated = arena != NULL;
     comma->base.klass = &AST_COMMA_OPERATOR_CLASS;
     comma->expressions = NULL;
     comma->expressions_capacity = 0;

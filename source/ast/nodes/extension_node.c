@@ -27,7 +27,8 @@ struct kefir_ast_extension_node *kefir_ast_new_extension_node(struct kefir_mem *
 
     struct kefir_ast_extension_node *extension_node = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_extension_node);
     REQUIRE(extension_node != NULL, NULL);
-    extension_node->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
+    extension_node->base.refcount = 1;
+    extension_node->base.arena_allocated = arena != NULL;
     extension_node->base.klass = &AST_EXTENSION_NODE_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&extension_node->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {

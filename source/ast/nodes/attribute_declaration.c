@@ -44,7 +44,8 @@ struct kefir_ast_attribute_declaration *kefir_ast_new_attribute_declaration(stru
     struct kefir_ast_attribute_declaration *attribute_declaration =
         KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_attribute_declaration);
     REQUIRE(attribute_declaration != NULL, NULL);
-    attribute_declaration->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
+    attribute_declaration->base.refcount = 1;
+    attribute_declaration->base.arena_allocated = arena != NULL;
     attribute_declaration->base.klass = &AST_ATTRIBUTE_DECLARATION_LIST_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&attribute_declaration->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {

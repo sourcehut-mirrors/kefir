@@ -52,7 +52,8 @@ struct kefir_ast_labeled_statement *kefir_ast_new_labeled_statement(struct kefir
 
     struct kefir_ast_labeled_statement *labeled_stmt = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_labeled_statement);
     REQUIRE(labeled_stmt != NULL, NULL);
-    labeled_stmt->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
+    labeled_stmt->base.refcount = 1;
+    labeled_stmt->base.arena_allocated = arena != NULL;
     labeled_stmt->base.klass = &AST_LABELED_STATEMENT_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&labeled_stmt->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {

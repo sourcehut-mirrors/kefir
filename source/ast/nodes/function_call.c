@@ -47,7 +47,8 @@ struct kefir_ast_function_call *kefir_ast_new_function_call(struct kefir_mem *me
     REQUIRE(function != NULL, NULL);
     struct kefir_ast_function_call *function_call = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_function_call);
     REQUIRE(function_call != NULL, NULL);
-    function_call->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
+    function_call->base.refcount = 1;
+    function_call->base.arena_allocated = arena != NULL;
     function_call->base.klass = &AST_FUNCTION_CALL_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&function_call->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {

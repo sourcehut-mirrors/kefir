@@ -46,7 +46,8 @@ struct kefir_ast_compound_literal *kefir_ast_new_compound_literal(struct kefir_m
 
     struct kefir_ast_compound_literal *literal = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_compound_literal);
     REQUIRE(literal != NULL, NULL);
-    literal->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
+    literal->base.refcount = 1;
+    literal->base.arena_allocated = arena != NULL;
     literal->base.klass = &AST_COMPOUND_LITERAL_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&literal->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {

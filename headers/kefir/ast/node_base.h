@@ -113,21 +113,18 @@ typedef struct kefir_ast_node_properties {
     };
 } kefir_ast_node_properties_t;
 
-#define KEFIR_AST_NODE_ARENA_ALLOCATED_FLAG (1ull << 63)
-#define KEFIR_AST_NODE_ARENA_ALLOCATED_MASK (~KEFIR_AST_NODE_ARENA_ALLOCATED_FLAG)
-#define KEFIR_AST_NODE_IS_ARENA_ALLOCATED(_node) (((_node)->base.refcount & KEFIR_AST_NODE_ARENA_ALLOCATED_FLAG) != 0)
-#define KEFIR_AST_NODE_ARENA_ALLOCATED(_arena, _refcount) ((_arena) ? (_refcount) | KEFIR_AST_NODE_ARENA_ALLOCATED_FLAG : (_refcount))
 #define KEFIR_AST_NODE_ARENA_ALLOC(_mem, _arena, _type) \
     ((_arena) != NULL ? kefir_memory_arena_alloc((_arena), sizeof(_type), _Alignof(_type)) : KEFIR_MALLOC((_mem), sizeof(_type)))
 #define KEFIR_AST_NODE_ARENA_FREE(_mem, _node) \
     do { \
-        if (!KEFIR_AST_NODE_IS_ARENA_ALLOCATED((_node))) { \
+        if (!(_node)->base.arena_allocated) { \
             KEFIR_FREE((_mem), (_node)); \
         } \
     } while (0)
 
 typedef struct kefir_ast_node_base {
-    kefir_uint64_t refcount;
+    kefir_uint32_t refcount : 31,
+                   arena_allocated : 1;
     const struct kefir_ast_node_class *klass;
     struct kefir_ast_node_properties properties;
     struct kefir_source_location source_location;

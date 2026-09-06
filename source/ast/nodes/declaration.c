@@ -47,7 +47,8 @@ struct kefir_ast_declaration *kefir_ast_new_declaration(struct kefir_mem *mem, s
 
     struct kefir_ast_declaration *declaration = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_declaration);
     REQUIRE(declaration != NULL, NULL);
-    declaration->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
+    declaration->base.refcount = 1;
+    declaration->base.arena_allocated = arena != NULL;
     declaration->base.klass = &AST_DECLARATION_LIST_CLASS;
     declaration->init_declarators = NULL;
     declaration->init_declarators_capacity = 0;

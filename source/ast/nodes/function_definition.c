@@ -125,7 +125,8 @@ struct kefir_ast_function_definition *kefir_ast_new_function_definition(struct k
 
     struct kefir_ast_function_definition *func = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_function_definition);
     REQUIRE(func != NULL, NULL);
-    func->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
+    func->base.refcount = 1;
+    func->base.arena_allocated = arena != NULL;
     func->base.klass = &AST_FUNCTION_DEFINITION_CLASS;
     func->declarations = NULL;
     func->declarations_capacity = 0;

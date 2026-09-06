@@ -46,7 +46,8 @@ struct kefir_ast_array_subscript *kefir_ast_new_array_subscript(struct kefir_mem
     REQUIRE(subscript != NULL, NULL);
     struct kefir_ast_array_subscript *array_subscript = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_array_subscript);
     REQUIRE(array_subscript != NULL, NULL);
-    array_subscript->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
+    array_subscript->base.refcount = 1;
+    array_subscript->base.arena_allocated = arena != NULL;
     array_subscript->base.klass = &AST_ARRAY_SUBSCRIPT_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&array_subscript->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {

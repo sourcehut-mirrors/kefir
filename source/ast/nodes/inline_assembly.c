@@ -64,7 +64,8 @@ struct kefir_ast_inline_assembly *kefir_ast_new_inline_assembly(struct kefir_mem
 
     struct kefir_ast_inline_assembly *inline_assembly = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_inline_assembly);
     REQUIRE(inline_assembly != NULL, NULL);
-    inline_assembly->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
+    inline_assembly->base.refcount = 1;
+    inline_assembly->base.arena_allocated = arena != NULL;
     inline_assembly->base.klass = &AST_INLINE_ASSEMBLY_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&inline_assembly->base.properties);
     REQUIRE_CHAIN(&res, kefir_source_location_empty(&inline_assembly->base.source_location));

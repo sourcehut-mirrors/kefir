@@ -52,7 +52,8 @@ struct kefir_ast_struct_member *kefir_ast_new_struct_member(struct kefir_mem *me
     REQUIRE(member != NULL, NULL);
     struct kefir_ast_struct_member *struct_member = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_struct_member);
     REQUIRE(struct_member != NULL, NULL);
-    struct_member->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
+    struct_member->base.refcount = 1;
+    struct_member->base.arena_allocated = arena != NULL;
     struct_member->base.klass = &AST_STRUCT_MEMBER_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&struct_member->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -81,7 +82,8 @@ struct kefir_ast_struct_member *kefir_ast_new_struct_indirect_member(struct kefi
     REQUIRE(member != NULL, NULL);
     struct kefir_ast_struct_member *struct_member = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_struct_member);
     REQUIRE(struct_member != NULL, NULL);
-    struct_member->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
+    struct_member->base.refcount = 1;
+    struct_member->base.arena_allocated = arena != NULL;
     struct_member->base.klass = &AST_STRUCT_INDIRECT_MEMBER_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&struct_member->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {

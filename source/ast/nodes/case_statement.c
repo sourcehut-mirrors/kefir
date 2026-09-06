@@ -53,7 +53,8 @@ struct kefir_ast_case_statement *kefir_ast_new_case_statement(struct kefir_mem *
 
     struct kefir_ast_case_statement *case_stmt = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_case_statement);
     REQUIRE(case_stmt != NULL, NULL);
-    case_stmt->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
+    case_stmt->base.refcount = 1;
+    case_stmt->base.arena_allocated = arena != NULL;
     case_stmt->base.klass = &AST_CASE_STATEMENT_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&case_stmt->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -86,7 +87,8 @@ struct kefir_ast_case_statement *kefir_ast_new_range_case_statement(struct kefir
 
     struct kefir_ast_case_statement *case_stmt = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_case_statement);
     REQUIRE(case_stmt != NULL, NULL);
-    case_stmt->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
+    case_stmt->base.refcount = 1;
+    case_stmt->base.arena_allocated = arena != NULL;
     case_stmt->base.klass = &AST_CASE_STATEMENT_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&case_stmt->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {

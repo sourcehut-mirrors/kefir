@@ -55,7 +55,8 @@ struct kefir_ast_assignment_operator *kefir_ast_new_compound_assignment(struct k
 
     struct kefir_ast_assignment_operator *assignment = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_assignment_operator);
     REQUIRE(assignment != NULL, NULL);
-    assignment->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
+    assignment->base.refcount = 1;
+    assignment->base.arena_allocated = arena != NULL;
     assignment->base.klass = &AST_ASSIGNMENT_OPERATOR_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&assignment->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {

@@ -47,7 +47,7 @@ kefir_result_t ast_constant_free(struct kefir_mem *mem, struct kefir_ast_node_ba
         case KEFIR_AST_COMPLEX_FLOAT64X_CONSTANT:
         case KEFIR_AST_COMPLEX_FLOAT80_CONSTANT:
         case KEFIR_AST_COMPLEX_LONG_DOUBLE_CONSTANT:
-            if (!KEFIR_AST_NODE_IS_ARENA_ALLOCATED(node)) {
+            if (!node->base.arena_allocated) {
                 KEFIR_FREE(mem, node->value.large);
             }
             break;
@@ -67,7 +67,8 @@ struct kefir_ast_constant *kefir_ast_new_constant_bool(struct kefir_mem *mem, st
     REQUIRE(mem != NULL || arena != NULL, NULL);
     struct kefir_ast_constant *constant = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_constant);
     REQUIRE(constant != NULL, NULL);
-    constant->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
+    constant->base.refcount = 1;
+    constant->base.arena_allocated = arena != NULL;
     constant->base.klass = &AST_CONSTANT_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&constant->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -88,7 +89,8 @@ struct kefir_ast_constant *kefir_ast_new_constant_nullptr(struct kefir_mem *mem,
     REQUIRE(mem != NULL || arena != NULL, NULL);
     struct kefir_ast_constant *constant = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_constant);
     REQUIRE(constant != NULL, NULL);
-    constant->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
+    constant->base.refcount = 1;
+    constant->base.arena_allocated = arena != NULL;
     constant->base.klass = &AST_CONSTANT_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&constant->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -108,7 +110,8 @@ struct kefir_ast_constant *kefir_ast_new_constant_char(struct kefir_mem *mem, st
     REQUIRE(mem != NULL || arena != NULL, NULL);
     struct kefir_ast_constant *constant = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_constant);
     REQUIRE(constant != NULL, NULL);
-    constant->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
+    constant->base.refcount = 1;
+    constant->base.arena_allocated = arena != NULL;
     constant->base.klass = &AST_CONSTANT_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&constant->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -129,7 +132,8 @@ struct kefir_ast_constant *kefir_ast_new_constant_unicode8_char(struct kefir_mem
     REQUIRE(mem != NULL || arena != NULL, NULL);
     struct kefir_ast_constant *constant = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_constant);
     REQUIRE(constant != NULL, NULL);
-    constant->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
+    constant->base.refcount = 1;
+    constant->base.arena_allocated = arena != NULL;
     constant->base.klass = &AST_CONSTANT_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&constant->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -150,7 +154,8 @@ struct kefir_ast_constant *kefir_ast_new_constant_wide_char(struct kefir_mem *me
     REQUIRE(mem != NULL || arena != NULL, NULL);
     struct kefir_ast_constant *constant = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_constant);
     REQUIRE(constant != NULL, NULL);
-    constant->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
+    constant->base.refcount = 1;
+    constant->base.arena_allocated = arena != NULL;
     constant->base.klass = &AST_CONSTANT_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&constant->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -171,7 +176,8 @@ struct kefir_ast_constant *kefir_ast_new_constant_unicode16_char(struct kefir_me
     REQUIRE(mem != NULL || arena != NULL, NULL);
     struct kefir_ast_constant *constant = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_constant);
     REQUIRE(constant != NULL, NULL);
-    constant->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
+    constant->base.refcount = 1;
+    constant->base.arena_allocated = arena != NULL;
     constant->base.klass = &AST_CONSTANT_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&constant->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -192,7 +198,8 @@ struct kefir_ast_constant *kefir_ast_new_constant_unicode32_char(struct kefir_me
     REQUIRE(mem != NULL || arena != NULL, NULL);
     struct kefir_ast_constant *constant = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_constant);
     REQUIRE(constant != NULL, NULL);
-    constant->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
+    constant->base.refcount = 1;
+    constant->base.arena_allocated = arena != NULL;
     constant->base.klass = &AST_CONSTANT_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&constant->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -213,7 +220,8 @@ struct kefir_ast_constant *kefir_ast_new_constant_int(struct kefir_mem *mem, str
     REQUIRE(mem != NULL || arena != NULL, NULL);
     struct kefir_ast_constant *constant = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_constant);
     REQUIRE(constant != NULL, NULL);
-    constant->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
+    constant->base.refcount = 1;
+    constant->base.arena_allocated = arena != NULL;
     constant->base.klass = &AST_CONSTANT_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&constant->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -234,7 +242,8 @@ struct kefir_ast_constant *kefir_ast_new_constant_uint(struct kefir_mem *mem, st
     REQUIRE(mem != NULL || arena != NULL, NULL);
     struct kefir_ast_constant *constant = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_constant);
     REQUIRE(constant != NULL, NULL);
-    constant->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
+    constant->base.refcount = 1;
+    constant->base.arena_allocated = arena != NULL;
     constant->base.klass = &AST_CONSTANT_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&constant->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -255,7 +264,8 @@ struct kefir_ast_constant *kefir_ast_new_constant_long(struct kefir_mem *mem, st
     REQUIRE(mem != NULL || arena != NULL, NULL);
     struct kefir_ast_constant *constant = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_constant);
     REQUIRE(constant != NULL, NULL);
-    constant->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
+    constant->base.refcount = 1;
+    constant->base.arena_allocated = arena != NULL;
     constant->base.klass = &AST_CONSTANT_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&constant->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -276,7 +286,8 @@ struct kefir_ast_constant *kefir_ast_new_constant_ulong(struct kefir_mem *mem, s
     REQUIRE(mem != NULL || arena != NULL, NULL);
     struct kefir_ast_constant *constant = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_constant);
     REQUIRE(constant != NULL, NULL);
-    constant->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
+    constant->base.refcount = 1;
+    constant->base.arena_allocated = arena != NULL;
     constant->base.klass = &AST_CONSTANT_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&constant->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -297,7 +308,8 @@ struct kefir_ast_constant *kefir_ast_new_constant_long_long(struct kefir_mem *me
     REQUIRE(mem != NULL || arena != NULL, NULL);
     struct kefir_ast_constant *constant = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_constant);
     REQUIRE(constant != NULL, NULL);
-    constant->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
+    constant->base.refcount = 1;
+    constant->base.arena_allocated = arena != NULL;
     constant->base.klass = &AST_CONSTANT_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&constant->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -318,7 +330,8 @@ struct kefir_ast_constant *kefir_ast_new_constant_ulong_long(struct kefir_mem *m
     REQUIRE(mem != NULL || arena != NULL, NULL);
     struct kefir_ast_constant *constant = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_constant);
     REQUIRE(constant != NULL, NULL);
-    constant->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
+    constant->base.refcount = 1;
+    constant->base.arena_allocated = arena != NULL;
     constant->base.klass = &AST_CONSTANT_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&constant->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -339,7 +352,8 @@ struct kefir_ast_constant *kefir_ast_new_constant_bitprecise(struct kefir_mem *m
     REQUIRE(mem != NULL || arena != NULL, NULL);
     struct kefir_ast_constant *constant = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_constant);
     REQUIRE(constant != NULL, NULL);
-    constant->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
+    constant->base.refcount = 1;
+    constant->base.arena_allocated = arena != NULL;
     constant->base.klass = &AST_CONSTANT_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&constant->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -371,7 +385,8 @@ struct kefir_ast_constant *kefir_ast_new_constant_unsigned_bitprecise(struct kef
     REQUIRE(mem != NULL || arena != NULL, NULL);
     struct kefir_ast_constant *constant = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_constant);
     REQUIRE(constant != NULL, NULL);
-    constant->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
+    constant->base.refcount = 1;
+    constant->base.arena_allocated = arena != NULL;
     constant->base.klass = &AST_CONSTANT_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&constant->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -402,7 +417,8 @@ struct kefir_ast_constant *kefir_ast_new_constant_float(struct kefir_mem *mem, s
     REQUIRE(mem != NULL || arena != NULL, NULL);
     struct kefir_ast_constant *constant = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_constant);
     REQUIRE(constant != NULL, NULL);
-    constant->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
+    constant->base.refcount = 1;
+    constant->base.arena_allocated = arena != NULL;
     constant->base.klass = &AST_CONSTANT_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&constant->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -423,7 +439,8 @@ struct kefir_ast_constant *kefir_ast_new_constant_float32(struct kefir_mem *mem,
     REQUIRE(mem != NULL || arena != NULL, NULL);
     struct kefir_ast_constant *constant = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_constant);
     REQUIRE(constant != NULL, NULL);
-    constant->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
+    constant->base.refcount = 1;
+    constant->base.arena_allocated = arena != NULL;
     constant->base.klass = &AST_CONSTANT_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&constant->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -444,7 +461,8 @@ struct kefir_ast_constant *kefir_ast_new_constant_float32x(struct kefir_mem *mem
     REQUIRE(mem != NULL || arena != NULL, NULL);
     struct kefir_ast_constant *constant = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_constant);
     REQUIRE(constant != NULL, NULL);
-    constant->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
+    constant->base.refcount = 1;
+    constant->base.arena_allocated = arena != NULL;
     constant->base.klass = &AST_CONSTANT_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&constant->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -465,7 +483,8 @@ struct kefir_ast_constant *kefir_ast_new_constant_double(struct kefir_mem *mem, 
     REQUIRE(mem != NULL || arena != NULL, NULL);
     struct kefir_ast_constant *constant = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_constant);
     REQUIRE(constant != NULL, NULL);
-    constant->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
+    constant->base.refcount = 1;
+    constant->base.arena_allocated = arena != NULL;
     constant->base.klass = &AST_CONSTANT_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&constant->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -486,7 +505,8 @@ struct kefir_ast_constant *kefir_ast_new_constant_float64(struct kefir_mem *mem,
     REQUIRE(mem != NULL || arena != NULL, NULL);
     struct kefir_ast_constant *constant = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_constant);
     REQUIRE(constant != NULL, NULL);
-    constant->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
+    constant->base.refcount = 1;
+    constant->base.arena_allocated = arena != NULL;
     constant->base.klass = &AST_CONSTANT_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&constant->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -507,7 +527,8 @@ struct kefir_ast_constant *kefir_ast_new_constant_float64x(struct kefir_mem *mem
     REQUIRE(mem != NULL || arena != NULL, NULL);
     struct kefir_ast_constant *constant = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_constant);
     REQUIRE(constant != NULL, NULL);
-    constant->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
+    constant->base.refcount = 1;
+    constant->base.arena_allocated = arena != NULL;
     constant->base.klass = &AST_CONSTANT_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&constant->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -533,7 +554,8 @@ struct kefir_ast_constant *kefir_ast_new_constant_long_double(struct kefir_mem *
     REQUIRE(mem != NULL || arena != NULL, NULL);
     struct kefir_ast_constant *constant = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_constant);
     REQUIRE(constant != NULL, NULL);
-    constant->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
+    constant->base.refcount = 1;
+    constant->base.arena_allocated = arena != NULL;
     constant->base.klass = &AST_CONSTANT_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&constant->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -559,7 +581,8 @@ struct kefir_ast_constant *kefir_ast_new_constant_float80(struct kefir_mem *mem,
     REQUIRE(mem != NULL || arena != NULL, NULL);
     struct kefir_ast_constant *constant = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_constant);
     REQUIRE(constant != NULL, NULL);
-    constant->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
+    constant->base.refcount = 1;
+    constant->base.arena_allocated = arena != NULL;
     constant->base.klass = &AST_CONSTANT_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&constant->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -585,7 +608,8 @@ struct kefir_ast_constant *kefir_ast_new_constant_decimal32(struct kefir_mem *me
     REQUIRE(mem != NULL || arena != NULL, NULL);
     struct kefir_ast_constant *constant = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_constant);
     REQUIRE(constant != NULL, NULL);
-    constant->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
+    constant->base.refcount = 1;
+    constant->base.arena_allocated = arena != NULL;
     constant->base.klass = &AST_CONSTANT_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&constant->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -606,7 +630,8 @@ struct kefir_ast_constant *kefir_ast_new_constant_decimal64(struct kefir_mem *me
     REQUIRE(mem != NULL || arena != NULL, NULL);
     struct kefir_ast_constant *constant = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_constant);
     REQUIRE(constant != NULL, NULL);
-    constant->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
+    constant->base.refcount = 1;
+    constant->base.arena_allocated = arena != NULL;
     constant->base.klass = &AST_CONSTANT_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&constant->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -627,7 +652,8 @@ struct kefir_ast_constant *kefir_ast_new_constant_decimal128(struct kefir_mem *m
     REQUIRE(mem != NULL || arena != NULL, NULL);
     struct kefir_ast_constant *constant = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_constant);
     REQUIRE(constant != NULL, NULL);
-    constant->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
+    constant->base.refcount = 1;
+    constant->base.arena_allocated = arena != NULL;
     constant->base.klass = &AST_CONSTANT_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&constant->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -653,7 +679,8 @@ struct kefir_ast_constant *kefir_ast_new_constant_decimal64x(struct kefir_mem *m
     REQUIRE(mem != NULL || arena != NULL, NULL);
     struct kefir_ast_constant *constant = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_constant);
     REQUIRE(constant != NULL, NULL);
-    constant->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
+    constant->base.refcount = 1;
+    constant->base.arena_allocated = arena != NULL;
     constant->base.klass = &AST_CONSTANT_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&constant->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -680,7 +707,8 @@ struct kefir_ast_constant *kefir_ast_new_constant_complex_float(struct kefir_mem
     REQUIRE(mem != NULL || arena != NULL, NULL);
     struct kefir_ast_constant *constant = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_constant);
     REQUIRE(constant != NULL, NULL);
-    constant->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
+    constant->base.refcount = 1;
+    constant->base.arena_allocated = arena != NULL;
     constant->base.klass = &AST_CONSTANT_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&constant->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -703,7 +731,8 @@ struct kefir_ast_constant *kefir_ast_new_constant_complex_float32(struct kefir_m
     REQUIRE(mem != NULL || arena != NULL, NULL);
     struct kefir_ast_constant *constant = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_constant);
     REQUIRE(constant != NULL, NULL);
-    constant->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
+    constant->base.refcount = 1;
+    constant->base.arena_allocated = arena != NULL;
     constant->base.klass = &AST_CONSTANT_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&constant->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -726,7 +755,8 @@ struct kefir_ast_constant *kefir_ast_new_constant_complex_double(struct kefir_me
     REQUIRE(mem != NULL || arena != NULL, NULL);
     struct kefir_ast_constant *constant = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_constant);
     REQUIRE(constant != NULL, NULL);
-    constant->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
+    constant->base.refcount = 1;
+    constant->base.arena_allocated = arena != NULL;
     constant->base.klass = &AST_CONSTANT_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&constant->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -754,7 +784,8 @@ struct kefir_ast_constant *kefir_ast_new_constant_complex_float32x(struct kefir_
     REQUIRE(mem != NULL || arena != NULL, NULL);
     struct kefir_ast_constant *constant = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_constant);
     REQUIRE(constant != NULL, NULL);
-    constant->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
+    constant->base.refcount = 1;
+    constant->base.arena_allocated = arena != NULL;
     constant->base.klass = &AST_CONSTANT_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&constant->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -782,7 +813,8 @@ struct kefir_ast_constant *kefir_ast_new_constant_complex_float64(struct kefir_m
     REQUIRE(mem != NULL || arena != NULL, NULL);
     struct kefir_ast_constant *constant = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_constant);
     REQUIRE(constant != NULL, NULL);
-    constant->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
+    constant->base.refcount = 1;
+    constant->base.arena_allocated = arena != NULL;
     constant->base.klass = &AST_CONSTANT_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&constant->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -810,7 +842,8 @@ struct kefir_ast_constant *kefir_ast_new_constant_complex_long_double(struct kef
     REQUIRE(mem != NULL || arena != NULL, NULL);
     struct kefir_ast_constant *constant = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_constant);
     REQUIRE(constant != NULL, NULL);
-    constant->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
+    constant->base.refcount = 1;
+    constant->base.arena_allocated = arena != NULL;
     constant->base.klass = &AST_CONSTANT_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&constant->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -838,7 +871,8 @@ struct kefir_ast_constant *kefir_ast_new_constant_complex_float64x(struct kefir_
     REQUIRE(mem != NULL || arena != NULL, NULL);
     struct kefir_ast_constant *constant = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_constant);
     REQUIRE(constant != NULL, NULL);
-    constant->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
+    constant->base.refcount = 1;
+    constant->base.arena_allocated = arena != NULL;
     constant->base.klass = &AST_CONSTANT_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&constant->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -866,7 +900,8 @@ struct kefir_ast_constant *kefir_ast_new_constant_complex_float80(struct kefir_m
     REQUIRE(mem != NULL || arena != NULL, NULL);
     struct kefir_ast_constant *constant = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_constant);
     REQUIRE(constant != NULL, NULL);
-    constant->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
+    constant->base.refcount = 1;
+    constant->base.arena_allocated = arena != NULL;
     constant->base.klass = &AST_CONSTANT_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&constant->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {

@@ -46,7 +46,8 @@ struct kefir_ast_compound_statement *kefir_ast_new_compound_statement(struct kef
 
     struct kefir_ast_compound_statement *stmt = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_compound_statement);
     REQUIRE(stmt != NULL, NULL);
-    stmt->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
+    stmt->base.refcount = 1;
+    stmt->base.arena_allocated = arena != NULL;
     stmt->base.klass = &AST_COMPOUND_STATEMENT_CLASS;
     stmt->block_items = NULL;
     stmt->block_capacity = 0;

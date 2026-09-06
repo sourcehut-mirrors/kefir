@@ -47,7 +47,8 @@ struct kefir_ast_expression_statement *kefir_ast_new_expression_statement(struct
 
     struct kefir_ast_expression_statement *expr_stmt = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_expression_statement);
     REQUIRE(expr_stmt != NULL, NULL);
-    expr_stmt->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
+    expr_stmt->base.refcount = 1;
+    expr_stmt->base.arena_allocated = arena != NULL;
     expr_stmt->base.klass = &AST_EXPRESSION_STATEMENT_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&expr_stmt->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {

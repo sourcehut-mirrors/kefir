@@ -46,7 +46,8 @@ struct kefir_ast_cast_operator *kefir_ast_new_cast_operator(struct kefir_mem *me
     REQUIRE(expr != NULL, NULL);
     struct kefir_ast_cast_operator *cast = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_cast_operator);
     REQUIRE(cast != NULL, NULL);
-    cast->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
+    cast->base.refcount = 1;
+    cast->base.arena_allocated = arena != NULL;
     cast->base.klass = &AST_CAST_OPERATOR_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&cast->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {

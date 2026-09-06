@@ -45,7 +45,8 @@ struct kefir_ast_identifier *kefir_ast_new_identifier(struct kefir_mem *mem, str
     REQUIRE(id_copy != NULL, NULL);
     struct kefir_ast_identifier *id = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_identifier);
     REQUIRE(id != NULL, NULL);
-    id->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
+    id->base.refcount = 1;
+    id->base.arena_allocated = arena != NULL;
     id->base.klass = &AST_IDENTIFIER_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&id->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {

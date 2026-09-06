@@ -45,7 +45,8 @@ struct kefir_ast_label_address *kefir_ast_new_label_address(struct kefir_mem *me
     REQUIRE(id_copy != NULL, NULL);
     struct kefir_ast_label_address *id = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_label_address);
     REQUIRE(id != NULL, NULL);
-    id->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
+    id->base.refcount = 1;
+    id->base.arena_allocated = arena != NULL;
     id->base.klass = &AST_LABEL_ADDRESS_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&id->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {

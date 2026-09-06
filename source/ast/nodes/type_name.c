@@ -48,7 +48,8 @@ struct kefir_ast_type_name *kefir_ast_new_type_name(struct kefir_mem *mem, struc
 
     struct kefir_ast_type_name *type_name = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_type_name);
     REQUIRE(type_name != NULL, NULL);
-    type_name->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
+    type_name->base.refcount = 1;
+    type_name->base.arena_allocated = arena != NULL;
     type_name->base.klass = &AST_TYPE_NAME_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&type_name->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {

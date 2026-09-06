@@ -60,7 +60,8 @@ struct kefir_ast_goto_statement *kefir_ast_new_goto_statement(struct kefir_mem *
 
     struct kefir_ast_goto_statement *stmt = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_goto_statement);
     REQUIRE(stmt != NULL, NULL);
-    stmt->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
+    stmt->base.refcount = 1;
+    stmt->base.arena_allocated = arena != NULL;
     stmt->base.klass = &AST_GOTO_STATEMENT_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&stmt->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -89,7 +90,8 @@ struct kefir_ast_goto_statement *kefir_ast_new_goto_address_statement(struct kef
 
     struct kefir_ast_goto_statement *stmt = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_goto_statement);
     REQUIRE(stmt != NULL, NULL);
-    stmt->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
+    stmt->base.refcount = 1;
+    stmt->base.arena_allocated = arena != NULL;
     stmt->base.klass = &AST_GOTO_ADDRESS_STATEMENT_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&stmt->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {

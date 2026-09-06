@@ -45,7 +45,8 @@ struct kefir_ast_builtin *kefir_ast_new_builtin(struct kefir_mem *mem, struct ke
 
     struct kefir_ast_builtin *builtin = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_builtin);
     REQUIRE(builtin != NULL, NULL);
-    builtin->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
+    builtin->base.refcount = 1;
+    builtin->base.arena_allocated = arena != NULL;
     builtin->base.klass = &AST_BUILTIN_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&builtin->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {

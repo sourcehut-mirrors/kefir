@@ -47,7 +47,7 @@ kefir_result_t ast_string_literal_free(struct kefir_mem *mem, struct kefir_ast_n
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(base != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST node base"));
     ASSIGN_DECL_CAST(struct kefir_ast_string_literal *, node, KEFIR_AST_NODE_SELF(base));
-    if (!KEFIR_AST_NODE_IS_ARENA_ALLOCATED(node)) {
+    if (!node->base.arena_allocated) {
         KEFIR_FREE(mem, node->data.literal);
     }
     KEFIR_AST_NODE_ARENA_FREE(mem, node);
@@ -81,7 +81,8 @@ static struct kefir_ast_string_literal *kefir_ast_new_string_literal(struct kefi
         return NULL;
     });
 
-    string_literal->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
+    string_literal->base.refcount = 1;
+    string_literal->base.arena_allocated = arena != NULL;
     string_literal->base.klass = &AST_STRING_LITERAL_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&string_literal->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {

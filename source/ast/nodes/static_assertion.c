@@ -48,7 +48,8 @@ struct kefir_ast_static_assertion *kefir_ast_new_static_assertion(struct kefir_m
 
     struct kefir_ast_static_assertion *static_assertion = KEFIR_AST_NODE_ARENA_ALLOC(mem, arena, struct kefir_ast_static_assertion);
     REQUIRE(static_assertion != NULL, NULL);
-    static_assertion->base.refcount = KEFIR_AST_NODE_ARENA_ALLOCATED(arena, 1);
+    static_assertion->base.refcount = 1;
+    static_assertion->base.arena_allocated = arena != NULL;
     static_assertion->base.klass = &AST_STATIC_ASSERTION_CLASS;
     kefir_result_t res = kefir_ast_node_properties_init(&static_assertion->base.properties);
     REQUIRE_ELSE(res == KEFIR_OK, {
