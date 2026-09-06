@@ -272,7 +272,7 @@ static kefir_result_t compact_data(struct kefir_mem *mem, struct kefir_ir_data *
 
             case KEFIR_IR_DATA_VALUE_POINTER:
                 REQUIRE_OK(kefir_queue_push(mem, &params->symbol_scan_queue,
-                                            (kefir_queue_entry_t) value->value.pointer.reference));
+                                            (kefir_queue_entry_t) value->value.large->pointer.reference));
                 break;
         }
     }

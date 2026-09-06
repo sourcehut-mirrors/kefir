@@ -75,7 +75,7 @@ static kefir_result_t generate_bits(struct static_data_param *param, const struc
         for (kefir_size_t i = 0; i < bytes / KEFIR_AMD64_ABI_QWORD; i++) {
             kefir_uint64_t qword_container;
             if (entry->type == KEFIR_IR_DATA_VALUE_BITS) {
-                qword_container = i < entry->value.bits.length ? entry->value.bits.bits[i] : 0;
+                qword_container = i < entry->value.large->bits.length ? entry->value.large->bits.bits[i] : 0;
             } else {
                 qword_container = i == 0 ? value : 0;
             }
@@ -90,7 +90,7 @@ static kefir_result_t generate_bits(struct static_data_param *param, const struc
             kefir_uint64_t qword_container;
             if (entry->type == KEFIR_IR_DATA_VALUE_BITS) {
                 qword_container =
-                    qword_container_idx < entry->value.bits.length ? entry->value.bits.bits[qword_container_idx] : 0;
+                    qword_container_idx < entry->value.large->bits.length ? entry->value.large->bits.bits[qword_container_idx] : 0;
             } else {
                 qword_container = qword_container_idx == 0 ? value : 0;
             }
@@ -133,7 +133,7 @@ static kefir_result_t integral_static_data(const struct kefir_ir_type *type, kef
             REQUIRE_OK(align_offset(layout, param));
 
             const struct kefir_ir_identifier *ir_identifier;
-            REQUIRE_OK(kefir_ir_module_get_identifier(param->module, entry->value.pointer.reference, &ir_identifier));
+            REQUIRE_OK(kefir_ir_module_get_identifier(param->module, entry->value.large->pointer.reference, &ir_identifier));
 
             REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
                 &param->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 1,
@@ -141,7 +141,7 @@ static kefir_result_t integral_static_data(const struct kefir_ir_type *type, kef
                     &param->codegen->xasmgen_helpers.operands[0],
                     kefir_asm_amd64_xasmgen_operand_label(&param->codegen->xasmgen_helpers.operands[1],
                                                           KEFIR_AMD64_XASMGEN_SYMBOL_ABSOLUTE, ir_identifier->symbol),
-                    entry->value.pointer.offset)));
+                    entry->value.large->pointer.offset)));
             if (typeentry->typecode == KEFIR_IR_TYPE_INT128) {
                 REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
                     &param->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 1,
@@ -168,8 +168,8 @@ static kefir_result_t integral_static_data(const struct kefir_ir_type *type, kef
                         &param->codegen->xasmgen_helpers.operands[1], KEFIR_AMD64_XASMGEN_SYMBOL_ABSOLUTE,
                         kefir_asm_amd64_xasmgen_helpers_format(
                             &param->codegen->xasmgen_helpers, KEFIR_AMD64_STRING_LITERAL, param->codegen->symbol_prefix,
-                            entry->value.string_ptr.id)),
-                    entry->value.string_ptr.offset)));
+                            entry->value.large->string_ptr.id)),
+                    entry->value.large->string_ptr.offset)));
 
             param->offset += layout->size;
             return KEFIR_OK;
@@ -347,12 +347,13 @@ static kefir_result_t long_double_static_data(const struct kefir_ir_type *type, 
         kefir_long_double_t long_double;
         kefir_uint64_t uint64[2];
     } value = {.uint64 = {0, 0}};
+    value.long_double = 0.0L;
     switch (entry->type) {
         case KEFIR_IR_DATA_VALUE_UNDEFINED:
             break;
 
         case KEFIR_IR_DATA_VALUE_LONG_DOUBLE:
-            value.long_double = entry->value.long_double;
+            value.long_double = kefir_ir_long_double_construct(entry->value.large->long_double[0], entry->value.large->long_double[1]);
             break;
 
         default:
@@ -430,9 +431,9 @@ static kefir_result_t decimal_static_data(const struct kefir_ir_type *type, kefi
                 REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
                     &param->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 2,
                     kefir_asm_amd64_xasmgen_operand_immu(&param->codegen->xasmgen_helpers.operands[0],
-                                                         entry->value.decimal128.uvalue[0]),
+                                                         entry->value.large->decimal128.uvalue[0]),
                     kefir_asm_amd64_xasmgen_operand_immu(&param->codegen->xasmgen_helpers.operands[1],
-                                                         entry->value.decimal128.uvalue[1])));
+                                                         entry->value.large->decimal128.uvalue[1])));
             } else {
                 REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
                     &param->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 2,
@@ -512,8 +513,8 @@ static kefir_result_t complex_float64_static_data(const struct kefir_ir_type *ty
             break;
 
         case KEFIR_IR_DATA_VALUE_COMPLEX_FLOAT64:
-            value.fp64[0] = entry->value.complex_float64.real;
-            value.fp64[1] = entry->value.complex_float64.imaginary;
+            value.fp64[0] = entry->value.large->complex_float64.real;
+            value.fp64[1] = entry->value.large->complex_float64.imaginary;
             break;
 
         default:
@@ -551,14 +552,16 @@ static kefir_result_t complex_long_double_static_data(const struct kefir_ir_type
     union {
         kefir_long_double_t ldouble[2];
         kefir_uint64_t uint64[4];
-    } value = {.ldouble = {0.0L}};
+    } value = {.uint64 = {0, 0, 0, 0}};
+    value.ldouble[0] = 0.0L;
+    value.ldouble[1] = 0.0L;
     switch (entry->type) {
         case KEFIR_IR_DATA_VALUE_UNDEFINED:
             break;
 
         case KEFIR_IR_DATA_VALUE_COMPLEX_LONG_DOUBLE:
-            value.ldouble[0] = entry->value.complex_long_double.real;
-            value.ldouble[1] = entry->value.complex_long_double.imaginary;
+            value.ldouble[0] = kefir_ir_long_double_construct(entry->value.big->complex_long_double.real[0], entry->value.big->complex_long_double.real[1]);
+            value.ldouble[1] = kefir_ir_long_double_construct(entry->value.big->complex_long_double.imaginary[0], entry->value.big->complex_long_double.imaginary[1]);
             break;
 
         default:
@@ -697,13 +700,13 @@ static kefir_result_t array_static_data(const struct kefir_ir_type *type, kefir_
         } break;
 
         case KEFIR_IR_DATA_VALUE_STRING:
-            REQUIRE_OK(dump_binary(param, entry->value.raw.data, entry->value.raw.length));
+            REQUIRE_OK(dump_binary(param, entry->value.large->raw.data, entry->value.large->raw.length));
             param->slot += array_content_slots;
             break;
 
         case KEFIR_IR_DATA_VALUE_RAW: {
-            ASSIGN_DECL_CAST(const char *, raw, entry->value.raw.data);
-            REQUIRE_OK(dump_binary(param, raw, entry->value.raw.length));
+            ASSIGN_DECL_CAST(const char *, raw, entry->value.large->raw.data);
+            REQUIRE_OK(dump_binary(param, raw, entry->value.large->raw.length));
             param->slot += array_content_slots;
         } break;
 

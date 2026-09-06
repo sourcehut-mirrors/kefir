@@ -1262,7 +1262,7 @@ static kefir_result_t format_datum(struct kefir_json_output *json, const struct 
             case KEFIR_IR_DATA_VALUE_LONG_DOUBLE:
                 REQUIRE_OK(kefir_json_output_string(json, "long_double"));
                 REQUIRE_OK(kefir_json_output_object_key(json, "value"));
-                REQUIRE_OK(kefir_json_output_long_double(json, value->value.long_double));
+                REQUIRE_OK(kefir_json_output_long_double(json, kefir_ir_long_double_construct(value->value.large->long_double[0], value->value.large->long_double[1])));
                 break;
 
             case KEFIR_IR_DATA_VALUE_DECIMAL32: {
@@ -1285,7 +1285,7 @@ static kefir_result_t format_datum(struct kefir_json_output *json, const struct 
                 REQUIRE_OK(kefir_json_output_string(json, "decimal128"));
                 REQUIRE_OK(kefir_json_output_object_key(json, "value"));
                 char buf[128];
-                kefir_dfp_decimal128_format(buf, sizeof(buf), value->value.decimal128);
+                kefir_dfp_decimal128_format(buf, sizeof(buf), value->value.large->decimal128);
                 REQUIRE_OK(kefir_json_output_string(json, buf));
             } break;
 
@@ -1300,50 +1300,50 @@ static kefir_result_t format_datum(struct kefir_json_output *json, const struct 
             case KEFIR_IR_DATA_VALUE_COMPLEX_FLOAT64:
                 REQUIRE_OK(kefir_json_output_string(json, "complex_float64"));
                 REQUIRE_OK(kefir_json_output_object_key(json, "real_value"));
-                REQUIRE_OK(kefir_json_output_float(json, value->value.complex_float64.real));
+                REQUIRE_OK(kefir_json_output_float(json, value->value.large->complex_float64.real));
                 REQUIRE_OK(kefir_json_output_object_key(json, "imaginary_value"));
-                REQUIRE_OK(kefir_json_output_float(json, value->value.complex_float64.imaginary));
+                REQUIRE_OK(kefir_json_output_float(json, value->value.large->complex_float64.imaginary));
                 break;
 
             case KEFIR_IR_DATA_VALUE_COMPLEX_LONG_DOUBLE:
                 REQUIRE_OK(kefir_json_output_string(json, "complex_long_double"));
                 REQUIRE_OK(kefir_json_output_object_key(json, "real_value"));
-                REQUIRE_OK(kefir_json_output_long_double(json, value->value.complex_long_double.real));
+                REQUIRE_OK(kefir_json_output_long_double(json, kefir_ir_long_double_construct(value->value.big->complex_long_double.real[0], value->value.big->complex_long_double.real[1])));
                 REQUIRE_OK(kefir_json_output_object_key(json, "imaginary_value"));
-                REQUIRE_OK(kefir_json_output_long_double(json, value->value.complex_long_double.imaginary));
+                REQUIRE_OK(kefir_json_output_long_double(json, kefir_ir_long_double_construct(value->value.big->complex_long_double.imaginary[0], value->value.big->complex_long_double.imaginary[1])));
                 break;
 
             case KEFIR_IR_DATA_VALUE_STRING:
                 REQUIRE_OK(kefir_json_output_string(json, "string"));
                 REQUIRE_OK(kefir_json_output_object_key(json, "content"));
                 REQUIRE_OK(
-                    kefir_json_output_raw_string(json, (const char *) value->value.raw.data, value->value.raw.length));
+                    kefir_json_output_raw_string(json, (const char *) value->value.large->raw.data, value->value.large->raw.length));
                 REQUIRE_OK(kefir_json_output_object_key(json, "length"));
-                REQUIRE_OK(kefir_json_output_uinteger(json, value->value.raw.length));
+                REQUIRE_OK(kefir_json_output_uinteger(json, value->value.large->raw.length));
                 break;
 
             case KEFIR_IR_DATA_VALUE_POINTER:
                 REQUIRE_OK(kefir_json_output_string(json, "pointer"));
                 REQUIRE_OK(kefir_json_output_object_key(json, "reference"));
-                REQUIRE_OK(kefir_json_output_string(json, value->value.pointer.reference));
+                REQUIRE_OK(kefir_json_output_string(json, value->value.large->pointer.reference));
                 REQUIRE_OK(kefir_json_output_object_key(json, "offset"));
-                REQUIRE_OK(kefir_json_output_integer(json, value->value.pointer.offset));
+                REQUIRE_OK(kefir_json_output_integer(json, value->value.large->pointer.offset));
                 break;
 
             case KEFIR_IR_DATA_VALUE_STRING_POINTER: {
                 REQUIRE_OK(kefir_json_output_string(json, "string_pointer"));
                 REQUIRE_OK(kefir_json_output_object_key(json, "string"));
-                REQUIRE_OK(kefir_json_output_integer(json, value->value.string_ptr.id));
+                REQUIRE_OK(kefir_json_output_integer(json, value->value.large->string_ptr.id));
                 REQUIRE_OK(kefir_json_output_object_key(json, "offset"));
-                REQUIRE_OK(kefir_json_output_integer(json, value->value.pointer.offset));
+                REQUIRE_OK(kefir_json_output_integer(json, value->value.large->pointer.offset));
             } break;
 
             case KEFIR_IR_DATA_VALUE_RAW:
                 REQUIRE_OK(kefir_json_output_string(json, "raw"));
                 REQUIRE_OK(kefir_json_output_object_key(json, "value"));
                 REQUIRE_OK(kefir_json_output_array_begin(json));
-                for (kefir_size_t i = 0; i < value->value.raw.length; i++) {
-                    REQUIRE_OK(kefir_json_output_integer(json, ((const char *) value->value.raw.data)[i]));
+                for (kefir_size_t i = 0; i < value->value.large->raw.length; i++) {
+                    REQUIRE_OK(kefir_json_output_integer(json, ((const char *) value->value.large->raw.data)[i]));
                 }
                 REQUIRE_OK(kefir_json_output_array_end(json));
                 break;
@@ -1356,8 +1356,8 @@ static kefir_result_t format_datum(struct kefir_json_output *json, const struct 
                 REQUIRE_OK(kefir_json_output_string(json, "bits"));
                 REQUIRE_OK(kefir_json_output_object_key(json, "value"));
                 REQUIRE_OK(kefir_json_output_array_begin(json));
-                for (kefir_size_t i = 0; i < value->value.bits.length; i++) {
-                    REQUIRE_OK(kefir_json_output_uinteger(json, value->value.bits.bits[i]));
+                for (kefir_size_t i = 0; i < value->value.large->bits.length; i++) {
+                    REQUIRE_OK(kefir_json_output_uinteger(json, value->value.large->bits.bits[i]));
                 }
                 REQUIRE_OK(kefir_json_output_array_end(json));
                 break;

@@ -25,6 +25,7 @@
 #include "kefir/ir/type.h"
 #include "kefir/core/block_tree.h"
 #include "kefir/core/mem.h"
+#include "kefir/core/memory_arena.h"
 #include "kefir/util/dfp.h"
 
 typedef enum kefir_ir_data_storage {
@@ -41,6 +42,7 @@ typedef struct kefir_ir_data {
     struct kefir_block_tree value_tree;
     kefir_bool_t finalized;
     kefir_bool_t defined;
+    struct kefir_memory_arena arena;
 } kefir_ir_data_t;
 
 typedef enum kefir_ir_string_literal_type {
@@ -69,45 +71,53 @@ typedef enum kefir_ir_data_value_type {
     KEFIR_IR_DATA_VALUE_BITS
 } kefir_ir_data_value_type_t;
 
+typedef union kefir_ir_data_large_value {
+    kefir_uint64_t long_double[2];
+    kefir_dfp_decimal128_t decimal128;
+    struct {
+        kefir_float64_t real;
+        kefir_float64_t imaginary;
+    } complex_float64;
+    struct {
+        const char *reference;
+        kefir_int64_t offset;
+    } pointer;
+    struct {
+        const void *data;
+        kefir_size_t length;
+    } raw;
+    struct {
+        kefir_id_t id;
+        kefir_int64_t offset;
+    } string_ptr;
+    struct {
+        kefir_uint64_t *bits;
+        kefir_size_t length;
+    } bits;
+} kefir_ir_data_large_value_t;
+
+typedef union kefir_ir_data_big_value {
+    struct {
+        kefir_uint64_t real[2];
+        kefir_uint64_t imaginary[2];
+    } complex_long_double;
+} kefir_ir_data_big_value_t;
+
 typedef struct kefir_ir_data_value {
-    kefir_ir_data_value_type_t type;
-    kefir_bool_t defined;
+    kefir_uint8_t type : 7,
+                  defined : 1;
     union {
         kefir_int64_t integer;
         kefir_float32_t float32;
         kefir_float64_t float64;
-        kefir_long_double_t long_double;
         kefir_dfp_decimal32_t decimal32;
         kefir_dfp_decimal64_t decimal64;
-        kefir_dfp_decimal128_t decimal128;
         struct {
             kefir_float32_t real;
             kefir_float32_t imaginary;
         } complex_float32;
-        struct {
-            kefir_float64_t real;
-            kefir_float64_t imaginary;
-        } complex_float64;
-        struct {
-            kefir_long_double_t real;
-            kefir_long_double_t imaginary;
-        } complex_long_double;
-        struct {
-            const char *reference;
-            kefir_int64_t offset;
-        } pointer;
-        struct {
-            const void *data;
-            kefir_size_t length;
-        } raw;
-        struct {
-            kefir_id_t id;
-            kefir_int64_t offset;
-        } string_ptr;
-        struct {
-            kefir_uint64_t *bits;
-            kefir_size_t length;
-        } bits;
+        union kefir_ir_data_large_value *large;
+        union kefir_ir_data_big_value *big;
     } value;
 } kefir_ir_data_value_t;
 

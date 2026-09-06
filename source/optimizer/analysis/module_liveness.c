@@ -181,11 +181,11 @@ static kefir_result_t trace_data(struct kefir_mem *mem, struct kefir_opt_module_
 
             case KEFIR_IR_DATA_VALUE_STRING_POINTER:
                 REQUIRE_OK(kefir_hashtreeset_add(mem, &liveness->string_literals,
-                                                 (kefir_hashtreeset_entry_t) value->value.string_ptr.id));
+                                                 (kefir_hashtreeset_entry_t) value->value.large->string_ptr.id));
                 break;
 
             case KEFIR_IR_DATA_VALUE_POINTER:
-                REQUIRE_OK(kefir_queue_push(mem, symbol_queue, (kefir_queue_entry_t) value->value.pointer.reference));
+                REQUIRE_OK(kefir_queue_push(mem, symbol_queue, (kefir_queue_entry_t) value->value.large->pointer.reference));
                 break;
         }
     }
