@@ -1,8 +1,8 @@
-image: ubuntu/noble
+image: ubuntu/resolute
 packages:
   - build-essential
-  - gcc-12
-  - clang-15
+  - gcc-16
+  - clang-22
   - valgrind
   - wget
   - yasm
@@ -15,13 +15,13 @@ tasks:
   - build_csmith: |
       mkdir csmith/build
       cd csmith/build
-      cmake -DCMAKE_INSTALL_PREFIX=$HOME/csmith-install ..
+      cmake -DCMAKE_INSTALL_PREFIX=$HOME/csmith-install -DCMAKE_POLICY_VERSION_MINIMUM=3.5 ..
       make -j$(nproc)
       make install
   - test_self: |
       cd kefir
       make clean
-      make all CC=gcc-12 -j$(nproc)
+      make all CC=gcc-16 -j$(nproc)
       make install prefix=$HOME/kefir-install
       make clean
       make all PROFILE=reldebug USE_EXTENSION_SUPPORT=yes CC=$HOME/kefir-install/bin/kefir -j$(nproc)

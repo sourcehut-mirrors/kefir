@@ -1,8 +1,8 @@
-image: ubuntu/noble
+image: ubuntu/resolute
 packages:
   - build-essential
-  - gcc-12
-  - clang-15
+  - gcc-16
+  - clang-22
   - valgrind
   - wget
   - yasm
@@ -17,7 +17,7 @@ tasks:
   - build_csmith: |
       mkdir csmith/build
       cd csmith/build
-      cmake -DCMAKE_INSTALL_PREFIX=$HOME/csmith-install ..
+      cmake -DCMAKE_INSTALL_PREFIX=$HOME/csmith-install -DCMAKE_POLICY_VERSION_MINIMUM=3.5 ..
       make -j$(nproc)
       make install
   - test_self: |

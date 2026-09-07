@@ -1,8 +1,8 @@
-image: ubuntu/noble
+image: ubuntu/resolute
 packages:
   - build-essential
-  - gcc-12
-  - clang-15
+  - gcc-16
+  - clang-22
   - valgrind
   - wget
   - yasm
@@ -14,7 +14,7 @@ tasks:
   - build: |
       cd kefir
       make clean
-      LC_ALL=C.UTF-8 make all PROFILE=reldebug CC=gcc-12
+      LC_ALL=C.UTF-8 make all PROFILE=reldebug CC=gcc-16
   - lua_tests: |
       cd kefir
       export LC_ALL=C.UTF-8
