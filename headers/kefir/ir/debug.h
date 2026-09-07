@@ -23,9 +23,9 @@
 
 #include "kefir/core/basic-types.h"
 #include "kefir/core/hashtable.h"
+#include "kefir/core/hashtree.h"
 #include "kefir/core/string_pool.h"
 #include "kefir/core/source_location.h"
-#include "kefir/core/interval_tree.h"
 #include "kefir/core/list.h"
 
 typedef kefir_id_t kefir_ir_debug_entry_id_t;
@@ -197,17 +197,16 @@ typedef struct kefir_ir_debug_source_location {
     struct kefir_source_location location;
     kefir_size_t begin;
     kefir_size_t end;
-
-    struct kefir_ir_debug_source_location *next;
 } kefir_ir_debug_source_location_t;
 
 typedef struct kefir_ir_debug_function_source_map {
-    struct kefir_interval_tree locations;
-    struct kefir_hashtable location_cache;
+    struct kefir_list locations;
+    kefir_bool_t best_locations_computed;
+    struct kefir_hashtable best_locations;
 } kefir_ir_debug_function_source_map_t;
 
 typedef struct kefir_ir_debug_function_source_map_iterator {
-    struct kefir_interval_tree_iterator iter;
+    const struct kefir_list_entry *iter;
     struct kefir_ir_debug_source_location *source_location;
 } kefir_ir_debug_function_source_map_iterator_t;
 
@@ -277,7 +276,7 @@ kefir_result_t kefir_ir_debug_function_source_map_insert(struct kefir_mem *,
                                                          struct kefir_string_pool *,
                                                          const struct kefir_source_location *, kefir_size_t,
                                                          kefir_size_t);
-kefir_result_t kefir_ir_debug_function_source_map_compute_cache(struct kefir_mem *,
+kefir_result_t kefir_ir_debug_function_source_map_compute_best(struct kefir_mem *,
                                                          struct kefir_ir_debug_function_source_map *);
 kefir_result_t kefir_ir_debug_function_source_map_find(struct kefir_mem *, const struct kefir_ir_debug_function_source_map *, kefir_size_t,
                                                        const struct kefir_ir_debug_source_location **);

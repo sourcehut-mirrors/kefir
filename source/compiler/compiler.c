@@ -545,7 +545,7 @@ kefir_result_t kefir_compiler_optimize(struct kefir_mem *mem, struct kefir_compi
     struct kefir_ir_module_function_iterator iter;
     for (struct kefir_ir_function *ir_func = kefir_ir_module_function_iter(ir_module, &iter, NULL);
          ir_func != NULL; ir_func = kefir_ir_module_function_next(&iter, NULL)) {
-        REQUIRE_OK(kefir_ir_debug_function_source_map_compute_cache(mem, &ir_func->debug_info.source_map));
+        REQUIRE_OK(kefir_ir_debug_function_source_map_compute_best(mem, &ir_func->debug_info.source_map));
     }
 
     return KEFIR_OK;

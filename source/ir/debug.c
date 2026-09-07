@@ -22,7 +22,6 @@
 #include "kefir/core/basic-types.h"
 #include "kefir/core/error.h"
 #include "kefir/core/hashtable.h"
-#include "kefir/core/interval_tree.h"
 #include "kefir/core/util.h"
 #include <string.h>
 
@@ -427,32 +426,26 @@ kefir_result_t kefir_ir_debug_entry_child_next(struct kefir_ir_debug_entry_child
     return KEFIR_OK;
 }
 
-static kefir_result_t on_source_location_remove(struct kefir_mem *mem, struct kefir_interval_tree *tree,
-                                                kefir_interval_tree_key_t begin, kefir_interval_tree_key_t end,
-                                                kefir_interval_tree_value_t value, void *payload) {
-    UNUSED(tree);
-    UNUSED(begin);
-    UNUSED(end);
+static kefir_result_t on_source_location_remove(struct kefir_mem *mem, struct kefir_list *list,
+                                                struct kefir_list_entry *entry, void *payload) {
+    UNUSED(list);
     UNUSED(payload);
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
-    ASSIGN_DECL_CAST(struct kefir_ir_debug_source_location *, source_location, value);
-    REQUIRE(source_location != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR source location"));
+    REQUIRE(entry != NULL && entry->value != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR source location"));
+    ASSIGN_DECL_CAST(struct kefir_ir_debug_source_location *, source_location, entry->value);
 
-    while (source_location != NULL) {
-        struct kefir_ir_debug_source_location *next_location = source_location->next;
-        memset(source_location, 0, sizeof(struct kefir_ir_debug_source_location));
-        KEFIR_FREE(mem, source_location);
-        source_location = next_location;
-    }
+    memset(source_location, 0, sizeof(struct kefir_ir_debug_source_location));
+    KEFIR_FREE(mem, source_location);
     return KEFIR_OK;
 }
 
 kefir_result_t kefir_ir_debug_function_source_map_init(struct kefir_ir_debug_function_source_map *source_map) {
     REQUIRE(source_map != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to IR source map"));
 
-    REQUIRE_OK(kefir_interval_tree_init(&source_map->locations));
-    REQUIRE_OK(kefir_interval_tree_on_remove(&source_map->locations, on_source_location_remove, NULL));
-    REQUIRE_OK(kefir_hashtable_init(&source_map->location_cache, &kefir_hashtable_uint_ops));
+    REQUIRE_OK(kefir_list_init(&source_map->locations));
+    REQUIRE_OK(kefir_list_on_remove(&source_map->locations, on_source_location_remove, NULL));
+    REQUIRE_OK(kefir_hashtable_init(&source_map->best_locations, &kefir_hashtable_uint_ops));
+    source_map->best_locations_computed = true;
     return KEFIR_OK;
 }
 
@@ -461,8 +454,8 @@ kefir_result_t kefir_ir_debug_function_source_map_free(struct kefir_mem *mem,
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(source_map != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR source map"));
 
-    REQUIRE_OK(kefir_hashtable_free(mem, &source_map->location_cache));
-    REQUIRE_OK(kefir_interval_tree_free(mem, &source_map->locations));
+    REQUIRE_OK(kefir_hashtable_free(mem, &source_map->best_locations));
+    REQUIRE_OK(kefir_list_free(mem, &source_map->locations));
     return KEFIR_OK;
 }
 
@@ -493,67 +486,48 @@ kefir_result_t kefir_ir_debug_function_source_map_insert(struct kefir_mem *mem,
     target->location.column = source_location->column;
     target->begin = begin;
     target->end = end;
-    target->next = NULL;
 
-    kefir_result_t res =
-        kefir_interval_tree_insert(mem, &source_map->locations, (kefir_interval_tree_key_t) begin,
-                                   (kefir_interval_tree_key_t) end, (kefir_interval_tree_value_t) target);
-    if (res == KEFIR_ALREADY_EXISTS) {
-        struct kefir_interval_tree_node *node = NULL;
-        res = kefir_interval_tree_get(&source_map->locations, (kefir_interval_tree_key_t) begin,
-                                      (kefir_interval_tree_key_t) end, &node);
-        if (res == KEFIR_OK) {
-            ASSIGN_DECL_CAST(struct kefir_ir_debug_source_location *, next_target, node->value);
-
-            target->next = next_target;
-            node->value = (kefir_interval_tree_value_t) target;
-        }
-    }
+    kefir_result_t res = kefir_list_insert_after(mem, &source_map->locations, NULL, target);
     REQUIRE_ELSE(res == KEFIR_OK, {
         KEFIR_FREE(mem, target);
         return res;
     });
 
-    REQUIRE_OK(kefir_hashtable_clear(mem, &source_map->location_cache));
+    if (source_map->best_locations_computed) {
+        source_map->best_locations_computed = false;
+        REQUIRE_OK(kefir_hashtable_clear(mem, &source_map->best_locations));
+    }
     return KEFIR_OK;
 }
 
 
-kefir_result_t kefir_ir_debug_function_source_map_compute_cache(struct kefir_mem *mem,
+kefir_result_t kefir_ir_debug_function_source_map_compute_best(struct kefir_mem *mem,
                                                          struct kefir_ir_debug_function_source_map *source_map) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(source_map != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR source map"));
+    REQUIRE(!source_map->best_locations_computed, KEFIR_OK);
 
-    kefir_result_t res;
-    struct kefir_interval_tree_node *node;
-    struct kefir_interval_tree_iterator iter;
-    for (res = kefir_interval_tree_iter(&source_map->locations, &iter, &node);
-         res == KEFIR_OK && node != NULL;
-         res = kefir_interval_tree_next(&iter, &node)) {
-        ASSIGN_DECL_CAST(const struct kefir_ir_debug_source_location *, source_location, node->value);
+    for (const struct kefir_list_entry *iter = kefir_list_head(&source_map->locations); iter != NULL; kefir_list_next(&iter)) {
+        ASSIGN_DECL_CAST(const struct kefir_ir_debug_source_location *, source_location, iter->value);
 
-
-        for (; source_location != NULL; source_location = source_location->next) {
-            for (kefir_size_t i = source_location->begin; i < source_location->end; i++) {
-                kefir_hashtable_value_t *table_value_ptr;
-                res = kefir_hashtable_at_mut(&source_map->location_cache, (kefir_hashtable_key_t) i, &table_value_ptr);
-                if (res != KEFIR_NOT_FOUND) {
-                    REQUIRE_OK(res);
-                    ASSIGN_DECL_CAST(const struct kefir_ir_debug_source_location *, current, *table_value_ptr);
+        for (kefir_size_t i = source_location->begin; i < source_location->end; i++) {
+            kefir_hashtable_value_t *table_value_ptr;
+            kefir_result_t res = kefir_hashtable_at_mut(&source_map->best_locations, (kefir_hashtable_key_t) i, &table_value_ptr);
+            if (res != KEFIR_NOT_FOUND) {
+                REQUIRE_OK(res);
+                ASSIGN_DECL_CAST(const struct kefir_ir_debug_source_location *, current, *table_value_ptr);
 #define WIDTH(_loc) ((_loc)->end - (_loc)->begin)
-                    if (WIDTH(current) >= WIDTH(source_location)) {
-                        *table_value_ptr = (kefir_hashtable_value_t) source_location;
-                    }
-#undef WIDTH
-                } else {
-                    REQUIRE_OK(kefir_hashtable_insert(mem, &source_map->location_cache, (kefir_hashtable_key_t) i, (kefir_hashtable_value_t) source_location));
+                if (WIDTH(current) >= WIDTH(source_location)) {
+                    *table_value_ptr = (kefir_hashtable_value_t) source_location;
                 }
+#undef WIDTH
+            } else {
+                REQUIRE_OK(kefir_hashtable_insert(mem, &source_map->best_locations, (kefir_hashtable_key_t) i, (kefir_hashtable_value_t) source_location));
             }
         }
     }
-    if (res != KEFIR_ITERATOR_END) {
-        REQUIRE_OK(res);
-    }
+
+    source_map->best_locations_computed = true;
     return KEFIR_OK;
 }
 
@@ -564,40 +538,15 @@ kefir_result_t kefir_ir_debug_function_source_map_find(struct kefir_mem *mem, co
     REQUIRE(source_map != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR source map"));
     REQUIRE(location_ptr != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to IR source location"));
+    REQUIRE(source_map->best_locations_computed, KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Expected IR source map with computed best locations"));
 
     kefir_hashtable_value_t table_value;
-    kefir_result_t res = kefir_hashtable_at(&source_map->location_cache, (kefir_hashtable_key_t) positon, &table_value);
-    if (res != KEFIR_NOT_FOUND) {
-        REQUIRE_OK(res);
-        *location_ptr = (const struct kefir_ir_debug_source_location *) table_value;
-        return KEFIR_OK;
+    kefir_result_t res = kefir_hashtable_at(&source_map->best_locations, (kefir_hashtable_key_t) positon, &table_value);
+    if (res == KEFIR_NOT_FOUND) {
+        res = KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find IR source map location");
     }
-
-    struct kefir_interval_tree_finder finder;
-    struct kefir_interval_tree_node *node;
-    const struct kefir_ir_debug_source_location *most_precise_location = NULL;
-    for (res = kefir_interval_tree_find(&source_map->locations, (kefir_interval_tree_key_t) positon, &finder, &node);
-         res == KEFIR_OK; res = kefir_interval_tree_find_next(&source_map->locations, &finder, &node)) {
-
-        ASSIGN_DECL_CAST(const struct kefir_ir_debug_source_location *, source_location, node->value);
-        for (; source_location != NULL; source_location = source_location->next) {
-            REQUIRE(positon >= source_location->begin && positon < source_location->end,
-                    KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected source location"));
-#define WIDTH(_loc) ((_loc)->end - (_loc)->begin)
-            if (most_precise_location == NULL || WIDTH(source_location) <= WIDTH(most_precise_location)) {
-                most_precise_location = source_location;
-            }
-#undef WIDTH
-        }
-    }
-
-    if (res != KEFIR_ITERATOR_END) {
-        REQUIRE_OK(res);
-    }
-    REQUIRE(most_precise_location != NULL,
-            KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find source location for requested position"));
-    REQUIRE_OK(kefir_hashtable_insert(mem, (struct kefir_hashtable *) &source_map->location_cache, (kefir_hashtable_key_t) positon, (kefir_hashtable_value_t) most_precise_location));
-    *location_ptr = most_precise_location;
+    REQUIRE_OK(res);
+    *location_ptr = (const struct kefir_ir_debug_source_location *) table_value;
     return KEFIR_OK;
 }
 
@@ -607,10 +556,9 @@ kefir_result_t kefir_ir_debug_function_source_map_iter(const struct kefir_ir_deb
     REQUIRE(source_map != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR source map"));
     REQUIRE(iter != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to IR source map iterator"));
 
-    struct kefir_interval_tree_node *node;
-    REQUIRE_OK(kefir_interval_tree_iter(&source_map->locations, &iter->iter, &node));
-    ASSIGN_DECL_CAST(const struct kefir_ir_debug_source_location *, source_location, node->value);
-    iter->source_location = source_location->next;
+    iter->iter = kefir_list_head(&source_map->locations);
+    REQUIRE(iter->iter != NULL, KEFIR_SET_ERROR(KEFIR_ITERATOR_END, "End of IR source map iterator"));
+    ASSIGN_DECL_CAST(const struct kefir_ir_debug_source_location *, source_location, iter->iter->value);
     ASSIGN_PTR(location_ptr, source_location);
     return KEFIR_OK;
 }
@@ -619,17 +567,10 @@ kefir_result_t kefir_ir_debug_function_source_map_next(struct kefir_ir_debug_fun
                                                        const struct kefir_ir_debug_source_location **location_ptr) {
     REQUIRE(iter != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR source map iterator"));
 
-    if (iter->source_location == NULL) {
-        struct kefir_interval_tree_node *node;
-        REQUIRE_OK(kefir_interval_tree_next(&iter->iter, &node));
-        ASSIGN_DECL_CAST(const struct kefir_ir_debug_source_location *, source_location, node->value);
-        iter->source_location = source_location->next;
-        ASSIGN_PTR(location_ptr, source_location);
-    } else {
-        const struct kefir_ir_debug_source_location *source_location = iter->source_location;
-        iter->source_location = source_location->next;
-        ASSIGN_PTR(location_ptr, source_location);
-    }
+    kefir_list_next(&iter->iter);
+    REQUIRE(iter->iter != NULL, KEFIR_SET_ERROR(KEFIR_ITERATOR_END, "End of IR source map iterator"));
+    ASSIGN_DECL_CAST(const struct kefir_ir_debug_source_location *, source_location, iter->iter->value);
+    ASSIGN_PTR(location_ptr, source_location);
     return KEFIR_OK;
 }
 

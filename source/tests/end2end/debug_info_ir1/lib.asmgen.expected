@@ -1896,6 +1896,20 @@
             "source_map": [
                 {
                     "source_id": "source\/tests\/end2end\/debug_info_ir1\/lib.kefir.asmgen.c",
+                    "line": 71,
+                    "column": 5,
+                    "begin": 43,
+                    "end": 47
+                },
+                {
+                    "source_id": "source\/tests\/end2end\/debug_info_ir1\/lib.kefir.asmgen.c",
+                    "line": 71,
+                    "column": 12,
+                    "begin": 43,
+                    "end": 44
+                },
+                {
+                    "source_id": "source\/tests\/end2end\/debug_info_ir1\/lib.kefir.asmgen.c",
                     "line": 70,
                     "column": 5,
                     "begin": 17,
@@ -1907,20 +1921,6 @@
                     "column": 13,
                     "begin": 30,
                     "end": 33
-                },
-                {
-                    "source_id": "source\/tests\/end2end\/debug_info_ir1\/lib.kefir.asmgen.c",
-                    "line": 71,
-                    "column": 12,
-                    "begin": 43,
-                    "end": 44
-                },
-                {
-                    "source_id": "source\/tests\/end2end\/debug_info_ir1\/lib.kefir.asmgen.c",
-                    "line": 71,
-                    "column": 5,
-                    "begin": 43,
-                    "end": 47
                 }
             ]
         }
