@@ -1,12 +1,12 @@
-image: openbsd/7.7
+image: openbsd/7.9
 packages:
   - gmake
-  - llvm-19.1.7p3
+  - llvm-19.1.7p14
   - binutils
   - coreutils
   - bash
   - wget
-  - python-3.12.9
+  - python-3.13.14
 sources:
   - https://git.sr.ht/~jprotopopov/kefir
 tasks:
