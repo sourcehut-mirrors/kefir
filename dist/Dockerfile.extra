@@ -23,7 +23,7 @@ FROM ${BASE_IMAGE}
 RUN mkdir -p /opt/gcc-15.2.0-tmp/build
 RUN wget -O /opt/gcc-15.2.0-tmp/gcc-15.2.0.tar.gz https://mirror.csclub.uwaterloo.ca/gnu/gcc/gcc-15.2.0/gcc-15.2.0.tar.gz
 RUN cd /opt/gcc-15.2.0-tmp && tar xvf gcc-15.2.0.tar.gz
-RUN cd /opt/gcc-15.2.0-tmp/build && ../gcc-15.2.0/configure --prefix=/opt/gcc-15.2.0 --enable-decimal-float=dpd --disable-multilib --enable-languages=c
+RUN cd /opt/gcc-15.2.0-tmp/build && ../gcc-15.2.0/configure --prefix=/opt/gcc-15.2.0 --enable-decimal-float=dpd --disable-multilib --disable-werror --disable-libstdcxx-pch --enable-languages=c
 RUN cd /opt/gcc-15.2.0-tmp/build && make -j$(nproc)
 RUN cd /opt/gcc-15.2.0-tmp/build && make install
 RUN rm -rf /opt/gcc-15.2.0-tmp

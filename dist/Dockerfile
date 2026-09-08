@@ -17,11 +17,11 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Base image includes minimum number of dependencies necessary to build kefir and run its own test suite
-FROM ubuntu:noble AS base
+FROM ubuntu:resolute AS base
 
 RUN apt update
 # Minimum build dependencies -- either gcc or clang are sufficient
-RUN apt install -y build-essential gcc-14 clang-16 groff m4
+RUN apt install -y build-essential gcc-16 clang-22 groff m4
 # For musl builds
 RUN apt install -y musl-dev musl-tools
 
@@ -45,7 +45,7 @@ RUN cd /tmp/make-4.4.1 && make install
 RUN cd /tmp && git clone "https://github.com/csmith-project/csmith"
 RUN cd /tmp/csmith && git checkout 0ec6f1b
 RUN cd /tmp/csmith && mkdir build
-RUN cd /tmp/csmith/build && cmake -DCMAKE_INSTALL_PREFIX=/opt/csmith ..
+RUN cd /tmp/csmith/build && cmake -DCMAKE_INSTALL_PREFIX=/opt/csmith -DCMAKE_POLICY_VERSION_MINIMUM=3.5 ..
 RUN cd /tmp/csmith/build && make -j$(nproc)
 RUN cd /tmp/csmith/build && make install
 
@@ -63,7 +63,7 @@ RUN echo "source /opt/kefir_dev_env.sh" >> /etc/bash.bashrc
 FROM dev as full
 
 RUN apt install -y nasm yacc libncurses-dev zlib1g-dev gettext file openssl \
-    libssl-dev unzip libpcre3 libpcre3-dev tcl8.6 tcl8.6-dev gcc-multilib \
+    libssl-dev unzip libpcre2-dev tcl8.6 tcl8.6-dev gcc-multilib \
     man-db autoconf autopoint bison gperf texinfo libgmp-dev inotify-tools strace \
     libinotifytools0-dev libtool pkg-config libsqlite3-dev flex libreadline-dev \
     libfont-ttf-perl libsort-versions-perl fonts-liberation libtool-bin libunistring-dev \
@@ -91,4 +91,4 @@ RUN locale-gen
 # Alias for gcc 4.7.4 bootstrap
 RUN ln -s /usr/lib/x86_64-linux-gnu/libstdc++.so.6 /usr/lib/libstdc++.so
 # Alias for pre-release script
-RUN ln -sf /usr/bin/clang-16 /usr/bin/clang
+RUN ln -sf /usr/bin/clang-22 /usr/bin/clang
