@@ -161,7 +161,9 @@ static kefir_result_t merge_literals(struct kefir_mem *mem, const struct kefir_l
                             break;
 
                         case (size_t) -2:
-                            // Intentionally left blank
+                            REQUIRE_OK(kefir_string_buffer_append_literal(mem, strbuf, content[index]));
+                            index++;
+                            terminate = true;
                             break;
 
                         case (size_t) -1:
