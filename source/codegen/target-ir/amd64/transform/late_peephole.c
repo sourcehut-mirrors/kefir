@@ -281,6 +281,11 @@ kefir_result_t kefir_codegen_target_ir_amd64_transform_late_peephole(
                     .args[1] = {.type = KEFIR_ASMCMP_VALUE_TYPE_PHYSICAL_REGISTER, .phreg = lhs_reg}};
                 return KEFIR_OK;
             } else if (rhs_regalloc_entry.type == KEFIR_CODEGEN_TARGET_IR_AMD64_REGALLOC_TYPE_SPILL) {
+                const struct kefir_codegen_target_ir_value_type *rhs_value_type;
+                REQUIRE_OK(kefir_codegen_target_ir_code_value_props(code, instr->operation.parameters[classification.operands[1].read_index].direct.value_ref, &rhs_value_type));
+                REQUIRE(rhs_value_type->variant != KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_32BIT ||
+                    instr->operation.parameters[classification.operands[1].read_index].direct.variant == KEFIR_CODEGEN_TARGET_IR_OPERAND_VARIANT_32BIT, NO_MATCH_ERROR);
+
                 kefir_asm_amd64_xasmgen_register_t lhs_reg = lhs_regalloc_entry.reg.value;
                 kefir_asmcmp_operand_variant_t variant = KEFIR_ASMCMP_OPERAND_VARIANT_64BIT;
                 if (instr->operation.parameters[classification.operands[0].read_index].direct.variant ==
