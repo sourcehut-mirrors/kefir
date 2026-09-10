@@ -17,11 +17,11 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Base image includes minimum number of dependencies necessary to build kefir and run its own test suite
-FROM ubuntu:resolute AS base
+FROM debian:trixie AS base
 
 RUN apt update
 # Minimum build dependencies -- either gcc or clang are sufficient
-RUN apt install -y build-essential gcc-16 clang-22 groff m4
+RUN apt install -y build-essential gcc clang groff m4
 # For musl builds
 RUN apt install -y musl-dev musl-tools
 
@@ -29,10 +29,7 @@ RUN apt install -y musl-dev musl-tools
 # Dev image includes base image + all remaining packages necessary for local development
 FROM base AS dev
 
-RUN apt install -y valgrind unminimize wget yasm cmake git
-
-# Prepare the system
-RUN yes | unminimize
+RUN apt install -y valgrind wget yasm cmake git
 
 # GNU Make 4.4
 RUN wget -O /tmp/make-4.4.1.tar.gz https://ftp.gnu.org/gnu/make/make-4.4.1.tar.gz
@@ -70,7 +67,7 @@ RUN apt install -y nasm yacc libncurses-dev zlib1g-dev gettext file openssl \
     libgc-dev libglib2.0-dev-bin dejagnu locales rake python3-dev libyaml-dev libgtest-dev \
     libevent-dev libtommath-dev libpsl-dev libgmp-dev libmpfr-dev libmpc-dev acl libacl1-dev \
     attr libattr1-dev libxxhash-dev libzstd-dev liblz4-dev libpcre2-dev libtasn1-6-dev libp11-kit-dev \
-    libunbound-dev
+    libunbound-dev libicu-dev
 
 # Libnettle 3.10
 RUN cd /tmp && wget "https://github.com/gnutls/nettle/archive/refs/tags/nettle_3.10.2_release_20250626.tar.gz"
@@ -91,4 +88,4 @@ RUN locale-gen
 # Alias for gcc 4.7.4 bootstrap
 RUN ln -s /usr/lib/x86_64-linux-gnu/libstdc++.so.6 /usr/lib/libstdc++.so
 # Alias for pre-release script
-RUN ln -sf /usr/bin/clang-22 /usr/bin/clang
+RUN ln -sf /usr/bin/clang-19 /usr/bin/clang
