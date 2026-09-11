@@ -42,8 +42,8 @@ $(KEFIR_EXTERNAL_TEST_MAKE_SOURCE_DIR)/make: $(KEFIR_EXTERNAL_TEST_MAKE_SOURCE_D
 
 $(KEFIR_EXTERNAL_TEST_MAKE_DIR)/tests.log: $(KEFIR_EXTERNAL_TEST_MAKE_SOURCE_DIR)/make
 	@echo "Testing GNU Make $(KEFIR_EXTERNAL_TEST_MAKE_VERSION)..."
-	@cd "$(KEFIR_EXTERNAL_TEST_MAKE_SOURCE_DIR)/tests" && \
-		bash -c 'set -o pipefail; ./run_make_tests -make_path "$(realpath $(KEFIR_EXTERNAL_TEST_MAKE_SOURCE_DIR)/make)" | tee "$(shell realpath $@.tmp)"'
+	@cd "$(KEFIR_EXTERNAL_TEST_MAKE_SOURCE_DIR)" && \
+		bash -c 'set -o pipefail; $(MAKE) check | tee "$(shell realpath $@.tmp)"'
 	@$(SOURCE_DIR)/tests/external/make/validate.sh "$@.tmp"
 	@mv "$@.tmp" "$@"
 
