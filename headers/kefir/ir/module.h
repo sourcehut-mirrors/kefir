@@ -86,6 +86,7 @@ typedef struct kefir_ir_module {
     struct kefir_hashtable inline_assembly;
     struct kefir_hashtree global_inline_asm;
     struct kefir_hashtable bigints;
+    struct kefir_memory_arena arena;
 
     kefir_id_t next_type_id;
     kefir_id_t next_string_literal_id;

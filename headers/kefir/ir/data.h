@@ -42,7 +42,7 @@ typedef struct kefir_ir_data {
     struct kefir_block_tree value_tree;
     kefir_bool_t finalized;
     kefir_bool_t defined;
-    struct kefir_memory_arena arena;
+    struct kefir_memory_arena *arena;
 } kefir_ir_data_t;
 
 typedef enum kefir_ir_string_literal_type {
@@ -121,7 +121,7 @@ typedef struct kefir_ir_data_value {
     } value;
 } kefir_ir_data_value_t;
 
-kefir_result_t kefir_ir_data_alloc(struct kefir_mem *, kefir_ir_data_storage_t, const struct kefir_ir_type *,
+kefir_result_t kefir_ir_data_alloc(struct kefir_mem *, struct kefir_memory_arena *, kefir_ir_data_storage_t, const struct kefir_ir_type *,
                                    kefir_id_t, struct kefir_ir_data *);
 
 kefir_result_t kefir_ir_data_free(struct kefir_mem *, struct kefir_ir_data *);

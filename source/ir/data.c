@@ -60,9 +60,10 @@ static kefir_result_t on_block_removal(struct kefir_mem *mem, struct kefir_block
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_ir_data_alloc(struct kefir_mem *mem, kefir_ir_data_storage_t storage,
+kefir_result_t kefir_ir_data_alloc(struct kefir_mem *mem, struct kefir_memory_arena *arena, kefir_ir_data_storage_t storage,
                                    const struct kefir_ir_type *type, kefir_id_t type_id, struct kefir_ir_data *data) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(arena != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory arena"));
     REQUIRE(type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR type pointer"));
     REQUIRE(data != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR data pointer"));
 
@@ -71,7 +72,7 @@ kefir_result_t kefir_ir_data_alloc(struct kefir_mem *mem, kefir_ir_data_storage_
     REQUIRE_OK(kefir_block_tree_init(&data->value_tree, BLOCK_SIZE));
     REQUIRE_OK(kefir_block_tree_on_block_init(&data->value_tree, on_block_init, NULL));
     REQUIRE_OK(kefir_block_tree_on_block_removal(&data->value_tree, on_block_removal, NULL));
-    REQUIRE_OK(kefir_memory_arena_init(mem, &data->arena));
+    data->arena = arena;
     data->type = type;
     data->type_id = type_id;
     data->finalized = false;
@@ -82,7 +83,6 @@ kefir_result_t kefir_ir_data_free(struct kefir_mem *mem, struct kefir_ir_data *d
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(data != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR data pointer"));
     REQUIRE_OK(kefir_block_tree_free(mem, &data->value_tree));
-    REQUIRE_OK(kefir_memory_arena_free(&data->arena));
     data->type = NULL;
     return KEFIR_OK;
 }
@@ -159,7 +159,7 @@ kefir_result_t kefir_ir_data_set_bitfield(struct kefir_mem *mem, struct kefir_ir
     } else {
         REQUIRE(entry->type == KEFIR_IR_DATA_VALUE_UNDEFINED,
                 KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "IR data cannot have non-integral type"));
-        entry->value.large = kefir_memory_arena_alloc(&data->arena, sizeof(union kefir_ir_data_large_value), _Alignof(union kefir_ir_data_large_value));
+        entry->value.large = kefir_memory_arena_alloc(data->arena, sizeof(union kefir_ir_data_large_value), _Alignof(union kefir_ir_data_large_value));
         REQUIRE(entry->value.large != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate IR data value"));
         entry->type = KEFIR_IR_DATA_VALUE_BITS;
         entry->value.large->bits.length = bit_num_of_containers + 1;
@@ -232,7 +232,7 @@ kefir_result_t kefir_ir_data_set_long_double(struct kefir_mem *mem, struct kefir
     struct kefir_ir_data_value *entry;
     REQUIRE_OK(value_entry_at(mem, data, index, &entry));
 
-    entry->value.large = kefir_memory_arena_alloc(&data->arena, sizeof(union kefir_ir_data_large_value), _Alignof(union kefir_ir_data_large_value));
+    entry->value.large = kefir_memory_arena_alloc(data->arena, sizeof(union kefir_ir_data_large_value), _Alignof(union kefir_ir_data_large_value));
     REQUIRE(entry->value.large != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate IR data value"));
 
     entry->type = KEFIR_IR_DATA_VALUE_LONG_DOUBLE;
@@ -281,7 +281,7 @@ kefir_result_t kefir_ir_data_set_decimal128(struct kefir_mem *mem, struct kefir_
     struct kefir_ir_data_value *entry;
     REQUIRE_OK(value_entry_at(mem, data, index, &entry));
 
-    entry->value.large = kefir_memory_arena_alloc(&data->arena, sizeof(union kefir_ir_data_large_value), _Alignof(union kefir_ir_data_large_value));
+    entry->value.large = kefir_memory_arena_alloc(data->arena, sizeof(union kefir_ir_data_large_value), _Alignof(union kefir_ir_data_large_value));
     REQUIRE(entry->value.large != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate IR data value"));
 
     entry->type = KEFIR_IR_DATA_VALUE_DECIMAL128;
@@ -315,7 +315,7 @@ kefir_result_t kefir_ir_data_set_complex_float64(struct kefir_mem *mem, struct k
     struct kefir_ir_data_value *entry;
     REQUIRE_OK(value_entry_at(mem, data, index, &entry));
 
-    entry->value.large = kefir_memory_arena_alloc(&data->arena, sizeof(union kefir_ir_data_large_value), _Alignof(union kefir_ir_data_large_value));
+    entry->value.large = kefir_memory_arena_alloc(data->arena, sizeof(union kefir_ir_data_large_value), _Alignof(union kefir_ir_data_large_value));
     REQUIRE(entry->value.large != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate IR data value"));
 
     entry->type = KEFIR_IR_DATA_VALUE_COMPLEX_FLOAT64;
@@ -337,7 +337,7 @@ kefir_result_t kefir_ir_data_set_complex_long_double(struct kefir_mem *mem, stru
 
     if (entry->type != KEFIR_IR_DATA_VALUE_COMPLEX_LONG_DOUBLE) {
         REQUIRE(entry->type == KEFIR_IR_DATA_VALUE_UNDEFINED, KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Unexpected IR data entry type"));
-        entry->value.big = kefir_memory_arena_alloc(&data->arena, sizeof(union kefir_ir_data_big_value), _Alignof(union kefir_ir_data_big_value));
+        entry->value.big = kefir_memory_arena_alloc(data->arena, sizeof(union kefir_ir_data_big_value), _Alignof(union kefir_ir_data_big_value));
         REQUIRE(entry->value.big != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate IR data entry value"));
         entry->type = KEFIR_IR_DATA_VALUE_COMPLEX_LONG_DOUBLE;
     }
@@ -358,7 +358,7 @@ kefir_result_t kefir_ir_data_set_string(struct kefir_mem *mem, struct kefir_ir_d
     struct kefir_ir_data_value *entry;
     REQUIRE_OK(value_entry_at(mem, data, index, &entry));
 
-    entry->value.large = kefir_memory_arena_alloc(&data->arena, sizeof(union kefir_ir_data_large_value), _Alignof(union kefir_ir_data_large_value));
+    entry->value.large = kefir_memory_arena_alloc(data->arena, sizeof(union kefir_ir_data_large_value), _Alignof(union kefir_ir_data_large_value));
     REQUIRE(entry->value.large != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate IR data value"));
 
     entry->type = KEFIR_IR_DATA_VALUE_STRING;
@@ -389,7 +389,7 @@ kefir_result_t kefir_ir_data_set_pointer(struct kefir_mem *mem, struct kefir_ir_
     struct kefir_ir_data_value *entry;
     REQUIRE_OK(value_entry_at(mem, data, index, &entry));
 
-    entry->value.large = kefir_memory_arena_alloc(&data->arena, sizeof(union kefir_ir_data_large_value), _Alignof(union kefir_ir_data_large_value));
+    entry->value.large = kefir_memory_arena_alloc(data->arena, sizeof(union kefir_ir_data_large_value), _Alignof(union kefir_ir_data_large_value));
     REQUIRE(entry->value.large != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate IR data value"));
 
     entry->type = KEFIR_IR_DATA_VALUE_POINTER;
@@ -408,7 +408,7 @@ kefir_result_t kefir_ir_data_set_string_pointer(struct kefir_mem *mem, struct ke
     struct kefir_ir_data_value *entry;
     REQUIRE_OK(value_entry_at(mem, data, index, &entry));
 
-    entry->value.large = kefir_memory_arena_alloc(&data->arena, sizeof(union kefir_ir_data_large_value), _Alignof(union kefir_ir_data_large_value));
+    entry->value.large = kefir_memory_arena_alloc(data->arena, sizeof(union kefir_ir_data_large_value), _Alignof(union kefir_ir_data_large_value));
     REQUIRE(entry->value.large != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate IR data value"));
 
     entry->type = KEFIR_IR_DATA_VALUE_STRING_POINTER;
@@ -427,7 +427,7 @@ kefir_result_t kefir_ir_data_set_raw(struct kefir_mem *mem, struct kefir_ir_data
     struct kefir_ir_data_value *entry;
     REQUIRE_OK(value_entry_at(mem, data, index, &entry));
 
-    entry->value.large = kefir_memory_arena_alloc(&data->arena, sizeof(union kefir_ir_data_large_value), _Alignof(union kefir_ir_data_large_value));
+    entry->value.large = kefir_memory_arena_alloc(data->arena, sizeof(union kefir_ir_data_large_value), _Alignof(union kefir_ir_data_large_value));
     REQUIRE(entry->value.large != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate IR data value"));
 
     entry->type = KEFIR_IR_DATA_VALUE_RAW;

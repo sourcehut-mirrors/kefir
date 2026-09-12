@@ -41,7 +41,6 @@ static kefir_result_t destroy_function_decl(struct kefir_mem *mem, struct kefir_
     ASSIGN_DECL_CAST(struct kefir_ir_function_decl *, decl, value);
     if (decl != NULL) {
         REQUIRE_OK(kefir_ir_function_decl_free(mem, decl));
-        KEFIR_FREE(mem, decl);
     }
     return KEFIR_OK;
 }
@@ -54,7 +53,6 @@ static kefir_result_t destroy_function(struct kefir_mem *mem, struct kefir_hasht
     ASSIGN_DECL_CAST(struct kefir_ir_function *, func, value);
     if (func != NULL) {
         REQUIRE_OK(kefir_ir_function_free(mem, func));
-        KEFIR_FREE(mem, func);
     }
     return KEFIR_OK;
 }
@@ -66,18 +64,6 @@ static kefir_result_t destroy_named_data(struct kefir_mem *mem, struct kefir_has
     UNUSED(data);
     ASSIGN_DECL_CAST(struct kefir_ir_data *, entry, value);
     REQUIRE_OK(kefir_ir_data_free(mem, entry));
-    KEFIR_FREE(mem, entry);
-    return KEFIR_OK;
-}
-
-static kefir_result_t destroy_string_literal(struct kefir_mem *mem, struct kefir_hashtree *tree,
-                                             kefir_hashtree_key_t key, kefir_hashtree_value_t value, void *data) {
-    UNUSED(tree);
-    UNUSED(key);
-    UNUSED(data);
-    ASSIGN_DECL_CAST(struct kefir_ir_module_string_literal *, literal, value);
-    KEFIR_FREE(mem, literal->content);
-    KEFIR_FREE(mem, literal);
     return KEFIR_OK;
 }
 
@@ -91,17 +77,6 @@ static kefir_result_t destroy_inline_assembly(struct kefir_mem *mem, struct kefi
     return KEFIR_OK;
 }
 
-static kefir_result_t destroy_identifier(struct kefir_mem *mem, struct kefir_hashtree *tree, kefir_hashtree_key_t key,
-                                         kefir_hashtree_value_t value, void *data) {
-    UNUSED(tree);
-    UNUSED(key);
-    UNUSED(data);
-    ASSIGN_DECL_CAST(struct kefir_ir_identifier *, identifier, value);
-    memset(identifier, 0, sizeof(struct kefir_ir_identifier));
-    KEFIR_FREE(mem, identifier);
-    return KEFIR_OK;
-}
-
 static kefir_result_t destroy_bigint(struct kefir_mem *mem, struct kefir_hashtable *table, kefir_hashtable_key_t key,
                                      kefir_hashtable_value_t value, void *data) {
     UNUSED(table);
@@ -112,7 +87,6 @@ static kefir_result_t destroy_bigint(struct kefir_mem *mem, struct kefir_hashtab
     REQUIRE(bigint != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid big integer"));
 
     REQUIRE_OK(kefir_bigint_free(mem, bigint));
-    KEFIR_FREE(mem, bigint);
     return KEFIR_OK;
 }
 
@@ -125,20 +99,19 @@ kefir_result_t kefir_ir_module_alloc(struct kefir_mem *mem, struct kefir_ir_modu
     REQUIRE_OK(kefir_hashtable_init(&module->function_declarations, &kefir_hashtable_uint_ops));
     REQUIRE_OK(kefir_hashtable_on_removal(&module->function_declarations, destroy_function_decl, NULL));
     REQUIRE_OK(kefir_hashtree_init(&module->identifiers, &kefir_hashtree_str_ops));
-    REQUIRE_OK(kefir_hashtree_on_removal(&module->identifiers, destroy_identifier, NULL));
     REQUIRE_OK(kefir_hashtree_init(&module->functions, &kefir_hashtree_str_ops));
     REQUIRE_OK(kefir_hashtree_on_removal(&module->functions, destroy_function, NULL));
     REQUIRE_OK(kefir_hashtable_init(&module->named_types, &kefir_hashtable_uint_ops));
     REQUIRE_OK(kefir_hashtree_init(&module->named_data, &kefir_hashtree_str_ops));
     REQUIRE_OK(kefir_hashtree_on_removal(&module->named_data, destroy_named_data, NULL));
     REQUIRE_OK(kefir_hashtree_init(&module->string_literals, &kefir_hashtree_uint_ops));
-    REQUIRE_OK(kefir_hashtree_on_removal(&module->string_literals, destroy_string_literal, NULL));
     REQUIRE_OK(kefir_hashtable_init(&module->inline_assembly, &kefir_hashtable_uint_ops));
     REQUIRE_OK(kefir_hashtable_on_removal(&module->inline_assembly, destroy_inline_assembly, NULL));
     REQUIRE_OK(kefir_hashtree_init(&module->global_inline_asm, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtable_init(&module->bigints, &kefir_hashtable_uint_ops));
     REQUIRE_OK(kefir_hashtable_on_removal(&module->bigints, destroy_bigint, NULL));
     REQUIRE_OK(kefir_ir_module_debug_info_init(&module->debug_info));
+    REQUIRE_OK(kefir_memory_arena_init(mem, &module->arena));
     module->next_type_id = 0;
     module->next_string_literal_id = 0;
     module->next_function_decl_id = 0;
@@ -163,6 +136,7 @@ kefir_result_t kefir_ir_module_free(struct kefir_mem *mem, struct kefir_ir_modul
     REQUIRE_OK(kefir_hashtable_free(mem, &module->function_declarations));
     REQUIRE_OK(kefir_list_free(mem, &module->types));
     REQUIRE_OK(kefir_string_pool_free(mem, &module->symbols));
+    REQUIRE_OK(kefir_memory_arena_free(&module->arena));
     return KEFIR_OK;
 }
 
@@ -182,12 +156,13 @@ kefir_result_t kefir_ir_module_string_literal(struct kefir_mem *mem, struct kefi
     REQUIRE(content != NULL && length > 0, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid literal"));
     REQUIRE(id != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid literal id pointer"));
 
-    struct kefir_ir_module_string_literal *literal = KEFIR_MALLOC(mem, sizeof(struct kefir_ir_module_string_literal));
+    struct kefir_ir_module_string_literal *literal = kefir_memory_arena_alloc(&module->arena, sizeof(struct kefir_ir_module_string_literal), _Alignof(struct kefir_ir_module_string_literal));
     REQUIRE(literal != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate string literal"));
 
     literal->type = type;
     literal->public = public;
     kefir_size_t sz = 0;
+    kefir_size_t alignment = 1;
     switch (literal->type) {
         case KEFIR_IR_STRING_LITERAL_MULTIBYTE:
             sz = length;
@@ -195,30 +170,23 @@ kefir_result_t kefir_ir_module_string_literal(struct kefir_mem *mem, struct kefi
 
         case KEFIR_IR_STRING_LITERAL_UNICODE16:
             sz = length * 2;
+            alignment = 2;
             break;
 
         case KEFIR_IR_STRING_LITERAL_UNICODE32:
             sz = length * 4;
+            alignment = 4;
             break;
     }
 
-    literal->content = KEFIR_MALLOC(mem, sz);
-    REQUIRE_ELSE(literal->content != NULL, {
-        KEFIR_FREE(mem, literal);
-        return KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate string literal content");
-    });
+    literal->content = kefir_memory_arena_alloc(&module->arena, sz, alignment);
+    REQUIRE(literal->content != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate string literal content"));
 
     memcpy(literal->content, content, sz);
     literal->length = length;
 
-    kefir_result_t res =
-        kefir_hashtree_insert(mem, &module->string_literals, (kefir_hashtree_key_t) module->next_string_literal_id,
-                              (kefir_hashtree_value_t) literal);
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, literal->content);
-        KEFIR_FREE(mem, literal);
-        return res;
-    });
+    REQUIRE_OK(kefir_hashtree_insert(mem, &module->string_literals, (kefir_hashtree_key_t) module->next_string_literal_id,
+                              (kefir_hashtree_value_t) literal));
 
     *id = module->next_string_literal_id++;
     return KEFIR_OK;
@@ -276,19 +244,17 @@ struct kefir_ir_function_decl *kefir_ir_module_new_function_declaration(struct k
 
     const char *symbol = kefir_ir_module_symbol(mem, module, name, NULL);
     kefir_id_t func_decl_id = module->next_function_decl_id;
-    struct kefir_ir_function_decl *decl = KEFIR_MALLOC(mem, sizeof(struct kefir_ir_function_decl));
+    struct kefir_ir_function_decl *decl = kefir_memory_arena_alloc(&module->arena, sizeof(struct kefir_ir_function_decl), _Alignof(struct kefir_ir_function_decl));
     REQUIRE(decl != NULL, NULL);
     kefir_result_t res = kefir_ir_function_decl_alloc(mem, func_decl_id, symbol, parameters, parameters_type_id, vararg,
                                                       returns, returns_type_id, decl);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, decl);
         return NULL;
     });
     res = kefir_hashtable_insert(mem, &module->function_declarations, (kefir_hashtable_key_t) decl->id,
                                  (kefir_hashtable_value_t) decl);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_ir_function_decl_free(mem, decl);
-        KEFIR_FREE(mem, decl);
         return NULL;
     });
 
@@ -318,45 +284,34 @@ kefir_result_t kefir_ir_module_declare_identifier(struct kefir_mem *mem, struct 
         REQUIRE(identifier_alias != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate a symbol"));
     }
 
-    struct kefir_ir_identifier *identifier_data = KEFIR_MALLOC(mem, sizeof(struct kefir_ir_identifier));
-    REQUIRE(identifier_data != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate IR identifier data"));
-    *identifier_data = *identifier;
-    identifier_data->symbol = identifier_symbol;
-    identifier_data->alias = identifier_alias;
-    kefir_result_t res = kefir_hashtree_insert(mem, &module->identifiers, (kefir_hashtree_key_t) symbol,
-                                               (kefir_hashtree_value_t) identifier_data);
-    if (res == KEFIR_ALREADY_EXISTS) {
-        struct kefir_hashtree_node *node;
-        res = kefir_hashtree_at(&module->identifiers, (kefir_hashtree_key_t) symbol, &node);
-        REQUIRE_ELSE(res == KEFIR_OK, {
-            KEFIR_FREE(mem, identifier_data);
-            return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Expected an identifier to exist in IR module");
-        });
+    struct kefir_hashtree_node *node;
+    kefir_result_t res = kefir_hashtree_at(&module->identifiers, (kefir_hashtree_key_t) symbol, &node);
+    if (res != KEFIR_NOT_FOUND) {
+        REQUIRE_OK(res);
         ASSIGN_DECL_CAST(const struct kefir_ir_identifier *, current_identifier_data, node->value);
 
-        res = KEFIR_OK;
-        REQUIRE_CHAIN_SET(&res, strcmp(identifier_data->symbol, current_identifier_data->symbol) == 0,
+        REQUIRE(strcmp(identifier_symbol, current_identifier_data->symbol) == 0,
                           KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Mismatch with existing IR module identifier symbol"));
-        REQUIRE_CHAIN_SET(&res, identifier_data->type == current_identifier_data->type,
+        REQUIRE(identifier->type == current_identifier_data->type,
                           KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Mismatch with existing IR module identifier type"));
-        REQUIRE_CHAIN_SET(&res, identifier_data->scope == current_identifier_data->scope,
+        REQUIRE(identifier->scope == current_identifier_data->scope,
                           KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Mismatch with existing IR module identifier scope"));
-        REQUIRE_CHAIN_SET(
-            &res, identifier_data->visibility == current_identifier_data->visibility,
+        REQUIRE(
+            identifier->visibility == current_identifier_data->visibility,
             KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Mismatch with existing IR module identifier visibility"));
-        REQUIRE_CHAIN_SET(&res,
-                          (identifier_data->alias == NULL && current_identifier_data->alias == NULL) ||
-                              (identifier_data->alias != NULL && current_identifier_data->alias != NULL &&
-                               strcmp(identifier_data->alias, current_identifier_data->alias) == 0),
+        REQUIRE((identifier_alias == NULL && current_identifier_data->alias == NULL) ||
+                              (identifier_alias != NULL && current_identifier_data->alias != NULL &&
+                               strcmp(identifier_alias, current_identifier_data->alias) == 0),
                           KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Mismatch with existing IR module identifier alias"));
-        KEFIR_FREE(mem, identifier_data);
-        REQUIRE_OK(res);
-        return KEFIR_OK;
+    } else {
+        struct kefir_ir_identifier *identifier_data = kefir_memory_arena_alloc(&module->arena, sizeof(struct kefir_ir_identifier), _Alignof(struct kefir_ir_identifier));
+        REQUIRE(identifier_data != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate IR identifier data"));
+        *identifier_data = *identifier;
+        identifier_data->symbol = identifier_symbol;
+        identifier_data->alias = identifier_alias;
+        REQUIRE_OK(kefir_hashtree_insert(mem, &module->identifiers, (kefir_hashtree_key_t) symbol,
+                                                (kefir_hashtree_value_t) identifier_data));
     }
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, identifier_data);
-        return res;
-    });
     return KEFIR_OK;
 }
 
@@ -367,18 +322,16 @@ struct kefir_ir_function *kefir_ir_module_new_function(struct kefir_mem *mem, st
     REQUIRE(decl != NULL, NULL);
     REQUIRE(decl->name != NULL && strlen(decl->name) != 0, NULL);
 
-    struct kefir_ir_function *func = KEFIR_MALLOC(mem, sizeof(struct kefir_ir_function));
+    struct kefir_ir_function *func = kefir_memory_arena_alloc(&module->arena, sizeof(struct kefir_ir_function), _Alignof(struct kefir_ir_function));
     REQUIRE(func != NULL, NULL);
     kefir_result_t result = kefir_ir_function_alloc(mem, decl, length, func);
     REQUIRE_ELSE(result == KEFIR_OK, {
-        KEFIR_FREE(mem, func);
         return NULL;
     });
     result = kefir_hashtree_insert(mem, &module->functions, (kefir_hashtree_key_t) decl->name,
                                    (kefir_hashtree_value_t) func);
     REQUIRE_ELSE(result == KEFIR_OK, {
         kefir_ir_function_free(mem, func);
-        KEFIR_FREE(mem, func);
         return NULL;
     });
     return func;
@@ -550,17 +503,15 @@ struct kefir_ir_data *kefir_ir_module_new_named_data(struct kefir_mem *mem, stru
 
     const char *symbol = kefir_ir_module_symbol(mem, module, identifier, NULL);
     REQUIRE(symbol != NULL, NULL);
-    struct kefir_ir_data *data = KEFIR_MALLOC(mem, sizeof(struct kefir_ir_data));
+    struct kefir_ir_data *data = kefir_memory_arena_alloc(&module->arena, sizeof(struct kefir_ir_data), _Alignof(struct kefir_ir_data));
     REQUIRE(data != NULL, NULL);
-    kefir_result_t res = kefir_ir_data_alloc(mem, storage, type, type_id, data);
+    kefir_result_t res = kefir_ir_data_alloc(mem, &module->arena, storage, type, type_id, data);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, data);
         return NULL;
     });
     res = kefir_hashtree_insert(mem, &module->named_data, (kefir_hashtree_key_t) symbol, (kefir_hashtree_value_t) data);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_ir_data_free(mem, data);
-        KEFIR_FREE(mem, data);
         return NULL;
     });
     return data;
@@ -847,12 +798,11 @@ kefir_result_t kefir_ir_module_new_bigint(struct kefir_mem *mem, struct kefir_ir
     REQUIRE(bigint != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid big integer"));
     REQUIRE(id_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to identifier"));
 
-    struct kefir_bigint *big_integer = KEFIR_MALLOC(mem, sizeof(struct kefir_bigint));
+    struct kefir_bigint *big_integer = kefir_memory_arena_alloc(&module->arena, sizeof(struct kefir_bigint), _Alignof(struct kefir_bigint));
     REQUIRE(big_integer != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate big integer"));
 
     kefir_result_t res = kefir_bigint_init(big_integer);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, big_integer);
         return res;
     });
 
