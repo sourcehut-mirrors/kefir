@@ -25,32 +25,16 @@
 #include <string.h>
 
 #define BLOCK_CAPACITY 8
-#define BLOCK_SIZE (BLOCK_CAPACITY * sizeof(struct kefir_ir_data_value))
 
-static kefir_result_t on_block_init(struct kefir_mem *mem, struct kefir_block_tree *tree, kefir_size_t block_id,
-                                    void *block, void *payload) {
-    UNUSED(mem);
+static kefir_result_t on_block_removal(struct kefir_mem *mem, struct kefir_hashtree *tree, kefir_hashtree_key_t key,
+                                       kefir_hashtree_value_t value, void *payload) {
     UNUSED(tree);
-    UNUSED(block_id);
-    UNUSED(payload);
-    REQUIRE(block != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid block"));
-
-    ASSIGN_DECL_CAST(struct kefir_ir_data_value *, value_block, block);
-    for (kefir_size_t i = 0; i < BLOCK_CAPACITY; i++) {
-        value_block[i] = (struct kefir_ir_data_value) {.type = KEFIR_IR_DATA_VALUE_UNDEFINED};
-    }
-    return KEFIR_OK;
-}
-
-static kefir_result_t on_block_removal(struct kefir_mem *mem, struct kefir_block_tree *tree, kefir_size_t block_id,
-                                       void *block, void *payload) {
-    UNUSED(tree);
-    UNUSED(block_id);
+    UNUSED(key);
     UNUSED(payload);
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
-    REQUIRE(block != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid block"));
+    ASSIGN_DECL_CAST(struct kefir_ir_data_value *, value_block, value);
+    REQUIRE(value_block != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid block"));
 
-    ASSIGN_DECL_CAST(struct kefir_ir_data_value *, value_block, block);
     for (kefir_size_t i = 0; i < BLOCK_CAPACITY; i++) {
         if (value_block[i].type == KEFIR_IR_DATA_VALUE_BITS) {
             KEFIR_FREE(mem, value_block[i].value.large->bits.bits);
@@ -69,9 +53,8 @@ kefir_result_t kefir_ir_data_alloc(struct kefir_mem *mem, struct kefir_memory_ar
 
     data->storage = storage;
     data->total_length = kefir_ir_type_slots(type);
-    REQUIRE_OK(kefir_block_tree_init(&data->value_tree, BLOCK_SIZE));
-    REQUIRE_OK(kefir_block_tree_on_block_init(&data->value_tree, on_block_init, NULL));
-    REQUIRE_OK(kefir_block_tree_on_block_removal(&data->value_tree, on_block_removal, NULL));
+    REQUIRE_OK(kefir_hashtree_init(&data->values, &kefir_hashtree_uint_ops));
+    REQUIRE_OK(kefir_hashtree_on_removal(&data->values, on_block_removal, NULL));
     data->arena = arena;
     data->type = type;
     data->type_id = type_id;
@@ -82,37 +65,58 @@ kefir_result_t kefir_ir_data_alloc(struct kefir_mem *mem, struct kefir_memory_ar
 kefir_result_t kefir_ir_data_free(struct kefir_mem *mem, struct kefir_ir_data *data) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(data != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR data pointer"));
-    REQUIRE_OK(kefir_block_tree_free(mem, &data->value_tree));
+    REQUIRE_OK(kefir_hashtree_free(mem, &data->values));
     data->type = NULL;
     return KEFIR_OK;
 }
 
 static kefir_result_t value_entry_at(struct kefir_mem *mem, struct kefir_ir_data *data, kefir_size_t index,
                                      struct kefir_ir_data_value **entry) {
-    kefir_size_t block_id, block_offset;
-    REQUIRE_OK(kefir_block_tree_get_block_offset(&data->value_tree, index * sizeof(struct kefir_ir_data_value),
-                                                 &block_id, &block_offset));
-    void *block;
-    REQUIRE_OK(kefir_block_tree_block(mem, &data->value_tree, block_id, &block));
-    ASSIGN_DECL_CAST(struct kefir_ir_data_value *, value_block, block);
-    *entry = &value_block[block_offset / sizeof(struct kefir_ir_data_value)];
+    struct kefir_hashtree_node *node;
+    kefir_result_t res = kefir_hashtree_lower_bound(&data->values, (kefir_hashtree_key_t) index, &node);
+    if (res == KEFIR_NOT_FOUND) {
+        REQUIRE_OK(kefir_hashtree_min(&data->values, &node));
+    } else {
+        REQUIRE_OK(res);
+    }
+
+    struct kefir_ir_data_value *value_block = NULL;
+    if (node == NULL || node->key > index || node->key + BLOCK_CAPACITY <= index) {
+        value_block = KEFIR_MALLOC(mem, sizeof(struct kefir_ir_data_value) * BLOCK_CAPACITY);
+        REQUIRE(value_block != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate IR data values"));
+
+        for (kefir_size_t i = 0; i < BLOCK_CAPACITY; i++) {
+            value_block[i] = (struct kefir_ir_data_value){.type = KEFIR_IR_DATA_VALUE_UNDEFINED};
+        }
+
+        res = kefir_hashtree_insert(mem, &data->values, (kefir_hashtree_key_t) (index / BLOCK_CAPACITY * BLOCK_CAPACITY), (kefir_hashtree_value_t) value_block);
+        REQUIRE_ELSE(res == KEFIR_OK, {
+            KEFIR_FREE(mem, value_block);
+            return res;
+        });
+    } else {
+        value_block = (struct kefir_ir_data_value *) node->value;
+    }
+    *entry = &value_block[index % BLOCK_CAPACITY];
     return KEFIR_OK;
 }
 
 static kefir_result_t value_get_entry(const struct kefir_ir_data *data, kefir_size_t index,
                                       struct kefir_ir_data_value **value_ptr) {
-    kefir_size_t block_id, block_offset;
-    REQUIRE_OK(kefir_block_tree_get_block_offset(&data->value_tree, index * sizeof(struct kefir_ir_data_value),
-                                                 &block_id, &block_offset));
-    void *block;
-    kefir_result_t res = kefir_block_tree_get_block(&data->value_tree, block_id, &block);
+    struct kefir_hashtree_node *node;
+    kefir_result_t res = kefir_hashtree_lower_bound(&data->values, (kefir_hashtree_key_t) index, &node);
     if (res == KEFIR_NOT_FOUND) {
-        *value_ptr = NULL;
-        return KEFIR_OK;
+        REQUIRE_OK(kefir_hashtree_min(&data->values, &node));
     } else {
         REQUIRE_OK(res);
-        ASSIGN_DECL_CAST(struct kefir_ir_data_value *, value_block, block);
-        *value_ptr = &value_block[block_offset / sizeof(struct kefir_ir_data_value)];
+    }
+
+    if (node == NULL || node->key > index || node->key + BLOCK_CAPACITY <= index) {
+        *value_ptr = NULL;
+    } else {
+        ASSIGN_DECL_CAST(struct kefir_ir_data_value *, value_block,
+            node->value);
+        *value_ptr = &value_block[index % BLOCK_CAPACITY];
     }
     return KEFIR_OK;
 }
@@ -442,7 +446,6 @@ struct finalize_param {
     struct kefir_ir_data *data;
     kefir_size_t slot;
     kefir_bool_t defined;
-    struct kefir_block_tree_iterator block_iterator;
 };
 
 static kefir_result_t finalize_unsupported(const struct kefir_ir_type *type, kefir_size_t index,
@@ -489,12 +492,10 @@ static kefir_result_t finalize_struct_union(const struct kefir_ir_type *type, ke
                                       .visitor = param->visitor,
                                       .data = param->data,
                                       .slot = param->slot,
-                                      .defined = false,
-                                      .block_iterator = param->block_iterator};
+                                      .defined = false};
     REQUIRE_OK(kefir_ir_type_visitor_list_nodes(type, param->visitor, &subparam, index + 1, typeentry->param));
     param->slot = subparam.slot;
     param->defined = param->defined || subparam.defined;
-    param->block_iterator = subparam.block_iterator;
 
     if (subparam.defined) {
         if (entry == NULL) {
@@ -519,21 +520,22 @@ static kefir_result_t finalize_array(const struct kefir_ir_type *type, kefir_siz
                                       .visitor = param->visitor,
                                       .data = param->data,
                                       .slot = param->slot,
-                                      .defined = false,
-                                      .block_iterator = param->block_iterator};
+                                      .defined = false};
 
     const kefir_size_t array_element_slots = kefir_ir_type_slots_of(type, index + 1);
     const kefir_size_t array_end_slot = param->slot + array_element_slots * (kefir_size_t) typeentry->param;
     for (kefir_size_t i = 0; i < (kefir_size_t) typeentry->param; i++) {
-        REQUIRE_OK(kefir_block_tree_iter_skip_to(&param->data->value_tree, &subparam.block_iterator,
-                                                 subparam.slot * sizeof(struct kefir_ir_data_value)));
-        if (subparam.block_iterator.block == NULL) {
+        kefir_size_t closest_block;
+        kefir_result_t res = kefir_ir_data_find_closest_block(param->data, subparam.slot, &closest_block);
+        if (res == KEFIR_NOT_FOUND) {
             // No initialized IR data blocks available => stop traversal
             break;
-        } else if (subparam.slot < subparam.block_iterator.block_id * BLOCK_CAPACITY) {
+        } 
+        REQUIRE_OK(res);
+        if (subparam.slot < closest_block) {
             // Some undefined slots can be skipped
             const kefir_size_t undefined_slots =
-                MIN(array_end_slot, subparam.block_iterator.block_id * BLOCK_CAPACITY) - subparam.slot;
+                MIN(array_end_slot, closest_block) - subparam.slot;
             const kefir_size_t undefined_elements = undefined_slots / array_element_slots;
             if (undefined_elements > 0) {
                 subparam.slot += undefined_elements * array_element_slots;
@@ -546,7 +548,6 @@ static kefir_result_t finalize_array(const struct kefir_ir_type *type, kefir_siz
     }
 
     param->slot = subparam.slot;
-    param->block_iterator = subparam.block_iterator;
 
     if (subparam.defined && entry == NULL) {
         REQUIRE_OK(value_entry_at(param->mem, param->data, entry_slot, &entry));
@@ -569,8 +570,6 @@ kefir_result_t kefir_ir_data_finalize(struct kefir_mem *mem, struct kefir_ir_dat
     REQUIRE(data != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR data pointer"));
     struct kefir_ir_type_visitor visitor;
     struct finalize_param param = {.mem = mem, .visitor = &visitor, .data = data, .slot = 0, .defined = false};
-
-    REQUIRE_OK(kefir_block_tree_iter(&data->value_tree, &param.block_iterator));
 
     REQUIRE_OK(kefir_ir_type_visitor_init(&visitor, finalize_unsupported));
     KEFIR_IR_TYPE_VISITOR_INIT_SCALARS(&visitor, finalize_scalar);
@@ -601,36 +600,23 @@ kefir_result_t kefir_ir_data_value_at(const struct kefir_ir_data *data, kefir_si
     return KEFIR_OK;
 }
 
-static kefir_result_t update_map_iter(struct kefir_ir_data_map_iterator *iter) {
-    iter->has_mapped_values = iter->value_iter.block != NULL;
-    iter->next_mapped_slot = iter->has_mapped_values ? iter->value_iter.block_id * BLOCK_CAPACITY : 0;
-    return KEFIR_OK;
-}
-
-kefir_result_t kefir_ir_data_map_iter(const struct kefir_ir_data *data, struct kefir_ir_data_map_iterator *iter) {
+kefir_result_t kefir_ir_data_find_closest_block(const struct kefir_ir_data *data, kefir_size_t index, kefir_size_t *closest_index_ptr) {
     REQUIRE(data != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR data"));
-    REQUIRE(iter != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR data map iterator"));
+    REQUIRE(index < data->total_length, KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Requested index exceeds IR data length"));
+    REQUIRE(closest_index_ptr, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Requested pointer to IR data index"));
 
-    REQUIRE_OK(kefir_block_tree_iter(&data->value_tree, &iter->value_iter));
-    REQUIRE_OK(update_map_iter(iter));
-    return KEFIR_OK;
-}
+    struct kefir_hashtree_node *node = NULL;
+    kefir_result_t res = kefir_hashtree_lower_bound(&data->values, (kefir_hashtree_key_t) index, &node);
+    if (res == KEFIR_NOT_FOUND) {
+        REQUIRE_OK(kefir_hashtree_min(&data->values, &node));
+    } else {
+        REQUIRE_OK(res);
+    }
 
-kefir_result_t kefir_ir_data_map_next(struct kefir_ir_data_map_iterator *iter) {
-    REQUIRE(iter != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR data map iterator"));
-
-    REQUIRE_OK(kefir_block_tree_next(&iter->value_iter));
-    REQUIRE_OK(update_map_iter(iter));
-    return KEFIR_OK;
-}
-
-kefir_result_t kefir_ir_data_map_skip_to(const struct kefir_ir_data *data, struct kefir_ir_data_map_iterator *iter,
-                                         kefir_size_t slot) {
-    REQUIRE(data != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR data"));
-    REQUIRE(iter != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR data map iterator"));
-
-    REQUIRE_OK(
-        kefir_block_tree_iter_skip_to(&data->value_tree, &iter->value_iter, slot * sizeof(struct kefir_ir_data_value)));
-    REQUIRE_OK(update_map_iter(iter));
+    if (node != NULL && index >= node->key + BLOCK_CAPACITY) {
+        node = kefir_hashtree_next_node(&data->values, node);
+    }
+    REQUIRE(node != NULL, KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find IR data closest block"));
+    *closest_index_ptr = node->key;
     return KEFIR_OK;
 }

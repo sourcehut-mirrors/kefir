@@ -23,8 +23,8 @@
 
 #include <stdbool.h>
 #include "kefir/ir/type.h"
-#include "kefir/core/block_tree.h"
 #include "kefir/core/mem.h"
+#include "kefir/core/hashtree.h"
 #include "kefir/core/memory_arena.h"
 #include "kefir/util/dfp.h"
 
@@ -39,7 +39,7 @@ typedef struct kefir_ir_data {
     kefir_id_t type_id;
     const struct kefir_ir_type *type;
     kefir_size_t total_length;
-    struct kefir_block_tree value_tree;
+    struct kefir_hashtree values;
     kefir_bool_t finalized;
     kefir_bool_t defined;
     struct kefir_memory_arena *arena;
@@ -170,15 +170,6 @@ kefir_result_t kefir_ir_data_finalize(struct kefir_mem *, struct kefir_ir_data *
 
 kefir_result_t kefir_ir_data_value_at(const struct kefir_ir_data *, kefir_size_t, const struct kefir_ir_data_value **);
 
-typedef struct kefir_ir_data_map_iterator {
-    struct kefir_block_tree_iterator value_iter;
-    kefir_size_t has_mapped_values;
-    kefir_size_t next_mapped_slot;
-} kefir_ir_data_map_iterator_t;
-
-kefir_result_t kefir_ir_data_map_iter(const struct kefir_ir_data *, struct kefir_ir_data_map_iterator *);
-kefir_result_t kefir_ir_data_map_next(struct kefir_ir_data_map_iterator *);
-kefir_result_t kefir_ir_data_map_skip_to(const struct kefir_ir_data *, struct kefir_ir_data_map_iterator *,
-                                         kefir_size_t);
+kefir_result_t kefir_ir_data_find_closest_block(const struct kefir_ir_data *, kefir_size_t, kefir_size_t *);
 
 #endif

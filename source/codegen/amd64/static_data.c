@@ -33,7 +33,6 @@ struct static_data_param {
     struct kefir_ir_type_visitor *visitor;
     kefir_size_t slot;
     kefir_size_t offset;
-    struct kefir_ir_data_map_iterator data_map_iter;
 };
 
 static kefir_result_t visitor_not_supported(const struct kefir_ir_type *type, kefir_size_t index,
@@ -674,13 +673,16 @@ static kefir_result_t array_static_data(const struct kefir_ir_type *type, kefir_
             const struct kefir_abi_amd64_typeentry_layout *array_element_layout = NULL;
             REQUIRE_OK(kefir_abi_amd64_type_layout_at(&param->layout, index + 1, &array_element_layout));
             for (kefir_size_t i = 0; i < (kefir_size_t) typeentry->param; i++) {
-                REQUIRE_OK(kefir_ir_data_map_skip_to(param->data, &param->data_map_iter, param->slot));
-                if (!param->data_map_iter.has_mapped_values) {
+                kefir_size_t closest_block;
+                kefir_result_t res = kefir_ir_data_find_closest_block(param->data, param->slot, &closest_block);
+                if (res == KEFIR_NOT_FOUND) {
                     param->slot = array_end_slot;
                     break;
-                } else if (param->slot < param->data_map_iter.next_mapped_slot) {
+                }
+                REQUIRE_OK(res);
+                if (param->slot < closest_block) {
                     const kefir_size_t missing_slots =
-                        MIN(param->data_map_iter.next_mapped_slot, array_end_slot) - param->slot;
+                        MIN(closest_block, array_end_slot) - param->slot;
                     const kefir_size_t missing_array_elements = missing_slots / array_element_slots;
                     if (missing_array_elements > 0) {
                         i += missing_array_elements - 1;
@@ -744,7 +746,6 @@ kefir_result_t kefir_codegen_amd64_static_data(struct kefir_mem *mem, struct kef
 
     struct static_data_param param = {
         .codegen = codegen, .module = module, .data = data, .visitor = &visitor, .slot = 0, .offset = 0};
-    REQUIRE_OK(kefir_ir_data_map_iter(data, &param.data_map_iter));
     REQUIRE_OK(kefir_abi_amd64_type_layout(mem, codegen->abi_variant, KEFIR_ABI_AMD64_TYPE_LAYOUT_CONTEXT_GLOBAL,
                                            data->type, &param.layout));
 
