@@ -2,6 +2,17 @@
 
 This file documents notable changes to the project.
 
+## [0.5.2] - 2026-09-15
+Project release:
+* Improvements in the optimization pipeline.
+* Optimization of compilation speed and memory usage.
+* Bug fixes and correctness improvements.
+
+With this release the project ceases public development; all post-announcement
+activities in this release are limited to bug fixes, clean-up and optimization
+of the compiler itself. Future bug reports are accepted in accordance with the
+MAINTENANCE.md policy.
+
 ## [0.5.1] - 2026-04-05
 Project release:
 * Completion of C23 support (incl. decimal floating-point, imaginary numbers,

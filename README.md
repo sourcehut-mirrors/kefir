@@ -1113,6 +1113,10 @@ about the release).
   codegen*), optimizer improvements including integation of conservative memory
   analysis via memory SSA, 128-bit integer support, extension of real-world
   compatibility.
+* 0.5.2 -- released in September 2026. The final
+  post-[announcement](https://kefir.protopopov.lv/posts/announce2.html) release.
+  Includes improvements in the optimization pipeline, general optimization and
+  clean-up of the compiler itself and bug fixes.
 
 **Starting from June 2026, the project development is conducted in private.**
 Should any bugs in already published code be discovered in the publicly
