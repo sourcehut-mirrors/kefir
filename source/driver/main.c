@@ -39,19 +39,19 @@ static int kefir_driver_main(int argc, char *const *argv) {
 
     struct kefir_string_pool symbols;
     struct kefir_driver_configuration driver_config;
-    struct kefir_driver_external_resources exteral_resources;
+    struct kefir_driver_external_resources external_resources;
     kefir_driver_command_t command;
     int exit_code = EXIT_SUCCESS;
 
     REQUIRE_CHAIN(&res, kefir_string_pool_init(&symbols));
     REQUIRE_CHAIN(&res, kefir_driver_configuration_init(&driver_config));
-    REQUIRE_CHAIN(&res, kefir_driver_external_resources_init_from_env(mem, &exteral_resources, &tmpmgr));
-    if (exteral_resources.default_target != NULL) {
-        REQUIRE_CHAIN(&res, kefir_driver_target_match(exteral_resources.default_target, &driver_config.target));
+    REQUIRE_CHAIN(&res, kefir_driver_external_resources_init_from_env(mem, &external_resources, &tmpmgr));
+    if (external_resources.default_target != NULL) {
+        REQUIRE_CHAIN(&res, kefir_driver_target_match(external_resources.default_target, &driver_config.target));
     }
     REQUIRE_CHAIN(
-        &res, kefir_driver_parse_args(mem, &symbols, &driver_config, &exteral_resources, (const char *const *) argv + 1,
-                                      argc - 1, &command, exteral_resources.driver_cli_quiet ? NULL : stderr));
+        &res, kefir_driver_parse_args(mem, &symbols, &driver_config, &external_resources, (const char *const *) argv + 1,
+                                      argc - 1, &command, external_resources.driver_cli_quiet ? NULL : stderr));
     if (res == KEFIR_OK && command == KEFIR_DRIVER_COMMAND_HELP) {
         fprintf(stdout, "%s", KefirDriverHelpContent);
     } else if (res == KEFIR_OK && command == KEFIR_DRIVER_COMMAND_VERSION) {
@@ -59,11 +59,11 @@ static int kefir_driver_main(int argc, char *const *argv) {
     } else if (res == KEFIR_OK && command == KEFIR_DRIVER_COMMAND_COMPILER_INFO) {
         res = print_compiler_info(stdout, argv[0]);
     } else if (res == KEFIR_OK && command == KEFIR_DRIVER_COMMAND_COMPILER_ENVIRONMENT) {
-        res = print_environment(stdout, &driver_config.target, &exteral_resources);
+        res = print_environment(stdout, &driver_config.target, &external_resources);
     } else if (res == KEFIR_OK && command == KEFIR_DRIVER_COMMAND_TARGET_ENVIRONMENT_HEADER) {
-        res = print_target_environment_header(stdout, &driver_config.target, &exteral_resources);
+        res = print_target_environment_header(stdout, &driver_config.target, &external_resources);
     } else {
-        REQUIRE_CHAIN(&res, kefir_driver_run(mem, &symbols, &driver_config, &exteral_resources));
+        REQUIRE_CHAIN(&res, kefir_driver_run(mem, &symbols, &driver_config, &external_resources));
         if (res == KEFIR_INTERRUPT) {
             res = KEFIR_OK;
             exit_code = EXIT_FAILURE;
