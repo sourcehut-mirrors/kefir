@@ -428,14 +428,14 @@ union floating_point_parts {
 _Static_assert(sizeof(kefir_ast_constant_expression_float_t) <= sizeof(kefir_uint64_t[2]), "Unexpected long double sizeof");
 
 kefir_ast_constant_expression_float_t kefir_ast_constant_expression_get_float(const kefir_uint64_t parts[2]) {
-    union floating_point_parts value = {
+    volatile union floating_point_parts value = {
         .parts = {parts[0], parts[1]}
     };
     return value.floating_point;
 }
 
 void kefir_ast_constant_expression_set_float(kefir_uint64_t parts[2], kefir_ast_constant_expression_float_t fp) {
-    union floating_point_parts value = {
+    volatile union floating_point_parts value = {
         .floating_point = fp
     };
     parts[0] = value.parts[0];

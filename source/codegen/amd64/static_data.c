@@ -342,7 +342,7 @@ static kefir_result_t long_double_static_data(const struct kefir_ir_type *type, 
     const struct kefir_ir_data_value *entry;
     REQUIRE_OK(kefir_ir_data_value_at(param->data, param->slot++, &entry));
 
-    union {
+    volatile union {
         kefir_long_double_t long_double;
         kefir_uint64_t uint64[2];
     } value = {.uint64 = {0, 0}};
@@ -548,7 +548,7 @@ static kefir_result_t complex_long_double_static_data(const struct kefir_ir_type
     const struct kefir_ir_data_value *entry;
     REQUIRE_OK(kefir_ir_data_value_at(param->data, param->slot++, &entry));
 
-    union {
+    volatile union {
         kefir_long_double_t ldouble[2];
         kefir_uint64_t uint64[4];
     } value = {.uint64 = {0, 0, 0, 0}};
