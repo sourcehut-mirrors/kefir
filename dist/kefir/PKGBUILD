@@ -1,22 +1,23 @@
 # Maintainer: Jevgenijs Protopopovs <jevgenij@protopopov.lv>
 pkgname='kefir'
-pkgver='0.5.1'
+pkgver='0.5.2'
 pkgrel='1'
 pkgdesc='C17/C23 language compiler for x86_64 systems'
 arch=('x86_64')
-provides=('kefir' 'kefir-debug')
-conflicts=('kefir' 'kefir-debug')
+provides=('kefir')
+conflicts=('kefir')
 url='https://kefir.protopopov.lv'
 license=('GPL3' 'BSD')
+options=('!debug')
 
 depends=()
 makedepends=()
 source=("https://git.sr.ht/~jprotopopov/kefir/archive/v$pkgver.tar.gz")
-sha512sums=('a8e324fca4a202fe3a2592f356834db261b6ceca2f419d5067842ed48f07bf6bfe266e75d85676c74ce340fb3ecb6708b395e39959dce62a4db8456abe26eea6')
+sha512sums=('c0c3e7905bae4e4ce42e53b65c32de8aa5beb5159a78435443da3582d01f227e45cc2c948662feca709da2df0906bbfaed068a8c93b6ff6a08ff97d2d5b64607')
 
 build () {
     cd kefir-v$pkgver
-    make all PROFILE=release KEFIR_BUILD_SOURCE_ID="a0a2f774a9832559c5eac400dff647be3263b618"
+    make all PROFILE=release KEFIR_BUILD_SOURCE_ID="3d89e03e35c5d3fce7c2cabb8bd055b49fbc7d9f"
 }
 
 package () {
